@@ -5,7 +5,7 @@ package com.azure.communication.common;
 /**
  * Options for refreshing CommunicationTokenCredential
  */
-public class CommunicationTokenRefreshOptions {
+public final class CommunicationTokenRefreshOptions {
     private final TokenRefresher tokenRefresher;
     private final boolean refreshProactively;
     private final String initialToken;
@@ -51,7 +51,7 @@ public class CommunicationTokenRefreshOptions {
     /**
      * @return whether or not to refresh token proactively
      */
-    public boolean getRefreshProactively() {
+    public boolean isRefreshProactively() {
         return refreshProactively;
     }
 

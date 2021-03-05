@@ -16,6 +16,7 @@ import org.apache.qpid.proton.amqp.transport.ConnectionError;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.SslPeerDetails;
 import org.apache.qpid.proton.engine.Transport;
 import org.apache.qpid.proton.engine.impl.TransportInternal;
 
@@ -55,8 +56,8 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
      * @throws IllegalStateException if a proxy address is unavailable for the given {@code proxyOptions}.
      */
     public WebSocketsProxyConnectionHandler(String connectionId, String productName, String clientVersion,
-        ConnectionOptions connectionOptions, ProxyOptions proxyOptions) {
-        super(connectionId, productName, clientVersion, connectionOptions);
+        ConnectionOptions connectionOptions, ProxyOptions proxyOptions, SslPeerDetails peerDetails) {
+        super(connectionId, productName, clientVersion, connectionOptions, peerDetails);
 
         this.proxyOptions = Objects.requireNonNull(proxyOptions, "'proxyConfiguration' cannot be null.");
         this.fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();

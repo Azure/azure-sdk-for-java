@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/sms?api-version=2021-03-07",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-sms/1.0.0-beta.5 (15.0.1; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "api-supported-versions" : "2020-07-20-preview1, 2020-08-20-preview, 2021-03-07",
+      "X-Processing-Time" : "596ms",
+      "MS-CV" : "9ZHrd+EY4kKS4wJRvzYY1g.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0aSRAYAAAAABFAEjttYkaSrLNXXE4sskhREFMRURHRTEwMTQAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+      "StatusCode" : "202",
+      "Body" : "{\"value\":[{\"to\":\"REDACTED\",\"messageId\":\"Outgoing_202103040006027e691189-3a1b-4c8e-a6da-18d0d154e90d_noam\",\"httpStatusCode\":202,\"successful\":true}]}",
+      "Date" : "Thu, 04 Mar 2021 00:06:01 GMT",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

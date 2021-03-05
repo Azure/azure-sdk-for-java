@@ -1,4 +1,4 @@
-# Azure Communications SMS Service client library for Java
+## Azure Communications SMS Service client library for Java
 
 Azure Communication SMS is used to send simple text messages.
 
@@ -38,56 +38,32 @@ via the endpoint() and httpClient() functions respectively.
 `AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables 
 are needed to create a DefaultAzureCredential object.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L80-L92 -->
+To create a SmsClient
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L22-L35 -->
 ```java
 // You can find your endpoint and access key from your resource in the Azure Portal
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
-
-// Create an HttpClient builder of your choice and customize it
-HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
-
-SmsClient smsClient = new SmsClientBuilder()
-    .endpoint(endpoint)
-    .credential(new DefaultAzureCredentialBuilder().build())
-    .httpClient(httpClient)
-    .buildClient();
-
-return smsClient;
-```
-
-### Access Key Authentication
-
-SMS messaging also uses HMAC authentication with a resource access key. The access key must be provided
-via the accessKey() function. Endpoint and httpClient must also be set via the endpoint() and httpClient()
-functions respectively.
-
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L23-L39 -->
-```java
-
-// Your can find your endpoint and access key from your resource in the Azure Portal
-String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
-String accessKey = "SECRET";
-
+//Enter your azureKeyCredential
+AzureKeyCredential azureKeyCredential = new AzureKeyCredential("SECRET");
 // Instantiate the http client
 HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
-
 // Create a new SmsClientBuilder to instantiate an SmsClient
 SmsClientBuilder smsClientBuilder = new SmsClientBuilder();
-
 // Set the endpoint, access key, and the HttpClient
 smsClientBuilder.endpoint(endpoint)
-    .accessKey(accessKey)
+    .credential(azureKeyCredential)
     .httpClient(httpClient);
-
 // Build a new SmsClient
+SmsClient smsClient = smsClientBuilder.buildClient();
 ```
 
 Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key. 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L65-L71 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L39-L46 -->
 ```java
-// Your can find your connection string from your resource in the Azure Portal
+// Create an HttpClient builder of your choice and customize it
+HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
+// You can find your connection string from your resource in the Azure Portal
 String connectionString = "<connection_string>";
-
 SmsClient smsClient = new SmsClientBuilder()
     .connectionString(connectionString)
     .httpClient(httpClient)
@@ -96,40 +72,46 @@ SmsClient smsClient = new SmsClientBuilder()
 
 ## Examples
 
-### Sending a message
-Use the `sendMessage` function to send a new message to a list of phone numbers.
-(Currently SMS Services only supports one phone number).
+### Sending a message to a single recipient
+Use the `send` function to send a new message to a phone number.
 Once you send the message, you'll receive a response where you can access several
-properties such as the message id with the `response.getMessageId()` function.
+properties such as the message id with the `messageResponseItem.getMessageId()` function.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L42-L58 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L50-L60 -->
 ```java
-// Currently Sms services only supports one phone number
-List<PhoneNumberIdentifier> to = new ArrayList<PhoneNumberIdentifier>();
-to.add(new PhoneNumberIdentifier("<to-phone-number>"));
-
-// SendSmsOptions is an optional field. It can be used
-// to enable a delivery report to the Azure Event Grid
-SendSmsOptions options = new SendSmsOptions();
-options.setEnableDeliveryReport(true);
-
-// Send the message and check the response for a message id
-SendSmsResponse response = smsClient.sendMessage(
-    new PhoneNumberIdentifier("<leased-phone-number>"), 
-    to, 
+//Send an sms to only one phone number
+SmsSendOptions options = new SmsSendOptions();
+options.setDeliveryReportEnabled(true);
+options.setTag("Tag"); /* Optional */
+// Send the message to a list of  phone Numbers and check the response for a messages ids
+SmsSendResult response = smsClient.send(
+    "<from-phone-number>",
+    "<to-phone-number>",
     "your message",
     options /* Optional */);
-
 System.out.println("MessageId: " + response.getMessageId());
 ```
+### Sending a message to multiple recipients
+Use the `send` function to send a new message to a list of phone numbers.
+Once you send the message, you'll receive a PagedIterable response where you can access several
+properties such as the message id with the `messageResponseItem.getMessageId()` function.
 
-## Contributing
-
-This project welcomes contributions and suggestions. Most contributions require you to agree to a [Contributor License Agreement (CLA)][cla] declaring that you have the right to, and actually do, grant us the rights to use your contribution.
-
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
-
-This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L64-L76 -->
+```java
+//Send an sms to multiple phone numbers
+SmsSendOptions options = new SmsSendOptions();
+options.setDeliveryReportEnabled(true);
+options.setTag("Tag"); /* Optional */
+// Send the message to a list of  phone Numbers and check the response for a messages ids
+Iterable<SmsSendResult> responseMultiplePhones = smsClient.send(
+    "<from-phone-number>",
+    new ArrayList<String>(Arrays.asList("<to-phone-number1>", "<to-phone-number2>")),
+    "your message",
+    options /* Optional */,
+    null);
+for (SmsSendResult messageResponseItem : responseMultiplePhones) {
+    System.out.println("MessageId sent to " + messageResponseItem.getTo() + ": " + messageResponseItem.getMessageId());
+```
 
 
 ## Troubleshooting
@@ -151,3 +133,11 @@ Check out other client libraries for Azure Communication Services
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/communication/azure-communication-sms/src
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Feng%2Fazure-communications-sms%2FREADME.png)
+
+## Contributing
+
+This project welcomes contributions and suggestions. Most contributions require you to agree to a [Contributor License Agreement (CLA)][cla] declaring that you have the right to, and actually do, grant us the rights to use your contribution.
+
+When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
+
+This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.

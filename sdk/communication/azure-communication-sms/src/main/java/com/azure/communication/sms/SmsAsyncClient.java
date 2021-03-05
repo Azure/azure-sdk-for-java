@@ -3,24 +3,21 @@
 
 package com.azure.communication.sms;
 
-import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImpl;
-import com.azure.communication.sms.models.SendMessageRequest;
-import com.azure.communication.sms.models.SendSmsOptions;
-import com.azure.communication.sms.models.SendSmsResponse;
+import com.azure.communication.sms.implementation.models.SmsSendResponseItem;
+import com.azure.communication.sms.implementation.models.SendMessageRequest;
+import com.azure.communication.sms.implementation.models.SmsRecipient;
+import com.azure.communication.sms.implementation.models.SmsSendResponse;
+import com.azure.communication.sms.models.SmsSendOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-
 import java.util.List;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Objects;
 import reactor.core.publisher.Mono;
-
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -38,51 +35,16 @@ public final class SmsAsyncClient {
 
     /**
      * Sends an SMS message from a phone number that belongs to the authenticated account.
+     * Phone number has to be in the format 000 - 00 - 00
      *
      * @param from Number that is sending the message.
-     * @param to The recipient's phone number. In this version, only one recipient in the list is supported.
-     * @param message message to send to recipient.
-     * @param smsOptions set options on the SMS request, like enable delivery report, which sends a report
-     * for this message to the Azure Resource Event Grid.
-     * @param context the context of the request. Can also be null or Context.NONE.
-     * @return response for a successful send Sms request.
-     */
-    Mono<Response<SendSmsResponse>> sendMessageWithResponse(PhoneNumberIdentifier from,
-        List<PhoneNumberIdentifier> to, String message,
-        SendSmsOptions smsOptions, Context context) {
-        if (from == null) {
-            return monoError(logger, new NullPointerException("Argument 'from' cannot be null."));
-        } else if (to == null) {
-            return monoError(logger, new NullPointerException("Argument 'to' cannot be null."));
-        }
-
-        SendMessageRequest sendMessageRequest = createSmsMessageRequest(from, to, message, smsOptions);
-
-        return this.smsServiceClient.getSms().sendWithResponseAsync(sendMessageRequest, context);
-    }
-
-    /**
-     * Sends an SMS message from a phone number that belongs to the authenticated account.
-     *
-     * @param from Number that is sending the message.
-     * @param to The recipient's phone number. In this version, only one recipient in the
-     * list is supported.
+     * @param to The recipient's phone number.
      * @param message message to send to recipient.
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendSmsResponse> sendMessage(PhoneNumberIdentifier from,
-        List<PhoneNumberIdentifier> to, String message) {
-        if (from == null) {
-            return monoError(logger, new NullPointerException("Argument 'from' cannot be null."));
-        } else if (to == null) {
-            return monoError(logger, new NullPointerException("Argument 'to' cannot be null."));
-        }
-
-        SendSmsOptions smsOptions = new SendSmsOptions();
-        smsOptions.setEnableDeliveryReport(false);
-
-        return sendMessage(from, to, message, smsOptions);
+    public Mono<SmsSendResult> send(String from, String to, String message) {
+        return send(from, to, message, null);
     }
 
     /**
@@ -91,64 +53,96 @@ public final class SmsAsyncClient {
      * @param from Number that is sending the message.
      * @param to The recipient's phone number.
      * @param message message to send to recipient.
+     * @param smsOptions set options on the SMS request, like enable delivery report, which sends a report
+     *                   for this message to the Azure Resource Event Grid.
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendSmsResponse> sendMessage(PhoneNumberIdentifier from, PhoneNumberIdentifier to, String message) {
-        if (from == null) {
-            return monoError(logger, new NullPointerException("Argument 'from' cannot be null."));
-        } else if (to == null) {
-            return monoError(logger, new NullPointerException("Argument 'to' cannot be null."));
+    public Mono<SmsSendResult> send(String from, String to, String message, SmsSendOptions smsOptions) {
+        List<String> recipients = new ArrayList<String>();
+        recipients.add(to);
+        SendMessageRequest request = createSendMessageRequest(from, recipients, message, smsOptions);
+        try {
+            Objects.requireNonNull(from, "'from' cannot be null.");
+            Objects.requireNonNull(to, "'to' cannot be null.");
+            Mono<Response<SmsSendResponse>> responseMono = withContext(context -> this.smsServiceClient.getSms().sendWithResponseAsync(request, context));
+            Response<SmsSendResponse> response = responseMono.block();
+            SmsSendResponse smsSendResponse = response.getValue();
+
+            List<SmsSendResult> result =  convertSmsResults(smsSendResponse.getValue());
+            if (result.size() == 1) {
+                return Mono.just(result.get(0));
+            } else {
+                return monoError(logger, new NullPointerException("no response"));
+            }
+        } catch (NullPointerException ex) {
+            return monoError(logger, ex);
+        } catch (RuntimeException  ex) {
+            return monoError(logger, ex);
         }
 
-        SendSmsOptions smsOptions = new SendSmsOptions();
-        smsOptions.setEnableDeliveryReport(false);
-
-        List<PhoneNumberIdentifier> toList = new ArrayList<PhoneNumberIdentifier>();
-        toList.add(to);
-
-        return sendMessage(from, toList, message, smsOptions);
     }
 
     /**
      * Sends an SMS message from a phone number that belongs to the authenticated account.
      *
      * @param from Number that is sending the message.
-     * @param to The recipient's phone number. In this version, only one recipient in the
-     * list is supported.
+     * @param to A list of the recipient's phone numbers.
+     * @param message message to send to recipient.
+     * @return response for a successful send Sms request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Iterable<SmsSendResult>> send(String from, Iterable<String> to, String message) {
+        return send(from, to, message, null);
+    }
+
+    /**
+     * Sends an SMS message from a phone number that belongs to the authenticated account.
+     *
+     * @param from Number that is sending the message.
+     * @param to A list of the recipient's phone numbers.
      * @param message message to send to recipient.
      * @param smsOptions set options on the SMS request, like enable delivery report, which sends a report
      * for this message to the Azure Resource Event Grid.
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendSmsResponse> sendMessage(PhoneNumberIdentifier from,
-        List<PhoneNumberIdentifier> to, String message,
-        SendSmsOptions smsOptions) {
-        if (from == null) {
-            return monoError(logger, new NullPointerException("Argument 'from' cannot be null."));
-        } else if (to == null) {
-            return monoError(logger, new NullPointerException("Argument 'to' cannot be null."));
-        }
-
-        SendMessageRequest sendMessageRequest = createSmsMessageRequest(from, to, message, smsOptions);
+    public Mono<Iterable<SmsSendResult>> send(String from, Iterable<String> to, String message, SmsSendOptions smsOptions) {
+        SendMessageRequest request = createSendMessageRequest(from, to, message, smsOptions);
         try {
-            return withContext(context -> this.smsServiceClient.getSms().sendAsync(sendMessageRequest, context));
+            Objects.requireNonNull(from, "'from' cannot be null.");
+            Objects.requireNonNull(to, "'to' cannot be null.");
+            Mono<Response<SmsSendResponse>> responseMono = withContext(context -> this.smsServiceClient.getSms().sendWithResponseAsync(request, context));
+            Response<SmsSendResponse> response = responseMono.block();
+            SmsSendResponse smsSendResponse = response.getValue();
+            List<SmsSendResult> result = convertSmsResults(smsSendResponse.getValue());
+            return Mono.just(result);
+        } catch (NullPointerException ex) {
+            return monoError(logger, ex);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    private SendMessageRequest createSmsMessageRequest(PhoneNumberIdentifier from,
-        List<PhoneNumberIdentifier> to, String message,
-        SendSmsOptions smsOptions) {
-        Stream<String> s = to.stream().map(n -> n.getPhoneNumber());
-        SendMessageRequest sendMessageRequest = new SendMessageRequest();
-        sendMessageRequest.setFrom(from.getPhoneNumber())
-            .setTo(s.collect(Collectors.toList()))
-            .setMessage(message)
-            .setSendSmsOptions(smsOptions);
+    private List<SmsSendResult>  convertSmsResults(Iterable<SmsSendResponseItem> resultsIterable) {
+        List <SmsSendResult> iterableWrapper = new ArrayList<>();
+        for (SmsSendResponseItem item : resultsIterable
+             ) {
+            iterableWrapper.add(new SmsSendResult(item));
+        }
+        return iterableWrapper;
+    }
 
-        return sendMessageRequest;
+    private SendMessageRequest createSendMessageRequest(String from, Iterable<String> smsRecipient, String message, SmsSendOptions smsOptions) {
+        SendMessageRequest request = new SendMessageRequest();
+        List<SmsRecipient> recipients = new ArrayList<SmsRecipient>();
+        for (String s : smsRecipient) {
+            recipients.add(new SmsRecipient().setTo(s));
+        }
+        request.setFrom(from)
+            .setSmsRecipients(recipients)
+            .setMessage(message)
+            .setSmsSendOptions(smsOptions);
+        return request;
     }
 }

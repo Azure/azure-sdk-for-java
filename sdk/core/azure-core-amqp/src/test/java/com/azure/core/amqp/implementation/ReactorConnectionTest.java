@@ -14,6 +14,7 @@ import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
+import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
@@ -25,6 +26,7 @@ import org.apache.qpid.proton.engine.Handler;
 import org.apache.qpid.proton.engine.Record;
 import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.engine.SslDomain.VerifyMode;
+import org.apache.qpid.proton.engine.SslPeerDetails;
 import org.apache.qpid.proton.engine.Transport;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
@@ -67,6 +69,7 @@ class ReactorConnectionTest {
     private static final String CLIENT_VERSION = "1.0.0-test";
     private static final VerifyMode VERIFY_MODE = VerifyMode.VERIFY_PEER_NAME;
 
+    private final SslPeerDetails peerDetails = Proton.sslPeerDetails(FULLY_QUALIFIED_NAMESPACE, 3128);
     private final ClientOptions clientOptions = new ClientOptions();
 
     private ReactorConnection connection;
@@ -113,7 +116,8 @@ class ReactorConnectionTest {
             tokenProvider, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, retryOptions,
             ProxyOptions.SYSTEM_DEFAULTS, SCHEDULER, clientOptions, VERIFY_MODE);
 
-        connectionHandler = new ConnectionHandler(CONNECTION_ID, PRODUCT, CLIENT_VERSION, connectionOptions);
+        connectionHandler = new ConnectionHandler(CONNECTION_ID, PRODUCT, CLIENT_VERSION, connectionOptions,
+            peerDetails);
 
         when(reactor.selectable()).thenReturn(selectable);
         when(reactor.connectionToHost(FULLY_QUALIFIED_NAMESPACE, connectionHandler.getProtocolPort(),
@@ -326,7 +330,7 @@ class ReactorConnectionTest {
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), clientOptions, VERIFY_MODE);
 
         final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, PRODUCT, CLIENT_VERSION,
-            connectionOptions);
+            connectionOptions, peerDetails);
         final ReactorHandlerProvider provider = mock(ReactorHandlerProvider.class);
 
         when(provider.createConnectionHandler(CONNECTION_ID, PRODUCT, CLIENT_VERSION, connectionOptions))
@@ -407,7 +411,7 @@ class ReactorConnectionTest {
             port);
 
         final ConnectionHandler connectionHandler = new ConnectionHandler(connectionId, PRODUCT, CLIENT_VERSION,
-            connectionOptions);
+            connectionOptions, peerDetails);
 
         when(reactor.connectionToHost(hostname, port, connectionHandler)).thenReturn(connectionProtonJ);
 

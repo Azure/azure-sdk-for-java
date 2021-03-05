@@ -29,6 +29,12 @@ public final class JobManifestTasks {
     @JsonProperty(value = "keyPhraseExtractionTasks")
     private List<KeyPhrasesTask> keyPhraseExtractionTasks;
 
+    /*
+     * The entityLinkingTasks property.
+     */
+    @JsonProperty(value = "entityLinkingTasks")
+    private List<EntityLinkingTask> entityLinkingTasks;
+
     /**
      * Get the entityRecognitionTasks property: The entityRecognitionTasks property.
      *
@@ -86,6 +92,26 @@ public final class JobManifestTasks {
      */
     public JobManifestTasks setKeyPhraseExtractionTasks(List<KeyPhrasesTask> keyPhraseExtractionTasks) {
         this.keyPhraseExtractionTasks = keyPhraseExtractionTasks;
+        return this;
+    }
+
+    /**
+     * Get the entityLinkingTasks property: The entityLinkingTasks property.
+     *
+     * @return the entityLinkingTasks value.
+     */
+    public List<EntityLinkingTask> getEntityLinkingTasks() {
+        return this.entityLinkingTasks;
+    }
+
+    /**
+     * Set the entityLinkingTasks property: The entityLinkingTasks property.
+     *
+     * @param entityLinkingTasks the entityLinkingTasks value to set.
+     * @return the JobManifestTasks object itself.
+     */
+    public JobManifestTasks setEntityLinkingTasks(List<EntityLinkingTask> entityLinkingTasks) {
+        this.entityLinkingTasks = entityLinkingTasks;
         return this;
     }
 }

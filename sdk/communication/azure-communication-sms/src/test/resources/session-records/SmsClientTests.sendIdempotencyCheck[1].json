@@ -1,0 +1,46 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/sms?api-version=2021-03-07",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-sms/1.0.0-beta.5 (15.0.1; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "api-supported-versions" : "2020-07-20-preview1, 2020-08-20-preview, 2021-03-07",
+      "X-Processing-Time" : "622ms",
+      "MS-CV" : "GSf80UC1GUGHxnY4OdEh9g.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0z5JAYAAAAADqqIY2ySSjSpdXtEV/i7ssREFMRURHRTEwMDgAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+      "StatusCode" : "202",
+      "Body" : "{\"value\":[{\"to\":\"REDACTED\",\"messageId\":\"Outgoing_20210304075704febb52e0-3641-4622-8491-1d08a6358a32_noam\",\"httpStatusCode\":202,\"successful\":true}]}",
+      "Date" : "Thu, 04 Mar 2021 07:57:03 GMT",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/sms?api-version=2021-03-07",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-sms/1.0.0-beta.5 (15.0.1; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "api-supported-versions" : "2020-07-20-preview1, 2020-08-20-preview, 2021-03-07",
+      "X-Processing-Time" : "415ms",
+      "MS-CV" : "A73ZRadboU6mRNkN4v7DKw.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "00JJAYAAAAABvTQ11qRzTTL2jk2zniM84REFMRURHRTEwMTIAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+      "StatusCode" : "202",
+      "Body" : "{\"value\":[{\"to\":\"+18335102092\",\"messageId\":\"Outgoing_202103040757046b2bcb68-8151-4ee6-8b27-5face2344ece_noam\",\"httpStatusCode\":202,\"successful\":true}]}",
+      "Date" : "Thu, 04 Mar 2021 07:57:04 GMT",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

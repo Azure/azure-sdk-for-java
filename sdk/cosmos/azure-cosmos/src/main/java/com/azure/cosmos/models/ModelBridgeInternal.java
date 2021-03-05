@@ -177,6 +177,11 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static Permission getPermission(CosmosPermissionProperties permissionProperties) {
+        return permissionProperties.getPermission();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static List<CosmosPermissionProperties> getCosmosPermissionPropertiesFromResults(List<Permission> results) {
         return CosmosPermissionProperties.getPermissions(results);
     }
@@ -277,6 +282,11 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static RequestOptions toRequestOptions(CosmosItemRequestOptions cosmosItemRequestOptions) {
         return cosmosItemRequestOptions.toRequestOptions();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static RequestOptions toRequestOptions(CosmosPatchItemRequestOptions cosmosPatchItemRequestOptions) {
+        return cosmosPatchItemRequestOptions.toRequestOptions();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -848,5 +858,15 @@ public final class ModelBridgeInternal {
 
         checkNotNull(options, "Argument 'options' must not be null.");
         options.setRequestContinuation(eTag);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void setFeedRange(CosmosQueryRequestOptions options, FeedRange feedRange) {
+        options.setFeedRange(feedRange);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static FeedRange getFeedRange(CosmosQueryRequestOptions options) {
+        return options.getFeedRange();
     }
 }

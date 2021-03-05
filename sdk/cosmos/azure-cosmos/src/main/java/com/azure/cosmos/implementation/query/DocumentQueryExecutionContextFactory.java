@@ -6,7 +6,10 @@ import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -28,11 +31,11 @@ import reactor.core.publisher.Mono;
 
 import java.time.Instant;
 import java.util.Collections;
-import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentMap;
+import java.util.stream.Collectors;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -60,7 +63,7 @@ public class DocumentQueryExecutionContextFactory {
         return collectionCache.resolveCollectionAsync(null, request);
     }
 
-    private static <T extends Resource> Mono<Pair<List<PartitionKeyRange>,QueryInfo>> getPartitionKeyRangesAndQueryInfo(
+    private static <T extends Resource> Mono<Pair<List<Range<String>>,QueryInfo>> getPartitionKeyRangesAndQueryInfo(
         DiagnosticsClientContext diagnosticsClientContext,
         IDocumentQueryClient client,
         SqlQuerySpec query,
@@ -81,7 +84,11 @@ public class DocumentQueryExecutionContextFactory {
                     collection.getResourceId(),
                     ModelBridgeInternal.partitionKeyRangeIdInternal(cosmosQueryRequestOptions));
 
-            return partitionKeyRanges.map(pkRanges -> Pair.of(pkRanges, QueryInfo.EMPTY));
+            return partitionKeyRanges.map(pkRanges -> {
+                List<Range<String>> ranges =
+                    pkRanges.stream().map(PartitionKeyRange::toRange).collect(Collectors.toList());
+                return Pair.of(ranges, QueryInfo.EMPTY);
+            });
         }
 
         Instant startTime = Instant.now();
@@ -97,9 +104,13 @@ public class DocumentQueryExecutionContextFactory {
             }
         }
 
-        queryExecutionInfoMono = QueryPlanRetriever
-                                     .getQueryPlanThroughGatewayAsync(diagnosticsClientContext, client, query,
-                                                                      resourceLink);
+        queryExecutionInfoMono =
+            QueryPlanRetriever.getQueryPlanThroughGatewayAsync(
+                diagnosticsClientContext,
+                client,
+                query,
+                resourceLink,
+                cosmosQueryRequestOptions != null ? cosmosQueryRequestOptions.getPartitionKey() : null);
 
         return queryExecutionInfoMono.flatMap(
             partitionedQueryExecutionInfo -> {
@@ -115,7 +126,7 @@ public class DocumentQueryExecutionContextFactory {
             });
     }
 
-    private static <T extends Resource> Mono<Pair<List<PartitionKeyRange>, QueryInfo>> getTargetRangesFromQueryPlan(
+    private static <T extends Resource> Mono<Pair<List<Range<String>>, QueryInfo>> getTargetRangesFromQueryPlan(
         CosmosQueryRequestOptions cosmosQueryRequestOptions, DocumentCollection collection,
         DefaultDocumentQueryExecutionContext<T> queryExecutionContext,
         PartitionedQueryExecutionInfo partitionedQueryExecutionInfo, Instant planFetchStartTime,
@@ -130,18 +141,28 @@ public class DocumentQueryExecutionContextFactory {
         if (isScopedToSinglePartition(cosmosQueryRequestOptions)) {
             PartitionKeyInternal internalPartitionKey =
                 BridgeInternal.getPartitionKeyInternal(cosmosQueryRequestOptions.getPartitionKey());
-            Range<String> range = Range
-                                      .getPointRange(internalPartitionKey
-                                                         .getEffectivePartitionKeyString(internalPartitionKey,
-                                                                                         collection
-                                                                                             .getPartitionKey()));
+            Range<String> range = Range.getPointRange(
+                internalPartitionKey.getEffectivePartitionKeyString(internalPartitionKey,collection.getPartitionKey()));
             queryRanges = Collections.singletonList(range);
         }
+
+        FeedRange userProvidedFeedRange = ModelBridgeInternal.getFeedRange(cosmosQueryRequestOptions);
+        if (userProvidedFeedRange != null) {
+           return queryExecutionContext.getTargetRange(collection.getResourceId(),
+                                                 FeedRangeInternal.convert(userProvidedFeedRange))
+                      . map(range -> Pair.of(Collections.singletonList(range),
+                                              partitionedQueryExecutionInfo.getQueryInfo()));
+        }
+
         return
             queryExecutionContext.getTargetPartitionKeyRanges(collection.getResourceId(), queryRanges)
-                .map(pkRanges -> Pair.of(
-                    pkRanges,
-                    partitionedQueryExecutionInfo.getQueryInfo()));
+                .map(pkRanges -> {
+                    List<Range<String>> ranges =
+                        pkRanges.stream().map(PartitionKeyRange::toRange).collect(Collectors.toList());
+                    return Pair.of(
+                        ranges,
+                        partitionedQueryExecutionInfo.getQueryInfo());
+                });
     }
 
     private static void tryCacheQueryPlan(
@@ -211,15 +232,16 @@ public class DocumentQueryExecutionContextFactory {
         }
 
         return collectionObs.single().flatMap(collectionValueHolder -> {
-            Mono<Pair<List<PartitionKeyRange>, QueryInfo>> queryPlanTask = getPartitionKeyRangesAndQueryInfo(diagnosticsClientContext,
-                                                                                             client,
-                                                                                             query,
-                                                                                             cosmosQueryRequestOptions,
-                                                                                             resourceLink,
-                                                                                             collectionValueHolder.v,
-                                                                                             queryExecutionContext,
-                                                                                             queryPlanCachingEnabled,
-                                                                                             queryPlanCache);
+            Mono<Pair<List<Range<String>>, QueryInfo>> queryPlanTask =
+                getPartitionKeyRangesAndQueryInfo(diagnosticsClientContext,
+                                                  client,
+                                                  query,
+                                                  cosmosQueryRequestOptions,
+                                                  resourceLink,
+                                                  collectionValueHolder.v,
+                                                  queryExecutionContext,
+                                                  queryPlanCachingEnabled,
+                                                  queryPlanCache);
 
             return queryPlanTask
                 .flatMap(queryPlan -> createSpecializedDocumentQueryExecutionContextAsync(diagnosticsClientContext,
@@ -248,7 +270,7 @@ public class DocumentQueryExecutionContextFactory {
             String resourceLink,
             boolean isContinuationExpected,
             QueryInfo queryInfo,
-            List<PartitionKeyRange> targetRanges,
+            List<Range<String>> targetRanges,
             String collectionRid,
             UUID correlatedActivityId) {
 
@@ -295,6 +317,9 @@ public class DocumentQueryExecutionContextFactory {
             //            }
         }
 
+        List<FeedRangeEpkImpl> feedRangeEpks = targetRanges.stream().map(FeedRangeEpkImpl::new)
+                                                   .collect(Collectors.toList());
+
         PipelinedDocumentQueryParams<T> documentQueryParams = new PipelinedDocumentQueryParams<T>(
             resourceTypeEnum,
             resourceType,
@@ -304,10 +329,10 @@ public class DocumentQueryExecutionContextFactory {
             getLazyFeedResponse,
             isContinuationExpected,
             initialPageSize,
-            targetRanges,
             queryInfo,
             cosmosQueryRequestOptions,
-            correlatedActivityId);
+            correlatedActivityId,
+            feedRangeEpks);
 
         return PipelinedDocumentQueryExecutionContext.createAsync(diagnosticsClientContext, client, documentQueryParams);
     }
@@ -319,9 +344,10 @@ public class DocumentQueryExecutionContextFactory {
         ResourceType resourceTypeEnum) {
 
         return PipelinedDocumentQueryExecutionContext.createReadManyAsync(diagnosticsClientContext, queryClient,
-                                                                   collectionResourceId, sqlQuery, rangeQueryMap,
-            cosmosQueryRequestOptions, resourceId, collectionLink,
-                                                                   activityId, klass,
-            resourceTypeEnum );
+                                                                          collectionResourceId, sqlQuery, rangeQueryMap,
+                                                                          cosmosQueryRequestOptions, resourceId,
+                                                                          collectionLink,
+                                                                          activityId, klass,
+                                                                          resourceTypeEnum);
     }
 }

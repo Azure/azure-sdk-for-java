@@ -21,6 +21,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.models.CloudEvent;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -320,7 +321,7 @@ public final class EventGridPublisherClientBuilder {
      *
      * @return the builder itself
      */
-    public EventGridPublisherClientBuilder serviceVersion(EventGridServiceVersion serviceVersion) {
+    EventGridPublisherClientBuilder serviceVersion(EventGridServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }

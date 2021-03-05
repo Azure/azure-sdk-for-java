@@ -11,20 +11,12 @@ import com.azure.cosmos.CosmosException;
  */
 public interface ResourceManager {
     /**
-     * Initialize the CosmosDB database required for running this test, or if the database exists, delete all
-     * legacy containers
+     * Initialize this resource required for running this test
      *
      * @throws CosmosException in the event of an error creating the underlying database, or deleting
      *                         containers from a previously created database of the same name
      */
-    void createDatabase() throws CosmosException;
-
-    /**
-     * Create desired container/collection for the test
-     *
-     * @throws CosmosException if the container could not be created
-     */
-    void createContainer() throws CosmosException;
+    void createResources() throws CosmosException;
 
     /**
      * Delete all managed resources e.g. account, databases and/or containers etc

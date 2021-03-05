@@ -13,7 +13,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-starter-servicebus-jms</artifactId>
-  <version>3.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-servicebus-jms;current} -->
+  <version>3.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-servicebus-jms;current} -->
 
   <name>Azure Spring Boot Starter for Azure Service Bus JMS</name>
   <description>Spring Boot Starter for Azure Service Bus JMS</description>
@@ -23,7 +23,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot</artifactId>
-      <version>3.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot;current} -->
+      <version>3.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot;current} -->
     </dependency>
 
     <dependency>
@@ -41,6 +41,11 @@
       <groupId>org.apache.qpid</groupId>
       <artifactId>qpid-jms-client</artifactId>
       <version>0.53.0</version> <!-- {x-version-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-servicebus-jms</artifactId>
+      <version>0.0.7</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
@@ -89,6 +94,7 @@
           <rules>
             <bannedDependencies>
               <includes>
+                <include>com.microsoft.azure:azure-servicebus-jms:[0.0.7]</include> <!-- {x-include-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
                 <include>org.apache.qpid:qpid-jms-client:[0.53.0]</include> <!-- {x-include-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
                 <include>io.netty:netty-buffer:[4.1.54.Final]</include> <!-- {x-include-update;io.netty:netty-buffer;external_dependency} -->
                 <include>io.netty:netty-common:[4.1.54.Final]</include> <!-- {x-include-update;io.netty:netty-common;external_dependency} -->
