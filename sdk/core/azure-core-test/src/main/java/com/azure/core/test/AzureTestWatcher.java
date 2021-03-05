@@ -3,6 +3,7 @@
 
 package com.azure.core.test;
 
+import com.azure.core.test.implementation.TestRunMetrics;
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -39,29 +40,19 @@ public class AzureTestWatcher implements BeforeTestExecutionCallback, AfterTestE
         logPrefixBuilder.append(",");
 
         getStore(extensionContext).put(extensionContext.getRequiredTestMethod(),
-            new TestInformation(logPrefixBuilder.toString(), System.currentTimeMillis()));
+            new TestRunMetrics(logPrefixBuilder.toString(), System.currentTimeMillis()));
     }
 
     @Override
     public void afterTestExecution(ExtensionContext context) {
-        TestInformation testInformation = getStore(context)
-            .remove(context.getRequiredTestMethod(), TestInformation.class);
-        long duration = System.currentTimeMillis() - testInformation.startMillis;
+        TestRunMetrics testInformation = getStore(context)
+            .remove(context.getRequiredTestMethod(), TestRunMetrics.class);
+        long duration = System.currentTimeMillis() - testInformation.getStartMillis();
 
-        System.out.printf("%s completed in %d ms.%n", testInformation.logPrefix, duration);
+        System.out.printf("%s completed in %d ms.%n", testInformation.getLogPrefix(), duration);
     }
 
     private static ExtensionContext.Store getStore(ExtensionContext context) {
         return context.getStore(ExtensionContext.Namespace.create(AzureTestWatcher.class, context));
-    }
-
-    private static final class TestInformation {
-        private final String logPrefix;
-        private final long startMillis;
-
-        private TestInformation(String logPrefix, long startMillis) {
-            this.logPrefix = logPrefix;
-            this.startMillis = startMillis;
-        }
     }
 }

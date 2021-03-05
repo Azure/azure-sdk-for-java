@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.aad.webapi;
 
-import java.util.Collection;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,6 +11,8 @@ import org.springframework.security.oauth2.server.resource.authentication.Bearer
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.util.Assert;
 
+import java.util.Collection;
+
 /**
  * A {@link Converter} that takes a {@link Jwt} and converts it into a {@link BearerTokenAuthentication}.
  */
@@ -19,10 +20,10 @@ public class AADJwtBearerTokenAuthenticationConverter implements Converter<Jwt, 
 
     private static final String DEFAULT_AUTHORITY_PREFIX = "SCOPE_";
 
-    private Converter<Jwt, Collection<GrantedAuthority>> converter
-        = new JwtGrantedAuthoritiesConverter();
+    private Converter<Jwt, Collection<GrantedAuthority>> converter;
 
     public AADJwtBearerTokenAuthenticationConverter() {
+        this.converter = new AADJwtGrantedAuthoritiesConverter();
     }
 
     public AADJwtBearerTokenAuthenticationConverter(String authoritiesClaimName) {

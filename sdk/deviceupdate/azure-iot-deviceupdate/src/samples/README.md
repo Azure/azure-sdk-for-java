@@ -31,7 +31,7 @@ To run the samples, you need to compile console Samples project. The executable 
 ## Creating Client
 
 You need to use AzureDeviceUpdateClientBuilder to create a proper valid AzureDeviceUpdateClient. This main client will let you access the other clients - Updates for update management, Devices for device management and finally Deployments for deployment management. To create a new client, you need the Device Update for IoT Hub account, instance and credentials.
-In the sample below, you can set `accountEndpoint`, `instanceId`, `tenantId` and `clientId` through the above mentioned environment variables. The client requires an instance of [TokenCredential](https://docs.microsoft.com/en-us/dotnet/api/azure.core.tokencredential?view=azure-dotnet).
+In the sample below, you can set `accountEndpoint`, `instanceId`, `tenantId` and `clientId` through the above mentioned environment variables. The client requires an instance of [TokenCredential](https://docs.microsoft.com/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable).
 In these samples, we illustrate how to use just derived class: InteractiveLogin. There are other options if you want to use client certificates for authentication (ClientCertificateCredential) or client secret (ClientSecretCredential).
 
 ``` java
@@ -183,7 +183,7 @@ Similar to importing update, the method will return job identity and you need to
 
 ### Create Simulator Device
 
-To create a simulator device, follow steps on [Getting Started Using Ubuntu (18.04 x64) Simulator Reference Client](https://github.com/Azure/adu-private-preview/blob/master/docs/quickstarts/how-to-client-eval-sim-quickstart.md) page.
+To create a simulator device, follow steps on [Getting Started Using Ubuntu (18.04 x64) Simulator Reference Client](https://docs.microsoft.com/azure/iot-hub-device-update/device-update-simulator) page.
 
 When you do that and have your simulator running, use your device identifier as `device` command-line argument.
 
