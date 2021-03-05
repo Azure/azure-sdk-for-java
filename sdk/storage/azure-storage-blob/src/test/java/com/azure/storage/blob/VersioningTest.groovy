@@ -101,8 +101,8 @@ class VersioningTest extends APISpec {
         when:
         def outputV1 = new ByteArrayOutputStream()
         def outputV2 = new ByteArrayOutputStream()
-        blobClient.getVersionClient(blobItemV1.getVersionId()).downloadStreaming(outputV1)
-        blobClient.getVersionClient(blobItemV2.getVersionId()).downloadStreaming(outputV2)
+        blobClient.getVersionClient(blobItemV1.getVersionId()).downloadStream(outputV1)
+        blobClient.getVersionClient(blobItemV2.getVersionId()).downloadStream(outputV2)
 
         then:
         outputV1.toByteArray() == contentV1.getBytes(StandardCharsets.UTF_8)

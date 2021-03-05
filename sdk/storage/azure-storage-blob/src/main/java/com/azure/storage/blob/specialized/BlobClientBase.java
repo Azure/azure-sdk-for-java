@@ -572,7 +572,7 @@ public class BlobClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
-     * <p>This method will be deprecated in the future. Use {@link #downloadStreaming(OutputStream)} instead.
+     * <p>This method will be deprecated in the future. Use {@link #downloadStream(OutputStream)} instead.
      *
      * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @throws UncheckedIOException If an I/O error occurs.
@@ -580,7 +580,7 @@ public class BlobClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void download(OutputStream stream) {
-        downloadStreaming(stream);
+        downloadStream(stream);
     }
 
     /**
@@ -589,7 +589,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadStreaming#OutputStream}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadStream#OutputStream}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -599,7 +599,7 @@ public class BlobClientBase {
      * @throws NullPointerException if {@code stream} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void downloadStreaming(OutputStream stream) {
+    public void downloadStream(OutputStream stream) {
         downloadWithResponse(stream, null, null, null, false, null, Context.NONE);
     }
 
@@ -613,6 +613,9 @@ public class BlobClientBase {
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * <p>This method supports downloads up to 2GB of data.
+     * Use {@link #downloadStream(OutputStream)} to download larger blobs.</p>
      *
      * @return The content of the blob.
      * @throws UncheckedIOException If an I/O error occurs.
@@ -634,7 +637,7 @@ public class BlobClientBase {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * <p>This method will be deprecated in the future.
-     * Use {@link #downloadStreamingWithResponse(OutputStream, BlobRange, DownloadRetryOptions,
+     * Use {@link #downloadStreamWithResponse(OutputStream, BlobRange, DownloadRetryOptions,
      * BlobRequestConditions, boolean, Duration, Context)} instead.
      *
      * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
@@ -652,7 +655,7 @@ public class BlobClientBase {
     public BlobDownloadResponse downloadWithResponse(OutputStream stream, BlobRange range,
         DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
         Duration timeout, Context context) {
-        return downloadStreamingWithResponse(stream, range,
+        return downloadStreamWithResponse(stream, range,
             options, requestConditions, getRangeContentMd5, timeout, context);
     }
 
@@ -662,7 +665,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadStreamingWithResponse#OutputStream-BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadStreamWithResponse#OutputStream-BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -679,12 +682,12 @@ public class BlobClientBase {
      * @throws NullPointerException if {@code stream} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BlobDownloadResponse downloadStreamingWithResponse(OutputStream stream, BlobRange range,
+    public BlobDownloadResponse downloadStreamWithResponse(OutputStream stream, BlobRange range,
         DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
         Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("stream", stream);
         Mono<BlobDownloadResponse> download = client
-            .downloadFluxWithResponse(range, options, requestConditions, getRangeContentMd5, context)
+            .downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, context)
             .flatMap(response -> response.getValue().reduce(stream, (outputStream, buffer) -> {
                 try {
                     outputStream.write(FluxUtil.byteBufferToArray(buffer));
@@ -708,6 +711,10 @@ public class BlobClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
+     * <p>This method supports downloads up to 2GB of data.
+     * Use {@link #downloadStreamWithResponse(OutputStream, BlobRange,
+     * DownloadRetryOptions, BlobRequestConditions, boolean, Duration, Context)}  to download larger blobs.</p>
+     *
      * @param options {@link DownloadRetryOptions}
      * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -718,7 +725,7 @@ public class BlobClientBase {
     public BlobDownloadContentResponse downloadContentWithResponse(
         DownloadRetryOptions options, BlobRequestConditions requestConditions, Duration timeout, Context context) {
         Mono<BlobDownloadContentResponse> download = client
-            .downloadFluxWithResponse(null, options, requestConditions, false, context)
+            .downloadStreamWithResponse(null, options, requestConditions, false, context)
             .flatMap(r ->
                 BinaryData.fromFlux(r.getValue())
                     .map(data ->

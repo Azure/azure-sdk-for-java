@@ -93,7 +93,7 @@ public class BlobClientJavaDocCodeSnippets {
     public void downloadContent() {
         // BEGIN: com.azure.storage.blob.BlobClient.downloadContent
         BinaryData data = client.downloadContent();
-        System.out.println("Download completed.");
+        System.out.printf("Downloaded %s", data.toString());
         // END: com.azure.storage.blob.BlobClient.downloadContent
     }
 

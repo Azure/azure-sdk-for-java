@@ -263,7 +263,7 @@ class BlobAPITest extends APISpec {
         when:
         def stream = new ByteArrayOutputStream()
         bc.setTags(Collections.singletonMap("foo", "bar"))
-        def response = bc.downloadStreamingWithResponse(stream, null, null, null, false, null, null)
+        def response = bc.downloadStreamWithResponse(stream, null, null, null, false, null, null)
         def body = ByteBuffer.wrap(stream.toByteArray())
         def headers = response.getDeserializedHeaders()
 
@@ -393,7 +393,7 @@ class BlobAPITest extends APISpec {
     def "Download streaming min"() {
         when:
         def outStream = new ByteArrayOutputStream()
-        bc.downloadStreaming(outStream)
+        bc.downloadStream(outStream)
         def result = outStream.toByteArray()
 
         then:
@@ -478,7 +478,7 @@ class BlobAPITest extends APISpec {
             .setTagsConditions(tags)
 
         when:
-        def response = bc.downloadStreamingWithResponse(new ByteArrayOutputStream(), null, null, bac, false, null, null)
+        def response = bc.downloadStreamWithResponse(new ByteArrayOutputStream(), null, null, bac, false, null, null)
 
         then:
         response.getStatusCode() == 200
@@ -568,7 +568,7 @@ class BlobAPITest extends APISpec {
             .setTagsConditions(tags)
 
         when:
-        bc.downloadStreamingWithResponse(new ByteArrayOutputStream(), null, null, bac, false, null, null).getStatusCode()
+        bc.downloadStreamWithResponse(new ByteArrayOutputStream(), null, null, bac, false, null, null).getStatusCode()
 
         then:
         thrown(BlobStorageException)
@@ -622,7 +622,7 @@ class BlobAPITest extends APISpec {
 
     def "Download md5 streaming"() {
         when:
-        def response = bc.downloadStreamingWithResponse(new ByteArrayOutputStream(), new BlobRange(0, 3), null, null, true, null, null)
+        def response = bc.downloadStreamWithResponse(new ByteArrayOutputStream(), new BlobRange(0, 3), null, null, true, null, null)
         def contentMD5 = response.getDeserializedHeaders().getContentMd5()
 
         then:
@@ -660,7 +660,7 @@ class BlobAPITest extends APISpec {
     def "Download snapshot streaming"() {
         when:
         def originalStream = new ByteArrayOutputStream()
-        bc.downloadStreaming(originalStream)
+        bc.downloadStream(originalStream)
 
         def bc2 = bc.createSnapshot()
         new SpecializedBlobClientBuilder()
@@ -670,7 +670,7 @@ class BlobAPITest extends APISpec {
 
         then:
         def snapshotStream = new ByteArrayOutputStream()
-        bc2.downloadStreaming(snapshotStream)
+        bc2.downloadStream(snapshotStream)
         snapshotStream.toByteArray() == originalStream.toByteArray()
     }
 

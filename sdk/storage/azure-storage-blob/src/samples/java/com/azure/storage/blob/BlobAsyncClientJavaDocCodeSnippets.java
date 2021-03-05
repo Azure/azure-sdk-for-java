@@ -99,7 +99,6 @@ public class BlobAsyncClientJavaDocCodeSnippets {
      */
     public void downloadContentCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.downloadContent
-        ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
         client.downloadContent().subscribe(data -> {
             System.out.printf("Downloaded %s", data.toString());
         });
