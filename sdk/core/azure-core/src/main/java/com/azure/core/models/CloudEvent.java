@@ -177,17 +177,17 @@ public final class CloudEvent {
 
     /**
      * Create an instance of {@link CloudEvent}.
-     * <p>'source', 'type', 'id', and 'specversion' are required attributes according to the
+     * <p>{@code source}, {@code type}, {@code id}, and {@code specversion} are required attributes according to the
      * <a href="https://github.com/cloudevents/spec/blob/v1.0.1/spec.md">CNCF CloudEvent spec</a>.
-     * You must set the 'source' and 'type' when using this constructor.
-     * For convenience, 'id' and 'specversion' are automatically assigned. You can change the 'id' by using
-     * {@link #setId(String)} after you create a CloudEvent. But you can not change 'specversion' because this class is
-     * specifically for CloudEvent 1.0 schema.</p>
+     * You must set the {@code source} and {@code type} when using this constructor.
+     * For convenience, {@code id} and {@code specversion} are automatically assigned. You can change the {@code id}
+     * by using {@link #setId(String)} after you create a CloudEvent. But you can not change {@code specversion}
+     * because this class is specifically for CloudEvent 1.0 schema.</p>
      *
-     * <p>For the CloudEvent data payload, this constructor accepts 'data' of {@link BinaryData} as the CloudEvent payload.
-     * The 'data' can be created from objects of type String, bytes, boolean, null, array or other types.
+     * <p>For the CloudEvent data payload, this constructor accepts {@code data} of {@link BinaryData} as the CloudEvent payload.
+     * The {@code data} can be created from objects of type String, bytes, boolean, null, array or other types.
      * A CloudEvent will be serialized to its Json String representation
-     * to be sent out. Use param 'format' to indicate whether the 'data' will be serialized as
+     * to be sent out. Use param {@code format} to indicate whether the {@code data} will be serialized as
      * bytes, or Json. When {@link CloudEventDataFormat#BYTES} is used, the data payload will be serialized to base64
      * bytes and stored in attribute <em>data_base64</em> of the CloudEvent's Json representation. When
      * {@link CloudEventDataFormat#JSON} is used, the data payload will be serialized as Json data and stored in
@@ -240,7 +240,7 @@ public final class CloudEvent {
     /**
      * Deserialize {@link CloudEvent} JSON string representation that has one CloudEvent object or
      * an array of CloudEvent objects into a list of CloudEvents, and validate whether any CloudEvents have
-     * null id', 'source', or 'type'. If you want to skip this validation, use {@link #fromString(String, boolean)}.
+     * null {@code id}, {@code source}, or {@code type}. If you want to skip this validation, use {@link #fromString(String, boolean)}.
      *
      * <p><strong>Deserialize CloudEvent Samples</strong></p>
      * {@codesnippet com.azure.core.model.CloudEvent.fromString}
@@ -250,7 +250,7 @@ public final class CloudEvent {
      * @return all of the events in the payload deserialized as {@link CloudEvent CloudEvents}.
      * @throws NullPointerException if cloudEventsJson is null.
      * @throws IllegalArgumentException if the input parameter isn't a correct JSON string for a CloudEvent
-     * or an array of CloudEvents, or any deserialized CloudEvents have null 'id', 'source', or 'type'.
+     * or an array of CloudEvents, or any deserialized CloudEvents have null {@code id}, {@code source}, or {@code type}.
      */
     public static List<CloudEvent> fromString(String cloudEventsJson) {
         return fromString(cloudEventsJson, false);
@@ -284,10 +284,10 @@ public final class CloudEvent {
                     if (event.getId() == null) {
                         nullAttributes.add("'id'");
                     }
-                    if (event.getId() == null) {
+                    if (event.getSource() == null) {
                         nullAttributes.add("'source'");
                     }
-                    if (event.getId() == null) {
+                    if (event.getType() == null) {
                         nullAttributes.add("'type'");
                     }
                     throw LOGGER.logExceptionAsError(new IllegalArgumentException(
