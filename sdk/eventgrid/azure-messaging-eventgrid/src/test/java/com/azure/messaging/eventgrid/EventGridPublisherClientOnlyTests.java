@@ -26,12 +26,11 @@ public class EventGridPublisherClientOnlyTests {
     public void testGenerateSas() throws UnsupportedEncodingException {
         OffsetDateTime time = OffsetDateTime.of(2021, 3, 3, 16, 48, 0, 0, ZoneOffset.UTC);
 
-        String endpoint = System.getenv(DUMMY_ENDPOINT);
         String sasToken1 = EventGridPublisherAsyncClient.generateSas(
-            endpoint, new AzureKeyCredential(System.getenv(DUMMY_KEY)), time);
+            DUMMY_ENDPOINT, new AzureKeyCredential(DUMMY_KEY), time);
 
         String sasToken2 = EventGridPublisherClient.generateSas(
-            System.getenv(DUMMY_ENDPOINT), new AzureKeyCredential(System.getenv(DUMMY_KEY)), time);
+            DUMMY_ENDPOINT, new AzureKeyCredential(DUMMY_KEY), time);
 
         assertEquals(sasToken1, sasToken2);
 
@@ -40,7 +39,7 @@ public class EventGridPublisherClientOnlyTests {
 
         Charset charset = StandardCharsets.UTF_8;
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("M/d/yyyy h:m:s a");
-        String fullEndpoint = String.format("%s?%s=%s", endpoint, "api-version",
+        String fullEndpoint = String.format("%s?%s=%s", DUMMY_ENDPOINT, "api-version",
             EventGridServiceVersion.getLatest().getVersion());
         String encodedResource = URLEncoder.encode(fullEndpoint, charset.name());
         String encodedExpiration = URLEncoder.encode(time.atZoneSameInstant(ZoneOffset.UTC).format(
