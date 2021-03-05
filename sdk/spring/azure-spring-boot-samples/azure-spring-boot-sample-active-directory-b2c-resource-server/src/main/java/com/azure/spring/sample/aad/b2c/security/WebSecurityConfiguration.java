@@ -4,7 +4,6 @@
 package com.azure.spring.sample.aad.b2c.security;
 
 import com.azure.spring.aad.webapi.AADJwtBearerTokenAuthenticationConverter;
-import com.azure.spring.autoconfigure.b2c.AADB2COidcLoginConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -12,20 +11,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final AADB2COidcLoginConfigurer configurer;
-
-    public WebSecurityConfiguration(AADB2COidcLoginConfigurer configurer) {
-        this.configurer = configurer;
-    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-            .antMatchers("/login").permitAll()
-            .anyRequest().authenticated()
-            .and()
-            .apply(configurer)
-            .and()
+        http.authorizeRequests((requests) -> requests.anyRequest().authenticated())
             .oauth2ResourceServer()
             .jwt()
             .jwtAuthenticationConverter(new AADJwtBearerTokenAuthenticationConverter());
