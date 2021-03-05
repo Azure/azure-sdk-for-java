@@ -19,6 +19,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
@@ -45,27 +46,33 @@ final class BuilderHelper {
     static HttpPipeline buildPipeline(
         TablesSharedKeyCredential tablesSharedKeyCredential,
         TokenCredential tokenCredential, AzureSasCredential azureSasCredential, String sasToken,
-        String endpoint, RequestRetryOptions retryOptions, HttpLogOptions logOptions,
-        HttpClient httpClient, List<HttpPipelinePolicy> additionalPolicies,
-        Configuration configuration, ClientLogger logger) {
+        String endpoint, RequestRetryOptions retryOptions, HttpLogOptions logOptions, ClientOptions clientOptions,
+        HttpClient httpClient, List<HttpPipelinePolicy> perCallAdditionalPolicies,
+        List<HttpPipelinePolicy> perRetryAdditionalPolicies, Configuration configuration, ClientLogger logger) {
+
+        configuration = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        clientOptions = (clientOptions == null) ? new ClientOptions() : clientOptions;
+        logOptions = (logOptions == null) ? new HttpLogOptions() : logOptions;
 
         validateSingleCredentialIsPresent(
             tablesSharedKeyCredential, tokenCredential, azureSasCredential, sasToken, logger);
 
-        //1
+        // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(getUserAgentPolicy(configuration));
+        policies.add(getUserAgentPolicy(configuration, clientOptions, logOptions));
         policies.add(new RequestIdPolicy());
 
         // Add Accept header so we don't get back XML.
         // Can be removed when this is fixed. https://github.com/Azure/autorest.modelerfour/issues/324
         policies.add(new AddHeadersPolicy(new HttpHeaders().put("Accept", "application/json")));
 
-        //2
+        // Add per call additional policies.
+        policies.addAll(perCallAdditionalPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
+
+        // Add retry policy.
         policies.add(new RequestRetryPolicy(retryOptions));
 
-        //3
         policies.add(new AddDatePolicy());
         HttpPipelinePolicy credentialPolicy;
         if (tablesSharedKeyCredential != null) {
@@ -89,17 +96,15 @@ final class BuilderHelper {
             policies.add(credentialPolicy);
         }
 
-        //4
-        policies.addAll(additionalPolicies);
+        // Add per retry additional policies.
+        policies.addAll(perRetryAdditionalPolicies);
         HttpPolicyProviders.addAfterRetryPolicies(policies); //should this be between 3/4?
 
-        //5
         policies.add(getResponseValidationPolicy());
-
-        //6
         policies.add(new HttpLoggingPolicy(logOptions));
 
         //hm what is this and why here not 5?
+        // vcolin7: Probably to log the actual ETag from the service before scrubbing it.
         policies.add(new ScrubEtagPolicy());
 
         //where is #7, transport policy
@@ -140,15 +145,24 @@ final class BuilderHelper {
      * Creates a {@link UserAgentPolicy} using the default blob module name and version.
      *
      * @param configuration Configuration store used to determine whether telemetry information should be included.
+     * @param clientOptions ClientOptions such as application ID and custom headers to set on a request.
+     * @param logOptions The logging configuration to use when sending and receiving requests to and from the service.
      * @return The default {@link UserAgentPolicy} for the module.
      */
-    private static UserAgentPolicy getUserAgentPolicy(Configuration configuration) {
-        configuration = (configuration == null) ? Configuration.NONE : configuration;
+    private static UserAgentPolicy getUserAgentPolicy(Configuration configuration, ClientOptions clientOptions,
+        HttpLogOptions logOptions) {
 
         String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
-        return new UserAgentPolicy(getDefaultHttpLogOptions().getApplicationId(), clientName, clientVersion,
-            configuration);
+        String applicationId = null;
+
+        if (!CoreUtils.isNullOrEmpty(clientOptions.getApplicationId())) {
+            applicationId = clientOptions.getApplicationId();
+        } else if (!CoreUtils.isNullOrEmpty(logOptions.getApplicationId())) {
+            applicationId = logOptions.getApplicationId();
+        }
+
+        return new UserAgentPolicy(applicationId, clientName, clientVersion, configuration);
     }
 
     /**
@@ -163,19 +177,6 @@ final class BuilderHelper {
             endpoint.setHost(String.join(".", hostParts));
         }
         return String.format("%s/.default", endpoint.toString());
-    }
-
-    /**
-     * Gets the default http log option for Storage Blob.
-     *
-     * @return the default http log options.
-     */
-    private static HttpLogOptions getDefaultHttpLogOptions() {
-        HttpLogOptions defaultOptions = new HttpLogOptions();
-        // TODO
-        //BlobHeadersAndQueryParameters.getBlobHeaders().forEach(defaultOptions::addAllowedHeaderName);
-        //BlobHeadersAndQueryParameters.getBlobQueryParameters().forEach(defaultOptions::addAllowedQueryParamName);
-        return defaultOptions;
     }
 
     /*

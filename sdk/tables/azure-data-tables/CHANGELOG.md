@@ -2,6 +2,8 @@
 
 ## 12.0.0-beta.5 (Unreleased)
 
+- Added support to specify whether or not a pipeline policy should be added per call or per retry.
+- Added support for passing Azure Core's `ClientOptions` to client builders.
 
 ## 12.0.0-beta.4 (2021-02-11)
 
