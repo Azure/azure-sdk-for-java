@@ -43,7 +43,7 @@ public class CosmosAnnotationIT {
         TestConstants.ROLE_NAME);
 
     @ClassRule
-    public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
+    public static final IntegrationTestCollectionManager.Synchronous collectionManager = new IntegrationTestCollectionManager.Synchronous();
 
     @Autowired
     private CosmosTemplate cosmosTemplate;

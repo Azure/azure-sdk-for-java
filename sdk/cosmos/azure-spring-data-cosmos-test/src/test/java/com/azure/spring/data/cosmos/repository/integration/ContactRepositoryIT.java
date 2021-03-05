@@ -41,7 +41,7 @@ public class ContactRepositoryIT {
     private static final Contact TEST_CONTACT5 = new Contact("testId5", "faketitle3", 43, true);
 
     @ClassRule
-    public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
+    public static final IntegrationTestCollectionManager.Synchronous collectionManager = new IntegrationTestCollectionManager.Synchronous();
 
     @Autowired
     ContactRepository repository;

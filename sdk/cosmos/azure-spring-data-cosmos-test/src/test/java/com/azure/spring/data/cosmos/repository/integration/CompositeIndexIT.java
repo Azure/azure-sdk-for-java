@@ -34,7 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CompositeIndexIT {
 
     @ClassRule
-    public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
+    public static final IntegrationTestCollectionManager.Synchronous collectionManager = new IntegrationTestCollectionManager.Synchronous();
 
     @Autowired
     CosmosTemplate template;

@@ -49,7 +49,7 @@ public class CustomerRepositoryIT {
     private static final Customer CUSTOMER_2 = new Customer(CUSTOMER_ID_2, CUSTOMER_LEVEL_1, USER_2);
 
     @ClassRule
-    public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
+    public static final IntegrationTestCollectionManager.Synchronous collectionManager = new IntegrationTestCollectionManager.Synchronous();
 
     @Autowired
     private CustomerRepository repository;

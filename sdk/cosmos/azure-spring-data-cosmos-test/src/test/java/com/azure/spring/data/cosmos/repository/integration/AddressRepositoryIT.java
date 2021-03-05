@@ -39,7 +39,7 @@ import static org.assertj.core.api.Assertions.fail;
 public class AddressRepositoryIT {
 
     @ClassRule
-    public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
+    public static final IntegrationTestCollectionManager.Synchronous collectionManager = new IntegrationTestCollectionManager.Synchronous();
 
     @Autowired
     AddressRepository repository;
