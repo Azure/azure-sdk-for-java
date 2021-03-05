@@ -10,6 +10,7 @@ import com.azure.core.experimental.implementation.AzureEnvironment;
 import com.azure.core.experimental.implementation.ARMScopeHelper;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.CoreUtils;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
@@ -29,7 +30,7 @@ import java.util.regex.Pattern;
  * This is a temporary class to support ARM Challenge based authentication. It will
  * move to azure-resource-manager package.
  */
-public class ARMChallengeAuthenticationPolicy extends BearerTokenAuthenticationChallengePolicy {
+public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationChallengePolicy {
     private static final Pattern AUTHENTICATION_CHALLENGE_PATTERN =
         Pattern.compile("(\\w+) ((?:\\w+=\".*?\"(?:, )?)+)(?:, )?");
     private static final Pattern AUTHENTICATION_CHALLENGE_PARAMS_PATTERN =
@@ -40,13 +41,13 @@ public class ARMChallengeAuthenticationPolicy extends BearerTokenAuthenticationC
     private static final String ARM_SCOPES_KEY = "ARMScopes";
 
     /**
-     * Creates ARMChallengeAuthenticationPolicy.
+     * Creates ArmChallengeAuthenticationPolicy.
      *
      * @param credential the token credential to authenticate the request
      * @param environment the environment with endpoints for authentication
      * @param scopes the scopes used in credential, using default scopes when empty
      */
-    public ARMChallengeAuthenticationPolicy(TokenCredential credential,
+    public ArmChallengeAuthenticationPolicy(TokenCredential credential,
                                             AzureEnvironment environment, String... scopes) {
         super(credential);
         this.scopes = scopes;
@@ -59,7 +60,7 @@ public class ARMChallengeAuthenticationPolicy extends BearerTokenAuthenticationC
         return Mono.defer(() -> {
             TokenRequestContext trc;
             String[] scopes = this.scopes;
-            if (scopes == null || scopes.length == 0) {
+            if (CoreUtils.isNullOrEmpty(scopes)) {
                 scopes = new String[1];
                 scopes[0] = ARMScopeHelper.getDefaultScopeFromRequest(
                     context.getHttpRequest(), environment);
@@ -74,7 +75,9 @@ public class ARMChallengeAuthenticationPolicy extends BearerTokenAuthenticationC
     public Mono<Boolean> onChallenge(HttpPipelineCallContext context, HttpResponse response) {
         return Mono.defer(() -> {
             String authHeader = response.getHeaderValue(WWW_AUTHENTICATE);
-            if (response.getStatusCode() == 401 && authHeader != null) {
+            if (!(response.getStatusCode() == 401 && authHeader != null)) {
+                return Mono.just(false);
+            } else {
                 List<AuthenticationChallenge> challenges = parseChallenges(authHeader);
                 for (AuthenticationChallenge authenticationChallenge : challenges) {
                     Map<String, String> extractedChallengeParams =
@@ -90,7 +93,7 @@ public class ARMChallengeAuthenticationPolicy extends BearerTokenAuthenticationC
                         }
                         // We should've retrieved and configured the scopes in on Before logic,
                         // re-use it here as an optimization.
-                        if (scopes == null || scopes.length == 0) {
+                        if (CoreUtils.isNullOrEmpty(scopes)) {
                             // If scopes wasn't configured in On Before logic or at constructor level,
                             // then retrieve it again.
                             scopes = new String[1];
@@ -102,8 +105,8 @@ public class ARMChallengeAuthenticationPolicy extends BearerTokenAuthenticationC
                             .flatMap(b -> Mono.just(true));
                     }
                 }
+                return Mono.just(false);
             }
-            return Mono.just(false);
         });
     }
 
