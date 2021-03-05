@@ -142,6 +142,18 @@ public interface StorageAccount
     boolean isLargeFileSharesEnabled();
 
     /**
+     * @return the minimal TLS version for HTTPS traffic.
+     */
+    MinimumTlsVersion minimalTlsVersion();
+
+    /**
+     * Checks whether storage account only allow HTTPS traffic.
+     *
+     * @return true if only allow HTTPS traffic, false otherwise
+     */
+    boolean isHttpsTrafficOnly();
+
+    /**
      * Fetch the up-to-date access keys from Azure for this storage account.
      *
      * @return the access keys for this storage account

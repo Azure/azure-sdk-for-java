@@ -191,6 +191,16 @@ class StorageAccountImpl
     }
 
     @Override
+    public MinimumTlsVersion minimalTlsVersion() {
+        return this.innerModel().minimumTlsVersion();
+    }
+
+    @Override
+    public boolean isHttpsTrafficOnly() {
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().enableHttpsTrafficOnly());
+    }
+
+    @Override
     public List<StorageAccountKey> getKeys() {
         return this.getKeysAsync().block();
     }
