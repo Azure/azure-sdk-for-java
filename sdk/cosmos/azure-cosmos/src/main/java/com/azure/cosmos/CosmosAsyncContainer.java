@@ -893,8 +893,10 @@ public class CosmosAsyncContainer {
     public <T> CosmosPagedFlux<T> readAllItems(
         PartitionKey partitionKey,
         Class<T> classType) {
+        CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
+        queryRequestOptions.setPartitionKey(partitionKey);
 
-        return this.readAllItems(partitionKey, new CosmosQueryRequestOptions(), classType);
+        return this.readAllItems(partitionKey, queryRequestOptions, classType);
     }
 
     /**
