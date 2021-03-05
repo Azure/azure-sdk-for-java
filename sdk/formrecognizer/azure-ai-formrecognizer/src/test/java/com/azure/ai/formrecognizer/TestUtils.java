@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 final class TestUtils {
     // Duration
-    static final Duration ONE_NANO_DURATION = Duration.ofNanos(1);
+    static final Duration ONE_NANO_DURATION = Duration.ofMillis(1);
     // Local test files
     static final String BLANK_PDF = "blank.pdf";
     static final String FORM_JPG = "Form_1.jpg";
