@@ -276,7 +276,7 @@ public final class SmsClientBuilder {
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
         policyList.add(new UserAgentPolicy(applicationId, clientName, clientVersion, configuration));
-        policyList.add(new RetryPolicy());
+        policyList.add((this.retryPolicy == null) ? new RetryPolicy() : this.retryPolicy);
         policyList.add(new CookiePolicy());
 
         // Add additional policies

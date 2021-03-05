@@ -92,7 +92,7 @@ There are two different forms of authentication to use the Azure Communication S
 ### Send a 1:1 SMS Message
 Use the `send` or `sendWithResponse` function to send a SMS message to a single phone number.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L68-L74 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L68-L75 -->
 ```java
 SmsSendResult sendResult = smsClient.send(
     "<from-phone-number>",
@@ -100,12 +100,13 @@ SmsSendResult sendResult = smsClient.send(
     "Hi");
 
 System.out.println("Message Id: " + sendResult.getMessageId());
+System.out.println("Recipient Number: " + sendResult.getTo());
 System.out.println("Send Result Successful:" + sendResult.isSuccessful());
 ```
 ### Send a 1:N SMS Message
 To send a SMS message to a list of recipients, call the `send` or `sendWithResponse` function with a list of recipient phone numbers. You may also add pass in an options object to specify whether the delivery report should be enabled and set custom tags.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L80-L94 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L81-L96 -->
 ```java
 SmsSendOptions options = new SmsSendOptions();
 options.setDeliveryReportEnabled(true);
@@ -120,15 +121,15 @@ Iterable<SmsSendResult> sendResults = smsClient.sendWithResponse(
 
 for (SmsSendResult result : sendResults) {
     System.out.println("Message Id: " + result.getMessageId());
+    System.out.println("Recipient Number: " + result.getTo());
     System.out.println("Send Result Successful:" + result.isSuccessful());
 }
 ```
 
-
 ## Troubleshooting
 
 All SMS service operations will throw an exception on failure.
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L102-L110 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L104-L112 -->
 ```java
 try {
     SmsSendResult sendResult = smsClient.send(

@@ -208,7 +208,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
     public void sendSmsFromNullNumber(HttpClient httpClient) {
         // Arrange
         SmsClientBuilder builder = getSmsClient(httpClient);
-        asyncClient = setupAsyncClient(builder, "sendSmsToSingleNumber");
+        asyncClient = setupAsyncClient(builder, "sendSmsFromNullNumber");
 
         // Action & Assert
         String from = null;

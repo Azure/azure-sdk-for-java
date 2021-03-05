@@ -80,10 +80,7 @@ public final class SmsAsyncClient {
                 return smsClient.sendWithResponseAsync(request, contextValue)
                     .flatMap((Response<SmsSendResponse> response) -> {
                         List<SmsSendResult> smsSendResults = convertSmsSendResults(response.getValue().getValue());
-                        if (!smsSendResults.isEmpty()) {
-                            return Mono.just(new SimpleResponse<SmsSendResult>(response, smsSendResults.get(0)));
-                        }
-                        return monoError(logger, new NullPointerException("SmsSendResult is empty."));
+                        return Mono.just(new SimpleResponse<SmsSendResult>(response, smsSendResults.get(0)));
                     });
             });
         } catch (RuntimeException  ex) {

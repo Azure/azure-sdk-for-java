@@ -71,6 +71,7 @@ public class ReadmeSamples {
             "Hi");
 
         System.out.println("Message Id: " + sendResult.getMessageId());
+        System.out.println("Recipient Number: " + sendResult.getTo());
         System.out.println("Send Result Successful:" + sendResult.isSuccessful());
     }
 
@@ -90,11 +91,12 @@ public class ReadmeSamples {
 
         for (SmsSendResult result : sendResults) {
             System.out.println("Message Id: " + result.getMessageId());
+            System.out.println("Recipient Number: " + result.getTo());
             System.out.println("Send Result Successful:" + result.isSuccessful());
         }
     }
 
-        /**
+    /**
      * Sample code for troubleshooting
      */
     public void sendSMSTroubleshooting() {
