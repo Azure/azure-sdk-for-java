@@ -74,7 +74,8 @@ public class DataLoader {
             containerName);
 
         // We want to wait longer depending on the number of documents in each iteration
-        final Duration blockingWaitTime = Duration.ofSeconds(120 * (_configuration.getBulkloadBatchSize() / 200000));
+        final Duration blockingWaitTime = Duration.ofSeconds(120 *
+            (((_configuration.getBulkloadBatchSize() - 1) / 200000) + 1));
         final BulkProcessingOptions<Object> bulkProcessingOptions = new BulkProcessingOptions<>(Object.class);
         bulkProcessingOptions.setMaxMicroBatchSize(MAX_BATCH_SIZE)
             .setMaxMicroBatchConcurrency(BULK_OPERATION_CONCURRENCY);

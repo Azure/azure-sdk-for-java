@@ -21,7 +21,6 @@ operation=LinkedInCtlWorkload
 number_Of_collection=1
 connection_mode=Direct
 protocol=Tcp
-bulk_load_batch_size=200000
 
 if [ -z "$ctl_database" ]
 then

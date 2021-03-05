@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
  */
 public class DatabaseResourceManager implements ResourceManager {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CollectionResourceManager.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseResourceManager.class);
     private static final Duration RESOURCE_CRUD_WAIT_TIME = Duration.ofSeconds(30);
 
     private final Configuration _configuration;
