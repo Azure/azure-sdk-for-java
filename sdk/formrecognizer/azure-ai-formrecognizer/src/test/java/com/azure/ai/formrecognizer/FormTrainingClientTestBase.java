@@ -113,9 +113,9 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         }
 
         if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(interceptorManager.getPlaybackClient());
+            builder.httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
         }
-        if (!interceptorManager.isLiveMode()) {
+        if (!interceptorManager.isPlaybackMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 

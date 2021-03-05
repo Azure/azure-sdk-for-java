@@ -159,9 +159,9 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
 
         if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(interceptorManager.getPlaybackClient());
+            builder.httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
         }
-        if (!interceptorManager.isLiveMode()) {
+        if (!interceptorManager.isPlaybackMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
@@ -181,9 +181,9 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             builder.credential(new DefaultAzureCredentialBuilder().build());
         }
         if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(interceptorManager.getPlaybackClient());
+            builder.httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
         }
-        if (!interceptorManager.isLiveMode()) {
+        if (!interceptorManager.isPlaybackMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
         return builder;
