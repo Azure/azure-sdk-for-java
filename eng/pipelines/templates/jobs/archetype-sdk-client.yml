@@ -19,7 +19,7 @@ parameters:
     default: []
   - name: TestOptions
     type: string
-    default: '$(DefaultOptions) -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dparallel-test-playback'
+    default: '$(DefaultOptions) -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dparallel-test-playback -T 1C'
   - name: TestGoals
     type: string
     default: verify
@@ -271,7 +271,7 @@ jobs:
     pool:
       name: $(Pool)
       vmImage: $(OSVmImage)
-    
+
     variables:
       - template: ../variables/globals.yml
 
