@@ -128,7 +128,7 @@ class ServiceBusSessionReceiver implements AutoCloseable {
                 .subscribe(item -> {
                     logger.info("entityPath[{}]. sessionId[{}]. Did not a receive message within timeout {}.",
                         receiveLink.getEntityPath(), sessionId.get(), retryOptions.getTryTimeout());
-                    this.idleTimeoutReached = true;
+                    setIdleTimeoutReached();
                     cancelReceiveProcessor.onComplete();
                 }));
         }
@@ -214,11 +214,18 @@ class ServiceBusSessionReceiver implements AutoCloseable {
     }
 
     /**
-     * Indicate is this session receiver's Idle timeout has reached.
+     * Indicate that session receiver's Idle timeout has reached.
      *
-     * @return if this receiver's idle timeout occurred.
+     * @return if receiver's idle timeout reached.
      */
     boolean isIdleTimeoutReached() {
         return this.idleTimeoutReached;
+    }
+
+    /**
+     * Sets the idle timeout to true;
+     */
+    private void setIdleTimeoutReached() {
+        this.idleTimeoutReached = true;
     }
 }
