@@ -453,8 +453,6 @@ class AnalyzeBatchActionsAsyncClient {
         }
 
         final AnalyzeBatchActionsResult analyzeBatchActionsResult = new AnalyzeBatchActionsResult();
-
-        // TODO: check with service side to make sure Tasks has statistics, indivisual task already has one but not the batch tasks result.
         final RequestStatistics requestStatistics = analyzeJobState.getStatistics();
         TextDocumentBatchStatistics batchStatistics = null;
         if (requestStatistics != null) {

@@ -3,6 +3,8 @@
 - We are now targeting the service's v3.1-preview.4 API as the default instead of v3.1-preview.3.
 
 ### New features
+- Added a new property `categoriesFilter` to `RecognizePiiEntitiesOptions`. The PII entity recognition endpoint will return 
+  the result with categories only match the given `categoriesFilter` list. 
 - Added `normalizedText` property to `HealthcareEntity`.
 - `AnalyzeHealthcareEntitiesResult` now exposes the property `entityRelations`, which is a list of `HealthcareEntityRelation`.
 - Added `HealthcareEntityRelation` class which will determine all the different relations between the entities as `Roles`.
@@ -12,6 +14,7 @@
 - Added new classes, `RecognizeLinkedEntitiesActionResult`, `PiiEntityCategory`.
 
 ### Breaking changes
+- Removed `PiiEntity` constructor and `PiiEntity`'s `category` property is no longer a type of `EntityCategory` but use a new introduced type `PiiEntityCategory`.
 - Replace `isNegated` by `HealthcareEntityAssertion` to `HealthcareEntity` which further exposes `EntityAssociation`, `EntityCertainity` and `EntityConditionality`.
 - Renamed classes,
   `AspectSentiment` to `TargetSentiment`, `OpinionSentiment` to `AssesssmentSentiment`, `MinedOpinion` to `SentenceOpinion`.
@@ -23,7 +26,7 @@
   `SentenceSentiment(String text, TextSentiment sentiment, SentimentConfidenceScores confidenceScores, IterableStream<MinedOpinion> minedOpinions, int offset)`,
   `AspectSentiment(String text, TextSentiment sentiment, int offset, SentimentConfidenceScores confidenceScores)`,
   `OpinionSentiment(String text, TextSentiment sentiment, int offset, boolean isNegated, SentimentConfidenceScores confidenceScores)`
-  `PiiEntity` constructor
+  
   
 ## 5.1.0-beta.4 (2021-02-10)
 ### New features
