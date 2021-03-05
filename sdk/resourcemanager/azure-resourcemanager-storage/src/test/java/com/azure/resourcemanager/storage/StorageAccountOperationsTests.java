@@ -221,20 +221,20 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
         Assertions.assertEquals(Kind.STORAGE_V2, storageAccountDefault.kind());
         Assertions.assertEquals(SkuName.STANDARD_RAGRS, storageAccountDefault.skuType().name());
         Assertions.assertTrue(storageAccountDefault.isHttpsTrafficOnly());
-        Assertions.assertEquals(MinimumTlsVersion.TLS1_2, storageAccountDefault.minimalTlsVersion());
+        Assertions.assertEquals(MinimumTlsVersion.TLS1_2, storageAccountDefault.minimumTlsVersion());
         Assertions.assertTrue(storageAccountDefault.isBlobPublicAccessAllowed());
         Assertions.assertTrue(storageAccountDefault.isSharedKeyAccessAllowed());
 
         // update to non-default
         StorageAccount storageAccount = storageAccountDefault.update()
             .withHttpAndHttpsTraffic()
-            .withMinimalTlsVersion(MinimumTlsVersion.TLS1_1)
+            .withMinimumTlsVersion(MinimumTlsVersion.TLS1_1)
             .disableBlobPublicAccess()
             .disableSharedKeyAccess()
             .apply();
 
         Assertions.assertFalse(storageAccount.isHttpsTrafficOnly());
-        Assertions.assertEquals(MinimumTlsVersion.TLS1_1, storageAccount.minimalTlsVersion());
+        Assertions.assertEquals(MinimumTlsVersion.TLS1_1, storageAccount.minimumTlsVersion());
         Assertions.assertFalse(storageAccount.isBlobPublicAccessAllowed());
         Assertions.assertFalse(storageAccount.isSharedKeyAccessAllowed());
 
@@ -245,7 +245,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .withSku(StorageAccountSkuType.STANDARD_LRS)
             .withGeneralPurposeAccountKind()
             .withHttpAndHttpsTraffic()
-            .withMinimalTlsVersion(MinimumTlsVersion.TLS1_1)
+            .withMinimumTlsVersion(MinimumTlsVersion.TLS1_1)
             .disableBlobPublicAccess()
             .disableSharedKeyAccess()
             .create();
@@ -253,7 +253,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
         Assertions.assertEquals(Kind.STORAGE, storageAccount.kind());
         Assertions.assertEquals(SkuName.STANDARD_LRS, storageAccount.skuType().name());
         Assertions.assertFalse(storageAccount.isHttpsTrafficOnly());
-        Assertions.assertEquals(MinimumTlsVersion.TLS1_1, storageAccount.minimalTlsVersion());
+        Assertions.assertEquals(MinimumTlsVersion.TLS1_1, storageAccount.minimumTlsVersion());
         Assertions.assertFalse(storageAccount.isBlobPublicAccessAllowed());
         Assertions.assertFalse(storageAccount.isSharedKeyAccessAllowed());
     }

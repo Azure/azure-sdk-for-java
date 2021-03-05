@@ -142,9 +142,9 @@ public interface StorageAccount
     boolean isLargeFileSharesEnabled();
 
     /**
-     * @return the minimal TLS version for HTTPS traffic.
+     * @return the minimum TLS version for HTTPS traffic.
      */
-    MinimumTlsVersion minimalTlsVersion();
+    MinimumTlsVersion minimumTlsVersion();
 
     /**
      * Checks whether storage account only allow HTTPS traffic.
@@ -369,11 +369,12 @@ public interface StorageAccount
             WithCreate withHttpAndHttpsTraffic();
 
             /**
-             * Specifies the minimal TLS version for HTTPS traffic.
+             * Specifies the minimum TLS version for HTTPS traffic.
              *
+             * @param minimumTlsVersion the minimum TLS version
              * @return the next stage of storage account definition
              */
-            WithCreate withMinimalTlsVersion(MinimumTlsVersion minimalTlsVersion);
+            WithCreate withMinimumTlsVersion(MinimumTlsVersion minimumTlsVersion);
         }
 
         /** The stage of storage account definition allowing to configure blob access. */
@@ -658,11 +659,12 @@ public interface StorageAccount
             Update withHttpAndHttpsTraffic();
 
             /**
-             * Specifies the minimal TLS version for HTTPS traffic.
+             * Specifies the minimum TLS version for HTTPS traffic.
              *
+             * @param minimumTlsVersion the minimum TLS version
              * @return the next stage of storage account update
              */
-            Update withMinimalTlsVersion(MinimumTlsVersion minimalTlsVersion);
+            Update withMinimumTlsVersion(MinimumTlsVersion minimumTlsVersion);
         }
 
         /** The stage of storage account update allowing to configure blob access. */
