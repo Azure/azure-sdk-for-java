@@ -2306,7 +2306,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         return createQueryInternal(
                             resourceLink,
                             querySpec,
-                            ModelBridgeInternal.partitionKeyRangeIdInternal(effectiveOptions, range.getId()),
+                            ModelBridgeInternal.setPartitionKeyRangeIdInternal(effectiveOptions, range.getId()),
                             Document.class,
                             ResourceType.Document,
                             queryClient,
