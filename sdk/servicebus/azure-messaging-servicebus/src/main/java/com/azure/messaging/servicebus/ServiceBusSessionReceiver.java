@@ -23,7 +23,6 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -56,12 +55,10 @@ class ServiceBusSessionReceiver implements AutoCloseable {
      * @param renewSessionLock Function to renew the session lock.
      * @param maxSessionLockRenewDuration Maximum time to renew the session lock for. {@code null} or {@link
      *     Duration#ZERO} to disable session lock renewal.
-     * @param idleTimeOutCleanupOperation to cleanup the resources once idle timeout has reached.
      */
     ServiceBusSessionReceiver(ServiceBusReceiveLink receiveLink, MessageSerializer messageSerializer,
         AmqpRetryOptions retryOptions, int prefetch, boolean disposeOnIdle, Scheduler scheduler,
-        Function<String, Mono<OffsetDateTime>> renewSessionLock, Duration maxSessionLockRenewDuration,
-        Consumer<ServiceBusSessionReceiver> idleTimeOutCleanupOperation) {
+        Function<String, Mono<OffsetDateTime>> renewSessionLock, Duration maxSessionLockRenewDuration) {
 
         this.receiveLink = receiveLink;
         this.lockContainer = new LockContainer<>(ServiceBusConstants.OPERATION_TIMEOUT);
@@ -129,8 +126,8 @@ class ServiceBusSessionReceiver implements AutoCloseable {
                 .subscribe(item -> {
                     logger.info("entityPath[{}]. sessionId[{}]. Did not a receive message within timeout {}.",
                         receiveLink.getEntityPath(), sessionId.get(), retryOptions.getTryTimeout());
+                    this.close();
                     cancelReceiveProcessor.onComplete();
-                    idleTimeOutCleanupOperation.accept(this);
                 }));
         }
 
@@ -212,5 +209,14 @@ class ServiceBusSessionReceiver implements AutoCloseable {
 
         receiveLink.dispose();
         subscriptions.dispose();
+    }
+
+    /**
+     * Indicate is this session receiver is disposed off.
+     *
+     * @return if this receiver is disposed.
+     */
+    boolean isDisposed() {
+        return isDisposed.get();
     }
 }
