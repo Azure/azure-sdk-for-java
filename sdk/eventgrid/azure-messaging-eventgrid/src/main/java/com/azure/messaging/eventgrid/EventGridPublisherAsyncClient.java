@@ -18,12 +18,14 @@ import com.azure.core.util.tracing.TracerProxy;
 import com.azure.messaging.eventgrid.implementation.Constants;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImpl;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImplBuilder;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
@@ -59,6 +61,7 @@ public final class EventGridPublisherAsyncClient<T> {
     private final ClientLogger logger = new ClientLogger(EventGridPublisherAsyncClient.class);
 
     private final ObjectSerializer eventDataSerializer;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     private final Class<T> eventClass;
 
@@ -219,15 +222,7 @@ public final class EventGridPublisherAsyncClient<T> {
         }
         final Context finalContext = context != null ? context : Context.NONE;
         return Flux.fromIterable(events)
-            .map(event -> {
-                com.azure.messaging.eventgrid.implementation.models.EventGridEvent internalEvent = event.toImpl();
-                if (this.eventDataSerializer != null && internalEvent.getData() != null) {
-                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    eventDataSerializer.serialize(bos, event.getData());
-                    internalEvent.setData(Base64.getEncoder().encode(bos.toByteArray()));
-                }
-                return internalEvent;
-            })
+            .map(EventGridEvent::toImpl)
             .collectList()
             .flatMap(list -> this.impl.publishEventsAsync(this.hostname, list,
                 finalContext.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
@@ -251,6 +246,16 @@ public final class EventGridPublisherAsyncClient<T> {
         }
         final Context finalContext = context != null ? context : Context.NONE;
         return Flux.fromIterable(events)
+            .map(event -> {
+                if (eventDataSerializer != null) {
+                    try {
+                        return objectMapper.readTree(eventDataSerializer.serializeToBytes(event));
+                    } catch (IOException e) {
+                        return monoError(logger, new UncheckedIOException(e));
+                    }
+                }
+                return event;
+            })
             .collectList()
             .flatMap(list -> this.impl.publishCustomEventEventsAsync(this.hostname, list,
                 finalContext.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
@@ -286,6 +291,16 @@ public final class EventGridPublisherAsyncClient<T> {
         }
         final Context finalContext = context != null ? context : Context.NONE;
         return Flux.fromIterable(events)
+            .map(event -> {
+                if (eventDataSerializer != null) {
+                    try {
+                        return objectMapper.readTree(eventDataSerializer.serializeToBytes(event));
+                    } catch (IOException e) {
+                        return monoError(logger, new UncheckedIOException(e));
+                    }
+                }
+                return event;
+            })
             .collectList()
             .flatMap(list -> this.impl.publishCustomEventEventsWithResponseAsync(this.hostname, list,
                 finalContext.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
