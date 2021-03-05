@@ -7,8 +7,7 @@ developers to work with data using a variety of standard APIs, such as SQL, Mong
 
 **NOTE this is a Preview build.
 This build has not been load or performance tested yet - and at this point is not recommended
-being used in production scenarios
-**
+being used in production scenarios**
 
 If you have any feedback or ideas on how to improve your experience please let us know here:
 https://github.com/Azure/azure-sdk-for-java/issues/new
