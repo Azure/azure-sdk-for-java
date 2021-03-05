@@ -502,35 +502,34 @@ public final class SystemEventNames {
 
     private static final Map<String, Class<?>> SYSTEM_EVENT_MAPPINGS = new HashMap<String, Class<?>>() {
         {
-            //
             // AppConfiguration events.
             put(APP_CONFIGURATION_KEY_VALUE_DELETED, AppConfigurationKeyValueDeletedEventData.class);
             put(APP_CONFIGURATION_KEY_VALUE_MODIFIED, AppConfigurationKeyValueModifiedEventData.class);
-            //
+
             // ContainerRegistry events.
             put(CONTAINER_REGISTRY_IMAGE_PUSHED, ContainerRegistryImagePushedEventData.class);
             put(CONTAINER_REGISTRY_IMAGE_DELETED, ContainerRegistryImageDeletedEventData.class);
             put(CONTAINER_REGISTRY_CHART_DELETED, ContainerRegistryChartDeletedEventData.class);
             put(CONTAINER_REGISTRY_CHART_PUSHED, ContainerRegistryChartPushedEventData.class);
-            //
+
             // Device events.
             put(IOT_HUB_DEVICE_CREATED, IotHubDeviceCreatedEventData.class);
             put(IOT_HUB_DEVICE_DELETED, IotHubDeviceDeletedEventData.class);
             put(IOT_HUB_DEVICE_CONNECTED, IotHubDeviceConnectedEventData.class);
             put(IOT_HUB_DEVICE_DISCONNECTED, IotHubDeviceDisconnectedEventData.class);
             put(IOT_HUB_DEVICE_TELEMETRY, IotHubDeviceTelemetryEventData.class);
-            //
+
             // EventGrid events.
             put(EVENT_GRID_SUBSCRIPTION_VALIDATION, SubscriptionValidationEventData.class);
             put(EVENT_GRID_SUBSCRIPTION_DELETED, SubscriptionDeletedEventData.class);
-            //
+
             // Event Hub Events.
             put(EVENT_HUB_CAPTURE_FILE_CREATED, EventHubCaptureFileCreatedEventData.class);
             // Maps events
             put(MAPS_GEOFENCE_ENTERED, MapsGeofenceEnteredEventData.class);
             put(MAPS_GEOFENCE_EXITED, MapsGeofenceExitedEventData.class);
             put(MAPS_GEOFENCE_RESULT, MapsGeofenceResultEventData.class);
-            //
+
             // Media Services events.
             put(MEDIA_JOB_CANCELED, MediaJobCanceledEventData.class);
             put(MEDIA_JOB_CANCELING, MediaJobCancelingEventData.class);
@@ -556,7 +555,7 @@ public final class SystemEventNames {
             put(MEDIA_LIVE_EVENT_INCOMING_VIDEO_STREAMS_OUTOFSYNC, MediaLiveEventIncomingVideoStreamsOutOfSyncEventData.class);
             put(MEDIA_LIVE_EVENT_INGEST_HEARTBEAT, MediaLiveEventIngestHeartbeatEventData.class);
             put(MEDIA_LIVE_EVENT_TRACK_DISCONTINUITY_DETECTED, MediaLiveEventTrackDiscontinuityDetectedEventData.class);
-            //
+
             // Resource Manager (Azure Subscription/Resource Group) events.
             put(RESOURCE_WRITE_SUCCESS, ResourceWriteSuccessEventData.class);
             put(RESOURCE_WRITE_FAILURE, ResourceWriteFailureEventData.class);
@@ -567,13 +566,13 @@ public final class SystemEventNames {
             put(RESOURCE_ACTION_SUCCESS, ResourceActionSuccessEventData.class);
             put(RESOURCE_ACTION_FAILURE, ResourceActionFailureEventData.class);
             put(RESOURCE_ACTION_CANCEL, ResourceActionCancelEventData.class);
-            //
+
             // ServiceBus events.
             put(SERVICE_BUS_ACTIVE_MESSAGES_AVAILABLE_WITH_NO_LISTENERS, ServiceBusActiveMessagesAvailableWithNoListenersEventData.class);
             put(SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_WITH_NO_LISTENER, ServiceBusDeadletterMessagesAvailableWithNoListenersEventData.class);
             put(SERVICE_BUS_ACTIVE_MESSAGES_AVAILABLE_PERIODIC_NOTIFICATION, ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData.class);
             put(SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_PERIODIC_NOTIFICATION, ServiceBusDeadletterMessagesAvailablePeriodicNotificationsEventData.class);
-            //
+
             // Storage events.
             put(STORAGE_BLOB_CREATED, StorageBlobCreatedEventData.class);
             put(STORAGE_BLOB_DELETED, StorageBlobDeletedEventData.class);

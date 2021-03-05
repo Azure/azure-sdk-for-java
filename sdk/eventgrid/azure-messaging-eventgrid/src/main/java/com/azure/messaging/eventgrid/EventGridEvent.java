@@ -172,8 +172,8 @@ public final class EventGridEvent {
      * @throws IllegalArgumentException if id is an empty String.
      */
     public EventGridEvent setId(String id) {
-        Objects.requireNonNull(id, "'id' cannot be null or empty.");
-        if ("".equals(id)) {
+        Objects.requireNonNull(id, "'id' cannot be null.");
+        if (id.isEmpty()) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'id' cannot be empty."));
         }
         this.event.setId(id);
