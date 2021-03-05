@@ -18,22 +18,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class EventGridPublisherClientOnlyTests {
-    // Event Grid endpoint for a topic accepting EventGrid schema events
-    private static final String EVENTGRID_ENDPOINT = "AZURE_EVENTGRID_EVENT_ENDPOINT";
+    private static final String DUMMY_ENDPOINT = "https://www.dummyEndpoint.com";
 
-    // Event Grid access key for a topic accepting EventGrid schema events
-    private static final String EVENTGRID_KEY = "AZURE_EVENTGRID_EVENT_KEY";
+    private static final String DUMMY_KEY = "dummyKey";
 
     @Test
     public void testGenerateSas() throws UnsupportedEncodingException {
         OffsetDateTime time = OffsetDateTime.of(2021, 3, 3, 16, 48, 0, 0, ZoneOffset.UTC);
 
-        String endpoint = System.getenv(EVENTGRID_ENDPOINT);
+        String endpoint = System.getenv(DUMMY_ENDPOINT);
         String sasToken1 = EventGridPublisherAsyncClient.generateSas(
-            endpoint, new AzureKeyCredential(System.getenv(EVENTGRID_KEY)), time);
+            endpoint, new AzureKeyCredential(System.getenv(DUMMY_KEY)), time);
 
         String sasToken2 = EventGridPublisherClient.generateSas(
-            System.getenv(EVENTGRID_ENDPOINT), new AzureKeyCredential(System.getenv(EVENTGRID_KEY)), time);
+            System.getenv(DUMMY_ENDPOINT), new AzureKeyCredential(System.getenv(DUMMY_KEY)), time);
 
         assertEquals(sasToken1, sasToken2);
 
