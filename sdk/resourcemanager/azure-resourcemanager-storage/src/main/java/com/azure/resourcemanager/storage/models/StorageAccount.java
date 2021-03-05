@@ -334,6 +334,20 @@ public interface StorageAccount
              * @return the next stage of storage account definition
              */
             WithCreate withOnlyHttpsTraffic();
+
+            /**
+             * Specifies that both http and https traffic should be allowed to storage account.
+             *
+             * @return the next stage of storage account definition
+             */
+            WithCreate withHttpAndHttpsTraffic();
+
+            /**
+             * Specifies the minimal TLS version for HTTPS traffic.
+             *
+             * @return the next stage of storage account definition
+             */
+            WithCreate withMinimalTlsVersion(MinimumTlsVersion minimalTlsVersion);
         }
 
         /** The stage of storage account definition allowing to configure network access settings. */
@@ -596,6 +610,13 @@ public interface StorageAccount
              * @return the next stage of storage account update
              */
             Update withHttpAndHttpsTraffic();
+
+            /**
+             * Specifies the minimal TLS version for HTTPS traffic.
+             *
+             * @return the next stage of storage account update
+             */
+            Update withMinimalTlsVersion(MinimumTlsVersion minimalTlsVersion);
         }
 
         /** The stage of storage account update allowing to configure network access. */

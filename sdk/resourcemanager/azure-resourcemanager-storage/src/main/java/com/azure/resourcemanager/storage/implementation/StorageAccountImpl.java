@@ -17,6 +17,7 @@ import com.azure.resourcemanager.storage.models.Identity;
 import com.azure.resourcemanager.storage.models.IdentityType;
 import com.azure.resourcemanager.storage.models.Kind;
 import com.azure.resourcemanager.storage.models.LargeFileSharesState;
+import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
 import com.azure.resourcemanager.storage.models.ProvisioningState;
 import com.azure.resourcemanager.storage.models.PublicEndpoints;
 import com.azure.resourcemanager.storage.models.Sku;
@@ -378,7 +379,21 @@ class StorageAccountImpl
 
     @Override
     public StorageAccountImpl withHttpAndHttpsTraffic() {
-        updateParameters.withEnableHttpsTrafficOnly(false);
+        if (isInCreateMode()) {
+            createParameters.withEnableHttpsTrafficOnly(false);
+        } else {
+            updateParameters.withEnableHttpsTrafficOnly(false);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl withMinimalTlsVersion(MinimumTlsVersion minimalTlsVersion) {
+        if (isInCreateMode()) {
+            createParameters.withMinimumTlsVersion(minimalTlsVersion);
+        } else {
+            updateParameters.withMinimumTlsVersion(minimalTlsVersion);
+        }
         return this;
     }
 
