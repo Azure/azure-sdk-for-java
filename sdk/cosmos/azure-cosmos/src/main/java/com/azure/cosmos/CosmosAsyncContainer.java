@@ -467,7 +467,8 @@ public class CosmosAsyncContainer {
     <T> CosmosPagedFlux<T> queryItemsInternal(
         SqlQuerySpec sqlQuerySpec, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType) {
         if (cosmosQueryRequestOptions != null) {
-            if (cosmosQueryRequestOptions.getPartitionKey() != null & cosmosQueryRequestOptions.getFeedRange() != null) {
+            if (cosmosQueryRequestOptions.getPartitionKey() != null && cosmosQueryRequestOptions
+                                                                           .getFeedRange() != null) {
                 throw new IllegalArgumentException("Setting partitionKey and feedRange at the same time is not " +
                                                        "allowed");
             }
