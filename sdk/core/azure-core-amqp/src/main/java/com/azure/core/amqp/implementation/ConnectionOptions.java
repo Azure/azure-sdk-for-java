@@ -16,7 +16,6 @@ import org.apache.qpid.proton.engine.SslDomain;
 import reactor.core.scheduler.Scheduler;
 
 import java.util.Objects;
-import java.util.stream.StreamSupport;
 
 /**
  * A wrapper class that contains all parameters that are needed to establish a connection to an AMQP message broker.

@@ -27,7 +27,6 @@ import reactor.core.scheduler.Scheduler;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.ProxySelector;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -102,7 +101,7 @@ public class WebSocketsProxyConnectionHandlerTest {
         assertThrows(NullPointerException.class, () -> new WebSocketsProxyConnectionHandler(CONNECTION_ID, null,
             PROXY_OPTIONS, peerDetails));
         assertThrows(NullPointerException.class, () -> new WebSocketsProxyConnectionHandler(CONNECTION_ID,
-           connectionOptions, PROXY_OPTIONS, null));
+            connectionOptions, PROXY_OPTIONS, null));
     }
 
     /**
