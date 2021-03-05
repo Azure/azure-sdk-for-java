@@ -1,4 +1,4 @@
-# Azure Communications SMS Service client library for Java
+## Azure Communications SMS Service client library for Java
 
 Azure Communication SMS is used to send simple text messages.
 
@@ -12,8 +12,7 @@ Azure Communication SMS is used to send simple text messages.
 - An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
 - [Java Development Kit (JDK)](https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable) version 8 or above.
 - [Apache Maven](https://maven.apache.org/download.cgi).
-- A deployed Communication Services resource. You can use the [Azure Portal](https://docs.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) 
-or the [Azure PowerShell](https://docs.microsoft.com/powershell/module/az.communication/new-azcommunicationservice) to set it up.
+- A deployed Communication Services resource. You can use the [Azure Portal](https://docs.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) or the [Azure PowerShell](https://docs.microsoft.com/powershell/module/az.communication/new-azcommunicationservice) to set it up.
 
 ### Include the package
 
@@ -37,7 +36,7 @@ the credential() funtion. Endpoint and httpClient must also be set
 via the endpoint() and httpClient() functions respectively.
 
 `AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables 
-are needed to create a DefaultAzureCredential object.
+are needed to create a DefaultAzureCredential object
 
 To create a SmsClient
 <!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L22-L35 -->
@@ -97,7 +96,7 @@ Use the `send` function to send a new message to a list of phone numbers.
 Once you send the message, you'll receive a PagedIterable response where you can access several
 properties such as the message id with the `messageResponseItem.getMessageId()` function.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L64-L77 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L64-L76 -->
 ```java
 //Send an sms to multiple phone numbers
 SmsSendOptions options = new SmsSendOptions();
@@ -112,16 +111,7 @@ Iterable<SmsSendResult> responseMultiplePhones = smsClient.send(
     null);
 for (SmsSendResult messageResponseItem : responseMultiplePhones) {
     System.out.println("MessageId sent to " + messageResponseItem.getTo() + ": " + messageResponseItem.getMessageId());
-}
 ```
-
-## Contributing
-
-This project welcomes contributions and suggestions. Most contributions require you to agree to a [Contributor License Agreement (CLA)][cla] declaring that you have the right to, and actually do, grant us the rights to use your contribution.
-
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
-
-This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 
 ## Troubleshooting
@@ -143,3 +133,11 @@ Check out other client libraries for Azure Communication Services
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/communication/azure-communication-sms/src
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Feng%2Fazure-communications-sms%2FREADME.png)
+
+## Contributing
+
+This project welcomes contributions and suggestions. Most contributions require you to agree to a [Contributor License Agreement (CLA)][cla] declaring that you have the right to, and actually do, grant us the rights to use your contribution.
+
+When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
+
+This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
