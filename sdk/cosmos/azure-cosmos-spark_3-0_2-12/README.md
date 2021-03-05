@@ -7,16 +7,16 @@ developers to work with data using a variety of standard APIs, such as SQL, Mong
 
 **NOTE this is a Preview build.
 This build has not been load or performance tested yet - and at this point is not recommended
-being used in production scenarios**
+being used in production scenarios.**
 
 If you have any feedback or ideas on how to improve your experience please let us know here:
 https://github.com/Azure/azure-sdk-for-java/issues/new
 
 ## Documentation
 
-- [Getting started](https://github.com/Azure/azure-sdk-for-java/blob/37901eb04f89e5dc12a3bb25e31110d65e6a53b2/sdk/cosmos/azure-cosmos-spark_3-0_2-12/docs/quick-start.md)
-- [Catalog API](https://github.com/Azure/azure-sdk-for-java/blob/37901eb04f89e5dc12a3bb25e31110d65e6a53b2/sdk/cosmos/azure-cosmos-spark_3-0_2-12/docs/catalog-api.md)
-- [Configuration Parameter Reference](https://github.com/Azure/azure-sdk-for-java/blob/37901eb04f89e5dc12a3bb25e31110d65e6a53b2/sdk/cosmos/azure-cosmos-spark_3-0_2-12/docs/configuration-reference.md)
+- [Getting started](https://github.com/Azure/azure-sdk-for-java/blob/feature/cosmos/spark30/sdk/cosmos/azure-cosmos-spark_3-0_2-12/docs/quick-start.md)
+- [Catalog API](https://github.com/Azure/azure-sdk-for-java/blob/feature/cosmos/spark30/sdk/cosmos/azure-cosmos-spark_3-0_2-12/docs/catalog-api.md)
+- [Configuration Parameter Reference](https://github.com/Azure/azure-sdk-for-java/blob/feature/cosmos/spark30/sdk/cosmos/azure-cosmos-spark_3-0_2-12/docs/configuration-reference.md)
 
 [//]: # (//TODO: moderakh add more sections)
 [//]: # (//TODO: moderakh Enable Client Logging)
