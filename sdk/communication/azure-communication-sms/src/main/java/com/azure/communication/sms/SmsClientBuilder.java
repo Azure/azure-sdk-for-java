@@ -19,6 +19,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.Configuration;
@@ -42,11 +43,13 @@ public final class SmsClientBuilder {
     private AzureKeyCredential azureKeyCredential;
     private TokenCredential tokenCredential;
     private HttpClient httpClient;
+    private HttpLogOptions httpLogOptions = new HttpLogOptions();
     private HttpPipeline pipeline;
-    private final Configuration configuration = Configuration.getGlobalConfiguration().clone();
+    private Configuration configuration;
     private final Map<String, String> properties = CoreUtils.getProperties(APP_CONFIG_PROPERTIES);
-    private final HttpLogOptions httpLogOptions = new HttpLogOptions();
     private final List<HttpPipelinePolicy> customPolicies = new ArrayList<HttpPipelinePolicy>();
+    private ClientOptions clientOptions;
+    private RetryPolicy retryPolicy;
 
     /**
      * Set endpoint of the service
@@ -112,6 +115,54 @@ public final class SmsClientBuilder {
         return this;
     }
 
+    /**
+     * Sets the retry policy to use (using the RetryPolicy type).
+     *
+     * @param retryPolicy object to be applied
+     * @return SmsClientBuilder
+     */
+    public SmsClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        this.retryPolicy = retryPolicy;
+        return this;
+    }
+
+    /**
+     * Sets the configuration object used to retrieve environment configuration values during building of the client.
+     *
+     * @param configuration Configuration store used to retrieve environment configurations.
+     * @return the updated SmsClientBuilder object
+     */
+    public SmsClientBuilder configuration(Configuration configuration) {
+        this.configuration = Objects.requireNonNull(configuration, "'configuration' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Sets the {@link HttpLogOptions} for service requests.
+     *
+     * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
+     * @return the updated SmsClientBuilder object
+     */
+    public SmsClientBuilder httpLogOptions(HttpLogOptions logOptions) {
+        this.httpLogOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Sets the {@link SmsServiceVersion} that is used when making API requests.
+     * <p>
+     * If a service version is not provided, the service version that will be used will be the latest known service
+     * version based on the version of the client library being used. If no service version is specified, updating to a
+     * newer version of the client library will have the result of potentially moving to a newer service version.
+     * <p>
+     * Targeting a specific service version may also mean that the service will return an error for newer APIs.
+     *
+     * @param version {@link SmsServiceVersion} of the service to be used when making requests.
+     * @return the updated SmsClientBuilder object
+     */
+    public SmsClientBuilder serviceVersion(SmsServiceVersion version) {
+        return this;
+    }
 
     /**
      * Set httpClient to use
@@ -161,11 +212,9 @@ public final class SmsClientBuilder {
 
     private AzureCommunicationSMSServiceImpl createServiceImpl() {
         Objects.requireNonNull(endpoint);
-
         if (this.pipeline == null) {
             Objects.requireNonNull(httpClient);
         }
-
         HttpPipeline builderPipeline = this.pipeline;
         if (this.pipeline == null) {
             HttpPipelinePolicy[] customPolicyArray = null;
@@ -186,6 +235,16 @@ public final class SmsClientBuilder {
         return clientBuilder.buildClient();
     }
 
+    /**
+     * Allows the user to set a variety of client-related options, such as user-agent string, headers, etc.
+     *
+     * @param clientOptions object to be applied
+     * @return SmsClientBuilder
+     */
+    public SmsClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+        return this;
+    }
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
         if (this.tokenCredential != null && this.azureKeyCredential != null) {
             throw logger.logExceptionAsError(
@@ -201,7 +260,6 @@ public final class SmsClientBuilder {
                 new IllegalArgumentException("Missing credential information while building a client."));
         }
     }
-
 
     private HttpPipeline createHttpPipeline(HttpClient httpClient,
                                             HttpPipelinePolicy authorizationPolicy,
@@ -224,7 +282,6 @@ public final class SmsClientBuilder {
     private void applyRequirePolicies(HttpPipelinePolicy[] policies) {
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-
         policies[1] = new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, configuration);
         policies[2] = new RetryPolicy();
         policies[3] = new CookiePolicy();
