@@ -13,6 +13,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.tracing.TracerProxy;
 import com.azure.messaging.eventgrid.implementation.Constants;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImpl;
@@ -22,6 +23,7 @@ import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
@@ -56,6 +58,8 @@ public final class EventGridPublisherAsyncClient<T> {
 
     private final ClientLogger logger = new ClientLogger(EventGridPublisherAsyncClient.class);
 
+    private final ObjectSerializer eventDataSerializer;
+
     private final Class<T> eventClass;
 
     private static final DateTimeFormatter SAS_DATE_TIME_FORMATER = DateTimeFormatter.ofPattern("M/d/yyyy h:m:s a");
@@ -65,7 +69,7 @@ public final class EventGridPublisherAsyncClient<T> {
     private static final ClientLogger LOGGER = new ClientLogger(EventGridPublisherAsyncClient.class);
 
     EventGridPublisherAsyncClient(HttpPipeline pipeline, String hostname, EventGridServiceVersion serviceVersion,
-        Class<T> eventClass) {
+        ObjectSerializer eventDataSerializer, Class<T> eventClass) {
         this.impl = new EventGridPublisherClientImplBuilder()
             .pipeline(pipeline)
             .apiVersion(serviceVersion.getVersion())
@@ -75,6 +79,7 @@ public final class EventGridPublisherAsyncClient<T> {
         // released we should add this to the impl builder options
 
         this.hostname = hostname;
+        this.eventDataSerializer = eventDataSerializer;
         this.eventClass = eventClass;
     }
 
@@ -214,7 +219,15 @@ public final class EventGridPublisherAsyncClient<T> {
         }
         final Context finalContext = context != null ? context : Context.NONE;
         return Flux.fromIterable(events)
-            .map(EventGridEvent::toImpl)
+            .map(event -> {
+                com.azure.messaging.eventgrid.implementation.models.EventGridEvent internalEvent = event.toImpl();
+                if (this.eventDataSerializer != null && internalEvent.getData() != null) {
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    eventDataSerializer.serialize(bos, event.getData());
+                    internalEvent.setData(Base64.getEncoder().encode(bos.toByteArray()));
+                }
+                return internalEvent;
+            })
             .collectList()
             .flatMap(list -> this.impl.publishEventsAsync(this.hostname, list,
                 finalContext.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
