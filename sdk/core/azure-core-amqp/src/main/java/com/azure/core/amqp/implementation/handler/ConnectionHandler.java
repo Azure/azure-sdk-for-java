@@ -46,6 +46,7 @@ public class ConnectionHandler extends Handler {
     private final Map<String, Object> connectionProperties;
     private final ClientLogger logger = new ClientLogger(ConnectionHandler.class);
     private final ConnectionOptions connectionOptions;
+    private final SslPeerDetails peerDetails;
 
     /**
      * Creates a handler that handles proton-j's connection events.
@@ -56,10 +57,9 @@ public class ConnectionHandler extends Handler {
      * @param connectionOptions Options used when creating the AMQP connection.
      */
     public ConnectionHandler(final String connectionId, final String productName, final String clientVersion,
-        final ConnectionOptions connectionOptions) {
+        final ConnectionOptions connectionOptions, SslPeerDetails peerDetails) {
         super(connectionId,
             Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.").getHostname());
-
         add(new Handshaker());
 
         this.connectionOptions = connectionOptions;
@@ -79,6 +79,8 @@ public class ConnectionHandler extends Handler {
             : null;
         String userAgent = UserAgentUtil.toUserAgentString(applicationId, productName, clientVersion, null);
         this.connectionProperties.put(USER_AGENT.toString(), userAgent);
+
+        this.peerDetails = Objects.requireNonNull(peerDetails, "'peerDetails' cannot be null.");
     }
 
     /**
@@ -114,7 +116,7 @@ public class ConnectionHandler extends Handler {
      * @param event The proton-j event.
      * @param transport Transport to add layers to.
      */
-    protected void addTransportLayers(final Event event, final TransportInternal transport) {
+    protected void addTransportLayers(Event event, TransportInternal transport) {
         final SslDomain sslDomain = Proton.sslDomain();
         sslDomain.init(SslDomain.Mode.CLIENT);
 
@@ -136,10 +138,6 @@ public class ConnectionHandler extends Handler {
             final StrictTlsContextSpi serviceProvider = new StrictTlsContextSpi(defaultSslContext);
             final SSLContext context = new StrictTlsContext(serviceProvider, defaultSslContext.getProvider(),
                 defaultSslContext.getProtocol());
-
-            final String theHostname = getHostname();
-            final int theProtocol = getProtocolPort();
-            final SslPeerDetails peerDetails = Proton.sslPeerDetails(theHostname, theProtocol);
 
             sslDomain.setSslContext(context);
             transport.ssl(sslDomain, peerDetails);
@@ -180,9 +178,10 @@ public class ConnectionHandler extends Handler {
 
     @Override
     public void onConnectionBound(Event event) {
-        logger.info("onConnectionBound hostname[{}], connectionId[{}]", getHostname(), getConnectionId());
-
         final Transport transport = event.getTransport();
+
+        logger.info("onConnectionBound connectionId[{}] hostname[{}] peerDetails[{}:{}]", getConnectionId(),
+            getHostname(), peerDetails.getHostname(), peerDetails.getPort());
 
         this.addTransportLayers(event, (TransportInternal) transport);
 

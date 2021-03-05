@@ -10,6 +10,7 @@ import com.azure.spring.data.cosmos.repository.query.AbstractReactiveCosmosQuery
 import com.azure.spring.data.cosmos.repository.query.ReactiveCosmosParameterAccessor;
 import com.azure.spring.data.cosmos.repository.query.ReactiveCosmosParameterParameterAccessor;
 import com.azure.spring.data.cosmos.repository.query.ReactiveCosmosQueryMethod;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.ResultProcessor;
 import reactor.core.publisher.Flux;
 
@@ -47,12 +48,13 @@ public class StringBasedReactiveCosmosQuery extends AbstractReactiveCosmosQuery 
         final ResultProcessor processor = getQueryMethod().getResultProcessor().withDynamicProjection(accessor);
 
         List<SqlParameter> sqlParameters = getQueryMethod().getParameters().stream()
+                            .filter(p -> !Sort.class.isAssignableFrom(p.getType()))
                             .map(p -> new SqlParameter("@" + p.getName().orElse(""),
                                                        toCosmosDbValue(parameters[p.getIndex()])))
                             .collect(Collectors.toList());
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query, sqlParameters);
-        Flux<?> flux = this.operations.runQuery(querySpec, processor.getReturnedType().getDomainType(),
+        Flux<?> flux = this.operations.runQuery(querySpec, accessor.getSort(), processor.getReturnedType().getDomainType(),
                                                 processor.getReturnedType().getReturnedType());
         return flux;
     }

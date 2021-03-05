@@ -12,6 +12,7 @@ import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.UserAgentUtil;
+import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -56,6 +57,8 @@ public class ConnectionHandlerTest {
     private static final String CLIENT_VERSION = "1.0.0-test";
     private static final SslDomain.VerifyMode VERIFY_MODE = SslDomain.VerifyMode.VERIFY_PEER_NAME;
 
+    private final SslPeerDetails peerDetails = Proton.sslPeerDetails(HOSTNAME, 2919);
+
     @Captor
     private ArgumentCaptor<Map<Symbol, Object>> argumentCaptor;
     @Mock
@@ -65,7 +68,6 @@ public class ConnectionHandlerTest {
 
     private ConnectionOptions connectionOptions;
     private ConnectionHandler handler;
-
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
@@ -73,7 +75,7 @@ public class ConnectionHandlerTest {
         this.connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(),
             ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, VERIFY_MODE);
-        this.handler = new ConnectionHandler(CONNECTION_ID, PRODUCT, CLIENT_VERSION, connectionOptions);
+        this.handler = new ConnectionHandler(CONNECTION_ID, PRODUCT, CLIENT_VERSION, connectionOptions, peerDetails);
     }
 
     @AfterEach
@@ -89,13 +91,15 @@ public class ConnectionHandlerTest {
     @Test
     void constructorNull() {
         assertThrows(NullPointerException.class, () -> new ConnectionHandler(null, PRODUCT,
-            CLIENT_VERSION, connectionOptions));
+            CLIENT_VERSION, connectionOptions, peerDetails));
         assertThrows(NullPointerException.class, () -> new ConnectionHandler(CONNECTION_ID, null,
-            CLIENT_VERSION, connectionOptions));
+            CLIENT_VERSION, connectionOptions, peerDetails));
         assertThrows(NullPointerException.class, () -> new ConnectionHandler(CONNECTION_ID, PRODUCT,
-            null, connectionOptions));
+            null, connectionOptions, peerDetails));
         assertThrows(NullPointerException.class, () -> new ConnectionHandler(CONNECTION_ID, PRODUCT,
-            CLIENT_VERSION, null));
+            CLIENT_VERSION, null, peerDetails));
+        assertThrows(NullPointerException.class, () -> new ConnectionHandler(CONNECTION_ID, PRODUCT,
+            CLIENT_VERSION, connectionOptions, null));
     }
 
     @Test
@@ -108,7 +112,7 @@ public class ConnectionHandlerTest {
             ProxyOptions.SYSTEM_DEFAULTS, scheduler, clientOptions, VERIFY_MODE);
 
         // Act
-        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, PRODUCT, CLIENT_VERSION, options);
+        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, PRODUCT, CLIENT_VERSION, options, peerDetails);
 
         // Assert
         final String userAgent = (String) handler.getConnectionProperties().get(USER_AGENT.toString());
@@ -123,7 +127,7 @@ public class ConnectionHandlerTest {
 
         // Act
         final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, PRODUCT, CLIENT_VERSION,
-            connectionOptions);
+            connectionOptions, peerDetails);
 
         // Assert
         final String userAgent = (String) handler.getConnectionProperties().get(USER_AGENT.toString());

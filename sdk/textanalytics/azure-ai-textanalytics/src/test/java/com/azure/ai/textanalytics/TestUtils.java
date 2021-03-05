@@ -6,15 +6,20 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.implementation.AnalyzeBatchActionsResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AssessmentSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.ExtractKeyPhrasesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.HealthcareEntityPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.SentenceOpinionPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.RecognizeEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.RecognizePiiEntitiesActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.SentenceSentimentPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.TargetSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
-import com.azure.ai.textanalytics.models.AspectSentiment;
+import com.azure.ai.textanalytics.models.SentenceOpinion;
+import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
@@ -30,8 +35,7 @@ import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.MinedOpinion;
-import com.azure.ai.textanalytics.models.OpinionSentiment;
+import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
@@ -300,8 +304,8 @@ final class TestUtils {
      */
     static RecognizePiiEntitiesResultCollection getExpectedBatchPiiEntitiesForDomainFilter() {
         PiiEntityCollection piiEntityCollection = new PiiEntityCollection(
-            new IterableStream<>(Arrays.asList(getPiiEntitiesList1().get(1))),
-            "Microsoft employee with ssn *********** is using our awesome API's.", null);
+            new IterableStream<>(getPiiEntitiesList1()),
+            "********* employee with ssn *********** is using our awesome API's.", null);
         PiiEntityCollection piiEntityCollection2 = new PiiEntityCollection(
             new IterableStream<>(Arrays.asList(getPiiEntitiesList2().get(0), getPiiEntitiesList2().get(1), getPiiEntitiesList2().get(2))),
             "Your ABA number - ********* - is the first 9 digits in the lower left hand corner of your personal check.", null);
@@ -321,7 +325,7 @@ final class TestUtils {
      */
     static List<PiiEntity> getPiiEntitiesList1() {
         PiiEntity piiEntity0 = new PiiEntity("Microsoft", EntityCategory.ORGANIZATION, null, 1.0, 0);
-        PiiEntity piiEntity1 = new PiiEntity("859-98-0987", EntityCategory.fromString("U.S. Social Security Number (SSN)"), null, 0.65, 28);
+        PiiEntity piiEntity1 = new PiiEntity("859-98-0987", EntityCategory.fromString("USSocialSecurityNumber"), null, 0.65, 28);
         return asList(piiEntity0, piiEntity1);
     }
 
@@ -329,11 +333,12 @@ final class TestUtils {
      * Helper method to get the expected Categorized Entities List 2
      */
     static List<PiiEntity> getPiiEntitiesList2() {
-        PiiEntity piiEntity2 = new PiiEntity("111000025", EntityCategory.fromString("Phone Number"), null, 0.8, 18);
-        PiiEntity piiEntity3 = new PiiEntity("111000025", EntityCategory.fromString("ABA Routing Number"), null, 0.75, 18);
-        PiiEntity piiEntity4 = new PiiEntity("111000025", EntityCategory.fromString("New Zealand Social Welfare Number"), null, 0.65, 18);
-        PiiEntity piiEntity5 = new PiiEntity("111000025", EntityCategory.fromString("Portugal Tax Identification Number"), null, 0.65, 18);
-        return asList(piiEntity2, piiEntity3, piiEntity4, piiEntity5);
+        // TODO: Use PiiEntityCategory after the class is introduced,
+        // issue: https://github.com/Azure/azure-sdk-for-java/issues/19180
+        PiiEntity piiEntity2 = new PiiEntity("111000025", EntityCategory.PHONE_NUMBER, null, 0.8, 18);
+        PiiEntity piiEntity3 = new PiiEntity("111000025", EntityCategory.fromString("ABARoutingNumber"), null, 0.75, 18);
+        PiiEntity piiEntity4 = new PiiEntity("111000025", EntityCategory.fromString("NZSocialWelfareNumber"), null, 0.65, 18);
+        return asList(piiEntity2, piiEntity3, piiEntity4);
     }
 
     /**
@@ -412,57 +417,146 @@ final class TestUtils {
      * Helper method that get the first expected DocumentSentiment result.
      */
     static DocumentSentiment getExpectedDocumentSentiment() {
+        final AssessmentSentiment assessmentSentiment1 = new AssessmentSentiment();
+        AssessmentSentimentPropertiesHelper.setText(assessmentSentiment1, "dark");
+        AssessmentSentimentPropertiesHelper.setSentiment(assessmentSentiment1, TextSentiment.NEGATIVE);
+        AssessmentSentimentPropertiesHelper.setConfidenceScores(assessmentSentiment1,
+            new SentimentConfidenceScores(0.0, 0.0, 0.0));
+        AssessmentSentimentPropertiesHelper.setNegated(assessmentSentiment1, false);
+        AssessmentSentimentPropertiesHelper.setOffset(assessmentSentiment1, 14);
+        AssessmentSentimentPropertiesHelper.setLength(assessmentSentiment1, 0);
+
+        final AssessmentSentiment assessmentSentiment2 = new AssessmentSentiment();
+        AssessmentSentimentPropertiesHelper.setText(assessmentSentiment2, "unclean");
+        AssessmentSentimentPropertiesHelper.setSentiment(assessmentSentiment2, TextSentiment.NEGATIVE);
+        AssessmentSentimentPropertiesHelper.setConfidenceScores(assessmentSentiment2,
+            new SentimentConfidenceScores(0.0, 0.0, 0.0));
+        AssessmentSentimentPropertiesHelper.setNegated(assessmentSentiment2, false);
+        AssessmentSentimentPropertiesHelper.setOffset(assessmentSentiment2, 23);
+        AssessmentSentimentPropertiesHelper.setLength(assessmentSentiment2, 0);
+
+        final AssessmentSentiment assessmentSentiment3 = new AssessmentSentiment();
+        AssessmentSentimentPropertiesHelper.setText(assessmentSentiment3, "amazing");
+        AssessmentSentimentPropertiesHelper.setSentiment(assessmentSentiment3, TextSentiment.POSITIVE);
+        AssessmentSentimentPropertiesHelper.setConfidenceScores(assessmentSentiment3,
+            new SentimentConfidenceScores(0.0, 0.0, 0.0));
+        AssessmentSentimentPropertiesHelper.setNegated(assessmentSentiment3, false);
+        AssessmentSentimentPropertiesHelper.setOffset(assessmentSentiment3, 51);
+        AssessmentSentimentPropertiesHelper.setLength(assessmentSentiment3, 0);
+
+        final TargetSentiment targetSentiment1 = new TargetSentiment();
+        TargetSentimentPropertiesHelper.setText(targetSentiment1, "hotel");
+        TargetSentimentPropertiesHelper.setSentiment(targetSentiment1, TextSentiment.NEGATIVE);
+        TargetSentimentPropertiesHelper.setConfidenceScores(targetSentiment1,
+            new SentimentConfidenceScores(0.0, 0.0, 0.0));
+        TargetSentimentPropertiesHelper.setOffset(targetSentiment1, 4);
+        final SentenceOpinion sentenceOpinion1 = new SentenceOpinion();
+        SentenceOpinionPropertiesHelper.setTarget(sentenceOpinion1, targetSentiment1);
+        SentenceOpinionPropertiesHelper.setAssessments(sentenceOpinion1,
+            new IterableStream<>(asList(assessmentSentiment1, assessmentSentiment2)));
+
+        final TargetSentiment targetSentiment2 = new TargetSentiment();
+        TargetSentimentPropertiesHelper.setText(targetSentiment2, "gnocchi");
+        TargetSentimentPropertiesHelper.setSentiment(targetSentiment2, TextSentiment.POSITIVE);
+        TargetSentimentPropertiesHelper.setConfidenceScores(targetSentiment2,
+            new SentimentConfidenceScores(0.0, 0.0, 0.0));
+        TargetSentimentPropertiesHelper.setOffset(targetSentiment2, 59);
+        final SentenceOpinion sentenceOpinion2 = new SentenceOpinion();
+        SentenceOpinionPropertiesHelper.setTarget(sentenceOpinion2, targetSentiment2);
+        SentenceOpinionPropertiesHelper.setAssessments(sentenceOpinion2,
+            new IterableStream<>(asList(assessmentSentiment3)));
+
+        final SentenceSentiment sentenceSentiment1 = new SentenceSentiment(
+            "The hotel was dark and unclean.", TextSentiment.NEGATIVE,
+            new SentimentConfidenceScores(0.0, 0.0, 0.0));
+        SentenceSentimentPropertiesHelper.setOpinions(sentenceSentiment1, new IterableStream<>(asList(sentenceOpinion1)));
+        SentenceSentimentPropertiesHelper.setOffset(sentenceSentiment1, 0);
+        SentenceSentimentPropertiesHelper.setLength(sentenceSentiment1, 31);
+
+        final SentenceSentiment sentenceSentiment2 = new SentenceSentiment(
+            "The restaurant had amazing gnocchi.", TextSentiment.POSITIVE,
+            new SentimentConfidenceScores(0.0, 0.0, 0.0));
+        SentenceSentimentPropertiesHelper.setOpinions(sentenceSentiment2, new IterableStream<>(asList(sentenceOpinion2)));
+        SentenceSentimentPropertiesHelper.setOffset(sentenceSentiment2, 32);
+        SentenceSentimentPropertiesHelper.setLength(sentenceSentiment2, 35);
+
         return new DocumentSentiment(TextSentiment.MIXED,
             new SentimentConfidenceScores(0.0, 0.0, 0.0),
-            new IterableStream<>(asList(
-                new SentenceSentiment("The hotel was dark and unclean.", TextSentiment.NEGATIVE,
-                    new SentimentConfidenceScores(0.0, 0.0, 0.0),
-                    new IterableStream<>(asList(new MinedOpinion(
-                        new AspectSentiment("hotel", TextSentiment.NEGATIVE, 4, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
-                        new IterableStream<>(asList(
-                            new OpinionSentiment("dark", TextSentiment.NEGATIVE, 14, false, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
-                            new OpinionSentiment("unclean", TextSentiment.NEGATIVE, 23, false, new SentimentConfidenceScores(0.0, 0.0, 0.0))
-                        ))))),
-                    0
-                ),
-                new SentenceSentiment("The restaurant had amazing gnocchi.", TextSentiment.POSITIVE,
-                    new SentimentConfidenceScores(0.0, 0.0, 0.0),
-                    new IterableStream<>(asList(new MinedOpinion(
-                        new AspectSentiment("gnocchi", TextSentiment.POSITIVE, 59, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
-                        new IterableStream<>(asList(
-                            new OpinionSentiment("amazing", TextSentiment.POSITIVE, 51, false, new SentimentConfidenceScores(0.0, 0.0, 0.0))
-                        ))))),
-                    32
-                )
-            )), null);
+            new IterableStream<>(asList(sentenceSentiment1, sentenceSentiment2)),
+            null);
     }
 
     /**
      * Helper method that get the second expected DocumentSentiment result.
      */
     static DocumentSentiment getExpectedDocumentSentiment2() {
+        final AssessmentSentiment assessmentSentiment1 = new AssessmentSentiment();
+        AssessmentSentimentPropertiesHelper.setText(assessmentSentiment1, "dark");
+        AssessmentSentimentPropertiesHelper.setSentiment(assessmentSentiment1, TextSentiment.NEGATIVE);
+        AssessmentSentimentPropertiesHelper.setConfidenceScores(assessmentSentiment1,
+            new SentimentConfidenceScores(0.0, 0.0, 0.0));
+        AssessmentSentimentPropertiesHelper.setNegated(assessmentSentiment1, false);
+        AssessmentSentimentPropertiesHelper.setOffset(assessmentSentiment1, 50);
+        AssessmentSentimentPropertiesHelper.setLength(assessmentSentiment1, 0);
+
+        final AssessmentSentiment assessmentSentiment2 = new AssessmentSentiment();
+        AssessmentSentimentPropertiesHelper.setText(assessmentSentiment2, "unclean");
+        AssessmentSentimentPropertiesHelper.setSentiment(assessmentSentiment2, TextSentiment.NEGATIVE);
+        AssessmentSentimentPropertiesHelper.setConfidenceScores(assessmentSentiment2,
+            new SentimentConfidenceScores(0.0, 0.0, 0.0));
+        AssessmentSentimentPropertiesHelper.setNegated(assessmentSentiment2, false);
+        AssessmentSentimentPropertiesHelper.setOffset(assessmentSentiment2, 59);
+        AssessmentSentimentPropertiesHelper.setLength(assessmentSentiment2, 0);
+
+        final AssessmentSentiment assessmentSentiment3 = new AssessmentSentiment();
+        AssessmentSentimentPropertiesHelper.setText(assessmentSentiment3, "amazing");
+        AssessmentSentimentPropertiesHelper.setSentiment(assessmentSentiment3, TextSentiment.POSITIVE);
+        AssessmentSentimentPropertiesHelper.setConfidenceScores(assessmentSentiment3,
+            new SentimentConfidenceScores(0.0, 0.0, 0.0));
+        AssessmentSentimentPropertiesHelper.setNegated(assessmentSentiment3, false);
+        AssessmentSentimentPropertiesHelper.setOffset(assessmentSentiment3, 19);
+        AssessmentSentimentPropertiesHelper.setLength(assessmentSentiment3, 0);
+
+        final TargetSentiment targetSentiment1 = new TargetSentiment();
+        TargetSentimentPropertiesHelper.setText(targetSentiment1, "gnocchi");
+        TargetSentimentPropertiesHelper.setSentiment(targetSentiment1, TextSentiment.POSITIVE);
+        TargetSentimentPropertiesHelper.setConfidenceScores(targetSentiment1,
+            new SentimentConfidenceScores(0.0, 0.0, 0.0));
+        TargetSentimentPropertiesHelper.setOffset(targetSentiment1, 27);
+        final SentenceOpinion sentenceOpinion1 = new SentenceOpinion();
+        SentenceOpinionPropertiesHelper.setTarget(sentenceOpinion1, targetSentiment1);
+        SentenceOpinionPropertiesHelper.setAssessments(sentenceOpinion1,
+            new IterableStream<>(asList(assessmentSentiment3)));
+
+        final TargetSentiment targetSentiment2 = new TargetSentiment();
+        TargetSentimentPropertiesHelper.setText(targetSentiment2, "hotel");
+        TargetSentimentPropertiesHelper.setSentiment(targetSentiment2, TextSentiment.NEGATIVE);
+        TargetSentimentPropertiesHelper.setConfidenceScores(targetSentiment2,
+            new SentimentConfidenceScores(0.0, 0.0, 0.0));
+        TargetSentimentPropertiesHelper.setOffset(targetSentiment2, 40);
+        final SentenceOpinion sentenceOpinion2 = new SentenceOpinion();
+        SentenceOpinionPropertiesHelper.setTarget(sentenceOpinion2, targetSentiment2);
+        SentenceOpinionPropertiesHelper.setAssessments(sentenceOpinion2,
+            new IterableStream<>(asList(assessmentSentiment1, assessmentSentiment2)));
+
+        final SentenceSentiment sentenceSentiment1 = new SentenceSentiment(
+            "The restaurant had amazing gnocchi.", TextSentiment.POSITIVE,
+            new SentimentConfidenceScores(0.0, 0.0, 0.0));
+        SentenceSentimentPropertiesHelper.setOpinions(sentenceSentiment1, new IterableStream<>(asList(sentenceOpinion1)));
+        SentenceSentimentPropertiesHelper.setOffset(sentenceSentiment1, 0);
+        SentenceSentimentPropertiesHelper.setLength(sentenceSentiment1, 35);
+
+        final SentenceSentiment sentenceSentiment2 = new SentenceSentiment(
+            "The hotel was dark and unclean.", TextSentiment.NEGATIVE,
+            new SentimentConfidenceScores(0.0, 0.0, 0.0));
+        SentenceSentimentPropertiesHelper.setOpinions(sentenceSentiment2, new IterableStream<>(asList(sentenceOpinion2)));
+        SentenceSentimentPropertiesHelper.setOffset(sentenceSentiment2, 36);
+        SentenceSentimentPropertiesHelper.setLength(sentenceSentiment2, 31);
+
         return new DocumentSentiment(TextSentiment.MIXED,
             new SentimentConfidenceScores(0.0, 0.0, 0.0),
-            new IterableStream<>(asList(
-                new SentenceSentiment("The restaurant had amazing gnocchi.", TextSentiment.POSITIVE,
-                    new SentimentConfidenceScores(0.0, 0.0, 0.0),
-                    new IterableStream<>(asList(new MinedOpinion(
-                        new AspectSentiment("gnocchi", TextSentiment.POSITIVE, 27, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
-                        new IterableStream<>(asList(
-                            new OpinionSentiment("amazing", TextSentiment.POSITIVE, 19, false, new SentimentConfidenceScores(0.0, 0.0, 0.0))
-                        ))))),
-                    0
-                ),
-                new SentenceSentiment("The hotel was dark and unclean.", TextSentiment.NEGATIVE,
-                    new SentimentConfidenceScores(0.0, 0.0, 0.0), new IterableStream<>(asList(new MinedOpinion(
-                        new AspectSentiment("hotel", TextSentiment.NEGATIVE, 40, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
-                        new IterableStream<>(asList(
-                            new OpinionSentiment("dark", TextSentiment.NEGATIVE, 50, false, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
-                            new OpinionSentiment("unclean", TextSentiment.NEGATIVE, 59, false, new SentimentConfidenceScores(0.0, 0.0, 0.0))
-                        ))))),
-                    36
-                )
-            )), null);
+            new IterableStream<>(asList(sentenceSentiment1, sentenceSentiment2)),
+            null);
     }
 
     /**
@@ -587,10 +681,10 @@ final class TestUtils {
         TextDocumentStatistics textDocumentStatistics = new TextDocumentStatistics(156, 1);
         // HealthcareEntity
         final HealthcareEntity healthcareEntity1 = new HealthcareEntity();
-        HealthcareEntityPropertiesHelper.setText(healthcareEntity1, "minutes");
+        HealthcareEntityPropertiesHelper.setText(healthcareEntity1, "six minutes");
         HealthcareEntityPropertiesHelper.setCategory(healthcareEntity1, "Time");
         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity1, 0.87);
-        HealthcareEntityPropertiesHelper.setOffset(healthcareEntity1, 25);
+        HealthcareEntityPropertiesHelper.setOffset(healthcareEntity1, 21);
         HealthcareEntityPropertiesHelper.setNegated(healthcareEntity1, false);
         final HealthcareEntity healthcareEntity2 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity2, "minimal");
