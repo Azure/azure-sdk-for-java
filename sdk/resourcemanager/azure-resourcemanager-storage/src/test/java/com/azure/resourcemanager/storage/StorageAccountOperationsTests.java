@@ -37,7 +37,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(rgName);
+        resourceManager.resourceGroups().beginDeleteByName(rgName);
     }
 
     @Test
@@ -222,20 +222,39 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
         Assertions.assertEquals(SkuName.STANDARD_RAGRS, storageAccountDefault.skuType().name());
         Assertions.assertTrue(storageAccountDefault.isHttpsTrafficOnly());
         Assertions.assertEquals(MinimumTlsVersion.TLS1_2, storageAccountDefault.minimalTlsVersion());
+        Assertions.assertTrue(storageAccountDefault.isBlobPublicAccessAllowed());
+        Assertions.assertTrue(storageAccountDefault.isSharedKeyAccessAllowed());
 
-        // not default
-        StorageAccount storageAccount = storageManager.storageAccounts().define(saName2)
+        // update to non-default
+        StorageAccount storageAccount = storageAccountDefault.update()
+            .withHttpAndHttpsTraffic()
+            .withMinimalTlsVersion(MinimumTlsVersion.TLS1_1)
+            .disableBlobPublicAccess()
+            .disableSharedKeyAccess()
+            .apply();
+
+        Assertions.assertFalse(storageAccount.isHttpsTrafficOnly());
+        Assertions.assertEquals(MinimumTlsVersion.TLS1_1, storageAccount.minimalTlsVersion());
+        Assertions.assertFalse(storageAccount.isBlobPublicAccessAllowed());
+        Assertions.assertFalse(storageAccount.isSharedKeyAccessAllowed());
+
+        // new storage account configured as non-default
+        storageAccount = storageManager.storageAccounts().define(saName2)
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
             .withSku(StorageAccountSkuType.STANDARD_LRS)
             .withGeneralPurposeAccountKind()
             .withHttpAndHttpsTraffic()
             .withMinimalTlsVersion(MinimumTlsVersion.TLS1_1)
+            .disableBlobPublicAccess()
+            .disableSharedKeyAccess()
             .create();
 
         Assertions.assertEquals(Kind.STORAGE, storageAccount.kind());
         Assertions.assertEquals(SkuName.STANDARD_LRS, storageAccount.skuType().name());
         Assertions.assertFalse(storageAccount.isHttpsTrafficOnly());
         Assertions.assertEquals(MinimumTlsVersion.TLS1_1, storageAccount.minimalTlsVersion());
+        Assertions.assertFalse(storageAccount.isBlobPublicAccessAllowed());
+        Assertions.assertFalse(storageAccount.isSharedKeyAccessAllowed());
     }
 }

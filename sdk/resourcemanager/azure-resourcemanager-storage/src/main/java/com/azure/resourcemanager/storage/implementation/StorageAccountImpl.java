@@ -197,17 +197,26 @@ class StorageAccountImpl
 
     @Override
     public boolean isHttpsTrafficOnly() {
-        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().enableHttpsTrafficOnly());
+        if (this.innerModel().enableHttpsTrafficOnly() == null) {
+            return true;
+        }
+        return this.innerModel().enableHttpsTrafficOnly();
     }
 
     @Override
     public boolean isBlobPublicAccessAllowed() {
-        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().allowBlobPublicAccess());
+        if (this.innerModel().allowBlobPublicAccess() == null) {
+            return true;
+        }
+        return this.innerModel().allowBlobPublicAccess();
     }
 
     @Override
     public boolean isSharedKeyAccessAllowed() {
-        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().allowSharedKeyAccess());
+        if (this.innerModel().allowSharedKeyAccess() == null) {
+            return true;
+        }
+        return this.innerModel().allowSharedKeyAccess();
     }
 
     @Override
