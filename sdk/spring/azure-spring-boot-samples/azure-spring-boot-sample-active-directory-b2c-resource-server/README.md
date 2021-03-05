@@ -43,9 +43,18 @@ Follow the guide of [AAD B2C user flows creation](https://docs.microsoft.com/azu
     "value": "Test.wirte"
   }
 ```
+
 ![Configuration Application Roles](docs/image-configuration-application-roles.png "Configuration Application Roles")
-3. Find the application permissions need to use.![Selected Application](docs/image-selected-application.png "Selected Application")![Add Application Roles](docs/image-add-application-roles.png "Add Application Roles")
-4. Consent Application permissions.![Consent Application permissions](docs/image-consent-application-permissions.png "Consent Application permissions")
+
+3. Find the application permissions need to use.
+
+![Selected Application](docs/image-selected-application.png "Selected Application")
+![Add Application Roles](docs/image-add-application-roles.png "Add Application Roles")
+
+4. Consent Application permissions.
+
+![Consent Application permissions](docs/image-consent-application-permissions.png "Consent Application permissions")
+
 5. In the end, configuration is as follows:![Final Configuration](docs/image-final-configuration.png "Final Configuration")
 
 ## Examples
