@@ -8,8 +8,9 @@
 - Added `SmsOptions`
 
 ### Breaking Change
-- Updated `public Mono<SendSmsResponse> send(PhoneNumberIdentifier from, PhoneNumberIdentifier to, String message)` to `public Mono<SendSmsResponse> send(PhoneNumberIdentifier from, String to, String message)`
-- Replaced `SendSmsResponse` with `SmsSendResult`
+- Updated `public Mono<SendSmsResponse> sendMessage(PhoneNumberIdentifier from, PhoneNumberIdentifier to, String message)` to `public Mono<SendSmsResponse> send(String from, String to, String message)`.
+- Updated `public Mono<Response<SendSmsResponse>> sendMessageWithResponse(PhoneNumberIdentifier from,List<PhoneNumberIdentifier> to, String message, SendSmsOptions smsOptions, Context context)` to `Mono<Response<SmsSendResult>> sendWithResponse(String from, String to, String message, SmsSendOptions options, Context context)`.
+- Replaced `SendSmsResponse` with `SmsSendResult`.
 
 ## 1.0.0-beta.4 (Skipped)
 ### Added
