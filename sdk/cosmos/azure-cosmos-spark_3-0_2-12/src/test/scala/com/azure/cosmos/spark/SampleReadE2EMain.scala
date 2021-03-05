@@ -3,8 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.TestConfigurations
-import com.azure.cosmos.{ConsistencyLevel, CosmosClientBuilder}
-import org.apache.htrace.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.apache.spark.sql.SparkSession
 
 /** sample test for query */

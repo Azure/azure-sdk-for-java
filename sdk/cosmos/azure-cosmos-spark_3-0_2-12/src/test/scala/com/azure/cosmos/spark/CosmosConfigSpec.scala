@@ -92,7 +92,7 @@ class CosmosConfigSpec extends UnitSpec {
     val config = CosmosSchemaInferenceConfig.parseCosmosReadConfig(userConfig)
 
     config.inferSchemaSamplingSize shouldEqual 1000
-    config.inferSchemaEnabled shouldBe false
+    config.inferSchemaEnabled shouldBe true
   }
 
   it should "provide default write config" in {
