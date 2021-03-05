@@ -89,8 +89,8 @@ stages:
                   inputs:
                     pwsh: true
                     workingDirectory: $(Build.SourcesDirectory)
-                    filePath: eng/scripts/SetTestPipelineVersion.ps1
-                    arguments: '-BuildID $(Build.BuildId)'
+                    filePath: eng/common/scripts/SetTestPipelineVersion.ps1
+                    arguments: '-BuildID $(Build.BuildId) -PackageName "azure-sdk-template" -ServiceDirectory "template"'
 
               - task: UsePythonVersion@0
                 displayName: 'Use Python 3.6'
