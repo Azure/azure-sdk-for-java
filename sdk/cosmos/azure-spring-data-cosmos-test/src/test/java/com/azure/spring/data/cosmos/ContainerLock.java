@@ -26,20 +26,21 @@ public class ContainerLock {
         this.lockStore = new NonReactiveLockStore(template);
         this.lockName = lockName;
         this.leaseDuration = leaseDuration;
-        initLockContainer(lockStore);
+        initLockContainer(lockStore, template);
     }
 
     public ContainerLock(ReactiveCosmosTemplate reactiveTemplate, String lockName, Duration leaseDuration) {
         this.lockStore = new ReactiveLockStore(reactiveTemplate);
         this.lockName = lockName;
         this.leaseDuration = leaseDuration;
-        initLockContainer(lockStore);
+        initLockContainer(lockStore, reactiveTemplate);
     }
 
-    private static synchronized void initLockContainer(LockStore lockStore) {
+    private static synchronized void initLockContainer(LockStore lockStore, Object template) {
         if (lockEntityInfo == null) {
             CosmosEntityInformation<LockEntry, String> info = new CosmosEntityInformation<>(LockEntry.class);
             lockStore.createContainerIfNotExists(info);
+            AbstractIntegrationTestCollectionManager.registerContainerForCleanup(template, info.getContainerName());
             lockEntityInfo = info;
         }
     }

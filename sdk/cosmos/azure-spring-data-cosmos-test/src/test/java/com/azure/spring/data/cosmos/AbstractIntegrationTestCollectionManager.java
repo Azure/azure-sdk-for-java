@@ -3,6 +3,8 @@
 package com.azure.spring.data.cosmos;
 
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.spring.data.cosmos.core.CosmosTemplate;
+import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
@@ -13,11 +15,35 @@ import org.slf4j.LoggerFactory;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public abstract class AbstractIntegrationTestCollectionManager<T> implements TestRule {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractIntegrationTestCollectionManager.class);
     private static final Duration LEASE_DURATION = Duration.ofMinutes(5);
+    private static final ConcurrentMap<String, DeleteContainerAction> CONTAINER_CLEANUP_REGISTRY = new ConcurrentHashMap<>();
+
+    static {
+        // since collections are sometimes re-used between tests, wait until the end of the test run to delete them
+        Runtime.getRuntime().addShutdownHook(new Thread(AbstractIntegrationTestCollectionManager::deleteRegisteredCollections));
+    }
+
+    public static void registerContainerForCleanup(Object template, String containerName) {
+        DeleteContainerAction action;
+        if (template instanceof CosmosTemplate) {
+            action = new DeleteContainerAction((CosmosTemplate) template, containerName);
+        } else if (template instanceof ReactiveCosmosTemplate) {
+            action = new DeleteContainerAction((ReactiveCosmosTemplate) template, containerName);
+        } else {
+            throw new IllegalStateException("Template must be instance of CosmosTemplate or ReactiveCosmosTemplate, was " + template);
+        }
+        CONTAINER_CLEANUP_REGISTRY.putIfAbsent(containerName, action);
+    }
+
+    private static void deleteRegisteredCollections() {
+        CONTAINER_CLEANUP_REGISTRY.values().forEach(DeleteContainerAction::deleteContainer);
+    }
 
     protected T template;
     private Map<Class, ContainerRefs> containerRefs = new HashMap<>();
@@ -42,6 +68,7 @@ public abstract class AbstractIntegrationTestCollectionManager<T> implements Tes
         for (Class entityType : entityTypes) {
             CosmosEntityInformation entityInfo = new CosmosEntityInformation(entityType);
             CosmosContainerProperties properties = createContainerIfNotExists(entityInfo);
+            registerContainerForCleanup(template, entityInfo.getContainerName());
             ContainerLock lock = createLock(entityInfo, LEASE_DURATION);
             lock.acquire(LEASE_DURATION.multipliedBy(2));
             containerRefs.put(entityType, new ContainerRefs(entityInfo, properties, lock));
@@ -77,13 +104,8 @@ public abstract class AbstractIntegrationTestCollectionManager<T> implements Tes
         }
     }
 
-    private void deleteContainers() {
+    private void releaseLocks() {
         for (ContainerRefs containerRef : containerRefs.values()) {
-            try {
-                deleteContainer(containerRef.cosmosEntityInformation);
-            } catch (Exception ex) {
-                LOGGER.info("Failed to delete container=" + containerRef.getContainerName());
-            }
             try {
                 containerRef.lock.release();
             } catch (Exception ex) {
@@ -99,7 +121,7 @@ public abstract class AbstractIntegrationTestCollectionManager<T> implements Tes
                 try {
                     base.evaluate();
                 } finally {
-                    deleteContainers();
+                    releaseLocks();
                 }
             }
         };
@@ -121,6 +143,35 @@ public abstract class AbstractIntegrationTestCollectionManager<T> implements Tes
             return cosmosEntityInformation.getContainerName();
         }
 
+    }
+
+    private static class DeleteContainerAction {
+
+        private CosmosTemplate template;
+        private ReactiveCosmosTemplate reactiveTemplate;
+        private String containerName;
+
+        public DeleteContainerAction(CosmosTemplate template, String containerName) {
+            this.template = template;
+            this.containerName = containerName;
+        }
+
+        public DeleteContainerAction(ReactiveCosmosTemplate reactiveTemplate, String containerName) {
+            this.reactiveTemplate = reactiveTemplate;
+            this.containerName = containerName;
+        }
+
+        public void deleteContainer() {
+            try {
+                if (template != null) {
+                    template.deleteContainer(containerName);
+                } else {
+                    reactiveTemplate.deleteContainer(containerName);
+                }
+            } catch (Exception ex) {
+                LOGGER.info("Failed to delete container=" + containerName);
+            }
+        }
     }
 
 }
