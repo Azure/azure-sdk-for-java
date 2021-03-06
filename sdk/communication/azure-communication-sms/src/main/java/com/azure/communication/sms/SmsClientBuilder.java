@@ -16,6 +16,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
@@ -58,7 +59,7 @@ public final class SmsClientBuilder {
      * @return SmsClientBuilder
      */
     public SmsClientBuilder endpoint(String endpoint) {
-        this.endpoint = endpoint;
+        this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
         return this;
     }
 
@@ -70,7 +71,7 @@ public final class SmsClientBuilder {
      * @return SmsClientBuilder
      */
     public SmsClientBuilder pipeline(HttpPipeline pipeline) {
-        this.pipeline = pipeline;
+        this.pipeline = Objects.requireNonNull(pipeline, "'pipeline' cannot be null.");
         return this;
     }
 
@@ -122,7 +123,7 @@ public final class SmsClientBuilder {
      * @return SmsClientBuilder
      */
     public SmsClientBuilder retryPolicy(RetryPolicy retryPolicy) {
-        this.retryPolicy = retryPolicy;
+        this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
         return this;
     }
 
@@ -172,7 +173,7 @@ public final class SmsClientBuilder {
      * @return SmsClientBuilder
      */
     public SmsClientBuilder httpClient(HttpClient httpClient) {
-        this.httpClient = httpClient;
+        this.httpClient = Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
         return this;
     }
 
@@ -184,7 +185,7 @@ public final class SmsClientBuilder {
      * @return SmsClientBuilder
      */
     public SmsClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
-        this.customPolicies.add(customPolicy);
+        this.customPolicies.add(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
         return this;
     }
 
@@ -217,15 +218,7 @@ public final class SmsClientBuilder {
         }
         HttpPipeline builderPipeline = this.pipeline;
         if (this.pipeline == null) {
-            HttpPipelinePolicy[] customPolicyArray = null;
-            if (customPolicies.size() > 0) {
-                customPolicyArray = new HttpPipelinePolicy[customPolicies.size()];
-                customPolicyArray = customPolicies.toArray(customPolicyArray);
-            }
-
-            builderPipeline = createHttpPipeline(httpClient,
-                createHttpPipelineAuthPolicy(),
-                customPolicyArray);
+            builderPipeline = createHttpPipeline(httpClient);
         }
 
         AzureCommunicationSMSServiceImplBuilder clientBuilder = new AzureCommunicationSMSServiceImplBuilder();
@@ -261,37 +254,58 @@ public final class SmsClientBuilder {
         }
     }
 
-    private HttpPipeline createHttpPipeline(HttpClient httpClient,
-                                            HttpPipelinePolicy authorizationPolicy,
-                                            HttpPipelinePolicy[] additionalPolicies) {
-
-        HttpPipelinePolicy[] policies = new HttpPipelinePolicy[4];
-        if (additionalPolicies != null) {
-            policies = new HttpPipelinePolicy[4 + additionalPolicies.length];
-            applyAdditionalPolicies(policies, additionalPolicies);
+    private HttpPipeline createHttpPipeline(HttpClient httpClient) {
+        if (this.pipeline != null) {
+            return this.pipeline;
         }
-        policies[0] = authorizationPolicy;
-        applyRequirePolicies(policies);
+
+        List<HttpPipelinePolicy> policyList = new ArrayList<>();
+
+        ClientOptions buildClientOptions = (clientOptions == null) ? new ClientOptions() : clientOptions;
+        HttpLogOptions buildLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
+
+        String applicationId = null;
+        if (!CoreUtils.isNullOrEmpty(buildClientOptions.getApplicationId())) {
+            applicationId = buildClientOptions.getApplicationId();
+        } else if (!CoreUtils.isNullOrEmpty(buildLogOptions.getApplicationId())) {
+            applicationId = buildLogOptions.getApplicationId();
+        }
+
+        // Add required policies
+        policyList.add(this.createHttpPipelineAuthPolicy());
+        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
+        policyList.add(new UserAgentPolicy(applicationId, clientName, clientVersion, configuration));
+        policyList.add((this.retryPolicy == null) ? new RetryPolicy() : this.retryPolicy);
+        policyList.add(new CookiePolicy());
+
+        // Add additional policies
+        if (!this.customPolicies.isEmpty()) {
+            policyList.addAll(this.customPolicies);
+        }
+
+         // Add logging policy
+        policyList.add(this.createHttpLoggingPolicy(this.getHttpLogOptions()));
 
         return new HttpPipelineBuilder()
-            .policies(policies)
+            .policies(policyList.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
     }
 
-    private void applyRequirePolicies(HttpPipelinePolicy[] policies) {
-        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        policies[1] = new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, configuration);
-        policies[2] = new RetryPolicy();
-        policies[3] = new CookiePolicy();
+    private HttpLogOptions getHttpLogOptions() {
+        if (this.httpLogOptions == null) {
+            this.httpLogOptions = this.createDefaultHttpLogOptions();
+        }
+
+        return this.httpLogOptions;
     }
 
-    private void applyAdditionalPolicies(HttpPipelinePolicy[] policies,
-                                         HttpPipelinePolicy[] customPolicies) {
-        for (int i = 0; i < customPolicies.length; i++) {
-            policies[4 + i] = customPolicies[i];
+    HttpLogOptions createDefaultHttpLogOptions() {
+        return new HttpLogOptions();
+    }
 
-        }
+    HttpLoggingPolicy createHttpLoggingPolicy(HttpLogOptions httpLogOptions) {
+        return new HttpLoggingPolicy(httpLogOptions);
     }
 }

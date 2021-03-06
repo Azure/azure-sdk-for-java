@@ -60,10 +60,8 @@ class ReactorNettyClient implements HttpClient {
             .observe(getConnectionObserver())
             .resolver(DefaultAddressResolverGroup.INSTANCE);
         reactorNettyClient.configureChannelPipelineHandlers();
-        //  TODO: (kuthapar) - Un-comment the below line once we upgrade to reactor-netty version 1.0.3
-        //  Related PR - https://github.com/reactor/reactor-netty/pull/1455
         //  This enables fast warm up of HttpClient
-        //  reactorNettyClient.httpClient.warmup().block();
+        reactorNettyClient.httpClient.warmup().block();
         return reactorNettyClient;
     }
 
@@ -79,10 +77,8 @@ class ReactorNettyClient implements HttpClient {
             .observe(getConnectionObserver())
             .resolver(DefaultAddressResolverGroup.INSTANCE);
         reactorNettyClient.configureChannelPipelineHandlers();
-        //  TODO: (kuthapar) - Un-comment the below line once we upgrade to reactor-netty version 1.0.3
-        //  Related PR - https://github.com/reactor/reactor-netty/pull/1455
         //  This enables fast warm up of HttpClient
-        //  reactorNettyClient.httpClient.warmup().block();
+        reactorNettyClient.httpClient.warmup().block();
         return reactorNettyClient;
     }
 

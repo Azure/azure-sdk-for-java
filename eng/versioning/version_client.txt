@@ -222,8 +222,6 @@ unreleased_com.azure:azure-core-http-netty;1.9.0-beta.1
 unreleased_com.azure:azure-core-management;1.2.0-beta.1
 unreleased_com.azure:azure-core-serializer-json-jackson;1.2.0-beta.1
 unreleased_com.azure:azure-core-tracing-opentelemetry;1.0.0-beta.8
-unreleased_com.azure:azure-messaging-eventhubs;5.5.0
-unreleased_com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.5.0
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid

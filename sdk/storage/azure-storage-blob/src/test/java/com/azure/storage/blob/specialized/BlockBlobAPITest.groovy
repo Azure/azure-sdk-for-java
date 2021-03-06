@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.RequestConditions
+import com.azure.core.util.BinaryData
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
 import com.azure.identity.DefaultAzureCredentialBuilder
@@ -52,6 +53,7 @@ import java.nio.file.Files
 import java.security.MessageDigest
 import java.time.Duration
 import java.time.OffsetDateTime
+import java.util.function.Consumer
 
 class BlockBlobAPITest extends APISpec {
     BlockBlobClient blockBlobClient
@@ -1268,6 +1270,16 @@ class BlockBlobAPITest extends APISpec {
         10 * Constants.MB  | 3 * Constants.MB  | 3        || 4 // Data does not squarely fit in buffers.
     }
 
+    def "Async upload binary data"() {
+        when:
+        blobAsyncClient.upload(defaultBinaryData, true).block()
+
+        then:
+        StepVerifier.create(blockBlobAsyncClient.downloadContent())
+                .assertNext({ assert it.toBytes() == defaultBinaryData.toBytes() })
+                .verifyComplete()
+    }
+
     @Unroll
     @Requires({ liveMode() })
     def "Async buffered upload computeMd5"() {
@@ -1289,6 +1301,11 @@ class BlockBlobAPITest extends APISpec {
         Constants.KB | null                | null               | 1                  // Simple case where uploadFull is called.
         Constants.KB | Constants.KB        | 500 * Constants.KB | 1000               // uploadChunked 2 blocks staged
         Constants.KB | Constants.KB        | 5 * Constants.KB   | 1000               // uploadChunked 100 blocks staged
+    }
+
+    def "Async upload binary data with response"() {
+        expect:
+        blobAsyncClient.uploadWithResponse(new BlobParallelUploadOptions(defaultBinaryData)).block().getStatusCode() == 201
     }
 
     def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
@@ -1830,6 +1847,12 @@ class BlockBlobAPITest extends APISpec {
     def "Buffered upload default no overwrite"() {
         expect:
         StepVerifier.create(blobAsyncClient.upload(defaultFlux, null))
+            .verifyError(IllegalArgumentException)
+    }
+
+    def "Upload binary data no overwrite"() {
+        expect:
+        StepVerifier.create(blobAsyncClient.upload(defaultBinaryData))
             .verifyError(IllegalArgumentException)
     }
 

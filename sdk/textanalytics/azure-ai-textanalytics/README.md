@@ -367,9 +367,9 @@ syncPoller.getFinalResult().forEach(healthcareTaskResult -> healthcareTaskResult
 ```
 
 ### Analyze multiple actions
-The `Analyze` functionality allows to choose which of the supported Text Analytics features to execute in the same 
-set of documents. Currently, the supported features are: `entity recognition`, `key phrase extraction`, and 
-`Personally Identifiable Information (PII) recognition`. 
+The `Analyze` functionality allows to choose which of the supported Text Analytics features to execute in the same
+set of documents. Currently, the supported features are: `entity recognition`, `linked entity recognition`,
+`key phrase extraction`, and `Personally Identifiable Information (PII) recognition`. 
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L243-L291 -->
 ```java
 List<TextDocumentInput> documents = Arrays.asList(
