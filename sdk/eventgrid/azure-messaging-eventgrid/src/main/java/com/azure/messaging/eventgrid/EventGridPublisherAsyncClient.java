@@ -18,14 +18,12 @@ import com.azure.core.util.tracing.TracerProxy;
 import com.azure.messaging.eventgrid.implementation.Constants;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImpl;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImplBuilder;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.RawValue;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
@@ -61,7 +59,6 @@ public final class EventGridPublisherAsyncClient<T> {
     private final ClientLogger logger = new ClientLogger(EventGridPublisherAsyncClient.class);
 
     private final ObjectSerializer eventDataSerializer;
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     private final Class<T> eventClass;
 
@@ -77,10 +74,6 @@ public final class EventGridPublisherAsyncClient<T> {
             .pipeline(pipeline)
             .apiVersion(serviceVersion.getVersion())
             .buildClient();
-
-        // currently the service version is hardcoded into the Impl client, but once another service version gets
-        // released we should add this to the impl builder options
-
         this.hostname = hostname;
         this.eventDataSerializer = eventDataSerializer;
         this.eventClass = eventClass;
@@ -248,11 +241,7 @@ public final class EventGridPublisherAsyncClient<T> {
         return Flux.fromIterable(events)
             .map(event -> {
                 if (eventDataSerializer != null) {
-                    try {
-                        return objectMapper.readTree(eventDataSerializer.serializeToBytes(event));
-                    } catch (IOException e) {
-                        return monoError(logger, new UncheckedIOException(e));
-                    }
+                    return new RawValue(new String(eventDataSerializer.serializeToBytes(event), StandardCharsets.UTF_8));
                 }
                 return event;
             })
@@ -293,11 +282,7 @@ public final class EventGridPublisherAsyncClient<T> {
         return Flux.fromIterable(events)
             .map(event -> {
                 if (eventDataSerializer != null) {
-                    try {
-                        return objectMapper.readTree(eventDataSerializer.serializeToBytes(event));
-                    } catch (IOException e) {
-                        return monoError(logger, new UncheckedIOException(e));
-                    }
+                    return new RawValue(new String(eventDataSerializer.serializeToBytes(event), StandardCharsets.UTF_8));
                 }
                 return event;
             })
