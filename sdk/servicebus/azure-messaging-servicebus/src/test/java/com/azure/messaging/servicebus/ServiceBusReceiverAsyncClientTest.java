@@ -287,7 +287,7 @@ class ServiceBusReceiverAsyncClientTest {
             .expectNextCount(numberOfEvents)
             .verifyComplete();
 
-        verify(amqpReceiveLink).addCredits(PREFETCH);
+        verify(amqpReceiveLink, times(1)).addCredits(PREFETCH);
         verify(amqpReceiveLink, never()).updateDisposition(eq(lockToken), any());
     }
 
@@ -884,12 +884,12 @@ class ServiceBusReceiverAsyncClientTest {
         //  After the autoConnect was removed from ServiceBusAsyncConsumer.processor, the receiver doesn't support
         //  multiple calls of receiver.receiveMessages().
         //  For more discussions.
-//        StepVerifier.create(receiver.receiveMessages().take(numberOfEvents))
-//            .then(() -> messages.forEach(m -> messageSink.next(m)))
-//            .expectNextCount(numberOfEvents)
-//            .verifyComplete();
+        //  StepVerifier.create(receiver.receiveMessages().take(numberOfEvents))
+        //      .then(() -> messages.forEach(m -> messageSink.next(m)))
+        //      .expectNextCount(numberOfEvents)
+        //      .verifyComplete();
 
-        verify(amqpReceiveLink).addCredits(PREFETCH);
+        verify(amqpReceiveLink, times(1)).addCredits(PREFETCH);
     }
 
     /**
