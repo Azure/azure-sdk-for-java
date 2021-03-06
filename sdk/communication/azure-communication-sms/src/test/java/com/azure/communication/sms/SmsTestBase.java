@@ -3,7 +3,7 @@
 
 package com.azure.communication.sms;
 
-
+import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -59,7 +59,7 @@ public class SmsTestBase extends TestBase {
     protected SmsClientBuilder getSmsClient(HttpClient httpClient) {
         AzureKeyCredential azureKeyCredential = new AzureKeyCredential(ACCESSKEY);
         SmsClientBuilder builder = new SmsClientBuilder();
-        builder.endpoint(ENDPOINT)
+        builder.endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint())
             .credential(azureKeyCredential)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
         if (getTestMode() == TestMode.RECORD) {
@@ -75,7 +75,7 @@ public class SmsTestBase extends TestBase {
             tokenCredential = new FakeCredentials();
         }
         SmsClientBuilder builder = new SmsClientBuilder();
-        builder.endpoint(ENDPOINT)
+        builder.endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint())
             .credential(tokenCredential)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
