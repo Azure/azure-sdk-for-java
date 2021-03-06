@@ -8,6 +8,7 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -25,6 +26,7 @@ import org.reactivestreams.Subscription;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
@@ -46,6 +48,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -137,7 +140,8 @@ class ServiceBusReceiveLinkProcessorTest {
         assertFalse(processor.hasError());
         assertNull(processor.getError());
 
-        verify(link1).addCredits(eq(PREFETCH - 1));
+        // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
+        verify(link1, times(3)).addCredits(eq(PREFETCH - 1));
     }
 
     /**
@@ -533,7 +537,8 @@ class ServiceBusReceiveLinkProcessorTest {
         assertFalse(processor.hasError());
         assertNull(processor.getError());
 
-        verify(link1).addCredits(eq(PREFETCH));
+        // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
+        verify(link1, times(3)).addCredits(eq(PREFETCH));
         verify(link1).setEmptyCreditListener(creditSupplierCaptor.capture());  // Add 0
 
         Supplier<Integer> value = creditSupplierCaptor.getValue();
@@ -566,7 +571,8 @@ class ServiceBusReceiveLinkProcessorTest {
         assertFalse(processor.hasError());
         assertNull(processor.getError());
 
-        verify(link1).addCredits(eq(PREFETCH));
+        // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
+        verify(link1, times(3)).addCredits(eq(PREFETCH));
         verify(link1).setEmptyCreditListener(creditSupplierCaptor.capture());  // Add 0.
 
         Supplier<Integer> value = creditSupplierCaptor.getValue();
@@ -610,7 +616,8 @@ class ServiceBusReceiveLinkProcessorTest {
         assertFalse(processor.hasError());
         assertNull(processor.getError());
 
-        verify(link1).addCredits(expectedCredits);
+        // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
+        verify(link1, times(backpressure + 1)).addCredits(expectedCredits);
         verify(link1).setEmptyCreditListener(any());
     }
 
@@ -633,5 +640,31 @@ class ServiceBusReceiveLinkProcessorTest {
                 }
             });
         }, FluxSink.OverflowStrategy.BUFFER);
+    }
+
+    @Test
+    void updateDispositionDoesNotAddCredit() {
+        // Arrange
+        ServiceBusReceiveLinkProcessor processor = Flux.<ServiceBusReceiveLink>create(sink -> sink.next(link1))
+            .subscribeWith(linkProcessor);
+        final String lockToken = "lockToken";
+        final DeliveryState deliveryState = mock(DeliveryState.class);
+
+        when(link1.getCredits()).thenReturn(0);
+        when(link1.updateDisposition(eq(lockToken), eq(deliveryState))).thenReturn(Mono.empty());
+
+        // Act & Assert
+        StepVerifier.create(processor)
+            .then(() -> processor.updateDisposition(lockToken, deliveryState))
+            .thenCancel()
+            .verify();
+
+        assertTrue(processor.isTerminated());
+        assertFalse(processor.hasError());
+        assertNull(processor.getError());
+
+        // This 'addCredits' is added when we subscribe to the 'ServiceBusReceiveLinkProcessor'
+        verify(link1).addCredits(eq(PREFETCH));
+        verify(link1).updateDisposition(eq(lockToken), eq(deliveryState));
     }
 }

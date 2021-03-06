@@ -59,6 +59,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class);
     private final AtomicInteger messagesPending = new AtomicInteger();
     private final boolean isSessionEnabled = false;
+    private final ClientCreationOptions defaultClientCreationOptions = new ClientCreationOptions()
+        .setMaxAutoLockRenewDuration(Duration.ofMinutes(5));
 
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusSenderAsyncClient sender;
@@ -689,6 +691,69 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
+     * Receiver should receive the messages even if user is not "settling the messages" in PEEK LOCK mode and
+     * autoComplete is disabled.
+     */
+    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
+    @ParameterizedTest
+    void receiveMessagesNoMessageSettlement(MessagingEntityType entityType, boolean isSessionEnabled) {
+        // Arrange
+        final int totalMessages = 5;
+        setSender(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
+
+        // Send messages
+        final String messageId = UUID.randomUUID().toString();
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(totalMessages, messageId, CONTENTS_BYTES);
+        if (isSessionEnabled) {
+            messages.forEach(m -> m.setSessionId(sessionId));
+        }
+        sender.sendMessages(messages).block(TIMEOUT);
+
+        setReceiver(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
+
+        // Assert & Act
+        StepVerifier.create(receiver.receiveMessages().take(totalMessages))
+            .expectNextCount(totalMessages)
+            .verifyComplete();
+
+        messagesPending.addAndGet(-totalMessages);
+    }
+
+    /**
+     * Receiver should receive the messages if  processing time larger than message lock duration and
+     * maxAutoLockRenewDuration is set to a large enough duration so user can complete in end.
+     * This test takes longer time.
+     */
+    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
+    @ParameterizedTest
+    void receiveMessagesLargeProcessingTime(MessagingEntityType entityType, boolean isSessionEnabled) {
+        // Arrange
+        final int totalMessages = 2;
+        // The lock timeout property set on the queue.
+        final Duration lockRenewTimeout = Duration.ofSeconds(15);
+        final ClientCreationOptions clientCreationOptions = new ClientCreationOptions().setMaxAutoLockRenewDuration(Duration.ofMinutes(1));
+        setSender(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
+
+        // Send messages
+        final String messageId = UUID.randomUUID().toString();
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(totalMessages, messageId, CONTENTS_BYTES);
+        if (isSessionEnabled) {
+            messages.forEach(m -> m.setSessionId(sessionId));
+        }
+        sender.sendMessages(messages).block(TIMEOUT);
+
+        setReceiver(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled, clientCreationOptions);
+
+        // Assert & Act
+        StepVerifier.create(receiver.receiveMessages().map(receivedMessage -> Mono.delay(lockRenewTimeout.plusSeconds(2))
+            .then(receiver.complete(receivedMessage)).thenReturn(receivedMessage).block()).take(totalMessages))
+            .expectNextCount(totalMessages)
+            .verifyComplete();
+
+        messagesPending.addAndGet(-totalMessages);
+    }
+
+    /**
      * Verifies that the lock can be automatically renewed.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
@@ -1232,11 +1297,17 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     private void setReceiver(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled) {
+        setReceiver(entityType, entityIndex, isSessionEnabled, defaultClientCreationOptions);
+    }
+
+    private void setReceiver(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled,
+        ClientCreationOptions options) {
         final boolean shareConnection = false;
         final boolean useCredentials = false;
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
             sessionReceiver = getSessionReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
+                .maxAutoLockRenewDuration(options.getMaxAutoLockRenewDuration())
                 .disableAutoComplete()
                 .buildAsyncClient();
 
@@ -1244,6 +1315,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         } else {
             this.receiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
+                .maxAutoLockRenewDuration(options.getMaxAutoLockRenewDuration())
                 .disableAutoComplete()
                 .buildAsyncClient();
         }
@@ -1269,5 +1341,21 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .block(TIMEOUT);
 
         return messages.size();
+    }
+
+    /**
+     * Class represents various options while creating receiver/sender client.
+     */
+    public static class ClientCreationOptions {
+        Duration maxAutoLockRenewDuration;
+
+        ClientCreationOptions setMaxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
+            this.maxAutoLockRenewDuration = maxAutoLockRenewDuration;
+            return this;
+        }
+
+        Duration getMaxAutoLockRenewDuration() {
+            return this.maxAutoLockRenewDuration;
+        }
     }
 }
