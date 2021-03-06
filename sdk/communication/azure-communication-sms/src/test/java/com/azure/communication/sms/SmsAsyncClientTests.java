@@ -56,7 +56,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendSmsToGroup(HttpClient httpClient) {
         // Arrange
-        SmsClientBuilder builder = getSmsClient(httpClient);
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
         asyncClient = setupAsyncClient(builder, "sendSmsToGroup");
 
         // Action & Assert
@@ -73,7 +73,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendSmsToGroupWithOptions(HttpClient httpClient) {
         // Arrange
-        SmsClientBuilder builder = getSmsClient(httpClient);
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
         asyncClient = setupAsyncClient(builder, "sendSmsToGroupWithOptions");
         SmsSendOptions options = new SmsSendOptions();
         options.setDeliveryReportEnabled(true);
@@ -93,7 +93,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendSmsToSingleNumber(HttpClient httpClient) {
         // Arrange
-        SmsClientBuilder builder = getSmsClient(httpClient);
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
         asyncClient = setupAsyncClient(builder, "sendSmsToSingleNumber");
 
         // Action & Assert
@@ -109,7 +109,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendSmsToSingleNumberWithOptions(HttpClient httpClient) {
         // Arrange
-        SmsClientBuilder builder = getSmsClient(httpClient);
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
         asyncClient = setupAsyncClient(builder, "sendSmsToSingleNumberWithOptions");
         SmsSendOptions options = new SmsSendOptions();
         options.setDeliveryReportEnabled(true);
@@ -127,7 +127,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendFromFakeNumber(HttpClient httpClient) {
         // Arrange
-        SmsClientBuilder builder = getSmsClient(httpClient);
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
         asyncClient = setupAsyncClient(builder, "sendFromFakeNumber");
         // Action & Assert
         Mono<SmsSendResult> response = asyncClient.send("+155512345678", TO_PHONE_NUMBER, MESSAGE);
@@ -140,7 +140,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendFromUnauthorizedNumber(HttpClient httpClient) {
         // Arrange
-        SmsClientBuilder builder = getSmsClient(httpClient);
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
         asyncClient = setupAsyncClient(builder, "sendFromUnauthorizedNumber");
 
         // Action & Assert
@@ -153,16 +153,18 @@ public class SmsAsyncClientTests extends SmsTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendToFakePhoneNumber(HttpClient httpClient) {
+        // Arrange
         SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
         asyncClient = setupAsyncClient(builder, "sendToFakePhoneNumber");
-        assertNotNull(asyncClient);
         Mono<Iterable<SmsSendResult>> response = asyncClient.send(FROM_PHONE_NUMBER, Arrays.asList("+15550000000"), MESSAGE);
-        assertNotNull(response);
+
+        // Action & Assert
         StepVerifier.create(response)
             .assertNext(item -> {
                 assertNotNull(item);
             })
             .verifyComplete();
+
         Iterable<SmsSendResult> smsSendResults = response.block();
         for (SmsSendResult result : smsSendResults) {
             assertFalse(result.isSuccessful());
@@ -174,7 +176,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendTwoMessages(HttpClient httpClient) {
         // Arrange
-        SmsClientBuilder builder = getSmsClient(httpClient);
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
         asyncClient = setupAsyncClient(builder, "sendTwoMessages");
 
         // Action & Assert
@@ -194,7 +196,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendSmsToNullNumber(HttpClient httpClient) {
         // Arrange
-        SmsClientBuilder builder = getSmsClient(httpClient);
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
         asyncClient = setupAsyncClient(builder, "sendSmsToSingleNumber");
 
         // Action & Assert
@@ -207,7 +209,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendSmsFromNullNumber(HttpClient httpClient) {
         // Arrange
-        SmsClientBuilder builder = getSmsClient(httpClient);
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
         asyncClient = setupAsyncClient(builder, "sendSmsFromNullNumber");
 
         // Action & Assert

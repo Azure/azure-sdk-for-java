@@ -3,7 +3,7 @@
 
 package com.azure.communication.sms;
 
-
+import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -32,16 +32,13 @@ public class SmsTestBase extends TestBase {
     protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_SERVICE_ENDPOINT", "https://REDACTED.communication.azure.com");
 
-    protected static final String ENDPOINT_TOKEN = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_TOKEN_ENDPOINT", "https://REDACTED.communication.azure.com");
-
     protected static final String ACCESSKEYRAW = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
     protected static final String ACCESSKEYENCODED = Base64.getEncoder().encodeToString(ACCESSKEYRAW.getBytes());
     protected static final String ACCESSKEY = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_SERVICE_ACCESS_KEY", ACCESSKEYENCODED);
 
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=" + ACCESSKEYENCODED);
+        .get("COMMUNICATION_LIVETEST_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=" + ACCESSKEYENCODED);
 
     protected static final String TO_PHONE_NUMBER = Configuration.getGlobalConfiguration()
         .get("SMS_SERVICE_PHONE_NUMBER", "+15551234567");
@@ -49,8 +46,7 @@ public class SmsTestBase extends TestBase {
     protected static final String FROM_PHONE_NUMBER = Configuration.getGlobalConfiguration()
         .get("SMS_SERVICE_PHONE_NUMBER", "+15551234567");
 
-    protected static final String MESSAGE = Configuration.getGlobalConfiguration()
-        .get("MESSAGE", "Hello");
+    protected static final String MESSAGE = "Hello";
 
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
@@ -63,7 +59,7 @@ public class SmsTestBase extends TestBase {
     protected SmsClientBuilder getSmsClient(HttpClient httpClient) {
         AzureKeyCredential azureKeyCredential = new AzureKeyCredential(ACCESSKEY);
         SmsClientBuilder builder = new SmsClientBuilder();
-        builder.endpoint(ENDPOINT)
+        builder.endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint())
             .credential(azureKeyCredential)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
         if (getTestMode() == TestMode.RECORD) {
@@ -79,7 +75,7 @@ public class SmsTestBase extends TestBase {
             tokenCredential = new FakeCredentials();
         }
         SmsClientBuilder builder = new SmsClientBuilder();
-        builder.endpoint(ENDPOINT_TOKEN)
+        builder.endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint())
             .credential(tokenCredential)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
