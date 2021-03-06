@@ -689,12 +689,7 @@ public class EventHubClientBuilder {
             ? verifyMode
             : SslDomain.VerifyMode.VERIFY_PEER_NAME;
 
-        final ClientOptions options = new ClientOptions();
-        if (clientOptions != null) {
-            options.setApplicationId(clientOptions.getApplicationId())
-                .setHeaders(clientOptions.getHeaders());
-        }
-
+        final ClientOptions options = clientOptions != null ? clientOptions : new ClientOptions();
         final Map<String, String> properties = CoreUtils.getProperties(EVENTHUBS_PROPERTIES_FILE);
         final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
         final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
