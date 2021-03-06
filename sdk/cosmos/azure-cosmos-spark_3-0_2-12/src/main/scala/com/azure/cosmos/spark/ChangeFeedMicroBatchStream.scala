@@ -60,13 +60,21 @@ private class ChangeFeedMicroBatchStream
     assertNotNull(endOffset, "endOffset")
     assert(startOffset.isInstanceOf[ChangeFeedOffset], "Argument 'startOffset' is not a change feed offset.")
     assert(endOffset.isInstanceOf[ChangeFeedOffset], "Argument 'endOffset' is not a change feed offset.")
+
     val start = startOffset.asInstanceOf[ChangeFeedOffset]
     val end = endOffset.asInstanceOf[ChangeFeedOffset]
-    assert(
-      end.inputPartitions.isDefined && end.inputPartitions.size > 0,
-      "Argument 'endOffset.inputPartitions' must not be null or empty.")
 
-    end.inputPartitions.get.map(_.asInstanceOf[InputPartition])
+    assert(end.inputPartitions.isDefined, "Argument 'endOffset.inputPartitions' must not be null or empty.")
+
+    val startJson = start.json()
+
+    end
+      .inputPartitions
+      .get
+      .map(partition => partition
+        .withContinuationState(
+          SparkBridgeImplementationInternal
+            .extractChangeFeedStateForRange(startJson, partition.feedRange)))
   }
 
   override def createReaderFactory(): PartitionReaderFactory = ???

@@ -9,6 +9,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.routing.HexConvert;
 import com.azure.cosmos.implementation.routing.Int128;
@@ -301,7 +302,7 @@ public class CosmosContainerTest extends TestSuiteBase {
 
         CosmosException cosmosException = null;
         try {
-            List<FeedRange> splitFeedRanges = nonExistingContainer.trySplitFeedRange(
+            List<FeedRangeEpkImpl> splitFeedRanges = nonExistingContainer.trySplitFeedRange(
                 FeedRange.forFullRange(),
                 3
             ).block();
@@ -350,7 +351,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         Range<String> secondEpkRange = getEffectiveRange(syncContainer, feedRanges.get(1));
         Range<String> thirdEpkRange = getEffectiveRange(syncContainer, feedRanges.get(2));
 
-        List<FeedRange> feedRangesAfterSplit = syncContainer
+        List<FeedRangeEpkImpl> feedRangesAfterSplit = syncContainer
             .asyncContainer
             .trySplitFeedRange(FeedRange.forFullRange(), 3)
             .block();

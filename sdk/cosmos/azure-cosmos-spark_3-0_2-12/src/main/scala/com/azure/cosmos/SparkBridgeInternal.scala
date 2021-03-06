@@ -3,9 +3,14 @@
 
 package com.azure.cosmos
 
-import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl
+import com.azure.cosmos.implementation.SparkBridgeImplementationInternal
+import com.azure.cosmos.implementation.feedranges.{FeedRangeEpkImpl, FeedRangeInternal}
 import com.azure.cosmos.implementation.routing.Range
+import com.azure.cosmos.models.FeedRange
 import com.azure.cosmos.spark.NormalizedRange
+import reactor.core.publisher.Mono
+import reactor.core.scala.publisher.SMono
+import reactor.core.scala.publisher.SMono.PimpJMono
 
 private[cosmos] object SparkBridgeInternal {
   def trySplitFeedRange
@@ -13,20 +18,20 @@ private[cosmos] object SparkBridgeInternal {
     container: CosmosAsyncContainer,
     feedRange: NormalizedRange,
     targetedCountAfterSplit: Int
-  ): Array[String] = {
+  ): Array[NormalizedRange] = {
 
     val list = container
       .trySplitFeedRange(new FeedRangeEpkImpl(toCosmosRange(feedRange)), targetedCountAfterSplit)
       .block
 
-    val array = new Array[String](list.size)
+    val array = new Array[NormalizedRange](list.size)
     for (i <- 0 until list.size) {
-      array(i) = list.get(i).toString
+      array(i) = SparkBridgeImplementationInternal.toNormalizedRange(list.get(i))
     }
     array
   }
 
-  private[this] def toCosmosRange(range: NormalizedRange): Range[String] = {
+  def toCosmosRange(range: NormalizedRange): Range[String] = {
     new Range[String](range.min, range.max, true, false)
   }
 }

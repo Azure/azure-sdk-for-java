@@ -118,7 +118,8 @@ public abstract class FeedRangeContinuation extends JsonSerializable {
         return new FeedRangeCompositeContinuationImpl(
             containerRid,
             feedRange,
-            ranges);
+            ranges,
+            null);
     }
 
     public static FeedRangeContinuation create(

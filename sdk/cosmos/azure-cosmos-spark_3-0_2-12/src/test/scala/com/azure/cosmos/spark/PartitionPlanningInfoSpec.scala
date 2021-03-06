@@ -6,13 +6,13 @@ import java.util.{Base64, UUID}
 
 class PartitionPlanningInfoSpec extends UnitSpec {
   private[this] val rnd = scala.util.Random
-  private[this] val feedRange = UUID.randomUUID().toString
+  private[this] val feedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
   private[this] val storageSizeInMB = rnd.nextDouble()
   private[this] val progressWeightFactor = rnd.nextDouble()
   private[this] val scaleFactor = rnd.nextDouble()
 
   it should "create instance with valid parameters via apply" in {
-    val viaCtor = PartitionPlanningInfo(feedRange, storageSizeInMB, progressWeightFactor, scaleFactor)
+    val viaCtor = PartitionPlanningInfo(feedRange, storageSizeInMB, progressWeightFactor, scaleFactor, None)
 
     viaCtor.feedRange shouldEqual feedRange
     viaCtor.storageSizeInMB shouldEqual storageSizeInMB
@@ -23,14 +23,8 @@ class PartitionPlanningInfoSpec extends UnitSpec {
   //scalastyle:off null
   it should "throw due to missing feedRange" in {
     assertThrows[IllegalArgumentException](
-      PartitionPlanningInfo(null, storageSizeInMB, progressWeightFactor, scaleFactor)
+      PartitionPlanningInfo(null, storageSizeInMB, progressWeightFactor, scaleFactor, None)
     )
   }
   //scalastyle:on null
-
-  it should "throw due to empty feedRange" in {
-    assertThrows[IllegalArgumentException](
-      PartitionPlanningInfo("", storageSizeInMB, progressWeightFactor, scaleFactor)
-    )
-  }
 }

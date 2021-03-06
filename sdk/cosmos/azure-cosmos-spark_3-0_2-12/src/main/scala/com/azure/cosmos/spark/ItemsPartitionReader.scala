@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
 import com.azure.cosmos.models.{CosmosParameterizedQuery, CosmosQueryRequestOptions, FeedRange}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
@@ -17,7 +17,7 @@ import org.apache.spark.sql.types.StructType
 private case class ItemsPartitionReader
 (
   config: Map[String, String],
-  feedRange: FeedRange,
+  feedRange: NormalizedRange,
   readSchema: StructType,
   cosmosQuery: CosmosParameterizedQuery,
   cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot]
@@ -41,7 +41,7 @@ private case class ItemsPartitionReader
     cosmosQuery.toSqlQuerySpec,
     new CosmosQueryRequestOptions(),
     classOf[ObjectNode],
-    feedRange).toIterable.iterator()
+    SparkBridgeImplementationInternal.toFeedRange(feedRange)).toIterable.iterator()
 
   override def next(): Boolean = iterator.hasNext
 

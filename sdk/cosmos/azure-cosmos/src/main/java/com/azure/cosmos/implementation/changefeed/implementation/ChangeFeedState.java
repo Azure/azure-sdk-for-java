@@ -109,13 +109,14 @@ public abstract class ChangeFeedState extends JsonSerializable {
             continuation.getCurrentContinuationTokens();
             continuationTokensSnapshot.sort(ContinuationTokenRangeComparator.SINGLETON_INSTANCE);
 
-            for(int i = 0; i < continuationTokensSnapshot.size(); i++) {
-                if (Range.checkOverlapping(effectiveRange, continuationTokensSnapshot.get(i).getRange())) {
+            for (CompositeContinuationToken compositeContinuationToken : continuationTokensSnapshot) {
+                if (Range.checkOverlapping(effectiveRange, compositeContinuationToken.getRange())) {
                     Range<String> overlappingRange =
-                        getOverlappingRange(effectiveRange, continuationTokensSnapshot.get(i).getRange());
+                        getOverlappingRange(effectiveRange, compositeContinuationToken.getRange());
 
                     extractedContinuationTokens.add(
-                        new CompositeContinuationToken(continuationTokensSnapshot.get(i).getToken(), overlappingRange));
+                        new CompositeContinuationToken(compositeContinuationToken.getToken(),
+                            overlappingRange));
 
                     if (min == null) {
                         min = overlappingRange.getMin();
@@ -129,7 +130,7 @@ public abstract class ChangeFeedState extends JsonSerializable {
             }
         }
 
-        Range totalRange = new Range<>(
+        Range<String> totalRange = new Range<>(
             min != null ? min : PartitionKeyInternalHelper.MinimumInclusiveEffectivePartitionKey,
             max != null ? max : PartitionKeyInternalHelper.MaximumExclusiveEffectivePartitionKey,
             true,
@@ -138,7 +139,6 @@ public abstract class ChangeFeedState extends JsonSerializable {
         return Pair.of(extractedContinuationTokens, totalRange);
     }
 
-
     public ChangeFeedState extractForEffectiveRange(Range<String> effectiveRange) {
         checkNotNull(effectiveRange);
 
@@ -146,7 +146,7 @@ public abstract class ChangeFeedState extends JsonSerializable {
             this.extractContinuationTokens(effectiveRange);
 
         List<CompositeContinuationToken> extractedContinuationTokens = effectiveTokensAndMinMax.getLeft();
-        Range totalRange = effectiveTokensAndMinMax.getRight();
+        Range<String> totalRange = effectiveTokensAndMinMax.getRight();
 
         FeedRangeEpkImpl feedRange = new FeedRangeEpkImpl(totalRange);
 
@@ -188,7 +188,7 @@ public abstract class ChangeFeedState extends JsonSerializable {
             max = right.getMax();
         }
 
-        return new Range<String>(min, max, true, false);
+        return new Range<>(min, max, true, false);
     }
 
     public static ChangeFeedState merge(ChangeFeedState[] states) {

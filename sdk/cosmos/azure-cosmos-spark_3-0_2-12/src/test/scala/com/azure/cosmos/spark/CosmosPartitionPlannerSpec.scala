@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.TestConfigurations
+import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, TestConfigurations}
+import com.azure.cosmos.spark.CosmosPartitionPlanner.{createInputPartitions, getPartitionMetadata}
+import org.apache.spark.sql.connector.read.streaming.ReadLimit
 import org.scalatest.Assertion
 
-import java.nio.charset.StandardCharsets
 import java.time.Instant
-import java.util.{Base64, UUID}
 import java.util.concurrent.atomic.AtomicLong
 import scala.collection.mutable.ArrayBuffer
 
@@ -28,9 +28,9 @@ class CosmosPartitionPlannerSpec
   )
   private[this] val clientConfig = CosmosClientConfiguration(userConfigTemplate, useEventualConsistency = true)
   private[this] val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfigTemplate)
-  private[this] var feedRanges = List("")
+  private[this] var feedRanges = List(NormalizedRange("", "FF"))
 
-  lazy val cosmosBEPartitionCount = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer).getFeedRanges.block().size()
+  lazy val cosmosBEPartitionCount: Int = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer).getFeedRanges.block().size()
 
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
@@ -79,7 +79,7 @@ class CosmosPartitionPlannerSpec
       "Aggressive",
       10 * 128 * 1024,
       3 * 3 * cosmosBEPartitionCount,
-      currentOffset = Some(createChangeFeedOffset(0.7)))
+      Some(70))
 
     for (_ <- 1 to 100) {
       val docSizeInKB = rnd.nextInt(50 * 1024 * 1024)
@@ -92,50 +92,50 @@ class CosmosPartitionPlannerSpec
     evaluateStorageBasedStrategy(
       128 * 10 * 1024,
       10 * cosmosBEPartitionCount,
-      currentOffset = Some(createChangeFeedOffset(0.0)))
+      None)
 
     evaluateStorageBasedStrategy(
       128 * 10 * 1024,
       1 * cosmosBEPartitionCount,
-      currentOffset = Some(createChangeFeedOffset(1.0)))
+      Some(100))
 
     // always return at least 1 partition even when metadata is stale
     evaluateStorageBasedStrategy(
       128 * 10 * 1024,
       1 * cosmosBEPartitionCount,
-      currentOffset = Some(createChangeFeedOffset(2.0)))
+      Some(200))
 
     evaluateStorageBasedStrategy(
       128 * 10 * 1024,
       1 * cosmosBEPartitionCount,
-      currentOffset = Some(createChangeFeedOffset(0.9)))
+      Some(90))
 
     evaluateStorageBasedStrategy(
       128 * 10 * 1024,
       8 * cosmosBEPartitionCount,
-      currentOffset = Some(createChangeFeedOffset(0.25)))
+      Some(25))
 
     evaluateStorageBasedStrategy(
       128 * 10 * 1024,
       6 * cosmosBEPartitionCount,
-      currentOffset = Some(createChangeFeedOffset(0.499999)))
+      Some(49))
 
     evaluateStorageBasedStrategy(
       128 * 10 * 1024,
       5 * cosmosBEPartitionCount,
-      currentOffset = Some(createChangeFeedOffset(0.5)))
+      Some(50))
 
     evaluateStorageBasedStrategy(
       128 * 10 * 1024,
       5 * cosmosBEPartitionCount,
-      currentOffset = Some(createChangeFeedOffset(0.5000000001)))
+      Some(51))
   }
 
   it should "honor the min partition count to allow saturating all spark executors" taggedAs RequiresCosmosEndpoint in {
     evaluateStorageBasedStrategy(
       128 * 10 * 1024,
       4 * cosmosBEPartitionCount, // would usually be just 1 because progress > 100%
-      currentOffset = Some(createChangeFeedOffset(2.0)),
+      Some(200),
       defaultMinimalPartitionCount = 4 * cosmosBEPartitionCount)
   }
 
@@ -154,7 +154,7 @@ class CosmosPartitionPlannerSpec
       "Custom",
       128 * 10 * 1024,
       23 * cosmosBEPartitionCount, // would usually be just 1 because progress > 100%
-      currentOffset = Some(createChangeFeedOffset(2.0)),
+      Some(200),
       customPartitionCount = Some(23 * cosmosBEPartitionCount))
 
     // targetPartitionCount is ignore when Strategy is != Custom
@@ -162,7 +162,7 @@ class CosmosPartitionPlannerSpec
       "Default",
       128 * 10 * 1024,
       1 * cosmosBEPartitionCount, // would usually be just 1 because progress > 100%
-      currentOffset = Some(createChangeFeedOffset(2.0)),
+      Some(200),
       customPartitionCount = Some(23 * cosmosBEPartitionCount))
   }
 
@@ -178,11 +178,11 @@ class CosmosPartitionPlannerSpec
     evaluateRestrictiveStrategy(
       50 * 1024 * 1024,
       1 * cosmosBEPartitionCount,
-      Some(createChangeFeedOffset(2.0)))
+      Some(200))
     evaluateRestrictiveStrategy(
       50 * 1024 * 1024,
       1 * cosmosBEPartitionCount,
-      Some(createChangeFeedOffset(0.9)))
+      Some(90))
   }
 
   //scalastyle:on magic.number
@@ -191,7 +191,7 @@ class CosmosPartitionPlannerSpec
   (
     docSizeInKB: Long,
     expectedPartitionCount: Int,
-    currentOffset: Option[ChangeFeedOffset] = None,
+    startLsn: Option[Long] = None,
 
     //scalastyle:off magic.number
     // 128 MB is the Spark default, can be changed via
@@ -207,10 +207,50 @@ class CosmosPartitionPlannerSpec
       "Default",
       docSizeInKB,
       expectedPartitionCount,
-      currentOffset,
+      startLsn,
       defaultMaxPartitionSizeInMB,
       defaultMinimalPartitionCount
     )
+  }
+
+  private[this] def createPartitions
+  (
+    startLsn: Option[Long],
+    userConfig: collection.mutable.Map[String, String],
+    defaultMaxPartitionSizeInMB: Int,
+    defaultMinimalPartitionCount: Int
+  ) = {
+    if (startLsn.isDefined) {
+      val partitionMetadata = getPartitionMetadata(
+        clientConfig,
+        None,
+        containerConfig
+      ).map(metadata => metadata.cloneForSubRange(metadata.feedRange, startLsn.get))
+
+      val client = CosmosClientCache.apply(clientConfig, None)
+      val container = client
+        .getDatabase(containerConfig.database)
+        .getContainer(containerConfig.container)
+
+      createInputPartitions(
+        CosmosPartitioningConfig.parseCosmosPartitioningConfig(userConfig.toMap),
+        container,
+        partitionMetadata: Array[PartitionMetadata],
+        defaultMinimalPartitionCount,
+        defaultMaxPartitionSizeInMB,
+        ReadLimit.allAvailable()
+      )
+    } else {
+      CosmosPartitionPlanner.createInputPartitions(
+        clientConfig,
+        None,
+        containerConfig,
+        CosmosPartitioningConfig.parseCosmosPartitioningConfig(userConfig.toMap),
+        defaultMinimalPartitionCount,
+        defaultMaxPartitionSizeInMB,
+        ReadLimit.allAvailable()
+      )
+    }
   }
 
   //scalastyle:off magic.number
@@ -219,7 +259,7 @@ class CosmosPartitionPlannerSpec
     strategy: String,
     docSizeInKB: Long,
     expectedPartitionCount: Int,
-    currentOffset: Option[ChangeFeedOffset] = None,
+    startLsn: Option[Long] = None,
 
     // 128 MB is the Spark default maps to  SparkSession.sessionState.conf.filesMaxPartitionBytes
     defaultMaxPartitionSizeInMB: Int = 128,
@@ -243,20 +283,12 @@ class CosmosPartitionPlannerSpec
     if (customPartitionCount.isDefined) {
       userConfig.put("spark.cosmos.partitioning.targetedCount", String.valueOf(customPartitionCount.get))
     }
-    val partitions = CosmosPartitionPlanner.createInputPartitions(
-      clientConfig,
-      None,
-      containerConfig,
-      CosmosPartitioningConfig.parseCosmosPartitioningConfig(userConfig.toMap),
-      currentOffset,
-      defaultMinimalPartitionCount,
-      defaultMaxPartitionSizeInMB
-    )
+    val partitions = createPartitions(startLsn, userConfig, defaultMaxPartitionSizeInMB, defaultMinimalPartitionCount)
     //scalastyle:on magic.number
 
     val alwaysThrow = false
     partitions.foreach {
-      case _: ChangeFeedInputPartition => Unit
+      case _: CosmosInputPartition => Unit
       case _ => assert(alwaysThrow, "Unexpected partition type")
     }
     partitions should have size expectedPartitionCount
@@ -266,7 +298,7 @@ class CosmosPartitionPlannerSpec
   (
     docSizeInKB: Long,
     expectedPartitionCount: Int,
-    currentOffset: Option[ChangeFeedOffset] = None,
+    currentOffset: Option[Long] = None,
 
     //scalastyle:off magic.number
     // 128 MB is the Spark default, can be changed via
@@ -302,6 +334,8 @@ class CosmosPartitionPlannerSpec
           documentCount,
           documentSizeInKB,
           latestLsn,
+          0,
+          None,
           new AtomicLong(nowEpochMs),
           new AtomicLong(nowEpochMs)))
     }
@@ -309,42 +343,16 @@ class CosmosPartitionPlannerSpec
 
   private[this] def reinitialize(): Unit = {
     val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
-    val ranges = ArrayBuffer[String]()
+    val ranges = ArrayBuffer[NormalizedRange]()
     container.getFeedRanges.block.forEach(fr => {
-      PartitionMetadataCache.purge(containerConfig, fr.toString)
-      ranges += fr.toString
+      val normalizedRange = SparkBridgeImplementationInternal.toNormalizedRange(fr)
+      PartitionMetadataCache.purge(containerConfig, normalizedRange)
+      ranges += normalizedRange
     })
 
     ranges should have size cosmosBEPartitionCount
     this.feedRanges = ranges.toList
 
     PartitionMetadataCache.resetTestOverrides()
-  }
-
-  private[this] def createChangeFeedOffset(progress: Double) = {
-    ChangeFeedOffset(createChangeFeedState((progress * 100).toLong))
-  }
-
-  private[this] def createChangeFeedState(latestLsn: Long) = {
-    val collectionRid = UUID.randomUUID().toString
-
-    val json = String.format(
-      "{\"V\":1," +
-        "\"Rid\":\"%s\"," +
-        "\"Mode\":\"INCREMENTAL\"," +
-        "\"StartFrom\":{\"Type\":\"BEGINNING\"}," +
-        "\"Continuation\":%s}",
-      collectionRid,
-      String.format(
-        "{\"V\":1," +
-          "\"Rid\":\"%s\"," +
-          "\"Continuation\":[" +
-          "{\"token\":\"\\\"%s\\\"\",\"range\":{\"min\":\"\",\"max\":\"FF\"}}" +
-          "]," +
-          "\"PKRangeId\":\"0\"}",
-        collectionRid,
-        String.valueOf(latestLsn)))
-
-    Base64.getUrlEncoder.encodeToString(json.getBytes(StandardCharsets.UTF_8))
   }
 }

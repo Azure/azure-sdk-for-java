@@ -19,7 +19,7 @@ private case class ChangeFeedScanPartitionReaderFactory
   logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
   override def createReader(partition: InputPartition): PartitionReader[InternalRow] = {
-    val changeFeedPartition = partition.asInstanceOf[ChangeFeedInputPartition]
-    ChangeFeedPartitionReader(changeFeedPartition.feedRangeJson, config, readSchema, cosmosClientStateHandle)
+    val changeFeedPartition = partition.asInstanceOf[CosmosInputPartition]
+    ChangeFeedPartitionReader(changeFeedPartition.feedRange, config, readSchema, cosmosClientStateHandle)
   }
 }

@@ -3,10 +3,10 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
-import com.azure.cosmos.models.{CosmosParameterizedQuery, FeedRange}
-import com.fasterxml.jackson.databind.node.ObjectNode
+import com.azure.cosmos.models.CosmosParameterizedQuery
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.connector.read.streaming.ReadLimit
 import org.apache.spark.sql.connector.read.{Batch, InputPartition, PartitionReaderFactory, Scan}
 import org.apache.spark.sql.types.StructType
 
@@ -42,10 +42,10 @@ private case class ItemsScan(session: SparkSession,
       Some(cosmosClientStateHandle),
       containerConfig,
       partitioningConfig,
-      None, // In batch mode always start a new query - without previous continuation state
       defaultMinPartitionCount,
-      defaultMaxPartitionSizeInMB
-    )
+      defaultMaxPartitionSizeInMB,
+      ReadLimit.allAvailable()
+    ).map(_.asInstanceOf[InputPartition])
   }
 
   override def createReaderFactory(): PartitionReaderFactory = {

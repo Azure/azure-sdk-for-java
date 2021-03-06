@@ -106,10 +106,10 @@ private[cosmos] case class PartitionMetadata(
 
   def getWeightedLsnGap: Long = {
     val progressFactor = math.max(this.latestLsn - this.startLsn, 0)
-    val averageItemsPerLsn = if (this.latestLsn == 0) {
+    val averageItemsPerLsn = if (this.documentCount == 0) {
       1d
     } else {
-      this.documentCount.toDouble / this.latestLsn
+      this.latestLsn / this.documentCount.toDouble
     }
 
     (progressFactor * averageItemsPerLsn).toLong

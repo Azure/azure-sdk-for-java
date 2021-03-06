@@ -30,9 +30,9 @@ class ChangeFeedOffsetSpec extends UnitSpec {
     val changeFeedState = UUID.randomUUID().toString
     val offsetJson = getOffsetJson(changeFeedState)
     val offset = ChangeFeedOffset.fromJson(offsetJson)
-    offset.isEmpty shouldEqual false
-    val serializedString = offset.get.json()
     //scalastyle:off null
+    offset should not be null
+    val serializedString = offset.json()
     serializedString should not be null
     //scalastyle:on null
     serializedString shouldEqual offsetJson
@@ -43,9 +43,10 @@ class ChangeFeedOffsetSpec extends UnitSpec {
     val offsetJson = getOffsetJson(changeFeedState)
     val offsetJsonWithWhitespaces = getOffsetJsonWithUnnecessaryWhitespaces(changeFeedState)
     val offset = ChangeFeedOffset.fromJson(offsetJsonWithWhitespaces)
-    offset.isEmpty shouldEqual false
-    val serializedString = offset.get.json()
     //scalastyle:off null
+    offset should not be null
+    val serializedString = offset.json()
+
     serializedString should not be null
     //scalastyle:on null
     serializedString shouldEqual offsetJson
@@ -57,8 +58,13 @@ class ChangeFeedOffsetSpec extends UnitSpec {
       "com.azure.cosmos.spark.changeFeed.offset.v1",
       "com.azure.cosmos.spark.changeFeed.offset.v356"
     )
-    val offset = ChangeFeedOffset.fromJson(offsetJson)
-    offset.isEmpty shouldEqual true
+
+    try {
+      ChangeFeedOffset.fromJson(offsetJson)
+      fail("Invalid version never get here.")
+    } catch {
+      case _:IllegalStateException =>
+    }
   }
 
   it should "complain when parsing invalid json" in {
@@ -68,7 +74,7 @@ class ChangeFeedOffsetSpec extends UnitSpec {
       ChangeFeedOffset.fromJson(invalidJson)
       fail("invalid json")
     } catch {
-      case e: JsonParseException =>
+      case _:JsonParseException =>
     }
   }
   //scalastyle:on multiple.string.literals

@@ -3,14 +3,16 @@
 
 package com.azure.cosmos.implementation
 
-import com.azure.cosmos.CosmosClientBuilder
+import com.azure.cosmos.{CosmosAsyncContainer, CosmosClientBuilder, SparkBridgeInternal}
 import com.azure.cosmos.implementation.routing.Range
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper
+import com.azure.cosmos.implementation.Utils.ValueHolder
 import com.azure.cosmos.implementation.changefeed.implementation.{ChangeFeedState, ChangeFeedStateV1}
 import com.azure.cosmos.implementation.feedranges.{FeedRangeContinuation, FeedRangeEpkImpl, FeedRangeInternal}
 import com.azure.cosmos.implementation.query.CompositeContinuationToken
 import com.azure.cosmos.models.FeedRange
 import com.azure.cosmos.spark.NormalizedRange
+import reactor.core.publisher.Mono
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -74,21 +76,38 @@ private[cosmos] object SparkBridgeImplementationInternal {
     state
       .extractContinuationTokens() // already sorted
       .asScala
-      .map(t => Tuple2(toNormalizedRange(t.getRange), toLsn(t.getToken)))
+      .map(t => Tuple2(rangeToNormalizedRange(t.getRange), toLsn(t.getToken)))
       .toArray
   }
 
-  def toFeedRange(range: NormalizedRange): String = {
-    new FeedRangeEpkImpl(new Range[String](range.min, range.max, true, false)).toJson
+  def extractChangeFeedStateForRange
+  (
+    stateJson: String,
+    feedRange: NormalizedRange
+  ): String = {
+    assert(!Strings.isNullOrWhiteSpace(stateJson), s"Argument 'stateJson' must not be null or empty.")
+    ChangeFeedState
+      .fromString(stateJson)
+      .extractForEffectiveRange(toCosmosRange(feedRange))
+      .toJson
   }
 
-  def toNormalizedRange(feedRange: String): NormalizedRange = {
-    val range = FeedRangeInternal
-      .convert(FeedRange.fromString(feedRange))
-      .asInstanceOf[FeedRangeEpkImpl]
-      .getRange
-    val normalizedRange = FeedRangeInternal.normalizeRange(range)
-    NormalizedRange(normalizedRange.getMin, normalizedRange.getMax)
+  def toFeedRange(range: NormalizedRange): FeedRange = {
+    new FeedRangeEpkImpl(toCosmosRange(range))
+  }
+
+  private[cosmos] def toNormalizedRange(feedRange: FeedRange) = {
+    val epk = feedRange.asInstanceOf[FeedRangeEpkImpl]
+    rangeToNormalizedRange(epk.getRange)
+  }
+
+  private[this] def rangeToNormalizedRange(rangeInput: Range[String]) = {
+    val range = FeedRangeInternal.normalizeRange(rangeInput)
+    assert(range != null, "Argument 'range' must not be null.")
+    assert(range.isMinInclusive, "Argument 'range' must be minInclusive")
+    assert(!range.isMaxInclusive, "Argument 'range' must be maxExclusive")
+
+    NormalizedRange(range.getMin, range.getMax)
   }
 
   def doRangesOverlap(left: NormalizedRange, right: NormalizedRange): Boolean = {
@@ -109,11 +128,4 @@ private[cosmos] object SparkBridgeImplementationInternal {
     lsnToken.substring(1, lsnToken.length - 1).toLong
   }
 
-  private[this] def toNormalizedRange(range: Range[String]): NormalizedRange = {
-    assert(range != null, "Argument 'range' must not be null.")
-    assert(range.isMinInclusive, "Argument 'range' must be minInclusive")
-    assert(!range.isMaxInclusive, "Argument 'range' must be maxExclusive")
-
-    NormalizedRange(range.getMin, range.getMax)
-  }
 }

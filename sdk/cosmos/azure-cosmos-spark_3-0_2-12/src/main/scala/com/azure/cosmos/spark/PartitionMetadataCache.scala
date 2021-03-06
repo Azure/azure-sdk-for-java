@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, Strings}
-import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, FeedRange}
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal, Strings}
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver, requireNotNull}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
@@ -42,7 +42,7 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
 
   // while retrieved within this interval the last time the data will be updated every
   // refresh cycle
-  private[this] val hotThresholdIntervalInMsDefault : Long = 60 * 1000 // refresh cache every minute after initialization
+  private[this] val hotThresholdIntervalInMs: Long = 60 * 1000 // refresh cache every minute after initialization
 
   // update cached items which haven't been retrieved in the last refreshPeriod only if they
   // have been last updated longer than 15 minutes ago
@@ -83,7 +83,7 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
   def apply(cosmosClientConfig: CosmosClientConfiguration,
             cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
             cosmosContainerConfig: CosmosContainerConfig,
-            feedRange: String,
+            feedRange: NormalizedRange,
             maxStaleness: Option[Duration] = None): SMono[PartitionMetadata] = {
 
     assertOnSparkDriver()
@@ -118,7 +118,7 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
     }
   }
 
-  def purge(cosmosContainerConfig: CosmosContainerConfig, feedRange: String): Boolean = {
+  def purge(cosmosContainerConfig: CosmosContainerConfig, feedRange: NormalizedRange): Boolean = {
     assertOnSparkDriver()
     val key = PartitionMetadata.createKey(
       cosmosContainerConfig.database,
@@ -133,10 +133,13 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
   }
 
   def injectTestData(cosmosContainerConfig: CosmosContainerConfig,
-                     feedRange: String,
+                     feedRange: NormalizedRange,
                      partitionMetadata: PartitionMetadata): Unit = {
 
-    val key = PartitionMetadata.createKey(cosmosContainerConfig.database, cosmosContainerConfig.container, feedRange)
+    val key = PartitionMetadata.createKey(
+      cosmosContainerConfig.database,
+      cosmosContainerConfig.container,
+      feedRange)
     val effectiveTestCache = this.cacheTestOverride match {
       case None =>
         val newCache = new TrieMap[String, PartitionMetadata]()
@@ -186,16 +189,16 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
     cosmosClientConfiguration: CosmosClientConfiguration,
     cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
     cosmosContainerConfig: CosmosContainerConfig,
-    feedRange: String,
+    feedRange: NormalizedRange,
     key: String
   ): SMono[PartitionMetadata] = {
 
     assertOnSparkDriver()
     val metadataObservable = readPartitionMetadata(
-      cosmosClientConfiguration: CosmosClientConfiguration,
-      cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
-      cosmosContainerConfig: CosmosContainerConfig,
-      feedRange: String
+      cosmosClientConfiguration,
+      cosmosClientStateHandle,
+      cosmosContainerConfig,
+      feedRange
     )
 
     metadataObservable
@@ -211,14 +214,15 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
     cosmosClientConfiguration: CosmosClientConfiguration,
     cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
     cosmosContainerConfig: CosmosContainerConfig,
-    feedRange: String
+    feedRange: NormalizedRange
   ): SMono[PartitionMetadata] = {
     val client = CosmosClientCache.apply(cosmosClientConfiguration, cosmosClientStateHandle)
     val container = client
       .getDatabase(cosmosContainerConfig.database)
       .getContainer(cosmosContainerConfig.container)
 
-    val options = CosmosChangeFeedRequestOptions.createForProcessingFromNow(FeedRange.fromString(feedRange))
+    val options = CosmosChangeFeedRequestOptions.createForProcessingFromNow(
+      SparkBridgeImplementationInternal.toFeedRange(feedRange))
     options.setMaxItemCount(1)
     options.setMaxPrefetchPageCount(1)
     options.setQuotaInfoEnabled(true)

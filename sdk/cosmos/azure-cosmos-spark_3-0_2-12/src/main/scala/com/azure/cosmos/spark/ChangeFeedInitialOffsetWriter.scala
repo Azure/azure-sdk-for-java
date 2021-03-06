@@ -4,7 +4,7 @@ package com.azure.cosmos.spark
 
 import org.apache.commons.io.IOUtils
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.execution.streaming.HDFSMetadataLog
+import org.apache.spark.sql.execution.streaming.{HDFSMetadataLog, MetadataVersionUtil}
 
 import java.io.{BufferedWriter, InputStream, InputStreamReader, OutputStream, OutputStreamWriter}
 import java.nio.charset.StandardCharsets
@@ -13,8 +13,7 @@ private class ChangeFeedInitialOffsetWriter
 (
   sparkSession: SparkSession,
   metadataPath: String
-) extends HDFSMetadataLog[String](sparkSession, metadataPath)
-  with CosmosLoggingTrait {
+) extends HDFSMetadataLog[String](sparkSession, metadataPath) {
 
   val VERSION = 1
 

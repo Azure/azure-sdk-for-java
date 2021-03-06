@@ -110,7 +110,7 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono
     ) {
         return this.getEffectiveRange(routingMapProvider, metadataDiagnosticsCtx, collectionResolutionMono)
-                   .map(effectiveRange -> normalizeRange(effectiveRange));
+                   .map(FeedRangeInternal::normalizeRange);
     }
 
     private static String addToEffectivePartitionKey(
@@ -194,7 +194,7 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         }
     }
 
-    public Mono<List<FeedRange>> trySplit(
+    public Mono<List<FeedRangeEpkImpl>> trySplit(
         IRoutingMapProvider routingMapProvider,
         MetadataDiagnosticsContext metadataDiagnosticsCtx,
         Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono,
@@ -243,7 +243,7 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
                    });
     }
 
-    static List<FeedRange> trySplitWithHashV1(
+    static List<FeedRangeEpkImpl> trySplitWithHashV1(
         Range<String> effectiveRange,
         int targetedSplitCount) {
 
@@ -264,7 +264,7 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
 
         String minRange = effectiveRange.getMin();
         long diff = max - min;
-        List<FeedRange> splitFeedRanges = new ArrayList<>(targetedSplitCount);
+        List<FeedRangeEpkImpl> splitFeedRanges = new ArrayList<>(targetedSplitCount);
         for (int i = 1; i < targetedSplitCount; i++) {
             long splitPoint = min + (i * (diff / targetedSplitCount));
             String maxRange = PartitionKeyInternalHelper.toHexEncodedBinaryString(
@@ -293,7 +293,7 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         return splitFeedRanges;
     }
 
-    static List<FeedRange> trySplitWithHashV2(
+    static List<FeedRangeEpkImpl> trySplitWithHashV2(
         Range<String> effectiveRange,
         int targetedSplitCount) {
 
@@ -323,7 +323,7 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         String minRange = effectiveRange.getMin();
         Int128 diff = Int128.subtract(max, min);
         Int128 splitCountInt128 = new Int128(targetedSplitCount);
-        List<FeedRange> splitFeedRanges = new ArrayList<>(targetedSplitCount);
+        List<FeedRangeEpkImpl> splitFeedRanges = new ArrayList<>(targetedSplitCount);
         for (int i = 1; i < targetedSplitCount; i++) {
             byte[] currentBlob = Int128.add(
                 min,

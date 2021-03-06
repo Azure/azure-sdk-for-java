@@ -3,9 +3,9 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, FeedRange}
-import com.azure.cosmos.spark.CosmosPredicates.requireNotNullOrEmpty
+import com.azure.cosmos.spark.CosmosPredicates.{requireNotNull, requireNotNullOrEmpty}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.catalyst.InternalRow
@@ -17,13 +17,13 @@ import org.apache.spark.sql.types.StructType
 // For now we are creating only one spark partition per physical partition
 private case class ChangeFeedPartitionReader
 (
-  feedRange: String,
+  feedRange: NormalizedRange,
   config: Map[String, String],
   readSchema: StructType,
   cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot]
 ) extends PartitionReader[InternalRow] with CosmosLoggingTrait {
 
-  requireNotNullOrEmpty(feedRange, "feedRange")
+  requireNotNull(feedRange, "feedRange")
   logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
   private val containerTargetConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
@@ -38,10 +38,11 @@ private case class ChangeFeedPartitionReader
   // TODO fabianm this needs to be initialized based on InputPartition and startFrom configuration
   private val changeFeedRequestOptions = this.changeFeedConfig.changeFeedMode match {
     case ChangeFeedModes.Incremental =>
-      CosmosChangeFeedRequestOptions.createForProcessingFromBeginning (FeedRange.fromString(feedRange))
+      CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(
+        SparkBridgeImplementationInternal.toFeedRange(feedRange))
     case ChangeFeedModes.FullFidelity =>
       CosmosChangeFeedRequestOptions
-        .createForProcessingFromNow(FeedRange.fromString(feedRange))
+        .createForProcessingFromNow(SparkBridgeImplementationInternal.toFeedRange(feedRange))
         .fullFidelity()
   }
 

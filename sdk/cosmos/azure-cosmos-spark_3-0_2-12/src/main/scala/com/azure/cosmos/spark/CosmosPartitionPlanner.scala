@@ -5,11 +5,10 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.{CosmosAsyncContainer, SparkBridgeInternal}
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
-import com.azure.cosmos.models.FeedRange
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver, requireNotNull}
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.connector.read.streaming.{ReadAllAvailable, ReadLimit, ReadMaxFiles, ReadMaxRows}
-import reactor.core.scala.publisher.{SFlux, SMono}
+import reactor.core.scala.publisher.SFlux
 import reactor.core.scala.publisher.SMono.PimpJMono
 
 import java.time.Duration
@@ -114,7 +113,7 @@ private object CosmosPartitionPlanner {
   ): Array[CosmosInputPartition] = {
     partitionPlanningInfo.map(info =>
       CosmosInputPartition(
-        SparkBridgeImplementationInternal.toFeedRange(info.feedRange),
+        info.feedRange,
         info.endLsn))
   }
 
@@ -262,7 +261,7 @@ private object CosmosPartitionPlanner {
       cosmosClientConfig: CosmosClientConfiguration,
       cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
       cosmosContainerConfig: CosmosContainerConfig
-  ): SMono[util.List[FeedRange]] = {
+  ) = {
 
   assertNotNull(cosmosClientConfig, "cosmosClientConfig")
     assertNotNull(cosmosContainerConfig, "cosmosContainerConfig")
@@ -273,7 +272,13 @@ private object CosmosPartitionPlanner {
       .getDatabase(cosmosContainerConfig.database)
       .getContainer(cosmosContainerConfig.container)
 
-    container.getFeedRanges.asScala
+    container
+      .getFeedRanges
+      .asScala
+      .map(feedRanges => feedRanges
+        .asScala
+        .map(feedRange => SparkBridgeImplementationInternal.toNormalizedRange(feedRange))
+        .toArray)
   }
 
   def getPartitionMetadata(
@@ -289,14 +294,14 @@ private object CosmosPartitionPlanner {
                      cosmosContainerConfig)
       .flatMap(feedRanges => {
         SFlux
-          .fromArray(feedRanges.toArray())
+          .fromArray(feedRanges)
           .flatMap(
-            f =>
+            normalizedRange =>
               PartitionMetadataCache.apply(
                 cosmosClientConfig,
                 cosmosClientStateHandle,
                 cosmosContainerConfig,
-                f.toString,
+                normalizedRange,
                 maxStaleness
             ))
           .collectSeq()

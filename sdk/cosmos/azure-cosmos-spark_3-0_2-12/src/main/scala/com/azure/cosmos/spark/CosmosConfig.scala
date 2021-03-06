@@ -130,7 +130,7 @@ private object CosmosReadConfig {
   }
 }
 
-private case class CosmosContainerConfig(database: String, container: String)
+private[cosmos] case class CosmosContainerConfig(database: String, container: String)
 
 private object ItemWriteStrategy extends Enumeration {
   type ItemWriteStrategy = Value
@@ -356,7 +356,7 @@ private case class CosmosChangeFeedConfig
     }
   }
 
-  def toReadLimit(): ReadLimit = {
+  def toReadLimit: ReadLimit = {
     this.maxItemCountPerTrigger match {
       case Some(maxItemCount) => ReadLimit.maxRows(maxItemCount)
       case None => ReadLimit.allAvailable()

@@ -46,7 +46,7 @@ private[spark] object CosmosClientCache {
           .throttlingRetryOptions(
             new ThrottlingRetryOptions()
               .setMaxRetryAttemptsOnThrottledRequests(Int.MaxValue)
-              .setMaxRetryWaitTime(ChronoUnit.FOREVER.getDuration)
+              .setMaxRetryWaitTime(Duration.ofMillis(Int.MaxValue).minusSeconds(1))
           )
 
         if (cosmosClientConfiguration.useEventualConsistency){

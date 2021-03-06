@@ -3,7 +3,8 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.TestConfigurations
+import com.azure.cosmos.SparkBridgeInternal
+import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, TestConfigurations}
 
 import java.time.{Duration, Instant}
 import java.util.concurrent.atomic.AtomicLong
@@ -24,14 +25,18 @@ class PartitionMetadataCacheSpec
   )
   private[this] val clientConfig = CosmosClientConfiguration(userConfig, useEventualConsistency = true)
   private[this] val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
-  private[this] var feedRange: String = ""
+  private[this] var feedRange: NormalizedRange = NormalizedRange("", "FF")
 
   //scalastyle:off multiple.string.literals
   it should "create the partition metadata for the first physical partition" taggedAs RequiresCosmosEndpoint in {
     this.reinitialize()
     val startEpochMs = Instant.now.toEpochMilli
 
-    val newItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    val newItem = PartitionMetadataCache(
+      clientConfig,
+      None,
+      containerConfig,
+      feedRange).block()
     newItem.feedRange shouldEqual feedRange
     newItem.lastRetrieved.get should be >= startEpochMs
     newItem.lastUpdated.get should be >= startEpochMs
@@ -160,6 +165,8 @@ class PartitionMetadataCacheSpec
       docCount,
       docSize,
       lastLsn,
+      0,
+      None,
       new AtomicLong(startEpochMs),
       new AtomicLong(startEpochMs))
 
@@ -185,7 +192,9 @@ class PartitionMetadataCacheSpec
 
   private[this] def reinitialize() = {
     val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
-    this.feedRange = container.getFeedRanges.block.get(0).toString
+
+    val cosmosFeedRange = container.getFeedRanges.block.get(0)
+    this.feedRange = SparkBridgeImplementationInternal.toNormalizedRange(cosmosFeedRange)
     PartitionMetadataCache.purge(containerConfig, feedRange)
     PartitionMetadataCache.resetTestOverrides()
   }

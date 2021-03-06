@@ -4,8 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.spark.ChangeFeedOffset.{IdPropertyName, InputPartitionsPropertyName, StatePropertyName, V1Identifier}
-import com.azure.cosmos.spark.CosmosInputPartition.EndLsnPropertyName
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import com.fasterxml.jackson.databind.node.ArrayNode
 import org.apache.spark.sql.connector.read.streaming.{Offset, PartitionOffset}
 
@@ -27,12 +26,11 @@ private case class ChangeFeedOffset
   logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
   @transient private lazy val jsonPersisted = inputPartitions match {
-    case Some(partitions) => {
-      val partitionsJson = String.join(",", partitions.map(p => raw""""${p.json}"""" ).toList.asJava)
+    case Some(partitions) =>
+      val partitionsJson = String.join(",", partitions.map(p => raw""""${p.json()}"""" ).toList.asJava)
       raw"""{"$IdPropertyName":"$V1Identifier",""" +
         raw""""$StatePropertyName":"$changeFeedState", """ +
-        raw""""$InputPartitionsPropertyName":[${partitionsJson}]}"""
-    }
+        raw""""$InputPartitionsPropertyName":[$partitionsJson]}"""
     case None => raw"""{"$IdPropertyName":"$V1Identifier","$StatePropertyName":"$changeFeedState"}"""
   }
 
@@ -48,13 +46,7 @@ private object ChangeFeedOffset {
 
   def fromJson(json: String): ChangeFeedOffset = {
     val parsedNode = objectMapper.readTree(json)
-    if (parsedNode != null &&
-      parsedNode.isObject &&
-      parsedNode.get(IdPropertyName) != null &&
-      parsedNode.get(IdPropertyName).asText("") == V1Identifier &&
-      parsedNode.get(StatePropertyName) != null &&
-      parsedNode.get(StatePropertyName).isTextual &&
-      parsedNode.get(StatePropertyName).asText("") != "") {
+    if (isValidJson(parsedNode)) {
 
       val inputPartitions = if (parsedNode.get(InputPartitionsPropertyName) != null &&
         parsedNode.get(InputPartitionsPropertyName).isArray) {
@@ -70,8 +62,18 @@ private object ChangeFeedOffset {
 
       ChangeFeedOffset(parsedNode.get(StatePropertyName).asText, inputPartitions)
     } else {
-        val message = s"Unable to deserialize offset '$json'."
-        throw new IllegalStateException(message)
+      val message = s"Unable to deserialize offset '$json'."
+      throw new IllegalStateException(message)
     }
+  }
+
+  private[this] def isValidJson(parsedNode: JsonNode): Boolean = {
+    parsedNode != null &&
+      parsedNode.isObject &&
+      parsedNode.get(IdPropertyName) != null &&
+      parsedNode.get(IdPropertyName).asText("") == V1Identifier &&
+      parsedNode.get(StatePropertyName) != null &&
+      parsedNode.get(StatePropertyName).isTextual &&
+      parsedNode.get(StatePropertyName).asText("") != ""
   }
 }

@@ -14,9 +14,9 @@ class PartitionMetadataSpec extends UnitSpec {
   it should "calculate the correct cache key" in {
     val databaseName = UUID.randomUUID().toString
     val collectionName = UUID.randomUUID().toString
-    val feedRange = UUID.randomUUID().toString
-    val key = PartitionMetadata.createKey(databaseName, collectionName, feedRange)
-    key shouldEqual s"$databaseName/$collectionName/$feedRange"
+    val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val key = PartitionMetadata.createKey(databaseName, collectionName, normalizedRange)
+    key shouldEqual s"$databaseName/$collectionName/${normalizedRange.min}-${normalizedRange.max}"
   }
 
   it should "create instance with valid parameters via apply" in {
@@ -30,7 +30,7 @@ class PartitionMetadataSpec extends UnitSpec {
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val latestLsn = rnd.nextInt()
-    val feedRange = UUID.randomUUID().toString
+    val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val docCount = rnd.nextInt()
     val docSizeInKB = rnd.nextInt()
 
@@ -42,10 +42,12 @@ class PartitionMetadataSpec extends UnitSpec {
       clientConfig,
       None,
       containerConfig,
-      feedRange,
+      normalizedRange,
       docCount,
       docSizeInKB,
       latestLsn,
+      0,
+      None,
       createdAt,
       lastRetrievedAt)
 
@@ -53,7 +55,7 @@ class PartitionMetadataSpec extends UnitSpec {
       clientConfig,
       None,
       containerConfig,
-      feedRange,
+      normalizedRange,
       docCount,
       docSizeInKB,
       createChangeFeedState(latestLsn))
@@ -63,7 +65,7 @@ class PartitionMetadataSpec extends UnitSpec {
     viaCtor.cosmosContainerConfig should be theSameInstanceAs viaApply.cosmosContainerConfig
     viaCtor.cosmosContainerConfig should be theSameInstanceAs containerConfig
     viaCtor.feedRange shouldEqual viaApply.feedRange
-    viaCtor.feedRange shouldEqual feedRange
+    viaCtor.feedRange shouldEqual normalizedRange
     viaCtor.documentCount shouldEqual viaApply.documentCount
     viaCtor.documentCount shouldEqual docCount
     viaCtor.totalDocumentSizeInKB shouldEqual viaApply.totalDocumentSizeInKB
@@ -85,7 +87,7 @@ class PartitionMetadataSpec extends UnitSpec {
 
   private[this] val contCfg = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
   private[this] val lLsn = rnd.nextInt()
-  private[this] val fr = UUID.randomUUID().toString
+  private[this] val fr = NormalizedRange("", UUID.randomUUID().toString)
   private[this] val dc = rnd.nextInt()
   private[this] val ds = rnd.nextInt()
 
@@ -96,32 +98,27 @@ class PartitionMetadataSpec extends UnitSpec {
   //scalastyle:off null
   it should "throw due to missing clientConfig" in {
     assertThrows[IllegalArgumentException](
-      PartitionMetadata(null, None, contCfg, fr, dc, ds, lLsn, lrAt, cAt))
+      PartitionMetadata(null, None, contCfg, fr, dc, ds, lLsn, 0, None, lrAt, cAt))
   }
 
   it should "throw due to missing containerConfig" in {
     assertThrows[IllegalArgumentException](
-      PartitionMetadata(clientCfg, None, null, fr, dc, ds, lLsn, lrAt, cAt))
+      PartitionMetadata(clientCfg, None, null, fr, dc, ds, lLsn, 0, None, lrAt, cAt))
   }
 
   it should "throw due to missing feedRange" in {
     assertThrows[IllegalArgumentException](
-      PartitionMetadata(clientCfg, None, contCfg, null, dc, ds, lLsn, lrAt, cAt))
-  }
-
-  it should "throw due to empty feedRange" in {
-    assertThrows[IllegalArgumentException](
-      PartitionMetadata(clientCfg, None, contCfg, "", dc, ds, lLsn, lrAt, cAt))
+      PartitionMetadata(clientCfg, None, contCfg, null, dc, ds, lLsn, 0, None, lrAt, cAt))
   }
 
   it should "throw due to missing lastRetrievedAt" in {
     assertThrows[IllegalArgumentException](
-      PartitionMetadata(clientCfg, None, contCfg, fr, dc, ds, lLsn, null, cAt))
+      PartitionMetadata(clientCfg, None, contCfg, fr, dc, ds, lLsn, 0, None, null, cAt))
   }
 
   it should "throw due to missing lastUpdatedAt" in {
     assertThrows[IllegalArgumentException](
-      PartitionMetadata(clientCfg, None, contCfg, fr, dc, ds, lLsn, lrAt, null))
+      PartitionMetadata(clientCfg, None, contCfg, fr, dc, ds, lLsn, 0, None, lrAt, null))
   }
   //scalastyle:on null
   //scalastyle:on multiple.string.literals

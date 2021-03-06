@@ -37,7 +37,7 @@ private class ChangeFeedBatch
       partitioningConfig,
       defaultMinPartitionCount,
       defaultMaxPartitionSizeInMB,
-      changeFeedConfig.toReadLimit()
+      changeFeedConfig.toReadLimit
     ).map(_.asInstanceOf[InputPartition])
   }
 
