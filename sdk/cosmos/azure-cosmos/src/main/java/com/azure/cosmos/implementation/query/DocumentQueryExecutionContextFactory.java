@@ -77,12 +77,12 @@ public class DocumentQueryExecutionContextFactory {
         // FeedOptions, but have the below condition
         // for handling ParallelDocumentQueryTest#partitionKeyRangeId
         if (cosmosQueryRequestOptions != null &&
-            !StringUtils.isEmpty(ModelBridgeInternal.partitionKeyRangeIdInternal(cosmosQueryRequestOptions))) {
+            !StringUtils.isEmpty(ModelBridgeInternal.getPartitionKeyRangeIdInternal(cosmosQueryRequestOptions))) {
 
             Mono<List<PartitionKeyRange>> partitionKeyRanges = queryExecutionContext
                 .getTargetPartitionKeyRangesById(
                     collection.getResourceId(),
-                    ModelBridgeInternal.partitionKeyRangeIdInternal(cosmosQueryRequestOptions));
+                    ModelBridgeInternal.getPartitionKeyRangeIdInternal(cosmosQueryRequestOptions));
 
             return partitionKeyRanges.map(pkRanges -> {
                 List<Range<String>> ranges =

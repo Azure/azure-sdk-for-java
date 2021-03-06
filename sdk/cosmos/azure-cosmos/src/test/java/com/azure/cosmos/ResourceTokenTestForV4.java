@@ -416,6 +416,36 @@ public class ResourceTokenTestForV4 extends TestSuiteBase {
         }
     }
 
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void readAllItemFromResourceToken() throws Exception {
+
+        CosmosAsyncClient asyncClientResourceToken = null;
+        try {
+            asyncClientResourceToken = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .gatewayMode()
+                .consistencyLevel(ConsistencyLevel.SESSION)
+                .resourceToken(createdContainerPermissionWithPartitionKey.getToken())
+                .buildAsyncClient();
+
+            CosmosAsyncContainer asyncContainer =
+                asyncClientResourceToken
+                    .getDatabase(createdDatabase.getId())
+                    .getContainer(createdContainerWithPartitionKey.getId());
+
+            CosmosPagedFlux<TestObject> readAllItemObservable =
+                asyncContainer.readAllItems(new PartitionKey(PARTITION_KEY_VALUE), TestObject.class);
+            FeedResponseListValidator<TestObject> validator = new FeedResponseListValidator.Builder<TestObject>()
+                .totalSize(1)
+                .numberOfPagesIsGreaterThanOrEqualTo(1)
+                .build();
+
+            validateQuerySuccess(readAllItemObservable.byPage(100), validator);
+        } finally {
+            safeClose(asyncClientResourceToken);
+        }
+    }
+
     private CosmosAsyncClient createAsyncClientWithPermission(List<CosmosPermissionProperties> permissions) {
         assertThat(permissions).isNotNull();
 
