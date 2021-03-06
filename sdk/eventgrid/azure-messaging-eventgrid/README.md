@@ -146,7 +146,7 @@ EventGridPublisherClient<CloudEvent> eventGridEventClient = new EventGridPublish
 Async client:
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/samples/ReadmeSamples.java#L109-L112 -->
 ```java
-EventGridPublisherAsyncClient<CloudEvent> eventGridPublisherAsyncClient = new EventGridPublisherClientBuilder()
+EventGridPublisherAsyncClient<CloudEvent> cloudEventAsyncClient = new EventGridPublisherClientBuilder()
     .endpoint("<endpont of your event grid topic/domain that accepts CloudEvent schema>")
     .credential(new AzureSasCredential("<sas token that can access the endpoint>"))
     .buildCloudEventPublisherAsyncClient();
@@ -162,7 +162,7 @@ Here is sample code to create a shared access signature that expires after 20 mi
 ```java
 OffsetDateTime expiration = OffsetDateTime.now().plusMinutes(20);
 String sasToken = EventGridPublisherClient
-    .generateSas("<your event grid endpoint>", new AzureKeyCredential("<your event grid access key>"), expiration);
+    .generateSas("<your event grid endpoint>", new AzureKeyCredential("<key for the endpoint>"), expiration);
 ```
 
 ## Key concepts
@@ -218,41 +218,41 @@ Note: figure out what schema (cloud event, event grid event, or custom event) th
 #### Sending `EventGridEvent` to a topic that accepts EventGridEvent schema
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/samples/ReadmeSamples.java#L125-L129 -->
 ```java
-    // Make sure that the event grid topic or domain you're sending to accepts EventGridEvent schema.
-    List<EventGridEvent> events = new ArrayList<>();
-    User user = new User("John", "James");
-    events.add(new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", BinaryData.fromObject(user), "0.1"));
-    eventGridEventClient.sendEvents(events);                       
+// Make sure that the event grid topic or domain you're sending to accepts EventGridEvent schema.
+List<EventGridEvent> events = new ArrayList<>();
+User user = new User("John", "James");
+events.add(new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", BinaryData.fromObject(user), "0.1"));
+eventGridEventClient.sendEvents(events);                     
 ```
 
 #### Sending `CloudEvent` to a topic that accepts CloudEvent schema
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/samples/ReadmeSamples.java#L116-L121 -->
 ```java
-    // Make sure that the event grid topic or domain you're sending to accepts CloudEvent schema.
-    List<CloudEvent> events = new ArrayList<>();
-    User user = new User("John", "James");
-    events.add(new CloudEvent("https://source.example.com", "Com.Example.ExampleEventType",
-        BinaryData.fromObject(user), CloudEventDataFormat.JSON, "application/json"));
-    cloudEventClient.sendEvents(events);
+// Make sure that the event grid topic or domain you're sending to accepts CloudEvent schema.
+List<CloudEvent> events = new ArrayList<>();
+User user = new User("John", "James");
+events.add(new CloudEvent("https://source.example.com", "Com.Example.ExampleEventType",
+    BinaryData.fromObject(user), CloudEventDataFormat.JSON, "application/json"));
+cloudEventClient.sendEvents(events);
 ```
 
 #### Sending Custom Events to a topic that accepts custom event schema
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/samples/ReadmeSamples.java#L141-L154 -->
 ```java
-    // Make sure that the event grid topic or domain you're sending to accepts the custom event schema.
-    List<Object> events = new ArrayList<>();
-    events.add(new HashMap<String, String>() {
-        {
-            put("id", UUID.randomUUID().toString());
-            put("time", OffsetDateTime.now().toString());
-            put("subject", "Test");
-            put("foo", "bar");
-            put("type", "Microsoft.MockPublisher.TestEvent");
-            put("data", "example data");
-            put("dataVersion", "0.1");
-        }
-    });
-    customEventClient.sendEvents(events);
+// Make sure that the event grid topic or domain you're sending to accepts the custom event schema.
+List<Object> events = new ArrayList<>();
+events.add(new HashMap<String, String>() {
+    {
+        put("id", UUID.randomUUID().toString());
+        put("time", OffsetDateTime.now().toString());
+        put("subject", "Test");
+        put("foo", "bar");
+        put("type", "Microsoft.MockPublisher.TestEvent");
+        put("data", "example data");
+        put("dataVersion", "0.1");
+    }
+});
+customEventClient.sendEvents(events);
 ```
 
 ### Sending Events To Event Grid Domain
@@ -263,11 +263,11 @@ an Event Grid Domain is the same as sending events to a regular Event Grid Topic
 specify the `topic` of an `EventGridEvent` if the domain accepts `EventGridEvent` schema.
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/samples/ReadmeSamples.java#L133-L137 -->
 ```java
-    List<EventGridEvent> events = new ArrayList<>();
-    User user = new User("John", "James");
-    events.add(new EventGridEvent("com/example", "Com.Example.ExampleEventType", BinaryData.fromObject(user), "1")
-        .setTopic("yourtopic"));
-    eventGridEventClient.sendEvents(events);
+List<EventGridEvent> events = new ArrayList<>();
+User user = new User("John", "James");
+events.add(new EventGridEvent("com/example", "Com.Example.ExampleEventType", BinaryData.fromObject(user), "1")
+    .setTopic("yourtopic"));
+eventGridEventClient.sendEvents(events);
 ```
 
 If the domain accepts `CloudEvent` schema, the CloudEvent's attribute that is configured to map the `topic` when the 
@@ -284,13 +284,13 @@ from the topic/subscription.
 The Json String can have a single event or an array of events. The returned result is a list of events.
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/samples/ReadmeSamples.java#L158-L164 -->
 ```java
-    // Deserialize an EventGridEvent
-    String eventGridEventJsonData = "<your EventGridEvent json String>";
-    List<EventGridEvent> eventGridEvents = EventGridEvent.fromString(eventGridEventJsonData);
-    
-    // Deserialize a CloudEvent
-    String cloudEventJsonData = "<your CloudEvent json String>";
-    List<CloudEvent> cloudEvents = CloudEvent.fromString(cloudEventJsonData);
+// Deserialize an EventGridEvent
+String eventGridEventJsonData = "<your EventGridEvent json String>";
+List<EventGridEvent> eventGridEvents = EventGridEvent.fromString(eventGridEventJsonData);
+
+// Deserialize a CloudEvent
+String cloudEventJsonData = "<your CloudEvent json String>";
+List<CloudEvent> cloudEvents = CloudEvent.fromString(cloudEventJsonData);
 ```
 
 #### Deserialize data from a `CloudEvent` or `EventGridEvent`
@@ -303,23 +303,23 @@ object, which has methods to further deserialize the data into usable types:
   an overload to accept your deserializer if you want to use your own.
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/samples/ReadmeSamples.java#L168-L184 -->
 ```java
-    BinaryData eventData = eventGridEvent.getData();
-    
-    //Deserialize data to a model class
-    User dataInModelClass = eventData.toObject(User.class);
-    
-    //Deserialize data to a Map
-    Map<String, Object> dataMap = eventData.toObject(new TypeReference<Map<String, Object>>() {
-    });
+BinaryData eventData = eventGridEvent.getData();
 
-    //Deserialize Json String to a String
-    String dataString = eventData.toObject(String.class);
+//Deserialize data to a model class
+User dataInModelClass = eventData.toObject(User.class);
 
-    //Deserialize String data to a String
-    String dataInJsonString = eventData.toString();
-    
-    //Deserialize data to byte array (byte[])
-    byte[] dataInBytes = eventData.toBytes();
+//Deserialize data to a Map
+Map<String, Object> dataMap = eventData.toObject(new TypeReference<Map<String, Object>>() {
+});
+
+//Deserialize Json String to a String
+String dataString = eventData.toObject(String.class);
+
+//Deserialize String data to a String
+String dataInJsonString = eventData.toString();
+
+//Deserialize data to byte array (byte[])
+byte[] dataInBytes = eventData.toBytes();
 ```  
 
 #### Deserialize system event data from `CloudEvent` or `EventGridEvent`
@@ -344,43 +344,43 @@ following after you deserialize an event by using `EventGridEvent.fromString()` 
 - look up the system event data model class that the System Event data can be deserialized to;
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/samples/ReadmeSamples.java#L193-L194 -->
 ```java
-    // Look up the System Event data class
-    Class<?> eventDataClazz = SystemEventNames.getSystemEventMappings().get(event.getEventType());
+// Look up the System Event data class
+Class<?> eventDataClazz = SystemEventNames.getSystemEventMappings().get(event.getEventType());
 ```
 - deserialize a system event's data to a model class instance like deserializing any other event data;
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/samples/ReadmeSamples.java#L196-L201 -->
 ```java
-    // Deserialize the event data to an instance of a specific System Event data class type
-    BinaryData data = event.getData();
-    if (data != null) {
-        StorageBlobCreatedEventData blobCreatedData = data.toObject(StorageBlobCreatedEventData.class);
-        System.out.println(blobCreatedData.getUrl());
-    }
+// Deserialize the event data to an instance of a specific System Event data class type
+BinaryData data = event.getData();
+if (data != null) {
+    StorageBlobCreatedEventData blobCreatedData = data.toObject(StorageBlobCreatedEventData.class);
+    System.out.println(blobCreatedData.getUrl());
+}
 ```
 - deal with multiple event types.
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/samples/ReadmeSamples.java#L205-L225 -->
 ```java
-    List<EventGridEvent> eventGridEvents = EventGridEvent.fromString("<Your EventGridEvent Json String>");
-    for (EventGridEvent eventGridEvent : eventGridEvents) {
-        BinaryData binaryData = eventGridEvent.getData();
-        switch (eventGridEvent.getEventType()) {
-            case SystemEventNames.APP_CONFIGURATION_KEY_VALUE_DELETED:
-                AppConfigurationKeyValueDeletedEventData keyValueDeletedEventData =
-                    binaryData.toObject(TypeReference.createInstance(AppConfigurationKeyValueDeletedEventData.class));
-                System.out.println("Processing the AppConfigurationKeyValueDeletedEventData...");
-                System.out.printf("The key is: %s%n", keyValueDeletedEventData.getKey());
-                break;
-            case SystemEventNames.APP_CONFIGURATION_KEY_VALUE_MODIFIED:
-                AppConfigurationKeyValueModifiedEventData keyValueModifiedEventData =
-                    binaryData.toObject(TypeReference.createInstance(AppConfigurationKeyValueModifiedEventData.class));
-                System.out.println("Processing the AppConfigurationKeyValueModifiedEventData...");
-                System.out.printf("The key is: %s%n", keyValueModifiedEventData.getKey());
-                break;
-            default:
-                System.out.printf("%s isn't an AppConfiguration event data%n", eventGridEvent.getEventType());
-                break;
-        }
+List<EventGridEvent> eventGridEvents = EventGridEvent.fromString("<Your EventGridEvent Json String>");
+for (EventGridEvent eventGridEvent : eventGridEvents) {
+    BinaryData binaryData = eventGridEvent.getData();
+    switch (eventGridEvent.getEventType()) {
+        case SystemEventNames.APP_CONFIGURATION_KEY_VALUE_DELETED:
+            AppConfigurationKeyValueDeletedEventData keyValueDeletedEventData =
+                binaryData.toObject(TypeReference.createInstance(AppConfigurationKeyValueDeletedEventData.class));
+            System.out.println("Processing the AppConfigurationKeyValueDeletedEventData...");
+            System.out.printf("The key is: %s%n", keyValueDeletedEventData.getKey());
+            break;
+        case SystemEventNames.APP_CONFIGURATION_KEY_VALUE_MODIFIED:
+            AppConfigurationKeyValueModifiedEventData keyValueModifiedEventData =
+                binaryData.toObject(TypeReference.createInstance(AppConfigurationKeyValueModifiedEventData.class));
+            System.out.println("Processing the AppConfigurationKeyValueModifiedEventData...");
+            System.out.printf("The key is: %s%n", keyValueModifiedEventData.getKey());
+            break;
+        default:
+            System.out.printf("%s isn't an AppConfiguration event data%n", eventGridEvent.getEventType());
+            break;
     }
+}
 ```
 ### More samples
 Some additional sample code can be found [here][samples].
