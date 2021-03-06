@@ -123,9 +123,9 @@ public class AccessTokenCacheImpl {
 
     private boolean checkIfWeShouldForceRefresh(TokenRequestContext tokenRequestContext) {
         return !(this.tokenRequestContext != null
-            && (this.tokenRequestContext.getClaims() == null ? tokenRequestContext.getClaims() == null :
-                (tokenRequestContext.getClaims() == null ? false
-                    : tokenRequestContext.getClaims().equals(this.tokenRequestContext.getClaims())))
+            && (this.tokenRequestContext.getClaims() == null ? tokenRequestContext.getClaims() == null
+                : (tokenRequestContext.getClaims() == null ? false
+                        : tokenRequestContext.getClaims().equals(this.tokenRequestContext.getClaims())))
             && this.tokenRequestContext.getScopes().equals(tokenRequestContext.getScopes()));
     }
 
