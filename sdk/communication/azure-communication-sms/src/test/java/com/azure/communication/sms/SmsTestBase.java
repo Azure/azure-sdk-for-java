@@ -46,8 +46,7 @@ public class SmsTestBase extends TestBase {
     protected static final String FROM_PHONE_NUMBER = Configuration.getGlobalConfiguration()
         .get("SMS_SERVICE_PHONE_NUMBER", "+15551234567");
 
-    protected static final String MESSAGE = Configuration.getGlobalConfiguration()
-        .get("MESSAGE", "Hello");
+    protected static final String MESSAGE = "Hello";
 
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
