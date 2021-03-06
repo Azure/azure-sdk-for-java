@@ -43,9 +43,8 @@ import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
- * A service client that publishes events to an EventGrid topic or domain. Use {@link EventGridPublisherClientBuilder}
- * to create an instance of this client. It uses <a href="https://projectreactor.io/">Project Reactor</a> to
- * handle asynchronous programming.
+ * A service client that publishes events to an EventGrid topic or domain asynchronously.
+ * Use {@link EventGridPublisherClientBuilder} to create an instance of this client.
  *
  * <p><strong>Create EventGridPublisherAsyncClient for CloudEvent Samples</strong></p>
  * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#CreateCloudEventClient}
@@ -53,11 +52,17 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  * <p><strong>Send CloudEvent Samples</strong></p>
  * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#SendCloudEvent}
  *
- * <p><strong>Create EventGridPublisherClient for EventGridEvent Samples</strong></p>
+ * <p><strong>Create EventGridPublisherAsyncClient for EventGridEvent Samples</strong></p>
  * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#CreateEventGridEventClient}
  *
  * <p><strong>Send EventGridEvent Samples</strong></p>
  * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#SendEventGridEvent}
+ *
+ * <p><strong>Create EventGridPublisherAsyncClient for Custom Event Schema Samples</strong></p>
+ * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#CreateCustomEventClient}
+ *
+ * <p><strong>Send Custom Event Schema Samples</strong></p>
+ * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#SendCustomEvent}
  *
  * @see EventGridEvent
  * @see com.azure.core.models.CloudEvent

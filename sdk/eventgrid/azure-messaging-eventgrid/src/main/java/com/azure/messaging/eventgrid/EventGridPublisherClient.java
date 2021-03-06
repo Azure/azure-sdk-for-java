@@ -31,6 +31,12 @@ import java.time.OffsetDateTime;
  * <p><strong>Send EventGridEvent Samples</strong></p>
  * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherClient#SendEventGridEvent}
  *
+ * <p><strong>Create EventGridPublisherClient for Custom Event Schema Samples</strong></p>
+ * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherClient#CreateCustomEventClient}
+ *
+ * <p><strong>Send Custom Event Schema Samples</strong></p>
+ * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherClient#SendCustomEvent}
+ *
  * @see EventGridEvent
  * @see CloudEvent
  */
