@@ -395,7 +395,7 @@ public class CosmosTemplateIT {
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
 
-        final Page<Person> page2 = cosmosTemplate.findAll(page1.getPageable(), Person.class,
+        final Page<Person> page2 = cosmosTemplate.findAll(page1.nextPageable(), Person.class,
             containerName);
         assertThat(page2.getContent().size()).isEqualTo(1);
         PageTestUtils.validateLastPage(page2, PAGE_SIZE_1);
@@ -520,7 +520,7 @@ public class CosmosTemplateIT {
         assertThat(firstPageResults.get(1).getFirstName()).isEqualTo(FIRST_NAME);
         assertThat(firstPageResults.get(2).getFirstName()).isEqualTo(testPerson5.getFirstName());
 
-        final Page<Person> secondPage = cosmosTemplate.findAll(firstPage.getPageable(), Person.class,
+        final Page<Person> secondPage = cosmosTemplate.findAll(firstPage.nextPageable(), Person.class,
             containerName);
 
         assertThat(secondPage.getContent().size()).isEqualTo(2);

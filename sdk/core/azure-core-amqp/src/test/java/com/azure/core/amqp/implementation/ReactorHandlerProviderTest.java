@@ -12,7 +12,11 @@ import com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsProxyConnectionHandler;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
+import org.apache.qpid.proton.engine.Connection;
+import org.apache.qpid.proton.engine.EndpointState;
+import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.SslDomain;
+import org.apache.qpid.proton.engine.impl.TransportImpl;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -20,6 +24,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -28,9 +33,11 @@ import reactor.core.scheduler.Scheduler;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.URI;
+import java.net.URL;
 import java.util.Collections;
 import java.util.stream.Stream;
 
@@ -40,6 +47,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -48,7 +56,7 @@ import static org.mockito.Mockito.when;
 public class ReactorHandlerProviderTest {
     private static final String CONNECTION_ID = "test-connection-id";
     private static final String FULLY_QUALIFIED_DOMAIN_NAME = "my-hostname.windows.com";
-    private static final String HOSTNAME = "my fake hostname";
+    private static final String HOSTNAME = "my.fake.hostname.com";
     private static final int PORT = 1003;
     private static final InetSocketAddress PROXY_ADDRESS = InetSocketAddress.createUnresolved("foo.proxy.com", 3138);
     private static final Proxy PROXY = new Proxy(Proxy.Type.HTTP, PROXY_ADDRESS);
@@ -302,5 +310,120 @@ public class ReactorHandlerProviderTest {
 
         // Act and Assert
         Assertions.assertFalse(WebSocketsProxyConnectionHandler.shouldUseProxy(host, port));
+    }
+
+    /**
+     * Verify that when we use a proxy, the SSL peer is the name of the AMQP messaae broker.
+     */
+    @Test
+    public void correctPeerDetailsProxy() {
+        // Arrange
+        final String anotherFakeHostname = "hostname.fake";
+        final ProxyOptions proxyOptions = new ProxyOptions(ProxyAuthenticationType.BASIC, PROXY, USERNAME, PASSWORD);
+        final ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS,
+            new AmqpRetryOptions(), proxyOptions, scheduler, CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME);
+
+        final Connection connection = mock(Connection.class);
+        when(connection.getRemoteState()).thenReturn(EndpointState.UNINITIALIZED);
+
+        final TransportImpl transport = mock(TransportImpl.class);
+
+        final Event event = mock(Event.class);
+        when(event.getTransport()).thenReturn(transport);
+        when(event.getConnection()).thenReturn(connection);
+        when(connection.getHostname()).thenReturn(anotherFakeHostname);
+
+        final ConnectionHandler connectionHandler = provider.createConnectionHandler(CONNECTION_ID, PRODUCT,
+            CLIENT_VERSION, connectionOptions);
+
+        // Act
+        connectionHandler.onConnectionBound(event);
+
+        // Assert
+        verify(transport).ssl(
+            argThat(sslDomain -> sslDomain.getMode() == SslDomain.Mode.CLIENT),
+            argThat(peerDetails -> HOSTNAME.equals(peerDetails.getHostname())
+                && WebSocketsConnectionHandler.HTTPS_PORT == peerDetails.getPort()));
+    }
+
+    /**
+     * Verify that when we use a custom endpoint, the peer details are for that custom endpoint.
+     */
+    @Test
+    public void correctPeerDetailsCustomEndpoint() throws MalformedURLException {
+        // Arrange
+        final URL customEndpoint = new URL("https://myappservice.windows.net");
+        final String anotherFakeHostname = "hostname.fake";
+        final ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS,
+            new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, customEndpoint.getHost(), customEndpoint.getDefaultPort());
+
+        final Connection connection = mock(Connection.class);
+        when(connection.getRemoteState()).thenReturn(EndpointState.UNINITIALIZED);
+
+        final TransportImpl transport = mock(TransportImpl.class);
+
+        final Event event = mock(Event.class);
+        when(event.getTransport()).thenReturn(transport);
+        when(event.getConnection()).thenReturn(connection);
+        when(connection.getHostname()).thenReturn(anotherFakeHostname);
+
+        final ConnectionHandler connectionHandler = provider.createConnectionHandler(CONNECTION_ID, PRODUCT,
+            CLIENT_VERSION, connectionOptions);
+
+        // Act
+        connectionHandler.onConnectionBound(event);
+
+        // Assert
+        verify(transport).ssl(
+            any(SslDomain.class),
+            argThat(peerDetails -> customEndpoint.getHost().equals(peerDetails.getHostname())
+                && customEndpoint.getDefaultPort() == peerDetails.getPort()));
+    }
+
+    /**
+     * Verify that in the normal case, the peer details are for the AMQP message broker.
+     */
+    @EnumSource(AmqpTransportType.class)
+    @ParameterizedTest
+    public void correctPeerDetails(AmqpTransportType transportType) {
+        // Arrange
+        final String anotherFakeHostname = "hostname.fake";
+        final ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, transportType, new AmqpRetryOptions(),
+            ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME);
+
+        final Connection connection = mock(Connection.class);
+        when(connection.getRemoteState()).thenReturn(EndpointState.UNINITIALIZED);
+
+        final TransportImpl transport = mock(TransportImpl.class);
+
+        final Event event = mock(Event.class);
+        when(event.getTransport()).thenReturn(transport);
+        when(event.getConnection()).thenReturn(connection);
+        when(connection.getHostname()).thenReturn(anotherFakeHostname);
+
+        final ConnectionHandler connectionHandler = provider.createConnectionHandler(CONNECTION_ID, PRODUCT,
+            CLIENT_VERSION, connectionOptions);
+
+        // Act
+        connectionHandler.onConnectionBound(event);
+
+        // Assert
+        verify(transport).ssl(
+            any(SslDomain.class),
+            argThat(peerDetails -> {
+                if (!HOSTNAME.equals(peerDetails.getHostname())) {
+                    return false;
+                }
+
+                if (transportType == AmqpTransportType.AMQP) {
+                    return peerDetails.getPort() == ConnectionHandler.AMQPS_PORT;
+                } else {
+                    return peerDetails.getPort() == WebSocketsConnectionHandler.HTTPS_PORT;
+                }
+            }));
     }
 }
