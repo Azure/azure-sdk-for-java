@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * raised when a resource action operation succeeds.
  */
 @Fluent
-public final class ResourceActionSuccessData {
+public final class ResourceActionSuccessEventData {
     /*
      * The tenant ID of the resource.
      */
@@ -92,9 +92,9 @@ public final class ResourceActionSuccessData {
      * Set the tenantId property: The tenant ID of the resource.
      *
      * @param tenantId the tenantId value to set.
-     * @return the ResourceActionSuccessData object itself.
+     * @return the ResourceActionSuccessEventData object itself.
      */
-    public ResourceActionSuccessData setTenantId(String tenantId) {
+    public ResourceActionSuccessEventData setTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
     }
@@ -112,9 +112,9 @@ public final class ResourceActionSuccessData {
      * Set the subscriptionId property: The subscription ID of the resource.
      *
      * @param subscriptionId the subscriptionId value to set.
-     * @return the ResourceActionSuccessData object itself.
+     * @return the ResourceActionSuccessEventData object itself.
      */
-    public ResourceActionSuccessData setSubscriptionId(String subscriptionId) {
+    public ResourceActionSuccessEventData setSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -132,9 +132,9 @@ public final class ResourceActionSuccessData {
      * Set the resourceGroup property: The resource group of the resource.
      *
      * @param resourceGroup the resourceGroup value to set.
-     * @return the ResourceActionSuccessData object itself.
+     * @return the ResourceActionSuccessEventData object itself.
      */
-    public ResourceActionSuccessData setResourceGroup(String resourceGroup) {
+    public ResourceActionSuccessEventData setResourceGroup(String resourceGroup) {
         this.resourceGroup = resourceGroup;
         return this;
     }
@@ -152,9 +152,9 @@ public final class ResourceActionSuccessData {
      * Set the resourceProvider property: The resource provider performing the operation.
      *
      * @param resourceProvider the resourceProvider value to set.
-     * @return the ResourceActionSuccessData object itself.
+     * @return the ResourceActionSuccessEventData object itself.
      */
-    public ResourceActionSuccessData setResourceProvider(String resourceProvider) {
+    public ResourceActionSuccessEventData setResourceProvider(String resourceProvider) {
         this.resourceProvider = resourceProvider;
         return this;
     }
@@ -172,9 +172,9 @@ public final class ResourceActionSuccessData {
      * Set the resourceUri property: The URI of the resource in the operation.
      *
      * @param resourceUri the resourceUri value to set.
-     * @return the ResourceActionSuccessData object itself.
+     * @return the ResourceActionSuccessEventData object itself.
      */
-    public ResourceActionSuccessData setResourceUri(String resourceUri) {
+    public ResourceActionSuccessEventData setResourceUri(String resourceUri) {
         this.resourceUri = resourceUri;
         return this;
     }
@@ -192,9 +192,9 @@ public final class ResourceActionSuccessData {
      * Set the operationName property: The operation that was performed.
      *
      * @param operationName the operationName value to set.
-     * @return the ResourceActionSuccessData object itself.
+     * @return the ResourceActionSuccessEventData object itself.
      */
-    public ResourceActionSuccessData setOperationName(String operationName) {
+    public ResourceActionSuccessEventData setOperationName(String operationName) {
         this.operationName = operationName;
         return this;
     }
@@ -212,9 +212,9 @@ public final class ResourceActionSuccessData {
      * Set the status property: The status of the operation.
      *
      * @param status the status value to set.
-     * @return the ResourceActionSuccessData object itself.
+     * @return the ResourceActionSuccessEventData object itself.
      */
-    public ResourceActionSuccessData setStatus(String status) {
+    public ResourceActionSuccessEventData setStatus(String status) {
         this.status = status;
         return this;
     }
@@ -232,9 +232,9 @@ public final class ResourceActionSuccessData {
      * Set the authorization property: The requested authorization for the operation.
      *
      * @param authorization the authorization value to set.
-     * @return the ResourceActionSuccessData object itself.
+     * @return the ResourceActionSuccessEventData object itself.
      */
-    public ResourceActionSuccessData setAuthorization(String authorization) {
+    public ResourceActionSuccessEventData setAuthorization(String authorization) {
         this.authorization = authorization;
         return this;
     }
@@ -252,9 +252,9 @@ public final class ResourceActionSuccessData {
      * Set the claims property: The properties of the claims.
      *
      * @param claims the claims value to set.
-     * @return the ResourceActionSuccessData object itself.
+     * @return the ResourceActionSuccessEventData object itself.
      */
-    public ResourceActionSuccessData setClaims(String claims) {
+    public ResourceActionSuccessEventData setClaims(String claims) {
         this.claims = claims;
         return this;
     }
@@ -272,9 +272,9 @@ public final class ResourceActionSuccessData {
      * Set the correlationId property: An operation ID used for troubleshooting.
      *
      * @param correlationId the correlationId value to set.
-     * @return the ResourceActionSuccessData object itself.
+     * @return the ResourceActionSuccessEventData object itself.
      */
-    public ResourceActionSuccessData setCorrelationId(String correlationId) {
+    public ResourceActionSuccessEventData setCorrelationId(String correlationId) {
         this.correlationId = correlationId;
         return this;
     }
@@ -292,9 +292,9 @@ public final class ResourceActionSuccessData {
      * Set the httpRequest property: The details of the operation.
      *
      * @param httpRequest the httpRequest value to set.
-     * @return the ResourceActionSuccessData object itself.
+     * @return the ResourceActionSuccessEventData object itself.
      */
-    public ResourceActionSuccessData setHttpRequest(String httpRequest) {
+    public ResourceActionSuccessEventData setHttpRequest(String httpRequest) {
         this.httpRequest = httpRequest;
         return this;
     }

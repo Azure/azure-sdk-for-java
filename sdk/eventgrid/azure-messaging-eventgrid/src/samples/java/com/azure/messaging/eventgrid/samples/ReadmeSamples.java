@@ -52,14 +52,14 @@ public class ReadmeSamples {
             .buildEventGridEventPublisherAsyncClient();
     }
 
-    public void createPublisherClientWithSAS() {
+    public void createPublisherClientWithSas() {
         EventGridPublisherClient<CloudEvent> egClient = new EventGridPublisherClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureSasCredential(key))
             .buildCloudEventPublisherClient();
     }
 
-    public void createAsyncPublisherClientWithSAS() {
+    public void createAsyncPublisherClientWithSas() {
         EventGridPublisherAsyncClient<CloudEvent> egAsyncClient = new EventGridPublisherClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureSasCredential(key))
@@ -69,7 +69,7 @@ public class ReadmeSamples {
     public void sendEventGridEventsToTopic() {
         List<EventGridEvent> events = new ArrayList<>();
         User user = new User("John", "James");
-        events.add(new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", user, "1"));
+        events.add(new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", BinaryData.fromObject(user), "1"));
         egClient.sendEvents(events);
     }
 
@@ -88,8 +88,7 @@ public class ReadmeSamples {
                 SubscriptionValidationEventData validationData = event.getData()
                     .toObject(TypeReference.createInstance(SubscriptionValidationEventData.class));
                 System.out.println(validationData.getValidationCode());
-            }
-            else {
+            } else {
                 // we can turn the data into the correct type by calling BinaryData.toString(), BinaryData.toObject(),
                 // or BinaryData.toBytes(). This sample uses toString.
                 BinaryData binaryData = event.getData();
@@ -107,8 +106,7 @@ public class ReadmeSamples {
                 SubscriptionValidationEventData validationData = event.getData()
                     .toObject(TypeReference.createInstance(SubscriptionValidationEventData.class));
                 System.out.println(validationData.getValidationCode());
-            }
-            else {
+            } else {
                 // we can turn the data into the correct type by calling BinaryData.toString(), BinaryData.toObject(),
                 // or BinaryData.toBytes(). This sample uses toString.
                 BinaryData binaryData = event.getData();
@@ -129,7 +127,7 @@ public class ReadmeSamples {
         List<EventGridEvent> events = new ArrayList<>();
         User user = new User("John", "James");
         events.add(
-            new EventGridEvent("com/example", "Com.Example.ExampleEventType", user, "1")
+            new EventGridEvent("com/example", "Com.Example.ExampleEventType", BinaryData.fromObject(user), "1")
                 .setTopic("yourtopic"));
         egClient.sendEvents(events);
     }

@@ -8,11 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceDeleteFailure event. This is
- * raised when a resource delete operation fails.
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceActionFailure event. This is
+ * raised when a resource action operation fails.
  */
 @Fluent
-public final class ResourceDeleteFailureData {
+public final class ResourceActionFailureEventData {
     /*
      * The tenant ID of the resource.
      */
@@ -92,9 +92,9 @@ public final class ResourceDeleteFailureData {
      * Set the tenantId property: The tenant ID of the resource.
      *
      * @param tenantId the tenantId value to set.
-     * @return the ResourceDeleteFailureData object itself.
+     * @return the ResourceActionFailureEventData object itself.
      */
-    public ResourceDeleteFailureData setTenantId(String tenantId) {
+    public ResourceActionFailureEventData setTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
     }
@@ -112,9 +112,9 @@ public final class ResourceDeleteFailureData {
      * Set the subscriptionId property: The subscription ID of the resource.
      *
      * @param subscriptionId the subscriptionId value to set.
-     * @return the ResourceDeleteFailureData object itself.
+     * @return the ResourceActionFailureEventData object itself.
      */
-    public ResourceDeleteFailureData setSubscriptionId(String subscriptionId) {
+    public ResourceActionFailureEventData setSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -132,9 +132,9 @@ public final class ResourceDeleteFailureData {
      * Set the resourceGroup property: The resource group of the resource.
      *
      * @param resourceGroup the resourceGroup value to set.
-     * @return the ResourceDeleteFailureData object itself.
+     * @return the ResourceActionFailureEventData object itself.
      */
-    public ResourceDeleteFailureData setResourceGroup(String resourceGroup) {
+    public ResourceActionFailureEventData setResourceGroup(String resourceGroup) {
         this.resourceGroup = resourceGroup;
         return this;
     }
@@ -152,9 +152,9 @@ public final class ResourceDeleteFailureData {
      * Set the resourceProvider property: The resource provider performing the operation.
      *
      * @param resourceProvider the resourceProvider value to set.
-     * @return the ResourceDeleteFailureData object itself.
+     * @return the ResourceActionFailureEventData object itself.
      */
-    public ResourceDeleteFailureData setResourceProvider(String resourceProvider) {
+    public ResourceActionFailureEventData setResourceProvider(String resourceProvider) {
         this.resourceProvider = resourceProvider;
         return this;
     }
@@ -172,9 +172,9 @@ public final class ResourceDeleteFailureData {
      * Set the resourceUri property: The URI of the resource in the operation.
      *
      * @param resourceUri the resourceUri value to set.
-     * @return the ResourceDeleteFailureData object itself.
+     * @return the ResourceActionFailureEventData object itself.
      */
-    public ResourceDeleteFailureData setResourceUri(String resourceUri) {
+    public ResourceActionFailureEventData setResourceUri(String resourceUri) {
         this.resourceUri = resourceUri;
         return this;
     }
@@ -192,9 +192,9 @@ public final class ResourceDeleteFailureData {
      * Set the operationName property: The operation that was performed.
      *
      * @param operationName the operationName value to set.
-     * @return the ResourceDeleteFailureData object itself.
+     * @return the ResourceActionFailureEventData object itself.
      */
-    public ResourceDeleteFailureData setOperationName(String operationName) {
+    public ResourceActionFailureEventData setOperationName(String operationName) {
         this.operationName = operationName;
         return this;
     }
@@ -212,9 +212,9 @@ public final class ResourceDeleteFailureData {
      * Set the status property: The status of the operation.
      *
      * @param status the status value to set.
-     * @return the ResourceDeleteFailureData object itself.
+     * @return the ResourceActionFailureEventData object itself.
      */
-    public ResourceDeleteFailureData setStatus(String status) {
+    public ResourceActionFailureEventData setStatus(String status) {
         this.status = status;
         return this;
     }
@@ -232,9 +232,9 @@ public final class ResourceDeleteFailureData {
      * Set the authorization property: The requested authorization for the operation.
      *
      * @param authorization the authorization value to set.
-     * @return the ResourceDeleteFailureData object itself.
+     * @return the ResourceActionFailureEventData object itself.
      */
-    public ResourceDeleteFailureData setAuthorization(String authorization) {
+    public ResourceActionFailureEventData setAuthorization(String authorization) {
         this.authorization = authorization;
         return this;
     }
@@ -252,9 +252,9 @@ public final class ResourceDeleteFailureData {
      * Set the claims property: The properties of the claims.
      *
      * @param claims the claims value to set.
-     * @return the ResourceDeleteFailureData object itself.
+     * @return the ResourceActionFailureEventData object itself.
      */
-    public ResourceDeleteFailureData setClaims(String claims) {
+    public ResourceActionFailureEventData setClaims(String claims) {
         this.claims = claims;
         return this;
     }
@@ -272,9 +272,9 @@ public final class ResourceDeleteFailureData {
      * Set the correlationId property: An operation ID used for troubleshooting.
      *
      * @param correlationId the correlationId value to set.
-     * @return the ResourceDeleteFailureData object itself.
+     * @return the ResourceActionFailureEventData object itself.
      */
-    public ResourceDeleteFailureData setCorrelationId(String correlationId) {
+    public ResourceActionFailureEventData setCorrelationId(String correlationId) {
         this.correlationId = correlationId;
         return this;
     }
@@ -292,9 +292,9 @@ public final class ResourceDeleteFailureData {
      * Set the httpRequest property: The details of the operation.
      *
      * @param httpRequest the httpRequest value to set.
-     * @return the ResourceDeleteFailureData object itself.
+     * @return the ResourceActionFailureEventData object itself.
      */
-    public ResourceDeleteFailureData setHttpRequest(String httpRequest) {
+    public ResourceActionFailureEventData setHttpRequest(String httpRequest) {
         this.httpRequest = httpRequest;
         return this;
     }

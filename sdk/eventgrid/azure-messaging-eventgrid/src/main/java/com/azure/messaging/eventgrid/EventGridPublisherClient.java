@@ -24,7 +24,7 @@ import java.time.OffsetDateTime;
 @ServiceClient(builder = EventGridPublisherClientBuilder.class)
 public final class EventGridPublisherClient<T> {
 
-    EventGridPublisherAsyncClient<T> asyncClient;
+    private final EventGridPublisherAsyncClient<T> asyncClient;
     EventGridPublisherClient(EventGridPublisherAsyncClient<T> client) {
         this.asyncClient = client;
     }
@@ -34,7 +34,7 @@ public final class EventGridPublisherClient<T> {
      * service with the latest Event Grid service API defined in {@link EventGridServiceVersion#getLatest()}.
      * @param endpoint the endpoint of the Event Grid topic or domain.
      * @param expirationTime the time in which the signature should expire, no longer providing authentication.
-     * @param keyCredential  the access key obtained from the Event Grid topic or domain.
+     * @param keyCredential the access key obtained from the Event Grid topic or domain.
      *
      * @return the shared access signature string which can be used to construct an instance of
      * {@link AzureSasCredential}.
@@ -52,7 +52,7 @@ public final class EventGridPublisherClient<T> {
      * service.
      * @param endpoint the endpoint of the Event Grid topic or domain.
      * @param expirationTime the time in which the signature should expire, no longer providing authentication.
-     * @param keyCredential  the access key obtained from the Event Grid topic or domain.
+     * @param keyCredential the access key obtained from the Event Grid topic or domain.
      * @param apiVersion the EventGrid service api version defined in {@link EventGridServiceVersion}
      *
      * @return the shared access signature string which can be used to construct an instance of
