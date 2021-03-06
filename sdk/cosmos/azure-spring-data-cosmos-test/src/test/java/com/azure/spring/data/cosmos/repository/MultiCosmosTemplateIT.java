@@ -36,7 +36,7 @@ public class MultiCosmosTemplateIT {
         TestConstants.NEW_LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES, AGE);
 
     @ClassRule
-    public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
+    public static final ReactiveIntegrationTestCollectionManager primaryCollectionManager = new ReactiveIntegrationTestCollectionManager();
 
     @Autowired
     @Qualifier("secondaryReactiveCosmosTemplate")
@@ -47,23 +47,15 @@ public class MultiCosmosTemplateIT {
     @Autowired
     @Qualifier("reactiveCosmosTemplate")
     private ReactiveCosmosTemplate primaryReactiveCosmosTemplate;
-    private CosmosEntityInformation<Person, ?> personInfo;
-
-    @Before
-    public void setUp() throws ClassNotFoundException {
-        collectionManager.ensureContainersCreatedAndEmpty(primaryReactiveCosmosTemplate, Person.class);
-        personInfo = collectionManager.getEntityInformation(Person.class);
-    }
+    private CosmosEntityInformation<Person, String> personInfo = new CosmosEntityInformation<>(Person.class);
 
     @Test
     public void testPrimaryTemplate() {
-        primaryReactiveCosmosTemplate.createContainerIfNotExists(personInfo).block();
+        primaryCollectionManager.ensureContainersCreatedAndEmpty(primaryReactiveCosmosTemplate, Person.class);
         primaryReactiveCosmosTemplate.insert(PRIMARY_TEST_PERSON,
             new PartitionKey(personInfo.getPartitionKeyFieldValue(PRIMARY_TEST_PERSON))).block();
         final Mono<Person> findById = primaryReactiveCosmosTemplate.findById(PRIMARY_TEST_PERSON.getId(), Person.class);
         Assertions.assertThat(findById.block().getFirstName()).isEqualTo(TestConstants.FIRST_NAME);
-        primaryReactiveCosmosTemplate.deleteAll(Person.class.getSimpleName(), Person.class).block();
-        primaryReactiveCosmosTemplate.deleteContainer(personInfo.getContainerName());
     }
 
     @Test

@@ -81,7 +81,6 @@ public class ReactiveCosmosTemplatePartitionIT {
             final MappingCosmosConverter dbConverter = new MappingCosmosConverter(mappingContext,
                 null);
             cosmosTemplate = new ReactiveCosmosTemplate(dbFactory, cosmosConfig, dbConverter);
-            cosmosTemplate.createContainerIfNotExists(personInfo).block();
         }
         collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, PartitionPerson.class);
         cosmosTemplate.insert(TEST_PERSON).block();

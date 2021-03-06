@@ -40,8 +40,8 @@ public class ContainerLockIT {
     public void setup() {
         staticTemplate = template;
         CosmosEntityInformation entityInfo = new CosmosEntityInformation(Address.class);
-        AbstractIntegrationTestCollectionManager.registerContainerForCleanup(template, entityInfo.getContainerName());
         template.createContainerIfNotExists(entityInfo);
+        AbstractIntegrationTestCollectionManager.registerContainerForCleanup(template, entityInfo.getContainerName());
         lock = new ContainerLock(template, entityInfo.getContainerName(), SHORT_LEASE_DURATION);
         otherLock = new ContainerLock(reactiveTemplate, entityInfo.getContainerName(), SHORT_LEASE_DURATION);
     }
@@ -58,11 +58,6 @@ public class ContainerLockIT {
         } catch (Exception ex) {
             // ignore
         }
-    }
-
-    @AfterClass
-    public static void afterClassCleanup() {
-        staticTemplate.deleteContainer(new CosmosEntityInformation<>(Address.class).getContainerName());
     }
 
     @Test
