@@ -2,6 +2,7 @@
 
 ## 1.2.0-beta.1 (Unreleased)
 
+- Added `SystemData`.
 
 ## 1.1.1 (2021-02-05)
 

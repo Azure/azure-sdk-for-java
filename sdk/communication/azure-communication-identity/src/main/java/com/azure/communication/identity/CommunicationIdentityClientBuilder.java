@@ -48,6 +48,7 @@ public final class CommunicationIdentityClientBuilder {
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions = new HttpLogOptions();
     private HttpPipeline pipeline;
+    private RetryPolicy retryPolicy;
     private Configuration configuration;
     private ClientOptions clientOptions;
     private final Map<String, String> properties = CoreUtils.getProperties(COMMUNICATION_IDENTITY_PROPERTIES);
@@ -172,6 +173,20 @@ public final class CommunicationIdentityClientBuilder {
      */
     public CommunicationIdentityClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Sets the {@link RetryPolicy} that is used when each request is sent.
+     * <p>
+     * The default retry policy will be used in the pipeline, if not provided.
+     *
+     * @param retryPolicy User's retry policy applied to each request.
+     * @return The updated {@link CommunicationIdentityClientBuilder} object.
+     * @throws NullPointerException If the specified {@code retryPolicy} is null.
+     */
+    public CommunicationIdentityClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        this.retryPolicy = Objects.requireNonNull(retryPolicy, "The retry policy cannot be bull");
         return this;
     }
 

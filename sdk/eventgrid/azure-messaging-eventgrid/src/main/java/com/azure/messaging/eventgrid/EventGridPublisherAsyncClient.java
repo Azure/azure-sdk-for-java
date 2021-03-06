@@ -18,12 +18,12 @@ import com.azure.core.util.tracing.TracerProxy;
 import com.azure.messaging.eventgrid.implementation.Constants;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImpl;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImplBuilder;
+import com.fasterxml.jackson.databind.util.RawValue;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
@@ -33,8 +33,8 @@ import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -74,8 +74,6 @@ public final class EventGridPublisherAsyncClient<T> {
 
     private final EventGridPublisherClientImpl impl;
 
-    private final EventGridServiceVersion serviceVersion;
-
     private final ClientLogger logger = new ClientLogger(EventGridPublisherAsyncClient.class);
 
     private final ObjectSerializer eventDataSerializer;
@@ -86,7 +84,7 @@ public final class EventGridPublisherAsyncClient<T> {
     private static final String HMAC_SHA256 = "hmacSHA256";
     private static final String API_VERSION = "api-version";
 
-    private static final ClientLogger LOGGER = new ClientLogger(EventGridPublisherClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EventGridPublisherAsyncClient.class);
 
     EventGridPublisherAsyncClient(HttpPipeline pipeline, String hostname, EventGridServiceVersion serviceVersion,
         ObjectSerializer eventDataSerializer, Class<T> eventClass) {
@@ -94,11 +92,6 @@ public final class EventGridPublisherAsyncClient<T> {
             .pipeline(pipeline)
             .apiVersion(serviceVersion.getVersion())
             .buildClient();
-
-        // currently the service version is hardcoded into the Impl client, but once another service version gets
-        // released we should add this to the impl builder options
-        this.serviceVersion = serviceVersion;
-
         this.hostname = hostname;
         this.eventDataSerializer = eventDataSerializer;
         this.eventClass = eventClass;
@@ -109,7 +102,7 @@ public final class EventGridPublisherAsyncClient<T> {
      * service with the latest Event Grid service API defined in {@link EventGridServiceVersion#getLatest()}.
      * @param endpoint the endpoint of the Event Grid topic or domain.
      * @param expirationTime the time in which the signature should expire, no longer providing authentication.
-     * @param keyCredential  the access key obtained from the Event Grid topic or domain.
+     * @param keyCredential the access key obtained from the Event Grid topic or domain.
      *
      * @return the shared access signature string which can be used to construct an instance of
      * {@link AzureSasCredential}.
@@ -126,7 +119,7 @@ public final class EventGridPublisherAsyncClient<T> {
      * service.
      * @param endpoint the endpoint of the Event Grid topic or domain.
      * @param expirationTime the time in which the signature should expire, no longer providing authentication.
-     * @param keyCredential  the access key obtained from the Event Grid topic or domain.
+     * @param keyCredential the access key obtained from the Event Grid topic or domain.
      * @param apiVersion the EventGrid service api version defined in {@link EventGridServiceVersion}
      *
      * @return the shared access signature string which can be used to construct an instance of
@@ -189,7 +182,7 @@ public final class EventGridPublisherAsyncClient<T> {
 
     @SuppressWarnings("unchecked")
     Mono<Void> sendEvents(Iterable<T> events, Context context) {
-        if(this.eventClass == CloudEvent.class) {
+        if (this.eventClass == CloudEvent.class) {
             return this.sendCloudEvents((Iterable<CloudEvent>) events, context);
         } else if (this.eventClass == EventGridEvent.class) {
             return this.sendEventGridEvents((Iterable<EventGridEvent>) events, context);
@@ -201,18 +194,21 @@ public final class EventGridPublisherAsyncClient<T> {
     /**
      * Publishes the given events to the set topic or domain and gives the response issued by EventGrid.
      * @param events the events to publish.
-     * @param context the context to use along the pipeline.
      *
      * @return the response from the EventGrid service.
      * @throws NullPointerException if events is {@code null}.
      */
-    @SuppressWarnings("unchecked")
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendEventsWithResponse(Iterable<T> events, Context context) {
-        if(this.eventClass == CloudEvent.class) {
+    public Mono<Response<Void>> sendEventsWithResponse(Iterable<T> events) {
+        return withContext(context -> this.sendEventsWithResponse(events, context));
+    }
+
+    @SuppressWarnings("unchecked")
+    Mono<Response<Void>> sendEventsWithResponse(Iterable<T> events, Context context) {
+        if (this.eventClass == CloudEvent.class) {
             return this.sendCloudEventsWithResponse((Iterable<CloudEvent>) events, context);
         } else if (this.eventClass == EventGridEvent.class) {
-            return this.sendEventGridEventsWithResponse((Iterable<EventGridEvent>)events, context);
+            return this.sendEventGridEventsWithResponse((Iterable<EventGridEvent>) events, context);
         } else {
             return this.sendCustomEventsWithResponse((Iterable<Object>) events, context);
         }
@@ -227,7 +223,7 @@ public final class EventGridPublisherAsyncClient<T> {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendEvent(T event) {
-        List<T> events = Arrays.asList(event);
+        List<T> events = Collections.singletonList(event);
         return withContext(context -> sendEvents(events, context));
     }
 
@@ -237,15 +233,7 @@ public final class EventGridPublisherAsyncClient<T> {
         }
         final Context finalContext = context != null ? context : Context.NONE;
         return Flux.fromIterable(events)
-            .map(event -> {
-                com.azure.messaging.eventgrid.implementation.models.EventGridEvent internalEvent = event.toImpl();
-                if (this.eventDataSerializer != null && internalEvent.getData() != null) {
-                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    eventDataSerializer.serialize(bos, event.getData());
-                    internalEvent.setData(Base64.getEncoder().encode(bos.toByteArray()));
-                }
-                return internalEvent;
-            })
+            .map(EventGridEvent::toImpl)
             .collectList()
             .flatMap(list -> this.impl.publishEventsAsync(this.hostname, list,
                 finalContext.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
@@ -269,6 +257,12 @@ public final class EventGridPublisherAsyncClient<T> {
         }
         final Context finalContext = context != null ? context : Context.NONE;
         return Flux.fromIterable(events)
+            .map(event -> {
+                if (eventDataSerializer != null) {
+                    return new RawValue(new String(eventDataSerializer.serializeToBytes(event), StandardCharsets.UTF_8));
+                }
+                return event;
+            })
             .collectList()
             .flatMap(list -> this.impl.publishCustomEventEventsAsync(this.hostname, list,
                 finalContext.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
@@ -304,6 +298,12 @@ public final class EventGridPublisherAsyncClient<T> {
         }
         final Context finalContext = context != null ? context : Context.NONE;
         return Flux.fromIterable(events)
+            .map(event -> {
+                if (eventDataSerializer != null) {
+                    return new RawValue(new String(eventDataSerializer.serializeToBytes(event), StandardCharsets.UTF_8));
+                }
+                return event;
+            })
             .collectList()
             .flatMap(list -> this.impl.publishCustomEventEventsWithResponseAsync(this.hostname, list,
                 finalContext.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
@@ -312,9 +312,9 @@ public final class EventGridPublisherAsyncClient<T> {
     private void addCloudEventTracePlaceHolder(Iterable<CloudEvent> events) {
         if (TracerProxy.isTracingEnabled()) {
             for (CloudEvent event : events) {
-                if (event.getExtensionAttributes() == null ||
-                    (event.getExtensionAttributes().get(Constants.TRACE_PARENT) == null &&
-                    event.getExtensionAttributes().get(Constants.TRACE_STATE) == null)) {
+                if (event.getExtensionAttributes() == null
+                    || (event.getExtensionAttributes().get(Constants.TRACE_PARENT) == null
+                    && event.getExtensionAttributes().get(Constants.TRACE_STATE) == null)) {
 
                     event.addExtensionAttribute(Constants.TRACE_PARENT, Constants.TRACE_PARENT_PLACEHOLDER_UUID);
                     event.addExtensionAttribute(Constants.TRACE_STATE, Constants.TRACE_STATE_PLACEHOLDER_UUID);

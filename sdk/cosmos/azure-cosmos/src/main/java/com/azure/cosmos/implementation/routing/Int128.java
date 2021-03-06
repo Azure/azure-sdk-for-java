@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.routing;
 
-
 import java.math.BigInteger;
 
 public class Int128 {
@@ -11,16 +10,16 @@ public class Int128 {
     private final BigInteger value;
 
     private static final BigInteger MaxBigIntValue =
-            new BigInteger(new byte[] {
-                    (byte) 0x80, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
-                    (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00
-            });
+        new BigInteger(new byte[] {
+            (byte) 0x80, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+            (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00
+        });
 
     public static final Int128 MaxValue = new Int128(
-            new BigInteger(new byte[] {
-                    (byte) 0x7F, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,
-                    (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,
-            })
+        new BigInteger(new byte[] {
+            (byte) 0x7F, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,
+            (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,
+        })
     );
 
     private Int128(BigInteger value) {
@@ -71,11 +70,10 @@ public class Int128 {
         byte[] bytes = this.value.toByteArray();
         if (bytes.length < 16) {
             byte[] paddedBytes = new byte[16];
-            System.arraycopy(bytes, 0, paddedBytes, 0, bytes.length);
+            System.arraycopy(bytes, 0, paddedBytes, 16 - bytes.length, bytes.length);
             return paddedBytes;
         }
 
         return bytes;
     }
-
 }
