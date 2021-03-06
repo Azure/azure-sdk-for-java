@@ -774,11 +774,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 messagesPending.decrementAndGet();
             }).verifyComplete();
 
-
-        receiver.receiveDeferredMessage(received.get().getSequenceNumber())
+        // TODO(Hemant): Identify if this is valid scenario (https://github.com/Azure/azure-sdk-for-java/issues/19673)
+        /*receiver.receiveDeferredMessage(received.get().getSequenceNumber())
             .flatMap(m -> receiver.complete(m))
             .block(TIMEOUT);
         messagesPending.decrementAndGet();
+         */
     }
 
     /**
@@ -901,18 +902,16 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         setReceiver(entityType, TestUtils.USE_CASE_DEFAULT, true);
 
         StepVerifier.create(receiver.receiveMessages()
-            .take(1)
             .flatMap(message -> {
-                logger.info("SessionId: {}. LockToken: {}. LockedUntil: {}. Message received.",
-                    message.getSessionId(), message.getLockToken(), message.getLockedUntil());
-                receiver.complete(message).block(Duration.ofSeconds(15));
-                messagesPending.decrementAndGet();
-                return receiver.setSessionState(sessionState);
-            }))
-            .expectComplete()
-            .verify();
-
-        StepVerifier.create(receiver.getSessionState())
+                    logger.info("SessionId: {}. LockToken: {}. LockedUntil: {}. Message received.",
+                        message.getSessionId(), message.getLockToken(), message.getLockedUntil());
+                    assertMessageEquals(message, messageId, isSessionEnabled);
+                    messagesPending.decrementAndGet();
+                    return receiver.abandon(message)
+                        .then(receiver.setSessionState(sessionState))
+                        .then(receiver.getSessionState());
+                }
+            ).take(1))
             .assertNext(state -> {
                 logger.info("State received: {}", new String(state, UTF_8));
                 assertArrayEquals(sessionState, state);
