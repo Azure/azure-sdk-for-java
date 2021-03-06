@@ -4,15 +4,15 @@ package com.azure.spring.data.cosmos.repository;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.spring.data.cosmos.ReactiveIntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.assertj.core.api.Assertions;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +34,10 @@ public class MultiCosmosTemplateIT {
     private static final Person SECONDARY_TEST_PERSON = new Person(TestConstants.ID_2,
         TestConstants.NEW_FIRST_NAME,
         TestConstants.NEW_LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES, AGE);
-    private static CosmosEntityInformation<Person, String> personInfo;
-    private static boolean initialized;
+
+    @ClassRule
+    public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
+
     @Autowired
     @Qualifier("secondaryReactiveCosmosTemplate")
     private ReactiveCosmosTemplate secondaryReactiveCosmosTemplate;
@@ -45,21 +47,12 @@ public class MultiCosmosTemplateIT {
     @Autowired
     @Qualifier("reactiveCosmosTemplate")
     private ReactiveCosmosTemplate primaryReactiveCosmosTemplate;
+    private CosmosEntityInformation<Person, ?> personInfo;
 
     @Before
     public void setUp() throws ClassNotFoundException {
-        if (!initialized) {
-            personInfo = new CosmosEntityInformation<>(Person.class);
-            initialized = true;
-        }
-    }
-
-    @After
-    public void cleanup() {
-    }
-
-    @AfterClass
-    public static void afterClassCleanup() {
+        collectionManager.ensureContainersCreatedAndEmpty(primaryReactiveCosmosTemplate, Person.class);
+        personInfo = collectionManager.getEntityInformation(Person.class);
     }
 
     @Test

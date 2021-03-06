@@ -3,7 +3,7 @@
 package com.azure.spring.data.cosmos.repository.integration;
 
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.spring.data.cosmos.SynchronousIntegrationTestCollectionManager;
+import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.common.TestUtils;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
@@ -39,7 +39,7 @@ import static org.assertj.core.api.Assertions.fail;
 public class AddressRepositoryIT {
 
     @ClassRule
-    public static final SynchronousIntegrationTestCollectionManager collectionManager = new SynchronousIntegrationTestCollectionManager();
+    public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
     AddressRepository repository;

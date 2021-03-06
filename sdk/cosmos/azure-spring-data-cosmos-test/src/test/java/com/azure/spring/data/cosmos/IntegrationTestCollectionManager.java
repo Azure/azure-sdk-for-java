@@ -8,7 +8,7 @@ import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 
 import java.time.Duration;
 
-public class SynchronousIntegrationTestCollectionManager extends AbstractIntegrationTestCollectionManager<CosmosTemplate> {
+public class IntegrationTestCollectionManager extends AbstractIntegrationTestCollectionManager<CosmosTemplate> {
 
     @Override
     public ContainerLock createLock(CosmosEntityInformation entityInfo, Duration leaseDuration) {
