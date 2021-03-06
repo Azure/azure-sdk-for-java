@@ -29,9 +29,9 @@ import reactor.core.publisher.Flux;
 public class DataLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(DataLoader.class);
 
-    private static final int MAX_BATCH_SIZE = 20000;
-    private static final int BULK_OPERATION_CONCURRENCY = 5;
-    private static final Duration BULK_LOAD_WAIT_DURATION = Duration.ofSeconds(120);
+    private static final int MAX_BATCH_SIZE = 10000;
+    private static final int BULK_OPERATION_CONCURRENCY = 10;
+    private static final Duration VALIDATE_DATA_WAIT_DURATION = Duration.ofSeconds(120);
     private static final String COUNT_ALL_QUERY = "SELECT COUNT(1) FROM c";
     private static final String COUNT_ALL_QUERY_RESULT_FIELD = "$1";
 
@@ -48,11 +48,13 @@ public class DataLoader {
         _client = Preconditions.checkNotNull(client,
             "The CosmosAsyncClient needed for data loading can not be null");
         _dataGenerator = new DataGenerationIterator(entityConfiguration.dataGenerator(),
-            _configuration.getNumberOfPreCreatedDocuments());
+            _configuration.getNumberOfPreCreatedDocuments(),
+            _configuration.getBulkloadBatchSize());
     }
 
     public void loadData() {
-        LOGGER.info("Starting batched data loading, loading {} documents in each iteration", DataGenerationIterator.BATCH_SIZE);
+        LOGGER.info("Starting batched data loading, loading {} documents in each iteration",
+            _configuration.getBulkloadBatchSize());
         while (_dataGenerator.hasNext()) {
             final Map<Key, ObjectNode> newDocuments = _dataGenerator.next();
             bulkCreateItems(newDocuments);
@@ -71,11 +73,14 @@ public class DataLoader {
             database.getId(),
             containerName);
 
+        // We want to wait longer depending on the number of documents in each iteration
+        final Duration blockingWaitTime = Duration.ofSeconds(120 *
+            (((_configuration.getBulkloadBatchSize() - 1) / 200000) + 1));
         final BulkProcessingOptions<Object> bulkProcessingOptions = new BulkProcessingOptions<>(Object.class);
         bulkProcessingOptions.setMaxMicroBatchSize(MAX_BATCH_SIZE)
             .setMaxMicroBatchConcurrency(BULK_OPERATION_CONCURRENCY);
         container.processBulkOperations(Flux.fromIterable(cosmosItemOperations), bulkProcessingOptions)
-            .blockLast(BULK_LOAD_WAIT_DURATION);
+            .blockLast(blockingWaitTime);
 
         LOGGER.info("Completed loading {} documents into [{}:{}]", cosmosItemOperations.size(),
             database.getId(),
@@ -93,7 +98,7 @@ public class DataLoader {
             .queryItems(COUNT_ALL_QUERY, ObjectNode.class)
             .byPage()
             .collectList()
-            .block(BULK_LOAD_WAIT_DURATION);
+            .block(VALIDATE_DATA_WAIT_DURATION);
         final int resultCount = Optional.ofNullable(queryItemsResponseList)
             .map(responseList -> responseList.get(0))
             .map(FeedResponse::getResults)

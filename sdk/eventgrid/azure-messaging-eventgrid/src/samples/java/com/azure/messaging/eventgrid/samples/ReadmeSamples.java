@@ -16,12 +16,16 @@ import com.azure.messaging.eventgrid.EventGridPublisherClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClientBuilder;
 import com.azure.messaging.eventgrid.SystemEventNames;
 import com.azure.messaging.eventgrid.samples.models.User;
+import com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueModifiedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobCreatedEventData;
-import com.azure.messaging.eventgrid.systemevents.SubscriptionValidationEventData;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
@@ -30,112 +34,159 @@ import java.util.List;
  * <p>
  * Code samples for the README.md
  */
+
 public class ReadmeSamples {
-
-    private final String endpoint = "endpoint";
-    private final String key = "key";
-    private final EventGridPublisherClient<EventGridEvent> egClient = new EventGridPublisherClientBuilder().buildEventGridEventPublisherClient();
-    private final EventGridPublisherClient<CloudEvent> cloudClient = new EventGridPublisherClientBuilder().buildCloudEventPublisherClient();
+    private final EventGridPublisherClient<EventGridEvent> eventGridEventClient = new EventGridPublisherClientBuilder()
+        .buildEventGridEventPublisherClient();
+    private final EventGridPublisherClient<CloudEvent> cloudEventClient = new EventGridPublisherClientBuilder()
+        .buildCloudEventPublisherClient();
+    private final EventGridPublisherClient<Object> customEventClient = new EventGridPublisherClientBuilder()
+        .buildCustomEventPublisherClient();
     private final String jsonData = "Json encoded event";
-
-    public void createPublisherClient() {
-        EventGridPublisherClient<EventGridEvent> egClient = new EventGridPublisherClientBuilder()
-            .endpoint(endpoint)
-            .credential(new AzureKeyCredential(key))
-            .buildEventGridEventPublisherClient();
-    }
-
-    public void createAsyncPublisherClient() {
-        EventGridPublisherAsyncClient<EventGridEvent> egAsyncClient = new EventGridPublisherClientBuilder()
-            .endpoint(endpoint)
-            .credential(new AzureKeyCredential(key))
-            .buildEventGridEventPublisherAsyncClient();
-    }
-
-    public void createPublisherClientWithSAS() {
-        EventGridPublisherClient<CloudEvent> egClient = new EventGridPublisherClientBuilder()
-            .endpoint(endpoint)
-            .credential(new AzureSasCredential(key))
-            .buildCloudEventPublisherClient();
-    }
-
-    public void createAsyncPublisherClientWithSAS() {
-        EventGridPublisherAsyncClient<CloudEvent> egAsyncClient = new EventGridPublisherClientBuilder()
-            .endpoint(endpoint)
-            .credential(new AzureSasCredential(key))
-            .buildCloudEventPublisherAsyncClient();
-    }
-
-    public void sendEventGridEventsToTopic() {
-        List<EventGridEvent> events = new ArrayList<>();
-        User user = new User("John", "James");
-        events.add(new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", user, "1"));
-        egClient.sendEvents(events);
-    }
-
-    public void sendCloudEventsToTopic() {
-        List<CloudEvent> events = new ArrayList<>();
-        User user = new User("John", "James");
-        events.add(new CloudEvent("https://source.example.com", "Com.Example.ExampleEventType",
-            BinaryData.fromObject(user), CloudEventDataFormat.JSON, "application/json"));
-        cloudClient.sendEvents(events);
-    }
-
-    public void deserializeEventGridEvent() {
-        List<EventGridEvent> events = EventGridEvent.fromString(jsonData);
-        for (EventGridEvent event : events) {
-            if (event.getEventType().equals(SystemEventNames.EVENT_GRID_SUBSCRIPTION_VALIDATION)) {
-                SubscriptionValidationEventData validationData = event.getData()
-                    .toObject(TypeReference.createInstance(SubscriptionValidationEventData.class));
-                System.out.println(validationData.getValidationCode());
-            }
-            else {
-                // we can turn the data into the correct type by calling BinaryData.toString(), BinaryData.toObject(),
-                // or BinaryData.toBytes(). This sample uses toString.
-                BinaryData binaryData = event.getData();
-                if (binaryData != null) {
-                    System.out.println(binaryData.toString());
-                }
-            }
-        }
-    }
-
-    public void deserializeCloudEvent() {
-        List<CloudEvent> events = CloudEvent.fromString(jsonData);
-        for (CloudEvent event : events) {
-            if (event.getType().equals(SystemEventNames.EVENT_GRID_SUBSCRIPTION_VALIDATION)) {
-                SubscriptionValidationEventData validationData = event.getData()
-                    .toObject(TypeReference.createInstance(SubscriptionValidationEventData.class));
-                System.out.println(validationData.getValidationCode());
-            }
-            else {
-                // we can turn the data into the correct type by calling BinaryData.toString(), BinaryData.toObject(),
-                // or BinaryData.toBytes(). This sample uses toString.
-                BinaryData binaryData = event.getData();
-                if (binaryData != null) {
-                    System.out.println(binaryData.toString()); // "Example Data"
-                }
-            }
-        }
-    }
 
     public void createSharedAccessSignature() {
         OffsetDateTime expiration = OffsetDateTime.now().plusMinutes(20);
         String sasToken = EventGridPublisherClient
-            .generateSas(endpoint, new AzureKeyCredential(key), expiration);
+            .generateSas("<your event grid endpoint>", new AzureKeyCredential("<key for the endpoint>"), expiration);
+    }
+
+    public void createCloudEventPublisherClient() {
+        // For CloudEvent
+        EventGridPublisherClient<CloudEvent> cloudEventClient = new EventGridPublisherClientBuilder()
+            .endpoint("<endpont of your event grid topic/domain that accepts CloudEvent schema>")
+            .credential(new AzureKeyCredential("<key for the endpoint>"))
+            .buildCloudEventPublisherClient();
+    }
+
+    public void createEventGridEventPublisherClient() {
+        // For EventGridEvent
+        EventGridPublisherClient<EventGridEvent> eventGridEventClient = new EventGridPublisherClientBuilder()
+            .endpoint("<endpont of your event grid topic/domain that accepts EventGridEvent schema>")
+            .credential(new AzureKeyCredential("<key for the endpoint>"))
+            .buildEventGridEventPublisherClient();
+    }
+
+    public void createCustomEventPublisherClient() {
+        // For custom event
+        EventGridPublisherClient<Object> customEventClient = new EventGridPublisherClientBuilder()
+            .endpoint("<endpont of your event grid topic/domain that accepts custom event schema>")
+            .credential(new AzureKeyCredential("<key for the endpoint>"))
+            .buildCustomEventPublisherClient();
+    }
+
+    public void createCloudEventPublisherAsyncClient() {
+        // For CloudEvent
+        EventGridPublisherAsyncClient<CloudEvent> cloudEventAsyncClient = new EventGridPublisherClientBuilder()
+            .endpoint("<endpont of your event grid topic/domain that accepts CloudEvent schema>")
+            .credential(new AzureKeyCredential("<key for the endpoint>"))
+            .buildCloudEventPublisherAsyncClient();
+    }
+
+    public void createEventGridEventPublisherAsyncClient() {
+        // For EventGridEvent
+        EventGridPublisherAsyncClient<EventGridEvent> eventGridEventAsyncClient = new EventGridPublisherClientBuilder()
+            .endpoint("<endpont of your event grid topic/domain that accepts EventGridEvent schema>")
+            .credential(new AzureKeyCredential("<key for the endpoint>"))
+            .buildEventGridEventPublisherAsyncClient();
+    }
+
+    public void createCustomEventPublisherAsyncClient() {
+        // For custom event
+        EventGridPublisherClient<Object> customEventAsyncClient = new EventGridPublisherClientBuilder()
+            .endpoint("<endpont of your event grid topic/domain that accepts custom event schema>")
+            .credential(new AzureKeyCredential("<key for the endpoint>"))
+            .buildCustomEventPublisherClient();
+    }
+
+    public void createPublisherClientWithSas() {
+        EventGridPublisherClient<CloudEvent> eventGridEventClient = new EventGridPublisherClientBuilder()
+            .endpoint("<endpont of your event grid topic/domain that accepts CloudEvent schema>")
+            .credential(new AzureSasCredential("<sas token that can access the endpoint>"))
+            .buildCloudEventPublisherClient();
+    }
+
+    public void createPublisherClientWithSasAsync() {
+        EventGridPublisherAsyncClient<CloudEvent> cloudEventAsyncClient = new EventGridPublisherClientBuilder()
+            .endpoint("<endpont of your event grid topic/domain that accepts CloudEvent schema>")
+            .credential(new AzureSasCredential("<sas token that can access the endpoint>"))
+            .buildCloudEventPublisherAsyncClient();
+    }
+
+    public void sendCloudEventsToTopic() {
+        // Make sure that the event grid topic or domain you're sending to accepts CloudEvent schema.
+        List<CloudEvent> events = new ArrayList<>();
+        User user = new User("John", "James");
+        events.add(new CloudEvent("https://source.example.com", "Com.Example.ExampleEventType",
+            BinaryData.fromObject(user), CloudEventDataFormat.JSON, "application/json"));
+        cloudEventClient.sendEvents(events);
+    }
+
+    public void sendEventGridEventsToTopic() {
+        // Make sure that the event grid topic or domain you're sending to accepts EventGridEvent schema.
+        List<EventGridEvent> events = new ArrayList<>();
+        User user = new User("John", "James");
+        events.add(new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", BinaryData.fromObject(user), "0.1"));
+        eventGridEventClient.sendEvents(events);
     }
 
     public void sendEventGridEventsToDomain() {
         List<EventGridEvent> events = new ArrayList<>();
         User user = new User("John", "James");
-        events.add(
-            new EventGridEvent("com/example", "Com.Example.ExampleEventType", user, "1")
-                .setTopic("yourtopic"));
-        egClient.sendEvents(events);
+        events.add(new EventGridEvent("com/example", "Com.Example.ExampleEventType", BinaryData.fromObject(user), "1")
+            .setTopic("yourtopic"));
+        eventGridEventClient.sendEvents(events);
     }
 
+    public void sendCustomEventsToTopic() {
+        // Make sure that the event grid topic or domain you're sending to accepts the custom event schema.
+        List<Object> events = new ArrayList<>();
+        events.add(new HashMap<String, String>() {
+            {
+                put("id", UUID.randomUUID().toString());
+                put("time", OffsetDateTime.now().toString());
+                put("subject", "Test");
+                put("foo", "bar");
+                put("type", "Microsoft.MockPublisher.TestEvent");
+                put("data", "example data");
+                put("dataVersion", "0.1");
+            }
+        });
+        customEventClient.sendEvents(events);
+    }
+
+    public void deserializeEvents() {
+        // Deserialize an EventGridEvent
+        String eventGridEventJsonData = "<your EventGridEvent json String>";
+        List<EventGridEvent> eventGridEvents = EventGridEvent.fromString(eventGridEventJsonData);
+
+        // Deserialize a CloudEvent
+        String cloudEventJsonData = "<your CloudEvent json String>";
+        List<CloudEvent> cloudEvents = CloudEvent.fromString(cloudEventJsonData);
+    }
+
+    public void deserializeEventData(EventGridEvent eventGridEvent) {
+        BinaryData eventData = eventGridEvent.getData();
+
+        //Deserialize data to a model class
+        User dataInModelClass = eventData.toObject(User.class);
+
+        //Deserialize data to a Map
+        Map<String, Object> dataMap = eventData.toObject(new TypeReference<Map<String, Object>>() {
+        });
+
+        //Deserialize Json String to a String
+        String dataString = eventData.toObject(String.class);
+
+        //Deserialize String data to a String
+        String dataInJsonString = eventData.toString();
+
+        //Deserialize data to byte array (byte[])
+        byte[] dataInBytes = eventData.toBytes();
+    }
+
+
     public void systemEventDataSampleCode() {
-        String eventGridEventJsonData = "Your event grid event Json data";
+        String eventGridEventJsonData = "<Your event grid event Json data>";
         List<EventGridEvent> events = EventGridEvent.fromString(eventGridEventJsonData);
         EventGridEvent event = events.get(0);
 
@@ -145,8 +196,32 @@ public class ReadmeSamples {
         // Deserialize the event data to an instance of a specific System Event data class type
         BinaryData data = event.getData();
         if (data != null) {
-            StorageBlobCreatedEventData blobCreatedData = data.toObject(TypeReference.createInstance(StorageBlobCreatedEventData.class));
+            StorageBlobCreatedEventData blobCreatedData = data.toObject(StorageBlobCreatedEventData.class);
             System.out.println(blobCreatedData.getUrl());
+        }
+    }
+
+    public void systemEventDifferentEventData() {
+        List<EventGridEvent> eventGridEvents = EventGridEvent.fromString("<Your EventGridEvent Json String>");
+        for (EventGridEvent eventGridEvent : eventGridEvents) {
+            BinaryData binaryData = eventGridEvent.getData();
+            switch (eventGridEvent.getEventType()) {
+                case SystemEventNames.APP_CONFIGURATION_KEY_VALUE_DELETED:
+                    AppConfigurationKeyValueDeletedEventData keyValueDeletedEventData =
+                        binaryData.toObject(TypeReference.createInstance(AppConfigurationKeyValueDeletedEventData.class));
+                    System.out.println("Processing the AppConfigurationKeyValueDeletedEventData...");
+                    System.out.printf("The key is: %s%n", keyValueDeletedEventData.getKey());
+                    break;
+                case SystemEventNames.APP_CONFIGURATION_KEY_VALUE_MODIFIED:
+                    AppConfigurationKeyValueModifiedEventData keyValueModifiedEventData =
+                        binaryData.toObject(TypeReference.createInstance(AppConfigurationKeyValueModifiedEventData.class));
+                    System.out.println("Processing the AppConfigurationKeyValueModifiedEventData...");
+                    System.out.printf("The key is: %s%n", keyValueModifiedEventData.getKey());
+                    break;
+                default:
+                    System.out.printf("%s isn't an AppConfiguration event data%n", eventGridEvent.getEventType());
+                    break;
+            }
         }
     }
 }
