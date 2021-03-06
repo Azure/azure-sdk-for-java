@@ -18,6 +18,25 @@ import java.time.OffsetDateTime;
  * A service client that publishes events to an EventGrid topic or domain. Use {@link EventGridPublisherClientBuilder}
  * to create an instance of this client. Note that this is simply a synchronous convenience layer over the
  * {@link EventGridPublisherAsyncClient}, which has more efficient asynchronous functionality and is recommended.
+ *
+ * <p><strong>Create EventGridPublisherClient for CloudEvent Samples</strong></p>
+ * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherClient#CreateCloudEventClient}
+ *
+ * <p><strong>Send CloudEvent Samples</strong></p>
+ * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherClient#SendCloudEvent}
+ *
+ * <p><strong>Create EventGridPublisherClient for EventGridEvent Samples</strong></p>
+ * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherClient#CreateEventGridEventClient}
+ *
+ * <p><strong>Send EventGridEvent Samples</strong></p>
+ * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherClient#SendEventGridEvent}
+ *
+ * <p><strong>Create EventGridPublisherClient for Custom Event Schema Samples</strong></p>
+ * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherClient#CreateCustomEventClient}
+ *
+ * <p><strong>Send Custom Event Schema Samples</strong></p>
+ * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherClient#SendCustomEvent}
+ *
  * @see EventGridEvent
  * @see CloudEvent
  */
