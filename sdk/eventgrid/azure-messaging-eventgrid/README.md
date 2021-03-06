@@ -158,10 +158,9 @@ a SAS (**Shared Access Signature**) for them so they can create an `EventGridPub
 to create the publisher client.
 
 Here is sample code to create a shared access signature that expires after 20 minutes:
-<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/samples/ReadmeSamples.java#L48-L51 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/samples/ReadmeSamples.java#L48-L50 -->
 ```java
 OffsetDateTime expiration = OffsetDateTime.now().plusMinutes(20);
-    
 String sasToken = EventGridPublisherClient
     .generateSas("<your event grid endpoint>", new AzureKeyCredential("<your event grid access key>"), expiration);
 ```
@@ -345,6 +344,7 @@ following after you deserialize an event by using `EventGridEvent.fromString()` 
 - look up the system event data model class that the System Event data can be deserialized to;
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/samples/ReadmeSamples.java#L193-L194 -->
 ```java
+    // Look up the System Event data class
     Class<?> eventDataClazz = SystemEventNames.getSystemEventMappings().get(event.getEventType());
 ```
 - deserialize a system event's data to a model class instance like deserializing any other event data;

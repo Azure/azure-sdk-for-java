@@ -137,14 +137,16 @@ public class EventGridEventJavaDocCodeSnippet {
         // BEGIN: com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#SendCustomEvent
         // Create an custom event object
         User user = new User("John", "James");
-        Map<String, Object> customEvent = new HashMap<String, Object>() {{
-            put("id", UUID.randomUUID().toString());
-            put("subject", "Test");
-            put("foo", "bar");
-            put("type", "Microsoft.MockPublisher.TestEvent");
-            put("data", 100.0);
-            put("dataVersion", "0.1");
-        }};
+        Map<String, Object> customEvent = new HashMap<String, Object>() {
+            {
+                put("id", UUID.randomUUID().toString());
+                put("subject", "Test");
+                put("foo", "bar");
+                put("type", "Microsoft.MockPublisher.TestEvent");
+                put("data", 100.0);
+                put("dataVersion", "0.1");
+            }
+        };
 
         // Send a single EventGridEvent
         customEventPublisherClient.sendEvent(customEvent).block();
@@ -152,7 +154,7 @@ public class EventGridEventJavaDocCodeSnippet {
         // Send a list of EventGridEvents to the EventGrid service altogether.
         // This has better performance than sending one by one.
 
-        customEventPublisherClient.sendEvents(new ArrayList<>() {
+        customEventPublisherClient.sendEvents(new ArrayList<Object>() {
             {
                 add(customEvent);
                 // add more custom events
@@ -231,14 +233,16 @@ public class EventGridEventJavaDocCodeSnippet {
         // BEGIN: com.azure.messaging.eventgrid.EventGridPublisherClient#SendCustomEvent
         // Create an custom event object
         User user = new User("John", "James");
-        Map<String, Object> customEvent = new HashMap<String, Object>() {{
-            put("id", UUID.randomUUID().toString());
-            put("subject", "Test");
-            put("foo", "bar");
-            put("type", "Microsoft.MockPublisher.TestEvent");
-            put("data", 100.0);
-            put("dataVersion", "0.1");
-        }};
+        Map<String, Object> customEvent = new HashMap<String, Object>() {
+            {
+                put("id", UUID.randomUUID().toString());
+                put("subject", "Test");
+                put("foo", "bar");
+                put("type", "Microsoft.MockPublisher.TestEvent");
+                put("data", 100.0);
+                put("dataVersion", "0.1");
+            }
+        };
 
         // Send a single EventGridEvent
         customEventPublisherClient.sendEvent(customEvent);
@@ -246,7 +250,7 @@ public class EventGridEventJavaDocCodeSnippet {
         // Send a list of EventGridEvents to the EventGrid service altogether.
         // This has better performance than sending one by one.
 
-        customEventPublisherClient.sendEvents(new ArrayList<>() {
+        customEventPublisherClient.sendEvents(new ArrayList<Object>() {
             {
                 add(customEvent);
                 // add more custom events

@@ -34,6 +34,7 @@ import java.util.UUID;
  * <p>
  * Code samples for the README.md
  */
+
 public class ReadmeSamples {
     private final EventGridPublisherClient<EventGridEvent> eventGridEventClient = new EventGridPublisherClientBuilder()
         .buildEventGridEventPublisherClient();
@@ -98,7 +99,7 @@ public class ReadmeSamples {
     }
 
     public void createPublisherClientWithSas() {
-        EventGridPublisherClient<CloudEvent> cloudGridEventClient = new EventGridPublisherClientBuilder()
+        EventGridPublisherClient<CloudEvent> eventGridEventClient = new EventGridPublisherClientBuilder()
             .endpoint("<endpont of your event grid topic/domain that accepts CloudEvent schema>")
             .credential(new AzureSasCredential("<sas token that can access the endpoint>"))
             .buildCloudEventPublisherClient();
