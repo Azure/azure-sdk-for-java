@@ -4,6 +4,8 @@ package com.azure.spring.data.cosmos;
 
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
+import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
+import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
@@ -13,23 +15,38 @@ import java.time.OffsetDateTime;
 
 public class ContainerLock {
 
+    private static CosmosEntityInformation<LockEntry, String> lockEntityInfo;
+
     private LockStore lockStore;
     private Duration leaseDuration;
+    private String lockName;
     private LockEntry acquiredLock;
 
-    public ContainerLock(CosmosTemplate template, String containerName, Duration leaseDuration) {
-        this.lockStore = new NonReactiveLockStore(template, containerName);
+    public ContainerLock(CosmosTemplate template, String lockName, Duration leaseDuration) {
+        this.lockStore = new NonReactiveLockStore(template);
+        this.lockName = lockName;
         this.leaseDuration = leaseDuration;
+        initLockContainer(lockStore);
     }
 
-    public ContainerLock(ReactiveCosmosTemplate reactiveTemplate, String containerName, Duration leaseDuration) {
-        this.lockStore = new ReactiveLockStore(reactiveTemplate, containerName);
+    public ContainerLock(ReactiveCosmosTemplate reactiveTemplate, String lockName, Duration leaseDuration) {
+        this.lockStore = new ReactiveLockStore(reactiveTemplate);
+        this.lockName = lockName;
         this.leaseDuration = leaseDuration;
+        initLockContainer(lockStore);
+    }
+
+    private static synchronized void initLockContainer(LockStore lockStore) {
+        if (lockEntityInfo == null) {
+            CosmosEntityInformation<LockEntry, String> info = new CosmosEntityInformation<>(LockEntry.class);
+            lockStore.createContainerIfNotExists(info);
+            lockEntityInfo = info;
+        }
     }
 
     public void acquire(Duration tryForDuration) {
         long started = System.currentTimeMillis();
-        LockEntry entry = new LockEntry(OffsetDateTime.now().plus(leaseDuration));
+        LockEntry entry = new LockEntry(lockName, OffsetDateTime.now().plus(leaseDuration));
         while (acquiredLock == null) {
             try {
                 acquiredLock = lockStore.insertLock(entry);
@@ -58,7 +75,7 @@ public class ContainerLock {
     }
 
     private void releaseIfLeaseExpired() {
-        LockEntry entry = lockStore.findActiveLock();
+        LockEntry entry = lockStore.findActiveLock(lockName);
         if (entry != null && entry.isLeaseExpired()) {
             acquiredLock = entry;
             release();
@@ -88,78 +105,84 @@ public class ContainerLock {
 
     private interface LockStore {
         LockEntry insertLock(LockEntry entry);
-        LockEntry findActiveLock();
+        LockEntry findActiveLock(String id);
         LockEntry refreshLock(LockEntry entry);
         void deleteLock(LockEntry entry);
+        void createContainerIfNotExists(CosmosEntityInformation entityInfo);
     }
 
     private static class NonReactiveLockStore implements LockStore {
 
         private final CosmosTemplate template;
-        private final String containerName;
 
-        public NonReactiveLockStore(CosmosTemplate template, String containerName) {
+        public NonReactiveLockStore(CosmosTemplate template) {
             this.template = template;
-            this.containerName = containerName;
         }
 
         @Override
         public LockEntry insertLock(LockEntry entry) {
-            return template.insert(containerName, entry);
+            return template.insert(lockEntityInfo.getContainerName(), entry);
         }
 
         @Override
-        public LockEntry findActiveLock() {
-            return template.findById(containerName, LockEntry.ID, LockEntry.class);
+        public LockEntry findActiveLock(String id) {
+            return template.findById(lockEntityInfo.getContainerName(), id, LockEntry.class);
         }
 
         @Override
         public LockEntry refreshLock(LockEntry entry) {
-            return template.upsertAndReturnEntity(containerName, entry);
+            return template.upsertAndReturnEntity(lockEntityInfo.getContainerName(), entry);
         }
 
         @Override
         public void deleteLock(LockEntry entry) {
-            template.deleteEntity(containerName, entry);
+            template.deleteEntity(lockEntityInfo.getContainerName(), entry);
+        }
+
+        @Override
+        public void createContainerIfNotExists(CosmosEntityInformation entityInfo) {
+            template.createContainerIfNotExists(entityInfo);
         }
     }
 
     private static class ReactiveLockStore implements LockStore {
 
         private final ReactiveCosmosTemplate template;
-        private final String containerName;
 
-        public ReactiveLockStore(ReactiveCosmosTemplate template, String containerName) {
+        public ReactiveLockStore(ReactiveCosmosTemplate template) {
             this.template = template;
-            this.containerName = containerName;
         }
 
         @Override
         public LockEntry insertLock(LockEntry entry) {
-            return template.insert(containerName, entry).block();
+            return template.insert(lockEntityInfo.getContainerName(), entry).block();
         }
 
         @Override
-        public LockEntry findActiveLock() {
-            return template.findById(containerName, LockEntry.ID, LockEntry.class).block();
+        public LockEntry findActiveLock(String id) {
+            return template.findById(lockEntityInfo.getContainerName(), id, LockEntry.class).block();
         }
 
         @Override
         public LockEntry refreshLock(LockEntry entry) {
-            return template.upsert(containerName, entry).block();
+            return template.upsert(lockEntityInfo.getContainerName(), entry).block();
         }
 
         @Override
         public void deleteLock(LockEntry entry) {
-            template.deleteEntity(containerName, entry).block();
+            template.deleteEntity(lockEntityInfo.getContainerName(), entry).block();
+        }
+
+        @Override
+        public void createContainerIfNotExists(CosmosEntityInformation entityInfo) {
+            template.createContainerIfNotExists(entityInfo).block();
         }
     }
 
     static class LockEntry {
-        static final String ID = "lock";
-
         @Id
-        public String id = ID;
+        @PartitionKey
+        public String id;
         @Version
         public String version;
         public OffsetDateTime leaseExpiration;
@@ -167,7 +190,8 @@ public class ContainerLock {
         public LockEntry() {
         }
 
-        public LockEntry(OffsetDateTime leaseExpiration) {
+        public LockEntry(String id, OffsetDateTime leaseExpiration) {
+            this.id = id;
             this.leaseExpiration = leaseExpiration;
         }
 

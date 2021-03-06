@@ -78,12 +78,16 @@ public abstract class AbstractIntegrationTestCollectionManager<T> implements Tes
     }
 
     private void deleteContainers() {
-        // since we're deleting the containers, there's no need to release the locks
         for (ContainerRefs containerRef : containerRefs.values()) {
             try {
                 deleteContainer(containerRef.cosmosEntityInformation);
             } catch (Exception ex) {
                 LOGGER.info("Failed to delete container=" + containerRef.getContainerName());
+            }
+            try {
+                containerRef.lock.release();
+            } catch (Exception ex) {
+                LOGGER.info("Failed to delete lock for container=" + containerRef.getContainerName());
             }
         }
     }

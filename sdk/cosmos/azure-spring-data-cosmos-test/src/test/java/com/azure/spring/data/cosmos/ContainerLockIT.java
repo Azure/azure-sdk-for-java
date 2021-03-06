@@ -3,6 +3,7 @@
 package com.azure.spring.data.cosmos;
 
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
+import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.junit.After;
@@ -38,7 +39,7 @@ public class ContainerLockIT {
     @Before
     public void setup() {
         staticTemplate = template;
-        CosmosEntityInformation entityInfo = new CosmosEntityInformation(ContainerLock.LockEntry.class);
+        CosmosEntityInformation entityInfo = new CosmosEntityInformation(Address.class);
         template.createContainerIfNotExists(entityInfo);
         lock = new ContainerLock(template, entityInfo.getContainerName(), SHORT_LEASE_DURATION);
         otherLock = new ContainerLock(reactiveTemplate, entityInfo.getContainerName(), SHORT_LEASE_DURATION);
@@ -60,7 +61,7 @@ public class ContainerLockIT {
 
     @AfterClass
     public static void afterClassCleanup() {
-        staticTemplate.deleteContainer(new CosmosEntityInformation<>(ContainerLock.LockEntry.class).getContainerName());
+        staticTemplate.deleteContainer(new CosmosEntityInformation<>(Address.class).getContainerName());
     }
 
     @Test
