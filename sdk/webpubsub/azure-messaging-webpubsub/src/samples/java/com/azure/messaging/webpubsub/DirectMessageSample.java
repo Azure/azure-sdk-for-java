@@ -19,6 +19,6 @@ public class DirectMessageSample {
         chatHub.sendToUser("jogiles", "Hi there!");
 
         // send a text message to a specific connection
-        chatHub.sendToUser("Tn3XcrAbHI0OE36XvbWwige4ac096c1", "Hi there!");
+        chatHub.sendToConnection("Tn3XcrAbHI0OE36XvbWwige4ac096c1", "Hi there!");
     }
 }

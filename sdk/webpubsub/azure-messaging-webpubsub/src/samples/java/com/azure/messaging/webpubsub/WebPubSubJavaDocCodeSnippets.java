@@ -46,10 +46,6 @@ public final class WebPubSubJavaDocCodeSnippets {
         // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAll.String.String
         client.sendToAll("Hello world!").block();
         // END: com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAll.String.String
-
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAll.String.String.2
-        client.sendToAll("Hello world!", "connection-id-1", "connection-id-2").block();
-        // END: com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAll.String.String.2
     }
 
     public void asyncSendToAllList() {
@@ -58,10 +54,10 @@ public final class WebPubSubJavaDocCodeSnippets {
         client.sendToAll("Hello world!").block();
         // END: com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAll.String.List
 
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAll.String.List.2
-        List<String> excludedUsers = getExcludedUsers();
-        client.sendToAll("Hello world!", excludedUsers).block();
-        // END: com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAll.String.List.2
+//        // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAll.String.List.2
+//        List<String> excludedUsers = getExcludedUsers();
+//        client.sendToAll("Hello world!", excludedUsers).block();
+//        // END: com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAll.String.List.2
     }
 
     public void asyncSendToAllBytesVarArgs() {
@@ -69,10 +65,6 @@ public final class WebPubSubJavaDocCodeSnippets {
         // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAllBytes.byte.String
         client.sendToAll("Hello world!".getBytes()).block();
         // END: com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAllBytes.byte.String
-
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAllBytes.byte.String.2
-        client.sendToAll("Hello world!".getBytes(), "connection-id-1", "connection-id-2").block();
-        // END: com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAllBytes.byte.String.2
     }
 
     public void ayncSendToAllBytesList() {
@@ -81,10 +73,10 @@ public final class WebPubSubJavaDocCodeSnippets {
         client.sendToAll("Hello world!".getBytes()).block();
         // END: com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAllBytes.byte.List
 
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAllBytes.byte.List.2
-        List<String> excludedUsers = getExcludedUsers();
-        client.sendToAll("Hello world!".getBytes(), excludedUsers).block();
-        // END: com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAllBytes.byte.List.2
+//        // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAllBytes.byte.List.2
+//        List<String> excludedUsers = getExcludedUsers();
+//        client.sendToAll("Hello world!".getBytes(), excludedUsers).block();
+//        // END: com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAllBytes.byte.List.2
     }
 
     // ASYNC - GROUP
@@ -107,9 +99,9 @@ public final class WebPubSubJavaDocCodeSnippets {
         groupClient.sendToAll("Hello world!").block();
         // END: com.azure.messaging.webpubsub.webpubsubgroupasyncclient.sendToAll.String.String
 
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubgroupasyncclient.sendToAll.String.String.2
-        groupClient.sendToAll("Hello world!", "connection-id-1", "connection-id-2").block();
-        // END: com.azure.messaging.webpubsub.webpubsubgroupasyncclient.sendToAll.String.String.2
+//        // BEGIN: com.azure.messaging.webpubsub.webpubsubgroupasyncclient.sendToAll.String.String.2
+//        groupClient.sendToAll("Hello world!", "connection-id-1", "connection-id-2").block();
+//        // END: com.azure.messaging.webpubsub.webpubsubgroupasyncclient.sendToAll.String.String.2
     }
 
     public void groupAsyncSendToAllList() {
@@ -119,10 +111,10 @@ public final class WebPubSubJavaDocCodeSnippets {
         groupClient.sendToAll("Hello world!").block();
         // END: com.azure.messaging.webpubsub.webpubsubgroupasyncclient.sendToAll.String.List
 
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubgroupasyncclient.sendToAll.String.List.2
-        List<String> excludedUsers = getExcludedUsers();
-        groupClient.sendToAll("Hello world!", excludedUsers).block();
-        // END: com.azure.messaging.webpubsub.webpubsubgroupasyncclient.sendToAll.String.List.2
+//        // BEGIN: com.azure.messaging.webpubsub.webpubsubgroupasyncclient.sendToAll.String.List.2
+//        List<String> excludedUsers = getExcludedUsers();
+//        groupClient.sendToAll("Hello world!", excludedUsers).block();
+//        // END: com.azure.messaging.webpubsub.webpubsubgroupasyncclient.sendToAll.String.List.2
     }
 
     public void groupAsyncSendToAllBytesVarArgs() {
@@ -132,9 +124,9 @@ public final class WebPubSubJavaDocCodeSnippets {
         groupClient.sendToAll("Hello world!".getBytes()).block();
         // END: com.azure.messaging.webpubsub.webpubsubgroupasyncclient.sendToAllBytes.byte.String
 
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubgroupasyncclient.sendToAllBytes.byte.String.2
-        groupClient.sendToAll("Hello world!".getBytes(), "connection-id-1", "connection-id-2").block();
-        // END: com.azure.messaging.webpubsub.webpubsubgroupasyncclient.sendToAllBytes.byte.String.2
+//        // BEGIN: com.azure.messaging.webpubsub.webpubsubgroupasyncclient.sendToAllBytes.byte.String.2
+//        groupClient.sendToAll("Hello world!".getBytes(), "connection-id-1", "connection-id-2").block();
+//        // END: com.azure.messaging.webpubsub.webpubsubgroupasyncclient.sendToAllBytes.byte.String.2
     }
 
     public void groupAsyncSendToAllBytesList() {
@@ -144,10 +136,10 @@ public final class WebPubSubJavaDocCodeSnippets {
         groupClient.sendToAll("Hello world!".getBytes()).block();
         // END: com.azure.messaging.webpubsub.webpubsubgroupasyncclient.sendToAllBytes.byte.List
 
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubgroupasyncclient.sendToAllBytes.byte.List.2
-        List<String> excludedUsers = getExcludedUsers();
-        groupClient.sendToAll("Hello world!".getBytes(), excludedUsers).block();
-        // END: com.azure.messaging.webpubsub.webpubsubgroupasyncclient.sendToAllBytes.byte.List.2
+//        // BEGIN: com.azure.messaging.webpubsub.webpubsubgroupasyncclient.sendToAllBytes.byte.List.2
+//        List<String> excludedUsers = getExcludedUsers();
+//        groupClient.sendToAll("Hello world!".getBytes(), excludedUsers).block();
+//        // END: com.azure.messaging.webpubsub.webpubsubgroupasyncclient.sendToAllBytes.byte.List.2
     }
 
     // SYNC - HUB
@@ -169,9 +161,9 @@ public final class WebPubSubJavaDocCodeSnippets {
         client.sendToAll("Hello world!");
         // END: com.azure.messaging.webpubsub.webpubsubclient.sendToAll.String.String
 
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubclient.sendToAll.String.String.2
-        client.sendToAll("Hello world!", "connection-id-1", "connection-id-2");
-        // END: com.azure.messaging.webpubsub.webpubsubclient.sendToAll.String.String.2
+//        // BEGIN: com.azure.messaging.webpubsub.webpubsubclient.sendToAll.String.String.2
+//        client.sendToAll("Hello world!", "connection-id-1", "connection-id-2");
+//        // END: com.azure.messaging.webpubsub.webpubsubclient.sendToAll.String.String.2
     }
 
     public void sendToAllList() {
@@ -180,10 +172,10 @@ public final class WebPubSubJavaDocCodeSnippets {
         client.sendToAll("Hello world!");
         // END: com.azure.messaging.webpubsub.webpubsubclient.sendToAll.String.List
 
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubclient.sendToAll.String.List.2
-        List<String> excludedUsers = getExcludedUsers();
-        client.sendToAll("Hello world!", excludedUsers);
-        // END: com.azure.messaging.webpubsub.webpubsubclient.sendToAll.String.List.2
+//        // BEGIN: com.azure.messaging.webpubsub.webpubsubclient.sendToAll.String.List.2
+//        List<String> excludedUsers = getExcludedUsers();
+//        client.sendToAll("Hello world!", excludedUsers);
+//        // END: com.azure.messaging.webpubsub.webpubsubclient.sendToAll.String.List.2
     }
 
     public void sendToAllBytesVarArgs() {
@@ -192,9 +184,9 @@ public final class WebPubSubJavaDocCodeSnippets {
         client.sendToAll("Hello world!".getBytes());
         // END: com.azure.messaging.webpubsub.webpubsubclient.sendToAllBytes.byte.String
 
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubclient.sendToAllBytes.byte.String.2
-        client.sendToAll("Hello world!".getBytes(), "connection-id-1", "connection-id-2");
-        // END: com.azure.messaging.webpubsub.webpubsubclient.sendToAllBytes.byte.String.2
+//        // BEGIN: com.azure.messaging.webpubsub.webpubsubclient.sendToAllBytes.byte.String.2
+//        client.sendToAll("Hello world!".getBytes(), "connection-id-1", "connection-id-2");
+//        // END: com.azure.messaging.webpubsub.webpubsubclient.sendToAllBytes.byte.String.2
     }
 
     public void sendToAllBytesList() {
@@ -203,10 +195,10 @@ public final class WebPubSubJavaDocCodeSnippets {
         client.sendToAll("Hello world!".getBytes());
         // END: com.azure.messaging.webpubsub.webpubsubclient.sendToAllBytes.byte.List
 
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubclient.sendToAllBytes.byte.List.2
-        List<String> excludedUsers = getExcludedUsers();
-        client.sendToAll("Hello world!".getBytes(), excludedUsers);
-        // END: com.azure.messaging.webpubsub.webpubsubclient.sendToAllBytes.byte.List.2
+//        // BEGIN: com.azure.messaging.webpubsub.webpubsubclient.sendToAllBytes.byte.List.2
+//        List<String> excludedUsers = getExcludedUsers();
+//        client.sendToAll("Hello world!".getBytes(), excludedUsers);
+//        // END: com.azure.messaging.webpubsub.webpubsubclient.sendToAllBytes.byte.List.2
     }
 
     // SYNC - GROUP
@@ -218,9 +210,9 @@ public final class WebPubSubJavaDocCodeSnippets {
         client.sendToAll("Hello world!");
         // END: com.azure.messaging.webpubsub.webpubsubgroupclient.sendToAll.String.String
 
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubgroupclient.sendToAll.String.String.2
-        client.sendToAll("Hello world!", "connection-id-1", "connection-id-2");
-        // END: com.azure.messaging.webpubsub.webpubsubgroupclient.sendToAll.String.String.2
+//        // BEGIN: com.azure.messaging.webpubsub.webpubsubgroupclient.sendToAll.String.String.2
+//        client.sendToAll("Hello world!", "connection-id-1", "connection-id-2");
+//        // END: com.azure.messaging.webpubsub.webpubsubgroupclient.sendToAll.String.String.2
     }
 
     public void groupSendToAllList() {
@@ -230,10 +222,10 @@ public final class WebPubSubJavaDocCodeSnippets {
         client.sendToAll("Hello world!");
         // END: com.azure.messaging.webpubsub.webpubsubgroupclient.sendToAll.String.List
 
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubgroupclient.sendToAll.String.List.2
-        List<String> excludedUsers = getExcludedUsers();
-        client.sendToAll("Hello world!", excludedUsers);
-        // END: com.azure.messaging.webpubsub.webpubsubgroupclient.sendToAll.String.List.2
+//        // BEGIN: com.azure.messaging.webpubsub.webpubsubgroupclient.sendToAll.String.List.2
+//        List<String> excludedUsers = getExcludedUsers();
+//        client.sendToAll("Hello world!", excludedUsers);
+//        // END: com.azure.messaging.webpubsub.webpubsubgroupclient.sendToAll.String.List.2
     }
 
     public void groupSendToAllBytesVarArgs() {
@@ -243,9 +235,9 @@ public final class WebPubSubJavaDocCodeSnippets {
         client.sendToAll("Hello world!".getBytes());
         // END: com.azure.messaging.webpubsub.webpubsubgroupclient.sendToAllBytes.byte.String
 
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubgroupclient.sendToAllBytes.byte.String.2
-        client.sendToAll("Hello world!".getBytes(), "connection-id-1", "connection-id-2");
-        // END: com.azure.messaging.webpubsub.webpubsubgroupclient.sendToAllBytes.byte.String.2
+//        // BEGIN: com.azure.messaging.webpubsub.webpubsubgroupclient.sendToAllBytes.byte.String.2
+//        client.sendToAll("Hello world!".getBytes(), "connection-id-1", "connection-id-2");
+//        // END: com.azure.messaging.webpubsub.webpubsubgroupclient.sendToAllBytes.byte.String.2
     }
 
     public void groupSendToAllBytesList() {
@@ -255,10 +247,10 @@ public final class WebPubSubJavaDocCodeSnippets {
         client.sendToAll("Hello world!".getBytes());
         // END: com.azure.messaging.webpubsub.webpubsubgroupclient.sendToAllBytes.byte.List
 
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubgroupclient.sendToAllBytes.byte.List.2
-        List<String> excludedUsers = getExcludedUsers();
-        client.sendToAll("Hello world!".getBytes(), excludedUsers);
-        // END: com.azure.messaging.webpubsub.webpubsubgroupclient.sendToAllBytes.byte.List.2
+//        // BEGIN: com.azure.messaging.webpubsub.webpubsubgroupclient.sendToAllBytes.byte.List.2
+//        List<String> excludedUsers = getExcludedUsers();
+//        client.sendToAll("Hello world!".getBytes(), excludedUsers);
+//        // END: com.azure.messaging.webpubsub.webpubsubgroupclient.sendToAllBytes.byte.List.2
     }
 
 

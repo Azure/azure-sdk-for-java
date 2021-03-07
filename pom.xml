@@ -590,7 +590,6 @@
         <module>sdk/schemaregistry</module>
         <module>sdk/search</module>
         <module>sdk/servicebus</module>
-        <module>sdk/signalr</module>
         <module>sdk/spring</module>
         <module>sdk/sqlvirtualmachine</module>
         <module>sdk/storage</module>
@@ -598,6 +597,7 @@
         <module>sdk/tables</module>
         <module>sdk/template</module>
         <module>sdk/textanalytics</module>
+        <module>sdk/webpubsub</module>
       </modules>
     </profile>
   </profiles>

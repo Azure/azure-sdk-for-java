@@ -10,8 +10,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.messaging.webpubsub.implementation.WebPubSubApisImpl;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static com.azure.core.annotation.ReturnType.SINGLE;
@@ -26,14 +24,13 @@ import static com.azure.core.annotation.ReturnType.SINGLE;
  * Within the Azure Web Pub Sub client, users may perform operations including:
  *
  * <ul>
- *     <li>Sending messages to {@link #sendToAll(String, String...) everyone in the hub},</li>
+ *     <li>Sending messages to {@link #sendToAll(String) everyone in the hub},</li>
  *     <li>Sending messages to a {@link #sendToUser(String, String) specific user} or
  *     {@link #sendToConnection(String, String) connection},</li>
  *     <li>{@link #removeUserFromAllGroups(String) Removing a user} from all groups,</li>
  *     <li>{@link #closeConnection(String) Closing a connection} of a specific user</li>
  *     <li>To check the existence of a {@link #userExists(String) user}, a {@link #connectionExists(String) connection},
  *     or a {@link #groupExists(String) group},</li>
- *     <li>Check on the {@link #getStatus() health status} of the Azure Web Pub Sub service.</li>
  * </ul>
  *
  * <p>It is possible to connect to a specific group within a hub by calling
@@ -71,16 +68,16 @@ public final class WebPubSubClient {
         return new WebPubSubGroupClient(asyncClient.getGroupAsyncClient(group));
     }
 
-    /**
-     * Returns status information related to the Azure Web Pub Sub service, in particular whether it is considered
-     * {@link WebPubSubHubStatus#isAvailable() available}.
-     *
-     * @return status information related to the Azure Web Pub Sub service.
-     */
-    @ServiceMethod(returns = SINGLE)
-    public WebPubSubHubStatus getStatus() {
-        return asyncClient.getStatus().block();
-    }
+//    /**
+//     * Returns status information related to the Azure Web Pub Sub service, in particular whether it is considered
+//     * {@link WebPubSubHubStatus#isAvailable() available}.
+//     *
+//     * @return status information related to the Azure Web Pub Sub service.
+//     */
+//    @ServiceMethod(returns = SINGLE)
+//    public WebPubSubHubStatus getStatus() {
+//        return asyncClient.getStatus().block();
+//    }
 
     /**
      * Broadcast a text message to all connections on this hub, excluding any connection IDs provided in the
@@ -98,36 +95,34 @@ public final class WebPubSubClient {
      * {@codesnippet com.azure.messaging.webpubsub.webpubsubclient.sendToAll.String.String.2}
      *
      * @param message The message to send.
-     * @param excludedConnectionIds An optional var-args of connection IDs to not broadcast the message to.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendToAll(final String message, final String... excludedConnectionIds) {
-        sendToAll(message, excludedConnectionIds == null
-                               ? Collections.emptyList() : Arrays.asList(excludedConnectionIds));
+    public void sendToAll(final String message) {
+        sendToAllWithResponse(message, null, Context.NONE);
     }
 
-    /**
-     * Broadcast a text message to all connections on this hub, excluding any connection IDs provided in the
-     * {@code excludedConnectionIds} list.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>To send a message to all users within the same hub, with no exclusions, do the following:</p>
-     *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubclient.sendToAll.String.List}
-     *
-     * <p>To send a message to all users within the same hub, with one or more connection IDs excluded, simply add the
-     * excluded connection IDs to a List and pass that in as the second argument:</p>
-     *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubclient.sendToAll.String.List.2}
-     *
-     * @param message The message to send.
-     * @param excludedConnectionIds An optional list of connection IDs to not broadcast the message to.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendToAll(final String message, final List<String> excludedConnectionIds) {
-        sendToAllWithResponse(message, excludedConnectionIds, Context.NONE);
-    }
+//    /**
+//     * Broadcast a text message to all connections on this hub, excluding any connection IDs provided in the
+//     * {@code excludedConnectionIds} list.
+//     *
+//     * <p><strong>Code Samples</strong></p>
+//     *
+//     * <p>To send a message to all users within the same hub, with no exclusions, do the following:</p>
+//     *
+//     * {@codesnippet com.azure.messaging.webpubsub.webpubsubclient.sendToAll.String.List}
+//     *
+//     * <p>To send a message to all users within the same hub, with one or more connection IDs excluded, simply add the
+//     * excluded connection IDs to a List and pass that in as the second argument:</p>
+//     *
+//     * {@codesnippet com.azure.messaging.webpubsub.webpubsubclient.sendToAll.String.List.2}
+//     *
+//     * @param message The message to send.
+//     * @param excludedConnectionIds An optional list of connection IDs to not broadcast the message to.
+//     */
+//    @ServiceMethod(returns = ReturnType.SINGLE)
+//    public void sendToAll(final String message, final List<String> excludedConnectionIds) {
+//        sendToAllWithResponse(message, excludedConnectionIds, Context.NONE);
+//    }
 
     /**
      * Broadcast a text message to all connections on this hub, excluding any connection IDs provided in the
@@ -154,7 +149,7 @@ public final class WebPubSubClient {
     public Response<Void> sendToAllWithResponse(final String message,
                                                 final List<String> excludedConnectionIds,
                                                 final Context context) {
-        return asyncClient.sendToAll(message, excludedConnectionIds, context).block();
+        return asyncClient.sendToAllWithResponse(message, excludedConnectionIds, context).block();
     }
 
     /**
@@ -173,36 +168,34 @@ public final class WebPubSubClient {
      * {@codesnippet com.azure.messaging.webpubsub.webpubsubclient.sendToAllBytes.byte.String.2}
      *
      * @param message The message to send.
-     * @param excludedConnectionIds An optional var-args of connection IDs to not broadcast the message to.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendToAll(final byte[] message, final String... excludedConnectionIds) {
-        sendToAll(message, excludedConnectionIds == null
-                               ? Collections.emptyList() : Arrays.asList(excludedConnectionIds));
+    public void sendToAll(final byte[] message) {
+        sendToAllWithResponse(message, null, Context.NONE);
     }
 
-    /**
-     * Broadcast a binary message to all connections on this hub, excluding any connection IDs provided in the
-     * {@code excludedConnectionIds} list.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
-     *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubclient.sendToAllBytes.byte.List}
-     *
-     * <p>To send a binary message to all users within the same hub, with one or more connection IDs excluded, simply
-     * add the excluded connection IDs to the end of the method call as var-args:</p>
-     *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubclient.sendToAllBytes.byte.List.2}
-     *
-     * @param message The message to send.
-     * @param excludedConnectionIds An optional list of connection IDs to not broadcast the message to.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendToAll(final byte[] message, final List<String> excludedConnectionIds) {
-        sendToAllWithResponse(message, excludedConnectionIds, Context.NONE);
-    }
+//    /**
+//     * Broadcast a binary message to all connections on this hub, excluding any connection IDs provided in the
+//     * {@code excludedConnectionIds} list.
+//     *
+//     * <p><strong>Code Samples</strong></p>
+//     *
+//     * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
+//     *
+//     * {@codesnippet com.azure.messaging.webpubsub.webpubsubclient.sendToAllBytes.byte.List}
+//     *
+//     * <p>To send a binary message to all users within the same hub, with one or more connection IDs excluded, simply
+//     * add the excluded connection IDs to the end of the method call as var-args:</p>
+//     *
+//     * {@codesnippet com.azure.messaging.webpubsub.webpubsubclient.sendToAllBytes.byte.List.2}
+//     *
+//     * @param message The message to send.
+//     * @param excludedConnectionIds An optional list of connection IDs to not broadcast the message to.
+//     */
+//    @ServiceMethod(returns = ReturnType.SINGLE)
+//    public void sendToAll(final byte[] message, final List<String> excludedConnectionIds) {
+//        sendToAllWithResponse(message, excludedConnectionIds, Context.NONE);
+//    }
 
     /**
      * Broadcast a binary message to all connections on this hub, excluding any connection IDs provided in the
@@ -229,7 +222,7 @@ public final class WebPubSubClient {
     public Response<Void> sendToAllWithResponse(final byte[] message,
                                                 final List<String> excludedConnectionIds,
                                                 final Context context) {
-        return asyncClient.sendToAll(message, excludedConnectionIds, context).block();
+        return asyncClient.sendToAllWithResponse(message, excludedConnectionIds, context).block();
     }
 
     /**
@@ -254,7 +247,7 @@ public final class WebPubSubClient {
      */
     @ServiceMethod(returns = SINGLE)
     public Response<Void> sendToUserWithResponse(final String userId, final String message, final Context context) {
-        return asyncClient.sendToUser(userId, message, context).block();
+        return asyncClient.sendToUserWithResponse(userId, message, context).block();
     }
 
     /**
@@ -279,7 +272,7 @@ public final class WebPubSubClient {
      */
     @ServiceMethod(returns = SINGLE)
     public Response<Void> sendToUserWithResponse(final String userId, final byte[] message, final Context context) {
-        return asyncClient.sendToUser(userId, message, context).block();
+        return asyncClient.sendToUserWithResponse(userId, message, context).block();
     }
 
     /**
@@ -306,7 +299,7 @@ public final class WebPubSubClient {
     public Response<Void> sendToConnectionWithResponse(final String connectionId,
                                                        final String message,
                                                        final Context context) {
-        return asyncClient.sendToConnection(connectionId, message, context).block();
+        return asyncClient.sendToConnectionWithResponse(connectionId, message, context).block();
     }
 
     /**
@@ -356,7 +349,7 @@ public final class WebPubSubClient {
      */
     @ServiceMethod(returns = SINGLE)
     public Response<Void> removeUserFromAllGroupsWithResponse(final String userId, final Context context) {
-        return asyncClient.removeUserFromAllGroups(userId, context).block();
+        return asyncClient.removeUserFromAllGroupsWithResponse(userId, context).block();
     }
 
     /**

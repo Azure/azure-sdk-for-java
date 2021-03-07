@@ -84,7 +84,6 @@ public final class WebPubSubClientBuilder {
     private Configuration configuration;
     private WebPubSubServiceVersion version;
     private String hub;
-    private String group;
     private ClientOptions clientOptions;
 
     /**
@@ -166,18 +165,18 @@ public final class WebPubSubClientBuilder {
         return this;
     }
 
-    /**
-     * Target group name, which should start with alphabetic characters and only contain alpha-numeric characters or
-     * underscore.
-     *
-     * @param group Target group name, which should start with alphabetic characters and only contain alpha-numeric
-     * characters or underscore.
-     * @return The updated WebPubSubClientBuilder object.
-     */
-    public WebPubSubClientBuilder group(final String group) {
-        this.group = group;
-        return this;
-    }
+//    /**
+//     * Target group name, which should start with alphabetic characters and only contain alpha-numeric characters or
+//     * underscore.
+//     *
+//     * @param group Target group name, which should start with alphabetic characters and only contain alpha-numeric
+//     * characters or underscore.
+//     * @return The updated WebPubSubClientBuilder object.
+//     */
+//    public WebPubSubClientBuilder group(final String group) {
+//        this.group = group;
+//        return this;
+//    }
 
     /**
      * Sets the logging configuration for HTTP requests and responses.
@@ -366,12 +365,7 @@ public final class WebPubSubClientBuilder {
     private WebPubSubAsyncClient buildAsyncClient(final AzureWebPubSubServiceRestAPIImplBuilder innerBuilder,
                                                   final String hub,
                                                   final WebPubSubServiceVersion serviceVersion) {
-        final AzureWebPubSubServiceRestAPIImpl client = innerBuilder.buildClient();
-        return new WebPubSubAsyncClient(
-            client.getWebPubSubApis(),
-            client.getHealthApis(),
-            hub,
-            serviceVersion);
+        return new WebPubSubAsyncClient(innerBuilder.buildClient().getWebPubSubApis(), hub, serviceVersion);
     }
 
     /**
@@ -383,31 +377,31 @@ public final class WebPubSubClientBuilder {
         return new WebPubSubClient(buildAsyncClient());
     }
 
-    /**
-     * Builds a WebPubSubGroupClient with the provided parameters.
-     *
-     * @return an instance of WebPubSubGroupClient.
-     */
-    public WebPubSubGroupClient buildGroupClient() {
-        if (group == null || group.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                    "To build a group client, the 'group' builder property must be non-null and non-empty"));
-        }
-        return buildClient().getGroupClient(group);
-    }
-
-    /**
-     * Builds a WebPubSubGroupAsyncClient with the provided parameters.
-     *
-     * @return an instance of WebPubSubGroupAsyncClient.
-     */
-    public WebPubSubGroupAsyncClient buildGroupAsyncClient() {
-        if (group == null || group.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                "To build a group client, the 'group' builder property must be non-null and non-empty"));
-        }
-        return buildAsyncClient().getGroupAsyncClient(group);
-    }
+//    /**
+//     * Builds a WebPubSubGroupClient with the provided parameters.
+//     *
+//     * @return an instance of WebPubSubGroupClient.
+//     */
+//    public WebPubSubGroupClient buildGroupClient() {
+//        if (group == null || group.isEmpty()) {
+//            throw logger.logExceptionAsError(new IllegalStateException(
+//                    "To build a group client, the 'group' builder property must be non-null and non-empty"));
+//        }
+//        return buildClient().getGroupClient(group);
+//    }
+//
+//    /**
+//     * Builds a WebPubSubGroupAsyncClient with the provided parameters.
+//     *
+//     * @return an instance of WebPubSubGroupAsyncClient.
+//     */
+//    public WebPubSubGroupAsyncClient buildGroupAsyncClient() {
+//        if (group == null || group.isEmpty()) {
+//            throw logger.logExceptionAsError(new IllegalStateException(
+//                "To build a group client, the 'group' builder property must be non-null and non-empty"));
+//        }
+//        return buildAsyncClient().getGroupAsyncClient(group);
+//    }
 
     private Map<String, String> parseConnectionString(final String cs) {
         final String[] params = cs.split(";");

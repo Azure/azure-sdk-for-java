@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.webpubsub.implementation.HealthApisImpl;
 import com.azure.messaging.webpubsub.implementation.WebPubSubApisImpl;
@@ -15,8 +16,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
@@ -32,14 +31,13 @@ import static com.azure.core.util.FluxUtil.withContext;
  * Within the Azure Web Pub Sub client, users may perform operations including:
  *
  * <ul>
- *     <li>Sending messages to {@link #sendToAll(String, String...) everyone in the hub},</li>
+ *     <li>Sending messages to {@link #sendToAll(String) everyone in the hub},</li>
  *     <li>Sending messages to a {@link #sendToUser(String, String) specific user} or
  *     {@link #sendToConnection(String, String) connection},</li>
  *     <li>{@link #removeUserFromAllGroups(String) Removing a user} from all groups,</li>
  *     <li>{@link #closeConnection(String) Closing a connection} of a specific user</li>
  *     <li>To check the existence of a {@link #userExists(String) user}, a {@link #connectionExists(String) connection},
  *     or a {@link #groupExists(String) group},</li>
- *     <li>Check on the {@link #getStatus() health status} of the Azure Web Pub Sub service.</li>
  * </ul>
  *
  * <p>It is possible to connect to a specific group within a hub by calling
@@ -66,7 +64,6 @@ public final class WebPubSubAsyncClient {
     private final ClientLogger logger = new ClientLogger(WebPubSubAsyncClient.class);
 
     private final WebPubSubApisImpl webSubPubApis;
-    private final HealthApisImpl healthApis;
 
     // The name of the hub this client is connected to
     private final String hub;
@@ -76,11 +73,9 @@ public final class WebPubSubAsyncClient {
 
     // package-private (instantiated through builder)
     WebPubSubAsyncClient(final WebPubSubApisImpl webSubPubApis,
-                         final HealthApisImpl healthApis,
                          final String hub,
                          final WebPubSubServiceVersion serviceVersion) {
         this.webSubPubApis = webSubPubApis;
-        this.healthApis = healthApis;
         this.hub = hub;
         this.serviceVersion = serviceVersion;
     }
@@ -103,22 +98,21 @@ public final class WebPubSubAsyncClient {
         return new WebPubSubGroupAsyncClient(webSubPubApis, hub, group);
     }
 
-    /**
-     * Returns status information related to the Azure Web Pub Sub service, in particular whether it is considered
-     * {@link WebPubSubHubStatus#isAvailable() available}.
-     *
-     * @return status information related to the Azure Web Pub Sub service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WebPubSubHubStatus> getStatus() {
-        return withContext(context -> healthApis
-                   .getHealthStatusWithResponseAsync(context)// TODO (jgiles) we should introduce a withResponse overload
-                   .map(WebPubSubHubStatus::new));
-    }
+//    /**
+//     * Returns status information related to the Azure Web Pub Sub service, in particular whether it is considered
+//     * {@link WebPubSubHubStatus#isAvailable() available}.
+//     *
+//     * @return status information related to the Azure Web Pub Sub service.
+//     */
+//    @ServiceMethod(returns = ReturnType.SINGLE)
+//    public Mono<WebPubSubHubStatus> getStatus() {
+//        return withContext(context -> healthApis
+//                   .getHealthStatusWithResponseAsync(context)// TODO (jgiles) we should introduce a withResponse overload
+//                   .map(WebPubSubHubStatus::new));
+//    }
 
     /**
-     * Broadcast a text message to all connections on this hub, excluding any connection IDs provided in the
-     * {@code excludedConnectionIds} var-args (keeping in mind that it is valid to provide no excluded connection IDs).
+     * Broadcast a text message to all connections on this hub.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -126,22 +120,37 @@ public final class WebPubSubAsyncClient {
      *
      * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAll.String.String}
      *
-     * <p>To send a message to all users within the same hub, with one or more connection IDs excluded, simply add the
-     * excluded connection IDs to the end of the method call as var-args:</p>
-     *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAll.String.String.2}
-     *
      * @param message The message to send.
-     * @param excludedConnectionIds An optional var-args of connection IDs to not broadcast the message to.
-     * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
-     *      representing the response from the service.
+     * @return An empty {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendToAll(final String message, final String... excludedConnectionIds) {
-        return withContext(context -> sendToAll(message,
-            excludedConnectionIds == null ? Collections.emptyList() : Arrays.asList(excludedConnectionIds),
-            context));
+    public Mono<Void> sendToAll(final String message) {
+        return sendToAllWithResponse(message, null).flatMap(FluxUtil::toMono);
     }
+
+//    /**
+//     * Broadcast a text message to all connections on this hub, excluding any connection IDs provided in the
+//     * {@code excludedConnectionIds} list.
+//     *
+//     * <p><strong>Code Samples</strong></p>
+//     *
+//     * <p>To send a message to all users within the same hub, with no exclusions, do the following:</p>
+//     *
+//     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAll.String.List}
+//     *
+//     * <p>To send a message to all users within the same hub, with one or more connection IDs excluded, simply add the
+//     * excluded connection IDs to a List and pass that in as the second argument:</p>
+//     *
+//     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAll.String.List.2}
+//     *
+//     * @param message The message to send.
+//     * @param excludedConnectionIds An optional list of connection IDs to not broadcast the message to.
+//     * @return An empty {@link Mono}.
+//     */
+//    @ServiceMethod(returns = ReturnType.SINGLE)
+//    public Mono<Void> sendToAll(final String message, final List<String> excludedConnectionIds) {
+//        return sendToAllWithResponse(message, excludedConnectionIds).flatMap(FluxUtil::toMono);
+//    }
 
     /**
      * Broadcast a text message to all connections on this hub, excluding any connection IDs provided in the
@@ -159,19 +168,20 @@ public final class WebPubSubAsyncClient {
      * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAll.String.List.2}
      *
      * @param message The message to send.
-     * @param excludedConnectionIds An optional list of connection IDs to not broadcast the message to.
+     * @param excludedConnectionIds An optional iterable of connection IDs to not broadcast the message to.
      * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
      *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendToAll(final String message, final List<String> excludedConnectionIds) {
-        return withContext(context -> sendToAll(message, excludedConnectionIds, context));
+    public Mono<Response<Void>> sendToAllWithResponse(final String message, final List<String> excludedConnectionIds) {
+        return withContext(context -> sendToAllWithResponse(message, excludedConnectionIds, context));
     }
 
     // package-private
-    Mono<Response<Void>> sendToAll(final String message, final List<String> excludedUsers, Context context) {
-        context = configureTracing(context);
-        return webSubPubApis.broadcastWithResponseAsync(hub, message, excludedUsers, context)
+    Mono<Response<Void>> sendToAllWithResponse(final String message,
+                                               final List<String> excludedUsers,
+                                               final Context context) {
+        return webSubPubApis.broadcastWithResponseAsync(hub, message, excludedUsers, configureTracing(context))
            .doOnSubscribe(ignoredValue -> logger.info("Broadcasting message '{}'", message))
            .doOnSuccess(response -> logger.info("Broadcasted message: '{}', response: {}",
                message, response.getValue()))
@@ -179,8 +189,7 @@ public final class WebPubSubAsyncClient {
     }
 
     /**
-     * Broadcast a binary message to all connections on this hub, excluding any connection IDs provided in the
-     * {@code excludedConnectionIds} var-args (keeping in mind that it is valid to provide no excluded connection IDs).
+     * Broadcast a binary message to all connections on this hub.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -188,21 +197,12 @@ public final class WebPubSubAsyncClient {
      *
      * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAllBytes.byte.String}
      *
-     * <p>To send a binary message to all users within the same hub, with one or more connection IDs excluded, simply
-     * add the excluded connection IDs to the end of the method call as var-args:</p>
-     *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAllBytes.byte.String.2}
-     *
      * @param message The message to send.
-     * @param excludedConnectionIds An optional var-args of connection IDs to not broadcast the message to.
-     * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
-     *      representing the response from the service.
+     * @return An empty {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendToAll(final byte[] message, final String... excludedConnectionIds) {
-        return withContext(context -> sendToAll(message,
-            excludedConnectionIds == null ? Collections.emptyList() : Arrays.asList(excludedConnectionIds),
-            context));
+    public Mono<Void> sendToAll(final byte[] message) {
+        return sendToAllWithResponse(message, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -226,12 +226,12 @@ public final class WebPubSubAsyncClient {
      *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendToAll(final byte[] message, final List<String> excludedConnectionIds) {
-        return withContext(context -> sendToAll(message, excludedConnectionIds, context));
+    public Mono<Response<Void>> sendToAllWithResponse(final byte[] message, final List<String> excludedConnectionIds) {
+        return withContext(context -> sendToAllWithResponse(message, excludedConnectionIds, context));
     }
 
     // package-private
-    Mono<Response<Void>> sendToAll(final byte[] message,
+    Mono<Response<Void>> sendToAllWithResponse(final byte[] message,
                                    final List<String> excludedConnectionIds,
                                    Context context) {
         final Flux<ByteBuffer> byteFlux = Flux.just(ByteBuffer.wrap(message));
@@ -248,18 +248,29 @@ public final class WebPubSubAsyncClient {
      *
      * @param userId User name to send to.
      * @param message The message to send.
+     * @return An empty {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> sendToUser(final String userId, final String message) {
+        return sendToUserWithResponse(userId, message).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Send a text message to a specific user.
+     *
+     * @param userId User name to send to.
+     * @param message The message to send.
      * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
      *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendToUser(final String userId, final String message) {
-        return withContext(context -> sendToUser(userId, message, context));
+    public Mono<Response<Void>> sendToUserWithResponse(final String userId, final String message) {
+        return withContext(context -> sendToUserWithResponse(userId, message, context));
     }
 
     // package-private
-    Mono<Response<Void>> sendToUser(final String userId, final String message, Context context) {
-        context = configureTracing(context);
-        return webSubPubApis.sendToUserWithResponseAsync(hub, userId, message, context)
+    Mono<Response<Void>> sendToUserWithResponse(final String userId, final String message, Context context) {
+        return webSubPubApis.sendToUserWithResponseAsync(hub, userId, message, configureTracing(context))
            .doOnSubscribe(ignoredValue -> logger.info("Sending to user '{}' message: '{}'", userId, message))
            .doOnSuccess(response -> logger.info("Sent to user '{}' message: '{}', response: {}",
                userId, message, response.getValue()))
@@ -272,16 +283,28 @@ public final class WebPubSubAsyncClient {
      *
      * @param userId User name to send to.
      * @param message The binary message to send.
+     * @return An empty {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> sendToUser(final String userId, final byte[] message) {
+        return sendToUserWithResponse(userId, message).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Send a binary message to a specific user.
+     *
+     * @param userId User name to send to.
+     * @param message The binary message to send.
      * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
      *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendToUser(final String userId, final byte[] message) {
-        return withContext(context -> sendToUser(userId, message, context));
+    public Mono<Response<Void>> sendToUserWithResponse(final String userId, final byte[] message) {
+        return withContext(context -> sendToUserWithResponse(userId, message, context));
     }
 
     // package-private
-    Mono<Response<Void>> sendToUser(final String userId, final byte[] message, Context context) {
+    Mono<Response<Void>> sendToUserWithResponse(final String userId, final byte[] message, Context context) {
         final Flux<ByteBuffer> byteFlux = Flux.just(ByteBuffer.wrap(message));
         context = configureTracing(context);
         return webSubPubApis.sendToUserWithResponseAsync(userId, byteFlux, message.length, hub, context)
@@ -295,18 +318,29 @@ public final class WebPubSubAsyncClient {
      *
      * @param connectionId Connection ID to send to.
      * @param message The message to send.
+     * @return An empty {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> sendToConnection(final String connectionId, final String message) {
+        return sendToConnectionWithResponse(connectionId, message).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Send a message to a specific connection
+     *
+     * @param connectionId Connection ID to send to.
+     * @param message The message to send.
      * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
      *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendToConnection(final String connectionId, final String message) {
-        return withContext(context -> sendToConnection(connectionId, message, context));
+    public Mono<Response<Void>> sendToConnectionWithResponse(final String connectionId, final String message) {
+        return withContext(context -> sendToConnectionWithResponse(connectionId, message, context));
     }
 
     // package-private
-    Mono<Response<Void>> sendToConnection(final String connectionId, final String message, Context context) {
-        context = configureTracing(context);
-        return webSubPubApis.sendToConnectionWithResponseAsync(hub, connectionId, message, context)
+    Mono<Response<Void>> sendToConnectionWithResponse(final String connectionId, final String message, Context context) {
+        return webSubPubApis.sendToConnectionWithResponseAsync(hub, connectionId, message, configureTracing(context))
            .doOnSubscribe(ignoredValue ->
                logger.info("Sending to connection '{}' message: '{}'", connectionId, message))
            .doOnSuccess(response ->
@@ -322,11 +356,23 @@ public final class WebPubSubAsyncClient {
      *
      * @param connectionId Connection ID to send to.
      * @param message The binary message to send.
+     * @return An empty {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> sendToConnection(final String connectionId, final byte[] message) {
+        return sendToConnectionWithResponse(connectionId, message).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Send a binary message to a specific connection
+     *
+     * @param connectionId Connection ID to send to.
+     * @param message The binary message to send.
      * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
      *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendToConnection(final String connectionId, final byte[] message) {
+    public Mono<Response<Void>> sendToConnectionWithResponse(final String connectionId, final byte[] message) {
         return withContext(context -> sendToConnectionWithResponse(connectionId, message, context));
     }
 
@@ -346,18 +392,28 @@ public final class WebPubSubAsyncClient {
      * Remove a specific user from all groups they are joined to.
      *
      * @param userId The user ID to remove from all groups.
+     * @return An empty {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> removeUserFromAllGroups(final String userId) {
+        return removeUserFromAllGroupsWithResponse(userId).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Remove a specific user from all groups they are joined to.
+     *
+     * @param userId The user ID to remove from all groups.
      * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
      *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeUserFromAllGroups(final String userId) {
-        return withContext(context -> removeUserFromAllGroups(userId, context));
+    public Mono<Response<Void>> removeUserFromAllGroupsWithResponse(final String userId) {
+        return withContext(context -> removeUserFromAllGroupsWithResponse(userId, context));
     }
 
     // package-private
-    Mono<Response<Void>> removeUserFromAllGroups(final String userId, Context context) {
-        context = configureTracing(context);
-        return webSubPubApis.removeUserFromAllGroupsWithResponseAsync(hub, userId, context)
+    Mono<Response<Void>> removeUserFromAllGroupsWithResponse(final String userId, Context context) {
+        return webSubPubApis.removeUserFromAllGroupsWithResponseAsync(hub, userId, configureTracing(context))
            .doOnSubscribe(ignoredValue -> logger.info("Removing user '{}' from all groups"))
            .doOnSuccess(response -> logger.info("Removed user '{}' from all groups, response: {}", response.getValue()))
            .doOnError(error -> logger.warning("Failed to remove user '{}' from all groups, response: {}", error));
@@ -439,8 +495,8 @@ public final class WebPubSubAsyncClient {
      *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> closeConnection(final String connectionId) {
-        return closeConnection(connectionId, null);
+    public Mono<Void> closeConnection(final String connectionId) {
+        return closeConnectionWithResponse(connectionId, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -452,7 +508,7 @@ public final class WebPubSubAsyncClient {
      *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> closeConnection(final String connectionId, final String reason) {
+    public Mono<Response<Void>> closeConnectionWithResponse(final String connectionId, final String reason) {
         return withContext(context -> closeConnectionWithResponse(connectionId, reason, context));
     }
 
