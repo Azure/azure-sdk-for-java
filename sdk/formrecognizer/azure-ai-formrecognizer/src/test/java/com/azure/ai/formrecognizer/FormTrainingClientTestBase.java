@@ -103,22 +103,16 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         FormRecognizerServiceVersion serviceVersion) {
         FormTrainingClientBuilder builder = new FormTrainingClientBuilder()
             .endpoint(getEndpoint())
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .serviceVersion(serviceVersion);
+            .serviceVersion(serviceVersion)
+            .addPolicy(interceptorManager.getRecordPolicy());
 
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
         } else {
             builder.credential(new DefaultAzureCredentialBuilder().build());
         }
-
-        if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
-        }
-        if (!interceptorManager.isPlaybackMode()) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-
         return builder;
     }
 

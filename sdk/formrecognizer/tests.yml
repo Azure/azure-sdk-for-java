@@ -10,4 +10,3 @@ stages:
         - name: azure-ai-formrecognizer
           groupId: com.azure
           safeName: azureaiformrecognizer
-

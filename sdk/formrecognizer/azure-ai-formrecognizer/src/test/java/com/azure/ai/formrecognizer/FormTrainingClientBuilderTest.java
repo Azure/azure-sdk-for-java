@@ -169,11 +169,9 @@ public class FormTrainingClientBuilderTest extends TestBase {
         final FormTrainingClientBuilder clientBuilder = new FormTrainingClientBuilder()
             .credential(credential)
             .endpoint(endpoint)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .serviceVersion(serviceVersion);
 
-        if (interceptorManager.isPlaybackMode()) {
-            clientBuilder.httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
-        }
         if (!interceptorManager.isPlaybackMode()) {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
