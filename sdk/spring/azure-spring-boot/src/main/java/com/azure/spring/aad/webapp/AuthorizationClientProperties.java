@@ -10,6 +10,8 @@ import java.util.List;
  */
 public class AuthorizationClientProperties {
 
+    public static final String AZURE_CLIENT_REGISTRATION_ID = "azure";
+
     private List<String> scopes;
 
     private boolean onDemand = false;
