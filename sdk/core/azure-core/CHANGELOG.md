@@ -12,7 +12,7 @@
 - Added default interface API overloads to `ObjectSerializer` which take or return `byte[]` instead of `InputStream` or
   `OutputStream` allowing for performance optimizations by removing array copies.
 - Added default interface API `SerializerAdapter.serializeIterable` which handles serializing generic collections.
-- Added `CloudEvent` model which conforms to the [Cloud Event Specification]("https://github.com/cloudevents/spec/blob/v1.0.1/spec.md).
+- Added `CloudEvent` model which conforms to the [Cloud Event Specification](https://github.com/cloudevents/spec/blob/v1.0.1/spec.md).
 
 ### Dependency Updates
 
