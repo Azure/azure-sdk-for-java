@@ -45,8 +45,7 @@ public class AADAuthenticationProperties implements InitializingBean {
     private String clientSecret;
 
     /**
-     * @deprecated
-     * Now the redirect-url-template is not configurable.
+     * @deprecated Now the redirect-url-template is not configurable.
      * Redirect URI always equal to "{baseUrl}/login/oauth2/code/".
      * User should set "Redirect URI" to "{baseUrl}/login/oauth2/code/" in Azure Portal.
      * Refs: https://github.com/Azure/azure-sdk-for-java/tree/c27ee4421309cec8598462b419e035cf091429da/sdk/spring/azure-spring-boot-starter-active-directory#accessing-a-web-application
