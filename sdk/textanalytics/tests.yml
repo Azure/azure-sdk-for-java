@@ -5,6 +5,7 @@ stages:
     parameters:
       ServiceDirectory: textanalytics
       TimeoutInMinutes: 60
+      TestMode: RECORD # to make sure recordedData is not null but still testing LIVE mode
       MaxParallel: 7
       Artifacts:
         - name: azure-ai-textanalytics
