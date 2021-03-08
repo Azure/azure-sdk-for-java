@@ -26,7 +26,6 @@ import java.nio.channels.CompletionHandler;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -245,7 +244,7 @@ public final class FluxUtil {
      * @return The response from service call
      */
     public static <T> Mono<T> withContext(Function<Context, Mono<T>> serviceCall,
-        Map<String, String> contextAttributes) {
+                                          Map<String, String> contextAttributes) {
         return Mono.subscriberContext()
             .map(ctx -> ctx == null || ctx.isEmpty()
                 ? Context.NONE
@@ -257,6 +256,7 @@ public final class FluxUtil {
     private static class ReactorToAzureContextWrapper extends Context {
         private final Map<String, String> contextAttributes;
         private final reactor.util.context.Context reactorContext;
+        private final int size;
 
         ReactorToAzureContextWrapper(reactor.util.context.Context reactorContext) {
             this(null, reactorContext);
@@ -267,12 +267,19 @@ public final class FluxUtil {
             super();
             this.contextAttributes = contextAttributes;
             this.reactorContext = reactorContext;
+            this.size = reactorContext.size() + (contextAttributes == null ? 0 : contextAttributes.size());
+        }
+
+        @Override
+        public int size() {
+            return size;
         }
 
         @Override
         public Optional<Object> getData(Object key) {
             if (key == null) {
-                super.getData(null);
+                // going into the exception case
+                return super.getData(null);
             }
 
             // Look through the reactor context first
@@ -292,7 +299,6 @@ public final class FluxUtil {
 
         @Override
         public Map<Object, Object> getValues() {
-            final int size = reactorContext.size() + (contextAttributes == null ? 0 : contextAttributes.size());
             return new AbstractMap<Object, Object>() {
 
                 @Override
@@ -352,19 +358,43 @@ public final class FluxUtil {
                     return new AbstractSet<Entry<Object, Object>>() {
                         @Override
                         public Iterator<Entry<Object, Object>> iterator() {
-                            // TODO (jogiles) This is not good code
-                            Map<Object, Object> map = new HashMap<>(size);
+//                            // TODO (jogiles) This is not good code
+//                            Map<Object, Object> map = new HashMap<>(size);
+//
+//                            if (contextAttributes != null) {
+//                                map.putAll(contextAttributes);
+//                            }
+//
+//                            reactorContext.stream().forEach(entry -> map.put(entry.getKey(), entry.getValue()));
+//
+//                            // defer up the chain, if there is any parent (unlikely)
+//                            map.putAll(ReactorToAzureContextWrapper.super.getValues());
+//
+//                            return map.entrySet().iterator();
 
-                            if (contextAttributes != null) {
-                                map.putAll(contextAttributes);
-                            }
+                            return new Iterator<Entry<Object, Object>>() {
+                                private final Iterator<Entry<Object, Object>> reactorIterator =
+                                    reactorContext.stream().iterator();
 
-                            reactorContext.stream().forEach(entry -> map.put(entry.getKey(), entry.getValue()));
+                                private final Iterator<Entry<String, String>> contextAttrsIterator =
+                                    contextAttributes == null
+                                        ? Collections.emptyIterator()
+                                        : contextAttributes.entrySet().iterator();
 
-                            // defer up the chain, if there is any parent (unlikely)
-                            map.putAll(ReactorToAzureContextWrapper.super.getValues());
+                                @Override
+                                public boolean hasNext() {
+                                    return reactorIterator.hasNext() || contextAttrsIterator.hasNext();
+                                }
 
-                            return map.entrySet().iterator();
+                                @Override
+                                @SuppressWarnings("unchecked")
+                                public Entry<Object, Object> next() {
+                                    if (reactorIterator.hasNext()) {
+                                        return reactorIterator.next();
+                                    }
+                                    return (Entry<Object, Object>) (Object) contextAttrsIterator.next();
+                                }
+                            };
                         }
 
                         @Override

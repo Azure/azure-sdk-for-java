@@ -67,12 +67,10 @@ public class Context {
         this.key = key;
         this.value = value;
 
-        if (parent == null) {
-            this.size = 1;
-        } else {
-            // we need to check if this key is shadowing an existing key
-            this.size = parent.size + (parent.getData(key).isPresent() ? 0 : 1);
-        }
+        // we need to check if this key is shadowing an existing key
+        this.size = parent == null
+            ? 1
+            : parent.size + (parent.getData(key).isPresent() ? 0 : 1);
     }
 
     /**
