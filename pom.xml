@@ -593,14 +593,15 @@
         <module>sdk/core</module>
         <module>sdk/cosmos</module>
         <module>sdk/costmanagement</module>
-        <module>sdk/deviceupdate</module>
         <module>sdk/datadog</module>
+        <module>sdk/deviceupdate</module>
         <module>sdk/digitaltwins</module>
         <module>sdk/eventgrid</module>
         <module>sdk/eventhubs</module>
         <module>sdk/formrecognizer</module>
         <module>sdk/hdinsight</module>
         <module>sdk/healthbot</module>
+        <module>sdk/hybriddatamanager</module>
         <module>sdk/hybridkubernetes</module>
         <module>sdk/identity</module>
         <module>sdk/iothub</module>
