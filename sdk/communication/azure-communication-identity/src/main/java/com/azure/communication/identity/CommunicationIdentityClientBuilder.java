@@ -295,7 +295,7 @@ public final class CommunicationIdentityClientBuilder {
         }
 
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, configuration));
-        policies.add(new RetryPolicy());
+        policies.add(this.retryPolicy == null ? new RetryPolicy() : this.retryPolicy);
         policies.add(new CookiePolicy());
         policies.add(new HttpLoggingPolicy(httpLogOptions));
     }

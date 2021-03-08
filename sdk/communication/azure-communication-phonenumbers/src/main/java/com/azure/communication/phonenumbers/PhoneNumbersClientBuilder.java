@@ -51,6 +51,7 @@ public final class PhoneNumbersClientBuilder {
     private TokenCredential tokenCredential;
     private Configuration configuration;
     private ClientOptions clientOptions;
+    private RetryPolicy retryPolicy;
     private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
 
     /**
@@ -197,6 +198,20 @@ public final class PhoneNumbersClientBuilder {
         return this;
     }
 
+     /**
+     * Sets the {@link RetryPolicy} that is used when each request is sent.
+     * <p>
+     * The default retry policy will be used in the pipeline, if not provided.
+     *
+     * @param retryPolicy User's retry policy applied to each request.
+     * @return The updated {@link PhoneNumbersClientBuilder} object.
+     * @throws NullPointerException If the specified {@code retryPolicy} is null.
+     */
+    public PhoneNumbersClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        this.retryPolicy = Objects.requireNonNull(retryPolicy, "The retry policy cannot be bull");
+        return this;
+    }
+
     /**
      * Create synchronous client applying CommunicationClientCredentialPolicy,
      * UserAgentPolicy, RetryPolicy, and CookiePolicy.
@@ -257,7 +272,7 @@ public final class PhoneNumbersClientBuilder {
     }
 
     RetryPolicy createRetryPolicy() {
-        return new RetryPolicy();
+        return this.retryPolicy == null ? new RetryPolicy() : this.retryPolicy;
     }
 
     CookiePolicy createCookiePolicy() {
