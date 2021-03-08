@@ -8,6 +8,8 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.connector.read.{Batch, InputPartition, PartitionReaderFactory}
 import org.apache.spark.sql.types.StructType
 
+import java.time.Duration
+
 private class ChangeFeedBatch
 (
   session: SparkSession,
@@ -27,18 +29,33 @@ private class ChangeFeedBatch
     val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
     val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(config)
 
-    val defaultMaxPartitionSizeInMB = (session.sessionState.conf.filesMaxPartitionBytes / (1024 * 1024)).toInt
-    val defaultMinPartitionCount = 1 + (2 * session.sparkContext.defaultParallelism)
+    val client =
+      CosmosClientCache.apply(clientConfiguration, Some(cosmosClientStateHandle))
+    val container = client
+      .getDatabase(containerConfig.database)
+      .getContainer(containerConfig.container)
 
-    CosmosPartitionPlanner.createInputPartitions(
+    // This maps the StartFrom settings to concrete LSNs
+    val initialOffsetJson = CosmosPartitionPlanner.createInitialOffset(container, changeFeedConfig, None)
+
+    // Calculates the Input partitions based on start Lsn and latest Lsn
+    val latestOffset = CosmosPartitionPlanner.getLatestOffset(
+      ChangeFeedOffset(initialOffsetJson, None),
+      changeFeedConfig.toReadLimit,
+      Duration.ZERO,
       clientConfiguration,
-      Some(cosmosClientStateHandle),
+      this.cosmosClientStateHandle,
       containerConfig,
       partitioningConfig,
-      defaultMinPartitionCount,
-      defaultMaxPartitionSizeInMB,
-      changeFeedConfig.toReadLimit
-    ).map(_.asInstanceOf[InputPartition])
+      this.session
+    )
+
+    // Latest offset above has the EndLsn specified based on the point-in-time latest offset
+    // For batch mode instead we need to reset it so that the change feed will get fully drained
+    latestOffset
+      .inputPartitions
+      .get
+      .map(p => p.clearEndLsn())
   }
 
   override def createReaderFactory(): PartitionReaderFactory = {

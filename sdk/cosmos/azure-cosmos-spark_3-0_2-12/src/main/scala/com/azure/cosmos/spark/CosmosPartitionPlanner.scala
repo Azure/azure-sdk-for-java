@@ -3,17 +3,24 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.implementation.SparkBridgeImplementationInternal.extractContinuationTokensFromChangeFeedStateJson
 import com.azure.cosmos.{CosmosAsyncContainer, SparkBridgeInternal}
-import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal, Strings}
+import com.azure.cosmos.models.FeedRange
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver, requireNotNull}
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
+import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.connector.read.streaming.{ReadAllAvailable, ReadLimit, ReadMaxFiles, ReadMaxRows}
 import reactor.core.scala.publisher.SFlux
 import reactor.core.scala.publisher.SMono.PimpJMono
 
 import java.time.Duration
 import java.util
+import java.util.concurrent.{ConcurrentHashMap, ConcurrentMap}
 import java.util.concurrent.atomic.AtomicLong
+import scala.collection.mutable
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -21,7 +28,7 @@ import scala.collection.JavaConverters._
 
 // TODO @fabianm remove
 // scalastyle:off method.length
-private object CosmosPartitionPlanner {
+private object CosmosPartitionPlanner extends CosmosLoggingTrait {
   def createInputPartitions
   (
      cosmosClientConfig: CosmosClientConfiguration,
@@ -106,6 +113,173 @@ private object CosmosPartitionPlanner {
     }
   }
   // scalastyle:on method.length
+
+  def createInitialOffset
+  (
+    container: CosmosAsyncContainer,
+    changeFeedConfig: CosmosChangeFeedConfig,
+    streamId: Option[String]
+  ): String = {
+
+    val lastContinuationTokens: ConcurrentMap[FeedRange, String] = new ConcurrentHashMap[FeedRange, String]()
+
+    container
+      .getFeedRanges
+      .asScala
+      .flatMapMany(feedRanges => SFlux.fromIterable(feedRanges.asScala))
+      .map(feedRange => {
+        val requestOptions = changeFeedConfig.toRequestOptions(feedRange)
+        requestOptions.setMaxItemCount(1)
+        requestOptions.setMaxPrefetchPageCount(1)
+        requestOptions.setQuotaInfoEnabled(true)
+
+        container
+          .queryChangeFeed(requestOptions, classOf[ObjectNode])
+          .handle(r => {
+            val items = r.getElements.asScala
+            val lsnFromItems = items
+              .collectFirst({ case item: ObjectNode if item != null => parseLsnFromNode(item.get("_lsn"))})
+              .flatten
+
+            val continuation = lsnFromItems.getOrElse(r.getContinuationToken)
+            if (!Strings.isNullOrWhiteSpace(continuation)) {
+              lastContinuationTokens.put(feedRange, continuation)
+            }
+          })
+          .collectList()
+          .asScala
+      })
+      .asJava()
+      .collectList()
+
+    val offsetJson = SparkBridgeImplementationInternal
+      .mergeChangeFeedContinuations(lastContinuationTokens.values().asScala)
+
+    logDebug(s"Initial offset of stream ${streamId.getOrElse("null")}: '$offsetJson'.")
+
+    offsetJson
+  }
+
+  def getLatestOffset
+  (
+    startOffset: ChangeFeedOffset,
+    readLimit: ReadLimit,
+    maxStaleness: Duration,
+    clientConfiguration: CosmosClientConfiguration,
+    cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
+    containerConfig: CosmosContainerConfig,
+    partitioningConfig: CosmosPartitioningConfig,
+    session: SparkSession
+  ): ChangeFeedOffset = {
+    assertOnSparkDriver()
+    assertNotNull(startOffset, "startOffset")
+
+    val latestPartitionMetadata = CosmosPartitionPlanner.getPartitionMetadata(
+      clientConfiguration,
+      Some(cosmosClientStateHandle),
+      containerConfig,
+      Some(maxStaleness)
+    )
+
+    val defaultMaxPartitionSizeInMB = (session.sessionState.conf.filesMaxPartitionBytes / (1024 * 1024)).toInt
+    val defaultMinPartitionCount = 1 + (2 * session.sparkContext.defaultParallelism)
+
+    val orderedMetadataWithStartLsn = this.getOrderedPartitionMetadataWithStartLsn(
+      startOffset.changeFeedState,
+      latestPartitionMetadata)
+
+    val client =
+      CosmosClientCache.apply(clientConfiguration, Some(cosmosClientStateHandle))
+    val container = client
+      .getDatabase(containerConfig.database)
+      .getContainer(containerConfig.container)
+
+    val inputPartitions: Array[CosmosInputPartition] = CosmosPartitionPlanner.createInputPartitions(
+      partitioningConfig,
+      container,
+      orderedMetadataWithStartLsn,
+      defaultMinPartitionCount,
+      defaultMaxPartitionSizeInMB,
+      readLimit
+    )
+
+    val changeFeedStateJson = SparkBridgeImplementationInternal
+      .createChangeFeedStateJson(
+        startOffset.changeFeedState,
+        orderedMetadataWithStartLsn.map(m => (m.feedRange, m.endLsn.getOrElse(m.latestLsn))))
+
+    ChangeFeedOffset(changeFeedStateJson, Some(inputPartitions))
+  }
+
+  private[this] def getOrderedPartitionMetadataWithStartLsn
+  (
+    stateJson: String,
+    latestPartitionMetadata: Array[PartitionMetadata]
+  ): Array[PartitionMetadata] = {
+
+    assert(!Strings.isNullOrWhiteSpace(stateJson), s"Argument 'stateJson' must not be null or empty.")
+    val orderedStartTokens = extractContinuationTokensFromChangeFeedStateJson(stateJson)
+
+    val orderedLatestTokens = latestPartitionMetadata
+      .sortBy(metadata => metadata.feedRange.min)
+
+    mergeStartAndLatestTokens(orderedStartTokens, orderedLatestTokens)
+  }
+
+  private[this] def mergeStartAndLatestTokens
+  (
+    startTokens: Array[(NormalizedRange, Long)],
+    latestTokens: Array[PartitionMetadata]
+  ): Array[PartitionMetadata] = {
+
+    val orderedBoundaries = mutable.SortedSet[String]()
+    startTokens.foreach(token => {
+      orderedBoundaries += token._1.min
+      orderedBoundaries += token._1.max
+    })
+    latestTokens.foreach(metadata => {
+      orderedBoundaries += metadata.feedRange.min
+      orderedBoundaries += metadata.feedRange.max
+    })
+
+    var startTokensIndex = 0
+    var latestTokensIndex = 0
+    orderedBoundaries
+      .foldLeft(None: Option[NormalizedRange])((previous: Option[NormalizedRange], current) => {
+        previous match {
+          case Some(previousRange) =>
+            Some(NormalizedRange(previousRange.max, current))
+          case None => None
+        }
+      })
+      .map(range => {
+        while (!SparkBridgeImplementationInternal.doRangesOverlap(range, startTokens(startTokensIndex)._1)) {
+          startTokensIndex += 1
+          assert(
+            startTokensIndex < startTokens.length,
+            "No overlapping start token found for range '$range' ")
+        }
+
+        while (!SparkBridgeImplementationInternal.doRangesOverlap(range, latestTokens(latestTokensIndex).feedRange)) {
+          latestTokensIndex += 1
+          assert(
+            latestTokensIndex < latestTokens.length,
+            "No overlapping latest token found for range '$range' ")
+        }
+
+        val startLsn: Long = startTokens(startTokensIndex)._2
+        latestTokens(latestTokensIndex).cloneForSubRange(range, startLsn)
+      })
+      .toArray
+  }
+
+  private def parseLsnFromNode(lsnNode: JsonNode) = {
+    if (lsnNode != null && lsnNode.isTextual) {
+      Some(lsnNode.textValue())
+    } else {
+      None
+    }
+  }
 
   private[this] def applyRestrictiveStrategy
   (
