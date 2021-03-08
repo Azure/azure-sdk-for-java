@@ -14,7 +14,7 @@ Licensed under the MIT License.
 
   <groupId>com.azure</groupId>
   <artifactId>azure-data-tables</artifactId>
-  <version>12.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-data-tables;current} -->
+  <version>12.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-data-tables;current} -->
   <name>Microsoft Azure SDK for Azure Table</name>
   <description>This package contains the Microsoft Azure Table storage client library.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>

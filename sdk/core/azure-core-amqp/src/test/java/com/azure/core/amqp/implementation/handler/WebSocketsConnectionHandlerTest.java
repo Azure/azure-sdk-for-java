@@ -11,6 +11,7 @@ import com.azure.core.amqp.implementation.ClientConstants;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
+import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -50,6 +51,7 @@ public class WebSocketsConnectionHandlerTest {
     private static final String PRODUCT = "test";
     private static final String CLIENT_VERSION = "1.0.0-test";
     private static final SslDomain.VerifyMode VERIFY_MODE = SslDomain.VerifyMode.VERIFY_PEER_NAME;
+    private final SslPeerDetails peerDetails = Proton.sslPeerDetails(HOSTNAME, 2919);
 
     private WebSocketsConnectionHandler handler;
     private ConnectionOptions connectionOptions;
@@ -68,7 +70,8 @@ public class WebSocketsConnectionHandlerTest {
         this.connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(),
             ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, VERIFY_MODE);
-        this.handler = new WebSocketsConnectionHandler(CONNECTION_ID, PRODUCT, CLIENT_VERSION, connectionOptions);
+        this.handler = new WebSocketsConnectionHandler(CONNECTION_ID, PRODUCT, CLIENT_VERSION, connectionOptions,
+            peerDetails);
     }
 
     @AfterEach
@@ -179,7 +182,7 @@ public class WebSocketsConnectionHandlerTest {
             ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, VERIFY_MODE, customEndpoint, port);
 
         try (WebSocketsConnectionHandler handler = new WebSocketsConnectionHandler(CONNECTION_ID, PRODUCT,
-            CLIENT_VERSION, connectionOptions)) {
+            CLIENT_VERSION, connectionOptions, peerDetails)) {
 
             // Act
             handler.onConnectionInit(event);

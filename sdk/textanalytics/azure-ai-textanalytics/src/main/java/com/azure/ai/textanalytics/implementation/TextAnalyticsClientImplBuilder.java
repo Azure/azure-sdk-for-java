@@ -32,6 +32,7 @@ public final class TextAnalyticsClientImplBuilder {
 
     private final Map<String, String> properties = new HashMap<>();
 
+    /** Create an instance of the TextAnalyticsClientImplBuilder. */
     public TextAnalyticsClientImplBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
@@ -155,7 +156,7 @@ public final class TextAnalyticsClientImplBuilder {
     /*
      * The list of Http pipeline policies to add.
      */
-    private List<HttpPipelinePolicy> pipelinePolicies;
+    private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /**
      * Adds a custom Http pipeline policy.

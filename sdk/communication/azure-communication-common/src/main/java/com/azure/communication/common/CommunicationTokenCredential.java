@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.communication.common;
 
-import java.util.concurrent.ExecutionException;
-
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -59,7 +57,7 @@ public final class CommunicationTokenCredential implements AutoCloseable {
         refresher = tokenRefresher;
         if (tokenRefreshOptions.getToken() != null) {
             setToken(tokenRefreshOptions.getToken());
-            if (tokenRefreshOptions.getRefreshProactively()) {
+            if (tokenRefreshOptions.isRefreshProactively()) {
                 OffsetDateTime nextFetchTime = accessToken.getExpiresAt().minusMinutes(DEFAULT_EXPIRING_OFFSET_MINUTES);
                 fetchingTask = new FetchingTask(this, nextFetchTime);
             }
@@ -70,10 +68,8 @@ public final class CommunicationTokenCredential implements AutoCloseable {
      * Get Azure core access token from credential
      *
      * @return Asynchronous call to fetch actual token
-     * @throws ExecutionException when supplier throws this exception
-     * @throws InterruptedException when supplier throws this exception
      */
-    public Mono<AccessToken> getToken() throws InterruptedException, ExecutionException {
+    public Mono<AccessToken> getToken() {
         if (isClosed) {
             return FluxUtil.monoError(logger,
                 new RuntimeException("getToken called on closed CommunicationTokenCredential object"));

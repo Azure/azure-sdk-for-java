@@ -12,6 +12,7 @@ import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -25,7 +26,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.OPERA
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Sample to demontrate using {@link AzureMonitorExporter} to export telemetry events when sending events to Event Hubs
+ * Sample to demontrate using {@link AzureMonitorTraceExporter} to export telemetry events when sending events to Event Hubs
  * using {@link EventHubProducerAsyncClient}.
  */
 public class EventHubsAzureMonitorExporterSample {
@@ -41,16 +42,23 @@ public class EventHubsAzureMonitorExporterSample {
     }
 
     /**
-     * Configure the OpenTelemetry {@link AzureMonitorExporter} to enable tracing.
+     * Configure the OpenTelemetry {@link AzureMonitorTraceExporter} to enable tracing.
      * @return The OpenTelemetry {@link Tracer} instance.
      */
     private static Tracer configureAzureMonitorExporter() {
-        AzureMonitorExporter exporter = new AzureMonitorExporterBuilder()
+        AzureMonitorTraceExporter exporter = new AzureMonitorExporterBuilder()
             .connectionString("{connection-string}")
-            .buildExporter();
+            .buildTraceExporter();
 
-        OpenTelemetrySdk.getGlobalTracerManagement().addSpanProcessor(SimpleSpanProcessor.create(exporter));
-        return OpenTelemetrySdk.get().getTracer("Sample");
+        SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
+            .addSpanProcessor(SimpleSpanProcessor.create(exporter))
+            .build();
+
+        OpenTelemetrySdk openTelemetrySdk = OpenTelemetrySdk.builder()
+            .setTracerProvider(tracerProvider)
+            .buildAndRegisterGlobal();
+
+        return openTelemetrySdk.getTracer("Sample");
     }
 
     /**
@@ -59,7 +67,7 @@ public class EventHubsAzureMonitorExporterSample {
      */
     private static void doClientWork() {
         EventHubProducerAsyncClient producer = new EventHubClientBuilder()
-            .connectionString(CONNECTION_STRING)
+            .connectionString(CONNECTION_STRING, "<eventHub Name>")
             .buildAsyncProducerClient();
 
         Span span = TRACER.spanBuilder("user-parent-span").startSpan();

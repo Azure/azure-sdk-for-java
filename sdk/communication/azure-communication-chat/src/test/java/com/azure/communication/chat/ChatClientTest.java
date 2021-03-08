@@ -54,7 +54,7 @@ public class ChatClientTest extends ChatClientTestBase {
         secondThreadMember = communicationClient.createUser();
 
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
-        AccessToken response = communicationClient.issueToken(firstThreadMember, scopes);
+        AccessToken response = communicationClient.getToken(firstThreadMember, scopes);
 
         ChatClientBuilder chatBuilder = getChatClientBuilder(response.getToken(), httpClient);
         client = addLoggingPolicyForIdentityClientBuilder(chatBuilder, testName).buildClient();
@@ -136,24 +136,24 @@ public class ChatClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getForbiddenOnNonExistingChatThread(HttpClient httpClient) {
+    public void getNotFoundOnNonExistingChatThreadSync(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "getNotFoundOnNonExistingChatThreadSync");
 
         // Action & Assert
         assertRestException(
-            () -> client.getChatThread("19:020082a8df7b44dd8c722bea8fe7167f@thread.v2"), 403);
+            () -> client.getChatThread("19:00000000000000000000000000000000@thread.v2"), 404);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getForbiddenOnNonExistingChatThreadWithResponse(HttpClient httpClient) {
+    public void getNotFoundOnNonExistingChatThreadWithResponseSync(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "getNotFoundOnNonExistingChatThreadWithResponseSync");
 
         // Action & Assert
         assertRestException(
-            () -> client.getChatThreadWithResponse("19:020082a8df7b44dd8c722bea8fe7167f@thread.v2", Context.NONE), 403);
+            () -> client.getChatThreadWithResponse("19:00000000000000000000000000000000@thread.v2", Context.NONE), 404);
     }
 
     @ParameterizedTest

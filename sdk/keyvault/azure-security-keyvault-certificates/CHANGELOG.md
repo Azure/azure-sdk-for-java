@@ -1,7 +1,23 @@
 # Release History
 
-## 4.2.0-beta.3 (Unreleased)
+## 4.2.0-beta.4 (Unreleased)
 
+
+## 4.2.0-beta.3 (2021-02-11)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.13.0`
+- Upgraded `azure-core-http-netty` dependency to `1.8.0`
+- Upgraded `azure-core-http-okhttp` dependency to `1.5.0`
+- Upgraded `azure-identity` dependency to `1.2.3`
+
+## 4.1.5 (2021-02-11)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.13.0`
+- Upgraded `azure-core-http-netty` dependency to `1.8.0`
+- Upgraded `azure-core-http-okhttp` dependency to `1.5.0`
+- Upgraded `azure-identity` dependency to `1.2.3`
 
 ## 4.1.4 (2021-01-15)
 

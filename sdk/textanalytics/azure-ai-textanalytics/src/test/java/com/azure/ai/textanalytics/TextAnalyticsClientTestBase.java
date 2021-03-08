@@ -5,21 +5,24 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
-import com.azure.ai.textanalytics.models.AspectSentiment;
+import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
-import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
+import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
+import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
+import com.azure.ai.textanalytics.models.HealthcareEntityRelationRole;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.MinedOpinion;
-import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.PiiEntity;
+import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
@@ -27,7 +30,9 @@ import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
+import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
+import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -52,6 +57,7 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -98,11 +104,15 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Override
     protected void beforeTest() {
         if (interceptorManager.isPlaybackMode()) {
-            durationTestMode = Duration.ofNanos(1);
+            durationTestMode = Duration.ofMillis(1);
         } else {
             durationTestMode = DEFAULT_POLL_INTERVAL;
         }
         interceptorManagerTestBase = interceptorManager;
+    }
+
+    protected <T, U> SyncPoller<T, U> setPollInterval(SyncPoller<T, U> syncPoller) {
+        return syncPoller.setPollInterval(durationTestMode);
     }
 
     // Detect Language
@@ -311,6 +321,14 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void recognizePiiEntitiesForBatchInputForDomainFilter(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizePiiEntitiesForBatchInputForCategoriesFilter(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizePiiEntityWithCategoriesFilterFromOtherResult(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion);
 
     // Linked Entities
@@ -595,6 +613,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Test
     abstract void analyzeHealthcareEntitiesZalgoText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
+    @Test
+    abstract void analyzeHealthcareEntitiesForAssertion(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
     // Healthcare LRO - Cancellation
 
     @Test
@@ -616,6 +637,13 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void analyzeBatchActionsAllFailed(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzePiiEntityRecognitionWithCategoriesFilters(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeLinkedEntityTasks(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // Detect Language runner
     void detectLanguageShowStatisticsRunner(BiConsumer<List<DetectLanguageInput>,
@@ -753,6 +781,13 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     void recognizeStringBatchPiiEntitiesShowStatsRunner(
         BiConsumer<List<String>, RecognizePiiEntitiesOptions> testRunner) {
         testRunner.accept(PII_ENTITY_INPUTS, new RecognizePiiEntitiesOptions().setIncludeStatistics(true));
+    }
+
+    void recognizeStringBatchPiiEntitiesForCategoriesFilterRunner(
+        BiConsumer<List<String>, RecognizePiiEntitiesOptions> testRunner) {
+        testRunner.accept(PII_ENTITY_INPUTS,
+            new RecognizePiiEntitiesOptions().setCategoriesFilter(
+                PiiEntityCategory.USSOCIAL_SECURITY_NUMBER, PiiEntityCategory.ABAROUTING_NUMBER));
     }
 
     // Linked Entity runner
@@ -966,6 +1001,13 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(documents, new AnalyzeHealthcareEntitiesOptions().setIncludeStatistics(true));
     }
 
+    void analyzeHealthcareEntitiesForAssertionRunner(
+        BiConsumer<List<String>, AnalyzeHealthcareEntitiesOptions> testRunner) {
+        testRunner.accept(asList(
+            "Baby not likely to have Meningitis."),
+            new AnalyzeHealthcareEntitiesOptions().setIncludeStatistics(false));
+    }
+
     // Healthcare LRO runner- Cancellation
     void cancelHealthcareLroRunner(BiConsumer<List<TextDocumentInput>, AnalyzeHealthcareEntitiesOptions> testRunner) {
         List<TextDocumentInput> documents = new ArrayList<>();
@@ -1029,6 +1071,28 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 .setRecognizePiiEntitiesOptions(
                     new RecognizePiiEntitiesOptions().setModelVersion("invalidaVersion"),
                     new RecognizePiiEntitiesOptions().setModelVersion("2929")));
+    }
+
+    void analyzePiiEntityRecognitionWithCategoriesFiltersRunner(
+        BiConsumer<List<TextDocumentInput>, TextAnalyticsActions> testRunner) {
+        testRunner.accept(
+            asList(
+                new TextDocumentInput("0", PII_ENTITY_INPUTS.get(0)),
+                new TextDocumentInput("1", PII_ENTITY_INPUTS.get(1))),
+            new TextAnalyticsActions()
+                .setDisplayName("Test1")
+                .setRecognizePiiEntitiesOptions(
+                    new RecognizePiiEntitiesOptions()
+                        .setCategoriesFilter(PiiEntityCategory.USSOCIAL_SECURITY_NUMBER)
+                ));
+    }
+
+    void analyzeLinkedEntityRecognitionRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
+        testRunner.accept(
+            LINKED_ENTITY_INPUTS,
+            new TextAnalyticsActions()
+                .setDisplayName("Test1")
+                .setRecognizeLinkedEntitiesOptions(new RecognizeLinkedEntitiesOptions()));
     }
 
     String getEndpoint() {
@@ -1155,9 +1219,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static void validateHealthcareEntitiesResult(boolean showStatistics,
         AnalyzeHealthcareEntitiesResultCollection expected, AnalyzeHealthcareEntitiesResultCollection actual) {
         validateTextAnalyticsResult(showStatistics, expected, actual,
-            (expectedItem, actualItem) -> validateHealthcareEntities(
-                expectedItem.getEntities().stream().collect(Collectors.toList()),
-                actualItem.getEntities().stream().collect(Collectors.toList())));
+            (expectedItem, actualItem) -> validateHealthcareEntityDocumentResult(expectedItem, actualItem));
     }
 
     /**
@@ -1321,69 +1383,70 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedSentiment.getSentiment(), actualSentiment.getSentiment());
         assertEquals(expectedSentiment.getText(), actualSentiment.getText());
         assertEquals(expectedSentiment.getOffset(), actualSentiment.getOffset());
+        assertEquals(expectedSentiment.getLength(), actualSentiment.getLength());
 
         if (includeOpinionMining) {
-            validateSentenceMinedOpinions(expectedSentiment.getMinedOpinions().stream().collect(Collectors.toList()),
-                actualSentiment.getMinedOpinions().stream().collect(Collectors.toList()));
+            validateSentenceOpinions(expectedSentiment.getOpinions().stream().collect(Collectors.toList()),
+                actualSentiment.getOpinions().stream().collect(Collectors.toList()));
         } else {
-            assertNull(actualSentiment.getMinedOpinions());
+            assertNull(actualSentiment.getOpinions());
         }
     }
 
     /**
-     * Helper method to validate sentence's mined opinions.
+     * Helper method to validate sentence's opinions.
      *
-     * @param expectedMinedOpinions a list of mined opinions returned by the service.
-     * @param actualMinedOpinions a list of mined opinions returned by the API.
+     * @param expectedSentenceOpinions a list of sentence opinions returned by the service.
+     * @param actualSentenceOpinions a list of sentence opinions returned by the API.
      */
-    static void validateSentenceMinedOpinions(List<MinedOpinion> expectedMinedOpinions,
-        List<MinedOpinion> actualMinedOpinions) {
-        assertEquals(expectedMinedOpinions.size(), actualMinedOpinions.size());
-        for (int i = 0; i < actualMinedOpinions.size(); i++) {
-            final MinedOpinion expectedMinedOpinion = expectedMinedOpinions.get(i);
-            final MinedOpinion actualMinedOpinion = actualMinedOpinions.get(i);
-            validateAspectSentiment(expectedMinedOpinion.getAspect(), actualMinedOpinion.getAspect());
-            validateAspectOpinionList(expectedMinedOpinion.getOpinions().stream().collect(Collectors.toList()),
-                actualMinedOpinion.getOpinions().stream().collect(Collectors.toList()));
+    static void validateSentenceOpinions(List<SentenceOpinion> expectedSentenceOpinions,
+        List<SentenceOpinion> actualSentenceOpinions) {
+        assertEquals(expectedSentenceOpinions.size(), actualSentenceOpinions.size());
+        for (int i = 0; i < actualSentenceOpinions.size(); i++) {
+            final SentenceOpinion expectedSentenceOpinion = expectedSentenceOpinions.get(i);
+            final SentenceOpinion actualSentenceOpinion = actualSentenceOpinions.get(i);
+            validateTargetSentiment(expectedSentenceOpinion.getTarget(), actualSentenceOpinion.getTarget());
+            validateAssessmentList(expectedSentenceOpinion.getAssessments().stream().collect(Collectors.toList()),
+                actualSentenceOpinion.getAssessments().stream().collect(Collectors.toList()));
         }
     }
 
     /**
-     * Helper method to validate aspect sentiment.
+     * Helper method to validate target sentiment.
      *
-     * @param expectedAspectSentiment An expected aspect sentiment.
-     * @param actualAspectSentiment An actual aspect sentiment.
+     * @param expected An expected target sentiment.
+     * @param actual An actual target sentiment.
      */
-    static void validateAspectSentiment(AspectSentiment expectedAspectSentiment, AspectSentiment actualAspectSentiment) {
-        assertEquals(expectedAspectSentiment.getSentiment(), actualAspectSentiment.getSentiment());
-        assertEquals(expectedAspectSentiment.getText(), actualAspectSentiment.getText());
-        assertEquals(expectedAspectSentiment.getOffset(), actualAspectSentiment.getOffset());
+    static void validateTargetSentiment(TargetSentiment expected, TargetSentiment actual) {
+        assertEquals(expected.getSentiment(), actual.getSentiment());
+        assertEquals(expected.getText(), actual.getText());
+        assertEquals(expected.getOffset(), actual.getOffset());
     }
 
     /**
-     * Helper method to validate a list of {@link OpinionSentiment}.
+     * Helper method to validate a list of {@link AssessmentSentiment}.
      *
-     * @param expectedOpinionSentiments A list of expected opinion sentiments.
-     * @param actualOpinionSentiments A list of actual opinion sentiments.
+     * @param expected A list of expected assessment sentiments.
+     * @param actual A list of actual assessment sentiments.
      */
-    static void validateAspectOpinionList(List<OpinionSentiment> expectedOpinionSentiments, List<OpinionSentiment> actualOpinionSentiments) {
-        assertEquals(expectedOpinionSentiments.size(), actualOpinionSentiments.size());
-        for (int i = 0; i < expectedOpinionSentiments.size(); i++) {
-            validateAspectOpinion(expectedOpinionSentiments.get(i), actualOpinionSentiments.get(i));
+    static void validateAssessmentList(List<AssessmentSentiment> expected, List<AssessmentSentiment> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < expected.size(); i++) {
+            validateAssessmentSentiment(expected.get(i), actual.get(i));
         }
     }
 
     /**
-     * Helper method to validate opinion sentiment.
+     * Helper method to validate assessment sentiment.
      *
-     * @param expectedAspectOpinion An expected opinion sentiment.
-     * @param actualAspectOpinion An actual opinion sentiment.
+     * @param expect An expected assessment sentiment.
+     * @param actual An actual assessment sentiment.
      */
-    static void validateAspectOpinion(OpinionSentiment expectedAspectOpinion, OpinionSentiment actualAspectOpinion) {
-        assertEquals(expectedAspectOpinion.getSentiment(), actualAspectOpinion.getSentiment());
-        assertEquals(expectedAspectOpinion.getText(), actualAspectOpinion.getText());
-        assertEquals(expectedAspectOpinion.isNegated(), actualAspectOpinion.isNegated());
-        assertEquals(expectedAspectOpinion.getOffset(), actualAspectOpinion.getOffset());
+    static void validateAssessmentSentiment(AssessmentSentiment expect, AssessmentSentiment actual) {
+        assertEquals(expect.getSentiment(), actual.getSentiment());
+        assertEquals(expect.getText(), actual.getText());
+        assertEquals(expect.isNegated(), actual.isNegated());
+        assertEquals(expect.getOffset(), actual.getOffset());
     }
 
     /**
@@ -1406,16 +1469,60 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expected.getCategory(), actual.getCategory());
         assertEquals(expected.getText(), actual.getText());
         assertEquals(expected.getOffset(), actual.getOffset());
-        validateEntitiyDataSourceList(expected.getDataSources(), actual.getDataSources());
+        assertEquals(expected.getLength(), actual.getLength());
+        assertEquals(expected.getNormalizedText(), actual.getNormalizedText());
+        assertEquals(expected.getSubcategory(), actual.getSubcategory());
+        validateEntityAssertion(expected.getAssertion(), actual.getAssertion());
+        validateEntityDataSourceList(expected.getDataSources(), actual.getDataSources());
     }
 
-    static void validateEntitiyDataSourceList(IterableStream<EntityDataSource> expected,
+    static void validateEntityAssertion(HealthcareEntityAssertion expected, HealthcareEntityAssertion actual) {
+        if (actual == expected) {
+            return;
+        }
+        assertEquals(expected.getConditionality(), actual.getConditionality());
+        assertEquals(expected.getAssociation(), actual.getAssociation());
+        assertEquals(expected.getCertainty(), actual.getCertainty());
+    }
+
+    static void validateEntityDataSourceList(IterableStream<EntityDataSource> expected,
         IterableStream<EntityDataSource> actual) {
         if (expected == actual) {
             return;
         } else if (expected == null || actual == null) {
             assertTrue(false);
         }
+    }
+
+    static void validateHealthcareEntityDocumentResult(AnalyzeHealthcareEntitiesResult expected,
+        AnalyzeHealthcareEntitiesResult actual) {
+        validateHealthcareEntityRelations(expected.getEntityRelations().stream().collect(Collectors.toList()),
+            actual.getEntityRelations().stream().collect(Collectors.toList()));
+        validateHealthcareEntities(expected.getEntities().stream().collect(Collectors.toList()),
+            actual.getEntities().stream().collect(Collectors.toList()));
+    }
+
+    static void validateHealthcareEntityRelations(List<HealthcareEntityRelation> expected,
+        List<HealthcareEntityRelation> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < expected.size(); i++) {
+            validateHealthcareEntityRelation(expected.get(i), actual.get(i));
+        }
+    }
+
+    static void validateHealthcareEntityRelation(HealthcareEntityRelation expected, HealthcareEntityRelation actual) {
+        final List<HealthcareEntityRelationRole> expectedRoles = expected.getRoles().stream().collect(Collectors.toList());
+        final List<HealthcareEntityRelationRole> actualRoles = actual.getRoles().stream().collect(Collectors.toList());
+        assertEquals(expected.getRelationType(), actual.getRelationType());
+        for (int i = 0; i < expectedRoles.size(); i++) {
+            validateHealthcareEntityRelationRole(expectedRoles.get(i), actualRoles.get(i));
+        }
+    }
+
+    static void validateHealthcareEntityRelationRole(HealthcareEntityRelationRole expected,
+        HealthcareEntityRelationRole actual) {
+        assertEquals(expected.getName(), actual.getName());
+        validateHealthcareEntity(expected.getEntity(), actual.getEntity());
     }
 
     static void validateHealthcareEntities(List<HealthcareEntity> expected, List<HealthcareEntity> actual) {
@@ -1447,17 +1554,19 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     static void validateAnalyzeTasksResult(boolean showStatistics, AnalyzeBatchActionsResult expected,
         AnalyzeBatchActionsResult actual) {
-        final TextDocumentBatchStatistics expectedOperationStatistics = expected.getStatistics();
-        final TextDocumentBatchStatistics actualOperationStatistics = actual.getStatistics();
-        if (showStatistics) {
-            assertEquals(expectedOperationStatistics.getDocumentCount(), actualOperationStatistics.getDocumentCount());
-            assertEquals(expectedOperationStatistics.getInvalidDocumentCount(),
-                actualOperationStatistics.getDocumentCount());
-            assertEquals(expectedOperationStatistics.getValidDocumentCount(),
-                actualOperationStatistics.getValidDocumentCount());
-            assertEquals(expectedOperationStatistics.getTransactionCount(),
-                actualOperationStatistics.getTransactionCount());
-        }
+        // TODO: batch actions has return non statistics.
+        // Issue: https://github.com/Azure/azure-sdk-for-java/issues/19672
+//        final TextDocumentBatchStatistics expectedOperationStatistics = expected.getStatistics();
+//        final TextDocumentBatchStatistics actualOperationStatistics = actual.getStatistics();
+//        if (showStatistics) {
+//            assertEquals(expectedOperationStatistics.getDocumentCount(), actualOperationStatistics.getDocumentCount());
+//            assertEquals(expectedOperationStatistics.getInvalidDocumentCount(),
+//                actualOperationStatistics.getDocumentCount());
+//            assertEquals(expectedOperationStatistics.getValidDocumentCount(),
+//                actualOperationStatistics.getValidDocumentCount());
+//            assertEquals(expectedOperationStatistics.getTransactionCount(),
+//                actualOperationStatistics.getTransactionCount());
+//        }
 
         validateRecognizeEntitiesActionResults(showStatistics,
             expected.getRecognizeEntitiesActionResults().stream().collect(Collectors.toList()),

@@ -1,26 +1,28 @@
 # Release History
 
+## 1.0.0-beta.5 (2021-03-02)
+### Breaking Changes
+
+- ChatMessage - `senderId` renamed to `senderCommunicationIdentifier`, changed type to `CommunicationIdentifier`.
+- ChatMessageReadReceipt - `senderId` renamed to `senderCommunicationIdentifier`, changed type to `CommunicationIdentifier`.
+- ChatParticipant - `user` renamed to `communicationIdentifier`, changed type to `CommunicationIdentifier`.
+- ChatThread - `createdBy` renamed to `createdByCommunicationIdentifier`, changed type to `CommunicationIdentifier`.
+- ChatMessageContent - `initiator` renamed to `initiatorCommunicationIdentifier`, changed type to `CommunicationIdentifier`.
+
+
 ## 1.0.0-beta.4 (2021-02-09)
 ### Breaking Changes
-- 'ChatClient' is split into 'ChatClient' and 'ChatThreadClient'.
-- Renamed 'Member' and 'ThreadMember' to 'Participant'.
-- Removed 'Priority' in 'ChatMessage'.
-- 'ChatMessage' properties are now all required.
-- 'ChatMessage' type property is no longer a 'String', but an extendable Enum type, 'ChatMessageType'.
-- 'ChatMessage' content property is no longer a 'String', but an object of 'ChatMessageContent'.
-- All 'OffsetDateTime' properties are now in RFC3339 format instead of ISO8601 format.
+
+- Updated to azure-communication-common version 1.0.0-beta.4. Now uses `CommunicationUserIdentifier` and `CommunicationIdentifier` in place of `CommunicationUser`, and `CommunicationTokenCredential` instead of `CommunicationUserCredential`.
+- Removed `Priority` field from `ChatMessage`.
 
 ### Added
-- Support for 'ChatMessageType' in 'ChatMessage'.
-- Support optional user agent http header in chat clients.
-- Added CommunicationError.
-- Added CommunicationErrorResponse.
-- Added CommunicationErrorResponseException.
-- Added ChatMessageContent.
-- Added ChatMessageType.
-- Added AddChatParticipantsErrors.
-- Added AddChatParticipantsResult.
-- Added ChatMessageType.
+
+- Added support for `CreateChatThreadResult` and `AddChatParticipantsResult` to handle partial errors in batch calls.
+- Added pagination support for `listReadReceipts` and `listParticipants`.
+- Added new model for messages and content types: `Text`, `Html`, `ParticipantAdded`, `ParticipantRemoved`, `TopicUpdated`.
+- Added new model for errors (`CommunicationError`).
+- Added notifications for 'ChatThread' level changes.
 
 ## 1.0.0-beta.3 (2020-11-16)
 Updated `azure-communication-chat` version

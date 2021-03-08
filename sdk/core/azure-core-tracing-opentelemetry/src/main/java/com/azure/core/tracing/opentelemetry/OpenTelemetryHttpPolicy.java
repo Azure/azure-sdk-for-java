@@ -18,10 +18,11 @@ import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanBuilder;
 import io.opentelemetry.api.trace.SpanContext;
+import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator;
 import io.opentelemetry.context.propagation.TextMapPropagator;
-import io.opentelemetry.semconv.trace.attributes.SemanticAttributes;
+import io.opentelemetry.context.propagation.TextMapSetter;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 import reactor.util.context.Context;
@@ -29,6 +30,7 @@ import reactor.util.context.Context;
 import java.util.Optional;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.core.util.tracing.Tracer.DISABLE_TRACING_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 
 /**
@@ -48,6 +50,10 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
     private static final Tracer TRACER = GlobalOpenTelemetry.getTracer("Azure-OpenTelemetry");
 
     // standard attributes with http call information
+    private static final String HTTP_USER_AGENT = "http.user_agent";
+    private static final String HTTP_METHOD = "http.method";
+    private static final String HTTP_URL = "http.url";
+    private static final String HTTP_STATUS_CODE = "http.status_code";
     private static final String REQUEST_ID = "x-ms-request-id";
 
     // This helper class implements W3C distributed tracing protocol and injects SpanContext into the outgoing http
@@ -56,6 +62,10 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        if ((boolean) context.getData(DISABLE_TRACING_KEY).orElse(false)) {
+            return next.process();
+        }
+
         Span parentSpan = (Span) context.getData(PARENT_SPAN_KEY).orElse(Span.current());
         HttpRequest request = context.getHttpRequest();
 
@@ -66,7 +76,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
             .setParent(io.opentelemetry.context.Context.current().with(parentSpan));
 
         // A span's kind can be SERVER (incoming request) or CLIENT (outgoing request);
-        spanBuilder.setSpanKind(Span.Kind.CLIENT);
+        spanBuilder.setSpanKind(SpanKind.CLIENT);
 
         // Starting the span makes the sampling decision (nothing is logged at this time)
         Span span = spanBuilder.startSpan();
@@ -90,21 +100,21 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
 
     private static void addSpanRequestAttributes(Span span, HttpRequest request,
         HttpPipelineCallContext context) {
-        putAttributeIfNotEmptyOrNull(span, SemanticAttributes.HTTP_USER_AGENT,
+        putAttributeIfNotEmptyOrNull(span, HTTP_USER_AGENT,
             request.getHeaders().getValue("User-Agent"));
-        putAttributeIfNotEmptyOrNull(span, SemanticAttributes.HTTP_METHOD, request.getHttpMethod().toString());
-        putAttributeIfNotEmptyOrNull(span, SemanticAttributes.HTTP_URL, request.getUrl().toString());
+        putAttributeIfNotEmptyOrNull(span, HTTP_METHOD, request.getHttpMethod().toString());
+        putAttributeIfNotEmptyOrNull(span, HTTP_URL, request.getUrl().toString());
         Optional<Object> tracingNamespace = context.getData(AZ_TRACING_NAMESPACE_KEY);
         if (tracingNamespace.isPresent()) {
-            putAttributeIfNotEmptyOrNull(span, AttributeKey.stringKey(OpenTelemetryTracer.AZ_NAMESPACE_KEY),
+            putAttributeIfNotEmptyOrNull(span, OpenTelemetryTracer.AZ_NAMESPACE_KEY,
                 tracingNamespace.get().toString());
         }
     }
 
-    private static void putAttributeIfNotEmptyOrNull(Span span, AttributeKey<String> key, String value) {
+    private static void putAttributeIfNotEmptyOrNull(Span span, String key, String value) {
         // AttributeValue will throw an error if the value is null.
         if (!CoreUtils.isNullOrEmpty(value)) {
-            span.setAttribute(key, value);
+            span.setAttribute(AttributeKey.stringKey(key), value);
         }
     }
 
@@ -158,8 +168,8 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
                 requestId = response.getHeaderValue(REQUEST_ID);
             }
 
-            putAttributeIfNotEmptyOrNull(span, AttributeKey.stringKey(REQUEST_ID), requestId);
-            span.setAttribute(SemanticAttributes.HTTP_STATUS_CODE, statusCode);
+            putAttributeIfNotEmptyOrNull(span, REQUEST_ID, requestId);
+            span.setAttribute(HTTP_STATUS_CODE, statusCode);
             span = HttpTraceUtil.setSpanStatus(span, statusCode, error);
         }
 
@@ -168,6 +178,6 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
     }
 
     // lambda that actually injects arbitrary header into the request
-    private final TextMapPropagator.Setter<HttpRequest> contextSetter =
+    private final TextMapSetter<HttpRequest> contextSetter =
         (request, key, value) -> request.getHeaders().set(key, value);
 }

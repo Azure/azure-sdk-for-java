@@ -10,6 +10,7 @@
 ##  - ctl_concurrency (optional: default 50)
 ##  - ctl_consistency_level (optional: default Session)
 ##  - ctl_number_of_precreated_documents (optional: default 100,000)
+##  - ctl_bulk_load_batch_size (optional: default 200,000)
 ##  - ctl_number_of_operations (optional: default 1,000,000)
 ##  - ctl_max_running_time_duration (optional: default 10 minutes)
 ##  - ctl_printing_interval (optional: default 30 seconds)
@@ -63,6 +64,13 @@ else
 number_of_precreated_documents=$ctl_number_of_precreated_documents
 fi
 
+if [ -z "$ctl_bulk_load_batch_size" ]
+then
+bulk_load_batch_size=200000
+else
+bulk_load_batch_size=$ctl_bulk_load_batch_size
+fi
+
 if [ -z "$ctl_number_of_operations" ]
 then
 number_of_operations=-1
@@ -98,9 +106,9 @@ jvm_opt=""
 
 if [ -z "$ctl_graphite_endpoint" ]
 then
-java -Xmx8g -Xms8g  $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -jar "$jar_file" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$database_name"  -collectionId "$collection_name" -numberOfCollectionForCtl "$number_Of_collection" -throughput $throughput  -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -numberOfPreCreatedDocuments $number_of_precreated_documents -printingInterval $printing_interval 2>&1 | tee -a "$log_filename"
+java -Xmx8g -Xms8g  $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -jar "$jar_file" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$database_name"  -collectionId "$collection_name" -numberOfCollectionForCtl "$number_Of_collection" -throughput $throughput  -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -numberOfPreCreatedDocuments $number_of_precreated_documents -bulkloadBatchSize $bulk_load_batch_size -printingInterval $printing_interval 2>&1 | tee -a "$log_filename"
 else
-java -Xmx8g -Xms8g  $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -jar "$jar_file" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$database_name"  -collectionId "$collection_name" -numberOfCollectionForCtl "$number_Of_collection" -throughput $throughput  -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -graphiteEndpoint $ctl_graphite_endpoint -numberOfPreCreatedDocuments $number_of_precreated_documents -printingInterval $printing_interval 2>&1 | tee -a "$log_filename"
+java -Xmx8g -Xms8g  $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -jar "$jar_file" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$database_name"  -collectionId "$collection_name" -numberOfCollectionForCtl "$number_Of_collection" -throughput $throughput  -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -graphiteEndpoint $ctl_graphite_endpoint -numberOfPreCreatedDocuments $number_of_precreated_documents -bulkloadBatchSize $bulk_load_batch_size -printingInterval $printing_interval 2>&1 | tee -a "$log_filename"
 fi
 
 end=`date +%s`

@@ -30,6 +30,12 @@ public class RedisCommonProperties {
     private Boolean enableNonSslPort;
 
     /*
+     * The number of replicas to be created per master.
+     */
+    @JsonProperty(value = "replicasPerMaster")
+    private Integer replicasPerMaster;
+
+    /*
      * A dictionary of tenant settings
      */
     @JsonProperty(value = "tenantSettings")
@@ -47,6 +53,15 @@ public class RedisCommonProperties {
      */
     @JsonProperty(value = "minimumTlsVersion")
     private TlsVersion minimumTlsVersion;
+
+    /*
+     * Whether or not public endpoint access is allowed for this cache.  Value
+     * is optional but if passed in, must be 'Enabled' or 'Disabled'. If
+     * 'Disabled', private endpoints are the exclusive access method. Default
+     * value is 'Enabled'
+     */
+    @JsonProperty(value = "publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
 
     /**
      * Get the redisConfiguration property: All Redis Settings. Few possible keys:
@@ -89,6 +104,26 @@ public class RedisCommonProperties {
      */
     public RedisCommonProperties withEnableNonSslPort(Boolean enableNonSslPort) {
         this.enableNonSslPort = enableNonSslPort;
+        return this;
+    }
+
+    /**
+     * Get the replicasPerMaster property: The number of replicas to be created per master.
+     *
+     * @return the replicasPerMaster value.
+     */
+    public Integer replicasPerMaster() {
+        return this.replicasPerMaster;
+    }
+
+    /**
+     * Set the replicasPerMaster property: The number of replicas to be created per master.
+     *
+     * @param replicasPerMaster the replicasPerMaster value to set.
+     * @return the RedisCommonProperties object itself.
+     */
+    public RedisCommonProperties withReplicasPerMaster(Integer replicasPerMaster) {
+        this.replicasPerMaster = replicasPerMaster;
         return this;
     }
 
@@ -151,6 +186,30 @@ public class RedisCommonProperties {
      */
     public RedisCommonProperties withMinimumTlsVersion(TlsVersion minimumTlsVersion) {
         this.minimumTlsVersion = minimumTlsVersion;
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this cache. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the exclusive
+     * access method. Default value is 'Enabled'.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this cache. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the exclusive
+     * access method. Default value is 'Enabled'.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the RedisCommonProperties object itself.
+     */
+    public RedisCommonProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
         return this;
     }
 

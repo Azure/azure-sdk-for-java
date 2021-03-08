@@ -95,11 +95,11 @@ public class LROPollerTests {
 
             PollerFlux<PollResult<FooWithProvisioningState>, FooWithProvisioningState> lroFlux
                 = PollerFactory.create(SERIALIZER,
-                new HttpPipelineBuilder().build(),
-                FooWithProvisioningState.class,
-                FooWithProvisioningState.class,
-                POLLING_DURATION,
-                newLroInitFunction(client));
+                    new HttpPipelineBuilder().build(),
+                    FooWithProvisioningState.class,
+                    FooWithProvisioningState.class,
+                    POLLING_DURATION,
+                    newLroInitFunction(client));
 
             int[] onNextCallCount = new int[1];
             lroFlux.doOnNext(response -> {
@@ -199,11 +199,11 @@ public class LROPollerTests {
 
             PollerFlux<PollResult<FooWithProvisioningState>, FooWithProvisioningState> lroFlux
                 = PollerFactory.create(SERIALIZER,
-                new HttpPipelineBuilder().build(),
-                FooWithProvisioningState.class,
-                FooWithProvisioningState.class,
-                POLLING_DURATION,
-                newLroInitFunction(client));
+                    new HttpPipelineBuilder().build(),
+                    FooWithProvisioningState.class,
+                    FooWithProvisioningState.class,
+                    POLLING_DURATION,
+                    newLroInitFunction(client));
 
             int[] onNextCallCount = new int[1];
             AsyncPollResponse<PollResult<FooWithProvisioningState>, FooWithProvisioningState> pollResponse = lroFlux.doOnNext(response -> {
@@ -302,11 +302,11 @@ public class LROPollerTests {
 
             PollerFlux<PollResult<FooWithProvisioningState>, FooWithProvisioningState> lroFlux
                 = PollerFactory.create(SERIALIZER,
-                new HttpPipelineBuilder().build(),
-                FooWithProvisioningState.class,
-                FooWithProvisioningState.class,
-                POLLING_DURATION,
-                newLroInitFunction(client));
+                    new HttpPipelineBuilder().build(),
+                    FooWithProvisioningState.class,
+                    FooWithProvisioningState.class,
+                    POLLING_DURATION,
+                    newLroInitFunction(client));
 
             int[] onNextCallCount = new int[1];
             AsyncPollResponse<PollResult<FooWithProvisioningState>, FooWithProvisioningState> pollResponse = lroFlux.doOnNext(response -> {
@@ -379,11 +379,11 @@ public class LROPollerTests {
 
             PollerFlux<PollResult<Resource>, Resource> lroFlux
                 = PollerFactory.create(SERIALIZER,
-                new HttpPipelineBuilder().build(),
-                Resource.class,
-                Resource.class,
-                POLLING_DURATION,
-                newLroInitFunction(client));
+                    new HttpPipelineBuilder().build(),
+                    Resource.class,
+                    Resource.class,
+                    POLLING_DURATION,
+                    newLroInitFunction(client));
 
             StepVerifier.create(lroFlux)
                 .expectSubscription()
@@ -455,11 +455,11 @@ public class LROPollerTests {
 
             PollerFlux<PollResult<Resource>, Resource> lroFlux
                 = PollerFactory.create(SERIALIZER,
-                new HttpPipelineBuilder().build(),
-                Resource.class,
-                Resource.class,
-                POLLING_DURATION,
-                newLroInitFunction(client));
+                    new HttpPipelineBuilder().build(),
+                    Resource.class,
+                    Resource.class,
+                    POLLING_DURATION,
+                    newLroInitFunction(client));
 
             StepVerifier.create(lroFlux)
                 .expectSubscription()
@@ -531,11 +531,11 @@ public class LROPollerTests {
 
             PollerFlux<PollResult<Resource>, Resource> lroFlux
                 = PollerFactory.create(SERIALIZER,
-                new HttpPipelineBuilder().build(),
-                Resource.class,
-                Resource.class,
-                POLLING_DURATION,
-                newLroInitFunction(client));
+                    new HttpPipelineBuilder().build(),
+                    Resource.class,
+                    Resource.class,
+                    POLLING_DURATION,
+                    newLroInitFunction(client));
 
             StepVerifier.create(lroFlux)
                 .expectSubscription()
@@ -644,11 +644,11 @@ public class LROPollerTests {
 
             PollerFlux<PollResult<FooWithProvisioningState>, FooWithProvisioningState> lroFlux
                 = PollerFactory.create(SERIALIZER,
-                new HttpPipelineBuilder().build(),
-                FooWithProvisioningState.class,
-                FooWithProvisioningState.class,
-                POLLING_DURATION,
-                newLroInitFunction(client));
+                    new HttpPipelineBuilder().build(),
+                    FooWithProvisioningState.class,
+                    FooWithProvisioningState.class,
+                    POLLING_DURATION,
+                    newLroInitFunction(client));
 
             StepVerifier.create(lroFlux)
                 .expectSubscription()
@@ -718,11 +718,11 @@ public class LROPollerTests {
 
             PollerFlux<PollResult<FooWithProvisioningState>, FooWithProvisioningState> lroFlux
                 = PollerFactory.create(SERIALIZER,
-                new HttpPipelineBuilder().build(),
-                FooWithProvisioningState.class,
-                FooWithProvisioningState.class,
-                POLLING_DURATION,
-                newLroInitFunction(client));
+                    new HttpPipelineBuilder().build(),
+                    FooWithProvisioningState.class,
+                    FooWithProvisioningState.class,
+                    POLLING_DURATION,
+                    newLroInitFunction(client));
 
             Mono<FooWithProvisioningState> resultMonoWithTimeout = lroFlux.last()
                 .flatMap(AsyncPollResponse::getFinalResult)
@@ -764,11 +764,11 @@ public class LROPollerTests {
 
             PollerFlux<PollResult<FooWithProvisioningState>, FooWithProvisioningState> lroFlux
                 = PollerFactory.create(SERIALIZER,
-                new HttpPipelineBuilder().build(),
-                FooWithProvisioningState.class,
-                FooWithProvisioningState.class,
-                POLLING_DURATION,
-                newLroInitFunction(client));
+                    new HttpPipelineBuilder().build(),
+                    FooWithProvisioningState.class,
+                    FooWithProvisioningState.class,
+                    POLLING_DURATION,
+                    newLroInitFunction(client));
 
             long nanoTime = System.nanoTime();
 
@@ -810,11 +810,11 @@ public class LROPollerTests {
 
             Flux<AsyncPollResponse<PollResult<FooWithProvisioningState>, FooWithProvisioningState>> lroFlux
                 = PollerFactory.create(SERIALIZER,
-                httpPipeline,
-                FooWithProvisioningState.class,
-                FooWithProvisioningState.class,
-                POLLING_DURATION,
-                newLroInitFunction(client));
+                    httpPipeline,
+                    FooWithProvisioningState.class,
+                    FooWithProvisioningState.class,
+                    POLLING_DURATION,
+                    newLroInitFunction(client));
             lroFlux = lroFlux.subscriberContext(context -> context.put("key1", "value1"));
 
             FooWithProvisioningState result = lroFlux
@@ -850,12 +850,12 @@ public class LROPollerTests {
 
             Flux<AsyncPollResponse<PollResult<FooWithProvisioningState>, FooWithProvisioningState>> lroFlux
                 = PollerFactory.create(SERIALIZER,
-                httpPipeline,
-                FooWithProvisioningState.class,
-                FooWithProvisioningState.class,
-                POLLING_DURATION,
-                newLroInitFunction(client).subscriberContext(context -> context.put("key1", "value1")),
-                new Context("key1", "value1"));
+                    httpPipeline,
+                    FooWithProvisioningState.class,
+                    FooWithProvisioningState.class,
+                    POLLING_DURATION,
+                    newLroInitFunction(client).subscriberContext(context -> context.put("key1", "value1")),
+                    new Context("key1", "value1"));
 
             FooWithProvisioningState result = lroFlux
                 .blockLast()

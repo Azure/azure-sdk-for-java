@@ -88,7 +88,7 @@ public interface VpnServerConfigurationsClient
      *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
-     * @param vpnServerConfigurationParameters VpnServerConfiguration Resource.
+     * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -105,7 +105,7 @@ public interface VpnServerConfigurationsClient
      *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
-     * @param vpnServerConfigurationParameters VpnServerConfiguration Resource.
+     * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -122,7 +122,7 @@ public interface VpnServerConfigurationsClient
      *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
-     * @param vpnServerConfigurationParameters VpnServerConfiguration Resource.
+     * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -139,7 +139,7 @@ public interface VpnServerConfigurationsClient
      *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
-     * @param vpnServerConfigurationParameters VpnServerConfiguration Resource.
+     * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -158,7 +158,7 @@ public interface VpnServerConfigurationsClient
      *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
-     * @param vpnServerConfigurationParameters VpnServerConfiguration Resource.
+     * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -175,7 +175,7 @@ public interface VpnServerConfigurationsClient
      *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
-     * @param vpnServerConfigurationParameters VpnServerConfiguration Resource.
+     * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -192,7 +192,7 @@ public interface VpnServerConfigurationsClient
      *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
-     * @param vpnServerConfigurationParameters VpnServerConfiguration Resource.
+     * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

@@ -21,6 +21,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.models.CloudEvent;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -63,7 +64,7 @@ public final class EventGridPublisherClientBuilder {
 
     private ClientOptions clientOptions;
 
-    private ObjectSerializer eventDataSerializer;
+    private ObjectSerializer serializer;
 
     private Configuration configuration;
 
@@ -102,7 +103,7 @@ public final class EventGridPublisherClientBuilder {
      * All other settings have defaults and are optional.
      * @return a publisher client with asynchronous publishing methods.
      */
-    public EventGridPublisherAsyncClient buildAsyncClient() {
+    private <T> EventGridPublisherAsyncClient<T> buildAsyncClient(Class<T> eventClass) {
         String hostname;
         try {
             hostname = new URL(Objects.requireNonNull(endpoint, "endpoint cannot be null")).getHost();
@@ -110,12 +111,12 @@ public final class EventGridPublisherClientBuilder {
             throw logger.logExceptionAsError(new IllegalArgumentException("Cannot parse endpoint"));
         }
 
-        EventGridServiceVersion buildServiceVersion = serviceVersion == null ?
-            EventGridServiceVersion.getLatest() :
-            serviceVersion;
+        EventGridServiceVersion buildServiceVersion = serviceVersion == null
+            ? EventGridServiceVersion.getLatest()
+            : serviceVersion;
 
         if (httpPipeline != null) {
-            return new EventGridPublisherAsyncClient(httpPipeline, hostname, buildServiceVersion, eventDataSerializer);
+            return new EventGridPublisherAsyncClient<T>(httpPipeline, hostname, buildServiceVersion, serializer, eventClass);
         }
 
         Configuration buildConfiguration = (configuration == null)
@@ -169,7 +170,7 @@ public final class EventGridPublisherClientBuilder {
             .build();
 
 
-        return new EventGridPublisherAsyncClient(buildPipeline, hostname, buildServiceVersion, eventDataSerializer);
+        return new EventGridPublisherAsyncClient<T>(buildPipeline, hostname, buildServiceVersion, serializer, eventClass);
     }
 
     /**
@@ -179,8 +180,8 @@ public final class EventGridPublisherClientBuilder {
      * performance, as the synchronous client simply blocks on the same asynchronous calls.
      * @return a publisher client with synchronous publishing methods.
      */
-    public EventGridPublisherClient buildClient() {
-        return new EventGridPublisherClient(buildAsyncClient());
+    private <T> EventGridPublisherClient<T> buildClient(Class<T> eventClass) {
+        return new EventGridPublisherClient<T>(buildAsyncClient(eventClass));
     }
 
     /**
@@ -290,12 +291,12 @@ public final class EventGridPublisherClientBuilder {
     }
 
     /**
-     * Set the serializer that will serialize the data part of the events when the events are sent to the service.
-     * @param eventDataSerializer The data serializer.
+     * Set the serializer that will serialize the custom events when custom events are sent to the service.
+     * @param serializer The serializer.
      * @return the builder itself.
      */
-    public EventGridPublisherClientBuilder serializer(ObjectSerializer eventDataSerializer) {
-        this.eventDataSerializer = eventDataSerializer;
+    public EventGridPublisherClientBuilder serializer(ObjectSerializer serializer) {
+        this.serializer = serializer;
         return this;
     }
 
@@ -325,4 +326,63 @@ public final class EventGridPublisherClientBuilder {
         return this;
     }
 
+    /**
+     * Build a {@link CloudEvent} publisher client with asynchronous publishing methods and the current settings. An endpoint must be set,
+     * and either a pipeline with correct authentication must be set, or a credential must be set in the form of
+     * an {@link AzureSasCredential} or a {@link AzureKeyCredential} at the respective methods.
+     * All other settings have defaults and are optional.
+     * @return a publisher client with asynchronous publishing methods.
+     */
+    public EventGridPublisherAsyncClient<CloudEvent> buildCloudEventPublisherAsyncClient() {
+        return this.buildAsyncClient(CloudEvent.class);
+    }
+
+    /**
+     * Build an {@link EventGridEvent} publisher client with asynchronous publishing methods and the current settings. An endpoint must be set,
+     * and either a pipeline with correct authentication must be set, or a credential must be set in the form of
+     * an {@link AzureSasCredential} or a {@link AzureKeyCredential} at the respective methods.
+     * All other settings have defaults and are optional.
+     * @return a publisher client with asynchronous publishing methods.
+     */
+    public EventGridPublisherAsyncClient<EventGridEvent> buildEventGridEventPublisherAsyncClient() {
+        return this.buildAsyncClient(EventGridEvent.class);
+    }
+
+    /**
+     * Build a custom event publisher client with asynchronous publishing methods and the current settings. An endpoint must be set,
+     * and either a pipeline with correct authentication must be set, or a credential must be set in the form of
+     * an {@link AzureSasCredential} or a {@link AzureKeyCredential} at the respective methods.
+     * All other settings have defaults and are optional.
+     * @return a publisher client with asynchronous publishing methods.
+     */
+    public EventGridPublisherAsyncClient<Object> buildCustomEventPublisherAsyncClient() {
+        return this.buildAsyncClient(Object.class);
+    }
+
+    /**
+     * Build a {@link CloudEvent} publisher client with synchronous publishing methods and the current settings. Endpoint and a credential
+     * must be set (either keyCredential or sharedAccessSignatureCredential), all other settings have defaults and/or are optional.
+     * @return a publisher client with synchronous publishing methods.
+     */
+    public EventGridPublisherClient<CloudEvent> buildCloudEventPublisherClient() {
+        return this.buildClient(CloudEvent.class);
+    }
+
+    /**
+     * Build an {@link EventGridEvent} publisher client with synchronous publishing methods and the current settings. Endpoint and a credential
+     * must be set (either keyCredential or sharedAccessSignatureCredential), all other settings have defaults and/or are optional.
+     * @return a publisher client with synchronous publishing methods.
+     */
+    public EventGridPublisherClient<EventGridEvent> buildEventGridEventPublisherClient() {
+        return this.buildClient(EventGridEvent.class);
+    }
+
+    /**
+     * Build a custom event publisher client with synchronous publishing methods and the current settings. Endpoint and a credential
+     * must be set (either keyCredential or sharedAccessSignatureCredential), all other settings have defaults and/or are optional.
+     * @return a publisher client with synchronous publishing methods.
+     */
+    public EventGridPublisherClient<Object> buildCustomEventPublisherClient() {
+        return this.buildClient(Object.class);
+    }
 }

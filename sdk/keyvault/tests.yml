@@ -1,7 +1,7 @@
 trigger: none
 
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       TimeoutInMinutes: 240
       MaxParallel: 7
@@ -17,7 +17,6 @@ stages:
           groupId: com.azure
           safeName: azuresecuritykeyvaultsecrets
       EnvVars:
-        AZURE_TEST_MODE: RECORD
         ARM_CLIENTID: $(aad-azure-sdk-test-client-id)
         ARM_CLIENTKEY: $(aad-azure-sdk-test-client-secret)
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)

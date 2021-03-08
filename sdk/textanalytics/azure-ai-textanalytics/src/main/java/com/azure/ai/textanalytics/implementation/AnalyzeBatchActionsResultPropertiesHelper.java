@@ -6,6 +6,7 @@ package com.azure.ai.textanalytics.implementation;
 import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesActionResult;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.core.util.IterableStream;
@@ -26,6 +27,8 @@ public final class AnalyzeBatchActionsResultPropertiesHelper {
             TextDocumentBatchStatistics operationStatistics);
         void setRecognizeEntitiesActionResults(AnalyzeBatchActionsResult analyzeBatchActionsResult,
             IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesActionResults);
+        void setRecognizeLinkedEntitiesActionResults(AnalyzeBatchActionsResult analyzeBatchActionsResult,
+            IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesActionResults);
         void setRecognizePiiEntitiesActionResults(AnalyzeBatchActionsResult analyzeBatchActionsResult,
             IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesActionResults);
         void setExtractKeyPhrasesActionResults(AnalyzeBatchActionsResult analyzeBatchActionsResult,
@@ -48,8 +51,14 @@ public final class AnalyzeBatchActionsResultPropertiesHelper {
     }
 
     public static void setRecognizeEntitiesActionResults(AnalyzeBatchActionsResult analyzeBatchActionsResult,
-        IterableStream<RecognizeEntitiesActionResult> entityRecognitionActionResults) {
-        accessor.setRecognizeEntitiesActionResults(analyzeBatchActionsResult, entityRecognitionActionResults);
+        IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesActionResults) {
+        accessor.setRecognizeEntitiesActionResults(analyzeBatchActionsResult, recognizeEntitiesActionResults);
+    }
+
+    public static void setRecognizeLinkedEntitiesActionResults(AnalyzeBatchActionsResult analyzeBatchActionsResult,
+        IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesActionResults) {
+        accessor.setRecognizeLinkedEntitiesActionResults(analyzeBatchActionsResult,
+            recognizeLinkedEntitiesActionResults);
     }
 
     public static void setRecognizePiiEntitiesActionResults(AnalyzeBatchActionsResult analyzeBatchActionsResult,

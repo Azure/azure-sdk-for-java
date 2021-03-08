@@ -41,6 +41,14 @@ import java.util.ArrayList;
  * With the custom deserializer the response correctly returns two PageRange elements and one ClearRange element.
  */
 final class PageListDeserializer extends JsonDeserializer<PageList> {
+    /*
+     * Added as of Jackson 2.12 as empty/missing XML was no longer triggering deserialize.
+     */
+    @Override
+    public PageList getNullValue(DeserializationContext ctxt) {
+        return new PageList();
+    }
+
     @Override
     public PageList deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         ArrayList<PageRange> pageRanges = new ArrayList<>();

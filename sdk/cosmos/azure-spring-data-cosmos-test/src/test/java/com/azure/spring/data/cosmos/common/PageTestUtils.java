@@ -18,6 +18,7 @@ public class PageTestUtils {
         assertThat(pageable).isInstanceOf(CosmosPageRequest.class);
         assertTrue(continuationTokenIsNull((CosmosPageRequest) pageable));
         assertThat(pageable.getPageSize()).isEqualTo(pageSize);
+        assertThat(page.hasNext()).isFalse();
     }
 
     public static void validateNonLastPage(Page<?> page, int pageSize) {
@@ -27,6 +28,7 @@ public class PageTestUtils {
         assertThat(((CosmosPageRequest) pageable).getRequestContinuation()).isNotNull();
         assertThat(((CosmosPageRequest) pageable).getRequestContinuation()).isNotBlank();
         assertThat(pageable.getPageSize()).isEqualTo(pageSize);
+        assertThat(page.hasNext()).isTrue();
     }
 
     private static boolean continuationTokenIsNull(CosmosPageRequest pageRequest) {
