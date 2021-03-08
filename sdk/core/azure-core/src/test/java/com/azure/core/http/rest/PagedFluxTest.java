@@ -181,7 +181,7 @@ public class PagedFluxTest {
         CountDownLatch singlePageLatch = new CountDownLatch(1);
         PagedFlux<Integer> pagedFlux = new PagedFlux<>(() -> withContext(context -> {
             assertNotNull(context);
-            assertEquals(1, context.getValues().size());
+            assertEquals(1, context.size());
             assertEquals("context", context.getData("hello").get().toString());
             singlePageLatch.countDown();
             return Mono.empty();
@@ -202,7 +202,7 @@ public class PagedFluxTest {
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
         pagedFlux = new PagedFlux<>(() -> withContext(context -> {
             assertNotNull(context);
-            assertEquals(1, context.getValues().size());
+            assertEquals(1, context.size());
             assertEquals("context", context.getData("hello").get().toString());
             multiPageLatch.countDown();
             PagedResponse<Integer> response = new PagedResponseBase<>(httpRequest, 200, httpHeaders,
@@ -211,7 +211,7 @@ public class PagedFluxTest {
             return Mono.just(response);
         }), continuationToken -> withContext(context -> {
             assertNotNull(context);
-            assertEquals(1, context.getValues().size());
+            assertEquals(1, context.size());
             assertEquals("context", context.getData("hello").get().toString());
             multiPageLatch.countDown();
             return Mono.empty();

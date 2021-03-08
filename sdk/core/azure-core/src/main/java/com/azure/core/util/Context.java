@@ -34,10 +34,13 @@ public class Context {
     private final Object key;
     private final Object value;
 
+    private final int size;
+
     protected Context() {
         this.parent = null;
         this.key = null;
         this.value = null;
+        this.size = 0;
     }
 
     /**
@@ -55,12 +58,14 @@ public class Context {
         this.parent = null;
         this.key = Objects.requireNonNull(key, "'key' cannot be null.");
         this.value = value;
+        this.size = 1;
     }
 
     private Context(Context parent, Object key, Object value) {
         this.parent = parent;
         this.key = key;
         this.value = value;
+        this.size = parent.size + 1;
     }
 
     /**
@@ -136,7 +141,18 @@ public class Context {
     }
 
     /**
-     * Scans the linked-list of {@link Context} objects populating a {@link Map} with the values of the context.
+     * Returns the number of elements in this Context, measured from the given context to the root element. If there
+     * are children of this context, they are not counted.
+     *
+     * @return The number of elements in this context.
+     */
+    public int size() {
+        return size;
+    }
+
+    /**
+     * Scans the linked-list of {@link Context} objects populating an unmodifiable {@link Map} with the values of the
+     * context.
      *
      * <p><strong>Code samples</strong></p>
      *
