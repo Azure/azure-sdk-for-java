@@ -271,10 +271,6 @@ public final class PhoneNumbersClientBuilder {
         return new UserAgentPolicy(applicationId, sdkName, sdkVersion, configuration);
     }
 
-    RetryPolicy createRetryPolicy() {
-        return this.retryPolicy == null ? new RetryPolicy() : this.retryPolicy;
-    }
-
     CookiePolicy createCookiePolicy() {
         return new CookiePolicy();
     }
@@ -328,7 +324,7 @@ public final class PhoneNumbersClientBuilder {
             PROPERTIES.get(SDK_VERSION),
             this.configuration
         ));
-        policyList.add(this.createRetryPolicy());
+        policyList.add(this.retryPolicy == null ? new RetryPolicy() : this.retryPolicy);
         policyList.add(this.createCookiePolicy());
 
         // Add additional policies
