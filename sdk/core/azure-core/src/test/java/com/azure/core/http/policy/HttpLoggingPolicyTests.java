@@ -143,8 +143,8 @@ public class HttpLoggingPolicyTests {
         throws MalformedURLException {
         URL requestUrl = new URL("https://test.com");
         HttpHeaders requestHeaders = new HttpHeaders()
-            .put("Content-Type", ContentType.APPLICATION_JSON)
-            .put("Content-Length", Integer.toString(contentLength));
+            .set("Content-Type", ContentType.APPLICATION_JSON)
+            .set("Content-Length", Integer.toString(contentLength));
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY)))
@@ -170,8 +170,8 @@ public class HttpLoggingPolicyTests {
     public void validateLoggingDoesNotConsumeResponse(Flux<ByteBuffer> stream, byte[] data, int contentLength) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, "https://test.com");
         HttpHeaders responseHeaders = new HttpHeaders()
-            .put("Content-Type", ContentType.APPLICATION_JSON)
-            .put("Content-Length", Integer.toString(contentLength));
+            .set("Content-Type", ContentType.APPLICATION_JSON)
+            .set("Content-Length", Integer.toString(contentLength));
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY)))

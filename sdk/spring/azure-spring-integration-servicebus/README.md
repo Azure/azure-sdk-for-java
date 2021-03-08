@@ -19,7 +19,7 @@ Service Bus offers a reliable and secure platform for asynchronous transfer of d
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-integration-servicebus</artifactId>
-    <version>2.2.0-beta.1</version>
+    <version>2.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -29,6 +29,9 @@ Service Bus offers a reliable and secure platform for asynchronous transfer of d
 [Spring Integration][spring_integration] enables lightweight messaging within Spring-based applications and supports integration with external systems via declarative adapters.
 
 This project provides inbound and outbound channel adapters for Azure Service Bus.
+
+### Configure ServiceBusMessageConverter to customize ObjectMapper
+`ServiceBusMessageConverter` is made as a configurable bean to allow users to customized `ObjectMapper`.
 
 ## Examples
 

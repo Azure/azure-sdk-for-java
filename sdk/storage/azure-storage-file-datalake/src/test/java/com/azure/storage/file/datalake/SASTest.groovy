@@ -3,6 +3,9 @@
 
 package com.azure.storage.file.datalake
 
+import com.azure.core.credential.AzureSasCredential
+import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.test.TestMode
 import com.azure.storage.blob.sas.BlobSasServiceVersion
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.sas.AccountSasPermission
@@ -792,4 +795,170 @@ class SASTest extends APISpec {
         null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | null    | "cid" || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\ncid\n\n\n" + BlobSasServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
     }
 
+    def "can use sas to authenticate"() {
+        setup:
+        def service = new AccountSasService()
+            .setBlobAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+        def expiryTime = getUTCNow().plusDays(1)
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = primaryDataLakeServiceClient.generateAccountSas(sasValues)
+        HttpPipelinePolicy recordPolicy = { context, next -> return next.process() }
+        if (testMode == TestMode.RECORD) {
+            recordPolicy = interceptorManager.getRecordPolicy()
+        }
+        def pathName = generatePathName()
+        fsc.createDirectory(pathName)
+
+        when:
+        new DataLakeFileSystemClientBuilder()
+            .endpoint(fsc.getFileSystemUrl())
+            .sasToken(sas)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new DataLakeFileSystemClientBuilder()
+            .endpoint(fsc.getFileSystemUrl())
+            .credential(new AzureSasCredential(sas))
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new DataLakeFileSystemClientBuilder()
+            .endpoint(fsc.getFileSystemUrl() + "?" + sas)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new DataLakePathClientBuilder()
+            .endpoint(fsc.getFileSystemUrl())
+            .pathName(pathName)
+            .sasToken(sas)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildDirectoryClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new DataLakePathClientBuilder()
+            .endpoint(fsc.getFileSystemUrl())
+            .pathName(pathName)
+            .credential(new AzureSasCredential(sas))
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildDirectoryClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new DataLakePathClientBuilder()
+            .endpoint(fsc.getFileSystemUrl() + "?" + sas)
+            .pathName(pathName)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildDirectoryClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new DataLakePathClientBuilder()
+            .endpoint(fsc.getFileSystemUrl())
+            .pathName(pathName)
+            .sasToken(sas)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildFileClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new DataLakePathClientBuilder()
+            .endpoint(fsc.getFileSystemUrl())
+            .pathName(pathName)
+            .credential(new AzureSasCredential(sas))
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildFileClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new DataLakePathClientBuilder()
+            .endpoint(fsc.getFileSystemUrl() + "?" + sas)
+            .pathName(pathName)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildFileClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new DataLakeServiceClientBuilder()
+            .endpoint(fsc.getFileSystemUrl())
+            .sasToken(sas)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new DataLakeServiceClientBuilder()
+            .endpoint(fsc.getFileSystemUrl())
+            .credential(new AzureSasCredential(sas))
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new DataLakeServiceClientBuilder()
+            .endpoint(fsc.getFileSystemUrl() + "?" + sas)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+    }
 }

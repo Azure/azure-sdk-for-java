@@ -45,7 +45,6 @@ public class SSISLogLocation {
 
     /**
      * Creates an instance of SSISLogLocation class.
-     * @param logPath the SSIS package execution log path. Type: string (or Expression with resultType string).
      */
     public SSISLogLocation() {
         type = "File";

@@ -29,7 +29,7 @@ public class QueryTests extends QueryTestBase {
     @Override
     public void validQuerySucceeds(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
-        int pageSize = 5;
+        int pageSize = 3;
         String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
         String roomModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
         List<String> roomTwinIds = new ArrayList<>();
@@ -56,7 +56,7 @@ public class QueryTests extends QueryTestBase {
                     .isEqualTo(true);
             }
 
-            pagedQueryResponse = client.query(queryString, BasicDigitalTwin.class);
+            pagedQueryResponse = client.query(queryString, BasicDigitalTwin.class,new QueryOptions().setMaxItemsPerPage(pageSize), Context.NONE);
 
             // Test that page size hint works, and that all returned pages either have the page size hint amount of
             // elements, or have no continuation token (signaling that it is the last page)

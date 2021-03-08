@@ -3,6 +3,8 @@
 
 package com.azure.storage.file.datalake
 
+import com.azure.core.credential.AzureSasCredential
+import com.azure.core.credential.TokenCredential
 import com.azure.core.http.HttpClient
 import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpMethod
@@ -40,7 +42,8 @@ class BuilderHelperTest extends Specification {
      */
     def "Fresh date applied on retry"() {
         when:
-        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, requestRetryOptions, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
+        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, null,
+            endpoint, requestRetryOptions, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
             new FreshDateTestClient(), new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTest.class))
 
         then:
@@ -122,7 +125,8 @@ class BuilderHelperTest extends Specification {
     @Unroll
     def "Custom application id in UA string"() {
         when:
-        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, new RequestRetryOptions(), new HttpLogOptions().setApplicationId(logOptionsUA), new ClientOptions().setApplicationId(clientOptionsUA),
+        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, null,
+            endpoint, new RequestRetryOptions(), new HttpLogOptions().setApplicationId(logOptionsUA), new ClientOptions().setApplicationId(clientOptionsUA),
             new ApplicationIdUAStringTestClient(expectedUA), new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTest.class))
 
         then:
@@ -226,6 +230,165 @@ class BuilderHelperTest extends Specification {
         "log-options-id" | null                || "log-options-id"
         null             | "client-options-id" || "client-options-id"
         "log-options-id" | "client-options-id" || "client-options-id"   // Client options preferred over log options
+    }
+
+    def "Does not throw on ambiguous credentials, without AzureSasCredential"(){
+        when:
+        new DataLakeFileSystemClientBuilder()
+            .endpoint(endpoint)
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .credential(Mock(TokenCredential.class))
+            .sasToken("foo")
+            .buildClient()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new DataLakePathClientBuilder()
+            .endpoint(endpoint)
+            .pathName("foo")
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .credential(Mock(TokenCredential.class))
+            .sasToken("foo")
+            .buildDirectoryClient()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new DataLakeServiceClientBuilder()
+            .endpoint(endpoint)
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .credential(Mock(TokenCredential.class))
+            .sasToken("foo")
+            .buildClient()
+
+        then:
+        noExceptionThrown()
+    }
+
+    def "Throws on ambiguous credentials, with AzureSasCredential"() {
+        when:
+        new DataLakeFileSystemClientBuilder()
+            .endpoint(endpoint)
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new DataLakeFileSystemClientBuilder()
+            .endpoint(endpoint)
+            .credential(Mock(TokenCredential.class))
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new DataLakeFileSystemClientBuilder()
+            .endpoint(endpoint)
+            .sasToken("foo")
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new DataLakeFileSystemClientBuilder()
+            .endpoint(endpoint + "?sig=foo")
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new DataLakePathClientBuilder()
+            .endpoint(endpoint)
+            .pathName("foo")
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .credential(new AzureSasCredential("foo"))
+            .buildDirectoryClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new DataLakePathClientBuilder()
+            .endpoint(endpoint)
+            .pathName("foo")
+            .credential(Mock(TokenCredential.class))
+            .credential(new AzureSasCredential("foo"))
+            .buildDirectoryClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new DataLakePathClientBuilder()
+            .endpoint(endpoint)
+            .pathName("foo")
+            .sasToken("foo")
+            .credential(new AzureSasCredential("foo"))
+            .buildDirectoryClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new DataLakePathClientBuilder()
+            .endpoint(endpoint + "?sig=foo")
+            .pathName("foo")
+            .credential(new AzureSasCredential("foo"))
+            .buildDirectoryClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new DataLakeServiceClientBuilder()
+            .endpoint(endpoint)
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new DataLakeServiceClientBuilder()
+            .endpoint(endpoint)
+            .credential(Mock(TokenCredential.class))
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new DataLakeServiceClientBuilder()
+            .endpoint(endpoint)
+            .sasToken("foo")
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new DataLakeServiceClientBuilder()
+            .endpoint(endpoint + "?sig=foo")
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
     }
 
     private static final class FreshDateTestClient implements HttpClient {

@@ -47,7 +47,7 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
         }
         return cache.getToken()
             .flatMap(token -> {
-                context.getHttpRequest().getHeaders().put(AUTHORIZATION_HEADER, BEARER + " " + token.getToken());
+                context.getHttpRequest().getHeaders().set(AUTHORIZATION_HEADER, BEARER + " " + token.getToken());
                 return next.process();
             });
     }

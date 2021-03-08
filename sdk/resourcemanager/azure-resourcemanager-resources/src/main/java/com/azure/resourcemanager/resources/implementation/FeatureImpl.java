@@ -36,4 +36,9 @@ final class FeatureImpl extends
         }
         return innerModel().properties().state();
     }
+
+    @Override
+    public String id() {
+        return innerModel().id();
+    }
 }

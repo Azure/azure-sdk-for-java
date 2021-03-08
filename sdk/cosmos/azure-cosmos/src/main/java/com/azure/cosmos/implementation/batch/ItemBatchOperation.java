@@ -6,9 +6,11 @@ package com.azure.cosmos.implementation.batch;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosItemOperation;
 import com.azure.cosmos.CosmosItemOperationType;
+import com.azure.cosmos.CosmosPatchOperations;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.patch.PatchUtil;
 import com.azure.cosmos.models.PartitionKey;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -63,7 +65,12 @@ public final class ItemBatchOperation<TInternal> implements CosmosItemOperation 
         }
 
         if (this.getItemInternal() != null) {
-            jsonSerializable.set(BatchRequestResponseConstants.FIELD_RESOURCE_BODY, this.getItemInternal());
+            if (this.getOperationType() == CosmosItemOperationType.PATCH) {
+                jsonSerializable.set(BatchRequestResponseConstants.FIELD_RESOURCE_BODY,
+                    PatchUtil.serializableBatchPatchOperation((CosmosPatchOperations)this.getItemInternal(), this.getRequestOptions()));
+            } else {
+                jsonSerializable.set(BatchRequestResponseConstants.FIELD_RESOURCE_BODY, this.getItemInternal());
+            }
         }
 
         if (this.getRequestOptions() != null) {

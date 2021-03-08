@@ -3,6 +3,9 @@
 
 package com.azure.storage.file.datalake;
 
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
@@ -64,9 +67,10 @@ import java.util.Set;
  * <p>
  * Please refer to the
  *
- * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json">Azure
+ * <a href="https://docs.microsoft.com/azure/storage/blobs/data-lake-storage-introduction">Azure
  * Docs</a> for more information.
  */
+@ServiceClient(builder = DataLakePathClientBuilder.class)
 public class DataLakeFileClient extends DataLakePathClient {
 
     /**
@@ -123,9 +127,10 @@ public class DataLakeFileClient extends DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.delete}
      *
      * <p>For more information see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a></p>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete() {
         deleteWithResponse(null, null, Context.NONE).getValue();
     }
@@ -138,7 +143,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.deleteWithResponse#DataLakeRequestConditions-Duration-Context}
      *
      * <p>For more information see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a></p>
      *
      * @param requestConditions {@link DataLakeRequestConditions}
@@ -147,6 +152,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      *
      * @return A response containing status code and HTTP headers.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(DataLakeRequestConditions requestConditions, Duration timeout,
         Context context) {
         // TODO (rickle-msft): Update for continuation token if we support HNS off
@@ -169,6 +175,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * data provided in the {@link InputStream}.
      * @return Information about the uploaded path.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PathInfo upload(InputStream data, long length) {
         return upload(data, length, false);
     }
@@ -188,6 +195,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @param overwrite Whether or not to overwrite, should data exist on the bfilelob.
      * @return Information about the uploaded path.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PathInfo upload(InputStream data, long length, boolean overwrite) {
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
         if (!overwrite) {
@@ -211,6 +219,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Information about the uploaded path.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PathInfo> uploadWithResponse(FileParallelUploadOptions options, Duration timeout,
         Context context) {
         Objects.requireNonNull(options);
@@ -235,6 +244,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @param filePath Path of the file to upload
      * @throws UncheckedIOException If an I/O error occurs
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void uploadFromFile(String filePath) {
         uploadFromFile(filePath, false);
     }
@@ -250,6 +260,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @param overwrite Whether or not to overwrite, should the file already exist
      * @throws UncheckedIOException If an I/O error occurs
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void uploadFromFile(String filePath, boolean overwrite) {
         DataLakeRequestConditions requestConditions = null;
 
@@ -282,6 +293,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @throws UncheckedIOException If an I/O error occurs
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions requestConditions,
         Duration timeout) {
@@ -303,13 +315,14 @@ public class DataLakeFileClient extends DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.append#InputStream-long-long}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure
      * Docs</a></p>
      *
      * @param data The data to write to the file.
      * @param fileOffset The position where the data is to be appended.
      * @param length The exact length of the data.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void append(InputStream data, long fileOffset, long length) {
         appendWithResponse(data, fileOffset, length, null, null, null, Context.NONE);
     }
@@ -322,7 +335,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.appendWithResponse#InputStream-long-long-byte-String-Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure
      * Docs</a></p>
      *
      * @param data The data to write to the file.
@@ -337,6 +350,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      *
      * @return A response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> appendWithResponse(InputStream data, long fileOffset, long length,
         byte[] contentMd5, String leaseId, Duration timeout, Context context) {
 
@@ -363,13 +377,14 @@ public class DataLakeFileClient extends DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.flush#long}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure
      * Docs</a></p>
      *
      * @param position The length of the file after all data has been written.
      *
      * @return Information about the created resource.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PathInfo flush(long position) {
         return flush(position, false);
     }
@@ -383,7 +398,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.flush#long-boolean}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure
      * Docs</a></p>
      *
      * @param position The length of the file after all data has been written.
@@ -391,6 +406,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      *
      * @return Information about the created resource.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PathInfo flush(long position, boolean overwrite) {
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
         if (overwrite) {
@@ -408,7 +424,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.flushWithResponse#long-boolean-boolean-PathHttpHeaders-DataLakeRequestConditions-Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure
      * Docs</a></p>
      *
      * @param position The length of the file after all data has been written.
@@ -421,6 +437,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      *
      * @return A response containing the information of the created resource.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PathInfo> flushWithResponse(long position, boolean retainUncommittedData, boolean close,
         PathHttpHeaders httpHeaders, DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
         Mono<Response<PathInfo>> response =  dataLakeFileAsyncClient.flushWithResponse(position, retainUncommittedData,
@@ -437,7 +454,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.read#OutputStream}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @throws UncheckedIOException If an I/O error occurs.
@@ -455,7 +472,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.readWithResponse#OutputStream-FileRange-DownloadRetryOptions-DataLakeRequestConditions-boolean-Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @param range {@link FileRange}
@@ -491,12 +508,13 @@ public class DataLakeFileClient extends DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.readToFile#String}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
      * @return The file properties and metadata.
      * @throws UncheckedIOException If an I/O error occurs
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PathProperties readToFile(String filePath) {
         return readToFile(filePath, false);
     }
@@ -512,13 +530,14 @@ public class DataLakeFileClient extends DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.readToFile#String-boolean}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
      * @param overwrite Whether or not to overwrite the file, should the file exist.
      * @return The file properties and metadata.
      * @throws UncheckedIOException If an I/O error occurs
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PathProperties readToFile(String filePath, boolean overwrite) {
         Set<OpenOption> openOptions = null;
         if (overwrite) {
@@ -545,7 +564,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.readToFileWithResponse#String-FileRange-ParallelTransferOptions-DownloadRetryOptions-DataLakeRequestConditions-boolean-Set-Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
      * @param range {@link FileRange}
@@ -560,6 +579,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @return A response containing the file properties and metadata.
      * @throws UncheckedIOException If an I/O error occurs.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PathProperties> readToFileWithResponse(String filePath, FileRange range,
         ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions downloadRetryOptions,
         DataLakeRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions,
@@ -579,7 +599,7 @@ public class DataLakeFileClient extends DataLakePathClient {
     /**
      * Moves the file to another location within the file system.
      * For more information see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -593,6 +613,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * in myfilesystem (ex: newdir/hi.txt) then set the destinationPath = "newdir/hi.txt"
      * @return A {@link DataLakeFileClient} used to interact with the new file created.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public DataLakeFileClient rename(String destinationFileSystem, String destinationPath) {
         return renameWithResponse(destinationFileSystem, destinationPath, null, null, null, null).getValue();
     }
@@ -600,7 +621,7 @@ public class DataLakeFileClient extends DataLakePathClient {
     /**
      * Moves the file to another location within the file system.
      * For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -619,6 +640,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @return A {@link Response} whose {@link Response#getValue() value} that contains a {@link DataLakeFileClient}
      * used to interact with the file created.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataLakeFileClient> renameWithResponse(String destinationFileSystem, String destinationPath,
         DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destinationRequestConditions,
         Duration timeout, Context context) {
@@ -634,7 +656,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * Opens an input stream to query the file.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -651,7 +673,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * Opens an input stream to query the file.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -679,7 +701,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * Queries an entire file into an output stream.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -698,7 +720,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * Queries an entire file into an output stream.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -729,6 +751,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      *
      * @param options Schedule deletion parameters.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void scheduleDeletion(FileScheduleDeletionOptions options) {
         this.scheduleDeletionWithResponse(options, null, Context.NONE);
     }
@@ -746,6 +769,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> scheduleDeletionWithResponse(FileScheduleDeletionOptions options,
         Duration timeout, Context context) {
         Mono<Response<Void>> response = this.dataLakeFileAsyncClient.scheduleDeletionWithResponse(options, context);

@@ -3,6 +3,8 @@
 
 package com.azure.messaging.servicebus;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.function.Consumer;
 
 /**
@@ -11,9 +13,13 @@ import java.util.function.Consumer;
  * @see ServiceBusProcessorClient
  */
 public class ServiceBusProcessorClientJavaDocCodeSamples {
+    String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+    String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_SESSION_QUEUE_NAME");
+
     /**
      * Creates a non session-enabled {@link ServiceBusProcessorClient}.
      */
+    @Test
     public void createServiceBusProcessorClient() {
         // BEGIN: com.azure.messaging.servicebus.servicebusprocessorclient#instantiation
         Consumer<ServiceBusReceivedMessageContext> onMessage = context -> {
@@ -35,10 +41,12 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
             }
         };
 
+        // Retrieve 'connectionString/queueName' from your configuration.
+
         ServiceBusProcessorClient processor = new ServiceBusClientBuilder()
-            .connectionString("<< connection-string >>")
+            .connectionString(connectionString)
             .processor()
-            .queueName("<< queue name >>")
+            .queueName(queueName)
             .processMessage(onMessage)
             .processError(onError)
             .buildProcessorClient();
@@ -51,6 +59,7 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
     /**
      * Creates a session-enabled {@link ServiceBusProcessorClient}.
      */
+    @Test
     public void createSessionEnabledServiceBusProcessorClient() {
         // BEGIN: com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation
         Consumer<ServiceBusReceivedMessageContext> onMessage = context -> {
@@ -72,10 +81,12 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
             }
         };
 
+        // Retrieve 'connectionString/queueName' from your configuration.
+
         ServiceBusProcessorClient sessionProcessor = new ServiceBusClientBuilder()
-            .connectionString("<< connection-string >>")
+            .connectionString(connectionString)
             .sessionProcessor()
-            .queueName("<< session-enabled queue name >>")
+            .queueName(queueName)
             .maxConcurrentSessions(2)
             .processMessage(onMessage)
             .processError(onError)

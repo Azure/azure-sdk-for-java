@@ -6,8 +6,8 @@ package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 /** The JobMetadata model. */
 @Fluent
@@ -19,12 +19,6 @@ public class JobMetadata {
     private OffsetDateTime createdDateTime;
 
     /*
-     * The displayName property.
-     */
-    @JsonProperty(value = "displayName")
-    private String displayName;
-
-    /*
      * The expirationDateTime property.
      */
     @JsonProperty(value = "expirationDateTime")
@@ -34,7 +28,7 @@ public class JobMetadata {
      * The jobId property.
      */
     @JsonProperty(value = "jobId", required = true)
-    private String jobId;
+    private UUID jobId;
 
     /*
      * The lastUpdateDateTime property.
@@ -69,26 +63,6 @@ public class JobMetadata {
     }
 
     /**
-     * Get the displayName property: The displayName property.
-     *
-     * @return the displayName value.
-     */
-    public String getDisplayName() {
-        return this.displayName;
-    }
-
-    /**
-     * Set the displayName property: The displayName property.
-     *
-     * @param displayName the displayName value to set.
-     * @return the JobMetadata object itself.
-     */
-    public JobMetadata setDisplayName(String displayName) {
-        this.displayName = displayName;
-        return this;
-    }
-
-    /**
      * Get the expirationDateTime property: The expirationDateTime property.
      *
      * @return the expirationDateTime value.
@@ -113,7 +87,7 @@ public class JobMetadata {
      *
      * @return the jobId value.
      */
-    public String getJobId() {
+    public UUID getJobId() {
         return this.jobId;
     }
 
@@ -123,7 +97,7 @@ public class JobMetadata {
      * @param jobId the jobId value to set.
      * @return the JobMetadata object itself.
      */
-    public JobMetadata setJobId(String jobId) {
+    public JobMetadata setJobId(UUID jobId) {
         this.jobId = jobId;
         return this;
     }

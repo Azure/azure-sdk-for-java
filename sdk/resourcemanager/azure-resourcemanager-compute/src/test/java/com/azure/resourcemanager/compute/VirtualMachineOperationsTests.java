@@ -866,6 +866,42 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertEquals(DiskState.RESERVED, disk.innerModel().diskState());
     }
 
+    @Test
+    public void canForceDeleteVirtualMachine() {
+        // Create
+        computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion("eastus2euap")
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+            .withAdminUsername("Foo12")
+            .withAdminPassword("abc!@#F0orL")
+            .create();
+        // Get
+        VirtualMachine virtualMachine = computeManager.virtualMachines().getByResourceGroup(rgName, vmName);
+        Assertions.assertNotNull(virtualMachine);
+        Assertions.assertEquals(Region.fromName("eastus2euap"), virtualMachine.region());
+        String nicId = virtualMachine.primaryNetworkInterfaceId();
+
+        // Force delete
+        computeManager.virtualMachines().deleteById(virtualMachine.id(), true);
+
+        try {
+            virtualMachine = computeManager.virtualMachines().getById(virtualMachine.id());
+        } catch (ManagementException ex) {
+            virtualMachine = null;
+            Assertions.assertEquals(404, ex.getResponse().getStatusCode());
+        }
+        Assertions.assertNull(virtualMachine);
+
+        // check if nic exists after force delete vm
+        NetworkInterface nic = networkManager.networkInterfaces().getById(nicId);
+        Assertions.assertNotNull(nic);
+    }
+
     private CreatablesInfo prepareCreatableVirtualMachines(
         Region region, String vmNamePrefix, String networkNamePrefix, String publicIpNamePrefix, int vmCount) {
 

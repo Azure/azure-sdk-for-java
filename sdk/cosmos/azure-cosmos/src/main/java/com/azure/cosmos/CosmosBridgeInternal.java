@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.query.Transformer;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -134,5 +135,18 @@ public final class CosmosBridgeInternal {
             sqlQuerySpec,
             cosmosQueryRequestOptions,
             JsonNode.class)));
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <T> CosmosPagedFlux<T> queryChangeFeedInternal(
+        CosmosAsyncContainer container,
+        CosmosChangeFeedRequestOptions changeFeedRequestOptions,
+        Transformer<T> transformer) {
+
+        return UtilBridgeInternal.createCosmosPagedFlux(
+            transformer.transform(
+                container.queryChangeFeedInternalFunc(
+                    changeFeedRequestOptions,
+                    JsonNode.class)));
     }
 }

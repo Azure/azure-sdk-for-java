@@ -1,0 +1,23 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.westus2-1.eventgrid.azure.net/api/events?api-version=2018-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2819c5bc-dbda-4ed9-b4be-36274276dd05",
+      "Content-Type" : "application/cloudevents-batch+json; charset=utf-8"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "api-supported-versions" : "2018-01-01",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "7785fded-6605-4856-baa0-4af648365a31",
+      "Date" : "Thu, 04 Mar 2021 00:41:03 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

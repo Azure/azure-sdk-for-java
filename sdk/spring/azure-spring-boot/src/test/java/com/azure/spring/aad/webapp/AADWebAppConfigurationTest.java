@@ -4,6 +4,7 @@
 package com.azure.spring.aad.webapp;
 
 import com.azure.spring.aad.AADAuthorizationServerEndpoints;
+import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.junit.Test;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -25,109 +26,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AADWebAppConfigurationTest {
 
     @Test
-    public void noConfigurationOnMissingRequiredProperties() {
-        WebApplicationContextRunnerUtils.getContextRunner()
-            .run(context -> {
-                assertThat(context).doesNotHaveBean(AADWebAppClientRegistrationRepository.class);
-                assertThat(context).doesNotHaveBean(OAuth2AuthorizedClientRepository.class);
-                assertThat(context).doesNotHaveBean(OAuth2UserService.class);
-            });
-    }
-
-    @Test
-    public void configurationOnRequiredProperties() {
-        WebApplicationContextRunnerUtils.getContextRunnerWithRequiredProperties()
-            .run(context -> {
-                assertThat(context).hasSingleBean(AADWebAppClientRegistrationRepository.class);
-                assertThat(context).hasSingleBean(OAuth2AuthorizedClientRepository.class);
-                assertThat(context).hasSingleBean(OAuth2UserService.class);
-            });
-    }
-
-    @Test
-    public void clientRegistered() {
-        WebApplicationContextRunnerUtils.getContextRunnerWithRequiredProperties()
-            .run(context -> {
-                ClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
-                ClientRegistration azure = clientRepo.findByRegistrationId("azure");
-
-                assertNotNull(azure);
-                assertEquals("fake-client-id", azure.getClientId());
-                assertEquals("fake-client-secret", azure.getClientSecret());
-
-                AADAuthorizationServerEndpoints endpoints = new AADAuthorizationServerEndpoints("https://login.microsoftonline.com/", "fake-tenant-id");
-                assertEquals(endpoints.authorizationEndpoint(),
-                    azure.getProviderDetails().getAuthorizationUri());
-                assertEquals(endpoints.tokenEndpoint(), azure.getProviderDetails().getTokenUri());
-                assertEquals(endpoints.jwkSetEndpoint(), azure.getProviderDetails().getJwkSetUri());
-                assertEquals("{baseUrl}/login/oauth2/code/{registrationId}", azure.getRedirectUriTemplate());
-                assertDefaultScopes(azure, "openid", "profile");
-            });
-    }
-
-    @Test
-    public void clientRequiresPermissionRegistered() {
-        WebApplicationContextRunnerUtils.getContextRunnerWithRequiredProperties()
-            .withPropertyValues(
-                "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read"
-            )
-            .run(context -> {
-                ClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
-                ClientRegistration azure = clientRepo.findByRegistrationId("azure");
-                ClientRegistration graph = clientRepo.findByRegistrationId("graph");
-
-                assertNotNull(azure);
-                assertNotNull(graph);
-                assertDefaultScopes(azure,
-                    "openid", "profile", "offline_access", "Calendars.Read");
-                assertDefaultScopes(graph, "Calendars.Read");
-            });
-    }
-
-    @Test
-    public void clientRequiresMultiPermissions() {
-        WebApplicationContextRunnerUtils.getContextRunnerWithRequiredProperties()
-            .withPropertyValues(
-                "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read",
-                "azure.activedirectory.authorization-clients.arm.scopes = https://management.core.windows.net/user_impersonation"
-            )
-            .run(context -> {
-                ClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
-                ClientRegistration azure = clientRepo.findByRegistrationId("azure");
-                ClientRegistration graph = clientRepo.findByRegistrationId("graph");
-                assertDefaultScopes(
-                    azure,
-                    "openid",
-                    "profile",
-                    "offline_access",
-                    "Calendars.Read",
-                    "https://management.core.windows.net/user_impersonation");
-                assertDefaultScopes(graph, "Calendars.Read");
-            });
-    }
-
-    @Test
-    public void clientRequiresPermissionInDefaultClient() {
-        WebApplicationContextRunnerUtils.getContextRunnerWithRequiredProperties()
-            .withPropertyValues(
-                "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read"
-            )
-            .run(context -> {
-                ClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
-                ClientRegistration azure = clientRepo.findByRegistrationId("azure");
-                assertDefaultScopes(azure,
-                    "openid", "profile", "offline_access", "Calendars.Read");
-            });
-    }
-
-    @Test
     public void aadAwareClientRepository() {
-        WebApplicationContextRunnerUtils.getContextRunnerWithRequiredProperties()
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
             .withPropertyValues(
                 "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read"
             )
             .run(context -> {
-                AADWebAppClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
+                AADWebAppClientRegistrationRepository clientRepo =
+                    context.getBean(AADWebAppClientRegistrationRepository.class);
                 ClientRegistration azure = clientRepo.findByRegistrationId("azure");
                 ClientRegistration graph = clientRepo.findByRegistrationId("graph");
                 assertDefaultScopes(
@@ -148,46 +55,65 @@ public class AADWebAppConfigurationTest {
     }
 
     @Test
-    public void defaultClientWithAuthzScope() {
-        WebApplicationContextRunnerUtils.getContextRunnerWithRequiredProperties().withPropertyValues(
-                "azure.activedirectory.authorization-clients.azure.scopes = Calendars.Read"
-            )
+    public void clientRegistered() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
             .run(context -> {
-                AADWebAppClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
-                assertDefaultScopes(
-                    clientRepo.getAzureClient(),
-                    "openid", "profile", "offline_access", "Calendars.Read"
-                );
-            });
-    }
-
-    @Test
-    public void customizeUri() {
-        WebApplicationContextRunnerUtils.getContextRunnerWithRequiredProperties()
-            .withPropertyValues(
-                "azure.activedirectory.base-uri = http://localhost/"
-            )
-            .run(context -> {
-                AADWebAppClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
+                ClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
                 ClientRegistration azure = clientRepo.findByRegistrationId("azure");
-                AADAuthorizationServerEndpoints endpoints = new AADAuthorizationServerEndpoints("http://localhost/", "fake-tenant-id");
+
+                assertNotNull(azure);
+                assertEquals("fake-client-id", azure.getClientId());
+                assertEquals("fake-client-secret", azure.getClientSecret());
+
+                AADAuthorizationServerEndpoints endpoints = new AADAuthorizationServerEndpoints(
+                    "https://login.microsoftonline.com/", "fake-tenant-id");
                 assertEquals(endpoints.authorizationEndpoint(),
                     azure.getProviderDetails().getAuthorizationUri());
                 assertEquals(endpoints.tokenEndpoint(), azure.getProviderDetails().getTokenUri());
                 assertEquals(endpoints.jwkSetEndpoint(), azure.getProviderDetails().getJwkSetUri());
+                assertEquals("{baseUrl}/login/oauth2/code/", azure.getRedirectUriTemplate());
+                assertDefaultScopes(azure, "openid", "profile");
+            });
+    }
+
+    @Test
+    public void clientRequiresMultiPermissions() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read",
+                "azure.activedirectory.authorization-clients.arm.scopes = "
+                    + "https://management.core.windows.net/user_impersonation"
+            )
+            .run(context -> {
+                ClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
+                ClientRegistration azure = clientRepo.findByRegistrationId("azure");
+                ClientRegistration graph = clientRepo.findByRegistrationId("graph");
+                assertDefaultScopes(
+                    azure,
+                    "openid",
+                    "profile",
+                    "offline_access",
+                    "Calendars.Read",
+                    "https://management.core.windows.net/user_impersonation");
+                assertDefaultScopes(graph, "Calendars.Read");
             });
     }
 
     @Test
     public void clientRequiresOnDemandPermissions() {
-        WebApplicationContextRunnerUtils.getContextRunnerWithRequiredProperties()
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
             .withPropertyValues(
                 "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read",
                 "azure.activedirectory.authorization-clients.graph.on-demand = true",
-                "azure.activedirectory.authorization-clients.arm.scopes = https://management.core.windows.net/user_impersonation"
+                "azure.activedirectory.authorization-clients.arm.scopes = "
+                    + "https://management.core.windows.net/user_impersonation"
             )
             .run(context -> {
-                AADWebAppClientRegistrationRepository repo = context.getBean(AADWebAppClientRegistrationRepository.class);
+                AADWebAppClientRegistrationRepository repo =
+                    context.getBean(AADWebAppClientRegistrationRepository.class);
                 ClientRegistration azure = repo.findByRegistrationId("azure");
                 ClientRegistration graph = repo.findByRegistrationId("graph");
                 ClientRegistration arm = repo.findByRegistrationId("arm");
@@ -208,6 +134,215 @@ public class AADWebAppConfigurationTest {
     }
 
     @Test
+    public void clientRequiresPermissionInDefaultClient() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read"
+            )
+            .run(context -> {
+                ClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
+                ClientRegistration azure = clientRepo.findByRegistrationId("azure");
+                assertDefaultScopes(azure,
+                    "openid", "profile", "offline_access", "Calendars.Read");
+            });
+    }
+
+    @Test
+    public void clientRequiresPermissionRegistered() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read"
+            )
+            .run(context -> {
+                ClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
+                ClientRegistration azure = clientRepo.findByRegistrationId("azure");
+                ClientRegistration graph = clientRepo.findByRegistrationId("graph");
+
+                assertNotNull(azure);
+                assertNotNull(graph);
+                assertDefaultScopes(azure, "openid", "profile", "offline_access", "Calendars.Read");
+                assertDefaultScopes(graph, "Calendars.Read");
+            });
+    }
+
+    @Test
+    public void configurationOnRequiredProperties() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .run(context -> {
+                assertThat(context).hasSingleBean(AADWebAppClientRegistrationRepository.class);
+                assertThat(context).hasSingleBean(OAuth2AuthorizedClientRepository.class);
+                assertThat(context).hasSingleBean(OAuth2UserService.class);
+            });
+    }
+
+    @Test
+    public void customizeUri() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.base-uri = http://localhost/"
+            )
+            .run(context -> {
+                AADWebAppClientRegistrationRepository clientRepo =
+                    context.getBean(AADWebAppClientRegistrationRepository.class);
+                ClientRegistration azure = clientRepo.findByRegistrationId("azure");
+                AADAuthorizationServerEndpoints endpoints = new AADAuthorizationServerEndpoints(
+                    "http://localhost/", "fake-tenant-id");
+                assertEquals(endpoints.authorizationEndpoint(),
+                    azure.getProviderDetails().getAuthorizationUri());
+                assertEquals(endpoints.tokenEndpoint(), azure.getProviderDetails().getTokenUri());
+                assertEquals(endpoints.jwkSetEndpoint(), azure.getProviderDetails().getJwkSetUri());
+            });
+    }
+
+    @Test
+    public void defaultClientWithAuthzScope() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties().withPropertyValues(
+            "azure.activedirectory.authorization-clients.azure.scopes = Calendars.Read"
+        )
+            .run(context -> {
+                AADWebAppClientRegistrationRepository clientRepo =
+                    context.getBean(AADWebAppClientRegistrationRepository.class);
+                assertDefaultScopes(
+                    clientRepo.getAzureClient(),
+                    "openid", "profile", "offline_access", "Calendars.Read"
+                );
+            });
+    }
+
+    @Test
+    public void graphUriConfigurationTest() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .run(context -> {
+                AADAuthenticationProperties properties =
+                    context.getBean(AADAuthenticationProperties.class);
+                assertEquals(properties.getGraphBaseUri(), "https://graph.microsoft.com/");
+                assertEquals(properties.getGraphMembershipUri(), "https://graph.microsoft.com/v1.0/me/memberOf");
+            });
+
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.graph-base-uri=https://microsoftgraph.chinacloudapi.cn"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties =
+                    context.getBean(AADAuthenticationProperties.class);
+                assertEquals(properties.getGraphBaseUri(), "https://microsoftgraph.chinacloudapi.cn/");
+                assertEquals(properties.getGraphMembershipUri(),
+                    "https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf");
+            });
+
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.graph-base-uri=https://microsoftgraph.chinacloudapi.cn/"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties =
+                    context.getBean(AADAuthenticationProperties.class);
+                assertEquals(properties.getGraphBaseUri(), "https://microsoftgraph.chinacloudapi.cn/");
+                assertEquals(properties.getGraphMembershipUri(),
+                    "https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf");
+            });
+
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.graph-membership-uri=https://graph.microsoft.com/v1.0/me/memberOf"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties =
+                    context.getBean(AADAuthenticationProperties.class);
+                assertEquals(properties.getGraphBaseUri(), "https://graph.microsoft.com/");
+                assertEquals(properties.getGraphMembershipUri(), "https://graph.microsoft.com/v1.0/me/memberOf");
+            });
+
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.graph-base-uri=https://microsoftgraph.chinacloudapi.cn/",
+                "azure.activedirectory.graph-membership-uri=https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties =
+                    context.getBean(AADAuthenticationProperties.class);
+                assertEquals(properties.getGraphBaseUri(), "https://microsoftgraph.chinacloudapi.cn/");
+                assertEquals(properties.getGraphMembershipUri(),
+                    "https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf");
+            });
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void graphUriConfigurationWithExceptionTest() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.graph-membership-uri=https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+            });
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void multiTenantWithAllowedGroupsConfiguredTest1() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.tenant-id=",
+                "azure.activedirectory.user-group.allowed-groups=group1,group2"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+            });
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void multiTenantWithAllowedGroupsConfiguredTest2() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.tenant-id=common",
+                "azure.activedirectory.user-group.allowed-groups=group1,group2"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+            });
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void multiTenantWithAllowedGroupsConfiguredTest3() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.tenant-id=organizations",
+                "azure.activedirectory.user-group.allowed-groups=group1,group2"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+            });
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void multiTenantWithAllowedGroupsConfiguredTest4() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.tenant-id=consumers",
+                "azure.activedirectory.user-group.allowed-groups=group1,group2"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+            });
+    }
+
+    @Test
     public void groupConfiguration() {
         WebApplicationContextRunnerUtils
             .getContextRunnerWithRequiredProperties()
@@ -218,7 +353,7 @@ public class AADWebAppConfigurationTest {
                 assertDefaultScopes(
                     clientRepo.getAzureClient(),
                     "openid", "profile", "https://graph.microsoft.com/User.Read",
-                    "https://graph.microsoft.com/Directory.AccessAsUser.All"
+                    "https://graph.microsoft.com/Directory.Read.All"
                 );
             });
     }
@@ -228,8 +363,8 @@ public class AADWebAppConfigurationTest {
         WebApplicationContextRunnerUtils
             .getContextRunnerWithRequiredProperties()
             .withPropertyValues(
-                "azure.activedirectory.authorization-clients.office.scopes ="
-                    + " https://manage.office.com/ActivityFeed.Read",
+                "azure.activedirectory.authorization-clients.office.scopes = "
+                    + "https://manage.office.com/ActivityFeed.Read",
                 "azure.activedirectory.authorization-clients.arm.scopes = "
                     + "https://management.core.windows.net/user_impersonation"
             )
@@ -246,6 +381,17 @@ public class AADWebAppConfigurationTest {
     }
 
     @Test
+    public void noConfigurationOnMissingRequiredProperties() {
+        WebApplicationContextRunnerUtils
+            .getContextRunner()
+            .run(context -> {
+                assertThat(context).doesNotHaveBean(AADWebAppClientRegistrationRepository.class);
+                assertThat(context).doesNotHaveBean(OAuth2AuthorizedClientRepository.class);
+                assertThat(context).doesNotHaveBean(OAuth2UserService.class);
+            });
+    }
+
+    @Test
     public void resourceServerCountTest() {
         Set<String> scopes = new HashSet<>();
         assertEquals(resourceServerCount(scopes), 0);
@@ -255,7 +401,7 @@ public class AADWebAppConfigurationTest {
         assertEquals(resourceServerCount(scopes), 0);
         scopes.add("https://graph.microsoft.com/User.Read");
         assertEquals(resourceServerCount(scopes), 1);
-        scopes.add("https://graph.microsoft.com/Directory.AccessAsUser.All");
+        scopes.add("https://graph.microsoft.com/Directory.Read.All");
         assertEquals(resourceServerCount(scopes), 1);
         scopes.add("https://manage.office.com/ActivityFeed.Read");
         assertEquals(resourceServerCount(scopes), 2);

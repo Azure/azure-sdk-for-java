@@ -18,17 +18,23 @@ spring:
         checkpoint-container: [checkpoint-container]
     stream:
       bindings:
-        input:
+        consume-in-0:
           destination: [eventhub-name]
           group: [consumer-group]
-        output:
+        supply-out-0:
           destination: [the-same-eventhub-name-as-above]
 
       eventhub:
         bindings:
-          input:
+          consume-in-0:
             consumer:
               checkpoint-mode: MANUAL
       default:
         producer:
           errorChannelEnabled: true
+      function:
+        definition: consume;supply;
+      poller:
+        initial-delay: 0
+        fixed-delay: 1000
+

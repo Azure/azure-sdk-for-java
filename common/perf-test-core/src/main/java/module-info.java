@@ -3,11 +3,9 @@
 
 module com.azure.core.test.perf {
     requires reactor.core;
+    requires org.reactivestreams;
     requires jcommander;
-    requires reactor.netty;
-    requires io.netty.handler;
     requires com.fasterxml.jackson.annotation;
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
-    requires com.azure.core;
 }

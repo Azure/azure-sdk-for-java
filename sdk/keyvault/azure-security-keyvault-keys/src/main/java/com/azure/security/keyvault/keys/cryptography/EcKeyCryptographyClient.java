@@ -71,7 +71,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
         keyPair = getKeyPair(key);
 
         // Interpret the requested algorithm
-        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
+        Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (baseAlgorithm == null) {
             if (serviceCryptoAvailable()) {
@@ -113,7 +113,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
         keyPair = getKeyPair(key);
 
         // Interpret the requested algorithm
-        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
+        Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (baseAlgorithm == null) {
             if (serviceCryptoAvailable()) {

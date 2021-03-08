@@ -26,15 +26,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_ID;
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_SECRET;
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_SINGLE_TENANT_CLIENT_ID;
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_SINGLE_TENANT_CLIENT_SECRET;
-import static com.azure.spring.test.aad.EnvironmentVariables.SCOPE_GRAPH_READ;
-import static com.azure.spring.test.aad.EnvironmentVariables.toFullNameScope;
+import static com.azure.spring.test.Constant.toFullNameScope;
+import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_ID;
+import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_SECRET;
+import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_ID;
+import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_SECRET;
+import static com.azure.spring.test.EnvironmentVariable.AAD_TENANT_ID_1;
 import static org.junit.Assert.assertEquals;
 
 public class AADAuthenticationFilterIT {
+    public static final String SCOPE_GRAPH_READ = "ResourceAccessGraph.Read";
 
     private AADWebApiITHelper singleTenantITHelper;
     private AADWebApiITHelper multiTenantITHelper;
@@ -47,6 +48,7 @@ public class AADAuthenticationFilterIT {
 
     private AADWebApiITHelper getAADWebApiITHelper(String clientId, String clientSecret) {
         Map<String, String> properties = new HashMap<>();
+        properties.put("azure.activedirectory.tenant-id", AAD_TENANT_ID_1);
         properties.put("azure.activedirectory.client-id", clientId);
         properties.put("azure.activedirectory.client-secret", clientSecret);
         properties.put("azure.activedirectory.user-group.allowed-groups", "group1");

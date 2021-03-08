@@ -9,6 +9,7 @@ import com.azure.resourcemanager.containerregistry.models.RegistryTaskRun;
 import com.azure.resourcemanager.containerregistry.models.RegistryTaskRuns;
 import com.azure.resourcemanager.containerregistry.fluent.models.RunInner;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 public class RegistryTaskRunsImpl implements RegistryTaskRuns {
 
@@ -25,8 +26,8 @@ public class RegistryTaskRunsImpl implements RegistryTaskRuns {
 
     @Override
     public PagedFlux<RegistryTaskRun> listByRegistryAsync(String rgName, String acrName) {
-        return this.registryManager.serviceClient().getRuns().listAsync(rgName, acrName)
-            .mapPage(inner -> wrapModel(inner));
+        return PagedConverter.mapPage(this.registryManager.serviceClient().getRuns().listAsync(rgName, acrName),
+            inner -> wrapModel(inner));
     }
 
     @Override

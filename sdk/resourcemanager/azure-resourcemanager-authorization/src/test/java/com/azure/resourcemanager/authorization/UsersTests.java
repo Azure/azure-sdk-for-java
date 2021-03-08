@@ -43,8 +43,13 @@ public class UsersTests extends GraphRbacManagementTest {
                 .withPromptToChangePasswordOnLogin(true)
                 .create();
 
-        Assertions.assertNotNull(user);
-        Assertions.assertNotNull(user.id());
+        try {
+            Assertions.assertNotNull(user);
+            Assertions.assertNotNull(user.id());
+            Assertions.assertNotNull(authorizationManager.users().getById(user.id()));
+        } finally {
+            authorizationManager.users().deleteById(user.id());
+        }
     }
 
     @Test
@@ -58,8 +63,15 @@ public class UsersTests extends GraphRbacManagementTest {
                 .withPassword("StrongPass!123")
                 .create();
 
-        user = user.update().withUsageLocation(CountryIsoCode.AUSTRALIA).apply();
+        try {
+            user = user.update().withUsageLocation(CountryIsoCode.AUSTRALIA).apply();
 
-        Assertions.assertEquals(CountryIsoCode.AUSTRALIA, user.usageLocation());
+            Assertions.assertEquals(CountryIsoCode.AUSTRALIA, user.usageLocation());
+
+            ActiveDirectoryUser finalUser = user;
+            Assertions.assertTrue(authorizationManager.users().list().stream().anyMatch(x -> x.id().equals(finalUser.id())));
+        } finally {
+            authorizationManager.users().deleteById(user.id());
+        }
     }
 }

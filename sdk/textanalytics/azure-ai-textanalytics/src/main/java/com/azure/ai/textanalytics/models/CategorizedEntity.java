@@ -3,18 +3,18 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.ai.textanalytics.implementation.CategorizedEntityPropertiesHelper;
 
 /**
  * The {@link CategorizedEntity} model.
  */
-@Immutable
 public final class CategorizedEntity {
     private final String text;
     private final EntityCategory category;
     private final String subcategory;
     private final double confidenceScore;
     private final int offset;
+    private int length;
 
     /**
      * Creates a {@link CategorizedEntity} model that describes entity.
@@ -50,6 +50,10 @@ public final class CategorizedEntity {
         this.subcategory = subcategory;
         this.confidenceScore = confidenceScore;
         this.offset = offset;
+    }
+
+    static {
+        CategorizedEntityPropertiesHelper.setAccessor((entity, length) -> entity.setLength(length));
     }
 
     /**
@@ -96,5 +100,18 @@ public final class CategorizedEntity {
      */
     public int getOffset() {
         return offset;
+    }
+
+    /**
+     * Get the length of entity text.
+     *
+     * @return The length of entity text.
+     */
+    public int getLength() {
+        return length;
+    }
+
+    private void setLength(int length) {
+        this.length = length;
     }
 }

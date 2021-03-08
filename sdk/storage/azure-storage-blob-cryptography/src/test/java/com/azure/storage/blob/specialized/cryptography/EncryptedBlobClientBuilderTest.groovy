@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob.specialized.cryptography
 
+import com.azure.core.credential.AzureSasCredential
+import com.azure.core.credential.TokenCredential
 import com.azure.core.http.HttpClient
 import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpMethod
@@ -123,6 +125,83 @@ class EncryptedBlobClientBuilderTest extends Specification {
         StepVerifier.create(encryptedBlobClient.getHttpPipeline().send(request(encryptedBlobClient.getBlobUrl())))
             .assertNext({ it.getStatusCode() == 200 })
             .verifyComplete()
+    }
+
+    def "Does not throw on ambiguous credentials, without AzureSasCredential"(){
+        setup:
+        def randomData = new byte[256]
+        new SecureRandom().nextBytes(randomData)
+
+        when:
+        new EncryptedBlobClientBuilder()
+            .endpoint(endpoint)
+            .containerName("container")
+            .blobName("foo")
+            .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .credential(Mock(TokenCredential.class))
+            .sasToken("foo")
+            .buildEncryptedBlobClient()
+
+        then:
+        noExceptionThrown()
+    }
+
+    def "Throws on ambiguous credentials, with AzureSasCredential"() {
+        setup:
+        def randomData = new byte[256]
+        new SecureRandom().nextBytes(randomData)
+
+        when:
+        new EncryptedBlobClientBuilder()
+            .endpoint(endpoint)
+            .blobName("foo")
+            .containerName("container")
+            .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .credential(new AzureSasCredential("foo"))
+            .buildEncryptedBlobClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new EncryptedBlobClientBuilder()
+            .endpoint(endpoint)
+            .blobName("foo")
+            .containerName("container")
+            .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
+            .credential(Mock(TokenCredential.class))
+            .credential(new AzureSasCredential("foo"))
+            .buildEncryptedBlobClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new EncryptedBlobClientBuilder()
+            .endpoint(endpoint)
+            .blobName("foo")
+            .containerName("container")
+            .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
+            .sasToken("foo")
+            .credential(new AzureSasCredential("foo"))
+            .buildEncryptedBlobClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new EncryptedBlobClientBuilder()
+            .endpoint(endpoint + "?sig=foo")
+            .blobName("foo")
+            .containerName("container")
+            .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
+            .credential(new AzureSasCredential("foo"))
+            .buildEncryptedBlobClient()
+
+        then:
+        thrown(IllegalStateException.class)
     }
 
     private static final class FreshDateTestClient implements HttpClient {

@@ -12,6 +12,7 @@ import com.azure.resourcemanager.appservice.models.TopLevelDomainAgreementOption
 import com.azure.resourcemanager.appservice.fluent.models.DomainInner;
 import com.azure.resourcemanager.appservice.fluent.DomainsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation for AppServiceDomains. */
 public class AppServiceDomainsImpl
@@ -43,11 +44,11 @@ public class AppServiceDomainsImpl
 
     @Override
     public PagedIterable<DomainLegalAgreement> listAgreements(String topLevelExtension) {
-        return this
+        return PagedConverter.mapPage(this
             .manager()
             .serviceClient()
             .getTopLevelDomains()
-            .listAgreements(topLevelExtension, new TopLevelDomainAgreementOption())
-            .mapPage(DomainLegalAgreementImpl::new);
+            .listAgreements(topLevelExtension, new TopLevelDomainAgreementOption()),
+            DomainLegalAgreementImpl::new);
     }
 }

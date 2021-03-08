@@ -81,7 +81,7 @@ public class AADWebAppConfiguration {
             // AAD server will return error if:
             // 1. authorizationCodeScopes have more than one resource server.
             // 2. accessTokenScopes have no resource server
-            accessTokenScopes.add("https://graph.microsoft.com/User.Read");
+            accessTokenScopes.add(properties.getGraphBaseUri() + "User.Read");
         }
         return new AzureClientRegistration(client, accessTokenScopes);
     }
@@ -115,11 +115,12 @@ public class AADWebAppConfiguration {
         result.addAll(openidScopes());
         if (properties.allowedGroupsConfigured()) {
             // The 2 scopes are need to get group name from graph.
-            result.add("https://graph.microsoft.com/User.Read");
-            result.add("https://graph.microsoft.com/Directory.AccessAsUser.All");
+            result.add(properties.getGraphBaseUri() + "User.Read");
+            result.add(properties.getGraphBaseUri() + "Directory.Read.All");
         }
         return result;
     }
+
 
     private Set<String> openidScopes() {
         Set<String> result = new HashSet<>();
@@ -163,7 +164,7 @@ public class AADWebAppConfiguration {
     private ClientRegistration.Builder createClientBuilder(String id) {
         ClientRegistration.Builder result = ClientRegistration.withRegistrationId(id);
         result.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE);
-        result.redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}");
+        result.redirectUriTemplate("{baseUrl}/login/oauth2/code/");
 
         result.clientId(properties.getClientId());
         result.clientSecret(properties.getClientSecret());
@@ -193,7 +194,9 @@ public class AADWebAppConfiguration {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             super.configure(http);
+            http.authorizeRequests()
+                .antMatchers("/login").permitAll()
+                .anyRequest().authenticated();
         }
     }
-
 }

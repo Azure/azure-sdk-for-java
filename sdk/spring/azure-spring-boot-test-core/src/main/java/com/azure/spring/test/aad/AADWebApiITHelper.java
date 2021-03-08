@@ -17,9 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_TENANT_ID_1;
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_USER_NAME_1;
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_USER_PASSWORD_1;
+import static com.azure.spring.test.EnvironmentVariable.AAD_TENANT_ID_1;
+import static com.azure.spring.test.EnvironmentVariable.AAD_USER_NAME_1;
+import static com.azure.spring.test.EnvironmentVariable.AAD_USER_PASSWORD_1;
 import static org.springframework.http.HttpHeaders.COOKIE;
 import static org.springframework.http.HttpHeaders.SET_COOKIE;
 

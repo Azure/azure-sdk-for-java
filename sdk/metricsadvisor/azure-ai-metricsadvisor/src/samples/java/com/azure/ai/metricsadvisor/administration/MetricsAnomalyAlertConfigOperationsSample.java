@@ -27,8 +27,8 @@ public class MetricsAnomalyAlertConfigOperationsSample {
 
         // Create DataPointAnomaly alert config
         System.out.printf("Creating DataPoint Anomaly alert config%n");
-        String detectionConfigurationId1 = "9ol48er30-6e6e-4391-b78f-b00dfee1e6f5";
-        String detectionConfigurationId2 = "3e58er30-6e6e-4391-b78f-b00dfee1e6f5";
+        String detectionConfigurationId1 = "ff3014a0-bbbb-41ec-a637-677e77b81299";
+        String detectionConfigurationId2 = "e87d899d-a5a0-4259-b752-11aea34d5e34";
         String hookId1 = "5f48er30-6e6e-4391-b78f-b00dfee1e6f5";
         String hookId2 = "8i48er30-6e6e-4391-b78f-b00dfee1e6f5";
 
@@ -43,7 +43,7 @@ public class MetricsAnomalyAlertConfigOperationsSample {
                         new MetricAnomalyAlertConfiguration(detectionConfigurationId2,
                             MetricAnomalyAlertScope.forWholeSeries())
                             .setAlertConditions(new MetricAnomalyAlertConditions()
-                                .setSeverityRangeCondition(new SeverityCondition().setMaxAlertSeverity(AnomalySeverity.HIGH)))))
+                                .setSeverityRangeCondition(new SeverityCondition().setMinAlertSeverity(AnomalySeverity.LOW)))))
                     .setCrossMetricsOperator(MetricAnomalyAlertConfigurationsOperator.AND)
                     .setIdOfHooksToAlert(Arrays.asList(hookId1, hookId2)));
 

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.clientTelemetry;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class MetricInfo {

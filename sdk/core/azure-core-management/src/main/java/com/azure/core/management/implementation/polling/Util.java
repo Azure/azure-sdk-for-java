@@ -13,6 +13,19 @@ import java.net.URL;
  * Utility class.
  */
 class Util {
+
+    /**
+     * An exception thrown while parsing an invalid URL.
+     */
+    static class MalformedUrlException extends RuntimeException {
+        MalformedUrlException(String message) {
+            super(message);
+        }
+        MalformedUrlException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
+
     /**
      * Gets value of Azure-AsyncOperation header from the given Http headers.
      *
@@ -32,7 +45,19 @@ class Util {
      * @return the Location header value if exists, null otherwise
      */
     static URL getLocationUrl(HttpHeaders headers, ClientLogger logger) {
-        return getUrl("Location", headers, logger, true);
+        return getUrl("Location", headers, logger, false);
+    }
+
+    /**
+     * Gets value of Location header from the given Http headers.
+     *
+     * @param headers the Http headers
+     * @param logger the logger
+     * @return the Location header value if exists, null otherwise
+     * @return the URL value of the given header, null if header does not exists.
+     */
+    static URL getLocationUrl(HttpHeaders headers, ClientLogger logger, boolean ignoreException) {
+        return getUrl("Location", headers, logger, ignoreException);
     }
 
     /**
@@ -41,9 +66,10 @@ class Util {
      * @param urlHeaderName the header name
      * @param headers the http headers
      * @param logger the logger
+     * @param ignoreException whether to ignore malformed URL
      * @return the URL value of the given header, null if header does not exists.
      */
-    static URL getUrl(String urlHeaderName, HttpHeaders headers, ClientLogger logger, boolean ignoreException) {
+    private static URL getUrl(String urlHeaderName, HttpHeaders headers, ClientLogger logger, boolean ignoreException) {
         String value = headers.getValue(urlHeaderName);
         if (value != null) {
             try {
@@ -51,9 +77,9 @@ class Util {
             } catch (MalformedURLException me) {
                 String message = "Malformed value '" + value + "' for URL header: '" + urlHeaderName + "'.";
                 if (ignoreException) {
-                    logger.logExceptionAsError(new RuntimeException(message, me));
+                    logger.logExceptionAsError(new MalformedUrlException(message, me));
                 } else {
-                    throw logger.logExceptionAsError(new RuntimeException(message, me));
+                    throw logger.logExceptionAsError(new MalformedUrlException(message, me));
                 }
             }
         }

@@ -18,6 +18,7 @@ import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.attestation.v2020_10_01.Operations;
 import com.microsoft.azure.management.attestation.v2020_10_01.AttestationProviders;
+import com.microsoft.azure.management.attestation.v2020_10_01.PrivateEndpointConnections;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -27,6 +28,7 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 public final class AttestationManager extends ManagerCore<AttestationManager, AttestationManagementClientImpl> {
     private Operations operations;
     private AttestationProviders attestationProviders;
+    private PrivateEndpointConnections privateEndpointConnections;
     /**
     * Get a Configurable instance that can be used to create AttestationManager with optional configuration.
     *
@@ -92,6 +94,16 @@ public final class AttestationManager extends ManagerCore<AttestationManager, At
             this.attestationProviders = new AttestationProvidersImpl(this);
         }
         return this.attestationProviders;
+    }
+
+    /**
+     * @return Entry point to manage PrivateEndpointConnections.
+     */
+    public PrivateEndpointConnections privateEndpointConnections() {
+        if (this.privateEndpointConnections == null) {
+            this.privateEndpointConnections = new PrivateEndpointConnectionsImpl(this);
+        }
+        return this.privateEndpointConnections;
     }
 
     /**

@@ -1,6 +1,6 @@
-# Guide for migrating to azure-messaging-servicebus
+# Guide for migrating to com.azure:azure-messaging-servicebus from com.microsoft.azure:azure-servicebus
 
-This guide assists in the migration to version 7 of the Service Bus client library
+This guide is intended to assist in the migration to
 [`com.azure:azure-messaging-servicebus`](https://search.maven.org/artifact/com.azure/azure-messaging-servicebus) from
 version 3 of
 [`com.microsoft.azure:azure-servicebus`](https://search.maven.org/artifact/com.microsoft.azure/azure-servicebus/). It
@@ -11,24 +11,24 @@ library for Java, please refer to the
 [README](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/README.md)
 and [Service Bus
 samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus)
-for the `azure-messaging-servicebus` library rather than this guide.
+for the `com.azure:azure-messaging-servicebus` library rather than this guide.
 
 ## Table of contents
 
-- [Guide for migrating to azure-messaging-servicebus](#guide-for-migrating-to-azure-messaging-servicebus)
-  - [Table of contents](#table-of-contents)
-  - [Migration benefits](#migration-benefits)
-  - [General changes](#general-changes)
-    - [Group id, artifact id, and package names](#group-id-artifact-id-and-package-names)
-    - [Client hierarchy](#client-hierarchy)
-    - [Async programming model](#async-programming-model)
-    - [Connection Pooling](#connection-pooling)
-  - [Migration Samples](#migration-samples)
-    - [Instantiating clients](#instantiating-clients)
-    - [Sending messages](#sending-messages)
-    - [Receiving messages](#receiving-messages)
-    - [Working with sessions](#working-with-sessions)
-  - [Additional samples](#additional-samples)
+- [Migration benefits](#migration-benefits)
+  - [Cross Service SDK improvements](#cross-service-sdk-improvements)
+  - [New features](#new-features)
+- [Important changes](#important-changes)
+  - [Group id, artifact id, and package names](#group-id-artifact-id-and-package-names)
+  - [Client hierarchy](#client-hierarchy)
+  - [Async programming model](#async-programming-model)
+  - [Connection Pooling](#connection-pooling)
+  - [Instantiating clients](#instantiating-clients)
+  - [Sending messages](#sending-messages)
+  - [Receiving messages](#receiving-messages)
+  - [Working with sessions](#working-with-sessions)
+- [Upcoming features](#upcoming-features)
+- [Additional samples](#additional-samples)
 
 ## Migration benefits
 
@@ -43,24 +43,36 @@ naming, and API structure. Additionally, many developers have felt that the lear
 did not offer a good, approachable, and consistent onboarding story for those learning Azure or exploring a specific
 Azure service.
 
-To improve the development experience across Azure services, including Service Bus, a set of uniform [design
+To try and improve the development experience across Azure services, including Service Bus, a set of uniform [design
 guidelines](https://azure.github.io/azure-sdk/general_introduction.html) was created for all languages to drive a
 consistent experience with established API patterns for all services. A set of [Java specific
 guidelines](https://azure.github.io/azure-sdk/java_introduction.html) was also introduced to ensure that Java clients
 have a natural and idiomatic feel that mirrors that of Java developers. Further details are available in the guidelines
 for those interested.
 
+### Cross Service SDK improvements
+
 The new Service Bus library `azure-messaging-servicebus` provides the ability to share in some of the cross-service
-improvements made to the Azure development experience, such as using the new `azure-identity` library to share a single
-authentication between clients and a unified diagnostics pipeline offering a common view of the activities across each
-of the client libraries.
+improvements made to the Azure development experience, such as 
+
+ - Using the new `azure-identity` library to share a single authentication between clients. 
+ - Dedicated clients for sync and async operations with the client.
+ - Use of builders to build the client.
+ - A unified diagnostics pipeline offering a common view of the activities across each of the client libraries.
+ 
 
 While we believe that there is significant benefit to adopting the new Service Bus library `azure-messaging-servicebus`,
 it is important to be aware that the previous version `azure-servicebus` have not been officially deprecated. They will
 continue to be supported with security and bug fixes as well as receiving some minor refinements. However, in the near
 future they will not be under active development and new features are unlikely to be added to them.
 
-## General changes
+### New features
+
+- Ability to create a batch of messages with the smarter `ServiceBusSenderClient.createMessageBatch()` and 
+`ServiceBusMessageBatch.tryAddMessage()` APIs. This will help manage the messages to be sent in the most optimal way.
+- The clients created using one `ServiceBusClientBuilder` instance shares AMQP connection implicitly.
+
+## Important changes
 
 ### Group id, artifact id, and package names
 
@@ -79,8 +91,15 @@ As part of the new Java SDK guidelines, all clients are instantiated from a buil
 Each client is expected to have a sync and async version that can be instantiated via `buildAsyncClient()` or `buildClient()` methods
 on the builder.
 
-In the new Service Bus library, this single entry point is the `ServiceBusClientBuilder` which can be used to create sender and receiver
-clients to the queue/topic/subscription/session of your choice and start sending/receiving messages.
+#### Approachability
+
+By having a single entry point, the `ServiceBusClientBuilder` which can be used to create sender, receiver and processor
+ clients to the queue/topic/subscription/session of your choice and start sending/receiving messages.
+
+#### Consistency
+
+We now have methods with similar names, signature and location to create senders, receivers and processor. This provides 
+consistency and predictability on the various features of the library.
 
 ### Async programming model
 
@@ -102,13 +121,19 @@ By making this connection sharing be implicit to a `ServiceBusClientBuilder` ins
 applications will not use multiple connections unless they explicitly opt in by creating multiple client builder
 instances.
 
-## Migration Samples
-
 ### Instantiating clients
 
 While we continue to support connection strings when constructing a client, the main difference is when using Azure
 Active Directory. We now use the new [azure-identity](https://search.maven.org/artifact/com.azure/azure-identity)
 library to share a single authentication solution between clients of different Azure services.
+
+Previously, in `azure-servicebus`, you can create client as shown below.
+
+```java
+        String connectionString = "Endpoint=sb://yournamespace.servicebus.windows.net/;SharedAccessKeyName=your-key-name;SharedAccessKey=your-key";
+        QueueClient client = new QueueClient(new ConnectionStringBuilder(connectionString, "my-queue"), ReceiveMode.PEEKLOCK);
+```
+Now in `azure-messaging-servicebus`, you start with `ServiceBusClientBuilder` and create all the clients.
 
 ```java
 // Create a sender client that will authenticate through Active Directory
@@ -370,8 +395,14 @@ ServiceBusSessionReceiverClient sessionClient = new ServiceBusClientBuilder()
 
 ServiceBusReceiverClient receiverClient = sessionClient.acceptSession("my-session-id");
 ```
+## Upcoming features
+ - [Cross entity transactions](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via) 
+ to support transaction across different entities.
+ - [Different AMQP body section](https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-amqp-sequence) 
+ support for 'Amqp Sequence' and 'Amqp Value'. 
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fservice-bus%2FMIGRATIONGUIDE.png)
 
 ## Additional samples
 
-More examples can be found at:
-- [Service Bus samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus)
+More examples can be found at [Service Bus samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus).

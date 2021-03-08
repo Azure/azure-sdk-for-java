@@ -10,6 +10,7 @@ package com.microsoft.azure.management.attestation.v2020_10_01.implementation;
 
 import com.microsoft.azure.management.attestation.v2020_10_01.SystemData;
 import com.microsoft.azure.management.attestation.v2020_10_01.AttestationServiceStatus;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -26,7 +27,7 @@ public class AttestationProviderInner extends Resource {
     private SystemData systemData;
 
     /**
-     * Trust model for the attestation service instance.
+     * Trust model for the attestation provider.
      */
     @JsonProperty(value = "properties.trustModel")
     private String trustModel;
@@ -45,6 +46,13 @@ public class AttestationProviderInner extends Resource {
     private String attestUri;
 
     /**
+     * List of private endpoint connections associated with the attestation
+     * provider.
+     */
+    @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
+
+    /**
      * Get the system metadata relating to this resource.
      *
      * @return the systemData value
@@ -54,7 +62,7 @@ public class AttestationProviderInner extends Resource {
     }
 
     /**
-     * Get trust model for the attestation service instance.
+     * Get trust model for the attestation provider.
      *
      * @return the trustModel value
      */
@@ -63,7 +71,7 @@ public class AttestationProviderInner extends Resource {
     }
 
     /**
-     * Set trust model for the attestation service instance.
+     * Set trust model for the attestation provider.
      *
      * @param trustModel the trustModel value to set
      * @return the AttestationProviderInner object itself.
@@ -111,6 +119,15 @@ public class AttestationProviderInner extends Resource {
     public AttestationProviderInner withAttestUri(String attestUri) {
         this.attestUri = attestUri;
         return this;
+    }
+
+    /**
+     * Get list of private endpoint connections associated with the attestation provider.
+     *
+     * @return the privateEndpointConnections value
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.privateEndpointConnections;
     }
 
 }

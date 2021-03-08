@@ -41,6 +41,14 @@ service
 
 <br/>
 <details>
+<summary> healthbot </summary>
+
+* [package-2020-12-08](https://github.com/Azure/azure-rest-api-specs/tree/master/specification/healthbot/resource-manager#tag-package-2020-12-08)
+    * [1.0.0-beta.1](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-healthbot/1.0.0-beta.1/jar)
+</details>
+
+<br/>
+<details>
 <summary> kusto </summary>
 
 * [package-2020-09-18](https://github.com/Azure/azure-rest-api-specs/tree/master/specification/azure-kusto/resource-manager#tag-package-2020-09-18)

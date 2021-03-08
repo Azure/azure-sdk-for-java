@@ -6,6 +6,7 @@ package com.azure.resourcemanager.containerregistry.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
 import com.azure.resourcemanager.containerregistry.fluent.RegistriesClient;
 import com.azure.resourcemanager.containerregistry.fluent.models.RegistryInner;
@@ -45,20 +46,24 @@ public class RegistriesImpl
 
     @Override
     public PagedFlux<Registry> listAsync() {
-        return this
+        return PagedConverter.mapPage(this
             .inner()
-            .listAsync()
-            .mapPage(inner -> new RegistryImpl(inner.name(), inner, this.manager(), this.storageManager));
+            .listAsync(),
+            inner -> new RegistryImpl(inner.name(), inner, this.manager(), this.storageManager));
     }
 
     @Override
     public PagedFlux<Registry> listByResourceGroupAsync(String resourceGroupName) {
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return new PagedFlux<>(() -> Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+        }
         return wrapPageAsync(this.inner().listByResourceGroupAsync(resourceGroupName));
     }
 
     @Override
     public PagedIterable<Registry> listByResourceGroup(String groupName) {
-        return wrapList(this.inner().listByResourceGroup(groupName));
+        return new PagedIterable<>(this.listByResourceGroupAsync(groupName));
     }
 
     @Override

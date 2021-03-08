@@ -52,11 +52,6 @@ public class AnomalyDetectionConfigurationSample {
         advisorAdministrationClient.updateMetricAnomalyDetectionConfig(config);
         System.out.printf("Updated detection configuration%n");
 
-        // Delete the detection configuration.
-        System.out.printf("Deleting detection configuration: %s%n", config.getId());
-        advisorAdministrationClient.deleteMetricAnomalyDetectionConfig(config.getId());
-        System.out.printf("Deleted detection configuration%n");
-
         // List configurations
         System.out.printf("Listing detection configurations%n");
         PagedIterable<AnomalyDetectionConfiguration> detectionConfigsIterable
@@ -65,6 +60,11 @@ public class AnomalyDetectionConfigurationSample {
         for (AnomalyDetectionConfiguration detectionConfig : detectionConfigsIterable) {
             printDetectionConfiguration(detectionConfig);
         }
+
+        // Delete the detection configuration.
+        System.out.printf("Deleting detection configuration: %s%n", config.getId());
+        advisorAdministrationClient.deleteMetricAnomalyDetectionConfig(config.getId());
+        System.out.printf("Deleted detection configuration%n");
     }
 
     private static AnomalyDetectionConfiguration prepareDetectionConfigurationObject() {

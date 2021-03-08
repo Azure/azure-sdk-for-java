@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos.dotnet.benchmark.operations;
 
 import com.azure.cosmos.CosmosAsyncClient;
@@ -18,6 +21,7 @@ public class InsertBenchmarkOperation implements IBenchmarkOperation {
     private final String databaseName;
     private final String partitionKeyPath;
     private final ObjectNode sampleJsonNode;
+    private final boolean explicitlyProvidePKAndId;
     private PartitionKey partitionKey;
 
     public InsertBenchmarkOperation(
@@ -25,13 +29,15 @@ public class InsertBenchmarkOperation implements IBenchmarkOperation {
         String databaseName,
         String containerName,
         String partitionKeyPath,
-        String sampleJson) {
+        String sampleJson,
+        boolean explicitlyProvidePKAndId) {
 
         this.databaseName = databaseName;
         this.containerName = containerName;
         this.partitionKeyPath = partitionKeyPath.replace("/", "");
         this.sampleJsonNode = (ObjectNode)JsonHelper.fromJsonString(sampleJson);
         this.container = cosmosClient.getDatabase(databaseName).getContainer(containerName);
+        this.explicitlyProvidePKAndId = explicitlyProvidePKAndId;
     }
 
     @Override
@@ -52,10 +58,12 @@ public class InsertBenchmarkOperation implements IBenchmarkOperation {
 
     @Override
     public Mono<OperationResult> executeOnce() {
-        Mono<CosmosItemResponse<ObjectNode>> createTask = this.container.createItem(
-            this.sampleJsonNode,
-            this.partitionKey,
-            null);
+        Mono<CosmosItemResponse<ObjectNode>> createTask = this.explicitlyProvidePKAndId ?
+            this.container.createItem(
+                this.sampleJsonNode,
+                this.partitionKey,
+                null)
+            : this.container.createItem(this.sampleJsonNode);
 
         return createTask
             .map((r) -> {

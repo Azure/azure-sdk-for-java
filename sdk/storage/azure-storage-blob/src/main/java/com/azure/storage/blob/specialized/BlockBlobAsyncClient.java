@@ -3,7 +3,9 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -54,7 +56,7 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  *
  * <p>
  * Please refer to the
- * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a> for more information.
+ * <a href=https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a> for more information.
  *
  * <p>
  * Note this client is an async client that returns reactive responses from Spring Reactor Core project
@@ -138,6 +140,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * data emitted by the {@code Flux}.
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, long length) {
         try {
             return upload(data, length, false);
@@ -167,6 +170,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param overwrite Whether or not to overwrite, should data exist on the blob.
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, long length, boolean overwrite) {
         try {
             BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
@@ -212,6 +216,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param requestConditions {@link BlobRequestConditions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHttpHeaders headers,
         Map<String, String> metadata, AccessTier tier, byte[] contentMd5, BlobRequestConditions requestConditions) {
         return this.uploadWithResponse(new BlockBlobSimpleUploadOptions(data, length).setHeaders(headers)
@@ -238,6 +243,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param options {@link BlockBlobSimpleUploadOptions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockBlobItem>> uploadWithResponse(BlockBlobSimpleUploadOptions options) {
         try {
             return withContext(context -> uploadWithResponse(options, context));
@@ -287,6 +293,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param sourceUrl The source URL to upload from.
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> uploadFromUrl(String sourceUrl) {
         try {
             return uploadFromUrl(sourceUrl, false);
@@ -311,6 +318,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param overwrite Whether or not to overwrite, should data exist on the blob.
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> uploadFromUrl(String sourceUrl, boolean overwrite) {
         try {
             BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
@@ -342,6 +350,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param options {@link BlobUploadFromUrlOptions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockBlobItem>> uploadFromUrlWithResponse(BlobUploadFromUrlOptions options) {
         try {
             return withContext(context -> uploadFromUrlWithResponse(options, context));
@@ -410,6 +419,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlock#String-Flux-long}
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stageBlock(String base64BlockId, Flux<ByteBuffer> data, long length) {
         try {
             return stageBlockWithResponse(base64BlockId, data, length, null, null).flatMap(FluxUtil::toMono);
@@ -444,6 +454,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, Flux<ByteBuffer> data, long length,
         byte[] contentMd5, String leaseId) {
         try {
@@ -465,7 +476,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
 
     /**
      * Creates a new block to be committed as part of a blob where the contents are read from a URL. For more
-     * information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-block-from-url">Azure
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-from-url">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -482,6 +493,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stageBlockFromUrl(String base64BlockId, String sourceUrl, BlobRange sourceRange) {
         try {
             return this.stageBlockFromUrlWithResponse(base64BlockId, sourceUrl, sourceRange, null, null, null)
@@ -515,6 +527,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param sourceRequestConditions {@link BlobRequestConditions}
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stageBlockFromUrlWithResponse(String base64BlockId, String sourceUrl,
         BlobRange sourceRange, byte[] sourceContentMd5, String leaseId, BlobRequestConditions sourceRequestConditions) {
         try {
@@ -561,6 +574,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @return A reactive response containing the list of blocks.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockList> listBlocks(BlockListType listType) {
         try {
             return this.listBlocksWithResponse(listType, null).map(Response::getValue);
@@ -583,6 +597,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param leaseId The lease ID the active lease on the blob must match.
      * @return A reactive response containing the list of blocks.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockList>> listBlocksWithResponse(BlockListType listType, String leaseId) {
         try {
             return this.listBlocksWithResponse(new BlockBlobListBlocksOptions(listType).setLeaseId(leaseId));
@@ -604,6 +619,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param options {@link BlockBlobListBlocksOptions}
      * @return A reactive response containing the list of blocks.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockList>> listBlocksWithResponse(BlockBlobListBlocksOptions options) {
         try {
             return withContext(context -> listBlocksWithResponse(options, context));
@@ -636,6 +652,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      * @return A reactive response containing the information of the block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> commitBlockList(List<String> base64BlockIds) {
         try {
             return commitBlockList(base64BlockIds, false);
@@ -660,6 +677,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param overwrite Whether or not to overwrite, should data exist on the blob.
      * @return A reactive response containing the information of the block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> commitBlockList(List<String> base64BlockIds, boolean overwrite) {
         try {
             BlobRequestConditions requestConditions = null;
@@ -695,6 +713,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param requestConditions {@link BlobRequestConditions}
      * @return A reactive response containing the information of the block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIds,
             BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
             BlobRequestConditions requestConditions) {
@@ -719,6 +738,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param options {@link BlockBlobCommitBlockListOptions}
      * @return A reactive response containing the information of the block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockBlobItem>> commitBlockListWithResponse(BlockBlobCommitBlockListOptions options) {
         try {
             return withContext(context -> commitBlockListWithResponse(options, context));

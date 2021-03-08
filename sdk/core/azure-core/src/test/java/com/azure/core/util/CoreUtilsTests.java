@@ -3,6 +3,7 @@
 
 package com.azure.core.util;
 
+import com.azure.core.http.policy.HttpLogOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -98,5 +99,35 @@ public class CoreUtilsTests {
         System.arraycopy(BYTES, 0, mergedArray, arr1.length, BYTES.length);
 
         return mergedArray;
+    }
+
+    @ParameterizedTest
+    @MethodSource("getApplicationIdSupplier")
+    public void getApplicationId(ClientOptions clientOptions, HttpLogOptions logOptions, String expected) {
+        assertEquals(expected, CoreUtils.getApplicationId(clientOptions, logOptions));
+    }
+
+    @SuppressWarnings("deprecation")
+    private static Stream<Arguments> getApplicationIdSupplier() {
+        String clientOptionApplicationId = "clientOptions";
+        String logOptionsApplicationId = "logOptions";
+
+        ClientOptions clientOptionsWithApplicationId = new ClientOptions().setApplicationId(clientOptionApplicationId);
+        ClientOptions clientOptionsWithoutApplicationId = new ClientOptions();
+
+        HttpLogOptions logOptionsWithApplicationId = new HttpLogOptions().setApplicationId(logOptionsApplicationId);
+        HttpLogOptions logOptionsWithoutApplicationId = new HttpLogOptions();
+
+        return Stream.of(
+            Arguments.of(clientOptionsWithApplicationId, logOptionsWithApplicationId, clientOptionApplicationId),
+            Arguments.of(clientOptionsWithApplicationId, logOptionsWithoutApplicationId, clientOptionApplicationId),
+            Arguments.of(clientOptionsWithApplicationId, null, clientOptionApplicationId),
+            Arguments.of(clientOptionsWithoutApplicationId, logOptionsWithApplicationId, logOptionsApplicationId),
+            Arguments.of(clientOptionsWithoutApplicationId, logOptionsWithoutApplicationId, null),
+            Arguments.of(clientOptionsWithoutApplicationId, null, null),
+            Arguments.of(null, logOptionsWithApplicationId, logOptionsApplicationId),
+            Arguments.of(null, logOptionsWithoutApplicationId, null),
+            Arguments.of(null, null, null)
+        );
     }
 }

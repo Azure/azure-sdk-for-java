@@ -245,6 +245,13 @@ public final class BlobDownloadHeaders {
     private String versionId;
 
     /*
+     * The value of this header indicates whether version of this blob is a
+     * current version, see also x-ms-version-id header.
+     */
+    @JsonProperty(value = "x-ms-is-current-version")
+    private Boolean isCurrentVersion;
+
+    /*
      * Indicates that the service supports requests for partial blob content.
      */
     @JsonProperty(value = "Accept-Ranges")
@@ -1034,6 +1041,30 @@ public final class BlobDownloadHeaders {
      */
     public BlobDownloadHeaders setVersionId(String versionId) {
         this.versionId = versionId;
+        return this;
+    }
+
+    /**
+     * Get the isCurrentVersion property: The value of this header indicates
+     * whether version of this blob is a current version, see also
+     * x-ms-version-id header.
+     *
+     * @return the isCurrentVersion value.
+     */
+    public Boolean isCurrentVersion() {
+        return this.isCurrentVersion;
+    }
+
+    /**
+     * Set the isCurrentVersion property: The value of this header indicates
+     * whether version of this blob is a current version, see also
+     * x-ms-version-id header.
+     *
+     * @param isCurrentVersion the isCurrentVersion value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setIsCurrentVersion(Boolean isCurrentVersion) {
+        this.isCurrentVersion = isCurrentVersion;
         return this;
     }
 

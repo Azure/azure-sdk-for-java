@@ -28,7 +28,6 @@ import com.azure.data.tables.implementation.models.ResponseFormat;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
 import com.azure.data.tables.implementation.models.TableServiceErrorException;
-import com.azure.data.tables.implementation.models.TableServiceErrorOdataError;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import org.junit.jupiter.api.AfterAll;
@@ -48,8 +47,6 @@ import java.util.Map;
 import static com.azure.data.tables.implementation.TablesConstants.PARTITION_KEY;
 import static com.azure.data.tables.implementation.TablesConstants.ROW_KEY;
 import static com.azure.data.tables.implementation.TablesConstants.TABLE_NAME_KEY;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -181,11 +178,8 @@ public class AzureTableImplTest extends TestBase {
                 assertTrue(error instanceof TableServiceErrorException);
 
                 final TableServiceErrorException exception = (TableServiceErrorException) error;
-                assertNotNull(exception.getValue());
 
-                final TableServiceErrorOdataError odataError = exception.getValue().getOdataError();
-                assertNotNull(odataError);
-                assertEquals(expectedErrorCode, odataError.getCode());
+                assertTrue(exception.getMessage().contains(expectedErrorCode));
             })
             .verify();
     }

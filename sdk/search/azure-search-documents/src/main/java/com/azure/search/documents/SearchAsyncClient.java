@@ -13,16 +13,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
-import com.azure.search.documents.implementation.SearchIndexClientImplBuilder;
 import com.azure.search.documents.implementation.converters.IndexActionConverter;
-import com.azure.search.documents.implementation.converters.IndexDocumentsResultConverter;
 import com.azure.search.documents.implementation.converters.SearchResultConverter;
 import com.azure.search.documents.implementation.converters.SuggestResultConverter;
 import com.azure.search.documents.implementation.models.AutocompleteRequest;
-import com.azure.search.documents.implementation.models.IndexBatch;
 import com.azure.search.documents.implementation.models.SearchContinuationToken;
 import com.azure.search.documents.implementation.models.SearchDocumentsResult;
 import com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper;
@@ -32,6 +27,7 @@ import com.azure.search.documents.implementation.models.SuggestRequest;
 import com.azure.search.documents.implementation.util.DocumentResponseConversions;
 import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.implementation.util.SuggestOptionsHandler;
+import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.models.FacetResult;
@@ -65,7 +61,6 @@ import java.util.stream.Collectors;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.serializer.TypeReference.createInstance;
-import static com.azure.search.documents.implementation.util.Utility.initializeSerializerAdapter;
 
 /**
  * This class provides a client that contains the operations for querying an index and uploading, merging, or deleting
@@ -75,11 +70,6 @@ import static com.azure.search.documents.implementation.util.Utility.initializeS
  */
 @ServiceClient(builder = SearchClientBuilder.class, isAsync = true)
 public final class SearchAsyncClient {
-    /*
-     * Representation of the Multi-Status HTTP response code.
-     */
-    private static final int MULTI_STATUS_CODE = 207;
-
     /**
      * Search REST API Version
      */
@@ -112,25 +102,17 @@ public final class SearchAsyncClient {
 
     final JsonSerializer serializer;
 
-    private static final SerializerAdapter ADAPTER = initializeSerializerAdapter();
-
     /**
      * Package private constructor to be used by {@link SearchClientBuilder}
      */
     SearchAsyncClient(String endpoint, String indexName, SearchServiceVersion serviceVersion,
-        HttpPipeline httpPipeline, JsonSerializer serializer) {
+        HttpPipeline httpPipeline, JsonSerializer serializer, SearchIndexClientImpl restClient) {
         this.endpoint = endpoint;
         this.indexName = indexName;
         this.serviceVersion = serviceVersion;
         this.httpPipeline = httpPipeline;
         this.serializer = serializer;
-
-        restClient = new SearchIndexClientImplBuilder()
-            .endpoint(endpoint)
-            .indexName(indexName)
-            .pipeline(httpPipeline)
-            .serializerAdapter(ADAPTER)
-            .buildClient();
+        this.restClient = restClient;
     }
 
     /**
@@ -158,21 +140,6 @@ public final class SearchAsyncClient {
      */
     public String getEndpoint() {
         return this.endpoint;
-    }
-
-    /**
-     * Creates a {@link SearchIndexingBufferedAsyncSender} used to index documents for the Search index associated with
-     * this {@link SearchAsyncClient}.
-     *
-     * @param options Configuration options used during construction of the {@link SearchIndexingBufferedAsyncSender}.
-     * @param <T> The type of the documents that will be added to the buffered sender.
-     * @return A {@link SearchIndexingBufferedAsyncSender} used to index documents for the Search index associated with
-     * this {@link SearchAsyncClient}.
-     * @throws NullPointerException If {@code options} or {@code options.getDocumentKeyRetriever()} is null.
-     */
-    public <T> SearchIndexingBufferedAsyncSender<T> getSearchIndexingBufferedAsyncSender(
-        SearchIndexingBufferedSenderOptions<T> options) {
-        return new SearchIndexingBufferedAsyncSender<>(this, options);
     }
 
     /**
@@ -484,21 +451,7 @@ public final class SearchAsyncClient {
             .collect(Collectors.toList());
 
         boolean throwOnAnyError = options == null || options.throwOnAnyError();
-        return indexDocumentsWithResponse(indexActions, throwOnAnyError, context);
-    }
-
-    Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(
-        List<com.azure.search.documents.implementation.models.IndexAction> actions, boolean throwOnAnyError,
-        Context context) {
-        try {
-            return restClient.getDocuments().indexWithResponseAsync(new IndexBatch(actions), null, context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE && throwOnAnyError)
-                    ? Mono.error(new IndexBatchException(IndexDocumentsResultConverter.map(response.getValue())))
-                    : Mono.just(response).map(MappingUtils::mappingIndexDocumentResultResponse));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return Utility.indexDocumentsWithResponse(restClient, indexActions, throwOnAnyError, context, logger);
     }
 
     /**
@@ -558,9 +511,7 @@ public final class SearchAsyncClient {
                 .map(res -> {
                     if (serializer == null) {
                         try {
-                            String serializedJson = ADAPTER.serialize(res.getValue(), SerializerEncoding.JSON);
-                            T document = ADAPTER.deserialize(serializedJson, modelClass, SerializerEncoding.JSON);
-                            return new SimpleResponse<>(res, document);
+                            return new SimpleResponse<>(res, Utility.convertValue(res.getValue(), modelClass));
                         } catch (IOException ex) {
                             throw logger.logExceptionAsError(
                                 new RuntimeException("Failed to deserialize document.", ex));

@@ -8,6 +8,7 @@ import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLinkProcessor;
@@ -170,9 +171,12 @@ class EventHubPartitionAsyncConsumerTest {
         final Message message3 = mock(Message.class);
         final String secondOffset = "54";
         final String lastOffset = "65";
-        final EventData event1 = new EventData("Foo".getBytes(), getSystemProperties("25", 14), Context.NONE);
-        final EventData event2 = new EventData("Bar".getBytes(), getSystemProperties(secondOffset, 21), Context.NONE);
-        final EventData event3 = new EventData("Baz".getBytes(), getSystemProperties(lastOffset, 53), Context.NONE);
+        final EventData event1 = new EventData(BinaryData.fromBytes("Foo".getBytes()), getSystemProperties("25", 14),
+            Context.NONE);
+        final EventData event2 = new EventData(BinaryData.fromBytes("Bar".getBytes()),
+            getSystemProperties(secondOffset, 21), Context.NONE);
+        final EventData event3 = new EventData(BinaryData.fromBytes("Baz".getBytes()),
+            getSystemProperties(lastOffset, 53), Context.NONE);
 
         when(messageSerializer.deserialize(same(message1), eq(EventData.class))).thenReturn(event1);
         when(messageSerializer.deserialize(same(message2), eq(EventData.class))).thenReturn(event2);
@@ -238,9 +242,12 @@ class EventHubPartitionAsyncConsumerTest {
         final Message message3 = mock(Message.class);
         final String secondOffset = "54";
         final String lastOffset = "65";
-        final EventData event1 = new EventData("Foo".getBytes(), getSystemProperties("25", 14), Context.NONE);
-        final EventData event2 = new EventData("Bar".getBytes(), getSystemProperties(secondOffset, 21), Context.NONE);
-        final EventData event3 = new EventData("Baz".getBytes(), getSystemProperties(lastOffset, 53), Context.NONE);
+        final EventData event1 = new EventData(BinaryData.fromBytes("Foo".getBytes()), getSystemProperties("25", 14),
+            Context.NONE);
+        final EventData event2 = new EventData(BinaryData.fromBytes("Bar".getBytes()), getSystemProperties(secondOffset,
+            21), Context.NONE);
+        final EventData event3 = new EventData(BinaryData.fromBytes("Baz".getBytes()), getSystemProperties(lastOffset,
+            53), Context.NONE);
 
         when(messageSerializer.deserialize(same(message1), eq(EventData.class))).thenReturn(event1);
         when(messageSerializer.deserialize(same(message2), eq(EventData.class))).thenReturn(event2);
