@@ -3,10 +3,10 @@
 
 package com.azure.spring.aad.webapp;
 
+import com.azure.spring.aad.AADClientRegistrationRepository;
 import com.azure.spring.autoconfigure.aad.Constants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.oauth2.client.ClientAuthorizationRequiredException;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -32,11 +32,11 @@ import java.util.stream.Stream;
  */
 public class AADHandleConditionalAccessFilter extends OncePerRequestFilter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AADHandleConditionalAccessFilter.class);
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws IOException, ServletException {
+        // Handle conditional access policy, step 2.
         try {
             filterChain.doFilter(request, response);
         } catch (Exception exception) {
@@ -53,18 +53,19 @@ public class AADHandleConditionalAccessFilter extends OncePerRequestFilter {
             if (authParameters != null && authParameters.containsKey(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS)) {
                 request.getSession().setAttribute(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS,
                     authParameters.get(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS));
-                response.setStatus(302);
-                try {
-                    response.sendRedirect(Constants.DEFAULT_AUTHORITY_ENDPOINT_URI);
-                } catch (IOException e) {
-                    LOGGER.error("Failed to redirect at this response.", exception);
-                }
-                return;
+                // OAuth2AuthorizationRequestRedirectFilter will catch this exception to re-authorize.
+                throw new ClientAuthorizationRequiredException(AADClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID);
             }
             throw exception;
         }
     }
 
+    /**
+     * Get claims filed form the header to re-authorize.
+     *
+     * @param wwwAuthenticateHeader httpHeader
+     * @return authParametersMap
+     */
     private Map<String, String> parseAuthParameters(String wwwAuthenticateHeader) {
         return Stream.of(wwwAuthenticateHeader)
                      .filter(header -> !StringUtils.isEmpty(header))
