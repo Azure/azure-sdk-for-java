@@ -178,8 +178,6 @@ public final class CommunicationIdentityClientBuilder {
 
     /**
      * Sets the {@link RetryPolicy} that is used when each request is sent.
-     * <p>
-     * The default retry policy will be used in the pipeline, if not provided.
      *
      * @param retryPolicy User's retry policy applied to each request.
      * @return The updated {@link CommunicationIdentityClientBuilder} object.
