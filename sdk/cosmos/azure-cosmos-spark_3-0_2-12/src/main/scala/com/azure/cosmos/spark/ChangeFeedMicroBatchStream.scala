@@ -70,8 +70,9 @@ private class ChangeFeedMicroBatchStream
   }
 
   override def latestOffset(startOffset: Offset, readLimit: ReadLimit): Offset = {
+    val startChangeFeedOffset = startOffset.asInstanceOf[ChangeFeedOffset]
     val offset = CosmosPartitionPlanner.getLatestOffset(
-      startOffset.asInstanceOf[ChangeFeedOffset],
+      startChangeFeedOffset,
       readLimit,
       Duration.ZERO,
       this.clientConfiguration,
@@ -80,8 +81,16 @@ private class ChangeFeedMicroBatchStream
       this.partitioningConfig,
       this.session
     )
-    this.latestOffsetSnapshot = Some(offset)
-    offset
+
+    if (offset.changeFeedState != startChangeFeedOffset.changeFeedState) {
+      this.latestOffsetSnapshot = Some(offset)
+      offset
+    } else {
+      // scalastyle:off null
+      this.latestOffsetSnapshot = null
+      null
+      // scalastyle:on null
+    }
   }
 
   override def initialOffset(): Offset = {
@@ -99,6 +108,8 @@ private class ChangeFeedMicroBatchStream
     logInfo(s"MicroBatch stream $streamId: Initial offset '$offsetJson'.")
     ChangeFeedOffset(offsetJson, None)
   }
+
+  override def getDefaultReadLimit: ReadLimit = this.changeFeedConfig.toReadLimit
 
   override def deserializeOffset(s: String): Offset = {
     logDebug(s"MicroBatch stream $streamId: Deserialized offset '$s'.")
