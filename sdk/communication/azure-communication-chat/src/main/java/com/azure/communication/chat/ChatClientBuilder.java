@@ -156,7 +156,6 @@ public final class ChatClientBuilder {
         return this;
     }
 
-
     /**
      * Create synchronous client applying CommunicationTokenCredential, UserAgentPolicy,
      * RetryPolicy, and CookiePolicy.
