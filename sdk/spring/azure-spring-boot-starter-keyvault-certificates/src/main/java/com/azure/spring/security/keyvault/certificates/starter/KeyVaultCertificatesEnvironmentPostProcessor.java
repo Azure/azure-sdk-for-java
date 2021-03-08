@@ -4,111 +4,90 @@ package com.azure.spring.security.keyvault.certificates.starter;
 
 import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
 import com.azure.security.keyvault.jca.KeyVaultTrustManagerFactoryProvider;
-
-import java.security.Security;
-import java.util.Properties;
-import javax.net.ssl.HttpsURLConnection;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertiesPropertySource;
+import org.springframework.util.StringUtils;
 
-import static org.springframework.core.Ordered.LOWEST_PRECEDENCE;
+import javax.net.ssl.HttpsURLConnection;
+import java.security.Security;
+import java.util.Optional;
+import java.util.Properties;
+import java.util.stream.Stream;
 
 /**
  * Leverage {@link EnvironmentPostProcessor} to add Key Store property source.
  */
-@Order(LOWEST_PRECEDENCE)
+@Order()
 public class KeyVaultCertificatesEnvironmentPostProcessor implements EnvironmentPostProcessor {
 
     @Override
-    public void postProcessEnvironment(ConfigurableEnvironment environment,
-            SpringApplication application) {
+    public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
 
-        Properties systemProperties = System.getProperties();
-
-        String uri = environment.getProperty("azure.keyvault.uri");
-        if (uri != null) {
-            systemProperties.put("azure.keyvault.uri", uri);
-
-            String tenantId = environment.getProperty("azure.keyvault.tenant-id");
-            if (tenantId != null) {
-                systemProperties.put("azure.keyvault.tenant-id", tenantId);
-            }
-            
-            String aadAuthenticationUrl = environment.getProperty("azure.keyvault.aad-authentication-url");
-            if (aadAuthenticationUrl != null) {
-                systemProperties.put("azure.keyvault.aad-authentication-url", aadAuthenticationUrl);
-            }
-
-            String clientId = environment.getProperty("azure.keyvault.client-id");
-            if (clientId != null) {
-                systemProperties.put("azure.keyvault.client-id", clientId);
-            }
-
-            String clientSecret = environment.getProperty("azure.keyvault.client-secret");
-            if (clientSecret != null) {
-                systemProperties.put("azure.keyvault.client-secret", clientSecret);
-            }
-
-            String managedIdentity = environment.getProperty("azure.keyvault.managed-identity");
-            if (managedIdentity != null) {
-                systemProperties.put("azure.keyvault.managed-identity", managedIdentity);
-            }
-
-            String keyStoreType = environment.getProperty("server.ssl.key-store-type");
-
-            if (keyStoreType != null && keyStoreType.equals("AzureKeyVault")) {
-                MutablePropertySources sources = environment.getPropertySources();
-                Properties properties = new Properties();
-                properties.put("server.ssl.key-store", "classpath:keyvault.dummy");
-
-                try {
-                    Class.forName("org.apache.tomcat.InstanceManager");
-                    properties.put("server.ssl.key-store-type", "DKS");
-                } catch (ClassNotFoundException ex) {
-                }
-
-                PropertiesPropertySource propertySource
-                        = new PropertiesPropertySource("KeyStorePropertySource", properties);
-                sources.addFirst(propertySource);
-            }
-
-            String trustStoreType = environment.getProperty("server.ssl.trust-store-type");
-
-            if (trustStoreType != null && trustStoreType.equals("AzureKeyVault")) {
-                MutablePropertySources sources = environment.getPropertySources();
-                Properties properties = new Properties();
-                properties.put("server.ssl.trust-store", "classpath:keyvault.dummy");
-
-                try {
-                    Class.forName("org.apache.tomcat.InstanceManager");
-                    properties.put("server.ssl.trust-store-type", "DKS");
-                } catch (ClassNotFoundException ex) {
-                }
-
-                PropertiesPropertySource propertySource
-                        = new PropertiesPropertySource("TrustStorePropertySource", properties);
-                sources.addFirst(propertySource);
-            }
-
-            KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
-            Security.insertProviderAt(provider, 1);
-
-            String enabled = environment.getProperty("azure.keyvault.jca.overrideTrustManagerFactory");
-            if (Boolean.parseBoolean(enabled)) {
-                KeyVaultTrustManagerFactoryProvider factoryProvider
-                        = new KeyVaultTrustManagerFactoryProvider();
-                Security.insertProviderAt(factoryProvider, 1);
-            }
-
-            enabled = environment.getProperty("azure.keyvault.jca.disableHostnameVerification");
-            if (Boolean.parseBoolean(enabled)) {
-                HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
-            }
+        if (environment.getProperty("azure.keyvault.uri") == null) {
+            return;
         }
+
+        Stream.of("azure.keyvault.uri",
+            "azure.keyvault.tenant-id",
+            "azure.keyvault.aad-authentication-url",
+            "azure.keyvault.client-id",
+            "azure.keyvault.client-secret",
+            "azure.keyvault.managed-identity")
+              .forEach(key -> putEnvironmentPropertyToSystemProperty(environment, key));
+
+        if ("AzureKeyVault".equals(environment.getProperty("server.ssl.key-store-type"))) {
+            Properties properties = new Properties();
+            properties.put("server.ssl.key-store", "classpath:keyvault.dummy");
+            if (hasEmbedTomcat()) {
+                properties.put("server.ssl.key-store-type", "DKS");
+            }
+            environment.getPropertySources().addFirst(
+                new PropertiesPropertySource("KeyStorePropertySource", properties));
+        }
+
+        if ("AzureKeyVault".equals(environment.getProperty("server.ssl.trust-store-type"))) {
+            Properties properties = new Properties();
+            properties.put("server.ssl.trust-store", "classpath:keyvault.dummy");
+            if (hasEmbedTomcat()) {
+                properties.put("server.ssl.trust-store-type", "DKS");
+            }
+            environment.getPropertySources().addFirst(
+                new PropertiesPropertySource("TrustStorePropertySource", properties));
+        }
+
+        Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
+        if (environmentPropertyIsTrue(environment, "azure.keyvault.jca.overrideTrustManagerFactory")) {
+            Security.insertProviderAt(new KeyVaultTrustManagerFactoryProvider(), 1);
+        }
+
+        if (environmentPropertyIsTrue(environment, "azure.keyvault.jca.disableHostnameVerification")) {
+            HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
+        }
+    }
+
+    private void putEnvironmentPropertyToSystemProperty(ConfigurableEnvironment environment, String key) {
+        Optional.of(key)
+                .map(environment::getProperty)
+                .filter(StringUtils::hasText)
+                .ifPresent(value -> System.getProperties().put(key, value));
+    }
+
+    private boolean hasEmbedTomcat() {
+        try {
+            Class.forName("org.apache.tomcat.InstanceManager");
+            return true;
+        } catch (ClassNotFoundException ex) {
+            return false;
+        }
+    }
+
+    private boolean environmentPropertyIsTrue(ConfigurableEnvironment environment, String key) {
+        return Optional.of(key)
+                       .map(environment::getProperty)
+                       .map(Boolean::parseBoolean)
+                       .orElse(false);
     }
 }
