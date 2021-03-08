@@ -287,7 +287,8 @@ class ServiceBusReceiverAsyncClientTest {
             .expectNextCount(numberOfEvents)
             .verifyComplete();
 
-        verify(amqpReceiveLink).addCredits(PREFETCH);
+        // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
+        verify(amqpReceiveLink, times(numberOfEvents + 1)).addCredits(PREFETCH);
         verify(amqpReceiveLink, never()).updateDisposition(eq(lockToken), any());
     }
 
@@ -889,7 +890,8 @@ class ServiceBusReceiverAsyncClientTest {
 //            .expectNextCount(numberOfEvents)
 //            .verifyComplete();
 
-        verify(amqpReceiveLink).addCredits(PREFETCH);
+        // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
+        verify(amqpReceiveLink, times(numberOfEvents + 1)).addCredits(PREFETCH);
     }
 
     /**

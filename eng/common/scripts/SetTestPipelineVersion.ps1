@@ -4,12 +4,12 @@ param (
   [Parameter(mandatory = $true)]
   $BuildID,
   [Parameter(mandatory = $true)]
-  $PackagName,
+  $PackageName,
   [Parameter(mandatory = $true)]
   $ServiceDirectory
 )
 
-. common.ps1
+. (Join-Path $PSScriptRoot common.ps1)
 
 $latestTags = git tag -l "${PackageName}_*"
 $semVars = @()
@@ -28,6 +28,6 @@ $newVersion.PrereleaseNumber = $BuildID
 
 LogDebug "Version to publish [ $($newVersion.ToString()) ]"
 
-SetPackageVersion -PackageName $PackagName `
+SetPackageVersion -PackageName $PackageName `
   -Version $newVersion `
-  -ServiceDirectory $ServiceDirectory `
+  -ServiceDirectory $ServiceDirectory

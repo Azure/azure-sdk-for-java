@@ -10,8 +10,8 @@ import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.PiiResult;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
-import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntity;
+import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
@@ -38,6 +38,7 @@ import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContex
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExists;
 import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
+import static com.azure.ai.textanalytics.implementation.Utility.toCategoriesFilter;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsException;
@@ -155,9 +156,13 @@ class RecognizePiiEntityAsyncClient {
             final List<PiiEntity> piiEntities =
                 documentEntities.getEntities().stream().map(
                     entity -> {
-                        final PiiEntity piiEntity = new PiiEntity(entity.getText(),
-                            EntityCategory.fromString(entity.getCategory()), entity.getSubcategory(),
-                            entity.getConfidenceScore(), entity.getOffset());
+                        final PiiEntity piiEntity = new PiiEntity();
+                        PiiEntityPropertiesHelper.setText(piiEntity, entity.getText());
+                        PiiEntityPropertiesHelper.setCategory(piiEntity,
+                            PiiEntityCategory.fromString(entity.getCategory()));
+                        PiiEntityPropertiesHelper.setSubcategory(piiEntity, entity.getSubcategory());
+                        PiiEntityPropertiesHelper.setConfidenceScore(piiEntity, entity.getConfidenceScore());
+                        PiiEntityPropertiesHelper.setOffset(piiEntity, entity.getOffset());
                         PiiEntityPropertiesHelper.setLength(piiEntity, entity.getLength());
                         return piiEntity;
                     })
@@ -206,13 +211,12 @@ class RecognizePiiEntityAsyncClient {
     private Mono<Response<RecognizePiiEntitiesResultCollection>> getRecognizePiiEntitiesResponse(
         Iterable<TextDocumentInput> documents, RecognizePiiEntitiesOptions options, Context context) {
         options = options == null ? new RecognizePiiEntitiesOptions() : options;
-        // TODO: add PiiEntityCategory class, issue: https://github.com/Azure/azure-sdk-for-java/issues/19180
         return service.entitiesRecognitionPiiWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             options.getModelVersion(), options.isIncludeStatistics(),
             options.getDomainFilter() != null ? options.getDomainFilter().toString() : null,
             getNonNullStringIndexType(options.getStringIndexType()),
-            null,
+            toCategoriesFilter(options.getCategoriesFilter()),
             getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
                    .doOnSubscribe(ignoredValue -> logger.info(
                        "Start recognizing Personally Identifiable Information entities for a batch of documents."))

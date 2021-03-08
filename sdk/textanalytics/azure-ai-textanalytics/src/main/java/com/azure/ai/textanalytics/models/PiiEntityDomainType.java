@@ -5,7 +5,6 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 /**
  * Defines values for {@link PiiEntityDomainType}.
@@ -28,7 +27,6 @@ public final class PiiEntityDomainType extends ExpandableStringEnum<PiiEntityDom
      * @param name The string name to look for.
      * @return The corresponding {@link EntityCategory}.
      */
-    @JsonCreator
     public static PiiEntityDomainType fromString(String name) {
         return fromString(name, PiiEntityDomainType.class);
     }

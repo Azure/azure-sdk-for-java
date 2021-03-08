@@ -9,7 +9,7 @@ import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
-import com.azure.ai.textanalytics.models.TargetSentiment;
+import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
@@ -18,8 +18,6 @@ import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
-import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
-import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
@@ -27,6 +25,7 @@ import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
+import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -44,14 +43,12 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -967,14 +964,15 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                             "\t\tEntity ID in data source: %s, data source: %s.%n",
                             healthcareEntityLink.getEntityId(), healthcareEntityLink.getName()));
                     }
-                    Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities =
-                        healthcareEntity.getRelatedEntities();
-                    if (!CoreUtils.isNullOrEmpty(relatedHealthcareEntities)) {
-                        relatedHealthcareEntities.forEach(
-                            (relatedHealthcareEntity, entityRelationType) -> System.out.printf(
-                                "\t\tRelated entity: %s, relation type: %s.%n",
-                                relatedHealthcareEntity.getText(), entityRelationType));
-                    }
+                });
+                // Healthcare entity relation groups
+                healthcareEntitiesResult.getEntityRelations().forEach(entityRelation -> {
+                    System.out.printf("\tRelation type: %s.%n", entityRelation.getRelationType());
+                    entityRelation.getRoles().forEach(role -> {
+                        final HealthcareEntity entity = role.getEntity();
+                        System.out.printf("\t\tEntity text: %s, category: %s, role: %s.%n",
+                            entity.getText(), entity.getCategory(), role.getName());
+                    });
                 });
             });
         });
