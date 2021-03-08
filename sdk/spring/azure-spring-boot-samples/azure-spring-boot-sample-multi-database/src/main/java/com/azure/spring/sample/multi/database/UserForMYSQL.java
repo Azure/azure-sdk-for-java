@@ -1,24 +1,24 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 package com.azure.spring.sample.multi.database;
 
-import com.azure.spring.data.cosmos.core.mapping.Container;
-import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
-import org.springframework.data.annotation.Id;
+import javax.persistence.Entity;
 
-public class User {
-    @Id
+@Entity
+public class UserForMYSQL {
+
+    @javax.persistence.Id
     private String id;
 
     private String email;
 
-    @PartitionKey
     private String name;
 
     private String address;
 
-    public User(String id, String email, String name, String address) {
+    public UserForMYSQL(){
+
+    }
+
+    public UserForMYSQL(String id, String email, String name, String address) {
         this.id = id;
         this.email = email;
         this.name = name;

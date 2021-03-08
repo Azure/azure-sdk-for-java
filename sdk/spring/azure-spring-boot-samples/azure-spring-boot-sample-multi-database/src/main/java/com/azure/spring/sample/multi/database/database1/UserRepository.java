@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.sample.multi.database;
+package com.azure.spring.sample.multi.database.database1;
 
 import com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository;
 import org.springframework.stereotype.Repository;

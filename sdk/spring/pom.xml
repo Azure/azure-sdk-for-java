@@ -157,7 +157,7 @@
         <module>azure-spring-boot-samples/azure-appconfiguration-conversion-sample-initial</module>
         <module>azure-spring-boot-samples/azure-appconfiguration-sample</module>
         <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder</module>
-        <module>azure-spring-boot-samples/azure-spring-cloud-sample-multi-database</module>
+        <module>azure-spring-boot-samples/azure-spring-boot-sample-multi-database</module>
         <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-kafka</module>
         <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-multibinders</module>
         <module>azure-spring-boot-samples/feature-management-web-sample</module>

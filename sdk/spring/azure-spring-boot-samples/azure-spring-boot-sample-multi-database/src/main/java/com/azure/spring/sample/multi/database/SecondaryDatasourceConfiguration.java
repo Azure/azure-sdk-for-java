@@ -5,7 +5,6 @@ package com.azure.spring.sample.multi.database;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.spring.autoconfigure.cosmos.CosmosProperties;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
@@ -28,17 +27,12 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.data.annotation.Persistent;
 import org.springframework.lang.Nullable;
 
-/**
- * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
- * ARE USED TO EXTRACT APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING
- * LINE NUMBERS OF EXISTING CODE SAMPLES.
- */
 @Configuration
 public class SecondaryDatasourceConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SecondaryDatasourceConfiguration.class);
     public static final String DATABASE3 = "secondary_database";
-
+    public static final String DATABASE4 = "secondary_database2";
 
     @Bean
     @Qualifier("secondary")
@@ -75,6 +69,16 @@ public class SecondaryDatasourceConfiguration {
                 null);
             CosmosTemplate cosmosTemplate = new CosmosTemplate(cosmosFactory, cosmosConfig, cosmosConverter);
             return cosmosTemplate;
+        }
+    }
+
+    @EnableCosmosRepositories(cosmosTemplateRef  = "secondaryDatabase2Template")
+    public class Database4Configuration {
+        @Bean
+        public CosmosTemplate secondaryDatabase2Template(@Qualifier("secondaryCosmosClient") CosmosAsyncClient client,
+                                                         @Qualifier("secondaryCosmosConfig") CosmosConfig cosmosConfig,
+                                                         MappingCosmosConverter mappingCosmosConverter) {
+            return new CosmosTemplate(client, DATABASE4, cosmosConfig, mappingCosmosConverter);
         }
     }
 

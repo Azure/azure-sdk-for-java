@@ -1,4 +1,4 @@
-# Azure Spring Cloud App Configuration Conversion Sample client library for Java
+# Azure Spring Boot App Multi Database Sample client library for Java
 
 ## Key concepts
 ## Getting started
