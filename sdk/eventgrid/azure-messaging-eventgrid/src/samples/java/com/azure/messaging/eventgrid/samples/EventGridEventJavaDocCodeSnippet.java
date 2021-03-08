@@ -136,7 +136,6 @@ public class EventGridEventJavaDocCodeSnippet {
 
         // BEGIN: com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#SendCustomEvent
         // Create an custom event object
-        User user = new User("John", "James");
         Map<String, Object> customEvent = new HashMap<String, Object>() {
             {
                 put("id", UUID.randomUUID().toString());
@@ -148,12 +147,11 @@ public class EventGridEventJavaDocCodeSnippet {
             }
         };
 
-        // Send a single EventGridEvent
+        // Send a single custom event
         customEventPublisherClient.sendEvent(BinaryData.fromObject(customEvent)).block();
 
         // Send a list of EventGridEvents to the EventGrid service altogether.
         // This has better performance than sending one by one.
-
         customEventPublisherClient.sendEvents(new ArrayList<BinaryData>() {
             {
                 add(BinaryData.fromObject(customEvent));
@@ -232,7 +230,6 @@ public class EventGridEventJavaDocCodeSnippet {
 
         // BEGIN: com.azure.messaging.eventgrid.EventGridPublisherClient#SendCustomEvent
         // Create an custom event object
-        User user = new User("John", "James");
         Map<String, Object> customEvent = new HashMap<String, Object>() {
             {
                 put("id", UUID.randomUUID().toString());
@@ -244,12 +241,11 @@ public class EventGridEventJavaDocCodeSnippet {
             }
         };
 
-        // Send a single EventGridEvent
+        // Send a single custom event
         customEventPublisherClient.sendEvent(BinaryData.fromObject(customEvent));
 
-        // Send a list of EventGridEvents to the EventGrid service altogether.
+        // Send a list of custom events to the EventGrid service altogether.
         // This has better performance than sending one by one.
-
         customEventPublisherClient.sendEvents(new ArrayList<BinaryData>() {
             {
                 add(BinaryData.fromObject(customEvent));
