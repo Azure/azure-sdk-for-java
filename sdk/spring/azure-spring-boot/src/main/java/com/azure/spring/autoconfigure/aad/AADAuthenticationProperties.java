@@ -45,9 +45,10 @@ public class AADAuthenticationProperties implements InitializingBean {
     private String clientSecret;
 
     /**
-     * Redirection Endpoint: Used by the authorization server to return responses containing authorization credentials
-     * to the client via the resource owner user-agent.
+     * @deprecated Now the redirect-url-template is equal to "{baseUrl}/login/oauth2/code/"
+     * @see com.azure.spring.aad.webapp.AADWebAppConfiguration#clientRegistrationRepository()
      */
+    @Deprecated
     private String redirectUriTemplate;
 
     /**
@@ -167,10 +168,12 @@ public class AADAuthenticationProperties implements InitializingBean {
         this.clientSecret = clientSecret;
     }
 
+    @Deprecated
     public String getRedirectUriTemplate() {
         return redirectUriTemplate;
     }
 
+    @Deprecated
     public void setRedirectUriTemplate(String redirectUriTemplate) {
         this.redirectUriTemplate = redirectUriTemplate;
     }
