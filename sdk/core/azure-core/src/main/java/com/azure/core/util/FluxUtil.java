@@ -27,12 +27,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Utility type exposing methods to deal with {@link Flux}.
@@ -238,9 +240,9 @@ public final class FluxUtil {
     public static <T> Mono<T> withContext(Function<Context, Mono<T>> serviceCall,
         Map<String, String> contextAttributes) {
         return Mono.subscriberContext()
-            .map(ctx -> ctx == null || ctx.isEmpty() ?
-                Context.NONE :
-                new ReactorToAzureContextWrapper(contextAttributes, ctx))
+            .map(ctx -> ctx == null || ctx.isEmpty()
+                ? Context.NONE
+                : new ReactorToAzureContextWrapper(contextAttributes, ctx))
             .flatMap(serviceCall);
     }
 
@@ -379,6 +381,8 @@ public final class FluxUtil {
             return reactor.util.context.Context.empty();
         }
 
+//        return new AzureToReactorContextWrapper(context);
+
         // Filter out null value entries as Reactor's context doesn't allow null values.
         Map<Object, Object> contextValues = context.getValues().entrySet().stream()
             .filter(kvp -> kvp.getValue() != null)
@@ -388,6 +392,46 @@ public final class FluxUtil {
             ? reactor.util.context.Context.empty()
             : reactor.util.context.Context.of(contextValues);
     }
+
+//    private static final class AzureToReactorContextWrapper implements reactor.util.context.Context {
+//        private Context azureContext;
+//
+//        public AzureToReactorContextWrapper(final Context azureContext) {
+//            this.azureContext = azureContext;
+//        }
+//
+//        @Override
+//        public <T> T get(Object key) {
+//            return (T) azureContext.getData(key).orElseThrow(() -> new NoSuchElementException());
+//        }
+//
+//        @Override
+//        public boolean hasKey(Object key) {
+//            return azureContext.getData(key).isPresent();
+//        }
+//
+//        @Override
+//        public reactor.util.context.Context put(Object key, Object value) {
+//            this.azureContext = azureContext.addData(key, value);
+//            return this;
+//        }
+//
+//        @Override
+//        public reactor.util.context.Context delete(Object key) {
+//            azureContext.
+//            return null;
+//        }
+//
+//        @Override
+//        public int size() {
+//            return azureContext.;
+//        }
+//
+//        @Override
+//        public Stream<Entry<Object, Object>> stream() {
+//            return null;
+//        }
+//    }
 
     /**
      * Writes the bytes emitted by a Flux to an AsynchronousFileChannel.
