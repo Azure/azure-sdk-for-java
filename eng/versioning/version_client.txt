@@ -210,6 +210,7 @@ com.azure.resourcemanager:azure-resourcemanager-redisenterprise;1.0.0-beta.2;1.0
 com.azure.resourcemanager:azure-resourcemanager-hybridkubernetes;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-iothub;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-datadog;1.0.0-beta.1;1.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration;1.0.0-beta.1;1.0.0-beta.1
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current
 # version. Unreleased dependencies are only valid for dependency versions.

@@ -593,8 +593,8 @@
         <module>sdk/core</module>
         <module>sdk/cosmos</module>
         <module>sdk/costmanagement</module>
-        <module>sdk/deviceupdate</module>
         <module>sdk/datadog</module>
+        <module>sdk/deviceupdate</module>
         <module>sdk/digitaltwins</module>
         <module>sdk/eventgrid</module>
         <module>sdk/eventhubs</module>
@@ -605,6 +605,7 @@
         <module>sdk/identity</module>
         <module>sdk/iothub</module>
         <module>sdk/keyvault</module>
+        <module>sdk/kubernetesconfiguration</module>
         <module>sdk/kusto</module>
         <module>sdk/loganalytics</module>
         <module>sdk/mediaservices</module>
