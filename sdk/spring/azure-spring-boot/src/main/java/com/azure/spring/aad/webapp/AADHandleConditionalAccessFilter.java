@@ -53,7 +53,7 @@ public class AADHandleConditionalAccessFilter extends OncePerRequestFilter {
                 request.getSession().setAttribute(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS,
                     authParameters.get(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS));
                 // OAuth2AuthorizationRequestRedirectFilter will catch this exception to re-authorize.
-                throw new ClientAuthorizationRequiredException(AuthorizationClientProperties.AZURE_CLIENT_REGISTRATION_ID);
+                throw new ClientAuthorizationRequiredException(AuthorizationClientProperties.AZURE);
             }
             throw exception;
         }

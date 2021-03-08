@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class AuthorizationClientProperties {
 
-    public static final String AZURE_CLIENT_REGISTRATION_ID = "azure";
+    public static final String AZURE = "azure";
 
     private List<String> scopes;
 
