@@ -70,7 +70,7 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
         if (repo.isClientNeedConsentWhenLogin(id)) {
             OAuth2AuthorizedClient azureClient = loadAuthorizedClient(getAzureClientId(), principal, request);
             if (azureClient == null) {
-                throw new ClientAuthorizationRequiredException(AuthorizationClientProperties.AZURE);
+                throw new ClientAuthorizationRequiredException(AADClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID);
             }
             OAuth2AuthorizedClient fakeAuthzClient = createFakeAuthzClient(azureClient, id, principal);
             OAuth2AuthorizationContext.Builder contextBuilder =

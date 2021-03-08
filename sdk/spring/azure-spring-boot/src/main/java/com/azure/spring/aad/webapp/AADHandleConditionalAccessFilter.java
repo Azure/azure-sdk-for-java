@@ -3,6 +3,7 @@
 
 package com.azure.spring.aad.webapp;
 
+import com.azure.spring.aad.AADClientRegistrationRepository;
 import com.azure.spring.autoconfigure.aad.Constants;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.oauth2.client.ClientAuthorizationRequiredException;
@@ -53,7 +54,7 @@ public class AADHandleConditionalAccessFilter extends OncePerRequestFilter {
                 request.getSession().setAttribute(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS,
                     authParameters.get(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS));
                 // OAuth2AuthorizationRequestRedirectFilter will catch this exception to re-authorize.
-                throw new ClientAuthorizationRequiredException(AuthorizationClientProperties.AZURE);
+                throw new ClientAuthorizationRequiredException(AADClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID);
             }
             throw exception;
         }

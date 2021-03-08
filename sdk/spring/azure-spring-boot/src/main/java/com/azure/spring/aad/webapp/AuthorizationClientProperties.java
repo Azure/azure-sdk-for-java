@@ -9,9 +9,6 @@ import java.util.List;
  * Properties for an oauth2 client.
  */
 public class AuthorizationClientProperties {
-
-    public static final String AZURE = "azure";
-
     private List<String> scopes;
 
     private boolean onDemand = false;
