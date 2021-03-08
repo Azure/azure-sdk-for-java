@@ -4,9 +4,7 @@ stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: textanalytics
-      TimeoutInMinutes: 60
       TestMode: RECORD # to make sure recordedData is not null but still testing LIVE mode
-      MaxParallel: 7
       Artifacts:
         - name: azure-ai-textanalytics
           groupId: com.azure
@@ -15,6 +13,5 @@ stages:
       # Will enable it when service rolls out AAD to all region.
       DisableAzureResourceCreation: true
       EnvVars:
-        AZURE_TEST_MODE: RECORD
         AZURE_TEXT_ANALYTICS_API_KEY: $(java-textanalytics-test-api-key)
         AZURE_TEXT_ANALYTICS_ENDPOINT: $(java-textanalytics-sdk-endpoint)
