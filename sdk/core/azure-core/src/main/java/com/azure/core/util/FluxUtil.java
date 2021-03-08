@@ -23,13 +23,17 @@ import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.CompletionHandler;
+import java.util.AbstractMap;
+import java.util.AbstractSet;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.function.Function;
@@ -40,6 +44,10 @@ import java.util.stream.Stream;
  */
 public final class FluxUtil {
     private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+
+    // This wrapper is frequently created, so we are OK with creating a single shared logger instance here,
+    // to lessen the cost of this type.
+    private static final ClientLogger LOGGER = new ClientLogger(FluxUtil.class);
 
     /**
      * Checks if a type is Flux&lt;ByteBuffer&gt;.
@@ -284,19 +292,88 @@ public final class FluxUtil {
 
         @Override
         public Map<Object, Object> getValues() {
-            int size = reactorContext.size() + (contextAttributes == null ? 0 : contextAttributes.size());
-            Map<Object, Object> map = new HashMap<>(size);
+            final int size = reactorContext.size() + (contextAttributes == null ? 0 : contextAttributes.size());
+            return new AbstractMap<Object, Object>() {
 
-            if (contextAttributes != null) {
-                map.putAll(contextAttributes);
-            }
+                @Override
+                public int size() {
+                    return size;
+                }
 
-            reactorContext.stream().forEach(entry -> map.put(entry.getKey(), entry.getValue()));
+                @Override
+                public boolean isEmpty() {
+                    return size == 0;
+                }
 
-            // defer up the chain, if there is any parent (unlikely)
-            map.putAll(super.getValues());
+                @Override
+                public boolean containsKey(Object key) {
+                    return (contextAttributes != null && contextAttributes.containsKey(key))
+                        || reactorContext.hasKey(key);
+                }
 
-            return map;
+                @Override
+                public boolean containsValue(Object value) {
+                    throw LOGGER.logExceptionAsWarning(new UnsupportedOperationException());
+                }
+
+                @Override
+                public String get(final Object key) {
+                    if (reactorContext.hasKey(key)) {
+                        return reactorContext.get(key);
+                    } else if (contextAttributes != null && contextAttributes.containsKey(key)) {
+                        return contextAttributes.get(key);
+                    } else {
+                        return null;
+                    }
+                }
+
+                @Override
+                public String put(Object key, Object value) {
+                    throw LOGGER.logExceptionAsWarning(new UnsupportedOperationException());
+                }
+
+                @Override
+                public String remove(Object key) {
+                    throw LOGGER.logExceptionAsWarning(new UnsupportedOperationException());
+                }
+
+                @Override
+                public void putAll(Map<? extends Object, ? extends Object> m) {
+                    throw LOGGER.logExceptionAsWarning(new UnsupportedOperationException());
+                }
+
+                @Override
+                public void clear() {
+                    throw LOGGER.logExceptionAsWarning(new UnsupportedOperationException());
+                }
+
+                @Override
+                public Set<Entry<Object, Object>> entrySet() {
+                    return new AbstractSet<Entry<Object, Object>>() {
+                        @Override
+                        public Iterator<Entry<Object, Object>> iterator() {
+                            // FIXME (jogiles) This is not good code
+                            Map<Object, Object> map = new HashMap<>(size);
+
+                            if (contextAttributes != null) {
+                                map.putAll(contextAttributes);
+                            }
+
+                            reactorContext.stream().forEach(entry -> map.put(entry.getKey(), entry.getValue()));
+
+                            // defer up the chain, if there is any parent (unlikely)
+                            map.putAll(ReactorToAzureContextWrapper.super.getValues());
+
+                            return map.entrySet().iterator();
+                        }
+
+                        @Override
+                        public int size() {
+                            return size;
+                        }
+                    };
+                }
+            };
         }
     }
 
@@ -381,15 +458,6 @@ public final class FluxUtil {
         }
 
         return new AzureToReactorContextWrapper(context);
-//
-//        // Filter out null value entries as Reactor's context doesn't allow null values.
-//        Map<Object, Object> contextValues = context.getValues().entrySet().stream()
-//            .filter(kvp -> kvp.getValue() != null)
-//            .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
-//
-//        return CoreUtils.isNullOrEmpty(contextValues)
-//            ? reactor.util.context.Context.empty()
-//            : reactor.util.context.Context.of(contextValues);
     }
 
     private static final class AzureToReactorContextWrapper implements reactor.util.context.Context {
@@ -400,6 +468,7 @@ public final class FluxUtil {
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         public <T> T get(Object key) {
             return (T) azureContext.getData(key).orElseThrow(() -> new NoSuchElementException());
         }
