@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.storagecache.implementation;
 
-import com.azure.resourcemanager.storagecache.StorageCacheManager;
 import com.azure.resourcemanager.storagecache.fluent.models.ResourceSkuInner;
 import com.azure.resourcemanager.storagecache.models.ResourceSku;
 import com.azure.resourcemanager.storagecache.models.ResourceSkuCapabilities;
@@ -16,9 +15,10 @@ import java.util.List;
 public final class ResourceSkuImpl implements ResourceSku {
     private ResourceSkuInner innerObject;
 
-    private final StorageCacheManager serviceManager;
+    private final com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager;
 
-    ResourceSkuImpl(ResourceSkuInner innerObject, StorageCacheManager serviceManager) {
+    ResourceSkuImpl(
+        ResourceSkuInner innerObject, com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -71,7 +71,7 @@ public final class ResourceSkuImpl implements ResourceSku {
         return this.innerObject;
     }
 
-    private StorageCacheManager manager() {
+    private com.azure.resourcemanager.storagecache.StorageCacheManager manager() {
         return this.serviceManager;
     }
 }

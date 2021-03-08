@@ -6,6 +6,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.spring.data.cosmos.CosmosFactory;
+import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.common.TestUtils;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
@@ -13,10 +14,8 @@ import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.PageableAddressRepository;
-import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,11 +43,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class PageableAddressRepositoryIT {
 
-    private static final CosmosEntityInformation<Address, String> entityInformation =
-            new CosmosEntityInformation<>(Address.class);
-
-    private static CosmosTemplate staticTemplate;
-    private static boolean isSetupDone;
+    @ClassRule
+    public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
     private CosmosTemplate template;
@@ -64,26 +60,12 @@ public class PageableAddressRepositoryIT {
 
     @Before
     public void setUp() {
-        if (!isSetupDone) {
-            staticTemplate = template;
-            template.createContainerIfNotExists(entityInformation);
-        }
+        collectionManager.ensureContainersCreatedAndEmpty(template, Address.class);
         repository.save(TEST_ADDRESS1_PARTITION1);
         repository.save(TEST_ADDRESS1_PARTITION2);
         repository.save(TEST_ADDRESS2_PARTITION1);
         repository.save(TEST_ADDRESS4_PARTITION3);
         repository.save(new Address(TestConstants.POSTAL_CODE, TestConstants.STREET, TestConstants.CITY_0));
-        isSetupDone = true;
-    }
-
-    @After
-    public void cleanup() {
-        repository.deleteAll();
-    }
-
-    @AfterClass
-    public static void afterClassCleanup() {
-        staticTemplate.deleteContainer(entityInformation.getContainerName());
     }
 
     @Test
@@ -171,7 +153,7 @@ public class PageableAddressRepositoryIT {
         final CosmosAsyncClient cosmosAsyncClient = applicationContext.getBean(CosmosAsyncClient.class);
         final Flux<FeedResponse<Address>> feedResponseFlux =
             cosmosAsyncClient.getDatabase(cosmosFactory.getDatabaseName())
-                        .getContainer(entityInformation.getContainerName())
+                        .getContainer(collectionManager.getContainerName(Address.class))
                         .queryItems(query, options, Address.class)
                         .byPage();
 

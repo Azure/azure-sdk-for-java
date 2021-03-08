@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.datadog.MicrosoftDatadogManager;
 import com.azure.resourcemanager.datadog.fluent.SingleSignOnConfigurationsClient;
 import com.azure.resourcemanager.datadog.fluent.models.DatadogSingleSignOnResourceInner;
 import com.azure.resourcemanager.datadog.models.DatadogSingleSignOnResource;
@@ -21,10 +20,11 @@ public final class SingleSignOnConfigurationsImpl implements SingleSignOnConfigu
 
     private final SingleSignOnConfigurationsClient innerClient;
 
-    private final MicrosoftDatadogManager serviceManager;
+    private final com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager;
 
     public SingleSignOnConfigurationsImpl(
-        SingleSignOnConfigurationsClient innerClient, MicrosoftDatadogManager serviceManager) {
+        SingleSignOnConfigurationsClient innerClient,
+        com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -129,7 +129,7 @@ public final class SingleSignOnConfigurationsImpl implements SingleSignOnConfigu
         return this.innerClient;
     }
 
-    private MicrosoftDatadogManager manager() {
+    private com.azure.resourcemanager.datadog.MicrosoftDatadogManager manager() {
         return this.serviceManager;
     }
 

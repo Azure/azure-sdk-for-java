@@ -17,6 +17,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.resources.models.Provider;
 import com.azure.resourcemanager.resources.models.Providers;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -124,7 +125,7 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
                     }
                     return providers.getByNameAsync(namespace)
                             .flatMap(this::checkProviderRegistered)
-                            .retry(60, ProviderUnregisteredException.class::isInstance);
+                            .retryWhen(Retry.max(60).filter(ProviderUnregisteredException.class::isInstance));
                 }
             );
     }

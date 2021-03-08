@@ -8,7 +8,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storagecache.StorageCacheManager;
 import com.azure.resourcemanager.storagecache.fluent.AscOperationsClient;
 import com.azure.resourcemanager.storagecache.fluent.models.AscOperationInner;
 import com.azure.resourcemanager.storagecache.models.AscOperation;
@@ -20,9 +19,10 @@ public final class AscOperationsImpl implements AscOperations {
 
     private final AscOperationsClient innerClient;
 
-    private final StorageCacheManager serviceManager;
+    private final com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager;
 
-    public AscOperationsImpl(AscOperationsClient innerClient, StorageCacheManager serviceManager) {
+    public AscOperationsImpl(
+        AscOperationsClient innerClient, com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -53,7 +53,7 @@ public final class AscOperationsImpl implements AscOperations {
         return this.innerClient;
     }
 
-    private StorageCacheManager manager() {
+    private com.azure.resourcemanager.storagecache.StorageCacheManager manager() {
         return this.serviceManager;
     }
 }
