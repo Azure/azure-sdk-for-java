@@ -4,7 +4,7 @@
 
 ### Dependency Updates
 
-- Updated `azure-core` from `1.12.0` to `1.13.0`.
+- Updated `azure-core` from `1.13.0` to `1.14.0`.
 - Updated Jackson from `2.11.3` to `2.12.1`.
 
 ## 1.1.2 (2021-02-05)

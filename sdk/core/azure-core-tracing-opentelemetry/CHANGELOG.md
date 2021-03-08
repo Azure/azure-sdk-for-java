@@ -4,7 +4,7 @@
 
 ### Dependency Updates
 
-- Updated `azure-core` from `1.12.0` to `1.13.0`.
+- Updated `azure-core` from `1.13.0` to `1.14.0`.
 - Updated versions of `opentelemetry-api` to `1.0.0` version.
   More detailed information about the new OpenTelemetry API version can be found in [OpenTelemetry changelog](https://github.com/open-telemetry/opentelemetry-java/blob/main/CHANGELOG.md#version-100---2021-02-26).
 
