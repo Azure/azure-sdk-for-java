@@ -142,7 +142,7 @@ public final class ChatClientBuilder {
         return this;
     }
 
-        /**
+    /**
      * Sets the {@link RetryPolicy} that is used when each request is sent.
      * <p>
      * The default retry policy will be used in the pipeline, if not provided.
@@ -152,7 +152,7 @@ public final class ChatClientBuilder {
      * @throws NullPointerException If the specified {@code retryPolicy} is null.
      */
     public ChatClientBuilder retryPolicy(RetryPolicy retryPolicy) {
-        this.retryPolicy = Objects.requireNonNull(retryPolicy, "The retry policy cannot be bull");
+        this.retryPolicy = Objects.requireNonNull(retryPolicy, "The retry policy cannot be null");
         return this;
     }
 

@@ -186,7 +186,7 @@ public final class CommunicationIdentityClientBuilder {
      * @throws NullPointerException If the specified {@code retryPolicy} is null.
      */
     public CommunicationIdentityClientBuilder retryPolicy(RetryPolicy retryPolicy) {
-        this.retryPolicy = Objects.requireNonNull(retryPolicy, "The retry policy cannot be bull");
+        this.retryPolicy = Objects.requireNonNull(retryPolicy, "The retry policy cannot be null");
         return this;
     }
 

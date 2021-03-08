@@ -208,7 +208,7 @@ public final class PhoneNumbersClientBuilder {
      * @throws NullPointerException If the specified {@code retryPolicy} is null.
      */
     public PhoneNumbersClientBuilder retryPolicy(RetryPolicy retryPolicy) {
-        this.retryPolicy = Objects.requireNonNull(retryPolicy, "The retry policy cannot be bull");
+        this.retryPolicy = Objects.requireNonNull(retryPolicy, "The retry policy cannot be null");
         return this;
     }
 
