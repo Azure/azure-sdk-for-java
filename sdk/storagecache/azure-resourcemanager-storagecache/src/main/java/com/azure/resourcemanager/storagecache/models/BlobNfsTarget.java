@@ -9,13 +9,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties pertaining to the Nfs3Target. */
+/** Properties pertaining to the BlobNfsTarget. */
 @Fluent
-public final class Nfs3Target {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Nfs3Target.class);
+public final class BlobNfsTarget {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobNfsTarget.class);
 
     /*
-     * IP address or host name of an NFSv3 host (e.g., 10.0.44.44).
+     * Resource ID of the storage container.
      */
     @JsonProperty(value = "target")
     private String target;
@@ -28,7 +28,7 @@ public final class Nfs3Target {
     private String usageModel;
 
     /**
-     * Get the target property: IP address or host name of an NFSv3 host (e.g., 10.0.44.44).
+     * Get the target property: Resource ID of the storage container.
      *
      * @return the target value.
      */
@@ -37,12 +37,12 @@ public final class Nfs3Target {
     }
 
     /**
-     * Set the target property: IP address or host name of an NFSv3 host (e.g., 10.0.44.44).
+     * Set the target property: Resource ID of the storage container.
      *
      * @param target the target value to set.
-     * @return the Nfs3Target object itself.
+     * @return the BlobNfsTarget object itself.
      */
-    public Nfs3Target withTarget(String target) {
+    public BlobNfsTarget withTarget(String target) {
         this.target = target;
         return this;
     }
@@ -60,9 +60,9 @@ public final class Nfs3Target {
      * Set the usageModel property: Identifies the StorageCache usage model to be used for this storage target.
      *
      * @param usageModel the usageModel value to set.
-     * @return the Nfs3Target object itself.
+     * @return the BlobNfsTarget object itself.
      */
-    public Nfs3Target withUsageModel(String usageModel) {
+    public BlobNfsTarget withUsageModel(String usageModel) {
         this.usageModel = usageModel;
         return this;
     }
