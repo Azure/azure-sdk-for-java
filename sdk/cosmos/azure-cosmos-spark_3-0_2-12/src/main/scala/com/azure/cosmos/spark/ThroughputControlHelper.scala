@@ -27,11 +27,18 @@ private object ThroughputControlHelper {
                 groupConfigBuilder.setTargetThroughputThreshold(throughputControlConfig.targetThroughputThreshold.get)
             }
 
-            val globalThroughputControlConfig = client.createGlobalThroughputControlConfigBuilder(
+            val globalThroughputControlConfigBuilder = client.createGlobalThroughputControlConfigBuilder(
                 throughputControlConfig.globalControlDatabase,
-                throughputControlConfig.globalControlContainer).build()
+                throughputControlConfig.globalControlContainer)
 
-            container.enableGlobalThroughputControlGroup(groupConfigBuilder.build(), globalThroughputControlConfig)
+            if (throughputControlConfig.globalControlRenewInterval.isDefined) {
+                globalThroughputControlConfigBuilder.setControlItemRenewInterval(throughputControlConfig.globalControlRenewInterval.get)
+            }
+            if (throughputControlConfig.globalControlExpireInterval.isDefined) {
+                globalThroughputControlConfigBuilder.setControlItemExpireInterval(throughputControlConfig.globalControlExpireInterval.get)
+            }
+
+            container.enableGlobalThroughputControlGroup(groupConfigBuilder.build(), globalThroughputControlConfigBuilder.build())
         }
 
         container

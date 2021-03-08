@@ -25,7 +25,9 @@ class SparkE2EThroughputControlSpec extends IntegrationSpec with Spark with Cosm
             "spark.cosmos.throughputControl.name" -> "sparkTest",
             "spark.cosmos.throughputControl.targetThroughput" -> "6",
             "spark.cosmos.throughputControl.globalControl.database" -> throughputControlDatabaseId,
-            "spark.cosmos.throughputControl.globalControl.container" -> throughputControlContainerId
+            "spark.cosmos.throughputControl.globalControl.container" -> throughputControlContainerId,
+            "spark.cosmos.throughputControl.globalControl.renewIntervalInMilliseconds" -> "5000",
+            "spark.cosmos.throughputControl.globalControl.expireIntervalInMilliseconds" -> "20000"
         )
 
         val newSpark = getSpark()
