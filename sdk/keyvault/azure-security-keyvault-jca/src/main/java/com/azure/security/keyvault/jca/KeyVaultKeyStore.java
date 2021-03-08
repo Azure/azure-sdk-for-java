@@ -37,9 +37,14 @@ import static java.util.logging.Level.WARNING;
 public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     /**
-     * Stores the name.
+     * Stores the key-store name.
      */
-    public static final String ALGORITHM_NAME = "AzureKeyVault";
+    public static final String KEY_STORE_TYPE = "AzureKeyVault";
+
+    /**
+     * Stores the algorithm name.
+     */
+    public static final String ALGORITHM_NAME = KEY_STORE_TYPE;
 
     /**
      * Stores the logger.

@@ -17,7 +17,7 @@ public class KeyVaultJcaProvider extends Provider {
     /**
      * Stores the name.
      */
-    public static final String NAME = "AzureKeyVault";
+    public static final String PROVIDER_NAME = KeyVaultKeyStore.KEY_STORE_TYPE;
 
     /**
      * Stores the serial version UID.
@@ -38,7 +38,7 @@ public class KeyVaultJcaProvider extends Provider {
      * Constructor.
      */
     public KeyVaultJcaProvider() {
-        super(NAME, VERSION, INFO);
+        super(PROVIDER_NAME, VERSION, INFO);
         initialize();
     }
 
