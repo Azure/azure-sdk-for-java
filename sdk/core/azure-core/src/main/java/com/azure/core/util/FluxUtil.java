@@ -211,7 +211,7 @@ public final class FluxUtil {
     }
 
     /**
-     * This method converts the incoming {@code subscriberContext} from {@link reactor.util.context.Context Reactor
+     * This method converts the incoming {@code deferContextual} from {@link reactor.util.context.Context Reactor
      * Context} to {@link Context Azure Context} and calls the given lambda function with this context and returns a
      * single entity of type {@code T}
      * <p>
@@ -230,7 +230,7 @@ public final class FluxUtil {
     }
 
     /**
-     * This method converts the incoming {@code subscriberContext} from {@link reactor.util.context.Context Reactor
+     * This method converts the incoming {@code deferContextual} from {@link reactor.util.context.Context Reactor
      * Context} to {@link Context Azure Context}, adds the specified context attributes and calls the given lambda
      * function with this context and returns a single entity of type {@code T}
      * <p>
@@ -455,7 +455,7 @@ public final class FluxUtil {
     }
 
     /**
-     * This method converts the incoming {@code subscriberContext} from {@link reactor.util.context.Context Reactor
+     * This method converts the incoming {@code deferContextual} from {@link reactor.util.context.Context Reactor
      * Context} to {@link Context Azure Context} and calls the given lambda function with this context and returns a
      * collection of type {@code T}
      * <p>

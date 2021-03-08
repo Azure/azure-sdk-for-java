@@ -4,16 +4,16 @@
 
 package com.azure.resourcemanager.datadog.implementation;
 
-import com.azure.resourcemanager.datadog.MicrosoftDatadogManager;
 import com.azure.resourcemanager.datadog.fluent.models.DatadogApiKeyInner;
 import com.azure.resourcemanager.datadog.models.DatadogApiKey;
 
 public final class DatadogApiKeyImpl implements DatadogApiKey {
     private DatadogApiKeyInner innerObject;
 
-    private final MicrosoftDatadogManager serviceManager;
+    private final com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager;
 
-    DatadogApiKeyImpl(DatadogApiKeyInner innerObject, MicrosoftDatadogManager serviceManager) {
+    DatadogApiKeyImpl(
+        DatadogApiKeyInner innerObject, com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -38,7 +38,7 @@ public final class DatadogApiKeyImpl implements DatadogApiKey {
         return this.innerObject;
     }
 
-    private MicrosoftDatadogManager manager() {
+    private com.azure.resourcemanager.datadog.MicrosoftDatadogManager manager() {
         return this.serviceManager;
     }
 }

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
+import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
@@ -10,10 +11,8 @@ import com.azure.spring.data.cosmos.domain.AuditableEntity;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.AddressRepository;
 import com.azure.spring.data.cosmos.repository.repository.AuditableRepository;
-import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +36,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class AnnotatedQueryIT {
 
-    private static final CosmosEntityInformation<Address, String> entityInformation =
-        new CosmosEntityInformation<>(Address.class);
-
-    private static CosmosTemplate staticTemplate;
-    private static boolean isSetupDone;
+    @ClassRule
+    public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
     private CosmosTemplate template;
@@ -52,24 +48,9 @@ public class AnnotatedQueryIT {
     @Autowired
     private AddressRepository addressRepository;
 
-    @AfterClass
-    public static void afterClassCleanup() {
-        staticTemplate.deleteContainer(entityInformation.getContainerName());
-    }
-
     @Before
     public void setUp() {
-        if (!isSetupDone) {
-            staticTemplate = template;
-            template.createContainerIfNotExists(entityInformation);
-        }
-        isSetupDone = true;
-    }
-
-    @After
-    public void cleanup() {
-        auditableRepository.deleteAll();
-        addressRepository.deleteAll();
+        collectionManager.ensureContainersCreatedAndEmpty(template, Address.class, AuditableEntity.class);
     }
 
     @Test

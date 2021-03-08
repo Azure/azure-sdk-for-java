@@ -48,9 +48,9 @@ public class WebSocketsConnectionHandlerTest {
     private static final String CONNECTION_ID = "some-random-id";
     private static final String HOSTNAME = "hostname-random";
 
-    private static final String PRODUCT = "test";
-    private static final String CLIENT_VERSION = "1.0.0-test";
     private static final SslDomain.VerifyMode VERIFY_MODE = SslDomain.VerifyMode.VERIFY_PEER_NAME;
+    private static final String PRODUCT = "my-product";
+    private static final String CLIENT_VERSION = "1.5.1-alpha";
     private final SslPeerDetails peerDetails = Proton.sslPeerDetails(HOSTNAME, 2919);
 
     private WebSocketsConnectionHandler handler;
@@ -69,9 +69,8 @@ public class WebSocketsConnectionHandlerTest {
 
         this.connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(),
-            ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, VERIFY_MODE);
-        this.handler = new WebSocketsConnectionHandler(CONNECTION_ID, PRODUCT, CLIENT_VERSION, connectionOptions,
-            peerDetails);
+            ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION);
+        this.handler = new WebSocketsConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails);
     }
 
     @AfterEach
@@ -179,10 +178,11 @@ public class WebSocketsConnectionHandlerTest {
 
         final ConnectionOptions connectionOptions = new ConnectionOptions(fullyQualifiedNamespace, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(),
-            ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, VERIFY_MODE, customEndpoint, port);
+            ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION,
+            customEndpoint, port);
 
-        try (WebSocketsConnectionHandler handler = new WebSocketsConnectionHandler(CONNECTION_ID, PRODUCT,
-            CLIENT_VERSION, connectionOptions, peerDetails)) {
+        try (WebSocketsConnectionHandler handler = new WebSocketsConnectionHandler(CONNECTION_ID, connectionOptions,
+            peerDetails)) {
 
             // Act
             handler.onConnectionInit(event);
