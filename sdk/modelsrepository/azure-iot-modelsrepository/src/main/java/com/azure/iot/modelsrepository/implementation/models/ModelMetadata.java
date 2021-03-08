@@ -2,17 +2,18 @@ package com.azure.iot.modelsrepository.implementation.models;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 
 /**
  * ModelMetadata is designated to store KPIs from model parsing.
  */
 public class ModelMetadata {
     private String id;
-    private ArrayList<String> extend;
-    private ArrayList<String> componentSchemas;
+    private List<String> extend;
+    private List<String> componentSchemas;
     private LinkedHashSet<String> dependencies;
 
-    public ModelMetadata(String id, ArrayList<String> extend, ArrayList<String> componentSchemas) {
+    public ModelMetadata(String id, List<String> extend, List<String> componentSchemas) {
         this.id = id;
         this.extend = extend;
         this.componentSchemas = componentSchemas;
@@ -24,11 +25,11 @@ public class ModelMetadata {
         return id;
     }
 
-    public ArrayList<String> getExtend() {
+    public List<String> getExtend() {
         return this.extend;
     }
 
-    public ArrayList<String> getComponentSchemas() {
+    public List<String> getComponentSchemas() {
         return this.componentSchemas;
     }
 
