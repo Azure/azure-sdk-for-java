@@ -245,25 +245,23 @@ public final class FluxUtil {
      */
     public static <T> Mono<T> withContext(Function<Context, Mono<T>> serviceCall,
                                           Map<String, String> contextAttributes) {
-        return Mono.subscriberContext()
-            .map(ctx -> ctx == null || ctx.isEmpty()
-                ? Context.NONE
-                : new ReactorToAzureContextWrapper(contextAttributes, ctx))
-            .flatMap(serviceCall);
+        return Mono.deferContextual(ctx -> serviceCall.apply(ctx == null || ctx.isEmpty()
+             ? Context.NONE
+             : new ReactorToAzureContextWrapper(contextAttributes, ctx)));
     }
 
     // This class wraps a reactor context in the Azure-Core Context API, to avoid unnecessary copying
     private static class ReactorToAzureContextWrapper extends Context {
         private final Map<String, String> contextAttributes;
-        private final reactor.util.context.Context reactorContext;
+        private final reactor.util.context.ContextView reactorContext;
         private final int size;
 
-        ReactorToAzureContextWrapper(reactor.util.context.Context reactorContext) {
+        ReactorToAzureContextWrapper(reactor.util.context.ContextView reactorContext) {
             this(null, reactorContext);
         }
 
         ReactorToAzureContextWrapper(Map<String, String> contextAttributes,
-                                     reactor.util.context.Context reactorContext) {
+                                     reactor.util.context.ContextView reactorContext) {
             super();
             this.contextAttributes = contextAttributes;
             this.reactorContext = reactorContext;
@@ -470,9 +468,9 @@ public final class FluxUtil {
      * @return The response from service call
      */
     public static <T> Flux<T> fluxContext(Function<Context, Flux<T>> serviceCall) {
-        return Mono.subscriberContext()
-            .map(ctx -> ctx == null || ctx.isEmpty() ? Context.NONE : new ReactorToAzureContextWrapper(ctx))
-            .flatMapMany(serviceCall);
+        return Flux.deferContextual(ctx -> serviceCall.apply(ctx == null || ctx.isEmpty()
+             ? Context.NONE
+             : new ReactorToAzureContextWrapper(ctx)));
     }
 
     /**
