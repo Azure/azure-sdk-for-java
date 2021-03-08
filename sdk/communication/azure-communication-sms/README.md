@@ -33,7 +33,7 @@ A `DefaultAzureCredential` object must be passed to the `SmsClientBuilder` via t
 `AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables
 are needed to create a DefaultAzureCredential object.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L50-L60 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L71-L81 -->
 ```java
 // You can find your endpoint and access key from your resource in the Azure Portal
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
@@ -52,7 +52,7 @@ SmsClient smsClient = new SmsClientBuilder()
 SMS uses HMAC authentication with the resource access key.
 The access key must be provided to the `SmsClientBuilder` via the credential() function. Endpoint and httpClient must also be set via the endpoint() and httpClient() functions respectively.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L18-L29 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L22-L33 -->
 ```java
 // You can find your endpoint and access key from your resource in the Azure Portal
 String endpoint = "https://<resource-name>.communication.azure.com";
@@ -69,7 +69,7 @@ SmsClient smsClient = new SmsClientBuilder()
 ```
 
 Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key.
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L35-L44 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L56-L65 -->
 ```java
 // You can find your connection string from your resource in the Azure Portal
 String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
@@ -92,8 +92,10 @@ There are two different forms of authentication to use the Azure Communication S
 ### Send a 1:1 SMS Message
 Use the `send` or `sendWithResponse` function to send a SMS message to a single phone number.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L68-L75 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L119-L128 -->
 ```java
+SmsClient smsClient = createSmsClientUsingAzureKeyCredential();
+
 SmsSendResult sendResult = smsClient.send(
     "<from-phone-number>",
     "<to-phone-number>",
@@ -106,8 +108,10 @@ System.out.println("Send Result Successful:" + sendResult.isSuccessful());
 ### Send a 1:N SMS Message
 To send a SMS message to a list of recipients, call the `send` or `sendWithResponse` function with a list of recipient phone numbers. You may also add pass in an options object to specify whether the delivery report should be enabled and set custom tags.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L81-L96 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L132-L149 -->
 ```java
+SmsClient smsClient = createSmsClientUsingAzureKeyCredential();
+
 SmsSendOptions options = new SmsSendOptions();
 options.setDeliveryReportEnabled(true);
 options.setTag("Tag");
@@ -128,15 +132,34 @@ for (SmsSendResult result : sendResults) {
 
 ## Troubleshooting
 
-All SMS service operations will throw an exception on failure.
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L104-L112 -->
+- SMS operations will throw an exception if the request to the server fails.
+- Exceptions will not be thrown if the error is caused by an individual message, only if something fails with the overall request.
+- Please use the `Successful` flag to validate each individual result to verify if the message was sent.
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L248-L273 -->
 ```java
+SmsClient smsClient = createSmsClientUsingAzureKeyCredential();
+
+SmsSendOptions options = new SmsSendOptions();
+options.setDeliveryReportEnabled(true);
+options.setTag("Tag");
+
 try {
-    SmsSendResult sendResult = smsClient.send(
+    Response<Iterable<SmsSendResult>> sendResults = smsClient.sendWithResponse(
         "<from-phone-number>",
-        "<to-phone-number>",
-        "Hi"
-    );
+        Arrays.asList("<to-phone-number1>", "<to-phone-number2>"),
+        "Hi",
+        options /* Optional */,
+        Context.NONE);
+
+    Iterable<SmsSendResult> resultOfEachMessage = sendResults.getValue();
+    for (SmsSendResult result : resultOfEachMessage) {
+        if (!result.isSuccessful()) {
+            System.out.println("Successfully sent this message: " + result.getMessageId() + " to " + result.getTo());
+        } else {
+            System.out.println("Something went wrong when trying to send this message " + result.getMessageId() + " to " + result.getTo());
+        }
+    }
+
 } catch (RuntimeException ex) {
     System.out.println(ex.getMessage());
 }

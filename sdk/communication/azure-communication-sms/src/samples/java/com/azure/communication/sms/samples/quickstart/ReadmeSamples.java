@@ -3,15 +3,19 @@
 package com.azure.communication.sms.samples.quickstart;
 
 import java.util.Arrays;
+import com.azure.communication.sms.SmsAsyncClient;
 import com.azure.communication.sms.SmsClient;
 import com.azure.communication.sms.SmsClientBuilder;
 import com.azure.communication.sms.models.SmsSendOptions;
 import com.azure.communication.sms.SmsSendResult;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
 
 public class ReadmeSamples {
     public SmsClient createSmsClientUsingAzureKeyCredential() {
@@ -27,6 +31,23 @@ public class ReadmeSamples {
             .credential(azureKeyCredential)
             .httpClient(httpClient)
             .buildClient();
+
+        return smsClient;
+    }
+
+    public SmsAsyncClient createSmsAsyncClientUsingAzureKeyCredential() {
+        // You can find your endpoint and access key from your resource in the Azure Portal
+        String endpoint = "https://<resource-name>.communication.azure.com";
+        AzureKeyCredential azureKeyCredential = new AzureKeyCredential("<access-key>");
+
+        // Create an HttpClient builder of your choice and customize it
+        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
+
+        SmsAsyncClient smsClient = new SmsClientBuilder()
+            .endpoint(endpoint)
+            .credential(azureKeyCredential)
+            .httpClient(httpClient)
+            .buildAsyncClient();
 
         return smsClient;
     }
@@ -60,6 +81,38 @@ public class ReadmeSamples {
             .buildClient();
 
         return smsClient;
+    }
+
+    public SmsAsyncClient createAsyncClientUsingTokenCredential() {
+        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+        // You can find your endpoint and access key from your resource in the Azure Portal
+        String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
+
+        // Create an HttpClient builder of your choice and customize it
+        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
+        SmsAsyncClient smsClient = new SmsClientBuilder().
+            endpoint(endpoint)
+            .credential(tokenCredential)
+            .httpClient(httpClient)
+            .buildAsyncClient();
+        return smsClient;
+
+    }
+
+    public SmsClient createSyncClientUsingTokenCredential() {
+        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+        // You can find your endpoint and access key from your resource in the Azure Portal
+        String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
+
+        // Create an HttpClient builder of your choice and customize it
+        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
+        SmsClient smsClient = new SmsClientBuilder().
+            endpoint(endpoint)
+            .credential(tokenCredential)
+            .httpClient(httpClient)
+            .buildClient();
+        return smsClient;
+
     }
 
     public void sendMessageToOneRecipient() {
@@ -96,10 +149,49 @@ public class ReadmeSamples {
         }
     }
 
+    public void sendMessageAsyncToOneRecipient() {
+        SmsAsyncClient smsClient = createSmsAsyncClientUsingAzureKeyCredential();
+
+        Mono<SmsSendResult> sendResult = smsClient.send(
+            "<from-phone-number>",
+            "<to-phone-number>",
+            "Hi");
+        Mono<Boolean> isSuccessful = sendResult.flatMap(result -> {
+            System.out.println("Message Id: " + result.getMessageId());
+            System.out.println("Recipient Number: " + result.getTo());
+            System.out.println("Send Result Successful:" + result.isSuccessful());
+            return Mono.just(result.isSuccessful());
+        });
+    }
+
+    public void sendMessageAsyncClientToGroup() {
+        SmsAsyncClient smsClient = createSmsAsyncClientUsingAzureKeyCredential();
+
+        SmsSendOptions options = new SmsSendOptions();
+        options.setDeliveryReportEnabled(true);
+        options.setTag("Tag");
+
+        Mono<Response<Iterable<SmsSendResult>>> sendResults = smsClient.sendWithResponse(
+            "<from-phone-number>",
+            Arrays.asList("<to-phone-number1>", "<to-phone-number2>"),
+            "Hi",
+            options /* Optional */);
+
+        Mono <Iterable<SmsSendResult>> resultOfEachMessage = sendResults.flatMap(response -> {
+            Iterable<SmsSendResult> iterableResults = response.getValue();
+            for (SmsSendResult result : iterableResults) {
+                System.out.println("Message Id: " + result.getMessageId());
+                System.out.println("Recipient Number: " + result.getTo());
+                System.out.println("Send Result Successful:" + result.isSuccessful());
+            }
+            return Mono.just(iterableResults);
+        });
+    }
+
     /**
      * Sample code for troubleshooting
      */
-    public void sendSMSTroubleshooting() {
+    public void catchHttpErrorOnRequestSync() {
         SmsClient smsClient = createSmsClientUsingAzureKeyCredential();
         try {
             SmsSendResult sendResult = smsClient.send(
@@ -111,4 +203,74 @@ public class ReadmeSamples {
             System.out.println(ex.getMessage());
         }
     }
+
+    public void catchHttpErrorOnRequestAsync() {
+        SmsAsyncClient smsClient = createSmsAsyncClientUsingAzureKeyCredential();
+        try {
+            Mono<SmsSendResult> sendResult = smsClient.send(
+                "<from-phone-number>",
+                "<to-phone-number>",
+                "Hi"
+            );
+        } catch (RuntimeException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    public void failedMessagesAsync() {
+        SmsAsyncClient smsClient = createSmsAsyncClientUsingAzureKeyCredential();
+
+        SmsSendOptions options = new SmsSendOptions();
+        options.setDeliveryReportEnabled(true);
+        options.setTag("Tag");
+
+        Mono<Response<Iterable<SmsSendResult>>> sendResults = smsClient.sendWithResponse(
+            "<from-phone-number>",
+            Arrays.asList("<to-phone-number1>", "<to-phone-number2>"),
+            "Hi",
+            options /* Optional */);
+
+        Mono <Iterable<SmsSendResult>> resultOfEachMessage = sendResults.flatMap(response -> {
+            Iterable<SmsSendResult> iterableResults = response.getValue();
+            for (SmsSendResult result : iterableResults) {
+                if (!result.isSuccessful()) {
+                    System.out.println("Successfully sent this message: " + result.getMessageId() + " to " + result.getTo());
+                } else {
+                    System.out.println("Something went wrong when trying to send this message " + result.getMessageId() + " to " + result.getTo());
+                }
+            }
+            return Mono.just(iterableResults);
+        });
+
+    }
+
+    public void failedMessagesSync() {
+        SmsClient smsClient = createSmsClientUsingAzureKeyCredential();
+
+        SmsSendOptions options = new SmsSendOptions();
+        options.setDeliveryReportEnabled(true);
+        options.setTag("Tag");
+
+        try {
+            Response<Iterable<SmsSendResult>> sendResults = smsClient.sendWithResponse(
+                "<from-phone-number>",
+                Arrays.asList("<to-phone-number1>", "<to-phone-number2>"),
+                "Hi",
+                options /* Optional */,
+                Context.NONE);
+
+            Iterable<SmsSendResult> resultOfEachMessage = sendResults.getValue();
+            for (SmsSendResult result : resultOfEachMessage) {
+                if (!result.isSuccessful()) {
+                    System.out.println("Successfully sent this message: " + result.getMessageId() + " to " + result.getTo());
+                } else {
+                    System.out.println("Something went wrong when trying to send this message " + result.getMessageId() + " to " + result.getTo());
+                }
+            }
+
+        } catch (RuntimeException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
 }
