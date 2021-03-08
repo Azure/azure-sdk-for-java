@@ -43,6 +43,9 @@
         <!-- Cosmos -->
         <module>sdk/cosmos/azure-cosmos</module>
 
+        <!-- Device Update -->
+        <module>sdk/deviceupdate/azure-iot-deviceupdate</module>
+
         <!-- Digital Twins -->
         <module>sdk/digitaltwins/azure-digitaltwins-core</module>
 
@@ -246,6 +249,10 @@
                     <packages>com.azure.identity*</packages>
                   </group>
                   <group>
+                    <title>Azure Device Update for IoT Hub</title>
+                    <packages>com.azure.iot.deviceupdate*</packages>
+                  </group>
+                  <group>
                     <title>Azure Key Vault</title>
                     <packages>com.azure.security.keyvault*</packages>
                   </group>
@@ -359,7 +366,7 @@
 <!--          <plugin>-->
 <!--            <groupId>net.jonathangiles.tools</groupId>-->
 <!--            <artifactId>dependencyChecker-maven-plugin</artifactId>-->
-<!--            <version>1.0.4</version> &lt;!&ndash; {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} &ndash;&gt;-->
+<!--            <version>1.0.5</version> &lt;!&ndash; {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} &ndash;&gt;-->
 <!--            <inherited>false</inherited>-->
 <!--            <executions>-->
 <!--              <execution>-->
@@ -586,6 +593,8 @@
         <module>sdk/core</module>
         <module>sdk/cosmos</module>
         <module>sdk/costmanagement</module>
+        <module>sdk/deviceupdate</module>
+        <module>sdk/datadog</module>
         <module>sdk/digitaltwins</module>
         <module>sdk/eventgrid</module>
         <module>sdk/eventhubs</module>

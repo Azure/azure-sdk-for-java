@@ -20,7 +20,7 @@ the lifetime of remote rendering sessions.
 
 ### Install the package
 
-**Note:** This version targets Azure Remote Rendering service API version v2021-01-01-preview.
+**Note:** This version targets Azure Remote Rendering service API version v2021-01-01.
 
 Add the following Maven dependency:
 
@@ -29,7 +29,7 @@ Add the following Maven dependency:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-mixedreality-remoterendering</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

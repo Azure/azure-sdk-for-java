@@ -210,7 +210,7 @@ public class DecryptOptions {
         if (algorithm == EncryptionAlgorithm.A128GCM || algorithm == EncryptionAlgorithm.A192GCM
             || algorithm == EncryptionAlgorithm.A256GCM) {
 
-            Objects.requireNonNull(authenticationTag, "Authentication tag cannot be null for GCM encryption.");
+            Objects.requireNonNull(authenticationTag, "Authentication tag cannot be null for GCM decryption.");
         }
 
         this.algorithm = algorithm;

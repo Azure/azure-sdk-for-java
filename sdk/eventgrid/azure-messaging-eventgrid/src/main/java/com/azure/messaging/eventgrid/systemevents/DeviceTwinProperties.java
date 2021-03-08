@@ -7,7 +7,7 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DeviceTwinProperties model. */
+/** A portion of the properties that can be written only by the application back-end, and read by the device. */
 @Fluent
 public final class DeviceTwinProperties {
     /*
