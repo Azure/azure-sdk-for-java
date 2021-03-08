@@ -352,7 +352,7 @@ public final class FluxUtil {
                     return new AbstractSet<Entry<Object, Object>>() {
                         @Override
                         public Iterator<Entry<Object, Object>> iterator() {
-                            // FIXME (jogiles) This is not good code
+                            // TODO (jogiles) This is not good code
                             Map<Object, Object> map = new HashMap<>(size);
 
                             if (contextAttributes != null) {
@@ -453,7 +453,7 @@ public final class FluxUtil {
      * @return The Reactor context.
      */
     public static reactor.util.context.Context toReactorContext(Context context) {
-        if (context == null) {
+        if (context == null || context == Context.NONE) {
             return reactor.util.context.Context.empty();
         }
 
@@ -463,7 +463,7 @@ public final class FluxUtil {
     private static final class AzureToReactorContextWrapper implements reactor.util.context.Context {
         private Context azureContext;
 
-        public AzureToReactorContextWrapper(final Context azureContext) {
+        AzureToReactorContextWrapper(final Context azureContext) {
             this.azureContext = azureContext;
         }
 

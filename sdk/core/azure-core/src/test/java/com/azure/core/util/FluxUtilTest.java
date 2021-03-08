@@ -81,11 +81,6 @@ public class FluxUtilTest {
     }
 
     @Test
-    public void toReactorContextCleansesNullValues() {
-        assertTrue(FluxUtil.toReactorContext(new Context("key", null)).isEmpty());
-    }
-
-    @Test
     public void toReactorContext() {
         Context context = new Context("key1", "value1");
 

@@ -6,6 +6,7 @@ package com.azure.core.util;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -52,12 +53,12 @@ public class Context {
      *
      * @param key The key with which the specified value should be associated.
      * @param value The value to be associated with the specified key.
-     * @throws IllegalArgumentException If {@code key} is {@code null}.
+     * @throws NullPointerException If {@code key} or {@code value} is {@code null}.
      */
     public Context(Object key, Object value) {
         this.parent = null;
         this.key = Objects.requireNonNull(key, "'key' cannot be null.");
-        this.value = value;
+        this.value = Objects.requireNonNull(value, "'value' cannot be null.");
         this.size = 1;
     }
 
@@ -65,7 +66,13 @@ public class Context {
         this.parent = parent;
         this.key = key;
         this.value = value;
-        this.size = parent.size + 1;
+
+        if (parent == null) {
+            this.size = 1;
+        } else {
+            // we need to check if this key is shadowing an existing key
+            this.size = parent.size + (parent.getData(key).isPresent() ? 0 : 1);
+        }
     }
 
     /**
@@ -161,7 +168,14 @@ public class Context {
      * @return A map containing all values of the context linked-list.
      */
     public Map<Object, Object> getValues() {
-        return getValuesHelper(new HashMap<>());
+        if (parent == null) {
+            if (key == null) {
+                return Collections.emptyMap();
+            } else {
+                return Collections.singletonMap(key, value);
+            }
+        }
+        return Collections.unmodifiableMap(getValuesHelper(new HashMap<>()));
     }
 
     private Map<Object, Object> getValuesHelper(Map<Object, Object> values) {
