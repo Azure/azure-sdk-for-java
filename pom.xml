@@ -593,8 +593,8 @@
         <module>sdk/core</module>
         <module>sdk/cosmos</module>
         <module>sdk/costmanagement</module>
-        <module>sdk/deviceupdate</module>
         <module>sdk/datadog</module>
+        <module>sdk/deviceupdate</module>
         <module>sdk/digitaltwins</module>
         <module>sdk/eventgrid</module>
         <module>sdk/eventhubs</module>
@@ -614,6 +614,7 @@
         <module>sdk/mysql</module>
         <module>sdk/netapp</module>
         <module>sdk/postgresql</module>
+        <module>sdk/powerplatform</module>
         <module>sdk/quantum</module>
         <module>sdk/recoveryservices</module>
         <module>sdk/redisenterprise</module>
