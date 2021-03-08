@@ -6,6 +6,7 @@ package com.azure.data.tables;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -40,8 +41,8 @@ import java.util.stream.Stream;
 final class BuilderHelper {
     private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure-data-tables.properties");
-    private static final String SDK_NAME = "name";
-    private static final String SDK_VERSION = "version";
+    private static final String CLIENT_NAME = PROPERTIES.getOrDefault("name", "UnknownName");
+    private static final String CLIENT_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
 
     static HttpPipeline buildPipeline(
         TablesSharedKeyCredential tablesSharedKeyCredential,
@@ -51,20 +52,25 @@ final class BuilderHelper {
         List<HttpPipelinePolicy> perRetryAdditionalPolicies, Configuration configuration, ClientLogger logger) {
 
         configuration = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
-        clientOptions = (clientOptions == null) ? new ClientOptions() : clientOptions;
-        logOptions = (logOptions == null) ? new HttpLogOptions() : logOptions;
 
         validateSingleCredentialIsPresent(
             tablesSharedKeyCredential, tokenCredential, azureSasCredential, sasToken, logger);
 
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(getUserAgentPolicy(configuration, clientOptions, logOptions));
+        policies.add(new UserAgentPolicy(
+            CoreUtils.getApplicationId(clientOptions, logOptions), CLIENT_NAME, CLIENT_VERSION, configuration));
         policies.add(new RequestIdPolicy());
 
-        // Add Accept header so we don't get back XML.
-        // Can be removed when this is fixed. https://github.com/Azure/autorest.modelerfour/issues/324
-        policies.add(new AddHeadersPolicy(new HttpHeaders().put("Accept", "application/json")));
+        List<HttpHeader> httpHeaderList = new ArrayList<>();
+
+        if (clientOptions != null) {
+            clientOptions.getHeaders().forEach(header ->
+                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+        }
+
+        // TODO: Remove the Accept header after making sure the JacksonAdapter can handle not setting such value.
+        policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList).set("Accept", "application/json")));
 
         // Add per call additional policies.
         policies.addAll(perCallAdditionalPolicies);
@@ -139,30 +145,6 @@ final class BuilderHelper {
                     .collect(Collectors.joining(","))
             ));
         }
-    }
-
-    /*
-     * Creates a {@link UserAgentPolicy} using the default blob module name and version.
-     *
-     * @param configuration Configuration store used to determine whether telemetry information should be included.
-     * @param clientOptions ClientOptions such as application ID and custom headers to set on a request.
-     * @param logOptions The logging configuration to use when sending and receiving requests to and from the service.
-     * @return The default {@link UserAgentPolicy} for the module.
-     */
-    private static UserAgentPolicy getUserAgentPolicy(Configuration configuration, ClientOptions clientOptions,
-        HttpLogOptions logOptions) {
-
-        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
-        String applicationId = null;
-
-        if (!CoreUtils.isNullOrEmpty(clientOptions.getApplicationId())) {
-            applicationId = clientOptions.getApplicationId();
-        } else if (!CoreUtils.isNullOrEmpty(logOptions.getApplicationId())) {
-            applicationId = logOptions.getApplicationId();
-        }
-
-        return new UserAgentPolicy(applicationId, clientName, clientVersion, configuration);
     }
 
     /**

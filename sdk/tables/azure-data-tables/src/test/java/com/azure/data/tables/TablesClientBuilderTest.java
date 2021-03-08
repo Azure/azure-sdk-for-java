@@ -175,15 +175,15 @@ public class TablesClientBuilderTest {
         int retryPolicyPosition = -1, perCallPolicyPosition = -1, perRetryPolicyPosition = -1;
 
         for (int i = 0; i < pipeline.getPolicyCount(); i++) {
-            if(pipeline.getPolicy(i).getClass() == RequestRetryPolicy.class) {
+            if (pipeline.getPolicy(i).getClass() == RequestRetryPolicy.class) {
                 retryPolicyPosition = i;
             }
 
-            if(pipeline.getPolicy(i).getClass() == TestUtils.PerCallPolicy.class) {
+            if (pipeline.getPolicy(i).getClass() == TestUtils.PerCallPolicy.class) {
                 perCallPolicyPosition = i;
             }
 
-            if(pipeline.getPolicy(i).getClass() == TestUtils.PerRetryPolicy.class) {
+            if (pipeline.getPolicy(i).getClass() == TestUtils.PerRetryPolicy.class) {
                 perRetryPolicyPosition = i;
             }
         }
