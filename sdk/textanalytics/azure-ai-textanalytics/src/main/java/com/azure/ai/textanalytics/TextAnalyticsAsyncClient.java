@@ -4,6 +4,11 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
+import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOperationDetail;
+import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOptions;
+import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
@@ -14,11 +19,16 @@ import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
-import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
+import com.azure.ai.textanalytics.models.StringIndexType;
+import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
@@ -28,9 +38,12 @@ import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
@@ -70,6 +83,8 @@ public final class TextAnalyticsAsyncClient {
     final RecognizeEntityAsyncClient recognizeEntityAsyncClient;
     final RecognizePiiEntityAsyncClient recognizePiiEntityAsyncClient;
     final RecognizeLinkedEntityAsyncClient recognizeLinkedEntityAsyncClient;
+    final AnalyzeHealthcareEntityAsyncClient analyzeHealthcareEntityAsyncClient;
+    final AnalyzeBatchActionsAsyncClient analyzeBatchActionsAsyncClient;
 
     /**
      * Create a {@link TextAnalyticsAsyncClient} that sends requests to the Text Analytics services's endpoint. Each
@@ -92,6 +107,8 @@ public final class TextAnalyticsAsyncClient {
         this.recognizeEntityAsyncClient = new RecognizeEntityAsyncClient(service);
         this.recognizePiiEntityAsyncClient = new RecognizePiiEntityAsyncClient(service);
         this.recognizeLinkedEntityAsyncClient = new RecognizeLinkedEntityAsyncClient(service);
+        this.analyzeHealthcareEntityAsyncClient = new AnalyzeHealthcareEntityAsyncClient(service);
+        this.analyzeBatchActionsAsyncClient = new AnalyzeBatchActionsAsyncClient(service);
     }
 
     /**
@@ -369,6 +386,40 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecognizeEntitiesResultCollection>> recognizeEntitiesBatchWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
+        final RecognizeEntitiesOptions recognizeEntitiesOptions = new RecognizeEntitiesOptions();
+        String modelVersion = null;
+        boolean includeStatistics = false;
+        if (options != null) {
+            modelVersion = options.getModelVersion();
+            includeStatistics = options.isIncludeStatistics();
+        }
+        return recognizeEntityAsyncClient.recognizeEntitiesBatch(documents,
+            recognizeEntitiesOptions.setModelVersion(modelVersion).setIncludeStatistics(includeStatistics));
+    }
+
+    /**
+     * Returns a list of general categorized entities for the provided list of {@link TextDocumentInput document} with
+     * provided request options.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p>Recognize entities in a list of {@link TextDocumentInput document}. Subscribes to the call asynchronously
+     * and prints out the entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable-RecognizeEntitiesOptions}
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to recognize entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param options The {@link RecognizeEntitiesResultCollection options} to configure the scoring model for
+     * documents, show statistics, and {@link StringIndexType}.
+     *
+     * @return A {@link Mono} contains a {@link Response} which contains a {@link RecognizeEntitiesResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RecognizeEntitiesResultCollection>> recognizeEntitiesBatchWithResponse(
+        Iterable<TextDocumentInput> documents, RecognizeEntitiesOptions options) {
         return recognizeEntityAsyncClient.recognizeEntitiesBatch(documents, options);
     }
 
@@ -439,16 +490,17 @@ public final class TextAnalyticsAsyncClient {
      * For a list of enabled languages, check: <a href="https://aka.ms/talangs">this</a>.
      *
      * <p><strong>Code sample</strong></p>
-     * <p>Recognize the PII entities details in a document with provided language code and RecognizePiiEntityOptions.
+     * <p>Recognize the PII entities details in a document with provided language code and
+     * {@link RecognizePiiEntitiesOptions}.
      * Subscribes to the call asynchronously and prints out the entity details when a response is received.</p>
      *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string-string-RecognizePiiEntityOptions}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string-string-RecognizePiiEntitiesOptions}
      *
      * @param document the text to recognize PII entities details for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
-     * @param options The additional configurable {@link RecognizePiiEntityOptions options} that may be passed when
+     * @param options The additional configurable {@link RecognizePiiEntitiesOptions options} that may be passed when
      * recognizing PII entities.
      *
      * @return A {@link Mono} contains a {@link PiiEntityCollection recognized PII entities collection}.
@@ -458,7 +510,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PiiEntityCollection> recognizePiiEntities(String document, String language,
-        RecognizePiiEntityOptions options) {
+        RecognizePiiEntitiesOptions options) {
         return recognizePiiEntityAsyncClient.recognizePiiEntities(document, language, options);
     }
 
@@ -470,13 +522,13 @@ public final class TextAnalyticsAsyncClient {
      * <p>Recognize Personally Identifiable Information entities in a document with the provided language code.
      * Subscribes to the call asynchronously and prints out the entity details when a response is received.</p>
      *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable-String-RecognizePiiEntityOptions}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable-String-RecognizePiiEntitiesOptions}
      *
      * @param documents A list of documents to recognize PII entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
-     * @param options The additional configurable {@link RecognizePiiEntityOptions options} that may be passed when
+     * @param options The additional configurable {@link RecognizePiiEntitiesOptions options} that may be passed when
      * recognizing PII entities.
      *
      * @return A {@link Mono} contains a {@link RecognizePiiEntitiesResultCollection}.
@@ -486,7 +538,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecognizePiiEntitiesResultCollection> recognizePiiEntitiesBatch(
-        Iterable<String> documents, String language, RecognizePiiEntityOptions options) {
+        Iterable<String> documents, String language, RecognizePiiEntitiesOptions options) {
         try {
             inputDocumentsValidation(documents);
             return recognizePiiEntitiesBatchWithResponse(
@@ -509,12 +561,12 @@ public final class TextAnalyticsAsyncClient {
      * with provided request options.
      * Subscribes to the call asynchronously and prints out the entity details when a response is received.</p>
      *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable-RecognizePiiEntityOptions}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable-RecognizePiiEntitiesOptions}
      *
      * @param documents A list of {@link TextDocumentInput documents} to recognize PII entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
-     * @param options The additional configurable {@link RecognizePiiEntityOptions options} that may be passed when
+     * @param options The additional configurable {@link RecognizePiiEntitiesOptions options} that may be passed when
      * recognizing PII entities.
      *
      * @return A {@link Mono} contains a {@link Response} which contains a {@link RecognizePiiEntitiesResultCollection}.
@@ -524,7 +576,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecognizePiiEntitiesResultCollection>> recognizePiiEntitiesBatchWithResponse(
-        Iterable<TextDocumentInput> documents, RecognizePiiEntityOptions options) {
+        Iterable<TextDocumentInput> documents, RecognizePiiEntitiesOptions options) {
         return recognizePiiEntityAsyncClient.recognizePiiEntitiesBatch(documents, options);
     }
 
@@ -643,9 +695,45 @@ public final class TextAnalyticsAsyncClient {
      * @throws NullPointerException if {@code documents} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecognizeLinkedEntitiesResultCollection>>
-        recognizeLinkedEntitiesBatchWithResponse(Iterable<TextDocumentInput> documents,
-            TextAnalyticsRequestOptions options) {
+    public Mono<Response<RecognizeLinkedEntitiesResultCollection>> recognizeLinkedEntitiesBatchWithResponse(
+        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
+        final RecognizeLinkedEntitiesOptions recognizeLinkedEntitiesOptions = new RecognizeLinkedEntitiesOptions();
+        String modelVersion = null;
+        boolean includeStatistics = false;
+        if (options != null) {
+            modelVersion = options.getModelVersion();
+            includeStatistics = options.isIncludeStatistics();
+        }
+        return recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesBatch(documents,
+            recognizeLinkedEntitiesOptions.setModelVersion(modelVersion).setIncludeStatistics(includeStatistics));
+    }
+
+    /**
+     * Returns a list of recognized entities with links to a well-known knowledge base for the list of
+     * {@link TextDocumentInput document} with provided request options.
+     *
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
+     *
+     * <p>Recognize linked  entities in a list of {@link TextDocumentInput document} and provided request options to
+     * show statistics. Subscribes to the call asynchronously and prints out the entity details when a response is
+     * received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#Iterable-RecognizeLinkedEntitiesOptions}
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to recognize linked entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param options The {@link RecognizeLinkedEntitiesOptions options} to configure the scoring model for documents,
+     * show statistics, and {@link StringIndexType}.
+     *
+     * @return A {@link Mono} contains a {@link Response} which contains a
+     * {@link RecognizeLinkedEntitiesResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RecognizeLinkedEntitiesResultCollection>> recognizeLinkedEntitiesBatchWithResponse(
+        Iterable<TextDocumentInput> documents, RecognizeLinkedEntitiesOptions options) {
         return recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesBatch(documents, options);
     }
 
@@ -833,7 +921,7 @@ public final class TextAnalyticsAsyncClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Analyze the sentiment and mine the opinions for each sentence in a document with a provided language
      * representation and {@link AnalyzeSentimentOptions} options. Subscribes to the call asynchronously and prints
-     * out the sentiment and mined opinions details when a response is received.</p>
+     * out the sentiment and sentence opinions details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#String-String-AnalyzeSentimentOptions}
      *
@@ -912,7 +1000,7 @@ public final class TextAnalyticsAsyncClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Analyze the sentiments and mine the opinions for each sentence in a list of documents with a provided language
      * representation and {@link AnalyzeSentimentOptions} options. Subscribes to the call asynchronously and prints out
-     * the sentiment and mined opinions details when a response is received.</p>
+     * the sentiment and sentence opinions details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable-String-AnalyzeSentimentOptions}
      *
@@ -982,7 +1070,7 @@ public final class TextAnalyticsAsyncClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Analyze sentiment and mine the opinions for each sentence in a list of
      * {@link TextDocumentInput document} with provided {@link AnalyzeSentimentOptions} options. Subscribes to the call
-     * asynchronously and prints out the sentiment and mined opinions details when a response is received.</p>
+     * asynchronously and prints out the sentiment and sentence opinions details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable-AnalyzeSentimentOptions}
      *
@@ -1001,5 +1089,150 @@ public final class TextAnalyticsAsyncClient {
     public Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatchWithResponse(
         Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options) {
         return analyzeSentimentAsyncClient.analyzeSentimentBatch(documents, options);
+    }
+
+    /**
+     * Analyze healthcare entities, entity data sources, and entity relations in a list of
+     * {@link String documents} with provided request options.
+     *
+     * Note: In order to use this functionality, request to access public preview is required.
+     * Azure Active Directory (AAD) is not currently supported. For more information see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-for-health?tabs=ner#request-access-to-the-public-preview">this</a>.
+     *
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
+     * English as default.
+     * @param options The additional configurable {@link AnalyzeHealthcareEntitiesOptions options} that may be passed
+     * when analyzing healthcare entities.
+     *
+     * @return A {@link PollerFlux} that polls the analyze healthcare operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a {@link PagedFlux} of
+     * {@link AnalyzeHealthcareEntitiesResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+        beginAnalyzeHealthcareEntities(Iterable<String> documents, String language,
+            AnalyzeHealthcareEntitiesOptions options) {
+        return beginAnalyzeHealthcareEntities(
+            mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), options);
+    }
+
+    /**
+     * Analyze healthcare entities, entity data sources, and entity relations in a list of
+     * {@link TextDocumentInput documents} with provided request options.
+     *
+     * Note: In order to use this functionality, request to access public preview is required.
+     * Azure Active Directory (AAD) is not currently supported. For more information see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-for-health?tabs=ner#request-access-to-the-public-preview">this</a>.
+     *
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
+     *
+     * <p>Analyze healthcare entities, entity data sources, and entity relations in a list of
+     * {@link TextDocumentInput document} and provided request options to
+     * show statistics. Subscribes to the call asynchronously and prints out the entity details when a response is
+     * received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeHealthcareEntities#Iterable-AnalyzeHealthcareEntitiesOptions}
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
+     * @param options The additional configurable {@link AnalyzeHealthcareEntitiesOptions options} that may be passed
+     * when analyzing healthcare entities.
+     *
+     * @return A {@link PollerFlux} that polls the analyze healthcare operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a {@link PagedFlux} of
+     * {@link AnalyzeHealthcareEntitiesResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+        beginAnalyzeHealthcareEntities(Iterable<TextDocumentInput> documents,
+            AnalyzeHealthcareEntitiesOptions options) {
+        return analyzeHealthcareEntityAsyncClient.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);
+    }
+
+    /**
+     * Execute actions, such as, entities recognition, PII entities recognition and key phrases extraction for a list of
+     * {@link String documents} with provided request options.
+     *
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeBatchActions#Iterable-TextAnalyticsActions-String-AnalyzeBatchActionsOptions}
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param actions The {@link TextAnalyticsActions actions} that contains all actions to be executed.
+     * An action is one task of execution, such as a single task of 'Key Phrases Extraction' on the given document
+     * inputs.
+     * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
+     * English as default.
+     * @param options The additional configurable {@link AnalyzeBatchActionsOptions options} that may be passed when
+     * analyzing a collection of actions.
+     *
+     * @return A {@link PollerFlux} that polls the analyze a collection of actions operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedFlux} of
+     * {@link AnalyzeBatchActionsResult}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<AnalyzeBatchActionsOperationDetail, PagedFlux<AnalyzeBatchActionsResult>>
+        beginAnalyzeBatchActions(Iterable<String> documents, TextAnalyticsActions actions, String language,
+            AnalyzeBatchActionsOptions options) {
+        return beginAnalyzeBatchActions(
+            mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), actions, options);
+    }
+
+    /**
+     * Execute actions, such as, entities recognition, PII entities recognition and key phrases extraction for a list of
+     * {@link TextDocumentInput documents} with provided request options.
+     *
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeBatchActions#Iterable-TextAnalyticsActions-AnalyzeBatchActionsOptions}
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
+     * @param actions The {@link TextAnalyticsActions actions} that contains all actions to be executed.
+     * An action is one task of execution, such as a single task of 'Key Phrases Extraction' on the given document
+     * inputs.
+     * @param options The additional configurable {@link AnalyzeBatchActionsOptions options} that may be passed when
+     * analyzing a collection of tasks.
+     *
+     * @return A {@link PollerFlux} that polls the analyze a collection of tasks operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedFlux} of
+     * {@link AnalyzeBatchActionsResult}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<AnalyzeBatchActionsOperationDetail, PagedFlux<AnalyzeBatchActionsResult>>
+        beginAnalyzeBatchActions(Iterable<TextDocumentInput> documents, TextAnalyticsActions actions,
+            AnalyzeBatchActionsOptions options) {
+        return analyzeBatchActionsAsyncClient.beginAnalyzeBatchActions(documents, actions, options, Context.NONE);
     }
 }

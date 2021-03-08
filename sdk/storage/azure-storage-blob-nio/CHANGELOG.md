@@ -1,7 +1,16 @@
 # Release History
 
-## 12.0.0-beta.3 (Unreleased)
+## 12.0.0-beta.4 (Unreleased)
+- Made AzurePath.toBlobClient public
+- Added support for Azurite
+- Change FileSystem configuration to accept an endpoint and credential types instead of a string for the account name, key, and token
 
+## 12.0.0-beta.3 (2021-02-10)
+- Added support for FileSystemProvider.checkAccess method
+- Added support for file key on AzureBasicFileAttributes and AzureBlobFileAttributes
+- Added support for SeekableByteChannel
+- When an operation is performed on a closed FileSystem, a ClosedFileSystemException is thrown instead of an IOException
+- Adjusted the required flags for opening an outputstream
 
 ## 12.0.0-beta.2 (2020-08-13)
 - Added checks to ensure file system has not been closed before operating on data

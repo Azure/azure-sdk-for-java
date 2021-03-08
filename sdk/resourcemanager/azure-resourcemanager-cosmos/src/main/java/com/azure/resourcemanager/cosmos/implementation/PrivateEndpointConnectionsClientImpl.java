@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -68,7 +69,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
     private interface PrivateEndpointConnectionsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/privateEndpointConnections")
@@ -80,9 +81,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("accountName") String accountName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
@@ -95,9 +97,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @QueryParam("api-version") String apiVersion,
             @PathParam("accountName") String accountName,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
@@ -111,9 +114,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @PathParam("accountName") String accountName,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
             @BodyParam("application/json") PrivateEndpointConnectionInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
@@ -126,6 +130,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @QueryParam("api-version") String apiVersion,
             @PathParam("accountName") String accountName,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -161,7 +166,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -170,8 +175,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accountName,
+                            accept,
                             context))
             .<PagedResponse<PrivateEndpointConnectionInner>>map(
                 res ->
@@ -213,15 +219,16 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByDatabaseAccount(
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accountName,
+                accept,
                 context)
             .map(
                 res ->
@@ -334,7 +341,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -343,9 +350,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accountName,
                             privateEndpointConnectionName,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -390,16 +398,17 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accountName,
                 privateEndpointConnectionName,
+                accept,
                 context);
     }
 
@@ -511,7 +520,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-08-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -520,10 +529,11 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accountName,
                             privateEndpointConnectionName,
                             parameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -578,17 +588,18 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-08-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accountName,
                 privateEndpointConnectionName,
                 parameters,
+                accept,
                 context);
     }
 
@@ -838,7 +849,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -847,9 +858,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accountName,
                             privateEndpointConnectionName,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -894,16 +906,17 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accountName,
                 privateEndpointConnectionName,
+                accept,
                 context);
     }
 

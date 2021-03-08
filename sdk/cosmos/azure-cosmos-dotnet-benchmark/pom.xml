@@ -42,7 +42,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.9.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.13.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
 
     <dependency>
@@ -80,6 +80,19 @@ Licensed under the MIT License.
       <version>4.13.1</version> <!-- {x-version-update;junit:junit;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>6.14.3</version> <!-- {x-version-update;org.testng:testng;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>3.18.1</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -106,7 +119,7 @@ Licensed under the MIT License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
         <configuration>
           <failsOnError>true</failsOnError>
           <failOnViolation>true</failOnViolation>
@@ -117,7 +130,7 @@ Licensed under the MIT License.
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>3.1.12.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <version>4.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
         <configuration>
           <failOnError>true</failOnError>
         </configuration>
@@ -169,9 +182,9 @@ Licensed under the MIT License.
                 <include>com.google.guava:guava:[25.0-jre]</include> <!-- {x-include-update;cosmos_com.google.guava:guava;external_dependency} -->
                 <include>io.dropwizard.metrics:metrics-graphite:[4.1.0]</include> <!-- {x-include-update;cosmos_io.dropwizard.metrics:metrics-graphite;external_dependency} -->
                 <include>io.dropwizard.metrics:metrics-jvm:[4.1.0]</include> <!-- {x-include-update;cosmos_io.dropwizard.metrics:metrics-jvm;external_dependency} -->
-                <include>io.micrometer:micrometer-registry-azure-monitor:[1.5.6]</include> <!-- {x-include-update;io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
-                <include>io.micrometer:micrometer-registry-graphite:[1.5.6]</include> <!-- {x-include-update;io.micrometer:micrometer-registry-graphite;external_dependency} -->
-                <include>org.apache.commons:commons-lang3:[3.10]</include> <!-- {x-include-update;org.apache.commons:commons-lang3;external_dependency} -->
+                <include>io.micrometer:micrometer-registry-azure-monitor:[1.6.1]</include> <!-- {x-include-update;io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
+                <include>io.micrometer:micrometer-registry-graphite:[1.6.1]</include> <!-- {x-include-update;io.micrometer:micrometer-registry-graphite;external_dependency} -->
+                <include>org.apache.commons:commons-lang3:[3.11]</include> <!-- {x-include-update;org.apache.commons:commons-lang3;external_dependency} -->
                 <include>org.apache.logging.log4j:log4j-api:[2.13.3]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
                 <include>org.apache.logging.log4j:log4j-core:[2.13.3]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
                 <include>org.apache.logging.log4j:log4j-slf4j-impl:[2.13.3]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->

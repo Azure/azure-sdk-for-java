@@ -39,6 +39,11 @@ class MetadataSyncConfigImpl extends WrapperImpl<MetadataSyncConfigInner> implem
     }
 
     @Override
+    public Integer syncIntervalInMinutes() {
+        return this.inner().syncIntervalInMinutes();
+    }
+
+    @Override
     public String type() {
         return this.inner().type();
     }

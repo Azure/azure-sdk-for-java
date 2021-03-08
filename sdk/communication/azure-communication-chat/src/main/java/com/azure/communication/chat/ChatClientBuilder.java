@@ -4,7 +4,9 @@
 package com.azure.communication.chat;
 
 import com.azure.communication.chat.implementation.AzureCommunicationChatServiceImplBuilder;
-import com.azure.communication.common.CommunicationUserCredential;
+import com.azure.communication.chat.implementation.CommunicationBearerTokenCredential;
+
+import com.azure.communication.common.CommunicationTokenCredential;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -14,6 +16,7 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -31,11 +34,12 @@ public final class ChatClientBuilder {
 
     private String endpoint;
     private HttpClient httpClient;
-    private CommunicationUserCredential communicationUserCredential;
+    private CommunicationTokenCredential communicationTokenCredential;
     private final List<HttpPipelinePolicy> customPolicies = new ArrayList<HttpPipelinePolicy>();
     private HttpLogOptions logOptions = new HttpLogOptions();
     private HttpPipeline httpPipeline;
     private Configuration configuration;
+    private RetryPolicy retryPolicy;
 
     private static final String APP_CONFIG_PROPERTIES = "azure-communication-chat.properties";
     private static final String SDK_NAME = "name";
@@ -66,12 +70,12 @@ public final class ChatClientBuilder {
     /**
      * Set a token credential for authorization
      *
-     * @param communicationUserCredential valid token credential as a string
+     * @param communicationTokenCredential valid token credential as a string
      * @return the updated ChatClientBuilder object
      */
-    public ChatClientBuilder credential(CommunicationUserCredential communicationUserCredential) {
-        this.communicationUserCredential = Objects.requireNonNull(
-            communicationUserCredential, "'communicationUserCredential' cannot be null.");
+    public ChatClientBuilder credential(CommunicationTokenCredential communicationTokenCredential) {
+        this.communicationTokenCredential = Objects.requireNonNull(
+            communicationTokenCredential, "'communicationTokenCredential' cannot be null.");
         return this;
     }
 
@@ -139,7 +143,19 @@ public final class ChatClientBuilder {
     }
 
     /**
-     * Create synchronous client applying ChatUserCredentialPolicy, UserAgentPolicy,
+     * Sets the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * @param retryPolicy User's retry policy applied to each request.
+     * @return The updated {@link ChatClientBuilder} object.
+     * @throws NullPointerException If the specified {@code retryPolicy} is null.
+     */
+    public ChatClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        this.retryPolicy = Objects.requireNonNull(retryPolicy, "The retry policy cannot be null");
+        return this;
+    }
+
+    /**
+     * Create synchronous client applying CommunicationTokenCredential, UserAgentPolicy,
      * RetryPolicy, and CookiePolicy.
      * Additional HttpPolicies specified by additionalPolicies will be applied after them
      *
@@ -151,7 +167,7 @@ public final class ChatClientBuilder {
     }
 
     /**
-     * Create asynchronous client applying ChatUserCredentialPolicy, UserAgentPolicy,
+     * Create asynchronous client applying CommunicationTokenCredential, UserAgentPolicy,
      * RetryPolicy, and CookiePolicy.
      * Additional HttpPolicies specified by additionalPolicies will be applied after them
      *
@@ -164,11 +180,13 @@ public final class ChatClientBuilder {
         if (httpPipeline != null) {
             pipeline = httpPipeline;
         } else {
-            Objects.requireNonNull(communicationUserCredential);
+            Objects.requireNonNull(communicationTokenCredential);
             Objects.requireNonNull(httpClient);
+            CommunicationBearerTokenCredential tokenCredential =
+                new CommunicationBearerTokenCredential(communicationTokenCredential);
 
             pipeline = createHttpPipeline(httpClient,
-                new ChatUserCredentialPolicy(communicationUserCredential),
+                new BearerTokenAuthenticationPolicy(tokenCredential, ""),
                 customPolicies);
         }
 
@@ -198,7 +216,7 @@ public final class ChatClientBuilder {
 
     private void applyRequiredPolicies(List<HttpPipelinePolicy> policies) {
         policies.add(getUserAgentPolicy());
-        policies.add(new RetryPolicy());
+        policies.add(this.retryPolicy == null ? new RetryPolicy() : this.retryPolicy);
         policies.add(new CookiePolicy());
         policies.add(new HttpLoggingPolicy(logOptions));
     }

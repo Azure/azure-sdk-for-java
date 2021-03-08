@@ -1,62 +1,62 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.1//prebuilt/businessCard/analyzeResults/c67896d2-5477-48fb-b070-ad077f037bd4",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.2//prebuilt/businessCard/analyzeResults/c8281ef8-658f-47ce-93f2-b326bc24b946",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "39bfcb03-5d70-4c38-81e5-d920c17b846b"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5446ec92-3748-4c18-a2a1-0e7ec8b3b4df"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "23",
+      "x-envoy-upstream-service-time" : "248",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "d92dfacf-64bf-41e7-ab4d-b1703511fa59",
+      "apim-request-id" : "0335a618-f015-4aec-a5aa-cede7737b5f0",
       "retry-after" : "0",
-      "Content-Length" : "978",
+      "Content-Length" : "968",
       "StatusCode" : "200",
-      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2020-10-15T21:54:36Z\",\"lastUpdatedDateTime\":\"2020-10-15T21:54:38Z\",\"analyzeResult\":{\"version\":\"2.1.0\",\"readResults\":[{\"page\":1,\"angle\":0.6893,\"width\":1688,\"height\":3000,\"unit\":\"pixel\"}],\"documentResults\":[{\"docType\":\"prebuilt:businesscard\",\"pageRange\":[1,1],\"fields\":{\"Addresses\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"123 Main Street Redmond, WA 98052\",\"text\":\"123 Main Street Redmond, WA 98052\",\"boundingBox\":[302,675.8,848.1,793.7,809.9,970.4,263.9,852.5],\"page\":1,\"confidence\":0.988}]},\"OtherPhones\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"valuePhoneNumber\":\"+19876543210\",\"text\":\"987-654-3210\",\"boundingBox\":[278,1004,656,1057,647,1123,271,1075],\"page\":1,\"confidence\":0.99}]},\"CompanyNames\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Contoso Contoso\",\"text\":\"Contoso Contoso\",\"boundingBox\":[378.2,292.4,1117.7,468.3,1035.7,812.7,296.3,636.8],\"page\":1,\"confidence\":0.403}]}}}]}}",
-      "Date" : "Thu, 15 Oct 2020 21:54:41 GMT",
+      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2020-11-18T23:39:06Z\",\"lastUpdatedDateTime\":\"2020-11-18T23:39:10Z\",\"analyzeResult\":{\"version\":\"2.1.0\",\"readResults\":[{\"page\":1,\"angle\":0.1273,\"width\":1688,\"height\":3000,\"unit\":\"pixel\"}],\"documentResults\":[{\"docType\":\"prebuilt:businesscard\",\"pageRange\":[1,1],\"fields\":{\"Addresses\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"123 Main Street Redmond, WA 98052\",\"text\":\"123 Main Street Redmond, WA 98052\",\"boundingBox\":[298.3,676.5,844.6,781.5,810.7,958,264.4,853],\"page\":1,\"confidence\":0.983}]},\"OtherPhones\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"valuePhoneNumber\":\"+19876543210\",\"text\":\"987-654-3210\",\"boundingBox\":[271,1000,651,1049,643,1125,264,1075],\"page\":1,\"confidence\":0.99}]},\"CompanyNames\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Contoso Contoso\",\"text\":\"Contoso Contoso\",\"boundingBox\":[380.9,282.9,1116,473.2,1025,824.4,290,634],\"page\":1,\"confidence\":0.286}]}}}]}}",
+      "Date" : "Wed, 18 Nov 2020 23:39:11 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.1//prebuilt/businessCard/analyzeResults/c67896d2-5477-48fb-b070-ad077f037bd4",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.2//prebuilt/businessCard/analyzeResults/c8281ef8-658f-47ce-93f2-b326bc24b946",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "64d8de06-9ef2-4854-9547-c36bb235f883"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6787e131-79cd-4de0-8ec3-2495e33a1792"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "21",
+      "x-envoy-upstream-service-time" : "127",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "4b375c42-28fc-4a6c-ada2-e57b20fcbe3e",
+      "apim-request-id" : "c774939a-b442-413d-b9d9-d49ebe869226",
       "retry-after" : "0",
-      "Content-Length" : "978",
+      "Content-Length" : "968",
       "StatusCode" : "200",
-      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2020-10-15T21:54:36Z\",\"lastUpdatedDateTime\":\"2020-10-15T21:54:38Z\",\"analyzeResult\":{\"version\":\"2.1.0\",\"readResults\":[{\"page\":1,\"angle\":0.6893,\"width\":1688,\"height\":3000,\"unit\":\"pixel\"}],\"documentResults\":[{\"docType\":\"prebuilt:businesscard\",\"pageRange\":[1,1],\"fields\":{\"Addresses\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"123 Main Street Redmond, WA 98052\",\"text\":\"123 Main Street Redmond, WA 98052\",\"boundingBox\":[302,675.8,848.1,793.7,809.9,970.4,263.9,852.5],\"page\":1,\"confidence\":0.988}]},\"OtherPhones\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"valuePhoneNumber\":\"+19876543210\",\"text\":\"987-654-3210\",\"boundingBox\":[278,1004,656,1057,647,1123,271,1075],\"page\":1,\"confidence\":0.99}]},\"CompanyNames\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Contoso Contoso\",\"text\":\"Contoso Contoso\",\"boundingBox\":[378.2,292.4,1117.7,468.3,1035.7,812.7,296.3,636.8],\"page\":1,\"confidence\":0.403}]}}}]}}",
-      "Date" : "Thu, 15 Oct 2020 21:54:42 GMT",
+      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2020-11-18T23:39:06Z\",\"lastUpdatedDateTime\":\"2020-11-18T23:39:10Z\",\"analyzeResult\":{\"version\":\"2.1.0\",\"readResults\":[{\"page\":1,\"angle\":0.1273,\"width\":1688,\"height\":3000,\"unit\":\"pixel\"}],\"documentResults\":[{\"docType\":\"prebuilt:businesscard\",\"pageRange\":[1,1],\"fields\":{\"Addresses\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"123 Main Street Redmond, WA 98052\",\"text\":\"123 Main Street Redmond, WA 98052\",\"boundingBox\":[298.3,676.5,844.6,781.5,810.7,958,264.4,853],\"page\":1,\"confidence\":0.983}]},\"OtherPhones\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"valuePhoneNumber\":\"+19876543210\",\"text\":\"987-654-3210\",\"boundingBox\":[271,1000,651,1049,643,1125,264,1075],\"page\":1,\"confidence\":0.99}]},\"CompanyNames\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Contoso Contoso\",\"text\":\"Contoso Contoso\",\"boundingBox\":[380.9,282.9,1116,473.2,1025,824.4,290,634],\"page\":1,\"confidence\":0.286}]}}}]}}",
+      "Date" : "Wed, 18 Nov 2020 23:39:11 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.1//prebuilt/businessCard/analyze?includeTextDetails=false&locale=en-US",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.2//prebuilt/businessCard/analyze?includeTextDetails=false&locale=en-US",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "681f1e93-ca4b-49f3-9cb7-bd39213ab848",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "23721cb1-5165-48e1-bc5f-9fea2993ee4f",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "695",
+      "x-envoy-upstream-service-time" : "435",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "c67896d2-5477-48fb-b070-ad077f037bd4",
+      "apim-request-id" : "c8281ef8-658f-47ce-93f2-b326bc24b946",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "Operation-Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1-preview.1/prebuilt/businessCard/analyzeResults/c67896d2-5477-48fb-b070-ad077f037bd4",
-      "Date" : "Thu, 15 Oct 2020 21:54:35 GMT"
+      "Operation-Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1-preview.2/prebuilt/businessCard/analyzeResults/c8281ef8-658f-47ce-93f2-b326bc24b946",
+      "Date" : "Wed, 18 Nov 2020 23:39:05 GMT"
     },
     "Exception" : null
   } ],

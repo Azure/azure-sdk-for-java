@@ -1,7 +1,58 @@
 # Release History
 
-## 11.2.0-beta.3 (Unreleased)
+## 11.3.0-beta.1 (Unreleased)
 
+
+## 11.2.0 (2021-02-10)
+
+### New Features
+
+- Added a builder, `SearchIndexingBufferedSenderBuilder<T>`, to configure and construct `SearchIndexingBufferedSender<T>`.
+- Added `SearchClientBuilder.bufferedSender(TypeReference)` to create a `SearchIndexingBufferedSenderBuilder<T>` with
+  base configuration passed from `SearchClientBuilder`.
+- Added `OnActionAddedOptions<T>`, `OnActionErrorOptions<T>`, `OnActionSentOptions<T>`, and `OnActionSucceededOptions<T>`
+  as request options for the on action callback methods in `SearchIndexingBufferedSender`.
+- Added `ClientOptions` APIs to all builders to allow re-using common client configurations.
+- All changes from the 11.2.0-beta.3, 11.2.0-beta.2, and 11.2.0-beta.1 releases listed below.
+
+### Breaking Changes
+
+- Removed `SearchIndexingBufferedSenderOptions` and `SearchClient.getSearchIndexingBufferedSender` and 
+  `SearchAsyncClient.getSearchIndexingBufferedSender`.
+- Changed buffered sender configuration options from `autoFlushWindow` to `autoFlushInterval`, 
+  `maxRetries` to `maxRetriesPerAction`, `retryDelay` to `throttlingDelay`, `maxRetryDelay` to `maxThrottlingDelay`
+  and `onActionErrorBiConsumer` to `onActionErrorConsumer`.
+- Renamed `BlobIndexerPDFTextRotationAlgorithm` to `BlobIndexerPdfTextRotationAlgorithm`.
+
+### Dependency updates
+
+- Updated `azure-core` to `1.13.0`.
+- Updated `azure-core-http-netty` to `1.8.0`.
+
+## 11.1.3 (2021-01-15)
+
+### Dependency updates
+
+- Updated `azure-core` to `1.12.0`.
+- Updated `azure-core-http-netty` to `1.7.1`.
+
+## 11.2.0-beta.3 (2020-11-10)
+
+### New Features
+
+- Added encryption key to `SearchIndexer`, `SearchIndexerDataSourceConnection`, and `SearchIndexerSkillset`.
+- Added ability to configure initial batch size and retry back-offs to `SearchIndexingBufferedSenderOptions`.
+
+### Breaking Changes
+
+- Removed `SearchIndexingBufferedSender.getBatchSize()`.
+- `SearchIndexingBufferedSenderOptions` now throws on invalid values instead of falling back to default.
+
+## 11.1.2 (2020-11-10)
+
+### Dependency updates
+
+- Updated `azure-core` version.
 
 ## 11.2.0-beta.2 (2020-10-06)
 

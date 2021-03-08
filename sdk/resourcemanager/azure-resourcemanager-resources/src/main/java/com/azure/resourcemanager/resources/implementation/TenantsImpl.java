@@ -5,9 +5,11 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.resourcemanager.resources.models.Tenant;
 import com.azure.resourcemanager.resources.models.Tenants;
 import com.azure.resourcemanager.resources.fluent.models.TenantIdDescriptionInner;
 import com.azure.resourcemanager.resources.fluent.TenantsClient;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /**
  * Implementation for {@link Tenants}.
@@ -21,12 +23,19 @@ public final class TenantsImpl
     }
 
     @Override
-    public PagedIterable<TenantIdDescriptionInner> list() {
-        return client.list();
+    public PagedIterable<Tenant> list() {
+        return PagedConverter.mapPage(client.list(), this::wrapModel);
     }
 
     @Override
-    public PagedFlux<TenantIdDescriptionInner> listAsync() {
-        return client.listAsync();
+    public PagedFlux<Tenant> listAsync() {
+        return PagedConverter.mapPage(client.listAsync(), this::wrapModel);
+    }
+
+    private TenantImpl wrapModel(TenantIdDescriptionInner tenantIdDescriptionInner) {
+        if (tenantIdDescriptionInner == null) {
+            return null;
+        }
+        return new TenantImpl(tenantIdDescriptionInner);
     }
 }

@@ -25,7 +25,7 @@ public final class ThroughputSettingsGetPropertiesResource extends ThroughputSet
      * the resource.
      */
     @JsonProperty(value = "_ts", access = JsonProperty.Access.WRITE_ONLY)
-    private Object ts;
+    private Float ts;
 
     /*
      * A system generated property representing the resource etag required for
@@ -48,7 +48,7 @@ public final class ThroughputSettingsGetPropertiesResource extends ThroughputSet
      *
      * @return the ts value.
      */
-    public Object ts() {
+    public Float ts() {
         return this.ts;
     }
 
@@ -60,6 +60,20 @@ public final class ThroughputSettingsGetPropertiesResource extends ThroughputSet
      */
     public String etag() {
         return this.etag;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ThroughputSettingsGetPropertiesResource withThroughput(Integer throughput) {
+        super.withThroughput(throughput);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ThroughputSettingsGetPropertiesResource withAutoscaleSettings(AutoscaleSettingsResource autoscaleSettings) {
+        super.withAutoscaleSettings(autoscaleSettings);
+        return this;
     }
 
     /**

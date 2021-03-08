@@ -34,6 +34,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.metricsadvisor.TestUtils.DATAFEED_ID_REQUIRED_ERROR;
+import static com.azure.ai.metricsadvisor.TestUtils.DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.metricsadvisor.TestUtils.INCORRECT_UUID;
 import static com.azure.ai.metricsadvisor.TestUtils.INCORRECT_UUID_ERROR;
@@ -61,7 +62,7 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
     @BeforeAll
     static void beforeAll() {
         TestBase.setupClass();
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS));
     }
 
     @AfterAll
@@ -167,28 +168,29 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
         }
     }
 
-    /**
-     * Verifies the result of the list data feed method using skip options.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    void testListDataFeedSkip(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
-        final ArrayList<DataFeed> actualDataFeedList = new ArrayList<>();
-        final ArrayList<DataFeed> expectedList = new ArrayList<>();
-
-        StepVerifier.create(client.listDataFeeds())
-            .thenConsumeWhile(expectedList::add)
-            .verifyComplete();
-
-        // Act & Assert
-        StepVerifier.create(client.listDataFeeds(new ListDataFeedOptions().setSkip(3)))
-            .thenConsumeWhile(actualDataFeedList::add)
-            .verifyComplete();
-
-        assertEquals(expectedList.size(), actualDataFeedList.size() + 3);
-    }
+    // TODO (savaity) Flakey test
+    // /**
+    //  * Verifies the result of the list data feed method using skip options.
+    //  */
+    // @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    // @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
+    // void testListDataFeedSkip(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
+    //     // Arrange
+    //     client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+    //     final ArrayList<DataFeed> actualDataFeedList = new ArrayList<>();
+    //     final ArrayList<DataFeed> expectedList = new ArrayList<>();
+    //
+    //     StepVerifier.create(client.listDataFeeds())
+    //         .thenConsumeWhile(expectedList::add)
+    //         .verifyComplete();
+    //
+    //     // Act & Assert
+    //     StepVerifier.create(client.listDataFeeds(new ListDataFeedOptions().setSkip(3)))
+    //         .thenConsumeWhile(actualDataFeedList::add)
+    //         .verifyComplete();
+    //
+    //     assertEquals(expectedList.size(), actualDataFeedList.size() + 3);
+    // }
 
     /**
      * Verifies the result of the list data feed method to filter results using

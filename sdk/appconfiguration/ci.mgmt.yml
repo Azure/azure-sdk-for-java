@@ -3,27 +3,34 @@ trigger:
   branches:
     include:
       - master
-      - feature/*
+      - main
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/appconfiguration/
-    exclude:
-      - sdk/appconfiguration/azure-data-appconfiguration
+      - sdk/appconfiguration/ci.mgmt.yml
+      - sdk/appconfiguration/pom.mgmt.xml
+      - sdk/appconfiguration/mgmt-v2019_02_01_preview
+      - sdk/appconfiguration/mgmt-v2019_10_01
+      - sdk/appconfiguration/mgmt-v2019_11_01_preview
+      - sdk/appconfiguration/mgmt-v2019_06_01
 
 pr:
   branches:
     include:
       - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/appconfiguration/
-    exclude:
-      - sdk/appconfiguration/azure-data-appconfiguration
+      - sdk/appconfiguration/ci.mgmt.yml
+      - sdk/appconfiguration/pom.mgmt.xml
+      - sdk/appconfiguration/mgmt-v2019_02_01_preview
+      - sdk/appconfiguration/mgmt-v2019_10_01
+      - sdk/appconfiguration/mgmt-v2019_11_01_preview
+      - sdk/appconfiguration/mgmt-v2019_06_01
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

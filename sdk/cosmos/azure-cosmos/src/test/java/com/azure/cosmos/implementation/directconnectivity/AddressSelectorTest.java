@@ -33,7 +33,7 @@ public class AddressSelectorTest {
     }
 
     @Test(groups = "unit", expectedExceptions = GoneException.class, expectedExceptionsMessageRegExp =
-        "The requested resource is no longer available at the server. Returned addresses are \\{https://cosmos1/,https://cosmos2/\\}")
+        ".*\"innerErrorMessage\":\"The requested resource is no longer available at the server. Returned addresses are .*https://cosmos1/,https://cosmos2/}.*")
     public void getPrimaryUri_NoPrimaryAddress() throws Exception {
         RxDocumentServiceRequest request = mockDocumentServiceRequest(clientContext);
         Mockito.doReturn(null).when(request).getDefaultReplicaIndex();

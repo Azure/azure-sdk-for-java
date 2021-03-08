@@ -73,6 +73,30 @@ class PrivateLinkHubsImpl extends GroupableResourcesCoreImpl<PrivateLinkHub, Pri
     }
 
     @Override
+    public PagedList<PrivateLinkHub> listByResourceGroup(String resourceGroupName) {
+        PrivateLinkHubsInner client = this.inner();
+        return this.wrapList(client.listByResourceGroup(resourceGroupName));
+    }
+
+    @Override
+    public Observable<PrivateLinkHub> listByResourceGroupAsync(String resourceGroupName) {
+        PrivateLinkHubsInner client = this.inner();
+        return client.listByResourceGroupAsync(resourceGroupName)
+        .flatMapIterable(new Func1<Page<PrivateLinkHubInner>, Iterable<PrivateLinkHubInner>>() {
+            @Override
+            public Iterable<PrivateLinkHubInner> call(Page<PrivateLinkHubInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<PrivateLinkHubInner, PrivateLinkHub>() {
+            @Override
+            public PrivateLinkHub call(PrivateLinkHubInner inner) {
+                return wrapModel(inner);
+            }
+        });
+    }
+
+    @Override
     public PagedList<PrivateLinkHub> list() {
         PrivateLinkHubsInner client = this.inner();
         return this.wrapList(client.list());
@@ -99,24 +123,6 @@ class PrivateLinkHubsImpl extends GroupableResourcesCoreImpl<PrivateLinkHub, Pri
     @Override
     public PrivateLinkHubImpl define(String name) {
         return wrapModel(name);
-    }
-
-    @Override
-    public Observable<PrivateLinkHub> listByResourceGroupAsync(final String resourceGroupName) {
-        PrivateLinkHubsInner client = this.inner();
-        return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMapIterable(new Func1<Page<PrivateLinkHubInner>, Iterable<PrivateLinkHubInner>>() {
-            @Override
-            public Iterable<PrivateLinkHubInner> call(Page<PrivateLinkHubInner> page) {
-                return page.items();
-            }
-        })
-        .map(new Func1<PrivateLinkHubInner, PrivateLinkHub>() {
-            @Override
-            public PrivateLinkHub call(PrivateLinkHubInner inner) {
-                return new PrivateLinkHubImpl(inner.name(), inner, manager());
-            }
-        });
     }
 
     @Override

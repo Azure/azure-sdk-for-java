@@ -5,14 +5,15 @@ package com.azure.messaging.servicebus;
 
 import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.VIA_PARTITION_KEY_ANNOTATION_NAME;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseUtils;
+import com.azure.core.amqp.models.AmqpAddress;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpMessageHeader;
+import com.azure.core.amqp.models.AmqpMessageId;
 import com.azure.core.amqp.models.AmqpMessageProperties;
-import com.azure.core.experimental.util.BinaryData;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.ManagementConstants;
 import com.azure.messaging.servicebus.implementation.MessageWithLockToken;
@@ -147,7 +148,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         amqpMessage.setReplyToGroupId(brokeredMessage.getReplyToSessionId());
         amqpMessage.setGroupId(brokeredMessage.getSessionId());
 
-        final AmqpMessageProperties brokeredProperties = brokeredMessage.getAmqpAnnotatedMessage().getProperties();
+        final AmqpMessageProperties brokeredProperties = brokeredMessage.getRawAmqpMessage().getProperties();
 
         amqpMessage.setContentEncoding(brokeredProperties.getContentEncoding());
         if (brokeredProperties.getGroupSequence() != null) {
@@ -165,10 +166,10 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         }
 
         //set footer
-        amqpMessage.setFooter(new Footer(brokeredMessage.getAmqpAnnotatedMessage().getFooter()));
+        amqpMessage.setFooter(new Footer(brokeredMessage.getRawAmqpMessage().getFooter()));
 
         //set header
-        AmqpMessageHeader header = brokeredMessage.getAmqpAnnotatedMessage().getHeader();
+        AmqpMessageHeader header = brokeredMessage.getRawAmqpMessage().getHeader();
         if (header.getDeliveryCount() != null) {
             amqpMessage.setDeliveryCount(header.getDeliveryCount());
         }
@@ -197,17 +198,12 @@ class ServiceBusMessageSerializer implements MessageSerializer {
                 brokeredMessage.getPartitionKey());
         }
 
-        final String viaPartitionKey = brokeredMessage.getViaPartitionKey();
-        if (viaPartitionKey != null && !viaPartitionKey.isEmpty()) {
-            messageAnnotationsMap.put(Symbol.valueOf(VIA_PARTITION_KEY_ANNOTATION_NAME.getValue()), viaPartitionKey);
-        }
-
         amqpMessage.setMessageAnnotations(new MessageAnnotations(messageAnnotationsMap));
 
         // Set Delivery Annotations.
         final Map<Symbol, Object> deliveryAnnotationsMap = new HashMap<>();
 
-        final Map<String, Object> deliveryAnnotations = brokeredMessage.getAmqpAnnotatedMessage()
+        final Map<String, Object> deliveryAnnotations = brokeredMessage.getRawAmqpMessage()
             .getDeliveryAnnotations();
         for (Map.Entry<String, Object> deliveryEntry : deliveryAnnotations.entrySet()) {
             deliveryAnnotationsMap.put(Symbol.valueOf(deliveryEntry.getKey()), deliveryEntry.getValue());
@@ -359,7 +355,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             bytes = EMPTY_BYTE_ARRAY;
         }
         final ServiceBusReceivedMessage brokeredMessage = new ServiceBusReceivedMessage(BinaryData.fromBytes(bytes));
-        AmqpAnnotatedMessage brokeredAmqpAnnotatedMessage = brokeredMessage.getAmqpAnnotatedMessage();
+        AmqpAnnotatedMessage brokeredAmqpAnnotatedMessage = brokeredMessage.getRawAmqpMessage();
 
         // Application properties
         ApplicationProperties applicationProperties = amqpMessage.getApplicationProperties();
@@ -387,21 +383,27 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         // Properties
         final AmqpMessageProperties brokeredProperties = brokeredAmqpAnnotatedMessage.getProperties();
         brokeredProperties.setReplyToGroupId(amqpMessage.getReplyToGroupId());
-        brokeredProperties.setReplyTo(amqpMessage.getReplyTo());
+        final String replyTo = amqpMessage.getReplyTo();
+        if (replyTo != null) {
+            brokeredProperties.setReplyTo(new AmqpAddress(amqpMessage.getReplyTo()));
+        }
         final Object messageId = amqpMessage.getMessageId();
         if (messageId != null) {
-            brokeredProperties.setMessageId(messageId.toString());
+            brokeredProperties.setMessageId(new AmqpMessageId(messageId.toString()));
         }
 
         brokeredProperties.setContentType(amqpMessage.getContentType());
         final Object correlationId = amqpMessage.getCorrelationId();
         if (correlationId != null) {
-            brokeredProperties.setCorrelationId(correlationId.toString());
+            brokeredProperties.setCorrelationId(new AmqpMessageId(correlationId.toString()));
         }
 
         final Properties amqpProperties = amqpMessage.getProperties();
         if (amqpProperties != null) {
-            brokeredProperties.setTo(amqpProperties.getTo());
+            final String to = amqpProperties.getTo();
+            if (to != null) {
+                brokeredProperties.setTo(new AmqpAddress(amqpProperties.getTo()));
+            }
 
             if (amqpProperties.getAbsoluteExpiryTime() != null) {
                 brokeredProperties.setAbsoluteExpiryTime(amqpProperties.getAbsoluteExpiryTime().toInstant()

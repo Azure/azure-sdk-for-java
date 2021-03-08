@@ -10,6 +10,7 @@ package com.microsoft.azure.management.cosmosdb.v2020_06_01_preview;
 
 import org.joda.time.DateTime;
 import java.util.List;
+import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.implementation.DatabaseRestoreResourceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -24,7 +25,9 @@ public class RestoreParameters {
     private RestoreMode restoreMode;
 
     /**
-     * Path of the source account from which the restore has to be initiated.
+     * The id of the restorable database account from which the restore has to
+     * be initiated. For example:
+     * /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}.
      */
     @JsonProperty(value = "restoreSource")
     private String restoreSource;
@@ -36,10 +39,10 @@ public class RestoreParameters {
     private DateTime restoreTimestampInUtc;
 
     /**
-     * List of specific databases to restore.
+     * List of specific databases available for restore.
      */
     @JsonProperty(value = "databasesToRestore")
-    private List<DatabaseRestoreResource> databasesToRestore;
+    private List<DatabaseRestoreResourceInner> databasesToRestore;
 
     /**
      * Get describes the mode of the restore. Possible values include: 'PointInTime'.
@@ -62,7 +65,7 @@ public class RestoreParameters {
     }
 
     /**
-     * Get path of the source account from which the restore has to be initiated.
+     * Get the id of the restorable database account from which the restore has to be initiated. For example: /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}.
      *
      * @return the restoreSource value
      */
@@ -71,7 +74,7 @@ public class RestoreParameters {
     }
 
     /**
-     * Set path of the source account from which the restore has to be initiated.
+     * Set the id of the restorable database account from which the restore has to be initiated. For example: /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}.
      *
      * @param restoreSource the restoreSource value to set
      * @return the RestoreParameters object itself.
@@ -102,21 +105,21 @@ public class RestoreParameters {
     }
 
     /**
-     * Get list of specific databases to restore.
+     * Get list of specific databases available for restore.
      *
      * @return the databasesToRestore value
      */
-    public List<DatabaseRestoreResource> databasesToRestore() {
+    public List<DatabaseRestoreResourceInner> databasesToRestore() {
         return this.databasesToRestore;
     }
 
     /**
-     * Set list of specific databases to restore.
+     * Set list of specific databases available for restore.
      *
      * @param databasesToRestore the databasesToRestore value to set
      * @return the RestoreParameters object itself.
      */
-    public RestoreParameters withDatabasesToRestore(List<DatabaseRestoreResource> databasesToRestore) {
+    public RestoreParameters withDatabasesToRestore(List<DatabaseRestoreResourceInner> databasesToRestore) {
         this.databasesToRestore = databasesToRestore;
         return this;
     }

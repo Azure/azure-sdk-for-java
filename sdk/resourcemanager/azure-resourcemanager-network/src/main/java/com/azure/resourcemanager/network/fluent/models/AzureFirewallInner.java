@@ -415,6 +415,20 @@ public class AzureFirewallInner extends Resource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureFirewallInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureFirewallInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

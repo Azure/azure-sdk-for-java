@@ -6,13 +6,18 @@ package com.azure.storage.file.share
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.file.share.implementation.util.ModelHelper
 import com.azure.storage.file.share.models.NtfsFileAttributes
+import com.azure.storage.file.share.models.ShareProtocols
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareRequestConditions
+import com.azure.storage.file.share.models.ShareRootSquash
 import com.azure.storage.file.share.models.ShareStorageException
-
+import com.azure.storage.file.share.options.ShareCreateOptions
+import com.azure.storage.file.share.options.ShareSetPropertiesOptions
 import reactor.test.StepVerifier
+import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
@@ -190,9 +195,15 @@ class ShareAsyncAPITests extends APISpec {
             }
     }
 
+    @Unroll
+    @Requires({ playbackMode() })
     def "Get properties premium"() {
         given:
-        def premiumShare = premiumFileServiceAsyncClient.createShareWithResponse(generateShareName(), testMetadata, null).block().getValue()
+        ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols(protocol)
+
+        def premiumShare = premiumFileServiceAsyncClient.createShareWithResponse(generateShareName(),
+            new ShareCreateOptions().setMetadata(testMetadata).setProtocols(enabledProtocol)
+            .setRootSquash(rootSquash), null).block().getValue()
         when:
         def getPropertiesVerifier = StepVerifier.create(premiumShare.getPropertiesWithResponse())
         then:
@@ -204,7 +215,40 @@ class ShareAsyncAPITests extends APISpec {
             assert it.getValue().getProvisionedIngressMBps()
             assert it.getValue().getProvisionedEgressMBps()
             assert it.getValue().getNextAllowedQuotaDowngradeTime()
+            assert it.getValue().getProtocols().toString() == enabledProtocol.toString()
+            assert it.getValue().getRootSquash() == rootSquash
         }.verifyComplete()
+
+        where:
+        protocol                               | rootSquash
+        Constants.HeaderConstants.SMB_PROTOCOL | null
+        Constants.HeaderConstants.NFS_PROTOCOL | ShareRootSquash.ALL_SQUASH
+        Constants.HeaderConstants.NFS_PROTOCOL | ShareRootSquash.NO_ROOT_SQUASH
+        Constants.HeaderConstants.NFS_PROTOCOL | ShareRootSquash.ROOT_SQUASH
+    }
+
+    @Unroll
+    @Requires({ playbackMode() })
+    def "Set premium properties"() {
+        setup:
+        def premiumShareClient = premiumFileServiceAsyncClient.createShareWithResponse(generateShareName(),
+            new ShareCreateOptions().setProtocols(new ShareProtocols().setNfsEnabled(true)), null)
+            .block().getValue()
+
+        when:
+        premiumShareClient.setProperties(new ShareSetPropertiesOptions().setRootSquash(rootSquash)).block()
+
+        then:
+        StepVerifier.create(premiumShareClient.getProperties())
+            .assertNext{
+                assert it.getRootSquash() == rootSquash
+            }.verifyComplete()
+
+        where:
+        rootSquash                     | _
+        ShareRootSquash.ROOT_SQUASH    | _
+        ShareRootSquash.NO_ROOT_SQUASH | _
+        ShareRootSquash.ALL_SQUASH     | _
     }
 
     def "Set quota"() {

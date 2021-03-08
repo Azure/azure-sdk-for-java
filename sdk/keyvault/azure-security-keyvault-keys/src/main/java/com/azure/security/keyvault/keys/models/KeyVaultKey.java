@@ -98,6 +98,15 @@ public class KeyVaultKey {
     }
 
     /**
+     * Get the policy rules under which the key can be exported.
+     *
+     * @return The release policy.
+     */
+    public KeyReleasePolicy getReleasePolicy() {
+        return properties.getReleasePolicy();
+    }
+
+    /**
      * Unpacks the key material json response and updates the variables in the Key Base object.
      * @param key The key value mapping of the key material
      */
@@ -120,5 +129,10 @@ public class KeyVaultKey {
     @JsonProperty("managed")
     private void setManaged(boolean managed) {
         properties.setManaged(managed);
+    }
+
+    @JsonProperty(value = "release_policy")
+    private void setReleasePolicy(KeyReleasePolicy releasePolicy) {
+        properties.setReleasePolicy(releasePolicy);
     }
 }

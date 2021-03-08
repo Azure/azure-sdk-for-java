@@ -19,10 +19,10 @@ public interface PacketCapture extends HasInnerModel<PacketCaptureResultInner>, 
     String targetId();
 
     /** @return the number of bytes captured per packet, the remaining bytes are truncated. */
-    int bytesToCapturePerPacket();
+    long bytesToCapturePerPacket();
 
     /** @return the maximum size of the capture output */
-    int totalBytesPerSession();
+    long totalBytesPerSession();
 
     /** @return the maximum duration of the capture session in seconds */
     int timeLimitInSeconds();
@@ -112,7 +112,7 @@ public interface PacketCapture extends HasInnerModel<PacketCaptureResultInner>, 
              * @param bytesToCapturePerPacket Number of bytes captured per packet
              * @return the next stage
              */
-            WithCreate withBytesToCapturePerPacket(int bytesToCapturePerPacket);
+            WithCreate withBytesToCapturePerPacket(long bytesToCapturePerPacket);
 
             /**
              * Set maximum size of the capture output.
@@ -120,7 +120,7 @@ public interface PacketCapture extends HasInnerModel<PacketCaptureResultInner>, 
              * @param totalBytesPerSession Maximum size of the capture output
              * @return the next stage
              */
-            WithCreate withTotalBytesPerSession(int totalBytesPerSession);
+            WithCreate withTotalBytesPerSession(long totalBytesPerSession);
 
             /**
              * Set maximum duration of the capture session in seconds.

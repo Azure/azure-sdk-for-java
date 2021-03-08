@@ -14,6 +14,7 @@ import com.azure.resourcemanager.compute.models.GalleryImageVersionStorageProfil
 import com.azure.resourcemanager.compute.models.ReplicationStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Specifies information about the gallery Image Version that you want to create or update. */
 @JsonFlatten
@@ -50,7 +51,7 @@ public class GalleryImageVersionInner extends Resource {
      *
      * @return the publishingProfile value.
      */
-    public GalleryImageVersionPublishingProfile  publishingProfile() {
+    public GalleryImageVersionPublishingProfile publishingProfile() {
         return this.publishingProfile;
     }
 
@@ -60,7 +61,7 @@ public class GalleryImageVersionInner extends Resource {
      * @param publishingProfile the publishingProfile value to set.
      * @return the GalleryImageVersionInner object itself.
      */
-    public GalleryImageVersionInner withPublishingProfile(GalleryImageVersionPublishingProfile  publishingProfile) {
+    public GalleryImageVersionInner withPublishingProfile(GalleryImageVersionPublishingProfile publishingProfile) {
         this.publishingProfile = publishingProfile;
         return this;
     }
@@ -101,6 +102,20 @@ public class GalleryImageVersionInner extends Resource {
      */
     public ReplicationStatus replicationStatus() {
         return this.replicationStatus;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryImageVersionInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryImageVersionInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**

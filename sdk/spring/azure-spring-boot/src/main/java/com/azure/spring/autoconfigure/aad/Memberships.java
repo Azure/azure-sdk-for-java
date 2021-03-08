@@ -48,7 +48,7 @@ public class Memberships {
         }
         final Memberships groups = (Memberships) o;
         return this.getOdataNextLink().equals(groups.getOdataNextLink())
-                && this.getValue().equals(groups.getValue());
+            && this.getValue().equals(groups.getValue());
     }
 
     @Override

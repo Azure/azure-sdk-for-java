@@ -7,6 +7,7 @@ import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
 import com.azure.spring.integration.servicebus.ServiceBusMessageHandler;
 import com.azure.spring.integration.servicebus.ServiceBusRuntimeException;
 import com.azure.spring.integration.servicebus.ServiceBusTemplate;
+import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.google.common.collect.Sets;
 import com.microsoft.azure.servicebus.IMessage;
 import com.microsoft.azure.servicebus.IMessageSession;
@@ -35,7 +36,8 @@ import java.util.function.Consumer;
  */
 public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicClientFactory>
     implements ServiceBusTopicOperation {
-    private static final Logger LOG = LoggerFactory.getLogger(ServiceBusTopicTemplate.class);
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusTopicTemplate.class);
 
     private static final String MSG_FAIL_CHECKPOINT = "Consumer group '%s' of topic '%s' failed to checkpoint %s";
 
@@ -43,8 +45,9 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
 
     private final Set<Tuple<String, String>> nameAndConsumerGroups = Sets.newConcurrentHashSet();
 
-    public ServiceBusTopicTemplate(ServiceBusTopicClientFactory clientFactory) {
-        super(clientFactory);
+    public ServiceBusTopicTemplate(ServiceBusTopicClientFactory clientFactory,
+                                   ServiceBusMessageConverter messageConverter) {
+        super(clientFactory, messageConverter);
     }
 
     @Override
@@ -74,13 +77,14 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
     /**
      * Register a message handler to receive message from the topic. A session handler will be registered if session is
      * enabled.
+     *
      * @param name The topic name.
      * @param consumerGroup The consumer group.
      * @param consumer The consumer method.
      * @param payloadType The type of the message payload.
      * @throws ServiceBusRuntimeException If fail to register the topic message handler.
      */
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     protected void internalSubscribe(String name, String consumerGroup, Consumer<Message<?>> consumer,
                                      Class<?> payloadType) {
         ISubscriptionClient subscriptionClient = this.senderFactory.getOrCreateSubscriptionClient(name, consumerGroup);
@@ -101,7 +105,7 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
                 subscriptionClient.registerMessageHandler(msgHandler, buildHandlerOptions(), executors);
             }
         } catch (ServiceBusException | InterruptedException e) {
-            LOG.error("Failed to register topic message handler", e);
+            LOGGER.error("Failed to register topic message handler", e);
             throw new ServiceBusRuntimeException("Failed to register topic message handler", e);
         }
     }
@@ -153,7 +157,7 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
         @Override
         @SuppressWarnings({ "rawtypes", "unchecked" })
         public CompletableFuture<Void> OnCloseSessionAsync(IMessageSession session) {
-            LOG.info("Closed session '" + session.getSessionId() + "' for subscription: " + session.getEntityPath());
+            LOGGER.info("Closed session '" + session.getSessionId() + "' for subscription: " + session.getEntityPath());
             return CompletableFuture.completedFuture(null);
         }
     }

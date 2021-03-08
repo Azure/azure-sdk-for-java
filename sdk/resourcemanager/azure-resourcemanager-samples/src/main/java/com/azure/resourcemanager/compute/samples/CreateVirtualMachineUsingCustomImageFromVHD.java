@@ -53,7 +53,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVHD {
         final String publicIPDnsLabel = Utils.randomResourceName(azureResourceManager, "pip", 10);
         final String userName = "tirekicker";
         final String password = Utils.password();
-        final Region region = Region.US_WEST_CENTRAL;
+        final Region region = Region.US_WEST;
 
         final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_apache.sh";
         final String apacheInstallCommand = "bash install_apache.sh";

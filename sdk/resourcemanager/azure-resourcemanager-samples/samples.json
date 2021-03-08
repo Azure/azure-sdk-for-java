@@ -180,7 +180,7 @@
       "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/cdn/samples/ManageCdn.java",
       "githubPath": "Azure-Samples/cdn-java-manage-cdn",
       "description": "Getting started on managing CDN using Java"
-    },	
+    },
     {
       "owner": "yungezz",
       "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/cdn/samples/ManageCdnWithCustomDomain.java",
@@ -663,6 +663,12 @@
     },
     {
       "owner": "yungezz",
+      "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/resources/samples/ManageLocks.java",
+      "githubPath": "Azure-Samples/locks-java-manage-locks",
+      "description": "Getting started with managing resource locks using Java"
+    },
+    {
+      "owner": "yungezz",
       "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/resources/samples/ManageResource.java",
       "githubPath": "Azure-Samples/resources-java-manage-resource",
       "description": "Getting started on managing resources using Java"
@@ -672,6 +678,12 @@
       "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/resources/samples/ManageResourceGroup.java",
       "githubPath": "Azure-Samples/resources-java-manage-resource-group",
       "description": "Getting started on managing resource groups using Java"
+    },
+    {
+      "owner": "yungezz",
+      "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/search/samples/ManageSearchService.java",
+      "githubPath": "Azure-Samples/search-java-manage-search-service",
+      "description": "Getting started on managing Azure search service using Java"
     },
     {
       "owner": "yungezz",

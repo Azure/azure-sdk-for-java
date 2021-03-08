@@ -11,6 +11,7 @@ import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 /**
  * Interface for cosmosDB operations
@@ -32,6 +33,23 @@ public interface CosmosOperations {
      * @return CosmosContainerProperties
      */
     CosmosContainerProperties createContainerIfNotExists(CosmosEntityInformation<?, ?> information);
+
+    /**
+     * Get properties for specified container
+     *
+     * @param containerName String
+     * @return CosmosContainerProperties
+     */
+    CosmosContainerProperties getContainerProperties(String containerName);
+
+    /**
+     * Replace container properties for the specified container
+     *
+     * @param containerName String
+     * @param properties CosmosContainerProperties
+     * @return CosmosContainerProperties
+     */
+    CosmosContainerProperties replaceContainerProperties(String containerName, CosmosContainerProperties properties);
 
     /**
      * Find the DocumentQuery, find all the items specified by domain type.
@@ -286,4 +304,29 @@ public interface CosmosOperations {
      * @return the Iterable
      */
     <T> Iterable<T> runQuery(SqlQuerySpec querySpec, Class<?> domainType, Class<T> returnType);
+
+    /**
+     * Run the query.
+     *
+     * @param <T> the type parameter
+     * @param querySpec the query spec
+     * @param sort the sort order
+     * @param domainType the domain type
+     * @param returnType the return type
+     * @return the Iterable
+     */
+    <T> Iterable<T> runQuery(SqlQuerySpec querySpec, Sort sort, Class<?> domainType, Class<T> returnType);
+
+    /**
+     * Run the query.
+     *
+     * @param <T> the type parameter
+     * @param querySpec the query spec
+     * @param pageable the pageable
+     * @param domainType the domain type
+     * @param returnType the return type
+     * @return the Page
+     */
+    <T> Page<T> runPaginationQuery(SqlQuerySpec querySpec, Pageable pageable, Class<?> domainType, Class<T> returnType);
+
 }

@@ -2,7 +2,7 @@
 
 This project provides client tools or utilities in Java that make it easy to query data in [Azure Log Analytics](https://azure.microsoft.com/services/log-analytics/). For reference documentation on classes and models, please see the [Azure SDK for Java reference](https://docs.microsoft.com/java/api/overview/azure/?view=azure-java-stable). 
 
-Azure Log Analytics provides agents for telemtry collection and enables deep analytics via a [rich query language](https://docs.loganalytics.io/index). This SDK provides query access to data already stored in Log Analytics. To start collecting data from different sources, take a look at these [quickstarts](https://docs.microsoft.com/azure/log-analytics/log-analytics-quick-collect-azurevm). 
+Azure Log Analytics provides agents for telemtry collection and enables deep analytics via a [rich query language](https://docs.microsoft.com/azure/data-explorer/kusto/query/). This SDK provides query access to data already stored in Log Analytics. To start collecting data from different sources, take a look at these [quickstarts](https://docs.microsoft.com/azure/log-analytics/log-analytics-quick-collect-azurevm). 
 
 ## Examples
 
@@ -36,7 +36,7 @@ If you encounter any bugs with these SDKs, please file issues via [Issues](https
 
 ## Contribute Code
 
-If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft Azure Projects Contribution Guidelines](https://azure.github.io/guidelines.html).
+For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md).
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)

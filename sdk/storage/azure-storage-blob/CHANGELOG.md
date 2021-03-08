@@ -1,11 +1,35 @@
 # Release History
 
-## 12.9.0-beta.3 (Unreleased)
+## 12.11.0-beta.2 (Unreleased)
+- Fixed a bug where downloading would throw a NPE on large downloads due to a lack of eTag.
+- Fixed a bug where more data would be buffered in buffered upload than expected due to Reactor's concatMap operator.
+- Added upload and download methods on BlobClient and BlobAsyncClient that work with BinaryData.
+
+## 12.11.0-beta.1 (2021-02-10)
+- Added support for the 2020-06-12 service version. 
+- Added support to lock on version id by specifying a consistent read control when opening a BlobInputStream.
+- Removed a deep copy in the general upload path to reduce memory consumption and increase perf
+- Added a deep copy immediately after calling BlobOutputStream.write to prevent overwriting data in the case of reusing a single buffer to write to an output stream
+
+## 12.10.0 (2021-01-14)
+- GA release
+
+## 12.10.0-beta.1 (2020-12-07)
+- Exposed ClientOptions on all client builders, allowing users to set a custom application id and custom headers.
+- Added ability to get container client from blob clients and service client from container clients
+- Added a MetadataValidationPolicy to check for leading and trailing whitespace in metadata that would cause Auth failures.
+- Fixed a bug where the error message would not be displayed the exception message of a HEAD request.
+- Added support for the 2020-04-08 service version. 
+- Added support to upload block blob from URL.
+- Added lease ID parameter to Get and Set Blob Tags.
+- Added blob tags to BlobServiceClient.findBlobsByTags() result.
+
+## 12.9.0 (2020-11-11)
 - Fixed a bug where interspersed element types returned by page listing would deserialize incorrectly.
 - Fixed a bug where BlobInputStream would not eTag lock on the blob, resulting in undesirable behavior if the blob was modified in the middle of reading. 
+- Renamed BlobDownloadToFileOptions.rangeGetContentMd5 to BlobDownloadToFileOptions.retrieveContentRangeMd5.
 - Added support for move and execute permissions on blob SAS and container SAS, and list permissions on blob SAS.
 - Added support to specify a preauthorized user id and correlation id for user delegation SAS.
-- Renamed BlobDownloadToFileOptions.rangeGetContentMd5 to BlobDownloadToFileOptions.retrieveContentRangeMd5
 
 ## 12.9.0-beta.2 (2020-10-08)
 - Added support to specify whether or not a pipeline policy should be added per call or per retry.

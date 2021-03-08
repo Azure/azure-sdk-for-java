@@ -11,6 +11,8 @@ package com.microsoft.azure.management.synapse.v2019_06_01_preview.implementatio
 import com.microsoft.azure.arm.resources.models.implementation.GroupableResourceCoreImpl;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.PrivateLinkHub;
 import rx.Observable;
+import java.util.List;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.PrivateEndpointConnectionForPrivateLinkHubBasic;
 
 class PrivateLinkHubImpl extends GroupableResourceCoreImpl<PrivateLinkHub, PrivateLinkHubInner, PrivateLinkHubImpl, SynapseManager> implements PrivateLinkHub, PrivateLinkHub.Definition, PrivateLinkHub.Update {
     PrivateLinkHubImpl(String name, PrivateLinkHubInner inner, SynapseManager manager) {
@@ -44,8 +46,19 @@ class PrivateLinkHubImpl extends GroupableResourceCoreImpl<PrivateLinkHub, Priva
 
 
     @Override
+    public List<PrivateEndpointConnectionForPrivateLinkHubBasic> privateEndpointConnections() {
+        return this.inner().privateEndpointConnections();
+    }
+
+    @Override
     public String provisioningState() {
         return this.inner().provisioningState();
+    }
+
+    @Override
+    public PrivateLinkHubImpl withProvisioningState(String provisioningState) {
+        this.inner().withProvisioningState(provisioningState);
+        return this;
     }
 
 }

@@ -13,7 +13,7 @@ import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
 
@@ -25,7 +25,6 @@ import java.time.Duration;
  */
 abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
     private final ClientLogger logger = new ClientLogger(ServiceTest.class);
-    protected static final String CONTENTS = "Track 2 AMQP message - Perf Test";
     protected static final int TOTAL_MESSAGE_MULTIPLIER = 300;
 
     private static final String AZURE_SERVICE_BUS_CONNECTION_STRING = "AZURE_SERVICE_BUS_CONNECTION_STRING";
@@ -44,7 +43,7 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
      * @param receiveMode to receive messages.
      * @throws IllegalArgumentException if environment variable not being available.
      */
-    ServiceTest(TOptions options, ReceiveMode receiveMode) {
+    ServiceTest(TOptions options, ServiceBusReceiveMode receiveMode) {
         super(options);
         String connectionString = System.getenv(AZURE_SERVICE_BUS_CONNECTION_STRING);
         if (CoreUtils.isNullOrEmpty(connectionString)) {

@@ -12,6 +12,7 @@ import com.azure.resourcemanager.network.models.BgpCommunity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Service Community Properties. */
 @JsonFlatten
@@ -94,6 +95,20 @@ public class BgpServiceCommunityInner extends Resource {
      */
     public BgpServiceCommunityInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BgpServiceCommunityInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BgpServiceCommunityInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

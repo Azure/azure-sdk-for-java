@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.AmqpLink;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.AmqpConstants;
@@ -12,13 +13,14 @@ import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.ReactorReceiver;
 import com.azure.core.amqp.implementation.ReactorSession;
+import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnsignedInteger;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
@@ -47,10 +49,10 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
         + ":transfer-destination-address");
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReactorSession.class);
-    private final Duration openTimeout;
     private final AmqpRetryPolicy retryPolicy;
     private final TokenManagerProvider tokenManagerProvider;
     private final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
+    private final AmqpRetryOptions retryOptions;
 
     /**
      * Creates a new AMQP session using proton-j.
@@ -63,23 +65,22 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
      * @param cbsNodeSupplier Mono that returns a reference to the {@link ClaimsBasedSecurityNode}.
      * @param tokenManagerProvider Provides {@link TokenManager} that authorizes the client when performing
      *     operations on the message broker.
-     * @param openTimeout Timeout to wait for the session operation to complete.
+     * @param retryOptions Retry options.
      */
     ServiceBusReactorSession(Session session, SessionHandler sessionHandler, String sessionName,
         ReactorProvider provider, ReactorHandlerProvider handlerProvider, Mono<ClaimsBasedSecurityNode> cbsNodeSupplier,
-        TokenManagerProvider tokenManagerProvider, Duration openTimeout, MessageSerializer messageSerializer,
-        AmqpRetryPolicy retryPolicy) {
+        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, AmqpRetryOptions retryOptions) {
         super(session, sessionHandler, sessionName, provider, handlerProvider, cbsNodeSupplier, tokenManagerProvider,
-            messageSerializer, openTimeout, retryPolicy);
-        this.openTimeout = openTimeout;
-        this.retryPolicy = retryPolicy;
+            messageSerializer, retryOptions);
+        this.retryOptions = retryOptions;
+        this.retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
         this.tokenManagerProvider = tokenManagerProvider;
         this.cbsNodeSupplier = cbsNodeSupplier;
     }
 
     @Override
     public Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath,
-        MessagingEntityType entityType, Duration timeout, AmqpRetryPolicy retry, ReceiveMode receiveMode) {
+        MessagingEntityType entityType, Duration timeout, AmqpRetryPolicy retry, ServiceBusReceiveMode receiveMode) {
         final Map<Symbol, Object> filter = new HashMap<>();
 
         return createConsumer(linkName, entityPath, entityType, timeout, retry, receiveMode, filter);
@@ -87,7 +88,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
 
     @Override
     public Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath,
-        MessagingEntityType entityType, Duration timeout, AmqpRetryPolicy retry, ReceiveMode receiveMode,
+        MessagingEntityType entityType, Duration timeout, AmqpRetryPolicy retry, ServiceBusReceiveMode receiveMode,
         String sessionId) {
 
         final Map<Symbol, Object> filter = new HashMap<>();
@@ -128,11 +129,11 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
     protected ReactorReceiver createConsumer(String entityPath, Receiver receiver,
         ReceiveLinkHandler receiveLinkHandler, TokenManager tokenManager, ReactorProvider reactorProvider) {
         return new ServiceBusReactorReceiver(entityPath, receiver, receiveLinkHandler, tokenManager,
-            reactorProvider, openTimeout, retryPolicy);
+            reactorProvider, retryOptions.getTryTimeout(), retryPolicy);
     }
 
     private Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath,
-        MessagingEntityType entityType, Duration timeout, AmqpRetryPolicy retry, ReceiveMode receiveMode,
+        MessagingEntityType entityType, Duration timeout, AmqpRetryPolicy retry, ServiceBusReceiveMode receiveMode,
         Map<Symbol, Object> filter) {
         Objects.requireNonNull(linkName, "'linkName' cannot be null.");
         Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");

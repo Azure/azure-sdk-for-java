@@ -4,18 +4,24 @@
 package com.azure.core.test;
 
 import com.azure.core.test.models.RecordingRedactor;
+import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
- * Test for {@linl RecordingRedactor} that redact the sensitive information while recording.
+ * Test for {@link RecordingRedactor} that redact the sensitive information while recording.
  */
 public class RecordingRedactorTests {
     private static final String DUMMY_SENSITIVE_INFORMATION = "sensitiveInformation";
@@ -126,6 +132,10 @@ public class RecordingRedactorTests {
 
     private static final String REDACTED_EMPTY_KEY_RESPONSE_BODY = "\"dataSourceParameter\":"
         + "{\"username\":\"\",\"port\":\"9200\"";
+
+    private static final String PII_RESPONSE_DATA = "\"name\":\"Foo\", \"ssn\":\"123-45-6789\"";
+    private static final String REDACTED_PII_RESPONSE_DATA = "\"name\":\"Foo\", \"ssn\":\"REDACTED\"";
+
     /**
      * Verify if the given content is redacted successfully.
      */
@@ -149,6 +159,25 @@ public class RecordingRedactorTests {
     @Test
     public void replaceUserDelegationKeyForSignedTidTag() {
         assertFalse(new RecordingRedactor().redact(USER_DELEGATION_KEY_FOR_SIGNED_TID_RESPONSE).contains(DUMMY_SENSITIVE_INFORMATION));
+    }
+
+    @Test
+    public void customRedactor() {
+        Pattern pattern = Pattern.compile("(.*\"ssn\":)(\"[-0-9]{11}\")");
+        List<Function<String, String>> redactors = new ArrayList<>();
+        redactors.add(data -> redact(data, pattern.matcher(data), "\"REDACTED\""));
+        RecordingRedactor recordingRedactor = new RecordingRedactor(redactors);
+        assertEquals(recordingRedactor.redact(PII_RESPONSE_DATA), REDACTED_PII_RESPONSE_DATA);
+    }
+
+    private String redact(String content, Matcher matcher, String replacement) {
+        while (matcher.find()) {
+            String captureGroup = matcher.group(2);
+            if (!CoreUtils.isNullOrEmpty(captureGroup)) {
+                content = content.replace(matcher.group(2), replacement);
+            }
+        }
+        return content;
     }
 
     private static Stream<Arguments> sensitiveDataSupplier() {

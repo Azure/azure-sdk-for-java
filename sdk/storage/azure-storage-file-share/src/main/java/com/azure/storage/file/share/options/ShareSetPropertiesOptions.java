@@ -6,6 +6,7 @@ package com.azure.storage.file.share.options;
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareRequestConditions;
+import com.azure.storage.file.share.models.ShareRootSquash;
 
 /**
  * Extended options that may be passed when setting properties on a share.
@@ -15,6 +16,7 @@ public class ShareSetPropertiesOptions {
 
     private Integer quotaInGb;
     private ShareAccessTier accessTier;
+    private ShareRootSquash rootSquash;
     private ShareRequestConditions requestConditions;
 
     /**
@@ -46,6 +48,22 @@ public class ShareSetPropertiesOptions {
      */
     public ShareSetPropertiesOptions setQuotaInGb(Integer quotaInGb) {
         this.quotaInGb = quotaInGb;
+        return this;
+    }
+
+    /**
+     * @return The root squash to set for the share. Only valid for NFS.
+     */
+    public ShareRootSquash getRootSquash() {
+        return rootSquash;
+    }
+
+    /**
+     * @param rootSquash The root squash to set for the share. Only valid for NFS.
+     * @return The updated options.
+     */
+    public ShareSetPropertiesOptions setRootSquash(ShareRootSquash rootSquash) {
+        this.rootSquash = rootSquash;
         return this;
     }
 

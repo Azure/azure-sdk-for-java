@@ -9,5 +9,7 @@ variables:
   AdditionalOptions: ''
   # format !<group1Id>:<artifact1Id>, !<group2Id>:<artifact2Id>,... no trailing comma is necessary
   PLSkipOptions: ''
-  # This is the default Java version. It's the version used to build the shipping libraries, spot bugs etc.
+  # This is the default Java build version. It's the version used to build the shipping libraries, Spotbugs etc.
   JavaBuildVersion: '1.11'
+  # This is the default Java test version. It's the version used when running tests.
+  JavaTestVersion: '1.11'

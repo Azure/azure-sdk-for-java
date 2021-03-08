@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CpuReaderTest {
     @Test(groups = "unit")
     public void range() {
-        double cpuLoad = new CpuReader().getSystemWideCpuUsage();
+        double cpuLoad = new CpuMemoryReader().getSystemWideCpuUsage();
 
         if (!Double.isNaN(cpuLoad)) {
             assertThat(cpuLoad).isBetween(0.0, 1.0);

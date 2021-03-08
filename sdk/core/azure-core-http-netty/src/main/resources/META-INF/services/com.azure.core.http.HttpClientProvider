@@ -1,1 +1,1 @@
-com.azure.core.http.netty.implementation.ReactorNettyClientProvider
+com.azure.core.http.netty.NettyAsyncHttpClientProvider

@@ -14,11 +14,14 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfil
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServerAccessProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterAutoUpgradeProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIdentity;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterPodIdentityProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSku;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterWindowsProfile;
+import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.UserAssignedIdentity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -49,6 +52,12 @@ public class ManagedClusterInner extends Resource {
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
+
+    /*
+     * Represents the Power State of the cluster
+     */
+    @JsonProperty(value = "properties.powerState", access = JsonProperty.Access.WRITE_ONLY)
+    private PowerState powerState;
 
     /*
      * The max number of agent pools for the managed cluster.
@@ -112,6 +121,12 @@ public class ManagedClusterInner extends Resource {
     private Map<String, ManagedClusterAddonProfile> addonProfiles;
 
     /*
+     * Profile of managed cluster pod identity.
+     */
+    @JsonProperty(value = "properties.podIdentityProfile")
+    private ManagedClusterPodIdentityProfile podIdentityProfile;
+
+    /*
      * Name of the resource group containing agent pool nodes.
      */
     @JsonProperty(value = "properties.nodeResourceGroup")
@@ -142,6 +157,12 @@ public class ManagedClusterInner extends Resource {
      */
     @JsonProperty(value = "properties.aadProfile")
     private ManagedClusterAadProfile aadProfile;
+
+    /*
+     * Profile of auto upgrade configuration.
+     */
+    @JsonProperty(value = "properties.autoUpgradeProfile")
+    private ManagedClusterAutoUpgradeProfile autoUpgradeProfile;
 
     /*
      * Parameters to be applied to the cluster-autoscaler when enabled
@@ -216,6 +237,15 @@ public class ManagedClusterInner extends Resource {
      */
     public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the powerState property: Represents the Power State of the cluster.
+     *
+     * @return the powerState value.
+     */
+    public PowerState powerState() {
+        return this.powerState;
     }
 
     /**
@@ -389,6 +419,26 @@ public class ManagedClusterInner extends Resource {
     }
 
     /**
+     * Get the podIdentityProfile property: Profile of managed cluster pod identity.
+     *
+     * @return the podIdentityProfile value.
+     */
+    public ManagedClusterPodIdentityProfile podIdentityProfile() {
+        return this.podIdentityProfile;
+    }
+
+    /**
+     * Set the podIdentityProfile property: Profile of managed cluster pod identity.
+     *
+     * @param podIdentityProfile the podIdentityProfile value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withPodIdentityProfile(ManagedClusterPodIdentityProfile podIdentityProfile) {
+        this.podIdentityProfile = podIdentityProfile;
+        return this;
+    }
+
+    /**
      * Get the nodeResourceGroup property: Name of the resource group containing agent pool nodes.
      *
      * @return the nodeResourceGroup value.
@@ -491,6 +541,26 @@ public class ManagedClusterInner extends Resource {
     }
 
     /**
+     * Get the autoUpgradeProfile property: Profile of auto upgrade configuration.
+     *
+     * @return the autoUpgradeProfile value.
+     */
+    public ManagedClusterAutoUpgradeProfile autoUpgradeProfile() {
+        return this.autoUpgradeProfile;
+    }
+
+    /**
+     * Set the autoUpgradeProfile property: Profile of auto upgrade configuration.
+     *
+     * @param autoUpgradeProfile the autoUpgradeProfile value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withAutoUpgradeProfile(ManagedClusterAutoUpgradeProfile autoUpgradeProfile) {
+        this.autoUpgradeProfile = autoUpgradeProfile;
+        return this;
+    }
+
+    /**
      * Get the autoScalerProfile property: Parameters to be applied to the cluster-autoscaler when enabled.
      *
      * @return the autoScalerProfile value.
@@ -572,6 +642,20 @@ public class ManagedClusterInner extends Resource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -583,6 +667,9 @@ public class ManagedClusterInner extends Resource {
         }
         if (identity() != null) {
             identity().validate();
+        }
+        if (powerState() != null) {
+            powerState().validate();
         }
         if (agentPoolProfiles() != null) {
             agentPoolProfiles().forEach(e -> e.validate());
@@ -606,11 +693,17 @@ public class ManagedClusterInner extends Resource {
                         }
                     });
         }
+        if (podIdentityProfile() != null) {
+            podIdentityProfile().validate();
+        }
         if (networkProfile() != null) {
             networkProfile().validate();
         }
         if (aadProfile() != null) {
             aadProfile().validate();
+        }
+        if (autoUpgradeProfile() != null) {
+            autoUpgradeProfile().validate();
         }
         if (autoScalerProfile() != null) {
             autoScalerProfile().validate();

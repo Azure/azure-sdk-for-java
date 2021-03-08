@@ -22,6 +22,14 @@ import com.microsoft.azure.management.datafactory.v2018_06_01.implementation.Lin
 @JsonFlatten
 public class AmazonS3LinkedService extends LinkedServiceInner {
     /**
+     * The authentication type of S3. Allowed value: AccessKey (default) or
+     * TemporarySecurityCredentials. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "typeProperties.authenticationType")
+    private Object authenticationType;
+
+    /**
      * The access key identifier of the Amazon S3 Identity and Access
      * Management (IAM) user. Type: string (or Expression with resultType
      * string).
@@ -46,12 +54,38 @@ public class AmazonS3LinkedService extends LinkedServiceInner {
     private Object serviceUrl;
 
     /**
+     * The session token for the S3 temporary security credential.
+     */
+    @JsonProperty(value = "typeProperties.sessionToken")
+    private SecretBase sessionToken;
+
+    /**
      * The encrypted credential used for authentication. Credentials are
      * encrypted using the integration runtime credential manager. Type: string
      * (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /**
+     * Get the authentication type of S3. Allowed value: AccessKey (default) or TemporarySecurityCredentials. Type: string (or Expression with resultType string).
+     *
+     * @return the authenticationType value
+     */
+    public Object authenticationType() {
+        return this.authenticationType;
+    }
+
+    /**
+     * Set the authentication type of S3. Allowed value: AccessKey (default) or TemporarySecurityCredentials. Type: string (or Expression with resultType string).
+     *
+     * @param authenticationType the authenticationType value to set
+     * @return the AmazonS3LinkedService object itself.
+     */
+    public AmazonS3LinkedService withAuthenticationType(Object authenticationType) {
+        this.authenticationType = authenticationType;
+        return this;
+    }
 
     /**
      * Get the access key identifier of the Amazon S3 Identity and Access Management (IAM) user. Type: string (or Expression with resultType string).
@@ -110,6 +144,26 @@ public class AmazonS3LinkedService extends LinkedServiceInner {
      */
     public AmazonS3LinkedService withServiceUrl(Object serviceUrl) {
         this.serviceUrl = serviceUrl;
+        return this;
+    }
+
+    /**
+     * Get the session token for the S3 temporary security credential.
+     *
+     * @return the sessionToken value
+     */
+    public SecretBase sessionToken() {
+        return this.sessionToken;
+    }
+
+    /**
+     * Set the session token for the S3 temporary security credential.
+     *
+     * @param sessionToken the sessionToken value to set
+     * @return the AmazonS3LinkedService object itself.
+     */
+    public AmazonS3LinkedService withSessionToken(SecretBase sessionToken) {
+        this.sessionToken = sessionToken;
         return this;
     }
 

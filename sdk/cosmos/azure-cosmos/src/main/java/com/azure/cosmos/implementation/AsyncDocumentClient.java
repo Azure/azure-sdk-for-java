@@ -5,11 +5,19 @@ package com.azure.cosmos.implementation;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.implementation.batch.ServerBatchRequest;
+import com.azure.cosmos.CosmosPatchOperations;
 import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.batch.ServerBatchRequest;
+import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
+import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
+import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -19,6 +27,9 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentMap;
+
 /**
  * Provides a client-side logical representation of the Azure Cosmos DB
  * database service. This async client is used to configure and execute requests
@@ -311,6 +322,13 @@ public interface AsyncDocumentClient {
     ConsistencyLevel getConsistencyLevel();
 
     /**
+     * Gets the client telemetry
+     *
+     * @return the client telemetry
+     */
+    ClientTelemetry getClientTelemetry();
+
+    /**
      * Gets the boolean which indicates whether to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations on CosmosItem.
      *
@@ -550,6 +568,21 @@ public interface AsyncDocumentClient {
     Mono<ResourceResponse<Document>> replaceDocument(String documentLink, Object document, RequestOptions options);
 
     /**
+     * Apply patch on an item.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single resource response with the patched document.
+     * In case of failure the {@link Mono} will error.
+     *
+     * @param documentLink the document link.
+     * @param cosmosPatchOperations container with the list of patch operations.
+     * @param options the request options.
+     *
+     * @return a {@link Mono} containing the single resource response with the patched document or an error.
+     */
+    Mono<ResourceResponse<Document>> patchDocument(String documentLink, CosmosPatchOperations cosmosPatchOperations, RequestOptions options);
+
+    /**
      * Replaces a document with the passed in document.
      * <p>
      * After subscription the operation will be performed.
@@ -649,12 +682,13 @@ public interface AsyncDocumentClient {
      * The {@link Flux} will contain one or several feed response pages of the obtained documents.
      * In case of failure the {@link Flux} will error.
      *
-     * @param collectionLink    the link to the parent document collection.
-     * @param changeFeedOptions the change feed options.
+     * @param collection    the parent document collection.
+     * @param requestOptions the change feed request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained documents or an error.
      */
-    Flux<FeedResponse<Document>> queryDocumentChangeFeed(String collectionLink,
-                                                               ChangeFeedOptions changeFeedOptions);
+    Flux<FeedResponse<Document>> queryDocumentChangeFeed(
+        DocumentCollection collection,
+        CosmosChangeFeedRequestOptions requestOptions);
 
     /**
      * Reads all partition key ranges in a document collection.
@@ -667,6 +701,14 @@ public interface AsyncDocumentClient {
      * @return a {@link Flux} containing one or several feed response pages of the obtained partition key ranges or an error.
      */
     Flux<FeedResponse<PartitionKeyRange>> readPartitionKeyRanges(String collectionLink, CosmosQueryRequestOptions options);
+
+    /**
+     * Gets the feed ranges of a container.
+     *
+     * @param collectionLink the link to the parent document collection.
+     * @return a {@link List} of @{link FeedRange} containing the feed ranges of a container.
+     */
+    Mono<List<FeedRange>> getFeedRanges(String collectionLink);
 
     /**
      * Creates a stored procedure.
@@ -1402,6 +1444,13 @@ public interface AsyncDocumentClient {
     Mono<DatabaseAccount> getDatabaseAccount();
 
     /**
+     * Gets latest cached database account information from GlobalEndpointManager.
+     *
+     * @return the database account.
+     */
+    DatabaseAccount getLatestDatabaseAccount();
+
+    /**
      * Reads many documents at once
      * @param itemIdentityList CosmosItem id and partition key tuple of items that that needs to be read
      * @param collectionLink link for the documentcollection/container to be queried
@@ -1433,10 +1482,33 @@ public interface AsyncDocumentClient {
         CosmosQueryRequestOptions options
     );
 
+    ConcurrentMap<String, PartitionedQueryExecutionInfo> getQueryPlanCache();
+
+    /**
+     * Gets the collection cache.
+     *
+     * @return the collection Cache
+     */
+    RxClientCollectionCache getCollectionCache();
+
+    /**
+     * Gets the partition key range cache.
+     *
+     * @return the partition key range cache
+     */
+    RxPartitionKeyRangeCache getPartitionKeyRangeCache();
+
     /**
      * Close this {@link AsyncDocumentClient} instance and cleans up the resources.
      */
     void close();
 
     ItemDeserializer getItemDeserializer();
+
+    /**
+     * Enable throughput control group.
+     *
+     * @param group the throughput control group.
+     */
+    void enableThroughputControlGroup(ThroughputControlGroupInternal group);
 }

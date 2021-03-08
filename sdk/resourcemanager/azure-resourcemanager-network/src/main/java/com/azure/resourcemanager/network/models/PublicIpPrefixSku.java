@@ -20,6 +20,12 @@ public final class PublicIpPrefixSku {
     @JsonProperty(value = "name")
     private PublicIpPrefixSkuName name;
 
+    /*
+     * Tier of a public IP prefix SKU.
+     */
+    @JsonProperty(value = "tier")
+    private PublicIpPrefixSkuTier tier;
+
     /**
      * Get the name property: Name of a public IP prefix SKU.
      *
@@ -37,6 +43,26 @@ public final class PublicIpPrefixSku {
      */
     public PublicIpPrefixSku withName(PublicIpPrefixSkuName name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the tier property: Tier of a public IP prefix SKU.
+     *
+     * @return the tier value.
+     */
+    public PublicIpPrefixSkuTier tier() {
+        return this.tier;
+    }
+
+    /**
+     * Set the tier property: Tier of a public IP prefix SKU.
+     *
+     * @param tier the tier value to set.
+     * @return the PublicIpPrefixSku object itself.
+     */
+    public PublicIpPrefixSku withTier(PublicIpPrefixSkuTier tier) {
+        this.tier = tier;
         return this;
     }
 

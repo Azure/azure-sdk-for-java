@@ -14,6 +14,7 @@ import com.azure.resourcemanager.network.models.SecurityPartnerProviderConnectio
 import com.azure.resourcemanager.network.models.SecurityProviderName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Security Partner Provider resource. */
 @JsonFlatten
@@ -141,6 +142,20 @@ public class SecurityPartnerProviderInner extends Resource {
      */
     public SecurityPartnerProviderInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SecurityPartnerProviderInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SecurityPartnerProviderInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

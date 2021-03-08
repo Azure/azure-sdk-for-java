@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 
 /** Api request input for LogAnalytics getRequestRateByInterval Api. */
 @Fluent
@@ -37,6 +38,62 @@ public final class RequestRateByIntervalInput extends LogAnalyticsInputBase {
      */
     public RequestRateByIntervalInput withIntervalLength(IntervalInMins intervalLength) {
         this.intervalLength = intervalLength;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RequestRateByIntervalInput withBlobContainerSasUri(String blobContainerSasUri) {
+        super.withBlobContainerSasUri(blobContainerSasUri);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RequestRateByIntervalInput withFromTime(OffsetDateTime fromTime) {
+        super.withFromTime(fromTime);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RequestRateByIntervalInput withToTime(OffsetDateTime toTime) {
+        super.withToTime(toTime);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RequestRateByIntervalInput withGroupByThrottlePolicy(Boolean groupByThrottlePolicy) {
+        super.withGroupByThrottlePolicy(groupByThrottlePolicy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RequestRateByIntervalInput withGroupByOperationName(Boolean groupByOperationName) {
+        super.withGroupByOperationName(groupByOperationName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RequestRateByIntervalInput withGroupByResourceName(Boolean groupByResourceName) {
+        super.withGroupByResourceName(groupByResourceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RequestRateByIntervalInput withGroupByClientApplicationId(Boolean groupByClientApplicationId) {
+        super.withGroupByClientApplicationId(groupByClientApplicationId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RequestRateByIntervalInput withGroupByUserAgent(Boolean groupByUserAgent) {
+        super.withGroupByUserAgent(groupByUserAgent);
         return this;
     }
 

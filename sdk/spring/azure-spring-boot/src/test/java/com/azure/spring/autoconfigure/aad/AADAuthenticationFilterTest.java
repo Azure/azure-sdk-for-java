@@ -3,9 +3,9 @@
 
 package com.azure.spring.autoconfigure.aad;
 
+import com.azure.spring.aad.AADAuthorizationServerEndpoints;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.proc.BadJOSEException;
-import org.junit.Assume;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -46,25 +46,18 @@ public class AADAuthenticationFilterTest {
         response = mock(HttpServletResponse.class);
         filter = new AADAuthenticationFilter(
             mock(AADAuthenticationProperties.class),
-            mock(ServiceEndpointsProperties.class),
+            mock(AADAuthorizationServerEndpoints.class),
             userPrincipalManager
         );
-    }
-
-    @Ignore
-    public void beforeEveryMethod() {
-        Assume.assumeTrue(!TestConstants.CLIENT_ID.contains("real_client_id"));
-        Assume.assumeTrue(!TestConstants.CLIENT_SECRET.contains("real_client_secret"));
-        Assume.assumeTrue(!TestConstants.BEARER_TOKEN.contains("real_jtw_bearer_token"));
     }
 
     //TODO (Zhou Liu): current test case is out of date, a new test case need to cover here, do it later.
     @Test
     @Ignore
     public void doFilterInternal() {
-        this.contextRunner.withPropertyValues(TestConstants.CLIENT_ID_PROPERTY, TestConstants.CLIENT_ID)
-                .withPropertyValues(TestConstants.CLIENT_SECRET_PROPERTY, TestConstants.CLIENT_SECRET)
-                .withPropertyValues(TestConstants.TARGETED_GROUPS_PROPERTY,
+        this.contextRunner.withPropertyValues("azure.activedirectory.client-id", TestConstants.CLIENT_ID)
+                .withPropertyValues("azure.activedirectory.client-secret", TestConstants.CLIENT_SECRET)
+                .withPropertyValues("azure.activedirectory.client-secret",
                         TestConstants.TARGETED_GROUPS.toString()
                                                      .replace("[", "").replace("]", ""));
 

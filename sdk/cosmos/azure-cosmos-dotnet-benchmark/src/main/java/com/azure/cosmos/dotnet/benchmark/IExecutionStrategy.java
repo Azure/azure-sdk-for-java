@@ -1,6 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos.dotnet.benchmark;
 
-import com.azure.cosmos.implementation.guava25.base.Function;
+import java.util.function.Supplier;
 
 interface IExecutionStrategy {
     RunSummary execute(
@@ -11,7 +14,7 @@ interface IExecutionStrategy {
 
     static IExecutionStrategy startNew(
         BenchmarkConfig config,
-        Function<Void, IBenchmarkOperation> benchmarkOperation) {
+        Supplier<IBenchmarkOperation> benchmarkOperation) {
 
         return new ParallelExecutionStrategy(config, benchmarkOperation);
     }

@@ -1,6 +1,42 @@
 # Release History
 
-## 12.7.0-beta.2 (Unreleased)
+## 12.9.0-beta.2 (Unreleased)
+
+### Support for binary data, custom shapes and Base64 encoding
+This release adds a convinient way to send and receive binary data and custom shapes as a payload.
+Additionally, support for Base64 encoding in HTTP requests and reponses has been added that makes interoperability with V11 and prior Storage SDK easier to implement.
+
+The `QueueClient.sendMessage` and `QueueAsyncClient.sendMessage` consume `com.azure.core.util.BinaryData` in addition to `String`.
+`QueueMessageItem` and `PeekedMessageItem` expose new property `getBody()` of `com.azure.core.util.BinaryData` type to access message payload and should be used instead of `getMessageText()`.
+
+See [BinaryData](https://docs.microsoft.com/java/api/com.azure.core.util.binarydata?view=azure-java-stable) for more information about handling `String`, binary data and custom shapes.
+
+#### Receiving message as string
+Before:
+```java
+QueueMessageItem message = queueClient.receiveMessage();
+String messageText = message.getMessageText();
+```
+
+After:
+```java
+QueueMessageItem message = queueClient.receiveMessage();
+BinaryData body = message.getBody();
+String messageText = body.toString();
+```
+
+## 12.9.0-beta.1 (2021-02-10)
+- Added support for the 2020-06-12 service version. 
+
+## 12.8.0 (2021-01-14)
+- GA release
+
+## 12.8.0-beta.1 (2020-12-07)
+- Exposed ClientOptions on all client builders, allowing users to set a custom application id and custom headers.
+- Fixed a bug where the error message would not be displayed the exception message of a HEAD request.\
+- Added a MetadataValidationPolicy to check for leading and trailing whitespace in metadata that would cause Auth failures.
+
+## 12.7.0 (2020-11-11)
 - Added support to specify whether or not a pipeline policy should be added per call or per retry.
 - Fixed a bug that would cause a NPE when visibilityTimeout was set to null in QueueClient.updateMessage
 

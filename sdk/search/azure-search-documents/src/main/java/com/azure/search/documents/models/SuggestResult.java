@@ -5,11 +5,10 @@ package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.implementation.converters.SuggestResultHelper;
+import com.azure.search.documents.implementation.util.Utility;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -19,7 +18,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import static com.azure.core.util.serializer.TypeReference.createInstance;
-import static com.azure.search.documents.implementation.util.Utility.initializeSerializerAdapter;
 
 /**
  * A result containing a document found by a suggestion query, plus associated
@@ -42,8 +40,6 @@ public final class SuggestResult {
 
     @JsonIgnore
     private JsonSerializer jsonSerializer;
-
-    private static final JacksonAdapter searchJacksonAdapter = (JacksonAdapter) initializeSerializerAdapter();
 
     static {
         SuggestResultHelper.setAccessor(new SuggestResultHelper.SuggestResultAccessor() {
@@ -77,8 +73,7 @@ public final class SuggestResult {
     public <T> T getDocument(Class<T> modelClass) {
         if (jsonSerializer == null) {
             try {
-                String serializedJson = searchJacksonAdapter.serialize(additionalProperties, SerializerEncoding.JSON);
-                return searchJacksonAdapter.deserialize(serializedJson, modelClass, SerializerEncoding.JSON);
+                return Utility.convertValue(additionalProperties, modelClass);
             } catch (IOException ex) {
                 throw logger.logExceptionAsError(new RuntimeException("Failed to deserialize suggestion result.", ex));
             }

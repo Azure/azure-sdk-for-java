@@ -196,6 +196,13 @@ public class ApplicationGatewayPrivateLinkIpConfiguration extends SubResource {
         return this.provisioningState;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayPrivateLinkIpConfiguration withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

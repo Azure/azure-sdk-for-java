@@ -30,12 +30,19 @@ import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Stream;
+
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import org.junit.jupiter.params.provider.Arguments;
@@ -316,6 +323,33 @@ public abstract class KeyClientTestBase extends TestBase {
                     .setExpiresOn(OffsetDateTime.of(2090, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
         }
         testRunner.accept(keys);
+    }
+
+    @Test
+    public abstract void createRsaKeyWithPublicExponent(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+
+    void createRsaKeyWithPublicExponentRunner(Consumer<CreateRsaKeyOptions> testRunner) {
+        final Map<String, String> tags = new HashMap<>();
+
+        tags.put("foo", "baz");
+
+        final CreateRsaKeyOptions keyOptions = new CreateRsaKeyOptions(generateResourceId("testRsaKey"))
+            .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
+            .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC))
+            .setTags(tags)
+            .setPublicExponent(3);
+
+        testRunner.accept(keyOptions);
+    }
+
+    @Test
+    public abstract void exportKey(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+
+    void exportKeyRunner(Consumer<CreateKeyOptions> testRunner) {
+        CreateKeyOptions createKeyOptions = new CreateKeyOptions(generateResourceId(KEY_NAME), KeyType.RSA)
+            .setExportable(true);
+
+        testRunner.accept(createKeyOptions);
     }
 
     String generateResourceId(String suffix) {

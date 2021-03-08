@@ -3,6 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
+import com.azure.spring.aad.AADAuthorizationServerEndpoints;
 import com.azure.spring.telemetry.TelemetrySender;
 import com.nimbusds.jose.jwk.source.DefaultJWKSetCache;
 import com.nimbusds.jose.jwk.source.JWKSetCache;
@@ -13,13 +14,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.util.ClassUtils;
 
 import javax.annotation.PostConstruct;
@@ -35,27 +36,25 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
  * <p>
  * The configuration will not be activated if no {@literal azure.activedirectory.client-id} property provided.
  * <p>
- * A stateless filter {@link AADAppRoleStatelessAuthenticationFilter} will be auto-configured by specifying
- * {@literal azure.activedirectory.session-stateless=true}. Otherwise, {@link AADAuthenticationFilter} will be
- * configured.
+ * A stateless filter {@link AADAppRoleStatelessAuthenticationFilter} will be auto-configured by specifying {@literal
+ * azure.activedirectory.session-stateless=true}. Otherwise, {@link AADAuthenticationFilter} will be configured.
  */
 @Configuration
 @ConditionalOnWebApplication
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
+@ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
 @ConditionalOnProperty(prefix = AADAuthenticationFilterAutoConfiguration.PROPERTY_PREFIX, value = { "client-id" })
-@EnableConfigurationProperties({ AADAuthenticationProperties.class, ServiceEndpointsProperties.class })
-@PropertySource(value = "classpath:service-endpoints.properties")
+@EnableConfigurationProperties({ AADAuthenticationProperties.class })
 public class AADAuthenticationFilterAutoConfiguration {
     public static final String PROPERTY_PREFIX = "azure.activedirectory";
     private static final Logger LOG = LoggerFactory.getLogger(AADAuthenticationProperties.class);
 
-    private final AADAuthenticationProperties aadAuthenticationProperties;
-    private final ServiceEndpointsProperties serviceEndpointsProperties;
+    private final AADAuthenticationProperties properties;
+    private final AADAuthorizationServerEndpoints endpoints;
 
-    public AADAuthenticationFilterAutoConfiguration(AADAuthenticationProperties aadAuthenticationProperties,
-                                                    ServiceEndpointsProperties serviceEndpointsProperties) {
-        this.aadAuthenticationProperties = aadAuthenticationProperties;
-        this.serviceEndpointsProperties = serviceEndpointsProperties;
+    public AADAuthenticationFilterAutoConfiguration(AADAuthenticationProperties properties) {
+        this.properties = properties;
+        this.endpoints = new AADAuthorizationServerEndpoints(properties.getBaseUri(), properties.getTenantId());
     }
 
     /**
@@ -67,12 +66,12 @@ public class AADAuthenticationFilterAutoConfiguration {
     @ConditionalOnMissingBean(AADAuthenticationFilter.class)
     @ConditionalOnExpression("${azure.activedirectory.session-stateless:false} == false")
     // client-id and client-secret used to: get graphApiToken -> groups
-    @ConditionalOnProperty(prefix = PROPERTY_PREFIX, value = {"client-id", "client-secret"})
+    @ConditionalOnProperty(prefix = PROPERTY_PREFIX, value = { "client-id", "client-secret" })
     public AADAuthenticationFilter azureADJwtTokenFilter() {
         LOG.info("AzureADJwtTokenFilter Constructor.");
         return new AADAuthenticationFilter(
-            aadAuthenticationProperties,
-            serviceEndpointsProperties,
+            properties,
+            endpoints,
             getJWTResourceRetriever(),
             getJWKSetCache()
         );
@@ -82,13 +81,13 @@ public class AADAuthenticationFilterAutoConfiguration {
     @ConditionalOnMissingBean(AADAppRoleStatelessAuthenticationFilter.class)
     @ConditionalOnExpression("${azure.activedirectory.session-stateless:false} == true")
     // client-id used to: userPrincipalManager.getValidator
-    @ConditionalOnProperty(prefix = PROPERTY_PREFIX, value = {"client-id"})
+    @ConditionalOnProperty(prefix = PROPERTY_PREFIX, value = { "client-id" })
     public AADAppRoleStatelessAuthenticationFilter azureADStatelessAuthFilter(ResourceRetriever resourceRetriever) {
         LOG.info("Creating AzureADStatelessAuthFilter bean.");
         return new AADAppRoleStatelessAuthenticationFilter(
             new UserPrincipalManager(
-                serviceEndpointsProperties,
-                aadAuthenticationProperties,
+                endpoints,
+                properties,
                 resourceRetriever,
                 true
             )
@@ -99,22 +98,23 @@ public class AADAuthenticationFilterAutoConfiguration {
     @ConditionalOnMissingBean(ResourceRetriever.class)
     public ResourceRetriever getJWTResourceRetriever() {
         return new DefaultResourceRetriever(
-            aadAuthenticationProperties.getJwtConnectTimeout(),
-            aadAuthenticationProperties.getJwtReadTimeout(),
-            aadAuthenticationProperties.getJwtSizeLimit()
+            properties.getJwtConnectTimeout(),
+            properties.getJwtReadTimeout(),
+            properties.getJwtSizeLimit()
         );
     }
 
     @Bean
     @ConditionalOnMissingBean(JWKSetCache.class)
     public JWKSetCache getJWKSetCache() {
-        long lifespan = aadAuthenticationProperties.getJwkSetCacheLifespan();
-        return new DefaultJWKSetCache(lifespan, lifespan, TimeUnit.MILLISECONDS);
+        long lifespan = properties.getJwkSetCacheLifespan();
+        long refreshTime = properties.getJwkSetCacheRefreshTime();
+        return new DefaultJWKSetCache(lifespan, refreshTime, TimeUnit.MILLISECONDS);
     }
 
     @PostConstruct
     private void sendTelemetry() {
-        if (aadAuthenticationProperties.isAllowTelemetry()) {
+        if (properties.isAllowTelemetry()) {
             final Map<String, String> events = new HashMap<>();
             final TelemetrySender sender = new TelemetrySender();
             events.put(SERVICE_NAME, getClassPackageSimpleName(AADAuthenticationFilterAutoConfiguration.class));

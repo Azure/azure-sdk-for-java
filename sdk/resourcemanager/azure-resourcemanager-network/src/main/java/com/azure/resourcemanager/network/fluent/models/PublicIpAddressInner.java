@@ -10,21 +10,30 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.DdosSettings;
+import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpTag;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.PublicIpAddressDnsSettings;
+import com.azure.resourcemanager.network.models.PublicIpAddressMigrationPhase;
 import com.azure.resourcemanager.network.models.PublicIpAddressSku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Public IP address resource. */
 @JsonFlatten
 @Fluent
 public class PublicIpAddressInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpAddressInner.class);
+
+    /*
+     * The extended location of the public ip address.
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
 
     /*
      * The public IP address SKU.
@@ -112,10 +121,54 @@ public class PublicIpAddressInner extends Resource {
     private ProvisioningState provisioningState;
 
     /*
+     * The service public IP address of the public IP address resource.
+     */
+    @JsonProperty(value = "properties.servicePublicIPAddress")
+    private PublicIpAddressInner servicePublicIpAddress;
+
+    /*
+     * The NatGateway for the Public IP address.
+     */
+    @JsonProperty(value = "properties.natGateway")
+    private NatGatewayInner natGateway;
+
+    /*
+     * Migration phase of Public IP Address.
+     */
+    @JsonProperty(value = "properties.migrationPhase")
+    private PublicIpAddressMigrationPhase migrationPhase;
+
+    /*
+     * The source Public IP Address (IPv6) that links to this address (IPv4).
+     */
+    @JsonProperty(value = "properties.linkedPublicIPAddress")
+    private PublicIpAddressInner linkedPublicIpAddress;
+
+    /*
      * Resource ID.
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /**
+     * Get the extendedLocation property: The extended location of the public ip address.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: The extended location of the public ip address.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the PublicIpAddressInner object itself.
+     */
+    public PublicIpAddressInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
+        return this;
+    }
 
     /**
      * Get the sku property: The public IP address SKU.
@@ -356,6 +409,86 @@ public class PublicIpAddressInner extends Resource {
     }
 
     /**
+     * Get the servicePublicIpAddress property: The service public IP address of the public IP address resource.
+     *
+     * @return the servicePublicIpAddress value.
+     */
+    public PublicIpAddressInner servicePublicIpAddress() {
+        return this.servicePublicIpAddress;
+    }
+
+    /**
+     * Set the servicePublicIpAddress property: The service public IP address of the public IP address resource.
+     *
+     * @param servicePublicIpAddress the servicePublicIpAddress value to set.
+     * @return the PublicIpAddressInner object itself.
+     */
+    public PublicIpAddressInner withServicePublicIpAddress(PublicIpAddressInner servicePublicIpAddress) {
+        this.servicePublicIpAddress = servicePublicIpAddress;
+        return this;
+    }
+
+    /**
+     * Get the natGateway property: The NatGateway for the Public IP address.
+     *
+     * @return the natGateway value.
+     */
+    public NatGatewayInner natGateway() {
+        return this.natGateway;
+    }
+
+    /**
+     * Set the natGateway property: The NatGateway for the Public IP address.
+     *
+     * @param natGateway the natGateway value to set.
+     * @return the PublicIpAddressInner object itself.
+     */
+    public PublicIpAddressInner withNatGateway(NatGatewayInner natGateway) {
+        this.natGateway = natGateway;
+        return this;
+    }
+
+    /**
+     * Get the migrationPhase property: Migration phase of Public IP Address.
+     *
+     * @return the migrationPhase value.
+     */
+    public PublicIpAddressMigrationPhase migrationPhase() {
+        return this.migrationPhase;
+    }
+
+    /**
+     * Set the migrationPhase property: Migration phase of Public IP Address.
+     *
+     * @param migrationPhase the migrationPhase value to set.
+     * @return the PublicIpAddressInner object itself.
+     */
+    public PublicIpAddressInner withMigrationPhase(PublicIpAddressMigrationPhase migrationPhase) {
+        this.migrationPhase = migrationPhase;
+        return this;
+    }
+
+    /**
+     * Get the linkedPublicIpAddress property: The source Public IP Address (IPv6) that links to this address (IPv4).
+     *
+     * @return the linkedPublicIpAddress value.
+     */
+    public PublicIpAddressInner linkedPublicIpAddress() {
+        return this.linkedPublicIpAddress;
+    }
+
+    /**
+     * Set the linkedPublicIpAddress property: The source Public IP Address (IPv6) that links to this address (IPv4).
+     *
+     * @param linkedPublicIpAddress the linkedPublicIpAddress value to set.
+     * @return the PublicIpAddressInner object itself.
+     */
+    public PublicIpAddressInner withLinkedPublicIpAddress(PublicIpAddressInner linkedPublicIpAddress) {
+        this.linkedPublicIpAddress = linkedPublicIpAddress;
+        return this;
+    }
+
+    /**
      * Get the id property: Resource ID.
      *
      * @return the id value.
@@ -375,12 +508,29 @@ public class PublicIpAddressInner extends Resource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public PublicIpAddressInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PublicIpAddressInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
+        }
         if (sku() != null) {
             sku().validate();
         }
@@ -395,6 +545,15 @@ public class PublicIpAddressInner extends Resource {
         }
         if (ipTags() != null) {
             ipTags().forEach(e -> e.validate());
+        }
+        if (servicePublicIpAddress() != null) {
+            servicePublicIpAddress().validate();
+        }
+        if (natGateway() != null) {
+            natGateway().validate();
+        }
+        if (linkedPublicIpAddress() != null) {
+            linkedPublicIpAddress().validate();
         }
     }
 }

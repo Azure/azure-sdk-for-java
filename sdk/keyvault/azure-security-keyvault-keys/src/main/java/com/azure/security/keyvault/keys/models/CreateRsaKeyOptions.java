@@ -25,6 +25,11 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
     private boolean hardwareProtected;
 
     /**
+     * The public exponent for the key.
+     */
+    private int publicExponent;
+
+    /**
      * Creates a RsaKeyCreateOptions with {@code name} as name of the Rsa key.
      * @param name The name of the key.
      */
@@ -129,5 +134,25 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
      */
     public Boolean isHardwareProtected() {
         return this.hardwareProtected;
+    }
+
+    /**
+     * Get the public exponent for the key.
+     *
+     * @return The public exponent.
+     */
+    public int getPublicExponent() {
+        return publicExponent;
+    }
+
+    /**
+     * Set the public exponent for the key.
+     *
+     * @param publicExponent The public exponent to set.
+     * @return The updated {@link CreateRsaKeyOptions} object.
+     */
+    public CreateRsaKeyOptions setPublicExponent(int publicExponent) {
+        this.publicExponent = publicExponent;
+        return this;
     }
 }

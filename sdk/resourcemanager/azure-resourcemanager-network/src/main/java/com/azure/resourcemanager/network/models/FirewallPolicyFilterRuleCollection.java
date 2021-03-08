@@ -71,6 +71,20 @@ public final class FirewallPolicyFilterRuleCollection extends FirewallPolicyRule
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public FirewallPolicyFilterRuleCollection withName(String name) {
+        super.withName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FirewallPolicyFilterRuleCollection withPriority(Integer priority) {
+        super.withPriority(priority);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

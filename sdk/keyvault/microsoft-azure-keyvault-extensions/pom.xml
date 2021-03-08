@@ -88,12 +88,12 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.10</version> <!-- {x-version-update;org.apache.commons:commons-lang3;external_dependency} -->
+      <version>3.11</version> <!-- {x-version-update;org.apache.commons:commons-lang3;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
-      <version>1.14</version> <!-- {x-version-update;commons-codec:commons-codec;external_dependency} -->
+      <version>1.15</version> <!-- {x-version-update;commons-codec:commons-codec;external_dependency} -->
     </dependency>
 
 
@@ -123,7 +123,7 @@
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcprov-jdk15on</artifactId>
-      <version>1.66</version> <!-- {x-version-update;org.bouncycastle:bcprov-jdk15on;external_dependency} -->
+      <version>1.68</version> <!-- {x-version-update;org.bouncycastle:bcprov-jdk15on;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

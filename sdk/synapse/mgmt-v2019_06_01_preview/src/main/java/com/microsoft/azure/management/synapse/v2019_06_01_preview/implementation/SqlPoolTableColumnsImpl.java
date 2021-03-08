@@ -14,7 +14,7 @@ import com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolTableCo
 import rx.Observable;
 import rx.functions.Func1;
 import com.microsoft.azure.Page;
-import com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolColumn;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.TableSchemaSqlPoolWorkspaceSqlPoolColumn;
 
 class SqlPoolTableColumnsImpl extends WrapperImpl<SqlPoolTableColumnsInner> implements SqlPoolTableColumns {
     private final SynapseManager manager;
@@ -28,12 +28,12 @@ class SqlPoolTableColumnsImpl extends WrapperImpl<SqlPoolTableColumnsInner> impl
         return this.manager;
     }
 
-    private SqlPoolColumnImpl wrapModel(SqlPoolColumnInner inner) {
-        return  new SqlPoolColumnImpl(inner, manager());
+    private TableSchemaSqlPoolWorkspaceSqlPoolColumnImpl wrapModel(SqlPoolColumnInner inner) {
+        return  new TableSchemaSqlPoolWorkspaceSqlPoolColumnImpl(inner, manager());
     }
 
     @Override
-    public Observable<SqlPoolColumn> listByTableNameAsync(final String resourceGroupName, final String workspaceName, final String sqlPoolName, final String schemaName, final String tableName) {
+    public Observable<TableSchemaSqlPoolWorkspaceSqlPoolColumn> listByTableNameAsync(final String resourceGroupName, final String workspaceName, final String sqlPoolName, final String schemaName, final String tableName) {
         SqlPoolTableColumnsInner client = this.inner();
         return client.listByTableNameAsync(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName)
         .flatMapIterable(new Func1<Page<SqlPoolColumnInner>, Iterable<SqlPoolColumnInner>>() {
@@ -42,9 +42,9 @@ class SqlPoolTableColumnsImpl extends WrapperImpl<SqlPoolTableColumnsInner> impl
                 return page.items();
             }
         })
-        .map(new Func1<SqlPoolColumnInner, SqlPoolColumn>() {
+        .map(new Func1<SqlPoolColumnInner, TableSchemaSqlPoolWorkspaceSqlPoolColumn>() {
             @Override
-            public SqlPoolColumn call(SqlPoolColumnInner inner) {
+            public TableSchemaSqlPoolWorkspaceSqlPoolColumn call(SqlPoolColumnInner inner) {
                 return wrapModel(inner);
             }
         });

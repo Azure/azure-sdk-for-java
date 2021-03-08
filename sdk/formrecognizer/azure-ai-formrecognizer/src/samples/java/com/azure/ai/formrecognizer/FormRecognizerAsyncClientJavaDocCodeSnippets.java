@@ -3,8 +3,10 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.models.FormRecognizerLocale;
 import com.azure.ai.formrecognizer.models.RecognizeBusinessCardsOptions;
 import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
+import com.azure.ai.formrecognizer.models.RecognizeInvoicesOptions;
 import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.FieldValueType;
 import com.azure.ai.formrecognizer.models.FormContentType;
@@ -33,7 +35,7 @@ import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffe
  * Code snippet for {@link FormRecognizerAsyncClient}
  */
 public class FormRecognizerAsyncClientJavaDocCodeSnippets {
-    FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder().buildAsyncClient();
+    private final FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder().buildAsyncClient();
 
     /**
      * Code snippet for creating a {@link FormRecognizerAsyncClient}
@@ -356,7 +358,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         formRecognizerAsyncClient.beginRecognizeReceiptsFromUrl(receiptUrl,
             new RecognizeReceiptsOptions()
                 .setFieldElementsIncluded(includeFieldElements)
-                .setLocale("en-US")
+                .setLocale(FormRecognizerLocale.EN_US)
                 .setPollInterval(Duration.ofSeconds(5)))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedReceipts -> {
@@ -500,7 +502,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
             new RecognizeReceiptsOptions()
                 .setContentType(FormContentType.IMAGE_JPEG)
                 .setFieldElementsIncluded(includeFieldElements)
-                .setLocale("en-US")
+                .setLocale(FormRecognizerLocale.EN_US)
                 .setPollInterval(Duration.ofSeconds(5)))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedReceipts -> {
@@ -605,7 +607,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     if (jobTitles != null) {
                         if (FieldValueType.LIST == jobTitles.getValue().getValueType()) {
                             List<FormField> jobTitlesItems = jobTitles.getValue().asList();
-                            jobTitlesItems.stream().forEach(jobTitlesItem -> {
+                            jobTitlesItems.forEach(jobTitlesItem -> {
                                 if (FieldValueType.STRING == jobTitlesItem.getValue().getValueType()) {
                                     String jobTitle = jobTitlesItem.getValue().asString();
                                     System.out.printf("Job Title: %s, confidence: %.2f%n",
@@ -670,7 +672,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     if (jobTitles != null) {
                         if (FieldValueType.LIST == jobTitles.getValue().getValueType()) {
                             List<FormField> jobTitlesItems = jobTitles.getValue().asList();
-                            jobTitlesItems.stream().forEach(jobTitlesItem -> {
+                            jobTitlesItems.forEach(jobTitlesItem -> {
                                 if (FieldValueType.STRING == jobTitlesItem.getValue().getValueType()) {
                                     String jobTitle = jobTitlesItem.getValue().asString();
                                     System.out.printf("Job Title: %s, confidence: %.2f%n",
@@ -733,7 +735,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     if (jobTitles != null) {
                         if (FieldValueType.LIST == jobTitles.getValue().getValueType()) {
                             List<FormField> jobTitlesItems = jobTitles.getValue().asList();
-                            jobTitlesItems.stream().forEach(jobTitlesItem -> {
+                            jobTitlesItems.forEach(jobTitlesItem -> {
                                 if (FieldValueType.STRING == jobTitlesItem.getValue().getValueType()) {
                                     String jobTitle = jobTitlesItem.getValue().asString();
                                     System.out.printf("Job Title: %s, confidence: %.2f%n",
@@ -804,7 +806,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     if (jobTitles != null) {
                         if (FieldValueType.LIST == jobTitles.getValue().getValueType()) {
                             List<FormField> jobTitlesItems = jobTitles.getValue().asList();
-                            jobTitlesItems.stream().forEach(jobTitlesItem -> {
+                            jobTitlesItems.forEach(jobTitlesItem -> {
                                 if (FieldValueType.STRING == jobTitlesItem.getValue().getValueType()) {
                                     String jobTitle = jobTitlesItem.getValue().asString();
                                     System.out.printf("Job Title: %s, confidence: %.2f%n",
@@ -816,5 +818,155 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                 }
             });
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeBusinessCards#Flux-long-RecognizeBusinessCardsOptions
+    }
+
+    /**
+     * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeInvoicesFromUrl(String)}
+     */
+    public void beginRecognizeInvoicesFromUrl() {
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeInvoicesFromUrl#string
+        String invoiceUrl = "invoice_url";
+        // if training polling operation completed, retrieve the final result.
+        formRecognizerAsyncClient.beginRecognizeInvoicesFromUrl(invoiceUrl)
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .subscribe(recognizedInvoices -> {
+                for (int i = 0; i < recognizedInvoices.size(); i++) {
+                    RecognizedForm recognizedForm = recognizedInvoices.get(i);
+                    Map<String, FormField> recognizedFields = recognizedForm.getFields();
+                    FormField customAddrFormField = recognizedFields.get("CustomerAddress");
+                    if (customAddrFormField != null) {
+                        if (FieldValueType.STRING == customAddrFormField.getValue().getValueType()) {
+                            System.out.printf("Customer Address: %s%n", customAddrFormField.getValue().asString());
+                        }
+                    }
+                    FormField invoiceDateFormField = recognizedFields.get("InvoiceDate");
+                    if (invoiceDateFormField != null) {
+                        if (FieldValueType.DATE == invoiceDateFormField.getValue().getValueType()) {
+                            LocalDate invoiceDate = invoiceDateFormField.getValue().asDate();
+                            System.out.printf("Invoice Date: %s, confidence: %.2f%n",
+                                invoiceDate, invoiceDateFormField.getConfidence());
+                        }
+                    }
+                }
+            });
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeInvoicesFromUrl#string
+    }
+
+    /**
+     * Code snippet for
+     * {@link FormRecognizerAsyncClient#beginRecognizeInvoicesFromUrl(String, RecognizeInvoicesOptions)}
+     */
+    public void beginRecognizeInvoicesFromUrlWithOptions() {
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeInvoicesFromUrl#string-RecognizeInvoicesOptions
+        String invoiceUrl = "invoice_url";
+        boolean includeFieldElements = true;
+        // if training polling operation completed, retrieve the final result.
+        formRecognizerAsyncClient.beginRecognizeInvoicesFromUrl(invoiceUrl,
+            new RecognizeInvoicesOptions()
+                .setFieldElementsIncluded(includeFieldElements)
+                .setPollInterval(Duration.ofSeconds(5)))
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .subscribe(recognizedInvoices -> {
+                for (int i = 0; i < recognizedInvoices.size(); i++) {
+                    RecognizedForm recognizedForm = recognizedInvoices.get(i);
+                    Map<String, FormField> recognizedFields = recognizedForm.getFields();
+                    FormField customAddrFormField = recognizedFields.get("CustomerAddress");
+                    if (customAddrFormField != null) {
+                        if (FieldValueType.STRING == customAddrFormField.getValue().getValueType()) {
+                            System.out.printf("Customer Address: %s%n", customAddrFormField.getValue().asString());
+                        }
+                    }
+                    FormField invoiceDateFormField = recognizedFields.get("InvoiceDate");
+                    if (invoiceDateFormField != null) {
+                        if (FieldValueType.DATE == invoiceDateFormField.getValue().getValueType()) {
+                            LocalDate invoiceDate = invoiceDateFormField.getValue().asDate();
+                            System.out.printf("Invoice Date: %s, confidence: %.2f%n",
+                                invoiceDate, invoiceDateFormField.getConfidence());
+                        }
+                    }
+                }
+            });
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeInvoicesFromUrl#string-RecognizeInvoicesOptions
+    }
+
+    /**
+     * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeInvoices(Flux, long)}
+     *
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
+     */
+    public void beginRecognizeInvoices() throws IOException {
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeInvoices#Flux-long
+        File invoice = new File("local/file_path/invoice.jpg");
+        Flux<ByteBuffer> buffer =
+            toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(invoice.toPath())));
+        // if training polling operation completed, retrieve the final result.
+        formRecognizerAsyncClient.beginRecognizeInvoices(buffer, invoice.length())
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .subscribe(recognizedInvoices -> {
+                for (int i = 0; i < recognizedInvoices.size(); i++) {
+                    RecognizedForm recognizedForm = recognizedInvoices.get(i);
+                    Map<String, FormField> recognizedFields = recognizedForm.getFields();
+                    FormField customAddrFormField = recognizedFields.get("CustomerAddress");
+                    if (customAddrFormField != null) {
+                        if (FieldValueType.STRING == customAddrFormField.getValue().getValueType()) {
+                            System.out.printf("Customer Address: %s%n", customAddrFormField.getValue().asString());
+                        }
+                    }
+                    FormField invoiceDateFormField = recognizedFields.get("InvoiceDate");
+                    if (invoiceDateFormField != null) {
+                        if (FieldValueType.DATE == invoiceDateFormField.getValue().getValueType()) {
+                            LocalDate invoiceDate = invoiceDateFormField.getValue().asDate();
+                            System.out.printf("Invoice Date: %s, confidence: %.2f%n",
+                                invoiceDate, invoiceDateFormField.getConfidence());
+                        }
+                    }
+                }
+            });
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeInvoices#Flux-long
+    }
+
+    /**
+     * Code snippet for
+     * {@link FormRecognizerAsyncClient#beginRecognizeInvoices(Flux, long, RecognizeInvoicesOptions)} with
+     * options
+     *
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
+     */
+    public void beginRecognizeInvoicesWithOptions() throws IOException {
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeInvoices#Flux-long-RecognizeInvoicesOptions
+        File invoice = new File("local/file_path/invoice.jpg");
+        boolean includeFieldElements = true;
+        // Utility method to convert input stream to Byte buffer
+        Flux<ByteBuffer> buffer =
+            toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(invoice.toPath())));
+        // if training polling operation completed, retrieve the final result.
+        formRecognizerAsyncClient.beginRecognizeInvoices(buffer,
+            invoice.length(),
+            new RecognizeInvoicesOptions()
+                .setContentType(FormContentType.IMAGE_JPEG)
+                .setFieldElementsIncluded(includeFieldElements)
+                .setPollInterval(Duration.ofSeconds(5)))
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .subscribe(recognizedInvoices -> {
+                for (int i = 0; i < recognizedInvoices.size(); i++) {
+                    RecognizedForm recognizedForm = recognizedInvoices.get(i);
+                    Map<String, FormField> recognizedFields = recognizedForm.getFields();
+                    FormField customAddrFormField = recognizedFields.get("CustomerAddress");
+                    if (customAddrFormField != null) {
+                        if (FieldValueType.STRING == customAddrFormField.getValue().getValueType()) {
+                            System.out.printf("Customer Address: %s%n", customAddrFormField.getValue().asString());
+                        }
+                    }
+                    FormField invoiceDateFormField = recognizedFields.get("InvoiceDate");
+                    if (invoiceDateFormField != null) {
+                        if (FieldValueType.DATE == invoiceDateFormField.getValue().getValueType()) {
+                            LocalDate invoiceDate = invoiceDateFormField.getValue().asDate();
+                            System.out.printf("Invoice Date: %s, confidence: %.2f%n",
+                                invoiceDate, invoiceDateFormField.getConfidence());
+                        }
+                    }
+                }
+            });
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeInvoices#Flux-long-RecognizeInvoicesOptions
     }
 }

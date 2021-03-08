@@ -12,6 +12,7 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** NetworkSecurityGroup resource. */
 @JsonFlatten
@@ -173,6 +174,20 @@ public class NetworkSecurityGroupInner extends Resource {
      */
     public NetworkSecurityGroupInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public NetworkSecurityGroupInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public NetworkSecurityGroupInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

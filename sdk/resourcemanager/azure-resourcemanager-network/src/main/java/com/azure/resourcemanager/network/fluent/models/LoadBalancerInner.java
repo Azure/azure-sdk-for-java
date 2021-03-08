@@ -8,18 +8,26 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.InboundNatPool;
 import com.azure.resourcemanager.network.models.LoadBalancerSku;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** LoadBalancer resource. */
 @JsonFlatten
 @Fluent
 public class LoadBalancerInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancerInner.class);
+
+    /*
+     * The extended location of the load balancer.
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
 
     /*
      * The load balancer SKU.
@@ -105,6 +113,26 @@ public class LoadBalancerInner extends Resource {
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /**
+     * Get the extendedLocation property: The extended location of the load balancer.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: The extended location of the load balancer.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the LoadBalancerInner object itself.
+     */
+    public LoadBalancerInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
+        return this;
+    }
 
     /**
      * Get the sku property: The load balancer SKU.
@@ -331,12 +359,29 @@ public class LoadBalancerInner extends Resource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public LoadBalancerInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LoadBalancerInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
+        }
         if (sku() != null) {
             sku().validate();
         }

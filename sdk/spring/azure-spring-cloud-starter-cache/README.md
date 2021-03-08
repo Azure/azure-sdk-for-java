@@ -8,6 +8,7 @@ This starter provides auto-configuration of Azure Cache for Redis. Azure Cache f
 - [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Maven][maven] 3.0 and above
+- [Build developing version artifacts if needed][build-developing-version-artifacts-if-needed]
 
 ### Include the package
 [//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-starter-cache;current})
@@ -15,7 +16,7 @@ This starter provides auto-configuration of Azure Cache for Redis. Azure Cache f
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-cloud-starter-cache</artifactId>
-    <version>2.0.0-beta.1</version>
+    <version>2.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -57,7 +58,7 @@ Please follow [instructions here][contributing_md] to build from source or contr
 
 <!-- Link -->
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-starter-azure-cache
-[refdocs]: https://azure.github.io/azure-sdk-for-java/spring.html#spring-starter-azure-cache
+[refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#azure-spring-cloud-autoconfigure
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-cache
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [azure_subscription]: https://azure.microsoft.com/free
@@ -65,3 +66,5 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
 [maven]: https://maven.apache.org/
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[build-developing-version-artifacts-if-needed]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/build-developing-version-artifacts-if-needed.md
+

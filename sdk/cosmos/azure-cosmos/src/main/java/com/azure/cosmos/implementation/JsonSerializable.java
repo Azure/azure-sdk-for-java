@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
 import com.azure.cosmos.models.ExcludedPath;
@@ -698,6 +699,7 @@ public class JsonSerializable {
     <T> boolean containsJsonSerializable(Class<T> c) {
         return CompositePath.class.equals(c)
             || ConflictResolutionPolicy.class.equals(c)
+            || ChangeFeedPolicy.class.equals(c)
             || ExcludedPath.class.equals(c)
             || IncludedPath.class.equals(c)
             || IndexingPolicy.class.equals(c)

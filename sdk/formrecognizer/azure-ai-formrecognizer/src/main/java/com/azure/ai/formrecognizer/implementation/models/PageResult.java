@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PageResult model. */
+/** Extracted information from a single page. */
 @Fluent
 public final class PageResult {
     /*

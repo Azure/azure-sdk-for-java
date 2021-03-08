@@ -3,29 +3,32 @@
 
 package com.azure.security.keyvault.administration.models;
 
+import com.azure.core.annotation.Immutable;
+
 import java.util.List;
 
 /**
  * A class describing allowed and denied actions and data actions of a {@link KeyVaultRoleDefinition}.
  */
+@Immutable
 public final class KeyVaultPermission {
-    private final List<String> actions;
+    private final List<String> allowedActions;
     private final List<String> deniedActions;
-    private final List<String> dataActions;
+    private final List<String> allowedDataActions;
     private final List<String> deniedDataActions;
 
     /**
      * Creates a new {@link KeyVaultPermission} with the specified allowed and denied actions and data actions.
      *
-     * @param actions The actions this {@link KeyVaultPermission permission} allows.
+     * @param allowedActions The actions this {@link KeyVaultPermission permission} allows.
      * @param deniedActions The actions this {@link KeyVaultPermission permission} denies.
-     * @param dataActions The data actions this {@link KeyVaultPermission permission} allows.
+     * @param allowedDataActions The data actions this {@link KeyVaultPermission permission} allows.
      * @param deniedDataActions The data actions this {@link KeyVaultPermission permission} denies.
      */
-    public KeyVaultPermission(List<String> actions, List<String> deniedActions, List<String> dataActions, List<String> deniedDataActions) {
-        this.actions = actions;
+    public KeyVaultPermission(List<String> allowedActions, List<String> deniedActions, List<String> allowedDataActions, List<String> deniedDataActions) {
+        this.allowedActions = allowedActions;
         this.deniedActions = deniedActions;
-        this.dataActions = dataActions;
+        this.allowedDataActions = allowedDataActions;
         this.deniedDataActions = deniedDataActions;
     }
 
@@ -34,8 +37,8 @@ public final class KeyVaultPermission {
      *
      * @return The allowed actions.
      */
-    public List<String> getActions() {
-        return actions;
+    public List<String> getAllowedActions() {
+        return allowedActions;
     }
 
     /**
@@ -52,8 +55,8 @@ public final class KeyVaultPermission {
      *
      * @return The allowed data actions.
      */
-    public List<String> getDataActions() {
-        return dataActions;
+    public List<String> getAllowedDataActions() {
+        return allowedDataActions;
     }
 
     /**

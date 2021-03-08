@@ -16,8 +16,8 @@ public class BenchmarkConfig {
     public final static String USER_AGENT_SUFFIX = "cosmosdbdotnetbenchmark";
 
     @Parameter(names = "-w", description = "Type of Workload:\n"
-        + "\tReadTExists - run a READ workload that prints both throughput and latency *\n"
         + "\tInsert - run a Insert workload that prints both throughput and latency\n"
+        + "\tInsertWithoutExplicitPKAndId - same as Insert, but parsing PK and id from ObjectNode\n"
         , converter = Operation.OperationTypeConverter.class)
     private Operation operation = Operation.Insert;
 
@@ -239,8 +239,8 @@ public class BenchmarkConfig {
     }
 
     public enum Operation {
-        ReadTExists,
-        Insert;
+        Insert,
+        InsertWithoutExplicitPKAndId;
 
         static Operation fromString(String code) {
 

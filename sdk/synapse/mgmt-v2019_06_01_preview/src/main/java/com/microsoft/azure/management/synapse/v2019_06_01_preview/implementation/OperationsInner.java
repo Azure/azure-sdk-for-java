@@ -10,8 +10,8 @@ package com.microsoft.azure.management.synapse.v2019_06_01_preview.implementatio
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.CheckNameAvailabilityRequest;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.ErrorContractException;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -80,7 +80,7 @@ public class OperationsInner {
      *
      * @param request The check request
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CheckNameAvailabilityResponseInner object if successful.
      */
@@ -151,10 +151,10 @@ public class OperationsInner {
             });
     }
 
-    private ServiceResponse<CheckNameAvailabilityResponseInner> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<CheckNameAvailabilityResponseInner, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<CheckNameAvailabilityResponseInner> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<CheckNameAvailabilityResponseInner, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<CheckNameAvailabilityResponseInner>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -163,7 +163,7 @@ public class OperationsInner {
      * Get all available operations.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;AvailableRpOperationInner&gt; object if successful.
      */
@@ -221,10 +221,10 @@ public class OperationsInner {
             });
     }
 
-    private ServiceResponse<List<AvailableRpOperationInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException {
-        return this.client.restClient().responseBuilderFactory().<List<AvailableRpOperationInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<List<AvailableRpOperationInner>> listDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException {
+        return this.client.restClient().responseBuilderFactory().<List<AvailableRpOperationInner>, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<AvailableRpOperationInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -236,7 +236,7 @@ public class OperationsInner {
      * @param workspaceName The name of the workspace
      * @param operationId Operation ID
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void getLocationHeaderResult(String resourceGroupName, String workspaceName, String operationId) {
@@ -317,11 +317,13 @@ public class OperationsInner {
             });
     }
 
-    private ServiceResponse<Void> getLocationHeaderResultDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Void> getLocationHeaderResultDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
+                .register(201, new TypeToken<Void>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -333,11 +335,11 @@ public class OperationsInner {
      * @param workspaceName The name of the workspace
      * @param operationId Operation ID
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the Object object if successful.
+     * @return the OperationResourceInner object if successful.
      */
-    public Object getAzureAsyncHeaderResult(String resourceGroupName, String workspaceName, String operationId) {
+    public OperationResourceInner getAzureAsyncHeaderResult(String resourceGroupName, String workspaceName, String operationId) {
         return getAzureAsyncHeaderResultWithServiceResponseAsync(resourceGroupName, workspaceName, operationId).toBlocking().single().body();
     }
 
@@ -352,7 +354,7 @@ public class OperationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Object> getAzureAsyncHeaderResultAsync(String resourceGroupName, String workspaceName, String operationId, final ServiceCallback<Object> serviceCallback) {
+    public ServiceFuture<OperationResourceInner> getAzureAsyncHeaderResultAsync(String resourceGroupName, String workspaceName, String operationId, final ServiceCallback<OperationResourceInner> serviceCallback) {
         return ServiceFuture.fromResponse(getAzureAsyncHeaderResultWithServiceResponseAsync(resourceGroupName, workspaceName, operationId), serviceCallback);
     }
 
@@ -364,12 +366,12 @@ public class OperationsInner {
      * @param workspaceName The name of the workspace
      * @param operationId Operation ID
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Object object
+     * @return the observable to the OperationResourceInner object
      */
-    public Observable<Object> getAzureAsyncHeaderResultAsync(String resourceGroupName, String workspaceName, String operationId) {
-        return getAzureAsyncHeaderResultWithServiceResponseAsync(resourceGroupName, workspaceName, operationId).map(new Func1<ServiceResponse<Object>, Object>() {
+    public Observable<OperationResourceInner> getAzureAsyncHeaderResultAsync(String resourceGroupName, String workspaceName, String operationId) {
+        return getAzureAsyncHeaderResultWithServiceResponseAsync(resourceGroupName, workspaceName, operationId).map(new Func1<ServiceResponse<OperationResourceInner>, OperationResourceInner>() {
             @Override
-            public Object call(ServiceResponse<Object> response) {
+            public OperationResourceInner call(ServiceResponse<OperationResourceInner> response) {
                 return response.body();
             }
         });
@@ -383,9 +385,9 @@ public class OperationsInner {
      * @param workspaceName The name of the workspace
      * @param operationId Operation ID
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Object object
+     * @return the observable to the OperationResourceInner object
      */
-    public Observable<ServiceResponse<Object>> getAzureAsyncHeaderResultWithServiceResponseAsync(String resourceGroupName, String workspaceName, String operationId) {
+    public Observable<ServiceResponse<OperationResourceInner>> getAzureAsyncHeaderResultWithServiceResponseAsync(String resourceGroupName, String workspaceName, String operationId) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -402,11 +404,11 @@ public class OperationsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.getAzureAsyncHeaderResult(this.client.subscriptionId(), resourceGroupName, workspaceName, operationId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationResourceInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<OperationResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Object> clientResponse = getAzureAsyncHeaderResultDelegate(response);
+                        ServiceResponse<OperationResourceInner> clientResponse = getAzureAsyncHeaderResultDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -415,12 +417,11 @@ public class OperationsInner {
             });
     }
 
-    private ServiceResponse<Object> getAzureAsyncHeaderResultDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Object, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<OperationResourceInner> getAzureAsyncHeaderResultDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<OperationResourceInner, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<OperationResourceInner>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
-                .register(500, new TypeToken<ErrorContractInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 

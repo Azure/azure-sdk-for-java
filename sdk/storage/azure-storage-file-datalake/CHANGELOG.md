@@ -1,8 +1,26 @@
 # Release History
 
-## 12.3.0-beta.2 (Unreleased)
+## 12.5.0-beta.2 (Unreleased)
+- Fixed a bug where more data would be buffered in buffered upload than expected due to Reactor's concatMap operator.
+
+## 12.5.0-beta.1 (2021-02-10)
+- Added support for the 2020-06-12 service version. 
+- Added support to undelete a file system. 
+
+## 12.4.0 (2021-01-14)
+- GA release
+- Fixed bug where getFileClient and getSubDirectoryClient on DirectoryClient would throw IllegalArgumentException if either resource had special characters.
+
+## 12.4.0-beta.1 (2020-12-07)
+- Added support to list paths on a directory.
+- Exposed ClientOptions on all client builders, allowing users to set a custom application id and custom headers.
+- Fixed a bug where the error message would not be displayed the exception message of a HEAD request.
+- Added a MetadataValidationPolicy to check for leading and trailing whitespace in metadata that would cause Auth failures.
+
+## 12.3.0 (2020-11-11)
 - Added support to specify whether or not a pipeline policy should be added per call or per retry.
 - Modified DataLakeAclChangeFailedException to extend AzureException
+- Fixed a bug where the endpoint would be improperly converted if the account name contained the word dfs.
 
 ## 12.3.0-beta.1 (2020-10-01)
 - Added support for the 2020-02-10 service version.

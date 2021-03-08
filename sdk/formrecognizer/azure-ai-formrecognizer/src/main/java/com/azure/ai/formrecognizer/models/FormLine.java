@@ -3,7 +3,7 @@
 
 package com.azure.ai.formrecognizer.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.ai.formrecognizer.implementation.FormLineHelper;
 
 import java.util.Collections;
 import java.util.List;
@@ -11,13 +11,26 @@ import java.util.List;
 /**
  * The FormLine model.
  */
-@Immutable
 public final class FormLine extends FormElement {
 
     /*
      * List of words in the text line.
      */
     private final List<FormWord> words;
+
+    /*
+     * Line text appearance properties.
+     */
+    private TextAppearance appearance;
+
+    static {
+        FormLineHelper.setAccessor(new FormLineHelper.FormLineAccessor() {
+            @Override
+            public void setAppearance(FormLine formLine, TextAppearance textAppearance) {
+                formLine.setAppearance(textAppearance);
+            }
+        });
+    }
 
     /**
      * Creates raw OCR item.
@@ -28,8 +41,7 @@ public final class FormLine extends FormElement {
      * @param pageNumber the page number.
      * @param words The list of word element references.
      */
-    public FormLine(String text, FieldBoundingBox boundingBox, Integer pageNumber,
-        final List<FormWord> words) {
+    public FormLine(String text, FieldBoundingBox boundingBox, Integer pageNumber, final List<FormWord> words) {
         super(text, boundingBox, pageNumber);
         this.words = words == null ? null : Collections.unmodifiableList(words);
     }
@@ -65,5 +77,25 @@ public final class FormLine extends FormElement {
     @Override
     public int getPageNumber() {
         return super.getPageNumber();
+    }
+
+    /**
+     * The private setter to set the appearance property
+     * via {@link FormLineHelper.FormLineAccessor}.
+     *
+     * @param appearance the appearance text line.
+     */
+    private FormLine setAppearance(TextAppearance appearance) {
+        this.appearance = appearance;
+        return this;
+    }
+
+    /**
+     * Get the appearance of the text line.
+     *
+     * @return the appearance of the text line.
+     */
+    public TextAppearance getAppearance() {
+        return appearance;
     }
 }

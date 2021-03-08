@@ -1,7 +1,23 @@
 # Release History
 
-## 12.9.0-beta.3 (Unreleased)
+## 12.11.0-beta.2 (Unreleased)
 
+
+## 12.11.0-beta.1 (2021-02-10)
+- Added support to log retries 
+- Removed a deep copy in PayloadSizeGate
+- Fixed a bug that would throw if uploading using a stream that returned a number > 0 from available() after the stream had ended
+
+## 12.10.0 (2021-01-14)
+- GA release
+
+## 12.10.0-beta.1 (2020-12-07)
+- Added ability to specify timeout units in RequestRetryOptions.
+- Fixed bug where query params were being parsed incorrectly if an encoded comma was the query value.
+- Added a MetadataValidationPolicy to check for leading and trailing whitespace in metadata that would cause Auth failures.
+
+## 12.9.0 (2020-11-11)
+- GA release
 
 ## 12.9.0-beta.2 (2020-10-08)
 - Updated `azure-core` version to `1.9.0` to pick up fixes related to listBlobs.

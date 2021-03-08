@@ -412,6 +412,9 @@ public class ClientLogger {
      * @return The updated logMessage.
      */
     private static String sanitizeLogMessageInput(String logMessage) {
+        if (CoreUtils.isNullOrEmpty(logMessage)) {
+            return logMessage;
+        }
         return CRLF_PATTERN.matcher(logMessage).replaceAll("");
     }
 }

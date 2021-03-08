@@ -13,8 +13,9 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolRestorePoints;
 import rx.Observable;
 import rx.functions.Func1;
-import com.microsoft.azure.Page;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.RestorePoint;
+import com.microsoft.azure.Page;
+import rx.Completable;
 
 class SqlPoolRestorePointsImpl extends WrapperImpl<SqlPoolRestorePointsInner> implements SqlPoolRestorePoints {
     private final SynapseManager manager;
@@ -30,6 +31,31 @@ class SqlPoolRestorePointsImpl extends WrapperImpl<SqlPoolRestorePointsInner> im
 
     private RestorePointImpl wrapRestorePointModel(RestorePointInner inner) {
         return  new RestorePointImpl(inner, manager());
+    }
+
+    private Observable<RestorePointInner> getRestorePointInnerUsingSqlPoolRestorePointsInnerAsync(String id) {
+        String resourceGroupName = IdParsingUtils.getValueFromIdByName(id, "resourceGroups");
+        String workspaceName = IdParsingUtils.getValueFromIdByName(id, "workspaces");
+        String sqlPoolName = IdParsingUtils.getValueFromIdByName(id, "sqlPools");
+        String restorePointName = IdParsingUtils.getValueFromIdByName(id, "restorePoints");
+        SqlPoolRestorePointsInner client = this.inner();
+        return client.getAsync(resourceGroupName, workspaceName, sqlPoolName, restorePointName);
+    }
+
+    @Override
+    public Observable<RestorePoint> getAsync(String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName) {
+        SqlPoolRestorePointsInner client = this.inner();
+        return client.getAsync(resourceGroupName, workspaceName, sqlPoolName, restorePointName)
+        .flatMap(new Func1<RestorePointInner, Observable<RestorePoint>>() {
+            @Override
+            public Observable<RestorePoint> call(RestorePointInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((RestorePoint)wrapRestorePointModel(inner));
+                }
+            }
+       });
     }
 
     @Override
@@ -48,6 +74,12 @@ class SqlPoolRestorePointsImpl extends WrapperImpl<SqlPoolRestorePointsInner> im
                 return wrapRestorePointModel(inner);
             }
         });
+    }
+
+    @Override
+    public Completable deleteAsync(String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName) {
+        SqlPoolRestorePointsInner client = this.inner();
+        return client.deleteAsync(resourceGroupName, workspaceName, sqlPoolName, restorePointName).toCompletable();
     }
 
     @Override

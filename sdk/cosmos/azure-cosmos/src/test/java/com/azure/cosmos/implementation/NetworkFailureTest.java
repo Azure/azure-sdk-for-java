@@ -45,7 +45,7 @@ public class NetworkFailureTest extends TestSuiteBase {
                 RxDocumentServiceRequest request = invocation.getArgumentAt(0, RxDocumentServiceRequest.class);
 
                 if (request.getResourceType() == ResourceType.DocumentCollection) {
-                    CosmosException exception = BridgeInternal.createCosmosException(0, new UnknownHostException());
+                    CosmosException exception = BridgeInternal.createCosmosException(null, 0, new UnknownHostException());
                     BridgeInternal.setSubStatusCode(exception, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
                     return Mono.error(exception);
                 }

@@ -21,6 +21,8 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayPrivateLinkCon
 import com.azure.resourcemanager.network.models.ApplicationGatewayRewriteRuleSet;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySku;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySslPolicy;
+import com.azure.resourcemanager.network.models.ApplicationGatewaySslProfile;
+import com.azure.resourcemanager.network.models.ApplicationGatewayTrustedClientCertificate;
 import com.azure.resourcemanager.network.models.ApplicationGatewayTrustedRootCertificate;
 import com.azure.resourcemanager.network.models.ApplicationGatewayWebApplicationFirewallConfiguration;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
@@ -28,6 +30,7 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Application gateway resource. */
 @JsonFlatten
@@ -97,6 +100,14 @@ public class ApplicationGatewayInner extends Resource {
     private List<ApplicationGatewayTrustedRootCertificate> trustedRootCertificates;
 
     /*
+     * Trusted client certificates of the application gateway resource. For
+     * default limits, see [Application Gateway
+     * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
+     */
+    @JsonProperty(value = "properties.trustedClientCertificates")
+    private List<ApplicationGatewayTrustedClientCertificate> trustedClientCertificates;
+
+    /*
      * SSL certificates of the application gateway resource. For default
      * limits, see [Application Gateway
      * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
@@ -149,6 +160,14 @@ public class ApplicationGatewayInner extends Resource {
      */
     @JsonProperty(value = "properties.httpListeners")
     private List<ApplicationGatewayHttpListener> httpListeners;
+
+    /*
+     * SSL profiles of the application gateway resource. For default limits,
+     * see [Application Gateway
+     * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
+     */
+    @JsonProperty(value = "properties.sslProfiles")
+    private List<ApplicationGatewaySslProfile> sslProfiles;
 
     /*
      * URL path map of the application gateway resource. For default limits,
@@ -425,6 +444,31 @@ public class ApplicationGatewayInner extends Resource {
     }
 
     /**
+     * Get the trustedClientCertificates property: Trusted client certificates of the application gateway resource. For
+     * default limits, see [Application Gateway
+     * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
+     *
+     * @return the trustedClientCertificates value.
+     */
+    public List<ApplicationGatewayTrustedClientCertificate> trustedClientCertificates() {
+        return this.trustedClientCertificates;
+    }
+
+    /**
+     * Set the trustedClientCertificates property: Trusted client certificates of the application gateway resource. For
+     * default limits, see [Application Gateway
+     * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
+     *
+     * @param trustedClientCertificates the trustedClientCertificates value to set.
+     * @return the ApplicationGatewayInner object itself.
+     */
+    public ApplicationGatewayInner withTrustedClientCertificates(
+        List<ApplicationGatewayTrustedClientCertificate> trustedClientCertificates) {
+        this.trustedClientCertificates = trustedClientCertificates;
+        return this;
+    }
+
+    /**
      * Get the sslCertificates property: SSL certificates of the application gateway resource. For default limits, see
      * [Application Gateway
      * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
@@ -588,6 +632,30 @@ public class ApplicationGatewayInner extends Resource {
      */
     public ApplicationGatewayInner withHttpListeners(List<ApplicationGatewayHttpListener> httpListeners) {
         this.httpListeners = httpListeners;
+        return this;
+    }
+
+    /**
+     * Get the sslProfiles property: SSL profiles of the application gateway resource. For default limits, see
+     * [Application Gateway
+     * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
+     *
+     * @return the sslProfiles value.
+     */
+    public List<ApplicationGatewaySslProfile> sslProfiles() {
+        return this.sslProfiles;
+    }
+
+    /**
+     * Set the sslProfiles property: SSL profiles of the application gateway resource. For default limits, see
+     * [Application Gateway
+     * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
+     *
+     * @param sslProfiles the sslProfiles value to set.
+     * @return the ApplicationGatewayInner object itself.
+     */
+    public ApplicationGatewayInner withSslProfiles(List<ApplicationGatewaySslProfile> sslProfiles) {
+        this.sslProfiles = sslProfiles;
         return this;
     }
 
@@ -894,6 +962,20 @@ public class ApplicationGatewayInner extends Resource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -918,6 +1000,9 @@ public class ApplicationGatewayInner extends Resource {
         if (trustedRootCertificates() != null) {
             trustedRootCertificates().forEach(e -> e.validate());
         }
+        if (trustedClientCertificates() != null) {
+            trustedClientCertificates().forEach(e -> e.validate());
+        }
         if (sslCertificates() != null) {
             sslCertificates().forEach(e -> e.validate());
         }
@@ -938,6 +1023,9 @@ public class ApplicationGatewayInner extends Resource {
         }
         if (httpListeners() != null) {
             httpListeners().forEach(e -> e.validate());
+        }
+        if (sslProfiles() != null) {
+            sslProfiles().forEach(e -> e.validate());
         }
         if (urlPathMaps() != null) {
             urlPathMaps().forEach(e -> e.validate());

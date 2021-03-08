@@ -24,11 +24,17 @@ public class DiskEncryptionSetUpdate {
     private Map<String, String> tags;
 
     /*
-     * Key Vault Key Url and vault id of KeK, KeK is optional and when provided
-     * is used to unwrap the encryptionKey
+     * The type of key used to encrypt the data of the disk.
+     */
+    @JsonProperty(value = "properties.encryptionType")
+    private DiskEncryptionSetType encryptionType;
+
+    /*
+     * Key Vault Key Url to be used for server side encryption of Managed Disks
+     * and Snapshots
      */
     @JsonProperty(value = "properties.activeKey")
-    private KeyVaultAndKeyReference activeKey;
+    private KeyForDiskEncryptionSet activeKey;
 
     /**
      * Get the tags property: Resource tags.
@@ -51,23 +57,43 @@ public class DiskEncryptionSetUpdate {
     }
 
     /**
-     * Get the activeKey property: Key Vault Key Url and vault id of KeK, KeK is optional and when provided is used to
-     * unwrap the encryptionKey.
+     * Get the encryptionType property: The type of key used to encrypt the data of the disk.
+     *
+     * @return the encryptionType value.
+     */
+    public DiskEncryptionSetType encryptionType() {
+        return this.encryptionType;
+    }
+
+    /**
+     * Set the encryptionType property: The type of key used to encrypt the data of the disk.
+     *
+     * @param encryptionType the encryptionType value to set.
+     * @return the DiskEncryptionSetUpdate object itself.
+     */
+    public DiskEncryptionSetUpdate withEncryptionType(DiskEncryptionSetType encryptionType) {
+        this.encryptionType = encryptionType;
+        return this;
+    }
+
+    /**
+     * Get the activeKey property: Key Vault Key Url to be used for server side encryption of Managed Disks and
+     * Snapshots.
      *
      * @return the activeKey value.
      */
-    public KeyVaultAndKeyReference activeKey() {
+    public KeyForDiskEncryptionSet activeKey() {
         return this.activeKey;
     }
 
     /**
-     * Set the activeKey property: Key Vault Key Url and vault id of KeK, KeK is optional and when provided is used to
-     * unwrap the encryptionKey.
+     * Set the activeKey property: Key Vault Key Url to be used for server side encryption of Managed Disks and
+     * Snapshots.
      *
      * @param activeKey the activeKey value to set.
      * @return the DiskEncryptionSetUpdate object itself.
      */
-    public DiskEncryptionSetUpdate withActiveKey(KeyVaultAndKeyReference activeKey) {
+    public DiskEncryptionSetUpdate withActiveKey(KeyForDiskEncryptionSet activeKey) {
         this.activeKey = activeKey;
         return this;
     }

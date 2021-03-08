@@ -9,7 +9,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ReadResult model. */
+/** Text extracted from a page in the input document. */
 @Fluent
 public final class ReadResult {
     /*

@@ -25,7 +25,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * @see ServiceBusAdministrationClient#createQueue(String, CreateQueueOptions)
  */
 @Fluent
-public class CreateQueueOptions {
+public final class CreateQueueOptions {
     private final List<AuthorizationRule> authorizationRules;
 
     private Duration autoDeleteOnIdle;

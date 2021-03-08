@@ -4,7 +4,9 @@ from form documents. It includes the following main functionalities:
 
 * Custom models - Recognize field values and table data from forms. These models are trained with your own data, so they're tailored to your forms. You can then take these custom models and recognize forms. You can also manage the custom models you've created and see how close you are to the limit of custom models your account can hold.
 * Content API - Recognize text and table structures, along with their bounding box coordinates, from documents. Corresponds to the REST service's Layout API.
-* Prebuilt receipt model - Recognize data from USA sales receipts using a prebuilt model.
+* Prebuilt receipt model - Recognize data from sales receipts using a prebuilt model.
+* Prebuilt invoice model - Recognize data from USA sales invoices using a prebuilt model.
+* Prebuilt business card model - Recognize data from business cards using a prebuilt model.
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][sample_readme]
 
@@ -16,14 +18,14 @@ from form documents. It includes the following main functionalities:
 - [Cognitive Services or Form Recognizer account][form_recognizer_account] to use this package.
 
 ### Include the Package
-**Note:** This beta version targets Azure Form Recognizer service API version v2.0.
+**Note:** This beta version targets Azure Form Recognizer service API version v2.1-preview.2.
 
 [//]: # ({x-version-update-start;com.azure:azure-ai-formrecognizer;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>3.0.2</version>
+    <version>3.0.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -121,7 +123,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.1.3</version>
+    <version>1.2.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -155,6 +157,8 @@ provide both synchronous and asynchronous operations
  - Recognizing form content, including tables, lines and words, without the need to train a model.
  Form content is returned in a collection of `FormPage` objects. See example [Recognize Content](#recognize-content).
  - Recognizing common fields from receipts, using a pre-trained receipt model on the Form Recognizer service.
+ - Recognizing common fields from invoices, using a pre-trained invoice model on the Form Recognizer service.
+ - Recognizing common fields from business cards, using a pre-trained business card model on the Form Recognizer service.
  These fields and meta-data are returned in a collection of `RecognizedForm` objects. See example [Recognize Receipts](#recognize-receipts).
 
 ### FormTrainingClient
@@ -196,7 +200,7 @@ The following section provides several code snippets covering some of the most c
 ### Recognize Forms Using a Custom Model
 Recognize name/value pairs and table data from forms. These models are trained with your own data,
 so they're tailored to your forms. You should only recognize forms of the same form type that the custom model was trained on.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L90-L107 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L93-L110 -->
 ```java
 String formUrl = "{form_url}";
 String modelId = "{custom_trained_model_id}";
@@ -221,7 +225,7 @@ for (int i = 0; i < recognizedForms.size(); i++) {
 ### Recognize Content
 Recognize text, table structures and selection marks like radio buttons and check boxes, along with their bounding box
 coordinates, from documents, without the need to train a model.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L116-L144 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L119-L147 -->
 ```java
 // recognize form content using file input stream
 File form = new File("local/file_path/filename.png");
@@ -260,7 +264,7 @@ can be found [here][service_recognize_receipt].
 See [StronglyTypedRecognizedForm][strongly_typed_sample] for a suggested approach to extract
 information from receipts.
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L148-L204-->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L154-L210-->
 ```java
 String receiptUrl = "https://docs.microsoft.com/azure/cognitive-services/form-recognizer/media"
     + "/contoso-allinone.jpg";
@@ -327,7 +331,7 @@ can be found [here][service_recognize_business_card].
 See [StronglyTypedRecognizedForm][strongly_typed_sample] for a suggested approach to extract
 information from a business card. The given sample is for `receipt` but the same approach applies to `business card`.
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L208-L262-->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L217-L271-->
 ```java
 String businessCardUrl =
     "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer"
@@ -374,7 +378,7 @@ for (int i = 0; i < businessCardPageResults.size(); i++) {
     if (jobTitles != null) {
         if (FieldValueType.LIST == jobTitles.getValue().getValueType()) {
             List<FormField> jobTitlesItems = jobTitles.getValue().asList();
-            jobTitlesItems.stream().forEach(jobTitlesItem -> {
+            jobTitlesItems.forEach(jobTitlesItem -> {
                 if (FieldValueType.STRING == jobTitlesItem.getValue().getValueType()) {
                     String jobTitle = jobTitlesItem.getValue().asString();
                     System.out.printf("Job Title: %s, confidence: %.2f%n",
@@ -390,7 +394,7 @@ for (int i = 0; i < businessCardPageResults.size(); i++) {
 Train a machine-learned model on your own form type. The resulting model will be able to recognize values from the types of forms it was trained on.
 Provide a container SAS url to your Azure Storage Blob container where you're storing the training documents. See details on setting this up
 in the [service quickstart documentation][quickstart_training].
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L266-L292 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L278-L304 -->
 ```java
 String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
 SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
@@ -423,7 +427,7 @@ customFormModel.getSubmodels().forEach(customFormSubmodel -> {
 
 ### Manage your models
 Manage the custom models in your Form Recognizer account.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L296-L324 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L311-L339 -->
 ```java
 // First, we see how many custom models we have, and what our limit is
 AccountProperties accountProperties = formTrainingClient.getAccountProperties();
@@ -464,7 +468,7 @@ to provide an invalid file source URL an `HttpResponseException` would be raised
 In the following code snippet, the error is handled
 gracefully by catching the exception and display the additional information about the error.
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L331-L335 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L346-L350 -->
 ```java
 try {
     formRecognizerClient.beginRecognizeContentFromUrl("invalidSourceUrl");
@@ -499,7 +503,7 @@ These code samples show common scenario operations with the Azure Form Recognize
 #### Async APIs
 All the examples shown so far have been using synchronous APIs, but we provide full support for async APIs as well.
 You'll need to use `FormRecognizerAsyncClient`
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L342-L345 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L357-L360 -->
 ```java
 FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder()
     .credential(new AzureKeyCredential("{key}"))

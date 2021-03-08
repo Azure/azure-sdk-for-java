@@ -49,27 +49,27 @@ public final class ServiceBusMessageBatch {
     }
 
     /**
-     * Gets the number of {@link ServiceBusMessage events} in the batch.
+     * Gets the number of {@link ServiceBusMessage messages} in the batch.
      *
-     * @return The number of {@link ServiceBusMessage events} in the batch.
+     * @return The number of {@link ServiceBusMessage messages} in the batch.
      */
     public int getCount() {
         return serviceBusMessageList.size();
     }
 
     /**
-     * Gets the maximum size, in bytes, of the {@link ServiceBusMessageBatch}.
+     * Gets the maximum size, in bytes, of the {@link ServiceBusMessageBatch batch}.
      *
-     * @return The maximum size, in bytes, of the {@link ServiceBusMessageBatch}.
+     * @return The maximum size, in bytes, of the {@link ServiceBusMessageBatch batch}.
      */
     public int getMaxSizeInBytes() {
         return maxMessageSize;
     }
 
     /**
-     * Gets the size of the {@link ServiceBusMessageBatch} in bytes.
+     * Gets the size of the {@link ServiceBusMessageBatch batch} in bytes.
      *
-     * @return the size of the {@link ServiceBusMessageBatch} in bytes.
+     * @return The size of the {@link ServiceBusMessageBatch batch} in bytes.
      */
     public int getSizeInBytes() {
         return this.sizeInBytes;
@@ -101,10 +101,12 @@ public final class ServiceBusMessageBatch {
         try {
             size = getSize(serviceBusMessageUpdated, serviceBusMessageList.isEmpty());
         } catch (BufferOverflowException exception) {
-            throw logger.logExceptionAsWarning(new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
-                String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb",
-                    maxMessageSize / 1024),
-                contextProvider.getErrorContext()));
+            final RuntimeException ex = new ServiceBusException(
+                    new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
+                        String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb",
+                            maxMessageSize / 1024), contextProvider.getErrorContext()), ServiceBusErrorSource.SEND);
+
+            throw logger.logExceptionAsWarning(ex);
         }
 
         synchronized (lock) {

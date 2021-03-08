@@ -5,6 +5,7 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
@@ -23,6 +24,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.function.Function;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /**
  * Implementation of the {@link GenericResources}.
@@ -43,14 +45,12 @@ public final class GenericResourcesImpl
 
     @Override
     public PagedIterable<GenericResource> list() {
-        return wrapList(this.manager().serviceClient().getResources().list()
-                .mapPage(res -> (GenericResourceInner) res));
+        return new PagedIterable<>(this.listAsync());
     }
 
     @Override
     public PagedIterable<GenericResource> listByResourceGroup(String groupName) {
-        return wrapList(this.manager().serviceClient().getResources().listByResourceGroup(groupName)
-                .mapPage(res -> (GenericResourceInner) res));
+        return new PagedIterable<>(this.listByResourceGroupAsync(groupName));
     }
 
     @Override
@@ -60,9 +60,10 @@ public final class GenericResourcesImpl
 
     @Override
     public PagedFlux<GenericResource> listByTagAsync(String resourceGroupName, String tagName, String tagValue) {
-        return wrapPageAsync(this.manager().serviceClient().getResources().listByResourceGroupAsync(resourceGroupName,
-                ResourceManagerUtils.createOdataFilterForTags(tagName, tagValue), null, null)
-                .mapPage(res -> (GenericResourceInner) res));
+        return wrapPageAsync(PagedConverter.mapPage(this.manager().serviceClient().getResources()
+                .listByResourceGroupAsync(resourceGroupName,
+                    ResourceManagerUtils.createOdataFilterForTags(tagName, tagValue), null, null),
+                res -> (GenericResourceInner) res));
     }
 
     @Override
@@ -242,13 +243,18 @@ public final class GenericResourcesImpl
 
     @Override
     public PagedFlux<GenericResource> listAsync() {
-        return wrapPageAsync(this.inner().listAsync()
-                .mapPage(res -> (GenericResourceInner) res));
+        return wrapPageAsync(PagedConverter.mapPage(this.inner().listAsync(),
+                res -> (GenericResourceInner) res));
     }
 
     @Override
     public PagedFlux<GenericResource> listByResourceGroupAsync(String resourceGroupName) {
-        return wrapPageAsync(this.manager().serviceClient().getResources().listByResourceGroupAsync(resourceGroupName)
-                .mapPage(res -> (GenericResourceInner) res));
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return new PagedFlux<>(() -> Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+        }
+        return wrapPageAsync(PagedConverter.mapPage(this.manager().serviceClient().getResources()
+                .listByResourceGroupAsync(resourceGroupName),
+            res -> (GenericResourceInner) res));
     }
 }

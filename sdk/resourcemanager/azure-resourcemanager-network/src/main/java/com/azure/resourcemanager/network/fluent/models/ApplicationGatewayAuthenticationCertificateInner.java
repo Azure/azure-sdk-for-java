@@ -117,6 +117,13 @@ public class ApplicationGatewayAuthenticationCertificateInner extends SubResourc
         return this.provisioningState;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayAuthenticationCertificateInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

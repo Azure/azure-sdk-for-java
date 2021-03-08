@@ -1,7 +1,20 @@
 # Release History
 
-## 12.7.0-beta.2 (Unreleased)
+## 12.9.0-beta.2 (Unreleased)
 
+
+## 12.9.0-beta.1 (2021-02-10)
+- Added support for the 2020-06-12 service version. 
+- Added support to create a BlobBatchClient from a BlobContainerClient to perform container level operations.
+
+## 12.8.0 (2021-01-14)
+- GA release
+
+## 12.8.0-beta.1 (2020-12-07)
+- Reuse the Http client configured in the provided HttpPipeline during BlobBatch construction.
+
+## 12.7.0 (2020-11-11)
+- GA release
 
 ## 12.7.0-beta.1 (2020-10-01)
 - Added logging of batch operation exceptions when they are added into the aggregate batch response.

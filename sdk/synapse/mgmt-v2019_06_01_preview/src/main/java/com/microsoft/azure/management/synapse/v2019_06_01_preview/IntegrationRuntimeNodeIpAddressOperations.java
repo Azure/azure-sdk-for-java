@@ -21,7 +21,7 @@ public interface IntegrationRuntimeNodeIpAddressOperations extends HasInner<Inte
      * Get the IP address of an integration runtime node.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param nodeName Integration runtime node name
      * @throws IllegalArgumentException thrown if parameters fail the validation

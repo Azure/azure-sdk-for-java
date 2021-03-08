@@ -22,6 +22,8 @@ import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.models.PrivateEndpointInner;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.network.models.VirtualNetworkPrivateEndpointNetworkPolicies;
+import com.azure.resourcemanager.network.models.VirtualNetworkPrivateLinkServiceNetworkPolicies;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
@@ -88,7 +90,6 @@ public class CosmosDBTests extends ResourceManagerTestBase {
                 .withEventualConsistency()
                 .withWriteReplication(Region.US_EAST)
                 .withReadReplication(Region.US_CENTRAL)
-                .withIpRangeFilter("")
                 .withMultipleWriteLocationsEnabled(true)
                 .withTag("tag1", "value1")
                 .create();
@@ -125,8 +126,10 @@ public class CosmosDBTests extends ResourceManagerTestBase {
                 .attach()
                 .create();
 
-        network.subnets().get(subnetName).innerModel().withPrivateEndpointNetworkPolicies("Disabled");
-        network.subnets().get(subnetName).innerModel().withPrivateLinkServiceNetworkPolicies("Disabled");
+        network.subnets().get(subnetName).innerModel()
+            .withPrivateEndpointNetworkPolicies(VirtualNetworkPrivateEndpointNetworkPolicies.DISABLED);
+        network.subnets().get(subnetName).innerModel()
+            .withPrivateLinkServiceNetworkPolicies(VirtualNetworkPrivateLinkServiceNetworkPolicies.DISABLED);
 
         network.update().updateSubnet(subnetName).parent().apply();
 
@@ -202,7 +205,6 @@ public class CosmosDBTests extends ResourceManagerTestBase {
                 .withEventualConsistency()
                 .withWriteReplication(Region.US_EAST)
                 .withReadReplication(Region.US_CENTRAL)
-                .withIpRangeFilter("")
                 .withTag("tag1", "value1")
                 .create();
 
@@ -227,7 +229,6 @@ public class CosmosDBTests extends ResourceManagerTestBase {
                 .withEventualConsistency()
                 .withWriteReplication(Region.US_EAST)
                 .withReadReplication(Region.US_WEST)
-                .withIpRangeFilter("")
                 .withTag("tag1", "value1")
                 .create();
 
@@ -279,7 +280,6 @@ public class CosmosDBTests extends ResourceManagerTestBase {
                 .withEventualConsistency()
                 .withWriteReplication(Region.US_EAST)
                 .withReadReplication(Region.US_EAST2)
-                .withIpRangeFilter("")
                 .withTag("tag1", "value1")
                 .create();
 

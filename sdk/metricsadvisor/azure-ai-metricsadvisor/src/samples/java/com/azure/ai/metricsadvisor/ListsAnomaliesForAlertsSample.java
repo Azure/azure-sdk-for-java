@@ -7,6 +7,7 @@ import com.azure.ai.metricsadvisor.models.DataPointAnomaly;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesAlertedOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 
 /**
  * Sample demonstrates how to list anomalies that triggered an alert.
@@ -26,7 +27,9 @@ public class ListsAnomaliesForAlertsSample {
 
         PagedIterable<DataPointAnomaly> anomaliesIterable = advisorClient.listAnomaliesForAlert(
             alertConfigurationId,
-            alertId);
+            alertId,
+            options,
+            Context.NONE);
 
         for (DataPointAnomaly dataPointAnomaly : anomaliesIterable) {
             System.out.printf("Data Feed Metric Id: %s%n", dataPointAnomaly.getMetricId());

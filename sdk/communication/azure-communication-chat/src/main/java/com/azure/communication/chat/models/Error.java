@@ -12,31 +12,32 @@ import java.util.List;
 @Immutable
 public final class Error {
     /*
-     * The code property.
+     * Error code.
      */
     @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
     /*
-     * The message property.
+     * Description of the error.
      */
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
-     * The target property.
+     * If applicable, would be used to indicate the property causing the error.
      */
     @JsonProperty(value = "target", access = JsonProperty.Access.WRITE_ONLY)
     private String target;
 
     /*
-     * The innerErrors property.
+     * If applicable, inner errors would be returned for more details on the
+     * error.
      */
     @JsonProperty(value = "innerErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<Error> innerErrors;
 
     /**
-     * Get the code property: The code property.
+     * Get the code property: Error code.
      *
      * @return the code value.
      */
@@ -45,7 +46,7 @@ public final class Error {
     }
 
     /**
-     * Get the message property: The message property.
+     * Get the message property: Description of the error.
      *
      * @return the message value.
      */
@@ -54,7 +55,7 @@ public final class Error {
     }
 
     /**
-     * Get the target property: The target property.
+     * Get the target property: If applicable, would be used to indicate the property causing the error.
      *
      * @return the target value.
      */
@@ -63,7 +64,7 @@ public final class Error {
     }
 
     /**
-     * Get the innerErrors property: The innerErrors property.
+     * Get the innerErrors property: If applicable, inner errors would be returned for more details on the error.
      *
      * @return the innerErrors value.
      */

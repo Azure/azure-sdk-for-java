@@ -30,6 +30,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.metricsadvisor.TestUtils.DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.metricsadvisor.TestUtils.INCORRECT_UUID;
 import static com.azure.ai.metricsadvisor.TestUtils.INCORRECT_UUID_ERROR;
@@ -42,7 +43,7 @@ public class AnomalyAlertAsyncTest extends AnomalyAlertTestBase {
     @BeforeAll
     static void beforeAll() {
         TestBase.setupClass();
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS));
     }
 
     @AfterAll
@@ -140,27 +141,32 @@ public class AnomalyAlertAsyncTest extends AnomalyAlertTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void getAnomalyAlertValidId(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
         final AtomicReference<String> alertConfigurationId = new AtomicReference<>();
+        try {
+            // Arrange
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
 
-        creatAnomalyAlertRunner(inputAnomalyAlertConfiguration -> {
-            final AnomalyAlertConfiguration createdAnomalyAlert =
-                client.createAnomalyAlertConfig(inputAnomalyAlertConfiguration).block();
+            creatAnomalyAlertRunner(inputAnomalyAlertConfiguration -> {
+                final AnomalyAlertConfiguration createdAnomalyAlert =
+                    client.createAnomalyAlertConfig(inputAnomalyAlertConfiguration).block();
 
-            assertNotNull(createdAnomalyAlert);
-            alertConfigurationId.set(createdAnomalyAlert.getId());
+                assertNotNull(createdAnomalyAlert);
+                alertConfigurationId.set(createdAnomalyAlert.getId());
 
-            // Act & Assert
-            StepVerifier.create(client.getAnomalyAlertConfigWithResponse(alertConfigurationId.get()))
-                .assertNext(anomalyAlertConfigurationResponse -> {
-                    assertEquals(anomalyAlertConfigurationResponse.getStatusCode(), HttpResponseStatus.OK.code());
-                    validateAnomalyAlertResult(createdAnomalyAlert, anomalyAlertConfigurationResponse.getValue());
-                });
-        });
-        Mono<Void> deleteAnomalyAlertConfig = client.deleteAnomalyAlertConfig(alertConfigurationId.get());
+                // Act & Assert
+                StepVerifier.create(client.getAnomalyAlertConfigWithResponse(alertConfigurationId.get()))
+                    .assertNext(anomalyAlertConfigurationResponse -> {
+                        assertEquals(anomalyAlertConfigurationResponse.getStatusCode(), HttpResponseStatus.OK.code());
+                        validateAnomalyAlertResult(createdAnomalyAlert, anomalyAlertConfigurationResponse.getValue());
+                    });
+            });
+        } finally {
+            if (!CoreUtils.isNullOrEmpty(alertConfigurationId.get())) {
+                Mono<Void> deleteAnomalyAlertConfig = client.deleteAnomalyAlertConfig(alertConfigurationId.get());
 
-        StepVerifier.create(deleteAnomalyAlertConfig).verifyComplete();
+                StepVerifier.create(deleteAnomalyAlertConfig).verifyComplete();
+            }
+        }
     }
 
     // Create Anomaly alert configuration

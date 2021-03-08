@@ -19,11 +19,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.metricsadvisor.TestUtils.DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -33,7 +35,7 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
 
     @BeforeAll
     static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS));
     }
 
     @AfterAll
@@ -110,7 +112,7 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
         List<MetricSeriesDefinition> actualMetricSeriesDefinitions
             = client.listMetricSeriesDefinitions(METRIC_ID, TIME_SERIES_START_TIME,
-            new ListMetricSeriesDefinitionOptions()
+                new ListMetricSeriesDefinitionOptions()
                 .setDimensionCombinationToFilter(new HashMap<String, List<String>>() {{
                         put("city", Collections.singletonList("Miami"));
                     }}), Context.NONE)
@@ -132,7 +134,7 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
         List<EnrichmentStatus> enrichmentStatuses =
             client.listMetricEnrichmentStatus(ListEnrichmentStatusInput.INSTANCE.metricId,
-                    TIME_SERIES_START_TIME, TIME_SERIES_END_TIME)
+                OffsetDateTime.parse("2020-10-01T00:00:00Z"), OffsetDateTime.parse("2020-10-30T00:00:00Z"))
                 .stream()
                 .collect(Collectors.toList());
 

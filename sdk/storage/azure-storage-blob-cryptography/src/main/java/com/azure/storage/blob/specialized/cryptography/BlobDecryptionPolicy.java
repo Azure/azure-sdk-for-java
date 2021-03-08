@@ -13,6 +13,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.implementation.Constants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -114,7 +115,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                 boolean padding = encryptedRange.toBlobRange().getOffset()
                     + encryptedRange.toBlobRange().getCount() > (blobSize(responseHeaders) - ENCRYPTION_BLOCK_SIZE);
                 String encryptedDataString = responseHeaders
-                    .getValue(CryptographyConstants.METADATA_HEADER + CryptographyConstants.ENCRYPTION_DATA_KEY);
+                    .getValue(Constants.HeaderConstants.X_MS_META + "-"
+                        + CryptographyConstants.ENCRYPTION_DATA_KEY);
 
                 Flux<ByteBuffer> plainTextData = this.decryptBlob(encryptedDataString,
                     httpResponse.getBody(), encryptedRange, padding);

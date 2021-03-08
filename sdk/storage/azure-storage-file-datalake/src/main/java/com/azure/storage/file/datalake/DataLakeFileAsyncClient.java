@@ -3,6 +3,9 @@
 
 package com.azure.storage.file.datalake;
 
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -82,9 +85,10 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  * <p>
  * Please refer to the
  *
- * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json">Azure
+ * <a href="https://docs.microsoft.com/azure/storage/blobs/data-lake-storage-introduction">Azure
  * Docs</a> for more information.
  */
+@ServiceClient(builder = DataLakePathClientBuilder.class, isAsync = true)
 public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
     /**
@@ -152,11 +156,12 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.delete}
      *
      * <p>For more information see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a></p>
      *
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> delete() {
         try {
             return deleteWithResponse(null).flatMap(FluxUtil::toMono);
@@ -173,13 +178,14 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.deleteWithResponse#DataLakeRequestConditions}
      *
      * <p>For more information see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a></p>
      *
      * @param requestConditions {@link DataLakeRequestConditions}
      *
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponse(DataLakeRequestConditions requestConditions) {
         // TODO (rickle-msft): Update for continuation token if we support HNS off
         try {
@@ -203,6 +209,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @return A reactive response containing the information of the uploaded file.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathInfo> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions) {
         return upload(data, parallelTransferOptions, false);
     }
@@ -221,6 +228,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @param overwrite Whether or not to overwrite, should the file already exist.
      * @return A reactive response containing the information of the uploaded file.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathInfo> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions,
         boolean overwrite) {
 
@@ -261,10 +269,12 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * to produce the same values across subscriptions.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the resource.
+     * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A reactive response containing the information of the uploaded file.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PathInfo>> uploadWithResponse(Flux<ByteBuffer> data,
         ParallelTransferOptions parallelTransferOptions, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
@@ -293,6 +303,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @param options {@link FileParallelUploadOptions}
      * @return A reactive response containing the information of the uploaded file.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PathInfo>> uploadWithResponse(FileParallelUploadOptions options) {
         try {
             StorageImplUtils.assertNotNull("options", options);
@@ -351,6 +362,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
          Write to the pool and upload the output.
          */
         return chunkedSource.concatMap(pool::write)
+            .limitRate(parallelTransferOptions.getMaxConcurrency()) // This guarantees that concatMap will only buffer maxConcurrency * chunkSize data
             .concatWith(Flux.defer(pool::flush))
             /* Map the data to a tuple 3, of buffer, buffer length, buffer offset */
             .map(bufferAggregator -> Tuples.of(bufferAggregator, bufferAggregator.length(), 0L))
@@ -406,6 +418,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @return An empty response
      * @throws UncheckedIOException If an I/O error occurs
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadFromFile(String filePath) {
         try {
             return uploadFromFile(filePath, false);
@@ -426,6 +439,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @return An empty response
      * @throws UncheckedIOException If an I/O error occurs
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadFromFile(String filePath, boolean overwrite) {
         try {
             Mono<Void> overwriteCheck = Mono.empty();
@@ -463,11 +477,13 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
      * transfers parameter is ignored.
      * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the resource.
+     * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return An empty response
      * @throws UncheckedIOException If an I/O error occurs
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions requestConditions) {
         Long originalBlockSize = (parallelTransferOptions == null)
@@ -565,7 +581,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.append#Flux-long-long}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure
      * Docs</a></p>
      *
      * @param data The data to write to the file.
@@ -575,6 +591,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      *
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> append(Flux<ByteBuffer> data, long fileOffset, long length) {
         try {
             return appendWithResponse(data, fileOffset, length, null, null).flatMap(FluxUtil::toMono);
@@ -591,7 +608,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.appendWithResponse#Flux-long-long-byte-String}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure
      * Docs</a></p>
      *
      * @param data The data to write to the file.
@@ -605,6 +622,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      *
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> appendWithResponse(Flux<ByteBuffer> data, long fileOffset, long length,
         byte[] contentMd5, String leaseId) {
         try {
@@ -636,13 +654,14 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.flush#long}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure
      * Docs</a></p>
      *
      * @param position The length of the file after all data has been written.
      *
      * @return A reactive response containing the information of the created resource.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathInfo> flush(long position) {
         try {
             return flush(position, false);
@@ -660,7 +679,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.flush#long-boolean}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure
      * Docs</a></p>
      *
      * @param position The length of the file after all data has been written.
@@ -668,6 +687,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      *
      * @return A reactive response containing the information of the created resource.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathInfo> flush(long position, boolean overwrite) {
         try {
             DataLakeRequestConditions requestConditions = null;
@@ -690,7 +710,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.flushWithResponse#long-boolean-boolean-PathHttpHeaders-DataLakeRequestConditions}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure
      * Docs</a></p>
      *
      * @param position The length of the file after all data has been written.
@@ -701,6 +721,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      *
      * @return A reactive response containing the information of the created resource.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PathInfo>> flushWithResponse(long position, boolean retainUncommittedData, boolean close,
         PathHttpHeaders httpHeaders, DataLakeRequestConditions requestConditions) {
         try {
@@ -740,7 +761,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.read}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @return A reactive response containing the file data.
      */
@@ -761,7 +782,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.readWithResponse#FileRange-DownloadRetryOptions-DataLakeRequestConditions-boolean}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param range {@link FileRange}
      * @param options {@link DownloadRetryOptions}
@@ -792,11 +813,12 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.readToFile#String}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
      * @return A reactive response containing the file properties and metadata.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathProperties> readToFile(String filePath) {
         return readToFile(filePath, false);
     }
@@ -812,12 +834,13 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.readToFile#String-boolean}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
      * @param overwrite Whether or not to overwrite the file, should the file exist.
      * @return A reactive response containing the file properties and metadata.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathProperties> readToFile(String filePath, boolean overwrite) {
         Set<OpenOption> openOptions = null;
         if (overwrite) {
@@ -844,7 +867,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.readToFileWithResponse#String-FileRange-ParallelTransferOptions-DownloadRetryOptions-DataLakeRequestConditions-boolean-Set}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
      * @param range {@link FileRange}
@@ -858,6 +881,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB.
      * @throws UncheckedIOException If an I/O error occurs.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PathProperties>> readToFileWithResponse(String filePath, FileRange range,
         ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions options,
         DataLakeRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions) {
@@ -873,7 +897,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     /**
      * Moves the file to another location within the file system.
      * For more information see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -887,6 +911,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * in myfilesystem (ex: newdir/hi.txt) then set the destinationPath = "newdir/hi.txt"
      * @return A {@link Mono} containing a {@link DataLakeFileAsyncClient} used to interact with the new file created.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataLakeFileAsyncClient> rename(String destinationFileSystem, String destinationPath) {
         try {
             return renameWithResponse(destinationFileSystem, destinationPath, null, null).flatMap(FluxUtil::toMono);
@@ -897,7 +922,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
     /**
      * Moves the file to another location within the file system. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -913,6 +938,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakeFileAsyncClient} used to interact with the file created.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataLakeFileAsyncClient>> renameWithResponse(String destinationFileSystem,
         String destinationPath, DataLakeRequestConditions sourceRequestConditions,
         DataLakeRequestConditions destinationRequestConditions) {
@@ -930,7 +956,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * Queries the entire file.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -948,7 +974,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * Queries the entire file.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -974,6 +1000,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @param options Schedule deletion parameters.
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> scheduleDeletion(FileScheduleDeletionOptions options) {
         return scheduleDeletionWithResponse(options).flatMap(FluxUtil::toMono);
     }
@@ -989,6 +1016,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @param options Schedule deletion parameters.
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> scheduleDeletionWithResponse(FileScheduleDeletionOptions options) {
         try {
             return withContext(context -> scheduleDeletionWithResponse(options, context));

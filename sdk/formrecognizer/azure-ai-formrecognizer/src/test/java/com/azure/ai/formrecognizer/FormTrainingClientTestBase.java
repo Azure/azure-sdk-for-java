@@ -25,6 +25,7 @@ import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -110,9 +111,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
         } else {
-            // TODO: (savaity) switch back to AAD once fixed on service - side.
-            builder.credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_API_KEY)));
-            // builder.credential(new DefaultAzureCredentialBuilder().build());
+            builder.credential(new DefaultAzureCredentialBuilder().build());
         }
         return builder;
     }
@@ -412,20 +411,6 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         } else {
             try {
                 testRunner.accept(new FileInputStream(LOCAL_FILE_PATH + BLANK_PDF), fileLength);
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException("Local file not found.", e);
-            }
-        }
-    }
-
-    void dataRunner(BiConsumer<InputStream, Long> testRunner, String fileName) {
-        final long fileLength = new File(LOCAL_FILE_PATH + fileName).length();
-
-        if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream(TEST_DATA_PNG.getBytes(StandardCharsets.UTF_8)), fileLength);
-        } else {
-            try {
-                testRunner.accept(new FileInputStream(LOCAL_FILE_PATH + fileName), fileLength);
             } catch (FileNotFoundException e) {
                 throw new RuntimeException("Local file not found.", e);
             }

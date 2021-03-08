@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
@@ -28,7 +29,7 @@ import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
@@ -82,6 +83,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -161,7 +163,7 @@ class ServiceBusReceiverAsyncClientTest {
         ConnectionOptions connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(),
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.boundedElastic(), CLIENT_OPTIONS,
-            SslDomain.VerifyMode.VERIFY_PEER_NAME);
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);
@@ -169,9 +171,9 @@ class ServiceBusReceiverAsyncClientTest {
         when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE))
             .thenReturn(Mono.just(managementNode));
 
-        when(connection.createReceiveLink(anyString(), anyString(), any(ReceiveMode.class), any(),
+        when(connection.createReceiveLink(anyString(), anyString(), any(ServiceBusReceiveMode.class), any(),
             any(MessagingEntityType.class))).thenReturn(Mono.just(amqpReceiveLink));
-        when(connection.createReceiveLink(anyString(), anyString(), any(ReceiveMode.class), any(),
+        when(connection.createReceiveLink(anyString(), anyString(), any(ServiceBusReceiveMode.class), any(),
             any(MessagingEntityType.class), anyString())).thenReturn(Mono.just(sessionReceiveLink));
 
         connectionProcessor =
@@ -180,11 +182,11 @@ class ServiceBusReceiverAsyncClientTest {
                     connectionOptions.getRetry()));
 
         receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null, false),
+            new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false),
             connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
 
         sessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null, false, "Some-Session",
+            new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false, "Some-Session",
                 null),
             connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
     }
@@ -257,7 +259,7 @@ class ServiceBusReceiverAsyncClientTest {
         when(managementNode.peek(fromSequenceNumber, null, null)).thenReturn(Mono.just(receivedMessage));
 
         // Act & Assert
-        StepVerifier.create(receiver.peekMessageAt(fromSequenceNumber))
+        StepVerifier.create(receiver.peekMessage(fromSequenceNumber))
             .expectNext(receivedMessage)
             .verifyComplete();
     }
@@ -286,7 +288,8 @@ class ServiceBusReceiverAsyncClientTest {
             .expectNextCount(numberOfEvents)
             .verifyComplete();
 
-        verify(amqpReceiveLink).addCredits(PREFETCH);
+        // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
+        verify(amqpReceiveLink, atMost(numberOfEvents + 1)).addCredits(PREFETCH);
         verify(amqpReceiveLink, never()).updateDisposition(eq(lockToken), any());
     }
 
@@ -344,7 +347,7 @@ class ServiceBusReceiverAsyncClientTest {
      */
     @Test
     void completeInReceiveAndDeleteMode() {
-        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, PREFETCH, null, false);
+        final ReceiverOptions options = new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, PREFETCH, null, false);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, options, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
             messageSerializer, onClientClose);
@@ -361,6 +364,25 @@ class ServiceBusReceiverAsyncClientTest {
             client.close();
         }
     }
+
+    @Test
+    void throwsExceptionAboutSettlingPeekedMessagesWithNullLockToken() {
+        final ReceiverOptions options = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false);
+        ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
+            MessagingEntityType.QUEUE, options, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
+            messageSerializer, onClientClose);
+
+        when(receivedMessage.getLockToken()).thenReturn(null);
+
+        try {
+            StepVerifier.create(client.complete(receivedMessage))
+                .expectError(UnsupportedOperationException.class)
+                .verify();
+        } finally {
+            client.close();
+        }
+    }
+
 
     /**
      * Verifies that this peek batch of messages.
@@ -408,7 +430,7 @@ class ServiceBusReceiverAsyncClientTest {
             .thenReturn(Flux.fromArray(new ServiceBusReceivedMessage[]{receivedMessage, receivedMessage2}));
 
         // Act & Assert
-        StepVerifier.create(receiver.peekMessagesAt(numberOfEvents, fromSequenceNumber))
+        StepVerifier.create(receiver.peekMessages(numberOfEvents, fromSequenceNumber))
             .expectNext(receivedMessage, receivedMessage2)
             .verifyComplete();
     }
@@ -463,7 +485,7 @@ class ServiceBusReceiverAsyncClientTest {
         when(managementNode.renewMessageLock(lockToken, null))
             .thenReturn(Mono.error(new AzureException("some error occurred.")));
 
-        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null, true);
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, true);
         final ServiceBusReceiverAsyncClient receiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
             messageSerializer, onClientClose);
@@ -471,8 +493,8 @@ class ServiceBusReceiverAsyncClientTest {
         // Act & Assert
         StepVerifier.create(receiver2.renewMessageLock(receivedMessage, maxDuration))
             .verifyErrorSatisfies(throwable -> {
-                Assertions.assertTrue(throwable instanceof ServiceBusReceiverException);
-                final ServiceBusErrorSource actual = ((ServiceBusReceiverException) throwable).getErrorSource();
+                Assertions.assertTrue(throwable instanceof ServiceBusException);
+                final ServiceBusErrorSource actual = ((ServiceBusException) throwable).getErrorSource();
                 Assertions.assertEquals(ServiceBusErrorSource.RENEW_LOCK, actual);
             });
 
@@ -487,7 +509,7 @@ class ServiceBusReceiverAsyncClientTest {
         // Arrange
         when(managementNode.renewSessionLock(SESSION_ID, null)).thenReturn(Mono.error(new AzureException("some error occurred.")));
 
-        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null, true, "Some-Session",
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, true, "Some-Session",
             null);
         final ServiceBusReceiverAsyncClient sessionReceiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
             receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
@@ -495,8 +517,8 @@ class ServiceBusReceiverAsyncClientTest {
         // Act & Assert
         StepVerifier.create(sessionReceiver2.renewSessionLock(SESSION_ID))
             .verifyErrorSatisfies(throwable -> {
-                Assertions.assertTrue(throwable instanceof ServiceBusReceiverException);
-                final ServiceBusErrorSource actual = ((ServiceBusReceiverException) throwable).getErrorSource();
+                Assertions.assertTrue(throwable instanceof ServiceBusException);
+                final ServiceBusErrorSource actual = ((ServiceBusException) throwable).getErrorSource();
                 Assertions.assertEquals(ServiceBusErrorSource.RENEW_LOCK, actual);
             });
     }
@@ -541,8 +563,8 @@ class ServiceBusReceiverAsyncClientTest {
             .then(() -> messageSink.next(message))
             .expectNext()
             .verifyErrorSatisfies(throwable -> {
-                Assertions.assertTrue(throwable instanceof ServiceBusReceiverException);
-                final ServiceBusErrorSource actual = ((ServiceBusReceiverException) throwable).getErrorSource();
+                Assertions.assertTrue(throwable instanceof ServiceBusException);
+                final ServiceBusErrorSource actual = ((ServiceBusException) throwable).getErrorSource();
                 Assertions.assertEquals(errorSource, actual);
             });
 
@@ -560,7 +582,7 @@ class ServiceBusReceiverAsyncClientTest {
         final int messagesToReceive = 1;
         final List<Message> messages = getMessages();
         final String lockToken = UUID.randomUUID().toString();
-        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null, true);
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, true);
         final ServiceBusReceiverAsyncClient receiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
             messageSerializer, onClientClose);
@@ -569,7 +591,7 @@ class ServiceBusReceiverAsyncClientTest {
         when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
             .thenReturn(receivedMessage);
 
-        when(amqpReceiveLink.updateDisposition(lockToken, Accepted.getInstance())).thenReturn(Mono.error(new AmqpException(false, "some error occurred.", null)));
+        when(amqpReceiveLink.updateDisposition(lockToken, Accepted.getInstance())).thenReturn(Mono.error(new AmqpException(false, AmqpErrorCondition.MESSAGE_LOCK_LOST, "some error occurred.", null)));
 
         try {
             // Act & Assert
@@ -577,9 +599,13 @@ class ServiceBusReceiverAsyncClientTest {
                 .then(() -> messages.forEach(m -> messageSink.next(m)))
                 .expectNextCount(messagesToReceive)
                 .verifyErrorSatisfies(throwable -> {
-                    Assertions.assertTrue(throwable instanceof ServiceBusReceiverException);
-                    final ServiceBusErrorSource actual = ((ServiceBusReceiverException) throwable).getErrorSource();
+                    Assertions.assertTrue(throwable instanceof ServiceBusException);
+
+                    ServiceBusException serviceBusException = (ServiceBusException) throwable;
+                    final ServiceBusErrorSource actual = serviceBusException.getErrorSource();
+
                     Assertions.assertEquals(ServiceBusErrorSource.COMPLETE, actual);
+                    Assertions.assertEquals(ServiceBusFailureReason.MESSAGE_LOCK_LOST, serviceBusException.getReason());
                 });
         } finally {
             receiver2.close();
@@ -604,19 +630,19 @@ class ServiceBusReceiverAsyncClientTest {
         when(receivedMessage.getLockToken()).thenReturn(lockToken);
         when(receivedMessage.getLockedUntil()).thenReturn(expiration);
 
-        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null, true);
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, true);
         final ServiceBusReceiverAsyncClient receiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
             messageSerializer, onClientClose);
 
-        when(connection.createReceiveLink(anyString(), anyString(), any(ReceiveMode.class), any(),
+        when(connection.createReceiveLink(anyString(), anyString(), any(ServiceBusReceiveMode.class), any(),
             any(MessagingEntityType.class))).thenReturn(Mono.error(new AzureException("some receive link Error.")));
 
         // Act & Assert
         StepVerifier.create(receiver2.receiveMessages().take(1))
             .verifyErrorSatisfies(throwable -> {
-                Assertions.assertTrue(throwable instanceof ServiceBusReceiverException);
-                final ServiceBusErrorSource actual = ((ServiceBusReceiverException) throwable).getErrorSource();
+                Assertions.assertTrue(throwable instanceof ServiceBusException);
+                final ServiceBusErrorSource actual = ((ServiceBusException) throwable).getErrorSource();
                 Assertions.assertEquals(ServiceBusErrorSource.RECEIVE, actual);
             });
 
@@ -650,7 +676,7 @@ class ServiceBusReceiverAsyncClientTest {
         when(connection.getManagementNode(eq(ENTITY_PATH), eq(ENTITY_TYPE)))
             .thenReturn(Mono.just(managementNode));
 
-        when(managementNode.receiveDeferredMessages(eq(ReceiveMode.PEEK_LOCK), isNull(), isNull(), argThat(arg -> {
+        when(managementNode.receiveDeferredMessages(eq(ServiceBusReceiveMode.PEEK_LOCK), isNull(), isNull(), argThat(arg -> {
             boolean foundFirst = false;
             boolean foundSecond = false;
             for (Long seq : arg) {
@@ -764,6 +790,36 @@ class ServiceBusReceiverAsyncClientTest {
     }
 
     /**
+     * Verifies that managementNodeLocks was closed.
+     */
+    @Test
+    void callsManagementNodeLocksCloseWhenClientIsClosed() {
+        // Given
+        Assertions.assertFalse(receiver.isManagementNodeLocksClosed());
+
+        // Act
+        receiver.close();
+
+        // Assert
+        Assertions.assertTrue(receiver.isManagementNodeLocksClosed());
+    }
+
+    /**
+     * Verifies that renewalContainer was closed.
+     */
+    @Test
+    void callsRenewalContainerCloseWhenClientIsClosed() {
+        // Given
+        Assertions.assertFalse(receiver.isRenewalContainerClosed());
+
+        // Act
+        receiver.close();
+
+        // Assert
+        Assertions.assertTrue(receiver.isRenewalContainerClosed());
+    }
+
+    /**
      * Tests that invalid options throws and null options.
      */
     @Test
@@ -773,7 +829,7 @@ class ServiceBusReceiverAsyncClientTest {
             .connectionString(NAMESPACE_CONNECTION_STRING)
             .receiver()
             .topicName("baz").subscriptionName("bar")
-            .receiveMode(ReceiveMode.PEEK_LOCK);
+            .receiveMode(ServiceBusReceiveMode.PEEK_LOCK);
 
 
         // Act & Assert
@@ -791,7 +847,7 @@ class ServiceBusReceiverAsyncClientTest {
             .receiver()
             .topicName(topicName)
             .subscriptionName(subscriptionName)
-            .receiveMode(ReceiveMode.PEEK_LOCK)
+            .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
             .buildAsyncClient();
 
         // Act
@@ -825,12 +881,18 @@ class ServiceBusReceiverAsyncClientTest {
             .expectNextCount(numberOfEvents)
             .verifyComplete();
 
-        StepVerifier.create(receiver.receiveMessages().take(numberOfEvents))
-            .then(() -> messages.forEach(m -> messageSink.next(m)))
-            .expectNextCount(numberOfEvents)
-            .verifyComplete();
+        // TODO: Yijun and Srikanta are thinking of using two links for two subscribers.
+        //  We may not want to support multiple subscribers by using publish and autoConnect.
+        //  After the autoConnect was removed from ServiceBusAsyncConsumer.processor, the receiver doesn't support
+        //  multiple calls of receiver.receiveMessages().
+        //  For more discussions.
+        //  StepVerifier.create(receiver.receiveMessages().take(numberOfEvents))
+        //      .then(() -> messages.forEach(m -> messageSink.next(m)))
+        //      .expectNextCount(numberOfEvents)
+        //      .verifyComplete();
 
-        verify(amqpReceiveLink).addCredits(PREFETCH);
+        // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
+        verify(amqpReceiveLink, atMost(numberOfEvents + 1)).addCredits(PREFETCH);
     }
 
     /**
@@ -1088,7 +1150,7 @@ class ServiceBusReceiverAsyncClientTest {
         final int numberOfEvents = 3;
         final List<Message> messages = getMessages();
         final String lockToken = UUID.randomUUID().toString();
-        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null, true);
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, true);
         final ServiceBusReceiverAsyncClient receiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
             messageSerializer, onClientClose);
@@ -1121,7 +1183,7 @@ class ServiceBusReceiverAsyncClientTest {
         final String lockToken2 = "token2";
         final String lockToken3 = "token3";
 
-        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null,
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null,
             true, "Some-Session", null);
         final ServiceBusReceiverAsyncClient sessionReceiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
@@ -1165,6 +1227,6 @@ class ServiceBusReceiverAsyncClientTest {
     private static Stream<Arguments> errorSourceNoneOnSettlement() {
         return Stream.of(
             Arguments.of(DispositionStatus.COMPLETED, DeliveryStateType.Accepted, ServiceBusErrorSource.COMPLETE),
-            Arguments.of(DispositionStatus.ABANDONED, DeliveryStateType.Modified, ServiceBusErrorSource.ABANDONED));
+            Arguments.of(DispositionStatus.ABANDONED, DeliveryStateType.Modified, ServiceBusErrorSource.ABANDON));
     }
 }

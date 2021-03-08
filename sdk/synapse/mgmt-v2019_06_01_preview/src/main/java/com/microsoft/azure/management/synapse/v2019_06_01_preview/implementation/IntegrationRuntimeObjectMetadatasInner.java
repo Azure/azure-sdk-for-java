@@ -53,13 +53,17 @@ public class IntegrationRuntimeObjectMetadatasInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface IntegrationRuntimeObjectMetadatasService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.IntegrationRuntimeObjectMetadatas get" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.IntegrationRuntimeObjectMetadatas list" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/getObjectMetadata")
-        Observable<Response<ResponseBody>> get(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("integrationRuntimeName") String integrationRuntimeName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body GetSsisObjectMetadataRequest getMetadataRequest, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("integrationRuntimeName") String integrationRuntimeName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body GetSsisObjectMetadataRequest getMetadataRequest, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.IntegrationRuntimeObjectMetadatas refresh" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/refreshObjectMetadata")
         Observable<Response<ResponseBody>> refresh(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("integrationRuntimeName") String integrationRuntimeName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.IntegrationRuntimeObjectMetadatas beginRefresh" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/refreshObjectMetadata")
+        Observable<Response<ResponseBody>> beginRefresh(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("integrationRuntimeName") String integrationRuntimeName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -68,15 +72,15 @@ public class IntegrationRuntimeObjectMetadatasInner {
      * Get object metadata from an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SsisObjectMetadataListResponseInner object if successful.
      */
-    public SsisObjectMetadataListResponseInner get(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
-        return getWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName).toBlocking().single().body();
+    public SsisObjectMetadataListResponseInner list(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        return listWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName).toBlocking().single().body();
     }
 
     /**
@@ -84,14 +88,14 @@ public class IntegrationRuntimeObjectMetadatasInner {
      * Get object metadata from an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<SsisObjectMetadataListResponseInner> getAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName, final ServiceCallback<SsisObjectMetadataListResponseInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName), serviceCallback);
+    public ServiceFuture<SsisObjectMetadataListResponseInner> listAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName, final ServiceCallback<SsisObjectMetadataListResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName), serviceCallback);
     }
 
     /**
@@ -99,13 +103,13 @@ public class IntegrationRuntimeObjectMetadatasInner {
      * Get object metadata from an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SsisObjectMetadataListResponseInner object
      */
-    public Observable<SsisObjectMetadataListResponseInner> getAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
-        return getWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName).map(new Func1<ServiceResponse<SsisObjectMetadataListResponseInner>, SsisObjectMetadataListResponseInner>() {
+    public Observable<SsisObjectMetadataListResponseInner> listAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        return listWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName).map(new Func1<ServiceResponse<SsisObjectMetadataListResponseInner>, SsisObjectMetadataListResponseInner>() {
             @Override
             public SsisObjectMetadataListResponseInner call(ServiceResponse<SsisObjectMetadataListResponseInner> response) {
                 return response.body();
@@ -118,12 +122,12 @@ public class IntegrationRuntimeObjectMetadatasInner {
      * Get object metadata from an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SsisObjectMetadataListResponseInner object
      */
-    public Observable<ServiceResponse<SsisObjectMetadataListResponseInner>> getWithServiceResponseAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+    public Observable<ServiceResponse<SsisObjectMetadataListResponseInner>> listWithServiceResponseAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -142,12 +146,12 @@ public class IntegrationRuntimeObjectMetadatasInner {
         final String metadataPath = null;
         GetSsisObjectMetadataRequest getMetadataRequest = new GetSsisObjectMetadataRequest();
         getMetadataRequest.withMetadataPath(null);
-        return service.get(this.client.subscriptionId(), resourceGroupName, workspaceName, integrationRuntimeName, this.client.apiVersion(), this.client.acceptLanguage(), getMetadataRequest, this.client.userAgent())
+        return service.list(this.client.subscriptionId(), resourceGroupName, workspaceName, integrationRuntimeName, this.client.apiVersion(), this.client.acceptLanguage(), getMetadataRequest, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SsisObjectMetadataListResponseInner>>>() {
                 @Override
                 public Observable<ServiceResponse<SsisObjectMetadataListResponseInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<SsisObjectMetadataListResponseInner> clientResponse = getDelegate(response);
+                        ServiceResponse<SsisObjectMetadataListResponseInner> clientResponse = listDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -161,7 +165,7 @@ public class IntegrationRuntimeObjectMetadatasInner {
      * Get object metadata from an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param metadataPath Metadata path.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -169,8 +173,8 @@ public class IntegrationRuntimeObjectMetadatasInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SsisObjectMetadataListResponseInner object if successful.
      */
-    public SsisObjectMetadataListResponseInner get(String resourceGroupName, String workspaceName, String integrationRuntimeName, String metadataPath) {
-        return getWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName, metadataPath).toBlocking().single().body();
+    public SsisObjectMetadataListResponseInner list(String resourceGroupName, String workspaceName, String integrationRuntimeName, String metadataPath) {
+        return listWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName, metadataPath).toBlocking().single().body();
     }
 
     /**
@@ -178,15 +182,15 @@ public class IntegrationRuntimeObjectMetadatasInner {
      * Get object metadata from an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param metadataPath Metadata path.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<SsisObjectMetadataListResponseInner> getAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName, String metadataPath, final ServiceCallback<SsisObjectMetadataListResponseInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName, metadataPath), serviceCallback);
+    public ServiceFuture<SsisObjectMetadataListResponseInner> listAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName, String metadataPath, final ServiceCallback<SsisObjectMetadataListResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName, metadataPath), serviceCallback);
     }
 
     /**
@@ -194,14 +198,14 @@ public class IntegrationRuntimeObjectMetadatasInner {
      * Get object metadata from an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param metadataPath Metadata path.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SsisObjectMetadataListResponseInner object
      */
-    public Observable<SsisObjectMetadataListResponseInner> getAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName, String metadataPath) {
-        return getWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName, metadataPath).map(new Func1<ServiceResponse<SsisObjectMetadataListResponseInner>, SsisObjectMetadataListResponseInner>() {
+    public Observable<SsisObjectMetadataListResponseInner> listAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName, String metadataPath) {
+        return listWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName, metadataPath).map(new Func1<ServiceResponse<SsisObjectMetadataListResponseInner>, SsisObjectMetadataListResponseInner>() {
             @Override
             public SsisObjectMetadataListResponseInner call(ServiceResponse<SsisObjectMetadataListResponseInner> response) {
                 return response.body();
@@ -214,13 +218,13 @@ public class IntegrationRuntimeObjectMetadatasInner {
      * Get object metadata from an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param metadataPath Metadata path.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SsisObjectMetadataListResponseInner object
      */
-    public Observable<ServiceResponse<SsisObjectMetadataListResponseInner>> getWithServiceResponseAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName, String metadataPath) {
+    public Observable<ServiceResponse<SsisObjectMetadataListResponseInner>> listWithServiceResponseAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName, String metadataPath) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -241,12 +245,12 @@ public class IntegrationRuntimeObjectMetadatasInner {
             getMetadataRequest = new GetSsisObjectMetadataRequest();
             getMetadataRequest.withMetadataPath(metadataPath);
         }
-        return service.get(this.client.subscriptionId(), resourceGroupName, workspaceName, integrationRuntimeName, this.client.apiVersion(), this.client.acceptLanguage(), getMetadataRequest, this.client.userAgent())
+        return service.list(this.client.subscriptionId(), resourceGroupName, workspaceName, integrationRuntimeName, this.client.apiVersion(), this.client.acceptLanguage(), getMetadataRequest, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SsisObjectMetadataListResponseInner>>>() {
                 @Override
                 public Observable<ServiceResponse<SsisObjectMetadataListResponseInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<SsisObjectMetadataListResponseInner> clientResponse = getDelegate(response);
+                        ServiceResponse<SsisObjectMetadataListResponseInner> clientResponse = listDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -255,7 +259,7 @@ public class IntegrationRuntimeObjectMetadatasInner {
             });
     }
 
-    private ServiceResponse<SsisObjectMetadataListResponseInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SsisObjectMetadataListResponseInner> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<SsisObjectMetadataListResponseInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SsisObjectMetadataListResponseInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -267,7 +271,7 @@ public class IntegrationRuntimeObjectMetadatasInner {
      * Refresh the object metadata in an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -275,7 +279,7 @@ public class IntegrationRuntimeObjectMetadatasInner {
      * @return the SsisObjectMetadataStatusResponseInner object if successful.
      */
     public SsisObjectMetadataStatusResponseInner refresh(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
-        return refreshWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName).toBlocking().single().body();
+        return refreshWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName).toBlocking().last().body();
     }
 
     /**
@@ -283,7 +287,7 @@ public class IntegrationRuntimeObjectMetadatasInner {
      * Refresh the object metadata in an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -298,10 +302,10 @@ public class IntegrationRuntimeObjectMetadatasInner {
      * Refresh the object metadata in an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SsisObjectMetadataStatusResponseInner object
+     * @return the observable for the request
      */
     public Observable<SsisObjectMetadataStatusResponseInner> refreshAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         return refreshWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName).map(new Func1<ServiceResponse<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>() {
@@ -317,10 +321,10 @@ public class IntegrationRuntimeObjectMetadatasInner {
      * Refresh the object metadata in an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SsisObjectMetadataStatusResponseInner object
+     * @return the observable for the request
      */
     public Observable<ServiceResponse<SsisObjectMetadataStatusResponseInner>> refreshWithServiceResponseAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         if (this.client.subscriptionId() == null) {
@@ -338,12 +342,92 @@ public class IntegrationRuntimeObjectMetadatasInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.refresh(this.client.subscriptionId(), resourceGroupName, workspaceName, integrationRuntimeName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        Observable<Response<ResponseBody>> observable = service.refresh(this.client.subscriptionId(), resourceGroupName, workspaceName, integrationRuntimeName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<SsisObjectMetadataStatusResponseInner>() { }.getType());
+    }
+
+    /**
+     * Refresh integration runtime object metadata.
+     * Refresh the object metadata in an integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param integrationRuntimeName Integration runtime name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SsisObjectMetadataStatusResponseInner object if successful.
+     */
+    public SsisObjectMetadataStatusResponseInner beginRefresh(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        return beginRefreshWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName).toBlocking().single().body();
+    }
+
+    /**
+     * Refresh integration runtime object metadata.
+     * Refresh the object metadata in an integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param integrationRuntimeName Integration runtime name
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SsisObjectMetadataStatusResponseInner> beginRefreshAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName, final ServiceCallback<SsisObjectMetadataStatusResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginRefreshWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName), serviceCallback);
+    }
+
+    /**
+     * Refresh integration runtime object metadata.
+     * Refresh the object metadata in an integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param integrationRuntimeName Integration runtime name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SsisObjectMetadataStatusResponseInner object
+     */
+    public Observable<SsisObjectMetadataStatusResponseInner> beginRefreshAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        return beginRefreshWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName).map(new Func1<ServiceResponse<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>() {
+            @Override
+            public SsisObjectMetadataStatusResponseInner call(ServiceResponse<SsisObjectMetadataStatusResponseInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Refresh integration runtime object metadata.
+     * Refresh the object metadata in an integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param integrationRuntimeName Integration runtime name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SsisObjectMetadataStatusResponseInner object
+     */
+    public Observable<ServiceResponse<SsisObjectMetadataStatusResponseInner>> beginRefreshWithServiceResponseAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (workspaceName == null) {
+            throw new IllegalArgumentException("Parameter workspaceName is required and cannot be null.");
+        }
+        if (integrationRuntimeName == null) {
+            throw new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginRefresh(this.client.subscriptionId(), resourceGroupName, workspaceName, integrationRuntimeName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SsisObjectMetadataStatusResponseInner>>>() {
                 @Override
                 public Observable<ServiceResponse<SsisObjectMetadataStatusResponseInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<SsisObjectMetadataStatusResponseInner> clientResponse = refreshDelegate(response);
+                        ServiceResponse<SsisObjectMetadataStatusResponseInner> clientResponse = beginRefreshDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -352,7 +436,7 @@ public class IntegrationRuntimeObjectMetadatasInner {
             });
     }
 
-    private ServiceResponse<SsisObjectMetadataStatusResponseInner> refreshDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SsisObjectMetadataStatusResponseInner> beginRefreshDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<SsisObjectMetadataStatusResponseInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SsisObjectMetadataStatusResponseInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())

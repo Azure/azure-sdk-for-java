@@ -26,7 +26,8 @@ public final class BootDiagnostics {
 
     /*
      * Uri of the storage account to use for placing the console output and
-     * screenshot.
+     * screenshot. <br><br>If storageUri is not specified while enabling boot
+     * diagnostics, managed storage will be used.
      */
     @JsonProperty(value = "storageUri")
     private String storageUri;
@@ -53,6 +54,7 @@ public final class BootDiagnostics {
 
     /**
      * Get the storageUri property: Uri of the storage account to use for placing the console output and screenshot.
+     * &lt;br&gt;&lt;br&gt;If storageUri is not specified while enabling boot diagnostics, managed storage will be used.
      *
      * @return the storageUri value.
      */
@@ -62,6 +64,7 @@ public final class BootDiagnostics {
 
     /**
      * Set the storageUri property: Uri of the storage account to use for placing the console output and screenshot.
+     * &lt;br&gt;&lt;br&gt;If storageUri is not specified while enabling boot diagnostics, managed storage will be used.
      *
      * @param storageUri the storageUri value to set.
      * @return the BootDiagnostics object itself.

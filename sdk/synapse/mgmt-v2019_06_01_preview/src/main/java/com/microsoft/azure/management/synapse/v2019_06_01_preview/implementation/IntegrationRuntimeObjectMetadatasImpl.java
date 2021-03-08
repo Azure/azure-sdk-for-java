@@ -29,9 +29,9 @@ class IntegrationRuntimeObjectMetadatasImpl extends WrapperImpl<IntegrationRunti
     }
 
     @Override
-    public Observable<SsisObjectMetadataListResponse> getAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+    public Observable<SsisObjectMetadataListResponse> listAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         IntegrationRuntimeObjectMetadatasInner client = this.inner();
-        return client.getAsync(resourceGroupName, workspaceName, integrationRuntimeName)
+        return client.listAsync(resourceGroupName, workspaceName, integrationRuntimeName)
         .map(new Func1<SsisObjectMetadataListResponseInner, SsisObjectMetadataListResponse>() {
             @Override
             public SsisObjectMetadataListResponse call(SsisObjectMetadataListResponseInner inner) {

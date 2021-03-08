@@ -35,7 +35,7 @@ import java.util.Set;
 /**
  * Decoder to decode body of HTTP response.
  */
-final class HttpResponseBodyDecoder {
+public final class HttpResponseBodyDecoder {
     // TODO (jogiles) JavaDoc (even though it is non-public
     static Mono<Object> decode(final String body,
         final HttpResponse httpResponse,
@@ -337,7 +337,7 @@ final class HttpResponseBodyDecoder {
      * @param returnType The return type of the method.
      * @return True if the return type is decodable, false otherwise.
      */
-    private static boolean isReturnTypeDecodable(Type returnType) {
+    public static boolean isReturnTypeDecodable(Type returnType) {
         if (returnType == null) {
             return false;
         }

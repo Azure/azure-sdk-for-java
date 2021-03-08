@@ -47,6 +47,13 @@ public final class VirtualMachineScaleSetReimageParameters extends VirtualMachin
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineScaleSetReimageParameters withTempDisk(Boolean tempDisk) {
+        super.withTempDisk(tempDisk);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

@@ -7,12 +7,11 @@ import com.azure.core.annotation.Fluent;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
-import java.util.Objects;
 
 /**
  * The representation of message properties as defined by AMQP protocol.
  *
- * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format">
+ * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format" target="_blank">
  *     Amqp Message Format.</a>
  */
 @Fluent
@@ -21,40 +20,19 @@ public class AmqpMessageProperties {
     private OffsetDateTime absoluteExpiryTime;
     private String contentEncoding;
     private String contentType;
-    private String correlationId;
+    private AmqpMessageId correlationId;
     private OffsetDateTime creationTime;
     private String groupId;
     private Long groupSequence;
-    private String messageId;
+    private AmqpMessageId messageId;
     private String replyToGroupId;
-    private String replyTo;
-    private String to;
+    private AmqpAddress replyTo;
+    private AmqpAddress to;
     private String subject;
     private byte[] userId;
 
     AmqpMessageProperties() {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-    }
-
-    /**
-     * The constructor is used to clone the values.
-     */
-    AmqpMessageProperties(AmqpMessageProperties properties) {
-        super();
-        Objects.requireNonNull(properties, "'properties' cannot be null.");
-        absoluteExpiryTime = properties.getAbsoluteExpiryTime();
-        contentEncoding = properties.getContentEncoding();
-        contentType = properties.getContentType();
-        correlationId = properties.getCorrelationId();
-        creationTime = properties.getCreationTime();
-        groupId = properties.getGroupId();
-        groupSequence = properties.getGroupSequence();
-        messageId = properties.getMessageId();
-        replyToGroupId = properties.getReplyToGroupId();
-        replyTo = properties.getReplyTo();
-        to = properties.getTo();
-        subject = properties.getSubject();
-        userId = properties.getUserId();
     }
 
     /**
@@ -124,7 +102,7 @@ public class AmqpMessageProperties {
      *
      * @return the {@code correlationId} value.
      */
-    public String getCorrelationId() {
+    public AmqpMessageId getCorrelationId() {
         return correlationId;
     }
 
@@ -135,7 +113,7 @@ public class AmqpMessageProperties {
      *
      * @return updated {@link AmqpMessageProperties} object.
      */
-    public AmqpMessageProperties setCorrelationId(String correlationId) {
+    public AmqpMessageProperties setCorrelationId(AmqpMessageId correlationId) {
         this.correlationId = correlationId;
         return this;
     }
@@ -208,7 +186,7 @@ public class AmqpMessageProperties {
      *
      * @return the {@code messageId} value.
      */
-    public String getMessageId() {
+    public AmqpMessageId getMessageId() {
         return messageId;
     }
 
@@ -219,7 +197,7 @@ public class AmqpMessageProperties {
      *
      * @return updated {@link AmqpMessageProperties} object.
      */
-    public AmqpMessageProperties setMessageId(String messageId) {
+    public AmqpMessageProperties setMessageId(AmqpMessageId messageId) {
         this.messageId = messageId;
         return this;
     }
@@ -229,7 +207,7 @@ public class AmqpMessageProperties {
      *
      * @return The {@code replyTo} value.
      */
-    public String getReplyTo() {
+    public AmqpAddress getReplyTo() {
         return replyTo;
     }
 
@@ -240,7 +218,7 @@ public class AmqpMessageProperties {
      *
      * @return updated {@link AmqpMessageProperties} object.
      */
-    public AmqpMessageProperties setReplyTo(String replyTo) {
+    public AmqpMessageProperties setReplyTo(AmqpAddress replyTo) {
         this.replyTo = replyTo;
         return this;
     }
@@ -292,7 +270,7 @@ public class AmqpMessageProperties {
      *
      * @return the {@code to} value.
      */
-    public String getTo() {
+    public AmqpAddress getTo() {
         return to;
     }
 
@@ -303,7 +281,7 @@ public class AmqpMessageProperties {
      *
      * @return updated {@link AmqpMessageProperties} object.
      */
-    public AmqpMessageProperties setTo(String to) {
+    public AmqpMessageProperties setTo(AmqpAddress to) {
         this.to = to;
         return this;
     }

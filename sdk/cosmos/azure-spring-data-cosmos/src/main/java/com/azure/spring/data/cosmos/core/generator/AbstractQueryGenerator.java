@@ -18,6 +18,7 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter.toCosmosDbValue;
@@ -31,7 +32,8 @@ public abstract class AbstractQueryGenerator {
     }
 
     private String generateQueryParameter(@NonNull String subject) {
-        return subject.replaceAll("\\.", "_"); // user.name is not valid sql parameter identifier.
+        // user.name is not valid sql parameter identifier.
+        return subject.replaceAll("\\.", "_") + UUID.randomUUID().toString().replaceAll("-", "_");
     }
 
     private String generateUnaryQuery(@NonNull Criteria criteria) {
@@ -213,7 +215,7 @@ public abstract class AbstractQueryGenerator {
         return Pair.of(queryString, parameters);
     }
 
-    private String getParameter(@NonNull Sort.Order order) {
+    private static String getParameter(@NonNull Sort.Order order) {
         Assert.isTrue(!order.isIgnoreCase(), "Ignore case is not supported");
 
         final String direction = order.isDescending() ? "DESC" : "ASC";
@@ -221,13 +223,13 @@ public abstract class AbstractQueryGenerator {
         return String.format("r.%s %s", order.getProperty(), direction);
     }
 
-    private String generateQuerySort(@NonNull Sort sort) {
+    static String generateQuerySort(@NonNull Sort sort) {
         if (sort.isUnsorted()) {
             return "";
         }
 
         final String queryTail = "ORDER BY";
-        final List<String> subjects = sort.stream().map(this::getParameter).collect(Collectors.toList());
+        final List<String> subjects = sort.stream().map(AbstractQueryGenerator::getParameter).collect(Collectors.toList());
 
         return queryTail
             + " "
@@ -257,7 +259,7 @@ public abstract class AbstractQueryGenerator {
 
         if (query.getLimit() > 0) {
             queryString = new StringBuilder(queryString)
-                .append("OFFSET 0 LIMIT ")
+                .append(" OFFSET 0 LIMIT ")
                 .append(query.getLimit()).toString();
         }
 

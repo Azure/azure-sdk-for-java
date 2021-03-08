@@ -39,10 +39,25 @@ public class ManagedClusterAgentPoolProfileProperties {
     private Integer osDiskSizeGB;
 
     /*
-     * VNet SubnetID specifies the VNet's subnet identifier.
+     * OS disk type to be used for machines in a given agent pool. Allowed
+     * values are 'Ephemeral' and 'Managed'. Defaults to 'Managed'. May not be
+     * changed after creation.
+     */
+    @JsonProperty(value = "osDiskType")
+    private OSDiskType osDiskType;
+
+    /*
+     * VNet SubnetID specifies the VNet's subnet identifier for nodes and maybe
+     * pods
      */
     @JsonProperty(value = "vnetSubnetID")
     private String vnetSubnetId;
+
+    /*
+     * Pod SubnetID specifies the VNet's subnet identifier for pods.
+     */
+    @JsonProperty(value = "podSubnetID")
+    private String podSubnetId;
 
     /*
      * Maximum number of pods that can run on a node.
@@ -96,7 +111,7 @@ public class ManagedClusterAgentPoolProfileProperties {
     /*
      * Version of node image
      */
-    @JsonProperty(value = "nodeImageVersion")
+    @JsonProperty(value = "nodeImageVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String nodeImageVersion;
 
     /*
@@ -111,6 +126,12 @@ public class ManagedClusterAgentPoolProfileProperties {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
+
+    /*
+     * Describes whether the Agent Pool is Running or Stopped
+     */
+    @JsonProperty(value = "powerState", access = JsonProperty.Access.WRITE_ONLY)
+    private PowerState powerState;
 
     /*
      * Availability zones for nodes. Must use VirtualMachineScaleSets
@@ -172,6 +193,18 @@ public class ManagedClusterAgentPoolProfileProperties {
      */
     @JsonProperty(value = "proximityPlacementGroupID")
     private String proximityPlacementGroupId;
+
+    /*
+     * KubeletConfig specifies the configuration of kubelet on agent nodes.
+     */
+    @JsonProperty(value = "kubeletConfig")
+    private KubeletConfig kubeletConfig;
+
+    /*
+     * LinuxOSConfig specifies the OS configuration of linux agent nodes.
+     */
+    @JsonProperty(value = "linuxOSConfig")
+    private LinuxOSConfig linuxOSConfig;
 
     /**
      * Get the count property: Number of agents (VMs) to host docker containers. Allowed values must be in the range of
@@ -240,7 +273,29 @@ public class ManagedClusterAgentPoolProfileProperties {
     }
 
     /**
-     * Get the vnetSubnetId property: VNet SubnetID specifies the VNet's subnet identifier.
+     * Get the osDiskType property: OS disk type to be used for machines in a given agent pool. Allowed values are
+     * 'Ephemeral' and 'Managed'. Defaults to 'Managed'. May not be changed after creation.
+     *
+     * @return the osDiskType value.
+     */
+    public OSDiskType osDiskType() {
+        return this.osDiskType;
+    }
+
+    /**
+     * Set the osDiskType property: OS disk type to be used for machines in a given agent pool. Allowed values are
+     * 'Ephemeral' and 'Managed'. Defaults to 'Managed'. May not be changed after creation.
+     *
+     * @param osDiskType the osDiskType value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withOsDiskType(OSDiskType osDiskType) {
+        this.osDiskType = osDiskType;
+        return this;
+    }
+
+    /**
+     * Get the vnetSubnetId property: VNet SubnetID specifies the VNet's subnet identifier for nodes and maybe pods.
      *
      * @return the vnetSubnetId value.
      */
@@ -249,13 +304,33 @@ public class ManagedClusterAgentPoolProfileProperties {
     }
 
     /**
-     * Set the vnetSubnetId property: VNet SubnetID specifies the VNet's subnet identifier.
+     * Set the vnetSubnetId property: VNet SubnetID specifies the VNet's subnet identifier for nodes and maybe pods.
      *
      * @param vnetSubnetId the vnetSubnetId value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
      */
     public ManagedClusterAgentPoolProfileProperties withVnetSubnetId(String vnetSubnetId) {
         this.vnetSubnetId = vnetSubnetId;
+        return this;
+    }
+
+    /**
+     * Get the podSubnetId property: Pod SubnetID specifies the VNet's subnet identifier for pods.
+     *
+     * @return the podSubnetId value.
+     */
+    public String podSubnetId() {
+        return this.podSubnetId;
+    }
+
+    /**
+     * Set the podSubnetId property: Pod SubnetID specifies the VNet's subnet identifier for pods.
+     *
+     * @param podSubnetId the podSubnetId value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withPodSubnetId(String podSubnetId) {
+        this.podSubnetId = podSubnetId;
         return this;
     }
 
@@ -429,17 +504,6 @@ public class ManagedClusterAgentPoolProfileProperties {
     }
 
     /**
-     * Set the nodeImageVersion property: Version of node image.
-     *
-     * @param nodeImageVersion the nodeImageVersion value to set.
-     * @return the ManagedClusterAgentPoolProfileProperties object itself.
-     */
-    public ManagedClusterAgentPoolProfileProperties withNodeImageVersion(String nodeImageVersion) {
-        this.nodeImageVersion = nodeImageVersion;
-        return this;
-    }
-
-    /**
      * Get the upgradeSettings property: Settings for upgrading the agentpool.
      *
      * @return the upgradeSettings value.
@@ -467,6 +531,15 @@ public class ManagedClusterAgentPoolProfileProperties {
      */
     public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the powerState property: Describes whether the Agent Pool is Running or Stopped.
+     *
+     * @return the powerState value.
+     */
+    public PowerState powerState() {
+        return this.powerState;
     }
 
     /**
@@ -661,6 +734,46 @@ public class ManagedClusterAgentPoolProfileProperties {
     }
 
     /**
+     * Get the kubeletConfig property: KubeletConfig specifies the configuration of kubelet on agent nodes.
+     *
+     * @return the kubeletConfig value.
+     */
+    public KubeletConfig kubeletConfig() {
+        return this.kubeletConfig;
+    }
+
+    /**
+     * Set the kubeletConfig property: KubeletConfig specifies the configuration of kubelet on agent nodes.
+     *
+     * @param kubeletConfig the kubeletConfig value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withKubeletConfig(KubeletConfig kubeletConfig) {
+        this.kubeletConfig = kubeletConfig;
+        return this;
+    }
+
+    /**
+     * Get the linuxOSConfig property: LinuxOSConfig specifies the OS configuration of linux agent nodes.
+     *
+     * @return the linuxOSConfig value.
+     */
+    public LinuxOSConfig linuxOSConfig() {
+        return this.linuxOSConfig;
+    }
+
+    /**
+     * Set the linuxOSConfig property: LinuxOSConfig specifies the OS configuration of linux agent nodes.
+     *
+     * @param linuxOSConfig the linuxOSConfig value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withLinuxOSConfig(LinuxOSConfig linuxOSConfig) {
+        this.linuxOSConfig = linuxOSConfig;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -668,6 +781,15 @@ public class ManagedClusterAgentPoolProfileProperties {
     public void validate() {
         if (upgradeSettings() != null) {
             upgradeSettings().validate();
+        }
+        if (powerState() != null) {
+            powerState().validate();
+        }
+        if (kubeletConfig() != null) {
+            kubeletConfig().validate();
+        }
+        if (linuxOSConfig() != null) {
+            linuxOSConfig().validate();
         }
     }
 }

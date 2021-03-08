@@ -3,6 +3,7 @@
 
 package com.azure.storage.queue.implementation.util;
 
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
@@ -66,9 +67,10 @@ public class QueueSasImplUtil {
      * Generates a Sas signed with a {@link StorageSharedKeyCredential}
      *
      * @param storageSharedKeyCredentials {@link StorageSharedKeyCredential}
+     * @param context Additional context that is passed through the code when generating a SAS.
      * @return A String representing the Sas
      */
-    public String generateSas(StorageSharedKeyCredential storageSharedKeyCredentials) {
+    public String generateSas(StorageSharedKeyCredential storageSharedKeyCredentials, Context context) {
         StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
 
         ensureState();
@@ -76,6 +78,7 @@ public class QueueSasImplUtil {
         // Signature is generated on the un-url-encoded values.
         String canonicalName = getCanonicalName(storageSharedKeyCredentials.getAccountName());
         String stringToSign = stringToSign(canonicalName);
+        StorageImplUtils.logStringToSign(logger, stringToSign, context);
         String signature = storageSharedKeyCredentials.computeHmac256(stringToSign);
 
         return encode(signature);

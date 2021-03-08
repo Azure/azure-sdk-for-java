@@ -729,7 +729,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         final UUID activityId = response.getActivityId();
         final int statusCode = status.code();
 
-        if (HttpResponseStatus.OK.code() <= statusCode && statusCode < HttpResponseStatus.MULTIPLE_CHOICES.code()) {
+        if ((HttpResponseStatus.OK.code() <= statusCode && statusCode < HttpResponseStatus.MULTIPLE_CHOICES.code()) ||
+            statusCode == HttpResponseStatus.NOT_MODIFIED.code()) {
 
             final StoreResponse storeResponse = response.toStoreResponse(this.contextFuture.getNow(null));
             requestRecord.complete(storeResponse);
@@ -758,6 +759,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             );
 
             // ..Create CosmosException based on status and sub-status codes
+
+            final String resourceAddress = requestRecord.args().physicalAddress() != null ?
+                requestRecord.args().physicalAddress().toString() : null;
 
             switch (status.code()) {
 
@@ -825,9 +829,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
                 case StatusCodes.REQUEST_TIMEOUT:
                     Exception inner = new RequestTimeoutException(error, lsn, partitionKeyRangeId, responseHeaders);
-                    String resourceAddress = requestRecord.args().physicalAddress() != null ?
-                        requestRecord.args().physicalAddress().toString() : null;
-
                     cause = new GoneException(resourceAddress, error, lsn, partitionKeyRangeId, responseHeaders, inner);
                     break;
 
@@ -848,9 +849,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                     break;
 
                 default:
-                    cause = BridgeInternal.createCosmosException(status.code(), error, responseHeaders);
+                    cause = BridgeInternal.createCosmosException(resourceAddress, status.code(), error, responseHeaders);
                     break;
             }
+            BridgeInternal.setResourceAddress(cause, resourceAddress);
 
             requestRecord.completeExceptionally(cause);
         }

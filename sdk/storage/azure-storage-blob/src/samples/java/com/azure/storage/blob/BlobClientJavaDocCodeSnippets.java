@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.RequestConditions;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -84,6 +85,16 @@ public class BlobClientJavaDocCodeSnippets {
         client.download(new ByteArrayOutputStream());
         System.out.println("Download completed.");
         // END: com.azure.storage.blob.BlobClient.download#OutputStream
+    }
+
+    /**
+     * Code snippets for {@link BlobClient#downloadContent()}
+     */
+    public void downloadContent() {
+        // BEGIN: com.azure.storage.blob.BlobClient.downloadContent
+        BinaryData data = client.downloadContent();
+        System.out.printf("Downloaded %s", data.toString());
+        // END: com.azure.storage.blob.BlobClient.downloadContent
     }
 
     /**
@@ -355,8 +366,18 @@ public class BlobClientJavaDocCodeSnippets {
     public void getContainerName() {
         // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.getContainerName
         String containerName = client.getContainerName();
-        System.out.println("The name of the blob is " + containerName);
+        System.out.println("The name of the container is " + containerName);
         // END: com.azure.storage.blob.specialized.BlobClientBase.getContainerName
+    }
+
+    /**
+     * Generates a code sample for using {@link BlobClient#getContainerClient()}
+     */
+    public void getContainerClient() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.getContainerClient
+        BlobContainerClient containerClient = client.getContainerClient();
+        System.out.println("The name of the container is " + containerClient.getBlobContainerName());
+        // END: com.azure.storage.blob.specialized.BlobClientBase.getContainerClient
     }
 
     /**

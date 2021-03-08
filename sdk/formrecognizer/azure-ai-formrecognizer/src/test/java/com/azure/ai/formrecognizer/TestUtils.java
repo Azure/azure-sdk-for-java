@@ -33,12 +33,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 final class TestUtils {
     // Duration
-    static final Duration ONE_NANO_DURATION = Duration.ofNanos(1);
+    static final Duration ONE_NANO_DURATION = Duration.ofMillis(1);
     // Local test files
     static final String BLANK_PDF = "blank.pdf";
     static final String FORM_JPG = "Form_1.jpg";
     static final String TEST_DATA_PNG = "testData.png";
     static final String SELECTION_MARK_PDF = "selectionMarkForm.pdf";
+    static final String CONTENT_GERMAN_PDF = "content_german.pdf";
     // Other resources
     static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     static final String FAKE_ENCODED_EMPTY_SPACE_URL = "https://fakeuri.com/blank%20space";

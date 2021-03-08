@@ -4,6 +4,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Resource;
+import com.azure.cosmos.util.Beta;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
  */
 public final class CosmosContainerProperties {
 
-    private DocumentCollection documentCollection;
+    private final DocumentCollection documentCollection;
 
     /**
      * Constructor
@@ -143,6 +144,30 @@ public final class CosmosContainerProperties {
      */
     public CosmosContainerProperties setConflictResolutionPolicy(ConflictResolutionPolicy value) {
         this.documentCollection.setConflictResolutionPolicy(value);
+        return this;
+    }
+
+    /**
+     * Gets the changeFeedPolicy for this container in the Azure Cosmos DB service.
+     *
+     * @return ChangeFeedPolicy
+     */
+    @Beta(value = Beta.SinceVersion.V4_12_0,
+        warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ChangeFeedPolicy getChangeFeedPolicy() {
+        return this.documentCollection.getChangeFeedPolicy();
+    }
+
+    /**
+     * Sets the changeFeedPolicy for this container in the Azure Cosmos DB service.
+     *
+     * @param value ChangeFeedPolicy to be used.
+     * @return the CosmosContainerProperties.
+     */
+    @Beta(value = Beta.SinceVersion.V4_12_0,
+        warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosContainerProperties setChangeFeedPolicy(ChangeFeedPolicy value) {
+        this.documentCollection.setChangeFeedPolicy(value);
         return this;
     }
 

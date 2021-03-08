@@ -4,6 +4,8 @@
 package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
+import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 import com.azure.messaging.servicebus.implementation.models.MessageCountDetails;
 
 import java.time.OffsetDateTime;
@@ -11,9 +13,12 @@ import java.util.Objects;
 
 /**
  * Runtime properties about the topic.
+ *
+ * @see ServiceBusAdministrationAsyncClient#getTopicRuntimeProperties(String)
+ * @see ServiceBusAdministrationClient#getTopicRuntimeProperties(String)
  */
 @Immutable
-public class TopicRuntimeProperties {
+public final class TopicRuntimeProperties {
     private final String name;
     private final int subscriptionCount;
     private final long sizeInBytes;

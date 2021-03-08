@@ -36,10 +36,34 @@ public class WorkspacePatchInfo {
     private String sqlAdministratorLoginPassword;
 
     /**
+     * Managed Virtual Network Settings.
+     */
+    @JsonProperty(value = "properties.managedVirtualNetworkSettings")
+    private ManagedVirtualNetworkSettings managedVirtualNetworkSettings;
+
+    /**
+     * Git integration settings.
+     */
+    @JsonProperty(value = "properties.workspaceRepositoryConfiguration")
+    private WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration;
+
+    /**
+     * Purview Configuration.
+     */
+    @JsonProperty(value = "properties.purviewConfiguration")
+    private PurviewConfiguration purviewConfiguration;
+
+    /**
      * Resource provisioning state.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
+
+    /**
+     * The encryption details of the workspace.
+     */
+    @JsonProperty(value = "properties.encryption")
+    private EncryptionDetails encryption;
 
     /**
      * Get resource tags.
@@ -102,12 +126,92 @@ public class WorkspacePatchInfo {
     }
 
     /**
+     * Get managed Virtual Network Settings.
+     *
+     * @return the managedVirtualNetworkSettings value
+     */
+    public ManagedVirtualNetworkSettings managedVirtualNetworkSettings() {
+        return this.managedVirtualNetworkSettings;
+    }
+
+    /**
+     * Set managed Virtual Network Settings.
+     *
+     * @param managedVirtualNetworkSettings the managedVirtualNetworkSettings value to set
+     * @return the WorkspacePatchInfo object itself.
+     */
+    public WorkspacePatchInfo withManagedVirtualNetworkSettings(ManagedVirtualNetworkSettings managedVirtualNetworkSettings) {
+        this.managedVirtualNetworkSettings = managedVirtualNetworkSettings;
+        return this;
+    }
+
+    /**
+     * Get git integration settings.
+     *
+     * @return the workspaceRepositoryConfiguration value
+     */
+    public WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration() {
+        return this.workspaceRepositoryConfiguration;
+    }
+
+    /**
+     * Set git integration settings.
+     *
+     * @param workspaceRepositoryConfiguration the workspaceRepositoryConfiguration value to set
+     * @return the WorkspacePatchInfo object itself.
+     */
+    public WorkspacePatchInfo withWorkspaceRepositoryConfiguration(WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration) {
+        this.workspaceRepositoryConfiguration = workspaceRepositoryConfiguration;
+        return this;
+    }
+
+    /**
+     * Get purview Configuration.
+     *
+     * @return the purviewConfiguration value
+     */
+    public PurviewConfiguration purviewConfiguration() {
+        return this.purviewConfiguration;
+    }
+
+    /**
+     * Set purview Configuration.
+     *
+     * @param purviewConfiguration the purviewConfiguration value to set
+     * @return the WorkspacePatchInfo object itself.
+     */
+    public WorkspacePatchInfo withPurviewConfiguration(PurviewConfiguration purviewConfiguration) {
+        this.purviewConfiguration = purviewConfiguration;
+        return this;
+    }
+
+    /**
      * Get resource provisioning state.
      *
      * @return the provisioningState value
      */
     public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the encryption details of the workspace.
+     *
+     * @return the encryption value
+     */
+    public EncryptionDetails encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set the encryption details of the workspace.
+     *
+     * @param encryption the encryption value to set
+     * @return the WorkspacePatchInfo object itself.
+     */
+    public WorkspacePatchInfo withEncryption(EncryptionDetails encryption) {
+        this.encryption = encryption;
+        return this;
     }
 
 }

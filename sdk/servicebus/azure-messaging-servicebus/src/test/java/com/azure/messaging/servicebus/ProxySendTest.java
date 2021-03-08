@@ -8,6 +8,7 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.jproxy.ProxyServer;
 import com.azure.messaging.servicebus.jproxy.SimpleProxy;
+import org.apache.qpid.proton.engine.SslDomain;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -83,6 +84,7 @@ public class ProxySendTest extends IntegrationTestBase {
         final ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
+            .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
             .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
             .sender()
             .queueName(queueName)

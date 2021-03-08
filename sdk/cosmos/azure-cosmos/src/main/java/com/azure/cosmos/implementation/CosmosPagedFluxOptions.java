@@ -3,9 +3,9 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.util.CosmosPagedFlux;
-
-import java.util.Map;
 
 /**
  * Specifies paging options for Cosmos Paged Flux implementation.
@@ -18,10 +18,29 @@ public class CosmosPagedFluxOptions {
     private TracerProvider tracerProvider;
     private String tracerSpanName;
     private String databaseId;
+    private String containerId;
+    private OperationType operationType;
+    private ResourceType resourceType;
     private String serviceEndpoint;
-
+    private CosmosAsyncClient cosmosAsyncClient;
 
     public CosmosPagedFluxOptions() {}
+
+    public String getContainerId() {
+        return containerId;
+    }
+
+    public OperationType getOperationType() {
+        return operationType;
+    }
+
+    public ResourceType getResourceType() {
+        return resourceType;
+    }
+
+    public CosmosAsyncClient getCosmosAsyncClient() {
+        return cosmosAsyncClient;
+    }
 
     /**
      * Gets the request continuation token.
@@ -44,18 +63,34 @@ public class CosmosPagedFluxOptions {
     }
 
     /**
-     * Gets the maximum number of items to be returned in the enumeration
-     * operation.
+     * Gets the targeted number of items to be returned in the enumeration
+     * operation per page.
+     * <p>
+     * For query operations this is a hard upper limit.
+     * For ChangeFeed operations the number of items returned in a single
+     * page can exceed the targeted number if the targeted number is smaller
+     * than the number of change feed events within an atomic transaction. In this case
+     * all items within that atomic transaction are returned even when this results in
+     * page size > targeted maxItemSize.
+     * </p>
      *
-     * @return the max number of items.
+     * @return the targeted number of items.
      */
     public Integer getMaxItemCount() {
         return this.maxItemCount;
     }
 
     /**
-     * Sets the maximum number of items to be returned in the enumeration
-     * operation.
+     * Sets the targeted number of items to be returned in the enumeration
+     * operation per page.
+     * <p>
+     * For query operations this is a hard upper limit.
+     * For ChangeFeed operations the number of items returned in a single
+     * page can exceed the targeted number if the targeted number is smaller
+     * than the number of change feed events within an atomic transaction. In this case
+     * all items within that atomic transaction are returned even when this results in
+     * page size > targeted maxItemSize.
+     * </p>
      *
      * @param maxItemCount the max number of items.
      * @return the {@link CosmosPagedFluxOptions}.
@@ -102,5 +137,22 @@ public class CosmosPagedFluxOptions {
         this.serviceEndpoint = serviceEndpoint;
         this.tracerSpanName = tracerSpanName;
         this.tracerProvider = tracerProvider;
+    }
+
+    public void setTracerAndTelemetryInformation(String tracerSpanName,
+                                                 String databaseId,
+                                                 String containerId,
+                                                 OperationType operationType,
+                                                 ResourceType resourceType,
+                                                 CosmosAsyncClient cosmosAsyncClient
+    ) {
+        this.tracerProvider = BridgeInternal.getTracerProvider(cosmosAsyncClient);
+        this.serviceEndpoint = BridgeInternal.getServiceEndpoint(cosmosAsyncClient);
+        this.tracerSpanName = tracerSpanName;
+        this.databaseId = databaseId;
+        this.containerId = containerId;
+        this.operationType = operationType;
+        this.resourceType = resourceType;
+        this.cosmosAsyncClient = cosmosAsyncClient;
     }
 }

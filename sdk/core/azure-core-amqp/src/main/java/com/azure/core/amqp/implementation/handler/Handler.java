@@ -10,8 +10,12 @@ import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.ReplayProcessor;
 
 import java.io.Closeable;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Base class for all proton-j handlers.
+ */
 public abstract class Handler extends BaseHandler implements Closeable {
     private final AtomicBoolean isTerminal = new AtomicBoolean();
     private final ReplayProcessor<EndpointState> endpointStateProcessor =
@@ -20,19 +24,46 @@ public abstract class Handler extends BaseHandler implements Closeable {
     private final String connectionId;
     private final String hostname;
 
+    /**
+     * Creates an instance with the parameters.
+     *
+     * @param connectionId Identifier for the connection.
+     * @param hostname Hostname of the connection. This could be the DNS hostname or the IP address of the
+     *     connection. Usually of the form {@literal "<your-namespace>.service.windows.net"} but can change if the
+     *     messages are brokered through an intermediary.
+     *
+     * @throws NullPointerException if {@code connectionId} or {@code hostname} is null.
+     */
     Handler(final String connectionId, final String hostname) {
-        this.connectionId = connectionId;
-        this.hostname = hostname;
+        this.connectionId = Objects.requireNonNull(connectionId, "'connectionId' cannot be null.");
+        this.hostname = Objects.requireNonNull(hostname, "'hostname' cannot be null.");
     }
 
+    /**
+     * Gets the connection id.
+     *
+     * @return The connection id.
+     */
     public String getConnectionId() {
         return connectionId;
     }
 
+    /**
+     * Gets the hostname of the AMQP connection. This could be the DNS hostname or the IP address of the connection.
+     * Usually of the form {@literal "<your-namespace>.service.windows.net"} but can change if the messages are
+     * brokered through an intermediary.
+     *
+     * @return Gets the hostname of the AMQP connection.
+     */
     public String getHostname() {
         return hostname;
     }
 
+    /**
+     * Gets the endpoint states of the handler.
+     *
+     * @return The endpoint states of the handler.
+     */
     public Flux<EndpointState> getEndpointStates() {
         return endpointStateProcessor.distinct();
     }
@@ -50,6 +81,10 @@ public abstract class Handler extends BaseHandler implements Closeable {
         endpointSink.error(error);
     }
 
+    /**
+     * Changes the endpoint to {@link EndpointState#CLOSED} and completes the stream of {@link #getEndpointStates()
+     * endpoint states}.
+     */
     @Override
     public void close() {
         if (isTerminal.getAndSet(true)) {

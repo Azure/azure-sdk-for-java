@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public class StubDateTimeProvider implements DateTimeProvider {
 
-    private OffsetDateTime now;
+    private OffsetDateTime now = OffsetDateTime.now();
 
     @Override
     public Optional<TemporalAccessor> getNow() {

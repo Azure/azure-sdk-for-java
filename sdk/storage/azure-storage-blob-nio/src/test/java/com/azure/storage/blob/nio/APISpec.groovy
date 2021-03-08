@@ -80,7 +80,7 @@ class APISpec extends Specification {
 
     String blobPrefix = "javablob"
 
-    public static final String defaultEndpointTemplate = "https://%s.blob.core.windows.net/"
+    public static final String defaultEndpointTemplate = "https://%s.blob.core.windows.net"
 
     static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     static def PRIMARY_STORAGE = "PRIMARY_STORAGE_"
@@ -159,7 +159,7 @@ class APISpec extends Specification {
 
         interceptorManager.close()
     }
-    
+
     static Mono<ByteBuffer> collectBytesInBuffer(Flux<ByteBuffer> content) {
         return FluxUtil.collectBytesInByteBufferStream(content).map { bytes -> ByteBuffer.wrap(bytes) }
     }
@@ -196,6 +196,10 @@ class APISpec extends Specification {
         } else {
             return "azstoragesdkaccount"
         }
+    }
+
+    def getAccountUri() {
+        return String.format(defaultEndpointTemplate, getAccountName(PRIMARY_STORAGE))
     }
 
     private StorageSharedKeyCredential getCredential(String accountType) {
@@ -372,19 +376,22 @@ class APISpec extends Specification {
         }
     }
 
-    Map<String, Object> initializeConfigMap() {
+    Map<String, Object> initializeConfigMap(HttpPipelinePolicy... policies) {
         def config = [:]
         config[AzureFileSystem.AZURE_STORAGE_HTTP_CLIENT] = getHttpClient()
-        if (testMode == TestMode.RECORD) {
-            config[AzureFileSystem.AZURE_STORAGE_HTTP_POLICIES] =
-                [interceptorManager.getRecordPolicy()] as HttpPipelinePolicy[]
+        def policyList = []
+        for (HttpPipelinePolicy policy : policies) {
+            policyList.push(policy)
         }
-        config[AzureFileSystem.AZURE_STORAGE_USE_HTTPS] = defaultEndpointTemplate.startsWith("https")
+        if (testMode == TestMode.RECORD) {
+            policyList.push(interceptorManager.getRecordPolicy())
+        }
+        config[AzureFileSystem.AZURE_STORAGE_HTTP_POLICIES] = policyList as HttpPipelinePolicy[]
         return config as Map<String, Object>
     }
 
-    def getAccountUri() {
-        return new URI("azb://?account=" + getAccountName(PRIMARY_STORAGE))
+    def getFileSystemUri() {
+        return new URI("azb://?endpoint=" + getAccountUri())
     }
 
     def generateContainerName() {
@@ -413,9 +420,9 @@ class APISpec extends Specification {
 
     def createFS(Map<String,Object> config) {
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName() + "," + generateContainerName()
-        config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = getAccountKey(PRIMARY_STORAGE)
+        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = primaryCredential
 
-        return new AzureFileSystem(new AzureFileSystemProvider(), getAccountName(PRIMARY_STORAGE), config)
+        return new AzureFileSystem(new AzureFileSystemProvider(), getAccountUri(), config)
     }
 
     OffsetDateTime getUTCNow() {
@@ -526,7 +533,7 @@ class APISpec extends Specification {
                 return dir.toString()
             }
         }
-        throw new Exception("File system only contains the default directory");
+        throw new Exception("File system only contains the default directory")
     }
 
     def getDefaultDir(FileSystem fs) {

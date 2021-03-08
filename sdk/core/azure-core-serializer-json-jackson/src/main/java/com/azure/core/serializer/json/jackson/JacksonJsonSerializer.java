@@ -12,10 +12,13 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.cfg.MapperConfig;
+import com.fasterxml.jackson.databind.introspect.AccessorNamingStrategy;
+import com.fasterxml.jackson.databind.introspect.AnnotatedClass;
+import com.fasterxml.jackson.databind.introspect.AnnotatedClassResolver;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
 import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.fasterxml.jackson.databind.util.BeanUtil;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -47,6 +50,19 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
     }
 
     @Override
+    public <T> T deserializeFromBytes(byte[] data, TypeReference<T> typeReference) {
+        if (data == null) {
+            return null;
+        }
+
+        try {
+            return mapper.readValue(data, typeFactory.constructType(typeReference.getJavaType()));
+        } catch (IOException ex) {
+            throw logger.logExceptionAsError(new UncheckedIOException(ex));
+        }
+    }
+
+    @Override
     public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
         if (stream == null) {
             return null;
@@ -60,8 +76,22 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
     }
 
     @Override
+    public <T> Mono<T> deserializeFromBytesAsync(byte[] data, TypeReference<T> typeReference) {
+        return Mono.fromCallable(() -> deserializeFromBytes(data, typeReference));
+    }
+
+    @Override
     public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
         return Mono.fromCallable(() -> deserialize(stream, typeReference));
+    }
+
+    @Override
+    public byte[] serializeToBytes(Object value) {
+        try {
+            return mapper.writeValueAsBytes(value);
+        } catch (IOException ex) {
+            throw logger.logExceptionAsError(new UncheckedIOException(ex));
+        }
     }
 
     @Override
@@ -71,6 +101,11 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
         } catch (IOException ex) {
             throw logger.logExceptionAsError(new UncheckedIOException(ex));
         }
+    }
+
+    @Override
+    public Mono<byte[]> serializeToBytesAsync(Object value) {
+        return Mono.fromCallable(() -> this.serializeToBytes(value));
     }
 
     @Override
@@ -155,7 +190,19 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
             && returnType != Void.class;
     }
 
-    private static String removePrefix(Method method) {
-        return BeanUtil.okNameForGetter(new AnnotatedMethod(null, method, null, null), false);
+    private String removePrefix(Method method) {
+        MapperConfig<?> config = mapper.getSerializationConfig();
+
+        AnnotatedClass annotatedClass = AnnotatedClassResolver.resolve(config,
+            mapper.constructType(method.getDeclaringClass()), null);
+        AccessorNamingStrategy accessorNamingStrategy = config.getAccessorNaming().forPOJO(config, annotatedClass);
+
+        AnnotatedMethod annotatedMethod = new AnnotatedMethod(null, method, null, null);
+        String name = accessorNamingStrategy.findNameForIsGetter(annotatedMethod, annotatedMethod.getName());
+        if (name == null) {
+            name = accessorNamingStrategy.findNameForRegularGetter(annotatedMethod, annotatedMethod.getName());
+        }
+
+        return name;
     }
 }

@@ -3,27 +3,29 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 
 import java.time.Duration;
 
 /**
  * Options set when creating a service bus receiver.
+ *
+ * @see ServiceBusReceiverAsyncClient
  */
 class ReceiverOptions {
-    private final ReceiveMode receiveMode;
+    private final ServiceBusReceiveMode receiveMode;
     private final int prefetchCount;
     private final boolean enableAutoComplete;
     private final String sessionId;
     private final Integer maxConcurrentSessions;
     private final Duration maxLockRenewDuration;
 
-    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount, Duration maxLockRenewDuration,
+    ReceiverOptions(ServiceBusReceiveMode receiveMode, int prefetchCount, Duration maxLockRenewDuration,
         boolean enableAutoComplete) {
         this(receiveMode, prefetchCount, maxLockRenewDuration, enableAutoComplete, null, null);
     }
 
-    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount, Duration maxLockRenewDuration,
+    ReceiverOptions(ServiceBusReceiveMode receiveMode, int prefetchCount, Duration maxLockRenewDuration,
         boolean enableAutoComplete, String sessionId, Integer maxConcurrentSessions) {
         this.receiveMode = receiveMode;
         this.prefetchCount = prefetchCount;
@@ -46,7 +48,7 @@ class ReceiverOptions {
      *
      * @return the receive mode for the message.
      */
-    ReceiveMode getReceiveMode() {
+    ServiceBusReceiveMode getReceiveMode() {
         return receiveMode;
     }
 

@@ -10,9 +10,9 @@ package com.microsoft.azure.management.synapse.v2019_06_01_preview;
 
 import com.microsoft.azure.arm.collection.SupportsCreating;
 import rx.Completable;
+import rx.Observable;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation.SqlPoolSensitivityLabelsInner;
 import com.microsoft.azure.arm.model.HasInner;
-import rx.Observable;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.CurrentSensitivityLabels;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.RecommendedSensitivityLabels;
 
@@ -47,6 +47,21 @@ public interface SqlPoolSensitivityLabels extends SupportsCreating<SensitivityLa
      * @return the observable for the request
      */
     Completable disableRecommendationAsync(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName, String tableName, String columnName);
+
+    /**
+     * Gets the sensitivity label of a given column.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param sqlPoolName SQL pool name
+     * @param schemaName The name of the schema.
+     * @param tableName The name of the table.
+     * @param columnName The name of the column.
+     * @param sensitivityLabelSource The source of the sensitivity label. Possible values include: 'current', 'recommended'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SensitivityLabels> getAsync(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName, String tableName, String columnName, SensitivityLabelSource sensitivityLabelSource);
 
     /**
      * Deletes the sensitivity label of a given column in a Sql pool.

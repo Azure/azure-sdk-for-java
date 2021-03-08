@@ -4,6 +4,7 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
@@ -86,4 +87,24 @@ public class ManagedIdentityCredentialTest {
                         && expiresOn.getSecond() == token.getExpiresAt().getSecond())
                 .verifyComplete();
     }
+
+    @Test
+    public void testArcUserAssigned() throws Exception {
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+
+        // setup
+        String token1 = "token1";
+        String endpoint = "http://localhost";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        configuration.put("IDENTITY_ENDPOINT", endpoint);
+        configuration.put("IMDS_ENDPOINT", endpoint);
+
+
+        // test
+        ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(CLIENT_ID).build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(t -> t instanceof ClientAuthenticationException)
+            .verify();
+    }
+
 }

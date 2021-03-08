@@ -45,6 +45,30 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
     private ExecuteDataFlowActivityTypePropertiesCompute compute;
 
     /**
+     * Trace level setting used for data flow monitoring output. Supported
+     * values are: 'coarse', 'fine', and 'none'. Type: string (or Expression
+     * with resultType string).
+     */
+    @JsonProperty(value = "typeProperties.traceLevel")
+    private Object traceLevel;
+
+    /**
+     * Continue on error setting used for data flow execution. Enables
+     * processing to continue if a sink fails. Type: boolean (or Expression
+     * with resultType boolean).
+     */
+    @JsonProperty(value = "typeProperties.continueOnError")
+    private Object continueOnError;
+
+    /**
+     * Concurrent run setting used for data flow execution. Allows sinks with
+     * the same save order to be processed concurrently. Type: boolean (or
+     * Expression with resultType boolean).
+     */
+    @JsonProperty(value = "typeProperties.runConcurrently")
+    private Object runConcurrently;
+
+    /**
      * Get data flow reference.
      *
      * @return the dataFlow value
@@ -121,6 +145,66 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
      */
     public ExecuteDataFlowActivity withCompute(ExecuteDataFlowActivityTypePropertiesCompute compute) {
         this.compute = compute;
+        return this;
+    }
+
+    /**
+     * Get trace level setting used for data flow monitoring output. Supported values are: 'coarse', 'fine', and 'none'. Type: string (or Expression with resultType string).
+     *
+     * @return the traceLevel value
+     */
+    public Object traceLevel() {
+        return this.traceLevel;
+    }
+
+    /**
+     * Set trace level setting used for data flow monitoring output. Supported values are: 'coarse', 'fine', and 'none'. Type: string (or Expression with resultType string).
+     *
+     * @param traceLevel the traceLevel value to set
+     * @return the ExecuteDataFlowActivity object itself.
+     */
+    public ExecuteDataFlowActivity withTraceLevel(Object traceLevel) {
+        this.traceLevel = traceLevel;
+        return this;
+    }
+
+    /**
+     * Get continue on error setting used for data flow execution. Enables processing to continue if a sink fails. Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the continueOnError value
+     */
+    public Object continueOnError() {
+        return this.continueOnError;
+    }
+
+    /**
+     * Set continue on error setting used for data flow execution. Enables processing to continue if a sink fails. Type: boolean (or Expression with resultType boolean).
+     *
+     * @param continueOnError the continueOnError value to set
+     * @return the ExecuteDataFlowActivity object itself.
+     */
+    public ExecuteDataFlowActivity withContinueOnError(Object continueOnError) {
+        this.continueOnError = continueOnError;
+        return this;
+    }
+
+    /**
+     * Get concurrent run setting used for data flow execution. Allows sinks with the same save order to be processed concurrently. Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the runConcurrently value
+     */
+    public Object runConcurrently() {
+        return this.runConcurrently;
+    }
+
+    /**
+     * Set concurrent run setting used for data flow execution. Allows sinks with the same save order to be processed concurrently. Type: boolean (or Expression with resultType boolean).
+     *
+     * @param runConcurrently the runConcurrently value to set
+     * @return the ExecuteDataFlowActivity object itself.
+     */
+    public ExecuteDataFlowActivity withRunConcurrently(Object runConcurrently) {
+        this.runConcurrently = runConcurrently;
         return this;
     }
 

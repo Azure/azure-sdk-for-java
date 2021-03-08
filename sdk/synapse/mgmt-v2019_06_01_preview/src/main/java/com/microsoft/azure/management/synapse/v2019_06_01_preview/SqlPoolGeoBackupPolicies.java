@@ -28,4 +28,16 @@ public interface SqlPoolGeoBackupPolicies extends HasInner<SqlPoolGeoBackupPolic
      */
     Observable<GeoBackupPolicy> getAsync(String resourceGroupName, String workspaceName, String sqlPoolName);
 
+    /**
+     * List SQL pool geo backup policies.
+     * Get list of SQL pool geo backup policies.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param sqlPoolName SQL pool name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<GeoBackupPolicy> listAsync(String resourceGroupName, String workspaceName, String sqlPoolName);
+
 }

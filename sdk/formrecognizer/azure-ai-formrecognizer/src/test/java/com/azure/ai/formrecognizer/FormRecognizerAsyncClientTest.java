@@ -7,12 +7,16 @@ import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
+import com.azure.ai.formrecognizer.models.FormRecognizerLanguage;
+import com.azure.ai.formrecognizer.models.FormRecognizerLocale;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizeBusinessCardsOptions;
 import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
+import com.azure.ai.formrecognizer.models.RecognizeInvoicesOptions;
 import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
+import com.azure.ai.formrecognizer.models.TextStyleName;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.training.models.TrainingOptions;
@@ -21,16 +25,21 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.BUSINESS_CARD;
+import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.INVOICE;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.RECEIPT;
 import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
+import static com.azure.ai.formrecognizer.TestUtils.CONTENT_GERMAN_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.TestUtils.FORM_JPG;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_IMAGE_URL_ERROR_CODE;
@@ -41,6 +50,7 @@ import static com.azure.ai.formrecognizer.TestUtils.SELECTION_MARK_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.getContentDetectionFileData;
 import static com.azure.ai.formrecognizer.TestUtils.validateExceptionSource;
 import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
+import static com.azure.ai.formrecognizer.models.FormContentType.APPLICATION_PDF;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -110,9 +120,9 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         localFilePathRunner((filePath, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
-                = client.beginRecognizeReceipts(toFluxByteBuffer(getContentDetectionFileData(filePath)), dataLength,
-                new RecognizeReceiptsOptions().setPollInterval(durationTestMode)).getSyncPoller();
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeReceipts(toFluxByteBuffer(getContentDetectionFileData(filePath)), dataLength,
+                    new RecognizeReceiptsOptions().setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller.waitForCompletion();
             validatePrebuiltResultData(syncPoller.getFinalResult(), false, RECEIPT);
         }, RECEIPT_CONTOSO_JPG);
@@ -213,7 +223,9 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeReceiptsFromUrl(sourceUrl).getSyncPoller();
+                client.beginRecognizeReceiptsFromUrl(sourceUrl,
+                    new RecognizeReceiptsOptions().setPollInterval(durationTestMode))
+                    .getSyncPoller();
             syncPoller.waitForCompletion();
             validatePrebuiltResultData(syncPoller.getFinalResult(), false, RECEIPT);
         }, RECEIPT_CONTOSO_JPG);
@@ -413,6 +425,86 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         }, SELECTION_MARK_PDF);
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeContentWithPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller =
+                client.beginRecognizeContent(toFluxByteBuffer(data),
+                    dataLength,
+                    new RecognizeContentOptions()
+                        .setContentType(APPLICATION_PDF)
+                        .setPollInterval(durationTestMode)
+                        .setPages(Collections.singletonList("1")))
+                    .getSyncPoller();
+            syncPoller.waitForCompletion();
+            List<FormPage> formPages = syncPoller.getFinalResult();
+            validateContentResultData(formPages, false);
+            assertEquals(1, formPages.size());
+        }, MULTIPAGE_INVOICE_PDF);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeContentWithPages(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller =
+                client.beginRecognizeContent(toFluxByteBuffer(data),
+                    dataLength,
+                    new RecognizeContentOptions()
+                        .setContentType(APPLICATION_PDF)
+                        .setPollInterval(durationTestMode)
+                        .setPages(Arrays.asList("1", "2")))
+                    .getSyncPoller();
+            syncPoller.waitForCompletion();
+            List<FormPage> formPages = syncPoller.getFinalResult();
+            validateContentResultData(formPages, false);
+            assertEquals(2, formPages.size());
+        }, MULTIPAGE_INVOICE_PDF);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeContentWithPageRange(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller =
+                client.beginRecognizeContent(toFluxByteBuffer(data),
+                    dataLength,
+                    new RecognizeContentOptions()
+                        .setContentType(APPLICATION_PDF)
+                        .setPollInterval(durationTestMode)
+                        .setPages(Arrays.asList("1-2", "3")))
+                    .getSyncPoller();
+            syncPoller.waitForCompletion();
+            List<FormPage> formPages = syncPoller.getFinalResult();
+            validateContentResultData(formPages, false);
+            assertEquals(3, formPages.size());
+        }, MULTIPAGE_INVOICE_PDF);
+    }
+
+    /**
+     * Verifies layout data for a document using source as input stream data.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeContentAppearance(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller = client.beginRecognizeContent(
+                toFluxByteBuffer(data), dataLength, new RecognizeContentOptions()
+                    .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode))
+                .getSyncPoller();
+            syncPoller.waitForCompletion();
+            List<FormPage> formPages = syncPoller.getFinalResult();
+            validateContentResultData(formPages, false);
+            assertEquals(TextStyleName.OTHER,
+                formPages.get(0).getLines().get(0).getAppearance().getStyle().getName());
+        }, FORM_JPG);
+    }
+
     // Content - URL
 
     /**
@@ -504,6 +596,39 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             syncPoller.waitForCompletion();
             validateContentResultData(syncPoller.getFinalResult(), false);
         }, SELECTION_MARK_PDF);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeGermanContentFromUrl(HttpClient httpClient,
+                                              FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        testingContainerUrlRunner(sourceUrl -> {
+            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller =
+                client.beginRecognizeContentFromUrl(sourceUrl,
+                    new RecognizeContentOptions().setPollInterval(durationTestMode)
+                        .setLanguage(FormRecognizerLanguage.DE))
+                    .getSyncPoller();
+            syncPoller.waitForCompletion();
+            validateContentResultData(syncPoller.getFinalResult(), false);
+            validateNetworkCallRecord("language", "de");
+        }, CONTENT_GERMAN_PDF);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeContentIncorrectLanguageFromUrl(HttpClient httpClient,
+                                              FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        testingContainerUrlRunner(sourceUrl -> {
+            HttpResponseException exception
+                = assertThrows(HttpResponseException.class,
+                    () -> client.beginRecognizeContentFromUrl(sourceUrl,
+                        new RecognizeContentOptions().setPollInterval(durationTestMode)
+                            .setLanguage(FormRecognizerLanguage.fromString("language")))
+                        .getSyncPoller());
+            assertEquals(((FormRecognizerErrorInformation) exception.getValue()).getErrorCode(), "NotSupportedLanguage");
+        }, CONTENT_GERMAN_PDF);
     }
 
     // Custom form recognition
@@ -674,6 +799,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled
     public void recognizeCustomFormInvalidStatus(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         invalidSourceUrlRunner((invalidSourceUrl) ->
@@ -733,14 +859,15 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                     getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
                         true, new TrainingOptions().setPollInterval(durationTestMode)).getSyncPoller();
                 trainingPoller.waitForCompletion();
+                String modelId = trainingPoller.getFinalResult().getModelId();
 
                 SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
-                    trainingPoller.getFinalResult().getModelId(), toFluxByteBuffer(data), dataLength,
+                    modelId, toFluxByteBuffer(data), dataLength,
                     new RecognizeCustomFormsOptions()
                         .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode))
                     .getSyncPoller();
                 syncPoller.waitForCompletion();
-                validateMultiPageDataLabeled(syncPoller.getFinalResult());
+                validateMultiPageDataLabeled(syncPoller.getFinalResult(), modelId);
             }), MULTIPAGE_INVOICE_PDF);
     }
 
@@ -961,7 +1088,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     public void recognizeCustomFormUrlMultiPageUnlabeled(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        urlPdfUnlabeledRunner(fileUrl ->
+        testingContainerUrlRunner(fileUrl ->
             beginTrainingMultipageRunner((trainingFilesUrl) -> {
                 SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
                     getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
@@ -974,7 +1101,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                         .getSyncPoller();
                 syncPoller.waitForCompletion();
                 validateMultiPageDataUnlabeled(syncPoller.getFinalResult());
-            }));
+            }), MULTIPAGE_INVOICE_PDF);
     }
 
     // Custom form - URL - labeled data
@@ -993,7 +1120,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                     useTrainingLabels, new TrainingOptions().setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller.waitForCompletion();
             CustomFormModel createdModel = syncPoller.getFinalResult();
-            StepVerifier.create(client.beginRecognizeCustomFormsFromUrl(createdModel.getModelId(), INVALID_URL))
+            StepVerifier.create(client.beginRecognizeCustomFormsFromUrl(createdModel.getModelId(), INVALID_URL,
+                new RecognizeCustomFormsOptions().setPollInterval(durationTestMode)))
                 .verifyErrorSatisfies(throwable -> {
                     final HttpResponseException httpResponseException = (HttpResponseException) throwable;
                     final FormRecognizerErrorInformation errorInformation =
@@ -1097,12 +1225,12 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                         .beginTraining(trainingFilesUrl, true,
                             new TrainingOptions().setPollInterval(durationTestMode)).getSyncPoller();
                 trainingPoller.waitForCompletion();
-
+                String modelId = trainingPoller.getFinalResult().getModelId();
                 SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomFormsFromUrl(
-                    trainingPoller.getFinalResult().getModelId(), fileUrl, new RecognizeCustomFormsOptions()
+                    modelId, fileUrl, new RecognizeCustomFormsOptions()
                         .setPollInterval(durationTestMode)).getSyncPoller();
                 syncPoller.waitForCompletion();
-                validateMultiPageDataLabeled(syncPoller.getFinalResult());
+                validateMultiPageDataLabeled(syncPoller.getFinalResult(), modelId);
             }), MULTIPAGE_INVOICE_PDF);
     }
 
@@ -1344,7 +1472,9 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeBusinessCardsFromUrl(sourceUrl).getSyncPoller();
+                client.beginRecognizeBusinessCardsFromUrl(sourceUrl,
+                    new RecognizeBusinessCardsOptions().setPollInterval(durationTestMode))
+                    .getSyncPoller();
             syncPoller.waitForCompletion();
             validatePrebuiltResultData(syncPoller.getFinalResult(), false, BUSINESS_CARD);
         }, BUSINESS_CARD_JPG);
@@ -1457,28 +1587,10 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
                 client.beginRecognizeReceiptsFromUrl(sourceUrl,
                     new RecognizeReceiptsOptions()
-                        .setLocale("en-US")
+                        .setLocale(FormRecognizerLocale.EN_US)
                         .setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller.getFinalResult();
             validateNetworkCallRecord("locale", "en-US");
-        }, RECEIPT_CONTOSO_JPG);
-    }
-
-    /**
-     * Verify empty locale parameter passed when specified by user.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void receiptEmptyLocale(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        urlRunner(sourceUrl -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeReceiptsFromUrl(sourceUrl,
-                    new RecognizeReceiptsOptions()
-                        .setLocale("")
-                        .setPollInterval(durationTestMode)).getSyncPoller();
-            syncPoller.getFinalResult();
-            validateNetworkCallRecord("locale", "");
         }, RECEIPT_CONTOSO_JPG);
     }
 
@@ -1493,10 +1605,229 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
                 client.beginRecognizeBusinessCardsFromUrl(sourceUrl,
                     new RecognizeBusinessCardsOptions()
-                        .setLocale("en-US")
+                        .setLocale(FormRecognizerLocale.EN_US)
                         .setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller.getFinalResult();
             validateNetworkCallRecord("locale", "en-US");
         }, RECEIPT_CONTOSO_JPG);
+    }
+
+    // Invoice recognition
+
+    // Invoice - non-URL
+
+    /**
+     * Verifies invoice data recognition  for a document using source as input stream data.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeInvoiceData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeInvoices(toFluxByteBuffer(data),
+                    dataLength,
+                    new RecognizeInvoicesOptions()
+                        .setContentType(APPLICATION_PDF)
+                        .setPollInterval(durationTestMode)).getSyncPoller();
+            syncPoller.waitForCompletion();
+            validatePrebuiltResultData(syncPoller.getFinalResult(), false, INVOICE);
+        }, INVOICE_PDF);
+    }
+
+    /**
+     * Verifies content type will be auto detected when using invoice API with input stream data overload.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeInvoiceDataWithContentTypeAutoDetection(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        localFilePathRunner((filePath, dataLength) -> {
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeInvoices(toFluxByteBuffer(getContentDetectionFileData(filePath)),
+                    dataLength,
+                    new RecognizeInvoicesOptions().setPollInterval(durationTestMode)).getSyncPoller();
+            syncPoller.waitForCompletion();
+            validatePrebuiltResultData(syncPoller.getFinalResult(), false, INVOICE);
+        }, INVOICE_PDF);
+    }
+
+    /**
+     * Verifies invoice data for a document using source as as input stream data and text content when
+     * includeFieldElements is true.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeInvoiceDataIncludeFieldElements(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeInvoices(toFluxByteBuffer(data),
+                    dataLength,
+                    new RecognizeInvoicesOptions()
+                        .setContentType(APPLICATION_PDF)
+                        .setFieldElementsIncluded(true)
+                        .setPollInterval(durationTestMode)).getSyncPoller();
+            syncPoller.waitForCompletion();
+            validatePrebuiltResultData(syncPoller.getFinalResult(), true, INVOICE);
+        }, INVOICE_PDF);
+    }
+
+
+    /**
+     * Verifies invoice data from a document using blank PDF.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeInvoiceDataWithBlankPdf(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeInvoices(toFluxByteBuffer(data),
+                    dataLength,
+                    new RecognizeInvoicesOptions()
+                        .setContentType(APPLICATION_PDF)
+                        .setPollInterval(durationTestMode)).getSyncPoller();
+            syncPoller.waitForCompletion();
+            validateBlankPdfResultData(syncPoller.getFinalResult());
+        }, BLANK_PDF);
+    }
+
+    /**
+     * Verify that invoice recognition with damaged PDF file.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeInvoiceFromDamagedPdf(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        damagedPdfDataRunner((data, dataLength) -> {
+            HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
+                () -> client.beginRecognizeInvoices(toFluxByteBuffer(data),
+                    dataLength,
+                    new RecognizeInvoicesOptions()
+                        .setContentType(APPLICATION_PDF)
+                        .setPollInterval(durationTestMode))
+                    .getSyncPoller()
+                    .getFinalResult());
+            FormRecognizerErrorInformation errorInformation =
+                (FormRecognizerErrorInformation) httpResponseException.getValue();
+            assertEquals(BAD_ARGUMENT_CODE, errorInformation.getErrorCode());
+        });
+    }
+
+    /**
+     * Verify invoice data recognition with multipage pdf.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeMultipageInvoice(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeInvoices(toFluxByteBuffer(data),
+                    dataLength,
+                    new RecognizeInvoicesOptions()
+                        .setContentType(APPLICATION_PDF)
+                        .setFieldElementsIncluded(true)
+                        .setPollInterval(durationTestMode)).getSyncPoller();
+            syncPoller.waitForCompletion();
+            validateMultipageInvoiceData(syncPoller.getFinalResult());
+        }, MULTIPAGE_VENDOR_INVOICE_PDF);
+    }
+
+    // invoice - URL
+
+    /**
+     * Verifies invoice card data for a document using source as file url.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeInvoiceSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        urlRunner((sourceUrl) -> {
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeInvoicesFromUrl(sourceUrl,
+                    new RecognizeInvoicesOptions()
+                        .setPollInterval(durationTestMode)).getSyncPoller();
+            syncPoller.waitForCompletion();
+            validatePrebuiltResultData(syncPoller.getFinalResult(), false, INVOICE);
+        }, INVOICE_PDF);
+    }
+
+    /**
+     * Verifies encoded blank url must stay same when sent to service for a document using invalid source url with
+     * encoded blank space as input data to recognize invoice card from url API.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeInvoiceFromUrlWithEncodedBlankSpaceSourceUrl(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        encodedBlankSpaceSourceUrlRunner(sourceUrl -> {
+            HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
+                () -> client.beginRecognizeInvoicesFromUrl(sourceUrl,
+                    new RecognizeInvoicesOptions()
+                        .setPollInterval(durationTestMode)).getSyncPoller());
+            validateExceptionSource(errorResponseException);
+        });
+    }
+
+    /**
+     * Verifies that an exception is thrown for invalid source url.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeInvoiceInvalidSourceUrl(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        invalidSourceUrlRunner((sourceUrl)
+            -> assertThrows(HttpResponseException.class,
+                () -> client.beginRecognizeInvoicesFromUrl(sourceUrl,
+                    new RecognizeInvoicesOptions()
+                        .setPollInterval(durationTestMode)).getSyncPoller()));
+    }
+
+    /**
+     * Verifies invoice data for a document using source as file url and include form element references
+     * when includeFieldElements is true.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeInvoiceFromUrlIncludeFieldElements(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        urlRunner(sourceUrl -> {
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeInvoicesFromUrl(sourceUrl,
+                    new RecognizeInvoicesOptions()
+                        .setFieldElementsIncluded(true)
+                        .setPollInterval(durationTestMode))
+                    .getSyncPoller();
+            syncPoller.waitForCompletion();
+            validatePrebuiltResultData(syncPoller.getFinalResult(), true, INVOICE);
+        }, INVOICE_PDF);
+    }
+
+    /**
+     * Verify locale parameter passed when specified by user.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void invoiceValidLocale(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        urlRunner(sourceUrl -> {
+            final SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeInvoicesFromUrl(sourceUrl,
+                    new RecognizeInvoicesOptions()
+                        .setPollInterval(durationTestMode)
+                        .setLocale(FormRecognizerLocale.EN_US))
+                    .getSyncPoller();
+            syncPoller.getFinalResult();
+            // need to update this method for removing flakiness
+            validateNetworkCallRecord("locale", "en-US");
+        }, INVOICE_PDF);
     }
 }

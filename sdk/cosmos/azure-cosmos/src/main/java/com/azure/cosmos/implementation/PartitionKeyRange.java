@@ -74,16 +74,18 @@ public class PartitionKeyRange extends Resource {
         return super.getString("minInclusive");
     }
 
-    public void setMinInclusive(String minInclusive) {
+    public PartitionKeyRange setMinInclusive(String minInclusive) {
         BridgeInternal.setProperty(this, "minInclusive", minInclusive);
+        return this;
     }
 
     public String getMaxExclusive() {
         return super.getString("maxExclusive");
     }
 
-    public void setMaxExclusive(String maxExclusive) {
+    public PartitionKeyRange setMaxExclusive(String maxExclusive) {
         BridgeInternal.setProperty(this, "maxExclusive", maxExclusive);
+        return this;
     }
 
     public Range<String> toRange() {

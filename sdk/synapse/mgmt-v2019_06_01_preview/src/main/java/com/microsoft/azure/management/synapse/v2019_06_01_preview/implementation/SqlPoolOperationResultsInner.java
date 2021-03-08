@@ -10,7 +10,7 @@ package com.microsoft.azure.management.synapse.v2019_06_01_preview.implementatio
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.ErrorContractException;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -66,7 +66,7 @@ public class SqlPoolOperationResultsInner {
      * @param sqlPoolName SQL pool name
      * @param operationId Operation ID
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Object object if successful.
      */
@@ -154,10 +154,11 @@ public class SqlPoolOperationResultsInner {
             });
     }
 
-    private ServiceResponse<Object> getLocationHeaderResultDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Object, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Object> getLocationHeaderResultDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Object, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
-                .registerError(CloudException.class)
+                .register(202, new TypeToken<Object>() { }.getType())
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 

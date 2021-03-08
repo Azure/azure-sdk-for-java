@@ -95,4 +95,28 @@ public class ImportKeyOptions extends KeyProperties {
         this.notBefore = notBefore;
         return this;
     }
+
+    /**
+     * Set a value that indicates if the private key can be exported.
+     *
+     * @param exportable The exportable value to set.
+     * @return The updated {@link ImportKeyOptions} object.
+     */
+    @Override
+    public ImportKeyOptions setExportable(Boolean exportable) {
+        this.exportable = exportable;
+        return this;
+    }
+
+    /**
+     * Set the policy rules under which the key can be exported.
+     *
+     * @param releasePolicy The release policy to set.
+     * @return The updated {@link ImportKeyOptions} object.
+     */
+    @Override
+    public ImportKeyOptions setReleasePolicy(KeyReleasePolicy releasePolicy) {
+        this.releasePolicy = releasePolicy;
+        return this;
+    }
 }

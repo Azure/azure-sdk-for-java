@@ -3,16 +3,21 @@
 
 package com.azure.security.keyvault.administration.models;
 
+import com.azure.core.annotation.Immutable;
+
+import java.time.OffsetDateTime;
+
 /**
  * A class that contains the details of a long running operation.
  */
+@Immutable
 public class KeyVaultLongRunningOperation {
     private final String status;
     private final String statusDetails;
     private final KeyVaultError error;
     private final String jobId;
-    private final Long startTime;
-    private final Long endTime;
+    private final OffsetDateTime startTime;
+    private final OffsetDateTime endTime;
 
     /**
      * Creates an object containing the details of a {@link KeyVaultLongRunningOperation}.
@@ -20,11 +25,11 @@ public class KeyVaultLongRunningOperation {
      * @param status Status of the {@link KeyVaultLongRunningOperation}.
      * @param statusDetails The status details of the {@link KeyVaultLongRunningOperation}.
      * @param error Error encountered, if any, during the {@link KeyVaultLongRunningOperation}.
-     * @param startTime The start time of the {@link KeyVaultLongRunningOperation} in UTC.
-     * @param endTime The end time of the {@link KeyVaultLongRunningOperation} in UTC.
+     * @param startTime The start time of the {@link KeyVaultLongRunningOperation}.
+     * @param endTime The end time of the {@link KeyVaultLongRunningOperation}.
      * @param jobId Identifier for the full {@link KeyVaultLongRunningOperation}.
      */
-    public KeyVaultLongRunningOperation(String status, String statusDetails, KeyVaultError error, String jobId, Long startTime, Long endTime) {
+    public KeyVaultLongRunningOperation(String status, String statusDetails, KeyVaultError error, String jobId, OffsetDateTime startTime, OffsetDateTime endTime) {
         this.status = status;
         this.statusDetails = statusDetails;
         this.error = error;
@@ -61,20 +66,20 @@ public class KeyVaultLongRunningOperation {
     }
 
     /**
-     * Get the start time of the {@link KeyVaultLongRunningOperation} in UTC.
+     * Get the start time of the {@link KeyVaultLongRunningOperation}.
      *
-     * @return The start time in UTC.
+     * @return The start time.
      */
-    public Long getStartTime() {
+    public OffsetDateTime getStartTime() {
         return startTime;
     }
 
     /**
-     * Get the end time of the {@link KeyVaultLongRunningOperation} in UTC.
+     * Get the end time of the {@link KeyVaultLongRunningOperation}.
      *
-     * @return The end time in UTC.
+     * @return The end time.
      */
-    public Long getEndTime() {
+    public OffsetDateTime getEndTime() {
         return endTime;
     }
 

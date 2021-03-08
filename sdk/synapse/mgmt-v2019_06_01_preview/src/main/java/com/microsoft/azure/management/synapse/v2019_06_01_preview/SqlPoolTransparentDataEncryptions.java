@@ -40,4 +40,16 @@ public interface SqlPoolTransparentDataEncryptions extends HasInner<SqlPoolTrans
      */
     Observable<TransparentDataEncryption> createOrUpdateAsync(String resourceGroupName, String workspaceName, String sqlPoolName);
 
+    /**
+     * SQL pool's transparent data encryption configurations.
+     * Get list of SQL pool's transparent data encryption configurations.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param sqlPoolName SQL pool name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<TransparentDataEncryption> listAsync(final String resourceGroupName, final String workspaceName, final String sqlPoolName);
+
 }

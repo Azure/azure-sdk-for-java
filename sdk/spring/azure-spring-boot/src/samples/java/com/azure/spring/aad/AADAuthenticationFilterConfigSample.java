@@ -20,5 +20,4 @@ public class AADAuthenticationFilterConfigSample extends WebSecurityConfigurerAd
 
     @Autowired
     private AADAuthenticationFilter aadAuthFilter;
-
 }

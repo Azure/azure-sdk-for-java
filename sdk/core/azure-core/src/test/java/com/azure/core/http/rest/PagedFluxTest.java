@@ -57,6 +57,7 @@ public class PagedFluxTest {
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void testPagedFluxConverter() throws MalformedURLException {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(5);
@@ -75,6 +76,7 @@ public class PagedFluxTest {
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void testPagedFluxSubscribeToPagesFromStartWithConvertedType() throws MalformedURLException {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(5);
@@ -92,6 +94,7 @@ public class PagedFluxTest {
 
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void testPagedFluxSinglePageConvertedType() throws MalformedURLException {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(1);
@@ -188,14 +191,14 @@ public class PagedFluxTest {
         CountDownLatch multiPageLatch = new CountDownLatch(2);
         pagedFlux
             .byPage()
-            .subscriberContext(Context.of("hello", "context"))
+            .contextWrite(Context.of("hello", "context"))
             .subscribe(pagedResponse -> assertTrue(pagedResponse instanceof PagedResponse));
 
         boolean completed = singlePageLatch.await(1, TimeUnit.SECONDS);
         assertTrue(completed);
 
-        HttpHeaders httpHeaders = new HttpHeaders().put("header1", "value1")
-            .put("header2", "value2");
+        HttpHeaders httpHeaders = new HttpHeaders().set("header1", "value1")
+            .set("header2", "value2");
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
         pagedFlux = new PagedFlux<>(() -> withContext(context -> {
             assertNotNull(context);
@@ -216,15 +219,15 @@ public class PagedFluxTest {
 
         pagedFlux
             .byPage()
-            .subscriberContext(Context.of("hello", "context"))
+            .contextWrite(Context.of("hello", "context"))
             .subscribe(pagedResponse -> assertTrue(pagedResponse instanceof PagedResponse));
         completed = multiPageLatch.await(1, TimeUnit.SECONDS);
         assertTrue(completed);
     }
 
     private PagedFlux<Integer> getIntegerPagedFlux(int noOfPages) throws MalformedURLException {
-        HttpHeaders httpHeaders = new HttpHeaders().put("header1", "value1")
-            .put("header2", "value2");
+        HttpHeaders httpHeaders = new HttpHeaders().set("header1", "value1")
+            .set("header2", "value2");
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
 
         String deserializedHeaders = "header1,value1,header2,value2";
@@ -243,8 +246,8 @@ public class PagedFluxTest {
     }
 
     private PagedFlux<Integer> getIntegerPagedFluxSinglePage() throws MalformedURLException {
-        HttpHeaders httpHeaders = new HttpHeaders().put("header1", "value1")
-            .put("header2", "value2");
+        HttpHeaders httpHeaders = new HttpHeaders().set("header1", "value1")
+            .set("header2", "value2");
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
 
         String deserializedHeaders = "header1,value1,header2,value2";

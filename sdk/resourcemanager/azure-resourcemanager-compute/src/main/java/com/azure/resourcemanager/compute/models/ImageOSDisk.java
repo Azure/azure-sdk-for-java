@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -69,6 +70,55 @@ public final class ImageOSDisk extends ImageDisk {
      */
     public ImageOSDisk withOsState(OperatingSystemStateTypes osState) {
         this.osState = osState;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImageOSDisk withSnapshot(SubResource snapshot) {
+        super.withSnapshot(snapshot);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImageOSDisk withManagedDisk(SubResource managedDisk) {
+        super.withManagedDisk(managedDisk);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImageOSDisk withBlobUri(String blobUri) {
+        super.withBlobUri(blobUri);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImageOSDisk withCaching(CachingTypes caching) {
+        super.withCaching(caching);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImageOSDisk withDiskSizeGB(Integer diskSizeGB) {
+        super.withDiskSizeGB(diskSizeGB);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImageOSDisk withStorageAccountType(StorageAccountTypes storageAccountType) {
+        super.withStorageAccountType(storageAccountType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImageOSDisk withDiskEncryptionSet(SubResource diskEncryptionSet) {
+        super.withDiskEncryptionSet(diskEncryptionSet);
         return this;
     }
 

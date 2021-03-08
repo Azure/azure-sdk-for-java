@@ -10,7 +10,13 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 
 class EncryptionFeedResponse<T> extends FeedResponse<T> {
-    EncryptionFeedResponse(List<T> results, Map<String, String> headers, ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
-        super(results, headers, queryMetricsMap);
+    EncryptionFeedResponse(
+        List<T> results,
+        Map<String, String> headers,
+        ConcurrentMap<String, QueryMetrics> queryMetricsMap,
+        boolean useEtagAsContinuation,
+        boolean isNoChanges) {
+
+        super(results, headers, queryMetricsMap, useEtagAsContinuation, isNoChanges);
     }
 }

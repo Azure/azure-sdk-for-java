@@ -48,8 +48,7 @@ public final class LinkedEntity {
     private String dataSource;
 
     /*
-     * Bing unique identifier of the recognized entity. Use in conjunction with
-     * the Bing Entity Search API to fetch additional relevant information.
+     * Bing Entity Search API unique identifier of the recognized entity.
      */
     @JsonProperty(value = "bingId")
     private String bingId;
@@ -175,8 +174,7 @@ public final class LinkedEntity {
     }
 
     /**
-     * Get the bingId property: Bing unique identifier of the recognized entity. Use in conjunction with the Bing Entity
-     * Search API to fetch additional relevant information.
+     * Get the bingId property: Bing Entity Search API unique identifier of the recognized entity.
      *
      * @return the bingId value.
      */
@@ -185,8 +183,7 @@ public final class LinkedEntity {
     }
 
     /**
-     * Set the bingId property: Bing unique identifier of the recognized entity. Use in conjunction with the Bing Entity
-     * Search API to fetch additional relevant information.
+     * Set the bingId property: Bing Entity Search API unique identifier of the recognized entity.
      *
      * @param bingId the bingId value to set.
      * @return the LinkedEntity object itself.

@@ -71,6 +71,20 @@ public final class FirewallPolicyNatRuleCollection extends FirewallPolicyRuleCol
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public FirewallPolicyNatRuleCollection withName(String name) {
+        super.withName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FirewallPolicyNatRuleCollection withPriority(Integer priority) {
+        super.withPriority(priority);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

@@ -32,6 +32,12 @@ public final class ExpressRouteLinkMacSecConfig {
     @JsonProperty(value = "cipher")
     private ExpressRouteLinkMacSecCipher cipher;
 
+    /*
+     * Sci mode enabled/disabled.
+     */
+    @JsonProperty(value = "sciState")
+    private ExpressRouteLinkMacSecSciState sciState;
+
     /**
      * Get the cknSecretIdentifier property: Keyvault Secret Identifier URL containing Mac security CKN key.
      *
@@ -89,6 +95,26 @@ public final class ExpressRouteLinkMacSecConfig {
      */
     public ExpressRouteLinkMacSecConfig withCipher(ExpressRouteLinkMacSecCipher cipher) {
         this.cipher = cipher;
+        return this;
+    }
+
+    /**
+     * Get the sciState property: Sci mode enabled/disabled.
+     *
+     * @return the sciState value.
+     */
+    public ExpressRouteLinkMacSecSciState sciState() {
+        return this.sciState;
+    }
+
+    /**
+     * Set the sciState property: Sci mode enabled/disabled.
+     *
+     * @param sciState the sciState value to set.
+     * @return the ExpressRouteLinkMacSecConfig object itself.
+     */
+    public ExpressRouteLinkMacSecConfig withSciState(ExpressRouteLinkMacSecSciState sciState) {
+        this.sciState = sciState;
         return this;
     }
 

@@ -3,42 +3,39 @@
 
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
-class Fetcher<T extends Resource> {
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
+abstract class Fetcher<T extends Resource> {
     private final static Logger logger = LoggerFactory.getLogger(Fetcher.class);
 
-    private final BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc;
     private final Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc;
     private final boolean isChangeFeed;
 
     private volatile boolean shouldFetchMore;
     private volatile int maxItemCount;
     private volatile int top;
-    private volatile String continuationToken;
 
-    public Fetcher(BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
-                   Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
-                   String continuationToken,
-                   boolean isChangeFeed,
-                   int top,
-                   int maxItemCount) {
+    public Fetcher(
+        Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
+        boolean isChangeFeed,
+        int top,
+        int maxItemCount) {
 
-        this.createRequestFunc = createRequestFunc;
+        checkNotNull(executeFunc, "Argument 'executeFunc' must not be null.");
+
         this.executeFunc = executeFunc;
         this.isChangeFeed = isChangeFeed;
 
-        this.continuationToken = continuationToken;
         this.top = top;
         if (top == -1) {
             this.maxItemCount = maxItemCount;
@@ -49,17 +46,32 @@ class Fetcher<T extends Resource> {
         this.shouldFetchMore = true;
     }
 
-    public boolean shouldFetchMore() {
+    public final boolean shouldFetchMore() {
         return shouldFetchMore;
     }
 
     public Mono<FeedResponse<T>> nextPage() {
+        return this.nextPageCore();
+    }
+
+    protected final Mono<FeedResponse<T>> nextPageCore() {
         RxDocumentServiceRequest request = createRequest();
         return nextPage(request);
     }
 
-    private void updateState(FeedResponse<T> response) {
-        continuationToken = response.getContinuationToken();
+    protected abstract String applyServerResponseContinuation(
+        String serverContinuationToken,
+        RxDocumentServiceRequest request);
+
+    protected abstract boolean isFullyDrained(boolean isChangeFeed, FeedResponse<T> response);
+
+    protected abstract String getContinuationForLogging();
+
+    private void updateState(FeedResponse<T> response, RxDocumentServiceRequest request) {
+        String transformedContinuation =
+            this.applyServerResponseContinuation(response.getContinuationToken(), request);
+
+        ModelBridgeInternal.setFeedResponseContinuationToken(transformedContinuation, response);
         if (top != -1) {
             top -= response.getResults().size();
             if (top < 0) {
@@ -72,14 +84,20 @@ class Fetcher<T extends Resource> {
         }
 
         shouldFetchMore = shouldFetchMore &&
-                // if token is null or top == 0 then done
-                (!StringUtils.isEmpty(continuationToken) && (top != 0)) &&
-                // if change feed query and no changes then done
-                (!isChangeFeed || !BridgeInternal.noChanges(response));
+            // if top == 0 then done
+            (top != 0) &&
+            // if fullyDrained then done
+            !this.isFullyDrained(this.isChangeFeed, response);
 
-        logger.debug("Fetcher state updated: " +
-                        "isChangeFeed = {}, continuation token = {}, max item count = {}, should fetch more = {}",
-                        isChangeFeed, continuationToken, maxItemCount, shouldFetchMore);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Fetcher state updated: " +
+                    "isChangeFeed = {}, continuation token = {}, max item count = {}, should fetch more = {}",
+                isChangeFeed, this.getContinuationForLogging(), maxItemCount, shouldFetchMore);
+        }
+    }
+
+    protected void reenableShouldFetchMoreForRetry() {
+        this.shouldFetchMore = true;
     }
 
     private RxDocumentServiceRequest createRequest() {
@@ -89,12 +107,14 @@ class Fetcher<T extends Resource> {
             throw new IllegalStateException("INVALID state, trying to fetch more after completion");
         }
 
-        return createRequestFunc.apply(continuationToken, maxItemCount);
+        return this.createRequest(maxItemCount);
     }
+
+    protected abstract RxDocumentServiceRequest createRequest(int maxItemCount);
 
     private Mono<FeedResponse<T>> nextPage(RxDocumentServiceRequest request) {
         return executeFunc.apply(request).map(rsp -> {
-            updateState(rsp);
+            updateState(rsp, request);
             return rsp;
         });
     }

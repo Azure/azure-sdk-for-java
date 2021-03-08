@@ -21,6 +21,12 @@ public final class ConnectionMonitorEndpoint {
     private String name;
 
     /*
+     * The endpoint type.
+     */
+    @JsonProperty(value = "type")
+    private EndpointType type;
+
+    /*
      * Resource ID of the connection monitor endpoint.
      */
     @JsonProperty(value = "resourceId")
@@ -37,6 +43,18 @@ public final class ConnectionMonitorEndpoint {
      */
     @JsonProperty(value = "filter")
     private ConnectionMonitorEndpointFilter filter;
+
+    /*
+     * Endpoint scope.
+     */
+    @JsonProperty(value = "scope")
+    private ConnectionMonitorEndpointScope scope;
+
+    /*
+     * Test coverage for the endpoint.
+     */
+    @JsonProperty(value = "coverageLevel")
+    private CoverageLevel coverageLevel;
 
     /**
      * Get the name property: The name of the connection monitor endpoint.
@@ -55,6 +73,26 @@ public final class ConnectionMonitorEndpoint {
      */
     public ConnectionMonitorEndpoint withName(String name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the type property: The endpoint type.
+     *
+     * @return the type value.
+     */
+    public EndpointType type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type property: The endpoint type.
+     *
+     * @param type the type value to set.
+     * @return the ConnectionMonitorEndpoint object itself.
+     */
+    public ConnectionMonitorEndpoint withType(EndpointType type) {
+        this.type = type;
         return this;
     }
 
@@ -119,6 +157,46 @@ public final class ConnectionMonitorEndpoint {
     }
 
     /**
+     * Get the scope property: Endpoint scope.
+     *
+     * @return the scope value.
+     */
+    public ConnectionMonitorEndpointScope scope() {
+        return this.scope;
+    }
+
+    /**
+     * Set the scope property: Endpoint scope.
+     *
+     * @param scope the scope value to set.
+     * @return the ConnectionMonitorEndpoint object itself.
+     */
+    public ConnectionMonitorEndpoint withScope(ConnectionMonitorEndpointScope scope) {
+        this.scope = scope;
+        return this;
+    }
+
+    /**
+     * Get the coverageLevel property: Test coverage for the endpoint.
+     *
+     * @return the coverageLevel value.
+     */
+    public CoverageLevel coverageLevel() {
+        return this.coverageLevel;
+    }
+
+    /**
+     * Set the coverageLevel property: Test coverage for the endpoint.
+     *
+     * @param coverageLevel the coverageLevel value to set.
+     * @return the ConnectionMonitorEndpoint object itself.
+     */
+    public ConnectionMonitorEndpoint withCoverageLevel(CoverageLevel coverageLevel) {
+        this.coverageLevel = coverageLevel;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -131,6 +209,9 @@ public final class ConnectionMonitorEndpoint {
         }
         if (filter() != null) {
             filter().validate();
+        }
+        if (scope() != null) {
+            scope().validate();
         }
     }
 }

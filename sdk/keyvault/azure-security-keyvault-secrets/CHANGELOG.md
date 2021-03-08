@@ -1,7 +1,40 @@
 # Release History
 
-## 4.3.0-beta.3 (Unreleased)
+## 4.3.0-beta.4 (Unreleased)
 
+
+## 4.3.0-beta.3 (2021-02-11)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.13.0`
+- Upgraded `azure-core-http-netty` dependency to `1.8.0`
+- Upgraded `azure-core-http-okhttp` dependency to `1.5.0`
+- Upgraded `azure-identity` dependency to `1.2.3`
+
+## 4.2.5 (2021-02-11)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.13.0`
+- Upgraded `azure-core-http-netty` dependency to `1.8.0`
+- Upgraded `azure-core-http-okhttp` dependency to `1.5.0`
+- Upgraded `azure-identity` dependency to `1.2.3`
+
+## 4.2.4 (2021-01-15)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.12.0`
+- Upgraded `azure-core-http-netty` dependency to `1.7.1`
+- Upgraded `azure-core-http-okhttp` dependency to `1.4.1`
+- Upgraded `azure-identity` dependency to `1.2.2`
+
+## 4.2.3 (2020-11-12)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.10.0`
+- Upgraded `azure-core-http-netty` dependency to `1.6.3`
+- Upgraded `azure-core-http-okhttp` dependency to `1.3.3`
+- Upgraded `azure-core-test` dependency to `1.5.1`
+- Upgraded `azure-identity` dependency to `1.2.0`
 
 ## 4.3.0-beta.2 (2020-10-09)
 
@@ -23,7 +56,19 @@
 - Upgraded `azure-core-test` dependency to `1.5.0`
 - Upgraded `azure-identity` dependency to `1.1.3`
 
+## 4.2.2 (2020-10-08)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.9.0`
+- Upgraded `azure-core-http-netty` dependency to `1.6.2`
+- Upgraded `azure-core-http-okhttp` dependency to `1.3.2`
+- Upgraded `azure-core-test` dependency to `1.5.0`
+- Upgraded `azure-identity` dependency to `1.1.3`
+
 ## 4.3.0-beta.1 (2020-09-11)
+- Updated versions for azure-core and azure-identity.
+
+## 4.2.1 (2020-09-10)
 - Updated versions for azure-core and azure-identity.
 
 ## 4.2.0 (2020-08-12)
@@ -34,13 +79,29 @@
 ## 4.2.0-beta.4 (2020-07-08)
 - Updated versions for azure-core, azure-identity.
 
+## 4.1.5 (2020-07-08)
+- Updated versions for azure-core and azure-identity.
+
 ## 4.2.0-beta.3 (2020-06-10)
 - Updated version for azure-core, azure-identity and external dependencies.
 - Fixed `ByteBuf` resource leak in `KeyVaultCredentialPolicy`.
 
+## 4.1.4 (2020-06-10)
+- Updated version for azure-core, azure-identity and external dependencies.
+
+## 4.1.3 (2020-05-06)
+- Update azure-core dependency to version 1.5.0.
+- Fixed `ByteBuff` resource leak in `KeyVaultCredentialPolicy`.
+
 ## 4.2.0-beta.2 (2020-04-09)
 - Update azure-core dependency to version 1.4.0.
 - Added `retryPolicy` setter in `SecretClientBuilder`
+
+## 4.1.2 (2020-04-07)
+- Update azure-core dependency to version 1.4.0.
+
+## 4.1.1 (2020-03-25)
+- Update azure-core dependency to version 1.3.0.
 
 ## 4.2.0-beta.1 (2020-03-10)
 ### Added

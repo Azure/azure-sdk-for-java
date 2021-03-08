@@ -13,7 +13,7 @@ import com.azure.core.amqp.implementation.ReactorReceiver;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
@@ -69,7 +69,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
 
     /**
      * Indicates whether the message has already been settled from the sender side. This is the case when {@link
-     * ReceiveMode#RECEIVE_AND_DELETE} is used.
+     * ServiceBusReceiveMode#RECEIVE_AND_DELETE} is used.
      */
     private final boolean isSettled;
     private final Duration timeout;

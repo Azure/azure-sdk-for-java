@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The AnalyzeOperationResult model. */
+/** Status and result of the queued analyze operation. */
 @Fluent
 public final class AnalyzeOperationResult {
     /*

@@ -20,7 +20,7 @@ A single queue message can be up to 64 KB in size, and a queue can contain milli
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-queue</artifactId>
-  <version>12.7.0-beta.1</version>
+  <version>12.8.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -363,7 +363,7 @@ QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).sasToken(S
 // @param key: The key with which the specified value should be associated.
 // @param value: The value to be associated with the specified key.
 queueClient.peekMessages(5, Duration.ofSeconds(1), new Context(key, value)).forEach(message -> {
-    System.out.println(message.getMessageText());
+    System.out.println(message.getBody().toString());
 });
 ```
 
@@ -378,7 +378,7 @@ QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).sasToken(S
         .buildClient();
 // Try to receive 10 mesages: Maximum number of messages to get
 queueClient.receiveMessages(10).forEach(message -> {
-    System.out.println(message.getMessageText());
+    System.out.println(message.getBody().toString());
 });
 ```
 
@@ -464,7 +464,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft Azure Projects Contribution Guidelines](https://azure.github.io/guidelines.html).
+For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md).
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)

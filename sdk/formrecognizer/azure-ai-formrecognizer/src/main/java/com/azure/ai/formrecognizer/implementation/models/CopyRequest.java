@@ -7,7 +7,10 @@ package com.azure.ai.formrecognizer.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CopyRequest model. */
+/**
+ * Request parameter to copy an existing custom model from the source resource to a target resource referenced by the
+ * resource ID.
+ */
 @Fluent
 public final class CopyRequest {
     /*

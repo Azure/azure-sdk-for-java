@@ -15,12 +15,12 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.resourcemanager.resources.fluentcore.policy.AuthenticationPolicy;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.resourcemanager.resources.fluentcore.policy.ReturnRequestIdHeaderPolicy;
 import com.azure.resourcemanager.resources.fluentcore.policy.UserAgentPolicy;
-import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
-import com.azure.core.management.profile.AzureProfile;
 
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -73,7 +73,7 @@ public final class HttpPipelineProvider {
         if (credential != null) {
             policies.add(new AuthenticationPolicy(credential, profile.getEnvironment(), scopes));
         }
-        policies.add(new ProviderRegistrationPolicy(credential, profile));
+        policies.add(new ProviderRegistrationPolicy());
         if (additionalPolicies != null && !additionalPolicies.isEmpty()) {
             policies.addAll(additionalPolicies);
         }

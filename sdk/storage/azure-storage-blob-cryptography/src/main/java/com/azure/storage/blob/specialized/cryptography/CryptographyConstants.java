@@ -33,8 +33,6 @@ final class CryptographyConstants {
 
     static final String CONTENT_LENGTH = "Content-Length";
 
-    static final String METADATA_HEADER = "x-ms-meta-";
-
     static final String DECRYPT_UNENCRYPTED_BLOB = "Encryption client is being used but the blob metadata indicates "
         + "that it is not encrypted.";
 

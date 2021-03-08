@@ -136,7 +136,7 @@ public abstract class RxCollectionCache {
         return Mono.just(new Utils.ValueHolder<>(null));
     }
 
-    private Mono<Utils.ValueHolder<DocumentCollection>> resolveByRidAsync(
+    public Mono<Utils.ValueHolder<DocumentCollection>> resolveByRidAsync(
             MetadataDiagnosticsContext metaDataDiagnosticsContext,
             String resourceId,
             Map<String, Object> properties) {
@@ -151,7 +151,7 @@ public abstract class RxCollectionCache {
         return async.map(Utils.ValueHolder::new);
     }
 
-    private Mono<DocumentCollection> resolveByNameAsync(
+    public Mono<DocumentCollection> resolveByNameAsync(
         MetadataDiagnosticsContext metaDataDiagnosticsContext, String resourceAddress, Map<String, Object> properties) {
 
         String resourceFullName = PathsHelper.getCollectionPath(resourceAddress);

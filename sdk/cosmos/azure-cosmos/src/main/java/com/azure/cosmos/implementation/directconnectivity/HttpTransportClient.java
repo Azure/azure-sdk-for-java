@@ -218,7 +218,7 @@ public class HttpTransportClient extends TransportClient {
                                 null);
                     });
 
-            return httpResponseMono.flatMap(rsp -> processHttpResponse(request.getResourceAddress(),
+            return httpResponseMono.flatMap(rsp -> processHttpResponse(request.requestContext.resourcePhysicalAddress,
                     httpRequest, activityId, rsp, physicalAddress));
 
         } catch (Exception e) {
@@ -257,7 +257,7 @@ public class HttpTransportClient extends TransportClient {
             case Delete:
             case ExecuteJavaScript:
             case Replace:
-            case Update:
+            case Patch:
             case Upsert:
                 return request.getHeaders().get(HttpConstants.HttpHeaders.IF_MATCH);
 
@@ -327,9 +327,9 @@ public class HttpTransportClient extends TransportClient {
                 httpRequestMessage.withBody(request.getContentAsByteArrayFlux());
                 break;
 
-            case Update:
+            case Patch:
                 requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
-                method = new HttpMethod("PATCH");
+                method = HttpMethod.PATCH;
                 assert request.getContentAsByteArrayFlux() != null;
                 httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
                 httpRequestMessage.withBody(request.getContentAsByteArrayFlux());
@@ -404,6 +404,9 @@ public class HttpTransportClient extends TransportClient {
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.ACTIVITY_ID, activityId);
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.PARTITION_KEY, request);
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.READ_FEED_KEY_TYPE, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.START_EPK, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.END_EPK, request);
 
         String dateHeader = HttpUtils.getDateHeader(documentServiceRequestHeaders);
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.X_DATE, dateHeader);

@@ -15,10 +15,12 @@ import com.azure.core.amqp.implementation.RequestResponseUtils;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.ServiceBusErrorSource;
+import com.azure.messaging.servicebus.ServiceBusException;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.UnsignedInteger;
@@ -89,13 +91,18 @@ public class ManagementChannel implements ServiceBusManagementNode {
      */
     @Override
     public Mono<Void> cancelScheduledMessages(Iterable<Long> sequenceNumbers, String associatedLinkName) {
+        final List<Long> numbers = new ArrayList<>();
+        sequenceNumbers.forEach(s -> numbers.add(s));
+
+        if (numbers.isEmpty()) {
+            return Mono.empty();
+        }
+
         return isAuthorized(ManagementConstants.OPERATION_CANCEL_SCHEDULED_MESSAGE)
             .then(createChannel.flatMap(channel -> {
                 final Message requestMessage = createManagementMessage(
                     ManagementConstants.OPERATION_CANCEL_SCHEDULED_MESSAGE, associatedLinkName);
 
-                final List<Long> numbers = new ArrayList<>();
-                sequenceNumbers.forEach(s -> numbers.add(s));
                 final Long[] longs = numbers.toArray(new Long[0]);
                 requestMessage.setBody(new AmqpValue(Collections.singletonMap(ManagementConstants.SEQUENCE_NUMBERS,
                     longs)));
@@ -188,8 +195,18 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
-    public Flux<ServiceBusReceivedMessage> receiveDeferredMessages(ReceiveMode receiveMode, String sessionId,
+    public Flux<ServiceBusReceivedMessage> receiveDeferredMessages(ServiceBusReceiveMode receiveMode, String sessionId,
         String associatedLinkName, Iterable<Long> sequenceNumbers) {
+        if (sequenceNumbers == null) {
+            return fluxError(logger, new NullPointerException("'sequenceNumbers' cannot be null"));
+        }
+
+        final List<Long> numbers = new ArrayList<>();
+        sequenceNumbers.forEach(s -> numbers.add(s));
+
+        if (numbers.isEmpty()) {
+            return Flux.empty();
+        }
 
         return isAuthorized(ManagementConstants.OPERATION_RECEIVE_BY_SEQUENCE_NUMBER)
             .thenMany(createChannel.flatMap(channel -> {
@@ -199,13 +216,10 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 // set mandatory properties on AMQP message body
                 final Map<String, Object> requestBodyMap = new HashMap<>();
 
-                final List<Long> numbers = new ArrayList<>();
-                sequenceNumbers.forEach(s -> numbers.add(s));
-                Long[] longs = numbers.toArray(new Long[0]);
-                requestBodyMap.put(ManagementConstants.SEQUENCE_NUMBERS, longs);
+                requestBodyMap.put(ManagementConstants.SEQUENCE_NUMBERS, numbers.toArray(new Long[0]));
 
                 requestBodyMap.put(ManagementConstants.RECEIVER_SETTLE_MODE,
-                    UnsignedInteger.valueOf(receiveMode == ReceiveMode.RECEIVE_AND_DELETE ? 0 : 1));
+                    UnsignedInteger.valueOf(receiveMode == ServiceBusReceiveMode.RECEIVE_AND_DELETE ? 0 : 1));
 
                 if (!CoreUtils.isNullOrEmpty(sessionId)) {
                     requestBodyMap.put(ManagementConstants.SESSION_ID, sessionId);
@@ -220,6 +234,14 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
                 return Flux.fromIterable(messageList);
             }));
+    }
+
+    private Throwable mapError(Throwable throwable) {
+        if (throwable instanceof AmqpException) {
+            return new ServiceBusException(throwable, ServiceBusErrorSource.MANAGEMENT);
+        }
+
+        return throwable;
     }
 
     /**
@@ -332,11 +354,6 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 final String partitionKey = message.getPartitionKey();
                 if (!CoreUtils.isNullOrEmpty(partitionKey)) {
                     messageEntry.put(ManagementConstants.PARTITION_KEY, partitionKey);
-                }
-
-                final String viaPartitionKey = message.getViaPartitionKey();
-                if (!CoreUtils.isNullOrEmpty(viaPartitionKey)) {
-                    messageEntry.put(ManagementConstants.VIA_PARTITION_KEY, viaPartitionKey);
                 }
 
                 messageList.add(messageEntry);
@@ -487,17 +504,21 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 sink.error(throwable);
             })
             .switchIfEmpty(Mono.error(new AmqpException(true, "No response received from management channel.",
-                channel.getErrorContext())));
+                channel.getErrorContext())))
+            .onErrorMap(this::mapError);
     }
 
     private Mono<Void> isAuthorized(String operation) {
         return tokenManager.getAuthorizationResults()
+            .onErrorMap(this::mapError)
             .next()
             .handle((response, sink) -> {
                 if (response != AmqpResponseCode.ACCEPTED && response != AmqpResponseCode.OK) {
-                    sink.error(new AmqpException(false, String.format(
-                        "User does not have authorization to perform operation [%s] on entity [%s]. Response: [%s]",
-                        operation, entityPath, response), getErrorContext()));
+                    final String message = String.format("User does not have authorization to perform operation "
+                        + "[%s] on entity [%s]. Response: [%s]", operation, entityPath, response);
+                    final Throwable exc = new AmqpException(false, AmqpErrorCondition.UNAUTHORIZED_ACCESS,
+                        message, getErrorContext());
+                    sink.error(new ServiceBusException(exc, ServiceBusErrorSource.MANAGEMENT));
                 } else {
                     sink.complete();
                 }
@@ -509,7 +530,6 @@ public class ManagementChannel implements ServiceBusManagementNode {
      *
      * @param operation Management operation to perform (ie. peek, update-disposition, etc.)
      * @param associatedLinkName Name of the open receive link that first received the message.
-     *
      * @return An AMQP message with the required headers.
      */
     private Message createManagementMessage(String operation, String associatedLinkName) {

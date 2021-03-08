@@ -30,20 +30,29 @@ connection string value can be obtained by:
 
 ## Examples
 
-- [Send messages][SendMessageAsyncSample]
+### Asynchronously sending and receiving
+
+- [Send a message][SendMessageAsyncSample]
 - [Send messages using Azure Identity][SendMessageWithAzureIdentityAsyncSample]
-- [Send message batches synchronously][SendMessageBatchSyncSample]
-- [Schedule and cancel a message][SendScheduledMessageAndCancelAsyncSample]
-- [Receive messages synchronously][ReceiveMessageSyncSample]
+- [Process all messages using processor][ServiceBusProcessorSample]
 - [Receive and auto-complete messages][ReceiveMessageAsyncSample]
-- [Receive messages using Azure Identity][ReceiveMessageAzureIdentityAsyncSample]
-- [Receive and settle messages via complete or abandon][ReceiveMessageAndSettleAsyncSample]
+- [Receive and manually settle messages][ReceiveMessageAndSettleAsyncSample]
+- [Receive messages with auto-lock renewal][ReceiveMessageAutoLockRenewal]
+- [Schedule and cancel a message][SendScheduledMessageAndCancelAsyncSample]
 - [Peek at a message][PeekMessageAsyncSample]
 
+### Synchronous sending and receiving
+- [Send message batches synchronously][SendMessageBatchSyncSample]
+- [Receive messages synchronously][ReceiveMessageSample]
+
 ### Message sessions
-- [Send and receive messages from a session][SendAndReceiveSessionMessageSample]
+- [Send messages to a session][SendSessionMessageSample]
+- [Process all session messages using processor][ServiceBusSessionProcessorSample]
 - [Receive messages from a specific session][ReceiveNamedSessionAsyncSample]
 - [Receive messages from the first available session][ReceiveSingleSessionAsyncSample]
+
+### Synchronous Administration Client operations
+- [Update queue properties synchronously][AdministrationClientUpdateQueueSample]
 
 ## Troubleshooting
 See [Troubleshooting][sdk_readme_troubleshooting].
@@ -65,14 +74,18 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING
 [PeekMessageAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/PeekMessageAsyncSample.java
 [ReceiveMessageAndSettleAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveMessageAndSettleAsyncSample.java
 [ReceiveMessageAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveMessageAsyncSample.java
-[ReceiveMessageAzureIdentityAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveMessageAzureIdentityAsyncSample.java
-[ReceiveMessageSyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveMessageSyncSample.java
+[ReceiveMessageAutoLockRenewal]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveMessageAutoLockRenewal.java
+[ReceiveMessageSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveMessageSample.java
 [ReceiveNamedSessionAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveNamedSessionAsyncSample.java
+[ReceiveNamedSessionSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveNamedSessionSample.java
 [ReceiveSingleSessionAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveSingleSessionAsyncSample.java
-[SendAndReceiveSessionMessageSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/SendAndReceiveSessionMessageSample.java
+[SendSessionMessageSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/SendSessionMessageAsyncSample.java
 [SendMessageAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/SendMessageAsyncSample.java
-[SendMessageBatchSyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/SendMessageBatchSyncSample.java
+[SendMessageBatchSyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/SendMessageBatchSample.java
 [SendMessageWithAzureIdentityAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/SendMessageWithAzureIdentityAsyncSample.java
 [SendScheduledMessageAndCancelAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/SendScheduledMessageAndCancelAsyncSample.java
+[ServiceBusProcessorSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ServiceBusProcessorSample.java
+[ServiceBusSessionProcessorSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ServiceBusSessionProcessorSample.java
+[AdministrationClientUpdateQueueSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/AdministrationClientUpdateQueueSample.java 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fappconfiguration%2Fazure-messaging-servicebus%2Fsrc%2Fsamples%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fazure-messaging-servicebus%2Fsrc%2Fsamples%2FREADME.png)

@@ -49,7 +49,8 @@ public abstract class BlobOutputStream extends StorageOutputStream {
      * @param client {@link BlobAsyncClient} The blob client.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param headers {@link BlobHttpHeaders}
-     * @param metadata Metadata to associate with the blob.
+     * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param tier {@link AccessTier} for the destination blob.
      * @param requestConditions {@link BlobRequestConditions}
      * @return {@link BlobOutputStream} associated with the blob.
@@ -66,7 +67,8 @@ public abstract class BlobOutputStream extends StorageOutputStream {
      * @param client {@link BlobAsyncClient} The blob client.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param headers {@link BlobHttpHeaders}
-     * @param metadata Metadata to associate with the blob.
+     * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param tier {@link AccessTier} for the destination blob.
      * @param requestConditions {@link BlobRequestConditions}
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -267,7 +269,14 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         @Override
         protected void writeInternal(final byte[] data, int offset, int length) {
             this.checkStreamState();
-            sink.next(ByteBuffer.wrap(data, offset, length));
+            /*
+            We need to do a deep copy here because the writing is async in this case. It is a common pattern for
+            customers writing to an output stream to perform the writes in a tight loop with a reused buffer. This
+            coupled with async network behavior can result in the data being overwritten as the buffer is reused.
+             */
+            byte[] buffer = new byte[length];
+            System.arraycopy(data, offset, buffer, 0, length);
+            sink.next(ByteBuffer.wrap(buffer));
         }
 
         // Never called

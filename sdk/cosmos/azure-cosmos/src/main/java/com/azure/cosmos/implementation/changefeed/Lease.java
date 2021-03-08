@@ -3,6 +3,8 @@
 package com.azure.cosmos.implementation.changefeed;
 
 import com.azure.cosmos.ChangeFeedProcessor;
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 
 import java.time.Instant;
 import java.util.Map;
@@ -39,6 +41,10 @@ public interface Lease {
      * @return the timestamp of the lease.
      */
     String getTimestamp();
+
+    ChangeFeedState getContinuationState(
+        String containerRid,
+        FeedRangeInternal feedRange);
 
     /**
      * Gets the continuation token used to determine the last processed point of the Change Feed.

@@ -142,7 +142,7 @@ public class HttpTransportClientTest {
                 OperationType.Create, "dbs/db/colls/col", ResourceType.Document);
         request.setContentBytes(new byte[0]);
 
-        transportClient.invokeStoreAsync(Uri.create(physicalAddress), request).block();
+        transportClient.invokeResourceOperationAsync(Uri.create(physicalAddress), request).block();
 
         assertThat(httpClientMockWrapper.getCapturedInvocation()).asList().hasSize(1);
         HttpRequest httpRequest = httpClientMockWrapper.getCapturedInvocation().get(0);
@@ -460,8 +460,9 @@ public class HttpTransportClientTest {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Create, "dbs/db/colls/col", ResourceType.Document);
         request.setContentBytes(new byte[0]);
+        request.requestContext.resourcePhysicalAddress = "dbs/db/colls/col";
 
-        Mono<StoreResponse> storeResp = transportClient.invokeStoreAsync(
+        Mono<StoreResponse> storeResp = transportClient.invokeResourceOperationAsync(
                 Uri.create(physicalAddress),
                 request);
 
@@ -571,7 +572,7 @@ public class HttpTransportClientTest {
                 userAgentContainer,
                 httpClientMockWrapper.getClient());
 
-        Mono<StoreResponse> storeResp = transportClient.invokeStoreAsync(
+        Mono<StoreResponse> storeResp = transportClient.invokeResourceOperationAsync(
                 Uri.create(physicalAddress),
                 request);
 

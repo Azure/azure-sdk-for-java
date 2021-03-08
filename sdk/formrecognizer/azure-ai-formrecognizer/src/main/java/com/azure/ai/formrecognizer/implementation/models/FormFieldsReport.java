@@ -7,7 +7,7 @@ package com.azure.ai.formrecognizer.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The FormFieldsReport model. */
+/** Report for a custom model training field. */
 @Fluent
 public final class FormFieldsReport {
     /*

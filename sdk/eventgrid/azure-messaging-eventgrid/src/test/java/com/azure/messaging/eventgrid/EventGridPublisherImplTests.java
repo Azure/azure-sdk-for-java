@@ -7,10 +7,12 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.models.CloudEventDataFormat;
 import com.azure.core.test.TestBase;
+import com.azure.core.util.BinaryData;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImpl;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImplBuilder;
-import com.azure.messaging.eventgrid.implementation.models.CloudEvent;
+import com.azure.core.models.CloudEvent;
 import com.azure.messaging.eventgrid.implementation.models.EventGridEvent;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
@@ -31,19 +33,19 @@ public class EventGridPublisherImplTests extends TestBase {
     private EventGridPublisherClientImplBuilder clientBuilder;
 
     // Event Grid endpoint for a topic accepting EventGrid schema events
-    private static final String EVENTGRID_ENDPOINT = "AZURE_EVENTGRID_EVENTGRID_ENDPOINT";
+    private static final String EVENTGRID_ENDPOINT = "AZURE_EVENTGRID_EVENT_ENDPOINT";
 
     // Event Grid endpoint for a topic accepting CloudEvents schema events
-    private static final String CLOUD_ENDPOINT = "AZURE_EVENTGRID_CLOUD_ENDPOINT";
+    private static final String CLOUD_ENDPOINT = "AZURE_EVENTGRID_CLOUDEVENT_ENDPOINT";
 
     // Event Grid endpoint for a topic accepting custom schema events
     private static final String CUSTOM_ENDPOINT = "AZURE_EVENTGRID_CUSTOM_ENDPOINT";
 
     // Event Grid access key for a topic accepting EventGrid schema events
-    private static final String EVENTGRID_KEY = "AZURE_EVENTGRID_EVENTGRID_KEY";
+    private static final String EVENTGRID_KEY = "AZURE_EVENTGRID_EVENT_KEY";
 
     // Event Grid access key for a topic accepting CloudEvents schema events
-    private static final String CLOUD_KEY = "AZURE_EVENTGRID_CLOUD_KEY";
+    private static final String CLOUD_KEY = "AZURE_EVENTGRID_CLOUDEVENT_KEY";
 
     // Event Grid access key for a topic accepting custom schema events
     private static final String CUSTOM_KEY = "AZURE_EVENTGRID_CUSTOM_KEY";
@@ -85,11 +87,13 @@ public class EventGridPublisherImplTests extends TestBase {
                 .setId(UUID.randomUUID().toString())
                 .setSubject("Test")
                 .setEventType("Microsoft.MockPublisher.TestEvent")
-                .setData(new HashMap<String, String>() {{
-                    put("Field1", "Value1");
-                    put("Field2", "Value2");
-                    put("Field3", "Value3");
-                }})
+                .setData(new HashMap<String, String>() {
+                    {
+                        put("Field1", "Value1");
+                        put("Field2", "Value2");
+                        put("Field3", "Value3");
+                    }
+                })
                 .setDataVersion("1.0")
                 .setEventTime(OffsetDateTime.now())
         );
@@ -110,16 +114,16 @@ public class EventGridPublisherImplTests extends TestBase {
             .buildClient();
 
         List<CloudEvent> events = Collections.singletonList(
-            new CloudEvent()
+            new CloudEvent("TestSource", "Microsoft.MockPublisher.TestEvent",
+                BinaryData.fromObject(new HashMap<String, String>() {
+                    {
+                        put("Field1", "Value1");
+                        put("Field2", "Value2");
+                        put("Field3", "Value3");
+                    }
+                }), CloudEventDataFormat.JSON, "application/json")
                 .setId(UUID.randomUUID().toString())
                 .setSubject("Test")
-                .setType("Microsoft.MockPublisher.TestEvent")
-                .setData(new HashMap<String, String>() {{
-                    put("Field1", "Value1");
-                    put("Field2", "Value2");
-                    put("Field3", "Value3");
-                }})
-                .setSpecversion("1.0")
                 .setTime(OffsetDateTime.now())
         );
 
@@ -140,13 +144,15 @@ public class EventGridPublisherImplTests extends TestBase {
 
         List<Object> events = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            events.add(new HashMap<String, String>() {{
-                put("id", UUID.randomUUID().toString());
-                put("time", OffsetDateTime.now().toString());
-                put("subject", "Test");
-                put("foo", "bar");
-                put("type", "Microsoft.MockPublisher.TestEvent");
-            }});
+            events.add(new HashMap<String, String>() {
+                {
+                    put("id", UUID.randomUUID().toString());
+                    put("time", OffsetDateTime.now().toString());
+                    put("subject", "Test");
+                    put("foo", "bar");
+                    put("type", "Microsoft.MockPublisher.TestEvent");
+                }
+            });
         }
 
         String hostname = new URL(getEndpoint(CUSTOM_ENDPOINT)).getHost();

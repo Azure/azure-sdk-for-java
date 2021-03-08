@@ -3,6 +3,9 @@
 
 package com.azure.core.util;
 
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -13,7 +16,12 @@ import java.util.Objects;
  */
 public class Header {
     private final String name;
-    private String value;
+
+    // this is the actual internal representation of all values
+    private final List<String> values;
+
+    // but we also cache it to faster serve our public API
+    private String cachedStringValue;
 
     /**
      * Create a Header instance using the provided name and value.
@@ -25,7 +33,37 @@ public class Header {
     public Header(String name, String value) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         this.name = name;
-        this.value = value;
+        this.values = new LinkedList<>();
+        this.values.add(value);
+    }
+
+    /**
+     * Create a Header instance using the provided name and values.
+     *
+     * @param name the name of the header.
+     * @param values the values of the header.
+     * @throws NullPointerException if {@code name} is null.
+     */
+    public Header(String name, String... values) {
+        Objects.requireNonNull(name, "'name' cannot be null.");
+        this.name = name;
+        this.values = new LinkedList<>();
+        for (String value : values) {
+            this.values.add(value);
+        }
+    }
+
+    /**
+     * Create a Header instance using the provided name and values.
+     *
+     * @param name the name of the header.
+     * @param values the values of the header.
+     * @throws NullPointerException if {@code name} is null.
+     */
+    public Header(String name, List<String> values) {
+        Objects.requireNonNull(name, "'name' cannot be null.");
+        this.name = name;
+        this.values = new LinkedList<>(values);
     }
 
     /**
@@ -38,21 +76,31 @@ public class Header {
     }
 
     /**
-     * Gets the value of this {@link Header}.
+     * Gets the combined, comma-separated value of this {@link Header}, taking into account all values provided.
      *
      * @return the value of this Header
      */
     public String getValue() {
-        return value;
+        checkCachedStringValue();
+        return cachedStringValue;
     }
 
     /**
-     * Gets the comma separated value as an array.
+     * Gets the comma separated value as an array. Changes made to this array will not be reflected in the headers.
      *
      * @return the values of this {@link Header} that are separated by a comma
      */
     public String[] getValues() {
-        return value == null ? null : value.split(",");
+        return values.toArray(new String[] { });
+    }
+
+    /**
+     * Returns all values associated with this header, represented as an unmodifiable list of strings.
+     *
+     * @return An unmodifiable list containing all values associated with this header.
+     */
+    public List<String> getValuesList() {
+        return Collections.unmodifiableList(values);
     }
 
     /**
@@ -61,11 +109,8 @@ public class Header {
      * @param value the value to add
      */
     public void addValue(String value) {
-        if (this.value != null) {
-            this.value += "," + value;
-        } else {
-            this.value = value;
-        }
+        this.values.add(value);
+        this.cachedStringValue = null;
     }
 
     /**
@@ -75,6 +120,13 @@ public class Header {
      */
     @Override
     public String toString() {
-        return name + ":" + value;
+        checkCachedStringValue();
+        return name + ":" + cachedStringValue;
+    }
+
+    private void checkCachedStringValue() {
+        if (cachedStringValue == null) {
+            cachedStringValue = String.join(",", values);
+        }
     }
 }

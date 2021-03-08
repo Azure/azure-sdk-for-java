@@ -31,6 +31,11 @@ public final class FormContentType extends ExpandableStringEnum<FormContentType>
     public static final FormContentType IMAGE_TIFF = fromString("image/tiff");
 
     /**
+     * Static value Line for FormContentType.
+     */
+    public static final FormContentType IMAGE_BMP = fromString("image/bmp");
+
+    /**
      * Creates or finds a ElementType from its string representation.
      *
      * @param value a value to look for.

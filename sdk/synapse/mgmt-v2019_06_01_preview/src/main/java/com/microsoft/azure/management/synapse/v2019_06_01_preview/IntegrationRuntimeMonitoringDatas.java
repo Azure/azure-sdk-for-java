@@ -21,11 +21,11 @@ public interface IntegrationRuntimeMonitoringDatas extends HasInner<IntegrationR
      * Get monitoring data for an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<IntegrationRuntimeMonitoringData> getAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName);
+    Observable<IntegrationRuntimeMonitoringData> listAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName);
 
 }

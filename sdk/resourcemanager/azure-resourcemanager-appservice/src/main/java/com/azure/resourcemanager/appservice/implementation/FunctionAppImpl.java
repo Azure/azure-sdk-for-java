@@ -272,7 +272,9 @@ class FunctionAppImpl
         if (description.tier().equalsIgnoreCase(SkuName.BASIC.toString())
             || description.tier().equalsIgnoreCase(SkuName.STANDARD.toString())
             || description.tier().equalsIgnoreCase(SkuName.PREMIUM.toString())
-            || description.tier().equalsIgnoreCase(SkuName.PREMIUM_V2.toString())) {
+            || description.tier().equalsIgnoreCase(SkuName.PREMIUM_V2.toString())
+            || description.tier().equalsIgnoreCase(PricingTier.PREMIUM_P1V3.toSkuDescription().tier()) // PremiumV3
+        ) {
             return withWebAppAlwaysOn(true);
         } else {
             return withWebAppAlwaysOn(false);
@@ -285,12 +287,15 @@ class FunctionAppImpl
             manager().storageManager().storageAccounts().define(name).withRegion(regionName());
         if (super.creatableGroup != null && isInCreateMode()) {
             storageAccountCreatable =
-                storageDefine.withNewResourceGroup(super.creatableGroup).withGeneralPurposeAccountKind().withSku(sku);
+                storageDefine
+                    .withNewResourceGroup(super.creatableGroup)
+                    .withGeneralPurposeAccountKindV2()
+                    .withSku(sku);
         } else {
             storageAccountCreatable =
                 storageDefine
                     .withExistingResourceGroup(resourceGroupName())
-                    .withGeneralPurposeAccountKind()
+                    .withGeneralPurposeAccountKindV2()
                     .withSku(sku);
         }
         this.addDependency(storageAccountCreatable);
@@ -602,7 +607,7 @@ class FunctionAppImpl
                 withNewStorageAccount(
                     this.manager().resourceManager().internalContext()
                         .randomResourceName(getStorageAccountName(), 20),
-                    StorageAccountSkuType.STANDARD_GRS);
+                    StorageAccountSkuType.STANDARD_LRS);
             }
         }
         return super.createAsync();

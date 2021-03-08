@@ -65,6 +65,13 @@ Batch Samples:
 - [Analyze sentiment in a batch of documents(Convenience)][sample_sentiment_batch_convenience]
 - [Analyze sentiment in a batch of documents with asynchronous client][async_sample_sentiment_batch]
 - [Analyze sentiment in a batch of documents with asynchronous client(Convenience)][async_sample_sentiment_batch_convenience]
+- [Analyze healthcare entities in a batch of documents][sample_healthcare_batch]
+- [Analyze healthcare entities in a batch of documents with asynchronous client][async_sample_healthcare_batch]
+- [Cancel analyze healthcare entities][sample_cancel_healthcare_task]
+- [Cancel analyze healthcare entities with asynchronous client][async_sample_cancel_healthcare_task]
+- [Execute multiple actions][sample_execute_multiple_actions]
+- [Execute multiple actions with asynchronous client][async_sample_execute_multiple_actions]
+
 ## Troubleshooting
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
 
@@ -103,6 +110,9 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [async_sample_sentiment_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchDocumentsAsync.java
 [async_sample_sentiment_batch_convenience]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchStringDocumentsAsync.java
 [async_sample_sentiment_opinion_mining]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/AnalyzeSentimentWithOpinionMiningAsync.java
+[async_sample_healthcare_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/AnalyzeHealthcareEntitiesAsync.java
+[async_sample_cancel_healthcare_task]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/CancelAnalyzeHealthcareEntitiesAsync.java
+[async_sample_execute_multiple_actions]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/AnalyzeBatchActionsAsync.java
 
 [sample_detect_language]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/DetectLanguage.java
 [sample_detect_language_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/DetectLanguageBatchDocuments.java
@@ -124,5 +134,8 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [sample_sentiment_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchDocuments.java
 [sample_sentiment_batch_convenience]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchStringDocuments.java
 [sample_sentiment_opinion_mining]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/AnalyzeSentimentWithOpinionMining.java
+[sample_healthcare_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/AnalyzeHealthcareEntities.java
+[sample_cancel_healthcare_task]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/CancelAnalyzeHealthcareEntities.java
+[sample_execute_multiple_actions]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/AnalyzeBatchActions.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftextanalytics%2Fazure-ai-textanalytics%2FREADME.png)

@@ -10,11 +10,13 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.Flux;
@@ -28,6 +30,8 @@ import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -62,6 +66,13 @@ class AmqpChannelProcessorTest {
         channelProcessor = new AmqpChannelProcessor<>("connection-test", "test-path",
             TestObject::getStates, retryPolicy,
             new ClientLogger(AmqpChannelProcessor.class + "<TestObject>"));
+    }
+
+    @AfterEach
+    void teardown() {
+        // Tear down any inline mocks to avoid memory leaks.
+        // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
+        Mockito.framework().clearInlineMocks();
     }
 
     /**
@@ -206,6 +217,11 @@ class AmqpChannelProcessorTest {
         final AmqpChannelProcessor<TestObject> processor = publisher.next(connection1).flux()
             .subscribeWith(channelProcessor);
         final FluxSink<AmqpEndpointState> endpointSink = connection1.getSink();
+
+        /*
+         * Beginning in Mockito 3.4.0+ the default value for duration changed from null to Duration.ZERO
+         */
+        when(retryPolicy.calculateRetryDelay(any(), anyInt())).thenReturn(null);
 
         // Act & Assert
         // Verify that we get the first connection.

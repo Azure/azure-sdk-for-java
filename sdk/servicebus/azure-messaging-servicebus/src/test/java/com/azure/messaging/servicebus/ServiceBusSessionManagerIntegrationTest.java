@@ -12,17 +12,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static com.azure.messaging.servicebus.TestUtils.getServiceBusMessage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,6 +32,7 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
 
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusSenderAsyncClient sender;
+    private ServiceBusSessionReceiverAsyncClient sessionReceiver;
 
     ServiceBusSessionManagerIntegrationTest() {
         super(new ClientLogger(ServiceBusSessionManagerIntegrationTest.class));
@@ -51,6 +47,11 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
     protected void afterTest() {
         final int pending = messagesPending.get();
         logger.info("Pending messages: {}", pending);
+        try {
+            dispose(receiver, sender, sessionReceiver);
+        } catch (Exception e) {
+            logger.warning("Error occurred when draining queue.", e);
+        }
     }
 
     @ParameterizedTest
@@ -59,13 +60,10 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
         // Arrange
         final int entityIndex = TestUtils.USE_CASE_SINGLE_SESSION;
         final String messageId = "singleUnnamedSession";
-        final String sessionId = "singleUnnamedSession-" + OffsetDateTime.now().toString();
         final String contents = "Some-contents";
         final int numberToSend = 5;
-        final List<ServiceBusReceivedMessage> receivedMessages = new ArrayList<>();
 
-        setSenderAndReceiver(entityType, entityIndex, Function.identity());
-
+        setSender(entityType, entityIndex);
         final Disposable subscription = Flux.interval(Duration.ofMillis(500))
             .take(numberToSend)
             .flatMap(index -> {
@@ -73,49 +71,50 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
                     .setSessionId(sessionId);
                 messagesPending.incrementAndGet();
                 return sender.sendMessage(message).thenReturn(index);
-            }).subscribe(
+            })
+            .subscribe(
                 number -> logger.info("sessionId[{}] sent[{}] Message sent.", sessionId, number),
                 error -> logger.error("sessionId[{}] Error encountered.", sessionId, error),
                 () -> logger.info("sessionId[{}] Finished sending.", sessionId));
 
+        setReceiver(entityType, entityIndex, Function.identity());
+
         // Act & Assert
-        try {
-            StepVerifier.create(receiver.receiveMessages())
-                .assertNext(serviceBusReceivedMessage ->
-                    assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
-                .assertNext(serviceBusReceivedMessage ->
-                    assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
-                .assertNext(serviceBusReceivedMessage ->
-                    assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
-                .assertNext(serviceBusReceivedMessage ->
-                    assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
-                .assertNext(serviceBusReceivedMessage ->
-                    assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
-                .thenCancel()
-                .verify(Duration.ofMinutes(2));
-        } finally {
-            subscription.dispose();
-            Mono.when(receivedMessages.stream().map(e -> receiver.complete(e))
-                .collect(Collectors.toList()))
-                .block(TIMEOUT);
-        }
+        StepVerifier.create(receiver.receiveMessages().concatMap(
+            receivedMessage -> receiver.complete(receivedMessage).thenReturn(receivedMessage)
+        ))
+            .assertNext(serviceBusReceivedMessage ->
+                assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
+            .assertNext(serviceBusReceivedMessage ->
+                assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
+            .assertNext(serviceBusReceivedMessage ->
+                assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
+            .assertNext(serviceBusReceivedMessage ->
+                assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
+            .assertNext(serviceBusReceivedMessage ->
+                assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
+            .thenCancel()
+            .verify(Duration.ofMinutes(2));
     }
 
     /**
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */
-    private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex,
-        Function<ServiceBusSessionReceiverClientBuilder, ServiceBusSessionReceiverClientBuilder> onBuild) {
+    private void setSender(MessagingEntityType entityType, int entityIndex) {
 
         this.sender = getSenderBuilder(false, entityType, entityIndex, true, false)
             .buildAsyncClient();
+    }
+    private void setReceiver(MessagingEntityType entityType, int entityIndex,
+                             Function<ServiceBusSessionReceiverClientBuilder, ServiceBusSessionReceiverClientBuilder> onBuild) {
         ServiceBusSessionReceiverClientBuilder sessionBuilder = getSessionReceiverBuilder(false,
-            entityType, entityIndex, false);
-        this.receiver = onBuild.apply(sessionBuilder).buildAsyncClient().acceptSession(sessionId).block();
+            entityType, entityIndex, false).disableAutoComplete();
+
+        this.sessionReceiver = onBuild.apply(sessionBuilder).buildAsyncClient();
+        this.receiver = this.sessionReceiver.acceptSession(sessionId).block();
     }
 
-    private static void assertMessageEquals(String sessionId, String messageId, String contents,
-        ServiceBusReceivedMessage message) {
+    private static void assertMessageEquals(String sessionId, String messageId, String contents, ServiceBusReceivedMessage message) {
 
         assertNotNull(message, "'message' should not be null.");
 

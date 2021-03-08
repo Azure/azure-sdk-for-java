@@ -7,18 +7,26 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.cosmos.models.ApiProperties;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
+import com.azure.resourcemanager.cosmos.models.BackupPolicy;
 import com.azure.resourcemanager.cosmos.models.Capability;
 import com.azure.resourcemanager.cosmos.models.ConnectorOffer;
 import com.azure.resourcemanager.cosmos.models.ConsistencyPolicy;
+import com.azure.resourcemanager.cosmos.models.CorsPolicy;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountOfferType;
 import com.azure.resourcemanager.cosmos.models.FailoverPolicy;
+import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
 import com.azure.resourcemanager.cosmos.models.Location;
+import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.cosmos.models.NetworkAclBypass;
+import com.azure.resourcemanager.cosmos.models.PublicNetworkAccess;
 import com.azure.resourcemanager.cosmos.models.VirtualNetworkRule;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** An Azure Cosmos DB database account. */
 @JsonFlatten
@@ -34,6 +42,12 @@ public class DatabaseAccountGetResultsInner extends ArmResourceProperties {
     private DatabaseAccountKind kind;
 
     /*
+     * Identity for the resource.
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
+
+    /*
      * The status of the Cosmos DB account at the time the operation was
      * called. The status can be one of following. 'Creating' – the Cosmos DB
      * account is being created. When an account is in Creating state, only
@@ -41,8 +55,8 @@ public class DatabaseAccountGetResultsInner extends ArmResourceProperties {
      * operation are returned. 'Succeeded' – the Cosmos DB account is active
      * for use. 'Updating' – the Cosmos DB account is being updated. 'Deleting'
      * – the Cosmos DB account is being deleted. 'Failed' – the Cosmos DB
-     * account failed creation. 'Offline' - the Cosmos DB account is not
-     * active. 'DeletionFailed' – the Cosmos DB account deletion failed.
+     * account failed creation. 'DeletionFailed' – the Cosmos DB account
+     * deletion failed.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
@@ -61,13 +75,10 @@ public class DatabaseAccountGetResultsInner extends ArmResourceProperties {
     private DatabaseAccountOfferType databaseAccountOfferType;
 
     /*
-     * Cosmos DB Firewall Support: This value specifies the set of IP addresses
-     * or IP address ranges in CIDR form to be included as the allowed list of
-     * client IPs for a given database account. IP addresses/ranges must be
-     * comma separated and must not contain any spaces.
+     * List of IpRules.
      */
-    @JsonProperty(value = "properties.ipRangeFilter")
-    private String ipRangeFilter;
+    @JsonProperty(value = "properties.ipRules")
+    private List<IpAddressOrRange> ipRules;
 
     /*
      * Flag to indicate whether to enable/disable Virtual Network ACL rules.
@@ -129,6 +140,13 @@ public class DatabaseAccountGetResultsInner extends ArmResourceProperties {
     private List<VirtualNetworkRule> virtualNetworkRules;
 
     /*
+     * List of Private Endpoint Connections configured for the Cosmos DB
+     * account.
+     */
+    @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
+
+    /*
      * Enables the account to write in multiple locations
      */
     @JsonProperty(value = "properties.enableMultipleWriteLocations")
@@ -154,6 +172,61 @@ public class DatabaseAccountGetResultsInner extends ArmResourceProperties {
     @JsonProperty(value = "properties.disableKeyBasedMetadataWriteAccess")
     private Boolean disableKeyBasedMetadataWriteAccess;
 
+    /*
+     * The URI of the key vault
+     */
+    @JsonProperty(value = "properties.keyVaultKeyUri")
+    private String keyVaultKeyUri;
+
+    /*
+     * Whether requests from Public Network are allowed
+     */
+    @JsonProperty(value = "properties.publicNetworkAccess", access = JsonProperty.Access.WRITE_ONLY)
+    private PublicNetworkAccess publicNetworkAccess;
+
+    /*
+     * Flag to indicate whether Free Tier is enabled.
+     */
+    @JsonProperty(value = "properties.enableFreeTier")
+    private Boolean enableFreeTier;
+
+    /*
+     * API specific properties.
+     */
+    @JsonProperty(value = "properties.apiProperties")
+    private ApiProperties apiProperties;
+
+    /*
+     * Flag to indicate whether to enable storage analytics.
+     */
+    @JsonProperty(value = "properties.enableAnalyticalStorage")
+    private Boolean enableAnalyticalStorage;
+
+    /*
+     * The object representing the policy for taking backups on an account.
+     */
+    @JsonProperty(value = "properties.backupPolicy")
+    private BackupPolicy backupPolicy;
+
+    /*
+     * The CORS policy for the Cosmos DB database account.
+     */
+    @JsonProperty(value = "properties.cors")
+    private List<CorsPolicy> cors;
+
+    /*
+     * Indicates what services are allowed to bypass firewall checks.
+     */
+    @JsonProperty(value = "properties.networkAclBypass")
+    private NetworkAclBypass networkAclBypass;
+
+    /*
+     * An array that contains the Resource Ids for Network Acl Bypass for the
+     * Cosmos DB account.
+     */
+    @JsonProperty(value = "properties.networkAclBypassResourceIds")
+    private List<String> networkAclBypassResourceIds;
+
     /**
      * Get the kind property: Indicates the type of database account. This can only be set at database account creation.
      *
@@ -175,12 +248,32 @@ public class DatabaseAccountGetResultsInner extends ArmResourceProperties {
     }
 
     /**
+     * Get the identity property: Identity for the resource.
+     *
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Identity for the resource.
+     *
+     * @param identity the identity value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The status of the Cosmos DB account at the time the operation was called. The
      * status can be one of following. 'Creating' – the Cosmos DB account is being created. When an account is in
      * Creating state, only properties that are specified as input for the Create Cosmos DB account operation are
      * returned. 'Succeeded' – the Cosmos DB account is active for use. 'Updating' – the Cosmos DB account is being
      * updated. 'Deleting' – the Cosmos DB account is being deleted. 'Failed' – the Cosmos DB account failed creation.
-     * 'Offline' - the Cosmos DB account is not active. 'DeletionFailed' – the Cosmos DB account deletion failed.
+     * 'DeletionFailed' – the Cosmos DB account deletion failed.
      *
      * @return the provisioningState value.
      */
@@ -208,26 +301,22 @@ public class DatabaseAccountGetResultsInner extends ArmResourceProperties {
     }
 
     /**
-     * Get the ipRangeFilter property: Cosmos DB Firewall Support: This value specifies the set of IP addresses or IP
-     * address ranges in CIDR form to be included as the allowed list of client IPs for a given database account. IP
-     * addresses/ranges must be comma separated and must not contain any spaces.
+     * Get the ipRules property: List of IpRules.
      *
-     * @return the ipRangeFilter value.
+     * @return the ipRules value.
      */
-    public String ipRangeFilter() {
-        return this.ipRangeFilter;
+    public List<IpAddressOrRange> ipRules() {
+        return this.ipRules;
     }
 
     /**
-     * Set the ipRangeFilter property: Cosmos DB Firewall Support: This value specifies the set of IP addresses or IP
-     * address ranges in CIDR form to be included as the allowed list of client IPs for a given database account. IP
-     * addresses/ranges must be comma separated and must not contain any spaces.
+     * Set the ipRules property: List of IpRules.
      *
-     * @param ipRangeFilter the ipRangeFilter value to set.
+     * @param ipRules the ipRules value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
-    public DatabaseAccountGetResultsInner withIpRangeFilter(String ipRangeFilter) {
-        this.ipRangeFilter = ipRangeFilter;
+    public DatabaseAccountGetResultsInner withIpRules(List<IpAddressOrRange> ipRules) {
+        this.ipRules = ipRules;
         return this;
     }
 
@@ -374,6 +463,16 @@ public class DatabaseAccountGetResultsInner extends ArmResourceProperties {
     }
 
     /**
+     * Get the privateEndpointConnections property: List of Private Endpoint Connections configured for the Cosmos DB
+     * account.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
      * Get the enableMultipleWriteLocations property: Enables the account to write in multiple locations.
      *
      * @return the enableMultipleWriteLocations value.
@@ -457,6 +556,191 @@ public class DatabaseAccountGetResultsInner extends ArmResourceProperties {
     }
 
     /**
+     * Get the keyVaultKeyUri property: The URI of the key vault.
+     *
+     * @return the keyVaultKeyUri value.
+     */
+    public String keyVaultKeyUri() {
+        return this.keyVaultKeyUri;
+    }
+
+    /**
+     * Set the keyVaultKeyUri property: The URI of the key vault.
+     *
+     * @param keyVaultKeyUri the keyVaultKeyUri value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withKeyVaultKeyUri(String keyVaultKeyUri) {
+        this.keyVaultKeyUri = keyVaultKeyUri;
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Whether requests from Public Network are allowed.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Get the enableFreeTier property: Flag to indicate whether Free Tier is enabled.
+     *
+     * @return the enableFreeTier value.
+     */
+    public Boolean enableFreeTier() {
+        return this.enableFreeTier;
+    }
+
+    /**
+     * Set the enableFreeTier property: Flag to indicate whether Free Tier is enabled.
+     *
+     * @param enableFreeTier the enableFreeTier value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withEnableFreeTier(Boolean enableFreeTier) {
+        this.enableFreeTier = enableFreeTier;
+        return this;
+    }
+
+    /**
+     * Get the apiProperties property: API specific properties.
+     *
+     * @return the apiProperties value.
+     */
+    public ApiProperties apiProperties() {
+        return this.apiProperties;
+    }
+
+    /**
+     * Set the apiProperties property: API specific properties.
+     *
+     * @param apiProperties the apiProperties value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withApiProperties(ApiProperties apiProperties) {
+        this.apiProperties = apiProperties;
+        return this;
+    }
+
+    /**
+     * Get the enableAnalyticalStorage property: Flag to indicate whether to enable storage analytics.
+     *
+     * @return the enableAnalyticalStorage value.
+     */
+    public Boolean enableAnalyticalStorage() {
+        return this.enableAnalyticalStorage;
+    }
+
+    /**
+     * Set the enableAnalyticalStorage property: Flag to indicate whether to enable storage analytics.
+     *
+     * @param enableAnalyticalStorage the enableAnalyticalStorage value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withEnableAnalyticalStorage(Boolean enableAnalyticalStorage) {
+        this.enableAnalyticalStorage = enableAnalyticalStorage;
+        return this;
+    }
+
+    /**
+     * Get the backupPolicy property: The object representing the policy for taking backups on an account.
+     *
+     * @return the backupPolicy value.
+     */
+    public BackupPolicy backupPolicy() {
+        return this.backupPolicy;
+    }
+
+    /**
+     * Set the backupPolicy property: The object representing the policy for taking backups on an account.
+     *
+     * @param backupPolicy the backupPolicy value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withBackupPolicy(BackupPolicy backupPolicy) {
+        this.backupPolicy = backupPolicy;
+        return this;
+    }
+
+    /**
+     * Get the cors property: The CORS policy for the Cosmos DB database account.
+     *
+     * @return the cors value.
+     */
+    public List<CorsPolicy> cors() {
+        return this.cors;
+    }
+
+    /**
+     * Set the cors property: The CORS policy for the Cosmos DB database account.
+     *
+     * @param cors the cors value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withCors(List<CorsPolicy> cors) {
+        this.cors = cors;
+        return this;
+    }
+
+    /**
+     * Get the networkAclBypass property: Indicates what services are allowed to bypass firewall checks.
+     *
+     * @return the networkAclBypass value.
+     */
+    public NetworkAclBypass networkAclBypass() {
+        return this.networkAclBypass;
+    }
+
+    /**
+     * Set the networkAclBypass property: Indicates what services are allowed to bypass firewall checks.
+     *
+     * @param networkAclBypass the networkAclBypass value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withNetworkAclBypass(NetworkAclBypass networkAclBypass) {
+        this.networkAclBypass = networkAclBypass;
+        return this;
+    }
+
+    /**
+     * Get the networkAclBypassResourceIds property: An array that contains the Resource Ids for Network Acl Bypass for
+     * the Cosmos DB account.
+     *
+     * @return the networkAclBypassResourceIds value.
+     */
+    public List<String> networkAclBypassResourceIds() {
+        return this.networkAclBypassResourceIds;
+    }
+
+    /**
+     * Set the networkAclBypassResourceIds property: An array that contains the Resource Ids for Network Acl Bypass for
+     * the Cosmos DB account.
+     *
+     * @param networkAclBypassResourceIds the networkAclBypassResourceIds value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withNetworkAclBypassResourceIds(List<String> networkAclBypassResourceIds) {
+        this.networkAclBypassResourceIds = networkAclBypassResourceIds;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DatabaseAccountGetResultsInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DatabaseAccountGetResultsInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -464,6 +748,12 @@ public class DatabaseAccountGetResultsInner extends ArmResourceProperties {
     @Override
     public void validate() {
         super.validate();
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (ipRules() != null) {
+            ipRules().forEach(e -> e.validate());
+        }
         if (consistencyPolicy() != null) {
             consistencyPolicy().validate();
         }
@@ -484,6 +774,18 @@ public class DatabaseAccountGetResultsInner extends ArmResourceProperties {
         }
         if (virtualNetworkRules() != null) {
             virtualNetworkRules().forEach(e -> e.validate());
+        }
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
+        }
+        if (apiProperties() != null) {
+            apiProperties().validate();
+        }
+        if (backupPolicy() != null) {
+            backupPolicy().validate();
+        }
+        if (cors() != null) {
+            cors().forEach(e -> e.validate());
         }
     }
 }

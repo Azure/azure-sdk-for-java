@@ -6,6 +6,7 @@ package com.azure.storage.blob
 import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpPipelinePosition
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
@@ -382,6 +383,10 @@ class LargeBlobTest extends APISpec {
             return request.getHttpMethod().equals(HttpMethod.PUT) &&
                 request.getUrl().getPath().endsWith(blobName) &&
                 request.getUrl().getQuery() == null
+        }
+
+        HttpPipelinePosition getPipelinePosition() {
+            return HttpPipelinePosition.PER_CALL;
         }
     }
 }

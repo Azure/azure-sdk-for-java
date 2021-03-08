@@ -5,7 +5,36 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Immutable;
+import java.time.OffsetDateTime;
 
-/** The ContainerRegistryChartPushedEventData model. */
+/** Schema of the Data property of an EventGridEvent for a Microsoft.ContainerRegistry.ChartPushed event. */
 @Immutable
-public final class ContainerRegistryChartPushedEventData extends ContainerRegistryArtifactEventData {}
+public final class ContainerRegistryChartPushedEventData extends ContainerRegistryArtifactEventData {
+    /** {@inheritDoc} */
+    @Override
+    public ContainerRegistryChartPushedEventData setId(String id) {
+        super.setId(id);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ContainerRegistryChartPushedEventData setTimestamp(OffsetDateTime timestamp) {
+        super.setTimestamp(timestamp);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ContainerRegistryChartPushedEventData setAction(String action) {
+        super.setAction(action);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ContainerRegistryChartPushedEventData setTarget(ContainerRegistryArtifactEventTarget target) {
+        super.setTarget(target);
+        return this;
+    }
+}

@@ -3,12 +3,15 @@
 package com.azure.data.tables;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -16,7 +19,6 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
-import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -33,16 +35,19 @@ import java.util.Objects;
 public class TableServiceClientBuilder {
     private final ClientLogger logger = new ClientLogger(TableServiceClientBuilder.class);
     private final SerializerAdapter serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-    private final List<HttpPipelinePolicy> policies;
+    private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
     private Configuration configuration;
     private String endpoint;
     private HttpClient httpClient;
-    private HttpLogOptions httpLogOptions;
+    private HttpLogOptions httpLogOptions = new HttpLogOptions();
+    private ClientOptions clientOptions;
     private TablesServiceVersion version;
     private TokenCredential tokenCredential;
     private HttpPipeline httpPipeline;
     private TablesSharedKeyCredential tablesSharedKeyCredential;
-    private SasTokenCredential sasTokenCredential;
+    private AzureSasCredential azureSasCredential;
+    private String sasToken;
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
 
     /**
@@ -50,14 +55,13 @@ public class TableServiceClientBuilder {
      * {@link TableServiceAsyncClient} objects.
      */
     public TableServiceClientBuilder() {
-        policies = new ArrayList<>();
-        httpLogOptions = new HttpLogOptions();
     }
 
     /**
      * Creates a {@link TableServiceClient} based on options set in the builder.
      *
      * @return A {@link TableServiceClient} created from the configurations in this builder.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public TableServiceClient buildClient() {
         return new TableServiceClient(buildAsyncClient());
@@ -67,14 +71,15 @@ public class TableServiceClientBuilder {
      * Creates a {@link TableServiceAsyncClient} based on options set in the builder.
      *
      * @return A {@link TableServiceAsyncClient} created from the configurations in this builder.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public TableServiceAsyncClient buildAsyncClient() {
-
         TablesServiceVersion serviceVersion = version != null ? version : TablesServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            tablesSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, httpLogOptions,
-            httpClient, policies, configuration, logger);
+            tablesSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+            endpoint, retryOptions, httpLogOptions, clientOptions,
+            httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
         return new TableServiceAsyncClient(pipeline, endpoint, serviceVersion, serializerAdapter);
     }
@@ -161,10 +166,23 @@ public class TableServiceClientBuilder {
      * @throws NullPointerException if {@code sasToken} is {@code null}.
      */
     public TableServiceClientBuilder sasToken(String sasToken) {
-        this.sasTokenCredential = new SasTokenCredential(Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null."));
+        this.sasToken = Objects.requireNonNull(sasToken,
+            "'sasToken' cannot be null.");
         this.tablesSharedKeyCredential = null;
         this.tokenCredential = null;
+        return this;
+    }
+
+    /**
+     * Sets the {@link AzureSasCredential} used to authorize requests sent to the service.
+     *
+     * @param credential {@link AzureSasCredential} used to authorize requests sent to the service.
+     * @return The updated {@code TableServiceClientBuilder}.
+     * @throws NullPointerException if {@code credential} is {@code null}.
+     */
+    public TableServiceClientBuilder credential(AzureSasCredential credential) {
+        this.azureSasCredential = Objects.requireNonNull(credential,
+            "'sasToken' cannot be null.");
         return this;
     }
 
@@ -178,7 +196,7 @@ public class TableServiceClientBuilder {
     public TableServiceClientBuilder credential(TablesSharedKeyCredential credential) {
         this.tablesSharedKeyCredential = Objects.requireNonNull(credential, "credential cannot be null.");
         this.tokenCredential = null;
-        this.sasTokenCredential = null;
+        this.sasToken = null;
         return this;
     }
 
@@ -192,7 +210,7 @@ public class TableServiceClientBuilder {
     public TableServiceClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.tablesSharedKeyCredential = null;
-        this.sasTokenCredential = null;
+        this.sasToken = null;
         return this;
     }
 
@@ -228,12 +246,19 @@ public class TableServiceClientBuilder {
      * Adds a pipeline policy to apply on each request sent. The policy will be added after the retry policy. If
      * the method is called multiple times, all policies will be added and their order preserved.
      *
-     * @param pipelinePolicy A pipeline policy
+     * @param pipelinePolicy A pipeline policy.
      * @return The updated {@code TableServiceClientBuilder}.
      * @throws NullPointerException if {@code pipelinePolicy} is {@code null}.
      */
     public TableServiceClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        this.policies.add(Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null"));
+        Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null.");
+
+        if (pipelinePolicy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
+            perCallPolicies.add(pipelinePolicy);
+        } else {
+            perRetryPolicies.add(pipelinePolicy);
+        }
+
         return this;
     }
 
@@ -263,6 +288,17 @@ public class TableServiceClientBuilder {
      */
     public TableServiceClientBuilder retryOptions(RequestRetryOptions retryOptions) {
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Sets the client options such as application ID and custom headers to set on a request.
+     *
+     * @param clientOptions The {@link ClientOptions}.
+     * @return The updated {@code TableServiceClientBuilder}.
+     */
+    public TableServiceClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
         return this;
     }
 }
