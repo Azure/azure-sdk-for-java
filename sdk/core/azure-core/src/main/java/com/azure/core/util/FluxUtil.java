@@ -188,10 +188,13 @@ public final class FluxUtil {
     public static <T> Mono<T> withContext(Function<Context, Mono<T>> serviceCall,
         Map<String, String> contextAttributes) {
         return Mono.subscriberContext()
-            .map(context -> new ReactorToAzureContextWrapper(contextAttributes, context))
+            .map(ctx -> ctx == null || ctx.isEmpty() ?
+                Context.NONE :
+                new ReactorToAzureContextWrapper(contextAttributes, ctx))
             .flatMap(serviceCall);
     }
 
+    // This class wraps a reactor context in the Azure-Core Context API, to avoid unnecessary copying
     private static class ReactorToAzureContextWrapper extends Context {
         private final Map<String, String> contextAttributes;
         private final reactor.util.context.Context reactorContext;
@@ -310,19 +313,8 @@ public final class FluxUtil {
      */
     public static <T> Flux<T> fluxContext(Function<Context, Flux<T>> serviceCall) {
         return Mono.subscriberContext()
-            .map(FluxUtil::toAzureContext)
+            .map(ctx -> ctx == null || ctx.isEmpty() ? Context.NONE : new ReactorToAzureContextWrapper(ctx))
             .flatMapMany(serviceCall);
-    }
-
-    /**
-     * Converts a reactor context to azure context. If the reactor context is {@code null} or empty, {@link
-     * Context#NONE} will be returned.
-     *
-     * @param context The reactor context
-     * @return The azure context
-     */
-    private static Context toAzureContext(reactor.util.context.Context context) {
-        return context == null || context.isEmpty() ? Context.NONE : new ReactorToAzureContextWrapper(context);
     }
 
     /**
