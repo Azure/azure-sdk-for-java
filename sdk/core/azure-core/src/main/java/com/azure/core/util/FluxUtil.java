@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
@@ -99,15 +100,7 @@ public final class FluxUtil {
      * @throws IllegalStateException If the size of the network response is greater than {@link Integer#MAX_VALUE}.
      */
     public static Mono<byte[]> collectBytesFromNetworkResponse(Flux<ByteBuffer> stream, HttpHeaders headers) {
-        
-      
-      
-      
-      
-      
-      
-      
-      .requireNonNull(headers, "'headers' cannot be null.");
+        Objects.requireNonNull(headers, "'headers' cannot be null.");
 
         String contentLengthHeader = headers.getValue("Content-Length");
 
