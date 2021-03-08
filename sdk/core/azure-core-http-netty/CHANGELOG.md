@@ -1,7 +1,11 @@
 # Release History
 
-## 1.9.0-beta.1 (Unreleased)
+## 1.9.0 (2021-03-08)
 
+### Dependency Updates
+
+- Upgraded Netty from `4.1.54.Final` to `4.1.59.Final`.
+- Upgraded Reactor Netty from `0.9.15.RELEASE` to `1.0.4`.
 
 ## 1.8.0 (2021-02-05)
 
