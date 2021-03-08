@@ -115,7 +115,7 @@ public class AADB2CProperties implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
-        if(StringUtils.isEmpty(tenantId)){
+        if (StringUtils.isEmpty(tenantId)) {
             if (StringUtils.isEmpty(tenant) && StringUtils.isEmpty(baseUri)) {
                 throw new AADB2CConfigurationException("'tenant' and 'baseUri' at least configure one item.");
             }
