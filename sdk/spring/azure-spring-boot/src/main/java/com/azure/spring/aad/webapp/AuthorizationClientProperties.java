@@ -9,6 +9,7 @@ import java.util.List;
  * Properties for an oauth2 client.
  */
 public class AuthorizationClientProperties {
+
     private List<String> scopes;
 
     private boolean onDemand = false;
