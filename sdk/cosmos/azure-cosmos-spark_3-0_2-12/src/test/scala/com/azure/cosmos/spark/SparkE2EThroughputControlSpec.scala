@@ -7,7 +7,7 @@ import com.azure.cosmos.implementation.TestConfigurations
 
 class SparkE2EThroughputControlSpec extends IntegrationSpec with Spark with CosmosClient with AutoCleanableCosmosContainer {
 
-    "spark throughput control" can "use user provided schema" taggedAs RequiresCosmosEndpoint in {
+    "spark throughput control" should "limit throughput usage" taggedAs RequiresCosmosEndpoint in {
 
         val throughputControlDatabaseId = "testThroughputControlDB"
         val throughputControlContainerId = "testThroughputControlContainer"

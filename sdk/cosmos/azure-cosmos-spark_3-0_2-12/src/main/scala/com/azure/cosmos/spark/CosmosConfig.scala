@@ -463,16 +463,16 @@ private object CosmosThroughputControlConfig {
         helpMessage = "Container which will be used for throughput global control.")
 
     private val globalControlItemRenewIntervalSupplier = CosmosConfigEntry[Duration](
-        key = "spark.cosmos.throughputControl.globalControl.renewIntervalInSeconds",
+        key = "spark.cosmos.throughputControl.globalControl.renewIntervalInMilliseconds",
         mandatory = false,
-        parseFromStringFunction = renewIntervalInSeconds => Duration.ofSeconds(renewIntervalInSeconds.toInt),
+        parseFromStringFunction = renewIntervalInMilliseconds => Duration.ofMillis(renewIntervalInMilliseconds.toInt),
         helpMessage = "This controls how often the client is going to update the throughput usage of itself " +
             "and adjust its own throughput share based on the throughput usage of other clients")
 
     private val globalControlItemExpireIntervalSupplier = CosmosConfigEntry[Duration](
-        key = "spark.cosmos.throughputControl.group.globalControl.expireIntervalInSeconds",
+        key = "spark.cosmos.throughputControl.globalControl.expireIntervalInMilliseconds",
         mandatory = false,
-        parseFromStringFunction = expireIntervalInSeconds => Duration.ofSeconds(expireIntervalInSeconds.toInt),
+        parseFromStringFunction = expireIntervalInMilliseconds => Duration.ofMillis(expireIntervalInMilliseconds.toInt),
         helpMessage = "This controls how quickly we will detect the client has been offline " +
             "and hence allow its throughput share to be taken by other clients.")
 
