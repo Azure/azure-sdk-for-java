@@ -8,7 +8,6 @@ import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
-import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
@@ -84,7 +83,7 @@ public class AADAuthenticationProperties implements InitializingBean {
     /**
      * Azure Tenant ID.
      */
-    private String tenantId = "common";
+    private String tenantId;
 
     private String postLogoutRedirectUri;
 
@@ -142,18 +141,6 @@ public class AADAuthenticationProperties implements InitializingBean {
                        .map(AADAuthenticationProperties.UserGroupProperties::getAllowedGroups)
                        .map(allowedGroups -> !allowedGroups.isEmpty())
                        .orElse(false);
-    }
-
-    public boolean isResourceServer() {
-        return ClassUtils.isPresent(
-            "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken",
-            this.getClass().getClassLoader());
-    }
-
-    public boolean isWebApplication() {
-        return ClassUtils.isPresent(
-            "org.springframework.security.oauth2.client.registration.ClientRegistrationRepository",
-            this.getClass().getClassLoader());
     }
 
     public UserGroupProperties getUserGroup() {
@@ -337,6 +324,20 @@ public class AADAuthenticationProperties implements InitializingBean {
                 + "azure.activedirectory.graph-base-uri = " + graphBaseUri + ", "
                 + "azure.activedirectory.graph-membership-uri = " + graphMembershipUri + ".");
         }
+
+        if (!StringUtils.hasText(tenantId)) {
+            tenantId = "common";
+        }
+        if (isMultiTenantsApplication(tenantId) && !userGroup.getAllowedGroups().isEmpty()) {
+            throw new IllegalStateException("When azure.activedirectory.tenant-id is 'common/organizations/consumers', "
+                + "azure.activedirectory.user-group.allowed-groups should be empty. "
+                + "But actually azure.activedirectory.tenant-id=" + tenantId
+                + ", and azure.activedirectory.user-group.allowed-groups=" + userGroup.getAllowedGroups());
+        }
+    }
+
+    private boolean isMultiTenantsApplication(String tenantId) {
+        return "common".equals(tenantId) || "organizations".equals(tenantId) || "consumers".equals(tenantId);
     }
 
     private String addSlash(String uri) {

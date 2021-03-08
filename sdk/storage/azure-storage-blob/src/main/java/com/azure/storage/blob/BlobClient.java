@@ -7,6 +7,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -171,6 +172,32 @@ public class BlobClient extends BlobClientBase {
             blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
         uploadWithResponse(data, length, null, null, null, null, blobRequestConditions, null, Context.NONE);
+    }
+
+    /**
+     * Creates a new blob. By default this method will not overwrite an existing blob.
+     *
+     * @param data The data to write to the blob.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void upload(BinaryData data) {
+        upload(data, false);
+    }
+
+    /**
+     * Creates a new blob, or updates the content of an existing blob.
+     *
+     * @param data The data to write to the blob.
+     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void upload(BinaryData data, boolean overwrite) {
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
+        if (!overwrite) {
+            blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
+        uploadWithResponse(new BlobParallelUploadOptions(data).setRequestConditions(blobRequestConditions),
+            null, Context.NONE);
     }
 
     /**

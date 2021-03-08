@@ -23,48 +23,42 @@ parameters:
   - name: TestGoals
     type: string
     default: verify
-  - name: WindowsPool
-    type: string
-    default: azsdk-pool-mms-win-2019-general
-  - name: LinuxPool
-    type: string
-    default: azsdk-pool-mms-ubuntu-1804-general
   - name: TestMatrix
     type: object
     default:
       Linux - Java 8:
-        Pool: $(LinuxPool)
-        OSVmImage:
+        Pool: azsdk-pool-mms-ubuntu-1804-general
+        OSVmImage: MMSUbuntu18.04
         JavaTestVersion: '1.8'
         RunTitle: 'Linux on Java 1.8'
       macOS - Java 8:
-        Pool:
+        Pool: Azure Pipelines
         OSVmImage: 'macOS-10.15'
         JavaTestVersion: '1.8'
         RunTitle: 'macOS on Java 1.8'
       Windows - Java 8:
-        Pool: $(WindowsPool)
-        OSVmImage:
+        Pool: azsdk-pool-mms-win-2019-general
+        OSVmImage: MMS2019
         JavaTestVersion: '1.8'
         RunTitle: 'Windows on Java 1.8'
       Linux - Java 11:
-        Pool: $(LinuxPool)
-        OSVmImage:
+        Pool: azsdk-pool-mms-ubuntu-1804-general
+        OSVmImage: MMSUbuntu18.04
         JavaTestVersion: '1.11'
         RunTitle: 'Linux on Java 1.11'
       macOS - Java 11:
-        Pool:
+        Pool: Azure Pipelines
         OSVmImage: 'macOS-10.15'
         JavaTestVersion: '1.11'
         RunTitle: 'macOS on Java 1.11'
       Windows - Java 11:
-        Pool: $(WindowsPool)
-        OSVmImage:
+        Pool: azsdk-pool-mms-win-2019-general
+        OSVmImage: MMS2019
         JavaTestVersion: '1.11'
         RunTitle: 'Windows on Java 1.11'
       Linux From Source - Java 11:
-        Pool: $(LinuxPool)
-        OSVmImage:
+        Pool: azsdk-pool-mms-ubuntu-1804-general
+        OSVmImage: MMSUbuntu18.04
         JavaTestVersion: '1.11'
         RunTitle: 'From Source: Linux on Java 1.11'
         AdditionalOptions: '-amd'
@@ -78,7 +72,7 @@ jobs:
       - template: ../variables/globals.yml
 
     pool:
-      name: ${{ parameters.LinuxPool }}
+      name: azsdk-pool-mms-ubuntu-1804-general
 
     strategy:
       matrix:
@@ -107,6 +101,8 @@ jobs:
           versionSpec: '3.6'
 
       - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
+        parameters:
+          ServiceDirectory: ${{parameters.ServiceDirectory}}
 
       - ${{ each artifact in parameters.Artifacts }}:
         - script: |
@@ -178,7 +174,8 @@ jobs:
       - template: ../variables/globals.yml
 
     pool:
-      name: ${{ parameters.LinuxPool }}
+      name: azsdk-pool-mms-ubuntu-1804-general
+      vmImage: MMSUbuntu18.04
 
     steps:
       - pwsh: |
@@ -258,18 +255,10 @@ jobs:
 
       - template: ../steps/upload-repository-on-failure.yml
 
+      - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
+
   - job: 'Test'
     condition: and(succeeded(), ne(variables['Skip.Test'], 'true'))
-
-    # HACK: We can't reference parameters to define other parameters, so I am
-    #       setting some variables with the value of parameters which can then
-    #       be used later in the test evaluations.
-    variables:
-      - template: ../variables/globals.yml
-      - name: WindowsPool
-        value: ${{parameters.WindowsPool}}
-      - name: LinuxPool
-        value: ${{parameters.LinuxPool}}
 
     strategy:
       matrix:
@@ -280,10 +269,17 @@ jobs:
               ${{ insert }}: ${{ matrixEntry.value }}
 
     pool:
-      name: $[coalesce(variables['Pool'], '')]
-      vmImage: $[coalesce(variables['OSVmImage'], '')]
+      name: $(Pool)
+      vmImage: $(OSVmImage)
+    
+    variables:
+      - template: ../variables/globals.yml
 
     steps:
+      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
+        parameters:
+          AgentImage: $(OSVmImage)
+
       - template: ../steps/cache-maven-repository.yml
 
       - template: ../steps/install-reporting-tools.yml

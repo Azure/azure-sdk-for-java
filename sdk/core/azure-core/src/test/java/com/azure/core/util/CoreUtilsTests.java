@@ -107,6 +107,7 @@ public class CoreUtilsTests {
         assertEquals(expected, CoreUtils.getApplicationId(clientOptions, logOptions));
     }
 
+    @SuppressWarnings("deprecation")
     private static Stream<Arguments> getApplicationIdSupplier() {
         String clientOptionApplicationId = "clientOptions";
         String logOptionsApplicationId = "logOptions";

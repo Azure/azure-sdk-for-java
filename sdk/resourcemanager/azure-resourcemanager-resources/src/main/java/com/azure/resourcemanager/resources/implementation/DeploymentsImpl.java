@@ -5,6 +5,7 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.models.Deployment;
 import com.azure.resourcemanager.resources.models.Deployments;
@@ -37,8 +38,8 @@ public final class DeploymentsImpl
 
     @Override
     public PagedIterable<Deployment> listByResourceGroup(String groupName) {
-        return this.manager().serviceClient().getDeployments()
-            .listByResourceGroup(groupName).mapPage(inner -> createFluentModel(inner));
+        return PagedConverter.mapPage(this.manager().serviceClient().getDeployments()
+            .listByResourceGroup(groupName), inner -> createFluentModel(inner));
     }
 
     @Override
@@ -53,9 +54,17 @@ public final class DeploymentsImpl
     }
 
     @Override
-    public Mono<Deployment> getByResourceGroupAsync(String groupName, String name) {
+    public Mono<Deployment> getByResourceGroupAsync(String resourceGroupName, String name) {
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null."));
+        }
+        if (CoreUtils.isNullOrEmpty(name)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
+        }
         return this.manager().serviceClient().getDeployments()
-            .getByResourceGroupAsync(groupName, name).map(deploymentExtendedInner -> {
+            .getByResourceGroupAsync(resourceGroupName, name).map(deploymentExtendedInner -> {
                 if (deploymentExtendedInner != null) {
                     return createFluentModel(deploymentExtendedInner);
                 } else {
@@ -71,8 +80,16 @@ public final class DeploymentsImpl
 
 
     @Override
-    public Mono<Void> deleteByResourceGroupAsync(String groupName, String name) {
-        return this.manager().serviceClient().getDeployments().deleteAsync(groupName, name);
+    public Mono<Void> deleteByResourceGroupAsync(String resourceGroupName, String name) {
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null."));
+        }
+        if (CoreUtils.isNullOrEmpty(name)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
+        }
+        return this.manager().serviceClient().getDeployments().deleteAsync(resourceGroupName, name);
     }
 
     @Override
@@ -124,8 +141,12 @@ public final class DeploymentsImpl
 
     @Override
     public PagedFlux<Deployment> listByResourceGroupAsync(String resourceGroupName) {
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return new PagedFlux<>(() -> Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+        }
         final DeploymentsClient client = this.manager().serviceClient().getDeployments();
-        return client.listByResourceGroupAsync(resourceGroupName)
-            .mapPage(deploymentExtendedInner -> createFluentModel(deploymentExtendedInner));
+        return PagedConverter.mapPage(client.listByResourceGroupAsync(resourceGroupName),
+            deploymentExtendedInner -> createFluentModel(deploymentExtendedInner));
     }
 }

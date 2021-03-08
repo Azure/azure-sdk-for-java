@@ -14,6 +14,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /**
  * Implementation for {@link EventHubAuthorizationRules}.
@@ -60,17 +61,17 @@ public final class EventHubAuthorizationRulesImpl
     @Override
     public PagedIterable<EventHubAuthorizationRule> listByEventHub(
         final String resourceGroupName, final String namespaceName, final String eventHubName) {
-        return innerModel()
-            .listAuthorizationRules(resourceGroupName, namespaceName, eventHubName)
-            .mapPage(this::wrapModel);
+        return PagedConverter.mapPage(innerModel()
+            .listAuthorizationRules(resourceGroupName, namespaceName, eventHubName),
+            this::wrapModel);
     }
 
     @Override
     public PagedFlux<EventHubAuthorizationRule> listByEventHubAsync(
         String resourceGroupName, String namespaceName, final String eventHubName) {
-        return this.innerModel()
-            .listAuthorizationRulesAsync(resourceGroupName, namespaceName, eventHubName)
-            .mapPage(this::wrapModel);
+        return PagedConverter.mapPage(this.innerModel()
+            .listAuthorizationRulesAsync(resourceGroupName, namespaceName, eventHubName),
+            this::wrapModel);
     }
 
     @Override

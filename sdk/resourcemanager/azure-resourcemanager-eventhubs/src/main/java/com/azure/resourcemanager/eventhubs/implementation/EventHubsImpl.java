@@ -18,6 +18,7 @@ import com.azure.resourcemanager.eventhubs.models.EventHubs;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /**
  * Implementation for {@link EventHubs}.
@@ -79,16 +80,16 @@ public final class EventHubsImpl extends WrapperImpl<EventHubsClient> implements
 
     @Override
     public PagedIterable<EventHub> listByNamespace(String resourceGroupName, String namespaceName) {
-        return innerModel()
-            .listByNamespace(resourceGroupName, namespaceName)
-            .mapPage(this::wrapModel);
+        return PagedConverter.mapPage(innerModel()
+            .listByNamespace(resourceGroupName, namespaceName),
+            this::wrapModel);
     }
 
     @Override
     public PagedFlux<EventHub> listByNamespaceAsync(String resourceGroupName, String namespaceName) {
-        return innerModel()
-            .listByNamespaceAsync(resourceGroupName, namespaceName)
-            .mapPage(this::wrapModel);
+        return PagedConverter.mapPage(innerModel()
+            .listByNamespaceAsync(resourceGroupName, namespaceName),
+            this::wrapModel);
     }
 
     @Override
