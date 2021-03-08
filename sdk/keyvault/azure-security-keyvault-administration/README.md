@@ -25,7 +25,7 @@ Maven dependency for the Azure Key Vault Administration library. Add it to your 
 - An existing [Azure Key Vault][azure_keyvault]. If you need to create a Key Vault, you can use the [Azure Cloud Shell][azure_cloud_shell] to create one with this Azure CLI command. Replace `<your-resource-group-name>` and `<your-key-vault-name>` with your own, unique names:
 
     ```Bash
-    az keyvault create --resource-group <your-resource-group-name> --name <your-key-vault-name>
+    az keyvault create --hsm-name <your-key-vault-name> --resource-group <your-resource-group-name> --administrators <your-service-principal-object-id> --location <your-azure-location>
     ```
 
 ### Authenticate the client

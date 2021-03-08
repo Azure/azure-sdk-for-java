@@ -4,7 +4,6 @@
 
 package com.azure.communication.sms.implementation.models;
 
-import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,14 +15,14 @@ public final class SmsSendResponse {
      * The value property.
      */
     @JsonProperty(value = "value", required = true)
-    private List<SmsSendResult> value;
+    private List<SmsSendResponseItem> value;
 
     /**
      * Get the value property: The value property.
      *
      * @return the value value.
      */
-    public List<SmsSendResult> getValue() {
+    public List<SmsSendResponseItem> getValue() {
         return this.value;
     }
 
@@ -33,7 +32,7 @@ public final class SmsSendResponse {
      * @param value the value value to set.
      * @return the SmsSendResponse object itself.
      */
-    public SmsSendResponse setValue(List<SmsSendResult> value) {
+    public SmsSendResponse setValue(List<SmsSendResponseItem> value) {
         this.value = value;
         return this;
     }

@@ -19,6 +19,9 @@ public final class StorageTargetType extends ExpandableStringEnum<StorageTargetT
     /** Static value unknown for StorageTargetType. */
     public static final StorageTargetType UNKNOWN = fromString("unknown");
 
+    /** Static value blobNfs for StorageTargetType. */
+    public static final StorageTargetType BLOB_NFS = fromString("blobNfs");
+
     /**
      * Creates or finds a StorageTargetType from its string representation.
      *

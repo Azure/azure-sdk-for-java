@@ -44,8 +44,6 @@ stages:
           groupId: com.azure
           safeName: azurespringdatacosmostest
       TimeoutInMinutes: 90
-      EnvVars:
-        AZURE_TEST_MODE: LIVE
       PreSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
       PostSteps:

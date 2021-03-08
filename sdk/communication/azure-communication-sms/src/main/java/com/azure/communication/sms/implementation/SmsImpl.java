@@ -4,8 +4,8 @@
 
 package com.azure.communication.sms.implementation;
 
+import com.azure.communication.sms.implementation.models.SendMessageRequest;
 import com.azure.communication.sms.implementation.models.SmsSendResponse;
-import com.azure.communication.sms.models.SendMessageRequest;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Host;

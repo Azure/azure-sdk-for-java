@@ -21,6 +21,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.models.CloudEvent;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -63,7 +64,7 @@ public final class EventGridPublisherClientBuilder {
 
     private ClientOptions clientOptions;
 
-    private ObjectSerializer eventDataSerializer;
+    private ObjectSerializer serializer;
 
     private Configuration configuration;
 
@@ -110,12 +111,12 @@ public final class EventGridPublisherClientBuilder {
             throw logger.logExceptionAsError(new IllegalArgumentException("Cannot parse endpoint"));
         }
 
-        EventGridServiceVersion buildServiceVersion = serviceVersion == null ?
-            EventGridServiceVersion.getLatest() :
-            serviceVersion;
+        EventGridServiceVersion buildServiceVersion = serviceVersion == null
+            ? EventGridServiceVersion.getLatest()
+            : serviceVersion;
 
         if (httpPipeline != null) {
-            return new EventGridPublisherAsyncClient<T>(httpPipeline, hostname, buildServiceVersion, eventDataSerializer, eventClass);
+            return new EventGridPublisherAsyncClient<T>(httpPipeline, hostname, buildServiceVersion, serializer, eventClass);
         }
 
         Configuration buildConfiguration = (configuration == null)
@@ -169,7 +170,7 @@ public final class EventGridPublisherClientBuilder {
             .build();
 
 
-        return new EventGridPublisherAsyncClient<T>(buildPipeline, hostname, buildServiceVersion, eventDataSerializer, eventClass);
+        return new EventGridPublisherAsyncClient<T>(buildPipeline, hostname, buildServiceVersion, serializer, eventClass);
     }
 
     /**
@@ -290,12 +291,12 @@ public final class EventGridPublisherClientBuilder {
     }
 
     /**
-     * Set the serializer that will serialize the data part of the events when the events are sent to the service.
-     * @param eventDataSerializer The data serializer.
+     * Set the serializer that will serialize the custom events when custom events are sent to the service.
+     * @param serializer The serializer.
      * @return the builder itself.
      */
-    public EventGridPublisherClientBuilder serializer(ObjectSerializer eventDataSerializer) {
-        this.eventDataSerializer = eventDataSerializer;
+    public EventGridPublisherClientBuilder serializer(ObjectSerializer serializer) {
+        this.serializer = serializer;
         return this;
     }
 

@@ -37,7 +37,7 @@ output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL	
 namespace: com.azure.communication.sms	
 generate-client-as-impl: true	
-custom-types: SendMessageRequest,SmsSendOptions,SmsSendResult
+custom-types: SmsSendOptions
 custom-types-subpackage: models
 models-subpackage: implementation.models
 sync-methods: all
@@ -45,17 +45,7 @@ add-context-parameter: true
 context-client-method-parameter: true
 
 ```
-
-### Rename SendSmsResponseItem to SmsSendResult
-
-``` yaml
-directive:
-    - rename-model:
-        from: SmsSendResponseItem
-        to: SmsSendResult
-```
 ### Directive renaming "id" property to "identifier"
-
 ``` yaml
 directive:
     from: swagger-document
