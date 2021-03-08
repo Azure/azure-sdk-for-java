@@ -241,7 +241,6 @@ public final class TextAnalyticsClientBuilder {
         try {
             new URL(endpoint);
         } catch (MalformedURLException ex) {
-            System.out.println("endpoint: " + endpoint);
             throw logger.logExceptionAsWarning(new IllegalArgumentException(
                 String.format("'endpoint' must be a valid URL. value=%s", endpoint), ex));
         }
