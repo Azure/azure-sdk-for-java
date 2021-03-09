@@ -470,7 +470,7 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
                 WithRouteTable<ParentT>,
                 WithDelegation<ParentT>,
                 WithServiceEndpoint<ParentT>,
-                WithPrivateEndpointNetworkPolicies<ParentT>{
+                WithPrivateEndpointNetworkPolicies<ParentT> {
         }
     }
 
