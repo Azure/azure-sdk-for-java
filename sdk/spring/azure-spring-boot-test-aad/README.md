@@ -4,7 +4,7 @@
 ## Getting started
 
 ### How to run AADConditionalAccessIT. 
-    
+
 #####  What is AAD Conditional Access?
 
 Azure Active Directory is a token-based authentication platform, [On-Behalf-Of flow] is the middle-tier service to make authenticated requests to the downstream service through token.
