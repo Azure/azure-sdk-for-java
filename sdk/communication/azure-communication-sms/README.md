@@ -92,10 +92,8 @@ There are two different forms of authentication to use the Azure Communication S
 ### Send a 1:1 SMS Message
 Use the `send` or `sendWithResponse` function to send a SMS message to a single phone number.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L119-L128 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L105-L112 -->
 ```java
-SmsClient smsClient = createSmsClientUsingAzureKeyCredential();
-
 SmsSendResult sendResult = smsClient.send(
     "<from-phone-number>",
     "<to-phone-number>",
@@ -108,10 +106,8 @@ System.out.println("Send Result Successful:" + sendResult.isSuccessful());
 ### Send a 1:N SMS Message
 To send a SMS message to a list of recipients, call the `send` or `sendWithResponse` function with a list of recipient phone numbers. You may also add pass in an options object to specify whether the delivery report should be enabled and set custom tags.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L132-L149 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L118-L133 -->
 ```java
-SmsClient smsClient = createSmsClientUsingAzureKeyCredential();
-
 SmsSendOptions options = new SmsSendOptions();
 options.setDeliveryReportEnabled(true);
 options.setTag("Tag");
@@ -134,16 +130,15 @@ for (SmsSendResult result : sendResults) {
 
 - SMS operations will throw an exception if the request to the server fails.
 - Exceptions will not be thrown if the error is caused by an individual message, only if something fails with the overall request.
-- Please use the `Successful` flag to validate each individual result to verify if the message was sent.
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L248-L273 -->
+- Please use the `isSuccessful()` flag to validate each individual result to verify if the message was sent.
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L168-L192 -->
 ```java
-SmsClient smsClient = createSmsClientUsingAzureKeyCredential();
-
-SmsSendOptions options = new SmsSendOptions();
-options.setDeliveryReportEnabled(true);
-options.setTag("Tag");
-
 try {
+
+    SmsSendOptions options = new SmsSendOptions();
+    options.setDeliveryReportEnabled(true);
+    options.setTag("Tag");
+
     Response<Iterable<SmsSendResult>> sendResults = smsClient.sendWithResponse(
         "<from-phone-number>",
         Arrays.asList("<to-phone-number1>", "<to-phone-number2>"),
@@ -153,7 +148,7 @@ try {
 
     Iterable<SmsSendResult> resultOfEachMessage = sendResults.getValue();
     for (SmsSendResult result : resultOfEachMessage) {
-        if (!result.isSuccessful()) {
+        if (result.isSuccessful()) {
             System.out.println("Successfully sent this message: " + result.getMessageId() + " to " + result.getTo());
         } else {
             System.out.println("Something went wrong when trying to send this message " + result.getMessageId() + " to " + result.getTo());
