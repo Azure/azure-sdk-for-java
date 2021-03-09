@@ -97,7 +97,7 @@ Use the `send` or `sendWithResponse` function to send a SMS message to a single 
 SmsSendResult sendResult = smsClient.send(
     "<from-phone-number>",
     "<to-phone-number>",
-    "Hi");
+    "Weekly Promotion");
 
 System.out.println("Message Id: " + sendResult.getMessageId());
 System.out.println("Recipient Number: " + sendResult.getTo());
@@ -115,7 +115,7 @@ options.setTag("Marketing");
 Iterable<SmsSendResult> sendResults = smsClient.sendWithResponse(
     "<from-phone-number>",
     Arrays.asList("<to-phone-number1>", "<to-phone-number2>"),
-    "Hi",
+    "Weekly Promotion",
     options /* Optional */,
     Context.NONE).getValue();
 
@@ -128,9 +128,9 @@ for (SmsSendResult result : sendResults) {
 
 ## Troubleshooting
 
-- SMS operations will throw an exception if the request to the server fails.
-- Exceptions will not be thrown if the error is caused by an individual message, only if something fails with the overall request.
-- Please use the `isSuccessful()` flag to validate each individual result to verify if the message was sent.
+SMS operations will throw an exception if the request to the server fails.
+Exceptions will not be thrown if the error is caused by an individual message, only if something fails with the overall request.
+Please use the `isSuccessful()` flag to validate each individual result to verify if the message was sent.
 <!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L153-L176 -->
 ```java
 try {
@@ -141,7 +141,7 @@ try {
     Response<Iterable<SmsSendResult>> sendResults = smsClient.sendWithResponse(
         "<from-phone-number>",
         Arrays.asList("<to-phone-number1>", "<to-phone-number2>"),
-        "Hi",
+        "Weekly Promotion",
         options /* Optional */,
         Context.NONE);
 

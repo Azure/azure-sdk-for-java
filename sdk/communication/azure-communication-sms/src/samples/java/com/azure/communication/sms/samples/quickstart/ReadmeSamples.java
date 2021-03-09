@@ -103,7 +103,7 @@ public class ReadmeSamples {
         SmsSendResult sendResult = smsClient.send(
             "<from-phone-number>",
             "<to-phone-number>",
-            "Hi");
+            "Weekly Promotion");
 
         System.out.println("Message Id: " + sendResult.getMessageId());
         System.out.println("Recipient Number: " + sendResult.getTo());
@@ -120,7 +120,7 @@ public class ReadmeSamples {
         Iterable<SmsSendResult> sendResults = smsClient.sendWithResponse(
             "<from-phone-number>",
             Arrays.asList("<to-phone-number1>", "<to-phone-number2>"),
-            "Hi",
+            "Weekly Promotion",
             options /* Optional */,
             Context.NONE).getValue();
 
@@ -140,7 +140,7 @@ public class ReadmeSamples {
             SmsSendResult sendResult = smsClient.send(
                 "<from-phone-number>",
                 "<to-phone-number>",
-                "Hi"
+                "Weekly Promotion"
             );
         } catch (RuntimeException ex) {
             System.out.println(ex.getMessage());
@@ -158,7 +158,7 @@ public class ReadmeSamples {
             Response<Iterable<SmsSendResult>> sendResults = smsClient.sendWithResponse(
                 "<from-phone-number>",
                 Arrays.asList("<to-phone-number1>", "<to-phone-number2>"),
-                "Hi",
+                "Weekly Promotion",
                 options /* Optional */,
                 Context.NONE);
 
