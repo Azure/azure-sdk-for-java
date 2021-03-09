@@ -1,10 +1,15 @@
 # Sample for Azure AD B2C Resource server Spring Boot client library for Java
 
 ## Key concepts
-This sample illustrates how to use `azure-spring-boot-starter-active-directory-b2c` package to work with OAuth 2.0 and OpenID Connect protocols with Azure AD B2C to secure web services.
+This example demonstrates turning the aad b2c application into a resource server to protect the protected resource.
+
+1. Constructs trusted iss by configuring tenant id.
+2. Obtain the access token from the HTTP request header.
+3. Analyze access token to `iss` and construct `JwtDecoder` by `AADIssuerJWSKeySelector`.
+4. Use `JwtDecoder` to parse the access token into `Jwt`.
+5. Verify `aud`, `iss`, `nbf`, `exp` claims in access token.
 
 ## Getting started
-
 ### Environment checklist
 We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
 
@@ -54,16 +59,13 @@ We need to ensure that this [environment checklist][ready-to-run-checklist] is c
 #### application.yml
 
 ```yaml
-# In v2.0 tokens, this is always the client ID of the API, while in v1.0 tokens it can be the resource URI used in the request.
-# If we configure azure.activedirectory.b2c.app-id-uri will be to check the audience.
-# If you are using v1.0 tokens, configure app-id-uri to properly complete the audience validation.
-
+# In v2.0 tokens, `aud` is always the client ID of the API, while in v1.0 tokens it can be the app id uri.
 azure:
   activedirectory:
     b2c:
-      client-id: ${your-client-id}
       tenant-id: ${your-tenant-id}
-      app-id-uri: ${your-app-id-uri}         # If you are using v1.0 tokens, configure app-id-uri to properly complete the audience validation. 
+      app-id-uri: ${your-app-id-uri}         # If you are using v1.0 token, please configure app-id-uri for `aud` verification
+      client-id: ${your-client-id}           # If you are using v2.0 token, please configure client-id for `aud` verification
 ```
 
 ### Run with Maven
@@ -74,7 +76,6 @@ mvn spring-boot:run
 
 ### Access the Web API
 We could use Postman to simulate a Web APP to send a request to a Web API.
-**NOTE**: The `aud` in access token should be client id of the current application.
 
 ```http request
 GET /write HTTP/1.1
@@ -86,21 +87,6 @@ Authorization: Bearer eyJ0eXAiO ... 0X2tnSQLEANnSPHY0gKcgw
 ```
 
 ## Troubleshooting
-- `Missing 'tenant-id' in application.yml`
-    
-    ```
-    Method springSecurityFilterChain in org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration required a bean of type 'org.springframework.security.oauth2.jwt.JwtDecoder' that could not be found.
-        The following candidates were found but could not be injected:
-        - Bean method 'jwtDecoder' in 'AADResourceServerConfiguration' not loaded because @ConditionalOnResource did not find resource 'classpath:aad.enable.config'
-        - Bean method 'jwtDecoder' in 'AADB2CResourceServerAutoConfiguration' not loaded because @ConditionalOnProperty (azure.activedirectory.b2c.tenant-id) did not find property 'tenant-id'
-        - Bean method 'jwtDecoderByIssuerUri' in 'OAuth2ResourceServerJwtConfiguration.JwtDecoderConfiguration' not loaded because OpenID Connect Issuer URI Condition did not find issuer-uri property
-        - Bean method 'jwtDecoderByJwkKeySetUri' in 'OAuth2ResourceServerJwtConfiguration.JwtDecoderConfiguration' not loaded because @ConditionalOnProperty (spring.security.oauth2.resourceserver.jwt.jwk-set-uri) did not find property 'spring.security.oauth2.resourceserver.jwt.jwk-set-uri'
-        - Bean method 'jwtDecoderByPublicKeyValue' in 'OAuth2ResourceServerJwtConfiguration.JwtDecoderConfiguration' not loaded because Public Key Value Condition did not find public-key-location property
-    ```
-
-    While running sample, if error occurs with logs above:
-    - `azure-activedirectory-b2c:tenant-id` should be added to the `application.yml`.
----
 - `WWW-Authenticate: Bearer error="invalid_token", error_description="An error occurred while attempting to decode the Jwt: Couldn't retrieve remote JWK set: Read timed out",`
   
     While running sample, if error occurs with logs above:
@@ -113,5 +99,4 @@ You can set `isEnabled` to `false` in the manifest's JSON configuration.Then del
 ## Next steps
 ## Contributing
 <!-- LINKS -->
-
 [ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist

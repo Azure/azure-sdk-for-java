@@ -115,6 +115,8 @@ public class AADB2CProperties implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
+        //When tenantId is not configured, enable AAD B2C user flow related property checking
+        //When the tenantId has been configured, the check is not turned on
         if (StringUtils.isEmpty(tenantId)) {
             if (StringUtils.isEmpty(tenant) && StringUtils.isEmpty(baseUri)) {
                 throw new AADB2CConfigurationException("'tenant' and 'baseUri' at least configure one item.");
