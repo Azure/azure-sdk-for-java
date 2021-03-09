@@ -12,8 +12,6 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
-import com.azure.cosmos.implementation.routing.HexConvert;
-import com.azure.cosmos.implementation.routing.Int128;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -24,7 +22,6 @@ import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -331,8 +328,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
-
-        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        createdDatabase.createContainer(containerProperties, options);
         this.createdContainer = createdDatabase.getContainer(collectionName);
 
         CosmosContainer syncContainer = createdDatabase.getContainer(collectionName);
@@ -340,29 +336,29 @@ public class CosmosContainerTest extends TestSuiteBase {
         FeedRange fullRange = FeedRange.forFullRange();
         assertThat(syncContainer.asyncContainer.getNormalizedEffectiveRange(fullRange).block())
             .isNotNull()
-            .isEqualTo(new Range<String>("", "FF", true, false));
+            .isEqualTo(new Range<>("", "FF", true, false));
 
-        Range<String> expectedRange = new Range<String>("AA", "BB", true, false);
+        Range<String> expectedRange = new Range<>("AA", "BB", true, false);
         FeedRange epkRange = new FeedRangeEpkImpl(expectedRange);
         assertThat(syncContainer.asyncContainer.getNormalizedEffectiveRange(epkRange).block())
             .isNotNull()
             .isEqualTo(expectedRange);
 
         FeedRange pointEpkRange = new FeedRangeEpkImpl(
-            new Range("05C1D5AB55AB54", "05C1D5AB55AB54", true, true));
+            new Range<>("05C1D5AB55AB54", "05C1D5AB55AB54", true, true));
         assertThat(syncContainer.asyncContainer.getNormalizedEffectiveRange(pointEpkRange).block())
             .isNotNull()
-            .isEqualTo(new Range("05C1D5AB55AB54", "05C1D5AB55AB55", true, false));
+            .isEqualTo(new Range<>("05C1D5AB55AB54", "05C1D5AB55AB55", true, false));
 
         FeedRange pkRangeIdRange = new FeedRangePartitionKeyRangeImpl("0");
         assertThat(syncContainer.asyncContainer.getNormalizedEffectiveRange(pkRangeIdRange).block())
             .isNotNull()
-            .isEqualTo(new Range("", "FF", true, false));
+            .isEqualTo(new Range<>("", "FF", true, false));
 
         FeedRange logicalPartitionFeedRange = FeedRange.forLogicalPartition(new PartitionKey("Hello World"));
         assertThat(syncContainer.asyncContainer.getNormalizedEffectiveRange(logicalPartitionFeedRange).block())
             .isNotNull()
-            .isEqualTo(new Range(
+            .isEqualTo(new Range<>(
                 "05C1C5D58F13B00849666D6D70215870736D6500",
                 "05C1C5D58F13B00849666D6D70215870736D6501",
                 true,
@@ -374,8 +370,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinitionForHashV2(collectionName);
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
-
-        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        createdDatabase.createContainer(containerProperties, options);
         this.createdContainer = createdDatabase.getContainer(collectionName);
 
         CosmosContainer syncContainer = createdDatabase.getContainer(collectionName);
@@ -383,29 +378,29 @@ public class CosmosContainerTest extends TestSuiteBase {
         FeedRange fullRange = FeedRange.forFullRange();
         assertThat(syncContainer.asyncContainer.getNormalizedEffectiveRange(fullRange).block())
             .isNotNull()
-            .isEqualTo(new Range<String>("", "FF", true, false));
+            .isEqualTo(new Range<>("", "FF", true, false));
 
-        Range<String> expectedRange = new Range<String>("AA", "BB", true, false);
+        Range<String> expectedRange = new Range<>("AA", "BB", true, false);
         FeedRange epkRange = new FeedRangeEpkImpl(expectedRange);
         assertThat(syncContainer.asyncContainer.getNormalizedEffectiveRange(epkRange).block())
             .isNotNull()
             .isEqualTo(expectedRange);
 
         FeedRange pointEpkRange = new FeedRangeEpkImpl(
-            new Range("05C1D5AB55AB54", "05C1D5AB55AB54", true, true));
+            new Range<>("05C1D5AB55AB54", "05C1D5AB55AB54", true, true));
         assertThat(syncContainer.asyncContainer.getNormalizedEffectiveRange(pointEpkRange).block())
             .isNotNull()
-            .isEqualTo(new Range("05C1D5AB55AB54", "05C1D5AB55AB55", true, false));
+            .isEqualTo(new Range<>("05C1D5AB55AB54", "05C1D5AB55AB55", true, false));
 
         FeedRange pkRangeIdRange = new FeedRangePartitionKeyRangeImpl("0");
         assertThat(syncContainer.asyncContainer.getNormalizedEffectiveRange(pkRangeIdRange).block())
             .isNotNull()
-            .isEqualTo(new Range("", "FF", true, false));
+            .isEqualTo(new Range<>("", "FF", true, false));
 
         FeedRange logicalPartitionFeedRange = FeedRange.forLogicalPartition(new PartitionKey("Hello World"));
         assertThat(syncContainer.asyncContainer.getNormalizedEffectiveRange(logicalPartitionFeedRange).block())
             .isNotNull()
-            .isEqualTo(new Range(
+            .isEqualTo(new Range<>(
                 "306C52B42DECB3AE9D3C7586975E30B9",
                 "306C52B42DECB3AE9D3C7586975E30BA",
                 true,
