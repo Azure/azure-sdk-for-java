@@ -158,6 +158,20 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
         }
 
         /**
+         * The stage of a subnet definition for applying network policies on private endpoint.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
+        interface WithPrivateEndpointNetworkPolicies<ParentT> {
+            /**
+             * Disables applying network policies on private endpoint.
+             *
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> disableNetworkPoliciesOnPrivateEndpoint();
+        }
+
+        /**
          * The final stage of the subnet definition.
          *
          * <p>At this stage, any remaining optional settings can be specified, or the subnet definition can be attached
@@ -170,7 +184,8 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
                 WithNetworkSecurityGroup<ParentT>,
                 WithRouteTable<ParentT>,
                 WithDelegation<ParentT>,
-                WithServiceEndpoint<ParentT> {
+                WithServiceEndpoint<ParentT>,
+                WithPrivateEndpointNetworkPolicies<ParentT> {
         }
     }
 
@@ -293,6 +308,25 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
              */
             Update withoutAccessFromService(ServiceEndpointType service);
         }
+
+        /**
+         * The stage of a subnet update for applying network policies on private endpoint.
+         */
+        interface WithPrivateEndpointNetworkPolicies {
+            /**
+             * Enables applying network policies on private endpoint.
+             *
+             * @return the next stage of the update
+             */
+            Update enableNetworkPoliciesOnPrivateEndpoint();
+
+            /**
+             * Disables applying network policies on private endpoint.
+             *
+             * @return the next stage of the update
+             */
+            Update disableNetworkPoliciesOnPrivateEndpoint();
+        }
     }
 
     /** The entirety of a subnet update as part of a network update. */
@@ -302,6 +336,7 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
             UpdateStages.WithRouteTable,
             UpdateStages.WithDelegation,
             UpdateStages.WithServiceEndpoint,
+            UpdateStages.WithPrivateEndpointNetworkPolicies,
             Settable<Network.Update> {
     }
 
@@ -408,6 +443,20 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
         }
 
         /**
+         * The stage of a subnet definition for applying network policies on private endpoint.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
+        interface WithPrivateEndpointNetworkPolicies<ParentT> {
+            /**
+             * Disables applying network policies on private endpoint.
+             *
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> disableNetworkPoliciesOnPrivateEndpoint();
+        }
+
+        /**
          * The final stage of the subnet definition.
          *
          * <p>At this stage, any remaining optional settings can be specified, or the subnet definition can be attached
@@ -420,7 +469,8 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
                 WithNetworkSecurityGroup<ParentT>,
                 WithRouteTable<ParentT>,
                 WithDelegation<ParentT>,
-                WithServiceEndpoint<ParentT> {
+                WithServiceEndpoint<ParentT>,
+                WithPrivateEndpointNetworkPolicies<ParentT>{
         }
     }
 
