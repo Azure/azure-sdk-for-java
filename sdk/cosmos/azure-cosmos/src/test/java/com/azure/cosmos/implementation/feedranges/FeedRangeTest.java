@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternalUtils;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
@@ -142,13 +143,19 @@ public class FeedRangeTest {
         Range<String> range = new Range<>("AA", "BB", true, false);
         FeedRangeEpkImpl FeedRangeEpk = new FeedRangeEpkImpl(range);
 
+        PartitionKeyDefinition pkDef = new PartitionKeyDefinition();
+        pkDef.setVersion(PartitionKeyDefinitionVersion.V2);
+
+        DocumentCollection collection = new DocumentCollection();
+        collection.setPartitionKey(pkDef);
+
         IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
         StepVerifier
             .create(
-                FeedRangeEpk.getEffectiveRange(
+                FeedRangeEpk.getNormalizedEffectiveRange(
                     routingMapProviderMock,
                     null,
-                    null))
+                    Mono.just(Utils.ValueHolder.initialize(collection))))
             .recordWith(ArrayList::new)
             .expectNextCount(1)
             .consumeRecordedWith(r -> {
@@ -305,7 +312,7 @@ public class FeedRangeTest {
 
         StepVerifier
             .create(
-                feedRangePartitionKeyRange.getEffectiveRange(
+                feedRangePartitionKeyRange.getNormalizedEffectiveRange(
                     routingMapProviderMock,
                     BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                     Mono.just(Utils.ValueHolder.initialize(collection))))
@@ -359,7 +366,7 @@ public class FeedRangeTest {
 
         StepVerifier
             .create(
-                feedRangePartitionKeyRange.getEffectiveRange(
+                feedRangePartitionKeyRange.getNormalizedEffectiveRange(
                     routingMapProviderMock,
                     BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                     Mono.just(Utils.ValueHolder.initialize(collection))))
@@ -400,7 +407,7 @@ public class FeedRangeTest {
 
         StepVerifier
             .create(
-                feedRangePartitionKeyRange.getEffectiveRange(
+                feedRangePartitionKeyRange.getNormalizedEffectiveRange(
                     routingMapProviderMock,
                     BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                     Mono.just(Utils.ValueHolder.initialize(collection))))
@@ -512,6 +519,7 @@ public class FeedRangeTest {
     public void feedRangePK_getEffectiveRangeAsync() {
         PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
         partitionKeyDefinition.getPaths().add("/id");
+        partitionKeyDefinition.setVersion(PartitionKeyDefinitionVersion.V2);
         PartitionKeyInternal partitionKey = PartitionKeyInternalUtils.createPartitionKeyInternal(
             "Test");
         FeedRangePartitionKeyImpl feedRangePartitionKey =
@@ -525,7 +533,7 @@ public class FeedRangeTest {
         IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
         StepVerifier
             .create(
-                feedRangePartitionKey.getEffectiveRange(
+                feedRangePartitionKey.getNormalizedEffectiveRange(
                     routingMapProviderMock,
                     null,
                     Mono.just(new Utils.ValueHolder<>(collection))))
@@ -535,9 +543,31 @@ public class FeedRangeTest {
                 assertThat(r).hasSize(1);
                 assertThat(new ArrayList<>(r).get(0))
                     .isNotNull()
-                    .isEqualTo(range);
+                    .isEqualTo(convertToMaxExclusive(range));
             })
             .verifyComplete();
+    }
+
+    private Range<String> convertToMaxExclusive(Range<String> maxInclusiveRange) {
+        assertThat(maxInclusiveRange)
+            .isNotNull()
+            .matches(r -> r.isMaxInclusive(), "Ensure isMaxInclusive is set");
+        String max = maxInclusiveRange.getMax();
+        int i = max.length() - 1;
+        while (i >= 0) {
+            if (max.charAt(i) == 'F') {
+                i--;
+                continue;
+            }
+            char newChar = (char)(((int)max.charAt(i))+1);
+            if (i < max.length() - 1) {
+                max = max.substring(0, i) + newChar + max.substring(i + 1);
+            } else {
+                max = max.substring(0, i) + newChar;
+            }
+            break;
+        }
+        return new Range<>(maxInclusiveRange.getMin(), max, true, false);
     }
 
     @Test(groups = "unit")

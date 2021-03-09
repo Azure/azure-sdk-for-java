@@ -14,6 +14,7 @@
             "com\\.azure\\..+\\.implementation(\\..+)?",
             "com\\.azure\\..+\\.samples(\\..+)?",
             "com\\.fasterxml\\.jackson\\..+",
+            "reactor\\.core\\..+",
             "reactor\\.netty\\..+",
             "reactor\\.util\\..+",
             "io\\.netty\\..+",
@@ -376,6 +377,11 @@
         "justification": "Default interface method"
       },
       {
+        "code": "java.annotation.attributeValueChanged",
+        "new": "class com.azure.search.documents.SearchClientBuilder",
+        "justification": "Non-breaking change"
+      },
+      {
         "code": "java.method.staticMethodAddedToInterface",
         "new": "method com.azure.core.http.HttpClient com.azure.core.http.HttpClient::createDefault(com.azure.core.util.HttpClientOptions)",
         "justification": "Default implementation"
@@ -418,6 +424,16 @@
       {
         "code": "java.method.added",
         "new": "method com.azure.core.util.polling.PollerFlux<T, U> com.azure.core.util.polling.PollerFlux<T, U>::setPollInterval(java.time.Duration)",
+        "justification": "New method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.credential.TokenRequestContext com.azure.core.credential.TokenRequestContext::setClaims(java.lang.String)",
+        "justification": "New method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method java.lang.String com.azure.core.credential.TokenRequestContext::getClaims()",
         "justification": "New method"
       },
       {

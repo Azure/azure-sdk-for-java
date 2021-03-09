@@ -1,6 +1,11 @@
 # Release History
 
-## 12.0.0-beta.3 (Unreleased)
+## 12.0.0-beta.4 (Unreleased)
+- Made AzurePath.toBlobClient public
+- Added support for Azurite
+- Change FileSystem configuration to accept an endpoint and credential types instead of a string for the account name, key, and token
+
+## 12.0.0-beta.3 (2021-02-10)
 - Added support for FileSystemProvider.checkAccess method
 - Added support for file key on AzureBasicFileAttributes and AzureBlobFileAttributes
 - Added support for SeekableByteChannel

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * The retention policy.
- */
+/** The retention policy. */
 @JacksonXmlRootElement(localName = "RetentionPolicy")
 @Fluent
 public final class ShareRetentionPolicy {
@@ -31,9 +29,8 @@ public final class ShareRetentionPolicy {
     private Integer days;
 
     /**
-     * Get the enabled property: Indicates whether a retention policy is
-     * enabled for the File service. If false, metrics data is retained, and
-     * the user is responsible for deleting it.
+     * Get the enabled property: Indicates whether a retention policy is enabled for the File service. If false, metrics
+     * data is retained, and the user is responsible for deleting it.
      *
      * @return the enabled value.
      */
@@ -42,9 +39,8 @@ public final class ShareRetentionPolicy {
     }
 
     /**
-     * Set the enabled property: Indicates whether a retention policy is
-     * enabled for the File service. If false, metrics data is retained, and
-     * the user is responsible for deleting it.
+     * Set the enabled property: Indicates whether a retention policy is enabled for the File service. If false, metrics
+     * data is retained, and the user is responsible for deleting it.
      *
      * @param enabled the enabled value to set.
      * @return the ShareRetentionPolicy object itself.
@@ -55,10 +51,8 @@ public final class ShareRetentionPolicy {
     }
 
     /**
-     * Get the days property: Indicates the number of days that metrics data
-     * should be retained. All data older than this value will be deleted.
-     * Metrics data is deleted on a best-effort basis after the retention
-     * period expires.
+     * Get the days property: Indicates the number of days that metrics data should be retained. All data older than
+     * this value will be deleted. Metrics data is deleted on a best-effort basis after the retention period expires.
      *
      * @return the days value.
      */
@@ -67,10 +61,8 @@ public final class ShareRetentionPolicy {
     }
 
     /**
-     * Set the days property: Indicates the number of days that metrics data
-     * should be retained. All data older than this value will be deleted.
-     * Metrics data is deleted on a best-effort basis after the retention
-     * period expires.
+     * Set the days property: Indicates the number of days that metrics data should be retained. All data older than
+     * this value will be deleted. Metrics data is deleted on a best-effort basis after the retention period expires.
      *
      * @param days the days value to set.
      * @return the ShareRetentionPolicy object itself.

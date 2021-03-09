@@ -89,6 +89,9 @@ public class Configuration {
     @Parameter(names = "-readWriteQueryPct", description = "Comma separated read write query workload percent")
     private String readWriteQueryPct = "90,9,1";
 
+    @Parameter(names = "-manageDatabase", description = "Control switch for creating/deleting underlying database resource")
+    private boolean manageDatabase = false;
+
     @Parameter(names = "-operation", description = "Type of Workload:\n"
         + "\tReadThroughput- run a READ workload that prints only throughput *\n"
         + "\tReadThroughputWithMultipleClients - run a READ workload that prints throughput and latency for multiple client read.*\n"
@@ -157,6 +160,9 @@ public class Configuration {
 
     @Parameter(names = "-contentResponseOnWriteEnabled", description = "if set to false, does not returns content response on document write operations")
     private String contentResponseOnWriteEnabled = String.valueOf(true);
+
+    @Parameter(names = "-bulkloadBatchSize", description = "Control the number of documents uploaded in each BulkExecutor load iteration (Only supported for the LinkedInCtlWorkload)")
+    private int bulkloadBatchSize = 200000;
 
     @Parameter(names = {"-h", "-help", "--help"}, description = "Help", help = true)
     private boolean help = false;
@@ -388,6 +394,14 @@ public class Configuration {
 
     public String getReadWriteQueryPct() {
         return this.readWriteQueryPct;
+    }
+
+    public boolean shouldManageDatabase() {
+        return this.manageDatabase;
+    }
+
+    public int getBulkloadBatchSize() {
+        return this.bulkloadBatchSize;
     }
 
     public String toString() {

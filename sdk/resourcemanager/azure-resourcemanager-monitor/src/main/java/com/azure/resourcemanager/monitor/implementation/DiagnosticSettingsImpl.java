@@ -84,7 +84,7 @@ public class DiagnosticSettingsImpl
 
     @Override
     public PagedFlux<DiagnosticSettingsCategory> listCategoriesByResourceAsync(String resourceId) {
-        return PagedConverter
+        return PagedConverter.mapPage(PagedConverter
             .convertListToPagedFlux(
                 this
                     .manager
@@ -92,8 +92,8 @@ public class DiagnosticSettingsImpl
                     .getDiagnosticSettingsCategories()
                     .listWithResponseAsync(resourceId)
                     .map(r -> new SimpleResponse<>(r.getRequest(), r.getStatusCode(), r.getHeaders(),
-                        r.getValue().value() == null ? Collections.emptyList() : r.getValue().value())))
-            .mapPage(DiagnosticSettingsCategoryImpl::new);
+                        r.getValue().value() == null ? Collections.emptyList() : r.getValue().value()))),
+            DiagnosticSettingsCategoryImpl::new);
     }
 
     @Override
@@ -119,7 +119,7 @@ public class DiagnosticSettingsImpl
 
     @Override
     public PagedFlux<DiagnosticSetting> listByResourceAsync(String resourceId) {
-        return PagedConverter
+        return PagedConverter.mapPage(PagedConverter
             .convertListToPagedFlux(
                 this
                     .manager()
@@ -127,8 +127,8 @@ public class DiagnosticSettingsImpl
                     .getDiagnosticSettings()
                     .listWithResponseAsync(resourceId)
                     .map(r -> new SimpleResponse<>(r.getRequest(), r.getStatusCode(), r.getHeaders(),
-                        r.getValue().value() == null ? Collections.emptyList() : r.getValue().value())))
-            .mapPage(inner -> new DiagnosticSettingImpl(inner.name(), inner, this.manager()));
+                        r.getValue().value() == null ? Collections.emptyList() : r.getValue().value()))),
+            inner -> new DiagnosticSettingImpl(inner.name(), inner, this.manager()));
     }
 
     @Override

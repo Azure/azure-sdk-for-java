@@ -1,3 +1,7 @@
+## 1.0.0-beta.3 (2021-03-09)
+
+- Add new APIs in `LibraryClient` and `LibraryAsyncClient`
+
 ## 1.0.0-beta.2 (2021-02-09)
 
 - Support specifying the service API version. (AutoRest update)

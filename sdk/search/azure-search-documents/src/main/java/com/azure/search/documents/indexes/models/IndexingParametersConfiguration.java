@@ -128,7 +128,7 @@ public final class IndexingParametersConfiguration {
      * storage.
      */
     @JsonProperty(value = "pdfTextRotationAlgorithm")
-    private BlobIndexerPDFTextRotationAlgorithm pdfTextRotationAlgorithm;
+    private BlobIndexerPdfTextRotationAlgorithm pdfTextRotationAlgorithm;
 
     /*
      * Specifies the environment in which the indexer should execute.
@@ -455,7 +455,7 @@ public final class IndexingParametersConfiguration {
      *
      * @return the pdfTextRotationAlgorithm value.
      */
-    public BlobIndexerPDFTextRotationAlgorithm getPdfTextRotationAlgorithm() {
+    public BlobIndexerPdfTextRotationAlgorithm getPdfTextRotationAlgorithm() {
         return this.pdfTextRotationAlgorithm;
     }
 
@@ -467,7 +467,7 @@ public final class IndexingParametersConfiguration {
      * @return the IndexingParametersConfiguration object itself.
      */
     public IndexingParametersConfiguration setPdfTextRotationAlgorithm(
-            BlobIndexerPDFTextRotationAlgorithm pdfTextRotationAlgorithm) {
+            BlobIndexerPdfTextRotationAlgorithm pdfTextRotationAlgorithm) {
         this.pdfTextRotationAlgorithm = pdfTextRotationAlgorithm;
         return this;
     }

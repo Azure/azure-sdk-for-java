@@ -254,7 +254,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://gaprastg71.file.core.windows.net/directoryasyncapitestslistfilesanddirectoriesargs124757d2/directoryasyncapitestslistfilesanddirectoriesargs197052f6?prefix=directoryasyncapitestslistfilesanddirectoriesargs&maxresults=1&restype=directory&comp=list",
+    "Uri" : "https://gaprastg71.file.core.windows.net/directoryasyncapitestslistfilesanddirectoriesargs124757d2/directoryasyncapitestslistfilesanddirectoriesargs197052f6?restype=directory&comp=list&prefix=directoryasyncapitestslistfilesanddirectoriesargs&maxresults=1",
     "Headers" : {
       "x-ms-version" : "2019-07-07",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
@@ -275,7 +275,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://gaprastg71.file.core.windows.net/directoryasyncapitestslistfilesanddirectoriesargs124757d2/directoryasyncapitestslistfilesanddirectoriesargs197052f6?prefix=directoryasyncapitestslistfilesanddirectoriesargs&marker=1%2180%21ZGlyZWN0b3J5YXN5bmNhcGl0ZXN0c2xpc3RmaWxlc2FuZGRpcmVjdG9yaWVzYXJnczEyNzc5MTlmMQ--&maxresults=1&restype=directory&comp=list",
+    "Uri" : "https://gaprastg71.file.core.windows.net/directoryasyncapitestslistfilesanddirectoriesargs124757d2/directoryasyncapitestslistfilesanddirectoriesargs197052f6?restype=directory&comp=list&prefix=directoryasyncapitestslistfilesanddirectoriesargs&marker=1%2180%21ZGlyZWN0b3J5YXN5bmNhcGl0ZXN0c2xpc3RmaWxlc2FuZGRpcmVjdG9yaWVzYXJnczEyNzc5MTlmMQ--&maxresults=1",
     "Headers" : {
       "x-ms-version" : "2019-07-07",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
@@ -296,7 +296,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://gaprastg71.file.core.windows.net/directoryasyncapitestslistfilesanddirectoriesargs124757d2/directoryasyncapitestslistfilesanddirectoriesargs197052f6?prefix=directoryasyncapitestslistfilesanddirectoriesargs&marker=1%2180%21ZGlyZWN0b3J5YXN5bmNhcGl0ZXN0c2xpc3RmaWxlc2FuZGRpcmVjdG9yaWVzYXJnczEyNzc5MTlmMg--&maxresults=1&restype=directory&comp=list",
+    "Uri" : "https://gaprastg71.file.core.windows.net/directoryasyncapitestslistfilesanddirectoriesargs124757d2/directoryasyncapitestslistfilesanddirectoriesargs197052f6?restype=directory&comp=list&prefix=directoryasyncapitestslistfilesanddirectoriesargs&marker=1%2180%21ZGlyZWN0b3J5YXN5bmNhcGl0ZXN0c2xpc3RmaWxlc2FuZGRpcmVjdG9yaWVzYXJnczEyNzc5MTlmMg--&maxresults=1",
     "Headers" : {
       "x-ms-version" : "2019-07-07",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",

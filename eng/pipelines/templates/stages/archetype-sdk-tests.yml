@@ -8,6 +8,9 @@ parameters:
 - name: Clouds
   type: string
   default: 'Public'
+- name: SupportedClouds
+  type: string
+  default: 'Public,Canary'
 - name: UnsupportedClouds
   type: string
   default: ''
@@ -53,6 +56,9 @@ parameters:
 - name: TestSetupSteps
   type: stepList
   default: []
+- name: TestMode
+  type: string
+  default: 'RECORD'
 - name: TestStepMavenInputs
   type: object
   default:
@@ -87,6 +93,9 @@ parameters:
 - name: AdditionalMatrixConfigs
   type: object
   default: []
+- name: MatrixFilters
+  type: object
+  default: []
 - name: PlatformPreSteps
   type: object
   default:
@@ -100,7 +109,7 @@ stages:
   # TODO: re-enable tests-weekly allow filter once sovereign cloud live tests are stable: https://github.com/Azure/azure-sdk/issues/2074
   # Run all clouds by default for weekly test pipeline, except for clouds specifically unsupported by the calling pipeline
   # - ${{ if or(contains(parameters.Clouds, cloud.key), contains(variables['Build.DefinitionName'], 'tests-weekly')) }}:
-  - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'tests-weekly'), eq(cloud.key, 'Canary'))) }}:
+  - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'tests-weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
     - ${{ if not(contains(parameters.UnsupportedClouds, cloud.key)) }}:
       - stage: ${{ cloud.key }}_${{ parameters.TestName }}
         dependsOn: []
@@ -122,6 +131,7 @@ stages:
               ServiceDirectory: ${{ parameters.ServiceDirectory }}
               TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
               TestSetupSteps: ${{ parameters.TestSetupSteps }}
+              TestMode: ${{ parameters.TestMode }}
               TestStepMavenInputs: ${{ parameters.TestStepMavenInputs }}
               Artifacts: ${{ parameters.Artifacts }}
               AdditionalModules: ${{ parameters.AdditionalModules }}
@@ -133,6 +143,10 @@ stages:
                 -  ${{ config }}
               - ${{ each config in parameters.AdditionalMatrixConfigs }}:
                 -  ${{ config }}
+            MatrixFilters:
+              - ${{ each cloudFilter in cloud.value.MatrixFilters }}:
+                - ${{ cloudFilter }}
+              - ${{ parameters.MatrixFilters }}
             CloudConfig:
               SubscriptionConfiguration: ${{ cloud.value.SubscriptionConfiguration }}
               Location: ${{ coalesce(parameters.Location, cloud.value.Location) }}

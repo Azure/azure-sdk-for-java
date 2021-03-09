@@ -2,34 +2,23 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
-import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.ExcludedPath;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.spring.data.cosmos.CosmosFactory;
+import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.common.TestUtils;
-import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
-import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
-import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import com.azure.spring.data.cosmos.domain.Role;
 import com.azure.spring.data.cosmos.domain.TimeToLiveSample;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveRoleRepository;
-import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.domain.EntityScanner;
-import org.springframework.context.ApplicationContext;
-import org.springframework.data.annotation.Persistent;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
@@ -53,56 +42,18 @@ public class CosmosAnnotationIT {
     private static final Role TEST_ROLE_3 = new Role(TestConstants.ID_3, true, TestConstants.LEVEL,
         TestConstants.ROLE_NAME);
 
+    @ClassRule
+    public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
+
     @Autowired
-    private ApplicationContext applicationContext;
-    @Autowired
-    private CosmosConfig cosmosConfig;
-    @Autowired
-    private CosmosClientBuilder cosmosClientBuilder;
+    private CosmosTemplate cosmosTemplate;
     @Autowired
     private ReactiveRoleRepository repository;
 
-    private static CosmosTemplate cosmosTemplate;
-    private static CosmosContainerProperties collectionRole;
-    private static CosmosContainerProperties collectionSample;
-    private static CosmosEntityInformation<Role, String> roleInfo;
-    private static CosmosEntityInformation<TimeToLiveSample, String> sampleInfo;
-
-    private static boolean initialized;
-
     @Before
     public void setUp() throws ClassNotFoundException {
-        if (!initialized) {
-            CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
-            final CosmosFactory cosmosFactory = new CosmosFactory(client, TestConstants.DB_NAME);
-
-            roleInfo = new CosmosEntityInformation<>(Role.class);
-            sampleInfo = new CosmosEntityInformation<>(TimeToLiveSample.class);
-            final CosmosMappingContext mappingContext = new CosmosMappingContext();
-
-            mappingContext.setInitialEntitySet(new EntityScanner(this.applicationContext).scan(Persistent.class));
-
-            final MappingCosmosConverter mappingConverter = new MappingCosmosConverter(mappingContext, null);
-
-            cosmosTemplate = new CosmosTemplate(cosmosFactory, cosmosConfig, mappingConverter);
-            collectionRole = cosmosTemplate.createContainerIfNotExists(roleInfo);
-            collectionSample = cosmosTemplate.createContainerIfNotExists(sampleInfo);
-
-            initialized = true;
-        }
-
+        collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, Role.class, TimeToLiveSample.class);
         repository.saveAll(Arrays.asList(TEST_ROLE_1, TEST_ROLE_2, TEST_ROLE_3)).collectList().block();
-    }
-
-    @After
-    public void cleanUp() {
-        repository.deleteAll().block();
-    }
-
-    @AfterClass
-    public static void afterClassCleanup() {
-        cosmosTemplate.deleteContainer(roleInfo.getContainerName());
-        cosmosTemplate.deleteContainer(sampleInfo.getContainerName());
     }
 
     @Test
@@ -157,16 +108,16 @@ public class CosmosAnnotationIT {
 
     @Test
     public void testTimeToLiveAnnotation() {
-        Integer timeToLive = sampleInfo.getTimeToLive();
-        assertThat(timeToLive).isEqualTo(collectionSample.getDefaultTimeToLiveInSeconds());
+        Integer timeToLive = collectionManager.getEntityInformation(Role.class).getTimeToLive();
+        assertThat(timeToLive).isEqualTo(collectionManager.getContainerProperties(Role.class).getDefaultTimeToLiveInSeconds());
 
-        timeToLive = roleInfo.getTimeToLive();
-        assertThat(timeToLive).isEqualTo(collectionRole.getDefaultTimeToLiveInSeconds());
+        timeToLive = collectionManager.getEntityInformation(TimeToLiveSample.class).getTimeToLive();
+        assertThat(timeToLive).isEqualTo(collectionManager.getContainerProperties(TimeToLiveSample.class).getDefaultTimeToLiveInSeconds());
     }
 
     @Test
     public void testIndexingPolicyAnnotation() {
-        final IndexingPolicy policy = collectionRole.getIndexingPolicy();
+        final IndexingPolicy policy = collectionManager.getContainerProperties(Role.class).getIndexingPolicy();
 
         Assert.isTrue(policy.getIndexingMode() == TestConstants.INDEXING_POLICY_MODE,
             "unmatched collection policy indexing mode of class Role");

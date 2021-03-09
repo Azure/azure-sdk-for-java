@@ -18,8 +18,8 @@ public class ChatResponseMocker {
 
     public static HttpResponse createReadReceiptsResponse(HttpRequest request) {
         String body = String.format("{\"value\":["
-            + "{\"senderId\":\"8:acs:9b665d53-8164-4923-ad5d-5e983b07d2e7_00000005-334f-e4af-b274-5a3a0d0002f9\",\"chatMessageId\":\"1600201311647\",\"readOn\":\"2020-09-15T20:21:51Z\"},"
-            + "{\"senderId\":\"8:acs:9b665d53-8164-4923-ad5d-5e983b07d2e7_00000005-334f-e4af-b274-5a3a0d0002f9\",\"chatMessageId\":\"1600201311648\",\"readOn\":\"2020-09-15T20:21:53Z\"}"
+            + "{\"senderCommunicationIdentifier\":{\"communicationUser\":{ \"id\":\"8:acs:9b665d53-8164-4923-ad5d-5e983b07d2e7_00000005-334f-e4af-b274-5a3a0d0002f9\"} },\"chatMessageId\":\"1600201311647\",\"readOn\":\"2020-09-15T20:21:51Z\"},"
+            + "{\"senderCommunicationIdentifier\":{\"communicationUser\":{ \"id\":\"8:acs:9b665d53-8164-4923-ad5d-5e983b07d2e7_00000005-334f-e4af-b274-5a3a0d0002f9\"} },\"chatMessageId\":\"1600201311648\",\"readOn\":\"2020-09-15T20:21:53Z\"}"
             + "]}");
         return generateMockResponse(body, request, 200);
     }

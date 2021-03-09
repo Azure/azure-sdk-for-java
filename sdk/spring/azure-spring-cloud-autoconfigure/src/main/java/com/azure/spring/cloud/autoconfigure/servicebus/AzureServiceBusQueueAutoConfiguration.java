@@ -7,6 +7,7 @@ import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusQueueManager;
 import com.azure.spring.cloud.telemetry.TelemetryCollector;
+import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.DefaultServiceBusQueueClientFactory;
 import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStringProvider;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
@@ -86,9 +87,16 @@ public class AzureServiceBusQueueAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
+    public ServiceBusMessageConverter messageConverter() {
+        return new ServiceBusMessageConverter();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
     @ConditionalOnBean(ServiceBusQueueClientFactory.class)
-    public ServiceBusQueueOperation queueOperation(ServiceBusQueueClientFactory factory) {
-        return new ServiceBusQueueTemplate(factory);
+    public ServiceBusQueueOperation queueOperation(ServiceBusQueueClientFactory factory,
+                                                   ServiceBusMessageConverter messageConverter) {
+        return new ServiceBusQueueTemplate(factory, messageConverter);
     }
 
 

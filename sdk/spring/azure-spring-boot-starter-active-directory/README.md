@@ -1,73 +1,56 @@
 # Azure AD Spring Boot Starter client library for Java
 
-**azure-spring-boot-starter-active-directory** (**aad-starter** for short) supports Oauth 2.0 authentication for a `web application`. It can also protect a `resource server` by validating JWT token. Here `web application` and `resource server` are protected by Azure Active Directory.
+When you are building a web application, identity and access management will always be foundational pieces.
+
+Azure offers a great platform to democratize your application development journey, as it not only offers a cloud-base identity service, but also deep integration with the rest of the Azure ecosystem.
+
+Spring Security has made it easy to secure your Spring based applications with powerful abstractions and extensible interfaces. However, as powerful as the Spring framework can be, it is not tailored to a specific identity provider.
+
+The `azure-spring-boot-starter-active-directory` (`aad-starter` for short) provides the most optimal way to connect your `web application` to an Azure Active Directory(AAD for short) tenant and protect `resource server` with AAD. It uses the Oauth 2.0 protocol to protect `web applications` and `resource servers`.
 
 [Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs] | [Samples][sample]
 
 ## Getting started
+
 ### Prerequisites
 - [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Maven](https://maven.apache.org/) 3.0 and above
-
-### Register the Application in Azure AD
-
-* **Create a new App registration**: 
-1. Go to [Azure Portal].
-1. Click `Azure Active Directory`.
-1. Click `App registrations`.
-1. Click `New application`.
-![create-a-new-app-registration-1.png](resource/create-a-new-app-registration-1.png)
-1. Input `Name`. For example: `readme-sample-client`.
-1. (Optional, only required for web application) Input `Redirect URI(optional)`: `http://localhost:8080/login/oauth2/code/`.
-1. Click `Register`.
-![create-a-new-app-registration-2.png](resource/create-a-new-app-registration-2.png)
-1. Copy tenant-id and client-id. We will need it later.
-![create-a-new-app-registration-3.png.png](resource/create-a-new-app-registration-3.png)
-
-* **Create a client secret key for the application**:
-1. Click `Certificates & secrets`.
-1. Click `New client secret`.
-1. Input `Description`.
-1. Click `Add`.
-![create-a-new-client-secret-1.png](resource/create-a-new-client-secret-1.png)
-1. Copy client-secret. We will need it later.
-![create-a-new-client-secret-2.png](resource/create-a-new-client-secret-2.png)
-
+- [Register an application in Azure Portal][register_an_application_in_portal]
+- [Build developing version artifacts if needed][build-developing-version-artifacts-if-needed]
 
 ## Key concepts
-**aad-starter** supports 2 types of web server: Web application and resource server. 
 
-1. `Web application`: Support login by Microsoft account.
-1. `Resource server`: Not support login. Just protect the server by validating the access_token, and if valid, serves the request.
+A `web application` is any web based application that allows user to login, whereas a `resource server` will either accept or deny access after validating access_token. We will cover 4 scenarios in this guide:
 
-Both `web application` and `resource server` support extra function: itself can access other resource servers which are protected by Azure Active Directory. So there are 4 scenarios:
+1. Accessing a web application.
+1. Web application accessing resource servers.
+1. Accessing a resource server.
+1. Resource server accessing other resource servers.
 
-1. Web application.
-1. Web application visiting resource servers.
-1. Resource server.
-1. Resource server visiting other resource servers.
+### Accessing a web application
 
-The following content will introduce the 4 scenarios one by one.
-
-### Web application
-
-This scenario support login by Microsoft account, **aad-starter** use [The OAuth 2.0 authorization code grant] to deal with logins.
+This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in an user with a Microsoft account. 
 
 **System diagram**:
 
 ![Standalone Web Application](resource/web-application.png)
 
-To use **aad-starter** in this scenario, we need these steps:
 
-* Step 1: Add the following dependencies in you pom.xml.
+* Step 1: Make sure `redirect URI` has been set to `{application-base-uri}/login/oauth2/code/`, for 
+example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot be omitted.
+
+![web-application-set-redirect-uri-1.png](resource/web-application-set-redirect-uri-1.png)
+![web-application-set-redirect-uri-2.png](resource/web-application-set-redirect-uri-2.png)
+
+* Step 2: Add the following dependencies in you pom.xml.
 
 [//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory;current}"
 ```xml
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-    <version>3.2.0-beta.1</version>
+    <version>3.2.0</version>
 </dependency>
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -76,7 +59,7 @@ To use **aad-starter** in this scenario, we need these steps:
 ```
 [//]: # "{x-version-update-end}"
    
-* Step 2: Add properties in application.yml:
+* Step 3: Add properties in application.yml. These values should be got in [prerequisite].
 ```yaml
 azure:
   activedirectory:
@@ -85,7 +68,7 @@ azure:
     client-secret: xxxxxx-your-client-secret-xxxxxx
 ```
 
-* Step 3: Write Java code:
+* Step 4: Write your Java code:
 
 `AADWebSecurityConfigurerAdapter` contains necessary web security configuration for **aad-starter**.
 
@@ -109,24 +92,22 @@ public class AADOAuth2LoginConfigSample extends AADWebSecurityConfigurerAdapter 
 }
 ```
 
-### Web application visiting resource servers
-
-This scenario support visit resource servers in web application.
+### Web application accessing resource servers
 
 **System diagram**:
 
 ![web-application-visiting-resource-servers.png](resource/web-application-visiting-resource-servers.png)
 
-To use **aad-starter** in this scenario, we need these steps:
+* Step 1: Make sure `redirect URI` has been set, just like [Accessing a web application].
 
-* Step 1: Add the following dependencies in you pom.xml.
+* Step 2: Add the following dependencies in you pom.xml.
 
 [//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory;current}"
 ```xml
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-    <version>3.2.0-beta.1</version>
+    <version>3.2.0</version>
 </dependency>
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -135,17 +116,20 @@ To use **aad-starter** in this scenario, we need these steps:
 ```
 [//]: # "{x-version-update-end}"
 
-* Step 2: Add properties in application.yml:
+* Step 3: Add properties in application.yml:
 ```yaml
 azure:
   activedirectory:
+    tenant-id: xxxxxx-your-tenant-id-xxxxxx
+    client-id: xxxxxx-your-client-id-xxxxxx
+    client-secret: xxxxxx-your-client-secret-xxxxxx
     authorization-clients:
       graph:
         scopes: https://graph.microsoft.com/Analytics.Read, email
 ```
 Here, `graph` is the name of `OAuth2AuthorizedClient`, `scopes` means the scopes need to consent when login.
 
-* Step 3: Write Java code:
+* Step 4: Write your Java code:
 ```java
 @GetMapping("/graph")
 @ResponseBody
@@ -158,7 +142,7 @@ public String graph(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedC
 Here, `graph` is the client name configured in step 2. OAuth2AuthorizedClient contains access_token. 
 access_token can be used to access resource server.
 
-### Resource server
+### Accessing a resource server
 This scenario not support login. Just protect the server by validating the access_token, and if valid, serves the request.
 
 **System diagram**:
@@ -174,7 +158,7 @@ To use **aad-starter** in this scenario, we need these steps:
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-    <version>3.2.0-beta.1</version>
+    <version>3.2.0</version>
 </dependency>
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -196,20 +180,20 @@ Both `client-id` and `app-id-uri` can be used to verify access token. `app-id-ur
 ![get-app-id-uri-2.png](resource/get-app-id-uri-2.png)
 
 * Step 3: Write Java code:
+  
+`AADResourceServerWebSecurityConfigurerAdapter` contains necessary web security configuration for resource server.
+(A). `DefaultAADResourceServerWebSecurityConfigurerAdapter` is configured automatically if you not provide one.
 
-Write your own adapter class which extends `WebSecurityConfigurerAdapter`, 
-and `AzureJwtBearerTokenAuthenticationConverter` need to be included.
+(B). You can provide one by extending `AADResourceServerWebSecurityConfigurerAdapter` and call `super.configure(http)` explicitly
+in the `configure(HttpSecurity http)` function. Here is an example:
 ```java
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class AADOAuth2ResourceServerSecurityConfig extends WebSecurityConfigurerAdapter {
+public class CustomWebServerSecurityConfig extends AADResourceServerWebSecurityConfigurerAdapter {
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests((requests) -> requests.anyRequest().authenticated())
-            .oauth2ResourceServer()
-            .jwt()
-            .jwtAuthenticationConverter(new AzureJwtBearerTokenAuthenticationConverter());
-            // Note that AzureJwtBearerTokenAuthenticationConverter need to be included.
+    protected void configure(HttpSecurity http) {
+       super.configure(http);
+       // Do some custom configuration
     }
 }
 ```
@@ -231,7 +215,7 @@ To use **aad-starter** in this scenario, we need these steps:
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-    <version>3.2.0-beta.1</version>
+    <version>3.2.0</version>
 </dependency>
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -444,3 +428,8 @@ Please follow [instructions here] to build from source or contribute.
 [set up in the manifest of your application registration]: https://docs.microsoft.com/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps
 [Azure China]: https://docs.microsoft.com/azure/china/resources-developer-guide#check-endpoints-in-azure
 [Incremental consent]: https://docs.microsoft.com/azure/active-directory/azuread-dev/azure-ad-endpoint-comparison#incremental-and-dynamic-consent
+[register_an_application_in_portal]: https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app
+[prerequisite]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-active-directory#prerequisites
+[Accessing a web application]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-active-directory#accessing-a-web-application
+[build-developing-version-artifacts-if-needed]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/build-developing-version-artifacts-if-needed.md
+

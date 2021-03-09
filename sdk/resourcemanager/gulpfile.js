@@ -35,7 +35,7 @@ async function defaultInfo() {
     });
 
     console.log("--autorest");
-    console.log("\tThe version of AutoRest. E.g. 2.0.9, or the location of AutoRest repo, e.g. E:\\repo\\autorest");
+    console.log("\tThe version of AutoRest Core. E.g. 3.0.6368, or the location of AutoRest repo, e.g. E:\\repo\\autorest");
 
     console.log("--autorest-java");
     console.log("\tPath to an autorest.java generator to pass as a --use argument to AutoRest.");

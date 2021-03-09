@@ -714,8 +714,9 @@ public class CryptographyAsyncClient {
 
     private Mono<Boolean> ensureValidKeyAvailable() {
         boolean keyNotAvailable = (key == null && keyCollection != null);
+        boolean keyNotValid = (key != null && !key.isValid());
 
-        if (keyNotAvailable) {
+        if (keyNotAvailable || keyNotValid) {
             if (keyCollection.equals(SECRETS_COLLECTION)) {
                 return getSecretKey().map(jsonWebKey -> {
                     key = (jsonWebKey);
