@@ -1,6 +1,11 @@
 # Release History
 
-## 1.3.0-beta.2 (Unreleased)
+## 1.2.4 (2021-03-09)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to 1.14.0
+- Upgraded `msal4j` dependency to 1.9.1
+- Upgraded `msal4j-persistence-extension` dependency to 1.1.0
 
 ## 1.2.3 (2021-02-09)
 
