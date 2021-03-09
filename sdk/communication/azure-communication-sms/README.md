@@ -110,7 +110,7 @@ To send a SMS message to a list of recipients, call the `send` or `sendWithRespo
 ```java
 SmsSendOptions options = new SmsSendOptions();
 options.setDeliveryReportEnabled(true);
-options.setTag("Tag");
+options.setTag("Marketing");
 
 Iterable<SmsSendResult> sendResults = smsClient.sendWithResponse(
     "<from-phone-number>",
@@ -136,7 +136,7 @@ for (SmsSendResult result : sendResults) {
 try {
     SmsSendOptions options = new SmsSendOptions();
     options.setDeliveryReportEnabled(true);
-    options.setTag("Tag");
+    options.setTag("Marketing");
 
     Response<Iterable<SmsSendResult>> sendResults = smsClient.sendWithResponse(
         "<from-phone-number>",
@@ -145,8 +145,8 @@ try {
         options /* Optional */,
         Context.NONE);
 
-    Iterable<SmsSendResult> resultOfEachMessage = sendResults.getValue();
-    for (SmsSendResult result : resultOfEachMessage) {
+    Iterable<SmsSendResult> smsSendResults = sendResults.getValue();
+    for (SmsSendResult result : smsSendResults) {
         if (result.isSuccessful()) {
             System.out.println("Successfully sent this message: " + result.getMessageId() + " to " + result.getTo());
         } else {
