@@ -9,6 +9,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.util.StringUtils;
 
@@ -16,12 +17,11 @@ import javax.net.ssl.HttpsURLConnection;
 import java.security.Security;
 import java.util.Optional;
 import java.util.Properties;
-import java.util.stream.Stream;
 
 /**
  * Leverage {@link EnvironmentPostProcessor} to add Key Store property source.
  */
-@Order()
+@Order
 public class KeyVaultCertificatesEnvironmentPostProcessor implements EnvironmentPostProcessor {
 
     @Override
@@ -31,32 +31,29 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
             return;
         }
 
-        Stream.of("azure.keyvault.uri",
-            "azure.keyvault.tenant-id",
-            "azure.keyvault.aad-authentication-url",
-            "azure.keyvault.client-id",
-            "azure.keyvault.client-secret",
-            "azure.keyvault.managed-identity")
-              .forEach(key -> putEnvironmentPropertyToSystemProperty(environment, key));
+        putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.aad-authentication-url");
+        putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.uri");
+        putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.tenant-id");
+        putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.client-id");
+        putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.client-secret");
+        putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.managed-identity");
 
+        MutablePropertySources propertySources = environment.getPropertySources();
         if (KeyVaultKeyStore.KEY_STORE_TYPE.equals(environment.getProperty("server.ssl.key-store-type"))) {
             Properties properties = new Properties();
             properties.put("server.ssl.key-store", "classpath:keyvault.dummy");
             if (hasEmbedTomcat()) {
                 properties.put("server.ssl.key-store-type", "DKS");
             }
-            environment.getPropertySources().addFirst(
-                new PropertiesPropertySource("KeyStorePropertySource", properties));
+            propertySources.addFirst(new PropertiesPropertySource("KeyStorePropertySource", properties));
         }
-
         if (KeyVaultKeyStore.KEY_STORE_TYPE.equals(environment.getProperty("server.ssl.trust-store-type"))) {
             Properties properties = new Properties();
             properties.put("server.ssl.trust-store", "classpath:keyvault.dummy");
             if (hasEmbedTomcat()) {
                 properties.put("server.ssl.trust-store-type", "DKS");
             }
-            environment.getPropertySources().addFirst(
-                new PropertiesPropertySource("TrustStorePropertySource", properties));
+            propertySources.addFirst(new PropertiesPropertySource("TrustStorePropertySource", properties));
         }
 
         Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
