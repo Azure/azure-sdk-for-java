@@ -10,18 +10,24 @@ import com.azure.cosmos.implementation.feedranges.{FeedRangeContinuation, FeedRa
 import com.azure.cosmos.implementation.query.CompositeContinuationToken
 import com.azure.cosmos.implementation.routing.Range
 import com.azure.cosmos.models.FeedRange
-import com.azure.cosmos.spark.NormalizedRange
+import com.azure.cosmos.spark.{CosmosLoggingTrait, NormalizedRange}
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-private[cosmos] object SparkBridgeImplementationInternal {
+private[cosmos] object SparkBridgeImplementationInternal extends CosmosLoggingTrait {
   def setMetadataCacheSnapshot(cosmosClientBuilder: CosmosClientBuilder,
                                metadataCache: CosmosClientMetadataCachesSnapshot): Unit = {
 
     val clientBuilderAccessor = CosmosClientBuilderHelper.getCosmosClientBuilderAccessor
     clientBuilderAccessor.setCosmosClientMetadataCachesSnapshot(cosmosClientBuilder, metadataCache)
+  }
+
+  def changeFeedContinuationToJson(continuation: String): String = {
+    ChangeFeedState
+      .fromString(continuation)
+      .toJson()
   }
 
   def extractLsnFromChangeFeedContinuation(continuation: String): Long = {
@@ -34,6 +40,20 @@ private[cosmos] object SparkBridgeImplementationInternal {
     toLsn(lsnToken)
   }
 
+  def overrideLsnInChangeFeedContinuation(continuation: String, newContinuationToken: String): String = {
+    val state = ChangeFeedState
+      .fromString(continuation)
+
+    val continuationToken = state.getContinuation.getCurrentContinuationToken
+
+    logWarning(s"Replacing token '${continuationToken.getToken}' for feed " +
+      s"range '${continuationToken.getRange}' with new token '$newContinuationToken'")
+
+    continuationToken.setToken(newContinuationToken)
+
+    state.toString
+  }
+
   def mergeChangeFeedContinuations(continuationTokens: Iterable[String]): String = {
     var count = 0
     val states = continuationTokens.map(s => {
@@ -41,7 +61,7 @@ private[cosmos] object SparkBridgeImplementationInternal {
       ChangeFeedState.fromString(s)
     }).toArray
 
-    ChangeFeedState.merge(states).toJson()
+    ChangeFeedState.merge(states).toString()
   }
 
   def createChangeFeedStateJson
@@ -65,16 +85,16 @@ private[cosmos] object SparkBridgeImplementationInternal {
         startState.getFeedRange,
         continuationTokens.toList.asJava
       )
-    ).toJson
+    ).toString
   }
 
-  private[this] def toContinuationToken(lsn: Long): String = {
+  def toContinuationToken(lsn: Long): String = {
     raw""""${String.valueOf(lsn)}"""""
   }
 
-  def extractContinuationTokensFromChangeFeedStateJson(stateJson: String): Array[(NormalizedRange, Long)] = {
-    assert(!Strings.isNullOrWhiteSpace(stateJson), s"Argument 'stateJson' must not be null or empty.")
-    val state = ChangeFeedState.fromString(stateJson)
+  def extractContinuationTokensFromChangeFeedStateJson(stateJsonBase64: String): Array[(NormalizedRange, Long)] = {
+    assert(!Strings.isNullOrWhiteSpace(stateJsonBase64), s"Argument 'stateJsonBase64' must not be null or empty.")
+    val state = ChangeFeedState.fromString(stateJsonBase64)
     state
       .extractContinuationTokens() // already sorted
       .asScala
@@ -99,22 +119,22 @@ private[cosmos] object SparkBridgeImplementationInternal {
 
   def extractChangeFeedStateForRange
   (
-    stateJson: String,
+    stateJsonBase64: String,
     feedRange: NormalizedRange
   ): String = {
-    assert(!Strings.isNullOrWhiteSpace(stateJson), s"Argument 'stateJson' must not be null or empty.")
+    assert(!Strings.isNullOrWhiteSpace(stateJsonBase64), s"Argument 'stateJsonBase64' must not be null or empty.")
     ChangeFeedState
-      .fromString(stateJson)
+      .fromString(stateJsonBase64)
       .extractForEffectiveRange(toCosmosRange(feedRange))
-      .toJson
-  }
-
-  private[this] def toCosmosRange(range: NormalizedRange): Range[String] = {
-    new Range[String](range.min, range.max, true, false)
+      .toString
   }
 
   def toFeedRange(range: NormalizedRange): FeedRange = {
     new FeedRangeEpkImpl(toCosmosRange(range))
+  }
+
+  private[this] def toCosmosRange(range: NormalizedRange): Range[String] = {
+    new Range[String](range.min, range.max, true, false)
   }
 
   def doRangesOverlap(left: NormalizedRange, right: NormalizedRange): Boolean = {
@@ -125,5 +145,4 @@ private[cosmos] object SparkBridgeImplementationInternal {
     val epk = feedRange.asInstanceOf[FeedRangeEpkImpl]
     rangeToNormalizedRange(epk.getRange)
   }
-
 }

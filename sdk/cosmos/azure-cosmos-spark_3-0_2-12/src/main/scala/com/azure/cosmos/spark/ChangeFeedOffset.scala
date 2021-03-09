@@ -48,6 +48,9 @@ private object ChangeFeedOffset {
     val parsedNode = objectMapper.readTree(json)
     if (isValidJson(parsedNode)) {
 
+      // Input partitions are serialized here to avoid having to calculate the latest LSN again
+      // We need the latest LSN to calculate the endOffset/latestOffset - so we calculate
+      // the input partitions already and pass it via the end offset to planInputPartitions call
       val inputPartitions = if (parsedNode.get(InputPartitionsPropertyName) != null &&
         parsedNode.get(InputPartitionsPropertyName).isArray) {
         val arrayNode = parsedNode.get(InputPartitionsPropertyName).asInstanceOf[ArrayNode]
@@ -63,7 +66,7 @@ private object ChangeFeedOffset {
       ChangeFeedOffset(parsedNode.get(StatePropertyName).asText, inputPartitions)
     } else {
       val message = s"Unable to deserialize offset '$json'."
-      throw new IllegalStateException(message)
+      throw new IllegalArgumentException(message)
     }
   }
 

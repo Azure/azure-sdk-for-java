@@ -104,7 +104,10 @@ private class ChangeFeedTable(val session: SparkSession,
         ChangeFeedTable.defaultFullFidelityChangeFeedSchemaForInferenceDisabled
     }
 
-    CosmosTableSchemaInferrer.inferSchema(client, userConfig, defaultSchema)
+    CosmosTableSchemaInferrer.inferSchema(
+      client,
+      userConfig,
+      defaultSchema)
   }
 
   // This can be used only when databaseName and ContainerName are specified.

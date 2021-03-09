@@ -66,24 +66,24 @@ class CosmosPartitionPlannerSpec
     }
   }
 
-  it should "create exactly 3 times more partitions than with Default for Aggressive" in {
+  it should "create exactly 5 times more partitions than with Default for Aggressive" in {
 
     // Min is still 1 (not 3) to avoid wasting compute resources where not necessary
     evaluateStrategy("Aggressive", 0, 1 * cosmosBEPartitionCount)
 
-    // 3 Spark partitions for every 128 MB
-    evaluateStrategy("Aggressive", 10 * 128 * 1024, 3 * 10 * cosmosBEPartitionCount)
+    // 5 Spark partitions for every 128 MB
+    evaluateStrategy("Aggressive", 10 * 128 * 1024, 5 * 10 * cosmosBEPartitionCount)
 
     // change feed progress is honored
     evaluateStrategy(
       "Aggressive",
       10 * 128 * 1024,
-      3 * 3 * cosmosBEPartitionCount,
+      5 * 3 * cosmosBEPartitionCount,
       Some(70))
 
     for (_ <- 1 to 100) {
       val docSizeInKB = rnd.nextInt(50 * 1024 * 1024)
-      val expectedPartitionCount = ((3 * docSizeInKB) + (128 * 1024) - 1)/(128 * 1024)
+      val expectedPartitionCount = ((5 * docSizeInKB) + (128 * 1024) - 1)/(128 * 1024)
       evaluateStrategy("Aggressive", docSizeInKB, expectedPartitionCount * cosmosBEPartitionCount)
     }
   }

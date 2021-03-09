@@ -39,10 +39,26 @@ private class ChangeFeedMicroBatchStream
   private var latestOffsetSnapshot: Option[ChangeFeedOffset] = None
 
   override def latestOffset(): Offset = {
+    // For Spark data streams implementing SupportsAdmissionControl trait
+    // latestOffset(Offset, ReadLimit) is called instead
     throw new UnsupportedOperationException(
       "latestOffset(Offset, ReadLimit) should be called instead of this method")
   }
 
+  /**
+   * Returns a list of `InputPartition` given the start and end offsets. Each
+   * `InputPartition` represents a data split that can be processed by one Spark task. The
+   * number of input partitions returned here is the same as the number of RDD partitions this scan
+   * outputs.
+   * <p>
+   * If the `Scan` supports filter push down, this stream is likely configured with a filter
+   * and is responsible for creating splits for that filter, which is not a full scan.
+   * </p>
+   * <p>
+   * This method will be called multiple times, to launch one Spark job for each micro-batch in this
+   * data stream.
+   * </p>
+   */
   override def planInputPartitions(startOffset: Offset, endOffset: Offset): Array[InputPartition] = {
     assertNotNull(startOffset, "startOffset")
     assertNotNull(endOffset, "endOffset")
@@ -62,13 +78,32 @@ private class ChangeFeedMicroBatchStream
       .map(partition => partition
         .withContinuationState(
           SparkBridgeImplementationInternal
-            .extractChangeFeedStateForRange(startJson, partition.feedRange)))
+            .extractChangeFeedStateForRange(startJson, partition.feedRange),
+        false))
   }
 
+  /**
+   * Returns a factory to create a `PartitionReader` for each `InputPartition`.
+   */
   override def createReaderFactory(): PartitionReaderFactory = {
     ChangeFeedScanPartitionReaderFactory(config, schema, cosmosClientStateHandle)
   }
 
+  /**
+   * Returns the most recent offset available given a read limit. The start offset can be used
+   * to figure out how much new data should be read given the limit. Users should implement this
+   * method instead of latestOffset for a MicroBatchStream or getOffset for Source.
+   *
+   * When this method is called on a `Source`, the source can return `null` if there is no
+   * data to process. In addition, for the very first micro-batch, the `startOffset` will be
+   * null as well.
+   *
+   * When this method is called on a MicroBatchStream, the `startOffset` will be `initialOffset`
+   * for the very first micro-batch. The source can return `null` if there is no data to process.
+   */
+  // This method is doing all the heavy lifting - after calculating the latest offset
+  // all information necessary to plan partitions is available - so we plan partitions here and
+  // serialize them in the end offset returned to avoid any IO calls for the actual partitioning
   override def latestOffset(startOffset: Offset, readLimit: ReadLimit): Offset = {
     val startChangeFeedOffset = startOffset.asInstanceOf[ChangeFeedOffset]
     val offset = CosmosPartitionPlanner.getLatestOffset(
@@ -93,6 +128,13 @@ private class ChangeFeedMicroBatchStream
     }
   }
 
+  /**
+   * Returns the initial offset for a streaming query to start reading from. Note that the
+   * streaming data source should not assume that it will start reading from its initial offset:
+   * if Spark is restarting an existing query, it will restart from the check-pointed offset rather
+   * than the initial one.
+   */
+  // Mapping start form settings to the initial offset/LSNs
   override def initialOffset(): Offset = {
     assertOnSparkDriver()
 
@@ -109,17 +151,46 @@ private class ChangeFeedMicroBatchStream
     ChangeFeedOffset(offsetJson, None)
   }
 
-  override def getDefaultReadLimit: ReadLimit = this.changeFeedConfig.toReadLimit
+  /**
+   * Returns the read limits potentially passed to the data source through options when creating
+   * the data source.
+   */
+  override def getDefaultReadLimit: ReadLimit = {
+    this.changeFeedConfig.toReadLimit
+  }
 
+  /**
+   * Returns the most recent offset available.
+   *
+   * The source can return `null`, if there is no data to process or the source does not support
+   * to this method.
+   */
+  // TODO @fabianm mark this override when switching to Spark 3.2.0
+  def reportLatestOffset(): Offset = {
+    this.latestOffsetSnapshot.orNull
+  }
+
+  /**
+   * Deserialize a JSON string into an Offset of the implementation-defined offset type.
+   *
+   * @throws IllegalArgumentException if the JSON does not encode a valid offset for this reader
+   */
   override def deserializeOffset(s: String): Offset = {
     logDebug(s"MicroBatch stream $streamId: Deserialized offset '$s'.")
     ChangeFeedOffset.fromJson(s)
   }
 
+  /**
+   * Informs the source that Spark has completed processing all data for offsets less than or
+   * equal to `end` and will only request offsets greater than `end` in the future.
+   */
   override def commit(offset: Offset): Unit = {
     logInfo(s"MicroBatch stream $streamId: Committed offset '${offset.json()}'.")
   }
 
+  /**
+   * Stop this source and free any resources it has allocated.
+   */
   override def stop(): Unit = {
     logInfo(s"MicroBatch stream $streamId: stopped.")
   }

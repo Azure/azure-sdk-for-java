@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.connector.read.{Batch, InputPartition, PartitionReaderFactory}
@@ -42,7 +42,8 @@ private class ChangeFeedBatch
     val latestOffset = CosmosPartitionPlanner.getLatestOffset(
       ChangeFeedOffset(initialOffsetJson, None),
       changeFeedConfig.toReadLimit,
-      Duration.ZERO,
+      // ok to use from cache because endLsn is ignored in batch mode
+      Duration.ofMillis(PartitionMetadataCache.refreshIntervalInMsDefault),
       clientConfiguration,
       this.cosmosClientStateHandle,
       containerConfig,
@@ -55,7 +56,11 @@ private class ChangeFeedBatch
     latestOffset
       .inputPartitions
       .get
-      .map(p => p.clearEndLsn())
+      .map(partition => partition
+        .withContinuationState(
+          SparkBridgeImplementationInternal
+            .extractChangeFeedStateForRange(initialOffsetJson, partition.feedRange),
+          clearEndLsn = true))
   }
 
   override def createReaderFactory(): PartitionReaderFactory = {

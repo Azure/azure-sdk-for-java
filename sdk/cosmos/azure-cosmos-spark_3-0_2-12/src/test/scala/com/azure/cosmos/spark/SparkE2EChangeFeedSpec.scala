@@ -79,7 +79,8 @@ class SparkE2EChangeFeedSpec
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
       "spark.cosmos.read.inferSchemaEnabled" -> "false",
-      "spark.cosmos.changeFeed.mode" -> "FullFidelity"
+      "spark.cosmos.changeFeed.mode" -> "FullFidelity",
+      "spark.cosmos.changeFeed.startFrom" -> "NOW"
     )
 
     val df = spark.read.format("cosmos.changeFeed").options(cfg).load()

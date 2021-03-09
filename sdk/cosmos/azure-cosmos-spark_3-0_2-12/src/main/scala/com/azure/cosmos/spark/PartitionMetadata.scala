@@ -3,10 +3,7 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{
-  CosmosClientMetadataCachesSnapshot,
-  SparkBridgeImplementationInternal
-}
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
 import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
 import org.apache.spark.broadcast.Broadcast
 
@@ -52,19 +49,21 @@ private object PartitionMetadata {
   }
 }
 
-private[cosmos] case class PartitionMetadata(
-    cosmosClientConfig: CosmosClientConfiguration,
-    cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
-    cosmosContainerConfig: CosmosContainerConfig,
-    feedRange: NormalizedRange,
-    documentCount: Long,
-    totalDocumentSizeInKB: Long,
-    latestLsn: Long,
-    startLsn: Long,
-    endLsn: Option[Long],
-    lastRetrieved: AtomicLong,
-    lastUpdated: AtomicLong
+private[cosmos] case class PartitionMetadata
+(
+  cosmosClientConfig: CosmosClientConfiguration,
+  cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+  cosmosContainerConfig: CosmosContainerConfig,
+  feedRange: NormalizedRange,
+  documentCount: Long,
+  totalDocumentSizeInKB: Long,
+  latestLsn: Long,
+  startLsn: Long,
+  endLsn: Option[Long],
+  lastRetrieved: AtomicLong,
+  lastUpdated: AtomicLong
 ) {
+
   requireNotNull(feedRange, "feedRange")
   requireNotNull(cosmosClientConfig, "cosmosClientConfig")
   requireNotNull(cosmosContainerConfig, "cosmosContainerConfig")

@@ -52,7 +52,7 @@ class ChangeFeedOffsetSpec extends UnitSpec {
     serializedString shouldEqual offsetJson
   }
 
-  it should " should ignore valid json for different offset" in {
+  it should " complain on valid but incompatible json for different offset" in {
     val changeFeedState = UUID.randomUUID().toString
     val offsetJson = getOffsetJson(changeFeedState).replace(
       "com.azure.cosmos.spark.changeFeed.offset.v1",
@@ -63,7 +63,7 @@ class ChangeFeedOffsetSpec extends UnitSpec {
       ChangeFeedOffset.fromJson(offsetJson)
       fail("Invalid version never get here.")
     } catch {
-      case _:IllegalStateException =>
+      case _:IllegalArgumentException =>
     }
   }
 

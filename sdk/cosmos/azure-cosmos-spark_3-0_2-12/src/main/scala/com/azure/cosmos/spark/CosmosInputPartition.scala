@@ -63,8 +63,13 @@ private[spark] case class CosmosInputPartition
 
   def json(): String = jsonPersisted
 
-  private[spark] def withContinuationState(continuationState: String): InputPartition = {
-    CosmosInputPartition(this.feedRange, endLsn, Some(continuationState))
+  private[spark] def withContinuationState(continuationState: String, clearEndLsn: Boolean): InputPartition = {
+    val effectiveEndLsn = if (clearEndLsn) {
+      None
+    } else {
+      this.endLsn
+    }
+    CosmosInputPartition(this.feedRange, effectiveEndLsn , Some(continuationState))
   }
 
   private[spark] def clearEndLsn(): InputPartition = {

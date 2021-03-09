@@ -4,7 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
-import com.azure.cosmos.models.{CosmosParameterizedQuery, CosmosQueryRequestOptions, FeedRange}
+import com.azure.cosmos.models.{CosmosParameterizedQuery, CosmosQueryRequestOptions}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.catalyst.InternalRow
@@ -27,7 +27,7 @@ private case class ItemsPartitionReader
   extends PartitionReader[InternalRow] with CosmosLoggingTrait {
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
-  logDebug(s"Reading from ${feedRange}")
+  logDebug(s"Reading from $feedRange")
 
   private val containerTargetConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
@@ -51,6 +51,5 @@ private case class ItemsPartitionReader
   }
 
   override def close(): Unit = {
-    // TODO moderakh manage the lifetime of the cosmos clients
   }
 }

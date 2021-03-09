@@ -25,6 +25,7 @@ private object CosmosTableSchemaInferrer
   private[spark] val PreviousRawJsonBodyAttributeName = "_previousRawBody"
   private[spark] val TtlExpiredAttributeName = "_ttlExpired"
   private[spark] val OperationTypeAttributeName = "_operationType"
+  private[spark] val LsnAttributeName = "_lsn"
 
   private[spark] def inferSchema(inferredItems: Seq[ObjectNode]): StructType = {
     if (inferredItems.isEmpty) {

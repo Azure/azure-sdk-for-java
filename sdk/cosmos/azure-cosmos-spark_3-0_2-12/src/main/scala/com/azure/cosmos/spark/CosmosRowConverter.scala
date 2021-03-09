@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.spark.CosmosTableSchemaInferrer.LsnAttributeName
+
 import java.sql.{Date, Timestamp}
 import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, NullNode, ObjectNode, TextNode}
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
@@ -9,6 +11,7 @@ import org.apache.spark.sql.Row
 import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.catalyst.encoders.RowEncoder
 import org.apache.spark.sql.catalyst.expressions.{GenericRowWithSchema, UnsafeMapData}
+import org.codehaus.jackson.node.NumericNode
 
 import java.time.{OffsetDateTime, ZoneOffset}
 import java.time.format.DateTimeFormatter
@@ -223,6 +226,15 @@ private object CosmosRowConverter
       }
     }
 
+  private def parseLsn(objectNode: ObjectNode): Long = {
+    objectNode.get(LsnAttributeName)
+    match {
+      case lsnNode: JsonNode =>
+        Option(lsnNode).fold(-1L)(v => v.asLong(-1))
+      case _ => -1L
+    }
+  }
+
     private def parseTtlExpired(objectNode: ObjectNode): Boolean = {
       getFullFidelityMetadata(objectNode) match {
         case metadataNode: Some[ObjectNode] =>
@@ -257,6 +269,8 @@ private object CosmosRowConverter
               parseOperationType(objectNode)
             case StructField(CosmosTableSchemaInferrer.TtlExpiredAttributeName, BooleanType, _, _) =>
               parseTtlExpired(objectNode)
+            case StructField(CosmosTableSchemaInferrer.LsnAttributeName, LongType, _, _) =>
+              parseLsn(objectNode)
             case StructField(name, dataType, _, _) =>
                 Option(objectNode.get(name)).map(convertToSparkDataType(dataType, _)).orNull
         }
