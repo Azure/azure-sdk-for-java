@@ -15,7 +15,6 @@ import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
-import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
@@ -29,14 +28,12 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -226,13 +223,15 @@ public class ReadmeSamples {
                             "\t\tEntity ID in data source: %s, data source: %s.%n",
                             healthcareEntityLink.getEntityId(), healthcareEntityLink.getName()));
                     }
-                    Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities =
-                        healthcareEntity.getRelatedEntities();
-                    if (!CoreUtils.isNullOrEmpty(relatedHealthcareEntities)) {
-                        relatedHealthcareEntities.forEach((relatedHealthcareEntity, entityRelationType) -> System.out.printf(
-                            "\t\tRelated entity: %s, relation type: %s.%n",
-                            relatedHealthcareEntity.getText(), entityRelationType));
-                    }
+                });
+                // Healthcare entity relation groups
+                healthcareEntitiesResult.getEntityRelations().forEach(entityRelation -> {
+                    System.out.printf("\tRelation type: %s.%n", entityRelation.getRelationType());
+                    entityRelation.getRoles().forEach(role -> {
+                        final HealthcareEntity entity = role.getEntity();
+                        System.out.printf("\t\tEntity text: %s, category: %s, role: %s.%n",
+                            entity.getText(), entity.getCategory(), role.getName());
+                    });
                 });
             }));
     }

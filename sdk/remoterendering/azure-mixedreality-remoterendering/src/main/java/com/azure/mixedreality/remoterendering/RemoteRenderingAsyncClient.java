@@ -38,6 +38,7 @@ import com.azure.core.util.polling.PollerFlux;
 
 import java.time.Duration;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -517,14 +518,14 @@ public final class RemoteRenderingAsyncClient {
             }
             return new RenderingSession(
                 sessionProperties.getId(),
-                sessionProperties.getArrInspectorPort(),
-                sessionProperties.getHandshakePort(),
-                Duration.ofMinutes(sessionProperties.getElapsedTimeMinutes()),
+                Optional.ofNullable(sessionProperties.getArrInspectorPort()).orElse(0),
+                Optional.ofNullable(sessionProperties.getHandshakePort()).orElse(0),
+                Duration.ofMinutes(Optional.ofNullable(sessionProperties.getElapsedTimeMinutes()).orElse(0)),
                 sessionProperties.getHostname(),
-                Duration.ofMinutes(sessionProperties.getMaxLeaseTimeMinutes()),
+                Duration.ofMinutes(Optional.ofNullable(sessionProperties.getMaxLeaseTimeMinutes()).orElse(0)),
                 RenderingSessionSize.fromString(sessionProperties.getSize().toString()),
                 RenderingSessionStatus.fromString(sessionProperties.getStatus().toString()),
-                sessionProperties.getTeraflops(),
+                Optional.ofNullable(sessionProperties.getTeraflops()).orElse(0.0f),
                 fromGenerated(sessionProperties.getError()),
                 sessionProperties.getCreationTime());
         }
