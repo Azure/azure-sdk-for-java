@@ -184,6 +184,7 @@ public class ReadmeSamples {
                     System.out.println("Successfully sent this message: " + result.getMessageId() + " to " + result.getTo());
                 } else {
                     System.out.println("Something went wrong when trying to send this message " + result.getMessageId() + " to " + result.getTo());
+                    System.out.println("Status code " + result.getHttpStatusCode() + " and error message " + result.getErrorMessage());
                 }
             }
 
@@ -191,5 +192,4 @@ public class ReadmeSamples {
             System.out.println(ex.getMessage());
         }
     }
-
 }

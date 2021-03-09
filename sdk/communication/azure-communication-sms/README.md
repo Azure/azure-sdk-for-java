@@ -131,7 +131,7 @@ for (SmsSendResult result : sendResults) {
 - SMS operations will throw an exception if the request to the server fails.
 - Exceptions will not be thrown if the error is caused by an individual message, only if something fails with the overall request.
 - Please use the `isSuccessful()` flag to validate each individual result to verify if the message was sent.
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L168-L192 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L168-L193 -->
 ```java
 try {
 
@@ -152,6 +152,7 @@ try {
             System.out.println("Successfully sent this message: " + result.getMessageId() + " to " + result.getTo());
         } else {
             System.out.println("Something went wrong when trying to send this message " + result.getMessageId() + " to " + result.getTo());
+            System.out.println("Status code " + result.getHttpStatusCode() + " and error message " + result.getErrorMessage());
         }
     }
 
