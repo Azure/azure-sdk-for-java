@@ -5,9 +5,6 @@ package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.ScoringProfile;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.ScoringProfile} and
  * {@link ScoringProfile}.
@@ -23,9 +20,7 @@ public final class ScoringProfileConverter {
         ScoringProfile scoringProfile = new ScoringProfile(obj.getName());
 
         if (obj.getFunctions() != null) {
-            scoringProfile.setFunctions(obj.getFunctions().stream()
-                .map(ScoringFunctionConverter::map)
-                .collect(Collectors.toList()));
+            scoringProfile.setFunctions(obj.getFunctions());
         }
 
         if (obj.getTextWeights() != null) {
@@ -49,9 +44,7 @@ public final class ScoringProfileConverter {
             new com.azure.search.documents.indexes.implementation.models.ScoringProfile(obj.getName());
 
         if (obj.getFunctions() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.ScoringFunction> functions =
-                obj.getFunctions().stream().map(ScoringFunctionConverter::map).collect(Collectors.toList());
-            scoringProfile.setFunctions(functions);
+            scoringProfile.setFunctions(obj.getFunctions());
         }
 
         if (obj.getTextWeights() != null) {
