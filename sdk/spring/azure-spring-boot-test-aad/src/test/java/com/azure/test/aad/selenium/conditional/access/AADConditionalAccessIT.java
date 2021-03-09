@@ -33,6 +33,7 @@ public class AADConditionalAccessIT {
     private static final String CUSTOM_LOCAL_FILE_ENDPOINT = "http://localhost:8081/call-custom";
     private static final Logger LOGGER = LoggerFactory.getLogger(AADConditionalAccessIT.class);
 
+    @Ignore
     @Test
     public void conditionalAccessTest() {
         Map<String, String> properties = createDefaultProperties();
