@@ -46,30 +46,24 @@ public class ConnectionHandler extends Handler {
     private final Map<String, Object> connectionProperties;
     private final ClientLogger logger = new ClientLogger(ConnectionHandler.class);
     private final ConnectionOptions connectionOptions;
+    private final SslPeerDetails peerDetails;
 
     /**
      * Creates a handler that handles proton-j's connection events.
      *
      * @param connectionId Identifier for this connection.
-     * @param productName The name of the product this connection handler is created for.
-     * @param clientVersion The version of the client library creating the connection handler.
      * @param connectionOptions Options used when creating the AMQP connection.
      */
-    public ConnectionHandler(final String connectionId, final String productName, final String clientVersion,
-        final ConnectionOptions connectionOptions) {
+    public ConnectionHandler(final String connectionId, final ConnectionOptions connectionOptions,
+        SslPeerDetails peerDetails) {
         super(connectionId,
             Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.").getHostname());
-
         add(new Handshaker());
 
         this.connectionOptions = connectionOptions;
-
-        Objects.requireNonNull(productName, "'product' cannot be null.");
-        Objects.requireNonNull(clientVersion, "'clientVersion' cannot be null.");
-
         this.connectionProperties = new HashMap<>();
-        this.connectionProperties.put(PRODUCT.toString(), productName);
-        this.connectionProperties.put(VERSION.toString(), clientVersion);
+        this.connectionProperties.put(PRODUCT.toString(), connectionOptions.getProduct());
+        this.connectionProperties.put(VERSION.toString(), connectionOptions.getClientVersion());
         this.connectionProperties.put(PLATFORM.toString(), ClientConstants.PLATFORM_INFO);
         this.connectionProperties.put(FRAMEWORK.toString(), ClientConstants.FRAMEWORK_INFO);
 
@@ -77,8 +71,12 @@ public class ConnectionHandler extends Handler {
         final String applicationId = !CoreUtils.isNullOrEmpty(clientOptions.getApplicationId())
             ? clientOptions.getApplicationId()
             : null;
-        String userAgent = UserAgentUtil.toUserAgentString(applicationId, productName, clientVersion, null);
+        final String userAgent = UserAgentUtil.toUserAgentString(applicationId, connectionOptions.getProduct(),
+            connectionOptions.getClientVersion(), null);
+
         this.connectionProperties.put(USER_AGENT.toString(), userAgent);
+
+        this.peerDetails = Objects.requireNonNull(peerDetails, "'peerDetails' cannot be null.");
     }
 
     /**
@@ -114,7 +112,7 @@ public class ConnectionHandler extends Handler {
      * @param event The proton-j event.
      * @param transport Transport to add layers to.
      */
-    protected void addTransportLayers(final Event event, final TransportInternal transport) {
+    protected void addTransportLayers(Event event, TransportInternal transport) {
         final SslDomain sslDomain = Proton.sslDomain();
         sslDomain.init(SslDomain.Mode.CLIENT);
 
@@ -137,10 +135,6 @@ public class ConnectionHandler extends Handler {
             final SSLContext context = new StrictTlsContext(serviceProvider, defaultSslContext.getProvider(),
                 defaultSslContext.getProtocol());
 
-            final String theHostname = getHostname();
-            final int theProtocol = getProtocolPort();
-            final SslPeerDetails peerDetails = Proton.sslPeerDetails(theHostname, theProtocol);
-
             sslDomain.setSslContext(context);
             transport.ssl(sslDomain, peerDetails);
             return;
@@ -148,14 +142,15 @@ public class ConnectionHandler extends Handler {
 
         if (verifyMode == SslDomain.VerifyMode.VERIFY_PEER) {
             sslDomain.setSslContext(defaultSslContext);
+            sslDomain.setPeerAuthentication(SslDomain.VerifyMode.VERIFY_PEER);
         } else if (verifyMode == SslDomain.VerifyMode.ANONYMOUS_PEER) {
             logger.warning("{} is not secure.", verifyMode);
+            sslDomain.setPeerAuthentication(SslDomain.VerifyMode.ANONYMOUS_PEER);
         } else {
             throw logger.logExceptionAsError(new UnsupportedOperationException(
                 "verifyMode is not supported: " + verifyMode));
         }
 
-        sslDomain.setPeerAuthentication(verifyMode);
         transport.ssl(sslDomain);
     }
 
@@ -180,9 +175,10 @@ public class ConnectionHandler extends Handler {
 
     @Override
     public void onConnectionBound(Event event) {
-        logger.info("onConnectionBound hostname[{}], connectionId[{}]", getHostname(), getConnectionId());
-
         final Transport transport = event.getTransport();
+
+        logger.info("onConnectionBound connectionId[{}] hostname[{}] peerDetails[{}:{}]", getConnectionId(),
+            getHostname(), peerDetails.getHostname(), peerDetails.getPort());
 
         this.addTransportLayers(event, (TransportInternal) transport);
 

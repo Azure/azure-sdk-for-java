@@ -328,7 +328,6 @@ public class PhoneNumbersClientBuilderTest {
         assertEquals(5, phoneNumberManagementClient.getHttpPipeline().getPolicyCount());
         assertEquals(spyHelper.authenticationPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(0));
         assertEquals(spyHelper.userAgentPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(1));
-        assertEquals(spyHelper.retryPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(2));
         assertEquals(spyHelper.cookiePolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(3));
         assertEquals(spyHelper.httpLoggingPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(4));
 
@@ -382,7 +381,6 @@ public class PhoneNumbersClientBuilderTest {
         assertEquals(expectedPolicyCount, phoneNumberManagementClient.getHttpPipeline().getPolicyCount());
         assertEquals(spyHelper.authenticationPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(0));
         assertEquals(spyHelper.userAgentPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(1));
-        assertEquals(spyHelper.retryPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(2));
         assertEquals(spyHelper.cookiePolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(3));
         assertEquals(spyHelper.httpLoggingPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(lastPolicyIndex));
 
@@ -426,12 +424,6 @@ public class PhoneNumbersClientBuilderTest {
                 return this.userAgentPolicyRef.get();
             };
             doAnswer(createUserAgentPolicy).when(this.clientBuilder).createUserAgentPolicy(any(), any(), any(), any());
-
-            Answer<RetryPolicy> createRetryPolicy = (invocation) -> {
-                this.retryPolicyRef.set((RetryPolicy) invocation.callRealMethod());
-                return this.retryPolicyRef.get();
-            };
-            doAnswer(createRetryPolicy).when(this.clientBuilder).createRetryPolicy();
 
             Answer<CookiePolicy> createCookiePolicy = (invocation) -> {
                 this.cookiePolicyRef.set((CookiePolicy) invocation.callRealMethod());

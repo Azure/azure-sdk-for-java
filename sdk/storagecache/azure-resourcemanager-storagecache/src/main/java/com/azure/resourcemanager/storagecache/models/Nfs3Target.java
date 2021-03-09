@@ -21,8 +21,8 @@ public final class Nfs3Target {
     private String target;
 
     /*
-     * Identifies the usage model to be used for this Storage Target. Get
-     * choices from .../usageModels
+     * Identifies the StorageCache usage model to be used for this storage
+     * target.
      */
     @JsonProperty(value = "usageModel")
     private String usageModel;
@@ -48,8 +48,7 @@ public final class Nfs3Target {
     }
 
     /**
-     * Get the usageModel property: Identifies the usage model to be used for this Storage Target. Get choices from
-     * .../usageModels.
+     * Get the usageModel property: Identifies the StorageCache usage model to be used for this storage target.
      *
      * @return the usageModel value.
      */
@@ -58,8 +57,7 @@ public final class Nfs3Target {
     }
 
     /**
-     * Set the usageModel property: Identifies the usage model to be used for this Storage Target. Get choices from
-     * .../usageModels.
+     * Set the usageModel property: Identifies the StorageCache usage model to be used for this storage target.
      *
      * @param usageModel the usageModel value to set.
      * @return the Nfs3Target object itself.
