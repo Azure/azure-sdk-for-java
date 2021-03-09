@@ -188,11 +188,11 @@ public class ChangeFeedStateTest {
         ChangeFeedState original = this
             .createStateWithContinuation(continuationAAToCC, continuationCCToEE);
         ChangeFeedState stateAAToBB = original.extractForEffectiveRange(
-            new Range("AA", "BB", true, false));
+            new Range<>("AA", "BB", true, false));
         ChangeFeedState stateBBToDD = original.extractForEffectiveRange(
-            new Range("BB", "DD", true, false));
+            new Range<>("BB", "DD", true, false));
         ChangeFeedState stateDDToEE = original.extractForEffectiveRange(
-            new Range("DD", "EE", true, false));
+            new Range<>("DD", "EE", true, false));
 
         ChangeFeedState merged = ChangeFeedState.merge(
             new ChangeFeedState[] { stateAAToBB, stateBBToDD, stateDDToEE}
