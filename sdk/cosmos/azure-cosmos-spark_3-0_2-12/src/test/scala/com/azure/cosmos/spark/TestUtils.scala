@@ -128,11 +128,23 @@ trait CosmosContainer extends CosmosDatabase {
   this: Suite =>
   //scalastyle:off
 
-  val cosmosContainer = UUID.randomUUID().toString
+  var cosmosContainer = UUID.randomUUID().toString
 
   override def beforeAll(): Unit = {
     super.beforeAll()
     this.createContainerCore()
+  }
+
+  def reinitializeContainer(): Unit = {
+    val containerIdSnapshot = this.cosmosContainer
+
+    try {
+      cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer).delete().block()
+    }
+    finally {
+      this.cosmosContainer = UUID.randomUUID().toString
+      this.createContainerCore()
+    }
   }
 
   def createContainerCore(): Unit = {

@@ -6,14 +6,40 @@ import com.fasterxml.jackson.core.JsonParseException
 
 import java.util.UUID
 
+// scalastyle:off underscore.import
+import scala.collection.JavaConverters._
+// scalastyle:on underscore.import
+
 class ChangeFeedOffsetSpec extends UnitSpec {
   private[this] def getOffsetJson(changeFeedState: String) = {
+    // scala style rule flaky - even complaining on partial log messages
+    // scalastyle:off multiple.string.literals
     String.format(
       "{" +
         "\"id\":\"com.azure.cosmos.spark.changeFeed.offset.v1\"," +
         "\"state\":\"%s\"" +
         "}",
       changeFeedState)
+    // scalastyle:on multiple.string.literals
+  }
+
+  private[this] def getOffsetJsonWithInputPartitions
+  (
+    changeFeedState: String,
+    partitions: Array[CosmosInputPartition]
+  ) = {
+    // scala style rule flaky - even complaining on partial log messages
+    // scalastyle:off multiple.string.literals
+    String.format(
+      "{" +
+        "\"id\":\"com.azure.cosmos.spark.changeFeed.offset.v1\"," +
+        "\"state\":\"%s\"," +
+        "\"partitions\":[%s]" +
+        "}",
+      changeFeedState,
+      String.join(",", partitions.map(p => raw"""${p.json()}""" ).toList.asJava)
+    )
+    // scalastyle:on multiple.string.literals
   }
 
   private[this] def getOffsetJsonWithUnnecessaryWhitespaces(changeFeedState: String) = {
@@ -29,6 +55,25 @@ class ChangeFeedOffsetSpec extends UnitSpec {
   it should " pass serialization/deserialization test" in {
     val changeFeedState = UUID.randomUUID().toString
     val offsetJson = getOffsetJson(changeFeedState)
+    val offset = ChangeFeedOffset.fromJson(offsetJson)
+    //scalastyle:off null
+    offset should not be null
+    val serializedString = offset.json()
+    serializedString should not be null
+    //scalastyle:on null
+    serializedString shouldEqual offsetJson
+  }
+
+  //scalastyle:off multiple.string.literals
+  it should " pass serialization/deserialization test with Input partitions" in {
+    val changeFeedState = UUID.randomUUID().toString
+    val partitions = new Array[CosmosInputPartition](3)
+    // scalastyle:off magic.number
+    partitions(0) = CosmosInputPartition(NormalizedRange("", "AA"), Some(99L), Some(UUID.randomUUID().toString))
+    partitions(1) = CosmosInputPartition(NormalizedRange("AA", "BB"), None, None)
+    partitions(2) = CosmosInputPartition(NormalizedRange("BB", "FF"), None, Some(UUID.randomUUID().toString))
+    // scalastyle:on magic.number
+    val offsetJson = getOffsetJsonWithInputPartitions(changeFeedState, partitions)
     val offset = ChangeFeedOffset.fromJson(offsetJson)
     //scalastyle:off null
     offset should not be null

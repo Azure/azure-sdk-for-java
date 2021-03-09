@@ -11,6 +11,23 @@ class PartitionMetadataSpec extends UnitSpec {
   private[this] val rnd = scala.util.Random
 
   //scalastyle:off multiple.string.literals
+  private[this] val clientCfg = CosmosClientConfiguration(
+    UUID.randomUUID().toString,
+    UUID.randomUUID().toString,
+    UUID.randomUUID().toString,
+    useGatewayMode = false,
+    useEventualConsistency = true)
+
+  private[this] val contCfg = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
+  private[this] val lLsn = rnd.nextInt()
+  private[this] val fr = NormalizedRange("", UUID.randomUUID().toString)
+  private[this] val dc = rnd.nextInt()
+  private[this] val ds = rnd.nextInt()
+
+  private[this] val nowEpochMs = Instant.now.toEpochMilli
+  private[this] val cAt = new AtomicLong(nowEpochMs)
+  private[this] val lrAt = new AtomicLong(nowEpochMs)
+
   it should "calculate the correct cache key" in {
     val databaseName = UUID.randomUUID().toString
     val collectionName = UUID.randomUUID().toString
@@ -78,22 +95,91 @@ class PartitionMetadataSpec extends UnitSpec {
     viaApply.lastUpdated.get shouldEqual viaApply.lastRetrieved.get
   }
 
-  private[this] val clientCfg = CosmosClientConfiguration(
-    UUID.randomUUID().toString,
-    UUID.randomUUID().toString,
-    UUID.randomUUID().toString,
-    useGatewayMode = false,
-    useEventualConsistency = true)
+  it should "withEndLsn honors the new end LSN" in {
 
-  private[this] val contCfg = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
-  private[this] val lLsn = rnd.nextInt()
-  private[this] val fr = NormalizedRange("", UUID.randomUUID().toString)
-  private[this] val dc = rnd.nextInt()
-  private[this] val ds = rnd.nextInt()
+    val clientConfig = CosmosClientConfiguration(
+      UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
+      useGatewayMode = false,
+      useEventualConsistency = true)
 
-  private[this] val nowEpochMs = Instant.now.toEpochMilli
-  private[this] val cAt = new AtomicLong(nowEpochMs)
-  private[this] val lrAt = new AtomicLong(nowEpochMs)
+    val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val latestLsn = rnd.nextInt()
+    val startLsn = rnd.nextInt()
+    val endLsn = rnd.nextInt()
+    val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val docCount = rnd.nextInt()
+    val docSizeInKB = rnd.nextInt()
+
+    val nowEpochMs = Instant.now.toEpochMilli
+    val createdAt = new AtomicLong(nowEpochMs)
+    val lastRetrievedAt = new AtomicLong(nowEpochMs)
+
+    val original = PartitionMetadata(
+      clientConfig,
+      None,
+      containerConfig,
+      normalizedRange,
+      docCount,
+      docSizeInKB,
+      latestLsn,
+      startLsn,
+      Some(endLsn),
+      createdAt,
+      lastRetrievedAt)
+
+    original.latestLsn shouldEqual latestLsn
+    original.startLsn shouldEqual startLsn
+    original.endLsn shouldEqual Some(endLsn)
+
+    val newEndLsn = rnd.nextInt()
+    val withNewEndLsn = original.withEndLsn(newEndLsn)
+    withNewEndLsn.latestLsn shouldEqual latestLsn
+    withNewEndLsn.startLsn shouldEqual startLsn
+    withNewEndLsn.endLsn shouldEqual Some(newEndLsn)
+  }
+
+  it should "clone the meta data for a new sub range" in {
+    val clientConfig = CosmosClientConfiguration(
+      UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
+      useGatewayMode = false,
+      useEventualConsistency = true)
+
+    val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val latestLsn = rnd.nextInt()
+    val startLsn = rnd.nextInt()
+    val endLsn = rnd.nextInt()
+    val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val docCount = rnd.nextInt()
+    val docSizeInKB = rnd.nextInt()
+
+    val nowEpochMs = Instant.now.toEpochMilli
+    val createdAt = new AtomicLong(nowEpochMs)
+    val lastRetrievedAt = new AtomicLong(nowEpochMs)
+
+    val original = PartitionMetadata(
+      clientConfig,
+      None,
+      containerConfig,
+      normalizedRange,
+      docCount,
+      docSizeInKB,
+      latestLsn,
+      startLsn,
+      Some(endLsn),
+      createdAt,
+      lastRetrievedAt)
+
+    val newRange = NormalizedRange("AA", "AB")
+    val newStartLsn = rnd.nextInt()
+
+    val cloned = original.cloneForSubRange(newRange, newStartLsn)
+    cloned.feedRange shouldEqual newRange
+    cloned.startLsn shouldEqual newStartLsn
+  }
 
   //scalastyle:off null
   it should "throw due to missing clientConfig" in {

@@ -27,9 +27,9 @@ private case class ChangeFeedOffset
 
   @transient private lazy val jsonPersisted = inputPartitions match {
     case Some(partitions) =>
-      val partitionsJson = String.join(",", partitions.map(p => raw""""${p.json()}"""" ).toList.asJava)
+      val partitionsJson = String.join(",", partitions.map(p => raw"""${p.json()}""" ).toList.asJava)
       raw"""{"$IdPropertyName":"$V1Identifier",""" +
-        raw""""$StatePropertyName":"$changeFeedState", """ +
+        raw""""$StatePropertyName":"$changeFeedState",""" +
         raw""""$InputPartitionsPropertyName":[$partitionsJson]}"""
     case None => raw"""{"$IdPropertyName":"$V1Identifier","$StatePropertyName":"$changeFeedState"}"""
   }
@@ -55,8 +55,8 @@ private object ChangeFeedOffset {
         parsedNode.get(InputPartitionsPropertyName).isArray) {
         val arrayNode = parsedNode.get(InputPartitionsPropertyName).asInstanceOf[ArrayNode]
         val inputPartitions = ArrayBuffer[CosmosInputPartition]()
-        for (i <- 0 to arrayNode.size) {
-          inputPartitions += CosmosInputPartition.fromJson(arrayNode.get(i).asText)
+        for (i <- 0 until arrayNode.size) {
+          inputPartitions += CosmosInputPartition.fromJson(arrayNode.get(i))
         }
         Some(inputPartitions.toArray)
       } else {

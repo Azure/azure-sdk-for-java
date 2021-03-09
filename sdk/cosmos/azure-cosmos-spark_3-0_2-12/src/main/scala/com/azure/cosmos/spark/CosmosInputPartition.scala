@@ -2,25 +2,20 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.spark.CosmosPredicates.assertNotNullOrEmpty
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.azure.cosmos.spark.CosmosInputPartition.{EndLsnPropertyName, FeedRangePropertyName}
+import com.azure.cosmos.spark.CosmosPredicates.assertNotNull
+import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import org.apache.spark.sql.connector.read.InputPartition
 
 private[spark] object CosmosInputPartition {
-  private val IdPropertyName: String = "id"
-  private val FeedRangePropertyName: String = "state"
-  private val EndLsnPropertyName: String = "state"
-  private val V1Identifier: String = "com.azure.cosmos.spark.inputPartition.v1"
-
+  private val FeedRangePropertyName: String = "range"
+  private val EndLsnPropertyName: String = "endLsn"
   private val objectMapper = new ObjectMapper()
-  def fromJson(json: String): CosmosInputPartition = {
-    assertNotNullOrEmpty(json, "json")
 
-    val parsedNode = objectMapper.readTree(json)
-    if (parsedNode != null &&
-      parsedNode.isObject &&
-      parsedNode.get(IdPropertyName) != null &&
-      parsedNode.get(IdPropertyName).asText("") == V1Identifier &&
+  def fromJson(parsedNode: JsonNode): CosmosInputPartition = {
+    assertNotNull(parsedNode, "parsedNode")
+
+    if (parsedNode.isObject &&
       parsedNode.get(FeedRangePropertyName) != null &&
       parsedNode.get(FeedRangePropertyName).isArray &&
       parsedNode.get(FeedRangePropertyName).size() == 2 ) {
@@ -38,7 +33,7 @@ private[spark] object CosmosInputPartition {
 
       CosmosInputPartition(feedRange, endLsn)
     } else {
-      val message = s"Unable to deserialize input partition '$json'."
+      val message = s"Unable to deserialize input partition '${objectMapper.writeValueAsString(parsedNode)}'."
       throw new IllegalStateException(message)
     }
   }
@@ -54,11 +49,9 @@ private[spark] case class CosmosInputPartition
   // Intentionally leaving out the change feed state when serializing input partition to json
   // the continuation state will be provided later and added by calling withContinuationState
   @transient private lazy val jsonPersisted = endLsn match {
-    case Some(lsn) => raw"""{"$CosmosInputPartition.IdPropertyName":"$CosmosInputPartition.V1Identifier",""" +
-      raw""""$CosmosInputPartition.FeedRangePropertyName":["${feedRange.min}","${feedRange.max}"],""" +
-      raw""""$CosmosInputPartition.EndLsnPropertyName":${String.valueOf(lsn)}}"""
-    case None => raw"""{"$CosmosInputPartition.IdPropertyName":"$CosmosInputPartition.V1Identifier",""" +
-      raw""""$CosmosInputPartition.FeedRangePropertyName":["${feedRange.min}","${feedRange.max}"]}"""
+    case Some(lsn) => raw"""{"$FeedRangePropertyName":["${feedRange.min}","${feedRange.max}"],""" +
+      raw""""$EndLsnPropertyName":${String.valueOf(lsn)}}"""
+    case None => raw"""{"$FeedRangePropertyName":["${feedRange.min}","${feedRange.max}"]}"""
   }
 
   def json(): String = jsonPersisted

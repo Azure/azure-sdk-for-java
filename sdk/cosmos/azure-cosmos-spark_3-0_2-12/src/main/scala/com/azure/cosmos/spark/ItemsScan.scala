@@ -35,11 +35,22 @@ private case class ItemsScan(session: SparkSession,
     val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
     val defaultMinPartitionCount = 1 + (2 * session.sparkContext.defaultParallelism)
 
-    CosmosPartitionPlanner.createInputPartitions(
+    val partitionMetadata = CosmosPartitionPlanner.getPartitionMetadata(
       clientConfiguration,
       Some(cosmosClientStateHandle),
-      containerConfig,
+      containerConfig
+    )
+
+    val client =
+      CosmosClientCache.apply(clientConfiguration, Some(cosmosClientStateHandle))
+    val container = client
+      .getDatabase(containerConfig.database)
+      .getContainer(containerConfig.container)
+
+    CosmosPartitionPlanner.createInputPartitions(
       partitioningConfig,
+      container,
+      partitionMetadata,
       defaultMinPartitionCount,
       CosmosPartitionPlanner.DefaultPartitionSizeInMB,
       ReadLimit.allAvailable()

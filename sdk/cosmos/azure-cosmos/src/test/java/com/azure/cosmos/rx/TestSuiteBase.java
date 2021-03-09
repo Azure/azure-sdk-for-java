@@ -51,6 +51,7 @@ import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -524,6 +525,18 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         ArrayList<String> paths = new ArrayList<>();
         paths.add("/mypk");
         partitionKeyDef.setPaths(paths);
+
+        CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(collectionId, partitionKeyDef);
+
+        return collectionDefinition;
+    }
+
+    static protected CosmosContainerProperties getCollectionDefinitionForHashV2(String collectionId) {
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<>();
+        paths.add("/mypk");
+        partitionKeyDef.setPaths(paths);
+        partitionKeyDef.setVersion(PartitionKeyDefinitionVersion.V2);
 
         CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(collectionId, partitionKeyDef);
 

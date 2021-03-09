@@ -220,37 +220,32 @@ class CosmosPartitionPlannerSpec
     defaultMaxPartitionSizeInMB: Int,
     defaultMinimalPartitionCount: Int
   ) = {
-    if (startLsn.isDefined) {
-      val partitionMetadata = getPartitionMetadata(
-        clientConfig,
-        None,
-        containerConfig
-      ).map(metadata => metadata.cloneForSubRange(metadata.feedRange, startLsn.get))
+    val rawPartitionMetadata = getPartitionMetadata(
+      clientConfig,
+      None,
+      containerConfig
+    )
 
-      val client = CosmosClientCache.apply(clientConfig, None)
-      val container = client
-        .getDatabase(containerConfig.database)
-        .getContainer(containerConfig.container)
-
-      createInputPartitions(
-        CosmosPartitioningConfig.parseCosmosPartitioningConfig(userConfig.toMap),
-        container,
-        partitionMetadata: Array[PartitionMetadata],
-        defaultMinimalPartitionCount,
-        defaultMaxPartitionSizeInMB,
-        ReadLimit.allAvailable()
-      )
+    val partitionMetadata = if (startLsn.isDefined) {
+      rawPartitionMetadata
+        .map(metadata => metadata.cloneForSubRange(metadata.feedRange, startLsn.get))
     } else {
-      CosmosPartitionPlanner.createInputPartitions(
-        clientConfig,
-        None,
-        containerConfig,
-        CosmosPartitioningConfig.parseCosmosPartitioningConfig(userConfig.toMap),
-        defaultMinimalPartitionCount,
-        defaultMaxPartitionSizeInMB,
-        ReadLimit.allAvailable()
-      )
+      rawPartitionMetadata
     }
+
+    val client = CosmosClientCache.apply(clientConfig, None)
+    val container = client
+      .getDatabase(containerConfig.database)
+      .getContainer(containerConfig.container)
+
+    createInputPartitions(
+      CosmosPartitioningConfig.parseCosmosPartitioningConfig(userConfig.toMap),
+      container,
+      partitionMetadata: Array[PartitionMetadata],
+      defaultMinimalPartitionCount,
+      defaultMaxPartitionSizeInMB,
+      ReadLimit.allAvailable()
+    )
   }
 
   //scalastyle:off magic.number

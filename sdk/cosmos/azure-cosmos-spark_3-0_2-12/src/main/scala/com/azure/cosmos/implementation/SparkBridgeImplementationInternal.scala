@@ -43,14 +43,8 @@ private[cosmos] object SparkBridgeImplementationInternal extends CosmosLoggingTr
   def overrideLsnInChangeFeedContinuation(continuation: String, newContinuationToken: String): String = {
     val state = ChangeFeedState
       .fromString(continuation)
-
     val continuationToken = state.getContinuation.getCurrentContinuationToken
-
-    logWarning(s"Replacing token '${continuationToken.getToken}' for feed " +
-      s"range '${continuationToken.getRange}' with new token '$newContinuationToken'")
-
     continuationToken.setToken(newContinuationToken)
-
     state.toString
   }
 

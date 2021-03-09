@@ -29,48 +29,6 @@ import scala.collection.JavaConverters._
 private object CosmosPartitionPlanner extends CosmosLoggingTrait {
   val DefaultPartitionSizeInMB: Int = 5 * 1024 // 10 GB
 
-  // TODO @fabianm - delete this overload - just used in test
-  def createInputPartitions
-  (
-     cosmosClientConfig: CosmosClientConfiguration,
-     cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
-     cosmosContainerConfig: CosmosContainerConfig,
-     cosmosPartitioningConfig: CosmosPartitioningConfig,
-     defaultMinimalPartitionCount: Int,
-     defaultMaxPartitionSizeInMB: Int,
-     readLimit: ReadLimit
-  ): Array[CosmosInputPartition] = {
-    assertOnSparkDriver()
-    //scalastyle:off multiple.string.literals
-    requireNotNull(cosmosClientConfig, "cosmosClientConfig")
-    requireNotNull(cosmosContainerConfig, "cosmosContainerConfig")
-    requireNotNull(cosmosPartitioningConfig, "cosmosPartitioningConfig")
-    require(defaultMaxPartitionSizeInMB >= 64, "Argument 'defaultMaxPartitionSizeInMB' must at least be 64")
-    require(defaultMinimalPartitionCount >= 1, "Argument 'defaultMinimalPartitionCount' must at least be 1")
-    //scalastyle:on multiple.string.literals
-
-    val partitionMetadata = getPartitionMetadata(
-      cosmosClientConfig,
-      cosmosClientStateHandle,
-      cosmosContainerConfig
-    )
-
-    val client =
-      CosmosClientCache.apply(cosmosClientConfig, cosmosClientStateHandle)
-    val container = client
-      .getDatabase(cosmosContainerConfig.database)
-      .getContainer(cosmosContainerConfig.container)
-
-    createInputPartitions(
-      cosmosPartitioningConfig,
-      container,
-      partitionMetadata: Array[PartitionMetadata],
-      defaultMinimalPartitionCount,
-      defaultMaxPartitionSizeInMB,
-      readLimit
-    )
-  }
-
   def createInputPartitions
   (
     cosmosPartitioningConfig: CosmosPartitioningConfig,
