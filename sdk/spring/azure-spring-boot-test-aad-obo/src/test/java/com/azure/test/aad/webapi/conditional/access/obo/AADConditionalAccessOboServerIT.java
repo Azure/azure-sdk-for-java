@@ -1,4 +1,4 @@
-package com.azure.test.aad.webapi.conditional.access;
+package com.azure.test.aad.webapi.conditional.access.obo;
 
 import com.azure.spring.test.AppRunner;
 import org.slf4j.Logger;
@@ -83,10 +83,10 @@ public class AADConditionalAccessOboServerIT {
 
 
         /**
-         * Call custom resources, combine all the response and return.
+         * Call custom resources, return response body.
          *
          * @param custom authorized client for Custom
-         * @return custom data.
+         * @return Response response body data.
          */
         @GetMapping("call-custom")
         @PreAuthorize("hasAuthority('SCOPE_Obo.File.Read')")

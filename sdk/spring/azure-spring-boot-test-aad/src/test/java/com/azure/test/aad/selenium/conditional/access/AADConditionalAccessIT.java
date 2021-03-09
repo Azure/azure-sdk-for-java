@@ -68,10 +68,10 @@ public class AADConditionalAccessIT {
         }
 
         /**
-         * Call obo server, combine all the response and return.
+         * Call obo server, return response body.
          *
          * @param obo authorized client for Custom
-         * @return Response Graph and Custom data.
+         * @return Response response body data.
          */
         @GetMapping("/")
         public String callGraph(@RegisteredOAuth2AuthorizedClient("obo") OAuth2AuthorizedClient obo) {

@@ -33,7 +33,7 @@ public class AADOnDemandIT {
         String armClientScope = armClientUrl + "user_impersonation";
         Map<String, String> properties = createDefaultProperties();
         properties.put("azure.activedirectory.authorization-clients.arm.scopes", armClientScope);
-        properties.put("server.port", "8090");
+        properties.put("azure.activedirectory.authorization-clients.arm.on-demand", "true");
 
         aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties,
             AAD_USER_NAME_ON_DEMAND, AAD_USER_PASSWORD_ON_DEMAND);
