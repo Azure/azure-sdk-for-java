@@ -143,7 +143,7 @@ class SparkE2EChangeFeedSpec
       "spark.cosmos.read.inferSchemaEnabled" -> "false"
     )
 
-    val testId = UUID.randomUUID().toString()
+    val testId = UUID.randomUUID().toString().replace("-", "")
     val changeFeedDF = spark
       .readStream
       .format("cosmos.changeFeed")
@@ -151,7 +151,7 @@ class SparkE2EChangeFeedSpec
       .load()
     val microBatchQuery = changeFeedDF
       .writeStream
-      .format("console")
+      .format("memory")
       .queryName(testId)
       .option("checkpointLocation", s"/tmp/$testId/")
       .outputMode("append")
@@ -172,6 +172,10 @@ class SparkE2EChangeFeedSpec
     spark
       .table(testId)
       .show(truncate = false)
+
+    val rowCount = spark.table(testId).count()
+
+    rowCount shouldEqual 2
   }
 
   //scalastyle:on magic.number

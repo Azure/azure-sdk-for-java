@@ -70,15 +70,13 @@ private class ChangeFeedMicroBatchStream
 
     assert(end.inputPartitions.isDefined, "Argument 'endOffset.inputPartitions' must not be null or empty.")
 
-    val startJson = start.json()
-
     end
       .inputPartitions
       .get
       .map(partition => partition
         .withContinuationState(
           SparkBridgeImplementationInternal
-            .extractChangeFeedStateForRange(startJson, partition.feedRange),
+            .extractChangeFeedStateForRange(start.changeFeedState, partition.feedRange),
         false))
   }
 
