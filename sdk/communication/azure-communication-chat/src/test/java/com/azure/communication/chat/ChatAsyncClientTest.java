@@ -3,10 +3,16 @@
 
 package com.azure.communication.chat;
 
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.http.NoOpHttpClient;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import com.azure.communication.identity.CommunicationIdentityClient;
@@ -256,11 +262,11 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         AtomicReference<ChatThreadAsyncClient> chatThreadClientRef = new AtomicReference<>();
         StepVerifier.create(
             client.createChatThread(threadRequest)
-            .flatMap(createChatThreadResult -> {
-                ChatThreadAsyncClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getChatThread().getId());
-                chatThreadClientRef.set(chatThreadClient);
-                return client.getChatThreadWithResponse(chatThreadClient.getChatThreadId());
-            }))
+                .flatMap(createChatThreadResult -> {
+                    ChatThreadAsyncClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getChatThread().getId());
+                    chatThreadClientRef.set(chatThreadClient);
+                    return client.getChatThreadWithResponse(chatThreadClient.getChatThreadId());
+                }))
             .assertNext(chatThreadResponse -> {
                 ChatThreadProperties chatThreadProperties = chatThreadResponse.getValue();
                 assertEquals(chatThreadClientRef.get().getChatThreadId(), chatThreadProperties.getId());
@@ -327,7 +333,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
                     chatThreadClientRef.set(chatThreadClient);
                     return client.deleteChatThread(chatThreadClient.getChatThreadId());
                 })
-            )
+        )
             .verifyComplete();
     }
 
@@ -348,7 +354,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
                     chatThreadClientRef.set(chatThreadClient);
                     return client.deleteChatThreadWithResponse(chatThreadClient.getChatThreadId());
                 })
-            )
+        )
             .assertNext(deleteResponse -> {
                 assertEquals(deleteResponse.getStatusCode(), 204);
             })
@@ -382,8 +388,8 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
             firstThreadMember.getId(), secondThreadMember.getId());
 
         StepVerifier.create(
-                client.createChatThread(threadRequest)
-                    .concatWith(client.createChatThread(threadRequest)))
+            client.createChatThread(threadRequest)
+                .concatWith(client.createChatThread(threadRequest)))
             .assertNext(chatThreadClient -> {
                 // Act & Assert
                 PagedIterable<ChatThreadItem> threadsResponse = new PagedIterable<>(client.listChatThreads());
@@ -426,5 +432,41 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
 
                 assertTrue(returnedThreads.size() == 2);
             });
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canProcessInvalidParticipantsOnCreateChatThread(HttpClient httpClient) {
+
+        CreateChatThreadOptions threadRequest = new CreateChatThreadOptions()
+            .setTopic("topic");
+
+        threadRequest.addParticipant(new ChatParticipant()
+            .setCommunicationIdentifier(new CommunicationUserIdentifier("valid"))
+        );
+
+        CommunicationUserIdentifier invalidUser = new CommunicationUserIdentifier("invalid");
+        threadRequest.addParticipant(new ChatParticipant()
+            .setCommunicationIdentifier(invalidUser));
+
+        HttpClient mockHttpClient = new NoOpHttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                return Mono.just(ChatResponseMocker.createChatThreadInvalidParticipantResponse(request, threadRequest, invalidUser));
+            }
+        };
+
+        String mockToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjEwMl9pbnQiLCJ0eXAiOiJKV1QifQ.eyJza3lwZWlkIjoic3Bvb2w6NTdiOWJhYzktZGY2Yy00ZDM5LWE3M2ItMjZlOTQ0YWRmNmVhXzNmMDExNi03YzAwOTQ5MGRjIiwic2NwIjoxNzkyLCJjc2kiOiIxNTk3ODcyMDgyIiwiaWF0IjoxNTk3ODcyMDgyLCJleHAiOjE1OTc5NTg0ODIsImFjc1Njb3BlIjoiY2hhdCIsInJlc291cmNlSWQiOiI1N2I5YmFjOS1kZjZjLTRkMzktYTczYi0yNmU5NDRhZGY2ZWEifQ.l2UXI0KH2LXZQoz7FPsfLZS0CX8cYsnW3CMECfqwuncV8WqrTD7RbqZDfAaYXn0t5sHrGM4CRbpx4LwIZhXOlmsmOdTdHSsPUCIqJscwNjQmltvOrIt11DOmObQ63w0kYq9QrlB-lyZNzTEAED2FhMwBAbhZOokRtFajYD7KvJb1w9oUXousQ_z6zZqjbt1Cy4Ll3zO1GR4G7yRV8vK3bLnN2IWPaEkoqx8PHeHLa9Cb4joowseRfQxFHv28xcCF3r9SBCauUeJcmbwBmnOAOLS-EAJTLiGhil7m3BNyLN5RnYbsK5ComtL2-02TbkPilpy21OhW0MJkicSFlCbYvg";
+        client = getChatClientBuilder(mockToken, mockHttpClient).buildAsyncChatClient();
+
+        StepVerifier.create(client.createChatThread(threadRequest))
+            .assertNext(result -> {
+                assertNotNull(result);
+                assertNotNull(result.getChatThread());
+                assertNotNull(result.getChatThread().getId());
+                assertEquals(1, result.getInvalidParticipants().size());
+                assertEquals(invalidUser.getId(), result.getInvalidParticipants().stream().findFirst().get().getTarget());
+            })
+            .verifyComplete();
     }
 }
