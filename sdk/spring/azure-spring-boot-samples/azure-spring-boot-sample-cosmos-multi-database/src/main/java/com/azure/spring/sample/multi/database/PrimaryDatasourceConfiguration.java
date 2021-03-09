@@ -18,8 +18,7 @@ import org.springframework.context.annotation.Primary;
 @Configuration
 public class PrimaryDatasourceConfiguration {
 
-    private static final String PRIMARY_DATABASE1 = "primary_database1";
-    private static final String PRIMARY_DATABASE2 = "primary_database2";
+    private static final String PRIMARY_DATABASE = "primary_database";
 
     @Bean
     @Primary
@@ -37,35 +36,18 @@ public class PrimaryDatasourceConfiguration {
 
     @EnableReactiveCosmosRepositories(basePackages = "com.azure.spring.sample.multi.database.database1",
         reactiveCosmosTemplateRef = "primaryDatabaseTemplate")
-    public class PrimaryDatabase1Configuration extends AbstractCosmosConfiguration{
+    public class PrimaryDatabaseConfiguration extends AbstractCosmosConfiguration{
 
         @Bean
         public ReactiveCosmosTemplate primaryDatabaseTemplate(CosmosAsyncClient cosmosAsyncClient,
                                                                CosmosConfig cosmosConfig,
                                                                MappingCosmosConverter mappingCosmosConverter) {
-            return new ReactiveCosmosTemplate(cosmosAsyncClient, PRIMARY_DATABASE1, cosmosConfig, mappingCosmosConverter);
+            return new ReactiveCosmosTemplate(cosmosAsyncClient, PRIMARY_DATABASE, cosmosConfig, mappingCosmosConverter);
         }
 
         @Override
         protected String getDatabaseName() {
-            return PRIMARY_DATABASE1;
-        }
-    }
-
-    @EnableReactiveCosmosRepositories(basePackages = "com.azure.spring.sample.multi.database.database2" ,
-        reactiveCosmosTemplateRef = "primaryDatabase2Template")
-    public class PrimaryDataBase2Configuration extends AbstractCosmosConfiguration {
-
-        @Bean
-        public ReactiveCosmosTemplate primaryDatabase2Template(CosmosAsyncClient cosmosAsyncClient,
-                                                              CosmosConfig cosmosConfig,
-                                                              MappingCosmosConverter mappingCosmosConverter) {
-            return new ReactiveCosmosTemplate(cosmosAsyncClient, PRIMARY_DATABASE2, cosmosConfig, mappingCosmosConverter);
-        }
-
-        @Override
-        protected String getDatabaseName() {
-            return PRIMARY_DATABASE2;
+            return PRIMARY_DATABASE;
         }
     }
 }

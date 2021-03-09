@@ -4,11 +4,9 @@ package com.azure.spring.sample.multi.database;
 
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
-import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.azure.spring.sample.multi.database.database1.User;
 import com.azure.spring.sample.multi.database.database1.UserRepository;
-import com.azure.spring.sample.multi.database.database2.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
@@ -29,24 +27,12 @@ public class MultiDatasourceApplication implements CommandLineRunner {
     private UserRepositoryForMYSQL userRepositoryForMYSQL;
 
     @Autowired
-    @Qualifier("primaryDatabase2Template")
-    private ReactiveCosmosTemplate primaryDatabase2Template;
-
-    @Autowired
-    @Qualifier("secondaryDatabase1Template")
-    private CosmosTemplate secondaryDatabase1Template;
-
-    @Autowired
-    @Qualifier("secondaryDatabase2Template")
-    private CosmosTemplate secondaryDatabase2Template;
+    @Qualifier("secondaryDatabaseTemplate")
+    private CosmosTemplate secondaryDatabaseTemplate;
 
     private final User user = new User("1024", "1024@geek.com", "1k", "Mars");
     private UserForMYSQL userForMYSQL;
     private static CosmosEntityInformation<User, String> userInfo = new CosmosEntityInformation<>(User.class);
-
-    private final Book book = new Book("9780792745488",
-        "Zen and the Art of Motorcycle Maintenance", "Robert M. Pirsig");
-    private static CosmosEntityInformation<Book, String> bookInfo = new CosmosEntityInformation<>(Book.class);
 
     public static void main(String[] args) {
         SpringApplication.run(MultiDatasourceApplication.class, args);
@@ -58,12 +44,8 @@ public class MultiDatasourceApplication implements CommandLineRunner {
             this.user.getName()).collectList().block();
         users.forEach(System.out::println);
         users.stream().forEach(this::insertValueToMYSQL);
-        Book bookGet = primaryDatabase2Template.findById(Book.class.getSimpleName(), book.getIbsn(), Book.class).block();
-        System.out.println(bookGet);
-        User secondaryUserGet = secondaryDatabase1Template.findById(User.class.getSimpleName(), user.getId(), User.class);
+        User secondaryUserGet = secondaryDatabaseTemplate.findById(User.class.getSimpleName(), user.getId(), User.class);
         System.out.println(secondaryUserGet);
-        Book secondaryBookGet = secondaryDatabase2Template.findById(Book.class.getSimpleName(), book.getIbsn(), Book.class);
-        System.out.println(secondaryBookGet);
         userRepositoryForMYSQL.findAll().forEach(System.out::println);
     }
 
@@ -74,22 +56,15 @@ public class MultiDatasourceApplication implements CommandLineRunner {
 
     @PostConstruct
     public void setup() {
-
         this.userRepository.save(user).block();
-        primaryDatabase2Template.createContainerIfNotExists(bookInfo).block();
-        primaryDatabase2Template.insert(Book.class.getSimpleName(), book, new PartitionKey(book.getName())).block();
-        secondaryDatabase1Template.createContainerIfNotExists(userInfo);
-        secondaryDatabase1Template.insert(User.class.getSimpleName(), user, new PartitionKey(user.getName()));
-        secondaryDatabase2Template.createContainerIfNotExists(bookInfo);
-        secondaryDatabase2Template.insert(Book.class.getSimpleName(), book, new PartitionKey(book.getName()));
+        secondaryDatabaseTemplate.createContainerIfNotExists(userInfo);
+        secondaryDatabaseTemplate.insert(User.class.getSimpleName(), user, new PartitionKey(user.getName()));
     }
 
     @PreDestroy
     public void cleanup() {
         this.userRepository.deleteAll().block();
-        primaryDatabase2Template.deleteAll(Book.class.getSimpleName(), Book.class).block();
-        secondaryDatabase1Template.deleteAll(User.class.getSimpleName() , User.class);
-        secondaryDatabase2Template.deleteAll(Book.class.getSimpleName() , Book.class);
+        secondaryDatabaseTemplate.deleteAll(User.class.getSimpleName() , User.class);
         userRepositoryForMYSQL.deleteAll();
     }
 }

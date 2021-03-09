@@ -24,8 +24,7 @@ import org.springframework.lang.Nullable;
 public class SecondaryDatasourceConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SecondaryDatasourceConfiguration.class);
-    public static final String SECONDARY_DATABASE1 = "secondary_database1";
-    public static final String SECONDARY_DATABASE2 = "secondary_database2";
+    public static final String SECONDARY_DATABASE = "secondary_database";
 
     @Bean
     @Qualifier("secondary")
@@ -49,23 +48,13 @@ public class SecondaryDatasourceConfiguration {
             .build();
     }
 
-    @EnableCosmosRepositories(cosmosTemplateRef  = "secondaryDatabase1Template")
-    public class SecondaryDatabase1Configuration {
+    @EnableCosmosRepositories(cosmosTemplateRef  = "secondaryDatabaseTemplate")
+    public class SecondaryDatabaseConfiguration {
         @Bean
-        public CosmosTemplate secondaryDatabase1Template(@Qualifier("secondaryCosmosClient") CosmosAsyncClient client,
+        public CosmosTemplate secondaryDatabaseTemplate(@Qualifier("secondaryCosmosClient") CosmosAsyncClient client,
                                                          @Qualifier("secondaryCosmosConfig") CosmosConfig cosmosConfig,
                                                          MappingCosmosConverter mappingCosmosConverter) {
-            return new CosmosTemplate(client, SECONDARY_DATABASE1, cosmosConfig, mappingCosmosConverter);
-        }
-    }
-
-    @EnableCosmosRepositories(cosmosTemplateRef  = "secondaryDatabase2Template")
-    public class SecondaryDatabase2Configuration {
-        @Bean
-        public CosmosTemplate secondaryDatabase2Template(@Qualifier("secondaryCosmosClient") CosmosAsyncClient client,
-                                                         @Qualifier("secondaryCosmosConfig") CosmosConfig cosmosConfig,
-                                                         MappingCosmosConverter mappingCosmosConverter) {
-            return new CosmosTemplate(client, SECONDARY_DATABASE2, cosmosConfig, mappingCosmosConverter);
+            return new CosmosTemplate(client, SECONDARY_DATABASE, cosmosConfig, mappingCosmosConverter);
         }
     }
 
