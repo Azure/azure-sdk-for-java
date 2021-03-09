@@ -5,8 +5,6 @@ import com.azure.test.aad.common.SeleniumITHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,8 +15,6 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElemen
 public class AADSeleniumITHelper extends SeleniumITHelper {
     private String username;
     private String password;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(AADSeleniumITHelper.class);
 
     public static Map<String, String> createDefaultProperties() {
         Map<String, String> defaultProperties = new HashMap<>();
@@ -49,19 +45,10 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[type='submit']"))).click();
     }
 
-    public boolean logInAADConditionalAccess() {
-        driver.get(app.root() + "oauth2/authorization/azure");
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("loginfmt"))).sendKeys(username + Keys.ENTER);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("passwd"))).sendKeys(password + Keys.ENTER);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[type='submit']"))).click();
-        driver.get((app.root() + "obo"));
-        try {
-            Thread.sleep(30000);
-        } catch (InterruptedException e) {
-            LOGGER.error("Current Thread Failed to sleep", e);
-        }
-        this.httpGet("obo");
-        return driver.findElement(By.tagName("body")).getText().contains("response success");
+    public String getBodyText() {
+        logIn();
+        wait.until(ExpectedConditions.urlToBe(app.root() + "#"));
+        return driver.findElement(By.tagName("body")).getText();
     }
 
     public String httpGet(String endpoint) {

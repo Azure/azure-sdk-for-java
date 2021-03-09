@@ -33,15 +33,14 @@ public class AADConditionalAccessIT {
     private static final String CUSTOM_LOCAL_FILE_ENDPOINT = "http://localhost:8081/call-custom";
     private static final Logger LOGGER = LoggerFactory.getLogger(AADConditionalAccessIT.class);
 
-    @Ignore
     @Test
-    public void onDemandTest() throws InterruptedException {
+    public void conditionalAccessTest() {
         Map<String, String> properties = createDefaultProperties();
         properties.put("azure.activedirectory.authorization-clients.obo.scopes",
             "api://" + AAD_CUSTOM_ENDPOINT_CLIENT_ID + "/Obo.File.Read");
-
         aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties);
-        Assert.assertTrue(aadSeleniumITHelper.logInAADConditionalAccess());
+        String body = aadSeleniumITHelper.getBodyText();
+        Assert.assertEquals("Resource Server file read success.", body);
     }
 
     @After
@@ -74,7 +73,7 @@ public class AADConditionalAccessIT {
          * @param obo authorized client for Custom
          * @return Response Graph and Custom data.
          */
-        @GetMapping("/obo")
+        @GetMapping("/")
         public String callGraph(@RegisteredOAuth2AuthorizedClient("obo") OAuth2AuthorizedClient obo) {
             return callOboEndpoint(obo);
         }
@@ -94,7 +93,7 @@ public class AADConditionalAccessIT {
                 .bodyToMono(String.class)
                 .block();
             LOGGER.info("Response from Graph: {}", body);
-            return "Graph response " + (null != body ? "success." : "failed.");
+            return body;
         }
     }
 }

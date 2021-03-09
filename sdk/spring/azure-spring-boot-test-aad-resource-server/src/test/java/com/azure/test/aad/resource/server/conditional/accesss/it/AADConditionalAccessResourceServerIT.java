@@ -50,7 +50,7 @@ public class AADConditionalAccessResourceServerIT {
         @GetMapping("/file")
         @PreAuthorize("hasAuthority('SCOPE_File.Read')")
         public String file() {
-            return "File read success.";
+            return "Resource Server file read success.";
         }
     }
 }

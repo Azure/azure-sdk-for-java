@@ -108,8 +108,8 @@ public class AADConditionalAccessOboServerIT {
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
-            LOGGER.info("Response from Graph: {}", body);
-            return "Graph response " + (null != body ? "success." : "failed.");
+            LOGGER.info("Response from Resource Server: {}", body);
+            return body;
         }
     }
 }
