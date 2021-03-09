@@ -77,7 +77,8 @@ public class DatafeedAsyncSample {
                         System.out.printf("Data feed granularity value : %d%n",
                             dataFeed.getGranularity().getCustomGranularityValue());
                         System.out.println("Data feed related metric Id's:");
-                        dataFeed.getMetricIds().forEach(metricId -> System.out.println(metricId));
+                        dataFeed.getMetricIds().forEach((metricId, metricName)
+                            -> System.out.printf("Metric Id : %s, Metric Name: %s%n", metricId, metricName));
                         System.out.printf("Data feed source type: %s%n", dataFeed.getSourceType());
 
                         if (DataFeedSourceType.AZURE_APP_INSIGHTS.equals(dataFeed.getSourceType())) {
@@ -136,7 +137,8 @@ public class DatafeedAsyncSample {
                 System.out.printf("Data feed granularity value : %d%n",
                     dataFeedItem.getGranularity().getCustomGranularityValue());
                 System.out.println("Data feed related metric Id's:");
-                dataFeedItem.getMetricIds().forEach(System.out::println);
+                dataFeedItem.getMetricIds().forEach((metricId, metricName)
+                    -> System.out.printf("Metric Id : %s, Metric Name: %s%n", metricId, metricName));
                 System.out.printf("Data feed source type: %s%n", dataFeedItem.getSourceType());
             });
     }

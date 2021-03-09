@@ -3,7 +3,11 @@
 
 package com.azure.test.aad.selenium.role;
 
+import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
+
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
+import java.security.Principal;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -16,22 +20,26 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
-import java.util.Collections;
-
 public class AADRoleIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADRoleIT.class);
+    private AADSeleniumITHelper aadSeleniumITHelper;
 
     @Test
-    public void roleTest() throws InterruptedException {
-        AADSeleniumITHelper aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, Collections.emptyMap());
+    public void roleTest() {
+        aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, createDefaultProperties());
+        aadSeleniumITHelper.logIn();
         String httpResponse = aadSeleniumITHelper.httpGet("api/home");
         Assert.assertTrue(httpResponse.contains("home"));
         httpResponse = aadSeleniumITHelper.httpGet("api/group1");
         Assert.assertTrue(httpResponse.contains("group1"));
         httpResponse = aadSeleniumITHelper.httpGet("api/group_fdsaliieammQiovlikIOWssIEURsafjFelasdfe");
         Assert.assertNotEquals(httpResponse, "group_fdsaliieammQiovlikIOWssIEURsafjFelasdfe");
+    }
+
+    @After
+    public void destroy() {
+        aadSeleniumITHelper.destroy();
     }
 
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)

@@ -15,5 +15,10 @@ public enum ReadFeedKeyType {
     /**
      * Use effective partition key
      */
-    EffectivePartitionKey
+    EffectivePartitionKey,
+
+    /**
+     * Use effective partition key range
+     */
+    EffectivePartitionKeyRange
 }

@@ -37,14 +37,14 @@ public final class AssetsImpl implements Assets {
 
     public PagedIterable<Asset> list(String resourceGroupName, String accountName) {
         PagedIterable<AssetInner> inner = this.serviceClient().list(resourceGroupName, accountName);
-        return inner.mapPage(inner1 -> new AssetImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new AssetImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Asset> list(
         String resourceGroupName, String accountName, String filter, Integer top, String orderby, Context context) {
         PagedIterable<AssetInner> inner =
             this.serviceClient().list(resourceGroupName, accountName, filter, top, orderby, context);
-        return inner.mapPage(inner1 -> new AssetImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new AssetImpl(inner1, this.manager()));
     }
 
     public Asset get(String resourceGroupName, String accountName, String assetName) {

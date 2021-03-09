@@ -5,14 +5,19 @@ spring:
         connection-string: [servicebus-namespace-connection-string]
     stream:
       bindings:
-        input:
+        consume-in-0:
           destination: [servicebus-topic-name]
           group: [topic-subscription-name]
-        output:
+        supply-out-0:
           destination: [servicebus-topic-name-same-as-above]
       servicebus:
         topic:
           bindings:
-            input:
+            consume-in-0:
               consumer:
                 checkpoint-mode: MANUAL
+      function:
+        definition: consume;supply;
+      poller:
+        fixed-delay: 1000
+        initial-delay: 0

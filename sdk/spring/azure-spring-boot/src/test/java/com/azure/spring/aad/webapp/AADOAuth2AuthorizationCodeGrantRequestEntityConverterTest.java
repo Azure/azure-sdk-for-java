@@ -92,7 +92,7 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
     }
 
     private Object[] expectedHeaders() {
-        return AADOAuth2AuthorizationCodeGrantRequestEntityConverter
+        return new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(clientRepo.getAzureClient())
             .getHttpHeaders()
             .entrySet()
             .stream()

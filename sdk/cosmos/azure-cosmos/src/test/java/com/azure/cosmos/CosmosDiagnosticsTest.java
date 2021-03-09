@@ -300,12 +300,15 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     @Test(groups = {"simple"}, dataProvider = "query", timeOut = TIMEOUT)
     public void queryMetrics(String query, Boolean qmEnabled) {
+        CosmosContainer directContainer =
+            this.directClient.getDatabase(this.cosmosAsyncContainer.getDatabase().getId())
+                .getContainer(this.cosmosAsyncContainer.getId());
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         if (qmEnabled != null) {
             options.setQueryMetricsEnabled(qmEnabled);
         }
         boolean qroupByFirstResponse = true; // TODO https://github.com/Azure/azure-sdk-for-java/issues/14142
-        Iterator<FeedResponse<InternalObjectNode>> iterator = this.container.queryItems(query, options,
+        Iterator<FeedResponse<InternalObjectNode>> iterator = directContainer.queryItems(query, options,
             InternalObjectNode.class).iterableByPage().iterator();
         assertThat(iterator.hasNext()).isTrue();
         while (iterator.hasNext()) {
@@ -314,52 +317,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(feedResponse.getResults().size()).isEqualTo(0);
             if (!query.contains("group by") || qroupByFirstResponse) { // TODO https://github
                 validateQueryDiagnostics(queryDiagnostics, qmEnabled, true);
-
-                if (query.contains("group by")) {
-                    qroupByFirstResponse = false;
-                }
-            }
-        }
-    }
-
-    @Test(groups = {"simple"}, dataProvider = "query", timeOut = TIMEOUT)
-    public void queryDiagnosticsDirectMode(String query, Boolean qmEnabled) {
-        CosmosClient testDirectClient = new CosmosClientBuilder()
-                                            .endpoint(TestConfigurations.HOST)
-                                            .key(TestConfigurations.MASTER_KEY)
-                                            .contentResponseOnWriteEnabled(true)
-                                            .directMode()
-                                            .buildClient();
-        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-
-        CosmosContainer cosmosContainer = testDirectClient.getDatabase(cosmosAsyncContainer.getDatabase().getId())
-                                              .getContainer(cosmosAsyncContainer.getId());
-        List<String> itemIdList = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            InternalObjectNode internalObjectNode = getInternalObjectNode();
-            CosmosItemResponse<InternalObjectNode> createResponse = cosmosContainer.createItem(internalObjectNode);
-            if (i % 20 == 0) {
-                itemIdList.add(internalObjectNode.getId());
-            }
-        }
-        boolean qroupByFirstResponse = true;
-        if (qmEnabled != null) {
-            options.setQueryMetricsEnabled(qmEnabled);
-        }
-        Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer
-                                                                  .queryItems(query, options, InternalObjectNode.class)
-                                                                  .iterableByPage()
-                                                                  .iterator();
-        assertThat(iterator.hasNext()).isTrue();
-
-        while (iterator.hasNext()) {
-            FeedResponse<InternalObjectNode> feedResponse = iterator.next();
-            String queryDiagnostics = feedResponse.getCosmosDiagnostics().toString();
-            assertThat(feedResponse.getResults().size()).isEqualTo(0);
-            if (!query.contains("group by") || qroupByFirstResponse) { // TODO https://github
-                validateQueryDiagnostics(queryDiagnostics, qmEnabled, true);
                 validateDirectModeQueryDiagnostics(queryDiagnostics);
-                validateTransportRequestTimelineDirect(queryDiagnostics);
                 if (query.contains("group by")) {
                     qroupByFirstResponse = false;
                 }
@@ -370,6 +328,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     private void validateDirectModeQueryDiagnostics(String diagnostics) {
         assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
         assertThat(diagnostics).contains("supplementalResponseStatisticsList");
+        assertThat(diagnostics).contains("responseStatisticsList");
         assertThat(diagnostics).contains("\"gatewayStatistics\":null");
         assertThat(diagnostics).contains("addressResolutionStatistics");
         assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
@@ -379,13 +338,11 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
         assertThat(diagnostics).doesNotContain(("\"gatewayStatistics\":null"));
         assertThat(diagnostics).contains("\"operationType\":\"Query\"");
-        //   assertThat(diagnostics).contains("\"metaDataName\":\"CONTAINER_LOOK_UP\"");
-        //   assertThat(diagnostics).contains("\"serializationType\":\"PARTITION_KEY_FETCH_SERIALIZATION\"");
         assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
         assertThat(diagnostics).contains("\"regionsContacted\"");
     }
 
-    @Test(groups = {"simple"}, dataProvider = "query", timeOut = TIMEOUT)
+    @Test(groups = {"simple"}, dataProvider = "query", timeOut = TIMEOUT*2)
     public void queryDiagnosticsGatewayMode(String query, Boolean qmEnabled) {
         CosmosClient testDirectClient = new CosmosClientBuilder()
                                             .endpoint(TestConfigurations.HOST)

@@ -169,7 +169,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                     // on all locations, then don't retry the request
                     return ShouldRetryResult.noRetry();
                 } else {
-                    this.retryContext = new RetryContext(this.sessionTokenRetryCount - 1, this.sessionTokenRetryCount > 1);
+                    this.retryContext = new RetryContext(this.sessionTokenRetryCount , true);
                     return ShouldRetryResult.retryAfter(Duration.ZERO);
                 }
             } else {
@@ -178,7 +178,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                     // we have already tried this request on the write location
                     return ShouldRetryResult.noRetry();
                 } else {
-                    this.retryContext = new RetryContext(this.sessionTokenRetryCount - 1, false);
+                    this.retryContext = new RetryContext(0, false);
                     return ShouldRetryResult.retryAfter(Duration.ZERO);
                 }
             }

@@ -94,7 +94,10 @@ public class SessionTest extends TestSuiteBase {
 
     private List<String> getSessionTokensInRequests() {
         return spyClient.getCapturedRequests().stream()
-                .map(r -> r.headers().value(HttpConstants.HttpHeaders.SESSION_TOKEN)).collect(Collectors.toList());
+                .map(r -> r.headers()
+                           .value(HttpConstants.HttpHeaders.SESSION_TOKEN))
+                           .distinct()
+                           .collect(Collectors.toList());
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
@@ -117,8 +120,10 @@ public class SessionTest extends TestSuiteBase {
 
             spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), options).block();
 
-            assertThat(getSessionTokensInRequests()).hasSize(2);
-            assertThat(getSessionTokensInRequests().get(1)).isNotEmpty();
+            // same session token expected - because we collect
+            // distinct session tokens only one of them should be kept
+            assertThat(getSessionTokensInRequests()).hasSize(1);
+            assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
         }
     }
 

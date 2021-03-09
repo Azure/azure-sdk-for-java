@@ -5,6 +5,7 @@ package com.azure.resourcemanager.search.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.azure.resourcemanager.search.SearchServiceManager;
 import com.azure.resourcemanager.search.fluent.SearchManagementClient;
@@ -16,6 +17,7 @@ import com.azure.resourcemanager.search.models.QueryKey;
 import com.azure.resourcemanager.search.models.SearchService;
 import com.azure.resourcemanager.search.models.SearchServices;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /**
  * Implementation for SearchServices.
@@ -85,8 +87,8 @@ public class SearchServicesImpl
 
     @Override
     public PagedFlux<QueryKey> listQueryKeysAsync(String resourceGroupName, String searchServiceName) {
-        return this.inner().getQueryKeys().listBySearchServiceAsync(resourceGroupName, searchServiceName)
-            .mapPage(QueryKeyImpl::new);
+        return PagedConverter.mapPage(this.inner().getQueryKeys().listBySearchServiceAsync(resourceGroupName, searchServiceName),
+            QueryKeyImpl::new);
     }
 
     @Override
@@ -130,8 +132,12 @@ public class SearchServicesImpl
 
     @Override
     public PagedFlux<SearchService> listByResourceGroupAsync(String resourceGroupName) {
-        return this.inner().getServices().listByResourceGroupAsync(resourceGroupName)
-            .mapPage(this::wrapModel);
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return new PagedFlux<>(() -> Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+        }
+        return PagedConverter.mapPage(this.inner().getServices().listByResourceGroupAsync(resourceGroupName),
+            this::wrapModel);
     }
 
     @Override
@@ -146,7 +152,7 @@ public class SearchServicesImpl
 
     @Override
     public PagedFlux<SearchService> listAsync() {
-        return this.inner().getServices().listAsync()
-            .mapPage(this::wrapModel);
+        return PagedConverter.mapPage(this.inner().getServices().listAsync(),
+            this::wrapModel);
     }
 }

@@ -80,14 +80,12 @@ public class ReactorConnection implements AmqpConnection {
      * @param handlerProvider Provides {@link BaseHandler} to listen to proton-j reactor events.
      * @param tokenManagerProvider Provides the appropriate token manager to authorize with CBS node.
      * @param messageSerializer Serializer to translate objects to and from proton-j {@link Message messages}.
-     * @param product The name of the product this connection is created for.
-     * @param clientVersion The version of the client library creating the connection.
      * @param senderSettleMode to set as {@link SenderSettleMode} on sender.
      * @param receiverSettleMode to set as {@link ReceiverSettleMode} on receiver.
      */
     public ReactorConnection(String connectionId, ConnectionOptions connectionOptions, ReactorProvider reactorProvider,
         ReactorHandlerProvider handlerProvider, TokenManagerProvider tokenManagerProvider,
-        MessageSerializer messageSerializer, String product, String clientVersion, SenderSettleMode senderSettleMode,
+        MessageSerializer messageSerializer, SenderSettleMode senderSettleMode,
         ReceiverSettleMode receiverSettleMode) {
 
         this.connectionOptions = connectionOptions;
@@ -97,10 +95,7 @@ public class ReactorConnection implements AmqpConnection {
         this.tokenManagerProvider = Objects.requireNonNull(tokenManagerProvider,
             "'tokenManagerProvider' cannot be null.");
         this.messageSerializer = messageSerializer;
-        this.handler = handlerProvider.createConnectionHandler(connectionId,
-            connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getTransportType(),
-            connectionOptions.getProxyOptions(), product, clientVersion, connectionOptions.getSslVerifyMode(),
-            connectionOptions.getClientOptions());
+        this.handler = handlerProvider.createConnectionHandler(connectionId, connectionOptions);
 
         this.retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
         this.senderSettleMode = senderSettleMode;
@@ -139,12 +134,11 @@ public class ReactorConnection implements AmqpConnection {
                 "connectionId[%s]: Connection is disposed. Cannot get CBS node.", connectionId))));
         }
 
-        final Mono<ClaimsBasedSecurityNode> cbsNodeMono =
-            RetryUtil.withRetry(getEndpointStates().takeUntil(x -> x == AmqpEndpointState.ACTIVE),
-                connectionOptions.getRetry().getTryTimeout(), retryPolicy)
-            .then(Mono.fromCallable(this::getOrCreateCBSNode));
+        final Flux<AmqpEndpointState> activeEndpointState = RetryUtil.withRetry(
+            getEndpointStates().takeUntil(x -> x == AmqpEndpointState.ACTIVE), connectionOptions.getRetry(),
+            "ReactorConnection: Retries exhausted waiting for ACTIVE endpoint state on CBS node.");
 
-        return connectionMono.then(cbsNodeMono);
+        return Mono.when(connectionMono, activeEndpointState).then(Mono.fromCallable(() -> getOrCreateCBSNode()));
     }
 
     @Override
@@ -229,8 +223,7 @@ public class ReactorConnection implements AmqpConnection {
      */
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
         return new ReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
-            getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer,
-            connectionOptions.getRetry().getTryTimeout(), retryPolicy);
+            getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer, connectionOptions.getRetry());
     }
 
     /**

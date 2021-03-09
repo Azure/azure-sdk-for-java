@@ -740,7 +740,10 @@ public class CosmosAsyncDatabase {
                     ModelBridgeInternal.getCosmosUserPropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders(),
                     ModelBridgeInternal.queryMetrics(response),
-                    ModelBridgeInternal.getQueryPlanDiagnosticsContext(response), response.getCosmosDiagnostics()));
+                    ModelBridgeInternal.getQueryPlanDiagnosticsContext(response),
+                    false,
+                    false,
+                    response.getCosmosDiagnostics()));
         });
     }
 

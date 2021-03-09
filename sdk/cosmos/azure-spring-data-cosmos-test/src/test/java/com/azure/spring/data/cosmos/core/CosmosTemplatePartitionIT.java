@@ -271,7 +271,7 @@ public class CosmosTemplatePartitionIT {
         assertThat(page1.getContent().size()).isEqualTo(PAGE_SIZE_1);
         PageTestUtils.validateNonLastPage(page1, PAGE_SIZE_1);
 
-        final Page<PartitionPerson> page2 = cosmosTemplate.findAll(page1.getPageable(),
+        final Page<PartitionPerson> page2 = cosmosTemplate.findAll(page1.nextPageable(),
             PartitionPerson.class, containerName);
         assertThat(page2.getContent().size()).isEqualTo(1);
         PageTestUtils.validateLastPage(page2, PAGE_SIZE_1);

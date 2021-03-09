@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * Stats for the share.
- */
+/** Stats for the share. */
 @JacksonXmlRootElement(localName = "ShareStats")
 @Fluent
 public final class ShareStats {
@@ -23,9 +21,8 @@ public final class ShareStats {
     private long shareUsageBytes;
 
     /**
-     * Get the shareUsageBytes property: The approximate size of the data
-     * stored in bytes, rounded up to the nearest gigabyte. Note that this
-     * value may not include all recently created or recently resized files.
+     * Get the shareUsageBytes property: The approximate size of the data stored in bytes, rounded up to the nearest
+     * gigabyte. Note that this value may not include all recently created or recently resized files.
      *
      * @return the shareUsageBytes value.
      */
@@ -34,9 +31,8 @@ public final class ShareStats {
     }
 
     /**
-     * Set the shareUsageBytes property: The approximate size of the data
-     * stored in bytes, rounded up to the nearest gigabyte. Note that this
-     * value may not include all recently created or recently resized files.
+     * Set the shareUsageBytes property: The approximate size of the data stored in bytes, rounded up to the nearest
+     * gigabyte. Note that this value may not include all recently created or recently resized files.
      *
      * @param shareUsageBytes the shareUsageBytes value to set.
      * @return the ShareStats object itself.

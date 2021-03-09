@@ -5,6 +5,11 @@ package com.azure.cosmos.implementation;
 import java.time.Duration;
 
 public class ShouldRetryResult {
+    public final static ShouldRetryResult NO_RETRY =
+        ShouldRetryResult.noRetry();
+    public final static ShouldRetryResult RETRY_NOW =
+        ShouldRetryResult.retryAfter(Duration.ZERO);
+
     /// <summary>
     /// How long to wait before next retry. 0 indicates retry immediately.
     /// </summary>

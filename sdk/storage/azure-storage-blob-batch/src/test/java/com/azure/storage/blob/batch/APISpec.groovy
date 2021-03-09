@@ -13,6 +13,8 @@ import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
+import com.azure.storage.blob.BlobContainerClient
+import com.azure.storage.blob.BlobContainerClientBuilder
 import com.azure.storage.blob.BlobServiceAsyncClient
 import com.azure.storage.blob.BlobServiceClient
 import com.azure.storage.blob.BlobServiceClientBuilder
@@ -26,6 +28,7 @@ import spock.lang.Specification
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
+import java.time.OffsetDateTime
 import java.util.function.Supplier
 
 class APISpec extends Specification {
@@ -180,6 +183,10 @@ class APISpec extends Specification {
         return getServiceClientBuilder(credential, endpoint, policies).buildClient()
     }
 
+    BlobServiceClient getServiceClient(String sasToken, String endpoint) {
+        return getServiceClientBuilder(null, endpoint, null).sasToken(sasToken).buildClient()
+    }
+
     BlobServiceAsyncClient getServiceAsyncClient(StorageSharedKeyCredential credential) {
         return getServiceClientBuilder(credential, String.format(defaultEndpointTemplate, credential.getAccountName()))
             .buildAsyncClient()
@@ -201,6 +208,22 @@ class APISpec extends Specification {
 
         if (credential != null) {
             builder.credential(credential)
+        }
+
+        return builder
+    }
+
+    BlobContainerClient getContainerClient(String sasToken, String endpoint) {
+        getContainerClientBuilder(endpoint).sasToken(sasToken).buildClient()
+    }
+
+    BlobContainerClientBuilder getContainerClientBuilder(String endpoint) {
+        BlobContainerClientBuilder builder = new BlobContainerClientBuilder()
+            .endpoint(endpoint)
+            .httpClient(getHttpClient())
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
         return builder
@@ -231,6 +254,10 @@ class APISpec extends Specification {
 
     private String generateResourceName(String prefix, int entityNo) {
         return resourceNamer.randomName(prefix + testName + entityNo, 63)
+    }
+
+    OffsetDateTime getUTCNow() {
+        return resourceNamer.now()
     }
 
     /**

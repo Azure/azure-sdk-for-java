@@ -4,21 +4,25 @@ trigger:
   branches:
     include:
       - master
+      - main
       - hotfix/*
       - release/*
   paths:
     include:
+      - common/perf-test-core/
       - sdk/template/
 
 pr:
   branches:
     include:
       - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
+      - common/perf-test-core/
       - sdk/template/
 
 extends:
@@ -29,4 +33,6 @@ extends:
       - name: azure-sdk-template
         groupId: com.azure
         safeName: azuresdktemplate
-        
+    AdditionalModules:
+      - name: azure-template-perf
+        groupId: com.azure

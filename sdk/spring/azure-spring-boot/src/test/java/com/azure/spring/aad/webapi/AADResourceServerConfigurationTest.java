@@ -3,9 +3,11 @@
 package com.azure.spring.aad.webapi;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
-import com.azure.spring.aad.webapi.AADResourceServerConfiguration.DefaultAzureOAuth2ResourceServerWebSecurityConfigurerAdapter;
 import java.util.List;
+
+import com.azure.spring.aad.AADTrustedIssuerRepository;
 import org.junit.Test;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
@@ -19,7 +21,9 @@ import org.springframework.security.oauth2.server.resource.BearerTokenAuthentica
 public class AADResourceServerConfigurationTest {
 
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
-        .withPropertyValues("azure.activedirectory.user-group.allowed-groups=User");
+        .withPropertyValues("azure.activedirectory.tenant-id=fake-tenant-id");
+
+    private AADTrustedIssuerRepository aadTrustedIssuerRepository = mock(AADTrustedIssuerRepository.class);
 
     @Test
     public void testNotExistBearerTokenAuthenticationToken() {
@@ -75,7 +79,7 @@ public class AADResourceServerConfigurationTest {
             .withUserConfiguration(AADResourceServerConfiguration.class)
             .run(context -> {
                 WebSecurityConfigurerAdapter webSecurityConfigurerAdapter = context
-                    .getBean(DefaultAzureOAuth2ResourceServerWebSecurityConfigurerAdapter.class);
+                    .getBean(AADResourceServerConfiguration.DefaultAADResourceServerWebSecurityConfigurerAdapter.class);
                 assertThat(webSecurityConfigurerAdapter).isNotNull();
             });
     }

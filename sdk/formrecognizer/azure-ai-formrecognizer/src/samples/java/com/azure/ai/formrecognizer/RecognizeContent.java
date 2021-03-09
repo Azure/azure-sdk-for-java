@@ -25,7 +25,6 @@ public class RecognizeContent {
      * Main method to invoke this demo.
      *
      * @param args Unused. Arguments to the program.
-     *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public static void main(final String[] args) throws IOException {
@@ -48,10 +47,13 @@ public class RecognizeContent {
         for (int i = 0; i < contentPageResults.size(); i++) {
             final FormPage formPage = contentPageResults.get(i);
             System.out.printf("---- Recognized content info for page %d ----%n", i);
-            // Table information
-            System.out.printf("Has width: %.2f and height: %.2f, measured with unit: %s%n", formPage.getWidth(),
+
+            System.out.printf("Page has width: %.2f and height: %.2f, measured with unit: %s%n",
+                formPage.getWidth(),
                 formPage.getHeight(),
                 formPage.getUnit());
+
+            // Table information
             final List<FormTable> tables = formPage.getTables();
             for (int i1 = 0; i1 < tables.size(); i1++) {
                 final FormTable formTable = tables.get(i1);
@@ -63,6 +65,16 @@ public class RecognizeContent {
                 });
                 System.out.println();
             }
+
+            formPage.getLines().forEach(formLine -> {
+                if (formLine.getAppearance() != null) {
+                    System.out.printf(
+                        "Line %s consists of %d words and has a text style %s with a confidence score of %.2f.%n",
+                        formLine.getText(), formLine.getWords().size(),
+                        formLine.getAppearance().getStyle().getName(),
+                        formLine.getAppearance().getStyle().getConfidence());
+                }
+            });
         }
     }
 }

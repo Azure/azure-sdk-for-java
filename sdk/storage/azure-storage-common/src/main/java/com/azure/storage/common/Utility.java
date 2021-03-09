@@ -286,7 +286,7 @@ public final class Utility {
                 }))
                 .doOnComplete(() -> {
                     try {
-                        if (data.available() > 0) {
+                        if (data.read() != -1) {
                             long totalLength = currentTotalLength[0] + data.available();
                             throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
                                 String.format("Request body emitted %d bytes, more than the expected %d bytes.",

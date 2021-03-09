@@ -67,10 +67,9 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      */
     public ServiceBusReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions,
         ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
-        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, String product,
-        String clientVersion) {
+        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer) {
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
-            messageSerializer, product, clientVersion, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
+            messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
 
         this.connectionId = connectionId;
         this.reactorProvider = reactorProvider;
@@ -216,7 +215,6 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     @Override
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
         return new ServiceBusReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
-            getClaimsBasedSecurityNode(), tokenManagerProvider, retryOptions.getTryTimeout(), messageSerializer,
-            RetryUtil.getRetryPolicy(retryOptions));
+            getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer, retryOptions);
     }
 }

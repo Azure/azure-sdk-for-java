@@ -3,6 +3,8 @@
 
 package com.azure.security.keyvault.keys;
 
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
@@ -509,6 +511,7 @@ public final class KeyClient {
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpResponseException when a key with {@code name} is empty string.
      */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DeletedKey, Void> beginDeleteKey(String name) {
         return client.beginDeleteKey(name).getSyncPoller();
     }
@@ -532,6 +535,7 @@ public final class KeyClient {
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpResponseException when a key with {@code name} is empty string.
      */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DeletedKey, Void> beginDeleteKey(String name, Duration pollingInterval) {
         return client.beginDeleteKey(name, pollingInterval).getSyncPoller();
     }
@@ -628,6 +632,7 @@ public final class KeyClient {
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpResponseException when a key with {@code name} is empty string.
      */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
         return client.beginRecoverDeletedKey(name).getSyncPoller();
     }
@@ -648,6 +653,7 @@ public final class KeyClient {
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpResponseException when a key with {@code name} is empty string.
      */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<KeyVaultKey, Void> beginRecoverDeletedKey(String name, Duration pollingInterval) {
         return client.beginRecoverDeletedKey(name, pollingInterval).getSyncPoller();
     }

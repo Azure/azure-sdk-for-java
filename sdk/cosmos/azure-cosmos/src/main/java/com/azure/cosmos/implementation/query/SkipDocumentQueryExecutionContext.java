@@ -82,6 +82,8 @@ public final class SkipDocumentQueryExecutionContext<T extends Resource> impleme
                 headers,
                 BridgeInternal.queryMetricsFromFeedResponse(tFeedResponse),
                 ModelBridgeInternal.getQueryPlanDiagnosticsContext(tFeedResponse),
+                false,
+                false,
                 tFeedResponse.getCosmosDiagnostics());
         });
     }

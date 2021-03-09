@@ -96,6 +96,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation of VirtualMachineScaleSet. */
 public class VirtualMachineScaleSetImpl
@@ -197,12 +198,12 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public PagedIterable<VirtualMachineScaleSetSku> listAvailableSkus() {
-        return this
+        return PagedConverter.mapPage(this
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSets()
-            .listSkus(this.resourceGroupName(), this.name())
-            .mapPage(VirtualMachineScaleSetSkuImpl::new);
+            .listSkus(this.resourceGroupName(), this.name()),
+            VirtualMachineScaleSetSkuImpl::new);
     }
 
     @Override

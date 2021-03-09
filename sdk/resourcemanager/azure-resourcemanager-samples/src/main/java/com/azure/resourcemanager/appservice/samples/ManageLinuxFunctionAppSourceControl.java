@@ -59,7 +59,7 @@ public class ManageLinuxFunctionAppSourceControl {
                     .withNewResourceGroup(rgName)
                     .withNewLinuxAppServicePlan(plan1Name, PricingTier.STANDARD_S1)
                     .withBuiltInImage(FunctionRuntimeStack.JAVA_8)
-                    .withNewStorageAccount(storage1Name, StorageAccountSkuType.STANDARD_RAGRS)
+                    .withNewStorageAccount(storage1Name, StorageAccountSkuType.STANDARD_LRS)
                     .withHttpsOnly(true)
                     .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
                     .create();

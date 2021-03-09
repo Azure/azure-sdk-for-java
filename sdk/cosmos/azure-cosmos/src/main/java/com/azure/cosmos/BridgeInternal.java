@@ -42,6 +42,7 @@ import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -156,11 +157,16 @@ public final class BridgeInternal {
         Map<String, String> headers,
         ConcurrentMap<String, QueryMetrics> queryMetricsMap,
         QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext,
+        boolean useEtagAsContinuation,
+        boolean isNoChangesResponse,
         CosmosDiagnostics cosmosDiagnostics) {
-        FeedResponse<T> feedResponseWithQueryMetrics = ModelBridgeInternal
-                                                           .createFeedResponseWithQueryMetrics(results, headers,
-                                                                                               queryMetricsMap,
-                                                                                               diagnosticsContext);
+        FeedResponse<T> feedResponseWithQueryMetrics = ModelBridgeInternal.createFeedResponseWithQueryMetrics(
+            results,
+            headers,
+            queryMetricsMap,
+            diagnosticsContext,
+            useEtagAsContinuation,
+            isNoChangesResponse);
 
         ClientSideRequestStatistics requestStatistics;
         if (cosmosDiagnostics != null) {
@@ -508,7 +514,7 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static List<ClientSideRequestStatistics> getClientSideRequestStatics(CosmosDiagnostics cosmosDiagnostics) {
+    public static List<ClientSideRequestStatistics> getClientSideRequestStatisticsList(CosmosDiagnostics cosmosDiagnostics) {
         //Used only during aggregations like Aggregate/Orderby/Groupby which may contain clientSideStats in
         //feedResponseDiagnostics. So we need to add from both the places
         List<ClientSideRequestStatistics> clientSideRequestStatisticsList = new ArrayList<>();
@@ -524,14 +530,12 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static RetryContext getRetryContext(CosmosDiagnostics cosmosDiagnostics) {
-
+    public static ClientSideRequestStatistics getClientSideRequestStatics(CosmosDiagnostics cosmosDiagnostics) {
+        ClientSideRequestStatistics clientSideRequestStatistics = null;
         if (cosmosDiagnostics != null) {
-            if (cosmosDiagnostics.clientSideRequestStatistics() != null) {
-                return cosmosDiagnostics.clientSideRequestStatistics().getRetryContext();
-            }
+            clientSideRequestStatistics = cosmosDiagnostics.clientSideRequestStatistics();
         }
-        return null;
+        return clientSideRequestStatistics;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -788,5 +792,25 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static List<PatchOperation> getPatchOperationsFromCosmosPatch(CosmosPatchOperations cosmosPatchOperations) {
         return cosmosPatchOperations.getPatchOperations();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static int getPayloadLength(TransactionalBatchResponse transactionalBatchResponse) {
+        return transactionalBatchResponse.getResponseLength();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static SqlQuerySpec getOfferQuerySpecFromResourceId(CosmosAsyncContainer container, String resourceId) {
+        return container.getDatabase().getOfferQuerySpecFromResourceId(resourceId);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosAsyncContainer getControlContainerFromThroughputGlobalControlConfig(GlobalThroughputControlConfig globalControlConfig) {
+        return globalControlConfig.getControlContainer();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static RetryContext getRetryContext(CosmosDiagnostics cosmosDiagnostics) {
+        return cosmosDiagnostics.clientSideRequestStatistics().getRetryContext();
     }
 }

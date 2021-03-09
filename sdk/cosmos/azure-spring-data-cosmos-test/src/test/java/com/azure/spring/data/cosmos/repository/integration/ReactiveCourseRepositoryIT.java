@@ -10,6 +10,7 @@ import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveCourseRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.assertj.core.api.Assertions;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -25,6 +26,8 @@ import reactor.test.StepVerifier;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -298,7 +301,13 @@ public class ReactiveCourseRepositoryIT {
     public void testFindByNameAndDepartmentOrNameAndDepartment() {
         final Flux<Course> findResult = repository.findByNameAndDepartmentOrNameAndDepartment(
             COURSE_NAME_1, DEPARTMENT_NAME_3, COURSE_NAME_2, DEPARTMENT_NAME_2);
-        StepVerifier.create(findResult).expectNext(COURSE_1, COURSE_2).verifyComplete();
+        final Set<Course> courseResultSet = new HashSet<>();
+        courseResultSet.add(COURSE_1);
+        courseResultSet.add(COURSE_2);
+        StepVerifier.create(findResult).expectNextCount(2).thenConsumeWhile(value -> {
+            Assertions.assertThat(courseResultSet.contains(value)).isTrue();
+            return true;
+        }).verifyComplete();
     }
 
     @Test

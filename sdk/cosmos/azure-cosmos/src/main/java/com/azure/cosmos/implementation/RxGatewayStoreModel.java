@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
+import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
@@ -48,6 +49,7 @@ class RxGatewayStoreModel implements RxStoreModel {
     private final GlobalEndpointManager globalEndpointManager;
     private ConsistencyLevel defaultConsistencyLevel;
     private ISessionContainer sessionContainer;
+    private ThroughputControlStore throughputControlStore;
 
     public RxGatewayStoreModel(
             DiagnosticsClientContext clientContext,
@@ -135,17 +137,8 @@ class RxGatewayStoreModel implements RxStoreModel {
         return this.performRequest(request, HttpMethod.POST);
     }
 
-    /**
-     * Given the request it creates an flux which upon subscription issues HTTP call and emits one RxDocumentServiceResponse.
-     *
-     * @param request
-     * @param method
-     * @return Flux<RxDocumentServiceResponse>
-     */
     public Mono<RxDocumentServiceResponse> performRequest(RxDocumentServiceRequest request, HttpMethod method) {
-
         try {
-
             if (request.requestContext.cosmosDiagnostics == null) {
                 request.requestContext.cosmosDiagnostics = clientContext.createDiagnostics();
             }
@@ -153,13 +146,35 @@ class RxGatewayStoreModel implements RxStoreModel {
             URI uri = getUri(request);
             request.requestContext.resourcePhysicalAddress = uri.toString();
 
+            if (this.throughputControlStore != null) {
+                return this.throughputControlStore.processRequest(request, performRequestInternal(request, method, uri));
+            }
+
+            return this.performRequestInternal(request, method, uri);
+        } catch (Exception e) {
+            return Mono.error(e);
+        }
+    }
+
+    /**
+     * Given the request it creates an flux which upon subscription issues HTTP call and emits one RxDocumentServiceResponse.
+     *
+     * @param request
+     * @param method
+     * @param requestUri
+     * @return Flux<RxDocumentServiceResponse>
+     */
+    public Mono<RxDocumentServiceResponse> performRequestInternal(RxDocumentServiceRequest request, HttpMethod method, URI requestUri) {
+
+        try {
+
             HttpHeaders httpHeaders = this.getHttpRequestHeaders(request.getHeaders());
 
             Flux<byte[]> contentAsByteArray = request.getContentAsByteArrayFlux();
 
             HttpRequest httpRequest = new HttpRequest(method,
-                    uri,
-                    uri.getPort(),
+                    requestUri,
+                    requestUri.getPort(),
                     httpHeaders,
                     contentAsByteArray);
 
@@ -411,6 +426,11 @@ class RxGatewayStoreModel implements RxStoreModel {
                         this.captureSessionToken(request, dce.getResponseHeaders());
                     }
 
+                    if (Exceptions.isThroughputControlRequestRateTooLargeException(dce)) {
+                        BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null, dce);
+                        BridgeInternal.setCosmosDiagnostics(dce, request.requestContext.cosmosDiagnostics);
+                    }
+
                     return Mono.error(dce);
                 }
         ).map(response ->
@@ -419,6 +439,12 @@ class RxGatewayStoreModel implements RxStoreModel {
                     return response;
                 }
         );
+    }
+
+    @Override
+    public void enableThroughputControl(ThroughputControlStore throughputControlStore) {
+        // no-op
+        // Disable throughput control for gateway mode
     }
 
     private void captureSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders) {
@@ -456,13 +482,13 @@ class RxGatewayStoreModel implements RxStoreModel {
                         !Strings.areEqual(requestConsistencyLevel, ConsistencyLevel.EVENTUAL.toString())));
 
         if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
-            if (!sessionTokenApplicable || ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) {
+            if (!sessionTokenApplicable || isMasterOperation(request.getResourceType(), request.getOperationType())) {
                 request.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
             }
             return; //User is explicitly controlling the session.
         }
 
-        if (!sessionTokenApplicable || ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) {
+        if (!sessionTokenApplicable || isMasterOperation(request.getResourceType(), request.getOperationType())) {
             return; // Only apply the session token in case of session consistency and when resource is not a master resource
         }
 
@@ -472,5 +498,18 @@ class RxGatewayStoreModel implements RxStoreModel {
         if (!Strings.isNullOrEmpty(sessionToken)) {
             headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken);
         }
+    }
+
+    private static boolean isMasterOperation(ResourceType resourceType, OperationType operationType) {
+        // Stored procedures, trigger, and user defined functions CRUD operations are done on
+        // master so they do not require the session token.
+        // Stored procedures execute is not a master operation
+        return ReplicatedResourceClientUtils.isMasterResource(resourceType) ||
+            isStoredProcedureMasterOperation(resourceType, operationType) ||
+            operationType == OperationType.QueryPlan;
+    }
+
+    private static boolean isStoredProcedureMasterOperation(ResourceType resourceType, OperationType operationType) {
+        return resourceType == ResourceType.StoredProcedure && operationType != OperationType.ExecuteJavaScript;
     }
 }

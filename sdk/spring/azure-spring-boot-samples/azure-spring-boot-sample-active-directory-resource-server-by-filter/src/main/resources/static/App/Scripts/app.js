@@ -15,15 +15,14 @@ angular.module('todoApp', ['ngRoute', 'MsalAngular'])
         }).otherwise({redirectTo: "/Home"});
 
         window.applicationConfig = {
-            clientID: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+            clientID: window.aad_clientId
         };
-
         msalProvider.init(
             {
                 auth: {
-                    clientId: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-                    authority: "https://login.microsoftonline.com/xxxorg.onmicrosoft.com",
-                    redirectUri: "http://localhost:8080/",
+                    clientId: window.aad_clientId,
+                    authority: "https://login.microsoftonline.com/" + window.aad_tenantId,
+                    redirectUri: window.aad_redirectUri,
                 },
                 cache: {
                     cacheLocation: "sessionStorage", // This configures where your cache will be stored

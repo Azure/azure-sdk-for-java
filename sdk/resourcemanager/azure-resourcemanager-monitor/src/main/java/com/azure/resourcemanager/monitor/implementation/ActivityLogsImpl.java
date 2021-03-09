@@ -18,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for {@link ActivityLogs}. */
 public class ActivityLogsImpl implements ActivityLogs, ActivityLogs.ActivityLogsQueryDefinition {
@@ -47,12 +48,12 @@ public class ActivityLogsImpl implements ActivityLogs, ActivityLogs.ActivityLogs
 
     @Override
     public PagedIterable<LocalizableString> listEventCategories() {
-        return this.manager().serviceClient().getEventCategories().list().mapPage(LocalizableStringImpl::new);
+        return PagedConverter.mapPage(this.manager().serviceClient().getEventCategories().list(), LocalizableStringImpl::new);
     }
 
     @Override
     public PagedFlux<LocalizableString> listEventCategoriesAsync() {
-        return this.manager().serviceClient().getEventCategories().listAsync().mapPage(LocalizableStringImpl::new);
+        return PagedConverter.mapPage(this.manager().serviceClient().getEventCategories().listAsync(), LocalizableStringImpl::new);
     }
 
     @Override
@@ -149,29 +150,29 @@ public class ActivityLogsImpl implements ActivityLogs, ActivityLogs.ActivityLogs
     }
 
     private PagedIterable<EventData> listEventData(String filter) {
-        return this.inner().list(filter, createPropertyFilter(), Context.NONE).mapPage(EventDataImpl::new);
+        return PagedConverter.mapPage(this.inner().list(filter, createPropertyFilter(), Context.NONE), EventDataImpl::new);
     }
 
     private PagedIterable<EventData> listEventDataForTenant(String filter) {
-        return this
+        return PagedConverter.mapPage(this
             .manager()
             .serviceClient()
             .getTenantActivityLogs()
-            .list(filter, createPropertyFilter(), Context.NONE)
-            .mapPage(EventDataImpl::new);
+            .list(filter, createPropertyFilter(), Context.NONE),
+            EventDataImpl::new);
     }
 
     private PagedFlux<EventData> listEventDataAsync(String filter) {
-        return this.inner().listAsync(filter, createPropertyFilter()).mapPage(EventDataImpl::new);
+        return PagedConverter.mapPage(this.inner().listAsync(filter, createPropertyFilter()), EventDataImpl::new);
     }
 
     private PagedFlux<EventData> listEventDataForTenantAsync(String filter) {
-        return this
+        return PagedConverter.mapPage(this
             .manager()
             .serviceClient()
             .getTenantActivityLogs()
-            .listAsync(filter, createPropertyFilter())
-            .mapPage(EventDataImpl::new);
+            .listAsync(filter, createPropertyFilter()),
+            EventDataImpl::new);
     }
 
     private String createPropertyFilter() {

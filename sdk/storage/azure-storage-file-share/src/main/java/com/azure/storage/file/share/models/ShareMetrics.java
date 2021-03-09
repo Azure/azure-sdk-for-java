@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * Storage Analytics metrics for file service.
- */
+/** Storage Analytics metrics for file service. */
 @JacksonXmlRootElement(localName = "Metrics")
 @Fluent
 public final class ShareMetrics {
@@ -27,7 +25,7 @@ public final class ShareMetrics {
     private boolean enabled;
 
     /*
-     * The retentionPolicy property.
+     * The retention policy.
      */
     @JsonProperty(value = "RetentionPolicy")
     private ShareRetentionPolicy retentionPolicy;
@@ -60,8 +58,7 @@ public final class ShareMetrics {
     }
 
     /**
-     * Get the enabled property: Indicates whether metrics are enabled for the
-     * File service.
+     * Get the enabled property: Indicates whether metrics are enabled for the File service.
      *
      * @return the enabled value.
      */
@@ -70,8 +67,7 @@ public final class ShareMetrics {
     }
 
     /**
-     * Set the enabled property: Indicates whether metrics are enabled for the
-     * File service.
+     * Set the enabled property: Indicates whether metrics are enabled for the File service.
      *
      * @param enabled the enabled value to set.
      * @return the ShareMetrics object itself.
@@ -82,7 +78,7 @@ public final class ShareMetrics {
     }
 
     /**
-     * Get the retentionPolicy property: The retentionPolicy property.
+     * Get the retentionPolicy property: The retention policy.
      *
      * @return the retentionPolicy value.
      */
@@ -91,7 +87,7 @@ public final class ShareMetrics {
     }
 
     /**
-     * Set the retentionPolicy property: The retentionPolicy property.
+     * Set the retentionPolicy property: The retention policy.
      *
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the ShareMetrics object itself.
@@ -102,8 +98,8 @@ public final class ShareMetrics {
     }
 
     /**
-     * Get the includeApis property: Indicates whether metrics should generate
-     * summary statistics for called API operations.
+     * Get the includeApis property: Indicates whether metrics should generate summary statistics for called API
+     * operations.
      *
      * @return the includeApis value.
      */
@@ -112,8 +108,8 @@ public final class ShareMetrics {
     }
 
     /**
-     * Set the includeApis property: Indicates whether metrics should generate
-     * summary statistics for called API operations.
+     * Set the includeApis property: Indicates whether metrics should generate summary statistics for called API
+     * operations.
      *
      * @param includeApis the includeApis value to set.
      * @return the ShareMetrics object itself.

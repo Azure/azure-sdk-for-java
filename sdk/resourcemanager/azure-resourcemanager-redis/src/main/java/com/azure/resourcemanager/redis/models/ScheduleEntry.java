@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
-/** Patch schedule entry for a Redis Cache. */
+/** Patch schedule entry for a Premium Redis Cache. */
 @Fluent
 public final class ScheduleEntry {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ScheduleEntry.class);

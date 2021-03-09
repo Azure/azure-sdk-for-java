@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.AmqpConstants;
@@ -56,16 +57,15 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
      * @param cbsNodeSupplier Mono that returns a reference to the {@link ClaimsBasedSecurityNode}.
      * @param tokenManagerProvider Provides {@link TokenManager} that authorizes the client when performing
      *     operations on the message broker.
-     * @param openTimeout Timeout to wait for the session operation to complete.
-     * @param retryPolicy to be used for this session.
+     * @param retryOptions to be used for this session.
      * @param messageSerializer to be used.
      */
     EventHubReactorSession(Session session, SessionHandler sessionHandler, String sessionName,
                            ReactorProvider provider, ReactorHandlerProvider handlerProvider,
                            Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
-                           Duration openTimeout, AmqpRetryPolicy retryPolicy, MessageSerializer messageSerializer) {
+                           AmqpRetryOptions retryOptions, MessageSerializer messageSerializer) {
         super(session, sessionHandler, sessionName, provider, handlerProvider, cbsNodeSupplier, tokenManagerProvider,
-            messageSerializer, openTimeout, retryPolicy);
+            messageSerializer, retryOptions);
     }
 
     /**

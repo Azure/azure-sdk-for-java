@@ -25,6 +25,7 @@ import java.util.Map;
 
 import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE;
 import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE;
+import static com.azure.spring.test.EnvironmentVariable.AAD_TENANT_ID_1;
 import static org.junit.Assert.assertEquals;
 
 public class AADAppRoleStatelessAuthenticationFilterIT {
@@ -36,6 +37,7 @@ public class AADAppRoleStatelessAuthenticationFilterIT {
         String clientId = AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE;
         String clientSecret = AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE;
         Map<String, String> properties = new HashMap<>();
+        properties.put("azure.activedirectory.tenant-id", AAD_TENANT_ID_1);
         properties.put("azure.activedirectory.client-id", clientId);
         properties.put("azure.activedirectory.client-secret", clientSecret);
         properties.put("azure.activedirectory.session-stateless", "true");

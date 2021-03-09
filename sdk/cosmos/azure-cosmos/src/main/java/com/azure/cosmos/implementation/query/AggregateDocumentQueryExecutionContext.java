@@ -63,7 +63,8 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
                     List<ClientSideRequestStatistics> diagnosticsList = new ArrayList<>();
 
                     for(FeedResponse<T> page : superList) {
-                        diagnosticsList.addAll(BridgeInternal.getClientSideRequestStatics(page.getCosmosDiagnostics()));
+                        diagnosticsList.addAll(BridgeInternal
+                                                   .getClientSideRequestStatisticsList(page.getCosmosDiagnostics()));
 
                         if (page.getResults().size() == 0) {
                             headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));

@@ -10,6 +10,7 @@ import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.CorsRules;
 import com.azure.resourcemanager.storage.models.DeleteRetentionPolicy;
+import com.azure.resourcemanager.storage.models.ProtocolSettings;
 import com.azure.resourcemanager.storage.models.Sku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -40,6 +41,12 @@ public class FileServicePropertiesInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.shareDeleteRetentionPolicy")
     private DeleteRetentionPolicy shareDeleteRetentionPolicy;
+
+    /*
+     * Protocol settings for file service
+     */
+    @JsonProperty(value = "properties.protocolSettings")
+    private ProtocolSettings protocolSettings;
 
     /**
      * Get the sku property: Sku name and tier.
@@ -95,6 +102,26 @@ public class FileServicePropertiesInner extends ProxyResource {
     }
 
     /**
+     * Get the protocolSettings property: Protocol settings for file service.
+     *
+     * @return the protocolSettings value.
+     */
+    public ProtocolSettings protocolSettings() {
+        return this.protocolSettings;
+    }
+
+    /**
+     * Set the protocolSettings property: Protocol settings for file service.
+     *
+     * @param protocolSettings the protocolSettings value to set.
+     * @return the FileServicePropertiesInner object itself.
+     */
+    public FileServicePropertiesInner withProtocolSettings(ProtocolSettings protocolSettings) {
+        this.protocolSettings = protocolSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -108,6 +135,9 @@ public class FileServicePropertiesInner extends ProxyResource {
         }
         if (shareDeleteRetentionPolicy() != null) {
             shareDeleteRetentionPolicy().validate();
+        }
+        if (protocolSettings() != null) {
+            protocolSettings().validate();
         }
     }
 }
