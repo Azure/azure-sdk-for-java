@@ -251,10 +251,9 @@ events.add(BinaryData.fromObject(new HashMap<String, String>() {
         put("data", "example data");
         put("dataVersion", "0.1");
     }
-});
+}));
 customEventClient.sendEvents(events);
 ```
-
 ### Sending Events To Event Grid Domain
 
 An [Event Grid Domain](https://docs.microsoft.com/azure/event-grid/event-domains) can have thousands of topics
