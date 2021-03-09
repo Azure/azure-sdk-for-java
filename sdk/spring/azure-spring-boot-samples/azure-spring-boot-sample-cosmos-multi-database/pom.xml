@@ -4,15 +4,15 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.4.0</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
+    <version>2.4.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.azure.spring</groupId>
-  <artifactId>azure-spring-boot-sample-multi-database</artifactId>
-  <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-sample-multi-database;current} -->
-  <name>azure-spring-boot-sample-multi-database</name>
-  <description>Azure Spring Cloud Sample Multi Database</description>
+  <artifactId>azure-spring-boot-sample-cosmos-multi-database</artifactId>
+  <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-sample-cosmos-multi-database;current} -->
+  <name>azure-spring-boot-sample-cosmos-multi-database</name>
+  <description>Azure Spring Boot Sample Cosmos Multi Database</description>
 
   <dependencies>
     <dependency>

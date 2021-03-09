@@ -4,6 +4,7 @@ package com.azure.spring.sample.multi.database;
 
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
+import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.azure.spring.sample.multi.database.database1.User;
 import com.azure.spring.sample.multi.database.database1.UserRepository;
@@ -30,6 +31,10 @@ public class MultiDatasourceApplication implements CommandLineRunner {
     @Qualifier("secondaryDatabaseTemplate")
     private CosmosTemplate secondaryDatabaseTemplate;
 
+    @Autowired
+    @Qualifier("primaryDatabaseTemplate")
+    private ReactiveCosmosTemplate primaryDatabaseTemplate;
+
     private final User user = new User("1024", "1024@geek.com", "1k", "Mars");
     private UserForMYSQL userForMYSQL;
     private static CosmosEntityInformation<User, String> userInfo = new CosmosEntityInformation<>(User.class);
@@ -42,7 +47,6 @@ public class MultiDatasourceApplication implements CommandLineRunner {
 
         final List<User> users = this.userRepository.findByEmailOrName(this.user.getEmail(),
             this.user.getName()).collectList().block();
-        users.forEach(System.out::println);
         users.stream().forEach(this::insertValueToMYSQL);
         User secondaryUserGet = secondaryDatabaseTemplate.findById(User.class.getSimpleName(), user.getId(), User.class);
         System.out.println(secondaryUserGet);
@@ -56,14 +60,18 @@ public class MultiDatasourceApplication implements CommandLineRunner {
 
     @PostConstruct
     public void setup() {
-        this.userRepository.save(user).block();
+
+        primaryDatabaseTemplate.createContainerIfNotExists(userInfo).block();
+        primaryDatabaseTemplate.insert(User.class.getSimpleName(), user,
+            new PartitionKey(user.getName())).block(); // Same to this.userRepository.save(user).block();
         secondaryDatabaseTemplate.createContainerIfNotExists(userInfo);
         secondaryDatabaseTemplate.insert(User.class.getSimpleName(), user, new PartitionKey(user.getName()));
-    }
+   }
 
     @PreDestroy
     public void cleanup() {
-        this.userRepository.deleteAll().block();
+        primaryDatabaseTemplate.deleteAll(User.class.getSimpleName(),
+            User.class).block(); // Same to this.userRepository.deleteAll().block();
         secondaryDatabaseTemplate.deleteAll(User.class.getSimpleName() , User.class);
         userRepositoryForMYSQL.deleteAll();
     }
