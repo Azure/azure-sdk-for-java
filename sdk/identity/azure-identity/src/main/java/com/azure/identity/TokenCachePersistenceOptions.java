@@ -2,22 +2,25 @@
 // Licensed under the MIT License.
 package com.azure.identity;
 
+import com.azure.core.annotation.Fluent;
+
 /**
  * Represents the Persistence Token Cache options used to setup the persistent access token cache.
  */
+@Fluent
 public final class TokenCachePersistenceOptions {
-    private boolean allowUnencryptedStorage;
+    private boolean unencryptedStorageAllowed;
     private String name;
 
     /**
      * Allows to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
-     * Gnome keyring on Linux. This is restricted by default.
+     * Gnome keyring on Linux. This is restricted by default. For other platforms this setting currently doesn't apply.
      *
-     * @param allowUnencryptedStorage The flag indicating if unencrypted storage is allowed for the cache or not.
+     * @param unencryptedStorageAllowed The flag indicating if unencrypted storage is allowed for the cache or not.
      * @return An updated instance of the options bag.
      */
-    public TokenCachePersistenceOptions setAllowUnencryptedStorage(boolean allowUnencryptedStorage) {
-        this.allowUnencryptedStorage = allowUnencryptedStorage;
+    public TokenCachePersistenceOptions setUnencryptedStorageAllowed(boolean unencryptedStorageAllowed) {
+        this.unencryptedStorageAllowed = unencryptedStorageAllowed;
         return this;
     }
 
@@ -27,7 +30,7 @@ public final class TokenCachePersistenceOptions {
      * @return The status indicating if unencrypted storage is allowed for the persistent token cache.
      */
     public boolean isUnencryptedStorageAllowed() {
-        return this.allowUnencryptedStorage;
+        return this.unencryptedStorageAllowed;
     }
 
     /**

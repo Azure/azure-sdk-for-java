@@ -12,7 +12,7 @@ package com.azure.identity;
 public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<SharedTokenCacheCredentialBuilder> {
     private String username;
     private TokenCachePersistenceOptions tokenCachePersistenceOptions = new TokenCachePersistenceOptions()
-        .setAllowUnencryptedStorage(true);
+        .setUnencryptedStorageAllowed(true);
 
     /**
      * Sets the username for the account.
@@ -33,7 +33,7 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
      * @return An updated instance of this builder.
      */
     SharedTokenCacheCredentialBuilder disallowUnencryptedCache() {
-        this.tokenCachePersistenceOptions.setAllowUnencryptedStorage(false);
+        this.tokenCachePersistenceOptions.setUnencryptedStorageAllowed(false);
         return this;
     }
 

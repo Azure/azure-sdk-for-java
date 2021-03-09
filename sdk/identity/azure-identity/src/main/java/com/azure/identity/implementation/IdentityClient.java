@@ -157,84 +157,86 @@ public class IdentityClient {
     }
 
     private Mono<ConfidentialClientApplication> getConfidentialClientApplication() {
-        if (clientId == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "A non-null value for client ID must be provided for user authentication."));
-        }
-        String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
-        IClientCredential credential;
-        if (clientSecret != null) {
-            credential = ClientCredentialFactory.createFromSecret(clientSecret);
-        } else if (certificate != null || certificatePath != null) {
-            try {
-                if (certificatePassword == null) {
-                    byte[] pemCertificateBytes = getCertificateBytes();
+        return Mono.defer(() -> {
+            if (clientId == null) {
+                return Mono.error(logger.logExceptionAsError(new IllegalArgumentException(
+                    "A non-null value for client ID must be provided for user authentication.")));
+            }
+            String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
+            IClientCredential credential;
+            if (clientSecret != null) {
+                credential = ClientCredentialFactory.createFromSecret(clientSecret);
+            } else if (certificate != null || certificatePath != null) {
+                try {
+                    if (certificatePassword == null) {
+                        byte[] pemCertificateBytes = getCertificateBytes();
 
-                    List<X509Certificate> x509CertificateList =  CertificateUtil.publicKeyFromPem(pemCertificateBytes);
-                    PrivateKey privateKey = CertificateUtil.privateKeyFromPem(pemCertificateBytes);
-                    if (x509CertificateList.size() == 1) {
-                        credential = ClientCredentialFactory.createFromCertificate(
-                            privateKey, x509CertificateList.get(0));
+                        List<X509Certificate> x509CertificateList = CertificateUtil.publicKeyFromPem(pemCertificateBytes);
+                        PrivateKey privateKey = CertificateUtil.privateKeyFromPem(pemCertificateBytes);
+                        if (x509CertificateList.size() == 1) {
+                            credential = ClientCredentialFactory.createFromCertificate(
+                                privateKey, x509CertificateList.get(0));
+                        } else {
+                            credential = ClientCredentialFactory.createFromCertificateChain(
+                                privateKey, x509CertificateList);
+                        }
                     } else {
-                        credential = ClientCredentialFactory.createFromCertificateChain(
-                            privateKey, x509CertificateList);
-                    }
-                } else {
-                    InputStream pfxCertificateStream = getCertificateInputStream();
-                    try {
-                        credential = ClientCredentialFactory.createFromCertificate(
-                            pfxCertificateStream, certificatePassword);
-                    } finally {
-                        if (pfxCertificateStream != null) {
-                            pfxCertificateStream.close();
+                        InputStream pfxCertificateStream = getCertificateInputStream();
+                        try {
+                            credential = ClientCredentialFactory.createFromCertificate(
+                                pfxCertificateStream, certificatePassword);
+                        } finally {
+                            if (pfxCertificateStream != null) {
+                                pfxCertificateStream.close();
+                            }
                         }
                     }
+                } catch (IOException | GeneralSecurityException e) {
+                    return Mono.error(logger.logExceptionAsError(new RuntimeException(
+                        "Failed to parse the certificate for the credential: " + e.getMessage(), e)));
                 }
-            } catch (IOException | GeneralSecurityException e) {
-                throw logger.logExceptionAsError(new RuntimeException(
-                    "Failed to parse the certificate for the credential: " + e.getMessage(), e));
+            } else {
+                return Mono.error(logger.logExceptionAsError(
+                    new IllegalArgumentException("Must provide client secret or client certificate path")));
             }
-        } else {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("Must provide client secret or client certificate path"));
-        }
 
-        ConfidentialClientApplication.Builder applicationBuilder =
-            ConfidentialClientApplication.builder(clientId, credential);
-        try {
-            applicationBuilder = applicationBuilder.authority(authorityUrl);
-        } catch (MalformedURLException e) {
-            throw logger.logExceptionAsWarning(new IllegalStateException(e));
-        }
-
-        applicationBuilder.sendX5c(options.isIncludeX5c());
-
-        initializeHttpPipelineAdapter();
-        if (httpPipelineAdapter != null) {
-            applicationBuilder.httpClient(httpPipelineAdapter);
-        } else {
-            applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
-        }
-
-        if (options.getExecutorService() != null) {
-            applicationBuilder.executorService(options.getExecutorService());
-        }
-        TokenCachePersistenceOptions tokenCachePersistenceOptions = options.getTokenCacheOptions();
-        PersistentTokenCacheImpl tokenCache = null;
-        if (tokenCachePersistenceOptions != null) {
+            ConfidentialClientApplication.Builder applicationBuilder =
+                ConfidentialClientApplication.builder(clientId, credential);
             try {
-                tokenCache = new PersistentTokenCacheImpl()
-                    .setAllowUnencryptedStorage(tokenCachePersistenceOptions.isUnencryptedStorageAllowed())
-                    .setName(tokenCachePersistenceOptions.getName());
-                applicationBuilder.setTokenCacheAccessAspect(tokenCache);
-            } catch (Throwable t) {
-                throw logger.logExceptionAsError(new ClientAuthenticationException(
-                    "Shared token cache is unavailable in this environment.", null, t));
+                applicationBuilder = applicationBuilder.authority(authorityUrl);
+            } catch (MalformedURLException e) {
+                return Mono.error(logger.logExceptionAsWarning(new IllegalStateException(e)));
             }
-        }
-        ConfidentialClientApplication confidentialClientApplication = applicationBuilder.build();
-        return tokenCache != null ? tokenCache.registerCache()
-            .map(ignored -> confidentialClientApplication) : Mono.just(confidentialClientApplication);
+
+            applicationBuilder.sendX5c(options.isIncludeX5c());
+
+            initializeHttpPipelineAdapter();
+            if (httpPipelineAdapter != null) {
+                applicationBuilder.httpClient(httpPipelineAdapter);
+            } else {
+                applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
+            }
+
+            if (options.getExecutorService() != null) {
+                applicationBuilder.executorService(options.getExecutorService());
+            }
+            TokenCachePersistenceOptions tokenCachePersistenceOptions = options.getTokenCacheOptions();
+            PersistentTokenCacheImpl tokenCache = null;
+            if (tokenCachePersistenceOptions != null) {
+                try {
+                    tokenCache = new PersistentTokenCacheImpl()
+                        .setAllowUnencryptedStorage(tokenCachePersistenceOptions.isUnencryptedStorageAllowed())
+                        .setName(tokenCachePersistenceOptions.getName());
+                    applicationBuilder.setTokenCacheAccessAspect(tokenCache);
+                } catch (Throwable t) {
+                     return  Mono.error(logger.logExceptionAsError(new ClientAuthenticationException(
+                        "Shared token cache is unavailable in this environment.", null, t)));
+                }
+            }
+            ConfidentialClientApplication confidentialClientApplication = applicationBuilder.build();
+            return tokenCache != null ? tokenCache.registerCache()
+                .map(ignored -> confidentialClientApplication) : Mono.just(confidentialClientApplication);
+        });
     }
 
     private Mono<PublicClientApplication> getPublicClientApplication(boolean sharedTokenCacheCredential) {
