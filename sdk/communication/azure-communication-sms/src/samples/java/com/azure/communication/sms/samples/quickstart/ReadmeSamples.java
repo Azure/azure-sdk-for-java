@@ -15,7 +15,6 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import reactor.core.publisher.Mono;
 
 public class ReadmeSamples {
     public SmsClient createSmsClientUsingAzureKeyCredential() {
@@ -96,7 +95,6 @@ public class ReadmeSamples {
             .httpClient(httpClient)
             .buildClient();
         return smsClient;
-
     }
 
     public void sendMessageToOneRecipient() {
@@ -149,24 +147,10 @@ public class ReadmeSamples {
         }
     }
 
-    public void catchHttpErrorOnRequestAsync() {
-        SmsAsyncClient smsClient = createSmsAsyncClientUsingAzureKeyCredential();
-        try {
-            Mono<SmsSendResult> sendResult = smsClient.send(
-                "<from-phone-number>",
-                "<to-phone-number>",
-                "Hi"
-            );
-        } catch (RuntimeException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-
-    public void failedMessages() {
+    public void sendMessageTroubleShooting() {
         SmsClient smsClient = createSmsClientUsingAzureKeyCredential();
 
         try {
-
             SmsSendOptions options = new SmsSendOptions();
             options.setDeliveryReportEnabled(true);
             options.setTag("Tag");
@@ -187,7 +171,6 @@ public class ReadmeSamples {
                     System.out.println("Status code " + result.getHttpStatusCode() + " and error message " + result.getErrorMessage());
                 }
             }
-
         } catch (RuntimeException ex) {
             System.out.println(ex.getMessage());
         }
