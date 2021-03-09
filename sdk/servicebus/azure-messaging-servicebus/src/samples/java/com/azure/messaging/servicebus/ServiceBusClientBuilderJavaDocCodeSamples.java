@@ -69,7 +69,7 @@ public class ServiceBusClientBuilderJavaDocCodeSamples {
             .topicName(topicName)
             .buildAsyncClient();
         // END: com.azure.messaging.servicebus.sender.async.client.instantiation
-        sender.sendMessage(new ServiceBusMessage("payload")).subscribe();;
+        sender.sendMessage(new ServiceBusMessage("payload")).subscribe();
     }
 
     @Test
