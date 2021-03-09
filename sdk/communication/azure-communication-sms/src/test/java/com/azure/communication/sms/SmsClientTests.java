@@ -99,8 +99,8 @@ public class SmsClientTests extends SmsTestBase {
         options.setTag("New Tag");
 
         // Action & Assert
-        Response<SmsSendResult> response = client.sendWithResponse(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE, options, Context.NONE);
-        assertHappyPath(response.getValue());
+        SmsSendResult response = client.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE, options, Context.NONE);
+        assertHappyPath(response);
     }
 
     @ParameterizedTest
