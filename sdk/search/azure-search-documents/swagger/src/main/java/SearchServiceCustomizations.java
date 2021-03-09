@@ -18,6 +18,10 @@ public class SearchServiceCustomizations extends Customization {
     private static final String SCORING_FUNCTION = "ScoringFunction";
     private static final String SEARCH_FIELD_DATA_TYPE = "SearchFieldDataType";
 
+    private static final String SIMILARITY_ALGORITHM = "SimilarityAlgorithm";
+    private static final String BM_25_SIMILARITY_ALGORITHM = "BM25SimilarityAlgorithm";
+    private static final String CLASSIC_SIMILARITY_ALGORITHM = "ClassicSimilarityAlgorithm";
+
     @Override
     public void customize(LibraryCustomization libraryCustomization) {
         customizeImplementationModelsPackage(libraryCustomization.getPackage(IMPLEMENTATION_MODELS));
@@ -31,6 +35,10 @@ public class SearchServiceCustomizations extends Customization {
         customizeScoringFunction(packageCustomization.getClass(SCORING_FUNCTION));
         customizeMagnitudeScoringParameters(packageCustomization.getClass(MAGNITUDE_SCORING_PARAMETERS));
         customizeSearchFieldDataType(packageCustomization.getClass(SEARCH_FIELD_DATA_TYPE));
+
+        customizeSimilarityAlgorithm(packageCustomization.getClass(SIMILARITY_ALGORITHM));
+        customizeBM25SimilarityAlgorithm(packageCustomization.getClass(BM_25_SIMILARITY_ALGORITHM));
+        customizeClassicSimilarityAlgorithm(packageCustomization.getClass(CLASSIC_SIMILARITY_ALGORITHM));
     }
 
     private void customizeSearchFieldDataType(ClassCustomization classCustomization) {
@@ -46,12 +54,25 @@ public class SearchServiceCustomizations extends Customization {
     }
 
     private void customizeScoringFunction(ClassCustomization classCustomization) {
-        int publicAbstractModifier = Modifier.PUBLIC | Modifier.ABSTRACT;
-        classCustomization.setModifier(publicAbstractModifier);
+        classCustomization.setModifier(Modifier.PUBLIC | Modifier.ABSTRACT);
     }
 
     private void customizeMagnitudeScoringParameters(ClassCustomization classCustomization) {
         classCustomization.getMethod("isShouldBoostBeyondRangeByConstant")
             .rename("shouldBoostBeyondRangeByConstant");
+    }
+
+    private void customizeSimilarityAlgorithm(ClassCustomization classCustomization) {
+        classCustomization.setModifier(Modifier.PUBLIC | Modifier.ABSTRACT);
+        classCustomization.removeAnnotation("@JsonTypeName");
+        classCustomization.addAnnotation("@JsonTypeName(\"Similarity\")");
+    }
+
+    private void customizeBM25SimilarityAlgorithm(ClassCustomization classCustomization) {
+        classCustomization.setModifier(Modifier.PUBLIC | Modifier.FINAL);
+    }
+
+    private void customizeClassicSimilarityAlgorithm(ClassCustomization classCustomization) {
+        classCustomization.setModifier(Modifier.PUBLIC | Modifier.FINAL);
     }
 }

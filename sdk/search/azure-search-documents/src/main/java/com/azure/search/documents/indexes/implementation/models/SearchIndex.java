@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.search.documents.indexes.models.CorsOptions;
+import com.azure.search.documents.indexes.models.SimilarityAlgorithm;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -98,7 +99,7 @@ public final class SearchIndex {
      * indexes. If null, the ClassicSimilarity algorithm is used.
      */
     @JsonProperty(value = "similarity")
-    private Similarity similarity;
+    private SimilarityAlgorithm similarity;
 
     /*
      * The ETag of the index.
@@ -349,7 +350,7 @@ public final class SearchIndex {
      *
      * @return the similarity value.
      */
-    public Similarity getSimilarity() {
+    public SimilarityAlgorithm getSimilarity() {
         return this.similarity;
     }
 
@@ -361,7 +362,7 @@ public final class SearchIndex {
      * @param similarity the similarity value to set.
      * @return the SearchIndex object itself.
      */
-    public SearchIndex setSimilarity(Similarity similarity) {
+    public SearchIndex setSimilarity(SimilarityAlgorithm similarity) {
         this.similarity = similarity;
         return this;
     }

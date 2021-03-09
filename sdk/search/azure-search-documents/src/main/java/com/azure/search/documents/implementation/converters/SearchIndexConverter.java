@@ -11,7 +11,6 @@ import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchResourceEncryptionKey;
 import com.azure.search.documents.indexes.models.SearchSuggester;
-import com.azure.search.documents.indexes.models.SimilarityAlgorithm;
 import com.azure.search.documents.indexes.models.TokenFilter;
 
 import java.util.List;
@@ -74,8 +73,7 @@ public final class SearchIndexConverter {
         }
 
         if (obj.getSimilarity() != null) {
-            SimilarityAlgorithm similarityAlgorithm = SimilarityConverter.map(obj.getSimilarity());
-            searchIndex.setSimilarity(similarityAlgorithm);
+            searchIndex.setSimilarity(obj.getSimilarity());
         }
 
         if (obj.getCorsOptions() != null) {
@@ -149,9 +147,7 @@ public final class SearchIndexConverter {
         }
 
         if (obj.getSimilarity() != null) {
-            com.azure.search.documents.indexes.implementation.models.Similarity similarity =
-                SimilarityConverter.map(obj.getSimilarity());
-            searchIndex.setSimilarity(similarity);
+            searchIndex.setSimilarity(obj.getSimilarity());
         }
 
         if (obj.getCorsOptions() != null) {
