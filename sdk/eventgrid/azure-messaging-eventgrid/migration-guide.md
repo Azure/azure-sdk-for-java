@@ -55,7 +55,7 @@ TopicCredentials topicCredentials = new TopicCredentials(key);
 EventGridClient client = new EventGridClientImpl(topicCredentials);
 ```
 
-In v4, the creation of the client is done through the [EventGridClientBuilder][EventGridClientBuilder]. The sync and async operations are separated to [EventGridPublisherClient] and [EventGridPublisherAsyncClient].
+In v4, the creation of the client is done through the [EventGridPublisherClientBuilder][EventGridPublisherClientBuilder]. The sync and async operations are separated to [EventGridPublisherClient] and [EventGridPublisherAsyncClient].
 ```java
 EventGridPublisherClient<EventGridEvent> eventGridEventClient = new EventGridPublisherClientBuilder()
     .endpoint("<endpont of your event grid topic/domain that accepts EventGridEvent schema>")
@@ -110,7 +110,7 @@ if (events[0].data() instanceof ContosoItemReceivedEventData){
 }
 ```
 
-In v4, you use `EventGridEvent.fromString` convenience method to deserialize from one or more `EventGridEvent` from a Json string. Then you can use the `getData()` method
+In v4, you use `EventGridEvent.fromString` convenience method to deserialize `EventGridEvent` from a Json string. Then you can use the `getData()` method
 to get the event's data in a `BinaryData`, from which you can use method `toObject()` to deserialize to the data, or use `toString()` and `toBytes()`.
 ```java
 List<EventGridEvent> eventGridEvents = EventGridEvent.fromString(eventGridJsonString);
@@ -127,10 +127,10 @@ More examples can be found at:
 - [Event Grid samples][README-Samples]
 
 <!-- Links -->
-[EventGridClientBuilder]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventgrid/latest/com/azure/messaging/eventgrid/EventGridClientBuilder.html
+[EventGridPublisherClientBuilder]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventgrid/latest/com/azure/messaging/eventgrid/EventGridPublisherClientBuilder.html
 [EventGridPublisherClient]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventgrid/latest/com/azure/messaging/eventgrid/EventGridPublisherClient.html
 [EventGridPublisherAsyncClient]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventgrid/latest/com/azure/messaging/eventgrid/EventGridPublisherAsyncClient.html
-[EventGridEvent]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventgrid/latest/com/azure/messaging/eventgrid/EventGridPublisherEvent.html
+[EventGridEvent]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventgrid/latest/com/azure/messaging/eventgrid/EventGridEvent.html
 [Guidelines]: https://azure.github.io/azure-sdk/general_introduction.html
 [GuidelinesJava]: https://azure.github.io/azure-sdk/java_introduction.html
 [GuidelinesJavaDesign]: https://azure.github.io/azure-sdk/java_introduction.html#namespaces
@@ -138,4 +138,4 @@ More examples can be found at:
 [README-Samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventgrid/azure-messaging-eventgrid/src/samples/java/README.md
 [README]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventgrid/azure-messaging-eventgrid/README.md
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%eventgrid%2Fazure-messaging-eventgrid%2Fmigration-guide.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventgrid%2Fazure-messaging-eventgrid%2Fmigration-guide.png)
