@@ -1,7 +1,7 @@
 package com.azure.iot.modelsrepository.implementation.models;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -11,14 +11,15 @@ public class ModelMetadata {
     private String id;
     private List<String> extend;
     private List<String> componentSchemas;
-    private LinkedHashSet<String> dependencies;
+    private List<String> dependencies;
 
     public ModelMetadata(String id, List<String> extend, List<String> componentSchemas) {
         this.id = id;
         this.extend = extend;
         this.componentSchemas = componentSchemas;
-        this.dependencies = new LinkedHashSet<>(extend);
-        this.dependencies.addAll(componentSchemas);
+        HashSet<String> mergedList = new HashSet<>(extend);
+        mergedList.addAll(componentSchemas);
+        this.dependencies = new ArrayList<>(mergedList);
     }
 
     public String getId() {
@@ -33,9 +34,7 @@ public class ModelMetadata {
         return this.componentSchemas;
     }
 
-    public ArrayList<String> getDependencies() {
-        ArrayList<String> all = new ArrayList<>(extend);
-        all.addAll(componentSchemas);
-        return all;
+    public List<String> getDependencies() {
+        return this.dependencies;
     }
 }

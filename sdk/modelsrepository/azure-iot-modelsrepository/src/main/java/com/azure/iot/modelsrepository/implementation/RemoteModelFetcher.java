@@ -22,7 +22,7 @@ class RemoteModelFetcher implements ModelFetcher {
     }
 
     @Override
-    public Mono<FetchResult> FetchAsync(String dtmi, URI repositoryUri, DependencyResolutionOptions resolutionOption, Context context) throws Exception {
+    public Mono<FetchResult> fetchAsync(String dtmi, URI repositoryUri, DependencyResolutionOptions resolutionOption, Context context) throws Exception {
         Queue<String> work = new LinkedList<>();
 
         if (resolutionOption == DependencyResolutionOptions.TRY_FROM_EXPANDED) {

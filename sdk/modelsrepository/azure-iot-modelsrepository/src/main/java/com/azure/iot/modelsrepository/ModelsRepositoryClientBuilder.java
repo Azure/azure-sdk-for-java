@@ -23,6 +23,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JsonSerializer;
 
+import java.net.URISyntaxException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -148,7 +149,7 @@ public final class ModelsRepositoryClientBuilder {
      *
      * @return the created synchronous ModelsRepotioryClient
      */
-    public ModelsRepotioryClient buildClient() {
+    public ModelsRepotioryClient buildClient() throws URISyntaxException {
         return new ModelsRepotioryClient(buildAsyncClient());
     }
 
@@ -157,7 +158,7 @@ public final class ModelsRepositoryClientBuilder {
      *
      * @return the created asynchronous ModelsRepositoryAsyncClient
      */
-    public ModelsRepositoryAsyncClient buildAsyncClient() {
+    public ModelsRepositoryAsyncClient buildAsyncClient() throws URISyntaxException {
         Configuration buildConfiguration = this.configuration;
         if (buildConfiguration == null)
         {

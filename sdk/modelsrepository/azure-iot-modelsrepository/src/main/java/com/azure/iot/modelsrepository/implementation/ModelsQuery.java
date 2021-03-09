@@ -38,7 +38,7 @@ public class ModelsQuery {
             JsonNode id = root.get("@id");
 
             if (id != null && id.isTextual()) {
-                return id.toString();
+                return id.textValue();
             }
         }
 
@@ -59,14 +59,14 @@ public class ModelsQuery {
         }
 
         if (extend.isTextual()) {
-            dependencies.add(extend.toString());
+            dependencies.add(extend.textValue());
         } else if (isOfDtdlType(extend, "Interface")) {
             ModelMetadata metadata = parseInterface(extend);
             dependencies.addAll(metadata.getDependencies());
         } else if (extend.isArray()) {
             for (JsonNode extendNode : extend) {
                 if (extendNode.isTextual()) {
-                    dependencies.add(extendNode.toString());
+                    dependencies.add(extendNode.textValue());
                 } else if (isOfDtdlType(extendNode, "Interface")) {
                     ModelMetadata metadata = parseInterface(extendNode);
                     dependencies.addAll(metadata.getDependencies());
@@ -102,14 +102,14 @@ public class ModelsQuery {
             JsonNode componentSchema = root.get("schema");
             if (componentSchema != null) {
                 if (componentSchema.isTextual()) {
-                    dependencies.add(componentSchema.toString());
+                    dependencies.add(componentSchema.textValue());
                 } else if (isOfDtdlType(componentSchema, "Interface")) {
                     ModelMetadata metadata = parseInterface(componentSchema);
                     dependencies.addAll(metadata.getDependencies());
                 } else if (componentSchema.isArray()) {
                     for (JsonNode componentNode : componentSchema) {
                         if (componentNode.isTextual()) {
-                            dependencies.add(componentNode.toString());
+                            dependencies.add(componentNode.textValue());
                         } else if (isOfDtdlType(componentNode, "Interface")) {
                             ModelMetadata metadata = parseInterface(componentNode);
                             dependencies.addAll(metadata.getDependencies());
@@ -126,7 +126,7 @@ public class ModelsQuery {
         if (root.isObject()) {
             JsonNode objectType = root.get("@type");
             if (objectType != null) {
-                return objectType.isTextual() && objectType.toString().equals(objectTypeString);
+                return objectType.isTextual() && objectType.textValue().equals(objectTypeString);
             }
         }
 

@@ -26,7 +26,7 @@ class LocalModelFetcher implements ModelFetcher {
     }
 
     @Override
-    public Mono<FetchResult> FetchAsync(String dtmi, URI repositoryUri, DependencyResolutionOptions resolutionOption, Context context) throws IOException {
+    public Mono<FetchResult> fetchAsync(String dtmi, URI repositoryUri, DependencyResolutionOptions resolutionOption, Context context) throws IOException {
         Queue<String> work = new LinkedList<>();
 
         if (resolutionOption == DependencyResolutionOptions.TRY_FROM_EXPANDED) {

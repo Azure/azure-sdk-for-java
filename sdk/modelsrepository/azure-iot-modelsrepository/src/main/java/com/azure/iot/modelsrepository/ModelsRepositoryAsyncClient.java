@@ -16,6 +16,7 @@ import com.azure.iot.modelsrepository.implementation.ModelsRepositoryAPIImplBuil
 import com.azure.iot.modelsrepository.implementation.RepositoryHandler;
 import reactor.core.publisher.Mono;
 
+import java.net.URISyntaxException;
 import java.util.Map;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -47,7 +48,7 @@ public final class ModelsRepositoryAsyncClient {
         HttpPipeline pipeline,
         ModelsRepositoryServiceVersion serviceVersion,
         DependencyResolutionOptions dependencyResolutionOption,
-        JsonSerializer jsonSerializer) {
+        JsonSerializer jsonSerializer) throws URISyntaxException {
 
         JacksonAdapter jacksonAdapter = new JacksonAdapter();
         this.serviceVersion = serviceVersion;
@@ -108,7 +109,7 @@ public final class ModelsRepositoryAsyncClient {
 
     private Mono<Map<String, String>> GetModels(String dtmi, DependencyResolutionOptions dependencyResolutionOption, Context context) throws Exception {
         context.addData(AZ_TRACING_NAMESPACE_KEY, MODELS_REPOSITORY_TRACING_NAMESPACE_VALUE);
-        return repositoryHandler.ProcessAsync(dtmi, dependencyResolutionOption, context);
+        return repositoryHandler.processAsync(dtmi, dependencyResolutionOption, context);
     }
 
     /**
@@ -138,6 +139,6 @@ public final class ModelsRepositoryAsyncClient {
 
     private Mono<Map<String, String>> GetModels(Iterable<String> dtmis, DependencyResolutionOptions dependencyResolutionOption, Context context) {
         context.addData(AZ_TRACING_NAMESPACE_KEY, MODELS_REPOSITORY_TRACING_NAMESPACE_VALUE);
-        return repositoryHandler.ProcessAsync(dtmis, dependencyResolutionOption, context);
+        return repositoryHandler.processAsync(dtmis, dependencyResolutionOption, context);
     }
 }
