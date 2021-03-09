@@ -136,7 +136,7 @@ The `getChatThread` method retrieves a thread from the service.
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L97-L98 -->
 ```Java
 String chatThreadId = "Id";
-ChatThread chatThread = chatClient.getChatThread(chatThreadId);
+ChatThread chatThreadProperties = chatClient.getChatThread(chatThreadId);
 ```
 
 #### Delete a thread

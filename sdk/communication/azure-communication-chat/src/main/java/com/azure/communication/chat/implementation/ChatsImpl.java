@@ -4,12 +4,12 @@
 
 package com.azure.communication.chat.implementation;
 
-import com.azure.communication.chat.implementation.models.ChatThread;
+import com.azure.communication.chat.implementation.models.ChatThreadProperties;
 import com.azure.communication.chat.implementation.models.ChatThreadsItemCollection;
+import com.azure.communication.chat.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.chat.implementation.models.CreateChatThreadOptions;
 import com.azure.communication.chat.implementation.models.CreateChatThreadResult;
 import com.azure.communication.chat.models.ChatThreadItem;
-import com.azure.communication.chat.models.CommunicationErrorResponseException;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -65,7 +65,7 @@ public final class ChatsImpl {
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<CreateChatThreadResult>> createChatThread(
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("repeatability-Request-Id") String repeatabilityRequestId,
+                @HeaderParam("idempotency-token") String idempotencyToken,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") CreateChatThreadOptions createChatThreadRequest,
                 @HeaderParam("Accept") String accept,
@@ -85,7 +85,7 @@ public final class ChatsImpl {
         @Get("/chat/threads/{chatThreadId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<ChatThread>> getChatThread(
+        Mono<Response<ChatThreadProperties>> getChatThreadProperties(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("chatThreadId") String chatThreadId,
                 @QueryParam("api-version") String apiVersion,
@@ -116,11 +116,11 @@ public final class ChatsImpl {
      * Creates a chat thread.
      *
      * @param createChatThreadRequest Request payload for creating a chat thread.
-     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, that the
-     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
-     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
-     *     is an opaque string representing a client-generated, globally unique for all time, identifier for the
-     *     request. It is recommended to use version 4 (random) UUIDs.
+     * @param idempotencyToken If specified, the client directs that the request is repeatable; that is, that the client
+     *     can make the request multiple times with the same Idempotency-Token and get back an appropriate response
+     *     without the server executing the request multiple times. The value of the Idempotency-Token is an opaque
+     *     string representing a client-generated, globally unique for all time, identifier for the request. It is
+     *     recommended to use version 4 (random) UUIDs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -128,13 +128,13 @@ public final class ChatsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CreateChatThreadResult>> createChatThreadWithResponseAsync(
-            CreateChatThreadOptions createChatThreadRequest, String repeatabilityRequestId) {
+            CreateChatThreadOptions createChatThreadRequest, String idempotencyToken) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createChatThread(
                                 this.client.getEndpoint(),
-                                repeatabilityRequestId,
+                                idempotencyToken,
                                 this.client.getApiVersion(),
                                 createChatThreadRequest,
                                 accept,
@@ -145,11 +145,11 @@ public final class ChatsImpl {
      * Creates a chat thread.
      *
      * @param createChatThreadRequest Request payload for creating a chat thread.
-     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, that the
-     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
-     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
-     *     is an opaque string representing a client-generated, globally unique for all time, identifier for the
-     *     request. It is recommended to use version 4 (random) UUIDs.
+     * @param idempotencyToken If specified, the client directs that the request is repeatable; that is, that the client
+     *     can make the request multiple times with the same Idempotency-Token and get back an appropriate response
+     *     without the server executing the request multiple times. The value of the Idempotency-Token is an opaque
+     *     string representing a client-generated, globally unique for all time, identifier for the request. It is
+     *     recommended to use version 4 (random) UUIDs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -158,11 +158,11 @@ public final class ChatsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CreateChatThreadResult>> createChatThreadWithResponseAsync(
-            CreateChatThreadOptions createChatThreadRequest, String repeatabilityRequestId, Context context) {
+            CreateChatThreadOptions createChatThreadRequest, String idempotencyToken, Context context) {
         final String accept = "application/json";
         return service.createChatThread(
                 this.client.getEndpoint(),
-                repeatabilityRequestId,
+                idempotencyToken,
                 this.client.getApiVersion(),
                 createChatThreadRequest,
                 accept,
@@ -173,11 +173,11 @@ public final class ChatsImpl {
      * Creates a chat thread.
      *
      * @param createChatThreadRequest Request payload for creating a chat thread.
-     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, that the
-     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
-     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
-     *     is an opaque string representing a client-generated, globally unique for all time, identifier for the
-     *     request. It is recommended to use version 4 (random) UUIDs.
+     * @param idempotencyToken If specified, the client directs that the request is repeatable; that is, that the client
+     *     can make the request multiple times with the same Idempotency-Token and get back an appropriate response
+     *     without the server executing the request multiple times. The value of the Idempotency-Token is an opaque
+     *     string representing a client-generated, globally unique for all time, identifier for the request. It is
+     *     recommended to use version 4 (random) UUIDs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -185,8 +185,8 @@ public final class ChatsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateChatThreadResult> createChatThreadAsync(
-            CreateChatThreadOptions createChatThreadRequest, String repeatabilityRequestId) {
-        return createChatThreadWithResponseAsync(createChatThreadRequest, repeatabilityRequestId)
+            CreateChatThreadOptions createChatThreadRequest, String idempotencyToken) {
+        return createChatThreadWithResponseAsync(createChatThreadRequest, idempotencyToken)
                 .flatMap(
                         (Response<CreateChatThreadResult> res) -> {
                             if (res.getValue() != null) {
@@ -208,8 +208,8 @@ public final class ChatsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateChatThreadResult> createChatThreadAsync(CreateChatThreadOptions createChatThreadRequest) {
-        final String repeatabilityRequestId = null;
-        return createChatThreadWithResponseAsync(createChatThreadRequest, repeatabilityRequestId)
+        final String idempotencyToken = null;
+        return createChatThreadWithResponseAsync(createChatThreadRequest, idempotencyToken)
                 .flatMap(
                         (Response<CreateChatThreadResult> res) -> {
                             if (res.getValue() != null) {
@@ -224,11 +224,11 @@ public final class ChatsImpl {
      * Creates a chat thread.
      *
      * @param createChatThreadRequest Request payload for creating a chat thread.
-     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, that the
-     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
-     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
-     *     is an opaque string representing a client-generated, globally unique for all time, identifier for the
-     *     request. It is recommended to use version 4 (random) UUIDs.
+     * @param idempotencyToken If specified, the client directs that the request is repeatable; that is, that the client
+     *     can make the request multiple times with the same Idempotency-Token and get back an appropriate response
+     *     without the server executing the request multiple times. The value of the Idempotency-Token is an opaque
+     *     string representing a client-generated, globally unique for all time, identifier for the request. It is
+     *     recommended to use version 4 (random) UUIDs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -237,8 +237,8 @@ public final class ChatsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateChatThreadResult> createChatThreadAsync(
-            CreateChatThreadOptions createChatThreadRequest, String repeatabilityRequestId, Context context) {
-        return createChatThreadWithResponseAsync(createChatThreadRequest, repeatabilityRequestId, context)
+            CreateChatThreadOptions createChatThreadRequest, String idempotencyToken, Context context) {
+        return createChatThreadWithResponseAsync(createChatThreadRequest, idempotencyToken, context)
                 .flatMap(
                         (Response<CreateChatThreadResult> res) -> {
                             if (res.getValue() != null) {
@@ -253,11 +253,11 @@ public final class ChatsImpl {
      * Creates a chat thread.
      *
      * @param createChatThreadRequest Request payload for creating a chat thread.
-     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, that the
-     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
-     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
-     *     is an opaque string representing a client-generated, globally unique for all time, identifier for the
-     *     request. It is recommended to use version 4 (random) UUIDs.
+     * @param idempotencyToken If specified, the client directs that the request is repeatable; that is, that the client
+     *     can make the request multiple times with the same Idempotency-Token and get back an appropriate response
+     *     without the server executing the request multiple times. The value of the Idempotency-Token is an opaque
+     *     string representing a client-generated, globally unique for all time, identifier for the request. It is
+     *     recommended to use version 4 (random) UUIDs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -265,8 +265,8 @@ public final class ChatsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreateChatThreadResult createChatThread(
-            CreateChatThreadOptions createChatThreadRequest, String repeatabilityRequestId) {
-        return createChatThreadAsync(createChatThreadRequest, repeatabilityRequestId).block();
+            CreateChatThreadOptions createChatThreadRequest, String idempotencyToken) {
+        return createChatThreadAsync(createChatThreadRequest, idempotencyToken).block();
     }
 
     /**
@@ -280,19 +280,19 @@ public final class ChatsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreateChatThreadResult createChatThread(CreateChatThreadOptions createChatThreadRequest) {
-        final String repeatabilityRequestId = null;
-        return createChatThreadAsync(createChatThreadRequest, repeatabilityRequestId).block();
+        final String idempotencyToken = null;
+        return createChatThreadAsync(createChatThreadRequest, idempotencyToken).block();
     }
 
     /**
      * Creates a chat thread.
      *
      * @param createChatThreadRequest Request payload for creating a chat thread.
-     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, that the
-     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
-     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
-     *     is an opaque string representing a client-generated, globally unique for all time, identifier for the
-     *     request. It is recommended to use version 4 (random) UUIDs.
+     * @param idempotencyToken If specified, the client directs that the request is repeatable; that is, that the client
+     *     can make the request multiple times with the same Idempotency-Token and get back an appropriate response
+     *     without the server executing the request multiple times. The value of the Idempotency-Token is an opaque
+     *     string representing a client-generated, globally unique for all time, identifier for the request. It is
+     *     recommended to use version 4 (random) UUIDs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -301,8 +301,8 @@ public final class ChatsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CreateChatThreadResult> createChatThreadWithResponse(
-            CreateChatThreadOptions createChatThreadRequest, String repeatabilityRequestId, Context context) {
-        return createChatThreadWithResponseAsync(createChatThreadRequest, repeatabilityRequestId, context).block();
+            CreateChatThreadOptions createChatThreadRequest, String idempotencyToken, Context context) {
+        return createChatThreadWithResponseAsync(createChatThreadRequest, idempotencyToken, context).block();
     }
 
     /**
@@ -481,11 +481,11 @@ public final class ChatsImpl {
      * @return a chat thread.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ChatThread>> getChatThreadWithResponseAsync(String chatThreadId) {
+    public Mono<Response<ChatThreadProperties>> getChatThreadPropertiesWithResponseAsync(String chatThreadId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getChatThread(
+                        service.getChatThreadProperties(
                                 this.client.getEndpoint(), chatThreadId, this.client.getApiVersion(), accept, context));
     }
 
@@ -500,9 +500,10 @@ public final class ChatsImpl {
      * @return a chat thread.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ChatThread>> getChatThreadWithResponseAsync(String chatThreadId, Context context) {
+    public Mono<Response<ChatThreadProperties>> getChatThreadPropertiesWithResponseAsync(
+            String chatThreadId, Context context) {
         final String accept = "application/json";
-        return service.getChatThread(
+        return service.getChatThreadProperties(
                 this.client.getEndpoint(), chatThreadId, this.client.getApiVersion(), accept, context);
     }
 
@@ -516,10 +517,10 @@ public final class ChatsImpl {
      * @return a chat thread.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ChatThread> getChatThreadAsync(String chatThreadId) {
-        return getChatThreadWithResponseAsync(chatThreadId)
+    public Mono<ChatThreadProperties> getChatThreadPropertiesAsync(String chatThreadId) {
+        return getChatThreadPropertiesWithResponseAsync(chatThreadId)
                 .flatMap(
-                        (Response<ChatThread> res) -> {
+                        (Response<ChatThreadProperties> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -539,10 +540,10 @@ public final class ChatsImpl {
      * @return a chat thread.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ChatThread> getChatThreadAsync(String chatThreadId, Context context) {
-        return getChatThreadWithResponseAsync(chatThreadId, context)
+    public Mono<ChatThreadProperties> getChatThreadPropertiesAsync(String chatThreadId, Context context) {
+        return getChatThreadPropertiesWithResponseAsync(chatThreadId, context)
                 .flatMap(
-                        (Response<ChatThread> res) -> {
+                        (Response<ChatThreadProperties> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -561,8 +562,8 @@ public final class ChatsImpl {
      * @return a chat thread.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ChatThread getChatThread(String chatThreadId) {
-        return getChatThreadAsync(chatThreadId).block();
+    public ChatThreadProperties getChatThreadProperties(String chatThreadId) {
+        return getChatThreadPropertiesAsync(chatThreadId).block();
     }
 
     /**
@@ -576,8 +577,8 @@ public final class ChatsImpl {
      * @return a chat thread.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ChatThread> getChatThreadWithResponse(String chatThreadId, Context context) {
-        return getChatThreadWithResponseAsync(chatThreadId, context).block();
+    public Response<ChatThreadProperties> getChatThreadPropertiesWithResponse(String chatThreadId, Context context) {
+        return getChatThreadPropertiesWithResponseAsync(chatThreadId, context).block();
     }
 
     /**

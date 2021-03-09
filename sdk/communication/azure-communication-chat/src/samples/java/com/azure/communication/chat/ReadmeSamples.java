@@ -6,7 +6,7 @@ package com.azure.communication.chat;
 
 import com.azure.communication.chat.models.ChatMessage;
 import com.azure.communication.chat.models.SendChatMessageResult;
-import com.azure.communication.chat.models.ChatThread;
+import com.azure.communication.chat.models.ChatThreadProperties;
 import com.azure.communication.chat.models.ChatParticipant;
 import com.azure.communication.chat.models.ChatMessageReadReceipt;
 import com.azure.communication.chat.models.CreateChatThreadOptions;
@@ -95,7 +95,7 @@ public class ReadmeSamples {
         ChatClient chatClient = createChatClient();
 
         String chatThreadId = "Id";
-        ChatThread chatThread = chatClient.getChatThread(chatThreadId);
+        ChatThreadProperties chatThreadProperties = chatClient.getChatThreadProperties(chatThreadId);
     }
 
     /**

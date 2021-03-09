@@ -23,9 +23,9 @@ public final class CreateChatThreadOptions {
      * Members to be added to the chat thread.
      */
     @JsonProperty(value = "participants", required = true)
-    private List<ChatParticipant> participants;
+    private List<ChatParticipant> participants = new ArrayList<>();
 
-    private String repeatabilityRequestId;
+    private String idempotencyToken;
 
     /**
      * Get the topic property: The chat thread topic.
@@ -68,36 +68,31 @@ public final class CreateChatThreadOptions {
     }
 
     public CreateChatThreadOptions addParticipant(ChatParticipant participant) {
-        if (this.participants == null)
-            this.participants = new ArrayList<ChatParticipant>();
-
         this.participants.add(participant);
-
         return this;
     }
 
     /**
-     * Get the repeatabilityRequestID property
+     * Get the idempotencyToken property
      *
-     * @return the repeatabilityRequestID.
+     * @return the idempotencyToken.
      */
-    public String getRepeatabilityRequestId() {
-        return this.repeatabilityRequestId;
+    public String getIdempotencyToken() {
+        return this.idempotencyToken;
     }
 
     /**
-     * Set the repeatabilityRequestID property: If specified, the client directs that the request is repeatable;
-     * that is, that the client can make the request multiple times with the same Repeatability-Request-ID
-     * and get back an appropriate response without the server executing the request multiple times.
-     * The value of the Repeatability-Request-ID is an opaque string representing a client-generated,
-     * globally unique for all time, identifier for the request.
-     * It is recommended to use version 4 (random) UUIDs.
+     * Set the idempotencyToken property: If specified, the client directs that the request is repeatable;
+     * that is, that the client can make the request multiple times with the same Idempotency-Token and get back an
+     * appropriate response without the server executing the request multiple times.
+     * The value of the Idempotency-Token is an opaque string representing a client-generated,
+     * globally unique for all time, identifier for the request. It is recommended to use version 4 (random) UUIDs.
      *
-     * @param repeatabilityRequestId the repeatabilityRequestID.
+     * @param idempotencyToken the idempotencyToken.
      * @return the CreateChatThreadOptions object itself.
      */
-    public CreateChatThreadOptions setRepeatabilityRequestId(String repeatabilityRequestId) {
-        this.repeatabilityRequestId = repeatabilityRequestId;
+    public CreateChatThreadOptions setIdempotencyToken(String idempotencyToken) {
+        this.idempotencyToken = idempotencyToken;
         return this;
     }
 
@@ -105,6 +100,6 @@ public final class CreateChatThreadOptions {
      * Creates a new instance of CreateChatThreadOptions
      */
     public CreateChatThreadOptions() {
-        this.repeatabilityRequestId = UUID.randomUUID().toString();
+        this.idempotencyToken = UUID.randomUUID().toString();
     }
 }

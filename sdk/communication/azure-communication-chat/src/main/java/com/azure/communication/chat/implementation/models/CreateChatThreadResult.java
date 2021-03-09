@@ -4,7 +4,6 @@
 
 package com.azure.communication.chat.implementation.models;
 
-import com.azure.communication.chat.models.CommunicationError;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,7 +15,7 @@ public final class CreateChatThreadResult {
      * Chat thread.
      */
     @JsonProperty(value = "chatThread")
-    private ChatThread chatThread;
+    private ChatThreadProperties chatThread;
 
     /*
      * The participants that failed to be added to the chat thread.
@@ -29,7 +28,7 @@ public final class CreateChatThreadResult {
      *
      * @return the chatThread value.
      */
-    public ChatThread getChatThread() {
+    public ChatThreadProperties getChatThread() {
         return this.chatThread;
     }
 
@@ -39,7 +38,7 @@ public final class CreateChatThreadResult {
      * @param chatThread the chatThread value to set.
      * @return the CreateChatThreadResult object itself.
      */
-    public CreateChatThreadResult setChatThread(ChatThread chatThread) {
+    public CreateChatThreadResult setChatThread(ChatThreadProperties chatThread) {
         this.chatThread = chatThread;
         return this;
     }

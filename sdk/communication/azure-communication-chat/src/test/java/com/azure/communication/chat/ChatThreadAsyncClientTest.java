@@ -27,7 +27,6 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.http.NoOpHttpClient;
-import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.OffsetDateTime;
@@ -103,7 +102,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         StepVerifier.create(
             chatThreadClient.updateTopic(newTopic)
                 .flatMap(noResp -> {
-                    return client.getChatThread(threadId);
+                    return client.getChatThreadProperties(threadId);
                 })
         )
             .assertNext(chatThread -> {
@@ -123,7 +122,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
             chatThreadClient.updateTopicWithResponse(newTopic)
                 .flatMap(updateThreadResponse -> {
                     assertEquals(204, updateThreadResponse.getStatusCode());
-                    return client.getChatThread(threadId);
+                    return client.getChatThreadProperties(threadId);
                 })
 
         )
@@ -785,7 +784,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         assertEquals(readReceiptList.size(), 2);
         assertNotNull(readReceiptList.get(0).getChatMessageId());
         assertNotNull(readReceiptList.get(0).getReadOn());
-        assertNotNull(readReceiptList.get(0).getSenderCommunicationIdentifier());
+        assertNotNull(readReceiptList.get(0).getSender());
     }
 
     @ParameterizedTest
@@ -808,7 +807,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         assertEquals(readReceiptList.size(), 2);
         assertNotNull(readReceiptList.get(0).getChatMessageId());
         assertNotNull(readReceiptList.get(0).getReadOn());
-        assertNotNull(readReceiptList.get(0).getSenderCommunicationIdentifier());
+        assertNotNull(readReceiptList.get(0).getSender());
     }
 
     @ParameterizedTest

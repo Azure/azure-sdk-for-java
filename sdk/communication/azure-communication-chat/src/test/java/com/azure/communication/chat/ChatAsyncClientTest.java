@@ -80,6 +80,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
                 assertNotNull(result);
                 assertNotNull(result.getChatThread());
                 assertNotNull(result.getChatThread().getId());
+                assertEquals(0, result.getInvalidParticipants().size());
             })
             .verifyComplete();
     }
@@ -114,7 +115,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
                 firstThreadMember.getId(),
                 secondThreadMember.getId()
             )
-            .setRepeatabilityRequestId(uuid.toString());
+            .setIdempotencyToken(uuid.toString());
 
         Response<CreateChatThreadResult> response1 = client.createChatThreadWithResponse(threadRequest).block();
         assertNotNull(response1.getValue());
@@ -134,7 +135,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
             })
             .verifyComplete();
 
-        threadRequest.setRepeatabilityRequestId(UUID.randomUUID().toString());
+        threadRequest.setIdempotencyToken(UUID.randomUUID().toString());
         StepVerifier.create(client.createChatThreadWithResponse(threadRequest))
             .assertNext(response3 -> {
                 CreateChatThreadResult result = response3.getValue();
@@ -235,7 +236,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
                 .flatMap(createChatThreadResult -> {
                     ChatThreadAsyncClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getChatThread().getId());
                     chatThreadClientRef.set(chatThreadClient);
-                    return client.getChatThread(chatThreadClient.getChatThreadId());
+                    return client.getChatThreadProperties(chatThreadClient.getChatThreadId());
                 }))
             .assertNext(chatThread -> {
                 assertEquals(chatThreadClientRef.get().getChatThreadId(), chatThread.getId());
@@ -261,8 +262,8 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
                 return client.getChatThreadWithResponse(chatThreadClient.getChatThreadId());
             }))
             .assertNext(chatThreadResponse -> {
-                ChatThread chatThread = chatThreadResponse.getValue();
-                assertEquals(chatThreadClientRef.get().getChatThreadId(), chatThread.getId());
+                ChatThreadProperties chatThreadProperties = chatThreadResponse.getValue();
+                assertEquals(chatThreadClientRef.get().getChatThreadId(), chatThreadProperties.getId());
             })
             .verifyComplete();
     }
@@ -272,7 +273,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
     public void getNotFoundOnNonExistingChatThread(HttpClient httpClient) {
         // Act & Assert
         setupTest(httpClient, "getNotFoundOnNonExistingChatThread");
-        StepVerifier.create(client.getChatThread("19:00000000000000000000000000000000@thread.v2"))
+        StepVerifier.create(client.getChatThreadProperties("19:00000000000000000000000000000000@thread.v2"))
             .expectErrorMatches(exception ->
                 ((HttpResponseException) exception).getResponse().getStatusCode() == 404
             )
@@ -296,7 +297,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
     public void cannotGetChatThreadWithNullId(HttpClient httpClient) {
         // Act & Assert
         setupTest(httpClient, "cannotGetChatThreadWithNullId");
-        StepVerifier.create(client.getChatThread(null))
+        StepVerifier.create(client.getChatThreadProperties(null))
             .verifyError(NullPointerException.class);
     }
 

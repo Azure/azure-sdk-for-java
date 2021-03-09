@@ -5,16 +5,16 @@
 package com.azure.communication.chat.implementation;
 
 import com.azure.communication.chat.implementation.models.AddChatParticipantsOptions;
+import com.azure.communication.chat.implementation.models.AddChatParticipantsResult;
 import com.azure.communication.chat.implementation.models.ChatMessage;
 import com.azure.communication.chat.implementation.models.ChatMessageReadReceipt;
 import com.azure.communication.chat.implementation.models.ChatMessageReadReceiptsCollection;
 import com.azure.communication.chat.implementation.models.ChatMessagesCollection;
 import com.azure.communication.chat.implementation.models.ChatParticipant;
 import com.azure.communication.chat.implementation.models.ChatParticipantsCollection;
+import com.azure.communication.chat.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.chat.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.chat.implementation.models.SendReadReceiptRequest;
-import com.azure.communication.chat.models.AddChatParticipantsResult;
-import com.azure.communication.chat.models.CommunicationErrorResponseException;
 import com.azure.communication.chat.models.SendChatMessageOptions;
 import com.azure.communication.chat.models.SendChatMessageResult;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
@@ -198,7 +198,7 @@ public final class ChatThreadsImpl {
         @Patch("/chat/threads/{chatThreadId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<Void>> updateChatThread(
+        Mono<Response<Void>> updateChatThreadProperties(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("chatThreadId") String chatThreadId,
                 @QueryParam("api-version") String apiVersion,
@@ -1734,12 +1734,12 @@ public final class ChatThreadsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateChatThreadWithResponseAsync(
+    public Mono<Response<Void>> updateChatThreadPropertiesWithResponseAsync(
             String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.updateChatThread(
+                        service.updateChatThreadProperties(
                                 this.client.getEndpoint(),
                                 chatThreadId,
                                 this.client.getApiVersion(),
@@ -1760,10 +1760,10 @@ public final class ChatThreadsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateChatThreadWithResponseAsync(
+    public Mono<Response<Void>> updateChatThreadPropertiesWithResponseAsync(
             String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest, Context context) {
         final String accept = "application/json";
-        return service.updateChatThread(
+        return service.updateChatThreadProperties(
                 this.client.getEndpoint(),
                 chatThreadId,
                 this.client.getApiVersion(),
@@ -1783,8 +1783,9 @@ public final class ChatThreadsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateChatThreadAsync(String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest) {
-        return updateChatThreadWithResponseAsync(chatThreadId, updateChatThreadRequest)
+    public Mono<Void> updateChatThreadPropertiesAsync(
+            String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest) {
+        return updateChatThreadPropertiesWithResponseAsync(chatThreadId, updateChatThreadRequest)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1800,9 +1801,9 @@ public final class ChatThreadsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateChatThreadAsync(
+    public Mono<Void> updateChatThreadPropertiesAsync(
             String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest, Context context) {
-        return updateChatThreadWithResponseAsync(chatThreadId, updateChatThreadRequest, context)
+        return updateChatThreadPropertiesWithResponseAsync(chatThreadId, updateChatThreadRequest, context)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1816,8 +1817,8 @@ public final class ChatThreadsImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateChatThread(String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest) {
-        updateChatThreadAsync(chatThreadId, updateChatThreadRequest).block();
+    public void updateChatThreadProperties(String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest) {
+        updateChatThreadPropertiesAsync(chatThreadId, updateChatThreadRequest).block();
     }
 
     /**
@@ -1832,9 +1833,9 @@ public final class ChatThreadsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateChatThreadWithResponse(
+    public Response<Void> updateChatThreadPropertiesWithResponse(
             String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest, Context context) {
-        return updateChatThreadWithResponseAsync(chatThreadId, updateChatThreadRequest, context).block();
+        return updateChatThreadPropertiesWithResponseAsync(chatThreadId, updateChatThreadRequest, context).block();
     }
 
     /**

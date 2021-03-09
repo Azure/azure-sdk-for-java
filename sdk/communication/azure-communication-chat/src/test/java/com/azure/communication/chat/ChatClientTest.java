@@ -114,8 +114,8 @@ public class ChatClientTest extends ChatClientTestBase {
         ChatThreadClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getChatThread().getId());
 
         // Action & Assert
-        ChatThread chatThread = client.getChatThread(chatThreadClient.getChatThreadId());
-        assertEquals(chatThreadClient.getChatThreadId(), chatThread.getId());
+        ChatThreadProperties chatThreadProperties = client.getChatThreadProperties(chatThreadClient.getChatThreadId());
+        assertEquals(chatThreadClient.getChatThreadId(), chatThreadProperties.getId());
     }
 
     @ParameterizedTest
@@ -130,8 +130,8 @@ public class ChatClientTest extends ChatClientTestBase {
         ChatThreadClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getChatThread().getId());
 
         // Action & Assert
-        ChatThread chatThread = client.getChatThreadWithResponse(chatThreadClient.getChatThreadId(), Context.NONE).getValue();
-        assertEquals(chatThreadClient.getChatThreadId(), chatThread.getId());
+        ChatThreadProperties chatThreadProperties = client.getChatThreadWithResponse(chatThreadClient.getChatThreadId(), Context.NONE).getValue();
+        assertEquals(chatThreadClient.getChatThreadId(), chatThreadProperties.getId());
     }
 
     @ParameterizedTest
@@ -142,7 +142,7 @@ public class ChatClientTest extends ChatClientTestBase {
 
         // Action & Assert
         assertRestException(
-            () -> client.getChatThread("19:00000000000000000000000000000000@thread.v2"), 404);
+            () -> client.getChatThreadProperties("19:00000000000000000000000000000000@thread.v2"), 404);
     }
 
     @ParameterizedTest

@@ -101,8 +101,8 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         // Action & Assert
         chatThreadClient.updateTopic(newTopic);
 
-        ChatThread chatThread = client.getChatThread(threadId);
-        assertEquals(chatThread.getTopic(), newTopic);
+        ChatThreadProperties chatThreadProperties = client.getChatThreadProperties(threadId);
+        assertEquals(chatThreadProperties.getTopic(), newTopic);
     }
 
     @ParameterizedTest
@@ -115,8 +115,8 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         // Action & Assert
         chatThreadClient.updateTopicWithResponse(newTopic, Context.NONE);
 
-        ChatThread chatThread = client.getChatThread(threadId);
-        assertEquals(chatThread.getTopic(), newTopic);
+        ChatThreadProperties chatThreadProperties = client.getChatThreadProperties(threadId);
+        assertEquals(chatThreadProperties.getTopic(), newTopic);
     }
 
     @ParameterizedTest
@@ -548,7 +548,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         assertEquals(readReceiptList.size(), 2);
         assertNotNull(readReceiptList.get(0).getChatMessageId());
         assertNotNull(readReceiptList.get(0).getReadOn());
-        assertNotNull(readReceiptList.get(0).getSenderCommunicationIdentifier());
+        assertNotNull(readReceiptList.get(0).getSender());
     }
 
     @ParameterizedTest
@@ -572,7 +572,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         assertEquals(readReceiptList.size(), 2);
         assertNotNull(readReceiptList.get(0).getChatMessageId());
         assertNotNull(readReceiptList.get(0).getReadOn());
-        assertNotNull(readReceiptList.get(0).getSenderCommunicationIdentifier());
+        assertNotNull(readReceiptList.get(0).getSender());
     }
 
     @ParameterizedTest

@@ -4,6 +4,7 @@ package com.azure.communication.chat;
 
 import com.azure.communication.chat.implementation.ChatThreadsImpl;
 
+import com.azure.communication.chat.implementation.converters.AddChatParticipantsResultConverter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -113,14 +114,14 @@ public final class ChatThreadAsyncClient {
     /**
      * Updates a thread's topic.
      *
-     * @param topic The new topic.
+     * @param topic   The new topic.
      * @param context The context to associate with this operation.
      * @return the completion.
      */
     Mono<Response<Void>> updateTopic(String topic, Context context) {
         context = context == null ? Context.NONE : context;
 
-        return this.chatThreadClient.updateChatThreadWithResponseAsync(
+        return this.chatThreadClient.updateChatThreadPropertiesWithResponseAsync(
             chatThreadId,
             new UpdateChatThreadOptions()
                 .setTopic(topic),
@@ -203,13 +204,15 @@ public final class ChatThreadAsyncClient {
      * Adds participants to a thread. If participants already exist, no change occurs.
      *
      * @param participants Collection of participants to add.
-     * @param context The context to associate with this operation.
+     * @param context      The context to associate with this operation.
      * @return the result.
      */
     Mono<Response<AddChatParticipantsResult>> addParticipants(Iterable<ChatParticipant> participants, Context context) {
         context = context == null ? Context.NONE : context;
         return this.chatThreadClient.addChatParticipantsWithResponseAsync(
-            chatThreadId, AddChatParticipantsOptionsConverter.convert(participants), context);
+            chatThreadId, AddChatParticipantsOptionsConverter.convert(participants), context)
+            .map(result -> new SimpleResponse<AddChatParticipantsResult>(
+                result, AddChatParticipantsResultConverter.convert(result.getValue())));
     }
 
     /**
@@ -254,7 +257,7 @@ public final class ChatThreadAsyncClient {
      * Remove a participant from a thread.
      *
      * @param identifier Identity of the participant to remove from the thread.
-     * @param context The context to associate with this operation.
+     * @param context    The context to associate with this operation.
      * @return the completion.
      */
     Mono<Response<Void>> removeParticipant(CommunicationIdentifier identifier, Context context) {
@@ -278,7 +281,7 @@ public final class ChatThreadAsyncClient {
     /**
      * Gets the participants of a thread.
      *
-     * @param context The context to associate with this operation.
+     * @param context                 The context to associate with this operation.
      * @param listParticipantsOptions The request options.
      * @return the participants of a thread.
      */
@@ -289,14 +292,14 @@ public final class ChatThreadAsyncClient {
 
         try {
             return pagedFluxConvert(new PagedFlux<>(
-                () ->
-                    this.chatThreadClient.listChatParticipantsSinglePageAsync(
-                        chatThreadId,
-                        serviceListParticipantsOptions.getMaxPageSize(),
-                        serviceListParticipantsOptions.getSkip(),
-                        serviceContext),
-                nextLink ->
-                    this.chatThreadClient.listChatParticipantsNextSinglePageAsync(nextLink, serviceContext)),
+                    () ->
+                        this.chatThreadClient.listChatParticipantsSinglePageAsync(
+                            chatThreadId,
+                            serviceListParticipantsOptions.getMaxPageSize(),
+                            serviceListParticipantsOptions.getSkip(),
+                            serviceContext),
+                    nextLink ->
+                        this.chatThreadClient.listChatParticipantsNextSinglePageAsync(nextLink, serviceContext)),
                 f -> ChatParticipantConverter.convert(f));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
@@ -351,8 +354,8 @@ public final class ChatThreadAsyncClient {
 
         return this.chatThreadClient.sendChatMessageWithResponseAsync(
             chatThreadId, options, context).map(
-                result -> new SimpleResponse<SendChatMessageResult>(
-                    result, (result.getValue())));
+            result -> new SimpleResponse<SendChatMessageResult>(
+                result, (result.getValue())));
     }
 
     /**
@@ -401,7 +404,7 @@ public final class ChatThreadAsyncClient {
      * Gets a message by id.
      *
      * @param chatMessageId The message id.
-     * @param context The context to associate with this operation.
+     * @param context       The context to associate with this operation.
      * @return a message by id.
      */
     Mono<Response<ChatMessage>> getMessage(String chatMessageId, Context context) {
@@ -422,10 +425,10 @@ public final class ChatThreadAsyncClient {
         ListChatMessagesOptions listMessagesOptions = new ListChatMessagesOptions();
         try {
             return pagedFluxConvert(new PagedFlux<>(
-                () -> withContext(context ->  this.chatThreadClient.listChatMessagesSinglePageAsync(
-                    chatThreadId, listMessagesOptions.getMaxPageSize(), listMessagesOptions.getStartTime(), context)),
-                nextLink -> withContext(context -> this.chatThreadClient.listChatMessagesNextSinglePageAsync(
-                    nextLink, context))),
+                    () -> withContext(context -> this.chatThreadClient.listChatMessagesSinglePageAsync(
+                        chatThreadId, listMessagesOptions.getMaxPageSize(), listMessagesOptions.getStartTime(), context)),
+                    nextLink -> withContext(context -> this.chatThreadClient.listChatMessagesNextSinglePageAsync(
+                        nextLink, context))),
                 f -> ChatMessageConverter.convert(f));
         } catch (RuntimeException ex) {
 
@@ -446,13 +449,13 @@ public final class ChatThreadAsyncClient {
 
         try {
             return pagedFluxConvert(new PagedFlux<>(
-                () -> withContext(context ->  this.chatThreadClient.listChatMessagesSinglePageAsync(
-                    chatThreadId,
-                    serviceListMessagesOptions.getMaxPageSize(),
-                    serviceListMessagesOptions.getStartTime(),
-                    context)),
-                nextLink -> withContext(context -> this.chatThreadClient.listChatMessagesNextSinglePageAsync(
-                    nextLink, context))),
+                    () -> withContext(context -> this.chatThreadClient.listChatMessagesSinglePageAsync(
+                        chatThreadId,
+                        serviceListMessagesOptions.getMaxPageSize(),
+                        serviceListMessagesOptions.getStartTime(),
+                        context)),
+                    nextLink -> withContext(context -> this.chatThreadClient.listChatMessagesNextSinglePageAsync(
+                        nextLink, context))),
                 f -> ChatMessageConverter.convert(f));
         } catch (RuntimeException ex) {
 
@@ -464,7 +467,7 @@ public final class ChatThreadAsyncClient {
      * Gets a list of messages from a thread.
      *
      * @param listMessagesOptions The request options.
-     * @param context The context to associate with this operation.
+     * @param context             The context to associate with this operation.
      * @return a paged list of messages from a thread.
      */
     PagedFlux<ChatMessage> listMessages(ListChatMessagesOptions listMessagesOptions, Context context) {
@@ -474,13 +477,13 @@ public final class ChatThreadAsyncClient {
 
         try {
             return pagedFluxConvert(new PagedFlux<>(
-                () ->  this.chatThreadClient.listChatMessagesSinglePageAsync(
-                    chatThreadId,
-                    serviceListMessagesOptions.getMaxPageSize(),
-                    serviceListMessagesOptions.getStartTime(),
-                    serviceContext),
-                nextLink -> this.chatThreadClient.listChatMessagesNextSinglePageAsync(
-                    nextLink, serviceContext)),
+                    () -> this.chatThreadClient.listChatMessagesSinglePageAsync(
+                        chatThreadId,
+                        serviceListMessagesOptions.getMaxPageSize(),
+                        serviceListMessagesOptions.getStartTime(),
+                        serviceContext),
+                    nextLink -> this.chatThreadClient.listChatMessagesNextSinglePageAsync(
+                        nextLink, serviceContext)),
                 f -> ChatMessageConverter.convert(f));
         } catch (RuntimeException ex) {
 
@@ -492,7 +495,7 @@ public final class ChatThreadAsyncClient {
      * Updates a message.
      *
      * @param chatMessageId The message id.
-     * @param options Options for updating the message.
+     * @param options       Options for updating the message.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -514,7 +517,7 @@ public final class ChatThreadAsyncClient {
      * Updates a message.
      *
      * @param chatMessageId The message id.
-     * @param options Options for updating the message.
+     * @param options       Options for updating the message.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -533,8 +536,8 @@ public final class ChatThreadAsyncClient {
      * Updates a message.
      *
      * @param chatMessageId The message id.
-     * @param options Options for updating the message.
-     * @param context The context to associate with this operation.
+     * @param options       Options for updating the message.
+     * @param context       The context to associate with this operation.
      * @return the completion.
      */
     Mono<Response<Void>> updateMessage(String chatMessageId, UpdateChatMessageOptions options, Context context) {
@@ -584,7 +587,7 @@ public final class ChatThreadAsyncClient {
      * Deletes a message.
      *
      * @param chatMessageId The message id.
-     * @param context The context to associate with this operation.
+     * @param context       The context to associate with this operation.
      * @return the completion.
      */
     Mono<Response<Void>> deleteMessage(String chatMessageId, Context context) {
@@ -679,7 +682,7 @@ public final class ChatThreadAsyncClient {
      * Posts a read receipt event to a thread, on behalf of a user.
      *
      * @param chatMessageId The id of the chat message that was read.
-     * @param context The context to associate with this operation.
+     * @param context       The context to associate with this operation.
      * @return the completion.
      */
     Mono<Response<Void>> sendReadReceipt(String chatMessageId, Context context) {
@@ -705,8 +708,7 @@ public final class ChatThreadAsyncClient {
      * Gets read receipts for a thread.
      *
      * @param listReadReceiptOptions The additional options for this operation.
-     * @param context The context to associate with this operation.
-     *
+     * @param context                The context to associate with this operation.
      * @return read receipts for a thread.
      */
     PagedFlux<ChatMessageReadReceipt> listReadReceipts(ListReadReceiptOptions listReadReceiptOptions, Context context) {
@@ -716,13 +718,13 @@ public final class ChatThreadAsyncClient {
 
         try {
             return pagedFluxConvert(new PagedFlux<>(
-                () -> this.chatThreadClient.listChatReadReceiptsSinglePageAsync(
-                    chatThreadId,
-                    serviceListReadReceiptOptions.getMaxPageSize(),
-                    serviceListReadReceiptOptions.getSkip(),
-                    serviceContext),
-                nextLink -> this.chatThreadClient.listChatReadReceiptsNextSinglePageAsync(
-                    nextLink, serviceContext)),
+                    () -> this.chatThreadClient.listChatReadReceiptsSinglePageAsync(
+                        chatThreadId,
+                        serviceListReadReceiptOptions.getMaxPageSize(),
+                        serviceListReadReceiptOptions.getSkip(),
+                        serviceContext),
+                    nextLink -> this.chatThreadClient.listChatReadReceiptsNextSinglePageAsync(
+                        nextLink, serviceContext)),
                 f -> ChatMessageReadReceiptConverter.convert(f));
         } catch (RuntimeException ex) {
 
@@ -733,22 +735,22 @@ public final class ChatThreadAsyncClient {
     private <T1, T2> PagedFlux<T1> pagedFluxConvert(PagedFlux<T2> originalPagedFlux, Function<T2, T1> func) {
 
         final Function<PagedResponse<T2>,
-                PagedResponse<T1>> responseMapper
+            PagedResponse<T1>> responseMapper
             = response -> new PagedResponseBase<Void, T1>(response.getRequest(),
-                response.getStatusCode(),
-                response.getHeaders(),
-                response.getValue()
-                    .stream()
-                    .map(value -> func.apply(value)).collect(Collectors.toList()),
-                response.getContinuationToken(),
-                null);
+            response.getStatusCode(),
+            response.getHeaders(),
+            response.getValue()
+                .stream()
+                .map(value -> func.apply(value)).collect(Collectors.toList()),
+            response.getContinuationToken(),
+            null);
 
         final Supplier<PageRetriever<String, PagedResponse<T1>>> provider = () ->
             (continuationToken, pageSize) -> {
                 Flux<PagedResponse<T2>> flux
                     = (continuationToken == null)
-                        ? originalPagedFlux.byPage()
-                        : originalPagedFlux.byPage(continuationToken);
+                    ? originalPagedFlux.byPage()
+                    : originalPagedFlux.byPage(continuationToken);
                 return flux.map(responseMapper);
             };
 

@@ -112,7 +112,7 @@ public class ChatClientTestBase extends TestBase {
      * @param expectedStatusCode Expected HTTP status code contained in the error response
      */
     static void assertRestException(Throwable exception, int expectedStatusCode) {
-        assertRestException(exception, CommunicationErrorResponseException.class, expectedStatusCode);
+        assertRestException(exception, HttpResponseException.class, expectedStatusCode);
     }
 
     static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
