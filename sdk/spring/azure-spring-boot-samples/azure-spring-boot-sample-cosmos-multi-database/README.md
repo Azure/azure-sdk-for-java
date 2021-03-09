@@ -65,8 +65,6 @@ spring.jpa.hibernate.ddl-auto=update
 spring.datasource.url=jdbc:mysql://${MYSQL_HOST:localhost}:3306/db_example
 spring.datasource.username=your-mysql-username
 spring.datasource.password=your-mysql-password
-# It's suggested the logged in user should at least belong to one of the above groups
-# If not, the logged in user will not be able to access any authorization controller rest APIs
 ```
 
 ### Run with Maven

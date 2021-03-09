@@ -36,37 +36,15 @@ We need to ensure that this [environment checklist][ready-to-run-checklist] is c
 
     ![Get Connect Info](resource/get-connect-info.png)
 
-1. Replace the content in `application.properties` with the obtained information.
-
-1. We need to create another cosmos DB as the secondary like the steps above.
-
-1. Add MYSQL connection attributes in `application.properties`.
-
 ## Key concepts
 ## Examples
 ### Configure application.yml
 ```yaml
-# primary account cosmos config
-azure.cosmos.primary.uri=your-primary-cosmosDb-uri
-azure.cosmos.primary.key=your-primary-cosmosDb-key
-azure.cosmos.primary.secondaryKey=your-primary-cosmosDb-secondary-key
-azure.cosmos.primary.database=your-primary-cosmosDb-dbName
-azure.cosmos.primary.populateQueryMetrics=if-populate-query-metrics
-
-# secondary account cosmos config
-azure.cosmos.secondary.uri=your-secondary-cosmosDb-uri
-azure.cosmos.secondary.key=your-secondary-cosmosDb-key
-azure.cosmos.secondary.secondaryKey=your-secondary-cosmosDb-secondary-key
-azure.cosmos.secondary.database=your-secondary-cosmosDb-dbName
-azure.cosmos.secondary.populateQueryMetrics=if-populate-query-metrics
-
-#mysql connection attributes
-spring.jpa.hibernate.ddl-auto=update
-spring.datasource.url=jdbc:mysql://${MYSQL_HOST:localhost}:3306/db_example
-spring.datasource.username=your-mysql-username
-spring.datasource.password=your-mysql-password
-# It's suggested the logged in user should at least belong to one of the above groups
-# If not, the logged in user will not be able to access any authorization controller rest APIs
+azure.cosmos.uri=your-cosmosDb-uri
+azure.cosmos.key=your-cosmosDb-key
+azure.cosmos.secondaryKey=your-cosmosDb-secondary-key
+azure.cosmos.database=your-cosmosDb-dbName
+azure.cosmos.populateQueryMetrics=if-populate-query-metrics
 ```
 
 ### Run with Maven
@@ -76,8 +54,7 @@ mvn spring-boot:run
 ```
 
 Verify Result:
-The corresponding data is added to the mysql database and cosmos database
-    ![Result in MYSQL](resource/result-in-mysql.png)
+The corresponding data is added to cosmos database
     ![Result in Primary Cosmos Database](resource/result-in-primary-cosmos-database.png)
     ![Result in Secondary Cosmos Database](resource/result-in-secondary-cosmos-database.png)
     
