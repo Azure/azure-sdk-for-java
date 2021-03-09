@@ -66,6 +66,12 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[type='submit']"))).click();
     }
 
+    public String getBodyText() {
+        logIn();
+        wait.until(ExpectedConditions.urlToBe(app.root() + "#"));
+        return driver.findElement(By.tagName("body")).getText();
+    }
+
     public String httpGet(String endpoint) {
         driver.get((app.root() + endpoint));
         return wait.until(presenceOfElementLocated(By.tagName("body"))).getText();
