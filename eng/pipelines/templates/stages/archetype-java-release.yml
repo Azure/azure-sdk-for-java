@@ -82,16 +82,16 @@ stages:
               vmImage: MMSUbuntu18.04
 
             steps:
+              - task: UsePythonVersion@0
+                displayName: 'Use Python 3.6'
+                inputs:
+                  versionSpec: '3.6'
+
               - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
                 parameters:
                   PackageName: "azure-sdk-template"
                   ServiceDirectory: "template"
                   TestPipeline: ${{ parameters.TestPipeline }}
-
-              - task: UsePythonVersion@0
-                displayName: 'Use Python 3.6'
-                inputs:
-                  versionSpec: '3.6'
 
               - script: |
                   python --version
