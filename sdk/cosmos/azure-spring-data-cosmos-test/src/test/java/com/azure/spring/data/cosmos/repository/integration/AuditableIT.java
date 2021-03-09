@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
+import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
+import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.AuditableEntity;
 import com.azure.spring.data.cosmos.domain.AuditableIdGeneratedEntity;
 import com.azure.spring.data.cosmos.repository.StubAuditorProvider;
@@ -9,7 +11,8 @@ import com.azure.spring.data.cosmos.repository.StubDateTimeProvider;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.AuditableIdGeneratedRepository;
 import com.azure.spring.data.cosmos.repository.repository.AuditableRepository;
-import org.junit.After;
+import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class AuditableIT {
 
+    @ClassRule
+    public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
+
+    @Autowired
+    private CosmosTemplate cosmosTemplate;
     @Autowired
     private AuditableRepository auditableRepository;
     @Autowired
@@ -35,9 +43,9 @@ public class AuditableIT {
     @Autowired
     private StubAuditorProvider stubAuditorProvider;
 
-    @After
-    public void cleanup() {
-        this.auditableRepository.deleteAll();
+    @Before
+    public void setup() {
+        collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, AuditableEntity.class, AuditableIdGeneratedEntity.class);
     }
 
     @Test

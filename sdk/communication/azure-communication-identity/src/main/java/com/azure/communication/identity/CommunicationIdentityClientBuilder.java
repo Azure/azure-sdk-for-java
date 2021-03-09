@@ -178,15 +178,13 @@ public final class CommunicationIdentityClientBuilder {
 
     /**
      * Sets the {@link RetryPolicy} that is used when each request is sent.
-     * <p>
-     * The default retry policy will be used in the pipeline, if not provided.
      *
      * @param retryPolicy User's retry policy applied to each request.
      * @return The updated {@link CommunicationIdentityClientBuilder} object.
      * @throws NullPointerException If the specified {@code retryPolicy} is null.
      */
     public CommunicationIdentityClientBuilder retryPolicy(RetryPolicy retryPolicy) {
-        this.retryPolicy = Objects.requireNonNull(retryPolicy, "The retry policy cannot be bull");
+        this.retryPolicy = Objects.requireNonNull(retryPolicy, "The retry policy cannot be null");
         return this;
     }
 
@@ -295,7 +293,7 @@ public final class CommunicationIdentityClientBuilder {
         }
 
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, configuration));
-        policies.add(new RetryPolicy());
+        policies.add(this.retryPolicy == null ? new RetryPolicy() : this.retryPolicy);
         policies.add(new CookiePolicy());
         policies.add(new HttpLoggingPolicy(httpLogOptions));
     }
