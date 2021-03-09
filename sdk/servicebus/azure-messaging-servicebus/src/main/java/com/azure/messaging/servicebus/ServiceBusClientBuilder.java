@@ -369,16 +369,11 @@ public final class ServiceBusClientBuilder {
                 final ReactorProvider provider = new ReactorProvider();
                 final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
 
-                final Map<String, String> properties = CoreUtils.getProperties(SERVICE_BUS_PROPERTIES_FILE);
-                final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
-                final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
-
                 final Flux<ServiceBusAmqpConnection> connectionFlux = Mono.fromCallable(() -> {
                     final String connectionId = StringUtil.getRandomString("MF");
 
                     return (ServiceBusAmqpConnection) new ServiceBusReactorAmqpConnection(connectionId,
-                        connectionOptions, provider, handlerProvider, tokenManagerProvider, serializer, product,
-                        clientVersion);
+                        connectionOptions, provider, handlerProvider, tokenManagerProvider, serializer);
                 }).repeat();
 
                 sharedConnection = connectionFlux.subscribeWith(new ServiceBusConnectionProcessor(
@@ -416,14 +411,18 @@ public final class ServiceBusClientBuilder {
         final CbsAuthorizationType authorizationType = credentials instanceof ServiceBusSharedKeyCredential
             ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CbsAuthorizationType.JSON_WEB_TOKEN;
-        final ClientOptions options = clientOptions != null ? clientOptions : new ClientOptions();
 
         final SslDomain.VerifyMode verificationMode = verifyMode != null
             ? verifyMode
             : SslDomain.VerifyMode.VERIFY_PEER_NAME;
 
+        final ClientOptions options = clientOptions != null ? clientOptions : new ClientOptions();
+        final Map<String, String> properties = CoreUtils.getProperties(SERVICE_BUS_PROPERTIES_FILE);
+        final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
+        final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
+
         return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport, retryOptions,
-            proxyOptions, scheduler, options, verificationMode);
+            proxyOptions, scheduler, options, verificationMode, product, clientVersion);
     }
 
     private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {

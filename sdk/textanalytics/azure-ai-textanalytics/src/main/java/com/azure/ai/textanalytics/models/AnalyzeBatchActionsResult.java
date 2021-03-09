@@ -12,6 +12,7 @@ import com.azure.core.util.IterableStream;
 public final class AnalyzeBatchActionsResult {
     private TextDocumentBatchStatistics statistics;
     private IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesActionResults;
+    private IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesActionResults;
     private IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesActionResults;
     private IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults;
 
@@ -28,6 +29,13 @@ public final class AnalyzeBatchActionsResult {
                 public void setRecognizeEntitiesActionResults(AnalyzeBatchActionsResult analyzeBatchActionsResult,
                     IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesActionResults) {
                     analyzeBatchActionsResult.setRecognizeEntitiesActionResults(recognizeEntitiesActionResults);
+                }
+
+                @Override
+                public void setRecognizeLinkedEntitiesActionResults(AnalyzeBatchActionsResult analyzeBatchActionsResult,
+                    IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesActionResults) {
+                    analyzeBatchActionsResult.setRecognizeLinkedEntitiesActionResults(
+                        recognizeLinkedEntitiesActionResults);
                 }
 
                 @Override
@@ -64,6 +72,16 @@ public final class AnalyzeBatchActionsResult {
     }
 
     /**
+     * Get the {@code recognizeLinkedEntitiesActionResults} property: The linked entities recognition action results
+     * property.
+     *
+     * @return the recognizeLinkedEntitiesActionResults value.
+     */
+    public IterableStream<RecognizeLinkedEntitiesActionResult> getRecognizeLinkedEntitiesActionResults() {
+        return this.recognizeLinkedEntitiesActionResults;
+    }
+
+    /**
      * Get the {@code recognizePiiEntitiesActionResults} property: The PII entities recognition actions results
      * property.
      *
@@ -89,6 +107,11 @@ public final class AnalyzeBatchActionsResult {
     private void setRecognizeEntitiesActionResults(
         IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesActionResults) {
         this.recognizeEntitiesActionResults = recognizeEntitiesActionResults;
+    }
+
+    private void setRecognizeLinkedEntitiesActionResults(
+        IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesActionResults) {
+        this.recognizeLinkedEntitiesActionResults = recognizeLinkedEntitiesActionResults;
     }
 
     private void setRecognizePiiEntitiesActionResults(

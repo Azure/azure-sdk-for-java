@@ -1,7 +1,13 @@
 # Release History
 
-## 1.6.0-beta.1 (Unreleased)
+## 1.7.0-beta.1 (Unreleased)
 
+
+## 1.6.0 (2021-03-08)
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.13.0` to `1.14.0`.
 
 ## 1.5.3 (2021-02-05)
 

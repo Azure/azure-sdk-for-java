@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.storagecache.implementation;
 
-import com.azure.resourcemanager.storagecache.StorageCacheManager;
 import com.azure.resourcemanager.storagecache.fluent.models.UsageModelInner;
 import com.azure.resourcemanager.storagecache.models.UsageModel;
 import com.azure.resourcemanager.storagecache.models.UsageModelDisplay;
@@ -12,9 +11,10 @@ import com.azure.resourcemanager.storagecache.models.UsageModelDisplay;
 public final class UsageModelImpl implements UsageModel {
     private UsageModelInner innerObject;
 
-    private final StorageCacheManager serviceManager;
+    private final com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager;
 
-    UsageModelImpl(UsageModelInner innerObject, StorageCacheManager serviceManager) {
+    UsageModelImpl(
+        UsageModelInner innerObject, com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -35,7 +35,7 @@ public final class UsageModelImpl implements UsageModel {
         return this.innerObject;
     }
 
-    private StorageCacheManager manager() {
+    private com.azure.resourcemanager.storagecache.StorageCacheManager manager() {
         return this.serviceManager;
     }
 }

@@ -48,6 +48,7 @@ public final class CommunicationIdentityClientBuilder {
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions = new HttpLogOptions();
     private HttpPipeline pipeline;
+    private RetryPolicy retryPolicy;
     private Configuration configuration;
     private ClientOptions clientOptions;
     private final Map<String, String> properties = CoreUtils.getProperties(COMMUNICATION_IDENTITY_PROPERTIES);
@@ -176,6 +177,18 @@ public final class CommunicationIdentityClientBuilder {
     }
 
     /**
+     * Sets the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * @param retryPolicy User's retry policy applied to each request.
+     * @return The updated {@link CommunicationIdentityClientBuilder} object.
+     * @throws NullPointerException If the specified {@code retryPolicy} is null.
+     */
+    public CommunicationIdentityClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        this.retryPolicy = Objects.requireNonNull(retryPolicy, "The retry policy cannot be null");
+        return this;
+    }
+
+    /**
      * Sets the {@link CommunicationIdentityServiceVersion} that is used when making API requests.
      * <p>
      * If a service version is not provided, the service version that will be used will be the latest known service
@@ -280,7 +293,7 @@ public final class CommunicationIdentityClientBuilder {
         }
 
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, configuration));
-        policies.add(new RetryPolicy());
+        policies.add(this.retryPolicy == null ? new RetryPolicy() : this.retryPolicy);
         policies.add(new CookiePolicy());
         policies.add(new HttpLoggingPolicy(httpLogOptions));
     }

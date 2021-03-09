@@ -188,15 +188,7 @@ public class JacksonAdapter implements SerializerAdapter {
 
     @Override
     public String serializeList(List<?> list, CollectionFormat format) {
-        if (list == null) {
-            return null;
-        }
-        List<String> serialized = new ArrayList<>();
-        for (Object element : list) {
-            String raw = serializeRaw(element);
-            serialized.add(raw != null ? raw : "");
-        }
-        return String.join(format.getDelimiter(), serialized);
+        return serializeIterable(list, format);
     }
 
     @Override

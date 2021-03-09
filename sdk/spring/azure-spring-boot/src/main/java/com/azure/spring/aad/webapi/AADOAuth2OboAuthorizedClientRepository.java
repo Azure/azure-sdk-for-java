@@ -101,7 +101,7 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
             request.setAttribute(oboAuthorizedClientAttributeName, (T) oAuth2AuthorizedClient);
             return (T) oAuth2AuthorizedClient;
         } catch (ExecutionException exception) {
-            // Handle conditional access policy for obo flow.
+            // Handle conditional access policy, step 1.
             // A user interaction is required, but we are in a web API, and therefore, we need to report back to the
             // client through a 'WWW-Authenticate' header https://tools.ietf.org/html/rfc6750#section-3.1
             Optional.of(exception)

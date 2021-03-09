@@ -65,7 +65,7 @@ public class IndexersManagementSyncTests extends SearchTestBase {
     private SearchIndexClient searchIndexClient;
 
     private String createDataSource() {
-        SearchIndexerDataSourceConnection dataSource = createTestSqlDataSourceObject();
+        SearchIndexerDataSourceConnection dataSource = createBlobDataSource();
         searchIndexerClient.createOrUpdateDataSourceConnection(dataSource);
 
         dataSourcesToDelete.add(dataSource.getName());

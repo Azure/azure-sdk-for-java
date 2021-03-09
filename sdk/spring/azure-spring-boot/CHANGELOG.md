@@ -1,6 +1,9 @@
 # Release History
 
-## 3.2.0-beta.1 (Unreleased)
+## 3.3.0-beta.1 (Unreleased)
+
+
+## 3.2.0 (2021-03-03)
 ### Breaking Changes
 - Remove `azure.activedirectory.b2c.oidc-enabled` property.
 - Add `azure.activedirectory.b2c.login-flow` property. 
@@ -13,7 +16,7 @@
           user-flows:
             ${your-user-flow-key}: ${your-user-flow-name-defined-on-azure-portal}
     ```
-
+- Require new property of `spring.jms.servicebus.pricing-tier` to set pricing tier of Azure Service Bus. Supported values are `premium`, `standard` and `basic`.
 ### New Features
 - Enable MessageConverter bean customization.
 - Update the underpinning JMS library for the Premium pricing tier of Service Bus to JMS 2.0.

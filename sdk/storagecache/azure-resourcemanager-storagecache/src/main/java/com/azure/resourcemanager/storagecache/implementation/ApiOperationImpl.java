@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.storagecache.implementation;
 
-import com.azure.resourcemanager.storagecache.StorageCacheManager;
 import com.azure.resourcemanager.storagecache.fluent.models.ApiOperationInner;
 import com.azure.resourcemanager.storagecache.models.ApiOperation;
 import com.azure.resourcemanager.storagecache.models.ApiOperationDisplay;
@@ -13,9 +12,10 @@ import com.azure.resourcemanager.storagecache.models.ApiOperationPropertiesServi
 public final class ApiOperationImpl implements ApiOperation {
     private ApiOperationInner innerObject;
 
-    private final StorageCacheManager serviceManager;
+    private final com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager;
 
-    ApiOperationImpl(ApiOperationInner innerObject, StorageCacheManager serviceManager) {
+    ApiOperationImpl(
+        ApiOperationInner innerObject, com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -44,7 +44,7 @@ public final class ApiOperationImpl implements ApiOperation {
         return this.innerObject;
     }
 
-    private StorageCacheManager manager() {
+    private com.azure.resourcemanager.storagecache.StorageCacheManager manager() {
         return this.serviceManager;
     }
 }
