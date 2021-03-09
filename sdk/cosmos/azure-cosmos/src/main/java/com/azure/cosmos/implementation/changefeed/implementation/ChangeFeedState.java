@@ -106,7 +106,6 @@ public abstract class ChangeFeedState extends JsonSerializable {
         if (continuation != null) {
             List<CompositeContinuationToken> continuationTokensSnapshot = new ArrayList<>();
             Collections.addAll(continuationTokensSnapshot, continuation.getCurrentContinuationTokens());
-            continuation.getCurrentContinuationTokens();
             continuationTokensSnapshot.sort(ContinuationTokenRangeComparator.SINGLETON_INSTANCE);
 
             for (CompositeContinuationToken compositeContinuationToken : continuationTokensSnapshot) {

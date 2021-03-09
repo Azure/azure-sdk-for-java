@@ -287,11 +287,8 @@ public class CosmosContainerTest extends TestSuiteBase {
         assertThat(feedRanges)
             .isNotNull()
             .hasSize(1);
-        assertThat(feedRanges.get(0).toString())
-            .isNotNull()
-            .isEqualTo(Base64.getUrlEncoder().encodeToString(
-                "{\"PKRangeId\":\"0\"}".getBytes(StandardCharsets.UTF_8)
-            ));
+
+        assertFeedRange(feedRanges.get(0), "{\"Range\":{\"min\":\"\",\"max\":\"FF\"}}");
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
@@ -314,6 +311,18 @@ public class CosmosContainerTest extends TestSuiteBase {
         assertThat(cosmosException.getStatusCode()).isEqualTo(404);
     }
 
+    private void assertFeedRange(FeedRange feedRange, String expectedJson)
+    {
+        assertThat(((FeedRangeInternal)feedRange).toJson())
+            .isNotNull()
+            .isEqualTo(expectedJson);
+
+        assertThat(feedRange.toString())
+            .isNotNull()
+            .isEqualTo(Base64.getUrlEncoder().encodeToString(expectedJson.getBytes(StandardCharsets.UTF_8)
+            ));
+    }
+
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void getFeedRanges_withMultiplePartitions() throws Exception {
         String collectionName = UUID.randomUUID().toString();
@@ -330,22 +339,10 @@ public class CosmosContainerTest extends TestSuiteBase {
         assertThat(feedRanges)
             .isNotNull()
             .hasSize(3);
-        assertThat(feedRanges.get(0).toString())
-            .isNotNull()
-            .isEqualTo(Base64.getUrlEncoder().encodeToString(
-                "{\"PKRangeId\":\"0\"}".getBytes(StandardCharsets.UTF_8)
-            ));
-        assertThat(feedRanges.get(1).toString())
-            .isNotNull()
-            .isEqualTo(Base64.getUrlEncoder().encodeToString(
-                "{\"PKRangeId\":\"1\"}".getBytes(StandardCharsets.UTF_8)
-            ));
-        assertThat(feedRanges.get(2).toString())
-            .isNotNull()
-            .isEqualTo(Base64.getUrlEncoder().encodeToString(
-                "{\"PKRangeId\":\"2\"}".getBytes(StandardCharsets.UTF_8)
-            ));
 
+        assertFeedRange(feedRanges.get(0), "{\"Range\":{\"min\":\"\",\"max\":\"05C1D5AB55AB54\"}}");
+        assertFeedRange(feedRanges.get(1), "{\"Range\":{\"min\":\"05C1D5AB55AB54\",\"max\":\"05C1E5AB55AB54\"}}");
+        assertFeedRange(feedRanges.get(2), "{\"Range\":{\"min\":\"05C1E5AB55AB54\",\"max\":\"FF\"}}");
 
         Range<String> firstEpkRange = getEffectiveRange(syncContainer, feedRanges.get(0));
         Range<String> secondEpkRange = getEffectiveRange(syncContainer, feedRanges.get(1));
