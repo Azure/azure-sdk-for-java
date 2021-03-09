@@ -77,12 +77,14 @@ class CosmosConfigSpec extends UnitSpec {
     val userConfig = Map(
       "spark.cosmos.read.inferSchemaSamplingSize" -> "50",
       "spark.cosmos.read.inferSchemaEnabled" -> "false",
+      "spark.cosmos.read.inferSchemaIncludeSystemProperties" -> "true",
       "spark.cosmos.read.inferSchemaQuery" -> customQuery
     )
 
     val config = CosmosSchemaInferenceConfig.parseCosmosReadConfig(userConfig)
     config.inferSchemaSamplingSize shouldEqual 50
     config.inferSchemaEnabled shouldBe false
+    config.includeSystemProperties shouldBe true
     config.inferSchemaQuery shouldEqual Some(customQuery)
   }
 
@@ -93,6 +95,7 @@ class CosmosConfigSpec extends UnitSpec {
 
     config.inferSchemaSamplingSize shouldEqual 1000
     config.inferSchemaEnabled shouldBe true
+    config.includeSystemProperties shouldBe false
   }
 
   it should "provide default write config" in {
