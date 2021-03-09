@@ -22,7 +22,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Represents the EventGrid event conforming to the <a href="https://docs.microsoft.com/en-us/azure/event-grid/event-schema">
+ * Represents the EventGrid event conforming to the <a href="https://docs.microsoft.com/azure/event-grid/event-schema">
  *     EventGrid event schema</a>.
  *
  * <p>Depending on your scenario, you can either use the constructor
