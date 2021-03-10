@@ -109,7 +109,7 @@ public interface PrivateEndpoint extends
                  * @param subResourceName the name of the sub resource
                  * @return the next stage of the definition
                  */
-                PrivateLinkServiceConnection.DefinitionStages.WithApprovalMethod<ParentT> withSubResource(
+                PrivateLinkServiceConnection.DefinitionStages.WithAttach<ParentT> withSubResource(
                     PrivateLinkSubResourceName subResourceName);
             }
 
@@ -118,8 +118,7 @@ public interface PrivateEndpoint extends
              *
              * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
-            interface WithApprovalMethod<ParentT>
-                extends PrivateLinkServiceConnection.DefinitionStages.WithAttach<ParentT> {
+            interface WithApprovalMethod<ParentT> {
                 /**
                  * Specifies the approval method.
                  *
@@ -139,7 +138,8 @@ public interface PrivateEndpoint extends
              * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
             interface WithAttach<ParentT> extends
-                Attachable.InDefinition<ParentT> {
+                Attachable.InDefinition<ParentT>,
+                WithApprovalMethod<ParentT> {
             }
         }
 
