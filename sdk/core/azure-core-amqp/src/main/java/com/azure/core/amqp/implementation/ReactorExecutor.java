@@ -18,7 +18,6 @@ import java.time.Duration;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -28,7 +27,6 @@ class ReactorExecutor implements Closeable {
     private final ClientLogger logger = new ClientLogger(ReactorExecutor.class);
     private final AtomicBoolean hasStarted = new AtomicBoolean();
     private final AtomicBoolean isDisposed = new AtomicBoolean();
-    private final Semaphore disposeSemaphore = new Semaphore(1);
 
     private final Object lock = new Object();
     private final Reactor reactor;
@@ -140,15 +138,10 @@ class ReactorExecutor implements Closeable {
         }
     }
 
+    /**
+     * Schedules the release of the current reactor after operation timeout has elapsed.
+     */
     private void scheduleCompletePendingTasks() {
-        try {
-            if (!disposeSemaphore.tryAcquire(timeout.toMillis(), TimeUnit.MILLISECONDS)) {
-                logger.info("Unable to acquire dispose reactor semaphore within timeout to schedule pending tasks.");
-            }
-        } catch (InterruptedException e) {
-            logger.warning("Could not acquire dispose semaphore to schedule pending tasks", e);
-        }
-
         this.scheduler.schedule(() -> {
             logger.info(LOG_MESSAGE, connectionId, "Processing all pending tasks and closing old reactor.");
             try {
@@ -165,35 +158,26 @@ class ReactorExecutor implements Closeable {
                     // Since reactor is not thread safe, it is possible that another thread has already disposed of the
                     // session before we were able to schedule this work.
                 }
-
-                disposeSemaphore.release();
             }
-        });
+        }, timeout.toMillis(), TimeUnit.MILLISECONDS);
     }
 
     @Override
     public void close() {
-        if (!isDisposed.getAndSet(true)) {
+        if (isDisposed.getAndSet(true)) {
+            return;
+        }
+
+        if (hasStarted.get()) {
             close(true, "ReactorExecutor.close() was called.");
         }
     }
 
     private void close(boolean isUserInitialized, String reason) {
-        if (!hasStarted.getAndSet(false)) {
-            return;
-        }
-
         if (isUserInitialized) {
             scheduleCompletePendingTasks();
-            // wait for the scheduled pending tasks to complete
-            try {
-                if (!disposeSemaphore.tryAcquire(timeout.toMillis(), TimeUnit.MILLISECONDS)) {
-                    logger.info("Unable to acquire dispose reactor semaphore within timeout.");
-                }
-            } catch (InterruptedException e) {
-                logger.warning("Could not acquire semaphore to finish close operation.", e);
-            }
         }
+
         exceptionHandler.onConnectionShutdown(new AmqpShutdownSignal(false, isUserInitialized, reason));
         scheduler.dispose();
     }
