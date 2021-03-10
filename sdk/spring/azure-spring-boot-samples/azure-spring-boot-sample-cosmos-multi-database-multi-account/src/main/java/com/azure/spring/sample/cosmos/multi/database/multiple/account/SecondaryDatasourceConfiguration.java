@@ -27,7 +27,6 @@ public class SecondaryDatasourceConfiguration {
     public static final String SECONDARY_DATABASE = "secondary_database";
 
     @Bean
-    @Qualifier("secondary")
     @ConfigurationProperties(prefix = "azure.cosmos.secondary")
     public CosmosProperties secondary() {
         return new CosmosProperties();
