@@ -42,7 +42,7 @@ public final class CommunicationIdentityClient {
     /**
      * Creates a new CommunicationUserIdentifier.
      *
-     * @return the created Communication User.
+     * @return The created Communication User.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunicationUserIdentifier createUser() {
@@ -54,14 +54,14 @@ public final class CommunicationIdentityClient {
      * Creates a new CommunicationUserIdentifier with response.
      *
      * @param context A {@link Context} representing the request context.
-     * @return the created Communication User.
+     * @return The created Communication User.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunicationUserIdentifier> createUserWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        Response<CommunicationIdentityAccessTokenResult> response = 
+        Response<CommunicationIdentityAccessTokenResult> response =
             client.createWithResponseAsync(new CommunicationIdentityCreateRequest(), context).block();
-        
+
         if (response == null || response.getValue() == null) {
             throw logger.logExceptionAsError(new IllegalStateException("Service failed to return a response or expected value."));
         }
@@ -69,14 +69,14 @@ public final class CommunicationIdentityClient {
         return new SimpleResponse<CommunicationUserIdentifier>(
             response,
             new CommunicationUserIdentifier(id));
-       
+
     }
 
     /**
      * Creates a new CommunicationUserIdentifier with token.
      *
-     * @param scopes the list of scopes for the token
-     * @return the result with created communication user and token
+     * @param scopes The list of scopes for the token.
+     * @return The created communication user and token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunicationUserIdentifierAndToken createUserAndToken(
@@ -91,9 +91,9 @@ public final class CommunicationIdentityClient {
     /**
      * Creates a new CommunicationUserIdentifier with token with response.
      *
-     * @param scopes the list of scopes for the token
+     * @param scopes The list of scopes for the token.
      * @param context A {@link Context} representing the request context.
-     * @return the result with created communication user and token
+     * @return The created communication user and token with response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunicationUserIdentifierAndToken> createUserAndTokenWithResponse(
@@ -130,7 +130,7 @@ public final class CommunicationIdentityClient {
      *
      * @param communicationUser The user to be deleted.
      * @param context A {@link Context} representing the request context.
-     * @return the response
+     * @return The response with void.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteUserWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
@@ -141,7 +141,7 @@ public final class CommunicationIdentityClient {
 
     /**
      * Revokes all the tokens created for an identifier.
-     * 
+     *
      * @param communicationUser The user to be revoked token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -156,7 +156,7 @@ public final class CommunicationIdentityClient {
      * @param communicationUser The user to be revoked token.
      * @param context the context of the request. Can also be null or
      *                          Context.NONE.
-     * @return the response.
+     * @return The response with void.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> revokeTokensWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
@@ -217,7 +217,7 @@ public final class CommunicationIdentityClient {
 
     private CommunicationUserIdentifierAndToken userWithAccessTokenResultConverter(
         CommunicationIdentityAccessTokenResult identityAccessTokenResult) {
-        CommunicationUserIdentifier user = 
+        CommunicationUserIdentifier user =
             new CommunicationUserIdentifier(identityAccessTokenResult.getIdentity().getId());
         AccessToken token = new AccessToken(
             identityAccessTokenResult.getAccessToken().getToken(),
