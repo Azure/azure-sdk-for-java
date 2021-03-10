@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.models.PrivateEndpointInner;
+import com.azure.resourcemanager.network.fluent.models.SubnetInner;
 import com.azure.resourcemanager.network.models.PrivateEndpoint;
 import com.azure.resourcemanager.network.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.network.models.PrivateLinkSubResourceName;
@@ -21,6 +22,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -99,13 +101,20 @@ class PrivateEndpointImpl extends
 
         @Override
         public PrivateEndpointConnectionImpl withResource(Resource privateLinkServiceResource) {
-            this.innerModel().withPrivateLinkServiceId(privateLinkServiceResource.id());
+            this.innerModel().withPrivateLinkServiceId(Objects.requireNonNull(privateLinkServiceResource).id());
+            return this;
+        }
+
+        @Override
+        public PrivateEndpointConnectionImpl withResource(String privateLinkServiceResourceId) {
+            this.innerModel().withPrivateLinkServiceId(Objects.requireNonNull(privateLinkServiceResourceId));
             return this;
         }
 
         @Override
         public PrivateEndpointConnectionImpl withSubResource(PrivateLinkSubResourceName subResourceName) {
-            this.innerModel().withGroupIds(Collections.singletonList(subResourceName.toString()));
+            this.innerModel().withGroupIds(
+                Collections.singletonList(Objects.requireNonNull(subResourceName).toString()));
             return this;
         }
 
@@ -156,13 +165,19 @@ class PrivateEndpointImpl extends
 
     @Override
     public PrivateEndpointImpl withSubnet(Subnet subnet) {
-        this.innerModel().withSubnet(subnet.innerModel());
+        this.innerModel().withSubnet(Objects.requireNonNull(subnet).innerModel());
+        return this;
+    }
+
+    @Override
+    public PrivateEndpointImpl withSubnet(String subnetId) {
+        this.innerModel().withSubnet(new SubnetInner().withId(Objects.requireNonNull(subnetId)));
         return this;
     }
 
     @Override
     public PrivateEndpointConnectionImpl definePrivateLinkServiceConnection(String name) {
-        return new PrivateEndpointConnectionImpl(name, this);
+        return new PrivateEndpointConnectionImpl(Objects.requireNonNull(name), this);
     }
 
     PrivateEndpointImpl withPrivateEndpointConnection(PrivateEndpointConnectionImpl connection) {

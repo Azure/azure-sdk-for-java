@@ -104,6 +104,7 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
             .create();
 
         Assertions.assertNotNull(privateEndpoint.subnet());
+        Assertions.assertEquals(network.subnets().get(subnetName).innerModel().id(), privateEndpoint.subnet().id());
         Assertions.assertEquals(1, privateEndpoint.networkInterfaces().size());
         Assertions.assertEquals(1, privateEndpoint.privateLinkServiceConnections().size());
         Assertions.assertTrue(privateEndpoint.privateLinkServiceConnections().values().iterator().next().isManualApproval());
@@ -115,14 +116,15 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
         privateEndpoint = azureResourceManager.privateEndpoints().define(peName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
-            .withSubnet(network.subnets().get(subnetName))
+            .withSubnet(network.subnets().get(subnetName).innerModel().id())
             .definePrivateLinkServiceConnection(peName)
-            .withResource(storageAccount)
+            .withResource(storageAccount.id())
             .withSubResource(PrivateLinkSubResourceName.STORAGE_BLOB)
             .attach()
             .create();
 
         Assertions.assertNotNull(privateEndpoint.subnet());
+        Assertions.assertEquals(network.subnets().get(subnetName).innerModel().id(), privateEndpoint.subnet().id());
         Assertions.assertEquals(1, privateEndpoint.networkInterfaces().size());
         Assertions.assertEquals(1, privateEndpoint.privateLinkServiceConnections().size());
         Assertions.assertEquals(storageAccount.id(), privateEndpoint.privateLinkServiceConnections().get(peName).privateLinkResourceId());
@@ -130,7 +132,5 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
         // auto-approved
         Assertions.assertFalse(privateEndpoint.privateLinkServiceConnections().values().iterator().next().isManualApproval());
         Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(peName).state().status());
-
-        int a = 1;
     }
 }
