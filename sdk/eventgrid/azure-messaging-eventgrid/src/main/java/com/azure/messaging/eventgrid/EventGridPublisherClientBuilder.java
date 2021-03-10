@@ -30,6 +30,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.TracerProxy;
 import com.azure.messaging.eventgrid.implementation.CloudEventTracingPipelinePolicy;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -245,11 +247,19 @@ public final class EventGridPublisherClientBuilder {
 
     /**
      * Set the domain or topic endpoint. This is the address to publish events to.
+     * It must be the full url of the endpoint instead of just the hostname.
      * @param endpoint the endpoint as a url.
      *
      * @return the builder itself.
+     * @throws NullPointerException if {@code endpoint} is null.
+     * @throws IllegalArgumentException if {@code endpoint} cannot be parsed into a valid URL.
      */
     public EventGridPublisherClientBuilder endpoint(String endpoint) {
+        try {
+            new URL(Objects.requireNonNull(endpoint, "'endpoint' cannot be null."));
+        } catch (MalformedURLException ex) {
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
+        }
         this.endpoint = endpoint;
         return this;
     }
