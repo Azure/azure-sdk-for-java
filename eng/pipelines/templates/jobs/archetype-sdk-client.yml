@@ -178,8 +178,6 @@ jobs:
       vmImage: MMSUbuntu18.04
 
     steps:
-#      - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
-
       - pwsh: |
           $(Build.SourcesDirectory)/eng/versioning/pom_file_version_scanner.ps1
         displayName: "Verify versions in POM files"
@@ -256,6 +254,8 @@ jobs:
           goals: 'verify'
 
       - template: ../steps/upload-repository-on-failure.yml
+
+      - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
 
   - job: 'Test'
     condition: and(succeeded(), ne(variables['Skip.Test'], 'true'))

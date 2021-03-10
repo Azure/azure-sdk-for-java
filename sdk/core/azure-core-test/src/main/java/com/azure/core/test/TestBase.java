@@ -4,6 +4,8 @@ package com.azure.core.test;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
+import com.azure.core.test.implementation.ImplUtils;
+import com.azure.core.test.implementation.TestIterationContext;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -22,8 +24,6 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.ServiceLoader;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -37,8 +37,6 @@ public abstract class TestBase implements BeforeEachCallback {
     public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_ALL = "ALL";
     public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY = "NettyAsyncHttpClient";
     public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
-
-    private static final Pattern TEST_ITERATION_PATTERN = Pattern.compile("test-template-invocation:#(\\d+)");
 
     private static TestMode testMode;
 
@@ -76,16 +74,14 @@ public abstract class TestBase implements BeforeEachCallback {
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
         this.testContextManager = new TestContextManager(testInfo.getTestMethod().get(), testMode);
-        if (testIterationContext != null) {
-            testContextManager.setTestIteration(testIterationContext.testIteration);
-        }
+        testContextManager.setTestIteration(testIterationContext.getTestIteration());
         logger.info("Test Mode: {}, Name: {}", testMode, testContextManager.getTestName());
 
         try {
             interceptorManager = new InterceptorManager(testContextManager);
         } catch (UncheckedIOException e) {
             logger.error("Could not create interceptor for {}", testContextManager.getTestName(), e);
-            Assertions.fail();
+            Assertions.fail(e);
         }
         testResourceNamer = new TestResourceNamer(testContextManager, interceptorManager.getRecordedData());
 
@@ -193,21 +189,15 @@ public abstract class TestBase implements BeforeEachCallback {
                 .contains(configuredHttpClient.trim().toLowerCase(Locale.ROOT)));
     }
 
-    private static TestMode initializeTestMode() {
-        final ClientLogger logger = new ClientLogger(TestBase.class);
-        final String azureTestMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE);
-
-        if (azureTestMode != null) {
-            try {
-                return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US));
-            } catch (IllegalArgumentException e) {
-                logger.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode);
-                return TestMode.PLAYBACK;
-            }
-        }
-
-        logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", AZURE_TEST_MODE);
-        return TestMode.PLAYBACK;
+    /**
+     * Initializes the {@link TestMode} from the environment configuration {@code AZURE_TEST_MODE}.
+     * <p>
+     * If {@code AZURE_TEST_MODE} isn't configured or is invalid then {@link TestMode#PLAYBACK} is returned.
+     *
+     * @return The {@link TestMode} being used for testing.
+     */
+    static TestMode initializeTestMode() {
+        return ImplUtils.getTestMode();
     }
 
     /**
@@ -225,18 +215,6 @@ public abstract class TestBase implements BeforeEachCallback {
             Thread.sleep(millis);
         } catch (InterruptedException ex) {
             throw logger.logExceptionAsWarning(new IllegalStateException(ex));
-        }
-    }
-
-    private static final class TestIterationContext implements BeforeEachCallback {
-        Integer testIteration;
-
-        @Override
-        public void beforeEach(ExtensionContext extensionContext) {
-            Matcher matcher = TEST_ITERATION_PATTERN.matcher(extensionContext.getUniqueId());
-            if (matcher.find()) {
-                testIteration = Integer.valueOf(matcher.group(1));
-            }
         }
     }
 }

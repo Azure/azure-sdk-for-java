@@ -28,12 +28,6 @@ public final class PhoneNumbersPurchasePhoneNumbersHeaders {
     @JsonProperty(value = "Operation-Location")
     private String operationLocation;
 
-    /*
-     * The Location property.
-     */
-    @JsonProperty(value = "Location")
-    private String location;
-
     /**
      * Get the operationId property: The operation-id property.
      *
@@ -91,26 +85,6 @@ public final class PhoneNumbersPurchasePhoneNumbersHeaders {
      */
     public PhoneNumbersPurchasePhoneNumbersHeaders setOperationLocation(String operationLocation) {
         this.operationLocation = operationLocation;
-        return this;
-    }
-
-    /**
-     * Get the location property: The Location property.
-     *
-     * @return the location value.
-     */
-    public String getLocation() {
-        return this.location;
-    }
-
-    /**
-     * Set the location property: The Location property.
-     *
-     * @param location the location value to set.
-     * @return the PhoneNumbersPurchasePhoneNumbersHeaders object itself.
-     */
-    public PhoneNumbersPurchasePhoneNumbersHeaders setLocation(String location) {
-        this.location = location;
         return this;
     }
 }

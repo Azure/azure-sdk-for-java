@@ -58,6 +58,11 @@ Below packages are available with latest release version. **We recommend users t
 
 Artifact Id | Version
 ------ |---
+[spring-cloud-azure-appconfiguration-config-web][spring-cloud-azure-appconfiguration-config-web-readme] | N/A 
+[spring-cloud-azure-appconfiguration-config][spring-cloud-azure-appconfiguration-config-readme] | N/A
+[spring-cloud-azure-feature-management-web][spring-cloud-azure-feature-management-web-readme] | N/A 
+[spring-cloud-azure-feature-management][spring-cloud-azure-feature-management-readme] | N/A 
+[spring-cloud-starter-azure-appconfiguration-config][spring-cloud-starter-azure-appconfiguration-config-readme] | N/A 
 [azure-spring-cloud-starter-cache][azure-spring-cloud-starter-cache-readme] | [![Maven Central][azure-spring-cloud-starter-cache-mvn-2.x.x-img]][azure-spring-cloud-starter-cache-mvn-2.x.x] 
 [azure-spring-cloud-stream-binder-eventhubs][azure-spring-cloud-stream-binder-eventhubs-readme] | [![Maven Central][azure-spring-cloud-stream-binder-eventhubs-mvn-2.x.x-img]][azure-spring-cloud-stream-binder-eventhubs-2.x.x] 
 [azure-spring-cloud-starter-eventhubs-kafka][azure-spring-cloud-starter-eventhubs-kafka-readme] | [![Maven Central][azure-spring-cloud-starter-eventhubs-kafka-mvn-2.x.x-img]][azure-spring-cloud-starter-eventhubs-kafka-mvn-2.x.x]
@@ -74,6 +79,11 @@ Below packages are Azure Spring Cloud packages with original artifactIds and gro
 
 Artifact Id | Version
 ------ |---
+spring-cloud-azure-appconfiguration-config-web | [![Maven Central][spring-cloud-azure-appconfiguration-config-web-mvn-1.2.x-img]][spring-cloud-azure-appconfiguration-config-web-mvn-1.2.x] 
+spring-cloud-azure-appconfiguration-config | [![Maven Central][spring-cloud-azure-appconfiguration-config-mvn-1.2.x-img]][spring-cloud-azure-appconfiguration-config-mvn-1.2.x] 
+spring-cloud-starter-azure-appconfiguration-config | [![Maven Central][spring-cloud-starter-azure-appconfiguration-config-mvn-1.2.x-img]][spring-cloud-starter-azure-appconfiguration-config-mvn-1.2.x]
+spring-cloud-azure-feature-management-web | [![Maven Central][spring-cloud-azure-feature-management-web-mvn-1.2.x-img]][spring-cloud-azure-feature-management-web-mvn-1.2.x]
+spring-cloud-azure-feature-management | [![Maven Central][spring-cloud-azure-feature-management-mvn-1.2.x-img]][spring-cloud-azure-feature-management-mvn-1.2.x]
 spring-starter-azure-cache | [![Maven Central][azure-spring-cloud-starter-cache-mvn-1.2.x-img]][azure-spring-cloud-starter-cache-mvn-1.2.x]
 spring-cloud-azure-eventhubs-stream-binder  | [![Maven Central][spring-cloud-azure-eventhubs-stream-binder-mvn-1.2.x-img]][spring-cloud-azure-eventhubs-stream-binder-mvn-1.2.x]
 spring-cloud-starter-azure-eventhubs | [![Maven Central][spring-cloud-starter-azure-eventhubs-mvn-1.2.x-img]][spring-cloud-starter-azure-eventhubs-mvn-1.2.x]
@@ -315,3 +325,23 @@ This project collects usage data and sends it to Microsoft to help improve our p
 [azure-spring-cloud-starter-cache-mvn-1.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22spring-starter-azure-cache%20AND%20v:1.2.*
 [azure-spring-cloud-starter-cache-mvn-2.x.x-img]: https://img.shields.io/maven-central/v/com.azure.spring/azure-spring-cloud-starter-cache.svg
 [azure-spring-cloud-starter-cache-mvn-2.x.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-spring-cloud-starter-cache%22
+
+[spring-cloud-azure-appconfiguration-config-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config
+[spring-cloud-azure-appconfiguration-config-mvn-1.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-cloud-azure-appconfiguration-config.svg
+[spring-cloud-azure-appconfiguration-config-mvn-1.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22spring-cloud-azure-appconfiguration-config%22
+
+[spring-cloud-azure-appconfiguration-config-web-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/appconfiguration/spring-cloud-azure-appconfiguration-config-web
+[spring-cloud-azure-appconfiguration-config-web-mvn-1.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-cloud-azure-appconfiguration-config-web.svg
+[spring-cloud-azure-appconfiguration-config-web-mvn-1.2.x]: https://search.maven.org/search?q=a:spring-cloud-azure-appconfiguration-config-web
+
+[spring-cloud-starter-azure-appconfiguration-config-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config
+[spring-cloud-starter-azure-appconfiguration-config-mvn-1.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-cloud-starter-azure-appconfiguration-config.svg
+[spring-cloud-starter-azure-appconfiguration-config-mvn-1.2.x]: https://search.maven.org/search?q=a:spring-cloud-starter-azure-appconfiguration-config
+
+[spring-cloud-azure-feature-management-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/appconfiguration/spring-cloud-azure-feature-management
+[spring-cloud-azure-feature-management-mvn-1.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-cloud-azure-feature-management.svg
+[spring-cloud-azure-feature-management-mvn-1.2.x]: https://search.maven.org/search?q=a:spring-cloud-azure-feature-management
+
+[spring-cloud-azure-feature-management-web-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/appconfiguration/spring-cloud-azure-feature-management-web
+[spring-cloud-azure-feature-management-web-mvn-1.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-cloud-azure-feature-management-web.svg
+[spring-cloud-azure-feature-management-web-mvn-1.2.x]: https://search.maven.org/search?q=a:spring-cloud-azure-feature-management-web

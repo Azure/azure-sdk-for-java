@@ -150,7 +150,7 @@ class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
 
             if (this.state.getContinuation() == null) {
                 final FeedRangeInternal feedRange = this.state.getFeedRange();
-                final Mono<Range<String>> effectiveRangeMono = feedRange.getEffectiveRange(
+                final Mono<Range<String>> effectiveRangeMono = feedRange.getNormalizedEffectiveRange(
                     this.client.getPartitionKeyRangeCache(),
                     null,
                     this.client.getCollectionCache().resolveByRidAsync(

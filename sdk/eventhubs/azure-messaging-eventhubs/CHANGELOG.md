@@ -1,7 +1,8 @@
 # Release History
 
 ## 5.6.0-beta.1 (Unreleased)
-
+### Bug Fixes
+- Update to end the trace span regardless of the scope instance type for process operation tracing spans.
 
 ## 5.5.0 (2020-02-15)
 ### New features

@@ -3,12 +3,8 @@
 
 package com.azure.test.aad.selenium.oauth2client.scopes;
 
-import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
-
+import com.azure.spring.utils.AzureCloudUrls;
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,6 +16,13 @@ import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+
+import static com.azure.spring.test.EnvironmentVariable.AZURE_CLOUD_TYPE;
+import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
+
 public class AADAccessTokenScopesIT {
 
     private AADSeleniumITHelper aadSeleniumITHelper;
@@ -27,30 +30,29 @@ public class AADAccessTokenScopesIT {
     @Test
     public void testAccessTokenScopes() {
         Map<String, String> properties = createDefaultProperties();
-        properties.put(
-            "azure.activedirectory.authorization-clients.office.scopes",
-            "https://manage.office.com/ActivityFeed.Read, https://manage.office.com/ActivityFeed.ReadDlp, "
-                + "https://manage.office.com/ServiceHealth.Read");
-        properties.put(
-            "azure.activedirectory.authorization-clients.graph.scopes",
-            "https://graph.microsoft.com/User.Read, https://graph.microsoft.com/Directory.Read.All");
+        String armClientUrl = AzureCloudUrls.getServiceManagementBaseUrl(AZURE_CLOUD_TYPE);
+        String armClientScope = armClientUrl + "user_impersonation";
+        properties.put("azure.activedirectory.authorization-clients.arm.scopes", armClientScope);
+        String graphBaseUrl = AzureCloudUrls.getGraphBaseUrl(AZURE_CLOUD_TYPE);
+        properties.put("azure.activedirectory.authorization-clients.graph.scopes",
+            graphBaseUrl + "User.Read, " + graphBaseUrl + "Directory.Read.All");
+
         aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties);
         aadSeleniumITHelper.logIn();
+
         String httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/azure");
         Assert.assertTrue(httpResponse.contains("profile"));
-        Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/Directory.Read.All"));
-        Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/User.Read"));
+        Assert.assertTrue(httpResponse.contains("Directory.Read.All"));
+        Assert.assertTrue(httpResponse.contains("User.Read"));
 
         httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/graph");
         Assert.assertTrue(httpResponse.contains("profile"));
-        Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/Directory.Read.All"));
-        Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/User.Read"));
+        Assert.assertTrue(httpResponse.contains("Directory.Read.All"));
+        Assert.assertTrue(httpResponse.contains("User.Read"));
 
-        httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/office");
+        httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/arm");
         Assert.assertFalse(httpResponse.contains("profile"));
-        Assert.assertTrue(httpResponse.contains("https://manage.office.com/ActivityFeed.Read"));
-        Assert.assertTrue(httpResponse.contains("https://manage.office.com/ActivityFeed.ReadDlp"));
-        Assert.assertTrue(httpResponse.contains("https://manage.office.com/ServiceHealth.Read"));
+        Assert.assertTrue(httpResponse.contains("user_impersonation"));
 
         httpResponse = aadSeleniumITHelper.httpGet("notExist");
         Assert.assertNotEquals(httpResponse, "notExist");
@@ -84,9 +86,9 @@ public class AADAccessTokenScopesIT {
                            .orElse(null);
         }
 
-        @GetMapping(value = "accessTokenScopes/office")
-        public Set<String> office(
-            @RegisteredOAuth2AuthorizedClient("office") OAuth2AuthorizedClient authorizedClient) {
+        @GetMapping(value = "accessTokenScopes/arm")
+        public Set<String> arm(
+            @RegisteredOAuth2AuthorizedClient("arm") OAuth2AuthorizedClient authorizedClient) {
             return Optional.of(authorizedClient)
                            .map(OAuth2AuthorizedClient::getAccessToken)
                            .map(OAuth2AccessToken::getScopes)

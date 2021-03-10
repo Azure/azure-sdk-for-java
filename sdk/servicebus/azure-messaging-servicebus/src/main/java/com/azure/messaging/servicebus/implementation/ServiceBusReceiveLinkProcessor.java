@@ -118,15 +118,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                 "lockToken[%s]. state[%s]. Cannot update disposition with no link.", lockToken, deliveryState)));
         }
 
-        return link.updateDisposition(lockToken, deliveryState)
-            .then(Mono.fromRunnable(() -> {
-                // Check if we should add more credits.
-                synchronized (queueLock) {
-                    pendingMessages.decrementAndGet();
-                }
-
-                checkAndAddCredits(link);
-            }));
+        return link.updateDisposition(lockToken, deliveryState);
     }
 
     /**
@@ -488,11 +480,10 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                 try {
                     subscriber.onNext(message);
 
-                    // These don't have to be settled because they're automatically settled by the link, so we
-                    // decrement the count.
-                    if (receiveMode != ServiceBusReceiveMode.PEEK_LOCK) {
-                        pendingMessages.decrementAndGet();
-                    }
+                    // RECEIVE_DELETE Mode: No need to settle message because they're automatically settled by the link.
+                    // PEEK_LOCK Mode: Consider message processed, as `onNext` is complete, So decrement the count.
+                    pendingMessages.decrementAndGet();
+
                     if (prefetch > 0) { // re-fill messageQueue if there is prefetch configured.
                         checkAndAddCredits(currentLink);
                     }

@@ -8,7 +8,6 @@ import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
-import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
@@ -46,9 +45,18 @@ public class AADAuthenticationProperties implements InitializingBean {
     private String clientSecret;
 
     /**
-     * Redirection Endpoint: Used by the authorization server to return responses containing authorization credentials
-     * to the client via the resource owner user-agent.
+     * @deprecated Now the redirect-url-template is not configurable.
+     * <p>
+     * Redirect URI always equal to "{baseUrl}/login/oauth2/code/".
+     * </p>
+     * <p>
+     * User should set "Redirect URI" to "{baseUrl}/login/oauth2/code/" in Azure Portal.
+     * </p>
+     *
+     * @see <a href="https://github.com/Azure/azure-sdk-for-java/tree/c27ee4421309cec8598462b419e035cf091429da/sdk/spring/azure-spring-boot-starter-active-directory#accessing-a-web-application">aad-starter readme.</a>
+     * @see com.azure.spring.aad.webapp.AADWebAppConfiguration#clientRegistrationRepository()
      */
+    @Deprecated
     private String redirectUriTemplate;
 
     /**
@@ -144,18 +152,6 @@ public class AADAuthenticationProperties implements InitializingBean {
                        .orElse(false);
     }
 
-    public boolean isResourceServer() {
-        return ClassUtils.isPresent(
-            "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken",
-            this.getClass().getClassLoader());
-    }
-
-    public boolean isWebApplication() {
-        return ClassUtils.isPresent(
-            "org.springframework.security.oauth2.client.registration.ClientRegistrationRepository",
-            this.getClass().getClassLoader());
-    }
-
     public UserGroupProperties getUserGroup() {
         return userGroup;
     }
@@ -180,10 +176,12 @@ public class AADAuthenticationProperties implements InitializingBean {
         this.clientSecret = clientSecret;
     }
 
+    @Deprecated
     public String getRedirectUriTemplate() {
         return redirectUriTemplate;
     }
 
+    @Deprecated
     public void setRedirectUriTemplate(String redirectUriTemplate) {
         this.redirectUriTemplate = redirectUriTemplate;
     }
@@ -341,12 +339,16 @@ public class AADAuthenticationProperties implements InitializingBean {
         if (!StringUtils.hasText(tenantId)) {
             tenantId = "common";
         }
-        if ("common".equals(tenantId) && !userGroup.getAllowedGroups().isEmpty()) {
-            throw new IllegalStateException("When azure.activedirectory.teannt-id=common, "
+        if (isMultiTenantsApplication(tenantId) && !userGroup.getAllowedGroups().isEmpty()) {
+            throw new IllegalStateException("When azure.activedirectory.tenant-id is 'common/organizations/consumers', "
                 + "azure.activedirectory.user-group.allowed-groups should be empty. "
-                + "But actually azure.activedirectory.user-group.allowed-groups="
-                + userGroup.getAllowedGroups());
+                + "But actually azure.activedirectory.tenant-id=" + tenantId
+                + ", and azure.activedirectory.user-group.allowed-groups=" + userGroup.getAllowedGroups());
         }
+    }
+
+    private boolean isMultiTenantsApplication(String tenantId) {
+        return "common".equals(tenantId) || "organizations".equals(tenantId) || "consumers".equals(tenantId);
     }
 
     private String addSlash(String uri) {

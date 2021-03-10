@@ -921,7 +921,7 @@ public final class TextAnalyticsAsyncClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Analyze the sentiment and mine the opinions for each sentence in a document with a provided language
      * representation and {@link AnalyzeSentimentOptions} options. Subscribes to the call asynchronously and prints
-     * out the sentiment and mined opinions details when a response is received.</p>
+     * out the sentiment and sentence opinions details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#String-String-AnalyzeSentimentOptions}
      *
@@ -1000,7 +1000,7 @@ public final class TextAnalyticsAsyncClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Analyze the sentiments and mine the opinions for each sentence in a list of documents with a provided language
      * representation and {@link AnalyzeSentimentOptions} options. Subscribes to the call asynchronously and prints out
-     * the sentiment and mined opinions details when a response is received.</p>
+     * the sentiment and sentence opinions details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable-String-AnalyzeSentimentOptions}
      *
@@ -1070,7 +1070,7 @@ public final class TextAnalyticsAsyncClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Analyze sentiment and mine the opinions for each sentence in a list of
      * {@link TextDocumentInput document} with provided {@link AnalyzeSentimentOptions} options. Subscribes to the call
-     * asynchronously and prints out the sentiment and mined opinions details when a response is received.</p>
+     * asynchronously and prints out the sentiment and sentence opinions details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable-AnalyzeSentimentOptions}
      *

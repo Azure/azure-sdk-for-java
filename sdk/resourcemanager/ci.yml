@@ -4,6 +4,7 @@ trigger:
   branches:
     include:
       - master
+      - main
       - hotfix/*
       - release/*
   paths:
@@ -16,6 +17,7 @@ pr:
   branches:
     include:
       - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
@@ -44,7 +46,7 @@ extends:
         safeName: azureresourcemanagerauthorization
       - name: azure-resourcemanager-cdn
         groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagercdn        
+        safeName: azureresourcemanagercdn
       - name: azure-resourcemanager-compute
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercompute
@@ -90,9 +92,12 @@ extends:
       - name: azure-resourcemanager-samples
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagersamples
+      - name: azure-resourcemanager-search
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagersearch
       - name: azure-resourcemanager-servicebus
         groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagerservicebus        
+        safeName: azureresourcemanagerservicebus
       - name: azure-resourcemanager-sql
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagersql

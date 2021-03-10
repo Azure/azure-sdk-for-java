@@ -29,7 +29,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.io.Closeable;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.HashMap;
@@ -139,7 +138,7 @@ public class EventProcessorClientTest {
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 return passed.addData(SPAN_CONTEXT_KEY, "value1")
-                    .addData("scope", (Closeable) () -> {
+                    .addData("scope", (AutoCloseable) () -> {
                     })
                     .addData(PARENT_SPAN_KEY, "value2");
             }
@@ -229,7 +228,7 @@ public class EventProcessorClientTest {
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 assertTrue(passed.getData(MESSAGE_ENQUEUED_TIME).isPresent());
-                return passed.addData(SPAN_CONTEXT_KEY, "value1").addData("scope", (Closeable) () -> {
+                return passed.addData(SPAN_CONTEXT_KEY, "value1").addData("scope", (AutoCloseable) () -> {
                     return;
                 }).addData(PARENT_SPAN_KEY, "value2");
             }
@@ -450,7 +449,7 @@ public class EventProcessorClientTest {
         when(tracer.start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(SPAN_CONTEXT_KEY, "value1").addData("scope", (Closeable) () -> {
+                return passed.addData(SPAN_CONTEXT_KEY, "value1").addData("scope", (AutoCloseable) () -> {
                     return;
                 }).addData(PARENT_SPAN_KEY, "value2");
             }
