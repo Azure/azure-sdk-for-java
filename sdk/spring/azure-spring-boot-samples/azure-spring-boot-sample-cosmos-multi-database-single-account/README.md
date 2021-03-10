@@ -1,4 +1,4 @@
-# Azure Spring Boot App Multi Cosmos Database Sample for Java
+# Azure Spring Boot Sample Cosmos Multi Database Single Account for Java
 
 ## Key concepts
 ## Getting started
@@ -42,9 +42,9 @@ We need to ensure that this [environment checklist][ready-to-run-checklist] is c
 ```yaml
 azure.cosmos.uri=your-cosmosDb-uri
 azure.cosmos.key=your-cosmosDb-key
-azure.cosmos.secondaryKey=your-cosmosDb-secondary-key
+azure.cosmos.secondary-key=your-cosmosDb-secondary-key
 azure.cosmos.database=your-cosmosDb-dbName
-azure.cosmos.populateQueryMetrics=if-populate-query-metrics
+azure.cosmos.populate-query-metrics=if-populate-query-metrics
 ```
 
 ### Run with Maven
@@ -55,8 +55,8 @@ mvn spring-boot:run
 
 Verify Result:
 The corresponding data is added to cosmos database
-    ![Result in Primary Cosmos Database](resource/result-in-primary-cosmos-database.png)
-    ![Result in Secondary Cosmos Database](resource/result-in-secondary-cosmos-database.png)
+    ![Result in Cosmos Database1](resource/result-in-cosmos-database1.png)
+    ![Result in Cosmos Database2](resource/result-in-cosmos-database2.png)
     
 ## Troubleshooting
 ## Next steps
