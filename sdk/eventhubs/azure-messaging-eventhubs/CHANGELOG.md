@@ -4,6 +4,10 @@
 ### Bug Fixes
 - Update to end the trace span regardless of the scope instance type for process operation tracing spans.
 
+### Dependency Updates
+- Update `azure-core` dependency to `1.14.0`.
+- Update `azure-core-amqp` dependency to `2.0.3`.
+
 ## 5.5.0 (2020-02-15)
 ### New features
 - Use `BinaryData` in `EventData`.
