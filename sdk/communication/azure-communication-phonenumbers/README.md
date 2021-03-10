@@ -2,7 +2,7 @@
 
 The phone numbers package provides capabilities for phone number management.
 
-Acquired phone numbers can come with many capabilities, depending on the country, number type and phone plan. Examples of capabilities are SMS inbound and outbound usage, calling inbound and outbound usage. Phone numbers can also be assigned to a bot via a webhook URL.
+Purchased phone numbers can come with many capabilities, depending on the country, number type and phone plan. Examples of capabilities are SMS inbound and outbound usage, calling inbound and outbound usage. Phone numbers can also be assigned to a bot via a webhook URL.
 
 [Source code][source] | [Package (Maven)][package] | [API reference documentation][api_documentation]
 | [Product documentation][product_docs]
@@ -69,14 +69,14 @@ Phone numbers come in two types; Geographic and Toll-Free. Geographic phone plan
 
 ### Searching and Purchasing and Releasing numbers
 
-Phone numbers can be searched through the search creation API by providing an area code, quantity of phone numbers, application type, phone number type, and capabilities. The provided quantity of phone numbers will be reserved for ten minutes and can be purchased within this time. If the search is not purchased, the phone numbers will become available to others after ten minutes. If the search is purchased, then the phone numbers are acquired for the Azure resources.
+Phone numbers can be searched through the search creation API by providing an area code, quantity of phone numbers, application type, phone number type, and capabilities. The provided quantity of phone numbers will be reserved for ten minutes and can be purchased within this time. If the search is not purchased, the phone numbers will become available to others after ten minutes. If the search is purchased, then the phone numbers are purchased for the Azure resources.
 
 Phone numbers can also be released using the release API.
 
 ## Examples
 
-### Get Phone Number
-Gets the specified acquired phone number.
+### Get Purchased Phone Number
+Gets the specified purchased phone number.
 
 <!-- embedme ./src/samples/java/com/azure/communication/phonenumbers/ReadmeSamples.java#L75-L77 -->
 ```java
@@ -85,8 +85,8 @@ System.out.println("Phone Number Value: " + phoneNumber.getPhoneNumber());
 System.out.println("Phone Number Country Code: " + phoneNumber.getCountryCode());
 ```
 
-### Get All Phone Numbers
-Lists all the acquired phone numbers.
+### Get All Purchased Phone Numbers
+Lists all the purchased phone numbers.
 
 <!-- embedme ./src/samples/java/com/azure/communication/phonenumbers/ReadmeSamples.java#L87-L90 -->
 ```java
@@ -130,7 +130,7 @@ System.out.println("Purchase phone numbers is complete: " + purchaseResponse.get
 ```
 
 ### Release Phone Number
-Releases an acquired phone number.
+Releases a purchased phone number.
 
 <!-- embedme ./src/samples/java/com/azure/communication/phonenumbers/ReadmeSamples.java#L122-L124 -->
 ```java
