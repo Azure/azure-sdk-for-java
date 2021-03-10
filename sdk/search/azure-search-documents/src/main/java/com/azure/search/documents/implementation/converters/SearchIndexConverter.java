@@ -5,7 +5,6 @@ package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.LexicalAnalyzer;
 import com.azure.search.documents.indexes.models.LexicalTokenizer;
-import com.azure.search.documents.indexes.models.ScoringProfile;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchResourceEncryptionKey;
@@ -81,9 +80,7 @@ public final class SearchIndexConverter {
         searchIndex.setETag(eTag);
 
         if (obj.getScoringProfiles() != null) {
-            List<ScoringProfile> scoringProfiles =
-                obj.getScoringProfiles().stream().map(ScoringProfileConverter::map).collect(Collectors.toList());
-            searchIndex.setScoringProfiles(scoringProfiles);
+            searchIndex.setScoringProfiles(obj.getScoringProfiles());
         }
 
         return searchIndex;
@@ -153,9 +150,7 @@ public final class SearchIndexConverter {
         searchIndex.setETag(eTag);
 
         if (obj.getScoringProfiles() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.ScoringProfile> scoringProfiles =
-                obj.getScoringProfiles().stream().map(ScoringProfileConverter::map).collect(Collectors.toList());
-            searchIndex.setScoringProfiles(scoringProfiles);
+            searchIndex.setScoringProfiles(obj.getScoringProfiles());
         }
 
         return searchIndex;

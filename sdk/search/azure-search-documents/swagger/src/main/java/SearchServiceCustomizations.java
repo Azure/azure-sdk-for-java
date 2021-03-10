@@ -51,6 +51,8 @@ public class SearchServiceCustomizations extends Customization {
 
     private static final String INPUT_FIELD_MAPPING_ENTRY = "InputFieldMappingEntry";
 
+    private static final String SCORING_PROFILE = "ScoringProfile";
+
     @Override
     public void customize(LibraryCustomization libraryCustomization) {
         customizeImplementationModelsPackage(libraryCustomization.getPackage(IMPLEMENTATION_MODELS));
@@ -71,8 +73,11 @@ public class SearchServiceCustomizations extends Customization {
             SQL_INTEGRATED_CHANGE_TRACKING_POLICY, SOFT_DELETE_COLUMN_DELETION_DETECTION_POLICY, MAPPING_CHAR_FILTER,
             PATTERN_REPLACE_CHAR_FILTER, DEFAULT_COGNITIVE_SERVICES_ACCOUNT);
 
+        // Add vararg overloads to list setters.
         addVarArgsOverload(packageCustomization.getClass(INPUT_FIELD_MAPPING_ENTRY), INPUT_FIELD_MAPPING_ENTRY,
             "inputs", "InputFieldMappingEntry");
+        addVarArgsOverload(packageCustomization.getClass(SCORING_PROFILE), SCORING_PROFILE, "functions",
+            "ScoringFunction");
 
         // Customize MagnitudeScoringParameters.
         customizeMagnitudeScoringParameters(packageCustomization.getClass(MAGNITUDE_SCORING_PARAMETERS));
