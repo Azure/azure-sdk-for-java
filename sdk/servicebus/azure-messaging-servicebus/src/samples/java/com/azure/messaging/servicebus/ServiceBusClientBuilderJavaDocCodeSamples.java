@@ -36,10 +36,8 @@ public class ServiceBusClientBuilderJavaDocCodeSamples {
     public void instantiateSessionReceiver() {
         // BEGIN: com.azure.messaging.servicebus.session.receiver.async.client.instantiation
         // Retrieve 'connectionString', 'topicName' and 'subscriptionName' from your configuration.
-        ServiceBusClientBuilder builder = new ServiceBusClientBuilder()
-            .connectionString(connectionString);
-        // Create a session receiver.
-        ServiceBusSessionReceiverAsyncClient sessionReceiver = builder
+        ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
+            .connectionString(connectionString)
             .sessionReceiver()
             .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
             .topicName(topicName)
@@ -51,12 +49,11 @@ public class ServiceBusClientBuilderJavaDocCodeSamples {
         // is returned when a lock on the session is acquired.
         Mono<ServiceBusReceiverAsyncClient> receiverMono = sessionReceiver.acceptNextSession();
 
-        Disposable subscription = Flux.usingWhen(receiverMono,
+        Flux.usingWhen(receiverMono,
             receiver -> receiver.receiveMessages(),
             receiver -> Mono.fromRunnable(receiver::close))
             .subscribe(message -> System.out.println(message.getBody().toString()));
         // END: com.azure.messaging.servicebus.session.receiver.async.client.instantiation
-        subscription.dispose();
     }
 
     @Test
