@@ -24,6 +24,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.temporal.ChronoUnit;
+import java.util.Collections;
 import java.util.List;
 
 public class PrivateLinkTests extends ResourceManagerTestBase {
@@ -95,7 +96,7 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withSubnet(network.subnets().get(subnetName))
-            .defineConnection(peName)
+            .definePrivateLinkServiceConnection(peName)
                 .withResource(storageAccount)
                 .withSubResource(PrivateLinkSubResourceName.STORAGE_BLOB)
                 .withManualApproval("request message")
@@ -104,9 +105,10 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
 
         Assertions.assertNotNull(privateEndpoint.subnet());
         Assertions.assertEquals(1, privateEndpoint.networkInterfaces().size());
-        Assertions.assertEquals(1, privateEndpoint.privateEndpointConnections().size());
-        Assertions.assertTrue(privateEndpoint.privateEndpointConnections().values().iterator().next().isManualApproval());
-        Assertions.assertEquals("Pending", privateEndpoint.privateEndpointConnections().get(peName).state().status());
+        Assertions.assertEquals(1, privateEndpoint.privateLinkServiceConnections().size());
+        Assertions.assertTrue(privateEndpoint.privateLinkServiceConnections().values().iterator().next().isManualApproval());
+        Assertions.assertEquals("Pending", privateEndpoint.privateLinkServiceConnections().get(peName).state().status());
+        Assertions.assertEquals("request message", privateEndpoint.privateLinkServiceConnections().get(peName).requestMessage());
 
         azureResourceManager.privateEndpoints().deleteById(privateEndpoint.id());
 
@@ -114,7 +116,7 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withSubnet(network.subnets().get(subnetName))
-            .defineConnection(peName)
+            .definePrivateLinkServiceConnection(peName)
             .withResource(storageAccount)
             .withSubResource(PrivateLinkSubResourceName.STORAGE_BLOB)
             .attach()
@@ -122,10 +124,12 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
 
         Assertions.assertNotNull(privateEndpoint.subnet());
         Assertions.assertEquals(1, privateEndpoint.networkInterfaces().size());
-        Assertions.assertEquals(1, privateEndpoint.privateEndpointConnections().size());
+        Assertions.assertEquals(1, privateEndpoint.privateLinkServiceConnections().size());
+        Assertions.assertEquals(storageAccount.id(), privateEndpoint.privateLinkServiceConnections().get(peName).privateLinkResourceId());
+        Assertions.assertEquals(Collections.singletonList(PrivateLinkSubResourceName.STORAGE_BLOB), privateEndpoint.privateLinkServiceConnections().get(peName).subResourceNames());
         // auto-approved
-        Assertions.assertFalse(privateEndpoint.privateEndpointConnections().values().iterator().next().isManualApproval());
-        Assertions.assertEquals("Approved", privateEndpoint.privateEndpointConnections().get(peName).state().status());
+        Assertions.assertFalse(privateEndpoint.privateLinkServiceConnections().values().iterator().next().isManualApproval());
+        Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(peName).state().status());
 
         int a = 1;
     }

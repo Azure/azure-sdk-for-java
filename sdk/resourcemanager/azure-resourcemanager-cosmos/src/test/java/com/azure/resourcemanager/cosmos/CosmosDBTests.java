@@ -141,13 +141,13 @@ public class CosmosDBTests extends ResourceManagerTestBase {
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withSubnet(network.subnets().get(subnetName))
-            .defineConnection(plsConnectionName)
+            .definePrivateLinkServiceConnection(plsConnectionName)
                 .withResource(cosmosDBAccount)
                 .withSubResource(PrivateLinkSubResourceName.COSMOS_SQL)
                 .attach()
             .create();
 
-        Assertions.assertEquals("Approved", privateEndpoint.privateEndpointConnections().get(0).state().status());
+        Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(0).state().status());
 
         cosmosDBAccount
             .update()
