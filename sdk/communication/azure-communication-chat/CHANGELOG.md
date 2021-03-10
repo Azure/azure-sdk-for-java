@@ -1,7 +1,14 @@
 # Release History
 
 ## 1.0.0-beta.7 (Unreleased)
+### Breaking Changes
 
+- Renamed `ChatThread` to `ChatThreadProperties`
+- Renamed `ChatThreadInfo` to `ChatThreadItem`
+- Renamed `repeatabilityRequestId` to `idempotencyToken`
+- SendMessage returns `SendChatMessageResult` instead of string containing ID
+- Renamed `CommunicationError` to `ChatError`
+- Renamed `CommunicationErrorResponse` to `ChatErrorResponse`
 
 ## 1.0.0-beta.6 (2021-03-09)
 Updated `azure-communication-chat` version
