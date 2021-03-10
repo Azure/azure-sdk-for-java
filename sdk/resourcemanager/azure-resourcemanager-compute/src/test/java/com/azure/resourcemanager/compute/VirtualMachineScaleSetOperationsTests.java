@@ -67,8 +67,10 @@ import java.io.InputStream;
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest {
     private String rgName = "";
@@ -1269,8 +1271,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         Assertions.assertEquals(original.extensions().size(), fetched.extensions().size());
         Assertions.assertEquals(original.instanceId(), fetched.instanceId());
         Assertions.assertEquals(original.isLatestScaleSetUpdateApplied(), fetched.isLatestScaleSetUpdateApplied());
-        Assertions
-            .assertEquals(original.isLinuxPasswordAuthenticationEnabled(), fetched.isLatestScaleSetUpdateApplied());
+        Assertions.assertEquals(original.isLinuxPasswordAuthenticationEnabled(), fetched.isLinuxPasswordAuthenticationEnabled());
         Assertions.assertEquals(original.isManagedDiskEnabled(), fetched.isManagedDiskEnabled());
         Assertions.assertEquals(original.isOSBasedOnCustomImage(), fetched.isOSBasedOnCustomImage());
         Assertions.assertEquals(original.isOSBasedOnPlatformImage(), fetched.isOSBasedOnPlatformImage());
@@ -1356,18 +1357,74 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         // first copy of sku
         Sku sku1 = skuType.sku();
         Assertions.assertNull(sku1.capacity());
-        sku1.withCapacity(new Long(1));
+        sku1.withCapacity(1L);
         Assertions.assertEquals(sku1.capacity().longValue(), 1);
         // Ensure the original is not affected
         Assertions.assertNull(skuType.sku().capacity());
         // second copy of sku
         Sku sku2 = skuType.sku();
         Assertions.assertNull(sku2.capacity());
-        sku2.withCapacity(new Long(2));
+        sku2.withCapacity(2L);
         Assertions.assertEquals(sku2.capacity().longValue(), 2);
         // Ensure the original is not affected
         Assertions.assertNull(skuType.sku().capacity());
         // Ensure previous copy is not affected due to change in first copy
         Assertions.assertEquals(sku1.capacity().longValue(), 1);
+    }
+
+    @Test
+    public void canDeleteVMSSInstance() throws Exception {
+        String euapRegion = "eastus2euap";
+
+        final String vmssName = generateRandomResourceName("vmss", 10);
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName)
+            .withRegion(euapRegion)
+            .create();
+
+        Network network =
+            this
+                .networkManager
+                .networks()
+                .define("vmssvnet")
+                .withRegion(euapRegion)
+                .withExistingResourceGroup(resourceGroup)
+                .withAddressSpace("10.0.0.0/28")
+                .withSubnet("subnet1", "10.0.0.0/28")
+                .create();
+
+        VirtualMachineScaleSet vmss = this
+            .computeManager
+            .virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(euapRegion)
+            .withExistingResourceGroup(resourceGroup)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withoutPrimaryInternetFacingLoadBalancer()
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .withCapacity(4)    // 4 instances
+            .create();
+
+        Assertions.assertEquals(4, vmss.virtualMachines().list().stream().count());
+
+        // force delete first 2 instances
+        List<String> firstTwoIds = vmss.virtualMachines().list().stream()
+            .limit(2)
+            .map(VirtualMachineScaleSetVM::instanceId)
+            .collect(Collectors.toList());
+        vmss.virtualMachines().deleteInstances(firstTwoIds, true);
+
+        Assertions.assertEquals(2, vmss.virtualMachines().list().stream().count());
+
+        // delete next 1 instance
+        vmss.virtualMachines().deleteInstances(Collections.singleton(vmss.virtualMachines().list().stream().findFirst().get().instanceId()), false);
+
+        Assertions.assertEquals(1, vmss.virtualMachines().list().stream().count());
+
+        // force delete next 1 instance
+        computeManager.virtualMachineScaleSets().deleteInstances(rgName, vmssName, Collections.singleton(vmss.virtualMachines().list().stream().findFirst().get().instanceId()), false);
     }
 }

@@ -51,6 +51,7 @@ public final class PhoneNumbersClientBuilder {
     private TokenCredential tokenCredential;
     private Configuration configuration;
     private ClientOptions clientOptions;
+    private RetryPolicy retryPolicy;
     private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
 
     /**
@@ -105,15 +106,14 @@ public final class PhoneNumbersClientBuilder {
     }
 
     /**
-     * Set AzureKeyCredential for authorization
+     * Sets the {@link AzureKeyCredential} used to authenticate HTTP requests.
      *
-     * @param accessKey access key for initalizing AzureKeyCredential
+     * @param keyCredential The {@link AzureKeyCredential} used to authenticate HTTP requests.
      * @return The updated {@link PhoneNumbersClientBuilder} object.
-     * @throws NullPointerException If {@code accessKey} is {@code null}.
+     * @throws NullPointerException If {@code keyCredential} is null.
      */
-    public PhoneNumbersClientBuilder accessKey(String accessKey) {
-        Objects.requireNonNull(accessKey, "'accessKey' cannot be null.");
-        this.azureKeyCredential = new AzureKeyCredential(accessKey);
+    public PhoneNumbersClientBuilder credential(AzureKeyCredential keyCredential)  {
+        this.azureKeyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
     }
 
@@ -144,7 +144,7 @@ public final class PhoneNumbersClientBuilder {
         String accessKey = connectionStringObject.getAccessKey();
         this
             .endpoint(endpoint)
-            .accessKey(accessKey);
+            .credential(new AzureKeyCredential(accessKey));
         return this;
     }
 
@@ -198,6 +198,18 @@ public final class PhoneNumbersClientBuilder {
         return this;
     }
 
+     /**
+     * Sets the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * @param retryPolicy User's retry policy applied to each request.
+     * @return The updated {@link PhoneNumbersClientBuilder} object.
+     * @throws NullPointerException If the specified {@code retryPolicy} is null.
+     */
+    public PhoneNumbersClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        this.retryPolicy = Objects.requireNonNull(retryPolicy, "The retry policy cannot be null");
+        return this;
+    }
+
     /**
      * Create synchronous client applying CommunicationClientCredentialPolicy,
      * UserAgentPolicy, RetryPolicy, and CookiePolicy.
@@ -239,7 +251,7 @@ public final class PhoneNumbersClientBuilder {
     HttpPipelinePolicy createAuthenticationPolicy() {
         if (this.tokenCredential != null && this.azureKeyCredential != null) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException("Both 'credential' and 'accessKey' are set. Just one may be used."));
+                new IllegalArgumentException("Both 'credential' and 'keyCredential' are set. Just one may be used."));
         }
         if (this.tokenCredential != null) {
             return new BearerTokenAuthenticationPolicy(
@@ -255,10 +267,6 @@ public final class PhoneNumbersClientBuilder {
     UserAgentPolicy createUserAgentPolicy(
         String applicationId, String sdkName, String sdkVersion, Configuration configuration) {
         return new UserAgentPolicy(applicationId, sdkName, sdkVersion, configuration);
-    }
-
-    RetryPolicy createRetryPolicy() {
-        return new RetryPolicy();
     }
 
     CookiePolicy createCookiePolicy() {
@@ -296,15 +304,25 @@ public final class PhoneNumbersClientBuilder {
 
         List<HttpPipelinePolicy> policyList = new ArrayList<>();
 
+        ClientOptions buildClientOptions = (clientOptions == null) ? new ClientOptions() : clientOptions;
+        HttpLogOptions buildLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
+
+        String applicationId = null;
+        if (!CoreUtils.isNullOrEmpty(buildClientOptions.getApplicationId())) {
+            applicationId = buildClientOptions.getApplicationId();
+        } else if (!CoreUtils.isNullOrEmpty(buildLogOptions.getApplicationId())) {
+            applicationId = buildLogOptions.getApplicationId();
+        }
+
         // Add required policies
         policyList.add(this.createAuthenticationPolicy());
         policyList.add(this.createUserAgentPolicy(
-            this.getHttpLogOptions().getApplicationId(),
+            applicationId,
             PROPERTIES.get(SDK_NAME),
             PROPERTIES.get(SDK_VERSION),
             this.configuration
         ));
-        policyList.add(this.createRetryPolicy());
+        policyList.add(this.retryPolicy == null ? new RetryPolicy() : this.retryPolicy);
         policyList.add(this.createCookiePolicy());
 
         // Add additional policies

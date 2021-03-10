@@ -68,14 +68,22 @@
 
   <!-- Don't apply custom Checkstyle rules to files under samples package -->
   <suppress
-      checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|HttpPipelinePolicyCheck|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck|GoodLoggingCheck|JavadocThrowsChecks)"
+      checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|HttpPipelinePolicyCheck|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck|JavadocThrowsChecks)"
       files=".*[/\\]samples[/\\].*\.java"/>
 
-  <!-- Don't check for JavaDocPackage in samples or tests -->
+  <!-- Don't check for JavaDocPackage in samples or tests-->
   <suppress checks="JavadocPackage" files=".*[/\\](samples|test)[/\\].*\.java"/>
 
-  <!-- Suppress LineLength for samples and tests -->
+  <!-- Suppress LineLength for samples and tests-->
   <suppress checks="LineLength" files=".*[/\\](samples|test)[/\\].*\.java"/>
+
+  <!-- To allow using sysout rather than logger in samples -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
+            files=".*[/\\]samples[/\\].*\.java"/>
+
+  <!-- All fields are not set in constructors. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
+            files="Receipt.java"/>
 
   <!-- Suppress LineLength for i18n message properties -->
   <suppress checks="LineLength" files="messages.properties"/>
@@ -160,8 +168,6 @@ the main ServiceBusClientBuilder. -->
             files="com.azure.security.keyvault.keys.cryptography.AesCbc.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
             files="com.azure.security.keyvault.keys.cryptography.AesCbcPad.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
-            files="com.azure.security.keyvault.keys.cryptography.AesGcm.java"/>
 
   <!-- suppress the runtime exception in the KeyVaultClient class-->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
@@ -274,6 +280,7 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Allows the HttpPipelinePolicy derived class in Implementation folder -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.messaging.servicebus.implementation.ServiceBusTokenCredentialHttpPolicy.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.messaging.eventgrid.implementation.CloudEventTracingPipelinePolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy.java"/>
@@ -502,8 +509,8 @@ the main ServiceBusClientBuilder. -->
   <!-- TODO: (https://github.com/Azure/azure-sdk-for-java/issues/18279) -->
   <!-- Suppress DigitalTwins for now -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-digitaltwins-core[/\\]src[/\\]"/>
-  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-messaging-eventgrid[/\\]src[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-ai-anomalydetector[/\\]src[/\\]"/>
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-iot-deviceupdate[/\\]src[/\\]"/>
 
   <!-- Don't enforce non-static ClientLogger instances in com.azure.core.util.Option types-->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
@@ -517,7 +524,7 @@ the main ServiceBusClientBuilder. -->
   <!-- The clients don't end with 'Client' but instead with 'Sender' -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck"
             files="com.azure.search.documents.SearchClientBuilder"
-            lines="369,401,413"/>
+            lines="366,398,410"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
             files="com.azure.search.documents.SearchIndexingBufferedAsyncSender"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"

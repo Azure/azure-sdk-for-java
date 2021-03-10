@@ -10,6 +10,8 @@ import java.security.KeyStore;
  */
 public class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParameter {
 
+    private static final String DEFAULT_AAD_AUTHENTICATION_URL = "https://login.microsoftonline.com/";
+
     /**
      * Stores the URI.
      */
@@ -73,7 +75,7 @@ public class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParameter {
      * @param clientSecret the client secret.
      */
     public KeyVaultLoadStoreParameter(String uri, String tenantId, String clientId, String clientSecret) {
-        this(uri, null, tenantId, clientId, clientSecret);
+        this(uri, DEFAULT_AAD_AUTHENTICATION_URL, tenantId, clientId, clientSecret);
     }
 
 

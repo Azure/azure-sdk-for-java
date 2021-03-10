@@ -30,14 +30,14 @@ public final class AssetFiltersImpl implements AssetFilters {
 
     public PagedIterable<AssetFilter> list(String resourceGroupName, String accountName, String assetName) {
         PagedIterable<AssetFilterInner> inner = this.serviceClient().list(resourceGroupName, accountName, assetName);
-        return inner.mapPage(inner1 -> new AssetFilterImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new AssetFilterImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AssetFilter> list(
         String resourceGroupName, String accountName, String assetName, Context context) {
         PagedIterable<AssetFilterInner> inner =
             this.serviceClient().list(resourceGroupName, accountName, assetName, context);
-        return inner.mapPage(inner1 -> new AssetFilterImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new AssetFilterImpl(inner1, this.manager()));
     }
 
     public AssetFilter get(String resourceGroupName, String accountName, String assetName, String filterName) {

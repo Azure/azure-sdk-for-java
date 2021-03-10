@@ -132,23 +132,6 @@ stages:
           # but we don't include them in the Maven site commands (so that we don't generate reports for the non-shipping modules).
           - template: ../steps/install-reporting-tools.yml
 
-          PostSteps:
-            - script: |
-                python --version
-                python -m pip install setuptools termcolor in_place
-                python sdk/spring/scripts/replace_util.py --module cosmos --log debug --color false
-              condition: and(succeededOrFailed(), eq(variables['DisplayName'], 'Spring Emulator only Integration Tests'))
-              displayName: 'Run replace_util.py'
-            - task: Maven@3
-              condition: and(succeededOrFailed(), eq(variables['DisplayName'], 'Spring Emulator only Integration Tests'))
-              displayName: 'Run tests again: $(DisplayName)'
-              inputs:
-                mavenPomFile: pom.xml
-                goals: clean verify
-                options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl com.azure:azure-spring-data-cosmos-test'
-                mavenAuthenticateFeed: true
-                jdkVersionOption: $(JavaTestVersion)
-
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
     - template: archetype-java-release.yml

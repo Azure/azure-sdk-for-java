@@ -20,9 +20,9 @@ dependency to your project and the Spring Cloud auto-configuration will kick-in:
 [//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-starter-eventhubs;current})
 ```xml
 <dependency>
-  <groupId>com.azure.spring</groupId>
-  <artifactId>azure-spring-cloud-starter-eventhubs</artifactId>
-  <version>2.2.0-beta.1</version>
+    <groupId>com.azure.spring</groupId>
+    <artifactId>azure-spring-cloud-starter-eventhubs</artifactId>
+    <version>2.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -32,6 +32,7 @@ Note that there is no need to add a `version` as those are managed already by th
 ## Key concepts
 This project provides auto-configuration for the following Azure services:
 
+- [Azure App Configuration][app_configuration]
 - [Azure Cache][cache]
 - [Event Hubs][event_hubs]
 - [Event Hubs Kafka][event_hubs_kafka]
@@ -43,6 +44,8 @@ This project provides auto-configuration for the following Azure services:
 
 The following section provides sample projects illustrating how to use the Azure Spring Cloud starters.
 ### More sample code
+- [Azure App Configuration][app_configuration_sample]
+- [Azure App Configuration Conversation][app_configuration_conversation_sample]
 - [Azure Cache][cache_sample]
 - [Event Hubs][event_hubs_sample]
 - [Event Hubs Kafka][event_hubs_kafka_sample]
@@ -58,7 +61,7 @@ Spring allow all the supported logging systems to set logger levels set in the S
 
 The following example shows potential logging settings in `application.properties`:
 
-```
+```properties
 logging.level.root=WARN
 logging.level.org.springframework.web=DEBUG
 logging.level.org.hibernate=ERROR
@@ -71,6 +74,8 @@ For more information about setting logging in spring, please refer to the [offic
 
 The following section provides sample projects illustrating how to use the Azure Spring Cloud starters.
 ### More sample code
+- [Azure App Configuration][app_configuration_sample]
+- [Azure App Configuration Conversation][app_configuration_conversation_sample]
 - [Azure Cache][cache_sample]
 - [Event Hubs][event_hubs_sample]
 - [Event Hubs Kafka][event_hubs_kafka_sample]
@@ -93,12 +98,15 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
 [maven]: https://maven.apache.org/
+[app_configuration]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config
 [cache]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-cache
 [event_hubs]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-eventhubs
 [event_hubs_kafka]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-eventhubs-kafka
 [service_bus]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-servicebus
 [storage]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-starter-storage
 [storage_queue]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-storage-queue
+[app_configuration_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-appconfiguration-sample
+[app_configuration_conversation_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-appconfiguration-conversion-sample-complete
 [cache_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-cache
 [event_hubs_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-eventhubs
 [event_hubs_kafka_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-kafka

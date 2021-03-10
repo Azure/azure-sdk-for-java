@@ -1122,11 +1122,11 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         new TestRedis().runTest(azureResourceManager.redisCaches(), azureResourceManager.resourceGroups());
     }
 
-    //    @Test
-    //    public void testCdnManager() throws Exception {
-    //        new TestCdn()
-    //                .runTest(azure.cdnProfiles(), azure.resourceGroups());
-    //    }
+    @Test
+    public void testCdnManager() throws Exception {
+        new TestCdn()
+                .runTest(azureResourceManager.cdnProfiles(), azureResourceManager.resourceGroups());
+    }
 
     @Test
     public void testDnsZones() throws Exception {

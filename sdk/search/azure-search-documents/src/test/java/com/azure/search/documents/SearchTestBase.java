@@ -36,7 +36,6 @@ import com.azure.search.documents.indexes.models.SoftDeleteColumnDeletionDetecti
 import com.azure.search.documents.indexes.models.TagScoringFunction;
 import com.azure.search.documents.indexes.models.TagScoringParameters;
 import com.azure.search.documents.indexes.models.TextWeights;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.Exceptions;
 
 import java.io.InputStreamReader;
@@ -53,6 +52,7 @@ import java.util.Objects;
 import static com.azure.search.documents.TestHelpers.BLOB_DATASOURCE_NAME;
 import static com.azure.search.documents.TestHelpers.HOTEL_INDEX_NAME;
 import static com.azure.search.documents.TestHelpers.SQL_DATASOURCE_NAME;
+import static com.azure.search.documents.indexes.DataSourceSyncTests.FAKE_AZURE_SQL_CONNECTION_STRING;
 
 /**
  * Abstract base class for all Search API tests
@@ -66,14 +66,6 @@ public abstract class SearchTestBase extends TestBase {
         .get("SEARCH_SERVICE_API_KEY", "apiKey");
 
     protected static final TestMode TEST_MODE = initializeTestMode();
-
-    // The connection string we use here, as well as table name and target index schema, use the USGS database
-    // that we set up to support our code samples.
-    //
-    // ASSUMPTION: Change tracking has already been enabled on the database with ALTER DATABASE ... SET CHANGE_TRACKING = ON
-    // and it has been enabled on the table with ALTER TABLE ... ENABLE CHANGE_TRACKING
-    private static final String AZURE_SQL_CONN_STRING_READONLY_PLAYGROUND =
-        "Server=tcp:azs-playground.database.windows.net,1433;Database=usgs;User ID=reader;Password=EdrERBt3j6mZDP;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;"; // [SuppressMessage("Microsoft.Security", "CS001:SecretInline")]
 
     private static final String FAKE_DESCRIPTION = "Some data source";
 
@@ -92,7 +84,7 @@ public abstract class SearchTestBase extends TestBase {
         Reader indexData = new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader()
             .getResourceAsStream(jsonFile)));
         try {
-            return setupIndex(new ObjectMapper().readValue(indexData, SearchIndex.class));
+            return setupIndex(TestHelpers.MAPPER.readValue(indexData, SearchIndex.class));
         } catch (Exception e) {
             throw Exceptions.propagate(e);
         }
@@ -371,7 +363,7 @@ public abstract class SearchTestBase extends TestBase {
     protected SearchIndexerDataSourceConnection createTestSqlDataSourceObject(
         DataDeletionDetectionPolicy dataDeletionDetectionPolicy, DataChangeDetectionPolicy dataChangeDetectionPolicy) {
         return SearchIndexerDataSources.createFromAzureSql(testResourceNamer.randomName(SQL_DATASOURCE_NAME, 32),
-            AZURE_SQL_CONN_STRING_READONLY_PLAYGROUND, "GeoNamesRI", FAKE_DESCRIPTION, dataChangeDetectionPolicy,
+            FAKE_AZURE_SQL_CONNECTION_STRING, "GeoNamesRI", FAKE_DESCRIPTION, dataChangeDetectionPolicy,
             dataDeletionDetectionPolicy);
     }
 
