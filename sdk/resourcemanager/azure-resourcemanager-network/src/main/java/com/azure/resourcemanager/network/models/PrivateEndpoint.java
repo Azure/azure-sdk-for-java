@@ -67,7 +67,8 @@ public interface PrivateEndpoint extends
              *
              * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
-            interface Blank<ParentT> extends PrivateLinkServiceConnection.DefinitionStages.WithPrivateLinkServiceResource<ParentT> {
+            interface Blank<ParentT>
+                extends PrivateLinkServiceConnection.DefinitionStages.WithPrivateLinkServiceResource<ParentT> {
             }
 
             /**
@@ -82,7 +83,17 @@ public interface PrivateEndpoint extends
                  * @param privateLinkServiceResource the resource of the private link service
                  * @return the next stage of the definition
                  */
-                PrivateLinkServiceConnection.DefinitionStages.WithSubResource<ParentT> withResource(Resource privateLinkServiceResource);
+                PrivateLinkServiceConnection.DefinitionStages.WithSubResource<ParentT> withResource(
+                    Resource privateLinkServiceResource);
+
+                /**
+                 * Specifies the resource of the private link service.
+                 *
+                 * @param privateLinkServiceResourceId the resource ID of the private link service
+                 * @return the next stage of the definition
+                 */
+                PrivateLinkServiceConnection.DefinitionStages.WithSubResource<ParentT> withResource(
+                    String privateLinkServiceResourceId);
             }
 
             /**
@@ -98,7 +109,8 @@ public interface PrivateEndpoint extends
                  * @param subResourceName the name of the sub resource
                  * @return the next stage of the definition
                  */
-                PrivateLinkServiceConnection.DefinitionStages.WithApprovalMethod<ParentT> withSubResource(PrivateLinkSubResourceName subResourceName);
+                PrivateLinkServiceConnection.DefinitionStages.WithApprovalMethod<ParentT> withSubResource(
+                    PrivateLinkSubResourceName subResourceName);
             }
 
             /**
@@ -106,14 +118,16 @@ public interface PrivateEndpoint extends
              *
              * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
-            interface WithApprovalMethod<ParentT> extends PrivateLinkServiceConnection.DefinitionStages.WithAttach<ParentT> {
+            interface WithApprovalMethod<ParentT>
+                extends PrivateLinkServiceConnection.DefinitionStages.WithAttach<ParentT> {
                 /**
                  * Specifies the approval method.
                  *
                  * @param requestMessage the request message for manual approval
                  * @return the next stage of the definition
                  */
-                PrivateLinkServiceConnection.DefinitionStages.WithAttach<ParentT> withManualApproval(String requestMessage);
+                PrivateLinkServiceConnection.DefinitionStages.WithAttach<ParentT> withManualApproval(
+                    String requestMessage);
             }
 
             /**
@@ -201,6 +215,14 @@ public interface PrivateEndpoint extends
              * @return the next stage of private endpoint definition
              */
             WithPrivateLinkServiceConnection withSubnet(Subnet subnet);
+
+            /**
+             * Specifies the subnet, from which the private IP will be allocated.
+             *
+             * @param subnetId the ID of subnet from which the private IP will be allocated
+             * @return the next stage of private endpoint definition
+             */
+            WithPrivateLinkServiceConnection withSubnet(String subnetId);
         }
 
         /**
