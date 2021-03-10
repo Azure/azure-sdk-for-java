@@ -47,6 +47,7 @@
       <modules>
         <module>azure-resourcemanager-mediaservices</module>
         <module>microsoft-azure-media</module>
+        <module>azure-media-analytics</module>
       </modules>
     </profile>
   </profiles>
