@@ -17,14 +17,14 @@ import com.azure.data.appconfiguration.implementation.ClientConstants;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.Locale;
 import java.util.Objects;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -110,6 +110,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
             ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
             : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
 
+        // What exactly is this testing?
         final ConfigurationClient client = new ConfigurationClientBuilder()
             .connectionString(connectionString)
             .addPolicy(new TimeoutPolicy(Duration.ofMillis(1))).buildClient();
