@@ -8,6 +8,7 @@ parameters:
   WorkingDirectory: $(System.DefaultWorkingDirectory)'
   ScriptDirectory: eng/common/scripts
   SkipCheckingForChanges: false
+  RemoteName: not-specified
 
 steps:
 - pwsh: |
@@ -51,4 +52,5 @@ steps:
       -CommitMsg "${{ parameters.CommitMsg }}"
       -GitUrl "https://$(azuresdk-github-pat)@github.com/${{ parameters.PROwner }}/$(RepoNameWithoutOwner).git"
       -PushArgs "${{ parameters.PushArgs }}"
-      -SkipCommit $${{ parameters.SkipCheckingForChanges }}
+      -SkipCommit ${{ parameters.SkipCheckingForChanges }}
+      -RemoteName ${{ parameters.RemoteName }}
