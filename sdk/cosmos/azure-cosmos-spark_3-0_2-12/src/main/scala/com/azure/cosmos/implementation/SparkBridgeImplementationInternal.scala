@@ -83,7 +83,7 @@ private[cosmos] object SparkBridgeImplementationInternal extends CosmosLoggingTr
   }
 
   def toContinuationToken(lsn: Long): String = {
-    raw""""${String.valueOf(lsn)}"""""
+    raw""""${String.valueOf(lsn)}""""
   }
 
   def extractContinuationTokensFromChangeFeedStateJson(stateJsonBase64: String): Array[(NormalizedRange, Long)] = {
@@ -108,7 +108,15 @@ private[cosmos] object SparkBridgeImplementationInternal extends CosmosLoggingTr
   def toLsn(lsnToken: String): Long = {
     // the continuation from the backend is encoded as '"<LSN>"' where LSN is a long integer
     // removing the first and last characters - which are the quotes
-    lsnToken.substring(1, lsnToken.length - 2).toLong
+    if (lsnToken != null && lsnToken.length > 2) {
+      if (lsnToken.startsWith("\"")) {
+        lsnToken.substring(1, lsnToken.length - 1).toLong
+      } else {
+        lsnToken.toLong
+      }
+    } else {
+      0
+    }
   }
 
   def extractChangeFeedStateForRange
