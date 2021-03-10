@@ -52,8 +52,9 @@ The new SDK starts with 4.0.0 to be inline with EventGrid SDKs of other language
 
 #### Instantiating clients
 
-In 1.x, the `EventGridClient` was instantiated via the `EventGridClientImpl` constructor. The client contained both sync and async methods.
-The client can send only `EventGridEvent` to an EventGrid topic or domain.
+In 1.x, the `EventGridClient` was instantiated via the `EventGridClientImpl` constructor. The client contains both sync and async methods.
+It doesn't have the `endpoint` while the publish methods like `publishEvents` accepts `topicHostname`.
+It can send only `EventGridEvent` to an EventGrid topic or domain.
 ```java
 String endpoint = "<endpont of your event grid topic/domain that accepts EventGridEvent schema>";
 TopicCredentials topicCredentials = new TopicCredentials(key);
@@ -61,6 +62,7 @@ EventGridClient client = new EventGridClientImpl(topicCredentials);
 ```
 
 In 4.x, the creation of the client is done through the [EventGridPublisherClientBuilder][EventGridPublisherClientBuilder]. The sync and async operations are separated to [EventGridPublisherClient] and [EventGridPublisherAsyncClient].
+It must have a full-url `endpoint` instead of a host name.
 ```java
 EventGridPublisherClient<EventGridEvent> eventGridEventClient = new EventGridPublisherClientBuilder()
     .endpoint("<endpont of your event grid topic/domain that accepts EventGridEvent schema>")
