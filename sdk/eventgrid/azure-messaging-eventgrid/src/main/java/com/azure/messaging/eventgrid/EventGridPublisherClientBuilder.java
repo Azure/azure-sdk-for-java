@@ -260,7 +260,7 @@ public final class EventGridPublisherClientBuilder {
         try {
             new URL(Objects.requireNonNull(endpoint, "'endpoint' cannot be null."));
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
         this.endpoint = endpoint;
         return this;
