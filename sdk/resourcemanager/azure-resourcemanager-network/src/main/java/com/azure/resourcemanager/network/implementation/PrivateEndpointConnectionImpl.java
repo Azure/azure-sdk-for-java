@@ -20,13 +20,17 @@ class PrivateEndpointConnectionImpl extends
     PrivateEndpointConnection,
     PrivateEndpointConnection.Definition<PrivateEndpoint.DefinitionStages.WithCreate> {
 
+    private boolean manualApproval = false;
+
     PrivateEndpointConnectionImpl(String name, PrivateEndpointImpl parent) {
         super(new PrivateLinkServiceConnection().withName(name), parent);
     }
 
 
-    PrivateEndpointConnectionImpl(PrivateLinkServiceConnection innerModel, PrivateEndpointImpl parent) {
+    PrivateEndpointConnectionImpl(PrivateLinkServiceConnection innerModel, PrivateEndpointImpl parent,
+                                  boolean manualApproval) {
         super(innerModel, parent);
+        this.manualApproval = manualApproval;
     }
 
     @Override
@@ -45,6 +49,11 @@ class PrivateEndpointConnectionImpl extends
     }
 
     @Override
+    public boolean isManualApproval() {
+        return this.manualApproval;
+    }
+
+    @Override
     public PrivateEndpointImpl attach() {
         return this.parent().withPrivateEndpointConnection(this);
     }
@@ -58,6 +67,13 @@ class PrivateEndpointConnectionImpl extends
     @Override
     public PrivateEndpointConnectionImpl withSubResource(PrivateLinkSubResourceName subResourceName) {
         this.innerModel().withGroupIds(Collections.singletonList(subResourceName.toString()));
+        return this;
+    }
+
+    @Override
+    public PrivateEndpointConnectionImpl withManualApproval(String requestMessage) {
+        this.manualApproval = true;
+        this.innerModel().withRequestMessage(requestMessage);
         return this;
     }
 }

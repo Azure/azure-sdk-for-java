@@ -22,6 +22,11 @@ public interface PrivateEndpointConnection extends
      */
     ProvisioningState provisioningState();
 
+    /**
+     * @return whether connection is manual approval.
+     */
+    boolean isManualApproval();
+
     /** Grouping of private endpoint connection definition stages. */
     interface DefinitionStages {
         /**
@@ -60,7 +65,22 @@ public interface PrivateEndpointConnection extends
              * @param subResourceName the name of the sub resource
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withSubResource(PrivateLinkSubResourceName subResourceName);
+            WithApprovalMethod<ParentT> withSubResource(PrivateLinkSubResourceName subResourceName);
+        }
+
+        /**
+         * The stage of the definition allowing to specify the approval method.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
+        interface WithApprovalMethod<ParentT> extends WithAttach<ParentT> {
+            /**
+             * Specifies the approval method.
+             *
+             * @param requestMessage the request message for manual approval
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withManualApproval(String requestMessage);
         }
 
         /**
@@ -85,6 +105,7 @@ public interface PrivateEndpointConnection extends
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithPrivateLinkServiceResource<ParentT>,
         DefinitionStages.WithSubResource<ParentT>,
+        DefinitionStages.WithApprovalMethod<ParentT>,
         DefinitionStages.WithAttach<ParentT> {
     }
 }

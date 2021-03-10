@@ -15,6 +15,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -50,11 +51,18 @@ class PrivateEndpointImpl extends
 
     @Override
     public Map<String, PrivateEndpointConnection> privateEndpointConnections() {
-        return this.innerModel().privateLinkServiceConnections().stream()
-            .map(connection -> new PrivateEndpointConnectionImpl(connection, this))
-            .collect(Collectors.collectingAndThen(
-                Collectors.toMap(PrivateEndpointConnectionImpl::name, Function.identity()),
-                Collections::unmodifiableMap));
+        Map<String, PrivateEndpointConnection> connections = new HashMap<>();
+        if (this.innerModel().privateLinkServiceConnections() != null) {
+            connections.putAll(this.innerModel().privateLinkServiceConnections().stream()
+                .map(connection -> new PrivateEndpointConnectionImpl(connection, this, false))
+                .collect(Collectors.toMap(PrivateEndpointConnectionImpl::name, Function.identity())));
+        }
+        if (this.innerModel().manualPrivateLinkServiceConnections() != null) {
+            connections.putAll(this.innerModel().manualPrivateLinkServiceConnections().stream()
+                .map(connection -> new PrivateEndpointConnectionImpl(connection, this, true))
+                .collect(Collectors.toMap(PrivateEndpointConnectionImpl::name, Function.identity())));
+        }
+        return Collections.unmodifiableMap(connections);
     }
 
     @Override
@@ -69,10 +77,17 @@ class PrivateEndpointImpl extends
     }
 
     PrivateEndpointImpl withPrivateEndpointConnection(PrivateEndpointConnectionImpl connection) {
-        if (this.innerModel().privateLinkServiceConnections() == null) {
-            this.innerModel().withPrivateLinkServiceConnections(new ArrayList<>());
+        if (connection.isManualApproval()) {
+            if (this.innerModel().manualPrivateLinkServiceConnections() == null) {
+                this.innerModel().withManualPrivateLinkServiceConnections(new ArrayList<>());
+            }
+            this.innerModel().manualPrivateLinkServiceConnections().add(connection.innerModel());
+        } else {
+            if (this.innerModel().privateLinkServiceConnections() == null) {
+                this.innerModel().withPrivateLinkServiceConnections(new ArrayList<>());
+            }
+            this.innerModel().privateLinkServiceConnections().add(connection.innerModel());
         }
-        this.innerModel().privateLinkServiceConnections().add(connection.innerModel());
         return this;
     }
 

@@ -98,13 +98,33 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
             .defineConnection(peName)
                 .withResource(storageAccount)
                 .withSubResource(PrivateLinkSubResourceName.STORAGE_BLOB)
+                .withManualApproval("request message")
                 .attach()
             .create();
 
         Assertions.assertNotNull(privateEndpoint.subnet());
         Assertions.assertEquals(1, privateEndpoint.networkInterfaces().size());
         Assertions.assertEquals(1, privateEndpoint.privateEndpointConnections().size());
+        Assertions.assertTrue(privateEndpoint.privateEndpointConnections().values().iterator().next().isManualApproval());
+        Assertions.assertEquals("Pending", privateEndpoint.privateEndpointConnections().get(peName).state().status());
+
+        azureResourceManager.privateEndpoints().deleteById(privateEndpoint.id());
+
+        privateEndpoint = azureResourceManager.privateEndpoints().define(peName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withSubnet(network.subnets().get(subnetName))
+            .defineConnection(peName)
+            .withResource(storageAccount)
+            .withSubResource(PrivateLinkSubResourceName.STORAGE_BLOB)
+            .attach()
+            .create();
+
+        Assertions.assertNotNull(privateEndpoint.subnet());
+        Assertions.assertEquals(1, privateEndpoint.networkInterfaces().size());
+        Assertions.assertEquals(1, privateEndpoint.privateEndpointConnections().size());
         // auto-approved
+        Assertions.assertFalse(privateEndpoint.privateEndpointConnections().values().iterator().next().isManualApproval());
         Assertions.assertEquals("Approved", privateEndpoint.privateEndpointConnections().get(peName).state().status());
 
         int a = 1;
