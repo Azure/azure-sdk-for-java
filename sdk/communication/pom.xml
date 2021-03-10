@@ -46,6 +46,11 @@
           <artifactId>azure-communication-sms</artifactId>
           <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
         </dependency>
+        <dependency>
+          <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.28</version>
+        </dependency>
       </dependencies>
 
       <build>
