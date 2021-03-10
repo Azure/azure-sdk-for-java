@@ -16,7 +16,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 @Configuration
-public class PrimaryDatasourceConfiguration {
+@EnableReactiveCosmosRepositories(basePackages = "com.azure.spring.sample.cosmos.multi.database.multiple.account.repository",
+    reactiveCosmosTemplateRef = "primaryDatabaseTemplate")
+public class PrimaryDatasourceConfiguration extends AbstractCosmosConfiguration{
 
     private static final String PRIMARY_DATABASE = "primary_database";
 
@@ -34,20 +36,15 @@ public class PrimaryDatasourceConfiguration {
             .endpoint(primaryProperties.getUri());
     }
 
-    @EnableReactiveCosmosRepositories(basePackages = "com.azure.spring.sample.cosmos.multi.database.multiple.account.repository",
-        reactiveCosmosTemplateRef = "primaryDatabaseTemplate")
-    public class PrimaryDatabaseConfiguration extends AbstractCosmosConfiguration{
+    @Bean
+    public ReactiveCosmosTemplate primaryDatabaseTemplate(CosmosAsyncClient cosmosAsyncClient,
+                                                          CosmosConfig cosmosConfig,
+                                                          MappingCosmosConverter mappingCosmosConverter) {
+        return new ReactiveCosmosTemplate(cosmosAsyncClient, PRIMARY_DATABASE, cosmosConfig, mappingCosmosConverter);
+    }
 
-        @Bean
-        public ReactiveCosmosTemplate primaryDatabaseTemplate(CosmosAsyncClient cosmosAsyncClient,
-                                                               CosmosConfig cosmosConfig,
-                                                               MappingCosmosConverter mappingCosmosConverter) {
-            return new ReactiveCosmosTemplate(cosmosAsyncClient, PRIMARY_DATABASE, cosmosConfig, mappingCosmosConverter);
-        }
-
-        @Override
-        protected String getDatabaseName() {
-            return PRIMARY_DATABASE;
-        }
+    @Override
+    protected String getDatabaseName() {
+        return PRIMARY_DATABASE;
     }
 }

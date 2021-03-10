@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.Nullable;
 
 @Configuration
+@EnableCosmosRepositories(cosmosTemplateRef  = "secondaryDatabaseTemplate")
 public class SecondaryDatasourceConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SecondaryDatasourceConfiguration.class);
@@ -47,14 +48,11 @@ public class SecondaryDatasourceConfiguration {
             .build();
     }
 
-    @EnableCosmosRepositories(cosmosTemplateRef  = "secondaryDatabaseTemplate")
-    public class SecondaryDatabaseConfiguration {
-        @Bean
-        public CosmosTemplate secondaryDatabaseTemplate(@Qualifier("secondaryCosmosClient") CosmosAsyncClient client,
-                                                         @Qualifier("secondaryCosmosConfig") CosmosConfig cosmosConfig,
-                                                         MappingCosmosConverter mappingCosmosConverter) {
-            return new CosmosTemplate(client, SECONDARY_DATABASE, cosmosConfig, mappingCosmosConverter);
-        }
+    @Bean
+    public CosmosTemplate secondaryDatabaseTemplate(@Qualifier("secondaryCosmosClient") CosmosAsyncClient client,
+                                                    @Qualifier("secondaryCosmosConfig") CosmosConfig cosmosConfig,
+                                                    MappingCosmosConverter mappingCosmosConverter) {
+        return new CosmosTemplate(client, SECONDARY_DATABASE, cosmosConfig, mappingCosmosConverter);
     }
 
     private static class ResponseDiagnosticsProcessorImplementation implements ResponseDiagnosticsProcessor {

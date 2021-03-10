@@ -6,7 +6,6 @@ package com.azure.spring.sample.cosmos.multi.database.multiple.account.repositor
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import org.springframework.data.annotation.Id;
 
-
 public class CosmosUser {
     @Id
     private String id;

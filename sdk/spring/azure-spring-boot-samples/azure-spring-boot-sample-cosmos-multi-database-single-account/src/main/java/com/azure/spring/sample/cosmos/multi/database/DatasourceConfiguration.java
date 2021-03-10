@@ -19,15 +19,15 @@ public class DatasourceConfiguration {
     private static final String DATABASE2 = "database2";
 
     @Bean
-    public CosmosProperties primary() {
+    public CosmosProperties cosmosProperties() {
         return new CosmosProperties();
     }
 
     @Bean
-    public CosmosClientBuilder primaryClientBuilder(CosmosProperties primaryProperties) {
+    public CosmosClientBuilder primaryClientBuilder(CosmosProperties cosmosProperties) {
         return new CosmosClientBuilder()
-            .key(primaryProperties.getKey())
-            .endpoint(primaryProperties.getUri());
+            .key(cosmosProperties.getKey())
+            .endpoint(cosmosProperties.getUri());
     }
 
     @EnableReactiveCosmosRepositories(basePackages = "com.azure.spring.sample.cosmos.multi.database.repository",
