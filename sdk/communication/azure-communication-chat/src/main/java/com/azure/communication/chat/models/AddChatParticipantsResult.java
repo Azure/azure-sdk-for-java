@@ -17,6 +17,10 @@ public final class AddChatParticipantsResult {
     @JsonProperty(value = "invalidParticipants", access = JsonProperty.Access.WRITE_ONLY)
     private List<ChatError> invalidParticipants;
 
+    /**
+     *
+     * @param invalidParticipants List of errors relating to invalid participants
+     */
     public AddChatParticipantsResult(List<ChatError> invalidParticipants) {
         this.invalidParticipants = invalidParticipants;
     }

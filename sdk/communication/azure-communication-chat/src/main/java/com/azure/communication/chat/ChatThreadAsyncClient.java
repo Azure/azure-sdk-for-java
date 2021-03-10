@@ -40,7 +40,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.paging.PageRetriever;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.Objects;
@@ -114,7 +113,7 @@ public final class ChatThreadAsyncClient {
     /**
      * Updates a thread's topic.
      *
-     * @param topic   The new topic.
+     * @param topic The new topic.
      * @param context The context to associate with this operation.
      * @return the completion.
      */
@@ -204,7 +203,7 @@ public final class ChatThreadAsyncClient {
      * Adds participants to a thread. If participants already exist, no change occurs.
      *
      * @param participants Collection of participants to add.
-     * @param context      The context to associate with this operation.
+     * @param context The context to associate with this operation.
      * @return the result.
      */
     Mono<Response<AddChatParticipantsResult>> addParticipants(Iterable<ChatParticipant> participants, Context context) {
@@ -257,7 +256,7 @@ public final class ChatThreadAsyncClient {
      * Remove a participant from a thread.
      *
      * @param identifier Identity of the participant to remove from the thread.
-     * @param context    The context to associate with this operation.
+     * @param context The context to associate with this operation.
      * @return the completion.
      */
     Mono<Response<Void>> removeParticipant(CommunicationIdentifier identifier, Context context) {
@@ -281,7 +280,7 @@ public final class ChatThreadAsyncClient {
     /**
      * Gets the participants of a thread.
      *
-     * @param context                 The context to associate with this operation.
+     * @param context The context to associate with this operation.
      * @param listParticipantsOptions The request options.
      * @return the participants of a thread.
      */
@@ -354,8 +353,7 @@ public final class ChatThreadAsyncClient {
 
         return this.chatThreadClient.sendChatMessageWithResponseAsync(
             chatThreadId, options, context).map(
-            result -> new SimpleResponse<SendChatMessageResult>(
-                result, (result.getValue())));
+                result -> new SimpleResponse<SendChatMessageResult>(result, (result.getValue())));
     }
 
     /**
@@ -404,7 +402,7 @@ public final class ChatThreadAsyncClient {
      * Gets a message by id.
      *
      * @param chatMessageId The message id.
-     * @param context       The context to associate with this operation.
+     * @param context The context to associate with this operation.
      * @return a message by id.
      */
     Mono<Response<ChatMessage>> getMessage(String chatMessageId, Context context) {
@@ -467,7 +465,7 @@ public final class ChatThreadAsyncClient {
      * Gets a list of messages from a thread.
      *
      * @param listMessagesOptions The request options.
-     * @param context             The context to associate with this operation.
+     * @param context The context to associate with this operation.
      * @return a paged list of messages from a thread.
      */
     PagedFlux<ChatMessage> listMessages(ListChatMessagesOptions listMessagesOptions, Context context) {
@@ -495,7 +493,7 @@ public final class ChatThreadAsyncClient {
      * Updates a message.
      *
      * @param chatMessageId The message id.
-     * @param options       Options for updating the message.
+     * @param options Options for updating the message.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -517,7 +515,7 @@ public final class ChatThreadAsyncClient {
      * Updates a message.
      *
      * @param chatMessageId The message id.
-     * @param options       Options for updating the message.
+     * @param options Options for updating the message.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -536,8 +534,8 @@ public final class ChatThreadAsyncClient {
      * Updates a message.
      *
      * @param chatMessageId The message id.
-     * @param options       Options for updating the message.
-     * @param context       The context to associate with this operation.
+     * @param options Options for updating the message.
+     * @param context The context to associate with this operation.
      * @return the completion.
      */
     Mono<Response<Void>> updateMessage(String chatMessageId, UpdateChatMessageOptions options, Context context) {
@@ -587,7 +585,7 @@ public final class ChatThreadAsyncClient {
      * Deletes a message.
      *
      * @param chatMessageId The message id.
-     * @param context       The context to associate with this operation.
+     * @param context The context to associate with this operation.
      * @return the completion.
      */
     Mono<Response<Void>> deleteMessage(String chatMessageId, Context context) {
@@ -682,7 +680,7 @@ public final class ChatThreadAsyncClient {
      * Posts a read receipt event to a thread, on behalf of a user.
      *
      * @param chatMessageId The id of the chat message that was read.
-     * @param context       The context to associate with this operation.
+     * @param context The context to associate with this operation.
      * @return the completion.
      */
     Mono<Response<Void>> sendReadReceipt(String chatMessageId, Context context) {
@@ -708,7 +706,7 @@ public final class ChatThreadAsyncClient {
      * Gets read receipts for a thread.
      *
      * @param listReadReceiptOptions The additional options for this operation.
-     * @param context                The context to associate with this operation.
+     * @param context The context to associate with this operation.
      * @return read receipts for a thread.
      */
     PagedFlux<ChatMessageReadReceipt> listReadReceipts(ListReadReceiptOptions listReadReceiptOptions, Context context) {

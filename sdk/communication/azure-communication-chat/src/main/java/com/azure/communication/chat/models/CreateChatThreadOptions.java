@@ -67,6 +67,12 @@ public final class CreateChatThreadOptions {
         return this;
     }
 
+    /**
+     * Adds another participant to the list of participants to create the chat thread with
+     *
+     * @param participant The participant to add
+     * @return the CreateChatThreadOptions object itself
+     */
     public CreateChatThreadOptions addParticipant(ChatParticipant participant) {
         this.participants.add(participant);
         return this;

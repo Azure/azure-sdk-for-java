@@ -10,12 +10,14 @@ import java.util.List;
 
 /**
  * A converter between {@link com.azure.communication.chat.implementation.models.AddChatParticipantsOptions} and
- * {@link Iterable<ChatParticipant>}.
+ * a collection of {@link ChatParticipant}.
  */
 public final class AddChatParticipantsOptionsConverter {
     /**
-     * Maps from {AddChatThreadMembersOptions} to
+     * Maps from a collection of {@link ChatParticipant} to
      * {@link com.azure.communication.chat.implementation.models.AddChatParticipantsOptions}.
+     *
+     * @param participants A list of participants to add
      */
     public static com.azure.communication.chat.implementation.models.AddChatParticipantsOptions convert(
         Iterable<ChatParticipant> participants) {
