@@ -82,20 +82,14 @@ steps:
   env:
     GH_TOKEN: $(azuresdk-github-pat)
 
-- template: /eng/common/pipelines/templates/steps/create-pull-request.yml
+- template: /eng/common/pipelines/templates/steps/git-push-changes.yml
   parameters:
-    RepoName: ${{ parameters.TargetDocRepoName }}
-    RepoOwner: ${{ parameters.TargetDocRepoOwner }}
     PRBranchName: ${{ parameters.PRBranchName }}
     CommitMsg: "Update docs metadata and targeting for release of ${{ parameters.ArtifactName }}"
-    PRTitle: "Docs.MS Release Updates for ${{ parameters.ArtifactName }}"
-    BaseBranchName: ${{ parameters.SourceBranchName }}
+    RepoName: ${{ parameters.TargetDocRepoName }}
+    RepoOwner: ${{ parameters.TargetDocRepoOwner }}
     WorkingDirectory: ${{ parameters.WorkingDirectory }}/repo
     ScriptDirectory: ${{ parameters.WorkingDirectory }}/${{ parameters.ScriptDirectory }}
-    GHReviewersVariable: ${{ parameters.GHReviewersVariable }}
-    GHTeamReviewersVariable: ${{ parameters.GHTeamReviewersVariable }} 
-    PRLabels: ${{ parameters.PRLabels }}
-    CloseAfterOpenForTesting: ${{ parameters.CloseAfterOpenForTesting }}
 
 - ${{if ne( parameters['OnboardingBranch'], '')}}:
   - pwsh: |
@@ -124,16 +118,16 @@ steps:
     env:
       GH_TOKEN: $(azuresdk-github-pat)
 
-  - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
-    parameters:
-      RepoName: ${{ parameters.TargetDocRepoName }}
-      RepoOwner: ${{ parameters.TargetDocRepoOwner }}
-      PRBranchName: ${{ parameters.PRBranchName }}-ci
-      CommitMsg: "CI Update for release of ${{ parameters.ArtifactName }}"
-      PRTitle: "Docs.MS CI Updates for ${{ parameters.ArtifactName }}"
-      BaseBranchName: ${{ parameters.OnboardingBranch }}
-      WorkingDirectory: ${{ parameters.WorkingDirectory }}/repo
-      ScriptDirectory: ${{ parameters.WorkingDirectory }}/${{ parameters.ScriptDirectory }}
-      GHReviewersVariable: ${{ parameters.GHReviewersVariable }}
-      GHTeamReviewersVariable: ${{ parameters.GHTeamReviewersVariable }}
-      CloseAfterOpenForTesting: ${{ parameters.CloseAfterOpenForTesting }}
+  # - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
+  #   parameters:
+  #     RepoName: ${{ parameters.TargetDocRepoName }}
+  #     RepoOwner: ${{ parameters.TargetDocRepoOwner }}
+  #     PRBranchName: ${{ parameters.PRBranchName }}-ci
+  #     CommitMsg: "CI Update for release of ${{ parameters.ArtifactName }}"
+  #     PRTitle: "Docs.MS CI Updates for ${{ parameters.ArtifactName }}"
+  #     BaseBranchName: ${{ parameters.OnboardingBranch }}
+  #     WorkingDirectory: ${{ parameters.WorkingDirectory }}/repo
+  #     ScriptDirectory: ${{ parameters.WorkingDirectory }}/${{ parameters.ScriptDirectory }}
+  #     GHReviewersVariable: ${{ parameters.GHReviewersVariable }}
+  #     GHTeamReviewersVariable: ${{ parameters.GHTeamReviewersVariable }}
+  #     CloseAfterOpenForTesting: ${{ parameters.CloseAfterOpenForTesting }}
