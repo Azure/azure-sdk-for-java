@@ -3,21 +3,28 @@
 
 package com.azure.communication.sms.models;
 
-import com.azure.communication.sms.implementation.models.SmsSendResponseItem;
-import com.azure.core.annotation.Fluent;
-
-
 /** The SmsSendResult model. */
-@Fluent
 public final class SmsSendResult {
-    private final SmsSendResponseItem result;
+    private final String to;
+    private final String messageId;
+    private final int httpStatusCode;
+    private final boolean isSuccessful;
+    private final String errorMessage;
 
     /**
      * Constructor to wrap the smsSendResponseItem
-     * @param item the to value to set.
+     * @param to The recipient's phone number in E.164 format.
+     * @param messageId The identifier of the outgoing Sms message. Only present if message processed.
+     * @param httpStatusCode The httpStatusCode property: HTTP Status code.
+     * @param isSuccessful The successful property: Indicates if the message is processed successfully or not.
+     * @param errorMessage Optional error message in case of 4xx/5xx/repeatable errors.
      */
-    public SmsSendResult(SmsSendResponseItem item) {
-        this.result = item;
+    public SmsSendResult(String to, String messageId, int httpStatusCode, boolean isSuccessful, String errorMessage) {
+        this.to = to;
+        this.messageId = messageId;
+        this.httpStatusCode = httpStatusCode;
+        this.isSuccessful = isSuccessful;
+        this.errorMessage = errorMessage;
     }
 
     /**
@@ -26,7 +33,7 @@ public final class SmsSendResult {
      * @return the to value.
      */
     public String getTo() {
-        return result.getTo();
+        return this.to;
     }
 
     /**
@@ -35,7 +42,7 @@ public final class SmsSendResult {
      * @return the messageId value.
      */
     public String getMessageId() {
-        return result.getMessageId();
+        return this.messageId;
     }
 
     /**
@@ -44,7 +51,7 @@ public final class SmsSendResult {
      * @return the httpStatusCode value.
      */
     public int getHttpStatusCode() {
-        return result.getHttpStatusCode();
+        return this.httpStatusCode;
     }
 
     /**
@@ -53,7 +60,7 @@ public final class SmsSendResult {
      * @return the successful value.
      */
     public boolean isSuccessful() {
-        return result.isSuccessful();
+        return this.isSuccessful;
     }
 
     /**
@@ -62,7 +69,6 @@ public final class SmsSendResult {
      * @return the errorMessage value.
      */
     public String getErrorMessage() {
-        return result.getErrorMessage();
+        return this.errorMessage;
     }
-
 }

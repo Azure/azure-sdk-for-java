@@ -141,7 +141,12 @@ public final class SmsAsyncClient {
     private List<SmsSendResult> convertSmsSendResults(Iterable<SmsSendResponseItem> resultsIterable) {
         List<SmsSendResult> iterableWrapper = new ArrayList<>();
         for (SmsSendResponseItem item : resultsIterable) {
-            iterableWrapper.add(new SmsSendResult(item));
+            iterableWrapper.add(new SmsSendResult(
+                item.getTo(),
+                item.getMessageId(),
+                item.getHttpStatusCode(),
+                item.isSuccessful(),
+                item.getErrorMessage()));
         }
         return iterableWrapper;
     }
