@@ -1,5 +1,8 @@
 # Release History
 
+## 1.0.0-beta.7 (Unreleased)
+
+
 ## 1.0.0-beta.6 (2021-03-09)
 ### Added
 - Added PhoneNumbersClient and PhoneNumbersAsyncClient (originally was part of the azure.communication.administration package).
