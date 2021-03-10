@@ -170,12 +170,14 @@ class CosmosTableSchemaInfererSpec extends UnitSpec {
         val etagVal = "etag"
         val selfVal = "self"
         val ridVal = "rid"
+        val attachmentVal = "attachments"
         val tsVal = 1000000
         val objectNode: ObjectNode = objectMapper.createObjectNode()
         objectNode.put("id", idVal1)
         objectNode.put(CosmosTableSchemaInferrer.ETagAttributeName, etagVal)
         objectNode.put(CosmosTableSchemaInferrer.ResourceIdAttributeName, ridVal)
         objectNode.put(CosmosTableSchemaInferrer.SelfAttributeName, selfVal)
+        objectNode.put(CosmosTableSchemaInferrer.AttachmentsAttributeName, attachmentVal)
         objectNode.put(CosmosTableSchemaInferrer.TimestampAttributeName, tsVal)
 
         val docs = List[ObjectNode](objectNode)
@@ -190,23 +192,26 @@ class CosmosTableSchemaInfererSpec extends UnitSpec {
         val etagVal = "etag"
         val selfVal = "self"
         val ridVal = "rid"
+        val attachmentVal = "attachments"
         val tsVal : Long = 1000000000
         val objectNode: ObjectNode = objectMapper.createObjectNode()
         objectNode.put("id", idVal1)
         objectNode.put(CosmosTableSchemaInferrer.ETagAttributeName, etagVal)
         objectNode.put(CosmosTableSchemaInferrer.ResourceIdAttributeName, ridVal)
         objectNode.put(CosmosTableSchemaInferrer.SelfAttributeName, selfVal)
+        objectNode.put(CosmosTableSchemaInferrer.AttachmentsAttributeName, attachmentVal)
         objectNode.put(CosmosTableSchemaInferrer.TimestampAttributeName, tsVal)
 
         val docs = List[ObjectNode](objectNode)
 
         val schema = CosmosTableSchemaInferrer.inferSchema(docs, includeSystemProperties = true)
-        schema.fields should have size 5
-        schema.fields(0).dataType shouldBe IntegerType
-        schema.fields(1).dataType shouldBe StringType
-        schema.fields(2).dataType shouldBe StringType
-        schema.fields(3).dataType shouldBe StringType
-        schema.fields(4).dataType shouldBe LongType
+        schema.fields should have size 6
+        schema.fields(schema.fieldIndex("id")).dataType shouldBe IntegerType
+        schema.fields(schema.fieldIndex(CosmosTableSchemaInferrer.ETagAttributeName)).dataType shouldBe StringType
+        schema.fields(schema.fieldIndex(CosmosTableSchemaInferrer.ResourceIdAttributeName)).dataType shouldBe StringType
+        schema.fields(schema.fieldIndex(CosmosTableSchemaInferrer.SelfAttributeName)).dataType shouldBe StringType
+        schema.fields(schema.fieldIndex(CosmosTableSchemaInferrer.AttachmentsAttributeName)).dataType shouldBe StringType
+        schema.fields(schema.fieldIndex(CosmosTableSchemaInferrer.TimestampAttributeName)).dataType shouldBe LongType
     }
 
     private class MyPOJO(value: Int)

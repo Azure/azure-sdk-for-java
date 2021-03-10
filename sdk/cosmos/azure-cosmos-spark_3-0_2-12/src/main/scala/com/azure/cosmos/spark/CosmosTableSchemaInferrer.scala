@@ -24,6 +24,7 @@ private object CosmosTableSchemaInferrer
   private[spark] val ETagAttributeName = "_etag"
   private[spark] val SelfAttributeName = "_self"
   private[spark] val ResourceIdAttributeName = "_rid"
+  private[spark] val AttachmentsAttributeName = "_attachments"
   private[spark] val PreviousRawJsonBodyAttributeName = "_previousRawBody"
   private[spark] val TtlExpiredAttributeName = "_ttlExpired"
   private[spark] val OperationTypeAttributeName = "_operationType"
@@ -31,7 +32,8 @@ private object CosmosTableSchemaInferrer
   private val systemProperties = List(TimestampAttributeName,
     ETagAttributeName,
     SelfAttributeName,
-    ResourceIdAttributeName)
+    ResourceIdAttributeName,
+    AttachmentsAttributeName)
 
   private[spark] def inferSchema(
                                   inferredItems: Seq[ObjectNode],
