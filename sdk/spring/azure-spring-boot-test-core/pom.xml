@@ -24,7 +24,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>5.3.0</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
+      <version>5.3.4</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -65,7 +65,7 @@
     <dependency>
       <groupId>com.jcraft</groupId>
       <artifactId>jsch</artifactId>
-      <version>0.1.54</version> <!-- {x-version-update;com.jcraft:jsch;external_dependency} -->
+      <version>0.1.55</version> <!-- {x-version-update;com.jcraft:jsch;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.github.cverges.expect4j</groupId>
@@ -89,7 +89,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13.1</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+      <version>4.13.2</version> <!-- {x-version-update;junit:junit;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
