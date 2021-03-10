@@ -7,13 +7,12 @@ import com.azure.cosmos.spark.ItemWriteStrategy.ItemWriteStrategy
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
 import com.azure.cosmos.spark.PartitioningStrategies.PartitioningStrategy
-
 import java.net.URL
 import java.util.Locale
+
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
-
-import java.time.Instant
+import java.time.{Duration, Instant}
 import java.time.format.DateTimeFormatter
 
 // scalastyle:off underscore.import
@@ -418,6 +417,97 @@ private object CosmosChangeFeedConfig {
       startFromPointInTimeParsed,
       maxItemCountPerTriggerHintParsed)
   }
+}
+
+private case class CosmosThroughputControlConfig(groupName: String,
+                                                 targetThroughput: Option[Int],
+                                                 targetThroughputThreshold: Option[Double],
+                                                 globalControlDatabase: String,
+                                                 globalControlContainer: String,
+                                                 globalControlRenewInterval: Option[Duration],
+                                                 globalControlExpireInterval: Option[Duration])
+
+private object CosmosThroughputControlConfig {
+    private val enableThroughputControlSupplier = CosmosConfigEntry[Boolean](
+        key = "spark.cosmos.enableThroughputControl",
+        mandatory = false,
+        defaultValue = Some(false),
+        parseFromStringFunction = enableThroughputControl => enableThroughputControl.toBoolean,
+        helpMessage = "A flag to indicate whether throughput control is enabled.")
+
+    private val groupNameSupplier = CosmosConfigEntry[String](
+        key = "spark.cosmos.throughputControl.name",
+        mandatory = false,
+        parseFromStringFunction = groupName => groupName,
+        helpMessage = "Throughput control group name. " +
+            "Since customer is allowed to create many groups for a container, the name should be unique.")
+
+    private val targetThroughputSupplier = CosmosConfigEntry[Int](
+        key = "spark.cosmos.throughputControl.targetThroughput",
+        mandatory = false,
+        parseFromStringFunction = targetThroughput => targetThroughput.toInt,
+        helpMessage = "Throughput control group target throughput. The value should be larger than 0.")
+
+    private val targetThroughputThresholdSupplier = CosmosConfigEntry[Double](
+        key = "spark.cosmos.throughputControl.targetThroughputThreshold",
+        mandatory = false,
+        parseFromStringFunction = targetThroughput => targetThroughput.toDouble,
+        helpMessage = "Throughput control group target throughput threshold. The value should be between (0,1]. ")
+
+    private val globalControlDatabaseSupplier = CosmosConfigEntry[String](
+        key = "spark.cosmos.throughputControl.globalControl.database",
+        mandatory = false,
+        parseFromStringFunction = globalControlDatabase => globalControlDatabase,
+        helpMessage = "Database which will be used for throughput global control.")
+
+    private val globalControlContainerSupplier = CosmosConfigEntry[String](
+        key = "spark.cosmos.throughputControl.globalControl.container",
+        mandatory = false,
+        parseFromStringFunction = globalControlContainer => globalControlContainer,
+        helpMessage = "Container which will be used for throughput global control.")
+
+    private val globalControlItemRenewIntervalSupplier = CosmosConfigEntry[Duration](
+        key = "spark.cosmos.throughputControl.globalControl.renewIntervalInMS",
+        mandatory = false,
+        parseFromStringFunction = renewIntervalInMilliseconds => Duration.ofMillis(renewIntervalInMilliseconds.toInt),
+        helpMessage = "This controls how often the client is going to update the throughput usage of itself " +
+            "and adjust its own throughput share based on the throughput usage of other clients")
+
+    private val globalControlItemExpireIntervalSupplier = CosmosConfigEntry[Duration](
+        key = "spark.cosmos.throughputControl.globalControl.expireIntervalInMS",
+        mandatory = false,
+        parseFromStringFunction = expireIntervalInMilliseconds => Duration.ofMillis(expireIntervalInMilliseconds.toInt),
+        helpMessage = "This controls how quickly we will detect the client has been offline " +
+            "and hence allow its throughput share to be taken by other clients.")
+
+    def parseThroughputControlConfig(cfg: Map[String, String]): Option[CosmosThroughputControlConfig] = {
+        val enableThroughputControl = CosmosConfigEntry.parse(cfg, enableThroughputControlSupplier).get
+
+        if (enableThroughputControl) {
+            val groupName = CosmosConfigEntry.parse(cfg, groupNameSupplier)
+            val targetThroughput = CosmosConfigEntry.parse(cfg, targetThroughputSupplier)
+            val targetThroughputThreshold = CosmosConfigEntry.parse(cfg, targetThroughputThresholdSupplier)
+            val globalControlDatabase = CosmosConfigEntry.parse(cfg, globalControlDatabaseSupplier)
+            val globalControlContainer = CosmosConfigEntry.parse(cfg, globalControlContainerSupplier)
+            val globalControlItemRenewInterval = CosmosConfigEntry.parse(cfg, globalControlItemRenewIntervalSupplier)
+            val globalControlItemExpireInterval = CosmosConfigEntry.parse(cfg, globalControlItemExpireIntervalSupplier)
+
+            assert(groupName.isDefined)
+            assert(globalControlDatabase.isDefined)
+            assert(globalControlContainer.isDefined)
+
+            Some(CosmosThroughputControlConfig(
+                groupName.get,
+                targetThroughput,
+                targetThroughputThreshold,
+                globalControlDatabase.get,
+                globalControlContainer.get,
+                globalControlItemRenewInterval,
+                globalControlItemExpireInterval))
+        } else {
+            None
+        }
+    }
 }
 
 private case class CosmosConfigEntry[T](key: String,

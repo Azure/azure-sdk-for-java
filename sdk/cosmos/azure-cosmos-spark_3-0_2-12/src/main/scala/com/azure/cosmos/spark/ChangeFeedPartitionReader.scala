@@ -31,9 +31,7 @@ private case class ChangeFeedPartitionReader
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
   private val client = CosmosClientCache(CosmosClientConfiguration(config, readConfig.forceEventualConsistency), Some(cosmosClientStateHandle))
 
-  private val cosmosAsyncContainer = client
-    .getDatabase(containerTargetConfig.database)
-    .getContainer(containerTargetConfig.container)
+  private val cosmosAsyncContainer = ThroughputControlHelper.getContainer(config, containerTargetConfig, client)
 
   // TODO fabianm this needs to be initialized based on InputPartition and startFrom configuration
   private val changeFeedRequestOptions = this.changeFeedConfig.changeFeedMode match {

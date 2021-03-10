@@ -37,7 +37,7 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
     }
 
     public ResourceThrottleRetryPolicy(int maxAttemptCount, Duration maxWaitTime, int backoffDelayFactor) {
-        Utils.checkStateOrThrow(maxWaitTime.getSeconds() < Integer.MAX_VALUE / 1000, "maxWaitTime", "maxWaitTime must be less than " + Integer.MAX_VALUE / 1000);
+        Utils.checkStateOrThrow(maxWaitTime.getSeconds() <= Integer.MAX_VALUE / 1000, "maxWaitTime", "maxWaitTime must not be larger than " + Integer.MAX_VALUE / 1000);
 
         this.maxAttemptCount = maxAttemptCount;
         this.backoffDelayFactor = backoffDelayFactor;
