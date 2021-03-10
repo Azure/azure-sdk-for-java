@@ -32,7 +32,6 @@ for those interested.
 
 The modern Event Hubs client library also provides the ability to share in some of the cross-service improvements made to the Azure development experience, such as
 
-- Using the new azure-identity library to share a single authentication approach between clients.
 - A unified logging and diagnostics pipeline offering a common view of the activities across each of the client libraries.
 - A unified asynchronous programming model using [Project Reactor][project-reactor].
 - A unified method of creating clients via client builders to interact with Azure services.
@@ -43,11 +42,12 @@ The modern Event Hubs client library also provides the ability to share in some 
 
 Group ids, artifact ids, and package names for the modern Azure client libraries for Java have changed. They follow the [Java SDK naming guidelines][GuidelinesJavaDesign]. Each will have the group id `com.azure`, an artifact id following the pattern `azure-[area]-[service]`, and the root package name `com.azure.[area].[Service]`. The legacy clients have a group id `com.microsoft.azure` and their package names followed the pattern `com.microsoft. Azure.[service]`. This provides a quick and accessible means to help understand, at a glance, whether you are using modern or legacy clients.
 
-In EventGrid, the modern client libraries have packages and namespaces that begin with `com.azure.messaging.eventgrid` and were released starting with version 4. The legacy client libraries have package names starting with `com.microsoft.azure.eventgrid` and a version of 1.x.x or below.
+In EventGrid, the modern client libraries have packages and namespaces that begin with `com.azure.messaging.eventgrid` and were released starting with 4.0.0. The legacy client libraries have package names starting with `com.microsoft.azure.eventgrid` and a version of 1.x.x or below.
+The new SDK starts with 4.0.0 to be inline with EventGrid SDKs of other languages.
 
 #### Instantiating clients
 
-In v1, the `EventGridClient` was instantiated via the `EventGridClientImpl` constructor. The client contained both sync and async methods.
+In 1.x, the `EventGridClient` was instantiated via the `EventGridClientImpl` constructor. The client contained both sync and async methods.
 The client can send only `EventGridEvent` to an EventGrid topic or domain.
 ```java
 String endpoint = "<endpont of your event grid topic/domain that accepts EventGridEvent schema>";
@@ -55,7 +55,7 @@ TopicCredentials topicCredentials = new TopicCredentials(key);
 EventGridClient client = new EventGridClientImpl(topicCredentials);
 ```
 
-In v4, the creation of the client is done through the [EventGridPublisherClientBuilder][EventGridPublisherClientBuilder]. The sync and async operations are separated to [EventGridPublisherClient] and [EventGridPublisherAsyncClient].
+In 4.x, the creation of the client is done through the [EventGridPublisherClientBuilder][EventGridPublisherClientBuilder]. The sync and async operations are separated to [EventGridPublisherClient] and [EventGridPublisherAsyncClient].
 ```java
 EventGridPublisherClient<EventGridEvent> eventGridEventClient = new EventGridPublisherClientBuilder()
     .endpoint("<endpont of your event grid topic/domain that accepts EventGridEvent schema>")
@@ -66,7 +66,7 @@ Aside from [EventGridEvent][EventGridEvent], the generic client can be instantia
 Refer to the [README][README] for more information about sending `CloudEvent` and custom events.
 
 #### Send events to an Event Grid Topic
-In V1, the `publishEvent` method has the EventGrid endpoint as a parameter.
+In 1.x, the `publishEvent` method has the EventGrid endpoint as a parameter.
 ```java
 List<EventGridEvent> eventsList = new ArrayList<>();
 for (int i = 0; i < 5; i++) {
@@ -82,7 +82,7 @@ for (int i = 0; i < 5; i++) {
 client.publishEvents(endpoint, getEventsList());
 ```
 
-In v4, `publishEvents` are renamed to `sendEvents` in line with other Azure messaging SDKs such as Event Hubs and Service Bus.
+In 4.x, `publishEvents` are renamed to `sendEvents` in line with other Azure messaging SDKs such as Event Hubs and Service Bus.
 `sendEvents` doesn't need the EventGrid endpoint because the client already has it.
 ```java
 List<EventGridEvent> eventsList = new ArrayList<>();
@@ -97,8 +97,40 @@ for (int i = 0; i < 5; i++) {
 eventGridEventClient.sendEvents(events);
 ```
 
+#### Send events to an Event Grid Domain
+To send an `EventGridEvent` to an Event Grid Domain Topic, in both versions of SDKs, you need to set the `topic` attribute for the event.
+
+In 1.x, you set the topic of an `EventGridEvent` and then send it to the topic of the Event Grid Domain.
+```java
+// Create an event 
+List<EventGridEvent> eventsList = new ArrayList<>();
+    for (int i = 0; i < 5; i++) {
+        eventsList.add(new EventGridEvent(
+            UUID.randomUUID().toString(),
+            String.format("Door%d", i),
+            new ContosoItemReceivedEventData("Contoso Item SKU #1"),
+            "Contoso.Items.ItemReceived",
+            DateTime.now(),
+            "2.0"
+        ).withTopic("myTopic"));
+    }
+```
+
+In 4.x, this remains the same except that you use `setTopic` instead of `withTopic`.
+```java
+List<EventGridEvent> eventsList = new ArrayList<>();
+for (int i = 0; i < 5; i++) {
+    eventsList.add(new EventGridEvent(
+        String.format("Door%d", i),
+        "Contoso.Items.ItemReceived",
+        BinaryData.fromObject(new ContosoItemReceivedEventData("Contoso Item SKU #1")),
+        "2.0"
+    ).setTopic("myTopic"));
+}
+```
+
 #### Deserialize events and data
-In V1, to consume events, you register the event types in the map and deserialize events.
+In 1.x, to consume events, you register the event types in the map and deserialize events.
 ```java
 EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
 eventGridSubscriber.putCustomEventMapping("Contoso.Items.ItemReceived", ContosoItemSentEventData.class);
@@ -110,7 +142,7 @@ if (events[0].data() instanceof ContosoItemReceivedEventData){
 }
 ```
 
-In v4, you use `EventGridEvent.fromString` convenience method to deserialize `EventGridEvent` from a Json string. Then you can use the `getData()` method
+In 4.x, you use `EventGridEvent.fromString` convenience method to deserialize `EventGridEvent` from a Json string. Then you can use the `getData()` method
 to get the event's data in a `BinaryData`, from which you can use method `toObject()` to deserialize to the data, or use `toString()` and `toBytes()`.
 ```java
 List<EventGridEvent> eventGridEvents = EventGridEvent.fromString(eventGridJsonString);
