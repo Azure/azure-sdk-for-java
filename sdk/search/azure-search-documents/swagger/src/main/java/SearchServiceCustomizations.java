@@ -7,11 +7,18 @@ import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 
 import java.lang.reflect.Modifier;
+import java.util.Locale;
 
 public class SearchServiceCustomizations extends Customization {
     // Common modifier combinations
     private static final int PUBLIC_ABSTRACT = Modifier.PUBLIC | Modifier.ABSTRACT;
     private static final int PUBLIC_FINAL = Modifier.PUBLIC | Modifier.FINAL;
+
+    private static final String VARARG_METHOD_TEMPLATE =
+        "public %s %s(%s... %s) {" +
+        "    this.%s = (%s == null) ? null : Arrays.asList(%s);\n" +
+        "    return this;\n" +
+        "}";
 
     // Packages
     private static final String IMPLEMENTATION_MODELS = "com.azure.search.documents.indexes.implementation.models";
@@ -41,6 +48,9 @@ public class SearchServiceCustomizations extends Customization {
     private static final String DEFAULT_COGNITIVE_SERVICES_ACCOUNT = "DefaultCognitiveServicesAccount";
     private static final String COGNITIVE_SERVICES_ACCOUNT_KEY = "CognitiveServicesAccountKey";
 
+    private static final String LEXICAL_ANALYZER = "LexicalAnalyzer";
+    private static final String STOP_ANALYZER = "StopAnalyzer";
+
     @Override
     public void customize(LibraryCustomization libraryCustomization) {
         customizeImplementationModelsPackage(libraryCustomization.getPackage(IMPLEMENTATION_MODELS));
@@ -51,8 +61,16 @@ public class SearchServiceCustomizations extends Customization {
     }
 
     private void customizeModelsPackage(PackageCustomization packageCustomization) {
-        // Change ScoringFunction to an abstract class.
-        changeClassModifier(packageCustomization.getClass(SCORING_FUNCTION), PUBLIC_ABSTRACT);
+        // Change class modifiers to 'public abstract'.
+        changeClassModifiers(packageCustomization, PUBLIC_ABSTRACT, SCORING_FUNCTION, DATA_CHANGE_DETECTION_POLICY,
+            DATA_DELETION_DETECTION_POLICY, CHAR_FILTER, COGNITIVE_SERVICES_ACCOUNT, LEXICAL_ANALYZER);
+
+        // Change class modifiers to 'public final'.
+        changeClassModifiers(packageCustomization, PUBLIC_FINAL, BM_25_SIMILARITY_ALGORITHM,
+            CLASSIC_SIMILARITY_ALGORITHM, HIGH_WATER_MARK_CHANGE_DETECTION_POLICY,
+            SQL_INTEGRATED_CHANGE_TRACKING_POLICY, SOFT_DELETE_COLUMN_DELETION_DETECTION_POLICY, MAPPING_CHAR_FILTER,
+            PATTERN_REPLACE_CHAR_FILTER, DEFAULT_COGNITIVE_SERVICES_ACCOUNT);
+
         // Customize MagnitudeScoringParameters.
         customizeMagnitudeScoringParameters(packageCustomization.getClass(MAGNITUDE_SCORING_PARAMETERS));
 
@@ -61,34 +79,7 @@ public class SearchServiceCustomizations extends Customization {
 
         // Customize SimilarityAlgorithm.
         customizeSimilarityAlgorithm(packageCustomization.getClass(SIMILARITY_ALGORITHM));
-        // Change BM25SimilarityAlgorithm to a final class.
-        changeClassModifier(packageCustomization.getClass(BM_25_SIMILARITY_ALGORITHM), PUBLIC_FINAL);
-        // Change ClassicSimilarityAlgorithm to a final class.
-        changeClassModifier(packageCustomization.getClass(CLASSIC_SIMILARITY_ALGORITHM), PUBLIC_FINAL);
 
-        // Change DataChangeDetectionPolicy to an abstract class.
-        changeClassModifier(packageCustomization.getClass(DATA_CHANGE_DETECTION_POLICY), PUBLIC_ABSTRACT);
-        // Change HighWaterMarkChangeDetectionPolicy to a final class.
-        changeClassModifier(packageCustomization.getClass(HIGH_WATER_MARK_CHANGE_DETECTION_POLICY), PUBLIC_FINAL);
-        // Change SqlIntegratedChangeTrackingPolicy to a final class.
-        changeClassModifier(packageCustomization.getClass(SQL_INTEGRATED_CHANGE_TRACKING_POLICY), PUBLIC_FINAL);
-
-        // Change DataDeletionDetectionPolicy to an abstract class.
-        changeClassModifier(packageCustomization.getClass(DATA_DELETION_DETECTION_POLICY), PUBLIC_ABSTRACT);
-        // Change SoftDeleteColumnDeletionDetectionPolicy to a final class.
-        changeClassModifier(packageCustomization.getClass(SOFT_DELETE_COLUMN_DELETION_DETECTION_POLICY), PUBLIC_FINAL);
-
-        // Change CharFilter to an abstract class.
-        changeClassModifier(packageCustomization.getClass(CHAR_FILTER), PUBLIC_ABSTRACT);
-        // Change MappingCharFiler to a final class.
-        changeClassModifier(packageCustomization.getClass(MAPPING_CHAR_FILTER), PUBLIC_FINAL);
-        // Change PatternReplaceCharFilter to a final class.
-        changeClassModifier(packageCustomization.getClass(PATTERN_REPLACE_CHAR_FILTER), PUBLIC_FINAL);
-
-        // Change CognitiveServicesAccount to an abstract class.
-        changeClassModifier(packageCustomization.getClass(COGNITIVE_SERVICES_ACCOUNT), PUBLIC_ABSTRACT);
-        // Change DefaultCognitiveServicesAccount to a final class.
-        changeClassModifier(packageCustomization.getClass(DEFAULT_COGNITIVE_SERVICES_ACCOUNT), PUBLIC_FINAL);
         // Customize CognitiveServicesAccountKey.
         customizeCognitiveServicesAccountKey(packageCustomization.getClass(COGNITIVE_SERVICES_ACCOUNT_KEY));
     }
@@ -133,7 +124,42 @@ public class SearchServiceCustomizations extends Customization {
         );
     }
 
+    private void customizeStopAnalyzer(ClassCustomization classCustomization) {
+        changeClassModifier(classCustomization, PUBLIC_FINAL);
+        addVarArgsOverload(classCustomization, STOP_ANALYZER, "stopwords", String.class);
+    }
+
+    private static void changeClassModifiers(PackageCustomization packageCustomization, int modifier,
+        String... classNames) {
+        if (classNames == null) {
+            return;
+        }
+
+        for (String className : classNames) {
+            changeClassModifier(packageCustomization.getClass(className), modifier);
+        }
+    }
+
     private static void changeClassModifier(ClassCustomization classCustomization, int modifier) {
         classCustomization.setModifier(modifier);
+    }
+
+    /*
+     * This helper function adds a varargs overload in addition to a List setter.
+     */
+    private static void addVarArgsOverload(ClassCustomization classCustomization, String className,
+        String parameterName, Class<?> parameterType) {
+        String methodName = "set" + parameterName.substring(0, 1).toUpperCase(Locale.ROOT) + parameterName.substring(1);
+
+        // Add the '@JsonSetter' annotation to indicate to Jackson to use the List setter.
+        classCustomization.getMethod(methodName)
+            .addAnnotation("@JsonSetter");
+
+        // TODO (alzimmer): Get the Javadocs from the List based API.
+
+        String varargMethod = String.format(VARARG_METHOD_TEMPLATE, className, methodName,
+            parameterType.getSimpleName(), parameterName, parameterName, parameterName, parameterName);
+
+        classCustomization.addMethod(varargMethod);
     }
 }
