@@ -2,7 +2,7 @@
 
 ## 3.3.0-beta.1 (Unreleased)
 ### Key Bug Fixes
-- Disable caching of `MessageProducer` and `MessageConsumer`.
+- Fix bug of using closed `MessageProducer` and `MessageConsumer` when a link is force detached.
 
 ## 3.2.0 (2021-03-03)
 ### Breaking Changes
