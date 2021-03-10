@@ -14,6 +14,7 @@
             "com\\.azure\\..+\\.implementation(\\..+)?",
             "com\\.azure\\..+\\.samples(\\..+)?",
             "com\\.fasterxml\\.jackson\\..+",
+            "reactor\\.core\\..+",
             "reactor\\.netty\\..+",
             "reactor\\.util\\..+",
             "io\\.netty\\..+",
@@ -374,6 +375,11 @@
         "code": "java.method.defaultMethodAddedToInterface",
         "new": "method reactor.core.publisher.Mono<com.azure.core.http.HttpResponse> com.azure.core.http.HttpClient::send(com.azure.core.http.HttpRequest, com.azure.core.util.Context)",
         "justification": "Default interface method"
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "new": "class com.azure.search.documents.SearchClientBuilder",
+        "justification": "Non-breaking change"
       },
       {
         "code": "java.method.staticMethodAddedToInterface",

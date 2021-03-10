@@ -31,10 +31,13 @@ public final class ChatThread {
     private OffsetDateTime createdOn;
 
     /*
-     * Id of the chat thread owner.
+     * Identifies a participant in Azure Communication services. A participant
+     * is, for example, a phone number or an Azure communication user. This
+     * model must be interpreted as a union: Apart from rawId, at most one
+     * further property may be set.
      */
-    @JsonProperty(value = "createdBy", required = true)
-    private String createdBy;
+    @JsonProperty(value = "createdByCommunicationIdentifier", required = true)
+    private CommunicationIdentifierModel createdByCommunicationIdentifier;
 
     /*
      * The timestamp when the chat thread was deleted. The timestamp is in
@@ -106,22 +109,27 @@ public final class ChatThread {
     }
 
     /**
-     * Get the createdBy property: Id of the chat thread owner.
+     * Get the createdByCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
+     * participant is, for example, a phone number or an Azure communication user. This model must be interpreted as a
+     * union: Apart from rawId, at most one further property may be set.
      *
-     * @return the createdBy value.
+     * @return the createdByCommunicationIdentifier value.
      */
-    public String getCreatedBy() {
-        return this.createdBy;
+    public CommunicationIdentifierModel getCreatedByCommunicationIdentifier() {
+        return this.createdByCommunicationIdentifier;
     }
 
     /**
-     * Set the createdBy property: Id of the chat thread owner.
+     * Set the createdByCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
+     * participant is, for example, a phone number or an Azure communication user. This model must be interpreted as a
+     * union: Apart from rawId, at most one further property may be set.
      *
-     * @param createdBy the createdBy value to set.
+     * @param createdByCommunicationIdentifier the createdByCommunicationIdentifier value to set.
      * @return the ChatThread object itself.
      */
-    public ChatThread setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
+    public ChatThread setCreatedByCommunicationIdentifier(
+            CommunicationIdentifierModel createdByCommunicationIdentifier) {
+        this.createdByCommunicationIdentifier = createdByCommunicationIdentifier;
         return this;
     }
 

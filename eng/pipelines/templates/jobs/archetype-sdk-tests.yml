@@ -8,6 +8,7 @@ parameters:
   PreSteps: []
   PostSteps: []
   TimeoutInMinutes: 60
+  TestMode: 'RECORD'
   TestStepMavenInputs: {}
   TestResultsFiles: ''
   CloudConfig: {}
@@ -42,7 +43,9 @@ jobs:
       container: $[ variables['Container'] ]
 
     steps:
-#      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
+      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
+        parameters:
+          AgentImage: $(OSVmImage)
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
         - ${{ if parameters.TestResourceDirectories }}:
@@ -107,7 +110,10 @@ jobs:
         inputs:
           mavenPomFile: pom.xml
           ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
-        env: ${{ parameters.EnvVars }}
+        env:
+          AZURE_TEST_MODE: ${{ parameters.TestMode }}
+          ${{ each var in parameters.EnvVars }}:
+            ${{ var.key }}: ${{ var.value }}
 
       - ${{ parameters.PostSteps }}
 

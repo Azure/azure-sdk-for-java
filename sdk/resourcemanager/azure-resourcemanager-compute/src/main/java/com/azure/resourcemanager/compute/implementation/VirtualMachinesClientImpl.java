@@ -40,6 +40,7 @@ import com.azure.resourcemanager.compute.fluent.models.RunCommandResultInner;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineAssessPatchesResultInner;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineCaptureResultInner;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInstallPatchesResultInner;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInstanceViewInner;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineSizeInner;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineUpdateInner;
@@ -47,6 +48,7 @@ import com.azure.resourcemanager.compute.models.ApiErrorException;
 import com.azure.resourcemanager.compute.models.InstanceViewTypes;
 import com.azure.resourcemanager.compute.models.RunCommandInput;
 import com.azure.resourcemanager.compute.models.VirtualMachineCaptureParameters;
+import com.azure.resourcemanager.compute.models.VirtualMachineInstallPatchesParameters;
 import com.azure.resourcemanager.compute.models.VirtualMachineListResult;
 import com.azure.resourcemanager.compute.models.VirtualMachineReimageParameters;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeListResult;
@@ -137,7 +139,7 @@ public final class VirtualMachinesClientImpl
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/virtualMachines/{vmName}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
@@ -427,6 +429,22 @@ public final class VirtualMachinesClientImpl
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/virtualMachines/{vmName}/installPatches")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<Response<Flux<ByteBuffer>>> installPatches(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("vmName") String vmName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") VirtualMachineInstallPatchesParameters installPatchesInput,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/virtualMachines/{vmName}/runCommand")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -497,7 +515,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -549,7 +567,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -633,7 +651,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Capture Virtual Machine parameters.
+     * @param parameters Parameters supplied to the Capture Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -666,7 +684,7 @@ public final class VirtualMachinesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -690,7 +708,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Capture Virtual Machine parameters.
+     * @param parameters Parameters supplied to the Capture Virtual Machine operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -724,7 +742,7 @@ public final class VirtualMachinesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -745,7 +763,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Capture Virtual Machine parameters.
+     * @param parameters Parameters supplied to the Capture Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -771,7 +789,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Capture Virtual Machine parameters.
+     * @param parameters Parameters supplied to the Capture Virtual Machine operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -801,7 +819,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Capture Virtual Machine parameters.
+     * @param parameters Parameters supplied to the Capture Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -819,7 +837,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Capture Virtual Machine parameters.
+     * @param parameters Parameters supplied to the Capture Virtual Machine operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -838,7 +856,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Capture Virtual Machine parameters.
+     * @param parameters Parameters supplied to the Capture Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -858,7 +876,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Capture Virtual Machine parameters.
+     * @param parameters Parameters supplied to the Capture Virtual Machine operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -879,7 +897,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Capture Virtual Machine parameters.
+     * @param parameters Parameters supplied to the Capture Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -897,7 +915,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Capture Virtual Machine parameters.
+     * @param parameters Parameters supplied to the Capture Virtual Machine operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -916,7 +934,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Describes a Virtual Machine.
+     * @param parameters Parameters supplied to the Create Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -949,7 +967,7 @@ public final class VirtualMachinesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -973,7 +991,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Describes a Virtual Machine.
+     * @param parameters Parameters supplied to the Create Virtual Machine operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1007,7 +1025,7 @@ public final class VirtualMachinesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1028,7 +1046,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Describes a Virtual Machine.
+     * @param parameters Parameters supplied to the Create Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1054,7 +1072,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Describes a Virtual Machine.
+     * @param parameters Parameters supplied to the Create Virtual Machine operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1079,7 +1097,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Describes a Virtual Machine.
+     * @param parameters Parameters supplied to the Create Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1097,7 +1115,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Describes a Virtual Machine.
+     * @param parameters Parameters supplied to the Create Virtual Machine operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1116,7 +1134,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Describes a Virtual Machine.
+     * @param parameters Parameters supplied to the Create Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1136,7 +1154,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Describes a Virtual Machine.
+     * @param parameters Parameters supplied to the Create Virtual Machine operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1157,7 +1175,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Describes a Virtual Machine.
+     * @param parameters Parameters supplied to the Create Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1174,7 +1192,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Describes a Virtual Machine.
+     * @param parameters Parameters supplied to the Create Virtual Machine operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1192,7 +1210,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Describes a Virtual Machine Update.
+     * @param parameters Parameters supplied to the Update Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1225,7 +1243,7 @@ public final class VirtualMachinesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1248,7 +1266,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Describes a Virtual Machine Update.
+     * @param parameters Parameters supplied to the Update Virtual Machine operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1282,7 +1300,7 @@ public final class VirtualMachinesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1302,7 +1320,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Describes a Virtual Machine Update.
+     * @param parameters Parameters supplied to the Update Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1327,7 +1345,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Describes a Virtual Machine Update.
+     * @param parameters Parameters supplied to the Update Virtual Machine operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1350,7 +1368,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Describes a Virtual Machine Update.
+     * @param parameters Parameters supplied to the Update Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1367,7 +1385,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Describes a Virtual Machine Update.
+     * @param parameters Parameters supplied to the Update Virtual Machine operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1385,7 +1403,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Describes a Virtual Machine Update.
+     * @param parameters Parameters supplied to the Update Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1404,7 +1422,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Describes a Virtual Machine Update.
+     * @param parameters Parameters supplied to the Update Virtual Machine operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1424,7 +1442,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Describes a Virtual Machine Update.
+     * @param parameters Parameters supplied to the Update Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1440,7 +1458,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Describes a Virtual Machine Update.
+     * @param parameters Parameters supplied to the Update Virtual Machine operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1486,7 +1504,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1536,7 +1554,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1761,7 +1779,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1813,7 +1831,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1943,7 +1961,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1993,7 +2011,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2095,7 +2113,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -2144,7 +2162,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         context = this.client.mergeContext(context);
         return service
             .convertToManagedDisks(
@@ -2332,7 +2350,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -2381,7 +2399,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         context = this.client.mergeContext(context);
         return service
             .deallocate(
@@ -2569,7 +2587,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -2620,7 +2638,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         context = this.client.mergeContext(context);
         return service
             .generalize(
@@ -2717,7 +2735,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2772,7 +2790,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2883,7 +2901,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2933,7 +2951,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3057,7 +3075,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3111,7 +3129,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3229,7 +3247,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -3282,7 +3300,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         context = this.client.mergeContext(context);
         return service
             .powerOff(
@@ -3531,7 +3549,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3581,7 +3599,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3758,7 +3776,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -3806,7 +3824,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         context = this.client.mergeContext(context);
         return service
             .restart(
@@ -3981,7 +3999,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -4029,7 +4047,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         context = this.client.mergeContext(context);
         return service
             .start(
@@ -4204,7 +4222,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -4252,7 +4270,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         context = this.client.mergeContext(context);
         return service
             .redeploy(
@@ -4430,7 +4448,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         VirtualMachineReimageParameters parametersInternal = null;
         if (tempDisk != null) {
             parametersInternal = new VirtualMachineReimageParameters();
@@ -4487,7 +4505,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         VirtualMachineReimageParameters parametersInternal = null;
         if (tempDisk != null) {
             parametersInternal = new VirtualMachineReimageParameters();
@@ -4726,7 +4744,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4780,7 +4798,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4917,7 +4935,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -4965,7 +4983,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         context = this.client.mergeContext(context);
         return service
             .performMaintenance(
@@ -5143,7 +5161,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -5191,7 +5209,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         context = this.client.mergeContext(context);
         return service
             .simulateEviction(
@@ -5280,7 +5298,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -5330,7 +5348,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -5494,11 +5512,305 @@ public final class VirtualMachinesClientImpl
     }
 
     /**
+     * Installs patches on the VM.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @param installPatchesInput Input for InstallPatches as directly received by the API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result summary of an installation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> installPatchesWithResponseAsync(
+        String resourceGroupName, String vmName, VirtualMachineInstallPatchesParameters installPatchesInput) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vmName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (installPatchesInput == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter installPatchesInput is required and cannot be null."));
+        } else {
+            installPatchesInput.validate();
+        }
+        final String apiVersion = "2020-12-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .installPatches(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            vmName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            installPatchesInput,
+                            accept,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Installs patches on the VM.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @param installPatchesInput Input for InstallPatches as directly received by the API.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result summary of an installation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> installPatchesWithResponseAsync(
+        String resourceGroupName,
+        String vmName,
+        VirtualMachineInstallPatchesParameters installPatchesInput,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vmName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (installPatchesInput == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter installPatchesInput is required and cannot be null."));
+        } else {
+            installPatchesInput.validate();
+        }
+        final String apiVersion = "2020-12-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .installPatches(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                vmName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                installPatchesInput,
+                accept,
+                context);
+    }
+
+    /**
+     * Installs patches on the VM.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @param installPatchesInput Input for InstallPatches as directly received by the API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result summary of an installation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<VirtualMachineInstallPatchesResultInner>, VirtualMachineInstallPatchesResultInner>
+        beginInstallPatchesAsync(
+            String resourceGroupName, String vmName, VirtualMachineInstallPatchesParameters installPatchesInput) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            installPatchesWithResponseAsync(resourceGroupName, vmName, installPatchesInput);
+        return this
+            .client
+            .<VirtualMachineInstallPatchesResultInner, VirtualMachineInstallPatchesResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                VirtualMachineInstallPatchesResultInner.class,
+                VirtualMachineInstallPatchesResultInner.class,
+                Context.NONE);
+    }
+
+    /**
+     * Installs patches on the VM.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @param installPatchesInput Input for InstallPatches as directly received by the API.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result summary of an installation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<VirtualMachineInstallPatchesResultInner>, VirtualMachineInstallPatchesResultInner>
+        beginInstallPatchesAsync(
+            String resourceGroupName,
+            String vmName,
+            VirtualMachineInstallPatchesParameters installPatchesInput,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            installPatchesWithResponseAsync(resourceGroupName, vmName, installPatchesInput, context);
+        return this
+            .client
+            .<VirtualMachineInstallPatchesResultInner, VirtualMachineInstallPatchesResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                VirtualMachineInstallPatchesResultInner.class,
+                VirtualMachineInstallPatchesResultInner.class,
+                context);
+    }
+
+    /**
+     * Installs patches on the VM.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @param installPatchesInput Input for InstallPatches as directly received by the API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result summary of an installation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<VirtualMachineInstallPatchesResultInner>, VirtualMachineInstallPatchesResultInner>
+        beginInstallPatches(
+            String resourceGroupName, String vmName, VirtualMachineInstallPatchesParameters installPatchesInput) {
+        return beginInstallPatchesAsync(resourceGroupName, vmName, installPatchesInput).getSyncPoller();
+    }
+
+    /**
+     * Installs patches on the VM.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @param installPatchesInput Input for InstallPatches as directly received by the API.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result summary of an installation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<VirtualMachineInstallPatchesResultInner>, VirtualMachineInstallPatchesResultInner>
+        beginInstallPatches(
+            String resourceGroupName,
+            String vmName,
+            VirtualMachineInstallPatchesParameters installPatchesInput,
+            Context context) {
+        return beginInstallPatchesAsync(resourceGroupName, vmName, installPatchesInput, context).getSyncPoller();
+    }
+
+    /**
+     * Installs patches on the VM.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @param installPatchesInput Input for InstallPatches as directly received by the API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result summary of an installation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VirtualMachineInstallPatchesResultInner> installPatchesAsync(
+        String resourceGroupName, String vmName, VirtualMachineInstallPatchesParameters installPatchesInput) {
+        return beginInstallPatchesAsync(resourceGroupName, vmName, installPatchesInput)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Installs patches on the VM.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @param installPatchesInput Input for InstallPatches as directly received by the API.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result summary of an installation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<VirtualMachineInstallPatchesResultInner> installPatchesAsync(
+        String resourceGroupName,
+        String vmName,
+        VirtualMachineInstallPatchesParameters installPatchesInput,
+        Context context) {
+        return beginInstallPatchesAsync(resourceGroupName, vmName, installPatchesInput, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Installs patches on the VM.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @param installPatchesInput Input for InstallPatches as directly received by the API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result summary of an installation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VirtualMachineInstallPatchesResultInner installPatches(
+        String resourceGroupName, String vmName, VirtualMachineInstallPatchesParameters installPatchesInput) {
+        return installPatchesAsync(resourceGroupName, vmName, installPatchesInput).block();
+    }
+
+    /**
+     * Installs patches on the VM.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @param installPatchesInput Input for InstallPatches as directly received by the API.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result summary of an installation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VirtualMachineInstallPatchesResultInner installPatches(
+        String resourceGroupName,
+        String vmName,
+        VirtualMachineInstallPatchesParameters installPatchesInput,
+        Context context) {
+        return installPatchesAsync(resourceGroupName, vmName, installPatchesInput, context).block();
+    }
+
+    /**
      * Run command on the VM.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Capture Virtual Machine parameters.
+     * @param parameters Parameters supplied to the Run command operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5531,7 +5843,7 @@ public final class VirtualMachinesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
@@ -5554,7 +5866,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Capture Virtual Machine parameters.
+     * @param parameters Parameters supplied to the Run command operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5588,7 +5900,7 @@ public final class VirtualMachinesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -5608,7 +5920,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Capture Virtual Machine parameters.
+     * @param parameters Parameters supplied to the Run command operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5633,7 +5945,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Capture Virtual Machine parameters.
+     * @param parameters Parameters supplied to the Run command operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5657,7 +5969,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Capture Virtual Machine parameters.
+     * @param parameters Parameters supplied to the Run command operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5674,7 +5986,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Capture Virtual Machine parameters.
+     * @param parameters Parameters supplied to the Run command operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5692,7 +6004,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Capture Virtual Machine parameters.
+     * @param parameters Parameters supplied to the Run command operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5711,7 +6023,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Capture Virtual Machine parameters.
+     * @param parameters Parameters supplied to the Run command operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5731,7 +6043,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Capture Virtual Machine parameters.
+     * @param parameters Parameters supplied to the Run command operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5747,7 +6059,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Capture Virtual Machine parameters.
+     * @param parameters Parameters supplied to the Run command operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

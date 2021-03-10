@@ -3,6 +3,7 @@
 
 package com.azure.test.aad.selenium.oauth2client.issuedat;
 
+import com.azure.spring.utils.AzureCloudUrls;
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
 import org.junit.After;
 import org.junit.Assert;
@@ -19,6 +20,7 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.azure.spring.test.EnvironmentVariable.AZURE_CLOUD_TYPE;
 import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
 
 public class AADOauth2AuthorizedClientCachedIT {
@@ -28,15 +30,14 @@ public class AADOauth2AuthorizedClientCachedIT {
     @Test
     public void testOauth2AuthorizedClientCached() {
         Map<String, String> properties = createDefaultProperties();
-        properties.put(
-            "azure.activedirectory.authorization-clients.office.scopes",
-            "https://manage.office.com/ActivityFeed.Read, "
-                + "https://manage.office.com/ActivityFeed.ReadDlp, "
-                + "https://manage.office.com/ServiceHealth.Read");
-        properties.put(
-            "azure.activedirectory.authorization-clients.graph.scopes",
-            "https://graph.microsoft.com/User.Read, https://graph.microsoft.com/Directory.Read.All");
 
+        String armClientUrl = AzureCloudUrls.getServiceManagementBaseUrl(AZURE_CLOUD_TYPE);
+        String armClientScope = armClientUrl + "user_impersonation";
+        properties.put("azure.activedirectory.authorization-clients.arm.scopes", armClientScope);
+
+        String graphBaseUrl = AzureCloudUrls.getGraphBaseUrl(AZURE_CLOUD_TYPE);
+        properties.put("azure.activedirectory.authorization-clients.graph.scopes",
+            graphBaseUrl + "User.Read, " + graphBaseUrl + "Directory.Read.All");
         aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties);
         aadSeleniumITHelper.logIn();
 
@@ -50,8 +51,8 @@ public class AADOauth2AuthorizedClientCachedIT {
             aadSeleniumITHelper.httpGet("accessTokenIssuedAt/graph"));
 
         Assert.assertEquals(
-            aadSeleniumITHelper.httpGet("accessTokenIssuedAt/office"),
-            aadSeleniumITHelper.httpGet("accessTokenIssuedAt/office"));
+            aadSeleniumITHelper.httpGet("accessTokenIssuedAt/arm"),
+            aadSeleniumITHelper.httpGet("accessTokenIssuedAt/arm"));
     }
 
     @After
@@ -84,9 +85,9 @@ public class AADOauth2AuthorizedClientCachedIT {
                            .orElse(null);
         }
 
-        @GetMapping(value = "accessTokenIssuedAt/office")
-        public String office(
-            @RegisteredOAuth2AuthorizedClient("office") OAuth2AuthorizedClient authorizedClient) {
+        @GetMapping(value = "accessTokenIssuedAt/arm")
+        public String arm(
+            @RegisteredOAuth2AuthorizedClient("arm") OAuth2AuthorizedClient authorizedClient) {
             return Optional.of(authorizedClient)
                            .map(OAuth2AuthorizedClient::getAccessToken)
                            .map(OAuth2AccessToken::getIssuedAt)

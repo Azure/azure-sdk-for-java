@@ -842,7 +842,7 @@
   <!-- Tracking work-item: https://github.com/Azure/azure-sdk-for-java/issues/9037 -->
   <Match>
     <Or>
-      <Class name="com.azure.cosmos.ClientSideRequestStatistics"/>
+      <Class name="com.azure.cosmos.implementation.ClientSideRequestStatistics"/>
       <Class name="com.azure.cosmos.models.CosmosItemResponse"/>
     </Or>
     <Bug pattern="IS2_INCONSISTENT_SYNC"/>
@@ -979,56 +979,56 @@
 
   <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
   <Match>
-    <Class name="com.azure.cosmos.ClientSideRequestStatistics$AddressResolutionStatistics"/>
+    <Class name="com.azure.cosmos.implementation.ClientSideRequestStatistics$AddressResolutionStatistics"/>
     <Field name="endTimeUTC"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
   <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
   <Match>
-    <Class name="com.azure.cosmos.ClientSideRequestStatistics$AddressResolutionStatistics"/>
+    <Class name="com.azure.cosmos.implementation.ClientSideRequestStatistics$AddressResolutionStatistics"/>
     <Field name="startTimeUTC"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
   <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
   <Match>
-    <Class name="com.azure.cosmos.ClientSideRequestStatistics$AddressResolutionStatistics"/>
+    <Class name="com.azure.cosmos.implementation.ClientSideRequestStatistics$AddressResolutionStatistics"/>
     <Field name="targetEndpoint"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
   <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
   <Match>
-    <Class name="com.azure.cosmos.ClientSideRequestStatistics$AddressResolutionStatistics"/>
+    <Class name="com.azure.cosmos.implementation.ClientSideRequestStatistics$AddressResolutionStatistics"/>
     <Field name="errorMessage"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
   <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
   <Match>
-    <Class name="com.azure.cosmos.ClientSideRequestStatistics$AddressResolutionStatistics"/>
+    <Class name="com.azure.cosmos.implementation.ClientSideRequestStatistics$AddressResolutionStatistics"/>
     <Field name="inflightRequest"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
   <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
   <Match>
-    <Class name="com.azure.cosmos.ClientSideRequestStatistics$StoreResponseStatistics"/>
+    <Class name="com.azure.cosmos.implementation.ClientSideRequestStatistics$StoreResponseStatistics"/>
     <Field name="requestResourceType"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
   <!-- Suppress URF_UNREAD_FIELD, the field is read but during serialization -->
   <Match>
-    <Class name="com.azure.cosmos.ClientSideRequestStatistics$StoreResponseStatistics"/>
+    <Class name="com.azure.cosmos.implementation.ClientSideRequestStatistics$StoreResponseStatistics"/>
     <Field name="requestResponseTimeUTC"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
   <!-- Suppress URF_UNREAD_FIELD, the field is read but during serialization -->
   <Match>
-    <Class name="com.azure.cosmos.ClientSideRequestStatistics$StoreResponseStatistics"/>
+    <Class name="com.azure.cosmos.implementation.ClientSideRequestStatistics$StoreResponseStatistics"/>
     <Field name="storeResult"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
@@ -1386,7 +1386,7 @@
 
   <!-- Exception is required to handle when parsing system information  -->
   <Match>
-    <Class name="com.azure.cosmos.ClientSideRequestStatistics$ClientSideRequestStatisticsSerializer"/>
+    <Class name="com.azure.cosmos.implementation.ClientSideRequestStatistics$ClientSideRequestStatisticsSerializer"/>
     <Method name="serialize"/>
     <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
@@ -1945,7 +1945,7 @@
 
   <!-- Exception is ignored by design which indicate that error while evaluating system information -->
   <Match>
-    <Class name="com.azure.cosmos.ClientSideRequestStatistics$ClientSideRequestStatisticsSerializer"/>
+    <Class name="com.azure.cosmos.implementation.ClientSideRequestStatistics$ClientSideRequestStatisticsSerializer"/>
     <Method name="serialize"/>
     <Bug pattern="DE_MIGHT_IGNORE"/>
   </Match>

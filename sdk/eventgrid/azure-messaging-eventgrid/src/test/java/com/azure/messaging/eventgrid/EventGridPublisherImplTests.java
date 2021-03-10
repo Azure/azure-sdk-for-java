@@ -7,10 +7,12 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.models.CloudEventDataFormat;
 import com.azure.core.test.TestBase;
+import com.azure.core.util.BinaryData;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImpl;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImplBuilder;
-import com.azure.messaging.eventgrid.implementation.models.CloudEvent;
+import com.azure.core.models.CloudEvent;
 import com.azure.messaging.eventgrid.implementation.models.EventGridEvent;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
@@ -85,11 +87,13 @@ public class EventGridPublisherImplTests extends TestBase {
                 .setId(UUID.randomUUID().toString())
                 .setSubject("Test")
                 .setEventType("Microsoft.MockPublisher.TestEvent")
-                .setData(new HashMap<String, String>() {{
-                    put("Field1", "Value1");
-                    put("Field2", "Value2");
-                    put("Field3", "Value3");
-                }})
+                .setData(new HashMap<String, String>() {
+                    {
+                        put("Field1", "Value1");
+                        put("Field2", "Value2");
+                        put("Field3", "Value3");
+                    }
+                })
                 .setDataVersion("1.0")
                 .setEventTime(OffsetDateTime.now())
         );
@@ -110,16 +114,16 @@ public class EventGridPublisherImplTests extends TestBase {
             .buildClient();
 
         List<CloudEvent> events = Collections.singletonList(
-            new CloudEvent()
+            new CloudEvent("TestSource", "Microsoft.MockPublisher.TestEvent",
+                BinaryData.fromObject(new HashMap<String, String>() {
+                    {
+                        put("Field1", "Value1");
+                        put("Field2", "Value2");
+                        put("Field3", "Value3");
+                    }
+                }), CloudEventDataFormat.JSON, "application/json")
                 .setId(UUID.randomUUID().toString())
                 .setSubject("Test")
-                .setType("Microsoft.MockPublisher.TestEvent")
-                .setData(new HashMap<String, String>() {{
-                    put("Field1", "Value1");
-                    put("Field2", "Value2");
-                    put("Field3", "Value3");
-                }})
-                .setSpecversion("1.0")
                 .setTime(OffsetDateTime.now())
         );
 
@@ -140,13 +144,15 @@ public class EventGridPublisherImplTests extends TestBase {
 
         List<Object> events = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            events.add(new HashMap<String, String>() {{
-                put("id", UUID.randomUUID().toString());
-                put("time", OffsetDateTime.now().toString());
-                put("subject", "Test");
-                put("foo", "bar");
-                put("type", "Microsoft.MockPublisher.TestEvent");
-            }});
+            events.add(new HashMap<String, String>() {
+                {
+                    put("id", UUID.randomUUID().toString());
+                    put("time", OffsetDateTime.now().toString());
+                    put("subject", "Test");
+                    put("foo", "bar");
+                    put("type", "Microsoft.MockPublisher.TestEvent");
+                }
+            });
         }
 
         String hostname = new URL(getEndpoint(CUSTOM_ENDPOINT)).getHost();

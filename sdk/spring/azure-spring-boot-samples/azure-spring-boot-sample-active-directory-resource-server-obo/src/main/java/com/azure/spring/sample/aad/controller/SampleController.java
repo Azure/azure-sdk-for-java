@@ -28,7 +28,7 @@ public class SampleController {
 
     private static final String GRAPH_ME_ENDPOINT = "https://graph.microsoft.com/v1.0/me";
 
-    private static final String CUSTOM_LOCAL_FILE_ENDPOINT = "http://localhost:8080/file";
+    private static final String CUSTOM_LOCAL_FILE_ENDPOINT = "http://localhost:8082/file";
 
     @Autowired
     private WebClient webClient;

@@ -4,33 +4,41 @@ package com.azure.spring.autoconfigure.b2c;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AADB2CURLTest {
+
+    static final String DEFAULT_BASE_URI = "https://faketenant.b2clogin.com/faketenant.onmicrosoft.com/";
+    static final String CHINA_BASE_URI = "https://faketenant.b2clogin.cn/faketenant.partner.onmschina.cn/";
 
     /**
      * Reference pattern see AUTHORIZATION_URL_PATTERN of ${@link AADB2CURL}.
      */
     @Test
-    public void testGetAuthorizationUrl() {
-        final String expect = "https://fake-tenant.b2clogin.com/fake-tenant.onmicrosoft.com/oauth2/v2.0/authorize";
-
-        assertThat(AADB2CURL.getAuthorizationUrl("fake-tenant")).isEqualTo(expect);
+    public void testGetGlobalAuthorizationUrl() {
+        final String expect = "https://faketenant.b2clogin.com/faketenant.onmicrosoft.com/oauth2/v2.0/authorize";
+        assertThat(AADB2CURL.getAuthorizationUrl(DEFAULT_BASE_URI)).isEqualTo(expect);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testGetAuthorizationUrlException() {
-        AADB2CURL.getAuthorizationUrl("");
+    @Test
+    public void testGetChinaAuthorizationUrl() {
+        final String expect = "https://faketenant.b2clogin.cn/faketenant.partner.onmschina.cn/oauth2/v2.0/authorize";
+        assertThat(AADB2CURL.getAuthorizationUrl(CHINA_BASE_URI)).isEqualTo(expect);
     }
 
     /**
      * Reference pattern see TOKEN_URL_PATTERN of ${@link AADB2CURL}.
      */
     @Test
-    public void testGetTokenUrl() {
-        final String expect = "https://fake-tenant.b2clogin.com/fake-tenant.onmicrosoft.com/oauth2/v2.0/token?p=fake-p";
+    public void testGetGlobalTokenUrl() {
+        final String expect = "https://faketenant.b2clogin.com/faketenant.onmicrosoft.com/oauth2/v2.0/token?p=fake-p";
+        assertThat(AADB2CURL.getTokenUrl(DEFAULT_BASE_URI, "fake-p")).isEqualTo(expect);
+    }
 
-        assertThat(AADB2CURL.getTokenUrl("fake-tenant", "fake-p")).isEqualTo(expect);
+    @Test
+    public void testGetChinaTokenUrl() {
+        final String expect = "https://faketenant.b2clogin.cn/faketenant.partner.onmschina.cn/oauth2/v2.0/token?p=fake-p";
+        assertThat(AADB2CURL.getTokenUrl(CHINA_BASE_URI, "fake-p")).isEqualTo(expect);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -42,31 +50,45 @@ public class AADB2CURLTest {
      * Reference pattern see JWKSET_URL_PATTERN of ${@link AADB2CURL}.
      */
     @Test
-    public void testGetJwkSetUrl() {
-        final String expect = "https://new-tenant.b2clogin.com/new-tenant.onmicrosoft.com/discovery/v2.0/keys?p=new-p";
+    public void testGetGlobalJwkSetUrl() {
+        final String expect = "https://faketenant.b2clogin.com/faketenant.onmicrosoft.com/discovery/v2.0/keys?p=new-p";
+        assertThat(AADB2CURL.getJwkSetUrl(DEFAULT_BASE_URI, "new-p")).isEqualTo(expect);
+    }
 
-        assertThat(AADB2CURL.getJwkSetUrl("new-tenant", "new-p")).isEqualTo(expect);
+    @Test
+    public void testGetChinaJwkSetUrl() {
+        final String expect = "https://faketenant.b2clogin.cn/faketenant.partner.onmschina.cn/discovery/v2.0/keys?p=new-p";
+        assertThat(AADB2CURL.getJwkSetUrl(CHINA_BASE_URI, "new-p")).isEqualTo(expect);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetJwkSetUrlException() {
-        AADB2CURL.getJwkSetUrl("", "");
+        AADB2CURL.getJwkSetUrl(DEFAULT_BASE_URI, "");
     }
 
     /**
      * Reference pattern see END_SESSION_URL_PATTERN of ${@link AADB2CURL}.
      */
     @Test
-    public void testGetEndSessionUrl() {
-        final String expect = "https://my-tenant.b2clogin.com/my-tenant.onmicrosoft.com/oauth2/v2.0/logout?"
+    public void testGetGlobalEndSessionUrl() {
+        final String expect = "https://faketenant.b2clogin.com/faketenant.onmicrosoft.com/oauth2/v2.0/logout?"
             + "post_logout_redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fhome&p=my-p";
 
-        assertThat(AADB2CURL.getEndSessionUrl("my-tenant", "http://localhost:8080/home",
+        assertThat(AADB2CURL.getEndSessionUrl(DEFAULT_BASE_URI, "http://localhost:8080/home",
+            "my-p")).isEqualTo(expect);
+    }
+
+    @Test
+    public void testGetChinaEndSessionUrl() {
+        final String expect = "https://faketenant.b2clogin.cn/faketenant.partner.onmschina.cn/oauth2/v2.0/logout?"
+            + "post_logout_redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fhome&p=my-p";
+
+        assertThat(AADB2CURL.getEndSessionUrl(CHINA_BASE_URI, "http://localhost:8080/home",
             "my-p")).isEqualTo(expect);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetEndSessionUrlException() {
-        AADB2CURL.getJwkSetUrl("", "");
+        AADB2CURL.getJwkSetUrl(DEFAULT_BASE_URI, "");
     }
 }

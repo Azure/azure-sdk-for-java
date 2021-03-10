@@ -60,7 +60,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         secondThreadMember = communicationClient.createUser();
 
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
-        AccessToken response = communicationClient.issueToken(firstThreadMember, scopes);
+        AccessToken response = communicationClient.getToken(firstThreadMember, scopes);
 
         ChatClientBuilder chatBuilder = getChatClientBuilder(response.getToken(), httpClient);
         client = addLoggingPolicyForIdentityClientBuilder(chatBuilder, testName).buildAsyncClient();
@@ -269,24 +269,24 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getForbiddenOnNonExistingChatThread(HttpClient httpClient) {
+    public void getNotFoundOnNonExistingChatThread(HttpClient httpClient) {
         // Act & Assert
         setupTest(httpClient, "getNotFoundOnNonExistingChatThread");
-        StepVerifier.create(client.getChatThread("19:020082a8df7b44dd8c722bea8fe7167f@thread.v2"))
+        StepVerifier.create(client.getChatThread("19:00000000000000000000000000000000@thread.v2"))
             .expectErrorMatches(exception ->
-                ((HttpResponseException) exception).getResponse().getStatusCode() == 403
+                ((HttpResponseException) exception).getResponse().getStatusCode() == 404
             )
             .verify();
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getForbiddenOnNonExistingChatThreadWithResponse(HttpClient httpClient) {
+    public void getNotFoundOnNonExistingChatThreadWithResponse(HttpClient httpClient) {
         // Act & Assert
         setupTest(httpClient, "getNotFoundOnNonExistingChatThreadWithResponse");
-        StepVerifier.create(client.getChatThreadWithResponse("19:020082a8df7b44dd8c722bea8fe7167f@thread.v2"))
+        StepVerifier.create(client.getChatThreadWithResponse("19:00000000000000000000000000000000@thread.v2"))
             .expectErrorMatches(exception ->
-                ((HttpResponseException) exception).getResponse().getStatusCode() == 403
+                ((HttpResponseException) exception).getResponse().getStatusCode() == 404
             )
             .verify();
     }

@@ -9,16 +9,13 @@ We need to ensure that this [environment checklist][ready-to-run-checklist] is c
 
 ### Configure web app
 1. Search for and select your tenant in **Azure Active Directory**.
-1. Under Manage In the same tenant, select **App registrations** -> **New registration**.![Protal manage](docs/image-protal-manage.png "Protal manage")
+1. Under Manage In the same tenant, select **App registrations** -> **New registration**.![Portal manage](docs/image-portal-manage.png "Portal manage")
 1. The registered application name is filled into `webapp`, select **Accounts in this organizational directory only**, click the **register** button.![Register a web app](docs/image-register-a-web-app.png "Register a web app")
-1. Under **webapp** application, select **Certificates & secrets** -> **new client secret**, expires select **Never**, click the **add** button.(Remember to save the secrets here and use them later.)![Creat secrets](docs/image-creat-secrets-app.png "Creat secrets")
-1. Under **webapp** application, select **Authentication** -> **Add a platform**, select **web** platform, redirect urls set to `http://localhost:8080/login/oauth2/code/`, check the **Access Tokens** and **ID Tokens** checkboxes, click **configure** button.![Add a platfform](docs/image-add-a-platfform.png "Add a platfform")
-1. Under **webapp** application, select **API permissions** -> **Add a permission**, select **Microsoft Graph**. Next, search `Directory.AccessAsUser.All` via **select Permissions**, check the check box, click **add permissions** button.(`User.Read` is created automatically, we need to keep it.)![Api permission](docs/image-api-permissions.png "Api permission")
-1. Similarly, add the following permissions: 
-   - **user_impersonation** in **Azure Service Management**,
-   - **ActivityFeed.Read**, **ActivityFeed.ReadDlp**, **ServiceHealth.Read** in **Office 365 Management APIs**.![Add permissions](docs/image-add-permissions.png "Add permissions")
-1. click **Grant admin consent for...**.![Grant permission](docs/image-grant-permission.png "Grant permission")
-11. Manually remove the admin consent for **user_impersonation**.(Easy to see incremental authorization.)![Final](docs/image-final.png "Final")
+1. Under **webapp** application, select **Certificates & secrets** -> **new client secret**, click the **add** button.(Remember to save the secrets here and use them later.)![Create secrets](docs/image-create-app-secrets.png "Create secrets")![Create secrets](docs/image-secret-value.png "Create Secrets")
+1. Under **webapp** application, select **Authentication** -> **Add a platform**, select **web** platform, redirect urls set to `http://localhost:8080/login/oauth2/code/`, click **configure** button.![Add a platform](docs/image-add-a-platform.png "Add a platform")
+1. Under **webapp** application, select **API permissions** -> **Add a permission**, select **Microsoft Graph**. Next, search `Directory.Read.All` via **select Permissions**, check the check box, click **add permissions** button.(`User.Read` is created automatically, we need to keep it.)![Request Api permission](docs/image-request-api-permissions.png "Request Api permission")
+1. Similarly, add permission **user_impersonation** in **Azure Service Management**,
+   ![Added permissions](docs/image-permissions.png "Added permissions")
 
 See [Register app], [Grant scoped permission] for more information about web app.
 
@@ -29,26 +26,21 @@ In order to try the authorization action with this sample with minimum effort, [
 ### Configure application.yml
 ```yaml
 azure:
-   activedirectory:
-      authorization-clients:
-         arm:
-            on-demand: true
-            scopes: https://management.core.windows.net/user_impersonation
-         graph:
-            scopes:
-               - https://graph.microsoft.com/User.Read
-               - https://graph.microsoft.com/Directory.AccessAsUser.All
-         office:
-            scopes:
-               - https://manage.office.com/ActivityFeed.Read
-               - https://manage.office.com/ActivityFeed.ReadDlp
-               - https://manage.office.com/ServiceHealth.Read
-      client-id: <client-id>
-      client-secret: <client-secret>
-      tenant-id: <tenant-id>
-      user-group:
-         allowed-groups: group1, group2
-      post-logout-redirect-uri: http://localhost:8080
+  activedirectory:
+    authorization-clients:
+      arm:
+        on-demand: true
+        scopes: https://management.core.windows.net/user_impersonation
+      graph:
+        scopes:
+          - https://graph.microsoft.com/User.Read
+          - https://graph.microsoft.com/Directory.Read.All
+    client-id: <client-id>
+    client-secret: <client-secret>
+    tenant-id: <tenant-id>
+    user-group:
+      allowed-groups: group1, group2
+    post-logout-redirect-uri: http://localhost:8080
 # It's suggested the logged in user should at least belong to one of the above groups
 # If not, the logged in user will not be able to access any authorization controller rest APIs
 ```
