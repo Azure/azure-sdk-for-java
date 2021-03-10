@@ -24,7 +24,6 @@ import io.opentelemetry.sdk.trace.data.EventData;
 import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
-import io.opentelemetry.semconv.trace.attributes.SemanticAttributes;
 import reactor.util.context.Context;
 
 import java.net.URI;
@@ -248,22 +247,22 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
     }
 
     private void applySemanticConventions(Attributes attributes, RemoteDependencyData remoteDependencyData, SpanKind spanKind) {
-        String httpMethod = attributes.get(SemanticAttributes.HTTP_METHOD);
+        String httpMethod = attributes.get(AttributeKey.stringKey("http.method"));
         if (httpMethod != null) {
             applyHttpClientSpan(attributes, remoteDependencyData);
             return;
         }
-        String rpcSystem = attributes.get(SemanticAttributes.RPC_SYSTEM);
+        String rpcSystem = attributes.get(AttributeKey.stringKey("rpc.system"));
         if (rpcSystem != null) {
             applyRpcClientSpan(attributes, remoteDependencyData, rpcSystem);
             return;
         }
-        String dbSystem = attributes.get(SemanticAttributes.DB_SYSTEM);
+        String dbSystem = attributes.get(AttributeKey.stringKey("db.system"));
         if (dbSystem != null) {
             applyDatabaseClientSpan(attributes, remoteDependencyData, dbSystem);
             return;
         }
-        String messagingSystem = attributes.get(SemanticAttributes.MESSAGING_SYSTEM);
+        String messagingSystem = attributes.get(AttributeKey.stringKey("messaging.system"));
         if (messagingSystem != null) {
             applyMessagingClientSpan(attributes, remoteDependencyData, messagingSystem, spanKind);
             return;
@@ -277,7 +276,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         // * http.scheme, http.host, http.target
         // * http.scheme, net.peer.name, net.peer.port, http.target
         // * http.scheme, net.peer.ip, net.peer.port, http.target
-        String scheme = attributes.get(SemanticAttributes.HTTP_SCHEME);
+        String scheme = attributes.get(AttributeKey.stringKey("http.scheme"));
         int defaultPort;
         if ("http".equals(scheme)) {
             defaultPort = 80;
@@ -288,9 +287,9 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         }
         String target = getTargetFromPeerAttributes(attributes, defaultPort);
         if (target == null) {
-            target = attributes.get(SemanticAttributes.HTTP_HOST);
+            target = attributes.get(AttributeKey.stringKey("http.host"));
         }
-        String url = attributes.get(SemanticAttributes.HTTP_URL);
+        String url = attributes.get(AttributeKey.stringKey("http.url"));
         if (target == null && url != null) {
             try {
                 URI uri = new URI(url);
@@ -322,7 +321,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
             telemetry.setTarget(target + " | " + targetAppId);
         }
 
-        Long httpStatusCode = attributes.get(SemanticAttributes.HTTP_STATUS_CODE);
+        Long httpStatusCode = attributes.get(AttributeKey.longKey("http.status_code"));
         if (httpStatusCode != null) {
             telemetry.setResultCode(Long.toString(httpStatusCode));
         }
@@ -331,20 +330,20 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
     }
 
     private static String getTargetFromPeerAttributes(Attributes attributes, int defaultPort) {
-        String target = attributes.get(SemanticAttributes.PEER_SERVICE);
+        String target = attributes.get(AttributeKey.stringKey("peer.service"));
         if (target != null) {
             // do not append port if peer.service is provided
             return target;
         }
-        target = attributes.get(SemanticAttributes.NET_PEER_NAME);
+        target = attributes.get(AttributeKey.stringKey("net.peer.name"));
         if (target == null) {
-            target = attributes.get(SemanticAttributes.NET_PEER_IP);
+            target = attributes.get(AttributeKey.stringKey("net.peer.ip"));
         }
         if (target == null) {
             return null;
         }
         // append net.peer.port to target
-        Long port = attributes.get(SemanticAttributes.NET_PEER_PORT);
+        Long port = attributes.get(AttributeKey.longKey("net.peer.port"));
         if (port != null && port != defaultPort) {
             return target + ":" + port;
         }
@@ -362,7 +361,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
     }
 
     private static void applyDatabaseClientSpan(Attributes attributes, RemoteDependencyData telemetry, String dbSystem) {
-        String dbStatement = attributes.get(SemanticAttributes.DB_STATEMENT);
+        String dbStatement = attributes.get(AttributeKey.stringKey("db.statement"));
         String type;
         if (SQL_DB_SYSTEMS.contains(dbSystem)) {
             type = "SQL";
@@ -383,7 +382,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         telemetry.setType(type);
         telemetry.setData(dbStatement);
         String target = nullAwareConcat(getTargetFromPeerAttributes(attributes, getDefaultPortForDbSystem(dbSystem)),
-            attributes.get(SemanticAttributes.DB_NAME), "/");
+            attributes.get(AttributeKey.stringKey("db.name")), "/");
         if (target == null) {
             target = dbSystem;
         }
@@ -397,7 +396,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
             // e.g. CONSUMER kind (without remote parent) and CLIENT kind
             telemetry.setType(messagingSystem);
         }
-        String destination = attributes.get(SemanticAttributes.MESSAGING_DESTINATION);
+        String destination = attributes.get(AttributeKey.stringKey("messaging.destination"));
         if (destination != null) {
             telemetry.setTarget(destination);
         } else {
@@ -445,11 +444,11 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
             source = sourceAppId;
         }
         if (source == null) {
-            String messagingSystem = attributes.get(SemanticAttributes.MESSAGING_SYSTEM);
+            String messagingSystem = attributes.get(AttributeKey.stringKey("messaging.system"));
             if (messagingSystem != null) {
                 // TODO (trask) should this pass default port for messaging.system?
                 source = nullAwareConcat(getTargetFromPeerAttributes(attributes, 0),
-                    attributes.get(SemanticAttributes.MESSAGING_DESTINATION), "/");
+                    attributes.get(AttributeKey.stringKey("messaging.destination")), "/");
                 if (source == null) {
                     source = messagingSystem;
                 }
@@ -464,14 +463,14 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         requestData.setSource(source);
 
         addLinks(requestData.getProperties(), span.getLinks());
-        Long httpStatusCode = attributes.get(SemanticAttributes.HTTP_STATUS_CODE);
+        Long httpStatusCode = attributes.get(AttributeKey.longKey("http.status_code"));
 
         requestData.setResponseCode("200");
         if (httpStatusCode != null) {
             requestData.setResponseCode(Long.toString(httpStatusCode));
         }
 
-        String httpUrl = attributes.get(SemanticAttributes.HTTP_URL);
+        String httpUrl = attributes.get(AttributeKey.stringKey("http.url"));
         if (httpUrl != null) {
             requestData.setUrl(httpUrl);
         }
@@ -556,9 +555,9 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
             telemetryItem.setTime(getFormattedTime(event.getEpochNanos()));
             setExtraAttributes(telemetryItem, eventData.getProperties(), event.getAttributes());
 
-            if (event.getAttributes().get(SemanticAttributes.EXCEPTION_TYPE) != null
-                || event.getAttributes().get(SemanticAttributes.EXCEPTION_MESSAGE) != null) {
-                String stacktrace = event.getAttributes().get(SemanticAttributes.EXCEPTION_STACKTRACE);
+            if (event.getAttributes().get(AttributeKey.stringKey("exception.type")) != null
+                || event.getAttributes().get(AttributeKey.stringKey("exception.message")) != null) {
+                String stacktrace = event.getAttributes().get(AttributeKey.stringKey("exception.stacktrace"));
                 if (stacktrace != null) {
                     trackException(stacktrace, span, operationId, span.getSpanId(), samplingPercentage, telemetryItems);
                 }
@@ -668,11 +667,11 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
                 return;
             }
             // special case mappings
-            if (key.equals(SemanticAttributes.ENDUSER_ID) && value instanceof String) {
+            if (key.getKey().equals("enduser.id") && value instanceof String) {
                 telemetry.getTags().put(ContextTagKeys.AI_USER_ID.toString(), (String) value);
                 return;
             }
-            if (key.equals(SemanticAttributes.HTTP_USER_AGENT) && value instanceof String) {
+            if (key.getKey().equals("http.user_agent") && value instanceof String) {
                 telemetry.getTags().put("ai.user.userAgent", (String) value);
                 return;
             }

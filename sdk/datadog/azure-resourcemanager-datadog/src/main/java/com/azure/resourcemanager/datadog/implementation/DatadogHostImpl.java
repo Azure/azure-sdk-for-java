@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.datadog.implementation;
 
-import com.azure.resourcemanager.datadog.MicrosoftDatadogManager;
 import com.azure.resourcemanager.datadog.fluent.models.DatadogHostInner;
 import com.azure.resourcemanager.datadog.models.DatadogHost;
 import com.azure.resourcemanager.datadog.models.DatadogHostMetadata;
@@ -14,9 +13,10 @@ import java.util.List;
 public final class DatadogHostImpl implements DatadogHost {
     private DatadogHostInner innerObject;
 
-    private final MicrosoftDatadogManager serviceManager;
+    private final com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager;
 
-    DatadogHostImpl(DatadogHostInner innerObject, MicrosoftDatadogManager serviceManager) {
+    DatadogHostImpl(
+        DatadogHostInner innerObject, com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -51,7 +51,7 @@ public final class DatadogHostImpl implements DatadogHost {
         return this.innerObject;
     }
 
-    private MicrosoftDatadogManager manager() {
+    private com.azure.resourcemanager.datadog.MicrosoftDatadogManager manager() {
         return this.serviceManager;
     }
 }

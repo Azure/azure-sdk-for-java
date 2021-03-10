@@ -9,7 +9,8 @@ import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetai
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
-import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
+import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
+import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
@@ -17,13 +18,11 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -45,8 +44,8 @@ public class AnalyzeHealthcareEntities {
         List<TextDocumentInput> documents = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
             documents.add(new TextDocumentInput(Integer.toString(i),
-                "The patient is a 54-year-old gentleman with a history of progressive angina over the past several"
-                    + " months."
+                "The patient is a 54-year-old gentleman with a history of progressive angina over the past "
+                    + "several months. "
             ));
         }
 
@@ -87,9 +86,18 @@ public class AnalyzeHealthcareEntities {
                     AtomicInteger ct = new AtomicInteger();
                     // Healthcare entities
                     healthcareEntitiesResult.getEntities().forEach(healthcareEntity -> {
-                        System.out.printf("\ti = %d, Text: %s, category: %s, subcategory: %s, confidence score: %f.%n",
-                            ct.getAndIncrement(), healthcareEntity.getText(), healthcareEntity.getCategory(),
+                        System.out.printf(
+                            "\ti = %d, Text: %s, normalized name: %s, category: %s, subcategory: %s, confidence score: %f.%n",
+                            ct.getAndIncrement(), healthcareEntity.getText(),
+                            healthcareEntity.getNormalizedText(), healthcareEntity.getCategory(),
                             healthcareEntity.getSubcategory(), healthcareEntity.getConfidenceScore());
+
+                        HealthcareEntityAssertion assertion = healthcareEntity.getAssertion();
+                        if (assertion != null) {
+                            System.out.printf(
+                                "\tEntity assertion: association=%s, certainty=%s, conditionality=%s.%n",
+                                assertion.getAssociation(), assertion.getCertainty(), assertion.getConditionality());
+                        }
                         // Data sources
                         IterableStream<EntityDataSource> dataSources = healthcareEntity.getDataSources();
                         if (dataSources != null) {
@@ -97,16 +105,22 @@ public class AnalyzeHealthcareEntities {
                                 "\t\tEntity ID in data source: %s, data source: %s.%n",
                                 dataSource.getEntityId(), dataSource.getName()));
                         }
-                        // Entities relationship
-                        Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities =
-                            healthcareEntity.getRelatedEntities();
-                        if (!CoreUtils.isNullOrEmpty(relatedHealthcareEntities)) {
-                            relatedHealthcareEntities.forEach(
-                                (relatedHealthcareEntity, entityRelationType) -> System.out.printf(
-                                    "\t\tRelated entity: %s, relation type: %s.%n",
-                                    relatedHealthcareEntity.getText(), entityRelationType));
-                        }
                     });
+                    // Healthcare entity relation groups
+                    final IterableStream<HealthcareEntityRelation> entityRelations =
+                        healthcareEntitiesResult.getEntityRelations();
+                    if (entityRelations != null) {
+                        entityRelations.forEach(
+                            entityRelation -> {
+                                System.out.printf("Relation type: %s.%n", entityRelation.getRelationType());
+                                entityRelation.getRoles().forEach(role -> {
+                                    final HealthcareEntity entity = role.getEntity();
+                                    System.out.printf("\tEntity text: %s, category: %s, role: %s.%n",
+                                        entity.getText(), entity.getCategory(), role.getName());
+                                });
+                            }
+                        );
+                    }
                 });
             });
         }

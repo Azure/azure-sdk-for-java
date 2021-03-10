@@ -1,0 +1,18 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.prod.adu.microsoft.com/deviceupdate/blue/v2/updates/operations?$top=1",
+    "Headers" : { },
+    "Response" : {
+      "traceparent" : "00-3c4599824dc0ce499e4d5dd726caa137-78418f01f10bb54d-00",
+      "retry-after" : "0",
+      "Content-Length" : "284",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"operationId\":\"46d66a2a-f082-4d0d-a6a3-7ad0f26baa1f\",\"status\":\"NotStarted\",\"traceId\":\"449cc4140100594d96fff75d21ddfc6e\",\"lastActionDateTime\":\"2021-03-02T21:28:55.2717226Z\",\"createdDateTime\":\"2021-03-02T21:28:55.2717231Z\",\"etag\":\"\\\"8c648602-47eb-41ab-85b4-a0b0746a78a6\\\"\"}]}",
+      "Date" : "Tue, 02 Mar 2021 21:28:55 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
