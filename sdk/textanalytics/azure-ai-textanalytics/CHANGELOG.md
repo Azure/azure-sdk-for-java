@@ -1,4 +1,7 @@
 # Release History
+## 5.1.0-beta.6 (Unreleased)
+
+
 ## 5.1.0-beta.5 (2021-03-10)
 - We are now targeting the service's v3.1-preview.4 API as the default instead of v3.1-preview.3.
 
