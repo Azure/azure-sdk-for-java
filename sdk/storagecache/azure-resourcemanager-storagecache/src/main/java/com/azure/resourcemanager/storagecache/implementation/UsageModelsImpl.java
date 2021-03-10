@@ -7,7 +7,6 @@ package com.azure.resourcemanager.storagecache.implementation;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storagecache.StorageCacheManager;
 import com.azure.resourcemanager.storagecache.fluent.UsageModelsClient;
 import com.azure.resourcemanager.storagecache.fluent.models.UsageModelInner;
 import com.azure.resourcemanager.storagecache.models.UsageModel;
@@ -19,9 +18,10 @@ public final class UsageModelsImpl implements UsageModels {
 
     private final UsageModelsClient innerClient;
 
-    private final StorageCacheManager serviceManager;
+    private final com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager;
 
-    public UsageModelsImpl(UsageModelsClient innerClient, StorageCacheManager serviceManager) {
+    public UsageModelsImpl(
+        UsageModelsClient innerClient, com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -40,7 +40,7 @@ public final class UsageModelsImpl implements UsageModels {
         return this.innerClient;
     }
 
-    private StorageCacheManager manager() {
+    private com.azure.resourcemanager.storagecache.StorageCacheManager manager() {
         return this.serviceManager;
     }
 }

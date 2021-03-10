@@ -164,6 +164,9 @@ public class Configuration {
     @Parameter(names = "-bulkloadBatchSize", description = "Control the number of documents uploaded in each BulkExecutor load iteration (Only supported for the LinkedInCtlWorkload)")
     private int bulkloadBatchSize = 200000;
 
+    @Parameter(names = "-testScenario", description = "The test scenario (GET, SQL) for the LinkedInCtlWorkload")
+    private String testScenario = "GET";
+
     @Parameter(names = {"-h", "-help", "--help"}, description = "Help", help = true)
     private boolean help = false;
 
@@ -402,6 +405,10 @@ public class Configuration {
 
     public int getBulkloadBatchSize() {
         return this.bulkloadBatchSize;
+    }
+
+    public String getTestScenario() {
+        return this.testScenario;
     }
 
     public String toString() {

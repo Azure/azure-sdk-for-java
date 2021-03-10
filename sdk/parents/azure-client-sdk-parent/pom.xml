@@ -1450,7 +1450,7 @@
       <id>transform-spotbugs</id>
       <activation>
         <file>
-          <exists>${project.build.directory}/spotbugs/spotbugsXml.xml</exists>
+          <exists>${packageOutputDirectory}/spotbugs/spotbugsXml.xml</exists>
         </file>
       </activation>
       <build>
@@ -1471,11 +1471,11 @@
             <configuration>
               <transformationSets>
                 <transformationSet>
-                  <dir>${project.build.directory}/spotbugs</dir>
+                  <dir>${packageOutputDirectory}/spotbugs</dir>
                   <includes>
                     <include>spotbugsXml.xml</include>
                   </includes>
-                  <outputDir>${project.build.directory}/spotbugs</outputDir>
+                  <outputDir>${packageOutputDirectory}/spotbugs</outputDir>
                   <stylesheet>fancy-hist.xsl</stylesheet>
                   <fileMappers>
                     <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">

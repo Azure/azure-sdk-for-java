@@ -52,24 +52,18 @@ public class ConnectionHandler extends Handler {
      * Creates a handler that handles proton-j's connection events.
      *
      * @param connectionId Identifier for this connection.
-     * @param productName The name of the product this connection handler is created for.
-     * @param clientVersion The version of the client library creating the connection handler.
      * @param connectionOptions Options used when creating the AMQP connection.
      */
-    public ConnectionHandler(final String connectionId, final String productName, final String clientVersion,
-        final ConnectionOptions connectionOptions, SslPeerDetails peerDetails) {
+    public ConnectionHandler(final String connectionId, final ConnectionOptions connectionOptions,
+        SslPeerDetails peerDetails) {
         super(connectionId,
             Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.").getHostname());
         add(new Handshaker());
 
         this.connectionOptions = connectionOptions;
-
-        Objects.requireNonNull(productName, "'product' cannot be null.");
-        Objects.requireNonNull(clientVersion, "'clientVersion' cannot be null.");
-
         this.connectionProperties = new HashMap<>();
-        this.connectionProperties.put(PRODUCT.toString(), productName);
-        this.connectionProperties.put(VERSION.toString(), clientVersion);
+        this.connectionProperties.put(PRODUCT.toString(), connectionOptions.getProduct());
+        this.connectionProperties.put(VERSION.toString(), connectionOptions.getClientVersion());
         this.connectionProperties.put(PLATFORM.toString(), ClientConstants.PLATFORM_INFO);
         this.connectionProperties.put(FRAMEWORK.toString(), ClientConstants.FRAMEWORK_INFO);
 
@@ -77,7 +71,9 @@ public class ConnectionHandler extends Handler {
         final String applicationId = !CoreUtils.isNullOrEmpty(clientOptions.getApplicationId())
             ? clientOptions.getApplicationId()
             : null;
-        String userAgent = UserAgentUtil.toUserAgentString(applicationId, productName, clientVersion, null);
+        final String userAgent = UserAgentUtil.toUserAgentString(applicationId, connectionOptions.getProduct(),
+            connectionOptions.getClientVersion(), null);
+
         this.connectionProperties.put(USER_AGENT.toString(), userAgent);
 
         this.peerDetails = Objects.requireNonNull(peerDetails, "'peerDetails' cannot be null.");
@@ -146,14 +142,15 @@ public class ConnectionHandler extends Handler {
 
         if (verifyMode == SslDomain.VerifyMode.VERIFY_PEER) {
             sslDomain.setSslContext(defaultSslContext);
+            sslDomain.setPeerAuthentication(SslDomain.VerifyMode.VERIFY_PEER);
         } else if (verifyMode == SslDomain.VerifyMode.ANONYMOUS_PEER) {
             logger.warning("{} is not secure.", verifyMode);
+            sslDomain.setPeerAuthentication(SslDomain.VerifyMode.ANONYMOUS_PEER);
         } else {
             throw logger.logExceptionAsError(new UnsupportedOperationException(
                 "verifyMode is not supported: " + verifyMode));
         }
 
-        sslDomain.setPeerAuthentication(verifyMode);
         transport.ssl(sslDomain);
     }
 

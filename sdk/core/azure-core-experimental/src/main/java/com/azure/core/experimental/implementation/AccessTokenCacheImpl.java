@@ -9,8 +9,8 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.MonoProcessor;
 import reactor.core.publisher.Signal;
+import reactor.core.publisher.Sinks;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -30,7 +30,7 @@ public class AccessTokenCacheImpl {
     private static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
     private volatile AccessToken cache;
     private volatile OffsetDateTime nextTokenRefresh = OffsetDateTime.now();
-    private final AtomicReference<MonoProcessor<AccessToken>> wip;
+    private final AtomicReference<Sinks.One<AccessToken>> wip;
     private final TokenCredential tokenCredential;
     private TokenRequestContext tokenRequestContext;
     private final Predicate<AccessToken> shouldRefresh;
@@ -64,8 +64,8 @@ public class AccessTokenCacheImpl {
     private Supplier<Mono<? extends AccessToken>> retrieveToken(TokenRequestContext tokenRequestContext) {
         return () -> {
             try {
-                if (wip.compareAndSet(null, MonoProcessor.create())) {
-                    final MonoProcessor<AccessToken> monoProcessor = wip.get();
+                if (wip.compareAndSet(null, Sinks.one())) {
+                    final Sinks.One<AccessToken> sinksOne = wip.get();
                     OffsetDateTime now = OffsetDateTime.now();
                     Mono<AccessToken> tokenRefresh;
                     Mono<AccessToken> fallback;
@@ -109,8 +109,8 @@ public class AccessTokenCacheImpl {
                     }
                     return tokenRefresh
                        .materialize()
-                       .flatMap(processTokenRefreshResult(monoProcessor, now, fallback))
-                       .doOnError(monoProcessor::onError)
+                       .flatMap(processTokenRefreshResult(sinksOne, now, fallback))
+                       .doOnError(sinksOne::tryEmitError)
                        .doFinally(ignored -> wip.set(null));
                 } else {
                     return Mono.empty();
@@ -130,15 +130,14 @@ public class AccessTokenCacheImpl {
     }
 
     private Function<Signal<AccessToken>, Mono<? extends AccessToken>> processTokenRefreshResult(
-        MonoProcessor<AccessToken> monoProcessor, OffsetDateTime now, Mono<AccessToken> fallback) {
+        Sinks.One<AccessToken> sinksOne, OffsetDateTime now, Mono<AccessToken> fallback) {
         return signal -> {
             AccessToken accessToken = signal.get();
             Throwable error = signal.getThrowable();
             if (signal.isOnNext() && accessToken != null) { // SUCCESS
                 logger.info(refreshLog(cache, now, "Acquired a new access token"));
                 cache = accessToken;
-                monoProcessor.onNext(accessToken);
-                monoProcessor.onComplete();
+                sinksOne.tryEmitValue(accessToken);
                 nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
                 return Mono.just(accessToken);
             } else if (signal.isOnError() && error != null) { // ERROR
@@ -146,7 +145,7 @@ public class AccessTokenCacheImpl {
                 nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
                 return fallback.switchIfEmpty(Mono.error(error));
             } else { // NO REFRESH
-                monoProcessor.onComplete();
+                sinksOne.tryEmitEmpty();
                 return fallback;
             }
         };

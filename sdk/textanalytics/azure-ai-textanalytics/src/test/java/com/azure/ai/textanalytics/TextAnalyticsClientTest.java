@@ -10,7 +10,7 @@ import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
-import com.azure.ai.textanalytics.models.EntityCertainty;
+import com.azure.ai.textanalytics.models.EntityConditionality;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
@@ -43,6 +43,7 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -2137,6 +2138,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
 
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/19707")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeHealthcareEntitiesZalgoText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -2167,21 +2169,23 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         analyzeHealthcareEntitiesForAssertionRunner((documents, options) -> {
-            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedIterable<AnalyzeHealthcareEntitiesResultCollection>>
-                syncPoller = client.beginAnalyzeHealthcareEntities(documents, "en", options, Context.NONE);
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail,
+                          PagedIterable<AnalyzeHealthcareEntitiesResultCollection>> syncPoller =
+                client.beginAnalyzeHealthcareEntities(documents, "en", options, Context.NONE);
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             PagedIterable<AnalyzeHealthcareEntitiesResultCollection> healthcareTaskResults = syncPoller.getFinalResult();
-            // "Baby not likely to have Meningitis."
+            // "All female participants that are premenopausal will be required to have a pregnancy test;
+            // any participant who is pregnant or breastfeeding will not be included"
             final HealthcareEntityAssertion assertion =
                 healthcareTaskResults.stream().collect(Collectors.toList())
                     .get(0).stream().collect(Collectors.toList()) // List of document result
                     .get(0).getEntities().stream().collect(Collectors.toList()) // List of entities
-                    .get(1) // "Meningitis" is the second entity recognized.
+                    .get(1) // "premenopausal" is the second entity recognized.
                     .getAssertion();
-            assertNull(assertion.getConditionality());
+            assertEquals(EntityConditionality.HYPOTHETICAL, assertion.getConditionality());
             assertNull(assertion.getAssociation());
-            assertEquals(EntityCertainty.NEGATIVE, assertion.getCertainty());
+            assertNull(assertion.getCertainty());
         });
     }
 

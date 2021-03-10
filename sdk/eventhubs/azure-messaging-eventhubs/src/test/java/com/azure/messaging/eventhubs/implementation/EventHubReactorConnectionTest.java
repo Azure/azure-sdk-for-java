@@ -20,6 +20,7 @@ import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.Header;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.Receiver;
@@ -43,6 +44,7 @@ import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -52,7 +54,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class EventHubReactorConnectionTest {
-    private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
+    private static final String NAME_KEY = "name";
+    private static final String VERSION_KEY = "version";
     private static final String CONNECTION_ID = "test-connection-id";
     private static final String HOSTNAME = "test-event-hub.servicebus.windows.net/";
 
@@ -87,22 +90,26 @@ public class EventHubReactorConnectionTest {
     @BeforeAll
     public static void init() {
         Map<String, String> properties = CoreUtils.getProperties("azure-messaging-eventhubs.properties");
-        product = properties.get("name");
-        clientVersion = properties.get("version");
+        product = properties.get(NAME_KEY);
+        clientVersion = properties.get(VERSION_KEY);
     }
 
     @BeforeEach
     public void setup() throws IOException {
         MockitoAnnotations.initMocks(this);
 
+        final ClientOptions clientOptions = new ClientOptions().setHeaders(
+            Arrays.asList(new Header(NAME_KEY, product), new Header(VERSION_KEY, clientVersion)));
+
         final ProxyOptions proxy = ProxyOptions.SYSTEM_DEFAULTS;
         this.connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(), proxy,
-            scheduler, CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME);
+            scheduler, clientOptions, SslDomain.VerifyMode.VERIFY_PEER_NAME, "product-test",
+            "client-test-version");
         final SslPeerDetails peerDetails = Proton.sslPeerDetails(HOSTNAME, ConnectionHandler.AMQPS_PORT);
 
-        final ConnectionHandler connectionHandler = new ConnectionHandler(CONNECTION_ID, product, clientVersion,
-            connectionOptions, peerDetails);
+        final ConnectionHandler connectionHandler = new ConnectionHandler(CONNECTION_ID, connectionOptions,
+            peerDetails);
 
         when(reactor.selectable()).thenReturn(selectable);
         when(reactor.connectionToHost(connectionHandler.getHostname(), connectionHandler.getProtocolPort(),
@@ -120,7 +127,7 @@ public class EventHubReactorConnectionTest {
         final SessionHandler sessionHandler = new SessionHandler(CONNECTION_ID, HOSTNAME, "EVENT_HUB",
             reactorDispatcher, Duration.ofSeconds(20));
 
-        when(handlerProvider.createConnectionHandler(CONNECTION_ID, product, clientVersion, connectionOptions))
+        when(handlerProvider.createConnectionHandler(CONNECTION_ID, connectionOptions))
             .thenReturn(connectionHandler);
         when(handlerProvider.createSessionHandler(eq(CONNECTION_ID), eq(HOSTNAME), anyString(), any(Duration.class)))
             .thenReturn(sessionHandler);
@@ -156,7 +163,7 @@ public class EventHubReactorConnectionTest {
 
         final EventHubReactorAmqpConnection connection = new EventHubReactorAmqpConnection(CONNECTION_ID,
             connectionOptions, "event-hub-name", reactorProvider, handlerProvider, tokenManagerProvider,
-            messageSerializer, product, clientVersion);
+            messageSerializer);
 
         // Act & Assert
         StepVerifier.create(connection.getManagementNode())

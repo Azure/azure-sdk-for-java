@@ -100,7 +100,7 @@ EventGridPublisherClient<EventGridEvent> eventGridEventClient = new EventGridPub
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/samples/ReadmeSamples.java#L70-L74 -->
 ```java
 // For custom event
-EventGridPublisherClient<Object> customEventClient = new EventGridPublisherClientBuilder()
+EventGridPublisherClient<BinaryData> customEventClient = new EventGridPublisherClientBuilder()
     .endpoint("<endpont of your event grid topic/domain that accepts custom event schema>")
     .credential(new AzureKeyCredential("<key for the endpoint>"))
     .buildCustomEventPublisherClient();
@@ -125,7 +125,7 @@ EventGridPublisherAsyncClient<EventGridEvent> eventGridEventAsyncClient = new Ev
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/samples/ReadmeSamples.java#L94-L98 -->
 ```java
 // For custom event
-EventGridPublisherClient<Object> customEventAsyncClient = new EventGridPublisherClientBuilder()
+EventGridPublisherClient<BinaryData> customEventAsyncClient = new EventGridPublisherClientBuilder()
     .endpoint("<endpont of your event grid topic/domain that accepts custom event schema>")
     .credential(new AzureKeyCredential("<key for the endpoint>"))
     .buildCustomEventPublisherClient();
@@ -188,7 +188,7 @@ it:
 | ------------ | --------------------- |
 | Event Grid Events  | `EventGridPublisherClient<CloudEvent>`       |
 | Cloud Events | `EventGridPublisherClient<EventGridEvent>`  |
-| Custom Events       | `EventGridPublisherClient<Object>` |
+| Custom Events       | `EventGridPublisherClient<BinaryData>` |
 
 Using the wrong type will result in a BadRequest error from the service and your events will not be published.
 Use this Azure CLI command to query which schema an Event Grid Topic or Domain accepts:
@@ -240,8 +240,8 @@ cloudEventClient.sendEvents(events);
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/samples/ReadmeSamples.java#L141-L154 -->
 ```java
 // Make sure that the event grid topic or domain you're sending to accepts the custom event schema.
-List<Object> events = new ArrayList<>();
-events.add(new HashMap<String, String>() {
+List<BinaryData> events = new ArrayList<>();
+events.add(BinaryData.fromObject(new HashMap<String, String>() {
     {
         put("id", UUID.randomUUID().toString());
         put("time", OffsetDateTime.now().toString());
@@ -251,10 +251,9 @@ events.add(new HashMap<String, String>() {
         put("data", "example data");
         put("dataVersion", "0.1");
     }
-});
+}));
 customEventClient.sendEvents(events);
 ```
-
 ### Sending Events To Event Grid Domain
 
 An [Event Grid Domain](https://docs.microsoft.com/azure/event-grid/event-domains) can have thousands of topics
