@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.communication.phonenumbers;
 
-import com.azure.communication.phonenumbers.models.AcquiredPhoneNumber;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
@@ -11,6 +10,7 @@ import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
+import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -32,29 +32,29 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getPhoneNumber(HttpClient httpClient) {
+    public void getPurchasedPhoneNumber(HttpClient httpClient) {
         String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
-        AcquiredPhoneNumber number = this.getClientWithConnectionString(httpClient, "getPhoneNumber").getPhoneNumber(phoneNumber);
+        PurchasedPhoneNumber number = this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumberSync").getPurchasedPhoneNumber(phoneNumber);
         assertEquals(phoneNumber, number.getPhoneNumber());
         assertEquals(COUNTRY_CODE, number.getCountryCode());
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getPhoneNumberWithAAD(HttpClient httpClient) {
+    public void getPurchasedPhoneNumberWithAAD(HttpClient httpClient) {
         String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
-        AcquiredPhoneNumber number = this.getClientWithManagedIdentity(httpClient, "getPhoneNumber").getPhoneNumber(phoneNumber);
+        PurchasedPhoneNumber number = this.getClientWithManagedIdentity(httpClient, "getPurchasedPhoneNumberWithAADSync").getPurchasedPhoneNumber(phoneNumber);
         assertEquals(phoneNumber, number.getPhoneNumber());
         assertEquals(COUNTRY_CODE, number.getCountryCode());
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getPhoneNumberWithResponse(HttpClient httpClient) {
+    public void getPurchasedPhoneNumberWithResponse(HttpClient httpClient) {
         String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
-        Response<AcquiredPhoneNumber> response = this.getClientWithConnectionString(httpClient, "getPhoneNumberWithResponseSync")
-            .getPhoneNumberWithResponse(phoneNumber, Context.NONE);
-        AcquiredPhoneNumber number = response.getValue();
+        Response<PurchasedPhoneNumber> response = this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumberWithResponseSync")
+            .getPurchasedPhoneNumberWithResponse(phoneNumber, Context.NONE);
+        PurchasedPhoneNumber number = response.getValue();
         assertEquals(200, response.getStatusCode());
         assertEquals(phoneNumber, number.getPhoneNumber());
         assertEquals(COUNTRY_CODE, number.getCountryCode());
@@ -62,9 +62,9 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void listPhoneNumbers(HttpClient httpClient) {
-        PagedIterable<AcquiredPhoneNumber> numbers = this.getClientWithConnectionString(httpClient, "listPhoneNumbersSync").listPhoneNumbers(Context.NONE);
-        AcquiredPhoneNumber number = numbers.iterator().next();
+    public void listPurchasedPhoneNumbers(HttpClient httpClient) {
+        PagedIterable<PurchasedPhoneNumber> numbers = this.getClientWithConnectionString(httpClient, "listPurchasedPhoneNumbersSync").listPurchasedPhoneNumbers(Context.NONE);
+        PurchasedPhoneNumber number = numbers.iterator().next();
         assertNotNull(number.getPhoneNumber());
         assertEquals(COUNTRY_CODE, number.getCountryCode());
     }
@@ -72,7 +72,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void beginSearchAvailablePhoneNumbers(HttpClient httpClient) {
-        PhoneNumberSearchResult searchResult = beginSearchAvailablePhoneNumbersHelper(httpClient, "beginSearchAvailablePhoneNumbers").getFinalResult();
+        PhoneNumberSearchResult searchResult = beginSearchAvailablePhoneNumbersHelper(httpClient, "beginSearchAvailablePhoneNumbersSync").getFinalResult();
         assertEquals(searchResult.getPhoneNumbers().size(), 1);
         assertNotNull(searchResult.getSearchId());
     }
@@ -95,7 +95,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void beginUpdatePhoneNumberCapabilities(HttpClient httpClient) {
         String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
-        AcquiredPhoneNumber acquiredPhoneNumber = beginUpdatePhoneNumberCapabilitiesHelper(httpClient, phoneNumber, "beginUpdatePhoneNumberCapabilitiesSync").getFinalResult();
+        PurchasedPhoneNumber acquiredPhoneNumber = beginUpdatePhoneNumberCapabilitiesHelper(httpClient, phoneNumber, "beginUpdatePhoneNumberCapabilitiesSync").getFinalResult();
         assertEquals(PhoneNumberCapabilityType.INBOUND_OUTBOUND, acquiredPhoneNumber.getCapabilities().getSms());
         assertEquals(PhoneNumberCapabilityType.INBOUND, acquiredPhoneNumber.getCapabilities().getCalling());
     }
@@ -128,7 +128,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
             .beginReleasePhoneNumber(phoneNumber, Context.NONE));
     }
 
-    private SyncPoller<PhoneNumberOperation, AcquiredPhoneNumber> beginUpdatePhoneNumberCapabilitiesHelper(HttpClient httpClient, String phoneNumber, String testName) {
+    private SyncPoller<PhoneNumberOperation, PurchasedPhoneNumber> beginUpdatePhoneNumberCapabilitiesHelper(HttpClient httpClient, String phoneNumber, String testName) {
         PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest = new PhoneNumberCapabilitiesRequest();
         capabilitiesUpdateRequest.setCalling(PhoneNumberCapabilityType.INBOUND);
         capabilitiesUpdateRequest.setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
