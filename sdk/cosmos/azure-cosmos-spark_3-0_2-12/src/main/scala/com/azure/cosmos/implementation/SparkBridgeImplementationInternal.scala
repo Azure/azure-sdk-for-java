@@ -49,9 +49,7 @@ private[cosmos] object SparkBridgeImplementationInternal extends CosmosLoggingTr
   }
 
   def mergeChangeFeedContinuations(continuationTokens: Iterable[String]): String = {
-    var count = 0
     val states = continuationTokens.map(s => {
-      count += 1
       ChangeFeedState.fromString(s)
     }).toArray
 
