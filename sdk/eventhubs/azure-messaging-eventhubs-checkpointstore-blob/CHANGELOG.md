@@ -1,7 +1,8 @@
 # Release History
 
-## 1.6.0-beta.1 (Unreleased)
-
+## 1.5.1 (2021-03-10)
+### Dependency Updates
+- Update `azure-messaging-eventhubs` dependency to `5.5.1`.
 
 ## 1.5.0 (2020-02-15)
 ### Dependency Updates
@@ -50,10 +51,6 @@
 
 ## 1.0.1 (2020-02-11)
 
-## 1.0.0-beta.4 (2019-12-02)
-- Artifact name changed from `preview` to `beta`.
-- `BlobCheckpointStore` implementation updated to match changes in `CheckpointStore` interface.
-
 ## 1.0.0-preview.3 (2019-11-01)
 - Renamed `BlobPartitionManager` to `BlobEventProcessorStore`
 - Added fully qualified namespace to list ownership API.
@@ -81,3 +78,7 @@ store checkpoints and balance partition load among all instances of Event Proces
 - Interoperability with Event Processors of other language SDKs like Python is not supported.
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fazure-messaging-eventhubs-checkpointstore-blob%2FCHANGELOG.png)
+## 1.0.0-beta.4 (2019-12-02)
+- Artifact name changed from `preview` to `beta`.
+- `BlobCheckpointStore` implementation updated to match changes in `CheckpointStore` interface.
+
