@@ -21,7 +21,7 @@ class SparkE2EThroughputControlSpec extends IntegrationSpec with Spark with Cosm
             "spark.cosmos.database" -> cosmosDatabase,
             "spark.cosmos.container" -> cosmosContainer,
             "spark.cosmos.read.inferSchemaEnabled" -> "true",
-            "spark.cosmos.enableThroughputControl" -> "true",
+            "spark.cosmos.throughputControlEnabled" -> "true",
             "spark.cosmos.throughputControl.name" -> "sparkTest",
             "spark.cosmos.throughputControl.targetThroughput" -> "6",
             "spark.cosmos.throughputControl.globalControl.database" -> throughputControlDatabaseId,

@@ -428,8 +428,8 @@ private case class CosmosThroughputControlConfig(groupName: String,
                                                  globalControlExpireInterval: Option[Duration])
 
 private object CosmosThroughputControlConfig {
-    private val enableThroughputControlSupplier = CosmosConfigEntry[Boolean](
-        key = "spark.cosmos.enableThroughputControl",
+    private val throughputControlEnabledSupplier = CosmosConfigEntry[Boolean](
+        key = "spark.cosmos.throughputControlEnabled",
         mandatory = false,
         defaultValue = Some(false),
         parseFromStringFunction = enableThroughputControl => enableThroughputControl.toBoolean,
@@ -471,19 +471,21 @@ private object CosmosThroughputControlConfig {
         mandatory = false,
         parseFromStringFunction = renewIntervalInMilliseconds => Duration.ofMillis(renewIntervalInMilliseconds.toInt),
         helpMessage = "This controls how often the client is going to update the throughput usage of itself " +
-            "and adjust its own throughput share based on the throughput usage of other clients")
+            "and adjust its own throughput share based on the throughput usage of other clients. " +
+            "Default is 5s, the allowed min value is 5s.")
 
     private val globalControlItemExpireIntervalSupplier = CosmosConfigEntry[Duration](
         key = "spark.cosmos.throughputControl.globalControl.expireIntervalInMS",
         mandatory = false,
         parseFromStringFunction = expireIntervalInMilliseconds => Duration.ofMillis(expireIntervalInMilliseconds.toInt),
         helpMessage = "This controls how quickly we will detect the client has been offline " +
-            "and hence allow its throughput share to be taken by other clients.")
+            "and hence allow its throughput share to be taken by other clients. " +
+            "Default is 11s, the allowed min value is 2 * renewIntervalInMS + 1")
 
     def parseThroughputControlConfig(cfg: Map[String, String]): Option[CosmosThroughputControlConfig] = {
-        val enableThroughputControl = CosmosConfigEntry.parse(cfg, enableThroughputControlSupplier).get
+        val throughputControlEnabled = CosmosConfigEntry.parse(cfg, throughputControlEnabledSupplier).get
 
-        if (enableThroughputControl) {
+        if (throughputControlEnabled) {
             val groupName = CosmosConfigEntry.parse(cfg, groupNameSupplier)
             val targetThroughput = CosmosConfigEntry.parse(cfg, targetThroughputSupplier)
             val targetThroughputThreshold = CosmosConfigEntry.parse(cfg, targetThroughputThresholdSupplier)

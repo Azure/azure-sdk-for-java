@@ -12,7 +12,7 @@ Configuration Reference:
 | `spark.cosmos.container`      | None    | Cosmos DB container name  |
 
 
-### Additional tuning
+### Additional Tuning
 
 
 
@@ -52,6 +52,19 @@ we recommend setting `spark.cosmos.read.inferSchemaEnabled` to be `true`.
 | `spark.cosmos.partitioning.strategy`     | `Default`    | The partitioning strategy used (Default, Custom, Restrictive or Aggressive) |
 | `spark.cosmos.partitioning.targetedCount`      | None    | The targeted Partition Count. This parameter is optional and ignored unless strategy==Custom is used. In this case the Spark Connector won't dynamically calculate number of partitions but stick with this value.  |  |
 
+### Throughput Control Config
+
+
+| Config Property Name      | Default | Description |
+| :---        |    :----   |         :--- | 
+| `spark.cosmos.throughputControlEnabled`      | `false`    | Whether throughput control is enabled  |
+| `spark.cosmos.throughputControl.name`      | None    | Throughput control group name   |
+| `spark.cosmos.throughputControl.targetThroughput`      | None   | Throughput control group target throughput  |
+| `spark.cosmos.throughputControl.targetThroughputThreshold`      | None    | Throughput control group target throughput threshold  |
+| `spark.cosmos.throughputControl.globalControl.database`      | None    | Database which will be used for throughput global control  |
+| `spark.cosmos.throughputControl.globalControl.container`      | None   | Container which will be used for throughput global control  |
+| `spark.cosmos.throughputControl.globalControl.renewIntervalInMS`      | `5s`    | How often the client is going to update the throughput usage of itself  |
+| `spark.cosmos.throughputControl.globalControl.expireIntervalInMS`      | `11s`   | How quickly an offline client will be detected |
 
 
 [//]: # (//TODO: fabianm, moderakh add streaming config once ready)
