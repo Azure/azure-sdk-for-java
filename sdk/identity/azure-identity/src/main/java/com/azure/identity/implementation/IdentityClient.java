@@ -229,7 +229,7 @@ public class IdentityClient {
                         .setName(tokenCachePersistenceOptions.getName());
                     applicationBuilder.setTokenCacheAccessAspect(tokenCache);
                 } catch (Throwable t) {
-                     return  Mono.error(logger.logExceptionAsError(new ClientAuthenticationException(
+                    return  Mono.error(logger.logExceptionAsError(new ClientAuthenticationException(
                         "Shared token cache is unavailable in this environment.", null, t)));
                 }
             }

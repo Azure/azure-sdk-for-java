@@ -110,7 +110,6 @@ public final class AuthenticationRecord {
      * Serializes the {@link AuthenticationRecord} to the specified {@link OutputStream}
      *
      * @param outputStream The {@link OutputStream} to which the serialized record will be written to.
-     * @return void
      */
     public void serialize(OutputStream outputStream) {
         serializeAsync(outputStream).block();
