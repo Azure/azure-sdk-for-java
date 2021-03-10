@@ -33,6 +33,10 @@ public class SearchServiceCustomizations extends Customization {
     private static final String DATA_DELETION_DETECTION_POLICY = "DataDeletionDetectionPolicy";
     private static final String SOFT_DELETE_COLUMN_DELETION_DETECTION_POLICY = "SoftDeleteColumnDeletionDetectionPolicy";
 
+    private static final String CHAR_FILTER = "CharFilter";
+    private static final String MAPPING_CHAR_FILTER = "MappingCharFilter";
+    private static final String PATTERN_REPLACE_CHAR_FILTER = "PatternReplaceCharFilter";
+
     @Override
     public void customize(LibraryCustomization libraryCustomization) {
         customizeImplementationModelsPackage(libraryCustomization.getPackage(IMPLEMENTATION_MODELS));
@@ -45,9 +49,13 @@ public class SearchServiceCustomizations extends Customization {
     private void customizeModelsPackage(PackageCustomization packageCustomization) {
         // Change ScoringFunction to an abstract class.
         changeClassModifier(packageCustomization.getClass(SCORING_FUNCTION), PUBLIC_ABSTRACT);
+        // Customize MagnitudeScoringParameters.
         customizeMagnitudeScoringParameters(packageCustomization.getClass(MAGNITUDE_SCORING_PARAMETERS));
+
+        // Customize SearchFieldDataTypes.
         customizeSearchFieldDataType(packageCustomization.getClass(SEARCH_FIELD_DATA_TYPE));
 
+        // Customize SimilarityAlgorithm.
         customizeSimilarityAlgorithm(packageCustomization.getClass(SIMILARITY_ALGORITHM));
         // Change BM25SimilarityAlgorithm to a final class.
         changeClassModifier(packageCustomization.getClass(BM_25_SIMILARITY_ALGORITHM), PUBLIC_FINAL);
@@ -65,6 +73,13 @@ public class SearchServiceCustomizations extends Customization {
         changeClassModifier(packageCustomization.getClass(DATA_DELETION_DETECTION_POLICY), PUBLIC_ABSTRACT);
         // Change SoftDeleteColumnDeletionDetectionPolicy to a final class.
         changeClassModifier(packageCustomization.getClass(SOFT_DELETE_COLUMN_DELETION_DETECTION_POLICY), PUBLIC_FINAL);
+
+        // Change CharFilter to an abstract class.
+        changeClassModifier(packageCustomization.getClass(CHAR_FILTER), PUBLIC_ABSTRACT);
+        // Change MappingCharFiler to a final class.
+        changeClassModifier(packageCustomization.getClass(MAPPING_CHAR_FILTER), PUBLIC_FINAL);
+        // Change PatternReplaceCharFilter to a final class.
+        changeClassModifier(packageCustomization.getClass(PATTERN_REPLACE_CHAR_FILTER), PUBLIC_FINAL);
     }
 
     private void customizeSearchFieldDataType(ClassCustomization classCustomization) {

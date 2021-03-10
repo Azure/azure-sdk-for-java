@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.indexes.models.CharFilter;
 import com.azure.search.documents.indexes.models.LexicalAnalyzer;
 import com.azure.search.documents.indexes.models.LexicalTokenizer;
 import com.azure.search.documents.indexes.models.ScoringProfile;
@@ -46,9 +45,7 @@ public final class SearchIndexConverter {
         }
 
         if (obj.getCharFilters() != null) {
-            List<CharFilter> charFilters =
-                obj.getCharFilters().stream().map(CharFilterConverter::map).collect(Collectors.toList());
-            searchIndex.setCharFilters(charFilters);
+            searchIndex.setCharFilters(obj.getCharFilters());
         }
 
         if (obj.getTokenFilters() != null) {
@@ -120,9 +117,7 @@ public final class SearchIndexConverter {
         }
 
         if (obj.getCharFilters() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.CharFilter> charFilters =
-                obj.getCharFilters().stream().map(CharFilterConverter::map).collect(Collectors.toList());
-            searchIndex.setCharFilters(charFilters);
+            searchIndex.setCharFilters(obj.getCharFilters());
         }
 
         if (obj.getTokenFilters() != null) {
