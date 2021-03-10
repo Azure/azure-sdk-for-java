@@ -16,6 +16,7 @@ We assume that you are familiar with the old SDK `microsoft-azure-eventgrid`. If
         - [Send events to an Event Grid Topic](#send-events-to-an-event-grid-topic)
         - [Send events to an Event Grid Domain](#send-events-to-an-event-grid-domain)
         - [Deserialize events and data](#deserialize-events-and-data)
+        - [Handle System Events](#handle-system-events)
     - [Additional samples](#additional-samples)
 
 ## Migration benefits
@@ -29,9 +30,12 @@ To improve the development experience across Azure services, a set of uniform [d
 consistent experience with established API patterns for all services. A set of [Java design guidelines][GuidelinesJava] was introduced to ensure that Java clients have a natural and idiomatic feel with respect to the Java ecosystem. Further details are available in the guidelines
 for those interested.
 
+Aside from the benefits of the new design mentioned above, the `azure-messaging-eventhub` adds new features to send `CloudEvent` and custom events to
+an EventGrid Topic or Domain Topic. Refer to the [README][README] for more information about sending `CloudEvent` and custom events.
+
 ### Cross Service SDK improvements
 
-The modern Event Hubs client library also provides the ability to share in some of the cross-service improvements made to the Azure development experience, such as
+The modern Event Grid client library also provides the ability to share in some of the cross-service improvements made to the Azure development experience, such as
 
 - A unified logging and diagnostics pipeline offering a common view of the activities across each of the client libraries.
 - A unified asynchronous programming model using [Project Reactor][project-reactor].
@@ -64,7 +68,6 @@ EventGridPublisherClient<EventGridEvent> eventGridEventClient = new EventGridPub
     .buildEventGridEventPublisherClient();
 ```
 Aside from [EventGridEvent][EventGridEvent], the generic client can be instantiated to also send `CloudEvent`, or custom events to an EventGrid topic or domain.
-Refer to the [README][README] for more information about sending `CloudEvent` and custom events.
 
 #### Send events to an Event Grid Topic
 In 1.x, the `publishEvent` method has the EventGrid endpoint as a parameter.
@@ -85,6 +88,7 @@ client.publishEvents(endpoint, getEventsList());
 
 In 4.x, `publishEvents` are renamed to `sendEvents` in line with other Azure messaging SDKs such as Event Hubs and Service Bus.
 `sendEvents` doesn't need the EventGrid endpoint because the client already has it.
+The `EventGridEvent` class set `id` to an UUID and `time` to now by default so you don't have to set it.
 ```java
 List<EventGridEvent> eventsList = new ArrayList<>();
 for (int i = 0; i < 5; i++) {
@@ -137,8 +141,8 @@ EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
 eventGridSubscriber.putCustomEventMapping("Contoso.Items.ItemReceived", ContosoItemSentEventData.class);
 EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(eventGridJsonString);
 EventGridEvent event = events[0];
-if (events[0].data() instanceof ContosoItemReceivedEventData){
-    ContosoItemReceivedEventData eventData=(ContosoItemReceivedEventData)events[0].data();
+if (event.data() instanceof ContosoItemReceivedEventData){
+    ContosoItemReceivedEventData eventData=(ContosoItemReceivedEventData)event.data();
     // do something
 }
 ```
@@ -150,6 +154,27 @@ List<EventGridEvent> eventGridEvents = EventGridEvent.fromString(eventGridJsonSt
 EventGridEvent event = events.get(0);
 if ("Contoso.Items.ItemReceived".equals(event.getType()) {
     ContosoItemReceivedEventData eventData = event.getData().toObject(ContosoItemReceivedEventData.class);
+}
+```
+
+#### Handle System Events
+Handling System Events is similar to handling other events like above except that there are pre-defined System Event Data classes and event types mapping in both v1.x and v4.x. 
+In 1.x,
+```java
+EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(eventGridJsonString);
+EventGridEvent event = events[0];
+if (event.data() instanceof StorageBlobDeletedEventData) {
+    StorageBlobDeletedEventData eventData=(StorageBlobDeletedEventData)event.data();
+}
+```
+
+In 4.x, you check event types:
+```java
+EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(eventGridJsonString);
+EventGridEvent event = events.get(0);
+if (SystemEventNames.STORAGE_BLOB_DELETED.equals(event.getEventType())) {
+    StorageBlobDeletedEventData eventData = event.getData().toObject(StorageBlobDeletedEventData.class);
 }
 ```
 
