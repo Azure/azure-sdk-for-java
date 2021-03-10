@@ -147,7 +147,7 @@ public class CosmosDBTests extends ResourceManagerTestBase {
                 .attach()
             .create();
 
-        Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(0).state().status());
+        Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(plsConnectionName).state().status());
 
         cosmosDBAccount
             .update()

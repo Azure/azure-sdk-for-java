@@ -46,7 +46,6 @@ class PrivateEndpointImpl extends
             super(new com.azure.resourcemanager.network.models.PrivateLinkServiceConnection().withName(name), parent);
         }
 
-
         PrivateEndpointConnectionImpl(com.azure.resourcemanager.network.models.PrivateLinkServiceConnection innerModel,
                                       PrivateEndpointImpl parent,
                                       boolean manualApproval) {
