@@ -31,22 +31,22 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>5.2.10.RELEASE</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
+      <version>5.3.4</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-aop</artifactId>
-      <version>2.3.5.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-aop;external_dependency} -->
+      <version>2.4.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-aop;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>5.2.10.RELEASE</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
+      <version>5.3.4</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-configuration-processor</artifactId>
-      <version>2.3.5.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+      <version>2.4.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -57,13 +57,13 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13.1</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+      <version>4.13.2</version> <!-- {x-version-update;junit:junit;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.3.5.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>2.4.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -80,10 +80,10 @@
               <includes>
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.12.1]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>commons-io:commons-io:[2.5]</include> <!-- {x-include-update;commons-io:commons-io;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-configuration-processor:[2.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter-aop:[2.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-aop;external_dependency} -->
-                <include>org.springframework:spring-context:[5.2.10.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
-                <include>org.springframework:spring-web:[5.2.10.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-configuration-processor:[2.4.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-aop:[2.4.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-aop;external_dependency} -->
+                <include>org.springframework:spring-context:[5.3.4]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
+                <include>org.springframework:spring-web:[5.3.4]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

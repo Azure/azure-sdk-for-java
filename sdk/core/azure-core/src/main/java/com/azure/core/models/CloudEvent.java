@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
@@ -34,18 +35,39 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * Represents the CloudEvent model defined by the
- * <a href="https://github.com/cloudevents/spec/blob/v1.0.1/spec.md">Cloud Native Computing Foundation</a>
+ *
+ * Represents the CloudEvent conforming to the 1.0 schema defined by the
+ * <a href="https://github.com/cloudevents/spec/blob/v1.0.1/spec.md">Cloud Native Computing Foundation</a>.
+ * <q>
+ * CloudEvents is a specification for describing event data in common formats to provide interoperability across
+ * services, platforms and systems.
+ * </q>
+ *
+ * <p>Some Azure services, for instance, EventGrid, are compatible with this specification. You can use this class to
+ * communicate with these Azure services.</p>
+ * <p>Depending on your scenario, you can either use the constructor
+ * {@link #CloudEvent(String, String, BinaryData, CloudEventDataFormat, String)} to
+ * create a CloudEvent, or use the factory method {@link #fromString(String)} to deserialize CloudEvent instances
+ * from a Json String representation of CloudEvents.</p>
+ *
+ * <p>If you have the data payload of a CloudEvent and want to send it out, use the constructor
+ * {@link #CloudEvent(String, String, BinaryData, CloudEventDataFormat, String)} to create it. Then you can
+ * serialize the CloudEvent into its Json String representation and send it.</p>
+ *
+ * <p><strong>Create CloudEvent Samples</strong></p>
+ * {@codesnippet com.azure.core.model.CloudEvent#constructor}
+ *
+ * <p>On the contrary, if you receive CloudEvents and have the Json string representation of one or more of CloudEvents,
+ * use {@link #fromString(String)} to deserialize them from the Json string.</p>
+ *
+ * <p><strong>Deserialize CloudEvent Samples</strong></p>
+ * {@codesnippet com.azure.core.model.CloudEvent.fromString}
  */
 @Fluent
 public final class CloudEvent {
     private static final String SPEC_VERSION = "1.0";
-    private static final JsonSerializer SERIALIZER;
-    // May get SERIALIZER's object mapper in the future.
-    private static final ObjectMapper BINARY_DATA_OBJECT_MAPPER = new ObjectMapper();
-    private static final Map<String, Object> EMPTY_ATTRIBUTES_MAP = Collections.unmodifiableMap(
-        new HashMap<String, Object>());
 
+    private static final JsonSerializer SERIALIZER;
     static {
         JsonSerializer tmp;
         try {
@@ -55,6 +77,11 @@ public final class CloudEvent {
         }
         SERIALIZER = tmp;
     }
+
+    // May get SERIALIZER's object mapper in the future.
+    private static final ObjectMapper BINARY_DATA_OBJECT_MAPPER = new ObjectMapper();
+    private static final Map<String, Object> EMPTY_ATTRIBUTES_MAP = Collections.unmodifiableMap(
+        new HashMap<String, Object>());
 
     private static final TypeReference<List<CloudEvent>> DESERIALIZER_TYPE_REFERENCE =
         new TypeReference<List<CloudEvent>>() {
@@ -147,16 +174,34 @@ public final class CloudEvent {
     private BinaryData binaryData;
 
 
+
     /**
+     * Create an instance of {@link CloudEvent}.
+     * <p>{@code source}, {@code type}, {@code id}, and {@code specversion} are required attributes according to the
+     * <a href="https://github.com/cloudevents/spec/blob/v1.0.1/spec.md">CNCF CloudEvent spec</a>.
+     * You must set the {@code source} and {@code type} when using this constructor.
+     * For convenience, {@code id} and {@code specversion} are automatically assigned. You can change the {@code id}
+     * by using {@link #setId(String)} after you create a CloudEvent. But you can not change {@code specversion}
+     * because this class is specifically for CloudEvent 1.0 schema.</p>
+     *
+     * <p>For the CloudEvent data payload, this constructor accepts {@code data} of {@link BinaryData} as the CloudEvent payload.
+     * The {@code data} can be created from objects of type String, bytes, boolean, null, array or other types.
+     * A CloudEvent will be serialized to its Json String representation
+     * to be sent out. Use param {@code format} to indicate whether the {@code data} will be serialized as
+     * bytes, or Json. When {@link CloudEventDataFormat#BYTES} is used, the data payload will be serialized to base64
+     * bytes and stored in attribute <em>data_base64</em> of the CloudEvent's Json representation. When
+     * {@link CloudEventDataFormat#JSON} is used, the data payload will be serialized as Json data and stored in
+     * attribute <em>data</em> of the CloudEvent's Json representation.</p>
+     *
+     * <p><strong>Create CloudEvent Samples</strong></p>
+     * {@codesnippet com.azure.core.model.CloudEvent#constructor}
      *
      * @param source Identifies the context in which an event happened. The combination of id and source must be unique
-     *               for each distinct event. It should be in format URI-reference according to <a href="https://github.com/cloudevents/spec/blob/v1.0.1/spec.md#source-1">
-     *                   CNCF CloudEvent spec source</a>
-     *               even though this class accepts any String for compatibility with legacy systems.
+     *               for each distinct event.
      * @param type Type of event related to the originating occurrence.
      * @param data A {@link BinaryData} that wraps the original data, which can be a String, byte[], or model class.
      * @param format Set to {@link CloudEventDataFormat#BYTES} to serialize the data to base64 format, or
-     *               {@link CloudEventDataFormat#JSON} to serialize the data to JSON.
+     *               {@link CloudEventDataFormat#JSON} to serialize the data to JSON value.
      * @param dataContentType The content type of the data. It has no impact on how the data is serialized but tells
      *                        the event subscriber how to use the data. Typically the value is of MIME types such as
      *                        "application/json", "text/plain", "text/xml", "avro/binary", etc. It can be null.
@@ -193,29 +238,36 @@ public final class CloudEvent {
     }
 
     /**
-     * Deserialize a list of {@link CloudEvent CloudEvents} from a JSON string and validate whether any CloudEvents have
-     * null id', 'source', or 'type'. If you want to skip this validation, use {@link #fromString(String, boolean)}.
+     * Deserialize {@link CloudEvent} JSON string representation that has one CloudEvent object or
+     * an array of CloudEvent objects into a list of CloudEvents, and validate whether any CloudEvents have
+     * null {@code id}, {@code source}, or {@code type}. If you want to skip this validation, use {@link #fromString(String, boolean)}.
+     *
+     * <p><strong>Deserialize CloudEvent Samples</strong></p>
+     * {@codesnippet com.azure.core.model.CloudEvent.fromString}
+     *
      * @param cloudEventsJson the JSON payload containing one or more events.
      *
      * @return all of the events in the payload deserialized as {@link CloudEvent CloudEvents}.
      * @throws NullPointerException if cloudEventsJson is null.
-     * @throws IllegalArgumentException if the input parameter isn't a correct JSON string for a cloud event
-     * or an array of it, or any deserialized CloudEvents have null 'id', 'source', or 'type'.
+     * @throws IllegalArgumentException if the input parameter isn't a correct JSON string for a CloudEvent
+     * or an array of CloudEvents, or any deserialized CloudEvents have null {@code id}, {@code source}, or {@code type}.
      */
     public static List<CloudEvent> fromString(String cloudEventsJson) {
         return fromString(cloudEventsJson, false);
     }
 
     /**
-     * Deserialize a list of {@link CloudEvent CloudEvents} from a JSON string.
+     * Deserialize {@link CloudEvent CloudEvents} JSON string representation that has one CloudEvent object or
+     * an array of CloudEvent objects into a list of CloudEvents.
+     *
      * @param cloudEventsJson the JSON payload containing one or more events.
      * @param skipValidation set to true if you'd like to skip the validation for the deserialized CloudEvents. A valid
      *                       CloudEvent should have 'id', 'source' and 'type' not null.
      *
      * @return all of the events in the payload deserialized as {@link CloudEvent CloudEvents}.
      * @throws NullPointerException if cloudEventsJson is null.
-     * @throws IllegalArgumentException if the input parameter isn't a JSON string for a cloud event or an array of it,
-     * or skipValidation is false and any CloudEvents have null id', 'source', or 'type'.
+     * @throws IllegalArgumentException if the input parameter isn't a JSON string for a CloudEvent or an array of
+     * CloudEvents, or skipValidation is false and any CloudEvents have null id', 'source', or 'type'.
      */
     public static List<CloudEvent> fromString(String cloudEventsJson, boolean skipValidation) {
         Objects.requireNonNull(cloudEventsJson, "'cloudEventsJson' cannot be null");
@@ -226,11 +278,25 @@ public final class CloudEvent {
             if (skipValidation) {
                 return events;
             }
-            for (CloudEvent event : events) {
+            for (int i = 0; i < events.size(); i++) {
+                CloudEvent event = events.get(i);
                 if (event.getId() == null || event.getSource() == null || event.getType() == null) {
+                    List<String> nullAttributes = new ArrayList<String>();
+                    if (event.getId() == null) {
+                        nullAttributes.add("'id'");
+                    }
+                    if (event.getSource() == null) {
+                        nullAttributes.add("'source'");
+                    }
+                    if (event.getType() == null) {
+                        nullAttributes.add("'type'");
+                    }
                     throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                        "'id', 'source' and 'type' are mandatory attributes for a CloudEvent. "
-                            + "Check if the input param is a JSON string for a CloudEvent or an array of it."));
+                        "'id', 'source' and 'type' are mandatory attributes for a CloudEvent according to the spec."
+                            + " This Json string doesn't have " + String.join(",", nullAttributes)
+                            + " for the object at index " + i
+                            + ". Please make sure the input Json string has the required attributes"
+                            + " or use CloudEvent.fromString(cloudEventsJson, true) to skip the null check."));
                 }
             }
             return events;
@@ -276,6 +342,7 @@ public final class CloudEvent {
     /**
      * Get the data associated with this event as a {@link BinaryData}, which has API to deserialize the data into
      * a String, an Object, or a byte[].
+     *
      * @return A {@link BinaryData} that wraps the this event's data payload.
      */
     public BinaryData getData() {
@@ -317,9 +384,8 @@ public final class CloudEvent {
     }
 
     /**
-     * Get the content MIME type that the data is in. A null value indicates that the data is either nonexistent or in the
-     * "application/json" type. Note that "application/json" is still a possible value for this field.
-     * @return the content type the data is in, or null if the data is nonexistent or in "application/json" format.
+     * Get the content MIME type that the data is in.
+     * @return the content type the data is in, or null it is not set.
      */
     public String getDataContentType() {
         return this.dataContentType;
@@ -337,7 +403,7 @@ public final class CloudEvent {
      * Set the schema that the data adheres to.
      * @param dataSchema a String identifying the schema of the data. The <a href="https://github.com/cloudevents/spec/blob/v1.0.1/spec.md#dataschema">
      *                   CNCF CloudEvent spec dataschema</a> is defined as a URI. For compatibility with legacy system, this class
-     *                   accepts any String. But for interoperability, you should use a URI string.
+     *                   accepts any String. But for interoperability, you should use a URI format string.
      *
      * @return the cloud event itself.
      */
@@ -348,7 +414,7 @@ public final class CloudEvent {
 
     /**
      * Get the subject associated with this event.
-     * @return the subject, or null if the subject was not set.
+     * @return the subject, or null if it is not set.
      */
     public String getSubject() {
         return this.subject;

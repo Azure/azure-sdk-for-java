@@ -273,7 +273,7 @@ azure.storageAccounts().define("<storage-account-name>")
     .flatMap(storageAccount -> azure.storageBlobContainers()
         .defineContainer("container")
         .withExistingBlobService(rgName, storageAccount.name())
-        .withPublicAccess(PublicAccess.BLOB)
+        .withPublicAccess(PublicAccess.NONE)
         .createAsync()
     )
     //...

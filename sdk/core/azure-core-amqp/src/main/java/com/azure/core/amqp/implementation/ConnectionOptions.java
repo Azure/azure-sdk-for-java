@@ -22,6 +22,11 @@ import java.util.Objects;
  */
 @Immutable
 public class ConnectionOptions {
+    // These name version keys are used in our properties files to specify client product and version information.
+    static final String NAME_KEY = "name";
+    static final String VERSION_KEY = "version";
+    static final String UNKNOWN = "UNKNOWN";
+
     private final TokenCredential tokenCredential;
     private final AmqpTransportType transport;
     private final AmqpRetryOptions retryOptions;
@@ -30,6 +35,8 @@ public class ConnectionOptions {
     private final String fullyQualifiedNamespace;
     private final CbsAuthorizationType authorizationType;
     private final ClientOptions clientOptions;
+    private final String product;
+    private final String clientVersion;
     private final SslDomain.VerifyMode verifyMode;
     private final String hostname;
     private final int port;
@@ -56,9 +63,10 @@ public class ConnectionOptions {
     public ConnectionOptions(String fullyQualifiedNamespace, TokenCredential tokenCredential,
         CbsAuthorizationType authorizationType, AmqpTransportType transport, AmqpRetryOptions retryOptions,
         ProxyOptions proxyOptions, Scheduler scheduler, ClientOptions clientOptions,
-        SslDomain.VerifyMode verifyMode) {
+        SslDomain.VerifyMode verifyMode, String product, String clientVersion) {
         this(fullyQualifiedNamespace, tokenCredential, authorizationType, transport, retryOptions,
-            proxyOptions, scheduler, clientOptions, verifyMode, fullyQualifiedNamespace, getPort(transport));
+            proxyOptions, scheduler, clientOptions, verifyMode, product, clientVersion, fullyQualifiedNamespace,
+            getPort(transport));
     }
 
     /**
@@ -87,7 +95,7 @@ public class ConnectionOptions {
     public ConnectionOptions(String fullyQualifiedNamespace, TokenCredential tokenCredential,
         CbsAuthorizationType authorizationType, AmqpTransportType transport, AmqpRetryOptions retryOptions,
         ProxyOptions proxyOptions, Scheduler scheduler, ClientOptions clientOptions,
-        SslDomain.VerifyMode verifyMode, String hostname, int port) {
+        SslDomain.VerifyMode verifyMode, String product, String clientVersion, String hostname, int port) {
 
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' is required.");
@@ -101,6 +109,9 @@ public class ConnectionOptions {
         this.hostname = Objects.requireNonNull(hostname, "'hostname' cannot be null.");
         this.port = port != -1 ? port : getPort(transport);
         this.proxyOptions = proxyOptions;
+
+        this.product = Objects.requireNonNull(product, "'product' cannot be null.");
+        this.clientVersion = Objects.requireNonNull(clientVersion, "'clientVersion' cannot be null.");
     }
 
     /**
@@ -119,6 +130,24 @@ public class ConnectionOptions {
      */
     public ClientOptions getClientOptions() {
         return clientOptions;
+    }
+
+    /**
+     * Gets the product information for this AMQP connection. (ie. Service Bus or Event Hubs.)
+     *
+     * @return The product information for this AMQP connection.
+     */
+    public String getProduct() {
+        return product;
+    }
+
+    /**
+     * Gets the client version for this AMQP connection.
+     *
+     * @return The client version for this AMQP connection.
+     */
+    public String getClientVersion() {
+        return clientVersion;
     }
 
     /**

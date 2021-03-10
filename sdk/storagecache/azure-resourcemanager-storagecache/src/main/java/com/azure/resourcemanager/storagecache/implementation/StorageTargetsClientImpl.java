@@ -13,6 +13,7 @@ import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -67,6 +68,22 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
     @Host("{$host}")
     @ServiceInterface(name = "StorageCacheManageme")
     private interface StorageTargetsService {
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches"
+                + "/{cacheName}/storageTargets/{storageTargetName}/dnsRefresh")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> dnsRefresh(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("cacheName") String cacheName,
+            @PathParam("storageTargetName") String storageTargetName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches"
@@ -140,6 +157,270 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
             Context context);
+    }
+
+    /**
+     * Tells a storage target to refresh its DNS information.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> dnsRefreshWithResponseAsync(
+        String resourceGroupName, String cacheName, String storageTargetName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (cacheName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+        }
+        if (storageTargetName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter storageTargetName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .dnsRefresh(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            cacheName,
+                            storageTargetName,
+                            accept,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Tells a storage target to refresh its DNS information.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> dnsRefreshWithResponseAsync(
+        String resourceGroupName, String cacheName, String storageTargetName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (cacheName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+        }
+        if (storageTargetName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter storageTargetName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .dnsRefresh(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                cacheName,
+                storageTargetName,
+                accept,
+                context);
+    }
+
+    /**
+     * Tells a storage target to refresh its DNS information.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<Void>, Void> beginDnsRefreshAsync(
+        String resourceGroupName, String cacheName, String storageTargetName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            dnsRefreshWithResponseAsync(resourceGroupName, cacheName, storageTargetName);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Tells a storage target to refresh its DNS information.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<Void>, Void> beginDnsRefreshAsync(
+        String resourceGroupName, String cacheName, String storageTargetName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            dnsRefreshWithResponseAsync(resourceGroupName, cacheName, storageTargetName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Tells a storage target to refresh its DNS information.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDnsRefresh(
+        String resourceGroupName, String cacheName, String storageTargetName) {
+        return beginDnsRefreshAsync(resourceGroupName, cacheName, storageTargetName).getSyncPoller();
+    }
+
+    /**
+     * Tells a storage target to refresh its DNS information.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDnsRefresh(
+        String resourceGroupName, String cacheName, String storageTargetName, Context context) {
+        return beginDnsRefreshAsync(resourceGroupName, cacheName, storageTargetName, context).getSyncPoller();
+    }
+
+    /**
+     * Tells a storage target to refresh its DNS information.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> dnsRefreshAsync(String resourceGroupName, String cacheName, String storageTargetName) {
+        return beginDnsRefreshAsync(resourceGroupName, cacheName, storageTargetName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Tells a storage target to refresh its DNS information.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> dnsRefreshAsync(
+        String resourceGroupName, String cacheName, String storageTargetName, Context context) {
+        return beginDnsRefreshAsync(resourceGroupName, cacheName, storageTargetName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Tells a storage target to refresh its DNS information.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void dnsRefresh(String resourceGroupName, String cacheName, String storageTargetName) {
+        dnsRefreshAsync(resourceGroupName, cacheName, storageTargetName).block();
+    }
+
+    /**
+     * Tells a storage target to refresh its DNS information.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void dnsRefresh(String resourceGroupName, String cacheName, String storageTargetName, Context context) {
+        dnsRefreshAsync(resourceGroupName, cacheName, storageTargetName, context).block();
     }
 
     /**
@@ -627,8 +908,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @param resourceGroupName Target resource group.
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of the Storage Target. Length of name must not be greater than 80 and chars must be
-     *     from the [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -683,8 +963,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @param resourceGroupName Target resource group.
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of the Storage Target. Length of name must not be greater than 80 and chars must be
-     *     from the [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -737,8 +1016,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @param resourceGroupName Target resource group.
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of the Storage Target. Length of name must not be greater than 80 and chars must be
-     *     from the [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -763,8 +1041,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @param resourceGroupName Target resource group.
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of the Storage Target. Length of name must not be greater than 80 and chars must be
-     *     from the [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -781,8 +1058,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @param resourceGroupName Target resource group.
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of the Storage Target. Length of name must not be greater than 80 and chars must be
-     *     from the [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -802,8 +1078,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @param resourceGroupName Target resource group.
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of the Storage Target. Length of name must not be greater than 80 and chars must be
-     *     from the [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
      * @param storagetarget Object containing the definition of a Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -864,8 +1139,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @param resourceGroupName Target resource group.
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of the Storage Target. Length of name must not be greater than 80 and chars must be
-     *     from the [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
      * @param storagetarget Object containing the definition of a Storage Target.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -928,8 +1202,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @param resourceGroupName Target resource group.
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of the Storage Target. Length of name must not be greater than 80 and chars must be
-     *     from the [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
      * @param storagetarget Object containing the definition of a Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -954,8 +1227,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @param resourceGroupName Target resource group.
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of the Storage Target. Length of name must not be greater than 80 and chars must be
-     *     from the [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
      * @param storagetarget Object containing the definition of a Storage Target.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -986,8 +1258,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @param resourceGroupName Target resource group.
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of the Storage Target. Length of name must not be greater than 80 and chars must be
-     *     from the [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
      * @param storagetarget Object containing the definition of a Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1007,8 +1278,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @param resourceGroupName Target resource group.
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of the Storage Target. Length of name must not be greater than 80 and chars must be
-     *     from the [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
      * @param storagetarget Object containing the definition of a Storage Target.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1034,8 +1304,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @param resourceGroupName Target resource group.
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of the Storage Target. Length of name must not be greater than 80 and chars must be
-     *     from the [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
      * @param storagetarget Object containing the definition of a Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1057,8 +1326,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @param resourceGroupName Target resource group.
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of the Storage Target. Length of name must not be greater than 80 and chars must be
-     *     from the [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1080,8 +1348,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @param resourceGroupName Target resource group.
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of the Storage Target. Length of name must not be greater than 80 and chars must be
-     *     from the [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
      * @param storagetarget Object containing the definition of a Storage Target.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1108,8 +1375,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @param resourceGroupName Target resource group.
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of the Storage Target. Length of name must not be greater than 80 and chars must be
-     *     from the [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
      * @param storagetarget Object containing the definition of a Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1129,8 +1395,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @param resourceGroupName Target resource group.
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of the Storage Target. Length of name must not be greater than 80 and chars must be
-     *     from the [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1149,8 +1414,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @param resourceGroupName Target resource group.
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of the Storage Target. Length of name must not be greater than 80 and chars must be
-     *     from the [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
      * @param storagetarget Object containing the definition of a Storage Target.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
