@@ -50,6 +50,11 @@
 - Dependency fixed so `EventProcessor` consumers can use blocking method calls in their code.
 
 ## 1.0.1 (2020-02-11)
+- Dependency updates.
+
+## 1.0.0-beta.4 (2019-12-02)
+- Artifact name changed from `preview` to `beta`.
+- `BlobCheckpointStore` implementation updated to match changes in `CheckpointStore` interface.
 
 ## 1.0.0-preview.3 (2019-11-01)
 - Renamed `BlobPartitionManager` to `BlobEventProcessorStore`
@@ -78,7 +83,3 @@ store checkpoints and balance partition load among all instances of Event Proces
 - Interoperability with Event Processors of other language SDKs like Python is not supported.
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fazure-messaging-eventhubs-checkpointstore-blob%2FCHANGELOG.png)
-## 1.0.0-beta.4 (2019-12-02)
-- Artifact name changed from `preview` to `beta`.
-- `BlobCheckpointStore` implementation updated to match changes in `CheckpointStore` interface.
-
