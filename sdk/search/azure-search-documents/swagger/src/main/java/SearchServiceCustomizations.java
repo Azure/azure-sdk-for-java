@@ -37,6 +37,10 @@ public class SearchServiceCustomizations extends Customization {
     private static final String MAPPING_CHAR_FILTER = "MappingCharFilter";
     private static final String PATTERN_REPLACE_CHAR_FILTER = "PatternReplaceCharFilter";
 
+    private static final String COGNITIVE_SERVICES_ACCOUNT = "CognitiveServicesAccount";
+    private static final String DEFAULT_COGNITIVE_SERVICES_ACCOUNT = "DefaultCognitiveServicesAccount";
+    private static final String COGNITIVE_SERVICES_ACCOUNT_KEY = "CognitiveServicesAccountKey";
+
     @Override
     public void customize(LibraryCustomization libraryCustomization) {
         customizeImplementationModelsPackage(libraryCustomization.getPackage(IMPLEMENTATION_MODELS));
@@ -80,6 +84,13 @@ public class SearchServiceCustomizations extends Customization {
         changeClassModifier(packageCustomization.getClass(MAPPING_CHAR_FILTER), PUBLIC_FINAL);
         // Change PatternReplaceCharFilter to a final class.
         changeClassModifier(packageCustomization.getClass(PATTERN_REPLACE_CHAR_FILTER), PUBLIC_FINAL);
+
+        // Change CognitiveServicesAccount to an abstract class.
+        changeClassModifier(packageCustomization.getClass(COGNITIVE_SERVICES_ACCOUNT), PUBLIC_ABSTRACT);
+        // Change DefaultCognitiveServicesAccount to a final class.
+        changeClassModifier(packageCustomization.getClass(DEFAULT_COGNITIVE_SERVICES_ACCOUNT), PUBLIC_FINAL);
+        // Customize CognitiveServicesAccountKey.
+        customizeCognitiveServicesAccountKey(packageCustomization.getClass(COGNITIVE_SERVICES_ACCOUNT_KEY));
     }
 
     private void customizeSearchFieldDataType(ClassCustomization classCustomization) {
@@ -100,9 +111,26 @@ public class SearchServiceCustomizations extends Customization {
     }
 
     private void customizeSimilarityAlgorithm(ClassCustomization classCustomization) {
-        changeClassModifier(classCustomization, Modifier.PUBLIC | Modifier.ABSTRACT);
+        changeClassModifier(classCustomization, PUBLIC_ABSTRACT);
         classCustomization.removeAnnotation("@JsonTypeName");
         classCustomization.addAnnotation("@JsonTypeName(\"Similarity\")");
+    }
+
+    private void customizeCognitiveServicesAccountKey(ClassCustomization classCustomization) {
+        changeClassModifier(classCustomization, PUBLIC_FINAL);
+        classCustomization.addMethod(
+            "/**\n" +
+            " * Set the key property: The key used to provision the cognitive service\n" +
+            " * resource attached to a skillset.\n" +
+            " *\n" +
+            " * @param key the key value to set.\n" +
+            " * @return the CognitiveServicesAccountKey object itself.\n" +
+            " */\n" +
+            "public CognitiveServicesAccountKey setKey(String key) {\n" +
+            "    this.key = key;\n" +
+            "    return this;\n" +
+            "}"
+        );
     }
 
     private static void changeClassModifier(ClassCustomization classCustomization, int modifier) {
