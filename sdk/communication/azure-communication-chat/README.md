@@ -128,15 +128,15 @@ CreateChatThreadResult result = chatClient.createChatThread(createChatThreadOpti
 String chatThreadId = result.getChatThread().getId();
 ```
 
-#### Get a chat thread
+#### Get a chat thread properties
 
-The `getChatThread` method retrieves a thread from the service.
+The `getChatThreadProperties` method retrieves a thread's properties from the service.
 `chatThreadId` is the unique ID of the chat thread.
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L97-L98 -->
 ```Java
 String chatThreadId = "Id";
-ChatThread chatThreadProperties = chatClient.getChatThread(chatThreadId);
+ChatThreadProperties chatThreadProperties = chatClient.getChatThreadProperties(chatThreadId);
 ```
 
 #### Delete a thread
