@@ -59,7 +59,7 @@ public final class SmsAsyncClient {
      * @param message message to send to recipient.
      * @param options set options on the SMS request, like enable delivery report, which sends a report
      *                   for this message to the Azure Resource Event Grid.
-     * @return response for a successful send Sms request.
+     * @return The Sms send result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SmsSendResult> send(String from, String to, String message, SmsSendOptions options) {
