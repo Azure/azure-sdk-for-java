@@ -9,6 +9,7 @@ parameters:
   ScriptDirectory: eng/common/scripts
   SkipCheckingForChanges: false
 
+steps:
 - pwsh: |
     echo "git add -A"
     git add -A
