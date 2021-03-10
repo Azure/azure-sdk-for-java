@@ -46,6 +46,6 @@ Here are the steps to start this case.
 ## Contributing
 
 <!-- LINKS -->
-[On-Behalf-Of flow]: https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow
-[Multi-Factor Authentication]: https://docs.microsoft.com/en-us/azure/active-directory/authentication/tutorial-enable-azure-mfa
-[Conditional Access]: https://docs.microsoft.com/en-us/azure/active-directory/conditional-access/overview
+[On-Behalf-Of flow]: https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow
+[Multi-Factor Authentication]: https://docs.microsoft.com/azure/active-directory/authentication/tutorial-enable-azure-mfa
+[Conditional Access]: https://docs.microsoft.com/azure/active-directory/conditional-access/overview
