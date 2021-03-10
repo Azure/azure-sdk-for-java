@@ -20,7 +20,6 @@ import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.storage.models.PrivateEndpointServiceConnectionStatus;
-import com.azure.resourcemanager.storage.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
