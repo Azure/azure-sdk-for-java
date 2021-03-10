@@ -49,7 +49,7 @@ public class NonPremiumServiceBusJMSAutoConfiguration {
         jmsConnectionFactory.setClientID(clientId);
         jmsConnectionFactory.setUsername(sasKeyName);
         jmsConnectionFactory.setPassword(sasKey);
-        return new CachingConnectionFactory(jmsConnectionFactory);
+        return jmsConnectionFactory;
     }
 
     @Bean

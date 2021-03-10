@@ -47,7 +47,7 @@ public class PremiumServiceBusJMSAutoConfiguration {
         springServiceBusJmsConnectionFactory.setClientId(clientId);
         springServiceBusJmsConnectionFactory.setCustomUserAgent(AZURE_SPRING_SERVICE_BUS);
 
-        return new CachingConnectionFactory(springServiceBusJmsConnectionFactory);
+        return springServiceBusJmsConnectionFactory;
     }
 
     @Bean
