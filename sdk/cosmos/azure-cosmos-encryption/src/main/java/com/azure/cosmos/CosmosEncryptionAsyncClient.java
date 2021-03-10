@@ -114,13 +114,6 @@ public class CosmosEncryptionAsyncClient {
      */
     public static CosmosEncryptionAsyncClient buildEncryptionCosmosAsyncClient(CosmosAsyncClient cosmosAsyncClient,
                                                                                EncryptionKeyStoreProvider encryptionKeyStoreProvider) {
-        if (cosmosAsyncClient == null) {
-            throw new IllegalArgumentException("cosmosClient is null");
-        }
-        if (encryptionKeyStoreProvider == null) {
-            throw new IllegalArgumentException("encryptionKeyStoreProvider is null");
-        }
-
         return new CosmosEncryptionAsyncClient(cosmosAsyncClient, encryptionKeyStoreProvider);
     }
 

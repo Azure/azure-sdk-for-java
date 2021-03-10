@@ -45,7 +45,7 @@ public class ReflectionUtils {
         return get(cosmosEncryptionAsyncClient, "clientEncryptionKeyPropertiesCacheByKeyId");
     }
 
-    public static ConcurrentHashMap getValueMap(AsyncCache asyncCache) {
+    public static <T> ConcurrentHashMap<String, ?> getValueMap(AsyncCache<String, T> asyncCache) {
         return get(asyncCache, "values");
     }
 
@@ -55,5 +55,9 @@ public class ReflectionUtils {
 
     public static void setCosmosEncryptionAsyncClient(EncryptionProcessor encryptionProcessor, CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient) {
         set(encryptionProcessor, cosmosEncryptionAsyncClient,"encryptionCosmosClient");
+    }
+
+    public static void setEncryptionSettings(EncryptionProcessor encryptionProcessor, EncryptionSettings encryptionSettings) {
+        set(encryptionProcessor, encryptionSettings,"encryptionSettings");
     }
 }

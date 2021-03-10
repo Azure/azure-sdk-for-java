@@ -66,6 +66,7 @@ public class CosmosEncryptionAsyncContainer {
      * @param <T>            serialization class type
      * @return result
      */
+    @SuppressWarnings("unchecked")
     public <T> Mono<CosmosItemResponse<T>> createItem(T item,
                                                       PartitionKey partitionKey,
                                                       CosmosItemRequestOptions requestOptions) {
@@ -79,13 +80,16 @@ public class CosmosEncryptionAsyncContainer {
 
         byte[] streamPayload = cosmosSerializerToStream(item);
         CosmosItemRequestOptions finalRequestOptions = requestOptions;
-        return this.encryptionProcessor.encrypt(streamPayload).flatMap(encryptedPayload -> this.container.createItem(
-            encryptedPayload,
-            partitionKey,
-            finalRequestOptions)
-            .publishOn(encryptionScheduler).flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
-                this.encryptionProcessor.decrypt(EncryptionModelBridgeInternal.getByteArrayContent(cosmosItemResponse)))
-                .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse, (Class<T>) item.getClass()))));
+        return this.encryptionProcessor.encrypt(streamPayload)
+            .flatMap(encryptedPayload -> this.container.createItem(
+                encryptedPayload,
+                partitionKey,
+                finalRequestOptions)
+                .publishOn(encryptionScheduler)
+                .flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
+                    this.encryptionProcessor.decrypt(EncryptionModelBridgeInternal.getByteArrayContent(cosmosItemResponse)))
+                    .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse,
+                        (Class<T>) item.getClass()))));
     }
 
     /**
@@ -115,6 +119,7 @@ public class CosmosEncryptionAsyncContainer {
      * @param <T>            serialization class type
      * @return result
      */
+    @SuppressWarnings("unchecked")
     public <T> Mono<CosmosItemResponse<T>> upsertItem(T item,
                                                       PartitionKey partitionKey,
                                                       CosmosItemRequestOptions requestOptions) {
@@ -148,6 +153,7 @@ public class CosmosEncryptionAsyncContainer {
      * @param <T>            serialization class type
      * @return result
      */
+    @SuppressWarnings("unchecked")
     public <T> Mono<CosmosItemResponse<T>> replaceItem(T item,
                                                        String itemId,
                                                        PartitionKey partitionKey,
@@ -249,10 +255,10 @@ public class CosmosEncryptionAsyncContainer {
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will contain one or several feed
      * response of the obtained items. In case of failure the {@link CosmosPagedFlux} will error.
      *
-     * @param <T>       the type parameter.
-     * @param sqlQuerySpecWithEncryption     the sqlQuerySpecWithEncryption.
-     * @param options   the query request options.
-     * @param classType the class type.
+     * @param <T>                        the type parameter.
+     * @param sqlQuerySpecWithEncryption the sqlQuerySpecWithEncryption.
+     * @param options                    the query request options.
+     * @param classType                  the class type.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
      * error.
      */
@@ -280,7 +286,8 @@ public class CosmosEncryptionAsyncContainer {
                     }
                 });
         } else {
-            return CosmosBridgeInternal.queryItemsInternal(container, EncryptionModelBridgeInternal.getSqlQuerySpec(sqlQuerySpecWithEncryption),
+            return CosmosBridgeInternal.queryItemsInternal(container,
+                EncryptionModelBridgeInternal.getSqlQuerySpec(sqlQuerySpecWithEncryption),
                 options,
                 new Transformer<T>() {
                     @Override

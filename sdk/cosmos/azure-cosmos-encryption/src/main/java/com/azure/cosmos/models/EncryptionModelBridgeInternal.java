@@ -26,17 +26,17 @@ public class EncryptionModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static byte[] getByteArrayContent(CosmosItemResponse response) {
+    public static byte[] getByteArrayContent(CosmosItemResponse<byte[]> response) {
         return response.responseBodyAsByteArray;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setByteArrayContent(CosmosItemResponse response, byte[] content) {
+    public static void setByteArrayContent(CosmosItemResponse<byte[]> response, byte[] content) {
         response.responseBodyAsByteArray = content;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static ResourceResponse<Document> getResourceResponse(CosmosItemResponse response) {
+    public static ResourceResponse<Document> getResourceResponse(CosmosItemResponse<byte[]> response) {
         return response.resourceResponse;
     }
 

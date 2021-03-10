@@ -83,7 +83,7 @@ public class EncryptionProcessor {
     public Mono<Void> initializeEncryptionSettingsAsync() {
         // update the property level setting.
         if (this.isEncryptionSettingsInitDone.get()) {
-            throw new IllegalStateException("The Encrypton Processor has already been initialized. ");
+            throw new IllegalStateException("The Encryption Processor has already been initialized. ");
         }
         Map<String, EncryptionSettings> settingsByDekId = new ConcurrentHashMap<>();
         return EncryptionBridgeInternal.getClientEncryptionPolicyAsync(this.encryptionCosmosClient,
@@ -135,9 +135,9 @@ public class EncryptionProcessor {
                         // This is based on the AKV provider implementaion so we expect a RequestFailedException in case
                         // other providers are used in unwrap implementation.
                         InvalidKeyException invalidKeyException = Utils.as(throwable, InvalidKeyException.class);
-                        if (invalidKeyException != null) {
+                        if (invalidKeyException != null && !forceRefreshClientEncryptionKey.get()) {
                             forceRefreshClientEncryptionKey.set(true);
-                            return Mono.empty();
+                            return Mono.delay(Duration.ZERO).flux();
                         }
                         return Flux.error(throwable);
                     }))));
@@ -455,6 +455,7 @@ public class EncryptionProcessor {
                         return Pair.of(TypeMarker.DOUBLE,
                             sqlSerializerFactory.getDefaultSerializer(0d).serialize(jsonNode.asDouble()));
                     }
+                    break;
                 case STRING:
                     if (jsonNode.asText().length() > STRING_SIZE_ENCRYPTION_LIMIT) {
                         LOGGER.error("{} length is greater than allowed encryption string length {}",

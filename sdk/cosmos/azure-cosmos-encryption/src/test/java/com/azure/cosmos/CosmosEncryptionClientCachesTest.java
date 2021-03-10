@@ -87,15 +87,16 @@ public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
     @Test(groups = {"encryption"}, priority = 0, timeOut = TIMEOUT)
     public void emptyCache() {
         AsyncCache<String, ClientEncryptionPolicy> clientEncryptionPolicyAsyncCache =  ReflectionUtils.getClientEncryptionPolicyCacheByContainerId(cosmosEncryptionAsyncClient);
-        ConcurrentHashMap  clientEncryptionPolicyMap= ReflectionUtils.getValueMap(clientEncryptionPolicyAsyncCache);
+        ConcurrentHashMap<String, ?>  clientEncryptionPolicyMap= ReflectionUtils.getValueMap(clientEncryptionPolicyAsyncCache);
         assertThat(clientEncryptionPolicyMap.size()).isEqualTo(0);
 
         AsyncCache<String, CosmosClientEncryptionKeyProperties> clientEncryptionKeyPropertiesAsyncCache =  ReflectionUtils.getClientEncryptionKeyPropertiesCacheByKeyId(cosmosEncryptionAsyncClient);
-        ConcurrentHashMap  clientEncryptionKeyMap= ReflectionUtils.getValueMap(clientEncryptionKeyPropertiesAsyncCache);
+        ConcurrentHashMap<String, ?>  clientEncryptionKeyMap= ReflectionUtils.getValueMap(clientEncryptionKeyPropertiesAsyncCache);
         assertThat(clientEncryptionKeyMap.size()).isEqualTo(0);
     }
 
     @Test(groups = {"encryption"}, priority = 1, timeOut = TIMEOUT)
+    @SuppressWarnings("unchecked")
     public void cacheAfterInitialization() throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
         CosmosEncryptionAsyncClient spyCosmosEncryptionAsyncClient = Mockito.spy(cosmosEncryptionAsyncClient);
         ReflectionUtils.setCosmosEncryptionAsyncClient(cosmosEncryptionAsyncContainer.getEncryptionProcessor(), spyCosmosEncryptionAsyncClient);
@@ -106,7 +107,7 @@ public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
 
         //Testing clientEncryptionPolicy cache
         AsyncCache<String, ClientEncryptionPolicy> clientEncryptionPolicyAsyncCache =  ReflectionUtils.getClientEncryptionPolicyCacheByContainerId(cosmosEncryptionAsyncClient);
-        ConcurrentHashMap  clientEncryptionPolicyMap= ReflectionUtils.getValueMap(clientEncryptionPolicyAsyncCache);
+        ConcurrentHashMap<String, ?>  clientEncryptionPolicyMap= ReflectionUtils.getValueMap(clientEncryptionPolicyAsyncCache);
         assertThat(clientEncryptionPolicyMap.size()).isEqualTo(1);
         Object clientEncryptionPolicyAyncLazy = clientEncryptionPolicyMap.get(cosmosEncryptionAsyncDatabase.getCosmosAsyncDatabase().getId()+"/"+cosmosEncryptionAsyncContainer.getCosmosAsyncContainer().getId());
 
@@ -119,7 +120,7 @@ public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
 
         //Testing clientEncryptionKey cache
         AsyncCache<String, CosmosClientEncryptionKeyProperties> clientEncryptionKeyPropertiesAsyncCache =  ReflectionUtils.getClientEncryptionKeyPropertiesCacheByKeyId(cosmosEncryptionAsyncClient);
-        ConcurrentHashMap  clientEncryptionKeyMap= ReflectionUtils.getValueMap(clientEncryptionKeyPropertiesAsyncCache);
+        ConcurrentHashMap<String, ?>  clientEncryptionKeyMap= ReflectionUtils.getValueMap(clientEncryptionKeyPropertiesAsyncCache);
         assertThat(clientEncryptionKeyMap.size()).isEqualTo(2);
 
         Object ClientEncryptionKeyAyncLazy1 = clientEncryptionKeyMap.get(cosmosEncryptionAsyncDatabase.getCosmosAsyncDatabase().getId()+"/"+"key1");
