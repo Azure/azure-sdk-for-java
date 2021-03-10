@@ -51,7 +51,7 @@ com.azure:azure-communication-sms;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-communication-identity;1.0.0-beta.6;1.0.0-beta.7
 com.azure:azure-communication-phonenumbers;1.0.0-beta.6;1.0.0-beta.7
 com.azure:azure-core;1.14.0;1.15.0-beta.1
-com.azure:azure-core-amqp;2.0.2;2.1.0-beta.1
+com.azure:azure-core-amqp;2.0.3;2.1.0-beta.1
 com.azure:azure-core-amqp-experimental;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core-experimental;1.0.0-beta.11;1.0.0-beta.12
 com.azure:azure-core-http-jdk-httpclient;1.0.0-beta.1;1.0.0-beta.1
@@ -216,7 +216,6 @@ com.azure.resourcemanager:azure-resourcemanager-datadog;1.0.0-beta.1;1.0.0-beta.
 # Format;
 # unreleased_<groupId>:<artifactId>;dependency-version
 # note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
-unreleased_com.azure:azure-core-amqp;2.1.0-beta.1
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid
