@@ -14,6 +14,7 @@ We assume that you are familiar with the old SDK `microsoft-azure-eventgrid`. If
         - [Group id, artifact id, and package names](#group-id-artifact-id-and-package-names)
         - [Instantiating clients](#instantiating-clients)
         - [Send events to an Event Grid Topic](#send-events-to-an-event-grid-topic)
+        - [Send events to an Event Grid Domain](#send-events-to-an-event-grid-domain)
         - [Deserialize events and data](#deserialize-events-and-data)
     - [Additional samples](#additional-samples)
 
