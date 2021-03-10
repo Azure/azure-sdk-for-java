@@ -22,11 +22,11 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.models.CloudEvent;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.tracing.TracerProxy;
 import com.azure.messaging.eventgrid.implementation.CloudEventTracingPipelinePolicy;
 
@@ -63,8 +63,6 @@ public final class EventGridPublisherClientBuilder {
     private final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
     private ClientOptions clientOptions;
-
-    private ObjectSerializer serializer;
 
     private Configuration configuration;
 
@@ -116,7 +114,7 @@ public final class EventGridPublisherClientBuilder {
             : serviceVersion;
 
         if (httpPipeline != null) {
-            return new EventGridPublisherAsyncClient<T>(httpPipeline, hostname, buildServiceVersion, serializer, eventClass);
+            return new EventGridPublisherAsyncClient<T>(httpPipeline, hostname, buildServiceVersion, eventClass);
         }
 
         Configuration buildConfiguration = (configuration == null)
@@ -170,7 +168,7 @@ public final class EventGridPublisherClientBuilder {
             .build();
 
 
-        return new EventGridPublisherAsyncClient<T>(buildPipeline, hostname, buildServiceVersion, serializer, eventClass);
+        return new EventGridPublisherAsyncClient<T>(buildPipeline, hostname, buildServiceVersion, eventClass);
     }
 
     /**
@@ -291,16 +289,6 @@ public final class EventGridPublisherClientBuilder {
     }
 
     /**
-     * Set the serializer that will serialize the custom events when custom events are sent to the service.
-     * @param serializer The serializer.
-     * @return the builder itself.
-     */
-    public EventGridPublisherClientBuilder serializer(ObjectSerializer serializer) {
-        this.serializer = serializer;
-        return this;
-    }
-
-    /**
      * Set the HTTP pipeline to use when sending calls to the service.
      * @param httpPipeline the pipeline to use.
      *
@@ -355,8 +343,8 @@ public final class EventGridPublisherClientBuilder {
      * All other settings have defaults and are optional.
      * @return a publisher client with asynchronous publishing methods.
      */
-    public EventGridPublisherAsyncClient<Object> buildCustomEventPublisherAsyncClient() {
-        return this.buildAsyncClient(Object.class);
+    public EventGridPublisherAsyncClient<BinaryData> buildCustomEventPublisherAsyncClient() {
+        return this.buildAsyncClient(BinaryData.class);
     }
 
     /**
@@ -382,7 +370,7 @@ public final class EventGridPublisherClientBuilder {
      * must be set (either keyCredential or sharedAccessSignatureCredential), all other settings have defaults and/or are optional.
      * @return a publisher client with synchronous publishing methods.
      */
-    public EventGridPublisherClient<Object> buildCustomEventPublisherClient() {
-        return this.buildClient(Object.class);
+    public EventGridPublisherClient<BinaryData> buildCustomEventPublisherClient() {
+        return this.buildClient(BinaryData.class);
     }
 }

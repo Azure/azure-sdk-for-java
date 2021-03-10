@@ -22,7 +22,7 @@ import javax.annotation.concurrent.ThreadSafe;
 
 
 /**
- * Class to encapsulate the CosmosDB GET operation for Azure Async SDK.
+ * Class to encapsulate the CosmosDB SQL QUERY operation for Azure Async SDK.
  *
  * @param <K> The key for the entity stored in the data store
  * @param <V> The entity stored in the data store
@@ -83,7 +83,7 @@ class QueryExecutor<K, V> {
         }
 
         final CollectionKey activeCollection = _dataLocator.getCollection();
-        _metrics.logCounterMetric(Metrics.MetricType.CALL_COUNT);
+        _metrics.logCounterMetric(Metrics.Type.CALL_COUNT);
         final String query = queryOptions.getDocumentDBQuery();
         long startTime = _clock.millis();
 
@@ -105,7 +105,14 @@ class QueryExecutor<K, V> {
                 _logger.logDebugInfo(Constants.METHOD_SQL_QUERY, query, activeCollection, _clock.millis() - startTime,
                     activityId, null);
             }
-            return _responseHandler.convertFeedResponse(responseList);
+
+            // Map the response as K-V values
+            final BatchGetResult<K, V> result = _responseHandler.convertFeedResponse(responseList);
+            if (result.getResults().size() == 0) {
+                _metrics.logCounterMetric(Metrics.Type.NOT_FOUND);
+            }
+
+            return  result;
         } catch (Exception ex) {
             _metrics.error(startTime);
             throw new CosmosDBDataAccessorException.Builder()
