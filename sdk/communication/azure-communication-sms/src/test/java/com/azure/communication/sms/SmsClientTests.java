@@ -4,6 +4,7 @@
 package com.azure.communication.sms;
 
 import com.azure.communication.sms.models.SmsSendOptions;
+import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -99,8 +100,8 @@ public class SmsClientTests extends SmsTestBase {
         options.setTag("New Tag");
 
         // Action & Assert
-        Response<SmsSendResult> response = client.sendWithResponse(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE, options, Context.NONE);
-        assertHappyPath(response.getValue());
+        SmsSendResult sendResult = client.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE, options, Context.NONE);
+        assertHappyPath(sendResult);
     }
 
     @ParameterizedTest

@@ -6,9 +6,9 @@
 - Constructor for `CommunicationCloudEnvironment` has been removed and now to set an environment value, the `fromString()` method must be called
 - `CommunicationCloudEnvironment`, `CommunicationTokenRefreshOptions `, `CommunicationUserIdentifier`, `MicrosoftTeamsUserIdentifier`,
 `PhoneNumberIdentifier`, `UnknownIdentifier`, are all final classes now.
+
 ## 1.0.0-beta.5 (2021-03-02)
 - Updated `azure-communication-common` version
-
 
 ## 1.0.0-beta.4 (2021-02-09)
 ### Breaking Changes
