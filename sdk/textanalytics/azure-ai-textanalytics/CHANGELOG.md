@@ -26,7 +26,10 @@
   `SentenceSentiment(String text, TextSentiment sentiment, SentimentConfidenceScores confidenceScores, IterableStream<MinedOpinion> minedOpinions, int offset)`,
   `AspectSentiment(String text, TextSentiment sentiment, int offset, SentimentConfidenceScores confidenceScores)`,
   `OpinionSentiment(String text, TextSentiment sentiment, int offset, boolean isNegated, SentimentConfidenceScores confidenceScores)`
-  
+
+## 5.0.4 (2021-03-09)
+### Dependency updates
+- Update dependency version, `azure-core` to 1.14.0 and `azure-core-http-netty` to 1.9.0.
   
 ## 5.1.0-beta.4 (2021-02-10)
 ### New features
