@@ -21,9 +21,10 @@
         <module>sdk/attestation/azure-security-attestation</module>
 
         <!-- Azure Communication Service -->
-        <module>sdk/communication/azure-communication-administration</module>
         <module>sdk/communication/azure-communication-chat</module>
         <module>sdk/communication/azure-communication-common</module>
+        <module>sdk/communication/azure-communication-identity</module>
+        <module>sdk/communication/azure-communication-phonenumbers</module>
         <module>sdk/communication/azure-communication-sms</module>
 
         <!-- Azure Core -->
@@ -42,9 +43,11 @@
         <!-- Cosmos -->
         <module>sdk/cosmos/azure-cosmos</module>
 
+        <!-- Device Update -->
+        <module>sdk/deviceupdate/azure-iot-deviceupdate</module>
+
         <!-- Digital Twins -->
         <module>sdk/digitaltwins/azure-digitaltwins-core</module>
-
 
         <!-- Event Grid -->
         <module>sdk/eventgrid/azure-messaging-eventgrid</module>
@@ -70,6 +73,9 @@
 
         <!-- Metrics Advisor -->
         <module>sdk/metricsadvisor/azure-ai-metricsadvisor</module>
+
+        <!-- Mixed Reality -->
+        <module>sdk/mixedreality/azure-mixedreality-authentication</module>
 
         <!-- Quantum Jobs -->
         <module>sdk/quantum/azure-quantum-jobs</module>
@@ -108,6 +114,9 @@
 
         <!-- Text Analytics -->
         <module>sdk/textanalytics/azure-ai-textanalytics</module>
+
+        <!-- Remote Rendering -->
+        <module>sdk/remoterendering/azure-mixedreality-remoterendering</module>
       </modules>
 
       <distributionManagement>
@@ -240,6 +249,10 @@
                     <packages>com.azure.identity*</packages>
                   </group>
                   <group>
+                    <title>Azure Device Update for IoT Hub</title>
+                    <packages>com.azure.iot.deviceupdate*</packages>
+                  </group>
+                  <group>
                     <title>Azure Key Vault</title>
                     <packages>com.azure.security.keyvault*</packages>
                   </group>
@@ -295,6 +308,18 @@
                     <title>Azure Text Analytics</title>
                     <packages>com.azure.ai.textanalytics*</packages>
                   </group>
+                  <group>
+                    <title>Azure Mixed Reality Authentication</title>
+                    <packages>com.azure.mixedreality.authentication*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Mixed Reality RemoteRendering</title>
+                    <packages>com.azure.mixedreality.remoterendering*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Communication</title>
+                    <packages>com.azure.communication.*</packages>
+                  </group>
                 </groups>
                 <links>
                   <link>https://docs.oracle.com/javase/8/docs/api/</link>
@@ -341,7 +366,7 @@
 <!--          <plugin>-->
 <!--            <groupId>net.jonathangiles.tools</groupId>-->
 <!--            <artifactId>dependencyChecker-maven-plugin</artifactId>-->
-<!--            <version>1.0.4</version> &lt;!&ndash; {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} &ndash;&gt;-->
+<!--            <version>1.0.5</version> &lt;!&ndash; {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} &ndash;&gt;-->
 <!--            <inherited>false</inherited>-->
 <!--            <executions>-->
 <!--              <execution>-->
@@ -391,7 +416,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-checkstyle-plugin</artifactId>
-            <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+            <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
             <configuration>
               <configLocation>eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
               <suppressionsLocation>eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
@@ -423,7 +448,7 @@
           <plugin>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-maven-plugin</artifactId>
-            <version>3.1.12.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+            <version>4.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
             <configuration>
               <effort>max</effort>
               <threshold>Low</threshold>
@@ -568,24 +593,32 @@
         <module>sdk/core</module>
         <module>sdk/cosmos</module>
         <module>sdk/costmanagement</module>
+        <module>sdk/deviceupdate</module>
+        <module>sdk/datadog</module>
         <module>sdk/digitaltwins</module>
         <module>sdk/eventgrid</module>
         <module>sdk/eventhubs</module>
         <module>sdk/formrecognizer</module>
         <module>sdk/hdinsight</module>
         <module>sdk/healthbot</module>
+        <module>sdk/hybridkubernetes</module>
         <module>sdk/identity</module>
+        <module>sdk/iothub</module>
         <module>sdk/keyvault</module>
         <module>sdk/kusto</module>
         <module>sdk/loganalytics</module>
         <module>sdk/mediaservices</module>
         <module>sdk/metricsadvisor</module>
+        <module>sdk/mixedreality</module>
         <module>sdk/monitor</module>
         <module>sdk/mysql</module>
+        <module>sdk/netapp</module>
         <module>sdk/postgresql</module>
         <module>sdk/quantum</module>
         <module>sdk/recoveryservices</module>
+        <module>sdk/redisenterprise</module>
         <module>sdk/relay</module>
+        <module>sdk/remoterendering</module>
         <module>sdk/resourcemanager</module>
         <module>sdk/schemaregistry</module>
         <module>sdk/search</module>
@@ -593,6 +626,7 @@
         <module>sdk/spring</module>
         <module>sdk/sqlvirtualmachine</module>
         <module>sdk/storage</module>
+        <module>sdk/storagecache</module>
         <module>sdk/synapse</module>
         <module>sdk/tables</module>
         <module>sdk/template</module>

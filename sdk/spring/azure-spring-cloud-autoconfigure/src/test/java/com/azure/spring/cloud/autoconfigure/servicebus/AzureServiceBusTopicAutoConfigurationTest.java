@@ -8,9 +8,11 @@ import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusTopicManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusTopicSubscriptionManager;
+import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStringProvider;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicOperation;
+import com.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate;
 import com.microsoft.azure.servicebus.TopicClient;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -21,6 +23,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.mock;
 
 public class AzureServiceBusTopicAutoConfigurationTest {
@@ -76,6 +79,7 @@ public class AzureServiceBusTopicAutoConfigurationTest {
                               assertThat(context).doesNotHaveBean(ServiceBusTopicSubscriptionManager.class);
                               assertThat(context).hasSingleBean(ServiceBusTopicClientFactory.class);
                               assertThat(context).hasSingleBean(ServiceBusTopicOperation.class);
+                              assertThat(context).hasSingleBean(ServiceBusMessageConverter.class);
                           });
     }
 
@@ -92,6 +96,24 @@ public class AzureServiceBusTopicAutoConfigurationTest {
                               assertThat(context).hasSingleBean(ServiceBusNamespaceManager.class);
                               assertThat(context).hasSingleBean(ServiceBusTopicManager.class);
                               assertThat(context).hasSingleBean(ServiceBusTopicSubscriptionManager.class);
+                          });
+    }
+
+    @Test
+    public void testMessageConverterProvided() {
+        this.contextRunner.withUserConfiguration(
+            TestConfigWithMessageConverter.class,
+            AzureServiceBusAutoConfiguration.class)
+                          .withPropertyValues(
+                              SERVICE_BUS_PROPERTY_PREFIX + "connection-string=str1"
+                          )
+                          .run(context -> {
+                              assertThat(context).hasSingleBean(ServiceBusMessageConverter.class);
+                              assertThat(context).hasSingleBean(ServiceBusTopicTemplate.class);
+
+                              ServiceBusMessageConverter messageConverter = context.getBean(ServiceBusMessageConverter.class);
+                              ServiceBusTopicTemplate topicTemplate = context.getBean(ServiceBusTopicTemplate.class);
+                              assertSame(messageConverter, topicTemplate.getMessageConverter());
                           });
     }
 
@@ -126,6 +148,17 @@ public class AzureServiceBusTopicAutoConfigurationTest {
             return mock(AzureResourceManager.class);
         }
 
+
+    }
+
+    @Configuration
+    @EnableConfigurationProperties(AzureProperties.class)
+    public static class TestConfigWithMessageConverter {
+
+        @Bean
+        public ServiceBusMessageConverter messageConverter() {
+            return mock(ServiceBusMessageConverter.class);
+        }
 
     }
 }

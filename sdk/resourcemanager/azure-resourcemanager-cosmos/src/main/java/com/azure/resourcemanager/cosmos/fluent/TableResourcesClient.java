@@ -128,7 +128,7 @@ public interface TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -147,7 +147,7 @@ public interface TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -166,7 +166,7 @@ public interface TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -185,7 +185,7 @@ public interface TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -206,7 +206,7 @@ public interface TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -225,7 +225,7 @@ public interface TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -244,7 +244,7 @@ public interface TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -431,7 +431,7 @@ public interface TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -450,7 +450,7 @@ public interface TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -470,7 +470,7 @@ public interface TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -490,7 +490,7 @@ public interface TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -512,7 +512,7 @@ public interface TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -531,7 +531,7 @@ public interface TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -550,7 +550,7 @@ public interface TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

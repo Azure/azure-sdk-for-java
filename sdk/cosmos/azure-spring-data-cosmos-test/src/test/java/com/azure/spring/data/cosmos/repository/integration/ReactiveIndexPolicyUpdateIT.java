@@ -7,12 +7,15 @@ import com.azure.cosmos.models.ExcludedPath;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.spring.data.cosmos.ReactiveIntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.domain.ComplexIndexPolicyEntity;
 import com.azure.spring.data.cosmos.domain.IndexPolicyEntity;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.azure.spring.data.cosmos.repository.support.SimpleReactiveCosmosRepository;
+import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -29,6 +32,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ReactiveIndexPolicyUpdateIT {
 
+    @ClassRule
+    public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
+
     @Autowired
     ReactiveCosmosTemplate template;
 
@@ -38,6 +44,11 @@ public class ReactiveIndexPolicyUpdateIT {
     CosmosEntityInformation<IndexPolicyEntity, String> defaultIndexPolicyEntityInformation = new CosmosEntityInformation<>(IndexPolicyEntity.class);
 
     CosmosEntityInformation<ComplexIndexPolicyEntity, String> complexIndexPolicyEntityInformation = new CosmosEntityInformation<>(ComplexIndexPolicyEntity.class);
+
+    @Before
+    public void setup() {
+        collectionManager.ensureContainersCreatedAndEmpty(template, IndexPolicyEntity.class, ComplexIndexPolicyEntity.class);
+    }
 
     @Test
     public void testIndexPolicyUpdatesOnRepoInitialization() {

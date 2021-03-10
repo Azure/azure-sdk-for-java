@@ -1,6 +1,9 @@
 # Release History
 
-## 3.2.0-beta.1 (Unreleased)
+## 3.3.0-beta.1 (Unreleased)
+
+
+## 3.2.0 (2021-03-03)
 
 
 ## 3.1.0 (2021-01-20)
@@ -32,7 +35,7 @@
 - Expose a flag `isPersonalAccount` in `AADOAuth2AuthenticatedPrincipal` to specify the account type in use: work account or personal account.
 - Enable loading transitive membership information from Microsoft Graph API.
 - Enable following `azure-spring-boot-starter-active-directory` configuration properties:
-    ```yaml
+    ```properties
     # Redirect URI of authorization server
     azure.activedirectory.redirect-uri-template
     # Refresh time of the cached JWK set before it expires, default value is 5 minutes.

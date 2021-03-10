@@ -4,8 +4,8 @@
 
 package com.azure.communication.sms.implementation;
 
-import com.azure.communication.sms.models.SendMessageRequest;
-import com.azure.communication.sms.models.SendSmsResponse;
+import com.azure.communication.sms.implementation.models.SendMessageRequest;
+import com.azure.communication.sms.implementation.models.SmsSendResponse;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Host;
@@ -49,9 +49,9 @@ public final class SmsImpl {
     @ServiceInterface(name = "AzureCommunicationSM")
     private interface SmsService {
         @Post("/sms")
-        @ExpectedResponses({200})
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<SendSmsResponse>> send(
+        Mono<Response<SmsSendResponse>> send(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") SendMessageRequest sendMessageRequest,
@@ -65,10 +65,10 @@ public final class SmsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful send Sms request.
+     * @return response for a successful or multi status send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SendSmsResponse>> sendWithResponseAsync(SendMessageRequest sendMessageRequest) {
+    public Mono<Response<SmsSendResponse>> sendWithResponseAsync(SendMessageRequest sendMessageRequest) {
         return FluxUtil.withContext(
                 context ->
                         service.send(
@@ -83,10 +83,10 @@ public final class SmsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful send Sms request.
+     * @return response for a successful or multi status send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SendSmsResponse>> sendWithResponseAsync(
+    public Mono<Response<SmsSendResponse>> sendWithResponseAsync(
             SendMessageRequest sendMessageRequest, Context context) {
         return service.send(this.client.getEndpoint(), this.client.getApiVersion(), sendMessageRequest, context);
     }
@@ -98,13 +98,13 @@ public final class SmsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful send Sms request.
+     * @return response for a successful or multi status send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendSmsResponse> sendAsync(SendMessageRequest sendMessageRequest) {
+    public Mono<SmsSendResponse> sendAsync(SendMessageRequest sendMessageRequest) {
         return sendWithResponseAsync(sendMessageRequest)
                 .flatMap(
-                        (Response<SendSmsResponse> res) -> {
+                        (Response<SmsSendResponse> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -121,13 +121,13 @@ public final class SmsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful send Sms request.
+     * @return response for a successful or multi status send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendSmsResponse> sendAsync(SendMessageRequest sendMessageRequest, Context context) {
+    public Mono<SmsSendResponse> sendAsync(SendMessageRequest sendMessageRequest, Context context) {
         return sendWithResponseAsync(sendMessageRequest, context)
                 .flatMap(
-                        (Response<SendSmsResponse> res) -> {
+                        (Response<SmsSendResponse> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -143,10 +143,10 @@ public final class SmsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful send Sms request.
+     * @return response for a successful or multi status send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SendSmsResponse send(SendMessageRequest sendMessageRequest) {
+    public SmsSendResponse send(SendMessageRequest sendMessageRequest) {
         return sendAsync(sendMessageRequest).block();
     }
 
@@ -158,10 +158,10 @@ public final class SmsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful send Sms request.
+     * @return response for a successful or multi status send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SendSmsResponse send(SendMessageRequest sendMessageRequest, Context context) {
+    public SmsSendResponse send(SendMessageRequest sendMessageRequest, Context context) {
         return sendAsync(sendMessageRequest, context).block();
     }
 }

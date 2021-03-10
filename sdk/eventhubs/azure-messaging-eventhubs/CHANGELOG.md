@@ -1,10 +1,14 @@
 # Release History
 
+## 5.6.0-beta.1 (Unreleased)
+### Bug Fixes
+- Update to end the trace span regardless of the scope instance type for process operation tracing spans.
+
 ## 5.5.0 (2020-02-15)
 ### New features
 - Use `BinaryData` in `EventData`.
-- Expose `EventHubsClientBuilder.customEndpointAddress` to support connecting to an intermediary before Azure Event
-  Hubs.
+- Expose `customEndpointAddress` to support connecting to an intermediary before Azure Event
+  Hubs in both `EventHubsClientBuilder` and `EventProcessorClientBuilder`
 
 ### Dependency Updates
 - Update `azure-core` dependency to `1.13.0`.

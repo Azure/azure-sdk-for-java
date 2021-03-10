@@ -3,6 +3,7 @@ trigger:
   branches:
     include:
       - master
+      - main
       - hotfix/*
       - release/*
   paths:
@@ -10,11 +11,18 @@ trigger:
       - sdk/appconfiguration/ci.yml
       - sdk/appconfiguration/pom.xml
       - sdk/appconfiguration/azure-data-appconfiguration
+      - sdk/appconfiguration/spring-cloud-azure-appconfiguration-config
+      - sdk/appconfiguration/spring-cloud-azure-appconfiguration-config-web
+      - sdk/appconfiguration/spring-cloud-azure-feature-management
+      - sdk/appconfiguration/spring-cloud-azure-feature-management-web
+      - sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config
+      - sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config
 
 pr:
   branches:
     include:
       - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
@@ -25,6 +33,12 @@ pr:
       - sdk/appconfiguration/test-resources.json
       - sdk/appconfiguration/tests.yml
       - sdk/appconfiguration/azure-data-appconfiguration
+      - sdk/appconfiguration/spring-cloud-azure-appconfiguration-config
+      - sdk/appconfiguration/spring-cloud-azure-appconfiguration-config-web
+      - sdk/appconfiguration/spring-cloud-azure-feature-management
+      - sdk/appconfiguration/spring-cloud-azure-feature-management-web
+      - sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config
+      - sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -34,3 +48,22 @@ extends:
       - name: azure-data-appconfiguration
         groupId: com.azure
         safeName: azuredataappconfiguration
+      - name: spring-cloud-azure-appconfiguration-config
+        groupId: com.microsoft.azure
+        safeName: springcloudazureappconfigurationconfig
+      - name: spring-cloud-azure-appconfiguration-config-web
+        groupId: com.microsoft.azure
+        safeName: springcloudazureappconfigurationconfigweb
+      - name: spring-cloud-azure-feature-management
+        groupId: com.microsoft.azure
+        safeName: springcloudazurefeaturemanagement
+      - name: spring-cloud-azure-feature-management-web
+        groupId: com.microsoft.azure
+        safeName: springcloudazurefeaturemanagementweb
+      - name: spring-cloud-starter-azure-appconfiguration-config
+        groupId: com.microsoft.azure
+        safeName: springcloudstarterazureappconfigurationconfig
+    AdditionalModules:
+      - name: azure-spring-cloud-test-appconfiguration-config
+        groupId: com.azure.spring
+        safeName: azurespringcloudtestappconfigurationconfig

@@ -16,6 +16,7 @@ import org.apache.qpid.proton.amqp.transport.ConnectionError;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.SslPeerDetails;
 import org.apache.qpid.proton.engine.Transport;
 import org.apache.qpid.proton.engine.impl.TransportInternal;
 
@@ -46,17 +47,15 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
      * The hostname of the proxy is exposed in {@link #getHostname()}.
      *
      * @param connectionId Identifier for this connection.
-     * @param proxyOptions The options to use for proxy.
-     * @param productName The name of the product this connection handler is created for.
-     * @param clientVersion The version of the client library creating the connection handler.
      * @param connectionOptions Options used when creating the connection.
+     * @param proxyOptions The options to use for proxy.
      *
      * @throws NullPointerException if {@code amqpHostname} or {@code proxyConfiguration} is null.
      * @throws IllegalStateException if a proxy address is unavailable for the given {@code proxyOptions}.
      */
-    public WebSocketsProxyConnectionHandler(String connectionId, String productName, String clientVersion,
-        ConnectionOptions connectionOptions, ProxyOptions proxyOptions) {
-        super(connectionId, productName, clientVersion, connectionOptions);
+    public WebSocketsProxyConnectionHandler(String connectionId, ConnectionOptions connectionOptions,
+        ProxyOptions proxyOptions, SslPeerDetails peerDetails) {
+        super(connectionId, connectionOptions, peerDetails);
 
         this.proxyOptions = Objects.requireNonNull(proxyOptions, "'proxyConfiguration' cannot be null.");
         this.fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();

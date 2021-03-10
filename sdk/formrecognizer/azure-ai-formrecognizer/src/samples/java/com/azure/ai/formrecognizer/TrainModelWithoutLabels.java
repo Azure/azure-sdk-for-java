@@ -37,12 +37,12 @@ public class TrainModelWithoutLabels {
         // Train custom model
         String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-        SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller
-            = client.beginTraining(trainingFilesUrl,
-            false,
-            new TrainingOptions()
-                .setModelName("composed model name"),
-            Context.NONE);
+        SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
+            client.beginTraining(trainingFilesUrl,
+                false,
+                new TrainingOptions()
+                    .setModelName("composed model name"),
+                Context.NONE);
 
         CustomFormModel customFormModel = trainingPoller.getFinalResult();
 

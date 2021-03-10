@@ -9,11 +9,9 @@ import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * Additional parameters for uploadRangeFromURL operation.
- */
-@JacksonXmlRootElement(localName = "source-modified-access-conditions")
+/** Parameter group. */
 @Fluent
+@JacksonXmlRootElement(localName = "source-modified-access-conditions")
 public final class SourceModifiedAccessConditions {
     /*
      * Specify the crc64 value to operate only on range with a matching crc64
@@ -30,8 +28,8 @@ public final class SourceModifiedAccessConditions {
     private byte[] sourceIfNoneMatchCrc64;
 
     /**
-     * Get the sourceIfMatchCrc64 property: Specify the crc64 value to operate
-     * only on range with a matching crc64 checksum.
+     * Get the sourceIfMatchCrc64 property: Specify the crc64 value to operate only on range with a matching crc64
+     * checksum.
      *
      * @return the sourceIfMatchCrc64 value.
      */
@@ -40,8 +38,8 @@ public final class SourceModifiedAccessConditions {
     }
 
     /**
-     * Set the sourceIfMatchCrc64 property: Specify the crc64 value to operate
-     * only on range with a matching crc64 checksum.
+     * Set the sourceIfMatchCrc64 property: Specify the crc64 value to operate only on range with a matching crc64
+     * checksum.
      *
      * @param sourceIfMatchCrc64 the sourceIfMatchCrc64 value to set.
      * @return the SourceModifiedAccessConditions object itself.
@@ -52,8 +50,8 @@ public final class SourceModifiedAccessConditions {
     }
 
     /**
-     * Get the sourceIfNoneMatchCrc64 property: Specify the crc64 value to
-     * operate only on range without a matching crc64 checksum.
+     * Get the sourceIfNoneMatchCrc64 property: Specify the crc64 value to operate only on range without a matching
+     * crc64 checksum.
      *
      * @return the sourceIfNoneMatchCrc64 value.
      */
@@ -62,8 +60,8 @@ public final class SourceModifiedAccessConditions {
     }
 
     /**
-     * Set the sourceIfNoneMatchCrc64 property: Specify the crc64 value to
-     * operate only on range without a matching crc64 checksum.
+     * Set the sourceIfNoneMatchCrc64 property: Specify the crc64 value to operate only on range without a matching
+     * crc64 checksum.
      *
      * @param sourceIfNoneMatchCrc64 the sourceIfNoneMatchCrc64 value to set.
      * @return the SourceModifiedAccessConditions object itself.

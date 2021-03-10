@@ -69,7 +69,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         secondAddedParticipant = communicationClient.createUser();
 
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
-        AccessToken response = communicationClient.issueToken(firstParticipant, scopes);
+        AccessToken response = communicationClient.getToken(firstParticipant, scopes);
 
         ChatClientBuilder chatBuilder = getChatClientBuilder(response.getToken(), httpClient);
         client = addLoggingPolicyForIdentityClientBuilder(chatBuilder, testName).buildClient();
@@ -112,7 +112,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         setupTest(httpClient, "canUpdateThreadWithResponse");
         String newTopic = "Update Test";
 
-         // Action & Assert
+        // Action & Assert
         chatThreadClient.updateTopicWithResponse(newTopic, Context.NONE);
 
         ChatThread chatThread = client.getChatThread(threadId);
@@ -142,14 +142,15 @@ public class ChatThreadClientTest extends ChatClientTestBase {
             resp.getItems().forEach(item -> returnedparticipants.add(item));
         });
 
-        for (ChatParticipant participant: options.getParticipants()) {
-            assertTrue(checkParticipantsListContainsParticipantId(returnedparticipants, participant.getUser().getId()));
+        for (ChatParticipant participant : options.getParticipants()) {
+            assertTrue(checkParticipantsListContainsParticipantId(returnedparticipants,
+                ((CommunicationUserIdentifier) participant.getCommunicationIdentifier()).getId()));
         }
 
         assertTrue(returnedparticipants.size() == 4);
 
-        for (ChatParticipant participant: options.getParticipants()) {
-            chatThreadClient.removeParticipant(participant.getUser());
+        for (ChatParticipant participant : options.getParticipants()) {
+            chatThreadClient.removeParticipant(participant.getCommunicationIdentifier());
         }
     }
 
@@ -177,14 +178,15 @@ public class ChatThreadClientTest extends ChatClientTestBase {
             resp.getItems().forEach(item -> returnedParticipants.add(item));
         });
 
-        for (ChatParticipant participant: options.getParticipants()) {
-            assertTrue(checkParticipantsListContainsParticipantId(returnedParticipants, participant.getUser().getId()));
+        for (ChatParticipant participant : options.getParticipants()) {
+            assertTrue(checkParticipantsListContainsParticipantId(returnedParticipants,
+                ((CommunicationUserIdentifier) participant.getCommunicationIdentifier()).getId()));
         }
 
         assertTrue(returnedParticipants.size() == 4);
 
-        for (ChatParticipant participant: options.getParticipants()) {
-            chatThreadClient.removeParticipant(participant.getUser());
+        for (ChatParticipant participant : options.getParticipants()) {
+            chatThreadClient.removeParticipant(participant.getCommunicationIdentifier());
         }
     }
 
@@ -230,14 +232,15 @@ public class ChatThreadClientTest extends ChatClientTestBase {
             resp.getItems().forEach(item -> returnedParticipants.add(item));
         });
 
-        for (ChatParticipant participant: options.getParticipants()) {
-            assertTrue(checkParticipantsListContainsParticipantId(returnedParticipants, participant.getUser().getId()));
+        for (ChatParticipant participant : options.getParticipants()) {
+            assertTrue(checkParticipantsListContainsParticipantId(returnedParticipants,
+                ((CommunicationUserIdentifier) participant.getCommunicationIdentifier()).getId()));
         }
 
         assertTrue(returnedParticipants.size() == 4);
 
-        for (ChatParticipant participant: options.getParticipants()) {
-            chatThreadClient.removeParticipantWithResponse(participant.getUser(), Context.NONE);
+        for (ChatParticipant participant : options.getParticipants()) {
+            chatThreadClient.removeParticipantWithResponse(participant.getCommunicationIdentifier(), Context.NONE);
         }
     }
 
@@ -249,10 +252,12 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         CommunicationUserIdentifier participant = communicationClient.createUser();
 
         // Action & Assert
-        chatThreadClient.addParticipant(new ChatParticipant().setUser(participant));
+        chatThreadClient.addParticipant(new ChatParticipant().setCommunicationIdentifier(participant));
 
         PagedIterable<ChatParticipant> participantsResponse = chatThreadClient.listParticipants();
-        assertTrue(participantsResponse.stream().anyMatch(p -> p.getUser().getId().equals(participant.getId())));
+        assertTrue(participantsResponse
+            .stream()
+            .anyMatch(p -> ((CommunicationUserIdentifier) p.getCommunicationIdentifier()).getId().equals(participant.getId())));
     }
 
     @ParameterizedTest
@@ -263,10 +268,12 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         CommunicationUserIdentifier participant = communicationClient.createUser();
 
         // Action & Assert
-        chatThreadClient.addParticipantWithResponse(new ChatParticipant().setUser(participant), Context.NONE);
+        chatThreadClient.addParticipantWithResponse(new ChatParticipant().setCommunicationIdentifier(participant), Context.NONE);
 
         PagedIterable<ChatParticipant> participantsResponse = chatThreadClient.listParticipants();
-        assertTrue(participantsResponse.stream().anyMatch(p -> p.getUser().getId().equals(participant.getId())));
+        assertTrue(participantsResponse
+            .stream()
+            .anyMatch(p -> ((CommunicationUserIdentifier) p.getCommunicationIdentifier()).getId().equals(participant.getId())));
     }
 
     @ParameterizedTest
@@ -541,7 +548,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         assertEquals(readReceiptList.size(), 2);
         assertNotNull(readReceiptList.get(0).getChatMessageId());
         assertNotNull(readReceiptList.get(0).getReadOn());
-        assertNotNull(readReceiptList.get(0).getSender());
+        assertNotNull(readReceiptList.get(0).getSenderCommunicationIdentifier());
     }
 
     @ParameterizedTest
@@ -565,7 +572,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         assertEquals(readReceiptList.size(), 2);
         assertNotNull(readReceiptList.get(0).getChatMessageId());
         assertNotNull(readReceiptList.get(0).getReadOn());
-        assertNotNull(readReceiptList.get(0).getSender());
+        assertNotNull(readReceiptList.get(0).getSenderCommunicationIdentifier());
     }
 
     @ParameterizedTest

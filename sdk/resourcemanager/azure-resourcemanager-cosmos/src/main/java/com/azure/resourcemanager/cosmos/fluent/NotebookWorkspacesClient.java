@@ -131,8 +131,7 @@ public interface NotebookWorkspacesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The resource model definition for a ARM proxy resource. It will have
-     *     everything other than required location and tags.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -151,8 +150,7 @@ public interface NotebookWorkspacesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The resource model definition for a ARM proxy resource. It will have
-     *     everything other than required location and tags.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -171,8 +169,7 @@ public interface NotebookWorkspacesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The resource model definition for a ARM proxy resource. It will have
-     *     everything other than required location and tags.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -191,8 +188,7 @@ public interface NotebookWorkspacesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The resource model definition for a ARM proxy resource. It will have
-     *     everything other than required location and tags.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -213,8 +209,7 @@ public interface NotebookWorkspacesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The resource model definition for a ARM proxy resource. It will have
-     *     everything other than required location and tags.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -233,8 +228,7 @@ public interface NotebookWorkspacesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The resource model definition for a ARM proxy resource. It will have
-     *     everything other than required location and tags.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -253,8 +247,7 @@ public interface NotebookWorkspacesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The resource model definition for a ARM proxy resource. It will have
-     *     everything other than required location and tags.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

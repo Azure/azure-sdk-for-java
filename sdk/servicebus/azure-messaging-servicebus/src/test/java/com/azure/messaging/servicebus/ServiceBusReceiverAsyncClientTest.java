@@ -83,6 +83,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -162,7 +163,7 @@ class ServiceBusReceiverAsyncClientTest {
         ConnectionOptions connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(),
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.boundedElastic(), CLIENT_OPTIONS,
-            SslDomain.VerifyMode.VERIFY_PEER_NAME);
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);
@@ -287,7 +288,8 @@ class ServiceBusReceiverAsyncClientTest {
             .expectNextCount(numberOfEvents)
             .verifyComplete();
 
-        verify(amqpReceiveLink).addCredits(PREFETCH);
+        // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
+        verify(amqpReceiveLink, atMost(numberOfEvents + 1)).addCredits(PREFETCH);
         verify(amqpReceiveLink, never()).updateDisposition(eq(lockToken), any());
     }
 
@@ -884,12 +886,13 @@ class ServiceBusReceiverAsyncClientTest {
         //  After the autoConnect was removed from ServiceBusAsyncConsumer.processor, the receiver doesn't support
         //  multiple calls of receiver.receiveMessages().
         //  For more discussions.
-//        StepVerifier.create(receiver.receiveMessages().take(numberOfEvents))
-//            .then(() -> messages.forEach(m -> messageSink.next(m)))
-//            .expectNextCount(numberOfEvents)
-//            .verifyComplete();
+        //  StepVerifier.create(receiver.receiveMessages().take(numberOfEvents))
+        //      .then(() -> messages.forEach(m -> messageSink.next(m)))
+        //      .expectNextCount(numberOfEvents)
+        //      .verifyComplete();
 
-        verify(amqpReceiveLink).addCredits(PREFETCH);
+        // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
+        verify(amqpReceiveLink, atMost(numberOfEvents + 1)).addCredits(PREFETCH);
     }
 
     /**

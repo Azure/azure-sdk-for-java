@@ -35,7 +35,7 @@ import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffe
  * Code snippet for {@link FormRecognizerAsyncClient}
  */
 public class FormRecognizerAsyncClientJavaDocCodeSnippets {
-    FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder().buildAsyncClient();
+    private final FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder().buildAsyncClient();
 
     /**
      * Code snippet for creating a {@link FormRecognizerAsyncClient}

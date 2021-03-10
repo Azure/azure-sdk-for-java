@@ -37,6 +37,7 @@ import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
 import com.microsoft.aad.msal4j.PublicClientApplication;
+import com.microsoft.aad.msal4j.Prompt;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
@@ -198,8 +199,14 @@ public class IdentityClient {
                     }
                 } else {
                     InputStream pfxCertificateStream = getCertificateInputStream();
-                    credential = ClientCredentialFactory.createFromCertificate(
+                    try {
+                        credential = ClientCredentialFactory.createFromCertificate(
                             pfxCertificateStream, certificatePassword);
+                    } finally {
+                        if (pfxCertificateStream != null) {
+                            pfxCertificateStream.close();
+                        }
+                    }
                 }
             } catch (IOException | GeneralSecurityException e) {
                 throw logger.logExceptionAsError(new RuntimeException(
@@ -637,9 +644,9 @@ public class IdentityClient {
             Mono.fromFuture(() -> {
                 DeviceCodeFlowParameters.DeviceCodeFlowParametersBuilder parametersBuilder =
                     DeviceCodeFlowParameters.builder(
-                    new HashSet<>(request.getScopes()), dc -> deviceCodeConsumer.accept(
-                        new DeviceCodeInfo(dc.userCode(), dc.deviceCode(), dc.verificationUri(),
-                        OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message())));
+                        new HashSet<>(request.getScopes()), dc -> deviceCodeConsumer.accept(
+                            new DeviceCodeInfo(dc.userCode(), dc.deviceCode(), dc.verificationUri(),
+                            OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message())));
 
                 if (request.getClaims() != null) {
                     ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
@@ -738,7 +745,9 @@ public class IdentityClient {
             return Mono.error(logger.logExceptionAsError(new RuntimeException(e)));
         }
         InteractiveRequestParameters.InteractiveRequestParametersBuilder builder =
-            InteractiveRequestParameters.builder(redirectUri).scopes(new HashSet<>(request.getScopes()));
+            InteractiveRequestParameters.builder(redirectUri)
+                .scopes(new HashSet<>(request.getScopes()))
+                .prompt(Prompt.SELECT_ACCOUNT);
 
         if (request.getClaims() != null) {
             ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());

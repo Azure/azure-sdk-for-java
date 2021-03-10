@@ -65,7 +65,7 @@ public final class ChatImpl {
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<CreateChatThreadResult>> createChatThread(
             @HostParam("endpoint") String endpoint,
-            @HeaderParam("repeatability-Request-ID") String repeatabilityRequestID,
+            @HeaderParam("repeatability-Request-Id") String repeatabilityRequestId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CreateChatThreadOptions createChatThreadRequest,
             @HeaderParam("Accept") String accept,
@@ -116,9 +116,9 @@ public final class ChatImpl {
      * Creates a chat thread.
      *
      * @param createChatThreadRequest Request payload for creating a chat thread.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
-     *     client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
-     *     response without the server executing the request multiple times. The value of the Repeatability-Request-ID
+     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
      *     is an opaque string representing a client-generated, globally unique for all time, identifier for the
      *     request. It is recommended to use version 4 (random) UUIDs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -128,13 +128,13 @@ public final class ChatImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CreateChatThreadResult>> createChatThreadWithResponseAsync(
-        CreateChatThreadOptions createChatThreadRequest, String repeatabilityRequestID) {
+        CreateChatThreadOptions createChatThreadRequest, String repeatabilityRequestId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
             context ->
                 service.createChatThread(
                     this.client.getEndpoint(),
-                    repeatabilityRequestID,
+                    repeatabilityRequestId,
                     this.client.getApiVersion(),
                     createChatThreadRequest,
                     accept,
@@ -145,9 +145,9 @@ public final class ChatImpl {
      * Creates a chat thread.
      *
      * @param createChatThreadRequest Request payload for creating a chat thread.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
-     *     client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
-     *     response without the server executing the request multiple times. The value of the Repeatability-Request-ID
+     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
      *     is an opaque string representing a client-generated, globally unique for all time, identifier for the
      *     request. It is recommended to use version 4 (random) UUIDs.
      * @param context The context to associate with this operation.
@@ -158,11 +158,11 @@ public final class ChatImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CreateChatThreadResult>> createChatThreadWithResponseAsync(
-        CreateChatThreadOptions createChatThreadRequest, String repeatabilityRequestID, Context context) {
+        CreateChatThreadOptions createChatThreadRequest, String repeatabilityRequestId, Context context) {
         final String accept = "application/json";
         return service.createChatThread(
             this.client.getEndpoint(),
-            repeatabilityRequestID,
+            repeatabilityRequestId,
             this.client.getApiVersion(),
             createChatThreadRequest,
             accept,
@@ -173,9 +173,9 @@ public final class ChatImpl {
      * Creates a chat thread.
      *
      * @param createChatThreadRequest Request payload for creating a chat thread.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
-     *     client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
-     *     response without the server executing the request multiple times. The value of the Repeatability-Request-ID
+     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
      *     is an opaque string representing a client-generated, globally unique for all time, identifier for the
      *     request. It is recommended to use version 4 (random) UUIDs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -185,8 +185,8 @@ public final class ChatImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateChatThreadResult> createChatThreadAsync(
-        CreateChatThreadOptions createChatThreadRequest, String repeatabilityRequestID) {
-        return createChatThreadWithResponseAsync(createChatThreadRequest, repeatabilityRequestID)
+        CreateChatThreadOptions createChatThreadRequest, String repeatabilityRequestId) {
+        return createChatThreadWithResponseAsync(createChatThreadRequest, repeatabilityRequestId)
             .flatMap(
                 (Response<CreateChatThreadResult> res) -> {
                     if (res.getValue() != null) {
@@ -208,8 +208,8 @@ public final class ChatImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateChatThreadResult> createChatThreadAsync(CreateChatThreadOptions createChatThreadRequest) {
-        final String repeatabilityRequestID = null;
-        return createChatThreadWithResponseAsync(createChatThreadRequest, repeatabilityRequestID)
+        final String repeatabilityRequestId = null;
+        return createChatThreadWithResponseAsync(createChatThreadRequest, repeatabilityRequestId)
             .flatMap(
                 (Response<CreateChatThreadResult> res) -> {
                     if (res.getValue() != null) {
@@ -224,9 +224,9 @@ public final class ChatImpl {
      * Creates a chat thread.
      *
      * @param createChatThreadRequest Request payload for creating a chat thread.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
-     *     client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
-     *     response without the server executing the request multiple times. The value of the Repeatability-Request-ID
+     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
      *     is an opaque string representing a client-generated, globally unique for all time, identifier for the
      *     request. It is recommended to use version 4 (random) UUIDs.
      * @param context The context to associate with this operation.
@@ -237,8 +237,8 @@ public final class ChatImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateChatThreadResult> createChatThreadAsync(
-        CreateChatThreadOptions createChatThreadRequest, String repeatabilityRequestID, Context context) {
-        return createChatThreadWithResponseAsync(createChatThreadRequest, repeatabilityRequestID, context)
+        CreateChatThreadOptions createChatThreadRequest, String repeatabilityRequestId, Context context) {
+        return createChatThreadWithResponseAsync(createChatThreadRequest, repeatabilityRequestId, context)
             .flatMap(
                 (Response<CreateChatThreadResult> res) -> {
                     if (res.getValue() != null) {
@@ -253,9 +253,9 @@ public final class ChatImpl {
      * Creates a chat thread.
      *
      * @param createChatThreadRequest Request payload for creating a chat thread.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
-     *     client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
-     *     response without the server executing the request multiple times. The value of the Repeatability-Request-ID
+     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
      *     is an opaque string representing a client-generated, globally unique for all time, identifier for the
      *     request. It is recommended to use version 4 (random) UUIDs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -265,8 +265,8 @@ public final class ChatImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreateChatThreadResult createChatThread(
-        CreateChatThreadOptions createChatThreadRequest, String repeatabilityRequestID) {
-        return createChatThreadAsync(createChatThreadRequest, repeatabilityRequestID).block();
+        CreateChatThreadOptions createChatThreadRequest, String repeatabilityRequestId) {
+        return createChatThreadAsync(createChatThreadRequest, repeatabilityRequestId).block();
     }
 
     /**
@@ -280,17 +280,17 @@ public final class ChatImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreateChatThreadResult createChatThread(CreateChatThreadOptions createChatThreadRequest) {
-        final String repeatabilityRequestID = null;
-        return createChatThreadAsync(createChatThreadRequest, repeatabilityRequestID).block();
+        final String repeatabilityRequestId = null;
+        return createChatThreadAsync(createChatThreadRequest, repeatabilityRequestId).block();
     }
 
     /**
      * Creates a chat thread.
      *
      * @param createChatThreadRequest Request payload for creating a chat thread.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
-     *     client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
-     *     response without the server executing the request multiple times. The value of the Repeatability-Request-ID
+     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
      *     is an opaque string representing a client-generated, globally unique for all time, identifier for the
      *     request. It is recommended to use version 4 (random) UUIDs.
      * @param context The context to associate with this operation.
@@ -301,8 +301,8 @@ public final class ChatImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CreateChatThreadResult> createChatThreadWithResponse(
-        CreateChatThreadOptions createChatThreadRequest, String repeatabilityRequestID, Context context) {
-        return createChatThreadWithResponseAsync(createChatThreadRequest, repeatabilityRequestID, context).block();
+        CreateChatThreadOptions createChatThreadRequest, String repeatabilityRequestId, Context context) {
+        return createChatThreadWithResponseAsync(createChatThreadRequest, repeatabilityRequestId, context).block();
     }
 
     /**

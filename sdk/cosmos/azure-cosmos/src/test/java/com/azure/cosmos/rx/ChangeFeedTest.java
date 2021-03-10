@@ -266,7 +266,7 @@ public class ChangeFeedTest extends TestSuiteBase {
             getContinuationToken()).as("Response continuation should not be null").isNotNull();
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, enabled = false, timeOut = TIMEOUT)
     @Tag(name = "EnableFullFidelity")
     public void changeFeed_fullFidelity_fromNow() throws Exception {
         changeFeed_withUpdatesAndDelete(true);
@@ -387,34 +387,6 @@ public class ChangeFeedTest extends TestSuiteBase {
             .isNotNull();
     }
 
-    private Range<String> convertToMaxExclusive(Range<String> maxInclusiveRange) {
-        assertThat(maxInclusiveRange)
-            .isNotNull()
-            .matches(r -> r.isMaxInclusive(), "Ensure isMaxInclusive is set");
-
-        String max = maxInclusiveRange.getMax();
-        int i = max.length() - 1;
-
-        while (i >= 0) {
-            if (max.charAt(i) == 'F') {
-                i--;
-                continue;
-            }
-
-            char newChar = (char)(((int)max.charAt(i))+1);
-
-            if (i < max.length() - 1) {
-                max = max.substring(0, i) + newChar + max.substring(i + 1);
-            } else {
-                max = max.substring(0, i) + newChar;
-            }
-
-            break;
-        }
-
-        return new Range<>(maxInclusiveRange.getMin(), max, true, false);
-    }
-
     @Test(groups = { "simple" }, timeOut = TIMEOUT, enabled = false)
     public void changeFeed_fromBeginning_withFeedRangeFiltering() throws Exception {
 
@@ -428,7 +400,7 @@ public class ChangeFeedTest extends TestSuiteBase {
 
             Range<String> effectiveRange =
                 feedRangeForLogicalPartition
-                    .getEffectiveRange(
+                    .getNormalizedEffectiveRange(
                         client.getPartitionKeyRangeCache(),
                         null,
                         Mono.just(new Utils.ValueHolder<>(this.createdCollection)))
@@ -436,7 +408,7 @@ public class ChangeFeedTest extends TestSuiteBase {
 
             assertThat(effectiveRange).isNotNull();
 
-            FeedRange feedRange = new FeedRangeEpkImpl(convertToMaxExclusive(effectiveRange));
+            FeedRange feedRange = new FeedRangeEpkImpl(effectiveRange);
 
             CosmosChangeFeedRequestOptions changeFeedOption =
                 CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRange);
