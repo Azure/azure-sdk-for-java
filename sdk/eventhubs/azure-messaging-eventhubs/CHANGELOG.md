@@ -1,6 +1,6 @@
 # Release History
 
-## 5.6.0-beta.1 (Unreleased)
+## 5.5.1 (2021-03-10)
 ### Bug Fixes
 - Update to end the trace span regardless of the scope instance type for process operation tracing spans.
 
@@ -96,22 +96,6 @@ the partition consumer to rebuild the connection later.
 - Tracing link names are shortened when sending events.
 - EventPosition.fromOffset(long) is no longer inclusive.
 
-## 5.0.0-beta.6 (2019-12-02)
-- Artifact name changed from `preview` to `beta`.
-- Producer clients (both sync and async) support sending events only using `EventDataBatch`. All other send overloads are removed.
-- Async consumer now supports receiving events from all partitions to help getting started scenarios.
-- Sync consumer will only support receiving from a single partition.
-- `BatchOptions` is renamed to `CreateBatchOptions`.
-- `receive()` methods now return `PartitionEvent` which includes `PartitionContext` and `EventData`.
-- Producer and consumer clients now support sharing same amqp connection.
-- Removed support for user-provided schedulers.
-- Configuration for owner level and ability to track last enqueued event properties are now in `ReceiveOptions` and will
-be declared at the time of receiving events and not when the client is created.
-- `EventProcessorStore` renamed to `CheckpointStore` and method signatures are updated.
-- `EventProcessor` renamed to `EventProcessorClient` and `EventProcessorBuilder` renamed to `EventProcessorClientBuilder`.
-- New types introduced to simplify functional callbacks used in `EventProcessorClient`.
-- `EventProcessorClient` now supports tracking last enqueued event properties.
-
 ## 5.0.0-preview.5 (2019-11-01)
 - Separate clients for sending and receiving events.
    - `EventHubProducerAsyncClient` and `EventHubProduderClient` for sending events.
@@ -190,3 +174,19 @@ For release notes and more information please visit https://aka.ms/azure-sdk-pre
   clients and consumers to two to avoid failures.
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fazure-messaging-eventhubs%2FCHANGELOG.png)
+## 5.0.0-beta.6 (2019-12-02)
+- Artifact name changed from `preview` to `beta`.
+- Producer clients (both sync and async) support sending events only using `EventDataBatch`. All other send overloads are removed.
+- Async consumer now supports receiving events from all partitions to help getting started scenarios.
+- Sync consumer will only support receiving from a single partition.
+- `BatchOptions` is renamed to `CreateBatchOptions`.
+- `receive()` methods now return `PartitionEvent` which includes `PartitionContext` and `EventData`.
+- Producer and consumer clients now support sharing same amqp connection.
+- Removed support for user-provided schedulers.
+- Configuration for owner level and ability to track last enqueued event properties are now in `ReceiveOptions` and will
+be declared at the time of receiving events and not when the client is created.
+- `EventProcessorStore` renamed to `CheckpointStore` and method signatures are updated.
+- `EventProcessor` renamed to `EventProcessorClient` and `EventProcessorBuilder` renamed to `EventProcessorClientBuilder`.
+- New types introduced to simplify functional callbacks used in `EventProcessorClient`.
+- `EventProcessorClient` now supports tracking last enqueued event properties.
+
