@@ -33,9 +33,7 @@ private case class ItemsPartitionReader
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
   private val client = CosmosClientCache(CosmosClientConfiguration(config, readConfig.forceEventualConsistency), Some(cosmosClientStateHandle))
 
-  private val cosmosAsyncContainer = client
-    .getDatabase(containerTargetConfig.database)
-    .getContainer(containerTargetConfig.container)
+  private val cosmosAsyncContainer = ThroughputControlHelper.getContainer(config, containerTargetConfig, client)
 
   private lazy val iterator = cosmosAsyncContainer.queryItems(
     cosmosQuery.toSqlQuerySpec,

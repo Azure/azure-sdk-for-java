@@ -2,10 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import java.util
+import java.util.UUID
+
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.models.PartitionKey
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.{IdAttributeName, RawJsonBodyAttributeName, TimestampAttributeName}
-import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, CosmosException}
+import com.azure.cosmos.{CosmosAsyncClient, CosmosException}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
@@ -15,9 +18,6 @@ import org.apache.spark.sql.connector.read.ScanBuilder
 import org.apache.spark.sql.connector.write.{LogicalWriteInfo, WriteBuilder}
 import org.apache.spark.sql.types.{LongType, StringType, StructField, StructType}
 import org.apache.spark.sql.util.CaseInsensitiveStringMap
-
-import java.util
-import java.util.UUID
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -64,6 +64,8 @@ private class ItemsTable(val sparkSession: SparkSession,
     CosmosClientConfiguration(effectiveUserConfig,
       useEventualConsistency = readConfig.forceEventualConsistency), None)
 
+  private val container = ThroughputControlHelper.getContainer(effectiveUserConfig, cosmosContainerConfig, client)
+
   override def name(): String = tableName
 
   override def capabilities(): util.Set[TableCapability] = Set(
@@ -104,8 +106,8 @@ private class ItemsTable(val sparkSession: SparkSession,
   // This can be used only when databaseName and ContainerName are specified.
   private[spark] def initializeAndBroadcastCosmosClientStateForContainer(): Broadcast[CosmosClientMetadataCachesSnapshot] = {
     try {
-      client.getDatabase(cosmosContainerConfig.database).getContainer(cosmosContainerConfig.container).readItem(
-        UUID.randomUUID().toString, new PartitionKey(UUID.randomUUID().toString), classOf[ObjectNode])
+        container.readItem(
+            UUID.randomUUID().toString, new PartitionKey(UUID.randomUUID().toString), classOf[ObjectNode])
         .block()
     } catch {
       case _: CosmosException => None
