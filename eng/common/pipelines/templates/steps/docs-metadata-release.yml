@@ -9,7 +9,7 @@ parameters:
   TargetDocRepoName: ''
   TargetDocRepoOwner: ''
   PRBranchName: 'master-rdme'
-  SourceBranchName: 'master'
+  SourceBranchName: 'master-test'
   PRLabels: 'auto-merge'
   ArtifactName: ''
   Language: ''
@@ -84,12 +84,13 @@ steps:
 
 - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
   parameters:
-    PRBranchName: ${{ parameters.PRBranchName }}
+    PRBranchName: ${{ parameters.SourceBranchName }}
     CommitMsg: "Update docs metadata and targeting for release of ${{ parameters.ArtifactName }}"
     RepoName: ${{ parameters.TargetDocRepoName }}
     RepoOwner: ${{ parameters.TargetDocRepoOwner }}
     WorkingDirectory: ${{ parameters.WorkingDirectory }}/repo
     ScriptDirectory: ${{ parameters.WorkingDirectory }}/${{ parameters.ScriptDirectory }}
+    RemoteName: 'origin'
 
 - ${{if ne( parameters['OnboardingBranch'], '')}}:
   - pwsh: |
@@ -117,7 +118,15 @@ steps:
       pwsh: true
     env:
       GH_TOKEN: $(azuresdk-github-pat)
-
+  - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
+    parameters:
+      PRBranchName: ${{ parameters.SourceBranchName }}
+      CommitMsg: "Update docs metadata and targeting for release of ${{ parameters.ArtifactName }}"
+      RepoName: ${{ parameters.TargetDocRepoName }}
+      RepoOwner: ${{ parameters.TargetDocRepoOwner }}
+      WorkingDirectory: ${{ parameters.WorkingDirectory }}/repo
+      ScriptDirectory: ${{ parameters.WorkingDirectory }}/${{ parameters.ScriptDirectory }}
+      RemoteName: 'origin'
   # - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
   #   parameters:
   #     RepoName: ${{ parameters.TargetDocRepoName }}
