@@ -16,6 +16,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.AbstractOAuth2Token;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.util.StringUtils;
@@ -23,9 +24,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpSession;
-import java.util.Collections;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.azure.spring.autoconfigure.aad.Constants.DEFAULT_AUTHORITY_SET;
@@ -54,6 +53,8 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
     public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
         // Delegate to the default implementation for loading a user
         OidcUser oidcUser = oidcUserService.loadUser(userRequest);
+        OidcIdToken idToken = oidcUser.getIdToken();
+        Set<String> roles = new HashSet<>();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(true);
@@ -62,6 +63,10 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
             return (DefaultOidcUser) session.getAttribute(DEFAULT_OIDC_USER);
         }
 
+        List<String> rolesClaim = idToken.getClaimAsStringList("roles");
+        if(null != rolesClaim) {
+            roles = rolesClaim.stream().map(role -> ROLE_PREFIX + role).collect(Collectors.toSet());
+        }
         Set<String> groups = Optional.of(userRequest)
                                      .filter(notUsed -> properties.allowedGroupsConfigured())
                                      .map(OAuth2UserRequest::getAccessToken)
@@ -72,9 +77,11 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
                                        .filter(properties::isAllowedGroup)
                                        .map(group -> ROLE_PREFIX + group)
                                        .collect(Collectors.toSet());
-        Set<SimpleGrantedAuthority> authorities = groupRoles.stream()
-                                                            .map(SimpleGrantedAuthority::new)
-                                                            .collect(Collectors.toSet());
+        roles.addAll(groupRoles);
+        Set<SimpleGrantedAuthority> authorities = roles.stream()
+                                                       .map(SimpleGrantedAuthority::new)
+                                                       .collect(Collectors.toSet());
+
         if (authorities.isEmpty()) {
             authorities = DEFAULT_AUTHORITY_SET;
         }
@@ -87,7 +94,7 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
                     .filter(StringUtils::hasText)
                     .orElse(AADTokenClaim.NAME);
         // Create a copy of oidcUser but use the mappedAuthorities instead
-        DefaultOidcUser defaultOidcUser = new DefaultOidcUser(authorities, oidcUser.getIdToken(), nameAttributeKey);
+        DefaultOidcUser defaultOidcUser = new DefaultOidcUser(authorities, idToken, nameAttributeKey);
 
         session.setAttribute(DEFAULT_OIDC_USER, defaultOidcUser);
         return defaultOidcUser;
