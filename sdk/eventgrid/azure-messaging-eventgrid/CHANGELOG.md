@@ -1,7 +1,26 @@
 # Release History
 
-## 4.0.0 (Unreleased)
+## 4.0.0 (2020-03-11)
+### New Features
+- added `sendEvent` to `EventGridPublisherClient` and `EventGridPublisherAsyncClient` to send a single event.
 
+### Breaking changes
+- `CloudEvent` is moved to `azure-core` SDK version 1.14.0. Its constructor uses `BinaryData` instead of `Object` as the data type for `data`.
+- `EventGridEvent` constructor also uses `BinaryData` instead of `Object` as the data type for `data`.
+- To send custom events, `sendEvents` accepts `Iterable<BinaryData>` instead of `Iterable<Object>`.
+- `EventGridPublisherClientBuilder.serializer()` is removed because `BinaryData.fromObject(Object data, ObjectSerializer serializer)` already supports custom serializer, which can be used to
+  serialize custom events and the data of `CloudEvent` and `EventGridEvent`.
+- `EventGridPublisherClient` is changed to `EventGridPublisherClient<T>` that can be statically instantiated to send `CloudEvent`, `EventGridEvent` and custom events (use `BinaryData`)
+  with methods `sendEvents` and `sendEvent`. 
+  `EventGridPublisherClientBuilder` now has `buildCloudEventPublisherClient`, `buildEventGridEventPublisherClient` and `buildCustomEventPublisherClient` to build the generic-instantiated clients respectively.
+  The async client has the same change.
+- `EventGridPublisherClientBuilder.endpoint()` now requires the EventGrid topic or domain full url endpoint because
+  different EventGrid service deployments may require different url patterns.
+- `EventGridSasGenerator` is removed. Method `generateSas` is moved to `EventGridPublisherClient` and `EventGridPublisherAsyncClient`. 
+
+### Dependency Updates
+- Update `azure-core` dependency to `1.14.0`.
+- Update `azure-core-http-netty` dependency to `1.9.0`.
 
 ## 2.0.0-beta.4 (2020-02-10)
 ### Breaking changes
