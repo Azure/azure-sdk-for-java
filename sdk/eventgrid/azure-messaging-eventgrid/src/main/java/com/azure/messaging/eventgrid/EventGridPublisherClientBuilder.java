@@ -30,8 +30,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.TracerProxy;
 import com.azure.messaging.eventgrid.implementation.CloudEventTracingPipelinePolicy;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -102,19 +100,12 @@ public final class EventGridPublisherClientBuilder {
      * @return a publisher client with asynchronous publishing methods.
      */
     private <T> EventGridPublisherAsyncClient<T> buildAsyncClient(Class<T> eventClass) {
-        String hostname;
-        try {
-            hostname = new URL(Objects.requireNonNull(endpoint, "endpoint cannot be null")).getHost();
-        } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Cannot parse endpoint"));
-        }
-
         EventGridServiceVersion buildServiceVersion = serviceVersion == null
             ? EventGridServiceVersion.getLatest()
             : serviceVersion;
 
         if (httpPipeline != null) {
-            return new EventGridPublisherAsyncClient<T>(httpPipeline, hostname, buildServiceVersion, eventClass);
+            return new EventGridPublisherAsyncClient<T>(httpPipeline, endpoint, buildServiceVersion, eventClass);
         }
 
         Configuration buildConfiguration = (configuration == null)
@@ -139,7 +130,7 @@ public final class EventGridPublisherClientBuilder {
         // Using token before key if both are set
         if (sasToken != null) {
             httpPipelinePolicies.add((context, next) -> {
-                context.getHttpRequest().getHeaders().put(AEG_SAS_TOKEN, sasToken.getSignature());
+                context.getHttpRequest().getHeaders().set(AEG_SAS_TOKEN, sasToken.getSignature());
                 return next.process();
             });
         } else {
@@ -168,7 +159,7 @@ public final class EventGridPublisherClientBuilder {
             .build();
 
 
-        return new EventGridPublisherAsyncClient<T>(buildPipeline, hostname, buildServiceVersion, eventClass);
+        return new EventGridPublisherAsyncClient<T>(buildPipeline, endpoint, buildServiceVersion, eventClass);
     }
 
     /**
