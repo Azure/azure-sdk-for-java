@@ -16,14 +16,14 @@ from form documents. It includes the following main functionalities:
 - [Cognitive Services or Form Recognizer account][form_recognizer_account] to use this package.
 
 ### Include the Package
-**Note:** This beta version targets Azure Form Recognizer service API version v2.0.
+**Note:** This version targets Azure Form Recognizer service API version v2.0.
 
 [//]: # ({x-version-update-start;com.azure:azure-ai-formrecognizer;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>3.0.5</version>
+    <version>3.0.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -121,7 +121,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.2.3</version>
+    <version>1.2.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
