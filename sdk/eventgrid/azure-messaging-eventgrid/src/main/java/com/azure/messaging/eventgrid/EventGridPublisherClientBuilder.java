@@ -100,8 +100,10 @@ public final class EventGridPublisherClientBuilder {
      * an {@link AzureSasCredential} or a {@link AzureKeyCredential} at the respective methods.
      * All other settings have defaults and are optional.
      * @return a publisher client with asynchronous publishing methods.
+     * @throws NullPointerException if {@code endpoint} is null.
      */
     private <T> EventGridPublisherAsyncClient<T> buildAsyncClient(Class<T> eventClass) {
+        Objects.requireNonNull(endpoint, "'endpoint' is required and can not be null.");
         EventGridServiceVersion buildServiceVersion = serviceVersion == null
             ? EventGridServiceVersion.getLatest()
             : serviceVersion;
