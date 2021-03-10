@@ -147,7 +147,7 @@ receiving [`ServiceBusMessage`][ServiceBusMessage] from a specific queue or topi
  - [Settle messages](#settle-messages)
  - [Send and receive from session enabled queues or topics](#send-and-receive-from-session-enabled-queues-or-topics)
  - [Create a dead-letter queue Receiver](#create-a-dead-letter-queue-receiver)
- - [Sharing of connection between clients](#sharing-of-connection-between-clients)
+ - [Sharing a connection between clients](#sharing-of-connection-between-clients)
 ### Send messages
 
 You'll need to create an asynchronous [`ServiceBusSenderAsyncClient`][ServiceBusSenderAsyncClient] or a synchronous

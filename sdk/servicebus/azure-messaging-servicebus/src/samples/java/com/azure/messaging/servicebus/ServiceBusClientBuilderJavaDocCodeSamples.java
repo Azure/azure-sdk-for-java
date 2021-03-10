@@ -3,7 +3,11 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.junit.jupiter.api.Test;
+import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
@@ -12,21 +16,6 @@ public class ServiceBusClientBuilderJavaDocCodeSamples {
     String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
     String topicName = System.getenv("AZURE_SERVICEBUS_SAMPLE_TOPIC_NAME");
     String subscriptionName = System.getenv("AZURE_SERVICEBUS_SAMPLE_SUBSCRIPTION_NAME");
-
-    @Test
-    public void instantiateReceiverSync() {
-        // BEGIN: com.azure.messaging.servicebus.receiver.sync.client.instantiation
-        // Retrieve 'connectionString' and queueName from your configuration.
-        ServiceBusClientBuilder builder = new ServiceBusClientBuilder()
-            .connectionString(connectionString);
-        ServiceBusReceiverClient receiver = builder
-            .receiver()
-            .maxAutoLockRenewDuration(Duration.ofMinutes(1))
-            .queueName(queueName)
-            .buildClient();
-        // END: com.azure.messaging.servicebus.receiver.sync.client.instantiation
-        receiver.receiveMessages(1);
-    }
 
     @Test
     public void instantiateReceiverAsync() {
@@ -44,6 +33,32 @@ public class ServiceBusClientBuilderJavaDocCodeSamples {
         receiver.receiveMessages().blockFirst(Duration.ofSeconds(1));
     }
 
+    public void instantiateSessionReceiver() {
+        // BEGIN: com.azure.messaging.servicebus.session.receiver.async.client.instantiation
+        // Retrieve 'connectionString', 'topicName' and 'subscriptionName' from your configuration.
+        ServiceBusClientBuilder builder = new ServiceBusClientBuilder()
+            .connectionString(connectionString);
+        // Create a session receiver.
+        ServiceBusSessionReceiverAsyncClient sessionReceiver = builder
+            .sessionReceiver()
+            .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
+            .topicName(topicName)
+            .subscriptionName(subscriptionName)
+            .buildAsyncClient();
+
+        // Receiving messages from the first available sessions. It waits up to the AmqpRetryOptions.getTryTimeout().
+        // If no session is available within that operation timeout, it completes with an error. Otherwise, a receiver
+        // is returned when a lock on the session is acquired.
+        Mono<ServiceBusReceiverAsyncClient> receiverMono = sessionReceiver.acceptNextSession();
+
+        Disposable subscription = Flux.usingWhen(receiverMono,
+            receiver -> receiver.receiveMessages(),
+            receiver -> Mono.fromRunnable(receiver::close))
+            .subscribe(message -> System.out.println(message.getBody().toString()));
+        // END: com.azure.messaging.servicebus.session.receiver.async.client.instantiation
+        subscription.dispose();
+    }
+
     @Test
     public void instantiateSenderSync() {
         // BEGIN: com.azure.messaging.servicebus.sender.sync.client.instantiation
@@ -59,17 +74,20 @@ public class ServiceBusClientBuilderJavaDocCodeSamples {
     }
 
     @Test
-    public void instantiateSenderAsync() {
-        // BEGIN: com.azure.messaging.servicebus.sender.async.client.instantiation
-        // Retrieve 'connectionString' and 'topicName' from your configuration.
+    public void instantiateProcessor() {
+        // BEGIN: com.azure.messaging.servicebus.processor.client.instantiation
+        // Retrieve 'connectionString' and 'queueName' from your configuration.
         ServiceBusClientBuilder builder = new ServiceBusClientBuilder()
             .connectionString(connectionString);
-        ServiceBusSenderAsyncClient sender = builder
-            .sender()
-            .topicName(topicName)
-            .buildAsyncClient();
-        // END: com.azure.messaging.servicebus.sender.async.client.instantiation
-        sender.sendMessage(new ServiceBusMessage("payload")).subscribe();
+        ServiceBusProcessorClient processor = builder
+            .processor()
+            .queueName(queueName)
+            .processMessage(System.out::println)
+            .processError(context -> System.err.println(context.getErrorSource()))
+            .buildProcessorClient();
+        // END: com.azure.messaging.servicebus.processor.client.instantiation
+        processor.start();
+        processor.stop();
     }
 
     @Test
