@@ -127,7 +127,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         Response<DetectLanguageResultCollection> response =
             textAnalyticsClient.detectLanguageBatchWithResponse(detectLanguageInputs,
-            new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE);
+                new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE);
 
         // Response's status code
         System.out.printf("Status code of request response: %d%n", response.getStatusCode());
