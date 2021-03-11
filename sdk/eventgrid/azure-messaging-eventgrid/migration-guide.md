@@ -30,7 +30,7 @@ To improve the development experience across Azure services, a set of uniform [d
 consistent experience with established API patterns for all services. A set of [Java design guidelines][GuidelinesJava] was introduced to ensure that Java clients have a natural and idiomatic feel with respect to the Java ecosystem. Further details are available in the guidelines
 for those interested.
 
-Aside from the benefits of the new design mentioned above, the `azure-messaging-eventhub` adds new features to send `CloudEvent` and custom events to
+Aside from the benefits of the new design mentioned above, the `azure-messaging-eventgrid` adds new features to send `CloudEvent` and custom events to
 an EventGrid Topic or Domain Topic. Refer to the [README][README] for more information about sending `CloudEvent` and custom events.
 
 ### Cross Service SDK improvements
