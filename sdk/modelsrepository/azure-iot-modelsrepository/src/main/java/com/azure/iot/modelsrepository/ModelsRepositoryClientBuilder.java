@@ -4,25 +4,14 @@
 package com.azure.iot.modelsrepository;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeader;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.*;
+import com.azure.core.http.policy.*;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JsonSerializer;
 
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -31,11 +20,11 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help aid the configuration and instantiation of {@link ModelsRepotioryClient}
+ * This class provides a fluent builder API to help aid the configuration and instantiation of {@link ModelsRepositoryClient}
  * and {@link ModelsRepositoryAsyncClient ModelsRepositoryAsyncClients}, call {@link #buildClient() buildClient} and {@link
  * #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
  */
-@ServiceClientBuilder(serviceClients = {ModelsRepotioryClient.class, ModelsRepositoryAsyncClient.class})
+@ServiceClientBuilder(serviceClients = {ModelsRepositoryClient.class, ModelsRepositoryAsyncClient.class})
 public final class ModelsRepositoryClientBuilder {
     // This is the name of the properties file in this repo that contains the default properties
     private static final String MODELS_REPOSITORY_PROPERTIES = "azure-iot-modelsrepository.properties";
@@ -48,7 +37,8 @@ public final class ModelsRepositoryClientBuilder {
     private final List<HttpPipelinePolicy> additionalPolicies;
 
     // Fields with default values.
-    private String repositoryEndpoint = DEFAULT_MODELS_REPOSITORY_ENDPOINT;
+    private URI repositoryEndpoint;
+
     private DependencyResolutionOptions dependencyResolutionOption = DependencyResolutionOptions.TRY_FROM_EXPANDED;
 
     // optional/have default values
@@ -76,22 +66,26 @@ public final class ModelsRepositoryClientBuilder {
     /**
      * The public constructor for ModelsRepositoryClientBuilder
      */
-    public ModelsRepositoryClientBuilder()
-    {
+    public ModelsRepositoryClientBuilder() {
         additionalPolicies = new ArrayList<>();
         properties = CoreUtils.getProperties(MODELS_REPOSITORY_PROPERTIES);
         httpLogOptions = new HttpLogOptions();
+        try {
+            this.repositoryEndpoint = new URI(DEFAULT_MODELS_REPOSITORY_ENDPOINT);
+        } catch (URISyntaxException e) {
+            // We know it won't throw since it's a known endpoint and has been validated.
+        }
     }
 
-    private static HttpPipeline buildPipeline(String endpoint,
-          HttpLogOptions httpLogOptions,
-          ClientOptions clientOptions,
-          HttpClient httpClient,
-          List<HttpPipelinePolicy> additionalPolicies,
-          RetryPolicy retryPolicy,
-          Configuration configuration,
-          Map<String, String> properties)
-    {
+    private static HttpPipeline buildPipeline(
+        String endpoint,
+        HttpLogOptions httpLogOptions,
+        ClientOptions clientOptions,
+        HttpClient httpClient,
+        List<HttpPipelinePolicy> additionalPolicies,
+        RetryPolicy retryPolicy,
+        Configuration configuration,
+        Map<String, String> properties) {
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
@@ -145,12 +139,12 @@ public final class ModelsRepositoryClientBuilder {
     }
 
     /**
-     * Create a {@link ModelsRepotioryClient} based on the builder settings.
+     * Create a {@link ModelsRepositoryClient} based on the builder settings.
      *
      * @return the created synchronous ModelsRepotioryClient
      */
-    public ModelsRepotioryClient buildClient() throws URISyntaxException {
-        return new ModelsRepotioryClient(buildAsyncClient());
+    public ModelsRepositoryClient buildClient() throws URISyntaxException {
+        return new ModelsRepositoryClient(buildAsyncClient());
     }
 
     /**
@@ -158,30 +152,27 @@ public final class ModelsRepositoryClientBuilder {
      *
      * @return the created asynchronous ModelsRepositoryAsyncClient
      */
-    public ModelsRepositoryAsyncClient buildAsyncClient() throws URISyntaxException {
+    public ModelsRepositoryAsyncClient buildAsyncClient() {
         Configuration buildConfiguration = this.configuration;
-        if (buildConfiguration == null)
-        {
+        if (buildConfiguration == null) {
             buildConfiguration = Configuration.getGlobalConfiguration().clone();
         }
 
         // Set defaults for these fields if they were not set while building the client
         ModelsRepositoryServiceVersion serviceVersion = this.serviceVersion;
-        if (serviceVersion == null)
-        {
+        if (serviceVersion == null) {
             serviceVersion = ModelsRepositoryServiceVersion.getLatest();
         }
 
         // Default is exponential backoff
         RetryPolicy retryPolicy = this.retryPolicy;
-        if (retryPolicy == null)
-        {
+        if (retryPolicy == null) {
             retryPolicy = DEFAULT_RETRY_POLICY;
         }
 
         if (this.httpPipeline == null) {
             this.httpPipeline = buildPipeline(
-                this.repositoryEndpoint,
+                this.repositoryEndpoint.toString(),
                 this.httpLogOptions,
                 this.clientOptions,
                 this.httpClient,
@@ -216,7 +207,7 @@ public final class ModelsRepositoryClientBuilder {
      * @param repositoryEndpoint Uri of the service in String format.
      * @return the updated ModelsRepositoryClientBuilder instance for fluent building.
      */
-    public ModelsRepositoryClientBuilder repositoryEndpoint(String repositoryEndpoint) {
+    public ModelsRepositoryClientBuilder repositoryEndpoint(URI repositoryEndpoint) {
         this.repositoryEndpoint = repositoryEndpoint;
         return this;
     }
@@ -276,7 +267,7 @@ public final class ModelsRepositoryClientBuilder {
 
     /**
      * Sets the {@link HttpPipelinePolicy} that is used as the retry policy for each request that is sent.
-     *
+     * <p>
      * The default retry policy will be used if not provided. The default retry policy is {@link RetryPolicy#RetryPolicy()}.
      * For implementing custom retry logic, see {@link RetryPolicy} as an example.
      *
@@ -291,7 +282,7 @@ public final class ModelsRepositoryClientBuilder {
     /**
      * Sets the {@link HttpPipeline} to use for the service client.
      * <p>
-     * If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint}.
+     * If {@code pipeline} is set, all other settings are ignored, aside from {@link #repositoryEndpoint(URI) endpoint}.
      *
      * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
      * @return the updated ModelsRepositoryClientBuilder instance for fluent building.
@@ -303,7 +294,7 @@ public final class ModelsRepositoryClientBuilder {
 
     /**
      * Sets the configuration store that is used during construction of the service client.
-     *
+     * <p>
      * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *

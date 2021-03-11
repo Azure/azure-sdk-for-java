@@ -7,7 +7,6 @@ import com.azure.iot.modelsrepository.implementation.models.ModelMetadata;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.*;
 
 public final class RepositoryHandler {
@@ -16,8 +15,8 @@ public final class RepositoryHandler {
     private final ModelsRepositoryAPIImpl protocolLayer;
     private final ModelFetcher modelFetcher;
 
-    public RepositoryHandler(String repositoryUri, ModelsRepositoryAPIImpl protocolLayer) throws URISyntaxException {
-        this.repositoryUri = new URI(repositoryUri);
+    public RepositoryHandler(URI repositoryUri, ModelsRepositoryAPIImpl protocolLayer) {
+        this.repositoryUri = repositoryUri;
         this.protocolLayer = protocolLayer;
 
         if (this.repositoryUri.getScheme() != "file") {
@@ -28,7 +27,7 @@ public final class RepositoryHandler {
     }
 
     public Mono<Map<String, String>> processAsync(String dtmi, DependencyResolutionOptions resolutionOptions, Context context) {
-        return null;
+        return processAsync(Arrays.asList(dtmi), resolutionOptions, context);
     }
 
     public Mono<Map<String, String>> processAsync(Iterable<String> dtmis, DependencyResolutionOptions resolutionOptions, Context context) {

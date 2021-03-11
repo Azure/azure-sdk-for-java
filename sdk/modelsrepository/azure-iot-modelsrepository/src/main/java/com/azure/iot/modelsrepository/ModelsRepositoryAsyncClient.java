@@ -16,7 +16,7 @@ import com.azure.iot.modelsrepository.implementation.ModelsRepositoryAPIImplBuil
 import com.azure.iot.modelsrepository.implementation.RepositoryHandler;
 import reactor.core.publisher.Mono;
 
-import java.net.URISyntaxException;
+import java.net.URI;
 import java.util.Map;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -44,11 +44,11 @@ public final class ModelsRepositoryAsyncClient {
     private final DependencyResolutionOptions defaultDependencyResolutionOption;
 
     ModelsRepositoryAsyncClient(
-        String repositoryEndpoint,
+        URI repositoryUri,
         HttpPipeline pipeline,
         ModelsRepositoryServiceVersion serviceVersion,
         DependencyResolutionOptions dependencyResolutionOption,
-        JsonSerializer jsonSerializer) throws URISyntaxException {
+        JsonSerializer jsonSerializer) {
 
         JacksonAdapter jacksonAdapter = new JacksonAdapter();
         this.serviceVersion = serviceVersion;
@@ -56,12 +56,12 @@ public final class ModelsRepositoryAsyncClient {
         this.defaultDependencyResolutionOption = dependencyResolutionOption;
 
         this.protocolLayer = new ModelsRepositoryAPIImplBuilder()
-            .host(repositoryEndpoint)
+            .host(repositoryUri.toString())
             .pipeline(pipeline)
             .serializerAdapter(jacksonAdapter)
             .buildClient();
 
-        this.repositoryHandler = new RepositoryHandler(repositoryEndpoint, protocolLayer);
+        this.repositoryHandler = new RepositoryHandler(repositoryUri, protocolLayer);
     }
 
     /**
@@ -83,8 +83,8 @@ public final class ModelsRepositoryAsyncClient {
      * and the value is the raw model definition string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, String>> GetModels(String dtmi) {
-        return GetModels(dtmi, this.defaultDependencyResolutionOption);
+    public Mono<Map<String, String>> getModels(String dtmi) {
+        return getModels(dtmi, this.defaultDependencyResolutionOption);
     }
 
     /**
@@ -96,10 +96,10 @@ public final class ModelsRepositoryAsyncClient {
      * and the value is the raw model definition string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, String>> GetModels(String dtmi, DependencyResolutionOptions dependencyResolutionOption) {
+    public Mono<Map<String, String>> getModels(String dtmi, DependencyResolutionOptions dependencyResolutionOption) {
         return withContext(context -> {
             try {
-                return GetModels(dtmi, dependencyResolutionOption, context);
+                return getModels(dtmi, dependencyResolutionOption, context);
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
@@ -107,7 +107,7 @@ public final class ModelsRepositoryAsyncClient {
         });
     }
 
-    private Mono<Map<String, String>> GetModels(String dtmi, DependencyResolutionOptions dependencyResolutionOption, Context context) throws Exception {
+    private Mono<Map<String, String>> getModels(String dtmi, DependencyResolutionOptions dependencyResolutionOption, Context context) throws Exception {
         context.addData(AZ_TRACING_NAMESPACE_KEY, MODELS_REPOSITORY_TRACING_NAMESPACE_VALUE);
         return repositoryHandler.processAsync(dtmi, dependencyResolutionOption, context);
     }
@@ -120,8 +120,8 @@ public final class ModelsRepositoryAsyncClient {
      * and the value is the raw model definition string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, String>> GetModels(Iterable<String> dtmis) {
-        return GetModels(dtmis, this.defaultDependencyResolutionOption);
+    public Mono<Map<String, String>> getModels(Iterable<String> dtmis) {
+        return getModels(dtmis, this.defaultDependencyResolutionOption);
     }
 
     /**
@@ -133,11 +133,11 @@ public final class ModelsRepositoryAsyncClient {
      * and the value is the raw model definition string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, String>> GetModels(Iterable<String> dtmis, DependencyResolutionOptions dependencyResolutionOption) {
-        return withContext(context -> GetModels(dtmis, dependencyResolutionOption, context));
+    public Mono<Map<String, String>> getModels(Iterable<String> dtmis, DependencyResolutionOptions dependencyResolutionOption) {
+        return withContext(context -> getModels(dtmis, dependencyResolutionOption, context));
     }
 
-    private Mono<Map<String, String>> GetModels(Iterable<String> dtmis, DependencyResolutionOptions dependencyResolutionOption, Context context) {
+    private Mono<Map<String, String>> getModels(Iterable<String> dtmis, DependencyResolutionOptions dependencyResolutionOption, Context context) {
         context.addData(AZ_TRACING_NAMESPACE_KEY, MODELS_REPOSITORY_TRACING_NAMESPACE_VALUE);
         return repositoryHandler.processAsync(dtmis, dependencyResolutionOption, context);
     }
