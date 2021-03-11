@@ -39,7 +39,7 @@ com.azure:azure-client-sdk-parent;1.7.0;1.7.0
 com.azure:azure-ai-anomalydetector;3.0.0-beta.1;3.0.0-beta.2
 com.azure:azure-ai-formrecognizer;3.0.5;3.1.0-beta.3
 com.azure:azure-ai-metricsadvisor;1.0.0-beta.3;1.0.0-beta.4
-com.azure:azure-ai-textanalytics;5.0.4;5.1.0-beta.5
+com.azure:azure-ai-textanalytics;5.0.4;5.1.0-beta.6
 com.azure:azure-analytics-synapse-accesscontrol;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-analytics-synapse-artifacts;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-analytics-synapse-spark;1.0.0-beta.2;1.0.0-beta.3
@@ -77,10 +77,10 @@ com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-identity;1.2.4;1.3.0-beta.3
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-iot-deviceupdate;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-messaging-eventgrid;2.0.0-beta.4;2.0.0-beta.5
+com.azure:azure-messaging-eventgrid;2.0.0-beta.4;4.0.0
+com.azure:azure-messaging-servicebus;7.1.0;7.2.0-beta.1
 com.azure:azure-messaging-eventhubs;5.5.0;5.6.0
 com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.5.0;1.5.1
-com.azure:azure-messaging-servicebus;7.0.2;7.1.0
 com.azure:azure-messaging-servicebus-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus-track2-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-mixedreality-authentication;1.0.0-beta.1;1.0.0
@@ -203,7 +203,7 @@ com.azure.resourcemanager:azure-resourcemanager-loganalytics;1.0.0-beta.1;1.0.0-
 com.azure.resourcemanager:azure-resourcemanager-eventgrid;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-healthbot;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-confluent;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-digitaltwins;1.0.0-beta.1;1.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-digitaltwins;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-netapp;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-storagecache;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-redisenterprise;1.0.0-beta.2;1.0.0-beta.3
