@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The AcquiredPhoneNumber model. */
+/** The PurchasedPhoneNumber model. */
 @Fluent
-public final class AcquiredPhoneNumber {
+public final class PurchasedPhoneNumber {
     /*
      * The id of the phone number, e.g. 11234567890.
      */
@@ -73,9 +73,9 @@ public final class AcquiredPhoneNumber {
      * Set the id property: The id of the phone number, e.g. 11234567890.
      *
      * @param id the id value to set.
-     * @return the AcquiredPhoneNumber object itself.
+     * @return the PurchasedPhoneNumber object itself.
      */
-    public AcquiredPhoneNumber setId(String id) {
+    public PurchasedPhoneNumber setId(String id) {
         this.id = id;
         return this;
     }
@@ -93,9 +93,9 @@ public final class AcquiredPhoneNumber {
      * Set the phoneNumber property: String of the E.164 format of the phone number, e.g. +11234567890.
      *
      * @param phoneNumber the phoneNumber value to set.
-     * @return the AcquiredPhoneNumber object itself.
+     * @return the PurchasedPhoneNumber object itself.
      */
-    public AcquiredPhoneNumber setPhoneNumber(String phoneNumber) {
+    public PurchasedPhoneNumber setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
         return this;
     }
@@ -113,9 +113,9 @@ public final class AcquiredPhoneNumber {
      * Set the countryCode property: The ISO 3166-2 code of the phone number's country, e.g. US.
      *
      * @param countryCode the countryCode value to set.
-     * @return the AcquiredPhoneNumber object itself.
+     * @return the PurchasedPhoneNumber object itself.
      */
-    public AcquiredPhoneNumber setCountryCode(String countryCode) {
+    public PurchasedPhoneNumber setCountryCode(String countryCode) {
         this.countryCode = countryCode;
         return this;
     }
@@ -133,9 +133,9 @@ public final class AcquiredPhoneNumber {
      * Set the phoneNumberType property: The phone number's type, e.g. Geographic, TollFree.
      *
      * @param phoneNumberType the phoneNumberType value to set.
-     * @return the AcquiredPhoneNumber object itself.
+     * @return the PurchasedPhoneNumber object itself.
      */
-    public AcquiredPhoneNumber setPhoneNumberType(PhoneNumberType phoneNumberType) {
+    public PurchasedPhoneNumber setPhoneNumberType(PhoneNumberType phoneNumberType) {
         this.phoneNumberType = phoneNumberType;
         return this;
     }
@@ -153,9 +153,9 @@ public final class AcquiredPhoneNumber {
      * Set the capabilities property: Capabilities of a phone number.
      *
      * @param capabilities the capabilities value to set.
-     * @return the AcquiredPhoneNumber object itself.
+     * @return the PurchasedPhoneNumber object itself.
      */
-    public AcquiredPhoneNumber setCapabilities(PhoneNumberCapabilities capabilities) {
+    public PurchasedPhoneNumber setCapabilities(PhoneNumberCapabilities capabilities) {
         this.capabilities = capabilities;
         return this;
     }
@@ -175,9 +175,9 @@ public final class AcquiredPhoneNumber {
      * person, or to an application.
      *
      * @param assignmentType the assignmentType value to set.
-     * @return the AcquiredPhoneNumber object itself.
+     * @return the PurchasedPhoneNumber object itself.
      */
-    public AcquiredPhoneNumber setAssignmentType(PhoneNumberAssignmentType assignmentType) {
+    public PurchasedPhoneNumber setAssignmentType(PhoneNumberAssignmentType assignmentType) {
         this.assignmentType = assignmentType;
         return this;
     }
@@ -195,9 +195,9 @@ public final class AcquiredPhoneNumber {
      * Set the purchaseDate property: The date and time that the phone number was purchased.
      *
      * @param purchaseDate the purchaseDate value to set.
-     * @return the AcquiredPhoneNumber object itself.
+     * @return the PurchasedPhoneNumber object itself.
      */
-    public AcquiredPhoneNumber setPurchaseDate(OffsetDateTime purchaseDate) {
+    public PurchasedPhoneNumber setPurchaseDate(OffsetDateTime purchaseDate) {
         this.purchaseDate = purchaseDate;
         return this;
     }
@@ -215,9 +215,9 @@ public final class AcquiredPhoneNumber {
      * Set the cost property: The incurred cost for a single phone number.
      *
      * @param cost the cost value to set.
-     * @return the AcquiredPhoneNumber object itself.
+     * @return the PurchasedPhoneNumber object itself.
      */
-    public AcquiredPhoneNumber setCost(PhoneNumberCost cost) {
+    public PurchasedPhoneNumber setCost(PhoneNumberCost cost) {
         this.cost = cost;
         return this;
     }

@@ -4,6 +4,7 @@
 package com.azure.communication.sms;
 
 import com.azure.communication.sms.models.SmsSendOptions;
+import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -116,9 +117,9 @@ public class SmsAsyncClientTests extends SmsTestBase {
         options.setTag("New Tag");
 
         // Action & Assert
-        StepVerifier.create(asyncClient.sendWithResponse(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE, options))
-            .assertNext((Response<SmsSendResult> response) -> {
-                assertHappyPath(response.getValue());
+        StepVerifier.create(asyncClient.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE, options))
+            .assertNext((SmsSendResult sendResult) -> {
+                assertHappyPath(sendResult);
             })
             .verifyComplete();
     }

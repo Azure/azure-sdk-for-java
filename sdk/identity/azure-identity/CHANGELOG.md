@@ -1,6 +1,18 @@
 # Release History
 
-## 1.3.0-beta.2 (Unreleased)
+## 1.3.0-beta.2 (2021-03-10)
+### New Features
+- Added the support to enable and configure Persistent Token Cache via `TokenCachePersistenceOptions` API on `InteractiveBrowserCredentialBuilder`, `AuthorizationCodeCredentialBuilder`, `UsernamePasswordCredentialBuilder`, `DeviceCodeCredentialBuilderBuilder` `ClientSecretCredentialBuilder`, `ClientCertificateCredentialBuilder` and `SharedTokenCacheCredentialBuilder`.
+- Added new APIs for authenticating users with `DeviceCodeCredential`,  `InteractiveBrowserCredential` and `UsernamePasswordCredential`.
+    - Added method `authenticate` which pro-actively interacts with the user to authenticate if necessary and returns a serializable `AuthenticationRecord`
+- Added following configurable options in classes `DeviceCodeCredentialBuilder` and `InteractiveBrowserCredentialBuilder`
+    - `authenticationRecord` enables initializing a credential with an `AuthenticationRecord` returned from a prior call to `Authenticate`
+    - `disableAutomaticAuthentication` disables automatic user interaction causing the credential to throw an `AuthenticationRequiredException` when interactive authentication is necessary.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to 1.14.0
+- Upgraded `msal4j` dependency to 1.9.1
+- Upgraded `msal4j-persistence-extension` to 1.1.0
 
 
 ## 1.3.0-beta.1 (2020-02-10)
