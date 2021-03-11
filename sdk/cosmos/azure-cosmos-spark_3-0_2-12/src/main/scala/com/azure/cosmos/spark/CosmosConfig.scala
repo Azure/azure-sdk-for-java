@@ -15,10 +15,13 @@ import org.apache.spark.sql.SparkSession
 
 import java.time.Instant
 import java.time.format.DateTimeFormatter
+import collection.immutable.Map
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
+
+// scalastyle:off multiple.string.literals
 
 // each config category will be a case class:
 // TODO moderakh more configs
@@ -139,7 +142,10 @@ private object ItemWriteStrategy extends Enumeration {
       throw new IllegalArgumentException("name is not a valid ItemWriteStrategy"))
 }
 
-private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy, maxRetryCount: Int, bulkEnabled: Boolean)
+private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy,
+                                     maxRetryCount: Int,
+                                     bulkEnabled: Boolean,
+                                     maxConcurrency: Int)
 
 private object CosmosWriteConfig {
   private val bulkEnabled = CosmosConfigEntry[Boolean](key = "spark.cosmos.write.bulkEnabled",
@@ -147,6 +153,15 @@ private object CosmosWriteConfig {
     mandatory = false,
     parseFromStringFunction = bulkEnabledAsString => bulkEnabledAsString.toBoolean,
     helpMessage = "Cosmos DB Item Write bulk enabled")
+
+  private val writeMaxConcurrency = 100
+  private val MaxRetryCount = 3
+
+  private val maxConcurrency = CosmosConfigEntry[Int](key = "spark.cosmos.write.maxConcurrency",
+    defaultValue = Option.apply(writeMaxConcurrency),
+    mandatory = false,
+    parseFromStringFunction = bulkMaxConcurrencyAsString => bulkMaxConcurrencyAsString.toInt,
+    helpMessage = s"Cosmos DB Item Write max concurrency, default is $writeMaxConcurrency")
 
   private val itemWriteStrategy = CosmosConfigEntry[ItemWriteStrategy](key = "spark.cosmos.write.strategy",
     defaultValue = Option.apply(ItemWriteStrategy.ItemOverwrite),
@@ -157,7 +172,7 @@ private object CosmosWriteConfig {
 
   private val maxRetryCount = CosmosConfigEntry[Int](key = "spark.cosmos.write.maxRetryCount",
     mandatory = false,
-    defaultValue = Option.apply(3),
+    defaultValue = Option.apply(MaxRetryCount),
     parseFromStringFunction = maxRetryAttempt => {
       val cnt = maxRetryAttempt.toInt
       if (cnt < 0) {
@@ -171,13 +186,15 @@ private object CosmosWriteConfig {
     val itemWriteStrategyOpt = CosmosConfigEntry.parse(cfg, itemWriteStrategy)
     val maxRetryCountOpt = CosmosConfigEntry.parse(cfg, maxRetryCount)
     val bulkEnabledOpt = CosmosConfigEntry.parse(cfg, bulkEnabled)
+    val maxConcurrencyOpt = CosmosConfigEntry.parse(cfg, maxConcurrency)
 
     // parsing above already validated this
     assert(itemWriteStrategyOpt.isDefined)
     assert(maxRetryCountOpt.isDefined)
     assert(bulkEnabledOpt.isDefined)
+    assert(maxConcurrencyOpt.isDefined)
 
-    CosmosWriteConfig(itemWriteStrategyOpt.get, maxRetryCountOpt.get, bulkEnabledOpt.get)
+    CosmosWriteConfig(itemWriteStrategyOpt.get, maxRetryCountOpt.get, bulkEnabledOpt.get, maxConcurrencyOpt.get)
   }
 }
 
@@ -465,3 +482,4 @@ private object CosmosConfigEntry {
     }
   }
 }
+// scalastyle:on multiple.string.literals

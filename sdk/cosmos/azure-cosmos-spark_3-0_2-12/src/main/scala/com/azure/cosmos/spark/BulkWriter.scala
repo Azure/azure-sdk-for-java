@@ -16,7 +16,9 @@ import scala.collection.concurrent.TrieMap
 
 //scalastyle:off null
 class BulkWriter(container: CosmosAsyncContainer,
-                 writeConfig: CosmosWriteConfig) extends CosmosLoggingTrait {
+                 writeConfig: CosmosWriteConfig)
+  extends AsyncItemWriter
+    with CosmosLoggingTrait {
 
   private val activeTasks = new AtomicInteger(0)
   private val lock = new ReentrantLock
