@@ -40,7 +40,7 @@ public class MultiDatabaseApplication implements CommandLineRunner {
     public void run(String... var1) throws Exception {
 
         User1 database1UserGet = database1Template.findById(User1.class.getSimpleName(), user.getId(), User1.class).block();
-        // Same to userRepository.findById(user.getId()).block()
+        // Same to userRepository1.findById(user.getId()).block()
         System.out.println(database1UserGet);
         User1 database2UserGet = database2Template.findById(User1.class.getSimpleName(), user.getId(), User1.class).block();
         System.out.println(database2UserGet);
@@ -50,7 +50,7 @@ public class MultiDatabaseApplication implements CommandLineRunner {
     public void setup() {
         database1Template.createContainerIfNotExists(userInfo).block();
         database1Template.insert(User1.class.getSimpleName(), user, new PartitionKey(user.getName())).block();
-        // Same to this.userRepository.save(user).block();
+        // Same to this.userRepository1.save(user).block();
         database2Template.createContainerIfNotExists(userInfo).block();
         database2Template.insert(User1.class.getSimpleName(), user, new PartitionKey(user.getName())).block();
     }
@@ -58,8 +58,7 @@ public class MultiDatabaseApplication implements CommandLineRunner {
     @PreDestroy
     public void cleanup() {
         database1Template.deleteAll(User1.class.getSimpleName(), User1.class).block();
-        // Same to this.userRepository.deleteAll().block();
+        // Same to this.userRepository1.deleteAll().block();
         database2Template.deleteAll(User1.class.getSimpleName(), User1.class).block();
     }
 }
-

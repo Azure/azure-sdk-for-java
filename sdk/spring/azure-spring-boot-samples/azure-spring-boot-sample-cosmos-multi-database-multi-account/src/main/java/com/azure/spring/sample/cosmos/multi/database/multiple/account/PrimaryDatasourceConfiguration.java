@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 
 @Configuration
 @EnableReactiveCosmosRepositories(basePackages = "com.azure.spring.sample.cosmos.multi.database.multiple.account.repository",
@@ -23,7 +22,6 @@ public class PrimaryDatasourceConfiguration extends AbstractCosmosConfiguration{
     private static final String PRIMARY_DATABASE = "primary_database";
 
     @Bean
-    @Primary
     @ConfigurationProperties(prefix = "azure.cosmos.primary")
     public CosmosProperties primary() {
         return new CosmosProperties();
