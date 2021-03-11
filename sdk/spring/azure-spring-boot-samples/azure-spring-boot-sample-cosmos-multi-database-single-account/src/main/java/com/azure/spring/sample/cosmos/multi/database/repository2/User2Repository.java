@@ -7,6 +7,6 @@ import com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository2 extends ReactiveCosmosRepository<User2, String> {
+public interface User2Repository extends ReactiveCosmosRepository<User2, String> {
 
 }
