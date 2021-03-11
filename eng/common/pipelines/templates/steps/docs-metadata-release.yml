@@ -84,7 +84,7 @@ steps:
 
 - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
   parameters:
-    PRBranchName: 'master-rdme'
+    PRBranchName: 'master'
     CommitMsg: "Update docs metadata and targeting for release of ${{ parameters.ArtifactName }}"
     RepoName: ${{ parameters.TargetDocRepoName }}
     RepoOwner: ${{ parameters.TargetDocRepoOwner }}
@@ -120,23 +120,10 @@ steps:
       GH_TOKEN: $(azuresdk-github-pat)
   - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
     parameters:
-      PRBranchName: 'master-rdme'
+      PRBranchName: 'master'
       CommitMsg: "Update docs metadata and targeting for release of ${{ parameters.ArtifactName }}"
       RepoName: ${{ parameters.TargetDocRepoName }}
       RepoOwner: ${{ parameters.TargetDocRepoOwner }}
       WorkingDirectory: ${{ parameters.WorkingDirectory }}/repo
       ScriptDirectory: ${{ parameters.WorkingDirectory }}/${{ parameters.ScriptDirectory }}
       RemoteName: 'origin'
-  # - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
-  #   parameters:
-  #     RepoName: ${{ parameters.TargetDocRepoName }}
-  #     RepoOwner: ${{ parameters.TargetDocRepoOwner }}
-  #     PRBranchName: ${{ parameters.PRBranchName }}-ci
-  #     CommitMsg: "CI Update for release of ${{ parameters.ArtifactName }}"
-  #     PRTitle: "Docs.MS CI Updates for ${{ parameters.ArtifactName }}"
-  #     BaseBranchName: ${{ parameters.OnboardingBranch }}
-  #     WorkingDirectory: ${{ parameters.WorkingDirectory }}/repo
-  #     ScriptDirectory: ${{ parameters.WorkingDirectory }}/${{ parameters.ScriptDirectory }}
-  #     GHReviewersVariable: ${{ parameters.GHReviewersVariable }}
-  #     GHTeamReviewersVariable: ${{ parameters.GHTeamReviewersVariable }}
-  #     CloseAfterOpenForTesting: ${{ parameters.CloseAfterOpenForTesting }}
