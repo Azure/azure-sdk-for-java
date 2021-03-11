@@ -59,7 +59,7 @@
     <dependency>
       <groupId>org.scala-lang.modules</groupId>
       <artifactId>scala-java8-compat_2.12</artifactId>
-      <version>0.9.1</version> <!-- {x-version-update;cosmos_org.scala-lang:scala-java8-compat_2.12;external_dependency} -->
+      <version>0.9.1</version> <!-- {x-version-update;cosmos_org.scala-lang.modules:scala-java8-compat_2.12;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
