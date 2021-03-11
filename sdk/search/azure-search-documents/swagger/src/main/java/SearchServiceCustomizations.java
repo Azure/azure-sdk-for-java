@@ -60,6 +60,8 @@ public class SearchServiceCustomizations extends Customization {
     }
 
     private void customizeImplementationModelsPackage(PackageCustomization packageCustomization) {
+        packageCustomization.getClass("AnalyzeRequest")
+            .getMethod("public AnalyzeRequest setTokenFilters(List<TokenFilterName> tokenFilters) {");
     }
 
     private void customizeModelsPackage(PackageCustomization packageCustomization) {
@@ -74,10 +76,9 @@ public class SearchServiceCustomizations extends Customization {
             PATTERN_REPLACE_CHAR_FILTER, DEFAULT_COGNITIVE_SERVICES_ACCOUNT);
 
         // Add vararg overloads to list setters.
-        addVarArgsOverload(packageCustomization.getClass(INPUT_FIELD_MAPPING_ENTRY), INPUT_FIELD_MAPPING_ENTRY,
-            "inputs", "InputFieldMappingEntry");
-        addVarArgsOverload(packageCustomization.getClass(SCORING_PROFILE), SCORING_PROFILE, "functions",
-            "ScoringFunction");
+        addVarArgsOverload(packageCustomization.getClass(INPUT_FIELD_MAPPING_ENTRY), "inputs",
+            "InputFieldMappingEntry");
+        addVarArgsOverload(packageCustomization.getClass(SCORING_PROFILE), "functions", "ScoringFunction");
 
         // Customize MagnitudeScoringParameters.
         customizeMagnitudeScoringParameters(packageCustomization.getClass(MAGNITUDE_SCORING_PARAMETERS));
@@ -132,10 +133,6 @@ public class SearchServiceCustomizations extends Customization {
         );
     }
 
-    private void customizeInputFieldMappingEntry(ClassCustomization classCustomization) {
-
-    }
-
     private static void bulkChangeClassModifiers(PackageCustomization packageCustomization, int modifier,
         String... classNames) {
         if (classNames == null) {
@@ -154,8 +151,8 @@ public class SearchServiceCustomizations extends Customization {
     /*
      * This helper function adds a varargs overload in addition to a List setter.
      */
-    private static void addVarArgsOverload(ClassCustomization classCustomization, String className,
-        String parameterName, String parameterType) {
+    private static void addVarArgsOverload(ClassCustomization classCustomization, String parameterName,
+        String parameterType) {
         String methodName = "set" + parameterName.substring(0, 1).toUpperCase(Locale.ROOT) + parameterName.substring(1);
 
         // Add the '@JsonSetter' annotation to indicate to Jackson to use the List setter.
@@ -163,8 +160,8 @@ public class SearchServiceCustomizations extends Customization {
             .addAnnotation("@JsonSetter")
             .getJavadoc();
 
-        String varargMethod = String.format(VARARG_METHOD_TEMPLATE, className, methodName, parameterType, parameterName,
-            parameterName, parameterName, parameterName);
+        String varargMethod = String.format(VARARG_METHOD_TEMPLATE, classCustomization.getClassName(), methodName,
+            parameterType, parameterName, parameterName, parameterName, parameterName);
 
         JavadocCustomization newJavadocs = classCustomization.addMethod(varargMethod).getJavadoc();
 
