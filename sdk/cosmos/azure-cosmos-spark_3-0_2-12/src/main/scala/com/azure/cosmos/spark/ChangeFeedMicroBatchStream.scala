@@ -33,7 +33,7 @@ private class ChangeFeedMicroBatchStream
   private val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
   private val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
   private val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(config)
-  private val client = CosmosClientCache.apply(clientConfiguration, Some(cosmosClientStateHandle))
+  private val client = CosmosClientCache(clientConfiguration, Some(cosmosClientStateHandle))
   private val container = ThroughputControlHelper.getContainer(config, containerConfig, client)
   private val streamId = UUID.randomUUID().toString
   private var latestOffsetSnapshot: Option[ChangeFeedOffset] = None
@@ -77,7 +77,7 @@ private class ChangeFeedMicroBatchStream
         .withContinuationState(
           SparkBridgeImplementationInternal
             .extractChangeFeedStateForRange(start.changeFeedState, partition.feedRange),
-        false))
+          clearEndLsn = false))
   }
 
   /**
@@ -122,6 +122,8 @@ private class ChangeFeedMicroBatchStream
       offset
     } else {
       // scalastyle:off null
+      // null means no more data to process
+      // null is used here because the DataSource V2 API is defined in Java
       this.latestOffsetSnapshot = null
       null
       // scalastyle:on null

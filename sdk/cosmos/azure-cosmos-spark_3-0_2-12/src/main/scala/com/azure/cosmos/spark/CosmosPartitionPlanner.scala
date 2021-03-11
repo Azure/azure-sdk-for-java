@@ -78,7 +78,7 @@ private object CosmosPartitionPlanner extends CosmosLoggingTrait {
         case item: ObjectNode if item != null =>
           val lsnNode = item.get(LsnAttributeName)
           if (lsnNode != null && lsnNode.isNumber) {
-            // when grabbing the LSN from the item we need to use teh item's LSN -1
+            // when grabbing the LSN from the item we need to use the item's LSN -1
             // to ensure we would retrieve this item again
             Some(
               SparkBridgeImplementationInternal.toContinuationToken(lsnNode.asLong() - 1))
@@ -452,7 +452,7 @@ private object CosmosPartitionPlanner extends CosmosLoggingTrait {
       cosmosClientConfig: CosmosClientConfiguration,
       cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
       cosmosContainerConfig: CosmosContainerConfig,
-      maxStaleness: Option[Duration] = None,
+      maxStaleness: Option[Duration] = None
   ): Array[PartitionMetadata] = {
 
     this
