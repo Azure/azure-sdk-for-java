@@ -517,7 +517,7 @@ azure.cosmos.secondary.populateQueryMetrics=if-populate-query-metrics
 - The `@EnableReactiveCosmosRepositories` or `@EnableCosmosRepositories` support user-define the cosmos template, use `reactiveCosmosTemplateRef` or `cosmosTemplateRef` to config the name of the `ReactiveCosmosTemplate` or `CosmosTemplate` bean to be used with the repositories detected.
 - If you have multiple cosmos database accounts, you can define multiple `CosmosAsyncClient`. If the single cosmos account has multiple databases, you can use the same `CosmosAsyncClient` to initialize the cosmos template.
 
-<!-- embedme ../../spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmos-multi-database-multi-account/src/main/java/com/azure/spring/sample/cosmos/multi/database/multiple/account/PrimaryDatasourceConfiguration.java#L18-L50 -->
+<!-- embedme ../../spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmos-multi-database-multi-account/src/main/java/com/azure/spring/sample/cosmos/multi/database/multiple/account/PrimaryDatasourceConfiguration.java#L17-L50 -->
 ```java
 @Configuration
 @EnableReactiveCosmosRepositories(basePackages = "com.azure.spring.sample.cosmos.multi.database.multiple.account.repository",
@@ -760,7 +760,7 @@ public class DatasourceConfiguration {
 
 - Create an Application class
 
-<!-- embedme ../../spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmos-multi-database-multi-account/src/main/java/com/azure/spring/sample/cosmos/multi/database/multiple/account/MultiDatabaseApplication.java#L19-L64 -->
+<!-- embedme ../../spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmos-multi-database-single-account/src/main/java/com/azure/spring/sample/cosmos/multi/database/MultiDatabaseApplication.java#L20-L69 -->
 ```java
 @SpringBootApplication
 public class MultiDatabaseApplication implements CommandLineRunner {
