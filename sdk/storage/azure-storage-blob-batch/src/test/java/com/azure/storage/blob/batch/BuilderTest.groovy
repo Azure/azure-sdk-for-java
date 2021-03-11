@@ -39,6 +39,7 @@ class BuilderTest extends Specification {
         def serviceClient = new BlobServiceClientBuilder()
             .endpoint(endpoint)
             .credential(credentials)
+                                                // This is supposed to be matching the following azsdk-java-azure-storage-blob/<version> azsdk-java-azure-storage-blob-batch/<version> <this part is the OS/runtime information>
             .httpClient(new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName + "/" + clientVersion + " " + "(.)*"))
             .buildClient()
 

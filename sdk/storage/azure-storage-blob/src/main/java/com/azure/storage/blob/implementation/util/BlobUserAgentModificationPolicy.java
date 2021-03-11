@@ -25,7 +25,7 @@ public class BlobUserAgentModificationPolicy implements HttpPipelinePolicy {
     private final String clientVersion;
 
     private static final String USER_AGENT = "User-Agent";
-    private static final String REGEX = "azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]*(.)*";
+    private static final String REGEX = "azsdk-java-azure-storage-blob/12\\.\\d{1,2}\\.\\d{1,2}(?:-beta\\.\\d{1,2})?";
     private static final Pattern PATTERN = Pattern.compile(REGEX);
 
     /**
@@ -45,11 +45,12 @@ public class BlobUserAgentModificationPolicy implements HttpPipelinePolicy {
         String userAgent = context.getHttpRequest().getHeaders().getValue(USER_AGENT);
         Matcher matcher = PATTERN.matcher(userAgent);
         StringBuilder builder = new StringBuilder();
-        if (matcher.matches()) {
+        if (matcher.find()) {
+            int insertAfter = matcher.end() + 1; // Add a 1 for the extra space
             String[] ua = userAgent.split(" ");
             for (int i = 0; i < ua.length; i++) {
                 builder.append(ua[i]).append(" ");
-                if (i == 0) {
+                if (builder.length() == insertAfter) {
                     builder.append("azsdk-java-").append(clientName).append("/").append(clientVersion).append(" ");
                 }
             }
