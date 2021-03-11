@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.catalyst.InternalRow
@@ -25,8 +26,7 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
 
     private val client = CosmosClientCache(CosmosClientConfiguration(userConfig, useEventualConsistency = true), Some(cosmosClientStateHandle))
 
-    private val container = client.getDatabase(cosmosTargetContainerConfig.database)
-      .getContainer(cosmosTargetContainerConfig.container)
+    private val container = ThroughputControlHelper.getContainer(userConfig, cosmosTargetContainerConfig, client)
 
     private val containerDefinition = container.read().block().getProperties
     private val partitionKeyDefinition = containerDefinition.getPartitionKeyDefinition

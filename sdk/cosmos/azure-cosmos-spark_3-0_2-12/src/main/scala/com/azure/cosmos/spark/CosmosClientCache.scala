@@ -2,10 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, ConsistencyLevel}
-import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
-import org.apache.spark.broadcast.Broadcast
+import java.time.Duration
 import java.util.ConcurrentModificationException
+
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
+import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, ThrottlingRetryOptions}
+import org.apache.spark.broadcast.Broadcast
 
 import scala.collection.concurrent.TrieMap
 
@@ -41,6 +43,10 @@ private[spark] object CosmosClientCache {
           .key(cosmosClientConfiguration.key)
           .endpoint(cosmosClientConfiguration.endpoint)
           .userAgentSuffix(cosmosClientConfiguration.applicationName)
+            .throttlingRetryOptions(
+                new ThrottlingRetryOptions()
+                    .setMaxRetryAttemptsOnThrottledRequests(Int.MaxValue)
+                    .setMaxRetryWaitTime(Duration.ofSeconds(Integer.MAX_VALUE/1000)))
 
         if (cosmosClientConfiguration.useEventualConsistency){
           builder = builder.consistencyLevel(ConsistencyLevel.EVENTUAL)
