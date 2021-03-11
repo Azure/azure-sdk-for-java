@@ -165,7 +165,7 @@ class CosmosTableSchemaInfererSpec extends UnitSpec {
         schema.fields(0).dataType shouldBe StringType
     }
 
-    it should "ignore system properties" in {
+    it should "include timestamp" in {
         val idVal1 = 20
         val etagVal = "etag"
         val selfVal = "self"
@@ -210,32 +210,6 @@ class CosmosTableSchemaInfererSpec extends UnitSpec {
         schema.fields(0).dataType shouldBe IntegerType
     }
 
-    it should "ignore timestamp" in {
-        val idVal1 = 20
-        val etagVal = "etag"
-        val selfVal = "self"
-        val ridVal = "rid"
-        val attachmentVal = "attachments"
-        val tsVal : Long = 1000000000
-        val objectNode: ObjectNode = objectMapper.createObjectNode()
-        objectNode.put("id", idVal1)
-        objectNode.put(CosmosTableSchemaInferrer.ETagAttributeName, etagVal)
-        objectNode.put(CosmosTableSchemaInferrer.ResourceIdAttributeName, ridVal)
-        objectNode.put(CosmosTableSchemaInferrer.SelfAttributeName, selfVal)
-        objectNode.put(CosmosTableSchemaInferrer.AttachmentsAttributeName, attachmentVal)
-        objectNode.put(CosmosTableSchemaInferrer.TimestampAttributeName, tsVal)
-
-        val docs = List[ObjectNode](objectNode)
-
-        val schema = CosmosTableSchemaInferrer.inferSchema(docs, includeSystemProperties = true, includeTimestamp = false)
-        schema.fields should have size 5
-        schema.fields(schema.fieldIndex("id")).dataType shouldBe IntegerType
-        schema.fields(schema.fieldIndex(CosmosTableSchemaInferrer.ETagAttributeName)).dataType shouldBe StringType
-        schema.fields(schema.fieldIndex(CosmosTableSchemaInferrer.ResourceIdAttributeName)).dataType shouldBe StringType
-        schema.fields(schema.fieldIndex(CosmosTableSchemaInferrer.SelfAttributeName)).dataType shouldBe StringType
-        schema.fields(schema.fieldIndex(CosmosTableSchemaInferrer.AttachmentsAttributeName)).dataType shouldBe StringType
-    }
-
     it should "not ignore system properties and timestamp" in {
         val idVal1 = 20
         val etagVal = "etag"
@@ -253,7 +227,7 @@ class CosmosTableSchemaInfererSpec extends UnitSpec {
 
         val docs = List[ObjectNode](objectNode)
 
-        val schema = CosmosTableSchemaInferrer.inferSchema(docs, includeSystemProperties = true, includeTimestamp = true)
+        val schema = CosmosTableSchemaInferrer.inferSchema(docs, includeSystemProperties = true, includeTimestamp = false)
         schema.fields should have size 6
         schema.fields(schema.fieldIndex("id")).dataType shouldBe IntegerType
         schema.fields(schema.fieldIndex(CosmosTableSchemaInferrer.ETagAttributeName)).dataType shouldBe StringType

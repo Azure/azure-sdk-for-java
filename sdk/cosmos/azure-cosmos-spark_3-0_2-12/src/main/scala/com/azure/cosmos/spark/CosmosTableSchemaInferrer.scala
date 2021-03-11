@@ -106,8 +106,13 @@ private object CosmosTableSchemaInferrer
   private def isAllowedPropertyToMap(propertyName: String,
                                      includeSystemProperties: Boolean,
                                      includeTimestamp: Boolean): Boolean = {
-    (includeSystemProperties || !systemProperties.contains(propertyName)) &&
-      (includeTimestamp || !TimestampAttributeName.equalsIgnoreCase(propertyName))
+    if (includeSystemProperties) {
+      true
+    }
+    else {
+      !systemProperties.contains(propertyName) &&
+        (includeTimestamp || !TimestampAttributeName.equalsIgnoreCase(propertyName))
+    }
   }
 
   // scalastyle:off
