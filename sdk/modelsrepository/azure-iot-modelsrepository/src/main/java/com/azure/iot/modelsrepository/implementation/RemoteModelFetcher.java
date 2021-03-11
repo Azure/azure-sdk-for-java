@@ -5,6 +5,7 @@ package com.azure.iot.modelsrepository.implementation;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.iot.modelsrepository.DtmiConventions;
 import com.azure.iot.modelsrepository.ModelsDependencyResolution;
 import com.azure.iot.modelsrepository.implementation.models.FetchResult;
 import com.fasterxml.jackson.databind.ObjectMapper;

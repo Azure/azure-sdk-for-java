@@ -3,7 +3,6 @@
 
 package com.azure.iot.modelsrepository;
 
-import com.azure.iot.modelsrepository.implementation.DtmiConventions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
