@@ -656,6 +656,19 @@ public class BinaryDataJavaDocCodeSnippet {
         // END: com.azure.core.util.BinaryData.toStream
     }
 
+    /**
+     * Codesnippets for {@link BinaryData#toReadOnlyByteBuffer()}.
+     */
+    public void toReadOnlyByteBuffer() {
+        // BEGIN: com.azure.util.BinaryData.toReadOnlyByteBuffer
+        final byte[] data = "Some Data".getBytes(StandardCharsets.UTF_8);
+        BinaryData binaryData = BinaryData.fromBytes(data);
+        final byte[] bytes = new byte[data.length];
+        binaryData.toReadOnlyByteBuffer().get(bytes, 0, data.length);
+        System.out.println(new String(bytes));
+        // END: com.azure.util.BinaryData.toReadOnlyByteBuffer
+    }
+
     public static class MyJsonSerializer implements JsonSerializer {
         private final ClientLogger logger = new ClientLogger(BinaryDataTest.MyJsonSerializer.class);
         private final ObjectMapper mapper;

@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.ReadOnlyBufferException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -591,6 +592,21 @@ public final class BinaryData {
      */
     public InputStream toStream() {
         return new ByteArrayInputStream(this.data);
+    }
+
+    /**
+     * Returns a read-only {@link ByteBuffer} representation of this {@link BinaryData}.
+     * <p>
+     * Attempting to mutate the returned {@link ByteBuffer} will throw a {@link ReadOnlyBufferException}.
+     *
+     * <p><strong>Get a read-only ByteBuffer from the BinaryData</strong></p>
+     *
+     * {@codesnippet com.azure.util.BinaryData.toReadOnlyByteBuffer}
+     *
+     * @return A read-only {@link ByteBuffer} representing the {@link BinaryData}.
+     */
+    public ByteBuffer toReadOnlyByteBuffer() {
+        return ByteBuffer.wrap(this.data).asReadOnlyBuffer();
     }
 
     /* This will ensure lazy instantiation to avoid hard dependency on Json Serializer. */
