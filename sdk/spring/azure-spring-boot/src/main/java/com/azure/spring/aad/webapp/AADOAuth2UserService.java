@@ -40,6 +40,7 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
     private final AADAuthenticationProperties properties;
     private final GraphClient graphClient;
     private static final String DEFAULT_OIDC_USER = "defaultOidcUser";
+    private static final String ROLES = "roles";
 
     public AADOAuth2UserService(
         AADAuthenticationProperties properties
@@ -63,9 +64,12 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
             return (DefaultOidcUser) session.getAttribute(DEFAULT_OIDC_USER);
         }
 
-        List<String> rolesClaim = idToken.getClaimAsStringList("roles");
-        if(null != rolesClaim) {
-            roles = rolesClaim.stream().map(role -> ROLE_PREFIX + role).collect(Collectors.toSet());
+        if(idToken.containsClaim(ROLES)) {
+            roles = idToken.getClaimAsStringList(ROLES)
+                           .stream()
+                           .filter(s -> StringUtils.hasText(s))
+                           .map(role -> ROLE_PREFIX + role)
+                           .collect(Collectors.toSet());
         }
         Set<String> groups = Optional.of(userRequest)
                                      .filter(notUsed -> properties.allowedGroupsConfigured())
