@@ -169,7 +169,8 @@ public class ClientTelemetry {
             this.clientTelemetryInfo.setHostEnvInfo(azureVMMetadata.getOsType() + "|" + azureVMMetadata.getSku() +
                 "|" + azureVMMetadata.getVmSize() + "|" + azureVMMetadata.getAzEnvironment());
         }).onErrorResume(throwable -> {
-            logger.info("Unable to get azure vm metadata", throwable);
+            logger.info("Unable to get azure vm metadata");
+            logger.debug("Unable to get azure vm metadata", throwable);
             return Mono.empty();
         }).subscribe();
     }

@@ -31,15 +31,14 @@ private class ChangeFeedBatch
 
     val client =
       CosmosClientCache.apply(clientConfiguration, Some(cosmosClientStateHandle))
-    val container = client
-      .getDatabase(containerConfig.database)
-      .getContainer(containerConfig.container)
+    val container = ThroughputControlHelper.getContainer(config, containerConfig, client)
 
     // This maps the StartFrom settings to concrete LSNs
     val initialOffsetJson = CosmosPartitionPlanner.createInitialOffset(container, changeFeedConfig, None)
 
     // Calculates the Input partitions based on start Lsn and latest Lsn
     val latestOffset = CosmosPartitionPlanner.getLatestOffset(
+      config,
       ChangeFeedOffset(initialOffsetJson, None),
       changeFeedConfig.toReadLimit,
       // ok to use from cache because endLsn is ignored in batch mode
@@ -48,7 +47,8 @@ private class ChangeFeedBatch
       this.cosmosClientStateHandle,
       containerConfig,
       partitioningConfig,
-      this.session
+      this.session,
+      container
     )
 
     // Latest offset above has the EndLsn specified based on the point-in-time latest offset

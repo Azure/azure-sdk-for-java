@@ -56,6 +56,7 @@ class PartitionMetadataSpec extends UnitSpec {
     val lastRetrievedAt = new AtomicLong(nowEpochMs)
 
     val viaCtor = PartitionMetadata(
+      Map[String, String](),
       clientConfig,
       None,
       containerConfig,
@@ -69,6 +70,7 @@ class PartitionMetadataSpec extends UnitSpec {
       lastRetrievedAt)
 
     val viaApply = PartitionMetadata(
+      Map[String, String](),
       clientConfig,
       None,
       containerConfig,
@@ -117,6 +119,7 @@ class PartitionMetadataSpec extends UnitSpec {
     val lastRetrievedAt = new AtomicLong(nowEpochMs)
 
     val original = PartitionMetadata(
+      Map[String, String](),
       clientConfig,
       None,
       containerConfig,
@@ -161,6 +164,7 @@ class PartitionMetadataSpec extends UnitSpec {
     val lastRetrievedAt = new AtomicLong(nowEpochMs)
 
     val original = PartitionMetadata(
+      Map[String, String](),
       clientConfig,
       None,
       containerConfig,
@@ -184,27 +188,27 @@ class PartitionMetadataSpec extends UnitSpec {
   //scalastyle:off null
   it should "throw due to missing clientConfig" in {
     assertThrows[IllegalArgumentException](
-      PartitionMetadata(null, None, contCfg, fr, dc, ds, lLsn, 0, None, lrAt, cAt))
+      PartitionMetadata(Map[String, String](), null, None, contCfg, fr, dc, ds, lLsn, 0, None, lrAt, cAt))
   }
 
   it should "throw due to missing containerConfig" in {
     assertThrows[IllegalArgumentException](
-      PartitionMetadata(clientCfg, None, null, fr, dc, ds, lLsn, 0, None, lrAt, cAt))
+      PartitionMetadata(Map[String, String](), clientCfg, None, null, fr, dc, ds, lLsn, 0, None, lrAt, cAt))
   }
 
   it should "throw due to missing feedRange" in {
     assertThrows[IllegalArgumentException](
-      PartitionMetadata(clientCfg, None, contCfg, null, dc, ds, lLsn, 0, None, lrAt, cAt))
+      PartitionMetadata(Map[String, String](), clientCfg, None, contCfg, null, dc, ds, lLsn, 0, None, lrAt, cAt))
   }
 
   it should "throw due to missing lastRetrievedAt" in {
     assertThrows[IllegalArgumentException](
-      PartitionMetadata(clientCfg, None, contCfg, fr, dc, ds, lLsn, 0, None, null, cAt))
+      PartitionMetadata(Map[String, String](), clientCfg, None, contCfg, fr, dc, ds, lLsn, 0, None, null, cAt))
   }
 
   it should "throw due to missing lastUpdatedAt" in {
     assertThrows[IllegalArgumentException](
-      PartitionMetadata(clientCfg, None, contCfg, fr, dc, ds, lLsn, 0, None, lrAt, null))
+      PartitionMetadata(Map[String, String](), clientCfg, None, contCfg, fr, dc, ds, lLsn, 0, None, lrAt, null))
   }
   //scalastyle:on null
   //scalastyle:on multiple.string.literals

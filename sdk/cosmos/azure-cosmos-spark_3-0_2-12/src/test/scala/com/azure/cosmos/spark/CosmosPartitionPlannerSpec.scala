@@ -216,11 +216,12 @@ class CosmosPartitionPlannerSpec
   private[this] def createPartitions
   (
     startLsn: Option[Long],
-    userConfig: collection.mutable.Map[String, String],
+    userConfig: Map[String, String],
     defaultMaxPartitionSizeInMB: Int,
     defaultMinimalPartitionCount: Int
   ) = {
     val rawPartitionMetadata = getPartitionMetadata(
+      userConfig,
       clientConfig,
       None,
       containerConfig
@@ -278,7 +279,8 @@ class CosmosPartitionPlannerSpec
     if (customPartitionCount.isDefined) {
       userConfig.put("spark.cosmos.partitioning.targetedCount", String.valueOf(customPartitionCount.get))
     }
-    val partitions = createPartitions(startLsn, userConfig, defaultMaxPartitionSizeInMB, defaultMinimalPartitionCount)
+    val partitions =
+      createPartitions(startLsn, userConfig.toMap, defaultMaxPartitionSizeInMB, defaultMinimalPartitionCount)
     //scalastyle:on magic.number
 
     val alwaysThrow = false
@@ -322,6 +324,7 @@ class CosmosPartitionPlannerSpec
         this.containerConfig,
         feedRange,
         PartitionMetadata(
+          Map[String, String](),
           this.clientConfig,
           None,
           this.containerConfig,

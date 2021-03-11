@@ -17,7 +17,8 @@ private object PartitionMetadata {
     s"$databaseId/$containerId/${feedRange.min}-${feedRange.max}"
 
   // scalastyle:off parameter.number
-  def apply(cosmosClientConfig: CosmosClientConfiguration,
+  def apply(userConfig: Map[String, String],
+            cosmosClientConfig: CosmosClientConfiguration,
             cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
             cosmosContainerConfig: CosmosContainerConfig,
             feedRange: NormalizedRange,
@@ -34,6 +35,7 @@ private object PartitionMetadata {
       continuationToken)
 
     PartitionMetadata(
+      userConfig,
       cosmosClientConfig,
       cosmosClientStateHandle,
       cosmosContainerConfig,
@@ -51,6 +53,7 @@ private object PartitionMetadata {
 
 private[cosmos] case class PartitionMetadata
 (
+  userConfig: Map[String, String],
   cosmosClientConfig: CosmosClientConfiguration,
   cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
   cosmosContainerConfig: CosmosContainerConfig,
@@ -73,6 +76,7 @@ private[cosmos] case class PartitionMetadata
 
   def cloneForSubRange(subRange: NormalizedRange, startLsn: Long): PartitionMetadata = {
     new PartitionMetadata(
+      this.userConfig,
       this.cosmosClientConfig,
       this.cosmosClientStateHandle,
       this.cosmosContainerConfig,
@@ -89,6 +93,7 @@ private[cosmos] case class PartitionMetadata
 
   def withEndLsn(explicitEndLsn: Long): PartitionMetadata = {
     new PartitionMetadata(
+      this.userConfig,
       this.cosmosClientConfig,
       this.cosmosClientStateHandle,
       this.cosmosContainerConfig,

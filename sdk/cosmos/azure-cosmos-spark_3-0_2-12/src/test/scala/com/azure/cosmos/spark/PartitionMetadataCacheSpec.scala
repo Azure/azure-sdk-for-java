@@ -33,6 +33,7 @@ class PartitionMetadataCacheSpec
     val startEpochMs = Instant.now.toEpochMilli
 
     val newItem = PartitionMetadataCache(
+      Map[String, String](),
       clientConfig,
       None,
       containerConfig,
@@ -47,7 +48,7 @@ class PartitionMetadataCacheSpec
     this.reinitialize()
     val startEpochMs = Instant.now.toEpochMilli
 
-    val newItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    val newItem = PartitionMetadataCache(Map[String, String](), clientConfig, None, containerConfig, feedRange).block()
     newItem.feedRange shouldEqual feedRange
     newItem.lastUpdated.get should be >= startEpochMs
     newItem.lastRetrieved.get should be >=  startEpochMs
@@ -59,7 +60,8 @@ class PartitionMetadataCacheSpec
     Thread.sleep(10)
     //scalastyle:on magic.number
 
-    val nextRetrievedItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    val nextRetrievedItem =
+      PartitionMetadataCache(Map[String, String](), clientConfig, None, containerConfig, feedRange).block()
     nextRetrievedItem.feedRange shouldEqual feedRange
     nextRetrievedItem.lastUpdated.get shouldEqual initialLastUpdated
     nextRetrievedItem.lastRetrieved.get should be > initialLastRetrieved
@@ -69,7 +71,7 @@ class PartitionMetadataCacheSpec
   it should "retrieve new item after purge" taggedAs RequiresCosmosEndpoint in {
     this.reinitialize()
 
-    val newItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    val newItem = PartitionMetadataCache(Map[String, String](), clientConfig, None, containerConfig, feedRange).block()
     val initialLastUpdated = newItem.lastUpdated.get
     PartitionMetadataCache.purge(containerConfig, feedRange) shouldEqual true
 
@@ -77,7 +79,8 @@ class PartitionMetadataCacheSpec
     Thread.sleep(10)
     //scalastyle:on magic.number
 
-    val nextRetrievedItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    val nextRetrievedItem =
+      PartitionMetadataCache(Map[String, String](), clientConfig, None, containerConfig, feedRange).block()
     nextRetrievedItem.lastUpdated.get should be > initialLastUpdated
   }
 
@@ -85,7 +88,7 @@ class PartitionMetadataCacheSpec
   it should "delete cached item after TTL elapsed" taggedAs RequiresCosmosEndpoint in {
     this.reinitialize()
 
-    val newItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    val newItem = PartitionMetadataCache(Map[String, String](), clientConfig, None, containerConfig, feedRange).block()
     val initialLastUpdated = newItem.lastUpdated.get
 
     //scalastyle:off magic.number
@@ -105,7 +108,7 @@ class PartitionMetadataCacheSpec
   it should "automatically update the cached item after staleness threshold elapsed" taggedAs RequiresCosmosEndpoint in {
     this.reinitialize()
 
-    val newItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    val newItem = PartitionMetadataCache(Map[String, String](), clientConfig, None, containerConfig, feedRange).block()
     val initialLastUpdated = newItem.lastUpdated.get
 
     //scalastyle:off magic.number
@@ -117,7 +120,8 @@ class PartitionMetadataCacheSpec
     Thread.sleep(500)
     //scalastyle:on magic.number
 
-    val candidate = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    val candidate =
+      PartitionMetadataCache(Map[String, String](), clientConfig, None, containerConfig, feedRange).block()
     candidate.lastUpdated.get should be > initialLastUpdated
 
     PartitionMetadataCache.purge(containerConfig, feedRange) shouldEqual true
@@ -128,20 +132,22 @@ class PartitionMetadataCacheSpec
   it should "honor maxStaleness" taggedAs RequiresCosmosEndpoint in {
     this.reinitialize()
 
-    val newItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    val newItem =
+      PartitionMetadataCache(Map[String, String](), clientConfig, None, containerConfig, feedRange).block()
     var initialLastUpdated = newItem.lastUpdated.get
 
     //scalastyle:off magic.number
     Thread.sleep(500)
 
     var candidate: PartitionMetadata = PartitionMetadataCache(
-      clientConfig, None, containerConfig, feedRange, Some(Duration.ofMillis(400))).block()
+      Map[String, String](), clientConfig, None, containerConfig, feedRange, Some(Duration.ofMillis(400))).block()
 
     candidate.lastUpdated.get should be > initialLastUpdated
     initialLastUpdated = candidate.lastUpdated.get
     Thread.sleep(1)
     //scalastyle:on magic.number
-    candidate = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange, Some(Duration.ZERO)).block()
+    candidate = PartitionMetadataCache(
+      Map[String, String](), clientConfig, None, containerConfig, feedRange, Some(Duration.ZERO)).block()
     candidate.lastUpdated.get should be > initialLastUpdated
 
     PartitionMetadataCache.purge(containerConfig, feedRange) shouldEqual true
@@ -158,6 +164,7 @@ class PartitionMetadataCacheSpec
     val lastLsn = rnd.nextInt()
 
     val testMetadata = PartitionMetadata(
+      Map[String, String](),
       clientConfig,
       None,
       containerConfig,
@@ -176,7 +183,7 @@ class PartitionMetadataCacheSpec
     Thread.sleep(10)
     //scalastyle:on magic.number
 
-    val newItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    val newItem = PartitionMetadataCache(Map[String, String](), clientConfig, None, containerConfig, feedRange).block()
     newItem.feedRange shouldEqual feedRange
     newItem.lastRetrieved.get should be >= startEpochMs
     newItem.lastUpdated.get shouldEqual startEpochMs
@@ -185,7 +192,7 @@ class PartitionMetadataCacheSpec
     val reinitializedEpochMs = Instant.now.toEpochMilli
     this.reinitialize()
 
-    val realItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    val realItem = PartitionMetadataCache(Map[String, String](), clientConfig, None, containerConfig, feedRange).block()
     realItem.lastUpdated.get should be >= reinitializedEpochMs
     realItem should not (be theSameInstanceAs testMetadata)
   }

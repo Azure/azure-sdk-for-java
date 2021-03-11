@@ -36,6 +36,7 @@ private case class ItemsScan(session: SparkSession,
     val defaultMinPartitionCount = 1 + (2 * session.sparkContext.defaultParallelism)
 
     val partitionMetadata = CosmosPartitionPlanner.getPartitionMetadata(
+      config,
       clientConfiguration,
       Some(cosmosClientStateHandle),
       containerConfig

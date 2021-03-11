@@ -56,7 +56,8 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
   // to retrieve the metadata for the partitioning should only ever need
   // to happen on the driver and not the executors.
   // This also helps reducing the RU consumption of the Cosmos DB call to get the metadata
-  def apply(cosmosClientConfig: CosmosClientConfiguration,
+  def apply(userConfig: Map[String, String],
+            cosmosClientConfig: CosmosClientConfiguration,
             cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
             cosmosContainerConfig: CosmosContainerConfig,
             feedRange: NormalizedRange,
@@ -75,6 +76,7 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
         metadata.lastRetrieved.set(Instant.now.toEpochMilli)
         SMono.just(metadata)
       case None => this.create(
+        userConfig,
         cosmosClientConfig,
         cosmosClientStateHandle,
         cosmosContainerConfig,
@@ -110,6 +112,7 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
 
   private[this] def create
   (
+    userConfig: Map[String, String],
     cosmosClientConfiguration: CosmosClientConfiguration,
     cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
     cosmosContainerConfig: CosmosContainerConfig,
@@ -119,6 +122,7 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
 
     assertOnSparkDriver()
     val metadataObservable = readPartitionMetadata(
+      userConfig,
       cosmosClientConfiguration,
       cosmosClientStateHandle,
       cosmosContainerConfig,
@@ -137,15 +141,14 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
 
   private def readPartitionMetadata
   (
+    userConfig: Map[String, String],
     cosmosClientConfiguration: CosmosClientConfiguration,
     cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
     cosmosContainerConfig: CosmosContainerConfig,
     feedRange: NormalizedRange
   ): SMono[PartitionMetadata] = {
     val client = CosmosClientCache.apply(cosmosClientConfiguration, cosmosClientStateHandle)
-    val container = client
-      .getDatabase(cosmosContainerConfig.database)
-      .getContainer(cosmosContainerConfig.container)
+    val container = ThroughputControlHelper.getContainer(userConfig, cosmosContainerConfig, client)
 
     val options = CosmosChangeFeedRequestOptions.createForProcessingFromNow(
       SparkBridgeImplementationInternal.toFeedRange(feedRange))
@@ -171,6 +174,7 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
       .asScala
       .map(_ => {
         PartitionMetadata(
+          userConfig,
           cosmosClientConfiguration,
           cosmosClientStateHandle,
           cosmosContainerConfig,
@@ -262,7 +266,10 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
     logTrace(s"<-- $timerName: onRunRefreshTimer")
   }
 
-  private def updateIfNecessary(metadataSnapshot: PartitionMetadata): SMono[Int] = {
+  private def updateIfNecessary
+  (
+    metadataSnapshot: PartitionMetadata
+  ): SMono[Int] = {
     val nowEpochMs = Instant.now.toEpochMilli
     val hotThreshold = nowEpochMs - hotThresholdIntervalInMs
     val staleThreshold = nowEpochMs - staleCachedItemRefreshPeriodInMs
@@ -274,6 +281,7 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
       SMono.just(Nothing)
     } else if (lastRetrievedSnapshot < staleThreshold || lastRetrievedSnapshot > hotThreshold) {
       readPartitionMetadata(
+        metadataSnapshot.userConfig,
         metadataSnapshot.cosmosClientConfig,
         metadataSnapshot.cosmosClientStateHandle,
         metadataSnapshot.cosmosContainerConfig,

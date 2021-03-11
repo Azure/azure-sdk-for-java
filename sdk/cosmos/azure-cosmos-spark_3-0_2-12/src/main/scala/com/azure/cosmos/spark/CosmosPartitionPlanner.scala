@@ -149,8 +149,10 @@ private object CosmosPartitionPlanner extends CosmosLoggingTrait {
   // scalastyle:on method.length
 
   // scalastyle:off method.length
+  // scalastyle:off parameter.number
   def getLatestOffset
   (
+    userConfig: Map[String, String],
     startOffset: ChangeFeedOffset,
     readLimit: ReadLimit,
     maxStaleness: Duration,
@@ -158,12 +160,14 @@ private object CosmosPartitionPlanner extends CosmosLoggingTrait {
     cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
     containerConfig: CosmosContainerConfig,
     partitioningConfig: CosmosPartitioningConfig,
-    session: SparkSession
+    session: SparkSession,
+    container: CosmosAsyncContainer
   ): ChangeFeedOffset = {
     assertOnSparkDriver()
     assertNotNull(startOffset, "startOffset")
 
     val latestPartitionMetadata = CosmosPartitionPlanner.getPartitionMetadata(
+      userConfig,
       clientConfiguration,
       Some(cosmosClientStateHandle),
       containerConfig,
@@ -175,11 +179,6 @@ private object CosmosPartitionPlanner extends CosmosLoggingTrait {
     val orderedMetadataWithStartLsn = this.getOrderedPartitionMetadataWithStartLsn(
       startOffset.changeFeedState,
       latestPartitionMetadata)
-    val client =
-      CosmosClientCache.apply(clientConfiguration, Some(cosmosClientStateHandle))
-    val container = client
-      .getDatabase(containerConfig.database)
-      .getContainer(containerConfig.container)
 
     val inputPartitions: Array[CosmosInputPartition] = CosmosPartitionPlanner.createInputPartitions(
       partitioningConfig,
@@ -198,6 +197,7 @@ private object CosmosPartitionPlanner extends CosmosLoggingTrait {
     ChangeFeedOffset(changeFeedStateJson, Some(inputPartitions))
   }
   // scalastyle:on method.length
+  // scalastyle:on parameter.number
 
   private[this] def getOrderedPartitionMetadataWithStartLsn
   (
@@ -448,10 +448,11 @@ private object CosmosPartitionPlanner extends CosmosLoggingTrait {
   }
 
   def getPartitionMetadata(
+      userConfig: Map[String, String],
       cosmosClientConfig: CosmosClientConfiguration,
       cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
       cosmosContainerConfig: CosmosContainerConfig,
-      maxStaleness: Option[Duration] = None
+      maxStaleness: Option[Duration] = None,
   ): Array[PartitionMetadata] = {
 
     this
@@ -464,6 +465,7 @@ private object CosmosPartitionPlanner extends CosmosLoggingTrait {
           .flatMap(
             normalizedRange =>
               PartitionMetadataCache.apply(
+                userConfig,
                 cosmosClientConfig,
                 cosmosClientStateHandle,
                 cosmosContainerConfig,

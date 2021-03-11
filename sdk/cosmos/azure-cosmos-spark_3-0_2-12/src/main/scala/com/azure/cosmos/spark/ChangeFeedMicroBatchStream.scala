@@ -34,7 +34,7 @@ private class ChangeFeedMicroBatchStream
   private val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
   private val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(config)
   private val client = CosmosClientCache.apply(clientConfiguration, Some(cosmosClientStateHandle))
-  private val container = client.getDatabase(containerConfig.database).getContainer(containerConfig.container)
+  private val container = ThroughputControlHelper.getContainer(config, containerConfig, client)
   private val streamId = UUID.randomUUID().toString
   private var latestOffsetSnapshot: Option[ChangeFeedOffset] = None
 
@@ -105,6 +105,7 @@ private class ChangeFeedMicroBatchStream
   override def latestOffset(startOffset: Offset, readLimit: ReadLimit): Offset = {
     val startChangeFeedOffset = startOffset.asInstanceOf[ChangeFeedOffset]
     val offset = CosmosPartitionPlanner.getLatestOffset(
+      config,
       startChangeFeedOffset,
       readLimit,
       Duration.ZERO,
@@ -112,7 +113,8 @@ private class ChangeFeedMicroBatchStream
       this.cosmosClientStateHandle,
       this.containerConfig,
       this.partitioningConfig,
-      this.session
+      this.session,
+      this.container
     )
 
     if (offset.changeFeedState != startChangeFeedOffset.changeFeedState) {
