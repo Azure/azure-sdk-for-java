@@ -529,6 +529,8 @@ Licensed under the MIT License.
                 --add-opens com.azure.cosmos/com.azure.cosmos.models=ALL-UNNAMED
                 --add-opens com.azure.cosmos/com.azure.cosmos.rx=ALL-UNNAMED
                 --add-opens com.azure.cosmos/com.azure.cosmos.rx.proxy=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.throughputControl=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.throughputControl.controller.request=ALL-UNNAMED
               </argLine>
             </configuration>
           </plugin>
