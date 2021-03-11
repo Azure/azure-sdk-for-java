@@ -56,8 +56,12 @@ public class EventHubMessageChannelBinder extends
         handler.setSendTimeout(producerProperties.getExtension().getSendTimeout());
         handler.setSendFailureChannel(errorChannel);
         if (producerProperties.isPartitioned()) {
-            handler.setPartitionKeyExpressionString(
+            if (null != producerProperties.getPartitionKeyExpression()) {
+                handler.setPartitionKeyExpression(producerProperties.getPartitionKeyExpression());
+            } else {
+                handler.setPartitionKeyExpressionString(
                     "'partitionKey-' + headers['" + BinderHeaders.PARTITION_HEADER + "']");
+            }
         } else {
             handler.setPartitionKeyExpression(new FunctionExpression<Message<?>>(m -> m.getPayload().hashCode()));
         }

@@ -26,7 +26,6 @@ public class EventHubMessageConverterTest extends AzureMessageConverterTest<Even
 
     private static final String EVENT_DATA = "event-hub-test-string";
 
-    private static final String PARTITION_KEY = "abc";
     private static final Instant ENQUEUED_TIME = Instant.now().minus(1, ChronoUnit.DAYS);
     private static final Long OFFSET = 1234567890L;
     private static final Long SEQUENCE_NUMBER = 123456L;
@@ -121,7 +120,6 @@ public class EventHubMessageConverterTest extends AzureMessageConverterTest<Even
     @Test
     public void testSystemPropertiesScreenedOut() {
         Map<String, Object> headerMap = new HashMap<>();
-        headerMap.put(EventHubHeaders.PARTITION_KEY, PARTITION_KEY);
         headerMap.put(EventHubHeaders.ENQUEUED_TIME, ENQUEUED_TIME);
         headerMap.put(EventHubHeaders.OFFSET, OFFSET);
         headerMap.put(EventHubHeaders.SEQUENCE_NUMBER, SEQUENCE_NUMBER);
@@ -132,7 +130,6 @@ public class EventHubMessageConverterTest extends AzureMessageConverterTest<Even
         MyEventHubMessageConverter converter = new MyEventHubMessageConverter();
         converter.setCustomHeaders(headers, eventData);
 
-        assertFalse(eventData.getProperties().containsKey(EventHubHeaders.PARTITION_KEY));
         assertFalse(eventData.getProperties().containsKey(EventHubHeaders.ENQUEUED_TIME));
         assertFalse(eventData.getProperties().containsKey(EventHubHeaders.OFFSET));
         assertFalse(eventData.getProperties().containsKey(EventHubHeaders.SEQUENCE_NUMBER));
@@ -148,6 +145,5 @@ public class EventHubMessageConverterTest extends AzureMessageConverterTest<Even
         assertTrue(headerHeadersMap.containsKey(EventHubHeaders.ENQUEUED_TIME));
         assertTrue(headerHeadersMap.containsKey(EventHubHeaders.OFFSET));
         assertTrue(headerHeadersMap.containsKey(EventHubHeaders.SEQUENCE_NUMBER));
-        assertTrue(headerHeadersMap.containsKey(EventHubHeaders.PARTITION_KEY));
     }
 }

@@ -30,4 +30,8 @@ public class AzureHeaders {
     public static final String LOCK_TOKEN = PREFIX + "locktoken";
 
     public static final String MESSAGE_SESSION = PREFIX + "message_session";
+
+    private static final String SYS_PREFIX = "scst_";
+    public static final String PARTITION_OVERRIDE = SYS_PREFIX + "partitionOverride";
+    public static final String PARTITION_HEADER = SYS_PREFIX + "partition";
 }

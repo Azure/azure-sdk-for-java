@@ -161,17 +161,23 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
 
     private PartitionSupplier toPartitionSupplier(Message<?> message) {
         PartitionSupplier partitionSupplier = new PartitionSupplier();
-        String partitionKey = message.getHeaders().get(AzureHeaders.PARTITION_KEY, String.class);
-        if (!StringUtils.hasText(partitionKey) && this.partitionKeyExpression != null) {
-            partitionKey = this.partitionKeyExpression.getValue(this.evaluationContext, message, String.class);
+        // Priority setting partitionId
+        String partitionId = message.getHeaders().get(AzureHeaders.PARTITION_ID, String.class);
+        if (!StringUtils.hasText(partitionId) && message.getHeaders().containsKey(AzureHeaders.PARTITION_OVERRIDE)) {
+            partitionId = String.valueOf(message.getHeaders().get(AzureHeaders.PARTITION_OVERRIDE));
+        } else if (!StringUtils.hasText(partitionId) && message.getHeaders().containsKey(AzureHeaders.PARTITION_HEADER)) {
+            partitionId = String.valueOf(message.getHeaders().get(AzureHeaders.PARTITION_HEADER, Integer.class));
         }
-
-        if (StringUtils.hasText(partitionKey)) {
-            partitionSupplier.setPartitionKey(partitionKey);
-        }
-
-        if (message.getHeaders().containsKey(AzureHeaders.PARTITION_ID)) {
-            partitionSupplier.setPartitionId(message.getHeaders().get(AzureHeaders.PARTITION_ID, String.class));
+        if (StringUtils.hasText(partitionId)) {
+            partitionSupplier.setPartitionId(partitionId);
+        } else {
+            // Access to payload properties is not supported here.
+            if (this.partitionKeyExpression != null) {
+                String partitionKey = this.partitionKeyExpression.getValue(this.evaluationContext, message, String.class);
+                if (StringUtils.hasText(partitionKey)) {
+                    partitionSupplier.setPartitionKey(partitionKey);
+                }
+            }
         }
         return partitionSupplier;
     }

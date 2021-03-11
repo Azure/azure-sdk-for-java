@@ -32,7 +32,6 @@ public class EventHubMessageConverter extends AbstractAzureMessageConverter<Even
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubMessageConverter.class);
 
     private static final Set<String> SYSTEM_HEADERS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
-        EventHubHeaders.PARTITION_KEY,
         EventHubHeaders.ENQUEUED_TIME,
         EventHubHeaders.OFFSET,
         EventHubHeaders.SEQUENCE_NUMBER)));
@@ -89,7 +88,6 @@ public class EventHubMessageConverter extends AbstractAzureMessageConverter<Even
         result.put(EventHubHeaders.ENQUEUED_TIME, azureMessage.getEnqueuedTime());
         result.put(EventHubHeaders.OFFSET, azureMessage.getOffset());
         result.put(EventHubHeaders.SEQUENCE_NUMBER, azureMessage.getSequenceNumber());
-        result.put(EventHubHeaders.PARTITION_KEY, azureMessage.getPartitionKey());
         return result;
     }
 }
