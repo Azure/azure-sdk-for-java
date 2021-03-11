@@ -16,6 +16,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.EnvironmentCredentialBuilder;
+import com.azure.identity.EnvironmentCredential;
+
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -74,8 +77,8 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new FakeCredentials());
         } else {
-            System.out.println("Creating DefaultAzureCredentialBuilder for tenant id 3b78b39a-ac6c-465a-a010-5a3f47148ff0");
-            builder.credential(new DefaultAzureCredentialBuilder().tenantId("3b78b39a-ac6c-465a-a010-5a3f47148ff0").authorityHost("https://login.windows-ppe.net").build());
+            System.out.println("Creating ClientSecretCredentialBuilder for tenant id 3b78b39a-ac6c-465a-a010-5a3f47148ff0");
+            builder.credential(new ClientSecretCredentialBuilder().tenantId("3b78b39a-ac6c-465a-a010-5a3f47148ff0").clientId("19ea75db-1ade-473a-9f60-c3fb905f1f56").clientSecret("wxJC4-t.~G2Xb6gnTrXU9~t~F41hrBl42l").authorityHost("https://login.windows-ppe.net").build());
         }
 
         if (getTestMode() == TestMode.RECORD) {
