@@ -1,6 +1,7 @@
 ## Release History
 
-### 4.13.0 (2021-03-11) NOTE: THIS RELEASE UPDATES `reactor-core` and `reactor-netty` MAJOR VERSIONS TO `2020.0.4 (Europium)` RELEASE TRAIN
+### 4.13.0 (2021-03-11) 
+#### NOTE: THIS RELEASE UPDATES `reactor-core` and `reactor-netty` MAJOR VERSIONS TO `2020.0.4 (Europium)` RELEASE TRAIN
 #### New Features
 * Updated `reactor-core` version to 3.4.3.
 * Updated `reactor-netty` version to 1.0.4.
