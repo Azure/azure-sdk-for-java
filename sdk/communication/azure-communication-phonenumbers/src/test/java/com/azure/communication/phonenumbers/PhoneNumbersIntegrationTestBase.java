@@ -23,6 +23,9 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.EnvironmentCredentialBuilder;
+import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.EnvironmentCredential;
 
 import reactor.core.publisher.Mono;
 
@@ -97,7 +100,9 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new FakeCredentials());
         } else {
-            builder.credential(new DefaultAzureCredentialBuilder().build());
+            builder.credential(new ClientSecretCredentialBuilder().tenantId("3b78b39a-ac6c-465a-a010-5a3f47148ff0").clientId("19ea75db-1ade-473a-9f60-c3fb905f1f56").clientSecret("wxJC4-t.~G2Xb6gnTrXU9~t~F41hrBl42l").authorityHost("https://login.windows-ppe.net").build());
+
+            //builder.credential(new DefaultAzureCredentialBuilder().build());
         }
 
         if (getTestMode() == TestMode.RECORD) {
