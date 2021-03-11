@@ -517,7 +517,7 @@ azure.cosmos.secondary.populateQueryMetrics=if-populate-query-metrics
 - The `@EnableReactiveCosmosRepositories` or `@EnableCosmosRepositories` support user-define the cosmos template, use `reactiveCosmosTemplateRef` or `cosmosTemplateRef` to config the name of the `ReactiveCosmosTemplate` or `CosmosTemplate` bean to be used with the repositories detected.
 - If you have multiple cosmos database accounts, you can define multiple `CosmosAsyncClient`. If the single cosmos account has multiple databases, you can use the same `CosmosAsyncClient` to initialize the cosmos template.
 
-<!-- embedme ../../spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmos-multi-database-multi-account/src/main/java/com/azure/spring/sample/cosmos/multi/database/multiple/account/PrimaryDatasourceConfiguration.java#L17-L50 -->
+<!-- embedme ../../spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmos-multi-database-multi-account/src/main/java/com/azure/spring/sample/cosmos/multi/database/multiple/account/PrimaryDatasourceConfiguration.java#L17-L48 -->
 ```java
 @Configuration
 @EnableReactiveCosmosRepositories(basePackages = "com.azure.spring.sample.cosmos.multi.database.multiple.account.repository",
@@ -527,7 +527,6 @@ public class PrimaryDatasourceConfiguration extends AbstractCosmosConfiguration{
     private static final String PRIMARY_DATABASE = "primary_database";
 
     @Bean
-    @Primary
     @ConfigurationProperties(prefix = "azure.cosmos.primary")
     public CosmosProperties primary() {
         return new CosmosProperties();
@@ -766,7 +765,7 @@ public class DatasourceConfiguration {
 public class MultiDatabaseApplication implements CommandLineRunner {
 
     @Autowired
-    private UserRepository1 userRepository1;
+    private User1Repository user1Repository;
 
     @Autowired
     @Qualifier("database1Template")
@@ -776,8 +775,12 @@ public class MultiDatabaseApplication implements CommandLineRunner {
     @Qualifier("database2Template")
     private ReactiveCosmosTemplate database2Template;
 
-    private final User1 user = new User1("1024", "1024@geek.com", "1k", "Mars");
-    private static CosmosEntityInformation<User1, String> userInfo = new CosmosEntityInformation<>(User1.class);
+    private final User1 user1 = new User1("1024", "1024@geek.com", "1k", "Mars");
+    private static CosmosEntityInformation<User1, String> user1Info = new CosmosEntityInformation<>(User1.class);
+
+    private final User2 user2 = new User2("2048", "2048@geek.com", "2k", "Mars");
+    private static CosmosEntityInformation<User2, String> user2Info = new CosmosEntityInformation<>(User2.class);
+
 
     public static void main(String[] args) {
         SpringApplication.run(MultiDatabaseApplication.class, args);
@@ -785,27 +788,27 @@ public class MultiDatabaseApplication implements CommandLineRunner {
 
     public void run(String... var1) throws Exception {
 
-        User1 database1UserGet = database1Template.findById(User1.class.getSimpleName(), user.getId(), User1.class).block();
+        User1 database1UserGet = database1Template.findById(User1.class.getSimpleName(), user1.getId(), User1.class).block();
         // Same to userRepository1.findById(user.getId()).block()
         System.out.println(database1UserGet);
-        User1 database2UserGet = database2Template.findById(User1.class.getSimpleName(), user.getId(), User1.class).block();
+        User2 database2UserGet = database2Template.findById(User2.class.getSimpleName(), user2.getId(), User2.class).block();
         System.out.println(database2UserGet);
     }
 
     @PostConstruct
     public void setup() {
-        database1Template.createContainerIfNotExists(userInfo).block();
-        database1Template.insert(User1.class.getSimpleName(), user, new PartitionKey(user.getName())).block();
+        database1Template.createContainerIfNotExists(user1Info).block();
+        database1Template.insert(User1.class.getSimpleName(), user1, new PartitionKey(user1.getName())).block();
         // Same to this.userRepository1.save(user).block();
-        database2Template.createContainerIfNotExists(userInfo).block();
-        database2Template.insert(User1.class.getSimpleName(), user, new PartitionKey(user.getName())).block();
+        database2Template.createContainerIfNotExists(user2Info).block();
+        database2Template.insert(User2.class.getSimpleName(), user2, new PartitionKey(user2.getName())).block();
     }
 
     @PreDestroy
     public void cleanup() {
         database1Template.deleteAll(User1.class.getSimpleName(), User1.class).block();
         // Same to this.userRepository1.deleteAll().block();
-        database2Template.deleteAll(User1.class.getSimpleName(), User1.class).block();
+        database2Template.deleteAll(User2.class.getSimpleName(), User2.class).block();
     }
 }
 ```
