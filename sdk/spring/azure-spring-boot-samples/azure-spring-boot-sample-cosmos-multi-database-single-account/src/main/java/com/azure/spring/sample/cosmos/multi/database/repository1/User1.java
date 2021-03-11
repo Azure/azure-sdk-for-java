@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.sample.cosmos.multi.database.repository;
+package com.azure.spring.sample.cosmos.multi.database.repository1;
 
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import org.springframework.data.annotation.Id;
 
 
-public class User {
+public class User1 {
     @Id
     private String id;
 
@@ -18,11 +18,11 @@ public class User {
 
     private String address;
 
-    public User(){
+    public User1(){
 
     }
 
-    public User(String id, String email, String name, String address) {
+    public User1(String id, String email, String name, String address) {
         this.id = id;
         this.email = email;
         this.name = name;

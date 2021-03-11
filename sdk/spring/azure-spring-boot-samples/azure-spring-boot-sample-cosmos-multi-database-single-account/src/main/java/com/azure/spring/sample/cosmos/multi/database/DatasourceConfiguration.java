@@ -30,7 +30,7 @@ public class DatasourceConfiguration {
             .endpoint(cosmosProperties.getUri());
     }
 
-    @EnableReactiveCosmosRepositories(basePackages = "com.azure.spring.sample.cosmos.multi.database.repository",
+    @EnableReactiveCosmosRepositories(basePackages = "com.azure.spring.sample.cosmos.multi.database.repository1",
         reactiveCosmosTemplateRef = "database1Template")
     public class Database1Configuration extends AbstractCosmosConfiguration {
 

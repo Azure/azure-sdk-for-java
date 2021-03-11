@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.sample.cosmos.multi.database.repository;
+package com.azure.spring.sample.cosmos.multi.database.repository2;
 
 import com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends ReactiveCosmosRepository<User, String> {
+public interface UserRepository2 extends ReactiveCosmosRepository<User2, String> {
 
 }

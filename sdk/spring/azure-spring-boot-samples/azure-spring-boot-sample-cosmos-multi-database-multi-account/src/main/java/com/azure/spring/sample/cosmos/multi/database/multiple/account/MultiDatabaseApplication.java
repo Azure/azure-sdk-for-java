@@ -45,26 +45,29 @@ public class MultiDatabaseApplication implements CommandLineRunner {
 
     public void run(String... var1) throws Exception {
 
-        CosmosUser cosmosUserGet = primaryDatabaseTemplate.findById(cosmosUser.getId(), cosmosUser.getClass()).block(); // Same to this.cosmosUserRepository.findById(cosmosUser.getId()).block();
+        CosmosUser cosmosUserGet = primaryDatabaseTemplate.findById(cosmosUser.getId(), cosmosUser.getClass()).block();
+        // Same to this.cosmosUserRepository.findById(cosmosUser.getId()).block();
         MysqlUser mysqlUser = new MysqlUser(cosmosUserGet.getId(), cosmosUserGet.getEmail(), cosmosUserGet.getName(), cosmosUserGet.getAddress());
         mysqlUserRepository.save(mysqlUser);
+        mysqlUserRepository.findAll().forEach(System.out::println);
         CosmosUser secondaryCosmosUserGet = secondaryDatabaseTemplate.findById(CosmosUser.class.getSimpleName(), cosmosUser.getId(), CosmosUser.class);
         System.out.println(secondaryCosmosUserGet);
-        mysqlUserRepository.findAll().forEach(System.out::println);
     }
 
 
     @PostConstruct
     public void setup() {
         primaryDatabaseTemplate.createContainerIfNotExists(userInfo).block();
-        primaryDatabaseTemplate.insert(CosmosUser.class.getSimpleName(), cosmosUser, new PartitionKey(cosmosUser.getName())).block(); // Same to this.cosmosUserRepository.save(user).block();
+        primaryDatabaseTemplate.insert(CosmosUser.class.getSimpleName(), cosmosUser, new PartitionKey(cosmosUser.getName())).block();
+        // Same to this.cosmosUserRepository.save(user).block();
         secondaryDatabaseTemplate.createContainerIfNotExists(userInfo);
         secondaryDatabaseTemplate.insert(CosmosUser.class.getSimpleName(), cosmosUser, new PartitionKey(cosmosUser.getName()));
    }
 
     @PreDestroy
     public void cleanup() {
-        primaryDatabaseTemplate.deleteAll(CosmosUser.class.getSimpleName(), CosmosUser.class).block(); // Same to this.cosmosUserRepository.deleteAll().block();
+        primaryDatabaseTemplate.deleteAll(CosmosUser.class.getSimpleName(), CosmosUser.class).block();
+        // Same to this.cosmosUserRepository.deleteAll().block();
         secondaryDatabaseTemplate.deleteAll(CosmosUser.class.getSimpleName() , CosmosUser.class);
         mysqlUserRepository.deleteAll();
     }
