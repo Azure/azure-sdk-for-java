@@ -423,10 +423,12 @@ private object CosmosPartitionPlanner extends CosmosLoggingTrait {
     }
   }
 
-  private[this] def getFeedRanges(
-      cosmosClientConfig: CosmosClientConfiguration,
-      cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
-      cosmosContainerConfig: CosmosContainerConfig
+  private[this] def getFeedRanges
+  (
+    userConfig: Map[String, String],
+    cosmosClientConfig: CosmosClientConfiguration,
+    cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+    cosmosContainerConfig: CosmosContainerConfig
   ) = {
 
   assertNotNull(cosmosClientConfig, "cosmosClientConfig")
@@ -434,9 +436,7 @@ private object CosmosPartitionPlanner extends CosmosLoggingTrait {
     val client =
       CosmosClientCache.apply(cosmosClientConfig, cosmosClientStateHandle)
 
-    val container = client
-      .getDatabase(cosmosContainerConfig.database)
-      .getContainer(cosmosContainerConfig.container)
+    val container = ThroughputControlHelper.getContainer(userConfig, cosmosContainerConfig, client)
 
     container
       .getFeedRanges
@@ -456,9 +456,11 @@ private object CosmosPartitionPlanner extends CosmosLoggingTrait {
   ): Array[PartitionMetadata] = {
 
     this
-      .getFeedRanges(cosmosClientConfig,
-                     cosmosClientStateHandle,
-                     cosmosContainerConfig)
+      .getFeedRanges(
+        userConfig,
+        cosmosClientConfig,
+        cosmosClientStateHandle,
+        cosmosContainerConfig)
       .flatMap(feedRanges => {
         SFlux
           .fromArray(feedRanges)
