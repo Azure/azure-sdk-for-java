@@ -271,7 +271,7 @@ jobs:
     pool:
       name: $(Pool)
       vmImage: $(OSVmImage)
-    
+
     variables:
       - template: ../variables/globals.yml
 
@@ -382,7 +382,7 @@ jobs:
           mavenPomFile: ClientAggregatePom.xml
           # For the From Source runs we don't want the -am switch as we don't care about running tests for our dependencies
           # but we do want the -amd switch because we want to run tests on things that depend on us.
-          options: ${{ parameters.TestOptions }} -pl $(PLSkipOptions)$(ProjectList) -amd
+          options: ${{ parameters.TestOptions }} -pl $(PLSkipOptions)$(ProjectList) -amd -T 1C
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)

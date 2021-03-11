@@ -1,6 +1,10 @@
 # Release History
 ## 1.0.0-beta.5 (Unreleased)
+
+
+## 1.0.0-beta.4 (2021-03-09)
 ### Added
+- Added Azure Active Directory authentication support
 - Support for creating SmsClient with TokenCredential.
 - Added support for 1:N SMS messaging.
 - Added support for tagging SMS messages.
@@ -11,10 +15,6 @@
 - Updated `public Mono<SendSmsResponse> sendMessage(PhoneNumberIdentifier from, PhoneNumberIdentifier to, String message)` to `public Mono<SendSmsResponse> send(String from, String to, String message)`.
 - Updated `public Mono<Response<SendSmsResponse>> sendMessageWithResponse(PhoneNumberIdentifier from,List<PhoneNumberIdentifier> to, String message, SendSmsOptions smsOptions, Context context)` to `Mono<Response<SmsSendResult>> sendWithResponse(String from, String to, String message, SmsSendOptions options, Context context)`.
 - Replaced `SendSmsResponse` with `SmsSendResult`.
-
-## 1.0.0-beta.4 (Skipped)
-### Added
-- Added Azure Active Directory authentication support
 
 ## 1.0.0-beta.3 (2020-11-16)
 ### Added

@@ -18,8 +18,8 @@ from pom import Pom
 
 EXTERNAL_DEPENDENCIES_FILE = 'eng/versioning/external_dependencies.txt'
 ROOT_POMS = [
-    'org.springframework.boot:spring-boot-dependencies;2.3.5.RELEASE',
-    'org.springframework.cloud:spring-cloud-dependencies;Hoxton.SR8'
+    'org.springframework.boot:spring-boot-dependencies;2.4.3',
+    'org.springframework.cloud:spring-cloud-dependencies;2020.0.1'
 ]
 SKIP_IDS = [
     'org.eclipse.jgit:org.eclipse.jgit'  # Refs: https://github.com/Azure/azure-sdk-for-java/pull/13956/files#r468368271
