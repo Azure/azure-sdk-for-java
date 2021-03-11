@@ -52,5 +52,5 @@ steps:
       -CommitMsg "${{ parameters.CommitMsg }}"
       -GitUrl "https://$(azuresdk-github-pat)@github.com/${{ parameters.PROwner }}/$(RepoNameWithoutOwner).git"
       -PushArgs "${{ parameters.PushArgs }}"
-      -SkipCommit ${{ parameters.SkipCheckingForChanges }}
+      -SkipCommit $${{ parameters.SkipCheckingForChanges }}
       -RemoteName ${{ parameters.RemoteName }}
