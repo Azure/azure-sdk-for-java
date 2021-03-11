@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.iot.modelsrepository;
 
 import com.azure.core.http.HttpClient;
@@ -64,7 +67,7 @@ public class ModelRepositoryIntegrationTests extends ModelsRepositoryTestBase {
         final String dtmi = "dtmi:com:example:Thermostat;1";
         ModelsRepositoryAsyncClient client = getAsyncClient(httpClient, serviceVersion);
 
-        Map<String, String> result = client.getModels(dtmi, DependencyResolutionOptions.DISABLED).block();
+        Map<String, String> result = client.getModels(dtmi, ModelsDependencyResolution.DISABLED).block();
 
         Assertions.assertTrue(result.keySet().stream().count() == 1);
         Assertions.assertTrue(result.keySet().contains(dtmi));

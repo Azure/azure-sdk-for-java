@@ -1,9 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.iot.modelsrepository;
 
-/*
-The model dependency resolution options.
+/**
+ * The model dependency resolution options.
  */
-public enum DependencyResolutionOptions {
+public enum ModelsDependencyResolution {
 
     /**
      * Disable model dependency resolution.

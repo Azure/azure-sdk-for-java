@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.iot.modelsrepository.implementation.models;
 
 import com.azure.core.annotation.Fluent;
@@ -15,28 +18,36 @@ public class FetchResult {
 
     /**
      * Gets the dtmi model definition
+     *
      * @return Model definition
      */
-    public String getDefinition(){ return this.definition; }
+    public String getDefinition() {
+        return this.definition;
+    }
 
     /**
      * Sets the model definition
+     *
      * @param definition the model definition
      * @return the FetchResult object itself
      */
-    public FetchResult setDefinition(String definition){
+    public FetchResult setDefinition(String definition) {
         this.definition = definition;
         return this;
     }
 
     /**
      * Gets the dtmi path.
+     *
      * @return
      */
-    public String getPath() { return this.path; }
+    public String getPath() {
+        return this.path;
+    }
 
     /**
      * Sets the dtmi path.
+     *
      * @param path the dtmi path.
      * @return the {@link FetchResult} object itself
      */
@@ -47,8 +58,8 @@ public class FetchResult {
 
     /**
      * Whether the result is from an expanded (pre-calculated) fetch or not.
-     * @return
-     * true: if result is from an expanded fetch operation.
+     *
+     * @return true: if result is from an expanded fetch operation.
      * false: if path is null or result is not from an expanded fetch operation.
      */
     public boolean isFromExpanded() {

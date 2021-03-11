@@ -1,7 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.iot.modelsrepository.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.iot.modelsrepository.DependencyResolutionOptions;
+import com.azure.iot.modelsrepository.ModelsDependencyResolution;
 import com.azure.iot.modelsrepository.implementation.models.FetchResult;
 import reactor.core.publisher.Mono;
 
@@ -26,10 +29,10 @@ class LocalModelFetcher implements ModelFetcher {
     }
 
     @Override
-    public Mono<FetchResult> fetchAsync(String dtmi, URI repositoryUri, DependencyResolutionOptions resolutionOption, Context context) throws IOException {
+    public Mono<FetchResult> fetchAsync(String dtmi, URI repositoryUri, ModelsDependencyResolution resolutionOption, Context context) throws IOException {
         Queue<String> work = new LinkedList<>();
 
-        if (resolutionOption == DependencyResolutionOptions.TRY_FROM_EXPANDED) {
+        if (resolutionOption == ModelsDependencyResolution.TRY_FROM_EXPANDED) {
             work.add(GetPath(dtmi, repositoryUri, true));
         }
 

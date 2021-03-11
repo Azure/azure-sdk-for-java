@@ -41,13 +41,13 @@ public final class ModelsRepositoryAsyncClient {
     private final ModelsRepositoryServiceVersion serviceVersion;
     private final ModelsRepositoryAPIImpl protocolLayer;
     private final RepositoryHandler repositoryHandler;
-    private final DependencyResolutionOptions defaultDependencyResolutionOption;
+    private final ModelsDependencyResolution defaultDependencyResolutionOption;
 
     ModelsRepositoryAsyncClient(
         URI repositoryUri,
         HttpPipeline pipeline,
         ModelsRepositoryServiceVersion serviceVersion,
-        DependencyResolutionOptions dependencyResolutionOption,
+        ModelsDependencyResolution dependencyResolutionOption,
         JsonSerializer jsonSerializer) {
 
         JacksonAdapter jacksonAdapter = new JacksonAdapter();
@@ -78,7 +78,7 @@ public final class ModelsRepositoryAsyncClient {
     /**
      * Gets a collection of model definitions.
      *
-     * @param dtmi A well-formed DTDL model Id. For example 'dtmi:com:example:Thermostat;1'.
+     * @param dtmi A well-formed DTDL model Id. See <a href="https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md">DTDL specs</a>. For example 'dtmi:com:example:Thermostat;1'.
      * @return A Map containing the model definition(s) where the key is the dtmi
      * and the value is the raw model definition string.
      */
@@ -90,24 +90,17 @@ public final class ModelsRepositoryAsyncClient {
     /**
      * Gets a collection of model definitions.
      *
-     * @param dtmi                       A well-formed DTDL model Id. For example 'dtmi:com:example:Thermostat;1'.
-     * @param dependencyResolutionOption A DependencyResolutionOption value to force model resolution behavior.
+     * @param dtmi                       A well-formed DTDL model Id. See <a href="https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md">DTDL specs</a>. For example 'dtmi:com:example:Thermostat;1'.
+     * @param dependencyResolutionOption A ModelDependencyResolution value to force model resolution behavior.
      * @return A Map containing the model definition(s) where the key is the dtmi
      * and the value is the raw model definition string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, String>> getModels(String dtmi, DependencyResolutionOptions dependencyResolutionOption) {
-        return withContext(context -> {
-            try {
-                return getModels(dtmi, dependencyResolutionOption, context);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        });
+    public Mono<Map<String, String>> getModels(String dtmi, ModelsDependencyResolution dependencyResolutionOption) {
+        return withContext(context -> getModels(dtmi, dependencyResolutionOption, context));
     }
 
-    private Mono<Map<String, String>> getModels(String dtmi, DependencyResolutionOptions dependencyResolutionOption, Context context) throws Exception {
+    Mono<Map<String, String>> getModels(String dtmi, ModelsDependencyResolution dependencyResolutionOption, Context context) {
         context.addData(AZ_TRACING_NAMESPACE_KEY, MODELS_REPOSITORY_TRACING_NAMESPACE_VALUE);
         return repositoryHandler.processAsync(dtmi, dependencyResolutionOption, context);
     }
@@ -127,17 +120,17 @@ public final class ModelsRepositoryAsyncClient {
     /**
      * Gets a collection of model definitions.
      *
-     * @param dtmis                      Collection of well-formed DTDL model Ids.
+     * @param dtmis                      An Iterable of well-formed DTDL model Ids. See <a href="https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md">DTDL specs</a>. For example 'dtmi:com:example:Thermostat;1'.
      * @param dependencyResolutionOption A DependencyResolutionOption value to force model resolution behavior.
      * @return A Map containing the model definition(s) where the key is the dtmi
      * and the value is the raw model definition string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, String>> getModels(Iterable<String> dtmis, DependencyResolutionOptions dependencyResolutionOption) {
+    public Mono<Map<String, String>> getModels(Iterable<String> dtmis, ModelsDependencyResolution dependencyResolutionOption) {
         return withContext(context -> getModels(dtmis, dependencyResolutionOption, context));
     }
 
-    private Mono<Map<String, String>> getModels(Iterable<String> dtmis, DependencyResolutionOptions dependencyResolutionOption, Context context) {
+    private Mono<Map<String, String>> getModels(Iterable<String> dtmis, ModelsDependencyResolution dependencyResolutionOption, Context context) {
         context.addData(AZ_TRACING_NAMESPACE_KEY, MODELS_REPOSITORY_TRACING_NAMESPACE_VALUE);
         return repositoryHandler.processAsync(dtmis, dependencyResolutionOption, context);
     }

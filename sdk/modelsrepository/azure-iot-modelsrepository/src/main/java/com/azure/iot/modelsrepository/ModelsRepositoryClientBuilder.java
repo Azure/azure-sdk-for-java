@@ -39,7 +39,7 @@ public final class ModelsRepositoryClientBuilder {
     // Fields with default values.
     private URI repositoryEndpoint;
 
-    private DependencyResolutionOptions dependencyResolutionOption = DependencyResolutionOptions.TRY_FROM_EXPANDED;
+    private ModelsDependencyResolution dependencyResolutionOption = ModelsDependencyResolution.TRY_FROM_EXPANDED;
 
     // optional/have default values
     private ModelsRepositoryServiceVersion serviceVersion;
@@ -196,7 +196,7 @@ public final class ModelsRepositoryClientBuilder {
      * @param dependencyResolutionOption A DependencyResolutionOption value to force model resolution behavior.
      * @return the updated ModelsRepositoryClientBuilder instance for fluent building.
      */
-    public ModelsRepositoryClientBuilder dependencyResolutionOption(DependencyResolutionOptions dependencyResolutionOption) {
+    public ModelsRepositoryClientBuilder dependencyResolutionOption(ModelsDependencyResolution dependencyResolutionOption) {
         this.dependencyResolutionOption = dependencyResolutionOption;
         return this;
     }

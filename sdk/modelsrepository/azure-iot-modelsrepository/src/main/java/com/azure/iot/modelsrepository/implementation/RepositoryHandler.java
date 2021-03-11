@@ -1,7 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.iot.modelsrepository.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.iot.modelsrepository.DependencyResolutionOptions;
+import com.azure.iot.modelsrepository.ModelsDependencyResolution;
 import com.azure.iot.modelsrepository.implementation.models.FetchResult;
 import com.azure.iot.modelsrepository.implementation.models.ModelMetadata;
 import reactor.core.publisher.Mono;
@@ -26,11 +29,11 @@ public final class RepositoryHandler {
         }
     }
 
-    public Mono<Map<String, String>> processAsync(String dtmi, DependencyResolutionOptions resolutionOptions, Context context) {
+    public Mono<Map<String, String>> processAsync(String dtmi, ModelsDependencyResolution resolutionOptions, Context context) {
         return processAsync(Arrays.asList(dtmi), resolutionOptions, context);
     }
 
-    public Mono<Map<String, String>> processAsync(Iterable<String> dtmis, DependencyResolutionOptions resolutionOptions, Context context) {
+    public Mono<Map<String, String>> processAsync(Iterable<String> dtmis, ModelsDependencyResolution resolutionOptions, Context context) {
 
         Map<String, String> processedModels = new HashMap<>();
         Queue<String> modelsToProcess = prepareWork(dtmis);
@@ -60,7 +63,7 @@ public final class RepositoryHandler {
 
                 ModelMetadata metadata = new ModelsQuery(result.getDefinition()).parseModel();
 
-                if (resolutionOptions == DependencyResolutionOptions.ENABLED || resolutionOptions == DependencyResolutionOptions.TRY_FROM_EXPANDED) {
+                if (resolutionOptions == ModelsDependencyResolution.ENABLED || resolutionOptions == ModelsDependencyResolution.TRY_FROM_EXPANDED) {
                     List<String> dependencies = metadata.getDependencies();
 
                     for (String dependency : dependencies) {
