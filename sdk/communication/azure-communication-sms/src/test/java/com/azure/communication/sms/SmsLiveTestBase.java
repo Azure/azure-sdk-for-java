@@ -18,9 +18,6 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-//import com.azure.identity.EnvironmentCredentialBuilder;
-//import com.azure.identity.ClientSecretCredentialBuilder;
-//import com.azure.identity.EnvironmentCredential;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
