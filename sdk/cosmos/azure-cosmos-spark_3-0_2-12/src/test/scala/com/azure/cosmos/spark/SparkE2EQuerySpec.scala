@@ -70,7 +70,7 @@ class SparkE2EQuerySpec extends IntegrationSpec with Spark with CosmosClient wit
     }
   }
 
-  "spark query" can "use schema inference with system properties" taggedAs RequiresCosmosEndpoint in {
+  "spark query" can "use schema inference with system properties and timestamp" taggedAs RequiresCosmosEndpoint in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
@@ -91,6 +91,7 @@ class SparkE2EQuerySpec extends IntegrationSpec with Spark with CosmosClient wit
       "spark.cosmos.container" -> cosmosContainer,
       "spark.cosmos.read.inferSchemaEnabled" -> "true",
       "spark.cosmos.read.inferSchemaIncludeSystemProperties" -> "true",
+      "spark.cosmos.read.inferSchemaIncludeTimestamp" -> "true",
       "spark.cosmos.partitioning.strategy" -> "Restrictive"
     )
 
@@ -113,7 +114,7 @@ class SparkE2EQuerySpec extends IntegrationSpec with Spark with CosmosClient wit
     fieldNames.contains(CosmosTableSchemaInferrer.AttachmentsAttributeName) shouldBe true
   }
 
-  "spark query" can "use schema inference with no system properties" taggedAs RequiresCosmosEndpoint in {
+  "spark query" can "use schema inference with no system properties or timestamp" taggedAs RequiresCosmosEndpoint in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
@@ -191,7 +192,7 @@ class SparkE2EQuerySpec extends IntegrationSpec with Spark with CosmosClient wit
     rowWithInference.getAs[Boolean]("isAlive") shouldEqual true
   }
 
-  "spark query" can "use schema inference with custom query an system properties" taggedAs RequiresCosmosEndpoint in {
+  "spark query" can "use schema inference with custom query and system properties" taggedAs RequiresCosmosEndpoint in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
@@ -211,8 +212,7 @@ class SparkE2EQuerySpec extends IntegrationSpec with Spark with CosmosClient wit
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
       "spark.cosmos.read.inferSchemaEnabled" -> "true",
-      "spark.cosmos.read.inferSchemaQuery" -> "select TOP 1 * from c",
-      "spark.cosmos.read.inferSchemaIncludeSystemProperties" -> "true",
+      "spark.cosmos.read.inferSchemaQuery" -> "select TOP 1 c.type, c.age, c.isAlive, c._ts from c",
       "spark.cosmos.partitioning.strategy" -> "Restrictive"
     )
 
@@ -227,11 +227,11 @@ class SparkE2EQuerySpec extends IntegrationSpec with Spark with CosmosClient wit
     rowWithInference.getAs[Boolean]("isAlive") shouldEqual true
 
     val fieldNames = rowWithInference.schema.fields.map(field => field.name)
-    fieldNames.contains(CosmosTableSchemaInferrer.SelfAttributeName) shouldBe true
+    fieldNames.contains(CosmosTableSchemaInferrer.SelfAttributeName) shouldBe false
     fieldNames.contains(CosmosTableSchemaInferrer.TimestampAttributeName) shouldBe true
-    fieldNames.contains(CosmosTableSchemaInferrer.ResourceIdAttributeName) shouldBe true
-    fieldNames.contains(CosmosTableSchemaInferrer.ETagAttributeName) shouldBe true
-    fieldNames.contains(CosmosTableSchemaInferrer.AttachmentsAttributeName) shouldBe true
+    fieldNames.contains(CosmosTableSchemaInferrer.ResourceIdAttributeName) shouldBe false
+    fieldNames.contains(CosmosTableSchemaInferrer.ETagAttributeName) shouldBe false
+    fieldNames.contains(CosmosTableSchemaInferrer.AttachmentsAttributeName) shouldBe false
   }
 
   //scalastyle:on magic.number
