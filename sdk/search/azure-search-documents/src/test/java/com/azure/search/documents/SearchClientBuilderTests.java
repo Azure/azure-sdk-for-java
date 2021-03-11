@@ -5,7 +5,9 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
@@ -16,6 +18,7 @@ import reactor.test.StepVerifier;
 
 import java.net.MalformedURLException;
 import java.security.SecureRandom;
+import java.time.Duration;
 import java.util.Collections;
 
 import static com.azure.search.documents.indexes.SearchIndexClientBuilderTests.request;
@@ -152,6 +155,7 @@ public class SearchClientBuilderTests {
             .indexName("test_builder")
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
             .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
+            .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
             .httpClient(httpRequest -> {
                 assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("aNewApplication"));
                 return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
@@ -168,6 +172,7 @@ public class SearchClientBuilderTests {
             .credential(searchApiKeyCredential)
             .indexName("test_builder")
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
+            .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
             .httpClient(httpRequest -> {
                 assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("anOldApplication"));
                 return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
@@ -185,6 +190,7 @@ public class SearchClientBuilderTests {
             .indexName("test_builder")
             .clientOptions(new ClientOptions()
                 .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
+            .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
             .httpClient(httpRequest -> {
                 assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
                 return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));

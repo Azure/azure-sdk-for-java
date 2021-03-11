@@ -1,5 +1,5 @@
 # Release History
-## 5.1.0-beta.5 (Unreleased)
+## 5.1.0-beta.5 (2021-03-10)
 - We are now targeting the service's v3.1-preview.4 API as the default instead of v3.1-preview.3.
 
 ### New features
@@ -26,7 +26,14 @@
   `SentenceSentiment(String text, TextSentiment sentiment, SentimentConfidenceScores confidenceScores, IterableStream<MinedOpinion> minedOpinions, int offset)`,
   `AspectSentiment(String text, TextSentiment sentiment, int offset, SentimentConfidenceScores confidenceScores)`,
   `OpinionSentiment(String text, TextSentiment sentiment, int offset, boolean isNegated, SentimentConfidenceScores confidenceScores)`
-  
+
+### Known Issues
+- `beginAnalyzeHealthcareEntities` is currently in gated preview and can not be used with AAD credentials. 
+  For more information, see [the Text Analytics for Health documentation](https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-for-health?tabs=ner#request-access-to-the-public-preview).
+
+## 5.0.4 (2021-03-09)
+### Dependency updates
+- Update dependency version, `azure-core` to 1.14.0 and `azure-core-http-netty` to 1.9.0.
   
 ## 5.1.0-beta.4 (2021-02-10)
 ### New features

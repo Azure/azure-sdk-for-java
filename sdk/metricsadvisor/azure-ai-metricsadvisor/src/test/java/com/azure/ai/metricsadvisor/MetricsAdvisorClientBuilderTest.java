@@ -6,6 +6,7 @@ package com.azure.ai.metricsadvisor;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -15,6 +16,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.Duration;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -85,6 +87,7 @@ public class MetricsAdvisorClientBuilderTest extends TestBase {
             assertThrows(RuntimeException.class,
                 () -> clientBuilder
                     .endpoint(INVALID_ENDPOINT)
+                    .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(10))))
                     .buildClient()
                     .listFeedback(METRIC_ID)
                     .forEach(metricFeedback -> assertNotNull(metricFeedback))));
