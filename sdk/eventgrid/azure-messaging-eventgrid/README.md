@@ -47,7 +47,7 @@ az eventgrid domain create --location <location> --resource-group <your-resource
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventgrid</artifactId>
-    <version>2.0.0-beta.5</version>
+    <version>4.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -396,6 +396,10 @@ which wraps the error code.
 Reference documentation for the event grid service can be found [here][service_docs]. This is a
 good place to start for problems involving configuration of topics/endpoints, as well as for
 problems involving error codes from the service.
+
+### Distributed Tracing
+The Event Grid library supports distributing tracing out of the box. In order to adhere to the CloudEvents specification's [guidance](https://github.com/cloudevents/spec/blob/master/extensions/distributed-tracing.md) on distributing tracing, the library will set the `traceparent` and `tracestate` on the `extensionAttributes` of a `CloudEvent` when distributed tracing is enabled. To learn more about how to enable distributed tracing in your application, take a look at the Azure SDK Java [distributed tracing documentation](https://docs.microsoft.com/azure/developer/java/sdk/tracing).
+
 
 ### Help and Issues
 
