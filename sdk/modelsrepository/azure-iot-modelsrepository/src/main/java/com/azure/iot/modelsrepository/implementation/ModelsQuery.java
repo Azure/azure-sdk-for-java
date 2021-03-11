@@ -17,12 +17,17 @@ import java.util.Map;
  */
 public class ModelsQuery {
 
+    private static final String UTF8_BOM = "\uFEFF";
     private final String content;
     private final ObjectMapper mapper;
 
     public ModelsQuery(String content) {
         mapper = new ObjectMapper();
-        this.content = content;
+        if (content.startsWith(UTF8_BOM)) {
+            this.content = content.substring(1);
+        } else {
+            this.content = content;
+        }
     }
 
     private static ModelMetadata parseInterface(JsonNode root) {
@@ -138,7 +143,7 @@ public class ModelsQuery {
         return parseInterface(rootElement);
     }
 
-    public Map<String, String> ListToMap() throws JsonProcessingException {
+    public Map<String, String> listToMap() throws JsonProcessingException {
         Map<String, String> result = new HashMap<>();
 
         JsonNode root = mapper.readValue(this.content, JsonNode.class);

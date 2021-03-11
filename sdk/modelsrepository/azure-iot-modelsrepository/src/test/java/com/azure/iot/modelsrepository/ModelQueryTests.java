@@ -4,12 +4,16 @@ import com.azure.iot.modelsrepository.implementation.ModelsQuery;
 import com.azure.iot.modelsrepository.implementation.models.ModelMetadata;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class ModelQueryTests {
     public static String MODEL_TEMPLATE = "" +
@@ -30,7 +34,7 @@ public class ModelQueryTests {
                 "\"@id\": \"\", | ''"
             },
         delimiter = '|')
-    public void getId(String id, String expected) throws JsonProcessingException {
+    public void getIdTests(String id, String expected) throws JsonProcessingException {
         String modelContent = String.format(MODEL_TEMPLATE, id, "", "");
         ModelsQuery query = new ModelsQuery(modelContent);
         String modelId = query.parseModel().getId();
@@ -78,7 +82,7 @@ public class ModelQueryTests {
                     "| ''",
             },
         delimiter = '|')
-    public void getComponentSchema(String contents, String expected) throws JsonProcessingException {
+    public void getComponentSchemaTests(String contents, String expected) throws JsonProcessingException {
         List<String> expectedDtmis;
 
         if (expected.isEmpty()) {
@@ -106,7 +110,7 @@ public class ModelQueryTests {
                 "\"extends\": \"dtmi:com:example:Camera;3\", | dtmi:com:example:Camera;3"
             },
         delimiter = '|')
-    public void getExtends(String extend, String expected) throws JsonProcessingException {
+    public void getExtendsTests(String extend, String expected) throws JsonProcessingException {
         List<String> expectedDtmis;
 
         if (expected.isEmpty()) {
@@ -188,7 +192,7 @@ public class ModelQueryTests {
                     "dtmi:example:Interface2;1,dtmi:example:Interface4;1,dtmi:example:Interface6;1"
             },
         delimiter = '|')
-    public void getModelDependencies(String id, String extend, String contents, String expected) throws JsonProcessingException {
+    public void getModelDependenciesTests(String id, String extend, String contents, String expected) throws JsonProcessingException {
         List<String> expectedDtmis;
 
         if (expected.isEmpty()) {
@@ -203,5 +207,25 @@ public class ModelQueryTests {
 
         Assertions.assertTrue(metadata.getDependencies().stream().count() == expectedDtmis.stream().count());
         Assertions.assertTrue(expectedDtmis.containsAll(metadata.getDependencies()));
+    }
+
+    @Test
+    public void ListToMapTest() throws IOException {
+        String path = "src/TestModelRepo/dtmi/com/example/temperaturecontroller-1.expanded.json";
+        File file = new File(path);
+        String directory = System.getProperty("user.dir");
+
+        String expandedContent = TestsAssetsHelpers.readResourceFile("/TestModelRepo/dtmi/com/example/temperaturecontroller-1.expanded.json");
+
+        ModelsQuery query = new ModelsQuery(expandedContent);
+        Map<String, String> transformResult = query.listToMap();
+
+        List<String> expectedDtmis = Arrays.asList(
+            "dtmi:azure:DeviceManagement:DeviceInformation;1",
+            "dtmi:com:example:Thermostat;1",
+            "dtmi:com:example:TemperatureController;1");
+
+        Assertions.assertTrue(expectedDtmis.stream().count() == transformResult.keySet().stream().count());
+        transformResult.keySet().containsAll(expectedDtmis);
     }
 }

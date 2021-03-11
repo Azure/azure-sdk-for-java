@@ -48,7 +48,7 @@ public final class RepositoryHandler {
                 FetchResult result = this.modelFetcher.fetchAsync(targetDtmi, repositoryUri, resolutionOptions, context).block();
 
                 if (result.isFromExpanded()) {
-                    Map<String, String> expanded = new ModelsQuery(result.getDefinition()).ListToMap();
+                    Map<String, String> expanded = new ModelsQuery(result.getDefinition()).listToMap();
 
                     for (Map.Entry<String, String> item : expanded.entrySet()) {
                         if (!processedModels.containsKey(item.getKey())) {
