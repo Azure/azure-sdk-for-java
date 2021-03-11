@@ -657,16 +657,16 @@ public class BinaryDataJavaDocCodeSnippet {
     }
 
     /**
-     * Codesnippets for {@link BinaryData#toReadOnlyByteBuffer()}.
+     * Codesnippets for {@link BinaryData#toByteBuffer()}.
      */
     public void toReadOnlyByteBuffer() {
-        // BEGIN: com.azure.util.BinaryData.toReadOnlyByteBuffer
+        // BEGIN: com.azure.util.BinaryData.toByteBuffer
         final byte[] data = "Some Data".getBytes(StandardCharsets.UTF_8);
         BinaryData binaryData = BinaryData.fromBytes(data);
         final byte[] bytes = new byte[data.length];
-        binaryData.toReadOnlyByteBuffer().get(bytes, 0, data.length);
+        binaryData.toByteBuffer().get(bytes, 0, data.length);
         System.out.println(new String(bytes));
-        // END: com.azure.util.BinaryData.toReadOnlyByteBuffer
+        // END: com.azure.util.BinaryData.toByteBuffer
     }
 
     public static class MyJsonSerializer implements JsonSerializer {

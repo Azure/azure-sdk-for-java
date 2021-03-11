@@ -601,11 +601,11 @@ public final class BinaryData {
      *
      * <p><strong>Get a read-only ByteBuffer from the BinaryData</strong></p>
      *
-     * {@codesnippet com.azure.util.BinaryData.toReadOnlyByteBuffer}
+     * {@codesnippet com.azure.util.BinaryData.toByteBuffer}
      *
      * @return A read-only {@link ByteBuffer} representing the {@link BinaryData}.
      */
-    public ByteBuffer toReadOnlyByteBuffer() {
+    public ByteBuffer toByteBuffer() {
         return ByteBuffer.wrap(this.data).asReadOnlyBuffer();
     }
 

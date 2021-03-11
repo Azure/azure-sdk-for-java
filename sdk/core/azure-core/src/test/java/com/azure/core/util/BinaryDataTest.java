@@ -295,7 +295,7 @@ public class BinaryDataTest {
     public void toReadOnlyByteBufferThrowsOnMutation() {
         BinaryData binaryData = BinaryData.fromString("Hello");
 
-        assertThrows(ReadOnlyBufferException.class, () -> binaryData.toReadOnlyByteBuffer().put((byte) 0));
+        assertThrows(ReadOnlyBufferException.class, () -> binaryData.toByteBuffer().put((byte) 0));
     }
 
     public static class MyJsonSerializer implements JsonSerializer {
