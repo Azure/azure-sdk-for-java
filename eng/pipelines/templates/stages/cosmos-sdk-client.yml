@@ -135,7 +135,7 @@ stages:
               Start-BitsTransfer -Source "https://aka.ms/cosmos-hadoop-for-spark-ci-pipeline" -Destination $downloadTarget
               Remove-Item -Recurse -Force $targetDir
               Expand-Archive -LiteralPath $downloadTarget -DestinationPath $targetDir
-            displayName: Download and Extract Hadoop winutils
+            displayName: 'Download and Extract Hadoop winutils'
           - powershell: |
               Write-Host "Updating environment variables for Hadoop usage (User scope)"
               [System.Environment]::SetEnvironmentVariable('HADOOP_HOME', '$targetDir',[System.EnvironmentVariableTarget]::User)
@@ -146,7 +146,7 @@ stages:
               [System.Environment]::SetEnvironmentVariable('Path', $newPath,[System.EnvironmentVariableTarget]::User)
               $updatedPath = [System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::User)
               Write-Host "New Path environment variable: $updatedPath"
-            displayName: Update env variables for Hadoop usage (User scope)
+            displayName: 'Update env variables for Hadoop usage (User scope)'
 
           # We `install` separately from running `site:site site:stage` so that the `install` brings in the non-shipping-modules,
           # but we don't include them in the Maven site commands (so that we don't generate reports for the non-shipping modules).
