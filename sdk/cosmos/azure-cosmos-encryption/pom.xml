@@ -55,7 +55,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.2.3</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.2.4</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     </dependency>
 
     <!-- Added this provided dependency to include necessary annotations used by "reactor-core".
@@ -95,7 +95,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.16.1</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
+      <version>3.18.1</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -130,21 +130,21 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.3.12.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.3</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>io.reactivex.rxjava2</groupId>
       <artifactId>rxjava</artifactId>
-      <version>2.2.20</version> <!-- {x-version-update;io.reactivex.rxjava2:rxjava;external_dependency} -->
+      <version>2.2.21</version> <!-- {x-version-update;io.reactivex.rxjava2:rxjava;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>3.3.3</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>3.6.28</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
 

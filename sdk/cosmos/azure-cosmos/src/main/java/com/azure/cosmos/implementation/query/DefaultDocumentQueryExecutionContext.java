@@ -3,15 +3,9 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.DiagnosticsClientContext;
-import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.implementation.Resource;
-import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InvalidPartitionExceptionRetryPolicy;
@@ -19,11 +13,15 @@ import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneRetryPolicy;
 import com.azure.cosmos.implementation.PathsHelper;
 import com.azure.cosmos.implementation.QueryMetrics;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.caches.IPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.query.metrics.FetchExecutionRangeAccumulator;
 import com.azure.cosmos.implementation.query.metrics.SchedulingStopwatch;
@@ -32,8 +30,10 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.routing.RoutingMapProviderHelper;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.SqlQuerySpec;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -45,7 +45,7 @@ import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import static com.azure.cosmos.models.ModelBridgeInternal.partitionKeyRangeIdInternal;
+import static com.azure.cosmos.models.ModelBridgeInternal.getPartitionKeyRangeIdInternal;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -203,8 +203,8 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
                 this.query,
                 this.getPartitionKeyInternal());
 
-        if (!StringUtils.isEmpty(partitionKeyRangeIdInternal(cosmosQueryRequestOptions))) {
-            request.routeTo(new PartitionKeyRangeIdentity(partitionKeyRangeIdInternal(cosmosQueryRequestOptions)));
+        if (!StringUtils.isEmpty(getPartitionKeyRangeIdInternal(cosmosQueryRequestOptions))) {
+            request.routeTo(new PartitionKeyRangeIdentity(getPartitionKeyRangeIdInternal(cosmosQueryRequestOptions)));
         }
 
         return request;
