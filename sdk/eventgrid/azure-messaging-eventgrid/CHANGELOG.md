@@ -10,7 +10,7 @@
 - To send custom events, `sendEvents` accepts `Iterable<BinaryData>` instead of `Iterable<Object>`.
 - `EventGridPublisherClientBuilder.serializer()` is removed because `BinaryData.fromObject(Object data, ObjectSerializer serializer)` already supports custom serializer, which can be used to
   serialize custom events and the data of `CloudEvent` and `EventGridEvent`.
-- `EventGridPublisherClient` is changed to `EventGridPublisherClient<T>` that can be statically instantiated to send `CloudEvent`, `EventGridEvent` and custom events (use `BinaryData`)
+- `EventGridPublisherClient` is changed to `EventGridPublisherClient<T>` that can be statically instantiated to send `CloudEvent`, `EventGridEvent` or custom events (use `BinaryData`)
   with methods `sendEvents` and `sendEvent`. 
   `EventGridPublisherClientBuilder` now has `buildCloudEventPublisherClient`, `buildEventGridEventPublisherClient` and `buildCustomEventPublisherClient` to build the generic-instantiated clients respectively.
   The async client has the same change.
@@ -56,4 +56,3 @@ set of libraries that are consistent across multiple services as well as differe
     Event Grid, Cloud Event, or a custom schema.
 + Parsing and deserialization of system and user-defined events from JSON payload
     at an event destination in EventGrid or Cloud Event schema.
-
