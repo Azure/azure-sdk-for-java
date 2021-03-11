@@ -45,7 +45,7 @@ public class MetricsImpl implements Metrics {
     }
 
     @Override
-    public void logCounterMetric(final MetricType metricType) {
+    public void logCounterMetric(final Type metricType) {
         switch (metricType) {
             case NOT_FOUND:
                 _documentsNotFoundMeter.mark();

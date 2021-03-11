@@ -58,7 +58,7 @@ public class EventGridPublisherClientTests extends TestBase {
     // Event Grid access key for a topic accepting custom schema events
     private static final String CUSTOM_KEY = "AZURE_EVENTGRID_CUSTOM_KEY";
 
-    private static final String DUMMY_ENDPOINT = "https://www.dummyEndpoint.com";
+    private static final String DUMMY_ENDPOINT = "https://www.dummyEndpoint.com/api/events";
 
     private static final String DUMMY_KEY = "dummyKey";
 

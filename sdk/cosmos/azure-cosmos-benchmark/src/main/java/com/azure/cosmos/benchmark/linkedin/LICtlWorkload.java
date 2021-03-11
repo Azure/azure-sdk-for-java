@@ -20,6 +20,14 @@ import org.slf4j.LoggerFactory;
 public class LICtlWorkload {
     private static final Logger LOGGER = LoggerFactory.getLogger(LICtlWorkload.class);
 
+    /**
+     * The test scenarios supported for the LinkedIn CTL Workload
+     */
+    public enum Scenario {
+        GET,
+        QUERY
+    }
+
     private final Configuration _configuration;
     private final EntityConfiguration _entityConfiguration;
     private final CosmosAsyncClient _client;
@@ -28,7 +36,7 @@ public class LICtlWorkload {
     private final ScheduledReporter _reporter;
     private final ResourceManager _resourceManager;
     private final DataLoader _dataLoader;
-    private final GetTestRunner _getTestRunner;
+    private final TestRunner _testRunner;
 
     public LICtlWorkload(final Configuration configuration) {
         Preconditions.checkNotNull(configuration, "The Workload configuration defining the parameters can not be null");
@@ -43,7 +51,7 @@ public class LICtlWorkload {
             ? new DatabaseResourceManager(_configuration, _entityConfiguration, _client)
             : new CollectionResourceManager(_configuration, _entityConfiguration, _client);
         _dataLoader = new DataLoader(_configuration, _entityConfiguration, _bulkLoadClient);
-        _getTestRunner = new GetTestRunner(_configuration, _client, _metricsRegistry, _entityConfiguration);
+        _testRunner = createTestRunner(_configuration);
     }
 
     public void setup() throws CosmosException {
@@ -58,10 +66,10 @@ public class LICtlWorkload {
     }
 
     public void run() {
-        LOGGER.info("Executing the Get test");
+        LOGGER.info("Executing the CosmosDB test");
         _reporter.start(_configuration.getPrintingInterval(), TimeUnit.SECONDS);
 
-        _getTestRunner.run();
+        _testRunner.run();
 
         _reporter.report();
     }
@@ -70,9 +78,20 @@ public class LICtlWorkload {
      * Close all existing resources, from CosmosDB collections to open connections
      */
     public void shutdown() {
-        _getTestRunner.cleanup();
+        _testRunner.cleanup();
         _resourceManager.deleteResources();
         _client.close();
         _reporter.close();
+    }
+
+    private TestRunner createTestRunner(Configuration configuration) {
+        final Scenario scenario = Scenario.valueOf(configuration.getTestScenario());
+        switch (scenario) {
+            case QUERY:
+                return new QueryTestRunner(_configuration, _client, _metricsRegistry, _entityConfiguration);
+            case GET:
+            default:
+                return new GetTestRunner(_configuration, _client, _metricsRegistry, _entityConfiguration);
+        }
     }
 }
