@@ -1,4 +1,4 @@
-# README.md template
+# Azure Template client library for Java
 
 Use the guidelines in each section of this template to ensure consistency and readability of your README. 
 The README resides in your package's GitHub repository at the root of its directory within the repo. 
@@ -105,7 +105,18 @@ Describe common errors and exceptions, how to "unpack" them if necessary, and in
 Provide information to help developers avoid throttling or other service-enforced errors they might encounter. For example, 
 provide guidance and examples for using retry or connection policies in the API.
 
-If the package or a related package supports it, include tips for logging or enabling instrumentation to help them debug their code.
+If the package, or a related package supports it, include tips for logging or enabling instrumentation to help them debug their code.
+
+### Enabling Logging
+
+Azure SDKs for Java provide a consistent logging story to help aid in troubleshooting application errors and expedite
+their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
+locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
+
+### Default HTTP Client
+
+By default, a Netty based HTTP client will be used. The [HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients)
+provides more information on configuring or changing the HTTP client.
 
 ## Next steps
 
@@ -115,8 +126,26 @@ If the package or a related package supports it, include tips for logging or ena
   for specific functionality and mistakenly think the package provides that functionality), point them to the packages 
   they might be looking for.
 
+## Contributing
+
+This project welcomes contributions and suggestions. Most contributions require you to agree to a
+[Contributor License Agreement (CLA)][cla] declaring that you have the right to, and actually do, grant us the rights
+to use your contribution.
+
+When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate
+the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to
+do this once across all repos using our CLA.
+
+This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the
+[Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
+
 <!-- LINKS -->
 [style-guide-msft]: https://docs.microsoft.com/style-guide/capitalization
 [jdk]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[cla]: https://cla.microsoft.com
+[coc]: https://opensource.microsoft.com/codeofconduct/
+[coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
+[coc_contact]: mailto:opencode@microsoft.com
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftemplate%2Fazure-sdk-template%2FREADME.png)
