@@ -36,14 +36,16 @@ Configuration Reference:
 
 #### Schema Inference Config
 
-Note when running queries unless if are interested to get back the raw json payload 
-we recommend setting `spark.cosmos.read.inferSchemaEnabled` to be `true`. 
+When doing read operations, users can specify a custom schema or allow the connector to infer it. When no custom schema is provided and schema inference is not enabled, the connector will return raw json.
+Enabling the schema inference is done by setting `spark.cosmos.read.inferSchemaEnabled` to be `true`.
 
 | Config Property Name      | Default | Description |
 | :---        |    :----   |         :--- | 
-| `spark.cosmos.read.inferSchemaEnabled`     | `false`    | Whether schema inference is enabled or should return raw json. We recommend to enable this option for query  |
-| `spark.cosmos.read.inferSchemaQuery`      | `SELECT * FROM r`    | When schema inference is enabled, used as custom query to infer it for example if you store multiple entities with different schemas within a container and you want to ensure inference only looks at certain document types|
-| `spark.cosmos.read.inferSchemaSamplingSize`      | `1000`    | Sampling size to use when inferring schema |
+| `spark.cosmos.read.inferSchemaEnabled`     | `false`    | Whether schema inference is enabled or should return raw json. We recommend to enable this option for query. |
+| `spark.cosmos.read.inferSchemaQuery`      | `SELECT * FROM r`    | When schema inference is enabled, used as custom query to infer it. For example, if you store multiple entities with different schemas within a container and you want to ensure inference only looks at certain document types or you want to project only particular columns. |
+| `spark.cosmos.read.inferSchemaSamplingSize`      | `1000`    | Sampling size to use when inferring schema and not using a query. |
+| `spark.cosmos.read.inferSchemaIncludeSystemProperties`     | `false`    | When schema inference is enabled, whether the resulting schema will include all [Cosmos DB system properties](https://docs.microsoft.com/azure/cosmos-db/account-databases-containers-items#properties-of-an-item). |
+| `spark.cosmos.read.inferSchemaIncludeTimestamp`     | `false`    | When schema inference is enabled, whether the resulting schema will include the document Timestamp (`_ts`). Not required if `spark.cosmos.read.inferSchemaIncludeSystemProperties` is enabled, as it will already include all system properties. |
 
 #### Partitioning Strategy Config
 
