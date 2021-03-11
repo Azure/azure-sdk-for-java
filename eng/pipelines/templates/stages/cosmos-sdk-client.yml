@@ -127,26 +127,6 @@ stages:
               cp $env:temp\CosmosDbEmulatorCert.cer .
               keytool -keystore cacerts -importcert -noprompt -trustcacerts -alias CosmosDbEmulatorCert -file CosmosDbEmulatorCert.cer -storepass changeit
             displayName: 'Create Java TrustStore'
-          - powershell: |
-              $downloadTarget = Join-Path -Path $env:temp -ChildPath "hadoopsource.zip"
-              $targetDir = Join-Path -Path $env:temp -ChildPath "hadoop-for-cosmos-ci\"
-              Write-Host "Downloading and extracting Hadoop winutils - ${{ parameters.SourceUrl }}"
-              Write-Host "Target: $targetDir"
-              Start-BitsTransfer -Source "https://aka.ms/cosmos-hadoop-for-spark-ci-pipeline" -Destination $downloadTarget
-              Remove-Item -Recurse -Force $targetDir
-              Expand-Archive -LiteralPath $downloadTarget -DestinationPath $targetDir
-            displayName: 'Download and Extract Hadoop winutils'
-          - powershell: |
-              Write-Host "Updating environment variables for Hadoop usage (User scope)"
-              [System.Environment]::SetEnvironmentVariable('HADOOP_HOME', '$targetDir',[System.EnvironmentVariableTarget]::User)
-              $path = [System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::User)
-              Write-Host "Original Path environment variable: $path"
-              $binPath = Join-Path -Path $targetDir -ChildPath "bin"
-              $newPath = $path + ";" + $binPath
-              [System.Environment]::SetEnvironmentVariable('Path', $newPath,[System.EnvironmentVariableTarget]::User)
-              $updatedPath = [System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::User)
-              Write-Host "New Path environment variable: $updatedPath"
-            displayName: 'Update env variables for Hadoop usage (User scope)'
 
           # We `install` separately from running `site:site site:stage` so that the `install` brings in the non-shipping-modules,
           # but we don't include them in the Maven site commands (so that we don't generate reports for the non-shipping modules).
