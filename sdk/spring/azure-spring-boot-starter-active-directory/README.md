@@ -368,6 +368,40 @@ After the scopes have been consented, AAD server will remember that this user ha
 the permission to the web application. So incremental consent will not happen anymore after user 
 consented.
 
+### Enhanced Azure Active Directory features
+#### Support access control by id token in web application 
+This starter supports creating `GrantedAuthority` from id_token's `roles` claim to allow using `id_token` for authorization in web application. Developers can use the
+`appRoles` feature of Azure Active Directory to create `roles` claim and implement access control. 
+Follow the guide to 
+[add app roles in your application and assign to users or groups](https://docs.microsoft.com/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps).
+* Step 1: Add below `appRoles` in your application's manifest:
+    ```
+      "appRoles": [
+        {
+          "allowedMemberTypes": [
+            "User"
+          ],
+          "displayName": "Admin",
+          "id": "2fa848d0-8054-4e11-8c73-7af5f1171001",
+          "isEnabled": true,
+          "description": "Full admin access",
+          "value": "Admin"
+         }
+      ]
+    ```
+* Step 2: Write Java code:
+    ```java
+    @Controller
+    public class RoleController {
+    
+        @GetMapping("Admin")
+        @ResponseBody
+        @PreAuthorize("hasRole('ROLE_Admin')")
+        public String Admin() {
+            return "Admin message";
+        }
+    }
+    ```
 ## Examples
 
 ### Web application visiting resource servers

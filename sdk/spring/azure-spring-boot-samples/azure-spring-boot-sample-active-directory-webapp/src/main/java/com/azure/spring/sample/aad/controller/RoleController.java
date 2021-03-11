@@ -23,4 +23,11 @@ public class RoleController {
     public String group2() {
         return "group2 message";
     }
+
+    @GetMapping("Admin")
+    @ResponseBody
+    @PreAuthorize("hasRole('ROLE_Admin')")
+    public String Admin() {
+        return "Admin message";
+    }
 }
