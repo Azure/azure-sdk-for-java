@@ -68,6 +68,7 @@ com.azure:azure-cosmos;4.13.0;4.14.0-beta.1
 com.azure:azure-cosmos-benchmark;4.0.1-beta.1;4.0.1-beta.1
 com.azure:azure-cosmos-dotnet-benchmark;4.0.1-beta.1;4.0.1-beta.1
 com.azure:azure-cosmos-encryption;1.0.0-beta.1;1.0.0-beta.1
+com.azure:azure-containers-containerregistry;1.0.0.beta.1;1.0.0-beta.1
 com.azure:azure-data-appconfiguration;1.1.10;1.2.0-beta.1
 com.azure:azure-data-schemaregistry;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-data-schemaregistry-avro;1.0.0-beta.4;1.0.0-beta.5
