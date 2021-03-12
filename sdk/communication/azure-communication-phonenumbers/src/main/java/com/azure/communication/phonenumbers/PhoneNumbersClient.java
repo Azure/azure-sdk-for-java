@@ -88,7 +88,7 @@ public final class PhoneNumbersClient {
         return client.listPhoneNumbers(null, null, context);
     }
 
-     /**
+    /**
      * Starts the search for available phone numbers to purchase.
      *
      * This function returns a Long Running Operation poller that allows you to wait indefinitely until the
@@ -136,7 +136,7 @@ public final class PhoneNumbersClient {
      * operation is complete.
      *
      * @param searchId ID of the search
-     * @return A {@link SyncPoller} object.
+     * @return A {@link SyncPoller} object with Void.
      * @throws NullPointerException if {@code searchId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -152,7 +152,7 @@ public final class PhoneNumbersClient {
      *
      * @param searchId ID of the search
      * @param context A {@link Context} representing the request context.
-     * @return A {@link SyncPoller} object.
+     * @return A {@link SyncPoller} object with Void.
      * @throws NullPointerException if {@code searchId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -166,10 +166,9 @@ public final class PhoneNumbersClient {
      * This function returns a Long Running Operation poller that allows you to wait indefinitely until the
      * operation is complete.
      *
-     *
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
      *                    as %2B.
-     * @return A {@link SyncPoller} object.
+     * @return A {@link SyncPoller} object with Void.
      * @throws NullPointerException if {@code phoneNumber} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -187,7 +186,7 @@ public final class PhoneNumbersClient {
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
      *                    as %2B.
      * @param context A {@link Context} representing the request context.
-     * @return A {@link SyncPoller} object.
+     * @return A {@link SyncPoller} object with Void.
      * @throws NullPointerException if {@code phoneNumber} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -203,7 +202,7 @@ public final class PhoneNumbersClient {
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
      *                    as %2B.
      * @param capabilitiesUpdateRequest Update capabilities of a purchased phone number.
-     * @return A {@link SyncPoller} object
+     * @return A {@link SyncPoller} object with purchased phone number.
      * @throws NullPointerException if {@code phoneNumber} or {@code capabilitiesUpdateRequest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -220,7 +219,7 @@ public final class PhoneNumbersClient {
      *                    as %2B.
      * @param capabilitiesUpdateRequest Update capabilities of a purchased phone number.
      * @param context A {@link Context} representing the request context.
-     * @return A {@link SyncPoller} object
+     * @return A {@link SyncPoller} object with purchased phone number.
      * @throws NullPointerException if {@code phoneNumber} or {@code capabilitiesUpdateRequest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

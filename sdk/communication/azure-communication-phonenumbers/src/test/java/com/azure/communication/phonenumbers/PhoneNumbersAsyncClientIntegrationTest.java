@@ -115,7 +115,6 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         .verifyComplete();
     }
 
-
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
