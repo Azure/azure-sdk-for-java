@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Schema of the Data property of an EventGridEvent for an Microsoft.Cache.ImportRDBCompleted event. */
+/** Schema of the Data property of an EventGridEvent for an Microsoft.Cache.ExportRDBCompleted event. */
 @Fluent
-public final class RedisImportRDBCompletedEventData {
+public final class RedisExportRdbCompletedEventData {
     /*
      * The time at which the event occurred.
      */
@@ -42,9 +42,9 @@ public final class RedisImportRDBCompletedEventData {
      * Set the timestamp property: The time at which the event occurred.
      *
      * @param timestamp the timestamp value to set.
-     * @return the RedisImportRDBCompletedEventData object itself.
+     * @return the RedisExportRdbCompletedEventData object itself.
      */
-    public RedisImportRDBCompletedEventData setTimestamp(OffsetDateTime timestamp) {
+    public RedisExportRdbCompletedEventData setTimestamp(OffsetDateTime timestamp) {
         this.timestamp = timestamp;
         return this;
     }
@@ -62,9 +62,9 @@ public final class RedisImportRDBCompletedEventData {
      * Set the name property: The name of this event.
      *
      * @param name the name value to set.
-     * @return the RedisImportRDBCompletedEventData object itself.
+     * @return the RedisExportRdbCompletedEventData object itself.
      */
-    public RedisImportRDBCompletedEventData setName(String name) {
+    public RedisExportRdbCompletedEventData setName(String name) {
         this.name = name;
         return this;
     }
@@ -82,9 +82,9 @@ public final class RedisImportRDBCompletedEventData {
      * Set the status property: The status of this event. Failed or succeeded.
      *
      * @param status the status value to set.
-     * @return the RedisImportRDBCompletedEventData object itself.
+     * @return the RedisExportRdbCompletedEventData object itself.
      */
-    public RedisImportRDBCompletedEventData setStatus(String status) {
+    public RedisExportRdbCompletedEventData setStatus(String status) {
         this.status = status;
         return this;
     }
