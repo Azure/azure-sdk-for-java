@@ -79,6 +79,19 @@ public class CommunicationIdentityClientTestBase extends TestBase {
             String clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
             String tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
             String clientSecret = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SECRET);
+
+            if (tenantId == "3b78b39a-ac6c-465a-a010-5a3f47148ff0") {
+                System.out.println("tenantId is same as expected");
+            } else {
+                System.out.println("tenantId is not  as expected");
+            }
+
+            if (clientId == "19ea75db-1ade-473a-9f60-c3fb905f1f56") {
+                System.out.println("clientId is same as expected");
+            }else {
+                System.out.println("clientId is not  as expected");
+            }
+
             System.out.println("Creating ClientSecretCredentialBuilder for tenant id " + tenantId);
             System.out.println("Creating ClientSecretCredentialBuilder for client id" + clientId);
 
