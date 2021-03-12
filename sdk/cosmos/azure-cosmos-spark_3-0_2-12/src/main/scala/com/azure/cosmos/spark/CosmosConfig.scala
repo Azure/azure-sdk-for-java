@@ -229,6 +229,8 @@ private object CosmosContainerConfig {
 
 private case class CosmosSchemaInferenceConfig(inferSchemaSamplingSize: Int,
                                                inferSchemaEnabled: Boolean,
+                                               includeSystemProperties: Boolean,
+                                               includeTimestamp: Boolean,
                                                inferSchemaQuery: Option[String])
 
 private object CosmosSchemaInferenceConfig {
@@ -246,6 +248,18 @@ private object CosmosSchemaInferenceConfig {
     parseFromStringFunction = enabled => enabled.toBoolean,
     helpMessage = "Whether schema inference is enabled or should return raw json")
 
+  private val inferSchemaIncludeSystemProperties = CosmosConfigEntry[Boolean](key = "spark.cosmos.read.inferSchemaIncludeSystemProperties",
+    mandatory = false,
+    defaultValue = Some(false),
+    parseFromStringFunction = include => include.toBoolean,
+    helpMessage = "Whether schema inference should include the system properties in the schema")
+
+  private val inferSchemaIncludeTimestamp = CosmosConfigEntry[Boolean](key = "spark.cosmos.read.inferSchemaIncludeTimestamp",
+    mandatory = false,
+    defaultValue = Some(false),
+    parseFromStringFunction = include => include.toBoolean,
+    helpMessage = "Whether schema inference should include the timestamp (_ts) property")
+
   private val inferSchemaQuery = CosmosConfigEntry[String](key = "spark.cosmos.read.inferSchemaQuery",
     mandatory = false,
     parseFromStringFunction = query => query,
@@ -255,12 +269,16 @@ private object CosmosSchemaInferenceConfig {
     val samplingSize = CosmosConfigEntry.parse(cfg, inferSchemaSamplingSize)
     val enabled = CosmosConfigEntry.parse(cfg, inferSchemaEnabled)
     val query = CosmosConfigEntry.parse(cfg, inferSchemaQuery)
+    val includeSystemProperties = CosmosConfigEntry.parse(cfg, inferSchemaIncludeSystemProperties)
+    val includeTimestamp = CosmosConfigEntry.parse(cfg, inferSchemaIncludeTimestamp)
 
     assert(samplingSize.isDefined)
     assert(enabled.isDefined)
     CosmosSchemaInferenceConfig(
       samplingSize.get,
       enabled.get,
+      includeSystemProperties.get,
+      includeTimestamp.get,
       query)
   }
 }
