@@ -37,7 +37,7 @@ public class EventHubBinderHealthIndicatorTest {
 
     @Before
     public void init() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         when(clientFactory.getOrCreateProducerClient(anyString())).thenReturn(producerAsyncClient);
         healthIndicator = new EventHubHealthIndicator(binder, clientFactory);
     }
