@@ -69,8 +69,8 @@ directive:
         from: ResourceWriteSuccessData
         to: ResourceWriteSuccessEventData
     - rename-model:
-        from: RedisImportRdbCompletedEventData
-        to: RedisImportRDBCompletedEventData
+        from: RedisImportRDBCompletedEventData
+        to: RedisImportRdbCompletedEventData
     - rename-model:
         from: RedisExportRDBCompletedEventData
         to: RedisExportRdbCompletedEventData
