@@ -85,7 +85,7 @@ public class CommunicationIdentityClientTestBase extends TestBase {
             } else if (tenantId == "72f988bf-86f1-41af-91ab-2d7cd011db47") {
                 System.out.println("tenantId is same as expected PROD value");
             } else {
-                System.out.println("tenantId is not  as expected");
+                System.out.println("tenantId is not as expected in both INT and PROD");
             }
 
             if (clientId == "19ea75db-1ade-473a-9f60-c3fb905f1f56") {
@@ -93,7 +93,7 @@ public class CommunicationIdentityClientTestBase extends TestBase {
             }else if (clientId == "f850650c-1fcf-4489-b46f-71af2e30d360") {
                 System.out.println("clientId is same as expected PROD value");
             } else {
-                System.out.println("clientId is not  as expected");
+                System.out.println("clientId is not as expected in both INT and PROD");
             }
 
             System.out.println("Creating ClientSecretCredentialBuilder for tenant id " + tenantId);
