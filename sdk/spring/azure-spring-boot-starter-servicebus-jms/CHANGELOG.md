@@ -1,6 +1,10 @@
 # Release History
 
-## 3.2.0-beta.1 (Unreleased)
+## 3.3.0-beta.1 (Unreleased)
+### Key Bug Fixes
+- Fix bug of using closed `MessageProducer` and `MessageConsumer` when a link is force detached.
+
+## 3.2.0 (2021-03-03)
 ### Breaking Changes
 - Require new property of `spring.jms.servicebus.pricing-tier` to set pricing tier of Azure Service Bus. Supported values are `premium`, `standard` and `basic`.
 

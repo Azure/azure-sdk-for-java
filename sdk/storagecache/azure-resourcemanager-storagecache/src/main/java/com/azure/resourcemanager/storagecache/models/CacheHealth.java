@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** An indication of Cache health. Gives more information about health than just that related to provisioning. */
 @Fluent
@@ -25,6 +26,12 @@ public final class CacheHealth {
      */
     @JsonProperty(value = "statusDescription")
     private String statusDescription;
+
+    /*
+     * Outstanding conditions that need to be investigated and resolved.
+     */
+    @JsonProperty(value = "conditions", access = JsonProperty.Access.WRITE_ONLY)
+    private List<Condition> conditions;
 
     /**
      * Get the state property: List of Cache health states.
@@ -67,10 +74,22 @@ public final class CacheHealth {
     }
 
     /**
+     * Get the conditions property: Outstanding conditions that need to be investigated and resolved.
+     *
+     * @return the conditions value.
+     */
+    public List<Condition> conditions() {
+        return this.conditions;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (conditions() != null) {
+            conditions().forEach(e -> e.validate());
+        }
     }
 }

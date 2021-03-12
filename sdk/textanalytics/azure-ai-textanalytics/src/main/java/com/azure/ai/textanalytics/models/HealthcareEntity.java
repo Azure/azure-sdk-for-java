@@ -6,28 +6,30 @@ package com.azure.ai.textanalytics.models;
 import com.azure.ai.textanalytics.implementation.HealthcareEntityPropertiesHelper;
 import com.azure.core.util.IterableStream;
 
-import java.util.Collections;
-import java.util.Map;
-
 /**
  * The {@link HealthcareEntity} model.
  */
 public final class HealthcareEntity {
     private String text;
+    private String normalizedText;
     private String category;
     private String subcategory;
     private double confidenceScore;
     private int offset;
     private int length;
-    private boolean negated;
     private IterableStream<EntityDataSource> dataSources;
-    private Map<HealthcareEntity, HealthcareEntityRelationType> relatedEntities;
+    private HealthcareEntityAssertion assertion;
 
     static {
         HealthcareEntityPropertiesHelper.setAccessor(new HealthcareEntityPropertiesHelper.HealthcareEntityAccessor() {
             @Override
             public void setText(HealthcareEntity healthcareEntity, String text) {
                 healthcareEntity.setText(text);
+            }
+
+            @Override
+            public void setNormalizedText(HealthcareEntity healthcareEntity, String normalizedText) {
+                healthcareEntity.setNormalizedText(normalizedText);
             }
 
             @Override
@@ -56,20 +58,14 @@ public final class HealthcareEntity {
             }
 
             @Override
-            public void setNegated(HealthcareEntity healthcareEntity, boolean negated) {
-                healthcareEntity.setNegated(negated);
-            }
-
-            @Override
             public void setDataSources(HealthcareEntity healthcareEntity,
                 IterableStream<EntityDataSource> dataSources) {
                 healthcareEntity.setDataSources(dataSources);
             }
 
             @Override
-            public void setRelatedEntities(HealthcareEntity healthcareEntity,
-                Map<HealthcareEntity, HealthcareEntityRelationType> relatedEntities) {
-                healthcareEntity.setRelatedEntities(relatedEntities);
+            public void setAssertion(HealthcareEntity healthcareEntity, HealthcareEntityAssertion assertion) {
+                healthcareEntity.setAssertion(assertion);
             }
         });
     }
@@ -81,6 +77,16 @@ public final class HealthcareEntity {
      */
     public String getText() {
         return this.text;
+    }
+
+    /**
+     * Get the normalized text property: The normalized text is preferred name for the entity.
+     * Example: 'histologically' would have a 'name' of 'histologic'.
+     *
+     * @return The normalized text value.
+     */
+    public String getNormalizedText() {
+        return this.normalizedText;
     }
 
     /**
@@ -130,15 +136,6 @@ public final class HealthcareEntity {
     }
 
     /**
-     * Get the isNegated property: The isNegated property.
-     *
-     * @return the isNegated value.
-     */
-    public boolean isNegated() {
-        return this.negated;
-    }
-
-    /**
      * Get the healthcare entity data sources property: Entity references in known data sources.
      *
      * @return the dataSources value.
@@ -148,16 +145,20 @@ public final class HealthcareEntity {
     }
 
     /**
-     * Get the related healthcare entities and relation type.
+     * Get the assertion property.
      *
-     * @return the related healthcare entities and relation type.
+     * @return the assertion property.
      */
-    public Map<HealthcareEntity, HealthcareEntityRelationType> getRelatedEntities() {
-        return Collections.unmodifiableMap(relatedEntities);
+    public HealthcareEntityAssertion getAssertion() {
+        return this.assertion;
     }
 
     private void setText(String text) {
         this.text = text;
+    }
+
+    private void setNormalizedText(String normalizedText) {
+        this.normalizedText = normalizedText;
     }
 
     private void setCategory(String category) {
@@ -180,15 +181,11 @@ public final class HealthcareEntity {
         this.length = length;
     }
 
-    private void setNegated(boolean negated) {
-        this.negated = negated;
-    }
-
     private void setDataSources(IterableStream<EntityDataSource> dataSources) {
         this.dataSources = dataSources;
     }
 
-    private void setRelatedEntities(Map<HealthcareEntity, HealthcareEntityRelationType> relatedEntities) {
-        this.relatedEntities = relatedEntities;
+    private void setAssertion(HealthcareEntityAssertion assertion) {
+        this.assertion = assertion;
     }
 }

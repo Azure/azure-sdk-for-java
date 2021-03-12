@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.RequestConditions;
+import com.azure.core.util.BinaryData;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
@@ -89,6 +90,19 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             }
         });
         // END: com.azure.storage.blob.BlobAsyncClient.download
+    }
+
+    /**
+     * Code snippets for {@link BlobAsyncClient#downloadContent()}
+     *
+     * @throws UncheckedIOException If an I/O error occurs
+     */
+    public void downloadContentCodeSnippet() {
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.downloadContent
+        client.downloadContent().subscribe(data -> {
+            System.out.printf("Downloaded %s", data.toString());
+        });
+        // END: com.azure.storage.blob.BlobAsyncClient.downloadContent
     }
 
     /**
@@ -430,6 +444,29 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             System.out.printf("Uploaded BlockBlob MD5 is %s%n",
                 Base64.getEncoder().encodeToString(response.getContentMd5())));
         // END: com.azure.storage.blob.BlobAsyncClient.upload#Flux-ParallelTransferOptions-boolean
+    }
+
+    /**
+     * Code snippet for {@link BlobAsyncClient#upload(BinaryData)}
+     */
+    public void uploadBinaryData() {
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.upload#BinaryData
+        client.upload(BinaryData.fromString("Data!")).subscribe(response ->
+            System.out.printf("Uploaded BlockBlob MD5 is %s%n",
+                Base64.getEncoder().encodeToString(response.getContentMd5())));
+        // END: com.azure.storage.blob.BlobAsyncClient.upload#BinaryData
+    }
+
+    /**
+     * Code snippet for {@link BlobAsyncClient#upload(BinaryData, boolean)}
+     */
+    public void uploadBinaryDataOverwrite() {
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.upload#BinaryData-boolean
+        boolean overwrite = false; // Default behavior
+        client.upload(BinaryData.fromString("Data!"), overwrite).subscribe(response ->
+            System.out.printf("Uploaded BlockBlob MD5 is %s%n",
+                Base64.getEncoder().encodeToString(response.getContentMd5())));
+        // END: com.azure.storage.blob.BlobAsyncClient.upload#BinaryData-boolean
     }
 
     /**

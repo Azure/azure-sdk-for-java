@@ -60,11 +60,11 @@ public final class MockProxyServer implements Closeable {
 
         this.disposableServer = HttpServer.create()
             .host("localhost")
-            .tcpConfiguration(tcpServer -> tcpServer.observe((connection, newState) -> {
+            .observe((connection, newState) -> {
                 if (newState == ConnectionObserver.State.RELEASED) {
                     isAuthenticated.remove(connection.channel().remoteAddress());
                 }
-            }))
+            })
             .handle((request, response) -> {
                 if (requiresAuthentication) {
                     if (isAuthenticated.contains(request.remoteAddress())) {
@@ -90,7 +90,7 @@ public final class MockProxyServer implements Closeable {
      * @return Address of the server.
      */
     public InetSocketAddress socketAddress() {
-        return disposableServer.address();
+        return (InetSocketAddress) disposableServer.address();
     }
 
     @Override

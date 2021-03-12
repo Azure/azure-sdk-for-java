@@ -141,7 +141,8 @@ class EventHubProducerAsyncClientTest {
         tracerProvider = new TracerProvider(Collections.emptyList());
         connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, retryOptions,
-            ProxyOptions.SYSTEM_DEFAULTS, testScheduler, CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME);
+            ProxyOptions.SYSTEM_DEFAULTS, testScheduler, CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME,
+            "client-product", "client-version");
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);

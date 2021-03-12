@@ -217,7 +217,7 @@ public class OkHttpAsyncHttpClientBuilder {
         if (buildProxyOptions != null) {
             httpClientBuilder = httpClientBuilder.proxySelector(new OkHttpProxySelector(
                 buildProxyOptions.getType().toProxyType(),
-                buildProxyOptions.getAddress(),
+                buildProxyOptions::getAddress,
                 buildProxyOptions.getNonProxyHosts()));
 
             if (buildProxyOptions.getUsername() != null) {

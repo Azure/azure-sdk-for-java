@@ -21,12 +21,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.ReadOnlyBufferException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Test class for {@link BinaryData}.
@@ -287,6 +289,13 @@ public class BinaryDataTest {
         // Assert
         assertArrayEquals(new byte[0], data.toBytes());
         assertEquals("", data.toString());
+    }
+
+    @Test
+    public void toReadOnlyByteBufferThrowsOnMutation() {
+        BinaryData binaryData = BinaryData.fromString("Hello");
+
+        assertThrows(ReadOnlyBufferException.class, () -> binaryData.toByteBuffer().put((byte) 0));
     }
 
     public static class MyJsonSerializer implements JsonSerializer {

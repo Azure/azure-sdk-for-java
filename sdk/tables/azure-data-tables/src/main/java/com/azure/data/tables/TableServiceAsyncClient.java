@@ -52,6 +52,7 @@ public class TableServiceAsyncClient {
     private final ClientLogger logger = new ClientLogger(TableServiceAsyncClient.class);
     private final AzureTableImpl implementation;
     private final String accountName;
+    private final HttpPipeline pipeline;
 
     TableServiceAsyncClient(HttpPipeline pipeline, String url, TablesServiceVersion serviceVersion,
         SerializerAdapter serializerAdapter) {
@@ -70,6 +71,8 @@ public class TableServiceAsyncClient {
             .pipeline(pipeline)
             .version(serviceVersion.getVersion())
             .buildClient();
+
+        this.pipeline = implementation.getHttpPipeline();
     }
 
     /**
@@ -88,6 +91,15 @@ public class TableServiceAsyncClient {
      */
     public String getServiceUrl() {
         return implementation.getUrl();
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    HttpPipeline getHttpPipeline() {
+        return this.pipeline;
     }
 
     /**

@@ -70,12 +70,12 @@ public class AsyncListKeyVaultSecretsLoggingExporterSample {
         Context traceContext = Context.of(PARENT_SPAN_KEY, Span.current());
 
         secretAsyncClient.setSecret(new KeyVaultSecret("Secret1", "password1"))
-            .subscriberContext(traceContext)
+            .contextWrite(traceContext)
             .subscribe(secretResponse -> System.out.printf("Secret with name: %s%n", secretResponse.getName()));
         secretAsyncClient.listPropertiesOfSecrets()
-            .subscriberContext(traceContext)
+            .contextWrite(traceContext)
             .doOnNext(secretBase -> secretAsyncClient.getSecret(secretBase.getName())
-                .subscriberContext(traceContext)
+                .contextWrite(traceContext)
                 .doOnNext(secret -> System.out.printf("Secret with name: %s%n", secret.getName())))
             .blockLast();
 

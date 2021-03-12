@@ -18,6 +18,8 @@ module com.azure.cosmos {
     requires io.netty.transport.epoll;
     requires io.netty.handler.proxy;
     requires reactor.netty;
+    requires reactor.netty.core;
+    requires reactor.netty.http;
     requires com.codahale.metrics;
     requires com.fasterxml.jackson.module.afterburner;
     requires java.management;
@@ -51,8 +53,8 @@ module com.azure.cosmos {
     opens com.azure.cosmos.implementation.clientTelemetry to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.models to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.util to com.fasterxml.jackson.databind;
-    opens com.azure.cosmos.implementation.throughputControl;
-    opens com.azure.cosmos.implementation.throughputControl.controller.request;
+    opens com.azure.cosmos.implementation.throughputControl to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos.implementation.throughputControl.controller.group.global to com.fasterxml.jackson.databind;
 
     uses com.azure.cosmos.implementation.guava25.base.PatternCompiler;
     uses com.azure.core.util.tracing.Tracer;
