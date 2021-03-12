@@ -547,7 +547,7 @@ public class ReactorSession implements AmqpSession {
         if (session.getLocalState() != EndpointState.CLOSED) {
             session.close();
 
-            if (session.getCondition() == null) {
+            if (errorCondition != null && session.getCondition() == null) {
                 session.setCondition(errorCondition);
             }
         }
