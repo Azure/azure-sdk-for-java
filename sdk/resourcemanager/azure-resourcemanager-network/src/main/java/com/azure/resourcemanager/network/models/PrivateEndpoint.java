@@ -158,6 +158,11 @@ public interface PrivateEndpoint extends
     }
 
     /**
+     * @return the resource collection API of private DNS zone group.
+     */
+    PrivateDnsZoneGroups privateDnsZoneGroups();
+
+    /**
      * @return the reference of the subnet.
      */
     SubResource subnet();

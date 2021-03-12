@@ -8,6 +8,7 @@ import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.models.PrivateEndpointInner;
 import com.azure.resourcemanager.network.fluent.models.SubnetInner;
 import com.azure.resourcemanager.network.models.CustomDnsConfigPropertiesFormat;
+import com.azure.resourcemanager.network.models.PrivateDnsZoneGroups;
 import com.azure.resourcemanager.network.models.PrivateEndpoint;
 import com.azure.resourcemanager.network.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.network.models.PrivateLinkSubResourceName;
@@ -33,6 +34,8 @@ class PrivateEndpointImpl extends
     PrivateEndpoint,
     PrivateEndpoint.Definition,
     PrivateEndpoint.Update {
+
+    private PrivateDnsZoneGroups privateDnsZoneGroups;
 
     static class PrivateEndpointConnectionImpl extends
         ChildResourceImpl<com.azure.resourcemanager.network.models.PrivateLinkServiceConnection,
@@ -128,6 +131,14 @@ class PrivateEndpointImpl extends
 
     protected PrivateEndpointImpl(String name, PrivateEndpointInner innerObject, NetworkManager manager) {
         super(name, innerObject, manager);
+    }
+
+    @Override
+    public PrivateDnsZoneGroups privateDnsZoneGroups() {
+        if (privateDnsZoneGroups == null) {
+            privateDnsZoneGroups = new PrivateDnsZoneGroupsImpl(this);
+        }
+        return privateDnsZoneGroups;
     }
 
     @Override

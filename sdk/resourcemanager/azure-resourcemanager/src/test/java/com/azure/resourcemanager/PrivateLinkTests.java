@@ -13,9 +13,16 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.compute.models.InstanceViewStatus;
+import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
+import com.azure.resourcemanager.compute.models.RunCommandResult;
+import com.azure.resourcemanager.compute.models.VirtualMachine;
+import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.PrivateDnsZoneGroup;
 import com.azure.resourcemanager.network.models.PrivateEndpoint;
 import com.azure.resourcemanager.network.models.PrivateLinkSubResourceName;
+import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.fluent.models.PrivateEndpointConnectionInner;
@@ -76,12 +83,23 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
 
     @Test
     public void testPrivateEndpoint() {
+        final boolean validateOnVirtualMachine = true;
+
         String saName = generateRandomResourceName("sa", 10);
         String vnName = generateRandomResourceName("vn", 10);
         String subnetName = "default";
         String peName = generateRandomResourceName("pe", 10);
         String peName2 = generateRandomResourceName("pe", 10);
         String pecName = generateRandomResourceName("pec", 10);
+        String vnlName = generateRandomResourceName("vnl", 10);
+        String pdzgName = "default";
+        String pdzcName = generateRandomResourceName("pdzcName", 10);
+
+        String vmName = generateRandomResourceName("vm", 10);
+
+        String saDomainName = saName + ".blob.core.windows.net";
+        System.out.println("storage account domain name: " + saDomainName);
+
         Region region = Region.US_EAST;
 
         StorageAccount storageAccount = azureResourceManager.storageAccounts().define(saName)
@@ -140,11 +158,11 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
         privateEndpoint = azureResourceManager.privateEndpoints().define(peName2)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
-            .withSubnet(network.subnets().get(subnetName).innerModel().id())
+            .withSubnetId(network.subnets().get(subnetName).innerModel().id())
             .definePrivateLinkServiceConnection(pecName)
-            .withResource(storageAccount.id())
-            .withSubResource(PrivateLinkSubResourceName.STORAGE_BLOB)
-            .attach()
+                .withResourceId(storageAccount.id())
+                .withSubResource(PrivateLinkSubResourceName.STORAGE_BLOB)
+                .attach()
             .create();
 
         Assertions.assertNotNull(privateEndpoint.subnet());
@@ -153,12 +171,71 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
         Assertions.assertEquals(1, privateEndpoint.privateLinkServiceConnections().size());
         Assertions.assertEquals(storageAccount.id(), privateEndpoint.privateLinkServiceConnections().get(pecName).privateLinkResourceId());
         Assertions.assertEquals(Collections.singletonList(PrivateLinkSubResourceName.STORAGE_BLOB), privateEndpoint.privateLinkServiceConnections().get(pecName).subResourceNames());
+        Assertions.assertNotNull(privateEndpoint.customDnsConfigurations());
+        Assertions.assertFalse(privateEndpoint.customDnsConfigurations().isEmpty());
         // auto-approved
         Assertions.assertFalse(privateEndpoint.privateLinkServiceConnections().values().iterator().next().isManualApproval());
         Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
 
+        String saPrivateIp = privateEndpoint.customDnsConfigurations().get(0).ipAddresses().get(0);
+        System.out.println("storage account private ip: " + saPrivateIp);
+
+        // verify list
         List<PrivateEndpoint> privateEndpoints = azureResourceManager.privateEndpoints().listByResourceGroup(rgName).stream().collect(Collectors.toList());
         Assertions.assertEquals(1, privateEndpoints.size());
         Assertions.assertEquals(peName2, privateEndpoints.get(0).name());
+
+        VirtualMachine virtualMachine = null;
+        if (validateOnVirtualMachine) {
+            // create a test virtual machine
+            virtualMachine = azureResourceManager.virtualMachines().define(vmName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withExistingPrimaryNetwork(network)
+                .withSubnet(subnetName)
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+                .withRootUsername("testUser")
+                .withSsh(sshPublicKey())
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2as_v4"))
+                .create();
+
+            // verify private endpoint not yet works
+            RunCommandResult commandResult = virtualMachine.runShellScript(Collections.singletonList("nslookup " + saDomainName), null);
+            for (InstanceViewStatus status : commandResult.value()) {
+                System.out.println(status.message());
+            }
+            Assertions.assertFalse(commandResult.value().stream().anyMatch(status -> status.message().contains(saPrivateIp)));
+        }
+
+        // private dns zone
+        PrivateDnsZone privateDnsZone = azureResourceManager.privateDnsZones().define("privatelink.blob.core.windows.net")
+            .withExistingResourceGroup(rgName)
+            .defineARecordSet(saName)
+                .withIPv4Address(privateEndpoint.customDnsConfigurations().get(0).ipAddresses().get(0))
+                .attach()
+            .defineVirtualNetworkLink(vnlName)
+                .withVirtualNetworkId(network.id())
+                .attach()
+            .create();
+
+        // private dns zone group on private endpoint
+        PrivateDnsZoneGroup privateDnsZoneGroup = privateEndpoint.privateDnsZoneGroups().define(pdzgName)
+            .withPrivateDnsZoneConfigure(pdzcName, privateDnsZone.id())
+            .create();
+
+        if (validateOnVirtualMachine) {
+            // verify private endpoint works
+            RunCommandResult commandResult = virtualMachine.runShellScript(Collections.singletonList("nslookup " + saDomainName), null);
+            for (InstanceViewStatus status : commandResult.value()) {
+                System.out.println(status.message());
+            }
+            Assertions.assertTrue(commandResult.value().stream().anyMatch(status -> status.message().contains(saPrivateIp)));
+        }
+
+        // verify list and get
+        Assertions.assertEquals(1, privateEndpoint.privateDnsZoneGroups().list().stream().count());
+        Assertions.assertEquals(pdzgName, privateEndpoint.privateDnsZoneGroups().getById(privateDnsZoneGroup.id()).name());
     }
 }
