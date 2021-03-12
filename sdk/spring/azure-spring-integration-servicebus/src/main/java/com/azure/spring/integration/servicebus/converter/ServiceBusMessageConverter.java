@@ -121,48 +121,38 @@ public class ServiceBusMessageConverter extends AbstractAzureMessageConverter<IM
         Map<String, Object> headers = new HashMap<>();
 
         // Spring MessageHeaders
-        Optional.ofNullable(message.getMessageId())
-                .filter(StringUtils::hasText)
-                .ifPresent(s -> headers.put(MessageHeaders.ID, s));
-        Optional.ofNullable(message.getContentType())
-                .filter(StringUtils::hasText)
-                .ifPresent(s -> headers.put(MessageHeaders.CONTENT_TYPE, s));
-        Optional.ofNullable(message.getReplyTo())
-                .filter(StringUtils::hasText)
-                .ifPresent(s -> headers.put(MessageHeaders.REPLY_CHANNEL, s));
+        setValueIfHasText(headers, MessageHeaders.ID, message.getMessageId());
+        setValueIfHasText(headers, MessageHeaders.CONTENT_TYPE, message.getContentType());
+        setValueIfHasText(headers, MessageHeaders.REPLY_CHANNEL, message.getReplyTo());
 
         // AzureHeaders.
         // Does not have SCHEDULED_ENQUEUE_MESSAGE, because it's meaningless in receiver side.
-        Optional.ofNullable(message.getMessageId())
-                .filter(StringUtils::hasText)
-                .ifPresent(s -> headers.put(AzureHeaders.RAW_ID, s));
+        setValueIfHasText(headers, AzureHeaders.RAW_ID, message.getMessageId());
 
         // ServiceBusMessageHeaders.
-        Optional.ofNullable(message.getMessageId())
-                .filter(StringUtils::hasText)
-                .ifPresent(s -> headers.put(MESSAGE_ID, s));
-        Optional.ofNullable(message.getTimeToLive())
-                .ifPresent(s -> headers.put(TIME_TO_LIVE, s));
-        Optional.ofNullable(message.getScheduledEnqueueTimeUtc())
-                .ifPresent(s -> headers.put(SCHEDULED_ENQUEUE_TIME, s));
-        Optional.ofNullable(message.getSessionId())
-                .filter(StringUtils::hasText)
-                .ifPresent(s -> headers.put(SESSION_ID, s));
-        Optional.ofNullable(message.getCorrelationId())
-                .filter(StringUtils::hasText)
-                .ifPresent(s -> headers.put(CORRELATION_ID, s));
-        Optional.ofNullable(message.getTo())
-                .filter(StringUtils::hasText)
-                .ifPresent(s -> headers.put(TO, s));
-        Optional.ofNullable(message.getReplyToSessionId())
-                .filter(StringUtils::hasText)
-                .ifPresent(s -> headers.put(REPLY_TO_SESSION_ID, s));
-        Optional.ofNullable(message.getPartitionKey())
-                .filter(StringUtils::hasText)
-                .ifPresent(s -> headers.put(PARTITION_KEY, s));
+        setValueIfHasText(headers, CORRELATION_ID, message.getCorrelationId());
+        setValueIfHasText(headers, MESSAGE_ID, message.getMessageId());
+        setValueIfHasText(headers, PARTITION_KEY, message.getPartitionKey());
+        setValueIfPresent(headers, TIME_TO_LIVE, message.getTimeToLive());
+        setValueIfHasText(headers, TO, message.getTo());
+        setValueIfPresent(headers, TIME_TO_LIVE, message.getTimeToLive());
+        setValueIfPresent(headers, SCHEDULED_ENQUEUE_TIME, message.getScheduledEnqueueTimeUtc());
+        setValueIfHasText(headers, REPLY_TO_SESSION_ID, message.getReplyToSessionId());
+        setValueIfHasText(headers, SESSION_ID, message.getSessionId());
 
         headers.putAll(message.getProperties());
 
         return Collections.unmodifiableMap(headers);
+    }
+
+    private void setValueIfHasText(Map<String, Object> map, String key, String value) {
+        Optional.ofNullable(value)
+                .filter(StringUtils::hasText)
+                .ifPresent(s -> map.put(key, s));
+    }
+
+    private void setValueIfPresent(Map<String, Object> map, String key, Object value) {
+        Optional.ofNullable(value)
+                .ifPresent(s -> map.put(key, s));
     }
 }
