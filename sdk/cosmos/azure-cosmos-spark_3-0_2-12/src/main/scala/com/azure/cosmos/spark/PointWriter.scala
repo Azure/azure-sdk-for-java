@@ -3,12 +3,13 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.implementation.guava25.base.Preconditions.checkState
 import com.azure.cosmos.models.{CosmosItemRequestOptions, PartitionKey}
 import com.azure.cosmos.{CosmosAsyncContainer, CosmosException}
 import com.fasterxml.jackson.databind.node.ObjectNode
 
-import java.util.concurrent.atomic.AtomicReference
-import java.util.concurrent.{Callable, CompletableFuture, Executors}
+import java.util.concurrent.atomic.{AtomicBoolean, AtomicReference}
+import java.util.concurrent.{Callable, CompletableFuture, ExecutorService, Executors, ThreadFactory}
 import scala.collection.concurrent.TrieMap
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
@@ -23,26 +24,40 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
   extends AsyncItemWriter
     with CosmosLoggingTrait {
 
+  val executorService: ExecutorService = Executors.newFixedThreadPool(
+    cosmosWriteConfig.maxConcurrency,
+    SparkUtils.daemonThreadFactory())
 
-  // TODO: moderakh executorService needs to get closed, otherwise we will have resource leak
-  private val executorService = Executors.newFixedThreadPool(cosmosWriteConfig.maxConcurrency)
   private val capturedFailure = new AtomicReference[Throwable]()
   private val pendingPointWrites = new TrieMap[Future[Unit], Boolean]()
+  private val closed = new AtomicBoolean(false)
 
-  def scheduleWrite(partitionKeyValue: PartitionKey, objectNode: ObjectNode): Unit = {
+  override def scheduleWrite(partitionKeyValue: PartitionKey, objectNode: ObjectNode): Unit = {
+    checkState(!closed.get())
+
     cosmosWriteConfig.itemWriteStrategy match {
       case ItemWriteStrategy.ItemOverwrite => upsertWithRetryAsync(partitionKeyValue, objectNode)
       case ItemWriteStrategy.ItemAppend => createWithRetryAsync(partitionKeyValue, objectNode)
     }
   }
 
-  def flushAndClose() {
-    for ((future, _) <- pendingPointWrites.snapshot()) {
-      Try(Await.result(future, Duration.Inf))
+  // scalastyle:off return
+  override def flushAndClose() : Unit = {
+    this.synchronized {
+      try {
+        if (!closed.compareAndSet(false, true)) {
+          return
+        }
+
+        for ((future, _) <- pendingPointWrites.snapshot()) {
+          Try(Await.result(future, Duration.Inf))
+        }
+      } finally {
+        executorService.shutdown()
+      }
     }
   }
 
-  // scalastyle:off return
   private def createWithRetryAsync(partitionKeyValue: PartitionKey,
                                    objectNode: ObjectNode): Unit = {
 
@@ -51,7 +66,7 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
 
     executeAsync(() => createWithRetry(partitionKeyValue, objectNode))
       .onComplete {
-        case Success(value) => {
+        case Success(_) => {
           promise.success(Unit)
           pendingPointWrites.remove(promise.future)
         }
@@ -70,7 +85,7 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
 
     executeAsync(() => upsertWithRetry(partitionKeyValue, objectNode))
       .onComplete {
-        case Success(value) => {
+        case Success(_) => {
           promise.success(Unit)
           pendingPointWrites.remove(promise.future)
         }

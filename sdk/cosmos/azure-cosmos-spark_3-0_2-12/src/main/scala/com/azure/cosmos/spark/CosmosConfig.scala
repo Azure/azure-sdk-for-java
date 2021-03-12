@@ -153,14 +153,24 @@ private object CosmosWriteConfig {
     parseFromStringFunction = bulkEnabledAsString => bulkEnabledAsString.toBoolean,
     helpMessage = "Cosmos DB Item Write bulk enabled")
 
-  private val writeMaxConcurrency = 100
+  // TODO: moderakh this should be dynamic based on the number of CPU cores
+  private val MaxPointWriteConcurrency = 100
+  private val MaxBulkWriteConcurrency = 100000
   private val MaxRetryCount = 3
 
-  private val maxConcurrency = CosmosConfigEntry[Int](key = "spark.cosmos.write.maxConcurrency",
-    defaultValue = Option.apply(writeMaxConcurrency),
+  private val maxPointWriteConcurrency = CosmosConfigEntry[Int](key = "spark.cosmos.write.maxConcurrency",
+    defaultValue = Option.apply(MaxPointWriteConcurrency),
     mandatory = false,
     parseFromStringFunction = bulkMaxConcurrencyAsString => bulkMaxConcurrencyAsString.toInt,
-    helpMessage = s"Cosmos DB Item Write max concurrency, default is $writeMaxConcurrency")
+    helpMessage = s"Cosmos DB Item Write Max concurrency." +
+      s" For Point Write Default is $MaxPointWriteConcurrency for Bulk Write Default is $MaxBulkWriteConcurrency")
+
+  private val maxBulkConcurrency = CosmosConfigEntry[Int](key = "spark.cosmos.write.maxConcurrency",
+    defaultValue = Option.apply(MaxBulkWriteConcurrency),
+    mandatory = false,
+    parseFromStringFunction = bulkMaxConcurrencyAsString => bulkMaxConcurrencyAsString.toInt,
+    helpMessage = s"Cosmos DB Item Write Max concurrency." +
+      s" For Point Write Default is $MaxPointWriteConcurrency for Bulk Write Default is $MaxBulkWriteConcurrency")
 
   private val itemWriteStrategy = CosmosConfigEntry[ItemWriteStrategy](key = "spark.cosmos.write.strategy",
     defaultValue = Option.apply(ItemWriteStrategy.ItemOverwrite),
@@ -185,7 +195,12 @@ private object CosmosWriteConfig {
     val itemWriteStrategyOpt = CosmosConfigEntry.parse(cfg, itemWriteStrategy)
     val maxRetryCountOpt = CosmosConfigEntry.parse(cfg, maxRetryCount)
     val bulkEnabledOpt = CosmosConfigEntry.parse(cfg, bulkEnabled)
-    val maxConcurrencyOpt = CosmosConfigEntry.parse(cfg, maxConcurrency)
+    assert(bulkEnabledOpt.isDefined)
+    val maxConcurrencyOpt = if (bulkEnabledOpt.get) {
+      CosmosConfigEntry.parse(cfg, maxBulkConcurrency)
+    } else {
+      CosmosConfigEntry.parse(cfg, maxPointWriteConcurrency)
+    }
 
     // parsing above already validated this
     assert(itemWriteStrategyOpt.isDefined)
@@ -193,7 +208,11 @@ private object CosmosWriteConfig {
     assert(bulkEnabledOpt.isDefined)
     assert(maxConcurrencyOpt.isDefined)
 
-    CosmosWriteConfig(itemWriteStrategyOpt.get, maxRetryCountOpt.get, bulkEnabledOpt.get, maxConcurrencyOpt.get)
+    CosmosWriteConfig(
+      itemWriteStrategyOpt.get,
+      maxRetryCountOpt.get,
+      bulkEnabledOpt.get,
+      maxConcurrencyOpt.get)
   }
 }
 

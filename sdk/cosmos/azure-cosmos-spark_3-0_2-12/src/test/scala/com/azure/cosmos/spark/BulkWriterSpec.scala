@@ -24,12 +24,12 @@ class BulkWriterSpec extends IntegrationSpec with CosmosClient with AutoCleanabl
   "Bulk Writer" can "upsert item" taggedAs RequiresCosmosEndpoint in  {
     val container = getContainer
 
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 0, bulkEnabled = true, 100)
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 5, bulkEnabled = true, 900)
 
     val bulkWriter = new BulkWriter(container, writeConfig)
 
     val items = mutable.Map[String, ObjectNode]()
-    for(_ <- 0 until 100) {
+    for(_ <- 0 until 10000) {
       val item = getItem(UUID.randomUUID().toString)
       val id = item.get("id").textValue()
       items += (id -> item)
@@ -48,13 +48,13 @@ class BulkWriterSpec extends IntegrationSpec with CosmosClient with AutoCleanabl
     }
   }
 
-  "Bulk Writer" can "create item with duplicates" taggedAs RequiresCosmosEndpoint in {
+  "Bulk Writer" can "create item with duplicates" taggedAs RequiresCosmosEndpoint in   {
     val container = getContainer
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 0, bulkEnabled = true, 100)
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 5, bulkEnabled = true, 900)
     val bulkWriter = new BulkWriter(container, writeConfig)
     val items = new mutable.HashMap[String, mutable.Set[ObjectNode]] with mutable.MultiMap[String, ObjectNode]
 
-    for(i <- 0 until 1000) {
+    for(i <- 0 until 10000) {
       val item = getItem((i % 100).toString)
       val id = item.get("id").textValue()
       items.addBinding(id, item)
