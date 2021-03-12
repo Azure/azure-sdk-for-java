@@ -3,8 +3,10 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -58,6 +60,7 @@ public final class ClientEncryptionPolicy {
         this.jsonSerializable = new JsonSerializable(objectNode);
     }
 
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public List<ClientEncryptionIncludedPath> getIncludedPaths() {
         return this.includedPaths;
     }
@@ -74,11 +77,11 @@ public final class ClientEncryptionPolicy {
         List<String> includedPathsList = new ArrayList<>();
         for (ClientEncryptionIncludedPath path : clientEncryptionIncludedPath) {
             this.validateClientEncryptionIncludedPath(path);
-            if (includedPathsList.contains(path.path)) {
+            if (includedPathsList.contains(path.getPath())) {
                 throw new IllegalArgumentException("Duplicate Path found in clientEncryptionIncludedPath.");
             }
 
-            includedPathsList.add(path.path);
+            includedPathsList.add(path.getPath());
         }
     }
 
@@ -87,34 +90,34 @@ public final class ClientEncryptionPolicy {
             throw new IllegalArgumentException("clientEncryptionIncludedPath is null");
         }
 
-        if (StringUtils.isEmpty(clientEncryptionIncludedPath.path)) {
+        if (StringUtils.isEmpty(clientEncryptionIncludedPath.getPath())) {
             throw new IllegalArgumentException("path in clientEncryptionIncludedPath is empty");
         }
 
-        if (clientEncryptionIncludedPath.path.charAt(0) != '/'
-            || clientEncryptionIncludedPath.path.lastIndexOf('/') != 0
-            || clientEncryptionIncludedPath.path.substring(1).equals("id")) {
-            throw new IllegalArgumentException("Invalid path " + clientEncryptionIncludedPath.path);
+        if (clientEncryptionIncludedPath.getPath().charAt(0) != '/'
+            || clientEncryptionIncludedPath.getPath().lastIndexOf('/') != 0
+            || clientEncryptionIncludedPath.getPath().substring(1).equals("id")) {
+            throw new IllegalArgumentException("Invalid path " + clientEncryptionIncludedPath.getPath());
         }
 
-        if (StringUtils.isEmpty(clientEncryptionIncludedPath.clientEncryptionKeyId)) {
+        if (StringUtils.isEmpty(clientEncryptionIncludedPath.getClientEncryptionKeyId())) {
             throw new IllegalArgumentException("clientEncryptionKeyId in clientEncryptionIncludedPath is empty");
         }
 
-        if (StringUtils.isEmpty(clientEncryptionIncludedPath.encryptionType)) {
+        if (StringUtils.isEmpty(clientEncryptionIncludedPath.getEncryptionType())) {
             throw new IllegalArgumentException("encryptionType in clientEncryptionIncludedPath is empty");
         }
 
-        if (!clientEncryptionIncludedPath.encryptionType.equals("Deterministic") &&
-            !clientEncryptionIncludedPath.encryptionType.equals("Randomized")) {
+        if (!clientEncryptionIncludedPath.getEncryptionType().equals(Constants.Properties.DETERMINISTIC) &&
+            !clientEncryptionIncludedPath.getEncryptionType().equals(Constants.Properties.RANDOMIZED)) {
             throw new IllegalArgumentException("EncryptionType should be either 'Deterministic' or 'Randomized'.");
         }
 
-        if (StringUtils.isEmpty(clientEncryptionIncludedPath.encryptionAlgorithm)) {
+        if (StringUtils.isEmpty(clientEncryptionIncludedPath.getEncryptionAlgorithm())) {
             throw new IllegalArgumentException("encryptionAlgorithm in clientEncryptionIncludedPath is empty");
         }
 
-        if (!clientEncryptionIncludedPath.encryptionAlgorithm.equals("AEAD_AES_256_CBC_HMAC_SHA256")) {
+        if (!clientEncryptionIncludedPath.getEncryptionAlgorithm().equals("AEAD_AES_256_CBC_HMAC_SHA256")) {
             throw new IllegalArgumentException("EncryptionAlgorithm should be 'AEAD_AES_256_CBC_HMAC_SHA256'.");
         }
     }

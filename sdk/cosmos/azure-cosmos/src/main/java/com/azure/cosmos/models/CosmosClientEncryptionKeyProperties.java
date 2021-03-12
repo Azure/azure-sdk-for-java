@@ -5,6 +5,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.ClientEncryptionKey;
 import com.azure.cosmos.implementation.Resource;
+import com.azure.cosmos.util.Beta;
 
 import java.time.Instant;
 import java.util.List;
@@ -40,26 +41,32 @@ public class CosmosClientEncryptionKeyProperties {
         this.clientEncryptionKey.setEncryptionKeyWrapMetadata(encryptionKeyWrapMetadata);
     }
 
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getEncryptionAlgorithm() {
         return this.clientEncryptionKey.getEncryptionAlgorithm();
     }
 
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void setEncryptionAlgorithm(String encryptionAlgorithm) {
         this.clientEncryptionKey.setEncryptionAlgorithm(encryptionAlgorithm);
     }
 
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public byte[] getWrappedDataEncryptionKey() {
         return this.clientEncryptionKey.getWrappedDataEncryptionKey();
     }
 
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void setWrappedDataEncryptionKey(byte[] wrappedDataEncryptionKey) {
         this.clientEncryptionKey.setWrappedDataEncryptionKey(wrappedDataEncryptionKey);
     }
 
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public EncryptionKeyWrapMetadata getEncryptionKeyWrapMetadata() {
         return this.clientEncryptionKey.getEncryptionKeyWrapMetadata();
     }
 
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void setEncryptionKeyWrapMetadata(EncryptionKeyWrapMetadata encryptionKeyWrapMetadata) {
         this.clientEncryptionKey.setEncryptionKeyWrapMetadata(encryptionKeyWrapMetadata);
     }
@@ -69,6 +76,7 @@ public class CosmosClientEncryptionKeyProperties {
      *
      * @return the name of the resource.
      */
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getId() {
         return this.clientEncryptionKey.getId();
     }
@@ -79,6 +87,7 @@ public class CosmosClientEncryptionKeyProperties {
      * @param id the name of the resource.
      * @return the current instance of {@link CosmosContainerProperties}.
      */
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosClientEncryptionKeyProperties setId(String id) {
         this.clientEncryptionKey.setId(id);
         return this;
@@ -89,6 +98,7 @@ public class CosmosClientEncryptionKeyProperties {
      *
      * @return the ID associated with the resource.
      */
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getResourceId() {
         return this.clientEncryptionKey.getResourceId();
     }
@@ -99,6 +109,7 @@ public class CosmosClientEncryptionKeyProperties {
      *
      * @return the timestamp.
      */
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Instant getTimestamp() {
         return this.clientEncryptionKey.getTimestamp();
     }
@@ -109,6 +120,7 @@ public class CosmosClientEncryptionKeyProperties {
      *
      * @return the e tag.
      */
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getETag() {
         return this.clientEncryptionKey.getETag();
     }

@@ -6,6 +6,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
@@ -98,16 +99,16 @@ public class CosmosContainerTest extends TestSuiteBase {
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
 
         ClientEncryptionIncludedPath path1 = new ClientEncryptionIncludedPath();
-        path1.path =  "/path1";
-        path1.encryptionAlgorithm = "AEAD_AES_256_CBC_HMAC_SHA256";
-        path1.encryptionType = "Randomized";
-        path1.clientEncryptionKeyId = "key1";
+        path1.setPath("/path1");
+        path1.setEncryptionAlgorithm("AEAD_AES_256_CBC_HMAC_SHA256");
+        path1.setEncryptionType(Constants.Properties.RANDOMIZED);
+        path1.setClientEncryptionKeyId("key1");
 
         ClientEncryptionIncludedPath path2 = new ClientEncryptionIncludedPath();
-        path2.path =  "/path2";
-        path2.encryptionAlgorithm = "AEAD_AES_256_CBC_HMAC_SHA256";
-        path2.encryptionType = "Deterministic";
-        path2.clientEncryptionKeyId = "key2";
+        path2.setPath("/path2");
+        path2.setEncryptionAlgorithm("AEAD_AES_256_CBC_HMAC_SHA256");
+        path2.setEncryptionType(Constants.Properties.DETERMINISTIC);
+        path2.setClientEncryptionKeyId("key2");
 
         List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
         paths.add(path1);
@@ -492,10 +493,10 @@ public class CosmosContainerTest extends TestSuiteBase {
         for (ClientEncryptionIncludedPath clientEncryptionIncludedPath :
             createResponse.getProperties().getClientEncryptionPolicy().getIncludedPaths()) {
             for (ClientEncryptionIncludedPath includedPath : clientEncryptionPolicy.getIncludedPaths()) {
-                if (clientEncryptionIncludedPath.path.equals(includedPath.path)) {
-                    assertThat(clientEncryptionIncludedPath.clientEncryptionKeyId).isEqualTo(includedPath.clientEncryptionKeyId);
-                    assertThat(clientEncryptionIncludedPath.encryptionAlgorithm).isEqualTo(includedPath.encryptionAlgorithm);
-                    assertThat(clientEncryptionIncludedPath.encryptionType).isEqualTo(includedPath.encryptionType);
+                if (clientEncryptionIncludedPath.getPath().equals(includedPath.getPath())) {
+                    assertThat(clientEncryptionIncludedPath.getClientEncryptionKeyId()).isEqualTo(includedPath.getClientEncryptionKeyId());
+                    assertThat(clientEncryptionIncludedPath.getEncryptionAlgorithm()).isEqualTo(includedPath.getEncryptionAlgorithm());
+                    assertThat(clientEncryptionIncludedPath.getEncryptionType()).isEqualTo(includedPath.getEncryptionType());
                     break;
                 }
             }

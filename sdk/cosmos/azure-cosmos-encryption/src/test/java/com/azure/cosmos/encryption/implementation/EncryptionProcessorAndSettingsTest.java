@@ -182,10 +182,10 @@ public class EncryptionProcessorAndSettingsTest {
 
     private ClientEncryptionPolicy generateClientEncryptionPolicy() {
         ClientEncryptionIncludedPath includedPath1 = new ClientEncryptionIncludedPath();
-        includedPath1.clientEncryptionKeyId = "key1";
-        includedPath1.path = "/sensitiveString";
-        includedPath1.encryptionType = CosmosEncryptionType.DETERMINISTIC;
-        includedPath1.encryptionAlgorithm = CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256;
+        includedPath1.setClientEncryptionKeyId("key1");
+        includedPath1.setPath("/sensitiveString");
+        includedPath1.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+        includedPath1.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
         List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
         paths.add(includedPath1);
         return new ClientEncryptionPolicy(paths);

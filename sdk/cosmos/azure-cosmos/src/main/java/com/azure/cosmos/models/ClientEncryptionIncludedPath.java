@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -10,28 +11,96 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public final class ClientEncryptionIncludedPath {
 
-    /**
-     * Path to be encrypted. Must be a top level path, eg. /salary
-     */
     @JsonProperty("path")
-    public String path;
+    private String path;
 
-    /**
-     * Identifier of the Data Encryption Key to be used to encrypt the path.
-     */
     @JsonProperty("clientEncryptionKeyId")
-    public String clientEncryptionKeyId;
+    private String clientEncryptionKeyId;
 
-    /**
-     * Type of encryption to be performed. Egs.: Deterministic Randomized
-     */
     @JsonProperty("EncryptionType")
-    public String encryptionType;
+    private String encryptionType;
 
+
+    @JsonProperty("encryptionAlgorithm")
+    private String encryptionAlgorithm;
 
     /**
-     * Type of encryption algorithm to be performed. Eg - AEAD_AES_256_CBC_HMAC_SHA256
+     * Gets the path to be encrypted. Must be a top level path, eg. /salary.
+     *
+     * @return path
      */
-    @JsonProperty("encryptionAlgorithm")
-    public String encryptionAlgorithm;
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public String getPath() {
+        return path;
+    }
+
+    /**
+     * Sets the path to be encrypted. Must be a top level path, eg. /salary.
+     *
+     * @param path path to be encrypted
+     */
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    /**
+     * Gets the identifier of the Data Encryption Key to be used to encrypt the path.
+     *
+     * @return clientEncryptionKeyId
+     */
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public String getClientEncryptionKeyId() {
+        return clientEncryptionKeyId;
+    }
+
+    /**
+     * Sets the identifier of the Data Encryption Key to be used to encrypt the path.
+     *
+     * @param clientEncryptionKeyId identifier of the Data Encryption Key
+     */
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public void setClientEncryptionKeyId(String clientEncryptionKeyId) {
+        this.clientEncryptionKeyId = clientEncryptionKeyId;
+    }
+
+    /**
+     * Gets the type of encryption to be performed. Egs.: Deterministic Randomized.
+     *
+     * @return encryptionType
+     */
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public String getEncryptionType() {
+        return encryptionType;
+    }
+
+    /**
+     * Sets the type of encryption to be performed. Egs.: Deterministic Randomized.
+     *
+     * @param encryptionType type of encryption
+     */
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public void setEncryptionType(String encryptionType) {
+        this.encryptionType = encryptionType;
+    }
+
+    /**
+     * Gets the type of encryption algorithm to be performed. Eg - AEAD_AES_256_CBC_HMAC_SHA256.
+     *
+     * @return encryptionAlgorithm
+     */
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public String getEncryptionAlgorithm() {
+        return encryptionAlgorithm;
+    }
+
+    /**
+     * Sets the type of encryption algorithm to be performed. Eg - AEAD_AES_256_CBC_HMAC_SHA256.
+     *
+     * @param encryptionAlgorithm type of encryption algorithm
+     */
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public void setEncryptionAlgorithm(String encryptionAlgorithm) {
+        this.encryptionAlgorithm = encryptionAlgorithm;
+    }
 }

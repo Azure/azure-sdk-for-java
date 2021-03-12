@@ -72,46 +72,46 @@ public class EncryptionCodeSnippet {
 
     void createContainerWithClientEncryptionPolicy(CosmosAsyncClient client) {
         ClientEncryptionIncludedPath includedPath1 = new ClientEncryptionIncludedPath();
-        includedPath1.clientEncryptionKeyId = "key1";
-        includedPath1.path = "/sensitive";
-        includedPath1.encryptionType = CosmosEncryptionType.DETERMINISTIC;
-        includedPath1.encryptionAlgorithm = CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256;
+        includedPath1.setClientEncryptionKeyId("key1");
+        includedPath1.setPath("/sensitive");
+        includedPath1.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+        includedPath1.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
 
         ClientEncryptionIncludedPath includedPath2 = new ClientEncryptionIncludedPath();
-        includedPath2.clientEncryptionKeyId = "key2";
-        includedPath2.path = "/nonValidPath";
-        includedPath2.encryptionType = CosmosEncryptionType.DETERMINISTIC;
-        includedPath2.encryptionAlgorithm = CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256;
+        includedPath2.setClientEncryptionKeyId("key2");
+        includedPath2.setPath("/nonValidPath");
+        includedPath2.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+        includedPath2.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
 
         ClientEncryptionIncludedPath includedPath3 = new ClientEncryptionIncludedPath();
-        includedPath3.clientEncryptionKeyId = "key1";
-        includedPath3.path = "/sensitiveInt";
-        includedPath3.encryptionType = CosmosEncryptionType.DETERMINISTIC;
-        includedPath3.encryptionAlgorithm = CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256;
+        includedPath3.setClientEncryptionKeyId("key1");
+        includedPath3.setPath("/sensitiveInt");
+        includedPath3.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+        includedPath3.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
 
         ClientEncryptionIncludedPath includedPath4 = new ClientEncryptionIncludedPath();
-        includedPath4.clientEncryptionKeyId = "key2";
-        includedPath4.path = "/sensitiveFloat";
-        includedPath4.encryptionType = CosmosEncryptionType.DETERMINISTIC;
-        includedPath4.encryptionAlgorithm = CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256;
+        includedPath4.setClientEncryptionKeyId("key2");
+        includedPath4.setPath("/sensitiveFloat");
+        includedPath4.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+        includedPath4.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
 
         ClientEncryptionIncludedPath includedPath5 = new ClientEncryptionIncludedPath();
-        includedPath5.clientEncryptionKeyId = "key1";
-        includedPath5.path = "/sensitiveLong";
-        includedPath5.encryptionType = CosmosEncryptionType.DETERMINISTIC;
-        includedPath5.encryptionAlgorithm = CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256;
+        includedPath5.setClientEncryptionKeyId("key1");
+        includedPath5.setPath("/sensitiveLong");
+        includedPath5.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+        includedPath5.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
 
         ClientEncryptionIncludedPath includedPath6 = new ClientEncryptionIncludedPath();
-        includedPath6.clientEncryptionKeyId = "key2";
-        includedPath6.path = "/sensitiveDouble";
-        includedPath6.encryptionType = CosmosEncryptionType.DETERMINISTIC;
-        includedPath6.encryptionAlgorithm = CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256;
+        includedPath6.setClientEncryptionKeyId("key2");
+        includedPath6.setPath("/sensitiveDouble");
+        includedPath6.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+        includedPath6.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
 
         ClientEncryptionIncludedPath includedPath7 = new ClientEncryptionIncludedPath();
-        includedPath7.clientEncryptionKeyId = "key1";
-        includedPath7.path = "/sensitiveBoolean";
-        includedPath7.encryptionType = CosmosEncryptionType.DETERMINISTIC;
-        includedPath7.encryptionAlgorithm = CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256;
+        includedPath7.setClientEncryptionKeyId("key1");
+        includedPath7.setPath("/sensitiveBoolean");
+        includedPath7.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+        includedPath7.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
 
         List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
         paths.add(includedPath1);

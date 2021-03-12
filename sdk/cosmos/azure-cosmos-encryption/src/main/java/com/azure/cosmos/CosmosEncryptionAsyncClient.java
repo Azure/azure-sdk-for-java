@@ -48,7 +48,8 @@ public class CosmosEncryptionAsyncClient {
             return this.clientEncryptionPolicyCacheByContainerId.getAsync(
                 cacheKey,
                 null,
-                () -> container.read().map(cosmosContainerResponse -> cosmosContainerResponse.getProperties().getClientEncryptionPolicy()));
+                () -> container.read().
+                    map(cosmosContainerResponse -> cosmosContainerResponse.getProperties().getClientEncryptionPolicy()));
         } else {
             return this.clientEncryptionPolicyCacheByContainerId.getAsync(
                 cacheKey,

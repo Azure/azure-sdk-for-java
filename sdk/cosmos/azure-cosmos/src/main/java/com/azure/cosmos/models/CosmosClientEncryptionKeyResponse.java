@@ -6,6 +6,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.ClientEncryptionKey;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.util.Beta;
 
 /**
  * The type Cosmos client encryption key response.
@@ -27,6 +28,7 @@ public class CosmosClientEncryptionKeyResponse extends CosmosResponse<CosmosClie
      *
      * @return {@link CosmosUserProperties}
      */
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosClientEncryptionKeyProperties getProperties() {
         return super.getProperties();
     }

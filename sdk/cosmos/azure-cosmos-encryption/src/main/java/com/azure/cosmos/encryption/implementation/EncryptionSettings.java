@@ -71,9 +71,9 @@ public final class EncryptionSettings {
         return encryptionPolicyMono.flatMap(clientEncryptionPolicy -> {
             if (clientEncryptionPolicy != null) {
                 for (ClientEncryptionIncludedPath propertyToEncrypt : clientEncryptionPolicy.getIncludedPaths()) {
-                    if (propertyToEncrypt.path.substring(1).equals(propertyName)) {
+                    if (propertyToEncrypt.getPath().substring(1).equals(propertyName)) {
                         return EncryptionBridgeInternal.getClientEncryptionPropertiesAsync(encryptionProcessor.getEncryptionCosmosClient(),
-                            propertyToEncrypt.clientEncryptionKeyId,
+                            propertyToEncrypt.getClientEncryptionKeyId(),
                             encryptionProcessor.getCosmosAsyncContainer(),
                             forceRefreshClientEncryptionKey.get())
                             .publishOn(Schedulers.elastic())
@@ -82,17 +82,17 @@ public final class EncryptionSettings {
                                 try {
                                     protectedDataEncryptionKey = buildProtectedDataEncryptionKey(keyProperties,
                                         encryptionProcessor.getEncryptionKeyStoreProvider(),
-                                        propertyToEncrypt.clientEncryptionKeyId);
+                                        propertyToEncrypt.getClientEncryptionKeyId());
                                 } catch (Exception ex) {
                                     return Mono.error(ex);
                                 }
                                 EncryptionSettings encryptionSettings = new EncryptionSettings();
                                 encryptionSettings.encryptionSettingTimeToLive =
                                     Instant.now().plus(Duration.ofMinutes(Constants.CACHED_ENCRYPTION_SETTING_DEFAULT_DEFAULT_TTL_IN_MINUTES));
-                                encryptionSettings.clientEncryptionKeyId = propertyToEncrypt.clientEncryptionKeyId;
+                                encryptionSettings.clientEncryptionKeyId = propertyToEncrypt.getClientEncryptionKeyId();
                                 encryptionSettings.dataEncryptionKey = protectedDataEncryptionKey;
                                 EncryptionType encryptionType = EncryptionType.Plaintext;
-                                switch (propertyToEncrypt.encryptionType) {
+                                switch (propertyToEncrypt.getEncryptionType()) {
                                     case CosmosEncryptionType.DETERMINISTIC:
                                         encryptionType = EncryptionType.Deterministic;
                                         break;
@@ -100,7 +100,7 @@ public final class EncryptionSettings {
                                         encryptionType = EncryptionType.Randomized;
                                         break;
                                     default:
-                                        LOGGER.debug("Invalid encryption type {}", propertyToEncrypt.encryptionType);
+                                        LOGGER.debug("Invalid encryption type {}", propertyToEncrypt.getEncryptionType());
                                         break;
                                 }
                                 try {

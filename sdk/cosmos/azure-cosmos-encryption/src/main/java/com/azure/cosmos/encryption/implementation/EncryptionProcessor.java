@@ -97,7 +97,7 @@ public class EncryptionProcessor {
             AtomicReference<Mono<List<Object>>> sequentialList = new AtomicReference<>();
             List<Mono<Object>> monoList = new ArrayList<>();
             this.clientEncryptionPolicy.getIncludedPaths().stream()
-                .map(clientEncryptionIncludedPath -> clientEncryptionIncludedPath.clientEncryptionKeyId).distinct().forEach(clientEncryptionKeyId -> {
+                .map(clientEncryptionIncludedPath -> clientEncryptionIncludedPath.getClientEncryptionKeyId()).distinct().forEach(clientEncryptionKeyId -> {
                 AtomicBoolean forceRefreshClientEncryptionKey = new AtomicBoolean(false);
                 Mono<Object> clientEncryptionPropertiesMono =
                     EncryptionBridgeInternal.getClientEncryptionPropertiesAsync(this.encryptionCosmosClient,
@@ -150,7 +150,7 @@ public class EncryptionProcessor {
         }).flatMap(ignoreVoid -> {
             for (ClientEncryptionIncludedPath propertyToEncrypt : clientEncryptionPolicy.getIncludedPaths()) {
                 EncryptionType encryptionType = EncryptionType.Plaintext;
-                switch (propertyToEncrypt.encryptionType) {
+                switch (propertyToEncrypt.getEncryptionType()) {
                     case CosmosEncryptionType.DETERMINISTIC:
                         encryptionType = EncryptionType.Deterministic;
                         break;
@@ -158,15 +158,15 @@ public class EncryptionProcessor {
                         encryptionType = EncryptionType.Randomized;
                         break;
                     default:
-                        LOGGER.debug("Invalid encryption type {}", propertyToEncrypt.encryptionType);
+                        LOGGER.debug("Invalid encryption type {}", propertyToEncrypt.getEncryptionType());
                         break;
                 }
-                String propertyName = propertyToEncrypt.path.substring(1);
+                String propertyName = propertyToEncrypt.getPath().substring(1);
                 try {
                     this.encryptionSettings.setEncryptionSettingForProperty(propertyName,
-                        EncryptionSettings.create(settingsByDekId.get(propertyToEncrypt.clientEncryptionKeyId),
+                        EncryptionSettings.create(settingsByDekId.get(propertyToEncrypt.getClientEncryptionKeyId()),
                             encryptionType),
-                        settingsByDekId.get(propertyToEncrypt.clientEncryptionKeyId).getEncryptionSettingTimeToLive());
+                        settingsByDekId.get(propertyToEncrypt.getClientEncryptionKeyId()).getEncryptionSettingTimeToLive());
                 } catch (MicrosoftDataEncryptionException ex) {
                     return Mono.error(ex);
                 }
@@ -233,13 +233,13 @@ public class EncryptionProcessor {
         assert (itemJObj != null);
         return initEncryptionSettingsIfNotInitializedAsync().then(Mono.defer(() -> {
             for (ClientEncryptionIncludedPath includedPath : this.clientEncryptionPolicy.getIncludedPaths()) {
-                if (StringUtils.isEmpty(includedPath.path) || includedPath.path.charAt(0) != '/' || includedPath.path.lastIndexOf('/') != 0) {
-                    return Mono.error(new IllegalArgumentException("Invalid encryption path: " + includedPath.path));
+                if (StringUtils.isEmpty(includedPath.getPath()) || includedPath.getPath().charAt(0) != '/' || includedPath.getPath().lastIndexOf('/') != 0) {
+                    return Mono.error(new IllegalArgumentException("Invalid encryption path: " + includedPath.getPath()));
                 }
             }
             List<Mono<Void>> encryptionMonoList = new ArrayList<>();
             for (ClientEncryptionIncludedPath includedPath : this.clientEncryptionPolicy.getIncludedPaths()) {
-                String propertyName = includedPath.path.substring(1);
+                String propertyName = includedPath.getPath().substring(1);
                 JsonNode propertyValueHolder = itemJObj.get(propertyName);
 
                 // Even null in the JSON is a JToken with Type Null, this null check is just a sanity check
@@ -339,13 +339,13 @@ public class EncryptionProcessor {
         assert (itemJObj != null);
         return initEncryptionSettingsIfNotInitializedAsync().then(Mono.defer(() -> {
             for (ClientEncryptionIncludedPath includedPath : this.clientEncryptionPolicy.getIncludedPaths()) {
-                if (StringUtils.isEmpty(includedPath.path) || includedPath.path.charAt(0) != '/' || includedPath.path.lastIndexOf('/') != 0) {
-                    return Mono.error(new IllegalArgumentException("Invalid encryption path: " + includedPath.path));
+                if (StringUtils.isEmpty(includedPath.getPath()) || includedPath.getPath().charAt(0) != '/' || includedPath.getPath().lastIndexOf('/') != 0) {
+                    return Mono.error(new IllegalArgumentException("Invalid encryption path: " + includedPath.getPath()));
                 }
             }
             List<Mono<Void>> encryptionMonoList = new ArrayList<>();
             for (ClientEncryptionIncludedPath includedPath : this.clientEncryptionPolicy.getIncludedPaths()) {
-                String propertyName = includedPath.path.substring(1);
+                String propertyName = includedPath.getPath().substring(1);
                 // TODO: moderakh should support JPath
                 JsonNode propertyValueHolder = itemJObj.get(propertyName);
 

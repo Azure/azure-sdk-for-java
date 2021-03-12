@@ -1,16 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos;
 
-import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosEncryptionAsyncClient;
-import com.azure.cosmos.CosmosEncryptionAsyncContainer;
-import com.azure.cosmos.CosmosEncryptionAsyncDatabase;
-import com.azure.cosmos.EncryptionCrudTest;
 import com.azure.cosmos.encryption.implementation.CosmosEncryptionAlgorithm;
-import com.azure.cosmos.encryption.implementation.EncryptionProcessor;
 import com.azure.cosmos.encryption.implementation.ReflectionUtils;
-import com.azure.cosmos.implementation.ClientEncryptionKey;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
@@ -29,10 +23,7 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.net.URI;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 

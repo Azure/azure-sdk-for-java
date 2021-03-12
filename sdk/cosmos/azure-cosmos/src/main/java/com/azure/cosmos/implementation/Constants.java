@@ -205,6 +205,8 @@ public final class Constants {
         public static final String  KeyWrapMetadataType = "type";
         public static final String  KeyWrapMetadataValue = "value";
         public static final String  EncryptedInfo = "_ei";
+        public final static  String RANDOMIZED = "Randomized";
+        public final static  String DETERMINISTIC = "Deterministic";
 
         // Feed Ranges
         public static final String RANGE = "Range";

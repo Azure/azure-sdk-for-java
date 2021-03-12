@@ -16,11 +16,11 @@ import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
-import com.azure.cosmos.models.SqlQuerySpecWithEncryption;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.SqlQuerySpecWithEncryption;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -142,10 +142,10 @@ public class Program {
         System.in.read();
 
         ClientEncryptionIncludedPath includedPath = new ClientEncryptionIncludedPath();
-        includedPath.clientEncryptionKeyId = dataEncryptionKeyId;
-        includedPath.path = "/accountNumber";
-        includedPath.encryptionType = CosmosEncryptionType.DETERMINISTIC;
-        includedPath.encryptionAlgorithm = CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256;
+        includedPath.setClientEncryptionKeyId(dataEncryptionKeyId);
+        includedPath.setPath("/accountNumber");
+        includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+        includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
         List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
         paths.add(includedPath);
 
