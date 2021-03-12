@@ -19,18 +19,18 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.3.5.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>2.4.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>5.2.10.RELEASE</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
+      <version>5.3.4</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
-      <version>5.2.10.RELEASE</version> <!-- {x-version-update;org.springframework:spring-webmvc;external_dependency} -->
+      <version>5.3.4</version> <!-- {x-version-update;org.springframework:spring-webmvc;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -52,6 +52,13 @@
       <version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
       <scope>provided</scope>
     </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13.2</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -65,8 +72,8 @@
               <includes>
                 <include>com.microsoft.azure:spring-cloud-azure-feature-management:[1.2.8]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-feature-management;current} -->
                 <include>javax.servlet:javax.servlet-api:[4.0.1]</include> <!-- {x-include-update;javax.servlet:javax.servlet-api;external_dependency} -->
-                <include>org.springframework:spring-web:[5.2.10.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
-                <include>org.springframework:spring-webmvc:[5.2.10.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-webmvc;external_dependency} -->
+                <include>org.springframework:spring-web:[5.3.4]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
+                <include>org.springframework:spring-webmvc:[5.3.4]</include> <!-- {x-include-update;org.springframework:spring-webmvc;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

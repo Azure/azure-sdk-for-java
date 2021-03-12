@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.ConflictException;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.spring.data.cosmos.CosmosFactory;
+import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.PageTestUtils;
 import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.common.TestConstants;
@@ -29,9 +30,8 @@ import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.AuditableRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.assertj.core.util.Lists;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,10 +89,12 @@ public class CosmosTemplateIT {
 
     private static final String WRONG_ETAG = "WRONG_ETAG";
 
+    @ClassRule
+    public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
+
     private static CosmosTemplate cosmosTemplate;
     private static CosmosEntityInformation<Person, String> personInfo;
     private static String containerName;
-    private static boolean initialized;
 
     private Person insertedPerson;
 
@@ -109,7 +111,7 @@ public class CosmosTemplateIT {
 
     @Before
     public void setUp() throws ClassNotFoundException {
-        if (!initialized) {
+        if (cosmosTemplate == null) {
             CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
             final CosmosFactory cosmosFactory = new CosmosFactory(client, TestConstants.DB_NAME);
 
@@ -123,23 +125,13 @@ public class CosmosTemplateIT {
                 null);
 
             cosmosTemplate = new CosmosTemplate(cosmosFactory, cosmosConfig, cosmosConverter);
-            cosmosTemplate.createContainerIfNotExists(personInfo);
-            cosmosTemplate.createContainerIfNotExists(CosmosEntityInformation.getInstance(GenIdEntity.class));
-            initialized = true;
         }
+
+        collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, Person.class,
+                                                          GenIdEntity.class, AuditableEntity.class);
 
         insertedPerson = cosmosTemplate.insert(Person.class.getSimpleName(), TEST_PERSON,
             new PartitionKey(TEST_PERSON.getLastName()));
-    }
-
-    @After
-    public void cleanup() {
-        cosmosTemplate.deleteAll(Person.class.getSimpleName(), Person.class);
-    }
-
-    @AfterClass
-    public static void afterClassCleanup() {
-        cosmosTemplate.deleteContainer(personInfo.getContainerName());
     }
 
     private void insertPerson(Person person) {

@@ -11,7 +11,7 @@ import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetai
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.EntityCertainty;
+import com.azure.ai.textanalytics.models.EntityConditionality;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
@@ -38,6 +38,7 @@ import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -2152,6 +2153,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                               PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
                     syncPoller = client.beginAnalyzeHealthcareEntities(
                     Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
+                syncPoller = setPollInterval(syncPoller);
                 syncPoller.waitForCompletion();
                 PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
                     = syncPoller.getFinalResult();
@@ -2230,6 +2232,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                               PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
                     syncPoller = client.beginAnalyzeHealthcareEntities(
                     Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
+                syncPoller = setPollInterval(syncPoller);
                 syncPoller.waitForCompletion();
                 PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
                     = syncPoller.getFinalResult();
@@ -2245,6 +2248,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
 
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/19707")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeHealthcareEntitiesZalgoText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -2282,16 +2286,17 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             syncPoller.waitForCompletion();
             PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
                 = syncPoller.getFinalResult();
-            // "Baby not likely to have Meningitis."
+            // "All female participants that are premenopausal will be required to have a pregnancy test;
+            // any participant who is pregnant or breastfeeding will not be included"
             final HealthcareEntityAssertion assertion =
                 healthcareEntitiesResultCollectionPagedFlux.toStream().collect(Collectors.toList())
                     .get(0).stream().collect(Collectors.toList()) // List of document result
                     .get(0).getEntities().stream().collect(Collectors.toList()) // List of entities
-                    .get(1) // "Meningitis" is the second entity recognized.
+                    .get(1) // "premenopausal" is the second entity recognized.
                     .getAssertion();
-            assertNull(assertion.getConditionality());
+            assertEquals(EntityConditionality.HYPOTHETICAL, assertion.getConditionality());
             assertNull(assertion.getAssociation());
-            assertEquals(EntityCertainty.NEGATIVE, assertion.getCertainty());
+            assertNull(assertion.getCertainty());
         });
     }
 

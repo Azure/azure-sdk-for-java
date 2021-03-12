@@ -2,18 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.communication.phonenumbers;
 
-import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
-
-import reactor.test.StepVerifier;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.time.Duration;
-
-import com.azure.communication.phonenumbers.models.AcquiredPhoneNumber;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
@@ -22,23 +10,33 @@ import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
+import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import reactor.test.StepVerifier;
+
+import java.time.Duration;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrationTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getPhoneNumber(HttpClient httpClient) {
+    public void getPurchasedPhoneNumber(HttpClient httpClient) {
         String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
         StepVerifier.create(
-            this.getClientWithConnectionString(httpClient, "getPhoneNumber").getPhoneNumber(phoneNumber)
+            this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumber").getPurchasedPhoneNumber(phoneNumber)
             )
-            .assertNext((AcquiredPhoneNumber number) -> {
+            .assertNext((PurchasedPhoneNumber number) -> {
                 assertEquals(phoneNumber, number.getPhoneNumber());
                 assertEquals(COUNTRY_CODE, number.getCountryCode());
             })
@@ -47,12 +45,12 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getPhoneNumberWithAAD(HttpClient httpClient) {
+    public void getPurchasedPhoneNumberWithAAD(HttpClient httpClient) {
         String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
         StepVerifier.create(
-            this.getClientWithManagedIdentity(httpClient, "getPhoneNumber").getPhoneNumber(phoneNumber)
+            this.getClientWithManagedIdentity(httpClient, "getPurchasedPhoneNumberWithAAD").getPurchasedPhoneNumber(phoneNumber)
             )
-            .assertNext((AcquiredPhoneNumber number) -> {
+            .assertNext((PurchasedPhoneNumber number) -> {
                 assertEquals(phoneNumber, number.getPhoneNumber());
                 assertEquals(COUNTRY_CODE, number.getCountryCode());
             })
@@ -61,12 +59,12 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getPhoneNumberWithResponse(HttpClient httpClient) {
+    public void getPurchasedPhoneNumberWithResponse(HttpClient httpClient) {
         String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
         StepVerifier.create(
-            this.getClientWithConnectionString(httpClient, "getPhoneNumberWithResponse").getPhoneNumberWithResponse(phoneNumber)
+            this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumberWithResponse").getPurchasedPhoneNumberWithResponse(phoneNumber)
         )
-        .assertNext((Response<AcquiredPhoneNumber> response) -> {
+        .assertNext((Response<PurchasedPhoneNumber> response) -> {
             assertEquals(200, response.getStatusCode());
             assertEquals(phoneNumber, response.getValue().getPhoneNumber());
             assertEquals(COUNTRY_CODE, response.getValue().getCountryCode());
@@ -76,11 +74,11 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void listPhoneNumbers(HttpClient httpClient) {
+    public void listPurchasedPhoneNumbers(HttpClient httpClient) {
         StepVerifier.create(
-            this.getClientWithConnectionString(httpClient, "listPhoneNumbers").listPhoneNumbers().next()
+            this.getClientWithConnectionString(httpClient, "listPurchasedPhoneNumbers").listPurchasedPhoneNumbers().next()
         )
-        .assertNext((AcquiredPhoneNumber number) -> {
+        .assertNext((PurchasedPhoneNumber number) -> {
             assertNotNull(number.getPhoneNumber());
             assertEquals(COUNTRY_CODE, number.getCountryCode());
         })
@@ -89,9 +87,6 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(
-        named = "SKIP_LIVE_TEST",
-        matches = "(?i)(true)")
     public void beginSearchAvailablePhoneNumbers(HttpClient httpClient) {
         StepVerifier.create(
             beginSearchAvailablePhoneNumbersHelper(httpClient, "beginSearchAvailablePhoneNumbers").last()
@@ -137,11 +132,11 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
         StepVerifier.create(
             beginUpdatePhoneNumberCapabilitiesHelper(httpClient, phoneNumber, "beginUpdatePhoneNumberCapabilities").last()
-            .flatMap((AsyncPollResponse<PhoneNumberOperation, AcquiredPhoneNumber> result) -> {
+            .flatMap((AsyncPollResponse<PhoneNumberOperation, PurchasedPhoneNumber> result) -> {
                 assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, result.getStatus());
                 return result.getFinalResult();
             })
-        ).assertNext((AcquiredPhoneNumber acquiredPhoneNumber) -> {
+        ).assertNext((PurchasedPhoneNumber acquiredPhoneNumber) -> {
             assertEquals(PhoneNumberCapabilityType.INBOUND_OUTBOUND, acquiredPhoneNumber.getCapabilities().getSms());
             assertEquals(PhoneNumberCapabilityType.INBOUND, acquiredPhoneNumber.getCapabilities().getCalling());
         })
@@ -150,18 +145,18 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getPhoneNumberNullNumber(HttpClient httpClient) {
+    public void getPurchasedPhoneNumberNullNumber(HttpClient httpClient) {
         StepVerifier.create(
-            this.getClientWithConnectionString(httpClient, "getPhoneNumberNullNumber").getPhoneNumber(null)
+            this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumberNullNumber").getPurchasedPhoneNumber(null)
             )
             .verifyError();
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getPhoneNumberWithResponseNullNumber(HttpClient httpClient) {
+    public void getPurchasedPhoneNumberWithResponseNullNumber(HttpClient httpClient) {
         StepVerifier.create(
-            this.getClientWithConnectionString(httpClient, "getPhoneNumberWithResponseNullNumber").getPhoneNumberWithResponse(null)
+            this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumberWithResponseNullNumber").getPurchasedPhoneNumberWithResponse(null)
             )
             .verifyError();
     }
@@ -192,35 +187,42 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         capabilities.setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
         PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setAreaCode(AREA_CODE).setQuantity(1);
 
-        return this.getClientWithConnectionString(httpClient, testName)
+        return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
             .beginSearchAvailablePhoneNumbers(
                 COUNTRY_CODE,
                 PhoneNumberType.TOLL_FREE,
                 PhoneNumberAssignmentType.APPLICATION,
                 capabilities,
                 searchOptions
-                ).setPollInterval(Duration.ofSeconds(1));
+                ));
     }
 
     private PollerFlux<PhoneNumberOperation, Void> beginPurchasePhoneNumbersHelper(HttpClient httpClient, String searchId, String testName) {
-        return this.getClientWithConnectionString(httpClient, testName)
-            .beginPurchasePhoneNumbers(searchId).setPollInterval(Duration.ofSeconds(1));
+        return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
+            .beginPurchasePhoneNumbers(searchId));
     }
 
     private PollerFlux<PhoneNumberOperation, Void> beginReleasePhoneNumberHelper(HttpClient httpClient, String phoneNumber, String testName) {
         if (getTestMode() == TestMode.PLAYBACK) {
             phoneNumber = "+REDACTED";
         }
-        return this.getClientWithConnectionString(httpClient, testName)
-            .beginReleasePhoneNumber(phoneNumber).setPollInterval(Duration.ofSeconds(1));
+        return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
+            .beginReleasePhoneNumber(phoneNumber));
     }
 
-    private PollerFlux<PhoneNumberOperation, AcquiredPhoneNumber> beginUpdatePhoneNumberCapabilitiesHelper(HttpClient httpClient, String phoneNumber, String testName) {
+    private PollerFlux<PhoneNumberOperation, PurchasedPhoneNumber> beginUpdatePhoneNumberCapabilitiesHelper(HttpClient httpClient, String phoneNumber, String testName) {
         PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest = new PhoneNumberCapabilitiesRequest();
         capabilitiesUpdateRequest.setCalling(PhoneNumberCapabilityType.INBOUND);
         capabilitiesUpdateRequest.setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
-        return this.getClientWithConnectionString(httpClient, testName)
-            .beginUpdatePhoneNumberCapabilities(phoneNumber, capabilitiesUpdateRequest).setPollInterval(Duration.ofSeconds(1));
+
+        return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
+            .beginUpdatePhoneNumberCapabilities(phoneNumber, capabilitiesUpdateRequest));
+    }
+
+    private <T, U> PollerFlux<T, U> setPollInterval(PollerFlux<T, U> pollerFlux) {
+        return interceptorManager.isPlaybackMode()
+            ? pollerFlux.setPollInterval(Duration.ofMillis(1))
+            : pollerFlux.setPollInterval(Duration.ofSeconds(1));
     }
 
     private PhoneNumbersAsyncClient getClientWithConnectionString(HttpClient httpClient, String testName) {

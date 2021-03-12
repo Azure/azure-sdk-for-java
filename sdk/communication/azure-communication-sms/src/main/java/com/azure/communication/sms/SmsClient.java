@@ -4,6 +4,7 @@
 package com.azure.communication.sms;
 
 import com.azure.communication.sms.models.SmsSendOptions;
+import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -43,13 +44,13 @@ public final class SmsClient {
      * @param to The recipient's phone number.
      * @param message message to send to recipient.
      * @param options set options on the SMS request, like enable delivery report, which sends a report
-     * @param context A {@link Context} representing the request context
      * for this message to the Azure Resource Event Grid.
-     * @return response for a successful send Sms request.
+     * @param context A {@link Context} representing the request context
+     * @return The Sms send result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SmsSendResult> sendWithResponse(String from, String to, String message, SmsSendOptions options, Context context) {
-        return smsAsyncClient.sendWithResponse(from, to, message, options, context).block();
+    public SmsSendResult send(String from, String to, String message, SmsSendOptions options, Context context) {
+        return smsAsyncClient.send(from, to, message, options, context).block();
     }
 
     /**

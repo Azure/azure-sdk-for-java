@@ -43,6 +43,13 @@
       <groupId>io.projectreactor.netty</groupId>
       <artifactId>reactor-netty</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13.2</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
 </project>
