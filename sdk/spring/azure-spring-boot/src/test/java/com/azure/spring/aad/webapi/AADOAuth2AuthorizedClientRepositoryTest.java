@@ -41,7 +41,7 @@ public class AADOAuth2AuthorizedClientRepositoryTest {
     private InMemoryClientRegistrationRepository clientRegistrationsRepo;
     private OAuth2AuthorizedClient client;
     private IAuthenticationResult authenticationResult;
-    private AADOAuth2AuthorizedClientRepository authorizedRepo;
+    private AADOAuth2OboAuthorizedClientRepository authorizedRepo;
     private JwtAuthenticationToken jwtAuthenticationToken;
     private MockHttpServletRequest mockHttpServletRequest;
 
@@ -56,7 +56,7 @@ public class AADOAuth2AuthorizedClientRepositoryTest {
             AAD_PROPERTY_PREFIX + "client-secret = fake-client-secret",
             AAD_PROPERTY_PREFIX + "authorization-clients.fake-graph.scopes = https://graph.microsoft.com/.default"
         );
-        context.register(AADResourceServerClientConfiguration.class);
+        context.register(AADResourceServerOboConfiguration.class);
         context.refresh();
 
         clientRegistrationsRepo = context.getBean(InMemoryClientRegistrationRepository.class);
@@ -79,7 +79,7 @@ public class AADOAuth2AuthorizedClientRepositoryTest {
 
         when(clientRegistrationsRepo.findByRegistrationId(any())).thenReturn(ClientRegistration
             .withRegistrationId("fake-graph")
-            .authorizationGrantType(new AuthorizationGrantType("on-behalf-of"))
+            .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
             .redirectUriTemplate("{baseUrl}/login/oauth2/code/")
             .tokenUri("https://login.microsoftonline.com/308df08a-1332-4a15-bb06-2ad7e8b71bcf/oauth2/v2.0/token")
             .jwkSetUri("https://login.microsoftonline.com/308df08a-1332-4a15-bb06-2ad7e8b71bcf/discovery/v2.0/keys")
@@ -87,7 +87,7 @@ public class AADOAuth2AuthorizedClientRepositoryTest {
                 + ".0/authorize")
             .scope("User.read")
             .clientId("2c47b831-d838-464f-a684-fa79cbd64f20").build());
-        authorizedRepo = new AADOAuth2AuthorizedClientRepository(
+        authorizedRepo = new AADOAuth2OboAuthorizedClientRepository(
             clientRegistrationsRepo) {
 
             @Override
@@ -140,7 +140,7 @@ public class AADOAuth2AuthorizedClientRepositoryTest {
     @SuppressWarnings("unchecked")
     public void testLoadNotExistClientRegistration() {
 
-        AADOAuth2AuthorizedClientRepository authorizedRepo = new AADOAuth2AuthorizedClientRepository(
+        AADOAuth2OboAuthorizedClientRepository authorizedRepo = new AADOAuth2OboAuthorizedClientRepository(
             clientRegistrationsRepo);
 
         final Jwt mockJwt = mock(Jwt.class);
@@ -153,7 +153,7 @@ public class AADOAuth2AuthorizedClientRepositoryTest {
     @SuppressWarnings("unchecked")
     public void testUnsupportedTokenImplementation() {
 
-        AADOAuth2AuthorizedClientRepository authorizedRepo = new AADOAuth2AuthorizedClientRepository(
+        AADOAuth2OboAuthorizedClientRepository authorizedRepo = new AADOAuth2OboAuthorizedClientRepository(
             clientRegistrationsRepo);
 
         PreAuthenticatedAuthenticationToken preToken = mock(PreAuthenticatedAuthenticationToken.class);
@@ -169,7 +169,7 @@ public class AADOAuth2AuthorizedClientRepositoryTest {
     @SuppressWarnings("unchecked")
     public void testNotExistClientApplication() {
 
-        AADOAuth2AuthorizedClientRepository authorizedRepo = new AADOAuth2AuthorizedClientRepository(
+        AADOAuth2OboAuthorizedClientRepository authorizedRepo = new AADOAuth2OboAuthorizedClientRepository(
             clientRegistrationsRepo) {
             @Override
             ConfidentialClientApplication createApp(ClientRegistration clientRegistration) {
