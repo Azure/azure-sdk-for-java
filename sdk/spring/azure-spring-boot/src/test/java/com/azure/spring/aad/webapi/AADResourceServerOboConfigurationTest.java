@@ -54,7 +54,7 @@ public class AADResourceServerOboConfigurationTest {
         this.contextRunner
             .withUserConfiguration(AADResourceServerOboConfiguration.class)
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .run(context -> assertThat(context).doesNotHaveBean(AADOAuth2OboAuthorizedClientRepository.class));
+            .run(context -> assertThat(context).doesNotHaveBean(AADOAuth2AuthorizedClientRepository.class));
     }
 
     @Test
@@ -62,7 +62,7 @@ public class AADResourceServerOboConfigurationTest {
         this.contextRunner
             .withUserConfiguration(AADResourceServerOboConfiguration.class)
             .withClassLoader(new FilteredClassLoader(OAuth2LoginAuthenticationFilter.class))
-            .run(context -> assertThat(context).doesNotHaveBean(AADOAuth2OboAuthorizedClientRepository.class));
+            .run(context -> assertThat(context).doesNotHaveBean(AADOAuth2AuthorizedClientRepository.class));
     }
 
     @Test
@@ -75,7 +75,7 @@ public class AADResourceServerOboConfigurationTest {
                 final InMemoryClientRegistrationRepository oboRepo = context.getBean(
                     InMemoryClientRegistrationRepository.class);
                 final OAuth2AuthorizedClientRepository aadOboRepo = context.getBean(
-                    AADOAuth2OboAuthorizedClientRepository.class);
+                    AADOAuth2AuthorizedClientRepository.class);
 
                 ClientRegistration graph = oboRepo.findByRegistrationId("graph");
                 Set<String> graphScopes = graph.getScopes();
@@ -99,7 +99,7 @@ public class AADResourceServerOboConfigurationTest {
                 final InMemoryClientRegistrationRepository oboRepo = context.getBean(
                     InMemoryClientRegistrationRepository.class);
                 final OAuth2AuthorizedClientRepository aadOboRepo = context.getBean(
-                    AADOAuth2OboAuthorizedClientRepository.class);
+                    AADOAuth2AuthorizedClientRepository.class);
 
                 ClientRegistration graph = oboRepo.findByRegistrationId("graph");
                 ClientRegistration custom = oboRepo.findByRegistrationId("custom");
