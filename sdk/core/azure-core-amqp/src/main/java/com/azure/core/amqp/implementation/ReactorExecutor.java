@@ -145,8 +145,8 @@ class ReactorExecutor implements Closeable {
         this.scheduler.schedule(() -> {
             logger.info(LOG_MESSAGE, connectionId, "Processing all pending tasks and closing old reactor.");
             try {
-                reactor.stop();
                 reactor.process();
+                reactor.stop();
             } catch (HandlerException e) {
                 logger.warning(LOG_MESSAGE, connectionId,
                     StringUtil.toStackTraceString(e, "scheduleCompletePendingTasks - exception occurred while "
