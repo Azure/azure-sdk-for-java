@@ -10,7 +10,7 @@ import java.time.Duration;
 /** The interface for CosmosDBManagementClient class. */
 public interface CosmosDBManagementClient {
     /**
-     * Gets Azure subscription ID.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -22,6 +22,13 @@ public interface CosmosDBManagementClient {
      * @return the endpoint value.
      */
     String getEndpoint();
+
+    /**
+     * Gets Api Version.
+     *
+     * @return the apiVersion value.
+     */
+    String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.

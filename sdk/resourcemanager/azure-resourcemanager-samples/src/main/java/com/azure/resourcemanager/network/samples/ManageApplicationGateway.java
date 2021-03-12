@@ -24,7 +24,6 @@ import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.apache.commons.lang.time.StopWatch;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,7 +91,7 @@ public final class ManageApplicationGateway {
         int backendPools = 2;
         int vmCountInAPool = 4;
 
-        Region[] regions = {Region.US_EAST, Region.UK_WEST};
+        Region[] regions = {Region.US_EAST, Region.US_WEST};
         String[] addressSpaces = {"172.16.0.0/16", "172.17.0.0/16"};
         String[][] publicIpCreatableKeys = new String[backendPools][vmCountInAPool];
         String[][] ipAddresses = new String[backendPools][vmCountInAPool];
@@ -229,9 +228,6 @@ public final class ManageApplicationGateway {
             stopwatch.reset();
             stopwatch.start();
 
-            final String sslCertificatePfxPath = ManageApplicationGateway.class.getClassLoader().getResource("myTest._pfx").getPath();
-            final String sslCertificatePfxPath2 = ManageApplicationGateway.class.getClassLoader().getResource("myTest2._pfx").getPath();
-
             ApplicationGateway applicationGateway = azureResourceManager.applicationGateways().define("myFirstAppGateway")
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(resourceGroup)
@@ -245,19 +241,6 @@ public final class ManageApplicationGateway {
                     .toBackendIPAddress(ipAddresses[0][1])
                     .toBackendIPAddress(ipAddresses[0][2])
                     .toBackendIPAddress(ipAddresses[0][3])
-                    .attach()
-
-                    // Request routing rule for HTTPS from public 443 to public 8080
-                    .defineRequestRoutingRule("HTTPs-443-to-8080")
-                    .fromPublicFrontend()
-                    .fromFrontendHttpsPort(443)
-                    .withSslCertificateFromPfxFile(new File(sslCertificatePfxPath))
-                    .withSslCertificatePassword("Abc123")
-                    .toBackendHttpPort(8080)
-                    .toBackendIPAddress(ipAddresses[1][0])
-                    .toBackendIPAddress(ipAddresses[1][1])
-                    .toBackendIPAddress(ipAddresses[1][2])
-                    .toBackendIPAddress(ipAddresses[1][3])
                     .attach()
 
                     .withExistingPublicIpAddress(publicIPAddress)
@@ -279,11 +262,9 @@ public final class ManageApplicationGateway {
 
             applicationGateway.update()
                     .withoutRequestRoutingRule("HTTP-80-to-8080")
-                    .defineRequestRoutingRule("HTTPs-1443-to-8080")
+                    .defineRequestRoutingRule("HTTP-81-to-8080")
                     .fromPublicFrontend()
-                    .fromFrontendHttpsPort(1443)
-                    .withSslCertificateFromPfxFile(new File(sslCertificatePfxPath2))
-                    .withSslCertificatePassword("Abc123")
+                    .fromFrontendHttpPort(81)
                     .toBackendHttpPort(8080)
                     .toBackendIPAddress(ipAddresses[0][0])
                     .toBackendIPAddress(ipAddresses[0][1])

@@ -12,10 +12,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.BillingProfile;
 import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
+import com.azure.resourcemanager.compute.models.ExtendedLocation;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
 import com.azure.resourcemanager.compute.models.NetworkProfile;
 import com.azure.resourcemanager.compute.models.OSProfile;
 import com.azure.resourcemanager.compute.models.Plan;
+import com.azure.resourcemanager.compute.models.SecurityProfile;
 import com.azure.resourcemanager.compute.models.StorageProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineEvictionPolicyTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineIdentity;
@@ -23,6 +25,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachinePriorityTypes;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Describes a Virtual Machine. */
 @JsonFlatten
@@ -61,6 +64,12 @@ public class VirtualMachineInner extends Resource {
     private List<String> zones;
 
     /*
+     * The extended location of the Virtual Machine.
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
+
+    /*
      * Specifies the hardware settings for the virtual machine.
      */
     @JsonProperty(value = "properties.hardwareProfile")
@@ -91,6 +100,12 @@ public class VirtualMachineInner extends Resource {
      */
     @JsonProperty(value = "properties.networkProfile")
     private NetworkProfile networkProfile;
+
+    /*
+     * Specifies the Security related profile settings for the virtual machine.
+     */
+    @JsonProperty(value = "properties.securityProfile")
+    private SecurityProfile securityProfile;
 
     /*
      * Specifies the boot diagnostic settings state. <br><br>Minimum
@@ -173,6 +188,14 @@ public class VirtualMachineInner extends Resource {
     private SubResource host;
 
     /*
+     * Specifies information about the dedicated host group that the virtual
+     * machine resides in. <br><br>Minimum api-version: 2020-06-01.
+     * <br><br>NOTE: User cannot specify both host and hostGroup properties.
+     */
+    @JsonProperty(value = "properties.hostGroup")
+    private SubResource hostGroup;
+
+    /*
      * The provisioning state, which only appears in the response.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
@@ -186,13 +209,14 @@ public class VirtualMachineInner extends Resource {
 
     /*
      * Specifies that the image or disk that is being used was licensed
-     * on-premises. This element is only used for images that contain the
-     * Windows Server operating system. <br><br> Possible values are: <br><br>
-     * Windows_Client <br><br> Windows_Server <br><br> If this element is
-     * included in a request for an update, the value must match the initial
-     * value. This value cannot be updated. <br><br> For more information, see
-     * [Azure Hybrid Use Benefit for Windows
-     * Server](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-hybrid-use-benefit-licensing?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
+     * on-premises. <br><br> Possible values for Windows Server operating
+     * system are: <br><br> Windows_Client <br><br> Windows_Server <br><br>
+     * Possible values for Linux Server operating system are: <br><br>
+     * RHEL_BYOS (for RHEL) <br><br> SLES_BYOS (for SUSE) <br><br> For more
+     * information, see [Azure Hybrid Use Benefit for Windows
+     * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
+     * <br><br> [Azure Hybrid Use Benefit for Linux
+     * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux)
      * <br><br> Minimum api-version: 2015-06-15
      */
     @JsonProperty(value = "properties.licenseType")
@@ -205,6 +229,30 @@ public class VirtualMachineInner extends Resource {
      */
     @JsonProperty(value = "properties.vmId", access = JsonProperty.Access.WRITE_ONLY)
     private String vmId;
+
+    /*
+     * Specifies the time alloted for all extensions to start. The time
+     * duration should be between 15 minutes and 120 minutes (inclusive) and
+     * should be specified in ISO 8601 format. The default value is 90 minutes
+     * (PT1H30M). <br><br> Minimum api-version: 2020-06-01
+     */
+    @JsonProperty(value = "properties.extensionsTimeBudget")
+    private String extensionsTimeBudget;
+
+    /*
+     * Specifies the scale set logical fault domain into which the Virtual
+     * Machine will be created. By default, the Virtual Machine will by
+     * automatically assigned to a fault domain that best maintains balance
+     * across available fault domains.<br><li>This is applicable only if the
+     * 'virtualMachineScaleSet' property of this Virtual Machine is set.<li>The
+     * Virtual Machine Scale Set that is referenced, must have
+     * 'platformFaultDomainCount' &gt; 1.<li>This property cannot be updated
+     * once the Virtual Machine is created.<li>Fault domain assignment can be
+     * viewed in the Virtual Machine Instance View.<br><br>Minimum api‐version:
+     * 2020‐12‐01
+     */
+    @JsonProperty(value = "properties.platformFaultDomain")
+    private Integer platformFaultDomain;
 
     /**
      * Get the plan property: Specifies information about the marketplace image used to create the virtual machine. This
@@ -280,6 +328,26 @@ public class VirtualMachineInner extends Resource {
      */
     public VirtualMachineInner withZones(List<String> zones) {
         this.zones = zones;
+        return this;
+    }
+
+    /**
+     * Get the extendedLocation property: The extended location of the Virtual Machine.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: The extended location of the Virtual Machine.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the VirtualMachineInner object itself.
+     */
+    public VirtualMachineInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
         return this;
     }
 
@@ -384,6 +452,26 @@ public class VirtualMachineInner extends Resource {
      */
     public VirtualMachineInner withNetworkProfile(NetworkProfile networkProfile) {
         this.networkProfile = networkProfile;
+        return this;
+    }
+
+    /**
+     * Get the securityProfile property: Specifies the Security related profile settings for the virtual machine.
+     *
+     * @return the securityProfile value.
+     */
+    public SecurityProfile securityProfile() {
+        return this.securityProfile;
+    }
+
+    /**
+     * Set the securityProfile property: Specifies the Security related profile settings for the virtual machine.
+     *
+     * @param securityProfile the securityProfile value to set.
+     * @return the VirtualMachineInner object itself.
+     */
+    public VirtualMachineInner withSecurityProfile(SecurityProfile securityProfile) {
+        this.securityProfile = securityProfile;
         return this;
     }
 
@@ -594,6 +682,30 @@ public class VirtualMachineInner extends Resource {
     }
 
     /**
+     * Get the hostGroup property: Specifies information about the dedicated host group that the virtual machine resides
+     * in. &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-06-01. &lt;br&gt;&lt;br&gt;NOTE: User cannot specify both host
+     * and hostGroup properties.
+     *
+     * @return the hostGroup value.
+     */
+    public SubResource hostGroup() {
+        return this.hostGroup;
+    }
+
+    /**
+     * Set the hostGroup property: Specifies information about the dedicated host group that the virtual machine resides
+     * in. &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-06-01. &lt;br&gt;&lt;br&gt;NOTE: User cannot specify both host
+     * and hostGroup properties.
+     *
+     * @param hostGroup the hostGroup value to set.
+     * @return the VirtualMachineInner object itself.
+     */
+    public VirtualMachineInner withHostGroup(SubResource hostGroup) {
+        this.hostGroup = hostGroup;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state, which only appears in the response.
      *
      * @return the provisioningState value.
@@ -612,13 +724,15 @@ public class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Get the licenseType property: Specifies that the image or disk that is being used was licensed on-premises. This
-     * element is only used for images that contain the Windows Server operating system. &lt;br&gt;&lt;br&gt; Possible
-     * values are: &lt;br&gt;&lt;br&gt; Windows_Client &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; If this
-     * element is included in a request for an update, the value must match the initial value. This value cannot be
-     * updated. &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid Use Benefit for Windows
-     * Server](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-hybrid-use-benefit-licensing?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
-     * &lt;br&gt;&lt;br&gt; Minimum api-version: 2015-06-15.
+     * Get the licenseType property: Specifies that the image or disk that is being used was licensed on-premises.
+     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt; Windows_Client
+     * &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server operating system are:
+     * &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE) &lt;br&gt;&lt;br&gt; For more
+     * information, see [Azure Hybrid Use Benefit for Windows
+     * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
+     * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
+     * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
+     * Minimum api-version: 2015-06-15.
      *
      * @return the licenseType value.
      */
@@ -627,13 +741,15 @@ public class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Set the licenseType property: Specifies that the image or disk that is being used was licensed on-premises. This
-     * element is only used for images that contain the Windows Server operating system. &lt;br&gt;&lt;br&gt; Possible
-     * values are: &lt;br&gt;&lt;br&gt; Windows_Client &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; If this
-     * element is included in a request for an update, the value must match the initial value. This value cannot be
-     * updated. &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid Use Benefit for Windows
-     * Server](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-hybrid-use-benefit-licensing?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
-     * &lt;br&gt;&lt;br&gt; Minimum api-version: 2015-06-15.
+     * Set the licenseType property: Specifies that the image or disk that is being used was licensed on-premises.
+     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt; Windows_Client
+     * &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server operating system are:
+     * &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE) &lt;br&gt;&lt;br&gt; For more
+     * information, see [Azure Hybrid Use Benefit for Windows
+     * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
+     * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
+     * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
+     * Minimum api-version: 2015-06-15.
      *
      * @param licenseType the licenseType value to set.
      * @return the VirtualMachineInner object itself.
@@ -654,6 +770,76 @@ public class VirtualMachineInner extends Resource {
     }
 
     /**
+     * Get the extensionsTimeBudget property: Specifies the time alloted for all extensions to start. The time duration
+     * should be between 15 minutes and 120 minutes (inclusive) and should be specified in ISO 8601 format. The default
+     * value is 90 minutes (PT1H30M). &lt;br&gt;&lt;br&gt; Minimum api-version: 2020-06-01.
+     *
+     * @return the extensionsTimeBudget value.
+     */
+    public String extensionsTimeBudget() {
+        return this.extensionsTimeBudget;
+    }
+
+    /**
+     * Set the extensionsTimeBudget property: Specifies the time alloted for all extensions to start. The time duration
+     * should be between 15 minutes and 120 minutes (inclusive) and should be specified in ISO 8601 format. The default
+     * value is 90 minutes (PT1H30M). &lt;br&gt;&lt;br&gt; Minimum api-version: 2020-06-01.
+     *
+     * @param extensionsTimeBudget the extensionsTimeBudget value to set.
+     * @return the VirtualMachineInner object itself.
+     */
+    public VirtualMachineInner withExtensionsTimeBudget(String extensionsTimeBudget) {
+        this.extensionsTimeBudget = extensionsTimeBudget;
+        return this;
+    }
+
+    /**
+     * Get the platformFaultDomain property: Specifies the scale set logical fault domain into which the Virtual Machine
+     * will be created. By default, the Virtual Machine will by automatically assigned to a fault domain that best
+     * maintains balance across available fault domains.&lt;br&gt;&lt;li&gt;This is applicable only if the
+     * 'virtualMachineScaleSet' property of this Virtual Machine is set.&lt;li&gt;The Virtual Machine Scale Set that is
+     * referenced, must have 'platformFaultDomainCount' &amp;gt; 1.&lt;li&gt;This property cannot be updated once the
+     * Virtual Machine is created.&lt;li&gt;Fault domain assignment can be viewed in the Virtual Machine Instance
+     * View.&lt;br&gt;&lt;br&gt;Minimum api‐version: 2020‐12‐01.
+     *
+     * @return the platformFaultDomain value.
+     */
+    public Integer platformFaultDomain() {
+        return this.platformFaultDomain;
+    }
+
+    /**
+     * Set the platformFaultDomain property: Specifies the scale set logical fault domain into which the Virtual Machine
+     * will be created. By default, the Virtual Machine will by automatically assigned to a fault domain that best
+     * maintains balance across available fault domains.&lt;br&gt;&lt;li&gt;This is applicable only if the
+     * 'virtualMachineScaleSet' property of this Virtual Machine is set.&lt;li&gt;The Virtual Machine Scale Set that is
+     * referenced, must have 'platformFaultDomainCount' &amp;gt; 1.&lt;li&gt;This property cannot be updated once the
+     * Virtual Machine is created.&lt;li&gt;Fault domain assignment can be viewed in the Virtual Machine Instance
+     * View.&lt;br&gt;&lt;br&gt;Minimum api‐version: 2020‐12‐01.
+     *
+     * @param platformFaultDomain the platformFaultDomain value to set.
+     * @return the VirtualMachineInner object itself.
+     */
+    public VirtualMachineInner withPlatformFaultDomain(Integer platformFaultDomain) {
+        this.platformFaultDomain = platformFaultDomain;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -667,6 +853,9 @@ public class VirtualMachineInner extends Resource {
         }
         if (identity() != null) {
             identity().validate();
+        }
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
         }
         if (hardwareProfile() != null) {
             hardwareProfile().validate();
@@ -682,6 +871,9 @@ public class VirtualMachineInner extends Resource {
         }
         if (networkProfile() != null) {
             networkProfile().validate();
+        }
+        if (securityProfile() != null) {
+            securityProfile().validate();
         }
         if (diagnosticsProfile() != null) {
             diagnosticsProfile().validate();

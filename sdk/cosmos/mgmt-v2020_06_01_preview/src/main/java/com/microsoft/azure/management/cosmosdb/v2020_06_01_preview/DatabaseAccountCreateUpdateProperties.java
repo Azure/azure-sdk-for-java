@@ -140,6 +140,12 @@ public class DatabaseAccountCreateUpdateProperties {
     private BackupPolicy backupPolicy;
 
     /**
+     * The CORS policy for the Cosmos DB database account.
+     */
+    @JsonProperty(value = "cors")
+    private List<CorsPolicy> cors;
+
+    /**
      * Creates an instance of DatabaseAccountCreateUpdateProperties class.
      * @param locations an array that contains the georeplication locations enabled for the Cosmos DB account.
      */
@@ -504,6 +510,26 @@ public class DatabaseAccountCreateUpdateProperties {
      */
     public DatabaseAccountCreateUpdateProperties withBackupPolicy(BackupPolicy backupPolicy) {
         this.backupPolicy = backupPolicy;
+        return this;
+    }
+
+    /**
+     * Get the CORS policy for the Cosmos DB database account.
+     *
+     * @return the cors value
+     */
+    public List<CorsPolicy> cors() {
+        return this.cors;
+    }
+
+    /**
+     * Set the CORS policy for the Cosmos DB database account.
+     *
+     * @param cors the cors value to set
+     * @return the DatabaseAccountCreateUpdateProperties object itself.
+     */
+    public DatabaseAccountCreateUpdateProperties withCors(List<CorsPolicy> cors) {
+        this.cors = cors;
         return this;
     }
 

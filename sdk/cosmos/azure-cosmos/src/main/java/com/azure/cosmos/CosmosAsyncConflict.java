@@ -71,15 +71,15 @@ public final class CosmosAsyncConflict {
     }
 
     /**
-     * Reads all conflicts in a container.
+     * Deletes a conflict.
      * <p>
-     * After subscription the operation will be performed. The {@link Mono} will
-     * contain one or several feed response pages of the read conflicts. In case of
-     * failure the {@link Mono} will error.
+     * After subscription the operation will be performed. The {@link Mono} upon
+     * successful completion will contain a single resource response for the deleted
+     * conflict. In case of failure the {@link Mono} will error.
      *
-     * @param options the feed options.
-     * @return a {@link Mono} containing one or several feed response pages of the
-     * read conflicts or an error.
+     * @param options the request options.
+     * @return a {@link Mono} containing the single resource response for the deleted
+     * conflict or an error.
      */
     public Mono<CosmosConflictResponse> delete(CosmosConflictRequestOptions options) {
         if (options == null) {

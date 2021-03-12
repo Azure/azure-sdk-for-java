@@ -11,6 +11,7 @@ import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
 import com.azure.resourcemanager.cosmos.models.SqlUserDefinedFunctionGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** An Azure Cosmos DB userDefinedFunction. */
 @JsonFlatten
@@ -41,6 +42,20 @@ public class SqlUserDefinedFunctionGetResultsInner extends ArmResourceProperties
      */
     public SqlUserDefinedFunctionGetResultsInner withResource(SqlUserDefinedFunctionGetPropertiesResource resource) {
         this.resource = resource;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlUserDefinedFunctionGetResultsInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlUserDefinedFunctionGetResultsInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

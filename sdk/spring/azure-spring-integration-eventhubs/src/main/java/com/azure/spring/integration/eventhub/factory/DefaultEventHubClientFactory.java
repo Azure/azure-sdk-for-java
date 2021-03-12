@@ -5,18 +5,18 @@ package com.azure.spring.integration.eventhub.factory;
 
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.ClientOptions;
-import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
+import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventProcessorClient;
-import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
+import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
+import com.azure.spring.cloud.context.core.util.Memoizer;
+import com.azure.spring.cloud.context.core.util.Tuple;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.impl.EventHubProcessor;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
-import com.azure.spring.cloud.context.core.util.Memoizer;
-import com.azure.spring.cloud.context.core.util.Tuple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
@@ -52,24 +52,25 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
     private final Map<Tuple<String, String>, EventProcessorClient> processorClientMap = new ConcurrentHashMap<>();
     private final String checkpointStorageConnectionString;
     private final String checkpointStorageContainer;
-    private final EventHubConnectionStringProvider connectionStringProvider;
+    private final String eventHubConnectionString;
     // Memoized functional client creator
     private final BiFunction<String, String, EventHubConsumerAsyncClient> eventHubConsumerClientCreator =
         Memoizer.memoize(consumerClientMap, this::createEventHubClient);
     private final Function<String, EventHubProducerAsyncClient> producerClientCreator =
         Memoizer.memoize(producerClientMap, this::createProducerClient);
 
-    public DefaultEventHubClientFactory(@NonNull EventHubConnectionStringProvider connectionStringProvider,
-                                        String checkpointConnectionString, String checkpointStorageContainer) {
+    public DefaultEventHubClientFactory(@NonNull String eventHubConnectionString,
+                                        String checkpointConnectionString,
+                                        String checkpointStorageContainer) {
         Assert.hasText(checkpointConnectionString, "checkpointConnectionString can't be null or empty");
-        this.connectionStringProvider = connectionStringProvider;
+        this.eventHubConnectionString = eventHubConnectionString;
         this.checkpointStorageConnectionString = checkpointConnectionString;
         this.checkpointStorageContainer = checkpointStorageContainer;
     }
 
     private EventHubConsumerAsyncClient createEventHubClient(String eventHubName, String consumerGroup) {
         return new EventHubClientBuilder()
-            .connectionString(connectionStringProvider.getConnectionString(), eventHubName)
+            .connectionString(eventHubConnectionString, eventHubName)
             .consumerGroup(consumerGroup)
             .clientOptions(new ClientOptions().setApplicationId(SPRING_EVENT_HUB_APPLICATION_ID))
             .buildAsyncConsumerClient();
@@ -77,7 +78,7 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
 
     private EventHubProducerAsyncClient createProducerClient(String eventHubName) {
         return new EventHubClientBuilder()
-            .connectionString(connectionStringProvider.getConnectionString(), eventHubName)
+            .connectionString(eventHubConnectionString, eventHubName)
             .clientOptions(new ClientOptions().setApplicationId(SPRING_EVENT_HUB_APPLICATION_ID))
             .buildAsyncProducerClient();
     }
@@ -104,7 +105,7 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
 
         // TODO (xiada): set up event processing position for each partition
         return new EventProcessorClientBuilder()
-            .connectionString(connectionStringProvider.getConnectionString(), eventHubName)
+            .connectionString(eventHubConnectionString, eventHubName)
             .consumerGroup(consumerGroup)
             .checkpointStore(new BlobCheckpointStore(blobClient))
             .processPartitionInitialization(eventHubProcessor::onInitialize)

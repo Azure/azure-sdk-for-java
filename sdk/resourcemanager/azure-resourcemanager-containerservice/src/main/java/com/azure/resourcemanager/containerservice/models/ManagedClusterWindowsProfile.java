@@ -15,19 +15,45 @@ public final class ManagedClusterWindowsProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterWindowsProfile.class);
 
     /*
-     * The administrator username to use for Windows VMs.
+     * Specifies the name of the administrator account. <br><br>
+     * **restriction:** Cannot end in "." <br><br> **Disallowed values:**
+     * "administrator", "admin", "user", "user1", "test", "user2", "test1",
+     * "user3", "admin1", "1", "123", "a", "actuser", "adm", "admin2",
+     * "aspnet", "backup", "console", "david", "guest", "john", "owner",
+     * "root", "server", "sql", "support", "support_388945a0", "sys", "test2",
+     * "test3", "user4", "user5". <br><br> **Minimum-length:** 1 character
+     * <br><br> **Max-length:** 20 characters
      */
     @JsonProperty(value = "adminUsername", required = true)
     private String adminUsername;
 
     /*
-     * The administrator password to use for Windows VMs.
+     * Specifies the password of the administrator account. <br><br>
+     * **Minimum-length:** 8 characters <br><br> **Max-length:** 123 characters
+     * <br><br> **Complexity requirements:** 3 out of 4 conditions below need
+     * to be fulfilled <br> Has lower characters <br>Has upper characters <br>
+     * Has a digit <br> Has a special character (Regex match [\W_]) <br><br>
+     * **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123",
+     * "Pa$$word", "pass@word1", "Password!", "Password1", "Password22",
+     * "iloveyou!"
      */
     @JsonProperty(value = "adminPassword")
     private String adminPassword;
 
+    /*
+     * The licenseType to use for Windows VMs. Windows_Server is used to enable
+     * Azure Hybrid User Benefits for Windows VMs.
+     */
+    @JsonProperty(value = "licenseType")
+    private LicenseType licenseType;
+
     /**
-     * Get the adminUsername property: The administrator username to use for Windows VMs.
+     * Get the adminUsername property: Specifies the name of the administrator account. &lt;br&gt;&lt;br&gt;
+     * **restriction:** Cannot end in "." &lt;br&gt;&lt;br&gt; **Disallowed values:** "administrator", "admin", "user",
+     * "user1", "test", "user2", "test1", "user3", "admin1", "1", "123", "a", "actuser", "adm", "admin2", "aspnet",
+     * "backup", "console", "david", "guest", "john", "owner", "root", "server", "sql", "support", "support_388945a0",
+     * "sys", "test2", "test3", "user4", "user5". &lt;br&gt;&lt;br&gt; **Minimum-length:** 1 character
+     * &lt;br&gt;&lt;br&gt; **Max-length:** 20 characters.
      *
      * @return the adminUsername value.
      */
@@ -36,7 +62,12 @@ public final class ManagedClusterWindowsProfile {
     }
 
     /**
-     * Set the adminUsername property: The administrator username to use for Windows VMs.
+     * Set the adminUsername property: Specifies the name of the administrator account. &lt;br&gt;&lt;br&gt;
+     * **restriction:** Cannot end in "." &lt;br&gt;&lt;br&gt; **Disallowed values:** "administrator", "admin", "user",
+     * "user1", "test", "user2", "test1", "user3", "admin1", "1", "123", "a", "actuser", "adm", "admin2", "aspnet",
+     * "backup", "console", "david", "guest", "john", "owner", "root", "server", "sql", "support", "support_388945a0",
+     * "sys", "test2", "test3", "user4", "user5". &lt;br&gt;&lt;br&gt; **Minimum-length:** 1 character
+     * &lt;br&gt;&lt;br&gt; **Max-length:** 20 characters.
      *
      * @param adminUsername the adminUsername value to set.
      * @return the ManagedClusterWindowsProfile object itself.
@@ -47,7 +78,12 @@ public final class ManagedClusterWindowsProfile {
     }
 
     /**
-     * Get the adminPassword property: The administrator password to use for Windows VMs.
+     * Get the adminPassword property: Specifies the password of the administrator account. &lt;br&gt;&lt;br&gt;
+     * **Minimum-length:** 8 characters &lt;br&gt;&lt;br&gt; **Max-length:** 123 characters &lt;br&gt;&lt;br&gt;
+     * **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled &lt;br&gt; Has lower characters
+     * &lt;br&gt;Has upper characters &lt;br&gt; Has a digit &lt;br&gt; Has a special character (Regex match [\W_])
+     * &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word",
+     * "pass@word1", "Password!", "Password1", "Password22", "iloveyou!".
      *
      * @return the adminPassword value.
      */
@@ -56,13 +92,40 @@ public final class ManagedClusterWindowsProfile {
     }
 
     /**
-     * Set the adminPassword property: The administrator password to use for Windows VMs.
+     * Set the adminPassword property: Specifies the password of the administrator account. &lt;br&gt;&lt;br&gt;
+     * **Minimum-length:** 8 characters &lt;br&gt;&lt;br&gt; **Max-length:** 123 characters &lt;br&gt;&lt;br&gt;
+     * **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled &lt;br&gt; Has lower characters
+     * &lt;br&gt;Has upper characters &lt;br&gt; Has a digit &lt;br&gt; Has a special character (Regex match [\W_])
+     * &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word",
+     * "pass@word1", "Password!", "Password1", "Password22", "iloveyou!".
      *
      * @param adminPassword the adminPassword value to set.
      * @return the ManagedClusterWindowsProfile object itself.
      */
     public ManagedClusterWindowsProfile withAdminPassword(String adminPassword) {
         this.adminPassword = adminPassword;
+        return this;
+    }
+
+    /**
+     * Get the licenseType property: The licenseType to use for Windows VMs. Windows_Server is used to enable Azure
+     * Hybrid User Benefits for Windows VMs.
+     *
+     * @return the licenseType value.
+     */
+    public LicenseType licenseType() {
+        return this.licenseType;
+    }
+
+    /**
+     * Set the licenseType property: The licenseType to use for Windows VMs. Windows_Server is used to enable Azure
+     * Hybrid User Benefits for Windows VMs.
+     *
+     * @param licenseType the licenseType value to set.
+     * @return the ManagedClusterWindowsProfile object itself.
+     */
+    public ManagedClusterWindowsProfile withLicenseType(LicenseType licenseType) {
+        this.licenseType = licenseType;
         return this;
     }
 

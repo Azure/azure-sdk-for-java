@@ -788,6 +788,36 @@ class ServiceBusReceiverAsyncClientTest {
     }
 
     /**
+     * Verifies that managementNodeLocks was closed.
+     */
+    @Test
+    void callsManagementNodeLocksCloseWhenClientIsClosed() {
+        // Given
+        Assertions.assertFalse(receiver.isManagementNodeLocksClosed());
+
+        // Act
+        receiver.close();
+
+        // Assert
+        Assertions.assertTrue(receiver.isManagementNodeLocksClosed());
+    }
+
+    /**
+     * Verifies that renewalContainer was closed.
+     */
+    @Test
+    void callsRenewalContainerCloseWhenClientIsClosed() {
+        // Given
+        Assertions.assertFalse(receiver.isRenewalContainerClosed());
+
+        // Act
+        receiver.close();
+
+        // Assert
+        Assertions.assertTrue(receiver.isRenewalContainerClosed());
+    }
+
+    /**
      * Tests that invalid options throws and null options.
      */
     @Test

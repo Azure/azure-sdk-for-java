@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.hdinsight.v2018_06_01_preview.implementation;
 
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.OperationDisplay;
+import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.OperationProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -26,6 +27,12 @@ public class OperationInner {
      */
     @JsonProperty(value = "display")
     private OperationDisplay display;
+
+    /**
+     * The operation properties.
+     */
+    @JsonProperty(value = "properties")
+    private OperationProperties properties;
 
     /**
      * Get the operation name: {provider}/{resource}/{operation}.
@@ -64,6 +71,26 @@ public class OperationInner {
      */
     public OperationInner withDisplay(OperationDisplay display) {
         this.display = display;
+        return this;
+    }
+
+    /**
+     * Get the operation properties.
+     *
+     * @return the properties value
+     */
+    public OperationProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the operation properties.
+     *
+     * @param properties the properties value to set
+     * @return the OperationInner object itself.
+     */
+    public OperationInner withProperties(OperationProperties properties) {
+        this.properties = properties;
         return this;
     }
 

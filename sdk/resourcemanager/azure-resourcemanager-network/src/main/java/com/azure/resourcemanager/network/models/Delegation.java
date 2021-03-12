@@ -32,6 +32,12 @@ public class Delegation extends SubResource {
     private String etag;
 
     /*
+     * Resource type.
+     */
+    @JsonProperty(value = "type")
+    private String type;
+
+    /*
      * The name of the service to whom the subnet should be delegated (e.g.
      * Microsoft.Sql/servers).
      */
@@ -82,6 +88,26 @@ public class Delegation extends SubResource {
     }
 
     /**
+     * Get the type property: Resource type.
+     *
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type property: Resource type.
+     *
+     * @param type the type value to set.
+     * @return the Delegation object itself.
+     */
+    public Delegation withType(String type) {
+        this.type = type;
+        return this;
+    }
+
+    /**
      * Get the serviceName property: The name of the service to whom the subnet should be delegated (e.g.
      * Microsoft.Sql/servers).
      *
@@ -119,6 +145,13 @@ public class Delegation extends SubResource {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Delegation withId(String id) {
+        super.withId(id);
+        return this;
     }
 
     /**

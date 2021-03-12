@@ -12,6 +12,7 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Virtual Network Tap resource. */
 @JsonFlatten
@@ -191,6 +192,20 @@ public class VirtualNetworkTapInner extends Resource {
      */
     public VirtualNetworkTapInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualNetworkTapInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualNetworkTapInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

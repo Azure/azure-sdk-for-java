@@ -175,7 +175,25 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
 
     }
 
+    @Override
+    public Mono<CosmosContainerProperties> getContainerProperties(String containerName) {
+        return cosmosAsyncClient.getDatabase(this.databaseName)
+            .getContainer(containerName)
+            .read()
+            .map(CosmosContainerResponse::getProperties);
+    }
+
+    @Override
+    public Mono<CosmosContainerProperties> replaceContainerProperties(String containerName,
+                                                                CosmosContainerProperties properties) {
+        return this.cosmosAsyncClient.getDatabase(this.databaseName)
+            .getContainer(containerName)
+            .replace(properties)
+            .map(CosmosContainerResponse::getProperties);
+    }
+
     /**
+     *
      * Find all items in a given container
      *
      * @param containerName the containerName
@@ -344,8 +362,9 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         Assert.notNull(objectToSave, "objectToSave should not be null");
 
         final Class<T> domainType = (Class<T>) objectToSave.getClass();
+        markAuditedIfConfigured(objectToSave);
         generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
-        final JsonNode originalItem = prepareToPersistAndConvertToItemProperties(objectToSave);
+        final JsonNode originalItem = mappingCosmosConverter.writeJsonNode(objectToSave);
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         //  if the partition key is null, SDK will get the partitionKey from the object
         return cosmosAsyncClient
@@ -404,7 +423,8 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     @Override
     public <T> Mono<T> upsert(String containerName, T object) {
         final Class<T> domainType = (Class<T>) object.getClass();
-        final JsonNode originalItem = prepareToPersistAndConvertToItemProperties(object);
+        markAuditedIfConfigured(object);
+        final JsonNode originalItem = mappingCosmosConverter.writeJsonNode(object);
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
 
         applyVersioning(object.getClass(), originalItem, options);
@@ -580,11 +600,16 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
 
     @Override
     public <T> Flux<T> runQuery(SqlQuerySpec querySpec, Class<?> domainType, Class<T> returnType) {
+        return runQuery(querySpec, domainType)
+            .map(cosmosItemProperties -> toDomainObject(returnType, cosmosItemProperties));
+    }
+
+    private Flux<JsonNode> runQuery(SqlQuerySpec querySpec, Class<?> domainType) {
         String containerName = getContainerName(domainType);
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         return cosmosAsyncClient.getDatabase(this.databaseName)
                    .getContainer(containerName)
-                   .queryItems(querySpec, options, returnType)
+                   .queryItems(querySpec, options, JsonNode.class)
                    .byPage()
                    .publishOn(Schedulers.parallel())
                    .flatMap(cosmosItemFeedResponse -> {
@@ -655,13 +680,12 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         return CosmosEntityInformation.getInstance(domainType).getContainerName();
     }
 
-    private JsonNode prepareToPersistAndConvertToItemProperties(Object object) {
+
+    private void markAuditedIfConfigured(Object object) {
         if (cosmosAuditingHandler != null) {
             cosmosAuditingHandler.markAudited(object);
         }
-        return mappingCosmosConverter.writeJsonNode(object);
     }
-
 
     private Flux<JsonNode> findItems(@NonNull CosmosQuery query,
                                      @NonNull String containerName) {

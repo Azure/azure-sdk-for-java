@@ -1,12 +1,38 @@
 ## Release History
 
-## 3.2.0-beta.1 (Unreleased)
+## 3.5.0-beta.1 (Unreleased)
 
+
+### 3.4.0 (2020-02-09)
+#### New Features
+* Updated azure-cosmos version to 4.12.0.
+
+#### Key Bug Fixes
+* Fixed `@EnableAuditing` for Java 11 modules.
+
+### 3.3.0 (2020-01-15)
+#### New Features
+* Support for composite indexes in `CosmosIndexPolicy` annotation.
+* Support for changes in `CosmosIndexPolicy` annotation.
+* Updated azure-cosmos version to 4.11.0.
+
+#### Key Bug Fixes
+* Fixed query generation with sort and limit.
+
+### 3.2.0 (2020-12-11)
+#### New Features
+* Updated Spring Data Commons version to 2.3.5.RELEASE.
+* Updated Spring Core version to 5.2.10.RELEASE.
+
+#### Key Bug Fixes
+* Fixed publishing of `spring.factories` file with released jar.
+* Fixed repository query with repeated parameters. 
 
 ### 3.1.0 (2020-10-21)
 #### New Features
 * Added support for `ARRAY_CONTAINS` `CriteriaType`.
 * Updated azure-cosmos version to 4.7.1.
+
 #### Key Bug Fixes
 * Fixed an issue where annotated queries do not pick the annotated container name.
 

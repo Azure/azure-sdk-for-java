@@ -14,6 +14,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS ARE USED TO EXTRACT
@@ -206,4 +207,39 @@ public class ReadmeSamples {
             .subQueue(SubQueue.DEAD_LETTER_QUEUE)
             .buildClient();
     }
+
+    /**
+     * Code sample for creating a Service Bus Processor Client.
+     */
+    public void createServiceBusProcessorClient() {
+        // Sample code that processes a single message
+        Consumer<ServiceBusReceivedMessageContext> processMessage = messageContext -> {
+            try {
+                System.out.println(messageContext.getMessage().getMessageId());
+                // other message processing code
+                messageContext.complete();
+            } catch (Exception ex) {
+                messageContext.abandon();
+            }
+        };
+
+        // Sample code that gets called if there's an error
+        Consumer<ServiceBusErrorContext> processError = errorContext -> {
+            System.err.println("Error occurred while receiving message: " + errorContext.getException());
+        };
+
+        // create the processor client via the builder and its sub-builder
+        ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
+                                        .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
+                                        .processor()
+                                        .queueName("<< QUEUE NAME >>")
+                                        .processMessage(processMessage)
+                                        .processError(processError)
+                                        .disableAutoComplete()
+                                        .buildProcessorClient();
+
+        // Starts the processor in the background and returns immediately
+        processorClient.start();
+    }
+
 }

@@ -10,6 +10,7 @@ import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Specifies information about the SSH public key. */
 @JsonFlatten
@@ -50,6 +51,20 @@ public class SshPublicKeyResourceInner extends Resource {
      */
     public SshPublicKeyResourceInner withPublicKey(String publicKey) {
         this.publicKey = publicKey;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SshPublicKeyResourceInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SshPublicKeyResourceInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

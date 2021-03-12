@@ -16,7 +16,7 @@ public interface PartitionKeyRangeIdsClient {
     /**
      * Retrieves the metrics determined by the given filter for the given partition key range id.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
@@ -41,7 +41,7 @@ public interface PartitionKeyRangeIdsClient {
     /**
      * Retrieves the metrics determined by the given filter for the given partition key range id.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
@@ -66,7 +66,7 @@ public interface PartitionKeyRangeIdsClient {
     /**
      * Retrieves the metrics determined by the given filter for the given partition key range id.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.

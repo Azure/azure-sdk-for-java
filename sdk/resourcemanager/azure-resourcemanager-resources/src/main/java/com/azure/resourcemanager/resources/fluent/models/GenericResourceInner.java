@@ -12,6 +12,7 @@ import com.azure.resourcemanager.resources.models.Plan;
 import com.azure.resourcemanager.resources.models.Sku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Resource information. */
 @Fluent
@@ -171,6 +172,20 @@ public class GenericResourceInner extends Resource {
      */
     public GenericResourceInner withIdentity(Identity identity) {
         this.identity = identity;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GenericResourceInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GenericResourceInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

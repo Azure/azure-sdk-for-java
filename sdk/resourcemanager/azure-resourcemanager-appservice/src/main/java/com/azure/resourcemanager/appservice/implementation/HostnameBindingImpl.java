@@ -114,7 +114,7 @@ class HostnameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
     @Override
     public HostnameBindingImpl<FluentT, FluentImplT> withDnsRecordType(
         CustomHostnameDnsRecordType hostnameDnsRecordType) {
-        Pattern pattern = Pattern.compile("([.\\w-]+)\\.([\\w-]+\\.\\w+)");
+        Pattern pattern = Pattern.compile("([.\\w-]+|\\*)\\.([\\w-]+\\.\\w+)");
         Matcher matcher = pattern.matcher(name);
         if (hostnameDnsRecordType == CustomHostnameDnsRecordType.CNAME && !matcher.matches()) {
             throw logger.logExceptionAsError(

@@ -3,6 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
+import com.azure.spring.aad.AADAuthorizationServerEndpoints;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.source.JWKSetCache;
@@ -36,7 +37,11 @@ import static com.azure.spring.autoconfigure.aad.Constants.BEARER_PREFIX;
  * A stateful authentication filter which uses Microsoft Graph groups to authorize. Both ID token and access token are
  * supported. In the case of access token, only access token issued for the exact same application this filter used for
  * could be accepted, e.g. access token issued for Microsoft Graph could not be processed by users' application.
+ * <p>
+ *
+ * @deprecated See the <a href="https://github.com/Azure/azure-sdk-for-java/issues/17860">Alternative method</a>.
  */
+@Deprecated
 public class AADAuthenticationFilter extends OncePerRequestFilter {
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationFilter.class);
     private static final String CURRENT_USER_PRINCIPAL = "CURRENT_USER_PRINCIPAL";
@@ -45,13 +50,13 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
     private final AzureADGraphClient azureADGraphClient;
 
     public AADAuthenticationFilter(AADAuthenticationProperties aadAuthenticationProperties,
-                                   ServiceEndpointsProperties serviceEndpointsProperties,
+                                   AADAuthorizationServerEndpoints endpoints,
                                    ResourceRetriever resourceRetriever) {
         this(
             aadAuthenticationProperties,
-            serviceEndpointsProperties,
+            endpoints,
             new UserPrincipalManager(
-                serviceEndpointsProperties,
+                endpoints,
                 aadAuthenticationProperties,
                 resourceRetriever,
                 false
@@ -60,14 +65,14 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
     }
 
     public AADAuthenticationFilter(AADAuthenticationProperties aadAuthenticationProperties,
-                                   ServiceEndpointsProperties serviceEndpointsProperties,
+                                   AADAuthorizationServerEndpoints endpoints,
                                    ResourceRetriever resourceRetriever,
                                    JWKSetCache jwkSetCache) {
         this(
             aadAuthenticationProperties,
-            serviceEndpointsProperties,
+            endpoints,
             new UserPrincipalManager(
-                serviceEndpointsProperties,
+                endpoints,
                 aadAuthenticationProperties,
                 resourceRetriever,
                 false,
@@ -77,14 +82,14 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
     }
 
     public AADAuthenticationFilter(AADAuthenticationProperties aadAuthenticationProperties,
-                                   ServiceEndpointsProperties serviceEndpointsProperties,
+                                   AADAuthorizationServerEndpoints endpoints,
                                    UserPrincipalManager userPrincipalManager) {
         this.userPrincipalManager = userPrincipalManager;
         this.azureADGraphClient = new AzureADGraphClient(
             aadAuthenticationProperties.getClientId(),
             aadAuthenticationProperties.getClientSecret(),
             aadAuthenticationProperties,
-            serviceEndpointsProperties
+            endpoints
         );
     }
 

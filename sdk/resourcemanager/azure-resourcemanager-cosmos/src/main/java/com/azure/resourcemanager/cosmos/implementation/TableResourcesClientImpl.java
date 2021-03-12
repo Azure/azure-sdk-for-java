@@ -8,10 +8,12 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -69,7 +71,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
     private interface TableResourcesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/tables")
@@ -81,9 +83,10 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/tables/{tableName}")
@@ -96,9 +99,10 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             @PathParam("accountName") String accountName,
             @PathParam("tableName") String tableName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/tables/{tableName}")
@@ -112,6 +116,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             @PathParam("tableName") String tableName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") TableCreateUpdateParameters createUpdateTableParameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -129,7 +134,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/tables/{tableName}/throughputSettings/default")
@@ -142,9 +147,10 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             @PathParam("accountName") String accountName,
             @PathParam("tableName") String tableName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/tables/{tableName}/throughputSettings/default")
@@ -158,13 +164,47 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             @PathParam("tableName") String tableName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ThroughputSettingsUpdateParameters updateThroughputParameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
+                + "/databaseAccounts/{accountName}/tables/{tableName}/throughputSettings/default/migrateToAutoscale")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> migrateTableToAutoscale(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("tableName") String tableName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
+                + "/databaseAccounts/{accountName}/tables/{tableName}/throughputSettings/default"
+                + "/migrateToManualThroughput")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> migrateTableToManualThroughput(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("tableName") String tableName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Lists the Tables under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -193,7 +233,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -203,7 +243,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
-                            apiVersion,
+                            this.client.getApiVersion(),
+                            accept,
                             context))
             .<PagedResponse<TableGetResultsInner>>map(
                 res ->
@@ -215,7 +256,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Lists the Tables under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -245,7 +286,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listTables(
@@ -253,7 +294,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
-                apiVersion,
+                this.client.getApiVersion(),
+                accept,
                 context)
             .map(
                 res ->
@@ -264,7 +306,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Lists the Tables under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -279,7 +321,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Lists the Tables under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -296,7 +338,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Lists the Tables under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -311,7 +353,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Lists the Tables under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -328,7 +370,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Gets the Tables under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -361,7 +403,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -372,7 +414,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                             resourceGroupName,
                             accountName,
                             tableName,
-                            apiVersion,
+                            this.client.getApiVersion(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -380,7 +423,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Gets the Tables under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @param context The context to associate with this operation.
@@ -414,7 +457,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getTable(
@@ -423,14 +466,15 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                 resourceGroupName,
                 accountName,
                 tableName,
-                apiVersion,
+                this.client.getApiVersion(),
+                accept,
                 context);
     }
 
     /**
      * Gets the Tables under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -454,7 +498,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Gets the Tables under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -470,7 +514,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Gets the Tables under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @param context The context to associate with this operation.
@@ -488,10 +532,10 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Create or update an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -533,7 +577,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         } else {
             createUpdateTableParameters.validate();
         }
-        final String apiVersion = "2019-08-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -544,8 +588,9 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                             resourceGroupName,
                             accountName,
                             tableName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             createUpdateTableParameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -553,10 +598,10 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Create or update an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -600,7 +645,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         } else {
             createUpdateTableParameters.validate();
         }
-        final String apiVersion = "2019-08-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createUpdateTable(
@@ -609,18 +654,19 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                 resourceGroupName,
                 accountName,
                 tableName,
-                apiVersion,
+                this.client.getApiVersion(),
                 createUpdateTableParameters,
+                accept,
                 context);
     }
 
     /**
      * Create or update an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -647,10 +693,10 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Create or update an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -677,10 +723,10 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Create or update an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -699,10 +745,10 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Create or update an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -724,10 +770,10 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Create or update an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -747,10 +793,10 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Create or update an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -773,10 +819,10 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Create or update an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -794,10 +840,10 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Create or update an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -818,7 +864,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Deletes an existing Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -851,7 +897,6 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -862,7 +907,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                             resourceGroupName,
                             accountName,
                             tableName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -870,7 +915,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Deletes an existing Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @param context The context to associate with this operation.
@@ -904,7 +949,6 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
         context = this.client.mergeContext(context);
         return service
             .deleteTable(
@@ -913,14 +957,14 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                 resourceGroupName,
                 accountName,
                 tableName,
-                apiVersion,
+                this.client.getApiVersion(),
                 context);
     }
 
     /**
      * Deletes an existing Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -940,7 +984,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Deletes an existing Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @param context The context to associate with this operation.
@@ -963,7 +1007,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Deletes an existing Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -980,7 +1024,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Deletes an existing Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @param context The context to associate with this operation.
@@ -998,7 +1042,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Deletes an existing Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1016,7 +1060,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Deletes an existing Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @param context The context to associate with this operation.
@@ -1036,7 +1080,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Deletes an existing Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1051,7 +1095,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Deletes an existing Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @param context The context to associate with this operation.
@@ -1067,7 +1111,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1101,7 +1145,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1112,7 +1156,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                             resourceGroupName,
                             accountName,
                             tableName,
-                            apiVersion,
+                            this.client.getApiVersion(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1120,7 +1165,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @param context The context to associate with this operation.
@@ -1155,7 +1200,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getTableThroughput(
@@ -1164,14 +1209,15 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                 resourceGroupName,
                 accountName,
                 tableName,
-                apiVersion,
+                this.client.getApiVersion(),
+                accept,
                 context);
     }
 
     /**
      * Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1197,7 +1243,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1215,7 +1261,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
      * @param context The context to associate with this operation.
@@ -1234,10 +1280,10 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1279,7 +1325,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         } else {
             updateThroughputParameters.validate();
         }
-        final String apiVersion = "2019-08-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1290,8 +1336,9 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                             resourceGroupName,
                             accountName,
                             tableName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             updateThroughputParameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1299,10 +1346,10 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1346,7 +1393,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         } else {
             updateThroughputParameters.validate();
         }
-        final String apiVersion = "2019-08-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .updateTableThroughput(
@@ -1355,18 +1402,19 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                 resourceGroupName,
                 accountName,
                 tableName,
-                apiVersion,
+                this.client.getApiVersion(),
                 updateThroughputParameters,
+                accept,
                 context);
     }
 
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1395,10 +1443,10 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1430,10 +1478,10 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1453,10 +1501,10 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1479,10 +1527,10 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1502,10 +1550,10 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1528,10 +1576,10 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1550,10 +1598,10 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1570,5 +1618,543 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         return updateTableThroughputAsync(
                 resourceGroupName, accountName, tableName, updateThroughputParameters, context)
             .block();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> migrateTableToAutoscaleWithResponseAsync(
+        String resourceGroupName, String accountName, String tableName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (tableName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .migrateTableToAutoscale(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            tableName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> migrateTableToAutoscaleWithResponseAsync(
+        String resourceGroupName, String accountName, String tableName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (tableName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .migrateTableToAutoscale(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                tableName,
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateTableToAutoscaleAsync(String resourceGroupName, String accountName, String tableName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            migrateTableToAutoscaleWithResponseAsync(resourceGroupName, accountName, tableName);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class,
+                Context.NONE);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateTableToAutoscaleAsync(
+            String resourceGroupName, String accountName, String tableName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            migrateTableToAutoscaleWithResponseAsync(resourceGroupName, accountName, tableName, context);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class,
+                context);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateTableToAutoscale(String resourceGroupName, String accountName, String tableName) {
+        return beginMigrateTableToAutoscaleAsync(resourceGroupName, accountName, tableName).getSyncPoller();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateTableToAutoscale(String resourceGroupName, String accountName, String tableName, Context context) {
+        return beginMigrateTableToAutoscaleAsync(resourceGroupName, accountName, tableName, context).getSyncPoller();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ThroughputSettingsGetResultsInner> migrateTableToAutoscaleAsync(
+        String resourceGroupName, String accountName, String tableName) {
+        return beginMigrateTableToAutoscaleAsync(resourceGroupName, accountName, tableName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ThroughputSettingsGetResultsInner> migrateTableToAutoscaleAsync(
+        String resourceGroupName, String accountName, String tableName, Context context) {
+        return beginMigrateTableToAutoscaleAsync(resourceGroupName, accountName, tableName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner migrateTableToAutoscale(
+        String resourceGroupName, String accountName, String tableName) {
+        return migrateTableToAutoscaleAsync(resourceGroupName, accountName, tableName).block();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner migrateTableToAutoscale(
+        String resourceGroupName, String accountName, String tableName, Context context) {
+        return migrateTableToAutoscaleAsync(resourceGroupName, accountName, tableName, context).block();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> migrateTableToManualThroughputWithResponseAsync(
+        String resourceGroupName, String accountName, String tableName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (tableName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .migrateTableToManualThroughput(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            tableName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> migrateTableToManualThroughputWithResponseAsync(
+        String resourceGroupName, String accountName, String tableName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (tableName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .migrateTableToManualThroughput(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                tableName,
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateTableToManualThroughputAsync(String resourceGroupName, String accountName, String tableName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            migrateTableToManualThroughputWithResponseAsync(resourceGroupName, accountName, tableName);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class,
+                Context.NONE);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateTableToManualThroughputAsync(
+            String resourceGroupName, String accountName, String tableName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            migrateTableToManualThroughputWithResponseAsync(resourceGroupName, accountName, tableName, context);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class,
+                context);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateTableToManualThroughput(String resourceGroupName, String accountName, String tableName) {
+        return beginMigrateTableToManualThroughputAsync(resourceGroupName, accountName, tableName).getSyncPoller();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateTableToManualThroughput(
+            String resourceGroupName, String accountName, String tableName, Context context) {
+        return beginMigrateTableToManualThroughputAsync(resourceGroupName, accountName, tableName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ThroughputSettingsGetResultsInner> migrateTableToManualThroughputAsync(
+        String resourceGroupName, String accountName, String tableName) {
+        return beginMigrateTableToManualThroughputAsync(resourceGroupName, accountName, tableName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ThroughputSettingsGetResultsInner> migrateTableToManualThroughputAsync(
+        String resourceGroupName, String accountName, String tableName, Context context) {
+        return beginMigrateTableToManualThroughputAsync(resourceGroupName, accountName, tableName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner migrateTableToManualThroughput(
+        String resourceGroupName, String accountName, String tableName) {
+        return migrateTableToManualThroughputAsync(resourceGroupName, accountName, tableName).block();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner migrateTableToManualThroughput(
+        String resourceGroupName, String accountName, String tableName, Context context) {
+        return migrateTableToManualThroughputAsync(resourceGroupName, accountName, tableName, context).block();
     }
 }

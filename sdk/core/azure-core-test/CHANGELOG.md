@@ -3,9 +3,21 @@
 ## 1.6.0-beta.1 (Unreleased)
 
 
+## 1.5.3 (2021-02-05)
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.12.0` to `1.13.0`.
+
+## 1.5.2 (2021-01-11)
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.10.0` to `1.12.0`.
+
 ## 1.5.1 (2020-10-29)
 
-### Dependency updates
+### Dependency Updates
 
 - Updated `azure-core` to `1.10.0`.
 

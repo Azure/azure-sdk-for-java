@@ -33,6 +33,12 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     private VirtualMachineScaleSetUpdateNetworkProfile networkProfile;
 
     /*
+     * The virtual machine scale set Security profile
+     */
+    @JsonProperty(value = "securityProfile")
+    private SecurityProfile securityProfile;
+
+    /*
      * The virtual machine scale set diagnostics profile.
      */
     @JsonProperty(value = "diagnosticsProfile")
@@ -122,6 +128,26 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     public VirtualMachineScaleSetUpdateVMProfile withNetworkProfile(
         VirtualMachineScaleSetUpdateNetworkProfile networkProfile) {
         this.networkProfile = networkProfile;
+        return this;
+    }
+
+    /**
+     * Get the securityProfile property: The virtual machine scale set Security profile.
+     *
+     * @return the securityProfile value.
+     */
+    public SecurityProfile securityProfile() {
+        return this.securityProfile;
+    }
+
+    /**
+     * Set the securityProfile property: The virtual machine scale set Security profile.
+     *
+     * @param securityProfile the securityProfile value to set.
+     * @return the VirtualMachineScaleSetUpdateVMProfile object itself.
+     */
+    public VirtualMachineScaleSetUpdateVMProfile withSecurityProfile(SecurityProfile securityProfile) {
+        this.securityProfile = securityProfile;
         return this;
     }
 
@@ -243,6 +269,9 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
         }
         if (networkProfile() != null) {
             networkProfile().validate();
+        }
+        if (securityProfile() != null) {
+            securityProfile().validate();
         }
         if (diagnosticsProfile() != null) {
             diagnosticsProfile().validate();

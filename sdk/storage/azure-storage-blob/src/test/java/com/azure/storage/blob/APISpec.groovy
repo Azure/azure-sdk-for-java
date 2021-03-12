@@ -30,7 +30,7 @@ import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.options.BlobBreakLeaseOptions
-import com.azure.storage.blob.specialized.BlobAsyncClientBase
+import com.azure.storage.blob.specialized.BlobAsyncClientBase	
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlobLeaseClient
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
@@ -759,6 +759,46 @@ class APISpec extends Specification {
             @Override
             Flux<ByteBuffer> getBody() {
                 return Flux.empty()
+            }
+
+            @Override
+            Mono<byte[]> getBodyAsByteArray() {
+                return Mono.just(new byte[0])
+            }
+
+            @Override
+            Mono<String> getBodyAsString() {
+                return Mono.just("")
+            }
+
+            @Override
+            Mono<String> getBodyAsString(Charset charset) {
+                return Mono.just("")
+            }
+        }
+    }
+
+    def getStubDownloadResponse(HttpResponse response, int code, Flux<ByteBuffer> body, HttpHeaders headers) {
+        return new HttpResponse(response.getRequest()) {
+
+            @Override
+            int getStatusCode() {
+                return code
+            }
+
+            @Override
+            String getHeaderValue(String s) {
+                return headers.getValue(s)
+            }
+
+            @Override
+            HttpHeaders getHeaders() {
+                return headers
+            }
+
+            @Override
+            Flux<ByteBuffer> getBody() {
+                return body
             }
 
             @Override

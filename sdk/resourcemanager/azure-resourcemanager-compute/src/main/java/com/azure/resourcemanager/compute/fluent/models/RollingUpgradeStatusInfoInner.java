@@ -14,6 +14,7 @@ import com.azure.resourcemanager.compute.models.RollingUpgradeProgressInfo;
 import com.azure.resourcemanager.compute.models.RollingUpgradeRunningStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** The status of the latest virtual machine scale set rolling upgrade. */
 @JsonFlatten
@@ -80,6 +81,20 @@ public class RollingUpgradeStatusInfoInner extends Resource {
      */
     public ApiError error() {
         return this.error;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RollingUpgradeStatusInfoInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RollingUpgradeStatusInfoInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**

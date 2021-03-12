@@ -6,9 +6,12 @@ package com.azure.resourcemanager.resources;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.resources.fluent.FeatureClient;
+import com.azure.resourcemanager.resources.fluent.ManagementLockClient;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.resourcemanager.resources.implementation.FeatureClientBuilder;
 import com.azure.resourcemanager.resources.fluent.PolicyClient;
+import com.azure.resourcemanager.resources.implementation.ManagementLockClientBuilder;
+import com.azure.resourcemanager.resources.implementation.ManagementLocksImpl;
 import com.azure.resourcemanager.resources.implementation.PolicyClientBuilder;
 import com.azure.resourcemanager.resources.fluent.ResourceManagementClient;
 import com.azure.resourcemanager.resources.implementation.ResourceManagementClientBuilder;
@@ -28,6 +31,7 @@ import com.azure.resourcemanager.resources.implementation.TenantsImpl;
 import com.azure.resourcemanager.resources.models.Deployments;
 import com.azure.resourcemanager.resources.models.Features;
 import com.azure.resourcemanager.resources.models.GenericResources;
+import com.azure.resourcemanager.resources.models.ManagementLocks;
 import com.azure.resourcemanager.resources.models.PolicyAssignments;
 import com.azure.resourcemanager.resources.models.PolicyDefinitions;
 import com.azure.resourcemanager.resources.models.Providers;
@@ -49,6 +53,7 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
     private final FeatureClient featureClient;
     private final SubscriptionClient subscriptionClient;
     private final PolicyClient policyClient;
+    private final ManagementLockClient managementLockClient;
     // The collections
     private ResourceGroups resourceGroups;
     private GenericResources genericResources;
@@ -59,6 +64,7 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
     private PolicyAssignments policyAssignments;
     private Subscriptions subscriptions;
     private Tenants tenants;
+    private ManagementLocks managementLocks;
     private ResourceManagerUtils.InternalRuntimeContext internalContext;
 
     /**
@@ -226,6 +232,12 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient();
 
+        this.managementLockClient = new ManagementLockClientBuilder()
+                .pipeline(httpPipeline)
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
+                .buildClient();
+
         for (int i = 0; i < httpPipeline.getPolicyCount(); ++i) {
             if (httpPipeline.getPolicy(i) instanceof ProviderRegistrationPolicy) {
                 ProviderRegistrationPolicy policy = (ProviderRegistrationPolicy) httpPipeline.getPolicy(i);
@@ -258,6 +270,14 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
      */
     public PolicyClient policyClient() {
         return policyClient;
+    }
+
+    /**
+     * @return wrapped inner policy client providing direct access to auto-generated API implementation,
+     * based on Azure REST API.
+     */
+    public ManagementLockClient managementLockClient() {
+        return managementLockClient;
     }
 
     /**
@@ -348,6 +368,16 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
             tenants = new TenantsImpl(subscriptionClient.getTenants());
         }
         return tenants;
+    }
+
+    /**
+     * @return the locks management API entry point
+     */
+    public ManagementLocks managementLocks() {
+        if (managementLocks == null) {
+            managementLocks = new ManagementLocksImpl(this);
+        }
+        return managementLocks;
     }
 
     /**

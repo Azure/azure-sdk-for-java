@@ -4,43 +4,33 @@
 package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.resourcemanager.authorization.AuthorizationManager;
+import com.azure.resourcemanager.authorization.fluent.models.Get2ItemsItem;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphPasswordProfile;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphUserInner;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
-import com.azure.resourcemanager.authorization.models.PasswordProfile;
-import com.azure.resourcemanager.authorization.models.UserCreateParameters;
-import com.azure.resourcemanager.authorization.models.UserUpdateParameters;
-import com.azure.resourcemanager.authorization.fluent.models.UserInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
+
 /** Implementation for User and its parent interfaces. */
-class ActiveDirectoryUserImpl extends CreatableUpdatableImpl<ActiveDirectoryUser, UserInner, ActiveDirectoryUserImpl>
+class ActiveDirectoryUserImpl
+    extends CreatableUpdatableImpl<ActiveDirectoryUser, MicrosoftGraphUserInner, ActiveDirectoryUserImpl>
     implements ActiveDirectoryUser, ActiveDirectoryUser.Definition, ActiveDirectoryUser.Update {
 
     private final AuthorizationManager manager;
-    private UserCreateParameters createParameters;
-    private UserUpdateParameters updateParameters;
     private String emailAlias;
 
-    ActiveDirectoryUserImpl(UserInner innerObject, AuthorizationManager manager) {
+    ActiveDirectoryUserImpl(MicrosoftGraphUserInner innerObject, AuthorizationManager manager) {
         super(innerObject.displayName(), innerObject);
         this.manager = manager;
-        this.createParameters = new UserCreateParameters().withDisplayName(name()).withAccountEnabled(true);
-        this.updateParameters = new UserUpdateParameters().withDisplayName(name());
     }
 
     @Override
     public String userPrincipalName() {
         return innerModel().userPrincipalName();
-    }
-
-    @Override
-    public String signInName() {
-        if (innerModel().signInNames() != null && !innerModel().signInNames().isEmpty()) {
-            return innerModel().signInNames().get(0).value();
-        } else {
-            return null;
-        }
     }
 
     @Override
@@ -60,9 +50,9 @@ class ActiveDirectoryUserImpl extends CreatableUpdatableImpl<ActiveDirectoryUser
 
     @Override
     public ActiveDirectoryUserImpl withUserPrincipalName(String userPrincipalName) {
-        createParameters.withUserPrincipalName(userPrincipalName);
-        if (isInCreateMode() || updateParameters.mailNickname() != null) {
-            withMailNickname(userPrincipalName.replaceAll("@.+$", ""));
+        innerModel().withUserPrincipalName(userPrincipalName);
+        if (isInCreateMode()) {
+            innerModel().withMailNickname(userPrincipalName.replaceAll("@.+$", ""));
         }
         return this;
     }
@@ -75,14 +65,28 @@ class ActiveDirectoryUserImpl extends CreatableUpdatableImpl<ActiveDirectoryUser
 
     @Override
     public ActiveDirectoryUserImpl withPassword(String password) {
-        createParameters.withPasswordProfile(new PasswordProfile().withPassword(password));
-        updateParameters.withPasswordProfile(new PasswordProfile().withPassword(password));
+        if (innerModel().passwordProfile() == null) {
+            innerModel().withPasswordProfile(new MicrosoftGraphPasswordProfile());
+        }
+        innerModel().passwordProfile().withPassword(password);
         return this;
     }
 
     @Override
-    protected Mono<UserInner> getInnerAsync() {
-        return manager.serviceClient().getUsers().getAsync(this.id());
+    protected Mono<MicrosoftGraphUserInner> getInnerAsync() {
+        return manager.serviceClient().getUsersUsers().getUserAsync(
+            id(),
+            null,
+            Arrays.asList(
+                Get2ItemsItem.ID,
+                Get2ItemsItem.DISPLAY_NAME,
+                Get2ItemsItem.USER_PRINCIPAL_NAME,
+                Get2ItemsItem.MAIL,
+                Get2ItemsItem.MAIL_NICKNAME,
+                Get2ItemsItem.USAGE_LOCATION,
+                Get2ItemsItem.ACCOUNT_ENABLED
+            ),
+            null);
     }
 
     @Override
@@ -92,49 +96,37 @@ class ActiveDirectoryUserImpl extends CreatableUpdatableImpl<ActiveDirectoryUser
 
     @Override
     public Mono<ActiveDirectoryUser> createResourceAsync() {
-        Mono<ActiveDirectoryUserImpl> domain = null;
+        if (innerModel().accountEnabled() == null) {
+            innerModel().withAccountEnabled(true);
+        }
+        Flux<Object> flux = Flux.empty();
         if (emailAlias != null) {
-            domain =
-                manager()
-                    .serviceClient()
-                    .getDomains()
-                    .listAsync(null)
-                    .map(
-                        domainInner -> {
-                            if (domainInner.isVerified() && domainInner.isDefault()) {
-                                if (emailAlias != null) {
-                                    withUserPrincipalName(emailAlias + "@" + domainInner.name());
-                                }
-                            }
-                            return Mono.just(ActiveDirectoryUserImpl.this);
-                        })
-                    .blockLast();
+            flux = manager().serviceClient().getDomainsDomains().listDomainAsync()
+                .flatMap(domainInner -> {
+                    if (domainInner.isVerified() && domainInner.isDefault()) {
+                        withUserPrincipalName(emailAlias + "@" + domainInner.id());
+                    }
+                    return Mono.empty();
+                });
         }
-        if (domain == null) {
-            domain = Mono.just(this);
-        }
-        return domain
-            .flatMap(activeDirectoryUser -> manager().serviceClient().getUsers().createAsync(createParameters))
+        return flux.then(manager().serviceClient().getUsersUsers().createUserAsync(innerModel()))
             .map(innerToFluentMap(this));
     }
 
     public Mono<ActiveDirectoryUser> updateResourceAsync() {
         return manager()
             .serviceClient()
-            .getUsers()
-            .updateAsync(id(), updateParameters)
-            .then(ActiveDirectoryUserImpl.this.refreshAsync());
-    }
-
-    private void withMailNickname(String mailNickname) {
-        createParameters.withMailNickname(mailNickname);
-        updateParameters.withMailNickname(mailNickname);
+            .getUsersUsers()
+            .updateUserAsync(id(), innerModel())
+            .then(this.refreshAsync());
     }
 
     @Override
     public ActiveDirectoryUserImpl withPromptToChangePasswordOnLogin(boolean promptToChangePasswordOnLogin) {
-        createParameters.passwordProfile().withForceChangePasswordNextLogin(promptToChangePasswordOnLogin);
-        updateParameters.passwordProfile().withForceChangePasswordNextLogin(promptToChangePasswordOnLogin);
+        if (innerModel().passwordProfile() == null) {
+            innerModel().withPasswordProfile(new MicrosoftGraphPasswordProfile());
+        }
+        innerModel().passwordProfile().withForceChangePasswordNextSignIn(promptToChangePasswordOnLogin);
         return this;
     }
 
@@ -145,21 +137,19 @@ class ActiveDirectoryUserImpl extends CreatableUpdatableImpl<ActiveDirectoryUser
 
     @Override
     public ActiveDirectoryUserImpl withAccountEnabled(boolean accountEnabled) {
-        createParameters.withAccountEnabled(accountEnabled);
-        updateParameters.withAccountEnabled(accountEnabled);
+        innerModel().withAccountEnabled(accountEnabled);
         return this;
     }
 
     @Override
     public ActiveDirectoryUserImpl withUsageLocation(CountryIsoCode usageLocation) {
-        createParameters.withUsageLocation(usageLocation.toString());
-        updateParameters.withUsageLocation(usageLocation.toString());
+        innerModel().withUsageLocation(usageLocation.toString());
         return this;
     }
 
     @Override
     public String id() {
-        return innerModel().objectId();
+        return innerModel().id();
     }
 
     @Override

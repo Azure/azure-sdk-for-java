@@ -133,11 +133,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     Duration durationTestMode;
 
-    // remove once merged with master
-    public static final String INVOICE_TEST_URL = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/"
-        + "feature/formrecognizer_v2.1-preview2/sdk/formrecognizer/azure-ai-formrecognizer/src/test/resources/"
-        + "sample_files/Test/Invoice_1.pdf";
-
     /**
      * Use duration of nearly zero value for PLAYBACK test mode, otherwise, use default duration value for LIVE mode.
      */
@@ -298,7 +293,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     private static void validateBoundingBoxData(List<Float> expectedBoundingBox, FieldBoundingBox actualFieldBoundingBox) {
-        // TODO (Service Bug) To be fixed in preview 3
+        // TODO (Service Bug) https://github.com/Azure/azure-sdk-for-java/issues/18967 To be fixed in preview 3
         // assertNotNull(actualFieldBoundingBox);
         // assertNotNull(actualFieldBoundingBox.getPoints());
         if (actualFieldBoundingBox != null && actualFieldBoundingBox.getPoints() != null) {
@@ -336,7 +331,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                         DateTimeFormatter.ofPattern("HH:mm:ss")), actualFormField.getValue().asTime());
                     break;
                 case STRING:
-                    if (actualFormField.getName() != "ReceiptType") {
+                    if (!"ReceiptType".equals(actualFormField.getName())) {
                         assertEquals(expectedFieldValue.getValueString(), actualFormField.getValue().asString());
                     }
                     break;
@@ -817,10 +812,9 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         });
     }
 
-    static void validateMultiPageDataLabeled(List<RecognizedForm> actualRecognizedFormsList) {
+    static void validateMultiPageDataLabeled(List<RecognizedForm> actualRecognizedFormsList, String modelId) {
         actualRecognizedFormsList.forEach(recognizedForm -> {
-            // TODO (#14889): assertEquals("custom:modelId", recognizedForm.getFormType());
-            // assertEquals("custom:form", recognizedForm.getFormType());
+            assertEquals("custom:" + modelId, recognizedForm.getFormType());
             assertEquals(1, recognizedForm.getPageRange().getFirstPageNumber());
             assertEquals(3, recognizedForm.getPageRange().getLastPageNumber());
             assertEquals(3, recognizedForm.getPages().size());

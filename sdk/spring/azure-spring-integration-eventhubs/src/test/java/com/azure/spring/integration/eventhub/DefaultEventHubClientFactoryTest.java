@@ -77,9 +77,8 @@ public class DefaultEventHubClientFactoryTest {
         when(blobContainerClientBuilder.buildAsyncClient()).thenReturn(this.blobContainerClient);
         when(this.blobContainerClient.exists()).thenReturn(Mono.just(true));
         when(eventProcessorClientBuilder.buildEventProcessorClient()).thenReturn(this.eventProcessorClient);
-        when(connectionStringProvider.getConnectionString()).thenReturn(connectionString);
 
-        this.clientFactory = spy(new DefaultEventHubClientFactory(connectionStringProvider, connectionString,
+        this.clientFactory = spy(new DefaultEventHubClientFactory(connectionString, connectionString,
             container));
     }
 

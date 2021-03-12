@@ -246,6 +246,13 @@ public class ApplicationGatewayPathRuleInner extends SubResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayPathRuleInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

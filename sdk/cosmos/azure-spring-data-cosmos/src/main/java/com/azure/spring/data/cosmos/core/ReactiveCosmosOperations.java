@@ -3,6 +3,7 @@
 
 package com.azure.spring.data.cosmos.core;
 
+import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -32,6 +33,24 @@ public interface ReactiveCosmosOperations {
      * @return Mono of CosmosContainerResponse
      */
     Mono<CosmosContainerResponse> createContainerIfNotExists(CosmosEntityInformation<?, ?> information);
+
+    /**
+     * Get properties for specified container
+     *
+     * @param containerName String
+     * @return CosmosContainerProperties
+     */
+    Mono<CosmosContainerProperties> getContainerProperties(String containerName);
+
+    /**
+     * Replace container properties for the specified container
+     *
+     * @param containerName String
+     * @param properties CosmosContainerProperties
+     * @return CosmosContainerProperties
+     */
+    Mono<CosmosContainerProperties> replaceContainerProperties(String containerName,
+                                                               CosmosContainerProperties properties);
 
     /**
      * Find all items in a given container

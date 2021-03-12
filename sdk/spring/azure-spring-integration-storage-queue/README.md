@@ -15,7 +15,7 @@ The *Spring Integration for Storage Queue* extension project provides inbound an
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-integration-storage-queue</artifactId>
-    <version>2.0.0-beta.1</version>
+    <version>2.2.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -57,7 +57,7 @@ Please follow [instructions here][contributing_md] to build from source or contr
 <!-- Link -->
 [src]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-integration-storage-queue
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-integration-storage-queue
-[refdocs]: https://azure.github.io/azure-sdk-for-java/spring.html#spring-integration-storage-queue
+[refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#azure-spring-integration-storage-queue
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-storage-queue
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [azure_subscription]: https://azure.microsoft.com/free

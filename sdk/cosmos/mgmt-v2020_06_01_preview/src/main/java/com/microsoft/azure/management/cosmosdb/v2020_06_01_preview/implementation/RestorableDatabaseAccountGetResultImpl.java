@@ -11,8 +11,11 @@ package com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.implementati
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.RestorableDatabaseAccountGetResult;
 import com.microsoft.azure.arm.model.implementation.IndexableRefreshableWrapperImpl;
 import rx.Observable;
+import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.ApiType;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.ManagedServiceIdentity;
+import java.util.List;
+import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.RestorableLocationResource;
 import java.util.Map;
 
 class RestorableDatabaseAccountGetResultImpl extends IndexableRefreshableWrapperImpl<RestorableDatabaseAccountGetResult, RestorableDatabaseAccountGetResultInner> implements RestorableDatabaseAccountGetResult {
@@ -47,6 +50,11 @@ class RestorableDatabaseAccountGetResultImpl extends IndexableRefreshableWrapper
     }
 
     @Override
+    public ApiType apiType() {
+        return this.inner().apiType();
+    }
+
+    @Override
     public DateTime creationTime() {
         return this.inner().creationTime();
     }
@@ -74,6 +82,11 @@ class RestorableDatabaseAccountGetResultImpl extends IndexableRefreshableWrapper
     @Override
     public String name() {
         return this.inner().name();
+    }
+
+    @Override
+    public List<RestorableLocationResource> restorableLocations() {
+        return this.inner().restorableLocations();
     }
 
     @Override

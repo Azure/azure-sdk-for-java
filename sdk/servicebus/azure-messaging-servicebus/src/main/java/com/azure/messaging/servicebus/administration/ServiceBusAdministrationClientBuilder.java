@@ -40,8 +40,14 @@ import java.util.Objects;
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link
  * ServiceBusAdministrationClient} and {@link ServiceBusAdministrationAsyncClient}. Call
- * {@link #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an
+ * {@link #buildClient() buildClient()} and {@link #buildAsyncClient() buildAsyncClient()} respectively to construct an
  * instance of the desired client.
+ *
+ * <p><strong>Create the sync client using a connection string</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.administration.servicebusadministrationclient.instantiation}
+ *
+ * <p><strong>Create the async client using Azure Identity</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.instantiation}
  *
  * @see ServiceBusAdministrationClient
  * @see ServiceBusAdministrationAsyncClient

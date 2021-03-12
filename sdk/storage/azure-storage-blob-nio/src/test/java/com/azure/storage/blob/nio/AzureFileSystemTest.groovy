@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.nio
 
+import com.azure.core.credential.AzureSasCredential
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
@@ -17,7 +18,7 @@ import java.nio.file.InvalidPathException
 import java.time.OffsetDateTime
 
 class AzureFileSystemTest extends APISpec {
-    def config = new HashMap<String, String>()
+    def config = new HashMap<String, Object>()
 
     def setup() {
         config = initializeConfigMap()
@@ -31,16 +32,17 @@ class AzureFileSystemTest extends APISpec {
             .toIterable()
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = String.join(",", containerNames)
         if (!sasToken) {
-            config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = getAccountKey(PRIMARY_STORAGE)
+            config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = primaryCredential
         } else {
-            config[AzureFileSystem.AZURE_STORAGE_SAS_TOKEN] = primaryBlobServiceClient.generateAccountSas(
-                new AccountSasSignatureValues(getUTCNow().plusDays(2),
-                    AccountSasPermission.parse("rwcdl"), new AccountSasService().setBlobAccess(true),
-                    new AccountSasResourceType().setContainer(true)))
+            config[AzureFileSystem.AZURE_STORAGE_SAS_TOKEN_CREDENTIAL] = new AzureSasCredential(
+                primaryBlobServiceClient.generateAccountSas(
+                    new AccountSasSignatureValues(getUTCNow().plusDays(2),
+                        AccountSasPermission.parse("rwcdl"), new AccountSasService().setBlobAccess(true),
+                        new AccountSasResourceType().setContainer(true))))
         }
 
         when:
-        def fileSystem = new AzureFileSystem(new AzureFileSystemProvider(), primaryCredential.getAccountName(),
+        def fileSystem = new AzureFileSystem(new AzureFileSystemProvider(), getAccountUri(),
             config)
 
         then:
@@ -50,7 +52,7 @@ class AzureFileSystemTest extends APISpec {
                 .hasElement(containerName)
             assert primaryBlobServiceClient.getBlobContainerClient(containerName).exists()
         }
-        fileSystem.getFileSystemName() == primaryCredential.getAccountName()
+        fileSystem.getFileSystemUrl() == primaryBlobServiceClient.getAccountUrl()
 
         where:
         numContainers | createContainers | sasToken
@@ -67,7 +69,7 @@ class AzureFileSystemTest extends APISpec {
             config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
         }
         if (credential) {
-            config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = getAccountKey(PRIMARY_STORAGE)
+            config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = getAccountKey(PRIMARY_STORAGE)
         }
 
         when:
@@ -84,14 +86,15 @@ class AzureFileSystemTest extends APISpec {
 
     def "Create fail container check"() {
         setup:
-        config[AzureFileSystem.AZURE_STORAGE_SAS_TOKEN] = primaryBlobServiceClient.generateAccountSas(
-            new AccountSasSignatureValues(OffsetDateTime.now().plusDays(2),
-                AccountSasPermission.parse("d"), new AccountSasService().setBlobAccess(true),
-                new AccountSasResourceType().setContainer(true)))
+        config[AzureFileSystem.AZURE_STORAGE_SAS_TOKEN_CREDENTIAL] = new AzureSasCredential(
+            primaryBlobServiceClient.generateAccountSas(
+                new AccountSasSignatureValues(OffsetDateTime.now().plusDays(2),
+                    AccountSasPermission.parse("d"), new AccountSasService().setBlobAccess(true),
+                    new AccountSasResourceType().setContainer(true))))
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
 
         when:
-        new AzureFileSystem(new AzureFileSystemProvider(), getAccountName(PRIMARY_STORAGE), config)
+        new AzureFileSystem(new AzureFileSystemProvider(), getAccountUri(), config)
 
         then:
         thrown(IOException)
@@ -100,9 +103,9 @@ class AzureFileSystemTest extends APISpec {
     def "Close"() {
         setup:
         def provider = new AzureFileSystemProvider()
-        def uri = getAccountUri()
+        def uri = getFileSystemUri()
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
-        config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = getAccountKey(PRIMARY_STORAGE)
+        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = primaryCredential
         def fileSystem = provider.newFileSystem(uri, config)
 
         when:

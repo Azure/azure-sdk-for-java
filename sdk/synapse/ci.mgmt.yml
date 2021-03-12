@@ -3,6 +3,7 @@ trigger:
   branches:
     include:
       - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
@@ -13,11 +14,14 @@ trigger:
       - sdk/synapse/azure-analytics-synapse-accesscontrol
       - sdk/synapse/azure-analytics-synapse-artifacts
       - sdk/synapse/azure-analytics-synapse-spark
+      - sdk/synapse/azure-analytics-synapse-managedprivateendpoints
+      - sdk/synapse/azure-analytics-synapse-monitoring
 
 pr:
   branches:
     include:
       - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
@@ -28,6 +32,8 @@ pr:
       - sdk/synapse/azure-analytics-synapse-accesscontrol
       - sdk/synapse/azure-analytics-synapse-artifacts
       - sdk/synapse/azure-analytics-synapse-spark
+      - sdk/synapse/azure-analytics-synapse-managedprivateendpoints
+      - sdk/synapse/azure-analytics-synapse-monitoring
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

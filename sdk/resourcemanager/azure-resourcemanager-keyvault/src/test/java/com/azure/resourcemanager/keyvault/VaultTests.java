@@ -27,7 +27,7 @@ public class VaultTests extends KeyVaultManagementTest {
         String sp = generateRandomResourceName("sp", 20);
         String us = generateRandomResourceName("us", 20);
         ServicePrincipal servicePrincipal =
-            authorizationManager.servicePrincipals().define(sp).withNewApplication("http://" + sp).create();
+            authorizationManager.servicePrincipals().define(sp).withNewApplication().create();
 
         ActiveDirectoryUser user =
             authorizationManager.users().define(us).withEmailAlias(us).withPassword("P@$$w0rd").create();
@@ -41,7 +41,7 @@ public class VaultTests extends KeyVaultManagementTest {
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rgName)
                     .defineAccessPolicy()
-                    .forServicePrincipal("http://" + sp)
+                    .forServicePrincipal(sp)
                     .allowKeyPermissions(KeyPermissions.LIST)
                     .allowSecretAllPermissions()
                     .allowCertificatePermissions(CertificatePermissions.GET)
@@ -126,7 +126,7 @@ public class VaultTests extends KeyVaultManagementTest {
         String sp = generateRandomResourceName("sp", 20);
         String us = generateRandomResourceName("us", 20);
         ServicePrincipal servicePrincipal =
-            authorizationManager.servicePrincipals().define(sp).withNewApplication("http://" + sp).create();
+            authorizationManager.servicePrincipals().define(sp).withNewApplication().create();
 
         ActiveDirectoryUser user =
             authorizationManager.users().define(us).withEmailAlias(us).withPassword("P@$$w0rd").create();
@@ -140,7 +140,7 @@ public class VaultTests extends KeyVaultManagementTest {
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rgName)
                     .defineAccessPolicy()
-                    .forServicePrincipal("http://" + sp)
+                    .forServicePrincipal(sp)
                     .allowKeyPermissions(KeyPermissions.LIST)
                     .allowSecretAllPermissions()
                     .allowCertificatePermissions(CertificatePermissions.GET)
@@ -222,7 +222,7 @@ public class VaultTests extends KeyVaultManagementTest {
         String us = generateRandomResourceName("us", 20);
 
         ServicePrincipal servicePrincipal =
-            authorizationManager.servicePrincipals().define(sp).withNewApplication("http://" + sp).create();
+            authorizationManager.servicePrincipals().define(sp).withNewApplication().create();
 
         ActiveDirectoryUser user =
             authorizationManager.users().define(us).withEmailAlias(us).withPassword("P@$$w0rd").create();
@@ -235,7 +235,7 @@ public class VaultTests extends KeyVaultManagementTest {
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rgName)
                     .defineAccessPolicy()
-                    .forServicePrincipal("http://" + sp)
+                    .forServicePrincipal(sp)
                     .allowKeyPermissions(KeyPermissions.LIST)
                     .allowSecretAllPermissions()
                     .allowCertificatePermissions(CertificatePermissions.GET)

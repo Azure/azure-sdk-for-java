@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -61,7 +62,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
     private interface LogAnalyticsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics/apiAccess"
                 + "/getRequestRateByInterval")
@@ -73,9 +74,10 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") RequestRateByIntervalInput parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics/apiAccess"
                 + "/getThrottledRequests")
@@ -87,6 +89,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") LogAnalyticsInputBase parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -95,7 +98,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * activities.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -124,7 +127,8 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-12-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -135,6 +139,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
                             apiVersion,
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -144,7 +149,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * activities.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -174,11 +179,18 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-12-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .exportRequestRateByInterval(
-                this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(), parameters, context);
+                this.client.getEndpoint(),
+                location,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                parameters,
+                accept,
+                context);
     }
 
     /**
@@ -186,7 +198,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * activities.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -211,7 +223,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * activities.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -239,7 +251,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * activities.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -256,7 +268,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * activities.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -274,7 +286,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * activities.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -293,7 +305,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * activities.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -313,7 +325,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * activities.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -330,7 +342,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * activities.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -347,7 +359,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
+     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -376,7 +388,8 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-12-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -387,6 +400,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
                             apiVersion,
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -395,7 +409,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
+     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -425,18 +439,25 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-12-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .exportThrottledRequests(
-                this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(), parameters, context);
+                this.client.getEndpoint(),
+                location,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                parameters,
+                accept,
+                context);
     }
 
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
+     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -460,7 +481,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
+     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -486,7 +507,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
+     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -502,7 +523,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
+     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -519,7 +540,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
+     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -537,7 +558,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
+     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -556,7 +577,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
+     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -571,7 +592,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
+     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

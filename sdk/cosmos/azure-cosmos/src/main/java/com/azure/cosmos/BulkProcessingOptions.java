@@ -13,7 +13,7 @@ import java.time.Duration;
  * Encapsulates options for executing a bulk. This is immutable once
  * {@link CosmosAsyncContainer#processBulkOperations(Flux, BulkProcessingOptions)} is called, changing it will have no affect.
  */
-@Beta(Beta.SinceVersion.V4_9_0)
+@Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class BulkProcessingOptions<TContext> {
 
     private int maxMicroBatchSize = BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
@@ -29,7 +29,7 @@ public final class BulkProcessingOptions<TContext> {
         this(null);
     }
 
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getMaxMicroBatchSize() {
         return maxMicroBatchSize;
     }
@@ -52,13 +52,13 @@ public final class BulkProcessingOptions<TContext> {
      *
      * @return the bulk processing options.
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkProcessingOptions<TContext> setMaxMicroBatchSize(int maxMicroBatchSize) {
         this.maxMicroBatchSize = maxMicroBatchSize;
         return this;
     }
 
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getMaxMicroBatchConcurrency() {
         return maxMicroBatchConcurrency;
     }
@@ -70,13 +70,13 @@ public final class BulkProcessingOptions<TContext> {
      *
      * @return the bulk processing options.
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkProcessingOptions<TContext> setMaxMicroBatchConcurrency(int maxMicroBatchConcurrency) {
         this.maxMicroBatchConcurrency = maxMicroBatchConcurrency;
         return this;
     }
 
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Duration getMaxMicroBatchInterval() {
         return maxMicroBatchInterval;
     }
@@ -88,13 +88,13 @@ public final class BulkProcessingOptions<TContext> {
      *
      * @return the bulk processing options.
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkProcessingOptions<TContext> setMaxMicroBatchInterval(Duration maxMicroBatchInterval) {
         this.maxMicroBatchInterval = maxMicroBatchInterval;
         return this;
     }
 
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public TContext getBatchContext() {
         return batchContext;
     }

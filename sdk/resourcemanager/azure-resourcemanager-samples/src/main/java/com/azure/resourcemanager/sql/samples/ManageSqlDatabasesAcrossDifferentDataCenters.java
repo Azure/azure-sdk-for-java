@@ -123,10 +123,10 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
             List<Region> regions = new ArrayList<>();
 
             regions.add(Region.US_EAST);
-            regions.add(Region.US_SOUTH_CENTRAL);
+            regions.add(Region.US_WEST);
             regions.add(Region.EUROPE_NORTH);
             regions.add(Region.ASIA_SOUTHEAST);
-            regions.add(Region.JAPAN_EAST);
+            regions.add(Region.US_WEST2);
 
             List<Creatable<Network>> creatableNetworks = new ArrayList<>();
 

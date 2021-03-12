@@ -6,9 +6,13 @@ package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.resources.models.Identity;
+import com.azure.resourcemanager.resources.models.Plan;
+import com.azure.resourcemanager.resources.models.Sku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /** Resource information. */
 @Immutable
@@ -64,6 +68,62 @@ public final class GenericResourceExpandedInner extends GenericResourceInner {
      */
     public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GenericResourceExpandedInner withPlan(Plan plan) {
+        super.withPlan(plan);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GenericResourceExpandedInner withProperties(Object properties) {
+        super.withProperties(properties);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GenericResourceExpandedInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GenericResourceExpandedInner withManagedBy(String managedBy) {
+        super.withManagedBy(managedBy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GenericResourceExpandedInner withSku(Sku sku) {
+        super.withSku(sku);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GenericResourceExpandedInner withIdentity(Identity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GenericResourceExpandedInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GenericResourceExpandedInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**

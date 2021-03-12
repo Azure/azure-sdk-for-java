@@ -1,7 +1,23 @@
 # Release History
 
-## 3.1.0-beta.2 (Unreleased)
+## 3.1.0-beta.3 (Unreleased)
 
+
+## 3.1.0-beta.2 (2021-02-10)
+
+### Breaking Changes
+- Renamed `Appearance`, `Style` and `TextStyle` models to `TextAppearance`, `TextStyle` and `TextStyleName` respectively.
+- Changed the type of `Locale` from `String` to `FormRecognizerLocale` in `RecognizeBusinessCardsOptions`, `RecognizeInvoicesOptions`, and `RecognizeReceiptsOptions`.
+- Changed the type of `Language` from `String` to `FormRecognizerLanguage` in `RecognizeContentOptions`.
+
+## 3.0.5 (2021-02-09)
+### Dependency updates
+- Update dependency version, `azure-core` to `1.13.0`, `azure-core-http-netty` to `1.8.0` and `azure-identity` to `1.2.3`.
+
+## 3.0.4 (2021-01-14)
+
+### Dependency Updates
+- Update dependency version, `azure-core` to `1.12.0`, `azure-core-http-netty` to `1.7.1` and `azure-identity` to `1.2.2`.
 
 ## 3.1.0-beta.1 (2020-11-23)
 

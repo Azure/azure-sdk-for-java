@@ -51,6 +51,9 @@ connection string value can be obtained by:
 - [Receive messages from a specific session][ReceiveNamedSessionAsyncSample]
 - [Receive messages from the first available session][ReceiveSingleSessionAsyncSample]
 
+### Synchronous Administration Client operations
+- [Update queue properties synchronously][AdministrationClientUpdateQueueSample]
+
 ## Troubleshooting
 See [Troubleshooting][sdk_readme_troubleshooting].
 
@@ -83,5 +86,6 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING
 [SendScheduledMessageAndCancelAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/SendScheduledMessageAndCancelAsyncSample.java
 [ServiceBusProcessorSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ServiceBusProcessorSample.java
 [ServiceBusSessionProcessorSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ServiceBusSessionProcessorSample.java
+[AdministrationClientUpdateQueueSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/AdministrationClientUpdateQueueSample.java 
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fazure-messaging-servicebus%2Fsrc%2Fsamples%2FREADME.png)

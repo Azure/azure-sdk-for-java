@@ -13,6 +13,9 @@ import com.azure.storage.blob.models.BlobListDetails;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.ListBlobsOptions;
+import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
+import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.common.implementation.Constants;
 
 import java.io.IOException;
@@ -238,6 +241,15 @@ final class AzureResource {
 
     BlobClient getBlobClient() {
         return this.blobClient;
+    }
+
+    BlobOutputStream getBlobOutputStream(ParallelTransferOptions pto, BlobRequestConditions rq) {
+        BlockBlobOutputStreamOptions options = new BlockBlobOutputStreamOptions()
+            .setHeaders(this.blobHeaders)
+            .setMetadata(this.blobMetadata)
+            .setParallelTransferOptions(pto)
+            .setRequestConditions(rq);
+        return this.blobClient.getBlockBlobClient().getBlobOutputStream(options);
     }
 
     private Map<String, String> prepareMetadataForDirectory() {

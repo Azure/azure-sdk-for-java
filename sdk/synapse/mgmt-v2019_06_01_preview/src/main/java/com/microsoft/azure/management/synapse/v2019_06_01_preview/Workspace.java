@@ -297,13 +297,25 @@ public interface Workspace extends HasInner<WorkspaceInner>, Resource, Groupable
     /**
      * The template for a Workspace update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Workspace>, Resource.UpdateWithTags<Update>, UpdateStages.WithIdentity, UpdateStages.WithManagedVirtualNetworkSettings, UpdateStages.WithPurviewConfiguration, UpdateStages.WithSqlAdministratorLoginPassword, UpdateStages.WithWorkspaceRepositoryConfiguration {
+    interface Update extends Appliable<Workspace>, Resource.UpdateWithTags<Update>, UpdateStages.WithEncryption, UpdateStages.WithIdentity, UpdateStages.WithManagedVirtualNetworkSettings, UpdateStages.WithPurviewConfiguration, UpdateStages.WithSqlAdministratorLoginPassword, UpdateStages.WithWorkspaceRepositoryConfiguration {
     }
 
     /**
      * Grouping of Workspace update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the workspace update allowing to specify Encryption.
+         */
+        interface WithEncryption {
+            /**
+             * Specifies encryption.
+             * @param encryption The encryption details of the workspace
+             * @return the next update stage
+             */
+            Update withEncryption(EncryptionDetails encryption);
+        }
+
         /**
          * The stage of the workspace update allowing to specify Identity.
          */

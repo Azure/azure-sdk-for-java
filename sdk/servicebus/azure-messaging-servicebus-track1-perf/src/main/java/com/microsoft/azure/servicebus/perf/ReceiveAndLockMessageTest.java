@@ -4,6 +4,7 @@
 package com.microsoft.azure.servicebus.perf;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.perf.test.core.TestDataCreationHelper;
 import com.microsoft.azure.servicebus.perf.core.ServiceBusStressOptions;
 import com.microsoft.azure.servicebus.perf.core.ServiceTest;
 import com.microsoft.azure.servicebus.IMessage;
@@ -24,6 +25,7 @@ import java.util.concurrent.CompletableFuture;
 public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptions> {
     private final ClientLogger logger = new ClientLogger(ReceiveAndLockMessageTest.class);
     private final ServiceBusStressOptions options;
+    private final String messageContent;
 
     /**
      * Creates test object
@@ -32,13 +34,15 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
     public ReceiveAndLockMessageTest(ServiceBusStressOptions options) {
         super(options, ReceiveMode.PEEKLOCK);
         this.options = options;
+        this.messageContent = TestDataCreationHelper.generateRandomString(options.getMessagesSizeBytesToSend());
     }
 
     private Mono<Void> sendMessage() {
         int total =  options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
+
         List<Message> messages = new ArrayList<>();
         for (int i = 0; i < total; ++i) {
-            Message message = new Message(CONTENTS);
+            Message message = new Message(messageContent);
             message.setMessageId(UUID.randomUUID().toString());
             messages.add(message);
         }

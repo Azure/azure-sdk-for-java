@@ -8,6 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.Map;
 
 /** Profile for the container service agent pool. */
 @Fluent
@@ -40,6 +42,188 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
      */
     public ManagedClusterAgentPoolProfile withName(String name) {
         this.name = name;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withCount(Integer count) {
+        super.withCount(count);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withVmSize(ContainerServiceVMSizeTypes vmSize) {
+        super.withVmSize(vmSize);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withOsDiskSizeGB(Integer osDiskSizeGB) {
+        super.withOsDiskSizeGB(osDiskSizeGB);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withOsDiskType(OSDiskType osDiskType) {
+        super.withOsDiskType(osDiskType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withVnetSubnetId(String vnetSubnetId) {
+        super.withVnetSubnetId(vnetSubnetId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withPodSubnetId(String podSubnetId) {
+        super.withPodSubnetId(podSubnetId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withMaxPods(Integer maxPods) {
+        super.withMaxPods(maxPods);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withOsType(OSType osType) {
+        super.withOsType(osType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withMaxCount(Integer maxCount) {
+        super.withMaxCount(maxCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withMinCount(Integer minCount) {
+        super.withMinCount(minCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withEnableAutoScaling(Boolean enableAutoScaling) {
+        super.withEnableAutoScaling(enableAutoScaling);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withType(AgentPoolType type) {
+        super.withType(type);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withMode(AgentPoolMode mode) {
+        super.withMode(mode);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withOrchestratorVersion(String orchestratorVersion) {
+        super.withOrchestratorVersion(orchestratorVersion);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withUpgradeSettings(AgentPoolUpgradeSettings upgradeSettings) {
+        super.withUpgradeSettings(upgradeSettings);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withAvailabilityZones(List<String> availabilityZones) {
+        super.withAvailabilityZones(availabilityZones);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withEnableNodePublicIp(Boolean enableNodePublicIp) {
+        super.withEnableNodePublicIp(enableNodePublicIp);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withScaleSetPriority(ScaleSetPriority scaleSetPriority) {
+        super.withScaleSetPriority(scaleSetPriority);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withScaleSetEvictionPolicy(ScaleSetEvictionPolicy scaleSetEvictionPolicy) {
+        super.withScaleSetEvictionPolicy(scaleSetEvictionPolicy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withSpotMaxPrice(Float spotMaxPrice) {
+        super.withSpotMaxPrice(spotMaxPrice);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withNodeLabels(Map<String, String> nodeLabels) {
+        super.withNodeLabels(nodeLabels);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withNodeTaints(List<String> nodeTaints) {
+        super.withNodeTaints(nodeTaints);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withProximityPlacementGroupId(String proximityPlacementGroupId) {
+        super.withProximityPlacementGroupId(proximityPlacementGroupId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withKubeletConfig(KubeletConfig kubeletConfig) {
+        super.withKubeletConfig(kubeletConfig);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withLinuxOSConfig(LinuxOSConfig linuxOSConfig) {
+        super.withLinuxOSConfig(linuxOSConfig);
         return this;
     }
 

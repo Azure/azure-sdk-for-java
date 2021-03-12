@@ -3,7 +3,9 @@
 
 package com.azure.storage.blob.specialized.cryptography;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -41,7 +43,7 @@ import java.util.Map;
  * encryption and decryption of the data client side. Note: setting metadata in particular is unsafe and should only be
  * done so with caution.
  * <p> Please refer to the
- * <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-client-side-encryption-java>Azure
+ * <a href=https://docs.microsoft.com/azure/storage/common/storage-client-side-encryption-java>Azure
  * Docs For Client-Side Encryption</a> for more information.
  *
  * <p>
@@ -55,7 +57,7 @@ import java.util.Map;
  * possible in case the associated block/page/append blob contains encrypted data.
  *
  * <p>
- * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
+ * Please refer to the <a href=https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
  * Docs</a> for more information.
  */
 @ServiceClient(builder = EncryptedBlobClientBuilder.class)
@@ -107,7 +109,8 @@ public class EncryptedBlobClient extends BlobClient {
      *
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param headers {@link BlobHttpHeaders}
-     * @param metadata Metadata to associate with the blob.
+     * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param tier {@link AccessTier} for the destination blob.
      * @param requestConditions {@link BlobRequestConditions}
      *
@@ -148,6 +151,7 @@ public class EncryptedBlobClient extends BlobClient {
      * @param filePath Path of the file to upload
      */
     @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void uploadFromFile(String filePath) {
         uploadFromFile(filePath, false);
     }
@@ -163,6 +167,7 @@ public class EncryptedBlobClient extends BlobClient {
      * @param overwrite Whether or not to overwrite should data already exist on the blob
      */
     @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void uploadFromFile(String filePath, boolean overwrite) {
         if (!overwrite && exists()) {
             throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
@@ -181,13 +186,15 @@ public class EncryptedBlobClient extends BlobClient {
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
      *        transfers parameter is ignored.
      * @param headers {@link BlobHttpHeaders}
-     * @param metadata Metadata to associate with the blob.
+     * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param tier {@link AccessTier} for the uploaded blob
      * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @throws UncheckedIOException If an I/O error occurs
      */
     @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout) throws UncheckedIOException {
@@ -211,6 +218,7 @@ public class EncryptedBlobClient extends BlobClient {
      * @return Information about the uploaded block blob.
      */
     @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockBlobItem> uploadFromFileWithResponse(BlobUploadFromFileOptions options,
         Duration timeout, Context context)
         throws UncheckedIOException {

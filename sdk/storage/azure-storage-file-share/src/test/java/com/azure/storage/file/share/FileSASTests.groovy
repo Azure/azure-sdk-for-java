@@ -1,5 +1,8 @@
 package com.azure.storage.file.share
 
+import com.azure.core.credential.AzureSasCredential
+import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.test.TestMode
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.sas.AccountSasPermission
@@ -439,5 +442,135 @@ class FileSASTests extends APISpec {
 
         then:
         notThrown(ShareStorageException)
+    }
+
+    def "can use sas to authenticate"() {
+        setup:
+        def service = new AccountSasService()
+            .setFileAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+        def expiryTime = getUTCNow().plusDays(1)
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = primaryFileServiceClient.generateAccountSas(sasValues)
+        HttpPipelinePolicy recordPolicy = { context, next -> return next.process() }
+        if (testMode == TestMode.RECORD) {
+            recordPolicy = interceptorManager.getRecordPolicy()
+        }
+        def pathName = generatePathName()
+        primaryShareClient.create()
+        primaryShareClient.createDirectory(pathName)
+
+        when:
+        new ShareClientBuilder()
+            .endpoint(primaryShareClient.getShareUrl())
+            .sasToken(sas)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new ShareClientBuilder()
+            .endpoint(primaryShareClient.getShareUrl())
+            .credential(new AzureSasCredential(sas))
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new ShareClientBuilder()
+            .endpoint(primaryShareClient.getShareUrl() + "?" + sas)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new ShareFileClientBuilder()
+            .endpoint(primaryShareClient.getShareUrl())
+            .resourcePath(pathName)
+            .sasToken(sas)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildDirectoryClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new ShareFileClientBuilder()
+            .endpoint(primaryShareClient.getShareUrl())
+            .resourcePath(pathName)
+            .credential(new AzureSasCredential(sas))
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildDirectoryClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new ShareFileClientBuilder()
+            .endpoint(primaryShareClient.getShareUrl() + "?" + sas)
+            .resourcePath(pathName)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildDirectoryClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new ShareServiceClientBuilder()
+            .endpoint(primaryShareClient.getShareUrl())
+            .sasToken(sas)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new ShareServiceClientBuilder()
+            .endpoint(primaryShareClient.getShareUrl())
+            .credential(new AzureSasCredential(sas))
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new ShareServiceClientBuilder()
+            .endpoint(primaryShareClient.getShareUrl() + "?" + sas)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
     }
 }

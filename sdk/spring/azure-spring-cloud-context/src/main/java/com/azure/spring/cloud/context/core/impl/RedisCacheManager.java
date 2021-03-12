@@ -3,8 +3,9 @@
 
 package com.azure.spring.cloud.context.core.impl;
 
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.redis.RedisCache;
+import com.azure.core.management.exception.ManagementException;
+import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 
 /**
@@ -12,8 +13,11 @@ import com.azure.spring.cloud.context.core.config.AzureProperties;
  */
 public class RedisCacheManager extends AzureManager<RedisCache, String> {
 
-    public RedisCacheManager(Azure azure, AzureProperties azureProperties) {
-        super(azure, azureProperties);
+    private final AzureResourceManager azureResourceManager;
+
+    public RedisCacheManager(AzureResourceManager azureResourceManager, AzureProperties azureProperties) {
+        super(azureProperties);
+        this.azureResourceManager = azureResourceManager;
     }
 
     @Override
@@ -28,12 +32,24 @@ public class RedisCacheManager extends AzureManager<RedisCache, String> {
 
     @Override
     public RedisCache internalGet(String name) {
-        return azure.redisCaches().getByResourceGroup(azureProperties.getResourceGroup(), name);
+        try {
+            return azureResourceManager.redisCaches().getByResourceGroup(resourceGroup, name);
+        } catch (ManagementException e) {
+            if (e.getResponse().getStatusCode() == 404) {
+                return null;
+            } else {
+                throw e;
+            }
+        }
     }
 
     @Override
     public RedisCache internalCreate(String name) {
-        return azure.redisCaches().define(name).withRegion(azureProperties.getRegion())
-            .withExistingResourceGroup(azureProperties.getResourceGroup()).withBasicSku().create();
+        return azureResourceManager.redisCaches()
+                                   .define(name)
+                                   .withRegion(region)
+                                   .withExistingResourceGroup(resourceGroup)
+                                   .withBasicSku()
+                                   .create();
     }
 }

@@ -9,16 +9,26 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cosmos DB resource throughput object. */
+/**
+ * Cosmos DB resource throughput object. Either throughput is required or autoscaleSettings is required, but not both.
+ */
 @Fluent
 public class ThroughputSettingsResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ThroughputSettingsResource.class);
 
     /*
-     * Value of the Cosmos DB resource throughput
+     * Value of the Cosmos DB resource throughput. Either throughput is
+     * required or autoscaleSettings is required, but not both.
      */
-    @JsonProperty(value = "throughput", required = true)
-    private int throughput;
+    @JsonProperty(value = "throughput")
+    private Integer throughput;
+
+    /*
+     * Cosmos DB resource for autoscale settings. Either throughput is required
+     * or autoscaleSettings is required, but not both.
+     */
+    @JsonProperty(value = "autoscaleSettings")
+    private AutoscaleSettingsResource autoscaleSettings;
 
     /*
      * The minimum throughput of the resource
@@ -33,22 +43,46 @@ public class ThroughputSettingsResource {
     private String offerReplacePending;
 
     /**
-     * Get the throughput property: Value of the Cosmos DB resource throughput.
+     * Get the throughput property: Value of the Cosmos DB resource throughput. Either throughput is required or
+     * autoscaleSettings is required, but not both.
      *
      * @return the throughput value.
      */
-    public int throughput() {
+    public Integer throughput() {
         return this.throughput;
     }
 
     /**
-     * Set the throughput property: Value of the Cosmos DB resource throughput.
+     * Set the throughput property: Value of the Cosmos DB resource throughput. Either throughput is required or
+     * autoscaleSettings is required, but not both.
      *
      * @param throughput the throughput value to set.
      * @return the ThroughputSettingsResource object itself.
      */
-    public ThroughputSettingsResource withThroughput(int throughput) {
+    public ThroughputSettingsResource withThroughput(Integer throughput) {
         this.throughput = throughput;
+        return this;
+    }
+
+    /**
+     * Get the autoscaleSettings property: Cosmos DB resource for autoscale settings. Either throughput is required or
+     * autoscaleSettings is required, but not both.
+     *
+     * @return the autoscaleSettings value.
+     */
+    public AutoscaleSettingsResource autoscaleSettings() {
+        return this.autoscaleSettings;
+    }
+
+    /**
+     * Set the autoscaleSettings property: Cosmos DB resource for autoscale settings. Either throughput is required or
+     * autoscaleSettings is required, but not both.
+     *
+     * @param autoscaleSettings the autoscaleSettings value to set.
+     * @return the ThroughputSettingsResource object itself.
+     */
+    public ThroughputSettingsResource withAutoscaleSettings(AutoscaleSettingsResource autoscaleSettings) {
+        this.autoscaleSettings = autoscaleSettings;
         return this;
     }
 
@@ -76,5 +110,8 @@ public class ThroughputSettingsResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (autoscaleSettings() != null) {
+            autoscaleSettings().validate();
+        }
     }
 }

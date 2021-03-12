@@ -11,8 +11,7 @@ package com.microsoft.azure.management.attestation.v2020_10_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Client supplied parameters used to create a new attestation service
- * instance.
+ * Client supplied parameters used to create a new attestation provider.
  */
 public class AttestationServiceCreationSpecificParams {
     /**

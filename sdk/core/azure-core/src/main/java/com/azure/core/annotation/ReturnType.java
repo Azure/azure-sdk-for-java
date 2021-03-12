@@ -9,5 +9,6 @@ package com.azure.core.annotation;
  */
 public enum ReturnType {
     SINGLE,
-    COLLECTION
+    COLLECTION,
+    LONG_RUNNING_OPERATION
 }

@@ -25,7 +25,7 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
      * the resource.
      */
     @JsonProperty(value = "_ts", access = JsonProperty.Access.WRITE_ONLY)
-    private Object ts;
+    private Float ts;
 
     /*
      * A system generated property representing the resource etag required for
@@ -48,7 +48,7 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
      *
      * @return the ts value.
      */
-    public Object ts() {
+    public Float ts() {
         return this.ts;
     }
 
@@ -60,6 +60,56 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
      */
     public String etag() {
         return this.etag;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlContainerGetPropertiesResource withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlContainerGetPropertiesResource withIndexingPolicy(IndexingPolicy indexingPolicy) {
+        super.withIndexingPolicy(indexingPolicy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlContainerGetPropertiesResource withPartitionKey(ContainerPartitionKey partitionKey) {
+        super.withPartitionKey(partitionKey);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlContainerGetPropertiesResource withDefaultTtl(Integer defaultTtl) {
+        super.withDefaultTtl(defaultTtl);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlContainerGetPropertiesResource withUniqueKeyPolicy(UniqueKeyPolicy uniqueKeyPolicy) {
+        super.withUniqueKeyPolicy(uniqueKeyPolicy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlContainerGetPropertiesResource withConflictResolutionPolicy(
+        ConflictResolutionPolicy conflictResolutionPolicy) {
+        super.withConflictResolutionPolicy(conflictResolutionPolicy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlContainerGetPropertiesResource withAnalyticalStorageTtl(Long analyticalStorageTtl) {
+        super.withAnalyticalStorageTtl(analyticalStorageTtl);
+        return this;
     }
 
     /**

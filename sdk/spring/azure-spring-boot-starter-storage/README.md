@@ -11,12 +11,12 @@ The project provides a Spring Boot Starter `azure-spring-boot-starter-storage` t
 - [Maven][maven] 3.0 and above
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure.spring:azure-spring-starter-storage;current})
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-boot-starter-storage;current})
 ```xml
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-storage</artifactId>
-    <version>3.0.0-beta.1</version>
+    <version>3.2.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -117,7 +117,7 @@ Please follow [instructions here][contributing_md] to build from source or contr
 <!-- Link -->
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-storage
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-starter-azure-storage
-[refdocs]: https://azure.github.io/azure-sdk-for-java/spring.html#azure-spring-boot-starter-storage
+[refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
 [src]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-storage
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-storage-resource
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application

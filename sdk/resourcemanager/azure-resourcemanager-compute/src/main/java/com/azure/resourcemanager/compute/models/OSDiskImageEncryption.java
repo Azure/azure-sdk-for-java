@@ -13,6 +13,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public final class OSDiskImageEncryption extends DiskImageEncryption {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OSDiskImageEncryption.class);
 
+    /** {@inheritDoc} */
+    @Override
+    public OSDiskImageEncryption withDiskEncryptionSetId(String diskEncryptionSetId) {
+        super.withDiskEncryptionSetId(diskEncryptionSetId);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

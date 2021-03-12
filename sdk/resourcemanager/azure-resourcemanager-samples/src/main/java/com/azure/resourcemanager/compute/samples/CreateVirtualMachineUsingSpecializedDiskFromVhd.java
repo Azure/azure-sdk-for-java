@@ -47,7 +47,7 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
         final String storageAccountName = Utils.randomResourceName(azureResourceManager, "stg", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
-        final Region region = Region.US_WEST_CENTRAL;
+        final Region region = Region.US_WEST;
 
         final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_apache.sh";
         final String apacheInstallCommand = "bash install_apache.sh";

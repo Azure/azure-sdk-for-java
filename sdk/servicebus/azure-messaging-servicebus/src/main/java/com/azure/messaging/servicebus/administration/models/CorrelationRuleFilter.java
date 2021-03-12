@@ -11,25 +11,33 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Represents the correlation rule filter expression.
+ * Represents the correlation rule filter expression. It holds a set of conditions that are matched against one or more
+ * of an arriving message's user and system properties. A common use case is to match against the message's:
+ * <ul>
+ *     <li>{@link ServiceBusMessage#getCorrelationId() correlation id}</li>
+ *     <li>{@link ServiceBusMessage#getContentType() content type}</li>
+ *     <li>{@link ServiceBusMessage#getSubject() subject}</li>
+ *     <li>{@link ServiceBusMessage#getMessageId() message id}</li>
+ *     <li>{@link ServiceBusMessage#getReplyTo() reply-to}</li>
+ *     <li>{@link ServiceBusMessage#getReplyToSessionId() reply-to session id}</li>
+ *     <li>{@link ServiceBusMessage#getSessionId() session id}</li>
+ *     <li>{@link ServiceBusMessage#getTo() to}</li>
+ *     <li>or, any {@link ServiceBusMessage#getApplicationProperties() user-defined properties}</li>
+ * </ul>
  * <p>
- * A CorrelationRuleFilter holds a set of conditions that are matched against one of more of an arriving message's user
- * and system properties. A common use is a match against the {@link ServiceBusMessage#getCorrelationId()} property, but
- * the application can also choose to match against {@link ServiceBusMessage#getContentType()}, {@link
- * ServiceBusMessage#getSubject()}, {@link ServiceBusMessage#getMessageId()}, {@link ServiceBusMessage#getReplyTo()},
- * {@link ServiceBusMessage#getReplyToSessionId()}, {@link ServiceBusMessage#getSessionId()}, {@link
- * ServiceBusMessage#getTo()}, and any user-defined properties. A match exists when an arriving message's value for a
- * property is equal to the value specified in the correlation filter. For string expressions, the comparison is
- * case-sensitive. When specifying multiple match properties, the filter combines them as a logical AND condition,
- * meaning all conditions must match for the filter to match.
- * </p>
+ * A match exists when an arriving message's value for a property is equal to the value specified in the correlation
+ * filter. For string expressions, the comparison is case-sensitive. When specifying multiple match properties, the
+ * filter combines them as a logical <code>AND</code> condition, meaning all conditions must match for the filter to
+ * match.
  * <p>
- * The CorrelationRuleFilter provides an efficient shortcut for declarations of filters that deal only with correlation
+ * This provides an efficient shortcut for declarations of filters that deal only with correlation
  * equality. In this case the cost of the lexigraphical analysis of the expression can be avoided. Not only will
  * correlation filters be optimized at declaration time, but they will also be optimized at runtime. Correlation filter
  * matching can be reduced to a hashtable lookup, which aggregates the complexity of the set of defined correlation
- * filters to O(1).
- * </p>
+ * filters to <code>O(1)</code>.
+ *
+ * @see CreateRuleOptions#setFilter(RuleFilter)
+ * @see RuleProperties#setFilter(RuleFilter)
  */
 @Fluent
 public class CorrelationRuleFilter extends RuleFilter {

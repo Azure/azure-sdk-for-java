@@ -10,7 +10,7 @@ import reactor.core.publisher.Flux;
  * Request, response and the exception(if any) for a {@link CosmosItemOperation} request when processed using Bulk by calling
  * {@link CosmosAsyncContainer#processBulkOperations(Flux, BulkProcessingOptions)}.
  */
-@Beta(Beta.SinceVersion.V4_9_0)
+@Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class CosmosBulkOperationResponse<TContext> {
 
     private final CosmosItemOperation operation;
@@ -46,22 +46,22 @@ public final class CosmosBulkOperationResponse<TContext> {
         this.batchContext = batchContext;
     }
 
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosItemOperation getOperation() {
         return operation;
     }
 
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosBulkItemResponse getResponse() {
         return response;
     }
 
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Exception getException() {
         return exception;
     }
 
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public TContext getBatchContext() {
         return batchContext;
     }

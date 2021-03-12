@@ -50,7 +50,7 @@ public class AddHeadersFromContextPolicy implements HttpPipelinePolicy {
                 // loop through customHttpHeaders and add headers in HttpRequest
                 for (HttpHeader httpHeader : customHttpHeaders) {
                     if (!Objects.isNull(httpHeader.getName()) && !Objects.isNull(httpHeader.getValue())) {
-                        context.getHttpRequest().getHeaders().put(httpHeader.getName(), httpHeader.getValue());
+                        context.getHttpRequest().getHeaders().set(httpHeader.getName(), httpHeader.getValue());
                     }
                 }
             }

@@ -140,6 +140,12 @@ class DataExportImpl extends CreatableUpdatableImpl<DataExport, DataExportInner,
     }
 
     @Override
+    public DataExportImpl withTableNames(List<String> tableNames) {
+        this.inner().withTableNames(tableNames);
+        return this;
+    }
+
+    @Override
     public DataExportImpl withCreatedDate(String createdDate) {
         this.inner().withCreatedDate(createdDate);
         return this;
@@ -166,12 +172,6 @@ class DataExportImpl extends CreatableUpdatableImpl<DataExport, DataExportInner,
     @Override
     public DataExportImpl withLastModifiedDate(String lastModifiedDate) {
         this.inner().withLastModifiedDate(lastModifiedDate);
-        return this;
-    }
-
-    @Override
-    public DataExportImpl withTableNames(List<String> tableNames) {
-        this.inner().withTableNames(tableNames);
         return this;
     }
 

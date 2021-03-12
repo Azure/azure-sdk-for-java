@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /** Describes the properties of a connection monitor. */
 @Immutable
@@ -73,6 +74,70 @@ public final class ConnectionMonitorResultProperties extends ConnectionMonitorPa
      */
     public ConnectionMonitorType connectionMonitorType() {
         return this.connectionMonitorType;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ConnectionMonitorResultProperties withSource(ConnectionMonitorSource source) {
+        super.withSource(source);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ConnectionMonitorResultProperties withDestination(ConnectionMonitorDestination destination) {
+        super.withDestination(destination);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ConnectionMonitorResultProperties withAutoStart(Boolean autoStart) {
+        super.withAutoStart(autoStart);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ConnectionMonitorResultProperties withMonitoringIntervalInSeconds(Integer monitoringIntervalInSeconds) {
+        super.withMonitoringIntervalInSeconds(monitoringIntervalInSeconds);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ConnectionMonitorResultProperties withEndpoints(List<ConnectionMonitorEndpoint> endpoints) {
+        super.withEndpoints(endpoints);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ConnectionMonitorResultProperties withTestConfigurations(
+        List<ConnectionMonitorTestConfiguration> testConfigurations) {
+        super.withTestConfigurations(testConfigurations);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ConnectionMonitorResultProperties withTestGroups(List<ConnectionMonitorTestGroup> testGroups) {
+        super.withTestGroups(testGroups);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ConnectionMonitorResultProperties withOutputs(List<ConnectionMonitorOutput> outputs) {
+        super.withOutputs(outputs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ConnectionMonitorResultProperties withNotes(String notes) {
+        super.withNotes(notes);
+        return this;
     }
 
     /**

@@ -3,7 +3,6 @@
 
 package com.azure.communication.chat.implementation.converters;
 
-import com.azure.communication.common.CommunicationUser;
 import com.azure.communication.chat.models.ChatMessage;
 
 /**
@@ -22,14 +21,17 @@ public final class ChatMessageConverter {
         ChatMessage chatMessage = new ChatMessage()
             .setId(obj.getId())
             .setType(obj.getType())
-            .setPriority(obj.getPriority())
             .setVersion(obj.getVersion())
-            .setContent(obj.getContent())
+            .setContent(ChatMessageContentConverter.convert(obj.getContent()))
             .setCreatedOn(obj.getCreatedOn())
-            .setSender(new CommunicationUser(obj.getSenderId()))
             .setDeletedOn(obj.getDeletedOn())
             .setEditedOn(obj.getEditedOn())
             .setSenderDisplayName(obj.getSenderDisplayName());
+
+        if (obj.getSenderCommunicationIdentifier() != null) {
+            chatMessage.setSenderCommunicationIdentifier(
+                CommunicationIdentifierConverter.convert(obj.getSenderCommunicationIdentifier()));
+        }
 
         return chatMessage;
     }

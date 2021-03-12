@@ -7,7 +7,7 @@ package com.azure.data.tables.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TableServiceStats model. */
+/** Stats for the service. */
 @Fluent
 public final class TableServiceStats {
     /*

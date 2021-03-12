@@ -4,53 +4,40 @@
 
 package com.azure.ai.formrecognizer.implementation.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for Locale. */
-public enum Locale {
-    /** Enum value en-AU. */
-    EN_AU("en-AU"),
+public final class Locale extends ExpandableStringEnum<Locale> {
+    /** Static value en-AU for Locale. */
+    public static final Locale EN_AU = fromString("en-AU");
 
-    /** Enum value en-CA. */
-    EN_CA("en-CA"),
+    /** Static value en-CA for Locale. */
+    public static final Locale EN_CA = fromString("en-CA");
 
-    /** Enum value en-GB. */
-    EN_GB("en-GB"),
+    /** Static value en-GB for Locale. */
+    public static final Locale EN_GB = fromString("en-GB");
 
-    /** Enum value en-IN. */
-    EN_IN("en-IN"),
+    /** Static value en-IN for Locale. */
+    public static final Locale EN_IN = fromString("en-IN");
 
-    /** Enum value en-US. */
-    EN_US("en-US");
-
-    /** The actual serialized value for a Locale instance. */
-    private final String value;
-
-    Locale(String value) {
-        this.value = value;
-    }
+    /** Static value en-US for Locale. */
+    public static final Locale EN_US = fromString("en-US");
 
     /**
-     * Parses a serialized value to a Locale instance.
+     * Creates or finds a Locale from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed Locale object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding Locale.
      */
     @JsonCreator
-    public static Locale fromString(String value) {
-        Locale[] items = Locale.values();
-        for (Locale item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static Locale fromString(String name) {
+        return fromString(name, Locale.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known Locale values. */
+    public static Collection<Locale> values() {
+        return values(Locale.class);
     }
 }

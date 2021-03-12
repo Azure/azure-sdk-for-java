@@ -14,6 +14,7 @@ import com.azure.resourcemanager.storage.models.AzureFilesIdentityBasedAuthentic
 import com.azure.resourcemanager.storage.models.CustomDomain;
 import com.azure.resourcemanager.storage.models.DirectoryServiceOptions;
 import com.azure.resourcemanager.storage.models.Identity;
+import com.azure.resourcemanager.storage.models.IdentityType;
 import com.azure.resourcemanager.storage.models.Kind;
 import com.azure.resourcemanager.storage.models.LargeFileSharesState;
 import com.azure.resourcemanager.storage.models.ProvisioningState;
@@ -357,9 +358,9 @@ class StorageAccountImpl
     public StorageAccountImpl withSystemAssignedManagedServiceIdentity() {
         if (this.innerModel().identity() == null) {
             if (isInCreateMode()) {
-                createParameters.withIdentity(new Identity().withType("SystemAssigned"));
+                createParameters.withIdentity(new Identity().withType(IdentityType.SYSTEM_ASSIGNED));
             } else {
-                updateParameters.withIdentity(new Identity().withType("SystemAssigned"));
+                updateParameters.withIdentity(new Identity().withType(IdentityType.SYSTEM_ASSIGNED));
             }
         }
         return this;

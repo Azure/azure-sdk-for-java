@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Specifies information about the availability set that the virtual machine should be assigned to. Only tags may be
@@ -168,6 +169,13 @@ public class AvailabilitySetUpdate extends UpdateResource {
      */
     public List<InstanceViewStatus> statuses() {
         return this.statuses;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AvailabilitySetUpdate withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**

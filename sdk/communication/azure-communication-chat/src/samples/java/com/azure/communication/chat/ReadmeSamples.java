@@ -3,19 +3,18 @@
 
 package com.azure.communication.chat;
 
-import com.azure.communication.chat.models.AddChatThreadMembersOptions;
-import com.azure.communication.chat.models.ChatMessagePriority;
+import com.azure.communication.chat.models.AddChatParticipantsOptions;
 import com.azure.communication.chat.models.ChatMessage;
+
 import com.azure.communication.chat.models.ChatThread;
-import com.azure.communication.chat.models.ChatThreadMember;
+import com.azure.communication.chat.models.ChatParticipant;
+import com.azure.communication.chat.models.ChatMessageReadReceipt;
 import com.azure.communication.chat.models.CreateChatThreadOptions;
-import com.azure.communication.chat.models.ReadReceipt;
+import com.azure.communication.chat.models.CreateChatThreadResult;
 import com.azure.communication.chat.models.SendChatMessageOptions;
-import com.azure.communication.chat.models.SendChatMessageResult;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
-import com.azure.communication.chat.models.UpdateChatThreadOptions;
-import com.azure.communication.common.CommunicationUser;
-import com.azure.communication.common.CommunicationUserCredential;
+import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.CommunicationTokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
@@ -30,6 +29,7 @@ import java.util.List;
  *
  * Class containing code snippets that will be injected to README.md.
  */
+
 public class ReadmeSamples {
 
     /**
@@ -47,7 +47,7 @@ public class ReadmeSamples {
 
         // Your user access token retrieved from your trusted service
         String token = "SECRET";
-        CommunicationUserCredential credential = new CommunicationUserCredential(token);
+        CommunicationTokenCredential credential = new CommunicationTokenCredential(token);
 
         // Initialize the chat client
         final ChatClientBuilder builder = new ChatClientBuilder();
@@ -65,27 +65,27 @@ public class ReadmeSamples {
     public void createChatThread() {
         ChatClient chatClient = createChatClient();
 
-        CommunicationUser user1 = new CommunicationUser("Id 1");
-        CommunicationUser user2 = new CommunicationUser("Id 2");
+        CommunicationUserIdentifier user1 = new CommunicationUserIdentifier("Id 1");
+        CommunicationUserIdentifier user2 = new CommunicationUserIdentifier("Id 2");
 
-        List<ChatThreadMember> members = new ArrayList<ChatThreadMember>();
+        List<ChatParticipant> participants = new ArrayList<ChatParticipant>();
 
-        ChatThreadMember firstThreadMember = new ChatThreadMember()
-            .setUser(user1)
-            .setDisplayName("Member Display Name 1");
+        ChatParticipant firstParticipant = new ChatParticipant()
+            .setCommunicationIdentifier(user1)
+            .setDisplayName("Participant Display Name 1");
 
-        ChatThreadMember secondThreadMember = new ChatThreadMember()
-            .setUser(user2)
-            .setDisplayName("Member Display Name 2");
+        ChatParticipant secondParticipant = new ChatParticipant()
+            .setCommunicationIdentifier(user2)
+            .setDisplayName("Participant Display Name 2");
 
-        members.add(firstThreadMember);
-        members.add(secondThreadMember);
+        participants.add(firstParticipant);
+        participants.add(secondParticipant);
 
         CreateChatThreadOptions createChatThreadOptions = new CreateChatThreadOptions()
             .setTopic("Topic")
-            .setMembers(members);
-        ChatThreadClient chatThreadClient = chatClient.createChatThread(createChatThreadOptions);
-        String chatThreadId = chatThreadClient.getChatThreadId();
+            .setParticipants(participants);
+        CreateChatThreadResult result = chatClient.createChatThread(createChatThreadOptions);
+        String chatThreadId = result.getChatThread().getId();
     }
 
     /**
@@ -123,29 +123,29 @@ public class ReadmeSamples {
     }
 
     /**
-     * Sample code for updating a chat thread using the sync chat thread client.
+     * Sample code for updating a chat thread topic using the sync chat thread client.
      */
-    public void updateChatThread() {
+    public void updateTopic() {
         ChatThreadClient chatThreadClient = getChatThreadClient();
 
-        UpdateChatThreadOptions updateChatThreadOptions = new UpdateChatThreadOptions()
-            .setTopic("New Topic");
-        chatThreadClient.updateChatThread(updateChatThreadOptions);
+        chatThreadClient.updateTopic("New Topic");
     }
+
+
 
     /**
      * Sample code for sending a chat message using the sync chat thread client.
      */
     public void sendChatMessage() {
+
         ChatThreadClient chatThreadClient = getChatThreadClient();
 
         SendChatMessageOptions sendChatMessageOptions = new SendChatMessageOptions()
             .setContent("Message content")
-            .setPriority(ChatMessagePriority.NORMAL)
             .setSenderDisplayName("Sender Display Name");
 
-        SendChatMessageResult sendChatMessageResult = chatThreadClient.sendMessage(sendChatMessageOptions);
-        String chatMessageId = sendChatMessageResult.getId();
+
+        String chatMessageId = chatThreadClient.sendMessage(sendChatMessageOptions);
     }
 
     /**
@@ -198,57 +198,57 @@ public class ReadmeSamples {
     }
 
     /**
-     * Sample code listing chat thread members using the sync chat thread client.
+     * Sample code listing chat participants using the sync chat thread client.
      */
-    public void listChatThreadMember() {
+    public void listChatParticipants() {
         ChatThreadClient chatThreadClient = getChatThreadClient();
 
-        PagedIterable<ChatThreadMember> chatThreadMembersResponse = chatThreadClient.listMembers();
-        chatThreadMembersResponse.iterableByPage().forEach(resp -> {
+        PagedIterable<ChatParticipant> chatParticipantsResponse = chatThreadClient.listParticipants();
+        chatParticipantsResponse.iterableByPage().forEach(resp -> {
             System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
                 resp.getRequest().getUrl(), resp.getStatusCode());
-            resp.getItems().forEach(chatMember -> {
-                System.out.printf("Member id is %s.", chatMember.getUser().getId());
+            resp.getItems().forEach(chatParticipant -> {
+                System.out.printf("Participant id is %s.", ((CommunicationUserIdentifier) chatParticipant.getCommunicationIdentifier()).getId());
             });
         });
     }
 
     /**
-     * Sample code adding chat thread members using the sync chat thread client.
+     * Sample code adding chat participants using the sync chat thread client.
      */
-    public void addChatThreadMembers() {
+    public void addChatParticipants() {
         ChatThreadClient chatThreadClient = getChatThreadClient();
 
-        CommunicationUser user1 = new CommunicationUser("Id 1");
-        CommunicationUser user2 = new CommunicationUser("Id 2");
+        CommunicationUserIdentifier user1 = new CommunicationUserIdentifier("Id 1");
+        CommunicationUserIdentifier user2 = new CommunicationUserIdentifier("Id 2");
 
-        List<ChatThreadMember> members = new ArrayList<ChatThreadMember>();
+        List<ChatParticipant> participants = new ArrayList<ChatParticipant>();
 
-        ChatThreadMember firstThreadMember = new ChatThreadMember()
-            .setUser(user1)
+        ChatParticipant firstParticipant = new ChatParticipant()
+            .setCommunicationIdentifier(user1)
             .setDisplayName("Display Name 1");
 
-        ChatThreadMember secondThreadMember = new ChatThreadMember()
-            .setUser(user2)
+        ChatParticipant secondParticipant = new ChatParticipant()
+            .setCommunicationIdentifier(user2)
             .setDisplayName("Display Name 2");
 
-        members.add(firstThreadMember);
-        members.add(secondThreadMember);
+        participants.add(firstParticipant);
+        participants.add(secondParticipant);
 
-        AddChatThreadMembersOptions addChatThreadMembersOptions = new AddChatThreadMembersOptions()
-            .setMembers(members);
-        chatThreadClient.addMembers(addChatThreadMembersOptions);
+        AddChatParticipantsOptions addChatParticipantsOptions = new AddChatParticipantsOptions()
+            .setParticipants(participants);
+        chatThreadClient.addParticipants(addChatParticipantsOptions);
     }
 
     /**
-     * Sample code removing a chat thread member using the sync chat thread client.
+     * Sample code removing a chat participant using the sync chat thread client.
      */
-    public void removeChatThreadMember() {
+    public void removeChatParticipant() {
         ChatThreadClient chatThreadClient = getChatThreadClient();
 
-        CommunicationUser user = new CommunicationUser("Id");
+        CommunicationUserIdentifier user = new CommunicationUserIdentifier("Id");
 
-        chatThreadClient.removeMember(user);
+        chatThreadClient.removeParticipant(user);
     }
 
     /**
@@ -267,7 +267,7 @@ public class ReadmeSamples {
     public void listReadReceipts() {
         ChatThreadClient chatThreadClient = getChatThreadClient();
 
-        PagedIterable<ReadReceipt> readReceiptsResponse = chatThreadClient.listReadReceipts();
+        PagedIterable<ChatMessageReadReceipt> readReceiptsResponse = chatThreadClient.listReadReceipts();
         readReceiptsResponse.iterableByPage().forEach(resp -> {
             System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
                 resp.getRequest().getUrl(), resp.getStatusCode());

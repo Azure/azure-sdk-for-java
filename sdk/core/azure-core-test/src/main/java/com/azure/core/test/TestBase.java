@@ -99,7 +99,7 @@ public abstract class TestBase implements BeforeEachCallback {
      */
     @AfterEach
     public void teardownTest(TestInfo testInfo) {
-        if (testContextManager.didTestRun()) {
+        if (testContextManager != null && testContextManager.didTestRun()) {
             afterTest();
             interceptorManager.close();
         }

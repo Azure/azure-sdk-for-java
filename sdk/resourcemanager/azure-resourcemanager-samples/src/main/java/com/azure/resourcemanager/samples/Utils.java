@@ -169,7 +169,11 @@ import com.azure.resourcemanager.redis.models.RedisCachePremium;
 import com.azure.resourcemanager.redis.models.ScheduleEntry;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.resources.models.ManagementLock;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.search.models.AdminKeys;
+import com.azure.resourcemanager.search.models.QueryKey;
+import com.azure.resourcemanager.search.models.SearchService;
 import com.azure.resourcemanager.servicebus.models.AuthorizationKeys;
 import com.azure.resourcemanager.servicebus.models.NamespaceAuthorizationRule;
 import com.azure.resourcemanager.servicebus.models.Queue;
@@ -774,18 +778,18 @@ public final class Utils {
         System.out.println(redisKeys.toString());
     }
 
-//    /**
-//     * Print management lock.
-//     *
-//     * @param lock a management lock
-//     */
-//    public static void print(ManagementLock lock) {
-//        StringBuilder info = new StringBuilder();
-//        info.append("\nLock ID: ").append(lock.id())
-//                .append("\nLocked resource ID: ").append(lock.lockedResourceId())
-//                .append("\nLevel: ").append(lock.level());
-//        System.out.println(info.toString());
-//    }
+    /**
+     * Print management lock.
+     *
+     * @param lock a management lock
+     */
+    public static void print(ManagementLock lock) {
+        StringBuilder info = new StringBuilder();
+        info.append("\nLock ID: ").append(lock.id())
+                .append("\nLocked resource ID: ").append(lock.lockedResourceId())
+                .append("\nLevel: ").append(lock.level());
+        System.out.println(info.toString());
+    }
 
     /**
      * Print load balancer.
@@ -1549,36 +1553,36 @@ public final class Utils {
         System.out.println(info.toString());
     }
 
-//    /**
-//     * Print an Azure Search Service.
-//     *
-//     * @param searchService an Azure Search Service
-//     */
-//    public static void print(SearchService searchService) {
-//        StringBuilder info = new StringBuilder();
-//        AdminKeys adminKeys = searchService.getAdminKeys();
-//        List<QueryKey> queryKeys = searchService.listQueryKeys();
-//
-//        info.append("Azure Search: ").append(searchService.id())
-//                .append("\n\tResource group: ").append(searchService.resourceGroupName())
-//                .append("\n\tRegion: ").append(searchService.region())
-//                .append("\n\tTags: ").append(searchService.tags())
-//                .append("\n\tSku: ").append(searchService.sku().name())
-//                .append("\n\tStatus: ").append(searchService.status())
-//                .append("\n\tProvisioning State: ").append(searchService.provisioningState())
-//                .append("\n\tHosting Mode: ").append(searchService.hostingMode())
-//                .append("\n\tReplicas: ").append(searchService.replicaCount())
-//                .append("\n\tPartitions: ").append(searchService.partitionCount())
-//                .append("\n\tPrimary Admin Key: ").append(adminKeys.primaryKey())
-//                .append("\n\tSecondary Admin Key: ").append(adminKeys.secondaryKey())
-//                .append("\n\tQuery keys:");
-//
-//        for (QueryKey queryKey : queryKeys) {
-//            info.append("\n\t\tKey name: ").append(queryKey.name());
-//            info.append("\n\t\t   Value: ").append(queryKey.key());
-//        }
-//        System.out.println(info.toString());
-//    }
+    /**
+     * Print an Azure Search Service.
+     *
+     * @param searchService an Azure Search Service
+     */
+    public static void print(SearchService searchService) {
+        StringBuilder info = new StringBuilder();
+        AdminKeys adminKeys = searchService.getAdminKeys();
+        PagedIterable<QueryKey> queryKeys = searchService.listQueryKeys();
+
+        info.append("Azure Search: ").append(searchService.id())
+                .append("\n\tResource group: ").append(searchService.resourceGroupName())
+                .append("\n\tRegion: ").append(searchService.region())
+                .append("\n\tTags: ").append(searchService.tags())
+                .append("\n\tSku: ").append(searchService.sku().name())
+                .append("\n\tStatus: ").append(searchService.status())
+                .append("\n\tProvisioning State: ").append(searchService.provisioningState())
+                .append("\n\tHosting Mode: ").append(searchService.hostingMode())
+                .append("\n\tReplicas: ").append(searchService.replicaCount())
+                .append("\n\tPartitions: ").append(searchService.partitionCount())
+                .append("\n\tPrimary Admin Key: ").append(adminKeys.primaryKey())
+                .append("\n\tSecondary Admin Key: ").append(adminKeys.secondaryKey())
+                .append("\n\tQuery keys:");
+
+        for (QueryKey queryKey : queryKeys) {
+            info.append("\n\t\tKey name: ").append(queryKey.name());
+            info.append("\n\t\t   Value: ").append(queryKey.key());
+        }
+        System.out.println(info.toString());
+    }
 
     /**
      * Retrieve the secondary service principal client ID.
@@ -2554,7 +2558,6 @@ public final class Utils {
                 .append("\n\tName: ").append(user.name())
                 .append("\n\tMail: ").append(user.mail())
                 .append("\n\tMail Nickname: ").append(user.mailNickname())
-                .append("\n\tSign In Name: ").append(user.signInName())
                 .append("\n\tUser Principal Name: ").append(user.userPrincipalName());
 
         System.out.println(builder.toString());

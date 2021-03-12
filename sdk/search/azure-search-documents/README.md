@@ -38,7 +38,7 @@ Use the Azure Cognitive Search client library to:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>11.2.0-beta.3</version>
+    <version>11.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -164,7 +164,7 @@ SearchAsyncClient searchAsyncClient = new SearchClientBuilder()
 To get running immediately, we're going to connect to a well-known sandbox Search service provided by Microsoft. This
 means you do not need an Azure subscription or Azure Cognitive Search service to try out this query.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L119-L144 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L122-L144 -->
 ```java
 // We'll connect to the Azure Cognitive Search public sandbox and send a
 // query to its "nycjobs" index built from a public dataset of available jobs
@@ -183,15 +183,12 @@ SearchClient client = new SearchClientBuilder()
     .buildClient();
 
 // Let's get the top 5 jobs related to Microsoft
-SearchPagedIterable searchResultsIterable = client.search("Microsoft", new SearchOptions().setTop(5),
-    Context.NONE);
-for (SearchResult searchResult: searchResultsIterable) {
+client.search("Microsoft", new SearchOptions().setTop(5), Context.NONE).forEach(searchResult -> {
     SearchDocument document = searchResult.getDocument(SearchDocument.class);
     String title = (String) document.get("business_title");
     String description = (String) document.get("job_description");
-    System.out.printf("The business title is %s, and here is the description: %s.%n",
-        title, description);
-}
+    System.out.printf("The business title is %s, and here is the description: %s.%n", title, description);
+});
 ```
 
 ## Key concepts
@@ -247,10 +244,9 @@ Let's explore them with a search for a "luxury" hotel.
 `SearchDocument` is the default type returned from queries when you don't provide your own.  Here we perform the search,
 enumerate over the results, and extract data using `SearchDocument`'s dictionary indexer.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L148-L154 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L148-L153 -->
 ```java
-SearchPagedIterable searchResultsIterable = searchClient.search("luxury");
-for (SearchResult searchResult: searchResultsIterable) {
+for (SearchResult searchResult : searchClient.search("luxury")) {
     SearchDocument doc = searchResult.getDocument(SearchDocument.class);
     String id = (String) doc.get("hotelId");
     String name = (String) doc.get("hotelName");
@@ -262,7 +258,7 @@ for (SearchResult searchResult: searchResultsIterable) {
 
 Define a `Hotel` class.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L157-L178 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L156-L177 -->
 ```java
 public class Hotel {
     private String id;
@@ -290,10 +286,9 @@ public class Hotel {
 
 Use it in place of `SearchDocument` when querying.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L181-L187 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L180-L185 -->
 ```java
-SearchPagedIterable searchResultsIterable = searchClient.search("luxury");
-for (SearchResult searchResult: searchResultsIterable) {
+for (SearchResult searchResult : searchClient.search("luxury")) {
     Hotel doc = searchResult.getDocument(Hotel.class);
     String id = doc.getId();
     String name = doc.getName();
@@ -309,11 +304,10 @@ The `SearchOptions` provide powerful control over the behavior of our queries.
 
 Let's search for the top 5 luxury hotels with a good rating.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L191-L197 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L189-L194 -->
 ```java
-int stars = 4;
 SearchOptions options = new SearchOptions()
-    .setFilter(String.format("rating ge %s", stars))
+    .setFilter("rating ge 4")
     .setOrderBy("rating desc")
     .setTop(5);
 SearchPagedIterable searchResultsIterable = searchClient.search("luxury", options, Context.NONE);
@@ -330,7 +324,7 @@ There are multiple ways of preparing search fields for a search index. For basic
 `List<SearchField>`. There are three annotations `SimpleFieldProperty`, `SearchFieldProperty` and `FieldBuilderIgnore`
 to configure the field of model class.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L274-L275 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L268-L269 -->
 ```java
 List<SearchField> searchFields = SearchIndexClient.buildSearchFields(Hotel.class, null);
 searchIndexClient.createIndex(new SearchIndex("index", searchFields));
@@ -338,7 +332,7 @@ searchIndexClient.createIndex(new SearchIndex("index", searchFields));
 
 For advanced scenarios, we can build search fields using `SearchField` directly.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L221-L270 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L218-L264 -->
 ```java
 List<SearchField> searchFieldList = new ArrayList<>();
 searchFieldList.add(new SearchField("hotelId", SearchFieldDataType.STRING)
@@ -355,12 +349,10 @@ searchFieldList.add(new SearchField("description", SearchFieldDataType.STRING)
     .setAnalyzerName(LexicalAnalyzerName.EU_LUCENE));
 searchFieldList.add(new SearchField("tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
     .setSearchable(true)
-    .setKey(true)
     .setFilterable(true)
     .setFacetable(true));
 searchFieldList.add(new SearchField("address", SearchFieldDataType.COMPLEX)
-    .setFields(Arrays.asList(
-        new SearchField("streetAddress", SearchFieldDataType.STRING).setSearchable(true),
+    .setFields(new SearchField("streetAddress", SearchFieldDataType.STRING).setSearchable(true),
         new SearchField("city", SearchFieldDataType.STRING)
             .setSearchable(true)
             .setFilterable(true)
@@ -381,13 +373,12 @@ searchFieldList.add(new SearchField("address", SearchFieldDataType.COMPLEX)
             .setFilterable(true)
             .setFacetable(true)
             .setSortable(true)
-    )));
+    ));
 
 // Prepare suggester.
 SearchSuggester suggester = new SearchSuggester("sg", Collections.singletonList("hotelName"));
 // Prepare SearchIndex with index name and search fields.
-SearchIndex index = new SearchIndex("hotels").setFields(searchFieldList).setSuggesters(
-    Collections.singletonList(suggester));
+SearchIndex index = new SearchIndex("hotels").setFields(searchFieldList).setSuggesters(suggester);
 // Create an index
 searchIndexClient.createIndex(index);
 ```
@@ -398,7 +389,7 @@ In addition to querying for documents using keywords and optional filters, you c
 your index if you already know the key. You could get the key from a query, for example, and want to show more
 information about it or navigate your customer to that document.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L209-L210 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L206-L207 -->
 ```java
 Hotel hotel = searchClient.getDocument("1", Hotel.class);
 System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
@@ -410,9 +401,9 @@ You can `Upload`, `Merge`, `MergeOrUpload`, and `Delete` multiple documents from
 There are [a few special rules for merging](https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents#document-actions)
 to be aware of.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L214-L217 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L211-L214 -->
 ```java
-IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>();
+IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<>();
 batch.addUploadActions(Collections.singletonList(new Hotel().setId("783").setName("Upload Inn")));
 batch.addMergeActions(Collections.singletonList(new Hotel().setId("12").setName("Renovated Ranch")));
 searchClient.indexDocuments(batch);
@@ -427,7 +418,7 @@ to `false` to get a successful response with an `IndexDocumentsResult` for inspe
 The examples so far have been using synchronous APIs, but we provide full support for async APIs as well. You'll need
 to use [SearchAsyncClient](#create-a-searchclient).
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L201-L205 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L198-L202 -->
 ```java
 searchAsyncClient.search("luxury")
     .subscribe(result -> {
@@ -449,7 +440,7 @@ error if you try to retrieve a document that doesn't exist in your index.
 Any Search API operation that fails will throw an [`HttpResponseException`][HttpResponseException] with helpful
 [`Status codes`][status_codes]. Many of these errors are recoverable.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L107-L115 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L110-L118 -->
 ```java
 try {
     Iterable<SearchResult> results = searchClient.search("hotel");

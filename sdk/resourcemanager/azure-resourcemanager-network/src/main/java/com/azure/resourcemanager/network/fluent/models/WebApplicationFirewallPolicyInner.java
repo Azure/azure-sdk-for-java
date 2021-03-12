@@ -17,6 +17,7 @@ import com.azure.resourcemanager.network.models.WebApplicationFirewallPolicyReso
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Defines web application firewall policy. */
 @JsonFlatten
@@ -215,6 +216,20 @@ public class WebApplicationFirewallPolicyInner extends Resource {
      */
     public WebApplicationFirewallPolicyInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WebApplicationFirewallPolicyInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WebApplicationFirewallPolicyInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

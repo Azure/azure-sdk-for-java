@@ -3,37 +3,40 @@
 
 package com.azure.spring.cloud.context.core.config;
 
-import com.azure.spring.cloud.context.core.api.CredentialSupplier;
-import com.google.common.base.Strings;
-import com.microsoft.azure.AzureEnvironment;
 
-import javax.annotation.PostConstruct;
+import com.azure.spring.cloud.context.core.api.CredentialSupplier;
+import com.azure.spring.cloud.context.core.enums.AzureEnvironments;
+import com.google.common.base.Strings;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Azure related properties.
  */
 @Validated
-@ConfigurationProperties("spring.cloud.azure")
+@ConfigurationProperties(AzureProperties.PREFIX)
 public class AzureProperties implements CredentialSupplier {
 
-    private String credentialFilePath;
+    public static final String PREFIX = "spring.cloud.azure";
+
+    private String clientId;
+
+    private String clientSecret;
+
+    private String tenantId;
 
     private String resourceGroup;
 
-    private AzureEnvironment environment = AzureEnvironment.AZURE;
+    private AzureEnvironments environment = AzureEnvironments.Azure;
 
     private String region;
 
     private boolean autoCreateResources = false;
 
     private boolean msiEnabled = false;
-
-    @NestedConfigurationProperty
-    private AzureManagedIdentityProperties managedIdentity;
 
     private String subscriptionId;
 
@@ -50,13 +53,28 @@ public class AzureProperties implements CredentialSupplier {
         }
     }
 
-    @Override
-    public String getCredentialFilePath() {
-        return credentialFilePath;
+    public String getClientId() {
+        return clientId;
     }
 
-    public void setCredentialFilePath(String credentialFilePath) {
-        this.credentialFilePath = credentialFilePath;
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public String getClientSecret() {
+        return clientSecret;
+    }
+
+    public void setClientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 
     public String getResourceGroup() {
@@ -67,11 +85,11 @@ public class AzureProperties implements CredentialSupplier {
         this.resourceGroup = resourceGroup;
     }
 
-    public AzureEnvironment getEnvironment() {
+    public AzureEnvironments getEnvironment() {
         return environment;
     }
 
-    public void setEnvironment(AzureEnvironment environment) {
+    public void setEnvironment(AzureEnvironments environment) {
         this.environment = environment;
     }
 
@@ -107,11 +125,4 @@ public class AzureProperties implements CredentialSupplier {
         this.subscriptionId = subscriptionId;
     }
 
-    public AzureManagedIdentityProperties getManagedIdentity() {
-        return managedIdentity;
-    }
-
-    public void setManagedIdentity(AzureManagedIdentityProperties managedIdentity) {
-        this.managedIdentity = managedIdentity;
-    }
 }

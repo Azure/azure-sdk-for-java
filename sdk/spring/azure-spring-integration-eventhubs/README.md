@@ -17,7 +17,7 @@ Event Hubs is a fully managed, real-time data ingestion service that’s simple,
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-integration-eventhubs</artifactId>
-    <version>2.0.0-beta.2</version>
+    <version>2.2.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -60,7 +60,7 @@ Please follow [instructions here][contributing_md] to build from source or contr
 <!-- Link -->
 [src]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-integration-eventhubs/src
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-integration-eventhubs
-[refdocs]: https://azure.github.io/azure-sdk-for-java/spring.html#spring-integration-eventhubs
+[refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#spring-integration-eventhubs
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-eventhubs
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [azure_subscription]: https://azure.microsoft.com/free

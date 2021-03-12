@@ -153,6 +153,13 @@ public class PrivateEndpointConnectionInner extends SubResource {
         return this.linkIdentifier;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public PrivateEndpointConnectionInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

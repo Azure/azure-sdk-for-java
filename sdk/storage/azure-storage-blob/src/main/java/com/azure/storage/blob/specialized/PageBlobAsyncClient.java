@@ -3,7 +3,9 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
@@ -56,7 +58,7 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  * instead a convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>
- * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a> for more information.
+ * Please refer to the <a href=https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a> for more information.
  *
  * <p>
  * Note this client is an async client that returns reactive responses from Spring Reactor Core project
@@ -132,6 +134,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @return A reactive response containing the information of the created page blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageBlobItem> create(long size) {
         try {
             return create(size, false);
@@ -154,6 +157,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @param overwrite Whether or not to overwrite, should data exist on the blob.
      * @return A reactive response containing the information of the created page blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageBlobItem> create(long size, boolean overwrite) {
         try {
             BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
@@ -182,13 +186,15 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @param sequenceNumber A user-controlled value that you can use to track requests. The value of the sequence
      * number must be between 0 and 2^63 - 1.The default value is 0.
      * @param headers {@link BlobHttpHeaders}
-     * @param metadata Metadata to associate with the blob.
+     * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link BlobRequestConditions}
      * @return A reactive response containing the information of the created page blob.
      *
      * @throws IllegalArgumentException If {@code size} isn't a multiple of {@link PageBlobAsyncClient#PAGE_BYTES} or
      * {@code sequenceNumber} isn't null and is less than 0.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PageBlobItem>> createWithResponse(long size, Long sequenceNumber, BlobHttpHeaders headers,
         Map<String, String> metadata, BlobRequestConditions requestConditions) {
         return this.createWithResponse(new PageBlobCreateOptions(size).setSequenceNumber(sequenceNumber)
@@ -212,6 +218,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @throws IllegalArgumentException If {@code size} isn't a multiple of {@link PageBlobAsyncClient#PAGE_BYTES} or
      * {@code sequenceNumber} isn't null and is less than 0.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PageBlobItem>> createWithResponse(PageBlobCreateOptions options) {
         try {
             return withContext(context ->
@@ -274,6 +281,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @return A reactive response containing the information of the uploaded pages.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageBlobItem> uploadPages(PageRange pageRange, Flux<ByteBuffer> body) {
         try {
             return uploadPagesWithResponse(pageRange, body, null, null).flatMap(FluxUtil::toMono);
@@ -307,6 +315,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @throws IllegalArgumentException If {@code pageRange} is {@code null}
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body,
         byte[] contentMd5, PageBlobRequestConditions pageBlobRequestConditions) {
         try {
@@ -371,6 +380,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @return A reactive response containing the information of the uploaded pages.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageBlobItem> uploadPagesFromUrl(PageRange range, String sourceUrl, Long sourceOffset) {
         try {
             return uploadPagesFromUrlWithResponse(range, sourceUrl, sourceOffset, null, null, null)
@@ -407,6 +417,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @throws IllegalArgumentException If {@code range} is {@code null}
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PageBlobItem>> uploadPagesFromUrlWithResponse(PageRange range, String sourceUrl,
             Long sourceOffset, byte[] sourceContentMd5, PageBlobRequestConditions destRequestConditions,
             BlobRequestConditions sourceRequestConditions) {
@@ -482,6 +493,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @return A reactive response containing the information of the cleared pages.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageBlobItem> clearPages(PageRange pageRange) {
         try {
             return clearPagesWithResponse(pageRange, null).flatMap(FluxUtil::toMono);
@@ -506,6 +518,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @throws IllegalArgumentException If {@code pageRange} is {@code null}
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PageBlobItem>> clearPagesWithResponse(PageRange pageRange,
         PageBlobRequestConditions pageBlobRequestConditions) {
         try {
@@ -557,6 +570,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @return A reactive response containing the information of the cleared pages.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageList> getPageRanges(BlobRange blobRange) {
         try {
             return getPageRangesWithResponse(blobRange, null).flatMap(FluxUtil::toMono);
@@ -577,6 +591,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @param requestConditions {@link BlobRequestConditions}
      * @return A reactive response emitting all the page ranges.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PageList>> getPageRangesWithResponse(BlobRange blobRange,
         BlobRequestConditions requestConditions) {
         try {
@@ -617,6 +632,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @return A reactive response emitting all the different page ranges.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageList> getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
         try {
             return getPageRangesDiffWithResponse(blobRange, prevSnapshot, null).flatMap(FluxUtil::toMono);
@@ -643,6 +659,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @throws IllegalArgumentException If {@code prevSnapshot} is {@code null}
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PageList>> getPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshot,
         BlobRequestConditions requestConditions) {
         try {
@@ -671,6 +688,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @return A reactive response emitting all the different page ranges.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageList> getManagedDiskPageRangesDiff(BlobRange blobRange, String prevSnapshotUrl) {
         try {
             return getManagedDiskPageRangesDiffWithResponse(blobRange, prevSnapshotUrl, null).flatMap(FluxUtil::toMono);
@@ -699,6 +717,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @throws IllegalArgumentException If {@code prevSnapshot} is {@code null}
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PageList>> getManagedDiskPageRangesDiffWithResponse(BlobRange blobRange,
         String prevSnapshotUrl, BlobRequestConditions requestConditions) {
         try {
@@ -749,6 +768,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @return A reactive response emitting the resized page blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageBlobItem> resize(long size) {
         try {
             return resizeWithResponse(size, null).flatMap(FluxUtil::toMono);
@@ -772,6 +792,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @throws IllegalArgumentException If {@code size} isn't a multiple of {@link PageBlobAsyncClient#PAGE_BYTES}
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PageBlobItem>> resizeWithResponse(long size, BlobRequestConditions requestConditions) {
         try {
             return withContext(context -> resizeWithResponse(size, requestConditions, context));
@@ -820,6 +841,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @return A reactive response emitting the updated page blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageBlobItem> updateSequenceNumber(SequenceNumberActionType action, Long sequenceNumber) {
         try {
             return updateSequenceNumberWithResponse(action, sequenceNumber, null).flatMap(FluxUtil::toMono);
@@ -844,6 +866,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @throws IllegalArgumentException If {@code sequenceNumber} isn't null and is less than 0
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PageBlobItem>> updateSequenceNumberWithResponse(SequenceNumberActionType action,
         Long sequenceNumber, BlobRequestConditions requestConditions) {
         try {
@@ -887,7 +910,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * usual. For more information, see the Azure Docs
      * <a href="https://docs.microsoft.com/rest/api/storageservices/incremental-copy-blob">here</a>
      * and
-     * <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/incremental-snapshots">here</a>.
+     * <a href="https://docs.microsoft.com/azure/virtual-machines/windows/incremental-snapshots">here</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -898,6 +921,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @return A reactive response emitting the copy status.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyStatusType> copyIncremental(String source, String snapshot) {
         try {
             return copyIncrementalWithResponse(source, snapshot, null).flatMap(FluxUtil::toMono);
@@ -914,7 +938,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * usual. For more information, see the Azure Docs
      * <a href="https://docs.microsoft.com/rest/api/storageservices/incremental-copy-blob">here</a>
      * and
-     * <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/incremental-snapshots">here</a>.
+     * <a href="https://docs.microsoft.com/azure/virtual-machines/windows/incremental-snapshots">here</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -930,6 +954,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @throws IllegalStateException If {@code source} and {@code snapshot} form a malformed URL.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CopyStatusType>> copyIncrementalWithResponse(String source, String snapshot,
         RequestConditions modifiedRequestConditions) {
         try {
@@ -949,7 +974,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * usual. For more information, see the Azure Docs
      * <a href="https://docs.microsoft.com/rest/api/storageservices/incremental-copy-blob">here</a>
      * and
-     * <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/incremental-snapshots">here</a>.
+     * <a href="https://docs.microsoft.com/azure/virtual-machines/windows/incremental-snapshots">here</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -961,6 +986,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @throws IllegalStateException If {@code source} and {@code snapshot} form a malformed URL.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CopyStatusType>> copyIncrementalWithResponse(PageBlobCopyIncrementalOptions options) {
         try {
             return withContext(context -> copyIncrementalWithResponse(options, context));

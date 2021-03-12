@@ -88,3 +88,7 @@ venv
 # NetBeans
 nbproject
 nb-configuration.xml
+
+# Emacs #
+
+#changebundle.txt#

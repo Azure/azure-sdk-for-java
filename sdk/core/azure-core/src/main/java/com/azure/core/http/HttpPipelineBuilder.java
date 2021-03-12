@@ -4,6 +4,8 @@
 package com.azure.core.http;
 
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.ClientOptions;
+import com.azure.core.util.HttpClientOptions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,44 +22,45 @@ import java.util.List;
  *
  * <p>Create a pipeline without configuration</p>
  *
- * <pre>
- * new HttpPipelineBuilder()
- *     .build();
- * </pre>
+ * {@codesnippet com.azure.core.http.HttpPipelineBuilder.noConfiguration}
  *
  * <p>Create a pipeline using the default HTTP client and a retry policy</p>
  *
- * <pre>
- * new HttpPipelineBuilder()
- *     .httpClient(HttpClient.createDefault())
- *     .policies(new RetryPolicy())
- *     .build();
- * </pre>
+ * {@codesnippet com.azure.core.http.HttpPipelineBuilder.defaultHttpClientWithRetryPolicy}
  *
  * @see HttpPipeline
  */
 public class HttpPipelineBuilder {
     private HttpClient httpClient;
     private List<HttpPipelinePolicy> pipelinePolicies;
+    private ClientOptions clientOptions;
 
     /**
-     *  Creates a new instance of HttpPipelineBuilder that can configure options for the {@link HttpPipeline} before
-     *  creating an instance of it.
+     * Creates a new instance of HttpPipelineBuilder that can configure options for the {@link HttpPipeline} before
+     * creating an instance of it.
      */
     public HttpPipelineBuilder() {
     }
 
     /**
-     * Creates a {@link HttpPipeline} based on options set in the Builder. Every time {@code build()} is
-     * called, a new instance of {@link HttpPipeline} is created.
-     *
-     * If HttpClient is not set then the {@link HttpClient#createDefault() default HttpClient} is used.
+     * Creates an {@link HttpPipeline} based on options set in the builder. Every time {@code build()} is called, a new
+     * instance of {@link HttpPipeline} is created.
+     * <p>
+     * If HttpClient is not set then a default HttpClient is used.
      *
      * @return A HttpPipeline with the options set from the builder.
      */
     public HttpPipeline build() {
         List<HttpPipelinePolicy> policies = (pipelinePolicies == null) ? new ArrayList<>() : pipelinePolicies;
-        HttpClient client = (httpClient == null) ? HttpClient.createDefault() : httpClient;
+
+        HttpClient client;
+        if (httpClient != null) {
+            client = httpClient;
+        } else if (clientOptions instanceof HttpClientOptions) {
+            client = HttpClient.createDefault((HttpClientOptions) clientOptions);
+        } else {
+            client = HttpClient.createDefault();
+        }
 
         return new HttpPipeline(client, policies);
     }
@@ -74,8 +77,8 @@ public class HttpPipelineBuilder {
     }
 
     /**
-     * Adds {@link HttpPipelinePolicy policies} to the set of policies that the pipeline will use
-     * when sending requests.
+     * Adds {@link HttpPipelinePolicy policies} to the set of policies that the pipeline will use when sending
+     * requests.
      *
      * @param policies Policies to add to the policy set.
      * @return The updated HttpPipelineBuilder object.
@@ -86,6 +89,17 @@ public class HttpPipelineBuilder {
         }
 
         this.pipelinePolicies.addAll(Arrays.asList(policies));
+        return this;
+    }
+
+    /**
+     * Sets the ClientOptions that will configure the pipeline.
+     *
+     * @param clientOptions The ClientOptions that will configure the pipeline.
+     * @return The updated HttpPipelineBuilder object.
+     */
+    public HttpPipelineBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
         return this;
     }
 }

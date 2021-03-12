@@ -11,6 +11,8 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.AutomaticRepairsPolicy;
+import com.azure.resourcemanager.compute.models.ExtendedLocation;
+import com.azure.resourcemanager.compute.models.OrchestrationMode;
 import com.azure.resourcemanager.compute.models.Plan;
 import com.azure.resourcemanager.compute.models.ScaleInPolicy;
 import com.azure.resourcemanager.compute.models.Sku;
@@ -20,6 +22,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProfile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Describes a Virtual Machine Scale Set. */
 @JsonFlatten
@@ -57,6 +60,12 @@ public class VirtualMachineScaleSetInner extends Resource {
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
+
+    /*
+     * The extended location of the Virtual Machine Scale Set.
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
 
     /*
      * The upgrade policy.
@@ -134,6 +143,13 @@ public class VirtualMachineScaleSetInner extends Resource {
     private SubResource proximityPlacementGroup;
 
     /*
+     * Specifies information about the dedicated host group that the virtual
+     * machine scale set resides in. <br><br>Minimum api-version: 2020-06-01.
+     */
+    @JsonProperty(value = "properties.hostGroup")
+    private SubResource hostGroup;
+
+    /*
      * Specifies additional capabilities enabled or disabled on the Virtual
      * Machines in the Virtual Machine Scale Set. For instance: whether the
      * Virtual Machines have the capability to support attaching managed data
@@ -148,6 +164,12 @@ public class VirtualMachineScaleSetInner extends Resource {
      */
     @JsonProperty(value = "properties.scaleInPolicy")
     private ScaleInPolicy scaleInPolicy;
+
+    /*
+     * Specifies the orchestration mode for the virtual machine scale set.
+     */
+    @JsonProperty(value = "properties.orchestrationMode")
+    private OrchestrationMode orchestrationMode;
 
     /**
      * Get the sku property: The virtual machine scale set sku.
@@ -236,6 +258,26 @@ public class VirtualMachineScaleSetInner extends Resource {
      */
     public VirtualMachineScaleSetInner withZones(List<String> zones) {
         this.zones = zones;
+        return this;
+    }
+
+    /**
+     * Get the extendedLocation property: The extended location of the Virtual Machine Scale Set.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: The extended location of the Virtual Machine Scale Set.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
         return this;
     }
 
@@ -452,6 +494,28 @@ public class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
+     * Get the hostGroup property: Specifies information about the dedicated host group that the virtual machine scale
+     * set resides in. &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-06-01.
+     *
+     * @return the hostGroup value.
+     */
+    public SubResource hostGroup() {
+        return this.hostGroup;
+    }
+
+    /**
+     * Set the hostGroup property: Specifies information about the dedicated host group that the virtual machine scale
+     * set resides in. &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-06-01.
+     *
+     * @param hostGroup the hostGroup value to set.
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner withHostGroup(SubResource hostGroup) {
+        this.hostGroup = hostGroup;
+        return this;
+    }
+
+    /**
      * Get the additionalCapabilities property: Specifies additional capabilities enabled or disabled on the Virtual
      * Machines in the Virtual Machine Scale Set. For instance: whether the Virtual Machines have the capability to
      * support attaching managed data disks with UltraSSD_LRS storage account type.
@@ -498,6 +562,40 @@ public class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
+     * Get the orchestrationMode property: Specifies the orchestration mode for the virtual machine scale set.
+     *
+     * @return the orchestrationMode value.
+     */
+    public OrchestrationMode orchestrationMode() {
+        return this.orchestrationMode;
+    }
+
+    /**
+     * Set the orchestrationMode property: Specifies the orchestration mode for the virtual machine scale set.
+     *
+     * @param orchestrationMode the orchestrationMode value to set.
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner withOrchestrationMode(OrchestrationMode orchestrationMode) {
+        this.orchestrationMode = orchestrationMode;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineScaleSetInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineScaleSetInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -511,6 +609,9 @@ public class VirtualMachineScaleSetInner extends Resource {
         }
         if (identity() != null) {
             identity().validate();
+        }
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
         }
         if (upgradePolicy() != null) {
             upgradePolicy().validate();

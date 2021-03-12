@@ -5,6 +5,8 @@
 package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
+import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.azure.messaging.servicebus.implementation.models.AuthorizationRuleImpl;
 import com.azure.messaging.servicebus.implementation.models.EntityAvailabilityStatus;
@@ -20,7 +22,10 @@ import java.util.stream.Collectors;
 import static com.azure.messaging.servicebus.implementation.MessageUtils.toPrimitive;
 
 /**
- * The {@link QueueProperties} model.
+ * Properties on a queue.
+ *
+ * @see ServiceBusAdministrationAsyncClient#getQueue(String)
+ * @see ServiceBusAdministrationClient#getQueue(String)
  */
 @Fluent
 public final class QueueProperties {
