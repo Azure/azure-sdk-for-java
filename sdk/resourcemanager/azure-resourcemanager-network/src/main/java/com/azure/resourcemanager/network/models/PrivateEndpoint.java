@@ -178,6 +178,11 @@ public interface PrivateEndpoint extends
     Map<String, PrivateLinkServiceConnection> privateLinkServiceConnections();
 
     /**
+     * @return the collection of custom DNS configurations.
+     */
+    List<CustomDnsConfigPropertiesFormat> customDnsConfigurations();
+
+    /**
      * Container interface for all the definitions that need to be implemented.
      */
     interface Definition extends

@@ -7,6 +7,7 @@ import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.models.PrivateEndpointInner;
 import com.azure.resourcemanager.network.fluent.models.SubnetInner;
+import com.azure.resourcemanager.network.models.CustomDnsConfigPropertiesFormat;
 import com.azure.resourcemanager.network.models.PrivateEndpoint;
 import com.azure.resourcemanager.network.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.network.models.PrivateLinkSubResourceName;
@@ -136,6 +137,9 @@ class PrivateEndpointImpl extends
 
     @Override
     public List<SubResource> networkInterfaces() {
+        if (this.innerModel().networkInterfaces() == null) {
+            return Collections.emptyList();
+        }
         return this.innerModel().networkInterfaces().stream()
             .map(ni -> new SubResource().withId(ni.id()))
             .collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
@@ -160,6 +164,14 @@ class PrivateEndpointImpl extends
                 .collect(Collectors.toMap(PrivateEndpointConnectionImpl::name, Function.identity())));
         }
         return Collections.unmodifiableMap(connections);
+    }
+
+    @Override
+    public List<CustomDnsConfigPropertiesFormat> customDnsConfigurations() {
+        if (this.innerModel().networkInterfaces() == null) {
+            return Collections.emptyList();
+        }
+        return Collections.unmodifiableList(this.innerModel().customDnsConfigs());
     }
 
     @Override
