@@ -6,15 +6,19 @@ import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClien
 import com.azure.communication.phonenumbers.implementation.PhoneNumbersImpl;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersPurchasePhoneNumbersResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberPurchaseRequest;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumberSearchRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersSearchAvailablePhoneNumbersResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReleasePhoneNumberResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUpdateCapabilitiesResponse;
-import com.azure.communication.phonenumbers.models.AcquiredPhoneNumber;
+import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
+import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
+import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperationStatus;
-import com.azure.communication.phonenumbers.models.PhoneNumberSearchRequest;
+import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
+import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -38,7 +42,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * Asynchronous client for Communication service phone number operations
+ * Asynchronous client for Communication service phone number operations.
  */
 @ServiceClient(builder = PhoneNumbersClientBuilder.class, isAsync = true)
 public final class PhoneNumbersAsyncClient {
@@ -51,14 +55,14 @@ public final class PhoneNumbersAsyncClient {
     }
 
     /**
-     * Gets information about an acquired phone number.
+     * Gets information about a purchased phone number.
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
      *                    as %2B.
-     * @return {@link AcquiredPhoneNumber} representing the acquired telephone number.
+     * @return {@link PurchasedPhoneNumber} representing the purchased telephone number.
      * @throws NullPointerException if {@code phoneNumber} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcquiredPhoneNumber> getPhoneNumber(String phoneNumber) {
+    public Mono<PurchasedPhoneNumber> getPurchasedPhoneNumber(String phoneNumber) {
         if (Objects.isNull(phoneNumber)) {
             return monoError(logger, new NullPointerException("'phoneNumber' cannot be null."));
         }
@@ -66,14 +70,14 @@ public final class PhoneNumbersAsyncClient {
     }
 
     /**
-     * Gets information about an acquired phone number with response.
+     * Gets information about a purchased phone number with response.
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
      *                    as %2B.
-     * @return {@link AcquiredPhoneNumber} representing the acquired telephone number.
+     * @return {@link PurchasedPhoneNumber} representing the purchased telephone number.
      * @throws NullPointerException if {@code phoneNumber} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AcquiredPhoneNumber>> getPhoneNumberWithResponse(String phoneNumber) {
+    public Mono<Response<PurchasedPhoneNumber>> getPurchasedPhoneNumberWithResponse(String phoneNumber) {
         if (Objects.isNull(phoneNumber)) {
             return monoError(logger, new NullPointerException("'phoneNumber' cannot be null."));
         }
@@ -81,12 +85,12 @@ public final class PhoneNumbersAsyncClient {
     }
 
     /**
-     * Gets the list of the acquired phone numbers.
+     * Gets the list of the purchased phone numbers.
      *
-     * @return A {@link PagedFlux} of {@link AcquiredPhoneNumber} instances representing acquired telephone numbers.
+     * @return A {@link PagedFlux} of {@link PurchasedPhoneNumber} instances representing a purchased telephone numbers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AcquiredPhoneNumber> listPhoneNumbers() {
+    public PagedFlux<PurchasedPhoneNumber> listPurchasedPhoneNumbers() {
         try {
             return client.listPhoneNumbersAsync(null, null);
         } catch (RuntimeException ex) {
@@ -98,22 +102,42 @@ public final class PhoneNumbersAsyncClient {
      * Starts the search for available phone numbers to purchase.
      *
      * @param countryCode The ISO 3166-2 country code.
-     * @param searchRequest {@link PhoneNumberSearchRequest} specifying the search request
-     * until it gets a result from the server
-     * @return A {@link PollerFlux} object with the reservation result
+     * @param phoneNumberType {@link PhoneNumberType} The phone number type.
+     * @param assignmentType {@link PhoneNumberAssignmentType} The phone number assignment type.
+     * @param capabilities {@link PhoneNumberCapabilities} The phone number capabilities.
+     * @param searchOptions The phone number search options.
+     * @return A {@link PollerFlux} object with the reservation result.
      * @throws NullPointerException if {@code countryCode} or {@code searchRequest} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
-        String countryCode, PhoneNumberSearchRequest searchRequest) {
-        return beginSearchAvailablePhoneNumbers(countryCode, searchRequest, null);
+        String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType,
+        PhoneNumberCapabilities capabilities, PhoneNumberSearchOptions searchOptions) {
+        return beginSearchAvailablePhoneNumbers(countryCode, phoneNumberType, assignmentType, capabilities, searchOptions, null);
     }
 
     PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
-        String countryCode, PhoneNumberSearchRequest searchRequest, Context context) {
+        String countryCode,  PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType,
+        PhoneNumberCapabilities capabilities, PhoneNumberSearchOptions searchOptions, Context context) {
         try {
             Objects.requireNonNull(countryCode, "'countryCode' cannot be null.");
-            Objects.requireNonNull(searchRequest, "'searchRequest' cannot be null.");
+            Objects.requireNonNull(phoneNumberType, "'phoneNumberType' cannot be null.");
+            Objects.requireNonNull(assignmentType, "'assignmentType' cannot be null.");
+            Objects.requireNonNull(capabilities, "'capabilities' cannot be null.");
+
+            String areaCode = null;
+            Integer quantity = null;
+            if (searchOptions != null) {
+                areaCode = searchOptions.getAreaCode();
+                quantity = searchOptions.getQuantity();
+            }
+            PhoneNumberSearchRequest searchRequest = new PhoneNumberSearchRequest();
+            searchRequest
+                .setPhoneNumberType(phoneNumberType)
+                .setAssignmentType(assignmentType)
+                .setCapabilities(capabilities)
+                .setAreaCode(areaCode)
+                .setQuantity(quantity);
 
             return new PollerFlux<>(defaultPollInterval,
                 searchAvailableNumbersInitOperation(countryCode, searchRequest, context),
@@ -145,7 +169,7 @@ public final class PhoneNumbersAsyncClient {
 
     private Function<PollingContext<PhoneNumberOperation>, Mono<PollResponse<PhoneNumberOperation>>>
         pollOperation() {
-        return (pollingContext) -> { 
+        return (pollingContext) -> {
             return client.getOperationAsync(pollingContext.getData("operationId"))
             .flatMap(operation -> {
                 if (operation.getStatus().toString().equalsIgnoreCase(PhoneNumberOperationStatus.SUCCEEDED.toString())) {
@@ -179,7 +203,7 @@ public final class PhoneNumbersAsyncClient {
             return Mono.empty();
         };
     }
-    
+
     private Function<PollingContext<PhoneNumberOperation>, Mono<PhoneNumberSearchResult>>
         searchAvailableNumbersFetchFinalResultOperation() {
         return (pollingContext) -> {
@@ -190,7 +214,7 @@ public final class PhoneNumbersAsyncClient {
     /**
      * Starts the purchase of the phone number(s) in the search result associated with a given id.
      *
-     * @param searchId ID of the search
+     * @param searchId ID of the search.
      * @return A {@link PollerFlux} object.
      * @throws NullPointerException if {@code searchId} is null.
      */
@@ -212,7 +236,7 @@ public final class PhoneNumbersAsyncClient {
         }
     }
 
-    private Function<PollingContext<PhoneNumberOperation>, Mono<PhoneNumberOperation>> 
+    private Function<PollingContext<PhoneNumberOperation>, Mono<PhoneNumberOperation>>
         purchaseNumbersInitOperation(String searchId, Context context) {
         return (pollingContext) -> {
             return withContext(contextValue -> {
@@ -229,9 +253,9 @@ public final class PhoneNumbersAsyncClient {
     }
 
     /**
-     * Begins release of an acquired phone number.
+     * Begins release of a purchased phone number.
      *
-     * This function returns a Long Running Operation poller that allows you to wait indefinitely until the 
+     * This function returns a Long Running Operation poller that allows you to wait indefinitely until the
      * operation is complete.
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
      *                    as %2B.
@@ -256,7 +280,7 @@ public final class PhoneNumbersAsyncClient {
         }
     }
 
-    private Function<PollingContext<PhoneNumberOperation>, Mono<PhoneNumberOperation>> 
+    private Function<PollingContext<PhoneNumberOperation>, Mono<PhoneNumberOperation>>
         releaseNumberInitOperation(String phoneNumber, Context context) {
         return (pollingContext) -> {
             return withContext(contextValue -> {
@@ -273,20 +297,20 @@ public final class PhoneNumbersAsyncClient {
     }
 
     /**
-     * Update capabilities of an acquired phone number.
+     * Update capabilities of a purchased phone number.
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
      *                    as %2B.
-     * @param capabilitiesUpdateRequest Update capabilities of an acquired phone number.
+     * @param capabilitiesUpdateRequest Update capabilities of a purchased phone number.
      * @return A {@link PollerFlux} object.
      * @throws NullPointerException if {@code phoneNumber} or {@code capabilitiesUpdateRequest} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PhoneNumberOperation, AcquiredPhoneNumber> 
+    public PollerFlux<PhoneNumberOperation, PurchasedPhoneNumber>
         beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest) {
         return beginUpdatePhoneNumberCapabilities(phoneNumber, capabilitiesUpdateRequest, null);
     }
 
-    PollerFlux<PhoneNumberOperation, AcquiredPhoneNumber> 
+    PollerFlux<PhoneNumberOperation, PurchasedPhoneNumber>
         beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest, Context context) {
         try {
             Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
@@ -302,7 +326,7 @@ public final class PhoneNumbersAsyncClient {
         }
     }
 
-    private Function<PollingContext<PhoneNumberOperation>, Mono<PhoneNumberOperation>> 
+    private Function<PollingContext<PhoneNumberOperation>, Mono<PhoneNumberOperation>>
         updateNumberCapabilitiesInitOperation(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest, Context context) {
         return (pollingContext) -> {
             return withContext(contextValue -> {
@@ -318,7 +342,7 @@ public final class PhoneNumbersAsyncClient {
         };
     }
 
-    private Function<PollingContext<PhoneNumberOperation>, Mono<AcquiredPhoneNumber>>
+    private Function<PollingContext<PhoneNumberOperation>, Mono<PurchasedPhoneNumber>>
         updateNumberCapabilitiesFetchFinalResultOperation(String phoneNumber) {
         return (pollingContext) -> {
             return client.getByNumberAsync(phoneNumber);

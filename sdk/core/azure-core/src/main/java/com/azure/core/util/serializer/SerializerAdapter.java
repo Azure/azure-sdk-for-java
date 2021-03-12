@@ -12,6 +12,8 @@ import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * An interface defining the behaviors of a serializer.
@@ -62,6 +64,24 @@ public interface SerializerAdapter {
      * @return the serialized string
      */
     String serializeList(List<?> list, CollectionFormat format);
+
+    /**
+     * Serializes an iterable into a string with the delimiter specified with the Swagger collection format joining each
+     * individual serialized items in the list.
+     *
+     * @param iterable the iterable to serialize
+     * @param format the Swagger collection format
+     * @return the serialized string
+     */
+    default String serializeIterable(Iterable<?> iterable, CollectionFormat format) {
+        if (iterable == null) {
+            return null;
+        }
+        return StreamSupport.stream(iterable.spliterator(), false)
+            .map(this::serializeRaw)
+            .map(serializedString -> serializedString == null ? "" : serializedString)
+            .collect(Collectors.joining(format.getDelimiter()));
+    }
 
     /**
      * Deserializes a string into a {@code T} object.

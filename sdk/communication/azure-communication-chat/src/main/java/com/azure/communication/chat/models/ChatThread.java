@@ -3,7 +3,7 @@
 
 package com.azure.communication.chat.models;
 
-import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -31,10 +31,13 @@ public final class ChatThread {
     private OffsetDateTime createdOn;
 
     /*
-     * Id of the chat thread owner.
+     * Identifies a participant in Azure Communication services. A participant
+     * is, for example, a phone number or an Azure communication user. This
+     * model must be interpreted as a union: Apart from rawId, at most one
+     * further property may be set.
      */
-    @JsonProperty(value = "createdBy", access = JsonProperty.Access.WRITE_ONLY)
-    private CommunicationUserIdentifier createdBy;
+    @JsonProperty(value = "createdByCommunicationIdentifier", access = JsonProperty.Access.WRITE_ONLY)
+    private CommunicationIdentifier createdByCommunicationIdentifier;
 
     /**
      * Get the id property: Chat thread id.
@@ -99,22 +102,26 @@ public final class ChatThread {
     }
 
     /**
-     * Get the createdBy property: Id of the chat thread owner.
+     * Get the createdByCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
+     * participant is, for example, a phone number or an Azure communication user. This model must be interpreted as a
+     * union: Apart from rawId, at most one further property may be set.
      *
-     * @return the createdBy value.
+     * @return the createdByCommunicationIdentifier value.
      */
-    public CommunicationUserIdentifier getCreatedBy() {
-        return this.createdBy;
+    public CommunicationIdentifier getCreatedByCommunicationIdentifier() {
+        return this.createdByCommunicationIdentifier;
     }
 
     /**
-     * Set the createdBy property: Id of the chat thread owner.
+     * Set the createdByCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
+     * participant is, for example, a phone number or an Azure communication user. This model must be interpreted as a
+     * union: Apart from rawId, at most one further property may be set.
      *
-     * @param createdBy the createdBy value to set.
+     * @param createdByCommunicationIdentifier the createdByCommunicationIdentifier value to set.
      * @return the ChatThread object itself.
      */
-    public ChatThread setCreatedBy(CommunicationUserIdentifier createdBy) {
-        this.createdBy = createdBy;
+    public ChatThread setCreatedByCommunicationIdentifier(CommunicationIdentifier createdByCommunicationIdentifier) {
+        this.createdByCommunicationIdentifier = createdByCommunicationIdentifier;
         return this;
     }
 }

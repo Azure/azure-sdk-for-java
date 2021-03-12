@@ -3,36 +3,44 @@
 
 package com.azure.cosmos.implementation.throughputControl.controller.group;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ThroughputControlGroup;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
-import com.azure.cosmos.implementation.throughputControl.ThroughputControlMode;
+import com.azure.cosmos.implementation.throughputControl.LinkedCancellationToken;
+import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
+import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
+import com.azure.cosmos.implementation.throughputControl.config.LocalThroughputControlGroup;
+import com.azure.cosmos.implementation.throughputControl.controller.group.global.GlobalThroughputControlGroupController;
+import com.azure.cosmos.implementation.throughputControl.controller.group.local.LocalThroughputControlGroupController;
 
 public class ThroughputGroupControllerFactory {
 
     public static ThroughputGroupControllerBase createController(
         ConnectionMode connectionMode,
-        GlobalEndpointManager globalEndpointManager,
-        ThroughputControlGroup group,
+        ThroughputControlGroupInternal group,
         Integer maxContainerThroughput,
         RxPartitionKeyRangeCache partitionKeyRangeCache,
-        String targetCollectionRid) {
+        String targetCollectionRid,
+        LinkedCancellationToken parentToken) {
 
-        ThroughputControlMode controlMode = BridgeInternal.getThroughputControlMode(group);
-        if (controlMode == ThroughputControlMode.LOCAL) {
-            return new ThroughputGroupLocalController(
+        if (group instanceof LocalThroughputControlGroup) {
+            return new LocalThroughputControlGroupController(
                 connectionMode,
-                globalEndpointManager,
-                group,
+                (LocalThroughputControlGroup) group,
                 maxContainerThroughput,
                 partitionKeyRangeCache,
-                targetCollectionRid);
+                targetCollectionRid,
+                parentToken);
+        } else if (group instanceof GlobalThroughputControlGroup) {
+            return new GlobalThroughputControlGroupController(
+                connectionMode,
+                (GlobalThroughputControlGroup) group,
+                maxContainerThroughput,
+                partitionKeyRangeCache,
+                targetCollectionRid,
+                parentToken);
         }
 
-        // TODO: distributed mode support
-
-        throw new IllegalArgumentException(String.format("Throughput group control mode %s is not supported", controlMode));
+        throw new IllegalArgumentException(String.format("Throughput group control group %s is not supported", group.getClass()));
     }
 }

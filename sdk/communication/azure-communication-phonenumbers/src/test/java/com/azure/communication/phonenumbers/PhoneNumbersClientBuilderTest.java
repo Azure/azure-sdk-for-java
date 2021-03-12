@@ -4,6 +4,7 @@ package com.azure.communication.phonenumbers;
 
 import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClientImpl;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.*;
@@ -151,7 +152,7 @@ public class PhoneNumbersClientBuilderTest {
     @Test()
     public void buildClientNoPipelineNoHttpClient() {
         assertThrows(NullPointerException.class, () -> {
-            this.clientBuilder.endpoint(ENDPOINT).accessKey(ACCESSKEY).buildClient();
+            this.clientBuilder.endpoint(ENDPOINT).credential(new AzureKeyCredential(ACCESSKEY)).buildClient();
         });
     }
 
@@ -265,7 +266,7 @@ public class PhoneNumbersClientBuilderTest {
     @Test()
     public void buildAsyncClientNoPipelineNoHttpClient() {
         assertThrows(NullPointerException.class, () -> {
-            this.clientBuilder.endpoint(ENDPOINT).accessKey(ACCESSKEY).buildClient();
+            this.clientBuilder.endpoint(ENDPOINT).credential(new AzureKeyCredential(ACCESSKEY)).buildClient();
         });
     }
 
@@ -283,14 +284,6 @@ public class PhoneNumbersClientBuilderTest {
         });
     }
 
-
-    @Test()
-    public void setAccessKeyNull() {
-        assertThrows(NullPointerException.class, () -> {
-            this.clientBuilder.accessKey(null);
-        });
-    }
-
     @Test()
     public void addPolicyNull() {
         assertThrows(NullPointerException.class, () -> {
@@ -302,7 +295,7 @@ public class PhoneNumbersClientBuilderTest {
         return clientBuilder
             .endpoint(ENDPOINT)
             .httpClient(this.httpClient)
-            .accessKey(ACCESSKEY);
+            .credential(new AzureKeyCredential(ACCESSKEY));
     }
 
     private PhoneNumbersClientBuilder setupBuilderWithPolicies(
@@ -335,7 +328,6 @@ public class PhoneNumbersClientBuilderTest {
         assertEquals(5, phoneNumberManagementClient.getHttpPipeline().getPolicyCount());
         assertEquals(spyHelper.authenticationPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(0));
         assertEquals(spyHelper.userAgentPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(1));
-        assertEquals(spyHelper.retryPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(2));
         assertEquals(spyHelper.cookiePolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(3));
         assertEquals(spyHelper.httpLoggingPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(4));
 
@@ -389,7 +381,6 @@ public class PhoneNumbersClientBuilderTest {
         assertEquals(expectedPolicyCount, phoneNumberManagementClient.getHttpPipeline().getPolicyCount());
         assertEquals(spyHelper.authenticationPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(0));
         assertEquals(spyHelper.userAgentPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(1));
-        assertEquals(spyHelper.retryPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(2));
         assertEquals(spyHelper.cookiePolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(3));
         assertEquals(spyHelper.httpLoggingPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(lastPolicyIndex));
 
@@ -433,12 +424,6 @@ public class PhoneNumbersClientBuilderTest {
                 return this.userAgentPolicyRef.get();
             };
             doAnswer(createUserAgentPolicy).when(this.clientBuilder).createUserAgentPolicy(any(), any(), any(), any());
-
-            Answer<RetryPolicy> createRetryPolicy = (invocation) -> {
-                this.retryPolicyRef.set((RetryPolicy) invocation.callRealMethod());
-                return this.retryPolicyRef.get();
-            };
-            doAnswer(createRetryPolicy).when(this.clientBuilder).createRetryPolicy();
 
             Answer<CookiePolicy> createCookiePolicy = (invocation) -> {
                 this.cookiePolicyRef.set((CookiePolicy) invocation.callRealMethod());

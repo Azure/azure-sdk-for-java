@@ -42,6 +42,14 @@ import java.util.ArrayList;
  * With the custom deserializer the response correctly returns two FileRange elements and one ClearRange element.
  */
 final class ShareFileRangeListDeserializer extends JsonDeserializer<ShareFileRangeList> {
+    /*
+     * Added as of Jackson 2.12 as empty/missing XML was no longer triggering deserialize.
+     */
+    @Override
+    public ShareFileRangeList getNullValue(DeserializationContext ctxt) {
+        return new ShareFileRangeList();
+    }
+
     @Override
     public ShareFileRangeList deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         ArrayList<FileRange> pageRanges = new ArrayList<>();

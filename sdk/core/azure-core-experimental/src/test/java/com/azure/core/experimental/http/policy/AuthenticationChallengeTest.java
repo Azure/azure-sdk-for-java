@@ -5,6 +5,7 @@ package com.azure.core.experimental.http.policy;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.experimental.implementation.AuthenticationChallenge;
+import com.azure.core.experimental.implementation.AzureEnvironment;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -75,15 +76,15 @@ public class AuthenticationChallengeTest {
     @Test
     public void bearerTokenAuthenticationChallengeParsingTest() {
         // Create custom Headers
-        BearerTokenAuthenticationChallengePolicy bearerTokenAuthenticationChallengePolicy =
-            new BearerTokenAuthenticationChallengePolicy(mockCredential, DUMMY_SCOPE);
+        ARMChallengeAuthenticationPolicy armChallengeAuthenticationPolicy =
+            new ARMChallengeAuthenticationPolicy(mockCredential, AzureEnvironment.AZURE, DUMMY_SCOPE);
 
         for (String authChallenge : AUTHENTICATION_CHALLENGE_MAP.keySet()) {
-            List<AuthenticationChallenge> authenticationChallenges = bearerTokenAuthenticationChallengePolicy
+            List<AuthenticationChallenge> authenticationChallenges = armChallengeAuthenticationPolicy
                 .parseChallenges(authChallenge);
             Assertions.assertEquals(1, authenticationChallenges.size());
 
-            Map<String, String> parsedChallengeParams =  bearerTokenAuthenticationChallengePolicy
+            Map<String, String> parsedChallengeParams =  armChallengeAuthenticationPolicy
                  .parseChallengeParams(authenticationChallenges.get(0).getChallengeParameters());
 
             Assertions.assertTrue(AUTHENTICATION_CHALLENGE_MAP.get(authChallenge).equals(parsedChallengeParams));

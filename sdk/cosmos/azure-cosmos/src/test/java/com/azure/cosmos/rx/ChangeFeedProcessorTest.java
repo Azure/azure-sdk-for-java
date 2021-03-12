@@ -38,6 +38,7 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import reactor.util.retry.Retry;
 
 import java.time.Duration;
 import java.time.ZoneOffset;
@@ -580,7 +581,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                     return count;
                 })
                 // this will timeout approximately after 3 minutes
-                .retry(40, throwable -> {
+                .retryWhen(Retry.max(40).filter(throwable -> {
                     try {
                         log.warn("Retrying...");
                         Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
@@ -588,7 +589,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                         throw new RuntimeException("Interrupted exception", e);
                     }
                     return true;
-                })
+                }))
                 .last().block();
 
             assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();

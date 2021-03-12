@@ -1,7 +1,18 @@
 # Release History
 
-## 12.0.0-beta.5 (Unreleased)
+## 12.0.0-beta.6 (Unreleased)
 
+
+## 12.0.0-beta.5 (2021-03-10)
+
+### New Features
+
+- Added support to specify whether or not a pipeline policy should be added per call or per retry.
+- Added support for passing Azure Core's `ClientOptions` to client builders.
+
+### Dependency Updates
+
+- Updated dependency version of `azure-core` to 1.14.0.
 
 ## 12.0.0-beta.4 (2021-02-11)
 

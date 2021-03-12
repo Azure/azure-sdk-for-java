@@ -124,7 +124,7 @@ class ServiceBusSessionManagerTest {
         ConnectionOptions connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP,
             new AmqpRetryOptions().setTryTimeout(TIMEOUT), ProxyOptions.SYSTEM_DEFAULTS, Schedulers.boundedElastic(),
-            CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME);
+            CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);
@@ -291,7 +291,7 @@ class ServiceBusSessionManagerTest {
         when(managementNode.renewSessionLock(sessionId2, linkName2)).thenReturn(Mono.fromCallable(onRenewal));
 
         // Act & Assert
-        StepVerifier.create(sessionManager.receive())
+        StepVerifier.create(sessionManager.receive().publishOn(Schedulers.parallel()))
             .then(() -> {
                 for (int i = 0; i < numberOfMessages; i++) {
                     messageSink.next(message);
@@ -443,23 +443,23 @@ class ServiceBusSessionManagerTest {
             any(MessagingEntityType.class), isNull())).thenReturn(Mono.just(amqpReceiveLink));
 
         // Act & Assert
-        StepVerifier.create(sessionManager.receive())
+        StepVerifier.create(sessionManager.receive().publishOn(Schedulers.parallel()))
             .then(() -> {
                 messageSink.next(message);
             })
             .assertNext(context -> {
                 assertMessageEquals(sessionId, receivedMessage, context);
+                assertNotNull(sessionManager.getLinkName(sessionId));
             })
             .then(() -> {
                 try {
-                    assertNotNull(sessionManager.getLinkName(sessionId));
                     TimeUnit.SECONDS.sleep(TIMEOUT.getSeconds());
                     assertNull(sessionManager.getLinkName(sessionId));
                 } catch (InterruptedException e) { }
 
             })
             .thenCancel()
-            .verify(TIMEOUT);
+            .verify();
     }
 
     private static void assertMessageEquals(String sessionId, ServiceBusReceivedMessage expected,

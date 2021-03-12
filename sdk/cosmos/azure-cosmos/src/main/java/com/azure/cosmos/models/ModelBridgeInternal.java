@@ -171,6 +171,11 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static Permission getPermission(CosmosPermissionProperties permissionProperties) {
+        return permissionProperties.getPermission();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static List<CosmosPermissionProperties> getCosmosPermissionPropertiesFromResults(List<Permission> results) {
         return CosmosPermissionProperties.getPermissions(results);
     }
@@ -264,6 +269,11 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static RequestOptions toRequestOptions(CosmosPatchItemRequestOptions cosmosPatchItemRequestOptions) {
+        return cosmosPatchItemRequestOptions.toRequestOptions();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosItemRequestOptions createCosmosItemRequestOptions(PartitionKey partitionKey) {
         return new CosmosItemRequestOptions(partitionKey);
     }
@@ -300,7 +310,7 @@ public final class ModelBridgeInternal {
      * @return the partitionKeyRangeId.
      */
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static String partitionKeyRangeIdInternal(CosmosQueryRequestOptions options) {
+    public static String getPartitionKeyRangeIdInternal(CosmosQueryRequestOptions options) {
         return options.getPartitionKeyRangeIdInternal();
     }
 
@@ -312,7 +322,7 @@ public final class ModelBridgeInternal {
      * @return the partitionKeyRangeId.
      */
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosQueryRequestOptions partitionKeyRangeIdInternal(CosmosQueryRequestOptions options, String partitionKeyRangeId) {
+    public static CosmosQueryRequestOptions setPartitionKeyRangeIdInternal(CosmosQueryRequestOptions options, String partitionKeyRangeId) {
         return options.setPartitionKeyRangeIdInternal(partitionKeyRangeId);
     }
 
@@ -831,4 +841,5 @@ public final class ModelBridgeInternal {
         checkNotNull(options, "Argument 'options' must not be null.");
         options.setRequestContinuation(eTag);
     }
+
 }

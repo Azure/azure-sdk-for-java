@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.ResourceSet;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -20,6 +21,12 @@ import java.util.Map;
 @Fluent
 public class PrivateLinkServiceInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkServiceInner.class);
+
+    /*
+     * The extended location of the load balancer.
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
@@ -93,6 +100,26 @@ public class PrivateLinkServiceInner extends Resource {
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /**
+     * Get the extendedLocation property: The extended location of the load balancer.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: The extended location of the load balancer.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the PrivateLinkServiceInner object itself.
+     */
+    public PrivateLinkServiceInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
+        return this;
+    }
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
@@ -303,6 +330,9 @@ public class PrivateLinkServiceInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
+        }
         if (loadBalancerFrontendIpConfigurations() != null) {
             loadBalancerFrontendIpConfigurations().forEach(e -> e.validate());
         }

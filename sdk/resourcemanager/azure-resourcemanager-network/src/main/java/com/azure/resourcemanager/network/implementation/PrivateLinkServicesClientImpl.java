@@ -361,7 +361,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -411,7 +411,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -591,7 +591,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -643,7 +643,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -746,7 +746,7 @@ public final class PrivateLinkServicesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
-     * @param parameters Private link service resource.
+     * @param parameters Parameters supplied to the create or update private link service operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -779,7 +779,7 @@ public final class PrivateLinkServicesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -802,7 +802,7 @@ public final class PrivateLinkServicesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
-     * @param parameters Private link service resource.
+     * @param parameters Parameters supplied to the create or update private link service operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -836,7 +836,7 @@ public final class PrivateLinkServicesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -856,7 +856,7 @@ public final class PrivateLinkServicesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
-     * @param parameters Private link service resource.
+     * @param parameters Parameters supplied to the create or update private link service operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -882,7 +882,7 @@ public final class PrivateLinkServicesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
-     * @param parameters Private link service resource.
+     * @param parameters Parameters supplied to the create or update private link service operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -910,7 +910,7 @@ public final class PrivateLinkServicesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
-     * @param parameters Private link service resource.
+     * @param parameters Parameters supplied to the create or update private link service operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -927,7 +927,7 @@ public final class PrivateLinkServicesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
-     * @param parameters Private link service resource.
+     * @param parameters Parameters supplied to the create or update private link service operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -945,7 +945,7 @@ public final class PrivateLinkServicesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
-     * @param parameters Private link service resource.
+     * @param parameters Parameters supplied to the create or update private link service operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -964,7 +964,7 @@ public final class PrivateLinkServicesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
-     * @param parameters Private link service resource.
+     * @param parameters Parameters supplied to the create or update private link service operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -984,7 +984,7 @@ public final class PrivateLinkServicesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
-     * @param parameters Private link service resource.
+     * @param parameters Parameters supplied to the create or update private link service operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1001,7 +1001,7 @@ public final class PrivateLinkServicesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
-     * @param parameters Private link service resource.
+     * @param parameters Parameters supplied to the create or update private link service operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1041,7 +1041,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1095,7 +1095,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1199,7 +1199,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1241,7 +1241,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1349,7 +1349,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1407,7 +1407,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1520,7 +1520,7 @@ public final class PrivateLinkServicesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
-     * @param parameters PrivateEndpointConnection resource.
+     * @param parameters Parameters supplied to approve or reject the private end point connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1560,7 +1560,7 @@ public final class PrivateLinkServicesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1585,7 +1585,7 @@ public final class PrivateLinkServicesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
-     * @param parameters PrivateEndpointConnection resource.
+     * @param parameters Parameters supplied to approve or reject the private end point connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1627,7 +1627,7 @@ public final class PrivateLinkServicesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1649,7 +1649,7 @@ public final class PrivateLinkServicesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
-     * @param parameters PrivateEndpointConnection resource.
+     * @param parameters Parameters supplied to approve or reject the private end point connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1679,7 +1679,7 @@ public final class PrivateLinkServicesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
-     * @param parameters PrivateEndpointConnection resource.
+     * @param parameters Parameters supplied to approve or reject the private end point connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1701,7 +1701,7 @@ public final class PrivateLinkServicesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
-     * @param parameters PrivateEndpointConnection resource.
+     * @param parameters Parameters supplied to approve or reject the private end point connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1757,7 +1757,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1813,7 +1813,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2012,7 +2012,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2071,7 +2071,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2192,7 +2192,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         CheckPrivateLinkServiceVisibilityRequest parameters = new CheckPrivateLinkServiceVisibilityRequest();
         parameters.withPrivateLinkServiceAlias(privateLinkServiceAlias);
@@ -2240,7 +2240,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         CheckPrivateLinkServiceVisibilityRequest parameters = new CheckPrivateLinkServiceVisibilityRequest();
         parameters.withPrivateLinkServiceAlias(privateLinkServiceAlias);
@@ -2476,7 +2476,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         CheckPrivateLinkServiceVisibilityRequest parameters = new CheckPrivateLinkServiceVisibilityRequest();
         parameters.withPrivateLinkServiceAlias(privateLinkServiceAlias);
@@ -2530,7 +2530,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         CheckPrivateLinkServiceVisibilityRequest parameters = new CheckPrivateLinkServiceVisibilityRequest();
         parameters.withPrivateLinkServiceAlias(privateLinkServiceAlias);
@@ -2793,7 +2793,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2847,7 +2847,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2965,7 +2965,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3026,7 +3026,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

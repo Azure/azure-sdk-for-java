@@ -23,7 +23,7 @@ For more information, please read [introduction to Application Insights][applica
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
-  <version>1.0.0-beta.3</version>
+  <version>1.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -40,9 +40,9 @@ right corner.
 ### Creating exporter for Azure Monitor
 <!-- embedme ./src/samples/java/com/azure/monitor/opentelemetry/exporter/ReadmeSamples.java#L33-L35 -->
 ```java
-AzureMonitorExporter azureMonitorExporter = new AzureMonitorExporterBuilder()
+AzureMonitorTraceExporter azureMonitorTraceExporter = new AzureMonitorExporterBuilder()
     .connectionString("{connection-string}")
-    .buildExporter();
+    .buildTraceExporter();
 ```
 
 #### Exporting span data
@@ -55,9 +55,9 @@ The following example shows how to export a trace data to Azure Monitor through 
 ```java
 // Create Azure Monitor exporter and configure OpenTelemetry tracer to use this exporter
 // This should be done just once when application starts up
-AzureMonitorExporter exporter = new AzureMonitorExporterBuilder()
+AzureMonitorTraceExporter exporter = new AzureMonitorExporterBuilder()
     .connectionString("{connection-string}")
-    .buildExporter();
+    .buildTraceExporter();
 
 SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
     .addSpanProcessor(SimpleSpanProcessor.create(exporter))

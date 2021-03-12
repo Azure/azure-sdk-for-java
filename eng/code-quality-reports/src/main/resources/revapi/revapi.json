@@ -14,6 +14,7 @@
             "com\\.azure\\..+\\.implementation(\\..+)?",
             "com\\.azure\\..+\\.samples(\\..+)?",
             "com\\.fasterxml\\.jackson\\..+",
+            "reactor\\.core\\..+",
             "reactor\\.netty\\..+",
             "reactor\\.util\\..+",
             "io\\.netty\\..+",
