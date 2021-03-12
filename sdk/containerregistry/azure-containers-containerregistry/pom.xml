@@ -28,10 +28,13 @@
   </scm>
 
   <properties>
-    <!-- Azure Container Registry temporarily skipping code coverage until tests are added -->
-    <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
-    <!--<jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>-->
+    <!-- Once full testing is added this should either be removed or increased -->
+    <!-- By default the targets are 0.40 and 0.30 respectively -->
+    <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
+
+    <!-- If skipping test coverage is absolutely necessary, for example resources cannot be provisioned uncomment this -->
+    <!--<jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>-->
   </properties>
 
   <dependencies>

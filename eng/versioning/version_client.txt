@@ -50,6 +50,7 @@ com.azure:azure-communication-common;1.0.0-beta.6;1.0.0-beta.7
 com.azure:azure-communication-sms;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-communication-identity;1.0.0-beta.6;1.0.0-beta.7
 com.azure:azure-communication-phonenumbers;1.0.0-beta.6;1.0.0-beta.7
+com.azure:azure-containers-containerregistry;1.0.0.beta.1;1.0.0-beta.1
 com.azure:azure-core;1.14.0;1.15.0-beta.1
 com.azure:azure-core-amqp;2.0.3;2.1.0-beta.1
 com.azure:azure-core-amqp-experimental;1.0.0-beta.1;1.0.0-beta.1
@@ -68,7 +69,6 @@ com.azure:azure-cosmos;4.13.0;4.14.0-beta.1
 com.azure:azure-cosmos-benchmark;4.0.1-beta.1;4.0.1-beta.1
 com.azure:azure-cosmos-dotnet-benchmark;4.0.1-beta.1;4.0.1-beta.1
 com.azure:azure-cosmos-encryption;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-containers-containerregistry;1.0.0.beta.1;1.0.0-beta.1
 com.azure:azure-data-appconfiguration;1.1.10;1.2.0-beta.1
 com.azure:azure-data-schemaregistry;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-data-schemaregistry-avro;1.0.0-beta.4;1.0.0-beta.5
