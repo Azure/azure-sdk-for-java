@@ -10,9 +10,21 @@ import java.util.List;
  */
 public class AuthorizationClientProperties {
 
+    private final String ON_BEHALF_OF = "on-behalf-of";
+
     private List<String> scopes;
 
     private boolean onDemand = false;
+
+    private String authorizationGrantType = ON_BEHALF_OF;
+
+    public String getAuthorizationGrantType() {
+        return authorizationGrantType;
+    }
+
+    public void setAuthorizationGrantType(String authorizationGrantType) {
+        this.authorizationGrantType = authorizationGrantType;
+    }
 
     public void setScopes(List<String> scopes) {
         this.scopes = scopes;
