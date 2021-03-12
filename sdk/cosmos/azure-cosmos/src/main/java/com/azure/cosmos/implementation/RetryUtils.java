@@ -36,6 +36,7 @@ public class RetryUtils {
                 }
 
                 if (s.backOffTime != null) {
+                    logger.info("Going to delay - backofftime {}", s.backOffTime);
                     policy.incrementRetry();
                     return Mono.delay(Duration.ofMillis(s.backOffTime.toMillis())).flux();
                 } else if (s.exception != null) {
@@ -114,9 +115,13 @@ public class RetryUtils {
                                     inBackoffAlternateCallbackMethod, shouldRetryResult, stopwatch,
                                     minBackoffForInBackoffCallback, rxDocumentServiceRequest, addressSelector));
                 } else {
+                    logger.info("DelaySubscription in recursiveFunction - back off time {}", shouldRetryResult.backOffTime);
                     return recursiveFunc(callbackMethod, retryPolicy, inBackoffAlternateCallbackMethod,
                             shouldRetryResult, minBackoffForInBackoffCallback, rxDocumentServiceRequest, addressSelector)
-                            .delaySubscription(Duration.ofMillis(shouldRetryResult.backOffTime.toMillis()));
+                            //.delaySubscription(Duration.ofMillis(shouldRetryResult.backOffTime.toMillis()));
+                            // Inject some artificial delay simulating that the switch from netty-IO thread to parallel thread takes time due to
+                            // thread starvation on the parallel threads
+                            .delaySubscription(Duration.ofMillis(shouldRetryResult.backOffTime.toMillis() == 0 ? 25000 : shouldRetryResult.backOffTime.toMillis()));
                 }
             });
         };

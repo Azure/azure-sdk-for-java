@@ -98,7 +98,10 @@ public class ConsistencyWriter {
         TimeoutHelper timeout,
         boolean forceRefresh) {
 
+        logger.info("ConsistencyWriter.writeAsync - Timeout {} - is elapsed {}", timeout.getRemainingTime(), timeout.isElapsed());
+
         if (timeout.isElapsed()) {
+            logger.info("THROW RequestTimeoutException in ConsistencyWriter.writeAsync");
             return Mono.error(new RequestTimeoutException());
         }
 
@@ -123,7 +126,11 @@ public class ConsistencyWriter {
         RxDocumentServiceRequest request,
         TimeoutHelper timeout,
         boolean forceRefresh) {
+
+        logger.info("ConsistencyWriter.writePrivateAsync - Timeout {} - is elapsed {}", timeout.getRemainingTime(), timeout.isElapsed());
+
         if (timeout.isElapsed()) {
+            logger.info("THROW RequestTimeoutException in ConsistencyWriter.writePrivateAsync");
             return Mono.error(new RequestTimeoutException());
         }
 

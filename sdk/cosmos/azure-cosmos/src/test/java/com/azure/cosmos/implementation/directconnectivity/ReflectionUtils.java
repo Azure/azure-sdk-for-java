@@ -215,6 +215,14 @@ public class ReflectionUtils {
         set(storeReader, transportClient, "transportClient");
     }
 
+    public static TransportClient getTransportClient(ReplicatedResourceClient replicatedResourceClient) {
+        return get(TransportClient.class, replicatedResourceClient, "transportClient");
+    }
+
+    public static TransportClient getTransportClient(ConsistencyWriter consistencyWriter) {
+        return get(TransportClient.class, consistencyWriter, "transportClient");
+    }
+
     public static void setTransportClient(ConsistencyWriter consistencyWriter, TransportClient transportClient) {
         set(consistencyWriter, transportClient, "transportClient");
     }

@@ -3,6 +3,8 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
@@ -16,6 +18,8 @@ import java.util.function.Function;
  * This is meant to be internally used only by our sdk.
  */
 public class BackoffRetryUtility {
+
+    private static final Logger logger = LoggerFactory.getLogger(BackoffRetryUtility.class);
 
     // transforms a retryFunc to a function which can be used by Observable.retryWhen(.)
     // also it invokes preRetryCallback prior to doing retry.
@@ -31,11 +35,24 @@ public class BackoffRetryUtility {
     static public <T> Mono<T> executeRetry(Callable<Mono<T>> callbackMethod,
                                            IRetryPolicy retryPolicy) {
 
+        logger.info("executeRetry - Before defer");
         return Mono.defer(() -> {
             // TODO: is defer required?
+
             try {
+                if (retryPolicy != null) {
+                    logger.info(
+                        "executeRetry - Within defer before callback call, " +
+                            "retry count {}, retry latency {}",
+                        retryPolicy.getRetryCount(),
+                        retryPolicy.getRetryLatency());
+                } else {
+                    logger.info(
+                        "executeRetry - Within defer before callback call without retry policy");
+                }
                 return callbackMethod.call();
             } catch (Exception e) {
+                logger.info("executeRetry - within defer, failed:", e);
                 return Mono.error(e);
             }
         }).retryWhen(Retry.withThrowable(RetryUtils.toRetryWhenFunc(retryPolicy)));
