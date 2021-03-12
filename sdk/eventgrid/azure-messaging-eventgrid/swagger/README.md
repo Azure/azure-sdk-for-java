@@ -68,6 +68,14 @@ directive:
     - rename-model:
         from: ResourceWriteSuccessData
         to: ResourceWriteSuccessEventData
+    - rename-model:
+        from: RedisImportRDBCompletedEventData
+        to: RedisImportRdbCompletedEventData
+    - rename-model:
+        from: RedisExportRdbCompletedEventData
+        to: RedisExportRDBCompletedEventData        
+        
+
 custom-types-subpackage: implementation.models
 custom-types: CloudEvent,EventGridEvent
 model-override-setter-from-superclass: true
