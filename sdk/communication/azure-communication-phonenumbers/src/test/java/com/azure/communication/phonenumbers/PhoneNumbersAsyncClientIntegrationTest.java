@@ -89,7 +89,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void beginSearchAvailablePhoneNumbers(HttpClient httpClient) {
         StepVerifier.create(
-            beginSearchAvailablePhoneNumbersHelper(httpClient, "beginSearchAvailablePhoneNumbers").last()
+            beginSearchAvailablePhoneNumbersHelper(httpClient, "beginSearchAvailablePhoneNumbers", true).last()
             .flatMap((AsyncPollResponse<PhoneNumberOperation, PhoneNumberSearchResult> result) -> {
                 return result.getFinalResult();
             })
@@ -102,12 +102,28 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void beginSearchAvailablePhoneNumbersWithoutOptions(HttpClient httpClient) {
+        StepVerifier.create(
+            beginSearchAvailablePhoneNumbersHelper(httpClient, "beginSearchAvailablePhoneNumbersWithoutOptions", false).last()
+            .flatMap((AsyncPollResponse<PhoneNumberOperation, PhoneNumberSearchResult> result) -> {
+                return result.getFinalResult();
+            })
+        ).assertNext((PhoneNumberSearchResult searchResult) -> {
+            assertEquals(searchResult.getPhoneNumbers().size(), 1);
+            assertNotNull(searchResult.getSearchId());
+        })
+        .verifyComplete();
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)")
     public void beginPurchaseandReleasePhoneNumbers(HttpClient httpClient) {
         StepVerifier.create(
-            beginSearchAvailablePhoneNumbersHelper(httpClient, "beginSearchAvailablePhoneNumbers").last()
+            beginSearchAvailablePhoneNumbersHelper(httpClient, "beginSearchAvailablePhoneNumbers", true).last()
             .flatMap((AsyncPollResponse<PhoneNumberOperation, PhoneNumberSearchResult> result) -> {
                 return result.getFinalResult()
                 .flatMap((PhoneNumberSearchResult searchResult) -> {
@@ -181,19 +197,28 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
             .verifyError();
     }
 
-    private PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbersHelper(HttpClient httpClient, String testName) {
+    private PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbersHelper(HttpClient httpClient, String testName, boolean withOptions) {
         PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
         capabilities.setCalling(PhoneNumberCapabilityType.INBOUND);
         capabilities.setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
         PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setAreaCode(AREA_CODE).setQuantity(1);
 
-        return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
+        if (withOptions) {
+            return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
             .beginSearchAvailablePhoneNumbers(
                 COUNTRY_CODE,
                 PhoneNumberType.TOLL_FREE,
                 PhoneNumberAssignmentType.APPLICATION,
                 capabilities,
                 searchOptions
+                ));
+        }
+        return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
+            .beginSearchAvailablePhoneNumbers(
+                COUNTRY_CODE,
+                PhoneNumberType.TOLL_FREE,
+                PhoneNumberAssignmentType.APPLICATION,
+                capabilities
                 ));
     }
 
