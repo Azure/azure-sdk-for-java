@@ -5,8 +5,8 @@
 ### Changed
 - Changed logging level in `onRequest` and `onSuccess` calls for service operations from `INFO` to `VERBOSE`.
 
-### Fixed
-- Fixes issue where `JsonWebKey` byte array contents would get serialized/deserialized using Base64 instead of URL-safe Base64.
+### Bug Fixes
+- Fixed issue where `JsonWebKey` byte array contents would get serialized/deserialized using Base64 instead of URL-safe Base64.
 
 ### Dependency Updates
 - Upgraded `azure-core` dependency to `1.14.0`
