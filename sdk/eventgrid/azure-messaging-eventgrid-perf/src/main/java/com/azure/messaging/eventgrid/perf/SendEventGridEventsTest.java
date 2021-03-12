@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventgrid.perf;
 
+import com.azure.core.util.BinaryData;
 import com.azure.messaging.eventgrid.EventGridEvent;
 import com.azure.perf.test.core.PerfStressOptions;
 import reactor.core.publisher.Mono;
@@ -18,21 +19,21 @@ public class SendEventGridEventsTest extends ServiceTest<PerfStressOptions> {
 
     @Override
     public void run() {
-        eventGridEventPublisherClient.sendEventGridEvents(createEvents());
+        eventGridEventPublisherClient.sendEvents(createEvents());
     }
 
     // Perform the Async API call to be tested here
     @Override
     public Mono<Void> runAsync() {
-        return eventGridEventPublisherAsyncClient.sendEventGridEvents(createEvents());
+        return eventGridEventPublisherAsyncClient.sendEvents(createEvents());
     }
 
     private List<EventGridEvent> createEvents() {
         List<EventGridEvent> events = new ArrayList<>();
-        String dataPayload = "A".repeat(options.getCount());
         for (int i = 0; i < options.getCount(); i++) {
+            String dataPayload = "A".repeat(options.getCount());
             EventGridEvent event = new EventGridEvent("https://www.eventgrid.com/", "EG.Perf",
-                new TestModelClass(dataPayload), "v1");
+                BinaryData.fromObject(new TestModelClass(dataPayload)), "v1");
             events.add(event);
         }
         return events;

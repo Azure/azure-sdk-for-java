@@ -3,7 +3,9 @@
 
 package com.azure.messaging.eventgrid.perf;
 
-import com.azure.messaging.eventgrid.CloudEvent;
+import com.azure.core.models.CloudEvent;
+import com.azure.core.models.CloudEventDataFormat;
+import com.azure.core.util.BinaryData;
 import com.azure.perf.test.core.PerfStressOptions;
 import reactor.core.publisher.Mono;
 
@@ -17,21 +19,21 @@ public class SendCloudEventsTest extends ServiceTest<PerfStressOptions> {
 
     @Override
     public void run() {
-        cloudEventPublisherClient.sendCloudEvents(createEvents());
+        cloudEventPublisherClient.sendEvents(createEvents());
     }
 
     // Perform the Async API call to be tested here
     @Override
     public Mono<Void> runAsync() {
-        return cloudEventPublisherAsyncClient.sendCloudEvents(createEvents());
+        return cloudEventPublisherAsyncClient.sendEvents(createEvents());
     }
 
     private List<CloudEvent> createEvents() {
-        String dataPayload = "A".repeat(options.getCount());
         List<CloudEvent> events = new ArrayList<>();
         for (int i = 0; i < options.getCount(); i++) {
+            String dataPayload = "A".repeat(options.getCount());
             CloudEvent ce = new CloudEvent("https://www.eventgrid.com/", "EG.Perf",
-                new TestModelClass(dataPayload));
+                BinaryData.fromObject(new TestModelClass(dataPayload)), CloudEventDataFormat.JSON, "application/json");
             events.add(ce);
         }
         return events;

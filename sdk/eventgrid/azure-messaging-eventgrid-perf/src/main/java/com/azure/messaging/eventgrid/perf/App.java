@@ -16,12 +16,10 @@ import com.azure.perf.test.core.PerfStressProgram;
  */
 public class App {
     public static void main(String[] args) {
-        Class<?>[] testClasses;
-        testClasses = new Class<?>[] {
+        PerfStressProgram.run(new Class<?>[] {
             SendCloudEventsTest.class,
-            SendEventGridEventsTest.class
-        };
-
-        PerfStressProgram.run(testClasses, args);
+            SendEventGridEventsTest.class,
+            SendCustomEventsTest.class
+        }, args);
     }
 }
