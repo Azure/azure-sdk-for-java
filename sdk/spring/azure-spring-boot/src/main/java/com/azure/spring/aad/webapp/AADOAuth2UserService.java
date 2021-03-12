@@ -30,6 +30,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.azure.spring.autoconfigure.aad.Constants.APPROLE_PREFIX;
 import static com.azure.spring.autoconfigure.aad.Constants.DEFAULT_AUTHORITY_SET;
 import static com.azure.spring.autoconfigure.aad.Constants.ROLE_PREFIX;
 
@@ -71,7 +72,7 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
             roles = idToken.getClaimAsStringList(ROLES)
                            .stream()
                            .filter(s -> StringUtils.hasText(s))
-                           .map(role -> ROLE_PREFIX + role)
+                           .map(role -> APPROLE_PREFIX + role)
                            .collect(Collectors.toSet());
         }
         Set<String> groups = Optional.of(userRequest)

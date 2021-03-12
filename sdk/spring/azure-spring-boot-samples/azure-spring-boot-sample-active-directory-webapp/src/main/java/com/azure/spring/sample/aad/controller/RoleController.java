@@ -26,7 +26,7 @@ public class RoleController {
 
     @GetMapping("Admin")
     @ResponseBody
-    @PreAuthorize("hasRole('ROLE_Admin')")
+    @PreAuthorize("hasRole('APPROLE_Admin')")
     public String Admin() {
         return "Admin message";
     }
