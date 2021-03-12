@@ -21,15 +21,13 @@ import java.util.Map;
 import java.util.Optional;
 
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.CORRELATION_ID;
-import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.LABEL;
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.MESSAGE_ID;
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.PARTITION_KEY;
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.REPLY_TO_SESSION_ID;
-import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.SCHEDULED_ENQUEUE_TIME_UTC;
+import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.SCHEDULED_ENQUEUE_TIME;
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.SESSION_ID;
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.TIME_TO_LIVE;
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.TO;
-import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.VIA_PARTITION_KEY;
 
 /**
  * A converter to turn a {@link org.springframework.messaging.Message} to {@link IMessage} and vice versa.
@@ -101,15 +99,13 @@ public class ServiceBusMessageConverter extends AbstractAzureMessageConverter<IM
         getStringHeader(headers, MESSAGE_ID).ifPresent(message::setMessageId);
         Optional.ofNullable((Duration) headers.get(TIME_TO_LIVE))
                 .ifPresent(message::setTimeToLive);
-        Optional.ofNullable((Instant) headers.get(SCHEDULED_ENQUEUE_TIME_UTC))
+        Optional.ofNullable((Instant) headers.get(SCHEDULED_ENQUEUE_TIME))
                 .ifPresent(message::setScheduledEnqueueTimeUtc);
         getStringHeader(headers, SESSION_ID).ifPresent(message::setSessionId);
         getStringHeader(headers, CORRELATION_ID).ifPresent(message::setCorrelationId);
         getStringHeader(headers, TO).ifPresent(message::setTo);
-        getStringHeader(headers, LABEL).ifPresent(message::setLabel);
         getStringHeader(headers, REPLY_TO_SESSION_ID).ifPresent(message::setReplyToSessionId);
         getStringHeader(headers, PARTITION_KEY).ifPresent(message::setPartitionKey);
-        getStringHeader(headers, VIA_PARTITION_KEY).ifPresent(message::setViaPartitionKey);
 
         headers.forEach((key, value) -> message.getProperties().put(key, value.toString()));
     }
@@ -148,7 +144,7 @@ public class ServiceBusMessageConverter extends AbstractAzureMessageConverter<IM
         Optional.ofNullable(message.getTimeToLive())
                 .ifPresent(s -> headers.put(TIME_TO_LIVE, s));
         Optional.ofNullable(message.getScheduledEnqueueTimeUtc())
-                .ifPresent(s -> headers.put(SCHEDULED_ENQUEUE_TIME_UTC, s));
+                .ifPresent(s -> headers.put(SCHEDULED_ENQUEUE_TIME, s));
         Optional.ofNullable(message.getSessionId())
                 .filter(StringUtils::hasText)
                 .ifPresent(s -> headers.put(SESSION_ID, s));
@@ -158,18 +154,12 @@ public class ServiceBusMessageConverter extends AbstractAzureMessageConverter<IM
         Optional.ofNullable(message.getTo())
                 .filter(StringUtils::hasText)
                 .ifPresent(s -> headers.put(TO, s));
-        Optional.ofNullable(message.getLabel())
-                .filter(StringUtils::hasText)
-                .ifPresent(s -> headers.put(LABEL, s));
         Optional.ofNullable(message.getReplyToSessionId())
                 .filter(StringUtils::hasText)
                 .ifPresent(s -> headers.put(REPLY_TO_SESSION_ID, s));
         Optional.ofNullable(message.getPartitionKey())
                 .filter(StringUtils::hasText)
                 .ifPresent(s -> headers.put(PARTITION_KEY, s));
-        Optional.ofNullable(message.getViaPartitionKey())
-                .filter(StringUtils::hasText)
-                .ifPresent(s -> headers.put(VIA_PARTITION_KEY, s));
 
         headers.putAll(message.getProperties());
 

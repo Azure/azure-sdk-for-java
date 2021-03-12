@@ -15,8 +15,6 @@ import com.azure.spring.integration.core.AzureHeaders;
  * import org.springframework.integration.support.MessageBuilder;
  * MessageBuilder.withPayload(payload)
  *               .setHeader(ServiceBusMessageHeaders.MESSAGE_ID, ...)
- *               .setHeader(ServiceBusMessageHeaders.TIME_TO_LIVE, ...)
- *               .setHeader(ServiceBusMessageHeaders.SCHEDULED_ENQUEUE_TIME_UTC, ...)
  *               .build();
  * }</pre>
  *
@@ -25,23 +23,31 @@ import com.azure.spring.integration.core.AzureHeaders;
  *   <li> 2 items are deprecated: ScheduledEnqueuedTimeUtc, Body. </li>
  *   <li> 3 items should be set by Spring message: ContentType, MessageBody. ReplyTo. </li>
  *   <li> 1 item should not be set: Properties. </li>
- *   <li> The rest 10 items can be set by Spring message header. </li>
+ *   <li> The rest 10 items can be set by Spring message header: MessageId, TimeToLive, ScheduledEnqueueTimeUtc, SessionId, CorrelationId, To, Label, ReplyToSessionId, PartitionKey, ViaPartitionKey. </li>
  * </ul>
  *
+ * There are 11 items can be set for ServiceBusMessage.
+ * <ul>
+ *   <li> 2 item should be set by Spring message: ContentType, ReplyTo.  </li>
+ *   <li> The rest 9 items can be set by Spring message header: CorrelationId, Subject, MessageId, PartitionKey, To, TimeToLive, ScheduledEnqueueTime, ReplyToSessionId, SessionId </li>
+ * </ul>
+ *
+ * For the items can be set by Spring message header there are 8 items can be set by both IMessage and ServiceBusMessage:
+ * CorrelationId, MessageId, PartitionKey, To, TimeToLive, ScheduledEnqueueTime, ReplyToSessionId, SessionId
+ *
  * @see com.microsoft.azure.servicebus.IMessage
+ * @see com.azure.messaging.servicebus.ServiceBusMessage
  */
 public class ServiceBusMessageHeaders extends AzureHeaders {
 
     private static final String PREFIX = AzureHeaders.PREFIX + "service_bus_";
 
-    public static final String MESSAGE_ID = PREFIX + "message_id";
-    public static final String TIME_TO_LIVE = PREFIX + "time_to_live";
-    public static final String SCHEDULED_ENQUEUE_TIME_UTC = PREFIX + "scheduled_enqueue_time_utc";
-    public static final String SESSION_ID = PREFIX + "session_id";
     public static final String CORRELATION_ID = PREFIX + "correlation_id";
-    public static final String TO = PREFIX + "to";
-    public static final String LABEL = PREFIX + "label";
-    public static final String REPLY_TO_SESSION_ID = PREFIX + "reply_to_session_id";
+    public static final String MESSAGE_ID = PREFIX + "message_id";
     public static final String PARTITION_KEY = PREFIX + "partition_key";
-    public static final String VIA_PARTITION_KEY = PREFIX + "via_partition_key";
+    public static final String TO = PREFIX + "to";
+    public static final String TIME_TO_LIVE = PREFIX + "time_to_live";
+    public static final String SCHEDULED_ENQUEUE_TIME = PREFIX + "scheduled_enqueue_time";
+    public static final String REPLY_TO_SESSION_ID = PREFIX + "reply_to_session_id";
+    public static final String SESSION_ID = PREFIX + "session_id";
 }

@@ -22,15 +22,13 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.CORRELATION_ID;
-import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.LABEL;
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.MESSAGE_ID;
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.PARTITION_KEY;
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.REPLY_TO_SESSION_ID;
-import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.SCHEDULED_ENQUEUE_TIME_UTC;
+import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.SCHEDULED_ENQUEUE_TIME;
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.SESSION_ID;
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.TIME_TO_LIVE;
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.TO;
-import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.VIA_PARTITION_KEY;
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -181,14 +179,12 @@ public class ServiceBusMessageConverterTest extends AzureMessageConverterTest<IM
                                       .setHeader(AzureHeaders.RAW_ID, azureMessageRawId)
                                       .setHeader(MESSAGE_ID, serviceBusMessageId)
                                       .setHeader(TIME_TO_LIVE, serviceBusTimeToLive)
-                                      .setHeader(SCHEDULED_ENQUEUE_TIME_UTC, serviceBusScheduledEnqueueTimeUtc)
+                                      .setHeader(SCHEDULED_ENQUEUE_TIME, serviceBusScheduledEnqueueTimeUtc)
                                       .setHeader(SESSION_ID, serviceBusSessionId)
                                       .setHeader(CORRELATION_ID, serviceBusCorrelationId)
                                       .setHeader(TO, serviceBusTo)
-                                      .setHeader(LABEL, serviceBusLabel)
                                       .setHeader(REPLY_TO_SESSION_ID, serviceBusReplyToSessionId)
                                       .setHeader(PARTITION_KEY, serviceBusPartitionKey)
-                                      .setHeader(VIA_PARTITION_KEY, serviceBusViaPartitionKey)
                                       .build();
         serviceBusMessage = getConverter().fromMessage(springMessage, IMessage.class);
         assertEquals(springMessageContent, serviceBusMessage.getContentType());
@@ -212,13 +208,11 @@ public class ServiceBusMessageConverterTest extends AzureMessageConverterTest<IM
         assertEquals(serviceBusMessageId, convertedSpringMessage.getHeaders().get(MESSAGE_ID));
         assertEquals(serviceBusTimeToLive.toString(), convertedSpringMessage.getHeaders().get(TIME_TO_LIVE));
         assertEquals(serviceBusScheduledEnqueueTimeUtc.toString(),
-            convertedSpringMessage.getHeaders().get(SCHEDULED_ENQUEUE_TIME_UTC));
+            convertedSpringMessage.getHeaders().get(SCHEDULED_ENQUEUE_TIME));
         assertEquals(serviceBusSessionId, convertedSpringMessage.getHeaders().get(SESSION_ID));
         assertEquals(serviceBusCorrelationId, convertedSpringMessage.getHeaders().get(CORRELATION_ID));
         assertEquals(serviceBusTo, convertedSpringMessage.getHeaders().get(TO));
-        assertEquals(serviceBusLabel, convertedSpringMessage.getHeaders().get(LABEL));
         assertEquals(serviceBusReplyToSessionId, convertedSpringMessage.getHeaders().get(REPLY_TO_SESSION_ID));
         assertEquals(serviceBusPartitionKey, convertedSpringMessage.getHeaders().get(PARTITION_KEY));
-        assertEquals(serviceBusViaPartitionKey, convertedSpringMessage.getHeaders().get(VIA_PARTITION_KEY));
     }
 }
