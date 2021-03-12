@@ -69,12 +69,11 @@ directive:
         from: ResourceWriteSuccessData
         to: ResourceWriteSuccessEventData
     - rename-model:
-        from: RedisImportRDBCompletedEventData
-        to: RedisImportRdbCompletedEventData
+        from: RedisImportRdbCompletedEventData
+        to: RedisImportRDBCompletedEventData
     - rename-model:
-        from: RedisExportRdbCompletedEventData
-        to: RedisExportRDBCompletedEventData        
-        
+        from: RedisExportRDBCompletedEventData
+        to: RedisExportRdbCompletedEventData
 
 custom-types-subpackage: implementation.models
 custom-types: CloudEvent,EventGridEvent
