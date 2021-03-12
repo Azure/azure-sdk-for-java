@@ -92,7 +92,7 @@ public interface PrivateEndpoint extends
                  * @param privateLinkServiceResourceId the resource ID of the private link service
                  * @return the next stage of the definition
                  */
-                PrivateLinkServiceConnection.DefinitionStages.WithSubResource<ParentT> withResource(
+                PrivateLinkServiceConnection.DefinitionStages.WithSubResource<ParentT> withResourceId(
                     String privateLinkServiceResourceId);
             }
 
@@ -227,7 +227,7 @@ public interface PrivateEndpoint extends
              * @param subnetId the ID of subnet from which the private IP will be allocated
              * @return the next stage of private endpoint definition
              */
-            WithPrivateLinkServiceConnection withSubnet(String subnetId);
+            WithPrivateLinkServiceConnection withSubnetId(String subnetId);
         }
 
         /**

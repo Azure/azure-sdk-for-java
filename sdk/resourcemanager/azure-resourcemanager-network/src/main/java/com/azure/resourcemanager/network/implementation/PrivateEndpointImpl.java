@@ -106,7 +106,7 @@ class PrivateEndpointImpl extends
         }
 
         @Override
-        public PrivateEndpointConnectionImpl withResource(String privateLinkServiceResourceId) {
+        public PrivateEndpointConnectionImpl withResourceId(String privateLinkServiceResourceId) {
             this.innerModel().withPrivateLinkServiceId(Objects.requireNonNull(privateLinkServiceResourceId));
             return this;
         }
@@ -181,7 +181,7 @@ class PrivateEndpointImpl extends
     }
 
     @Override
-    public PrivateEndpointImpl withSubnet(String subnetId) {
+    public PrivateEndpointImpl withSubnetId(String subnetId) {
         this.innerModel().withSubnet(new SubnetInner().withId(Objects.requireNonNull(subnetId)));
         return this;
     }
