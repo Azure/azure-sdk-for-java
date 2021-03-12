@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.identity.implementation;
+package com.azure.identity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,8 +15,7 @@ import java.io.OutputStream;
 /**
  * Represents the account information relating to an authentication request
  */
-//TODO: Move this to Public API when exposing User Authentication API
-public class AuthenticationRecord {
+public final class AuthenticationRecord {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @JsonProperty("authority")
@@ -37,8 +36,7 @@ public class AuthenticationRecord {
 
     AuthenticationRecord() { }
 
-    //TODO: Make this package private once moved to Public API
-    public AuthenticationRecord(IAuthenticationResult authenticationResult, String tenantId, String clientId) {
+    AuthenticationRecord(IAuthenticationResult authenticationResult, String tenantId, String clientId) {
         authority = authenticationResult.account().environment();
         homeAccountId = authenticationResult.account().homeAccountId();
         username = authenticationResult.account().username();
@@ -97,7 +95,7 @@ public class AuthenticationRecord {
      * @param outputStream The {@link OutputStream} to which the serialized record will be written to.
      * @return A {@link Mono} containing {@link Void}
      */
-    public Mono<OutputStream> serialize(OutputStream outputStream) {
+    public Mono<OutputStream> serializeAsync(OutputStream outputStream) {
         return Mono.defer(() -> {
             try {
                 OBJECT_MAPPER.writeValue(outputStream, this);
@@ -109,12 +107,21 @@ public class AuthenticationRecord {
     }
 
     /**
+     * Serializes the {@link AuthenticationRecord} to the specified {@link OutputStream}
+     *
+     * @param outputStream The {@link OutputStream} to which the serialized record will be written to.
+     */
+    public void serialize(OutputStream outputStream) {
+        serializeAsync(outputStream).block();
+    }
+
+    /**
      * Deserializes the {@link AuthenticationRecord} from the specified {@link InputStream}
      *
      * @param inputStream The {@link InputStream} from which the serialized record will be read.
      * @return A {@link Mono} containing the {@link AuthenticationRecord} object.
      */
-    public static Mono<AuthenticationRecord> deserialize(InputStream inputStream) {
+    public static Mono<AuthenticationRecord> deserializeAsync(InputStream inputStream) {
         return Mono.defer(() -> {
             AuthenticationRecord authenticationRecord;
             try {
@@ -125,5 +132,15 @@ public class AuthenticationRecord {
             }
             return Mono.just(authenticationRecord);
         });
+    }
+
+    /**
+     * Deserializes the {@link AuthenticationRecord} from the specified {@link InputStream}
+     *
+     * @param inputStream The {@link InputStream} from which the serialized record will be read.
+     * @return the {@link AuthenticationRecord} object.
+     */
+    public static AuthenticationRecord deserialize(InputStream inputStream) {
+        return deserializeAsync(inputStream).block();
     }
 }

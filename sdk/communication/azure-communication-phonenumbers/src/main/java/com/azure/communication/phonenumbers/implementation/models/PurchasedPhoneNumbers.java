@@ -4,19 +4,19 @@
 
 package com.azure.communication.phonenumbers.implementation.models;
 
-import com.azure.communication.phonenumbers.models.AcquiredPhoneNumber;
+import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AcquiredPhoneNumbers model. */
+/** The PurchasedPhoneNumbers model. */
 @Fluent
-public final class AcquiredPhoneNumbers {
+public final class PurchasedPhoneNumbers {
     /*
      * Represents a list of phone numbers.
      */
     @JsonProperty(value = "phoneNumbers", required = true)
-    private List<AcquiredPhoneNumber> phoneNumbers;
+    private List<PurchasedPhoneNumber> phoneNumbers;
 
     /*
      * Represents the URL link to the next page of phone number results.
@@ -29,7 +29,7 @@ public final class AcquiredPhoneNumbers {
      *
      * @return the phoneNumbers value.
      */
-    public List<AcquiredPhoneNumber> getPhoneNumbers() {
+    public List<PurchasedPhoneNumber> getPhoneNumbers() {
         return this.phoneNumbers;
     }
 
@@ -37,9 +37,9 @@ public final class AcquiredPhoneNumbers {
      * Set the phoneNumbers property: Represents a list of phone numbers.
      *
      * @param phoneNumbers the phoneNumbers value to set.
-     * @return the AcquiredPhoneNumbers object itself.
+     * @return the PurchasedPhoneNumbers object itself.
      */
-    public AcquiredPhoneNumbers setPhoneNumbers(List<AcquiredPhoneNumber> phoneNumbers) {
+    public PurchasedPhoneNumbers setPhoneNumbers(List<PurchasedPhoneNumber> phoneNumbers) {
         this.phoneNumbers = phoneNumbers;
         return this;
     }
@@ -57,9 +57,9 @@ public final class AcquiredPhoneNumbers {
      * Set the nextLink property: Represents the URL link to the next page of phone number results.
      *
      * @param nextLink the nextLink value to set.
-     * @return the AcquiredPhoneNumbers object itself.
+     * @return the PurchasedPhoneNumbers object itself.
      */
-    public AcquiredPhoneNumbers setNextLink(String nextLink) {
+    public PurchasedPhoneNumbers setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }

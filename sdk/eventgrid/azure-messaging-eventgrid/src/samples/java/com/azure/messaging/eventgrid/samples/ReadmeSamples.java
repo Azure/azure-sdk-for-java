@@ -40,7 +40,7 @@ public class ReadmeSamples {
         .buildEventGridEventPublisherClient();
     private final EventGridPublisherClient<CloudEvent> cloudEventClient = new EventGridPublisherClientBuilder()
         .buildCloudEventPublisherClient();
-    private final EventGridPublisherClient<Object> customEventClient = new EventGridPublisherClientBuilder()
+    private final EventGridPublisherClient<BinaryData> customEventClient = new EventGridPublisherClientBuilder()
         .buildCustomEventPublisherClient();
     private final String jsonData = "Json encoded event";
 
@@ -68,7 +68,7 @@ public class ReadmeSamples {
 
     public void createCustomEventPublisherClient() {
         // For custom event
-        EventGridPublisherClient<Object> customEventClient = new EventGridPublisherClientBuilder()
+        EventGridPublisherClient<BinaryData> customEventClient = new EventGridPublisherClientBuilder()
             .endpoint("<endpont of your event grid topic/domain that accepts custom event schema>")
             .credential(new AzureKeyCredential("<key for the endpoint>"))
             .buildCustomEventPublisherClient();
@@ -92,7 +92,7 @@ public class ReadmeSamples {
 
     public void createCustomEventPublisherAsyncClient() {
         // For custom event
-        EventGridPublisherClient<Object> customEventAsyncClient = new EventGridPublisherClientBuilder()
+        EventGridPublisherClient<BinaryData> customEventAsyncClient = new EventGridPublisherClientBuilder()
             .endpoint("<endpont of your event grid topic/domain that accepts custom event schema>")
             .credential(new AzureKeyCredential("<key for the endpoint>"))
             .buildCustomEventPublisherClient();
@@ -139,8 +139,8 @@ public class ReadmeSamples {
 
     public void sendCustomEventsToTopic() {
         // Make sure that the event grid topic or domain you're sending to accepts the custom event schema.
-        List<Object> events = new ArrayList<>();
-        events.add(new HashMap<String, String>() {
+        List<BinaryData> events = new ArrayList<>();
+        events.add(BinaryData.fromObject(new HashMap<String, String>() {
             {
                 put("id", UUID.randomUUID().toString());
                 put("time", OffsetDateTime.now().toString());
@@ -150,7 +150,7 @@ public class ReadmeSamples {
                 put("data", "example data");
                 put("dataVersion", "0.1");
             }
-        });
+        }));
         customEventClient.sendEvents(events);
     }
 

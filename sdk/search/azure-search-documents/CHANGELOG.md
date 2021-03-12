@@ -1,7 +1,16 @@
 # Release History
 
-## 11.3.0-beta.1 (Unreleased)
+## 11.4.0-beta.1 (Unreleased)
 
+
+## 11.3.0 (2021-03-10)
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.13.0` to `1.14.0`.
+- Updated Jackson from `2.11.3` ro `2.12.1`.
+- Updated Reactor from `3.3.12.RELEASE` to `3.4.3`.
+- Updated Reactor Netty from `0.9.15.RELEASE` to `1.0.4`.
 
 ## 11.2.0 (2021-02-10)
 
