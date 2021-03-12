@@ -138,11 +138,13 @@ class BulkWriter(container: CosmosAsyncContainer,
   }
 
   override def scheduleWrite(partitionKeyValue: PartitionKey, objectNode: ObjectNode): Unit = {
+    Preconditions.checkState(!closed.get())
     if (errorCaptureFirstException.get() != null) {
       logWarning("encountered failure earlier, rejecting new work")
       throw errorCaptureFirstException.get()
     }
 
+    semaphore.acquire()
     val cnt = totalScheduledMetrics.getAndIncrement()
     logDebug(s"total scheduled ${cnt}")
 
@@ -151,7 +153,6 @@ class BulkWriter(container: CosmosAsyncContainer,
 
   private def scheduleWriteInternal(partitionKeyValue: PartitionKey, objectNode: ObjectNode, operationContext: OperationContext): Unit = {
     activeTasks.incrementAndGet()
-    Preconditions.checkState(!closed.get())
     if (operationContext.attemptNumber > 1) {
       logInfo(s"bulk scheduleWrite attemptCnt: ${operationContext.attemptNumber}")
     }
@@ -164,9 +165,6 @@ class BulkWriter(container: CosmosAsyncContainer,
       case _ =>
         throw new RuntimeException(s"${writeConfig.itemWriteStrategy} not supported")
     }
-
-    semaphore.acquire()
-    Preconditions.checkState(!closed.get)
 
     activeOperations.put(bulkItemOperation, operationContext)
     bulkInputEmitter.onNext(bulkItemOperation)
@@ -198,8 +196,7 @@ class BulkWriter(container: CosmosAsyncContainer,
           lock.unlock()
         }
 
-        logInfo("flushAndClose before emmitted onCOmplete")
-
+        logInfo("invoking bulkInputEmitter.onComplete()")
         semaphore.release(activeTasks.get())
         bulkInputEmitter.onComplete()
 
