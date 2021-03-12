@@ -14,6 +14,16 @@ public class AuthorizationClientProperties {
 
     private boolean onDemand = false;
 
+    private String authorizationGrantType = "on-behalf-of";
+
+    public String getAuthorizationGrantType() {
+        return authorizationGrantType;
+    }
+
+    public void setAuthorizationGrantType(String authorizationGrantType) {
+        this.authorizationGrantType = authorizationGrantType;
+    }
+
     public void setScopes(List<String> scopes) {
         this.scopes = scopes;
     }
