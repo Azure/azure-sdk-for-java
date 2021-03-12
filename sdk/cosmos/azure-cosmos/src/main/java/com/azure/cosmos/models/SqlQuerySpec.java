@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
@@ -129,6 +130,7 @@ public final class SqlQuerySpec {
      * @param parameter the query parameter.
      * @return the SqlQuerySpec.
      */
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public SqlQuerySpec addSqlParameter(SqlParameter parameter) {
         if (this.parameters == null) {
             Collection<SqlParameter> sqlParameters = this.jsonSerializable.getCollection("parameters", SqlParameter.class);
