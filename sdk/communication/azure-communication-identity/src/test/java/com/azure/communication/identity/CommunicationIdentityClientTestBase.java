@@ -81,14 +81,18 @@ public class CommunicationIdentityClientTestBase extends TestBase {
             String clientSecret = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SECRET);
 
             if (tenantId == "3b78b39a-ac6c-465a-a010-5a3f47148ff0") {
-                System.out.println("tenantId is same as expected");
+                System.out.println("tenantId is same as expected INT value");
+            } else if (tenantId == "72f988bf-86f1-41af-91ab-2d7cd011db47") {
+                System.out.println("tenantId is same as expected PROD value");
             } else {
                 System.out.println("tenantId is not  as expected");
             }
 
             if (clientId == "19ea75db-1ade-473a-9f60-c3fb905f1f56") {
-                System.out.println("clientId is same as expected");
-            }else {
+                System.out.println("clientId is same as expected INT value");
+            }else if (clientId == "f850650c-1fcf-4489-b46f-71af2e30d360") {
+                System.out.println("clientId is same as expected PROD value");
+            } else {
                 System.out.println("clientId is not  as expected");
             }
 
