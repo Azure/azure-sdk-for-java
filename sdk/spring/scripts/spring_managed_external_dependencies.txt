@@ -1060,6 +1060,7 @@ org.springframework.boot:spring-boot-starter-mail;2.4.3
 org.springframework.boot:spring-boot-starter-mustache;2.4.3
 org.springframework.boot:spring-boot-starter-oauth2-client;2.4.3
 org.springframework.boot:spring-boot-starter-oauth2-resource-server;2.4.3
+org.springframework.boot:spring-boot-starter-parent;2.4.3
 org.springframework.boot:spring-boot-starter-quartz;2.4.3
 org.springframework.boot:spring-boot-starter-reactor-netty;2.4.3
 org.springframework.boot:spring-boot-starter-rsocket;2.4.3
