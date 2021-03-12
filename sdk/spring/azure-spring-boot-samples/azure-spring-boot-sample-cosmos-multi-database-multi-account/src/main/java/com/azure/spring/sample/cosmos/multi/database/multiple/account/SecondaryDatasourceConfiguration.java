@@ -1,11 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.data.cosmos.multidatasource;
+package com.azure.spring.sample.cosmos.multi.database.multiple.account;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.data.cosmos.CosmosFactory;
-import com.azure.spring.data.cosmos.CosmosProperties;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.ResponseDiagnostics;
@@ -20,17 +19,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.Nullable;
 
-/**
- * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
- * ARE USED TO EXTRACT APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING
- * LINE NUMBERS OF EXISTING CODE SAMPLES.
- */
 @Configuration
+@EnableCosmosRepositories(cosmosTemplateRef  = "secondaryDatabaseTemplate")
 public class SecondaryDatasourceConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SecondaryDatasourceConfiguration.class);
-    public static final String DATABASE3 = "secondary_database3";
-    public static final String DATABASE4 = "secondary_database4";
+    public static final String SECONDARY_DATABASE = "secondary_database";
 
     @Bean
     @ConfigurationProperties(prefix = "azure.cosmos.secondary")
@@ -53,25 +47,11 @@ public class SecondaryDatasourceConfiguration {
             .build();
     }
 
-    @EnableCosmosRepositories(basePackages = "com.azure.cosmos.multidatasource.secondary.database3",
-                              cosmosTemplateRef  = "secondaryDatabase3Template")
-    public class Database3Configuration {
-        @Bean
-        public CosmosTemplate secondaryDatabase3Template(@Qualifier("secondaryCosmosClient") CosmosAsyncClient client,
-                                                         @Qualifier("secondaryCosmosConfig") CosmosConfig cosmosConfig,
-                                                         MappingCosmosConverter mappingCosmosConverter) {
-            return new CosmosTemplate(client, DATABASE3, cosmosConfig, mappingCosmosConverter);
-        }
-    }
-    @EnableCosmosRepositories(basePackages = "com.azure.cosmos.multidatasource.secondary.database4",
-                              cosmosTemplateRef  = "secondaryDatabase4Template")
-    public class Database4Configuration {
-        @Bean
-        public CosmosTemplate secondaryDatabase4Template(@Qualifier("secondaryCosmosClient") CosmosAsyncClient client,
-                                                         @Qualifier("secondaryCosmosConfig") CosmosConfig cosmosConfig,
-                                                         MappingCosmosConverter mappingCosmosConverter) {
-            return new CosmosTemplate(client, DATABASE4, cosmosConfig, mappingCosmosConverter);
-        }
+    @Bean
+    public CosmosTemplate secondaryDatabaseTemplate(@Qualifier("secondaryCosmosClient") CosmosAsyncClient client,
+                                                    @Qualifier("secondaryCosmosConfig") CosmosConfig cosmosConfig,
+                                                    MappingCosmosConverter mappingCosmosConverter) {
+        return new CosmosTemplate(client, SECONDARY_DATABASE, cosmosConfig, mappingCosmosConverter);
     }
 
     private static class ResponseDiagnosticsProcessorImplementation implements ResponseDiagnosticsProcessor {

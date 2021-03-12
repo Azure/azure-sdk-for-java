@@ -1,20 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.data.cosmos.multidatasource.primary.database1;
 
-import com.azure.spring.data.cosmos.core.mapping.Container;
+package com.azure.spring.sample.cosmos.multi.database.repository1;
+
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import org.springframework.data.annotation.Id;
 
-/**
- * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
- * ARE USED TO EXTRACT APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING
- * LINE NUMBERS OF EXISTING CODE SAMPLES.
- */
 
-@Container(containerName = "users-container", ru = "400")
-public class User {
-
+public class User1 {
     @Id
     private String id;
 
@@ -25,7 +18,11 @@ public class User {
 
     private String address;
 
-    public User(String id, String email, String name, String address) {
+    public User1(){
+
+    }
+
+    public User1(String id, String email, String name, String address) {
         this.id = id;
         this.email = email;
         this.name = name;
