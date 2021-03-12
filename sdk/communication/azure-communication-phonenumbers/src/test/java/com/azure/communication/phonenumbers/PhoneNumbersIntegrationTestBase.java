@@ -22,10 +22,10 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.identity.EnvironmentCredentialBuilder;
+//import com.azure.identity.DefaultAzureCredentialBuilder;
+//import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.identity.EnvironmentCredential;
+//import com.azure.identity.EnvironmentCredential;
 
 import reactor.core.publisher.Mono;
 
