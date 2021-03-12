@@ -16,10 +16,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationTrustResolver;
+import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
@@ -53,77 +57,116 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
 
     private final ClientRegistrationRepository repository;
 
+    private final AuthenticationTrustResolver authenticationTrustResolver = new AuthenticationTrustResolverImpl();
+
+    private OAuth2AuthorizedClientRepository anonymousAuthorizedClientRepository =
+        new HttpSessionOAuth2AuthorizedClientRepository();
+
+    private final OAuth2AuthorizedClientService authorizedClientService;
+
+
     public AADOAuth2AuthorizedClientRepository(ClientRegistrationRepository repository) {
+        this(null, repository);
+    }
+
+    public AADOAuth2AuthorizedClientRepository(OAuth2AuthorizedClientService oAuth2AuthorizedClientService,
+                                               ClientRegistrationRepository repository) {
         this.repository = repository;
+        this.authorizedClientService = oAuth2AuthorizedClientService;
     }
 
     @Override
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public <T extends OAuth2AuthorizedClient> T loadAuthorizedClient(String registrationId,
-                                                                     Authentication authentication,
+                                                                     Authentication principal,
                                                                      HttpServletRequest request) {
-        String oboAuthorizedClientAttributeName = OBO_AUTHORIZEDCLIENT_PREFIX + registrationId;
-        if (request.getAttribute(oboAuthorizedClientAttributeName) != null) {
-            return (T) request.getAttribute(oboAuthorizedClientAttributeName);
+        ClientRegistration clientRegistration = repository.findByRegistrationId(registrationId);
+        if (clientRegistration == null) {
+            LOGGER.warn("Not found the ClientRegistration, registrationId={}", registrationId);
+            return null;
         }
-
-        if (!(authentication instanceof AbstractOAuth2TokenAuthenticationToken)) {
-            throw new IllegalStateException("Unsupported token implementation " + authentication.getClass());
-        }
-
-        try {
-            String accessToken = ((AbstractOAuth2TokenAuthenticationToken<?>) authentication).getToken()
-                                                                                             .getTokenValue();
-            ClientRegistration clientRegistration = repository.findByRegistrationId(registrationId);
-            if (clientRegistration == null) {
-                LOGGER.warn("Not found the ClientRegistration, registrationId={}", registrationId);
-                return null;
+        if (clientRegistration.getAuthorizationGrantType().getValue().equals("on-behalf-of")) {
+            String oboAuthorizedClientAttributeName = OBO_AUTHORIZEDCLIENT_PREFIX + registrationId;
+            if (request.getAttribute(oboAuthorizedClientAttributeName) != null) {
+                return (T) request.getAttribute(oboAuthorizedClientAttributeName);
             }
 
-            OnBehalfOfParameters parameters = OnBehalfOfParameters
-                .builder(clientRegistration.getScopes(), new UserAssertion(accessToken))
-                .build();
-            ConfidentialClientApplication clientApplication = createApp(clientRegistration);
-            if (null == clientApplication) {
-                return null;
+            if (!(principal instanceof AbstractOAuth2TokenAuthenticationToken)) {
+                throw new IllegalStateException("Unsupported token implementation " + principal.getClass());
             }
-            String oboAccessToken = clientApplication.acquireToken(parameters).get().accessToken();
-            JWT parser = JWTParser.parse(oboAccessToken);
-            Date iat = (Date) parser.getJWTClaimsSet().getClaim("iat");
-            Date exp = (Date) parser.getJWTClaimsSet().getClaim("exp");
-            OAuth2AccessToken oAuth2AccessToken = new OAuth2AccessToken(OAuth2AccessToken.TokenType.BEARER,
-                oboAccessToken,
-                Instant.ofEpochMilli(iat.getTime()),
-                Instant.ofEpochMilli(exp.getTime()));
-            OAuth2AuthorizedClient oAuth2AuthorizedClient = new OAuth2AuthorizedClient(clientRegistration,
-                authentication.getName(),
-                oAuth2AccessToken);
-            request.setAttribute(oboAuthorizedClientAttributeName, (T) oAuth2AuthorizedClient);
-            return (T) oAuth2AuthorizedClient;
-        } catch (ExecutionException exception) {
-            // Handle conditional access policy, step 1.
-            // A user interaction is required, but we are in a web API, and therefore, we need to report back to the
-            // client through a 'WWW-Authenticate' header https://tools.ietf.org/html/rfc6750#section-3.1
-            Optional.of(exception)
-                    .map(Throwable::getCause)
-                    .filter(e -> e instanceof MsalInteractionRequiredException)
-                    .map(e -> (MsalInteractionRequiredException) e)
-                    .ifPresent(this::replyForbiddenWithWwwAuthenticateHeader);
-            LOGGER.error("Failed to load authorized client.", exception);
-        } catch (InterruptedException | ParseException exception) {
-            LOGGER.error("Failed to load authorized client.", exception);
+
+            try {
+                String accessToken = ((AbstractOAuth2TokenAuthenticationToken<?>) principal).getToken()
+                                                                                            .getTokenValue();
+                OnBehalfOfParameters parameters = OnBehalfOfParameters
+                    .builder(clientRegistration.getScopes(), new UserAssertion(accessToken))
+                    .build();
+                ConfidentialClientApplication clientApplication = createApp(clientRegistration);
+                if (null == clientApplication) {
+                    return null;
+                }
+                String oboAccessToken = clientApplication.acquireToken(parameters).get().accessToken();
+                JWT parser = JWTParser.parse(oboAccessToken);
+                Date iat = (Date) parser.getJWTClaimsSet().getClaim("iat");
+                Date exp = (Date) parser.getJWTClaimsSet().getClaim("exp");
+                OAuth2AccessToken oAuth2AccessToken = new OAuth2AccessToken(OAuth2AccessToken.TokenType.BEARER,
+                    oboAccessToken,
+                    Instant.ofEpochMilli(iat.getTime()),
+                    Instant.ofEpochMilli(exp.getTime()));
+                OAuth2AuthorizedClient oAuth2AuthorizedClient = new OAuth2AuthorizedClient(clientRegistration,
+                    principal.getName(),
+                    oAuth2AccessToken);
+                request.setAttribute(oboAuthorizedClientAttributeName, (T) oAuth2AuthorizedClient);
+                return (T) oAuth2AuthorizedClient;
+            } catch (ExecutionException exception) {
+                // Handle conditional access policy, step 1.
+                // A user interaction is required, but we are in a web API, and therefore, we need to report back to the
+                // client through a 'WWW-Authenticate' header https://tools.ietf.org/html/rfc6750#section-3.1
+                Optional.of(exception)
+                        .map(Throwable::getCause)
+                        .filter(e -> e instanceof MsalInteractionRequiredException)
+                        .map(e -> (MsalInteractionRequiredException) e)
+                        .ifPresent(this::replyForbiddenWithWwwAuthenticateHeader);
+                LOGGER.error("Failed to load authorized client.", exception);
+            } catch (InterruptedException | ParseException exception) {
+                LOGGER.error("Failed to load authorized client.", exception);
+            }
+            return null;
+        } else if (clientRegistration.getAuthorizationGrantType().getValue().equals
+            ("client_credentials")) {
+            if (this.isPrincipalAuthenticated(principal)) {
+                return this.authorizedClientService.loadAuthorizedClient(registrationId, principal
+                    .getName());
+            } else {
+                return this.anonymousAuthorizedClientRepository.loadAuthorizedClient(registrationId,
+                    principal,
+                    request);
+            }
         }
         return null;
     }
 
     @Override
-    public void saveAuthorizedClient(OAuth2AuthorizedClient oAuth2AuthorizedClient, Authentication authentication,
-                                     HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+    public void saveAuthorizedClient(OAuth2AuthorizedClient oAuth2AuthorizedClient, Authentication principal,
+                                     HttpServletRequest request, HttpServletResponse response) {
+        if (this.isPrincipalAuthenticated(principal)) {
+            this.authorizedClientService.saveAuthorizedClient(oAuth2AuthorizedClient, principal);
+        } else {
+            this.anonymousAuthorizedClientRepository.saveAuthorizedClient(oAuth2AuthorizedClient, principal, request,
+                response);
+        }
+
     }
 
     @Override
-    public void removeAuthorizedClient(String clientRegistrationId, Authentication authentication,
-                                       HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+    public void removeAuthorizedClient(String clientRegistrationId, Authentication principal,
+                                       HttpServletRequest request, HttpServletResponse response) {
+        if (this.isPrincipalAuthenticated(principal)) {
+            this.authorizedClientService.removeAuthorizedClient(clientRegistrationId, principal.getName());
+        } else {
+            this.anonymousAuthorizedClientRepository.removeAuthorizedClient(clientRegistrationId, principal, request,
+                response);
+        }
     }
 
     ConfidentialClientApplication createApp(ClientRegistration clientRegistration) {
@@ -164,8 +207,22 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
         Map<String, Object> parameters = new LinkedHashMap<>();
         parameters.put(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS, exception.claims());
         parameters.put(OAuth2ParameterNames.ERROR, OAuth2ErrorCodes.INVALID_TOKEN);
-        parameters.put(OAuth2ParameterNames.ERROR_DESCRIPTION, "The resource server requires higher privileges than "
+        parameters.put(OAuth2ParameterNames.ERROR_DESCRIPTION, "The resource server requires higher privileges "
+            + "than "
             + "provided by the access token");
         response.addHeader(HttpHeaders.WWW_AUTHENTICATE, Constants.BEARER_PREFIX + parameters.toString());
     }
+
+    public void setAnonymousAuthorizedClientRepository(OAuth2AuthorizedClientRepository
+                                                           anonymousAuthorizedClientRepository) {
+        Assert.notNull(anonymousAuthorizedClientRepository, "anonymousAuthorizedClientRepository cannot be null");
+        this.anonymousAuthorizedClientRepository = anonymousAuthorizedClientRepository;
+    }
+
+    private boolean isPrincipalAuthenticated(Authentication authentication) {
+        return authentication != null &&
+            !this.authenticationTrustResolver.isAnonymous(authentication) &&
+            authentication.isAuthenticated();
+    }
+
 }
