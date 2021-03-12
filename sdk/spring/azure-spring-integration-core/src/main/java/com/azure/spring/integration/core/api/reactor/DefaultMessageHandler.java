@@ -171,7 +171,7 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
         if (StringUtils.hasText(partitionId)) {
             partitionSupplier.setPartitionId(partitionId);
         } else {
-            // Access to payload properties is not supported here.
+            // The default key expression is the hash code of the payload.
             if (this.partitionKeyExpression != null) {
                 String partitionKey = this.partitionKeyExpression.getValue(this.evaluationContext, message, String.class);
                 if (StringUtils.hasText(partitionKey)) {
@@ -187,7 +187,6 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
         properties.put("sync", sync);
         properties.put("sendTimeout", sendTimeoutExpression);
         properties.put("destination", destination);
-
         return properties;
     }
 
