@@ -3,11 +3,11 @@
 ## 1.0.0-beta.7 (Unreleased)
 ### Added
 - Added `PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType, PhoneNumberCapabilities capabilities)` in PhoneNumbersAsyncClient.
-- Added `PagedIterable<PurchasedPhoneNumber> listPurchasedPhoneNumbers()` in PhoneNumberslient.
-- Added `SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType, PhoneNumberCapabilities capabilities)` in PhoneNumberslient.
-- Added `SyncPoller<PhoneNumberOperation, Void> beginPurchasePhoneNumbers(String searchId)` in PhoneNumberslient.
-- Added `SyncPoller<PhoneNumberOperation, Void> beginReleasePhoneNumber(String phoneNumber)` in PhoneNumberslient.
-- Added `SyncPoller<PhoneNumberOperation, PurchasedPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest)` in PhoneNumberslient.
+- Added `PagedIterable<PurchasedPhoneNumber> listPurchasedPhoneNumbers()` in PhoneNumbersClient.
+- Added `SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType, PhoneNumberCapabilities capabilities)` in PhoneNumbersClient.
+- Added `SyncPoller<PhoneNumberOperation, Void> beginPurchasePhoneNumbers(String searchId)` in PhoneNumbersClient.
+- Added `SyncPoller<PhoneNumberOperation, Void> beginReleasePhoneNumber(String phoneNumber)` in PhoneNumbersClient.
+- Added `SyncPoller<PhoneNumberOperation, PurchasedPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest)` in PhoneNumbersClient.
 
 ### Breaking Changes
 - Renamed AcquiredPhoneNumber to PurchasedPhoneNumber.
