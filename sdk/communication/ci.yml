@@ -4,6 +4,7 @@ trigger:
   branches:
     include:
       - master
+      - main
       - hotfix/*
       - release/*
   paths:
@@ -14,6 +15,7 @@ pr:
   branches:
     include:
       - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
@@ -35,9 +37,10 @@ extends:
       - name: azure-communication-sms
         groupId: com.azure
         safeName: azurecommunicationsms
-      - name: azure-communication-administration
-        groupId: com.azure
-        safeName: azurecommunicationadministration
       - name: azure-communication-identity
         groupId: com.azure
         safeName: azurecommunicationidentity
+      - name: azure-communication-phonenumbers
+        groupId: com.azure
+        safeName: azurecommunicationphonenumbers
+

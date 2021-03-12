@@ -7,7 +7,7 @@ import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
-import com.azure.ai.textanalytics.models.AspectSentiment;
+import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
@@ -16,14 +16,13 @@ import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
-import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
-import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
+import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -35,14 +34,12 @@ import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.AsyncPollResponse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -690,14 +687,14 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             .subscribe(documentSentiment -> {
                 for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
                     System.out.printf("\tSentence sentiment: %s%n", sentenceSentiment.getSentiment());
-                    sentenceSentiment.getMinedOpinions().forEach(minedOpinions -> {
-                        AspectSentiment aspectSentiment = minedOpinions.getAspect();
-                        System.out.printf("\tAspect sentiment: %s, aspect text: %s%n",
-                            aspectSentiment.getSentiment(), aspectSentiment.getText());
-                        for (OpinionSentiment opinionSentiment : minedOpinions.getOpinions()) {
-                            System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the opinion negated: %s.%n",
-                                opinionSentiment.getSentiment(), opinionSentiment.getText(),
-                                opinionSentiment.isNegated());
+                    sentenceSentiment.getOpinions().forEach(opinion -> {
+                        TargetSentiment targetSentiment = opinion.getTarget();
+                        System.out.printf("\tTarget sentiment: %s, target text: %s%n",
+                            targetSentiment.getSentiment(), targetSentiment.getText());
+                        for (AssessmentSentiment assessmentSentiment : opinion.getAssessments()) {
+                            System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the assessment negated: %s.%n",
+                                assessmentSentiment.getSentiment(), assessmentSentiment.getText(),
+                                assessmentSentiment.isNegated());
                         }
                     });
                 }
@@ -763,15 +760,15 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
                     documentSentiment.getSentences().forEach(sentenceSentiment -> {
                         System.out.printf("\tSentence sentiment: %s%n", sentenceSentiment.getSentiment());
-                        sentenceSentiment.getMinedOpinions().forEach(minedOpinions -> {
-                            AspectSentiment aspectSentiment = minedOpinions.getAspect();
-                            System.out.printf("\t\tAspect sentiment: %s, aspect text: %s%n",
-                                aspectSentiment.getSentiment(), aspectSentiment.getText());
-                            for (OpinionSentiment opinionSentiment : minedOpinions.getOpinions()) {
+                        sentenceSentiment.getOpinions().forEach(opinion -> {
+                            TargetSentiment targetSentiment = opinion.getTarget();
+                            System.out.printf("\t\tTarget sentiment: %s, target text: %s%n",
+                                targetSentiment.getSentiment(), targetSentiment.getText());
+                            for (AssessmentSentiment assessmentSentiment : opinion.getAssessments()) {
                                 System.out.printf(
-                                    "\t\t\t'%s' opinion sentiment because of \"%s\". Is the opinion negated: %s.%n",
-                                    opinionSentiment.getSentiment(), opinionSentiment.getText(),
-                                    opinionSentiment.isNegated());
+                                    "\t\t\t'%s' assessment sentiment because of \"%s\". Is the assessment negated: %s.%n",
+                                    assessmentSentiment.getSentiment(), assessmentSentiment.getText(),
+                                    assessmentSentiment.isNegated());
                             }
                         });
                     });
@@ -847,15 +844,15 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
                     documentSentiment.getSentences().forEach(sentenceSentiment -> {
                         System.out.printf("\tSentence sentiment: %s%n", sentenceSentiment.getSentiment());
-                        sentenceSentiment.getMinedOpinions().forEach(minedOpinions -> {
-                            AspectSentiment aspectSentiment = minedOpinions.getAspect();
-                            System.out.printf("\t\tAspect sentiment: %s, aspect text: %s%n",
-                                aspectSentiment.getSentiment(), aspectSentiment.getText());
-                            for (OpinionSentiment opinionSentiment : minedOpinions.getOpinions()) {
+                        sentenceSentiment.getOpinions().forEach(opinion -> {
+                            TargetSentiment targetSentiment = opinion.getTarget();
+                            System.out.printf("\t\tTarget sentiment: %s, target text: %s%n",
+                                targetSentiment.getSentiment(), targetSentiment.getText());
+                            for (AssessmentSentiment assessmentSentiment : opinion.getAssessments()) {
                                 System.out.printf(
-                                    "\t\t\t'%s' opinion sentiment because of \"%s\". Is the opinion negated: %s.%n",
-                                    opinionSentiment.getSentiment(), opinionSentiment.getText(),
-                                    opinionSentiment.isNegated());
+                                    "\t\t\t'%s' assessment sentiment because of \"%s\". Is the assessment negated: %s.%n",
+                                    assessmentSentiment.getSentiment(), assessmentSentiment.getText(),
+                                    assessmentSentiment.isNegated());
                             }
                         });
                     });
@@ -920,14 +917,15 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                                         "\t\tEntity ID in data source: %s, data source: %s.%n",
                                         healthcareEntityLink.getEntityId(), healthcareEntityLink.getName()));
                                 }
-                                Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities =
-                                    healthcareEntity.getRelatedEntities();
-                                if (!CoreUtils.isNullOrEmpty(relatedHealthcareEntities)) {
-                                    relatedHealthcareEntities.forEach(
-                                        (relatedHealthcareEntity, entityRelationType) -> System.out.printf(
-                                            "\t\tRelated entity: %s, relation type: %s.%n",
-                                            relatedHealthcareEntity.getText(), entityRelationType));
-                                }
+                            });
+                            // Healthcare entity relation groups
+                            healthcareEntitiesResult.getEntityRelations().forEach(entityRelation -> {
+                                System.out.printf("\tRelation type: %s.%n", entityRelation.getRelationType());
+                                entityRelation.getRoles().forEach(role -> {
+                                    final HealthcareEntity entity = role.getEntity();
+                                    System.out.printf("\t\tEntity text: %s, category: %s, role: %s.%n",
+                                        entity.getText(), entity.getCategory(), role.getName());
+                                });
                             });
                         });
                     }

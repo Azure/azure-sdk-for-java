@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * The key operation result.
  */
 class KeyOperationResult {
+    private static final byte[] EMPTY_ARRAY = new byte[0];
+
     /**
      * Key identifier.
      */
@@ -23,23 +25,24 @@ class KeyOperationResult {
     private Base64Url result;
 
     /**
-     * Get the kid value.
+     * Get the key identifier.
      *
-     * @return the kid value
+     * @return The key identifier.
      */
     public String getKid() {
         return this.kid;
     }
 
     /**
-     * Get the result value.
+     * Get the result.
      *
-     * @return the result value
+     * @return The result.
      */
     public byte[] getResult() {
         if (this.result == null) {
-            return new byte[0];
+            return EMPTY_ARRAY;
         }
+
         return this.result.decodedBytes();
     }
 

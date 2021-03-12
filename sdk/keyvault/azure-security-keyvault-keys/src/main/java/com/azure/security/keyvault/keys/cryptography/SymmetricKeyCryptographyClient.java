@@ -77,7 +77,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         }
 
         // Interpret the algorithm
-        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
+        Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (baseAlgorithm == null || !(baseAlgorithm instanceof LocalKeyWrapAlgorithm)) {
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
@@ -109,7 +109,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
                                       JsonWebKey jsonWebKey) {
         key = getKey(jsonWebKey);
 
-        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
+        Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (baseAlgorithm == null || !(baseAlgorithm instanceof LocalKeyWrapAlgorithm)) {
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));

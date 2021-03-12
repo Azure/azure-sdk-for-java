@@ -9,12 +9,13 @@ pr:
       - eng/pipelines/aggregate-reports.yml
 
 jobs:
-  - job: Generate
+  - job: Reporting
+    displayName: Generate reports (with build)
     timeoutInMinutes: 180
     variables:
       - template: templates/variables/globals.yml
     pool:
-      vmImage: 'windows-2019'
+      vmImage: 'ubuntu-18.04'
     steps:
     # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
     # reports. This means it is available as part of that, but also so that this is not documented in the project report.
@@ -35,13 +36,6 @@ jobs:
         publishJUnitResults: false
         goals: 'clean install'
 
-    - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
-      # ComponentGovernance is currently unable to run on pull requests of public projects. Running on non-PR
-      # builds should be sufficient.
-      # Only run if building all libraries succeeded.
-      condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-      displayName: 'Component Detection'
-
     - task: Maven@3
       displayName: 'Generate Reports'
       inputs:
@@ -52,7 +46,7 @@ jobs:
         jdkVersionOption: $(JavaBuildVersion)
         jdkArchitectureOption: 'x64'
         publishJUnitResults: false
-        goals: 'clean verify site:site site:stage'
+        goals: 'verify site:site site:stage'
 
     - task: PublishTestResults@2
       condition: succeededOrFailed()
@@ -86,17 +80,38 @@ jobs:
         Copy-Item eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
         Copy-Item eng/code-quality-reports/src/main/resources/dependency-allowlist.html $(Build.ArtifactStagingDirectory)/staging
 
-        # What is this?
-        # copy output/pom.client.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
-
         Copy-Item eng/common/InterdependencyGraph.html $(Build.ArtifactStagingDirectory)/staging
         Copy-Item data.js $(Build.ArtifactStagingDirectory)/staging
       displayName: 'Copy reports to artifact staging'
 
+    - publish: $(Build.ArtifactStagingDirectory)
+      condition: succeededOrFailed()
+      displayName: 'Publish Report Artifacts'
+      artifact: reports
+  - job: Compliance
+    displayName: Analyze (no build)
+    timeoutInMinutes: 120
+    variables:
+      - template: templates/variables/globals.yml
+    pool:
+      # CredScan build task is Windows only (https://aka.ms/credscan).
+      vmImage: 'windows-2019'
+    steps:
+    - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
+      # ComponentGovernance is currently unable to run on pull requests of public projects. Running on non-PR
+      # builds should be sufficient.
+      # Only run if building all libraries succeeded.
+      condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+      displayName: 'Component Detection'
+
+    # Put cred scan step before install and build packages to avoid the tool scans generated folder like /target.
     - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@3
       displayName: 'Run CredScan'
       inputs:
         suppressionsFile: 'eng\CredScanSuppression.json'
+      condition: succeededOrFailed()
+    - task: securedevelopmentteam.vss-secure-development-tools.build-task-publishsecurityanalysislogs.PublishSecurityAnalysisLogs@3
+      displayName: 'Publish Security Analysis Logs'
       condition: succeededOrFailed()
     - task: securedevelopmentteam.vss-secure-development-tools.build-task-postanalysis.PostAnalysis@2
       displayName: 'Post Analysis'
@@ -105,14 +120,12 @@ jobs:
         GdnBreakGdnToolCredScan: true
         GdnBreakGdnToolCredScanSeverity: Error
         GdnBreakBaselineFiles: $(Build.SourcesDirectory)\eng\java.gdnbaselines
-        GdnBreakBaselines: baseline  
+        GdnBreakBaselines: baseline
         # Used for generating baseline file.
         # GdnBreakOutputBaselineFile: java
         # GdnBreakOutputBaseline: baseline
       condition: succeededOrFailed()
-    - task: securedevelopmentteam.vss-secure-development-tools.build-task-publishsecurityanalysislogs.PublishSecurityAnalysisLogs@3
-      displayName: 'Publish Security Analysis Logs'
-      condition: succeededOrFailed()
+      continueOnError: true
     # Run link verification at the end as it will run no matter the pipeline passing or failing.
     # If this task fails with an error it shouldn't prevent aggregate reports from being generated.
     - template: ../common/pipelines/templates/steps/verify-links.yml
@@ -120,7 +133,3 @@ jobs:
         Directory: ""
         CheckLinkGuidance: $true
         Condition: succeededOrFailed()
-    - publish: $(Build.ArtifactStagingDirectory)
-      condition: succeededOrFailed()
-      displayName: 'Publish Report Artifacts'
-      artifact: reports

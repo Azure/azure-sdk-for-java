@@ -1,5 +1,9 @@
 # Release History
 
+## 7.1.0-beta.1 (Unreleased)
+### Bug Fixes
+- Update to end the trace span regardless of the scope instance type for process operation tracing spans.
+
 ## 7.0.2 (2021-02-10)
 ### Dependency Updates
 - Upgraded `azure-core` dependency to `1.13.0`.

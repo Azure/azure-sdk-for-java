@@ -11,6 +11,7 @@ import com.azure.resourcemanager.mediaservices.models.AccountFilter;
 import com.azure.resourcemanager.mediaservices.models.FilterTrackSelection;
 import com.azure.resourcemanager.mediaservices.models.FirstQuality;
 import com.azure.resourcemanager.mediaservices.models.PresentationTimeRange;
+import com.azure.resourcemanager.mediaservices.models.SystemData;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,6 +30,10 @@ public final class AccountFilterImpl implements AccountFilter, AccountFilter.Def
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public PresentationTimeRange presentationTimeRange() {

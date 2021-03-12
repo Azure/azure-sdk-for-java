@@ -121,7 +121,7 @@ public final class AzureCommunicationChatServiceImpl {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-11-01-preview3";
+        this.apiVersion = "2021-01-27-preview4";
         this.chatThreadClient = new ChatThreadImpl(this);
         this.chatClient = new ChatImpl(this);
     }

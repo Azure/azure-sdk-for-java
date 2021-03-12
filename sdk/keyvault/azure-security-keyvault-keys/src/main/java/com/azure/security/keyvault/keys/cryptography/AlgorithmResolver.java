@@ -8,28 +8,28 @@ import java.util.concurrent.ConcurrentHashMap;
 
 class AlgorithmResolver {
 
-    public static final AlgorithmResolver Default = new AlgorithmResolver();
+    static final AlgorithmResolver DEFAULT = new AlgorithmResolver();
 
     static {
-        Default.put(Aes128CbcHmacSha256.ALGORITHM_NAME, new Aes128CbcHmacSha256());
-        Default.put(Aes192CbcHmacSha384.ALGORITHM_NAME, new Aes192CbcHmacSha384());
-        Default.put(Aes256CbcHmacSha512.ALGORITHM_NAME, new Aes256CbcHmacSha512());
+        DEFAULT.put(Aes128CbcHmacSha256.ALGORITHM_NAME, new Aes128CbcHmacSha256());
+        DEFAULT.put(Aes192CbcHmacSha384.ALGORITHM_NAME, new Aes192CbcHmacSha384());
+        DEFAULT.put(Aes256CbcHmacSha512.ALGORITHM_NAME, new Aes256CbcHmacSha512());
 
-        Default.put(Aes128Cbc.ALGORITHM_NAME, new Aes128Cbc());
-        Default.put(Aes192Cbc.ALGORITHM_NAME, new Aes192Cbc());
-        Default.put(Aes256Cbc.ALGORITHM_NAME, new Aes256Cbc());
+        DEFAULT.put(Aes128Cbc.ALGORITHM_NAME, new Aes128Cbc());
+        DEFAULT.put(Aes192Cbc.ALGORITHM_NAME, new Aes192Cbc());
+        DEFAULT.put(Aes256Cbc.ALGORITHM_NAME, new Aes256Cbc());
 
-        Default.put(AesKw128.ALGORITHM_NAME, new AesKw128());
-        Default.put(AesKw192.ALGORITHM_NAME, new AesKw192());
-        Default.put(AesKw256.ALGORITHM_NAME, new AesKw256());
+        DEFAULT.put(AesKw128.ALGORITHM_NAME, new AesKw128());
+        DEFAULT.put(AesKw192.ALGORITHM_NAME, new AesKw192());
+        DEFAULT.put(AesKw256.ALGORITHM_NAME, new AesKw256());
 
-        Default.put(Rsa15.ALGORITHM_NAME, new Rsa15());
-        Default.put(RsaOaep.ALGORITHM_NAME, new RsaOaep());
+        DEFAULT.put(Rsa15.ALGORITHM_NAME, new Rsa15());
+        DEFAULT.put(RsaOaep.ALGORITHM_NAME, new RsaOaep());
 
-        Default.put(Es256k.ALGORITHM_NAME, new Es256k());
-        Default.put(Es256.ALGORITHM_NAME, new Es256());
-        Default.put(Es384.ALGORITHM_NAME, new Es384());
-        Default.put(Es512.ALGORITHM_NAME, new Es512());
+        DEFAULT.put(Es256k.ALGORITHM_NAME, new Es256k());
+        DEFAULT.put(Es256.ALGORITHM_NAME, new Es256());
+        DEFAULT.put(Es384.ALGORITHM_NAME, new Es384());
+        DEFAULT.put(Es512.ALGORITHM_NAME, new Es512());
     }
 
     private final Map<String, Algorithm> algorithms = new ConcurrentHashMap<>();

@@ -30,9 +30,9 @@ public class ReadmeSamples {
      * Sample for creating Azure Monitor Exporter.
      */
     public void createExporter() {
-        AzureMonitorExporter azureMonitorExporter = new AzureMonitorExporterBuilder()
+        AzureMonitorTraceExporter azureMonitorTraceExporter = new AzureMonitorExporterBuilder()
             .connectionString("{connection-string}")
-            .buildExporter();
+            .buildTraceExporter();
     }
 
     /**
@@ -42,9 +42,9 @@ public class ReadmeSamples {
 
         // Create Azure Monitor exporter and configure OpenTelemetry tracer to use this exporter
         // This should be done just once when application starts up
-        AzureMonitorExporter exporter = new AzureMonitorExporterBuilder()
+        AzureMonitorTraceExporter exporter = new AzureMonitorExporterBuilder()
             .connectionString("{connection-string}")
-            .buildExporter();
+            .buildTraceExporter();
 
         SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
             .addSpanProcessor(SimpleSpanProcessor.create(exporter))

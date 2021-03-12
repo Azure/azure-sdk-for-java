@@ -54,7 +54,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
         keyPair = getKeyPair(jsonWebKey);
 
         // Interpret the requested algorithm
-        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
+        Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (baseAlgorithm == null) {
             if (serviceCryptoAvailable()) {
@@ -95,7 +95,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         keyPair = getKeyPair(jsonWebKey);
 
-        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
+        Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (baseAlgorithm == null) {
             if (serviceCryptoAvailable()) {
@@ -149,7 +149,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         keyPair = getKeyPair(jsonWebKey);
 
-        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
+        Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (baseAlgorithm == null) {
             if (serviceCryptoAvailable()) {
@@ -191,7 +191,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
         keyPair = getKeyPair(jsonWebKey);
 
         // Interpret the requested algorithm
-        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
+        Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (baseAlgorithm == null) {
             if (serviceCryptoAvailable()) {

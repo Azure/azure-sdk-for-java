@@ -1,12 +1,9 @@
 trigger: none
 
 stages:
-- template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
+- template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
     Artifacts:
-      - name: azure-communication-administration
-        groupId: com.azure
-        safeName: azurecommunicationadministration
       - name: azure-communication-chat
         groupId: com.azure
         safeName: azurecommunicationchat
@@ -16,6 +13,9 @@ stages:
       - name: azure-communication-identity
         groupId: com.azure
         safeName: azurecommunicationidentity
+      - name: azure-communication-phonenumbers
+        groupId: com.azure
+        safeName: azurecommunicationphonenumbers
     ServiceDirectory: communication
     PostSteps:
       - task: Maven@3
@@ -43,7 +43,6 @@ stages:
           reportDirectory: sdk/communication/target/site/jacoco-aggregate/
           failIfCoverageEmpty: false
     EnvVars:
-      AZURE_TEST_MODE: LIVE
       SKIP_PHONENUMBER_INTEGRATION_TESTS: TRUE
       SKIP_LIVE_TEST: TRUE
       AZURE_SUBSCRIPTION_ID: $(acs-subscription-id)
