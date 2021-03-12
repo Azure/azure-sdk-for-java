@@ -13,7 +13,6 @@ public class EnvironmentVariable {
     public static final String AAD_MULTI_TENANT_CLIENT_SECRET = System.getenv("AAD_MULTI_TENANT_CLIENT_SECRET");
     public static final String AAD_SINGLE_TENANT_CLIENT_ID = System.getenv("AAD_SINGLE_TENANT_CLIENT_ID");
     public static final String AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE = System.getenv("AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE");
-    public static final String AAD_CUSTOM_ENDPOINT_CLIENT_ID = System.getenv("AAD_CUSTOM_ENDPOINT_CLIENT_ID");
     public static final String AAD_SINGLE_TENANT_CLIENT_SECRET = System.getenv("AAD_SINGLE_TENANT_CLIENT_SECRET");
     public static final String AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE = System.getenv("AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE");
     public static final String AAD_TENANT_ID_1 = System.getenv("AAD_TENANT_ID_1");
@@ -49,7 +48,7 @@ public class EnvironmentVariable {
     public static final String SPRING_TENANT_ID = System.getenv("SPRING_TENANT_ID");
     public static final String SPRING_JMS_STANDARD_SERVICEBUS_CONNECTION_STRING = System.getenv("SPRING_JMS_STANDARD_SERVICEBUS_CONNECTION_STRING");
     public static final String SPRING_JMS_PREMIUM_SERVICEBUS_CONNECTION_STRING = System.getenv("SPRING_JMS_PREMIUM_SERVICEBUS_CONNECTION_STRING");
-    public static final String APPLICATION_SERVER_PORT = System.getenv("APPLICATION_SERVER_PORT");
-
-
+    public static final String CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_B_CLIENT_ID = System.getenv("CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_B_CLIENT_ID");
+    public static final String CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_A_CLIENT_ID = System.getenv("CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_A_CLIENT_ID");
+    public static final String CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_A_CLIENT_SECRET = System.getenv("CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_A_CLIENT_SECRET");
 }

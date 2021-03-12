@@ -1,4 +1,4 @@
-package com.azure.test.aad.conditional.access.resource.server;
+package com.azure.test.aad.conditional.access.webapi.b;
 
 import com.azure.spring.test.AppRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,15 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_ID;
-import static com.azure.spring.test.EnvironmentVariable.APPLICATION_SERVER_PORT;
+import static com.azure.spring.test.EnvironmentVariable.CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_B_CLIENT_ID;
 
-public class AADConditionalAccessResourceServerIT {
+public class ConditionalAccessPolicyTestWebApiB {
     private static void start() {
         Map<String, String> properties = new HashMap<>();
-        properties.put("azure.activedirectory.client-id", AAD_MULTI_TENANT_CLIENT_ID);
-        properties.put("azure.activedirectory.app-id-uri", "api://" + AAD_MULTI_TENANT_CLIENT_ID);
-        properties.put("server.port", APPLICATION_SERVER_PORT);
+        properties.put("azure.activedirectory.client-id", CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_B_CLIENT_ID);
+        properties.put("azure.activedirectory.app-id-uri", "api://" + CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_B_CLIENT_ID);
+        properties.put("server.port", "8883");
         AppRunner app = new AppRunner(DumbApp.class);
         properties.forEach(app::property);
         app.start();
@@ -46,10 +45,10 @@ public class AADConditionalAccessResourceServerIT {
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
         }
 
-        @GetMapping("/file")
+        @GetMapping("/webapiB")
         @PreAuthorize("hasAuthority('SCOPE_File.Read')")
         public String file() {
-            return "Resource Server file read success.";
+            return "Response from webapiB.";
         }
     }
 }

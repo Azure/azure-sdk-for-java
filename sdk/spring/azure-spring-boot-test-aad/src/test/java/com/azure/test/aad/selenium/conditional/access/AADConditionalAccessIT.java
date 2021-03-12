@@ -22,7 +22,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Map;
 
-import static com.azure.spring.test.EnvironmentVariable.AAD_CUSTOM_ENDPOINT_CLIENT_ID;
+import static com.azure.spring.test.EnvironmentVariable.CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_A_CLIENT_ID;
 import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
 
@@ -30,18 +30,17 @@ public class AADConditionalAccessIT {
 
     private AADSeleniumITHelper aadSeleniumITHelper;
 
-    private static final String CUSTOM_LOCAL_FILE_ENDPOINT = "http://localhost:8081/call-custom";
+    private static final String WEB_API_A_ENDPOINT = "http://localhost:8882/webapiA";
     private static final Logger LOGGER = LoggerFactory.getLogger(AADConditionalAccessIT.class);
 
-    @Ignore
     @Test
     public void conditionalAccessTest() {
         Map<String, String> properties = createDefaultProperties();
-        properties.put("azure.activedirectory.authorization-clients.obo.scopes",
-            "api://" + AAD_CUSTOM_ENDPOINT_CLIENT_ID + "/Obo.File.Read");
+        properties.put("azure.activedirectory.authorization-clients.webapiA.scopes",
+            "api://" + CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_A_CLIENT_ID + "/File.Read");
         aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties);
-        String body = aadSeleniumITHelper.getBodyText();
-        Assert.assertEquals("Resource Server file read success.", body);
+        String body = aadSeleniumITHelper.loginAndGetBodyText();
+        Assert.assertEquals("Response from webapiB.", body);
     }
 
     @After
@@ -69,31 +68,31 @@ public class AADConditionalAccessIT {
         }
 
         /**
-         * Call obo server, return response body.
+         * Call webapiA and webapiB server, return response body.
          *
-         * @param obo authorized client for Custom
+         * @param webapiA authorized client for webapiA
          * @return Response response body data.
          */
-        @GetMapping("/")
-        public String callGraph(@RegisteredOAuth2AuthorizedClient("obo") OAuth2AuthorizedClient obo) {
-            return callOboEndpoint(obo);
+        @GetMapping("/webapiA/webApiB")
+        public String callWebapiA(@RegisteredOAuth2AuthorizedClient("webapiA") OAuth2AuthorizedClient webapiA) {
+            return callOboEndpoint(webapiA);
         }
 
         /**
-         * Call obo local file endpoint
+         * Call WebapiA endpoint
          *
-         * @param obo Authorized Client
+         * @param webapiA Authorized Client
          * @return Response string data.
          */
-        private String callOboEndpoint(OAuth2AuthorizedClient obo) {
+        private String callOboEndpoint(OAuth2AuthorizedClient webapiA) {
             String body = webClient
                 .get()
-                .uri(CUSTOM_LOCAL_FILE_ENDPOINT)
-                .attributes(oauth2AuthorizedClient(obo))
+                .uri(WEB_API_A_ENDPOINT)
+                .attributes(oauth2AuthorizedClient(webapiA))
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
-            LOGGER.info("Response from Graph: {}", body);
+            LOGGER.info("Response from WebapiA: {}", body);
             return body;
         }
     }

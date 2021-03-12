@@ -1,4 +1,4 @@
-package com.azure.test.aad.webapi.conditional.access.obo;
+package com.azure.test.aad.webapi.conditional.access.webapi.a;
 
 import com.azure.spring.test.AppRunner;
 import org.slf4j.Logger;
@@ -24,26 +24,26 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.spring.test.EnvironmentVariable.AAD_CUSTOM_ENDPOINT_CLIENT_ID;
-import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_ID;
-import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_SECRET;
 import static com.azure.spring.test.EnvironmentVariable.AAD_TENANT_ID_1;
-import static com.azure.spring.test.EnvironmentVariable.APPLICATION_SERVER_PORT;
+import static com.azure.spring.test.EnvironmentVariable.CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_A_CLIENT_ID;
+import static com.azure.spring.test.EnvironmentVariable.CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_A_CLIENT_SECRET;
+import static com.azure.spring.test.EnvironmentVariable.CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_B_CLIENT_ID;
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
 
-public class AADConditionalAccessOboServerIT {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AADConditionalAccessOboServerIT.class);
-    private static final String CUSTOM_LOCAL_FILE_ENDPOINT = "http://localhost:8082/file";
+public class ConditionalAccessPolicyTestWebApiA {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConditionalAccessPolicyTestWebApiA.class);
+    private static final String WEB_API_B_ENDPOINT = "http://localhost:8883/webapiB";
 
     private static void start() {
         Map<String, String> properties = new HashMap<>();
-        properties.put("server.port", APPLICATION_SERVER_PORT);
-        properties.put("azure.activedirectory.client-id", AAD_MULTI_TENANT_CLIENT_ID);
-        properties.put("azure.activedirectory.client-secret", AAD_MULTI_TENANT_CLIENT_SECRET);
+        properties.put("server.port", "8882");
+        properties.put("azure.activedirectory.client-id", CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_A_CLIENT_ID);
+        properties.put("azure.activedirectory.client-secret", CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_A_CLIENT_SECRET);
         properties.put("azure.activedirectory.tenant-id", AAD_TENANT_ID_1);
-        properties.put("azure.activedirectory.authorization-clients.custom.scopes",
-            "api://" + AAD_CUSTOM_ENDPOINT_CLIENT_ID + "/File.Read");
-        properties.put("azure.activedirectory.app-id-uri", "api://" + AAD_MULTI_TENANT_CLIENT_ID);
+        properties.put("azure.activedirectory.authorization-clients.webapiB.scopes",
+            "api://" + CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_B_CLIENT_ID + "/File.Read");
+        properties.put("azure.activedirectory.app-id-uri",
+            "api://" + CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_A_CLIENT_ID);
         AppRunner app = new AppRunner(DumbApp.class);
         properties.forEach(app::property);
         app.start();
@@ -83,32 +83,32 @@ public class AADConditionalAccessOboServerIT {
 
 
         /**
-         * Call custom resources, return response body.
+         * webapiA, return response body.
          *
-         * @param custom authorized client for Custom
+         * @param webapiB authorized client for webapiB
          * @return Response response body data.
          */
-        @GetMapping("call-custom")
-        @PreAuthorize("hasAuthority('SCOPE_Obo.File.Read')")
-        public String callCustom(@RegisteredOAuth2AuthorizedClient("custom") OAuth2AuthorizedClient custom) {
-            return callCustomLocalFileEndpoint(custom);
+        @GetMapping("webapiA")
+        @PreAuthorize("hasAuthority('SCOPE_File.Read')")
+        public String callCustom(@RegisteredOAuth2AuthorizedClient("webapiB") OAuth2AuthorizedClient webapiB) {
+            return callCustomLocalFileEndpoint(webapiB);
         }
 
         /**
-         * Call custom local file endpoint
+         * Call webapiB endpoint
          *
-         * @param custom Authorized Client
+         * @param webapiB Authorized Client
          * @return Response string data.
          */
-        private String callCustomLocalFileEndpoint(OAuth2AuthorizedClient custom) {
+        private String callCustomLocalFileEndpoint(OAuth2AuthorizedClient webapiB) {
             String body = webClient
                 .get()
-                .uri(CUSTOM_LOCAL_FILE_ENDPOINT)
-                .attributes(oauth2AuthorizedClient(custom))
+                .uri(WEB_API_B_ENDPOINT)
+                .attributes(oauth2AuthorizedClient(webapiB))
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
-            LOGGER.info("Response from Resource Server: {}", body);
+            LOGGER.info("Response from webapiB: {}", body);
             return body;
         }
     }
