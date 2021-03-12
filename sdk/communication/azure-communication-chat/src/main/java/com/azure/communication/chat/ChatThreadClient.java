@@ -6,6 +6,7 @@ import com.azure.communication.chat.models.AddChatParticipantsResult;
 import com.azure.communication.chat.models.ChatMessage;
 import com.azure.communication.chat.models.ChatParticipant;
 import com.azure.communication.chat.models.ChatMessageReadReceipt;
+import com.azure.communication.chat.models.ChatThreadProperties;
 import com.azure.communication.chat.models.ListChatMessagesOptions;
 import com.azure.communication.chat.models.ListParticipantsOptions;
 import com.azure.communication.chat.models.ListReadReceiptOptions;
@@ -367,4 +368,26 @@ public final class ChatThreadClient {
                                                                   Context context) {
         return new PagedIterable<>(this.client.listReadReceipts(listReadReceiptOptions, context));
     }
+
+    /**
+     * Gets chat thread properties.
+     *
+     * @return chat thread properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ChatThreadProperties getProperties() {
+        return this.client.getProperties().block();
+    }
+
+    /**
+     * Gets chat thread properties.
+     *
+     * @param context The context to associate with this operation.
+     * @return chat thread properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ChatThreadProperties> getPropertiesWithResponse(Context context) {
+        return this.client.getProperties(context).block();
+    }
+
 }

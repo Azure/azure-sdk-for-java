@@ -102,7 +102,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         StepVerifier.create(
             chatThreadClient.updateTopic(newTopic)
                 .flatMap(noResp -> {
-                    return client.getChatThreadProperties(threadId);
+                    return chatThreadClient.getProperties();
                 })
         )
             .assertNext(chatThread -> {
@@ -122,7 +122,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
             chatThreadClient.updateTopicWithResponse(newTopic)
                 .flatMap(updateThreadResponse -> {
                     assertEquals(204, updateThreadResponse.getStatusCode());
-                    return client.getChatThreadProperties(threadId);
+                    return chatThreadClient.getProperties();
                 })
 
         )

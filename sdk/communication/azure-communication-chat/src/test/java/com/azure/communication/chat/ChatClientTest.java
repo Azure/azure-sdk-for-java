@@ -105,59 +105,6 @@ public class ChatClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void canGetExistingChatThread(HttpClient httpClient) {
-        // Arrange
-        setupTest(httpClient, "canGetExistingChatThreadSync");
-        CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
-            firstThreadMember.getId(), secondThreadMember.getId());
-        CreateChatThreadResult createChatThreadResult = client.createChatThread(threadRequest);
-        ChatThreadClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getChatThread().getId());
-
-        // Action & Assert
-        ChatThreadProperties chatThreadProperties = client.getChatThreadProperties(chatThreadClient.getChatThreadId());
-        assertEquals(chatThreadClient.getChatThreadId(), chatThreadProperties.getId());
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void canGetExistingChatThreadWithResponse(HttpClient httpClient) {
-        // Arrange
-        setupTest(httpClient, "canGetExistingChatThreadWithResponseSync");
-        CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
-            firstThreadMember.getId(), secondThreadMember.getId());
-
-        CreateChatThreadResult createChatThreadResult = client.createChatThread(threadRequest);
-        ChatThreadClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getChatThread().getId());
-
-        // Action & Assert
-        ChatThreadProperties chatThreadProperties = client.getChatThreadWithResponse(chatThreadClient.getChatThreadId(), Context.NONE).getValue();
-        assertEquals(chatThreadClient.getChatThreadId(), chatThreadProperties.getId());
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getNotFoundOnNonExistingChatThreadSync(HttpClient httpClient) {
-        // Arrange
-        setupTest(httpClient, "getNotFoundOnNonExistingChatThreadSync");
-
-        // Action & Assert
-        assertRestException(
-            () -> client.getChatThreadProperties("19:00000000000000000000000000000000@thread.v2"), 404);
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getNotFoundOnNonExistingChatThreadWithResponseSync(HttpClient httpClient) {
-        // Arrange
-        setupTest(httpClient, "getNotFoundOnNonExistingChatThreadWithResponseSync");
-
-        // Action & Assert
-        assertRestException(
-            () -> client.getChatThreadWithResponse("19:00000000000000000000000000000000@thread.v2", Context.NONE), 404);
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canDeleteChatThread(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canDeleteChatThreadSync");

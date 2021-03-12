@@ -101,7 +101,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         // Action & Assert
         chatThreadClient.updateTopic(newTopic);
 
-        ChatThreadProperties chatThreadProperties = client.getChatThreadProperties(threadId);
+        ChatThreadProperties chatThreadProperties = chatThreadClient.getProperties();
         assertEquals(chatThreadProperties.getTopic(), newTopic);
     }
 
@@ -115,7 +115,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         // Action & Assert
         chatThreadClient.updateTopicWithResponse(newTopic, Context.NONE);
 
-        ChatThreadProperties chatThreadProperties = client.getChatThreadProperties(threadId);
+        ChatThreadProperties chatThreadProperties = chatThreadClient.getProperties();
         assertEquals(chatThreadProperties.getTopic(), newTopic);
     }
 
@@ -600,5 +600,27 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         // Action & Assert
         Response<Void> sendResponse = chatThreadClient.sendReadReceiptWithResponse(response.getId(), Context.NONE);
         assertEquals(200, sendResponse.getStatusCode());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canGetChatThreadProperties(HttpClient httpClient) {
+        // Arrange
+        setupTest(httpClient, "canGetChatThreadPropertiesSync");
+
+        // Action & Assert
+        ChatThreadProperties chatThreadProperties = chatThreadClient.getProperties();
+        assertEquals(chatThreadClient.getChatThreadId(), chatThreadProperties.getId());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canGetChatThreadPropertiesWithResponse(HttpClient httpClient) {
+        // Arrange
+        setupTest(httpClient, "canGetChatThreadPropertiesWithResponseSync");
+
+        // Action & Assert
+        ChatThreadProperties chatThreadProperties = chatThreadClient.getPropertiesWithResponse(Context.NONE).getValue();
+        assertEquals(chatThreadClient.getChatThreadId(), chatThreadProperties.getId());
     }
 }

@@ -3,14 +3,12 @@
 package com.azure.communication.chat;
 
 import com.azure.communication.chat.implementation.converters.CreateChatThreadResultConverter;
-import com.azure.communication.chat.models.ChatThreadProperties;
 import reactor.core.publisher.Mono;
 
 import com.azure.communication.chat.models.ChatThreadItem;
 import com.azure.communication.chat.models.CreateChatThreadOptions;
 import com.azure.communication.chat.models.CreateChatThreadResult;
 import com.azure.communication.chat.models.ListChatThreadsOptions;
-import com.azure.communication.chat.implementation.converters.ChatThreadPropertiesConverter;
 import com.azure.communication.chat.implementation.converters.CreateChatThreadOptionsConverter;
 import com.azure.communication.chat.implementation.AzureCommunicationChatServiceImpl;
 import com.azure.communication.chat.implementation.ChatsImpl;
@@ -108,63 +106,6 @@ public final class ChatAsyncClient {
             CreateChatThreadOptionsConverter.convert(options), options.getIdempotencyToken(), context).map(
                 result -> new SimpleResponse<CreateChatThreadResult>(
                     result, CreateChatThreadResultConverter.convert(result.getValue())));
-    }
-
-    /**
-     * Gets a chat thread.
-     *
-     * @param chatThreadId Chat thread id to get.
-     * @return a chat thread.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ChatThreadProperties> getChatThreadProperties(String chatThreadId) {
-        try {
-            Objects.requireNonNull(chatThreadId, "'chatThreadId' cannot be null.");
-            return withContext(context -> getChatThreadProperties(chatThreadId, context)
-                .flatMap(
-                    (Response<ChatThreadProperties> res) -> {
-                        if (res.getValue() != null) {
-                            return Mono.just(res.getValue());
-                        } else {
-                            return Mono.empty();
-                        }
-                    }));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Gets a chat thread.
-     *
-     * @param chatThreadId Chat thread id to get.
-     * @return a chat thread.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ChatThreadProperties>> getChatThreadWithResponse(String chatThreadId) {
-        try {
-            Objects.requireNonNull(chatThreadId, "'chatThreadId' cannot be null.");
-            return withContext(context -> getChatThreadProperties(chatThreadId, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Gets a chat thread.
-     *
-     * @param chatThreadId Chat thread id to get.
-     * @param context The context to associate with this operation.
-     * @return chat thread properties.
-     */
-    Mono<Response<ChatThreadProperties>> getChatThreadProperties(String chatThreadId, Context context) {
-        context = context == null ? Context.NONE : context;
-        return this.chatClient.getChatThreadPropertiesWithResponseAsync(chatThreadId, context)
-            .flatMap(
-                (Response<com.azure.communication.chat.implementation.models.ChatThreadProperties> res) -> {
-                    return Mono.just(new SimpleResponse<ChatThreadProperties>(
-                        res, ChatThreadPropertiesConverter.convert(res.getValue())));
-                });
     }
 
     /**

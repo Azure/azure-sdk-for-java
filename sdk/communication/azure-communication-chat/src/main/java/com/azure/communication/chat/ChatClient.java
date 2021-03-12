@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.communication.chat;
 
-import com.azure.communication.chat.models.ChatThreadProperties;
 import com.azure.communication.chat.models.ChatThreadItem;
 import com.azure.communication.chat.models.CreateChatThreadOptions;
 import com.azure.communication.chat.models.CreateChatThreadResult;
@@ -73,31 +72,6 @@ public final class ChatClient {
 
         return this.client.createChatThread(options, context).map(
             result -> new SimpleResponse<CreateChatThreadResult>(result, result.getValue())).block();
-    }
-
-    /**
-     * Gets a chat thread.
-     *
-     * @param chatThreadId Chat thread id to get.
-     * @return chat thread properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ChatThreadProperties getChatThreadProperties(String chatThreadId) {
-
-        return this.client.getChatThreadProperties(chatThreadId).block();
-    }
-
-    /**
-     * Gets a chat thread.
-     *
-     * @param chatThreadId Chat thread id to get.
-     * @param context The context to associate with this operation.
-     * @return a chat thread.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ChatThreadProperties> getChatThreadWithResponse(String chatThreadId, Context context) {
-
-        return this.client.getChatThreadProperties(chatThreadId, context).block();
     }
 
     /**

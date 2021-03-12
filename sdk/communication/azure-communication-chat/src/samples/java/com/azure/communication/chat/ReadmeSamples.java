@@ -94,8 +94,8 @@ public class ReadmeSamples {
     public void getChatThread() {
         ChatClient chatClient = createChatClient();
 
-        String chatThreadId = "Id";
-        ChatThreadProperties chatThreadProperties = chatClient.getChatThreadProperties(chatThreadId);
+        ChatThreadClient chatThreadClient = chatClient.getChatThreadClient("Id");
+        ChatThreadProperties chatThreadProperties = chatThreadClient.getProperties();
     }
 
     /**

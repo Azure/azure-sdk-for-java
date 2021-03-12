@@ -5,6 +5,8 @@ package com.azure.communication.chat;
 import com.azure.communication.chat.implementation.ChatThreadsImpl;
 
 import com.azure.communication.chat.implementation.converters.AddChatParticipantsResultConverter;
+import com.azure.communication.chat.implementation.converters.ChatThreadPropertiesConverter;
+import com.azure.communication.chat.models.ChatThreadProperties;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -728,6 +730,60 @@ public final class ChatThreadAsyncClient {
 
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
+    }
+
+    /**
+     * Gets chat thread properties.
+     *
+     * @return chat thread properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ChatThreadProperties> getProperties() {
+        try {
+            Objects.requireNonNull(chatThreadId, "'chatThreadId' cannot be null.");
+            return withContext(context -> getProperties(context)
+                .flatMap(
+                    (Response<ChatThreadProperties> res) -> {
+                        if (res.getValue() != null) {
+                            return Mono.just(res.getValue());
+                        } else {
+                            return Mono.empty();
+                        }
+                    }));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Gets chat thread properties.
+     *
+     * @return chat thread properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ChatThreadProperties>> getPropertiesWithResponse() {
+        try {
+            Objects.requireNonNull(chatThreadId, "'chatThreadId' cannot be null.");
+            return withContext(context -> getProperties(context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Gets chat thread properties.
+     *
+     * @param context The context to associate with this operation.
+     * @return chat thread properties.
+     */
+    Mono<Response<ChatThreadProperties>> getProperties(Context context) {
+        context = context == null ? Context.NONE : context;
+        return this.chatThreadClient.getChatThreadPropertiesWithResponseAsync(this.chatThreadId, context)
+            .flatMap(
+                (Response<com.azure.communication.chat.implementation.models.ChatThreadProperties> res) -> {
+                    return Mono.just(new SimpleResponse<ChatThreadProperties>(
+                        res, ChatThreadPropertiesConverter.convert(res.getValue())));
+                });
     }
 
     private <T1, T2> PagedFlux<T1> pagedFluxConvert(PagedFlux<T2> originalPagedFlux, Function<T2, T1> func) {

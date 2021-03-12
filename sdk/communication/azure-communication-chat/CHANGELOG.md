@@ -9,6 +9,7 @@
 - SendMessage returns `SendChatMessageResult` instead of string containing ID
 - Renamed `CommunicationError` to `ChatError`
 - Renamed `CommunicationErrorResponse` to `ChatErrorResponse`
+- Moved `getChatThread` to `ChatThreadClient` and renamed to `getProperties`
 
 ## 1.0.0-beta.6 (2021-03-09)
 Updated `azure-communication-chat` version

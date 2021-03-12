@@ -131,12 +131,11 @@ String chatThreadId = result.getChatThread().getId();
 #### Get a chat thread properties
 
 The `getChatThreadProperties` method retrieves a thread's properties from the service.
-`chatThreadId` is the unique ID of the chat thread.
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L97-L98 -->
 ```Java
-String chatThreadId = "Id";
-ChatThreadProperties chatThreadProperties = chatClient.getChatThreadProperties(chatThreadId);
+ChatThreadClient chatThreadClient = chatClient.getChatThreadClient("Id");
+ChatThreadProperties chatThreadProperties = chatThreadClient.getProperties();
 ```
 
 #### Delete a thread

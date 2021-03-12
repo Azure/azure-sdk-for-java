@@ -19,7 +19,6 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.chat.implementation.ChatOptionsProvider;
 import com.azure.communication.chat.models.*;
 import com.azure.core.credential.AccessToken;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.logging.ClientLogger;
@@ -240,7 +239,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
                 .flatMap(createChatThreadResult -> {
                     ChatThreadAsyncClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getChatThread().getId());
                     chatThreadClientRef.set(chatThreadClient);
-                    return client.getChatThreadProperties(chatThreadClient.getChatThreadId());
+                    return chatThreadClient.getProperties();
                 }))
             .assertNext(chatThread -> {
                 assertEquals(chatThreadClientRef.get().getChatThreadId(), chatThread.getId());
@@ -263,55 +262,13 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
                 .flatMap(createChatThreadResult -> {
                     ChatThreadAsyncClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getChatThread().getId());
                     chatThreadClientRef.set(chatThreadClient);
-                    return client.getChatThreadWithResponse(chatThreadClient.getChatThreadId());
+                    return chatThreadClient.getPropertiesWithResponse();
                 }))
             .assertNext(chatThreadResponse -> {
                 ChatThreadProperties chatThreadProperties = chatThreadResponse.getValue();
                 assertEquals(chatThreadClientRef.get().getChatThreadId(), chatThreadProperties.getId());
             })
             .verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getNotFoundOnNonExistingChatThread(HttpClient httpClient) {
-        // Act & Assert
-        setupTest(httpClient, "getNotFoundOnNonExistingChatThread");
-        StepVerifier.create(client.getChatThreadProperties("19:00000000000000000000000000000000@thread.v2"))
-            .expectErrorMatches(exception ->
-                ((HttpResponseException) exception).getResponse().getStatusCode() == 404
-            )
-            .verify();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getNotFoundOnNonExistingChatThreadWithResponse(HttpClient httpClient) {
-        // Act & Assert
-        setupTest(httpClient, "getNotFoundOnNonExistingChatThreadWithResponse");
-        StepVerifier.create(client.getChatThreadWithResponse("19:00000000000000000000000000000000@thread.v2"))
-            .expectErrorMatches(exception ->
-                ((HttpResponseException) exception).getResponse().getStatusCode() == 404
-            )
-            .verify();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void cannotGetChatThreadWithNullId(HttpClient httpClient) {
-        // Act & Assert
-        setupTest(httpClient, "cannotGetChatThreadWithNullId");
-        StepVerifier.create(client.getChatThreadProperties(null))
-            .verifyError(NullPointerException.class);
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void cannotGetChatThreadWithResponseWithNullId(HttpClient httpClient) {
-        // Act & Assert
-        setupTest(httpClient, "cannotGetChatThreadWithResponseWithNullId");
-        StepVerifier.create(client.getChatThreadWithResponse(null))
-            .verifyError(NullPointerException.class);
     }
 
     @ParameterizedTest

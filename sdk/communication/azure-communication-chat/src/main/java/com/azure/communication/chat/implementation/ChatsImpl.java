@@ -4,7 +4,6 @@
 
 package com.azure.communication.chat.implementation;
 
-import com.azure.communication.chat.implementation.models.ChatThreadProperties;
 import com.azure.communication.chat.implementation.models.ChatThreadsItemCollection;
 import com.azure.communication.chat.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.chat.implementation.models.CreateChatThreadOptions;
@@ -78,16 +77,6 @@ public final class ChatsImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("maxPageSize") Integer maxPageSize,
                 @QueryParam("startTime") OffsetDateTime startTime,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Get("/chat/threads/{chatThreadId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<ChatThreadProperties>> getChatThreadProperties(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("chatThreadId") String chatThreadId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -469,116 +458,6 @@ public final class ChatsImpl {
     public PagedIterable<ChatThreadItem> listChatThreads(
             Integer maxPageSize, OffsetDateTime startTime, Context context) {
         return new PagedIterable<>(listChatThreadsAsync(maxPageSize, startTime, context));
-    }
-
-    /**
-     * Gets a chat thread.
-     *
-     * @param chatThreadId Id of the thread.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a chat thread.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ChatThreadProperties>> getChatThreadPropertiesWithResponseAsync(String chatThreadId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getChatThreadProperties(
-                                this.client.getEndpoint(), chatThreadId, this.client.getApiVersion(), accept, context));
-    }
-
-    /**
-     * Gets a chat thread.
-     *
-     * @param chatThreadId Id of the thread.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a chat thread.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ChatThreadProperties>> getChatThreadPropertiesWithResponseAsync(
-            String chatThreadId, Context context) {
-        final String accept = "application/json";
-        return service.getChatThreadProperties(
-                this.client.getEndpoint(), chatThreadId, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets a chat thread.
-     *
-     * @param chatThreadId Id of the thread.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a chat thread.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ChatThreadProperties> getChatThreadPropertiesAsync(String chatThreadId) {
-        return getChatThreadPropertiesWithResponseAsync(chatThreadId)
-                .flatMap(
-                        (Response<ChatThreadProperties> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Gets a chat thread.
-     *
-     * @param chatThreadId Id of the thread.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a chat thread.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ChatThreadProperties> getChatThreadPropertiesAsync(String chatThreadId, Context context) {
-        return getChatThreadPropertiesWithResponseAsync(chatThreadId, context)
-                .flatMap(
-                        (Response<ChatThreadProperties> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Gets a chat thread.
-     *
-     * @param chatThreadId Id of the thread.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a chat thread.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ChatThreadProperties getChatThreadProperties(String chatThreadId) {
-        return getChatThreadPropertiesAsync(chatThreadId).block();
-    }
-
-    /**
-     * Gets a chat thread.
-     *
-     * @param chatThreadId Id of the thread.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a chat thread.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ChatThreadProperties> getChatThreadPropertiesWithResponse(String chatThreadId, Context context) {
-        return getChatThreadPropertiesWithResponseAsync(chatThreadId, context).block();
     }
 
     /**
