@@ -7,6 +7,7 @@ import com.azure.core.http.*
 import com.azure.core.test.http.MockHttpResponse
 import com.azure.core.util.CoreUtils
 import com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy
+import com.azure.storage.common.StorageSharedKeyCredential
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
@@ -34,10 +35,10 @@ class NioClientBuilderTest extends Specification {
         def config = [:]
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = String.join(",", ["containerName"])
         config[AzureFileSystem.AZURE_STORAGE_HTTP_CLIENT] = new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName + "/" + clientVersion + " " + "(.)*")
-        config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = "accountKey"
+        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = new StorageSharedKeyCredential("accountName", "accountKey")
 
         when:
-        def fileSystem = new AzureFileSystem(new AzureFileSystemProvider(), "accountName", config)
+        def fileSystem = new AzureFileSystem(new AzureFileSystemProvider(), "https://accountName.blob.core.windows.net", config)
         def pipeline = fileSystem.blobServiceClient.getHttpPipeline()
         def foundPolicy = false
         for (int i = 0; i < pipeline.getPolicyCount(); i++)
@@ -56,8 +57,8 @@ class NioClientBuilderTest extends Specification {
         def config = [:]
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = String.join(",", ["containerName"])
         config[AzureFileSystem.AZURE_STORAGE_HTTP_CLIENT] = new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName + "/" + clientVersion + " " + "(.)*")
-        config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = "accountKey"
-        def fileSystem = new AzureFileSystem(new AzureFileSystemProvider(), "accountName", config)
+        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = new StorageSharedKeyCredential("accountName", "accountKey")
+        def fileSystem = new AzureFileSystem(new AzureFileSystemProvider(), "https://accountName.blob.core.windows.net", config)
 
         when:
         AzureFileStore fileStore = fileSystem.getFileStore("containerName")
@@ -79,8 +80,8 @@ class NioClientBuilderTest extends Specification {
         def config = [:]
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = String.join(",", ["containerName"])
         config[AzureFileSystem.AZURE_STORAGE_HTTP_CLIENT] = new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName + "/" + clientVersion + " " + "(.)*")
-        config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = "accountKey"
-        def fileSystem = new AzureFileSystem(new AzureFileSystemProvider(), "accountName", config)
+        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = new StorageSharedKeyCredential("accountName", "accountKey")
+        def fileSystem = new AzureFileSystem(new AzureFileSystemProvider(), "https://accountName.blob.core.windows.net", config)
         AzurePath path = fileSystem.getPath("blobName")
 
         when:
