@@ -166,10 +166,9 @@ String sasToken = EventGridPublisherClient
 ```
 
 ### Use `BinaryData`
-`com.azure.core.util.BinaryData.fromObject()` needs a Json serializer when you use it to wrap an object into
-a `BinaryData` for the `data` of `com.azure.core.models.CloudEvent`.
-So please include [azure-core-serializer-json-jackson](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/core/azure-core-serializer-json-jackson)
-in your project `pom.xml` if you use `BinaryData.fromObject()`.
+`com.azure.core.util.BinaryData.fromObject(Object object)` and `toObject()` need a default Json serializer if you don't provide one.
+Please include [azure-core-serializer-json-jackson](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/core/azure-core-serializer-json-jackson)
+in your project `pom.xml` so `BinaryData` has a default json serializer.
 
 ## Key concepts
 For information about general Event Grid concepts: [Concepts in Azure Event Grid](https://docs.microsoft.com/azure/event-grid/concepts).
