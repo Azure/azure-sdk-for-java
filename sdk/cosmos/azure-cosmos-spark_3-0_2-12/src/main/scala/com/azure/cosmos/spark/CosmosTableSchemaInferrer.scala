@@ -3,8 +3,10 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosAsyncClient
-import com.azure.cosmos.models.CosmosQueryRequestOptions
+import com.azure.cosmos.models.{CosmosQueryRequestOptions, FeedResponse}
 import com.fasterxml.jackson.databind.JsonNode
+
+import java.util.concurrent.atomic.AtomicLong
 
 // scalastyle:off underscore.import
 import com.fasterxml.jackson.databind.node._
@@ -79,10 +81,15 @@ private object CosmosTableSchemaInferrer
         case _ => cosmosReadConfig.inferSchemaQuery.get
       }
 
-      val queryObservable =
+      val totalResults = new AtomicLong(0)
+      val pagedFluxResponse =
         sourceContainer.queryItems(queryText, queryOptions, classOf[ObjectNode])
 
-      val feedResponseList = queryObservable.byPage.collectList.block
+      val feedResponseList = pagedFluxResponse
+        .byPage
+        .takeUntil(page => totalResults.addAndGet(page.getResults.size) >= cosmosReadConfig.inferSchemaSamplingSize)
+        .collectList
+        .block
       inferSchema(feedResponseList.asScala.flatten(feedResponse => feedResponse.getResults.asScala),
         cosmosReadConfig.inferSchemaQuery.isDefined || cosmosReadConfig.includeSystemProperties,
         cosmosReadConfig.inferSchemaQuery.isDefined || cosmosReadConfig.includeTimestamp)
