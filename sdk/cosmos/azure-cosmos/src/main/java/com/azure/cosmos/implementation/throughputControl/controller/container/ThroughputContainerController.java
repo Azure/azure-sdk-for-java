@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -117,7 +118,8 @@ public class ThroughputContainerController implements IThroughputContainerContro
             .flatMap(containerRid -> this.resolveContainerMaxThroughput())
             .flatMap(controller -> this.createAndInitializeGroupControllers())
             .doOnSuccess(controller -> {
-                Schedulers.parallel().schedule(() -> this.refreshContainerMaxThroughputTask(this.cancellationTokenSource.getToken()).subscribe());
+                CosmosSchedulers.Parallel.schedule(() ->
+                    this.refreshContainerMaxThroughputTask(this.cancellationTokenSource.getToken()).subscribe());
             })
             .thenReturn((T) this);
     }
@@ -353,7 +355,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
             return Flux.empty();
         }
 
-        return Mono.delay(DEFAULT_THROUGHPUT_REFRESH_INTERVAL)
+        return Mono.delay(DEFAULT_THROUGHPUT_REFRESH_INTERVAL, CosmosSchedulers.Parallel)
             .flatMap(t -> {
                 if (cancellationToken.isCancellationRequested()) {
                     return Mono.empty();

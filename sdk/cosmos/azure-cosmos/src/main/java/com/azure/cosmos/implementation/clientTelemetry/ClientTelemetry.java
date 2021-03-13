@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation.clientTelemetry;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -121,7 +122,7 @@ public class ClientTelemetry {
     }
 
     private Mono<Void> sendClientTelemetry() {
-        return Mono.delay(Duration.ofSeconds(clientTelemetrySchedulingSec))
+        return Mono.delay(Duration.ofSeconds(clientTelemetrySchedulingSec), CosmosSchedulers.Parallel)
                    .flatMap(t -> {
                        if (this.isClosed) {
                            logger.warn("client already closed");

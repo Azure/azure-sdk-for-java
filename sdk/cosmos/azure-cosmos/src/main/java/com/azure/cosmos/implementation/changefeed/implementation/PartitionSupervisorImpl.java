@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
+import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.CancellationTokenSource;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
@@ -46,7 +47,7 @@ class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
         this.scheduler = scheduler;
 
         if (scheduler == null) {
-            this.scheduler = Schedulers.elastic();
+            this.scheduler = Schedulers.boundedElastic();
         }
     }
 
@@ -69,7 +70,7 @@ class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
             .subscribe());
 
         return Mono.just(this)
-            .delayElement(Duration.ofMillis(100))
+            .delayElement(Duration.ofMillis(100), CosmosSchedulers.Parallel)
             .repeat( () -> !shutdownToken.isCancellationRequested() && this.processor.getResultException() == null && this.renewer.getResultException() == null)
             .last()
             .flatMap( value -> this.afterRun(context, shutdownToken));

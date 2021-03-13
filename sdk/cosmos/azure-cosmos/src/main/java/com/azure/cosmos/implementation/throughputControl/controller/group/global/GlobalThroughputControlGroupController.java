@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.throughputControl.controller.group.global;
 
 import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.guava25.collect.EvictingQueue;
@@ -63,8 +64,12 @@ public class GlobalThroughputControlGroupController extends ThroughputGroupContr
             })
             .flatMap(dummy -> this.resolveRequestController())
             .doOnSuccess(dummy -> {
-                this.throughputUsageCycleRenewTask(this.cancellationTokenSource.getToken()).publishOn(Schedulers.parallel()).subscribe();
-                this.calculateClientThroughputShareTask(this.cancellationTokenSource.getToken()).publishOn(Schedulers.parallel()).subscribe();
+                this.throughputUsageCycleRenewTask(this.cancellationTokenSource.getToken())
+                    .publishOn(CosmosSchedulers.Parallel)
+                    .subscribe();
+                this.calculateClientThroughputShareTask(this.cancellationTokenSource.getToken())
+                    .publishOn(CosmosSchedulers.Parallel)
+                    .subscribe();
             })
             .thenReturn((T)this);
     }
@@ -106,7 +111,7 @@ public class GlobalThroughputControlGroupController extends ThroughputGroupContr
     }
 
     private Flux<Void> calculateClientThroughputShareTask(LinkedCancellationToken cancellationToken) {
-        return Mono.delay(controlItemRenewInterval)
+        return Mono.delay(controlItemRenewInterval, CosmosSchedulers.Parallel)
             .flatMap(t -> {
                 if (cancellationToken.isCancellationRequested()) {
                     return Mono.empty();

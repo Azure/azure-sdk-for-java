@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.throughputControl.controller.group.local;
 
 import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.throughputControl.LinkedCancellationToken;
@@ -30,7 +31,9 @@ public class LocalThroughputControlGroupController extends ThroughputGroupContro
     public <T> Mono<T> init() {
         return this.resolveRequestController()
             .doOnSuccess(dummy -> {
-                this.throughputUsageCycleRenewTask(this.cancellationTokenSource.getToken()).publishOn(Schedulers.parallel()).subscribe();
+                this.throughputUsageCycleRenewTask(this.cancellationTokenSource.getToken())
+                    .publishOn(CosmosSchedulers.Parallel)
+                    .subscribe();
             })
             .thenReturn((T)this);
     }

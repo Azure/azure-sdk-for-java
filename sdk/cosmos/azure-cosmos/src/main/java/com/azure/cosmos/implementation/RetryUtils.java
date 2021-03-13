@@ -36,9 +36,8 @@ public class RetryUtils {
                 }
 
                 if (s.backOffTime != null) {
-                    logger.info("Going to delay - backofftime {}", s.backOffTime);
                     policy.incrementRetry();
-                    return Mono.delay(Duration.ofMillis(s.backOffTime.toMillis())).flux();
+                    return Mono.delay(Duration.ofMillis(s.backOffTime.toMillis()), CosmosSchedulers.Parallel).flux();
                 } else if (s.exception != null) {
                     return Flux.error(s.exception);
                 } else {
@@ -114,14 +113,15 @@ public class RetryUtils {
                             .onErrorResume(recursiveWithAlternateFunc(callbackMethod, retryPolicy,
                                     inBackoffAlternateCallbackMethod, shouldRetryResult, stopwatch,
                                     minBackoffForInBackoffCallback, rxDocumentServiceRequest, addressSelector));
-                } else {
-                    logger.info("DelaySubscription in recursiveFunction - back off time {}", shouldRetryResult.backOffTime);
+                } else if (shouldRetryResult.backOffTime == Duration.ZERO) {
                     return recursiveFunc(callbackMethod, retryPolicy, inBackoffAlternateCallbackMethod,
-                            shouldRetryResult, minBackoffForInBackoffCallback, rxDocumentServiceRequest, addressSelector)
-                            //.delaySubscription(Duration.ofMillis(shouldRetryResult.backOffTime.toMillis()));
-                            // Inject some artificial delay simulating that the switch from netty-IO thread to parallel thread takes time due to
-                            // thread starvation on the parallel threads
-                            .delaySubscription(Duration.ofMillis(shouldRetryResult.backOffTime.toMillis() == 0 ? 25000 : shouldRetryResult.backOffTime.toMillis()));
+                            shouldRetryResult, minBackoffForInBackoffCallback, rxDocumentServiceRequest, addressSelector);
+                } else {
+                    return recursiveFunc(callbackMethod, retryPolicy, inBackoffAlternateCallbackMethod,
+                        shouldRetryResult, minBackoffForInBackoffCallback, rxDocumentServiceRequest, addressSelector)
+                        .delaySubscription(
+                            Duration.ofMillis(shouldRetryResult.backOffTime.toMillis()),
+                            CosmosSchedulers.Parallel);
                 }
             });
         };
@@ -132,7 +132,7 @@ public class RetryUtils {
         AddressSelector addressSelector) {
 
         addressSelector.resolveAddressesAsync(request, true)
-                       .publishOn(Schedulers.elastic())
+                       .publishOn(Schedulers.boundedElastic())
                        .subscribe(
                            r -> {
                            },
@@ -178,7 +178,9 @@ public class RetryUtils {
                     : Duration.ZERO;
             return recursiveFunc(callbackMethod, retryPolicy, inBackoffAlternateCallbackMethod, shouldRetryResult,
                     minBackoffForInBackoffCallback, rxDocumentServiceRequest, addressSelector)
-                    .delaySubscription(Flux.just(0L).delayElements(Duration.ofMillis(backoffTime.toMillis())));
+                    .delaySubscription(
+                        Flux.just(0L).delayElements(
+                            Duration.ofMillis(backoffTime.toMillis()), CosmosSchedulers.Parallel));
         };
     }
 
