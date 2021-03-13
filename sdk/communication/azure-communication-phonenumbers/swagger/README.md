@@ -50,8 +50,6 @@ directive:
       $["properties"]["capabilities"].readOnly = true;
       $["properties"]["assignmentType"].readOnly = true;
       $["properties"]["purchaseDate"].readOnly = true;
-      $["properties"]["callbackUri"].readOnly = true;
-      $["properties"]["applicationId"].readOnly = true;
       $["properties"]["cost"].readOnly = true;
 ```
 
@@ -95,6 +93,7 @@ directive:
       $["properties"]["assignmentType"].readOnly = true;
       $["properties"]["capabilities"].readOnly = true;
 ```
+
 ### Rename AcquiredPhoneNumber to PurchasedPhoneNumber
 ``` yaml
 directive:
