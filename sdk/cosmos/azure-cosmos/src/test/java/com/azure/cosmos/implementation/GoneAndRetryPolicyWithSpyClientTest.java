@@ -108,8 +108,7 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
             responseObservable = originalClient.send(request);
         }
 
-        if (forceRefreshAddressHeader != null &&
-            "true".equalsIgnoreCase(forceRefreshAddressHeader)) {
+        if ("true".equalsIgnoreCase(forceRefreshAddressHeader)) {
 
             forceRefreshHeaderSeen.set(true);
             logger.info(
@@ -126,7 +125,7 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
     /**
      * Tests document creation through direct mode
      */
-    @Test(groups = { "direct" }, timeOut = TIMEOUT * 100000)
+    @Test(groups = { "direct" }, timeOut = TIMEOUT)
     public void createRecoversFrom410Gone() {
         HttpClient origHttpClient = this.client.getOrigHttpClient();
         HttpClient spyHttpClient = this.client.getSpyHttpClient();
@@ -200,17 +199,14 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
 
             client
                 .capturedRequestResponseHeaderPairs()
-                .stream()
                 .forEach(
                     p -> {
                         HttpRequest request = p.getLeft();
                         HttpResponse response = null;
                         try {
                             response = p.getRight().get();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
+                        } catch (InterruptedException | ExecutionException e) {
+                            logger.error("Failed to retrieve response", e);
                         }
 
                         String forceRefreshAddressHeader = request
