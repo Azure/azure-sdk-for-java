@@ -767,7 +767,7 @@ public class PipelinesInner {
         final Boolean isRecovery = null;
         final String startActivityName = null;
         final Boolean startFromFailure = null;
-        final Map<String, Object> parameters =  = new HashMap<>();
+        final Map<String, Object> parameters = new HashMap<>();
         return service.createRun(this.client.subscriptionId(), resourceGroupName, factoryName, pipelineName, this.client.apiVersion(), referencePipelineRunId, isRecovery, startActivityName, startFromFailure, parameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CreateRunResponseInner>>>() {
                 @Override
