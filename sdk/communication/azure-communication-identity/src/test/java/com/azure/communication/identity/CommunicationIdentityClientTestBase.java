@@ -15,8 +15,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.ClientSecretCredentialBuilder;
-
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -75,31 +74,7 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new FakeCredentials());
         } else {
-            Configuration configuration = Configuration.getGlobalConfiguration().clone();
-            String clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
-            String tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
-            String clientSecret = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SECRET);
-
-            if (tenantId == "3b78b39a-ac6c-465a-a010-5a3f47148ff0") {
-                System.out.println("tenantId is same as expected INT value");
-            } else if (tenantId == "72f988bf-86f1-41af-91ab-2d7cd011db47") {
-                System.out.println("tenantId is same as expected PROD value");
-            } else {
-                System.out.println("tenantId is not as expected in both INT and PROD");
-            }
-
-            if (clientId == "19ea75db-1ade-473a-9f60-c3fb905f1f56") {
-                System.out.println("clientId is same as expected INT value");
-            }else if (clientId == "f850650c-1fcf-4489-b46f-71af2e30d360") {
-                System.out.println("clientId is same as expected PROD value");
-            } else {
-                System.out.println("clientId is not as expected in both INT and PROD");
-            }
-
-            System.out.println("Creating ClientSecretCredentialBuilder for tenant id " + tenantId);
-            System.out.println("Creating ClientSecretCredentialBuilder for client id" + clientId);
-
-            builder.credential(new ClientSecretCredentialBuilder().tenantId("3b78b39a-ac6c-465a-a010-5a3f47148ff0").clientId("19ea75db-1ade-473a-9f60-c3fb905f1f56").clientSecret(clientSecret).authorityHost("https://login.windows-ppe.net").build());
+            builder.credential(new DefaultAzureCredentialBuilder().authorityHost("https://login.windows-ppe.net").build());
         }
 
         if (getTestMode() == TestMode.RECORD) {
