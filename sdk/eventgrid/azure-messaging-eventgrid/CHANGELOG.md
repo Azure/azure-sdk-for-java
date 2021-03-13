@@ -1,5 +1,8 @@
 # Release History
 
+## 4.1.0-beta.1 (Unreleased)
+
+
 ## 4.0.0 (2020-03-11)
 ### New Features
 - added `sendEvent` to `EventGridPublisherClient` and `EventGridPublisherAsyncClient` to send a single event.
