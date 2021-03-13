@@ -3,8 +3,6 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
@@ -18,8 +16,6 @@ import java.util.function.Function;
  * This is meant to be internally used only by our sdk.
  */
 public class BackoffRetryUtility {
-
-    private static final Logger logger = LoggerFactory.getLogger(BackoffRetryUtility.class);
 
     // transforms a retryFunc to a function which can be used by Observable.retryWhen(.)
     // also it invokes preRetryCallback prior to doing retry.
