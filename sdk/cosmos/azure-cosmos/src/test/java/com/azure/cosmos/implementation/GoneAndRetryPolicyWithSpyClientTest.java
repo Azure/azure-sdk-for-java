@@ -17,7 +17,6 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
 import com.azure.cosmos.implementation.http.HttpResponse;
-import jdk.dynalink.Operation;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -33,6 +32,7 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.mockito.Mockito.doAnswer;
@@ -53,7 +53,7 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
 
     @DataProvider
     public static Object[][] directClientBuilder() {
-        return new Object[][] { { createDCBuilder(Protocol.TCP) } };//, { createDCBuilder(Protocol.TCP) }
+        return new Object[][] { { createDCBuilder(Protocol.HTTPS) }, { createDCBuilder(Protocol.TCP) } };
     }
 
     static Builder createDCBuilder(Protocol protocol) {
@@ -88,7 +88,11 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
         return sb.toString();
     }
 
-    private Mono<HttpResponse> delayOnForceRefresh(InvocationOnMock invocation, HttpClient originalClient) {
+    private Mono<HttpResponse> captureAndLogRequest(
+        InvocationOnMock invocation,
+        HttpClient originalClient,
+        AtomicBoolean forceRefreshHeaderSeen) {
+
         final HttpRequest request =
             invocation.getArgumentAt(0, HttpRequest.class);
 
@@ -106,16 +110,17 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
 
         if (forceRefreshAddressHeader != null &&
             "true".equalsIgnoreCase(forceRefreshAddressHeader)) {
+
+            forceRefreshHeaderSeen.set(true);
             logger.info(
-                String.format("Force refresh request %s Headers: %s", request.uri().toString(), headersToString(request.headers())));
+                String.format("Force refresh request %s Headers: \n%s", request.uri().toString(), headersToString(request.headers())));
                 return responseObservable;
         } else {
             logger.info(
-                String.format("Other HTTP request %s Headers: %s", request.uri().toString(), headersToString(request.headers())));
+                String.format("Other HTTP request %s Headers: \n%s", request.uri().toString(), headersToString(request.headers())));
         }
 
-        return responseObservable
-            .delayElement(Duration.ofSeconds(3));
+        return responseObservable;
     }
 
     /**
@@ -123,17 +128,17 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
      */
     @Test(groups = { "direct" }, timeOut = TIMEOUT * 100000)
     public void createRecoversFrom410Gone() {
-
         HttpClient origHttpClient = this.client.getOrigHttpClient();
         HttpClient spyHttpClient = this.client.getSpyHttpClient();
+        final AtomicBoolean forceRefreshHeaderSeen = new AtomicBoolean(false);
 
-        doAnswer(invocation -> this.delayOnForceRefresh(invocation, origHttpClient))
+        doAnswer(invocation -> this.captureAndLogRequest(invocation, origHttpClient, forceRefreshHeaderSeen))
         .when(spyHttpClient)
         .send(
             Mockito.any(HttpRequest.class),
             Mockito.any(Duration.class));
 
-        doAnswer(invocation -> this.delayOnForceRefresh(invocation, origHttpClient))
+        doAnswer(invocation -> this.captureAndLogRequest(invocation, origHttpClient, forceRefreshHeaderSeen))
             .when(spyHttpClient)
             .send(
                 Mockito.any(HttpRequest.class));
@@ -157,35 +162,8 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
                 rxServiceRequest.requestContext.resourcePhysicalAddress = physicalAddress.toString();
             }
 
-            boolean forceRefreshHeaderSeen = this
-                .client
-                .capturedRequestResponseHeaderPairs()
-                .stream()
-                .anyMatch(
-                    p -> {
-                        HttpRequest request = p.getLeft();
-                        HttpResponse response = null;
-                        try {
-                            response = p.getRight().get();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                        }
 
-                        String forceRefreshAddressHeader = request
-                            .headers()
-                            .toMap()
-                            .get(HttpConstants.HttpHeaders.FORCE_REFRESH);
-
-                        if (forceRefreshAddressHeader != null) {
-                            return "trueNeverhappens".equalsIgnoreCase(forceRefreshAddressHeader);
-                        }
-
-                        return false;
-                    });
-
-            if (forceRefreshHeaderSeen ||
+            if (forceRefreshHeaderSeen.get() ||
                 rxServiceRequest.getResourceType() != ResourceType.Document ||
                 rxServiceRequest.getOperationType() != OperationType.Create) {
 

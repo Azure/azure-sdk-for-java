@@ -35,24 +35,10 @@ public class BackoffRetryUtility {
     static public <T> Mono<T> executeRetry(Callable<Mono<T>> callbackMethod,
                                            IRetryPolicy retryPolicy) {
 
-        logger.info("executeRetry - Before defer");
         return Mono.defer(() -> {
-            // TODO: is defer required?
-
             try {
-                if (retryPolicy != null) {
-                    logger.info(
-                        "executeRetry - Within defer before callback call, " +
-                            "retry count {}, retry latency {}",
-                        retryPolicy.getRetryCount(),
-                        retryPolicy.getRetryLatency());
-                } else {
-                    logger.info(
-                        "executeRetry - Within defer before callback call without retry policy");
-                }
                 return callbackMethod.call();
             } catch (Exception e) {
-                logger.info("executeRetry - within defer, failed:", e);
                 return Mono.error(e);
             }
         }).retryWhen(Retry.withThrowable(RetryUtils.toRetryWhenFunc(retryPolicy)));

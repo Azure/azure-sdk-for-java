@@ -99,10 +99,12 @@ public class ConsistencyWriter {
         TimeoutHelper timeout,
         boolean forceRefresh) {
 
-        logger.info("ConsistencyWriter.writeAsync - Timeout {} - is elapsed {}", timeout.getRemainingTime(), timeout.isElapsed());
-
-        if (timeout.isElapsed()) {
-            logger.info("THROW RequestTimeoutException in ConsistencyWriter.writeAsync");
+        if (timeout.isElapsed() &&
+            // skip throwing RequestTimeout on first retry because the first retry with
+            // force address refresh header can be critical to recover for example from
+            // stale Gateway caches etc.
+            entity.requestContext.retryContext != null &&
+            entity.requestContext.retryContext.retryCount > 1) {
             return Mono.error(new RequestTimeoutException());
         }
 
@@ -128,10 +130,12 @@ public class ConsistencyWriter {
         TimeoutHelper timeout,
         boolean forceRefresh) {
 
-        logger.info("ConsistencyWriter.writePrivateAsync - Timeout {} - is elapsed {}", timeout.getRemainingTime(), timeout.isElapsed());
-
-        if (timeout.isElapsed()) {
-            logger.info("THROW RequestTimeoutException in ConsistencyWriter.writePrivateAsync");
+        if (timeout.isElapsed() &&
+            // skip throwing RequestTimeout on first retry because the first retry with
+            // force address refresh header can be critical to recover for example from
+            // stale Gateway caches etc.
+            request.requestContext.retryContext != null &&
+            request.requestContext.retryContext.retryCount > 1) {
             return Mono.error(new RequestTimeoutException());
         }
 
