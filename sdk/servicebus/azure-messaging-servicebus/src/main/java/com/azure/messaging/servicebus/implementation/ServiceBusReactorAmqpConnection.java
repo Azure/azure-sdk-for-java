@@ -45,6 +45,8 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      */
     private final ConcurrentHashMap<String, AmqpSendLink> sendLinks = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, ServiceBusManagementNode> managementNodes = new ConcurrentHashMap<>();
+    private static final String CROSS_ENTITY_TRANSACTIONS_LINK_NAME = "crossentity-coordinator";
+
     private final String connectionId;
     private final ReactorProvider reactorProvider;
     private final ReactorHandlerProvider handlerProvider;
@@ -54,6 +56,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     private final Scheduler scheduler;
     private final String fullyQualifiedNamespace;
     private final CbsAuthorizationType authorizationType;
+    private final boolean crossEntityTransaction;
 
     /**
      * Creates a new AMQP connection that uses proton-j.
@@ -67,7 +70,8 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      */
     public ServiceBusReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions,
         ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
-        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer) {
+        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
+        boolean crossEntityTransaction ) {
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
             messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
 
@@ -80,6 +84,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
         this.messageSerializer = messageSerializer;
         this.scheduler = connectionOptions.getScheduler();
         this.fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();
+        this.crossEntityTransaction = crossEntityTransaction;
     }
 
     @Override
@@ -140,12 +145,12 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     @Override
     public Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions,
          String transferEntityPath) {
-
-        return createSession(entityPath).cast(ServiceBusSession.class).flatMap(session -> {
+        // TODO (Hemant) Transfer cross entity change use 'linkName' instead of 'entityPath'
+        return createSession(linkName).cast(ServiceBusSession.class).flatMap(session -> {
             logger.verbose("Get or create sender link : '{}'", linkName);
             final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
-            return session.createProducer(linkName, entityPath, retryOptions.getTryTimeout(),
+            return session.createProducer(linkName + entityPath, entityPath, retryOptions.getTryTimeout(),
                 retryPolicy, transferEntityPath).cast(AmqpSendLink.class);
         });
     }
@@ -166,7 +171,8 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     @Override
     public Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath,
         ServiceBusReceiveMode receiveMode, String transferEntityPath, MessagingEntityType entityType) {
-        return createSession(entityPath).cast(ServiceBusSession.class)
+        return createSession(linkName)
+            .cast(ServiceBusSession.class)
             .flatMap(session -> {
                 logger.verbose("Get or create consumer for path: '{}'", entityPath);
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
@@ -174,6 +180,12 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
                 return session.createConsumer(linkName, entityPath, entityType, retryOptions.getTryTimeout(),
                     retryPolicy, receiveMode);
             });
+    }
+
+    @Override
+    public Mono<AmqpSession> createSession(String sessionName) {
+        System.out.println(" !!!! ServiceBusReactorAmqpConnection : sessionName "+ sessionName + ", crossEntityTransaction : " + crossEntityTransaction + " , CROSS_ENTITY_TRANSACTIONS_LINK_NAME: " + CROSS_ENTITY_TRANSACTIONS_LINK_NAME);
+        return super.createSession(crossEntityTransaction ? CROSS_ENTITY_TRANSACTIONS_LINK_NAME : sessionName, crossEntityTransaction);
     }
 
     /**
@@ -215,6 +227,6 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     @Override
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
         return new ServiceBusReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
-            getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer, retryOptions);
+            getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer, retryOptions, false);
     }
 }

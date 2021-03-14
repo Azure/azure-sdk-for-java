@@ -170,11 +170,16 @@ public class ReactorConnection implements AmqpConnection {
         return handler.getConnectionProperties();
     }
 
+    @Override
+    public Mono<AmqpSession> createSession(String sessionName) {
+        return createSession(sessionName, false);
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public Mono<AmqpSession> createSession(String sessionName) {
+    public Mono<AmqpSession> createSession(String sessionName, boolean coordinatorRequired) {
         if (isDisposed()) {
             return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
                 "connectionId[%s]: Connection is disposed. Cannot create session '%s'.", connectionId, sessionName))));
@@ -192,7 +197,7 @@ public class ReactorConnection implements AmqpConnection {
                 final Session session = connection.session();
 
                 BaseHandler.setHandler(session, handler);
-                final AmqpSession amqpSession = createSession(key, session, handler);
+                final AmqpSession amqpSession = createSession(key, session, handler, coordinatorRequired);
                 final Disposable subscription = amqpSession.getEndpointStates()
                     .subscribe(state -> {
                     }, error -> {
@@ -222,8 +227,24 @@ public class ReactorConnection implements AmqpConnection {
      * @return A new instance of AMQP session.
      */
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
+        return createSession(sessionName, session, handler, false);
+    }
+
+    /**
+     * Creates a new AMQP session with the given parameters.
+     *
+     * @param sessionName Name of the AMQP session.
+     * @param session The reactor session associated with this session.
+     * @param handler Session handler for the reactor session.
+     * @param coordinatorRequired If coordinator is required for this session.
+     *
+     * @return A new instance of AMQP session.
+     */
+    protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler,
+        boolean coordinatorRequired) {
         return new ReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
-            getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer, connectionOptions.getRetry());
+            getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer, connectionOptions.getRetry(),
+            coordinatorRequired);
     }
 
     /**

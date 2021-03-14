@@ -194,7 +194,7 @@ public class ServiceBusReactorSessionTest {
         when(reactorProvider.getReactorDispatcher()).thenReturn(dispatcher);
 
         serviceBusReactorSession = new ServiceBusReactorSession(session, handler, SESSION_NAME, reactorProvider,
-            handlerProvider, cbsNodeSupplier, tokenManagerProvider, messageSerializer, retryOptions);
+            handlerProvider, cbsNodeSupplier, tokenManagerProvider, messageSerializer, retryOptions, false);
     }
 
     @AfterEach

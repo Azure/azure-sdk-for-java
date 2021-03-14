@@ -14,16 +14,20 @@ import org.apache.qpid.proton.amqp.transaction.Discharge;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.engine.impl.DeliveryImpl;
 import org.apache.qpid.proton.message.Message;
+import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.core.amqp.implementation.ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES;
 
 /**
  * Encapsulates transaction functions.
  */
-final class TransactionCoordinator {
+final class TransactionCoordinator implements Disposable {
 
     private final ClientLogger logger = new ClientLogger(TransactionCoordinator.class);
+    private final AtomicBoolean isDisposed = new AtomicBoolean();
 
     private final AmqpSendLink sendLink;
     private final MessageSerializer messageSerializer;
@@ -100,5 +104,21 @@ final class TransactionCoordinator {
                         logger.warning("Unknown DeliveryState type: {}", stateType);
                 }
             });
+    }
+
+    @Override
+    public void dispose() {
+        if (isDisposed.get()) return;
+
+        isDisposed.set(true);
+
+        if (this.sendLink != null) {
+            this.sendLink.dispose();
+        }
+    }
+
+    @Override
+    public boolean isDisposed() {
+        return isDisposed.get();
     }
 }
