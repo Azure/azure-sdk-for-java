@@ -6,13 +6,7 @@ package com.azure.communication.chat;
 import com.azure.communication.chat.implementation.AzureCommunicationChatServiceImpl;
 import com.azure.communication.chat.implementation.AzureCommunicationChatServiceImplBuilder;
 import com.azure.communication.chat.implementation.CommunicationBearerTokenCredential;
-
 import com.azure.communication.common.CommunicationTokenCredential;
-
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Objects;
-import java.util.List;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -21,18 +15,23 @@ import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.util.ClientOptions;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 /**
- * Builder for creating clients of Azure Communication Service Chat
+ * Builder for creating clients of Azure Communication Service Chat Threads
  */
-@ServiceClientBuilder(serviceClients = {ChatAsyncClient.class, ChatClient.class})
-public final class ChatClientBuilder {
+@ServiceClientBuilder(serviceClients = {ChatThreadAsyncClient.class, ChatThreadClient.class})
+public final class ChatThreadClientBuilder {
 
     private String endpoint;
     private HttpClient httpClient;
@@ -54,7 +53,7 @@ public final class ChatClientBuilder {
      * @param endpoint url of the service
      * @return the updated ChatClientBuilder object
      */
-    public ChatClientBuilder endpoint(String endpoint) {
+    public ChatThreadClientBuilder endpoint(String endpoint) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
         return this;
     }
@@ -65,7 +64,7 @@ public final class ChatClientBuilder {
      * @param httpClient HttpClient to use
      * @return the updated ChatClientBuilder object
      */
-    public ChatClientBuilder httpClient(HttpClient httpClient) {
+    public ChatThreadClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
         return this;
     }
@@ -76,7 +75,7 @@ public final class ChatClientBuilder {
      * @param communicationTokenCredential valid token credential as a string
      * @return the updated ChatClientBuilder object
      */
-    public ChatClientBuilder credential(CommunicationTokenCredential communicationTokenCredential) {
+    public ChatThreadClientBuilder credential(CommunicationTokenCredential communicationTokenCredential) {
         this.communicationTokenCredential = Objects.requireNonNull(
             communicationTokenCredential, "'communicationTokenCredential' cannot be null.");
         return this;
@@ -88,7 +87,7 @@ public final class ChatClientBuilder {
      * @param clientOptions The client options.
      * @return The updated ChatClientBuilder object.
      */
-    public ChatClientBuilder clientOptions(ClientOptions clientOptions) {
+    public ChatThreadClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
@@ -100,7 +99,7 @@ public final class ChatClientBuilder {
      *                       AzureKeyCredentialPolicy, UserAgentPolicy, RetryPolicy, and CookiePolicy
      * @return the updated ChatClientBuilder object
      */
-    public ChatClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public ChatThreadClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         this.customPolicies.add(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
         return this;
     }
@@ -113,7 +112,7 @@ public final class ChatClientBuilder {
      * @param retryPolicy The {@link RetryPolicy} that will attempt to retry requests when needed.
      * @return The updated ChatClientBuilder object.
      */
-    public ChatClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public ChatThreadClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
@@ -124,7 +123,7 @@ public final class ChatClientBuilder {
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated ChatClientBuilder object
      */
-    public ChatClientBuilder httpLogOptions(HttpLogOptions logOptions) {
+    public ChatThreadClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
     }
@@ -141,7 +140,7 @@ public final class ChatClientBuilder {
      * @param version {@link ChatServiceVersion} of the service to be used when making requests.
      * @return the updated ChatClientBuilder object
      */
-    public ChatClientBuilder serviceVersion(ChatServiceVersion version) {
+    public ChatThreadClientBuilder serviceVersion(ChatServiceVersion version) {
         return this;
     }
 
@@ -153,7 +152,7 @@ public final class ChatClientBuilder {
      * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
      * @return the updated BlobServiceClientBuilder object
      */
-    public ChatClientBuilder pipeline(HttpPipeline httpPipeline) {
+    public ChatThreadClientBuilder pipeline(HttpPipeline httpPipeline) {
         this.httpPipeline = httpPipeline;
         return this;
     }
@@ -164,33 +163,37 @@ public final class ChatClientBuilder {
      * @param configuration Configuration store used to retrieve environment configurations.
      * @return the updated BlobServiceClientBuilder object
      */
-    public ChatClientBuilder configuration(Configuration configuration) {
+    public ChatThreadClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
 
     /**
-     * Create synchronous chat client applying CommunicationTokenCredential, UserAgentPolicy,
+     * Create synchronous chat thread client applying CommunicationTokenCredential, UserAgentPolicy,
      * RetryPolicy, and CookiePolicy.
      * Additional HttpPolicies specified by additionalPolicies will be applied after them
+     *
+     * @param chatThreadId The id of the thread.
      *
      * @return ChatClient instance
      */
-    public ChatClient buildClient() {
-        ChatAsyncClient asyncClient = buildAsyncClient();
-        return new ChatClient(asyncClient);
+    public ChatThreadClient buildClient(String chatThreadId) {
+        ChatThreadAsyncClient asyncClient = buildAsyncClient(chatThreadId);
+        return new ChatThreadClient(asyncClient);
     }
 
     /**
-     * Create asynchronous chat client applying CommunicationTokenCredential, UserAgentPolicy,
+     * Create asynchronous chat thread client applying CommunicationTokenCredential, UserAgentPolicy,
      * RetryPolicy, and CookiePolicy.
      * Additional HttpPolicies specified by additionalPolicies will be applied after them
      *
-     * @return ChatAsyncClient instance
+     * @param chatThreadId The id of the thread.
+     *
+     * @return ChatThreadAsyncClient instance
      */
-    public ChatAsyncClient buildAsyncClient() {
+    public ChatThreadAsyncClient buildAsyncClient(String chatThreadId) {
         AzureCommunicationChatServiceImpl internalClient = createInternalClient();
-        return new ChatAsyncClient(internalClient);
+        return new ChatThreadAsyncClient(internalClient, chatThreadId);
     }
 
     private AzureCommunicationChatServiceImpl createInternalClient() {

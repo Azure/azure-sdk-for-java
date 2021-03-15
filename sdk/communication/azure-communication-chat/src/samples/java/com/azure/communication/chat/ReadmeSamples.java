@@ -54,7 +54,7 @@ public class ReadmeSamples {
         builder.endpoint(endpoint)
             .credential(credential)
             .httpClient(httpClient);
-        ChatClient chatClient = builder.buildChatClient();
+        ChatClient chatClient = builder.buildClient();
 
         return chatClient;
     }

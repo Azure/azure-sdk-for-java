@@ -87,7 +87,7 @@ final ChatClientBuilder builder = new ChatClientBuilder();
 builder.endpoint(endpoint)
     .credential(credential)
     .httpClient(httpClient);
-ChatClient chatClient = builder.buildChatClient();
+ChatClient chatClient = builder.buildClient();
 ```
 
 ### Chat Thread Operations
