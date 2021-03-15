@@ -16,13 +16,11 @@ public final class CreateChatThreadOptions {
     /*
      * The chat thread topic.
      */
-    @JsonProperty(value = "topic", required = true)
     private String topic;
 
     /*
      * Members to be added to the chat thread.
      */
-    @JsonProperty(value = "participants", required = true)
     private List<ChatParticipant> participants = new ArrayList<>();
 
     private String idempotencyToken;

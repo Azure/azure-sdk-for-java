@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.azure.communication.chat.implementation.models.AddChatParticipantsOptions;
 import com.azure.communication.chat.implementation.models.ChatThreadProperties;
 import com.azure.communication.chat.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.chat.implementation.models.CommunicationUserIdentifierModel;
@@ -46,6 +47,24 @@ public class ChatResponseMocker {
                     .setCommunicationUser(new CommunicationUserIdentifierModel()
                         .setId("8:acs:000")))
                 .setId("000"))
+            .setInvalidParticipants(invalidParticipants);
+
+        ObjectMapper mapper = new ObjectMapper();
+        String body = null;
+        try {
+            body = mapper.writeValueAsString(result);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        return generateMockResponse(body, request, 201);
+    }
+
+    public static HttpResponse addParticipantsInvalidParticipantResponse(HttpRequest request, CommunicationUserIdentifier invalidUser) {        List<MockCommunicationError> invalidParticipants = new ArrayList<>();
+        invalidParticipants.add(new MockCommunicationError()
+            .setTarget(invalidUser.getId()));
+
+        MockAddChatParticipantsResult result = new MockAddChatParticipantsResult()
             .setInvalidParticipants(invalidParticipants);
 
         ObjectMapper mapper = new ObjectMapper();
@@ -124,6 +143,21 @@ public class ChatResponseMocker {
         }
 
         public MockCreateChatThreadResult setInvalidParticipants(List<MockCommunicationError> invalidParticipants) {
+            this.invalidParticipants = invalidParticipants;
+            return this;
+        }
+    }
+
+    static class MockAddChatParticipantsResult {
+
+        @JsonProperty(value = "invalidParticipants")
+        private List<MockCommunicationError> invalidParticipants;
+
+        public List<MockCommunicationError> getInvalidParticipants() {
+            return this.invalidParticipants;
+        }
+
+        public MockAddChatParticipantsResult setInvalidParticipants(List<MockCommunicationError> invalidParticipants) {
             this.invalidParticipants = invalidParticipants;
             return this;
         }

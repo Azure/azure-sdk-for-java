@@ -6,7 +6,9 @@ import com.azure.communication.chat.implementation.ChatThreadsImpl;
 
 import com.azure.communication.chat.implementation.converters.AddChatParticipantsResultConverter;
 import com.azure.communication.chat.implementation.converters.ChatThreadPropertiesConverter;
+import com.azure.communication.chat.models.ChatError;
 import com.azure.communication.chat.models.ChatThreadProperties;
+import com.azure.communication.chat.models.InvalidParticipantException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -178,6 +180,16 @@ public final class ChatThreadAsyncClient {
         try {
             return withContext(context -> addParticipants(Collections.singletonList(participant), context)
                 .flatMap((Response<AddChatParticipantsResult> res) -> {
+                    if (res.getValue().getInvalidParticipants() != null) {
+                        if (res.getValue().getInvalidParticipants().size() > 0) {
+                            ChatError error = res.getValue().getInvalidParticipants()
+                                .stream()
+                                .findFirst()
+                                .get();
+
+                            return Mono.error(new InvalidParticipantException(error));
+                        }
+                    }
                     return Mono.empty();
                 }));
         } catch (RuntimeException ex) {
@@ -192,9 +204,23 @@ public final class ChatThreadAsyncClient {
      * @return the result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AddChatParticipantsResult>> addParticipantWithResponse(ChatParticipant participant) {
+    public Mono<Response<Void>> addParticipantWithResponse(ChatParticipant participant) {
         try {
-            return withContext(context -> addParticipants(Collections.singletonList(participant), context));
+            return withContext(context -> addParticipants(Collections.singletonList(participant), context)
+                .flatMap((Response<AddChatParticipantsResult> res) -> {
+                    if (res.getValue().getInvalidParticipants() != null) {
+                        if (res.getValue().getInvalidParticipants().size() > 0) {
+                            ChatError error = res.getValue().getInvalidParticipants()
+                                .stream()
+                                .findFirst()
+                                .get();
+
+                            return Mono.error(new InvalidParticipantException(error));
+                        }
+                    }
+
+                    return Mono.empty();
+                }));
         } catch (RuntimeException ex) {
 
             return monoError(logger, ex);
