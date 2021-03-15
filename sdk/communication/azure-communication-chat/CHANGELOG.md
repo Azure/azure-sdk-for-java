@@ -6,7 +6,7 @@
 - Renamed `ChatThread` to `ChatThreadProperties`
 - Renamed `ChatThreadInfo` to `ChatThreadItem`
 - Renamed `repeatabilityRequestId` to `idempotencyToken`
-- SendMessage returns `SendChatMessageResult` instead of string containing ID
+- SendMessage returns `SendChatMessageResult` instead of string ID
 - Renamed `CommunicationError` to `ChatError`
 - Renamed `CommunicationErrorResponse` to `ChatErrorResponse`
 - Moved `getChatThread` to `ChatThreadClient` and renamed to `getProperties`
