@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.datadog.implementation;
 
-import com.azure.resourcemanager.datadog.MicrosoftDatadogManager;
 import com.azure.resourcemanager.datadog.fluent.models.OperationResultInner;
 import com.azure.resourcemanager.datadog.models.OperationDisplay;
 import com.azure.resourcemanager.datadog.models.OperationResult;
@@ -12,9 +11,10 @@ import com.azure.resourcemanager.datadog.models.OperationResult;
 public final class OperationResultImpl implements OperationResult {
     private OperationResultInner innerObject;
 
-    private final MicrosoftDatadogManager serviceManager;
+    private final com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager;
 
-    OperationResultImpl(OperationResultInner innerObject, MicrosoftDatadogManager serviceManager) {
+    OperationResultImpl(
+        OperationResultInner innerObject, com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -35,7 +35,7 @@ public final class OperationResultImpl implements OperationResult {
         return this.innerObject;
     }
 
-    private MicrosoftDatadogManager manager() {
+    private com.azure.resourcemanager.datadog.MicrosoftDatadogManager manager() {
         return this.serviceManager;
     }
 }

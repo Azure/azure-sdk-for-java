@@ -115,10 +115,10 @@ public final class EventGridPublisherClientImpl {
      * The interface defining all the services for EventGridPublisherClient to be used by the proxy service to perform
      * REST calls.
      */
-    @Host("https://{topicHostname}")
+    @Host("{topicHostname}")
     @ServiceInterface(name = "EventGridPublisherCl")
     private interface EventGridPublisherClientService {
-        @Post("/api/events")
+        @Post("")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> publishEvents(
@@ -127,7 +127,7 @@ public final class EventGridPublisherClientImpl {
                 @BodyParam("application/json") List<EventGridEvent> events,
                 Context context);
 
-        @Post("/api/events")
+        @Post("")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> publishCloudEventEvents(
@@ -136,7 +136,7 @@ public final class EventGridPublisherClientImpl {
                 @BodyParam("application/cloudevents-batch+json; charset=utf-8") List<CloudEvent> events,
                 Context context);
 
-        @Post("/api/events")
+        @Post("")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> publishCustomEventEvents(

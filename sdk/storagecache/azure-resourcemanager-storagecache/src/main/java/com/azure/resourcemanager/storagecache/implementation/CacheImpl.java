@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storagecache.implementation;
 
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.storagecache.StorageCacheManager;
 import com.azure.resourcemanager.storagecache.fluent.models.CacheInner;
 import com.azure.resourcemanager.storagecache.models.Cache;
 import com.azure.resourcemanager.storagecache.models.CacheDirectorySettings;
@@ -26,7 +25,7 @@ import java.util.Map;
 public final class CacheImpl implements Cache, Cache.Definition, Cache.Update {
     private CacheInner innerObject;
 
-    private final StorageCacheManager serviceManager;
+    private final com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -122,7 +121,7 @@ public final class CacheImpl implements Cache, Cache.Definition, Cache.Update {
         return this.innerObject;
     }
 
-    private StorageCacheManager manager() {
+    private com.azure.resourcemanager.storagecache.StorageCacheManager manager() {
         return this.serviceManager;
     }
 
@@ -153,7 +152,7 @@ public final class CacheImpl implements Cache, Cache.Definition, Cache.Update {
         return this;
     }
 
-    CacheImpl(String name, StorageCacheManager serviceManager) {
+    CacheImpl(String name, com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerObject = new CacheInner();
         this.serviceManager = serviceManager;
         this.cacheName = name;
@@ -183,7 +182,7 @@ public final class CacheImpl implements Cache, Cache.Definition, Cache.Update {
         return this;
     }
 
-    CacheImpl(CacheInner innerObject, StorageCacheManager serviceManager) {
+    CacheImpl(CacheInner innerObject, com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourcegroups");

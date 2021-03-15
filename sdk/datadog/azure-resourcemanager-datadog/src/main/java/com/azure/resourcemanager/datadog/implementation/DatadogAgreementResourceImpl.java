@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.datadog.implementation;
 
-import com.azure.resourcemanager.datadog.MicrosoftDatadogManager;
 import com.azure.resourcemanager.datadog.fluent.models.DatadogAgreementResourceInner;
 import com.azure.resourcemanager.datadog.models.DatadogAgreementProperties;
 import com.azure.resourcemanager.datadog.models.DatadogAgreementResource;
@@ -12,9 +11,11 @@ import com.azure.resourcemanager.datadog.models.DatadogAgreementResource;
 public final class DatadogAgreementResourceImpl implements DatadogAgreementResource {
     private DatadogAgreementResourceInner innerObject;
 
-    private final MicrosoftDatadogManager serviceManager;
+    private final com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager;
 
-    DatadogAgreementResourceImpl(DatadogAgreementResourceInner innerObject, MicrosoftDatadogManager serviceManager) {
+    DatadogAgreementResourceImpl(
+        DatadogAgreementResourceInner innerObject,
+        com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -39,7 +40,7 @@ public final class DatadogAgreementResourceImpl implements DatadogAgreementResou
         return this.innerObject;
     }
 
-    private MicrosoftDatadogManager manager() {
+    private com.azure.resourcemanager.datadog.MicrosoftDatadogManager manager() {
         return this.serviceManager;
     }
 }

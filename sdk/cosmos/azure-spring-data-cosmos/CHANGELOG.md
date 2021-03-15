@@ -1,11 +1,25 @@
 ## Release History
 
-## 3.5.0-beta.1 (Unreleased)
+### 3.6.0-beta.1 (Unreleased)
 
+### 3.5.0 (2021-03-11)
+#### NOTE: THIS RELEASE SUPPORTS SPRING BOOT 2.4.3 AND ABOVE
+#### New Features
+* Updated `spring-boot` to major version 2.4.3.
+* Updated `spring-core` to major version 5.3.4.
+* Updated `spring-data-commons` to major version 2.4.5.
+* Updated `azure-cosmos` version to 4.13.0.
+* Added support for `org.springframework.data.domain.Persistable` entity type.
+* Added support to log SQL Queries.
+* Added support for `Pageable` and `Sort` for `@query` annotated queries.
+
+#### Key Bug Fixes
+* Fixed issue when using automatic id generation with the auditable framework.
+* Fixed query deserialization issue with `@query` annotated queries.
 
 ### 3.4.0 (2020-02-09)
 #### New Features
-* Updated azure-cosmos version to 4.12.0.
+* Updated `azure-cosmos` version to 4.12.0.
 
 #### Key Bug Fixes
 * Fixed `@EnableAuditing` for Java 11 modules.
