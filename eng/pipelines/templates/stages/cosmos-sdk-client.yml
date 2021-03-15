@@ -133,7 +133,7 @@ stages:
               Write-Host "Downloading and extracting Hadoop winutils - https://aka.ms/cosmos-hadoop-for-spark-ci-pipeline"
               Write-Host "Target: $targetDir"
               Invoke-WebRequest "https://aka.ms/cosmos-hadoop-for-spark-ci-pipeline" -OutFile $downloadTarget
-              Remove-Item -Recurse -Force $targetDir
+              if (Test-Path $targetDir) { Remove-Item -Recurse -Force $targetDir }
               Expand-Archive -LiteralPath $downloadTarget -DestinationPath $targetDir
               Write-Host "Updating environment variables for Hadoop usage (User scope)"
               [System.Environment]::SetEnvironmentVariable('HADOOP_HOME', '$targetDir',[System.EnvironmentVariableTarget]::User)
