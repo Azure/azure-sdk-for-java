@@ -20,6 +20,7 @@ parameters:
   OnboardingBranch: ''
   CloseAfterOpenForTesting: false
   SkipPackageJson: false
+  RemoteName: 'origin'
 
 steps:
 - pwsh: |
@@ -82,20 +83,15 @@ steps:
   env:
     GH_TOKEN: $(azuresdk-github-pat)
 
-- template: /eng/common/pipelines/templates/steps/create-pull-request.yml
+- template: /eng/common/pipelines/templates/steps/git-push-changes.yml
   parameters:
+    PRBranchName: 'master'
+    CommitMsg: "Update docs metadata and targeting for release of ${{ parameters.ArtifactName }}"
     RepoName: ${{ parameters.TargetDocRepoName }}
     RepoOwner: ${{ parameters.TargetDocRepoOwner }}
-    PRBranchName: ${{ parameters.PRBranchName }}
-    CommitMsg: "Update docs metadata and targeting for release of ${{ parameters.ArtifactName }}"
-    PRTitle: "Docs.MS Release Updates for ${{ parameters.ArtifactName }}"
-    BaseBranchName: ${{ parameters.SourceBranchName }}
     WorkingDirectory: ${{ parameters.WorkingDirectory }}/repo
     ScriptDirectory: ${{ parameters.WorkingDirectory }}/${{ parameters.ScriptDirectory }}
-    GHReviewersVariable: ${{ parameters.GHReviewersVariable }}
-    GHTeamReviewersVariable: ${{ parameters.GHTeamReviewersVariable }} 
-    PRLabels: ${{ parameters.PRLabels }}
-    CloseAfterOpenForTesting: ${{ parameters.CloseAfterOpenForTesting }}
+    RemoteName: ${{ parameters.RemoteName }}
 
 - ${{if ne( parameters['OnboardingBranch'], '')}}:
   - pwsh: |
@@ -123,17 +119,12 @@ steps:
       pwsh: true
     env:
       GH_TOKEN: $(azuresdk-github-pat)
-
-  - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
+  - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
     parameters:
+      PRBranchName: 'master'
+      CommitMsg: "Update docs metadata and targeting for release of ${{ parameters.ArtifactName }}"
       RepoName: ${{ parameters.TargetDocRepoName }}
       RepoOwner: ${{ parameters.TargetDocRepoOwner }}
-      PRBranchName: ${{ parameters.PRBranchName }}-ci
-      CommitMsg: "CI Update for release of ${{ parameters.ArtifactName }}"
-      PRTitle: "Docs.MS CI Updates for ${{ parameters.ArtifactName }}"
-      BaseBranchName: ${{ parameters.OnboardingBranch }}
       WorkingDirectory: ${{ parameters.WorkingDirectory }}/repo
       ScriptDirectory: ${{ parameters.WorkingDirectory }}/${{ parameters.ScriptDirectory }}
-      GHReviewersVariable: ${{ parameters.GHReviewersVariable }}
-      GHTeamReviewersVariable: ${{ parameters.GHTeamReviewersVariable }}
-      CloseAfterOpenForTesting: ${{ parameters.CloseAfterOpenForTesting }}
+      RemoteName: ${{ parameters.RemoteName }}
