@@ -21,6 +21,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageDeliveryException;
+import org.springframework.messaging.MessageHeaders;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.util.concurrent.ListenableFutureCallback;
@@ -161,19 +162,21 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
 
     private PartitionSupplier toPartitionSupplier(Message<?> message) {
         PartitionSupplier partitionSupplier = new PartitionSupplier();
+        MessageHeaders headers = message.getHeaders();
         // Priority setting partitionId
-        String partitionId = message.getHeaders().get(AzureHeaders.PARTITION_ID, String.class);
-        if (!StringUtils.hasText(partitionId) && message.getHeaders().containsKey(AzureHeaders.PARTITION_OVERRIDE)) {
-            partitionId = String.valueOf(message.getHeaders().get(AzureHeaders.PARTITION_OVERRIDE));
-        } else if (!StringUtils.hasText(partitionId) && message.getHeaders().containsKey(AzureHeaders.PARTITION_HEADER)) {
-            partitionId = String.valueOf(message.getHeaders().get(AzureHeaders.PARTITION_HEADER, Integer.class));
+        String partitionId = headers.get(AzureHeaders.PARTITION_ID, String.class);
+        if (!StringUtils.hasText(partitionId) && headers.containsKey(AzureHeaders.PARTITION_OVERRIDE)) {
+            partitionId = String.valueOf(headers.get(AzureHeaders.PARTITION_OVERRIDE));
+        } else if (!StringUtils.hasText(partitionId) && headers.containsKey(AzureHeaders.PARTITION_HEADER)) {
+            partitionId = String.valueOf(headers.get(AzureHeaders.PARTITION_HEADER, Integer.class));
         }
         if (StringUtils.hasText(partitionId)) {
             partitionSupplier.setPartitionId(partitionId);
         } else {
             // The default key expression is the hash code of the payload.
             if (this.partitionKeyExpression != null) {
-                String partitionKey = this.partitionKeyExpression.getValue(this.evaluationContext, message, String.class);
+                String partitionKey = this.partitionKeyExpression.getValue(this.evaluationContext,
+                    message, String.class);
                 if (StringUtils.hasText(partitionKey)) {
                     partitionSupplier.setPartitionKey(partitionKey);
                 }
