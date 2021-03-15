@@ -23,7 +23,7 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.2
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a4d1e1516433894fca89f9600a6ac8a5471fc598/specification/communication/data-plane/Microsoft.CommunicationServicesPhoneNumbers/stable/2021-03-07/phonenumbers.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/1ef769ae890b5f5a952f9ba6e46e0ef6d38241da/specification/communication/data-plane/Microsoft.CommunicationServicesPhoneNumbers/stable/2021-03-07/phonenumbers.json
 override-client-name: PhoneNumberAdminClient
 custom-types: PurchasedPhoneNumber,BillingFrequency,CommunicationError,PhoneNumberOperation,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilitiesRequest,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability
 custom-types-subpackage: models
@@ -37,11 +37,11 @@ sync-methods: all
 context-client-method-parameter: true
 ```
 
-### Add readonly attribute to AcquiredPhoneNumber properties
+### Add readonly attribute to PurchasedPhoneNumber properties
 ```yaml
 directive:
   - from: swagger-document
-    where: $.definitions.AcquiredPhoneNumber
+    where: $.definitions.PurchasedPhoneNumber
     transform: >
       $["properties"]["id"].readOnly = true;
       $["properties"]["phoneNumber"].readOnly = true;
@@ -92,20 +92,4 @@ directive:
       $["properties"]["phoneNumberType"].readOnly = true;
       $["properties"]["assignmentType"].readOnly = true;
       $["properties"]["capabilities"].readOnly = true;
-```
-
-### Rename AcquiredPhoneNumber to PurchasedPhoneNumber
-``` yaml
-directive:
-    - rename-model:
-        from: AcquiredPhoneNumber
-        to: PurchasedPhoneNumber
-```
-
-### Rename AcquiredPhoneNumbers to PurchasedPhoneNumbers
-``` yaml
-directive:
-    - rename-model:
-        from: AcquiredPhoneNumbers
-        to: PurchasedPhoneNumbers
 ```
