@@ -6,13 +6,19 @@ package com.azure.messaging.eventgrid;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -52,7 +58,16 @@ public final class EventGridEvent {
     private final com.azure.messaging.eventgrid.implementation.models.EventGridEvent event;
 
     private static final ClientLogger LOGGER = new ClientLogger(EventGridEvent.class);
-    private static final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance();
+    private static final JsonSerializer SERIALIZER;
+    static {
+        JsonSerializer tmp;
+        try {
+            tmp = JsonSerializerProviders.createInstance();
+        } catch (IllegalStateException e) {
+            tmp = new JacksonSerializer();
+        }
+        SERIALIZER = tmp;
+    }
     private static final TypeReference<List<com.azure.messaging.eventgrid.implementation.models.EventGridEvent>>
         DESERIALIZER_TYPE_REFERENCE =
         new TypeReference<List<com.azure.messaging.eventgrid.implementation.models.EventGridEvent>>() {
@@ -267,6 +282,38 @@ public final class EventGridEvent {
 
     com.azure.messaging.eventgrid.implementation.models.EventGridEvent toImpl() {
         return this.event;
+    }
+
+    private static class JacksonSerializer implements JsonSerializer {
+        private final SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
+
+        @Override
+        public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
+            try {
+                return jacksonAdapter.deserialize(stream, typeReference.getJavaType(), SerializerEncoding.JSON);
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+            }
+        }
+
+        @Override
+        public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
+            return Mono.defer(() -> Mono.fromCallable(() -> deserialize(stream, typeReference)));
+        }
+
+        @Override
+        public void serialize(OutputStream stream, Object value) {
+            try {
+                jacksonAdapter.serialize(value, SerializerEncoding.JSON, stream);
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+            }
+        }
+
+        @Override
+        public Mono<Void> serializeAsync(OutputStream stream, Object value) {
+            return Mono.fromRunnable(() -> serialize(stream, value));
+        }
     }
 
 }

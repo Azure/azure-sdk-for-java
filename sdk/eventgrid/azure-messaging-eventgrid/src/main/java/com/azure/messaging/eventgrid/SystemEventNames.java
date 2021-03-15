@@ -77,8 +77,8 @@ import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIncomingStreamsO
 import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIncomingVideoStreamsOutOfSyncEventData;
 import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIngestHeartbeatEventData;
 import com.azure.messaging.eventgrid.systemevents.MediaLiveEventTrackDiscontinuityDetectedEventData;
-import com.azure.messaging.eventgrid.systemevents.RedisExportRDBCompletedEventData;
-import com.azure.messaging.eventgrid.systemevents.RedisImportRDBCompletedEventData;
+import com.azure.messaging.eventgrid.systemevents.RedisExportRdbCompletedEventData;
+import com.azure.messaging.eventgrid.systemevents.RedisImportRdbCompletedEventData;
 import com.azure.messaging.eventgrid.systemevents.RedisPatchingCompletedEventData;
 import com.azure.messaging.eventgrid.systemevents.RedisScalingCompletedEventData;
 import com.azure.messaging.eventgrid.systemevents.ResourceActionCancelEventData;
@@ -639,9 +639,9 @@ public final class SystemEventNames {
             put(KEY_VAULT_VAULT_ACCESS_POLICY_CHANGED, KeyVaultAccessPolicyChangedEventData.class);
 
             // Redis
-            put(REDIS_EXPORT_RDB_COMPLETED, RedisExportRDBCompletedEventData.class);
+            put(REDIS_EXPORT_RDB_COMPLETED, RedisExportRdbCompletedEventData.class);
             put(REDIS_PATCHING_COMPLETED, RedisPatchingCompletedEventData.class);
-            put(REDIS_IMPORT_RDB_COMPLETED, RedisImportRDBCompletedEventData.class);
+            put(REDIS_IMPORT_RDB_COMPLETED, RedisImportRdbCompletedEventData.class);
             put(REDIS_SCALING_COMPLETED, RedisScalingCompletedEventData.class);
 
             // Signal R Service

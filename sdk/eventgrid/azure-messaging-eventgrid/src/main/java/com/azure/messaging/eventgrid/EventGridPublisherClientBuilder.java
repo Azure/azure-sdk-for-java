@@ -100,21 +100,16 @@ public final class EventGridPublisherClientBuilder {
      * an {@link AzureSasCredential} or a {@link AzureKeyCredential} at the respective methods.
      * All other settings have defaults and are optional.
      * @return a publisher client with asynchronous publishing methods.
+     * @throws NullPointerException if {@code endpoint} is null.
      */
     private <T> EventGridPublisherAsyncClient<T> buildAsyncClient(Class<T> eventClass) {
-        String hostname;
-        try {
-            hostname = new URL(Objects.requireNonNull(endpoint, "endpoint cannot be null")).getHost();
-        } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Cannot parse endpoint"));
-        }
-
+        Objects.requireNonNull(endpoint, "'endpoint' is required and can not be null.");
         EventGridServiceVersion buildServiceVersion = serviceVersion == null
             ? EventGridServiceVersion.getLatest()
             : serviceVersion;
 
         if (httpPipeline != null) {
-            return new EventGridPublisherAsyncClient<T>(httpPipeline, hostname, buildServiceVersion, eventClass);
+            return new EventGridPublisherAsyncClient<T>(httpPipeline, endpoint, buildServiceVersion, eventClass);
         }
 
         Configuration buildConfiguration = (configuration == null)
@@ -139,7 +134,7 @@ public final class EventGridPublisherClientBuilder {
         // Using token before key if both are set
         if (sasToken != null) {
             httpPipelinePolicies.add((context, next) -> {
-                context.getHttpRequest().getHeaders().put(AEG_SAS_TOKEN, sasToken.getSignature());
+                context.getHttpRequest().getHeaders().set(AEG_SAS_TOKEN, sasToken.getSignature());
                 return next.process();
             });
         } else {
@@ -168,7 +163,7 @@ public final class EventGridPublisherClientBuilder {
             .build();
 
 
-        return new EventGridPublisherAsyncClient<T>(buildPipeline, hostname, buildServiceVersion, eventClass);
+        return new EventGridPublisherAsyncClient<T>(buildPipeline, endpoint, buildServiceVersion, eventClass);
     }
 
     /**
@@ -254,11 +249,19 @@ public final class EventGridPublisherClientBuilder {
 
     /**
      * Set the domain or topic endpoint. This is the address to publish events to.
+     * It must be the full url of the endpoint instead of just the hostname.
      * @param endpoint the endpoint as a url.
      *
      * @return the builder itself.
+     * @throws NullPointerException if {@code endpoint} is null.
+     * @throws IllegalArgumentException if {@code endpoint} cannot be parsed into a valid URL.
      */
     public EventGridPublisherClientBuilder endpoint(String endpoint) {
+        try {
+            new URL(Objects.requireNonNull(endpoint, "'endpoint' cannot be null."));
+        } catch (MalformedURLException ex) {
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
+        }
         this.endpoint = endpoint;
         return this;
     }

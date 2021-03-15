@@ -1,7 +1,15 @@
 # Release History
 
-## 4.3.0-beta.4 (Unreleased)
+## 4.3.0-beta.4 (2021-03-12)
 
+### Changed
+- Changed logging level in `onRequest` and `onSuccess` calls for service operations from `INFO` to `VERBOSE`.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.14.0`
+- Upgraded `azure-core-http-netty` dependency to `1.9.0`
+- Upgraded `azure-core-http-okhttp` dependency to `1.6.0`
+- Upgraded `azure-identity` dependency to `1.2.4`
 
 ## 4.3.0-beta.3 (2021-02-11)
 

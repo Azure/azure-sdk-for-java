@@ -21,12 +21,16 @@
 /sdk/appconfiguration/                              @mssfang @alzimmermsft
 # PRLabel: %azure-spring
 /sdk/appconfiguration/azure-spring-cloud-*/         @mrm9084 @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @zhenlan @stliu
+/sdk/appconfiguration/spring-cloud-azure-*/         @mrm9084 @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @zhenlan @stliu
 
 # PRLabel: %Batch
 /sdk/batch/                                         @xingwu1 @bgklein @matthchr
 
 # PRLabel: %Communication
 /sdk/communication/                                 @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
+
+# PRLabel: %Container Registry
+/sdk/containerregistry/                             @pallavit @alzimmermsft @jianghaolu
 
 # PRLabel: %Azure.Core
 /sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @hemanttanwar @anuchandy
@@ -67,6 +71,9 @@
 /sdk/loganalytics/microsoft-azure-loganalytics/     @divya-jay @geneh @alongafni
 
 /sdk/monitor/azure-monitor-opentelemetry-exporter   @trask @joshfree @srnagar
+
+# PRLabel: %Remote Rendering
+/sdk/remoterendering/                               @MalcolmTyrrell
 
 # PRLabel: %Schema Registry
 /sdk/schemaregistry/                                @arerlend @sjkwak
