@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.AbstractOAuth2Token;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
@@ -24,11 +25,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpSession;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -70,50 +67,50 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
             return (DefaultOidcUser) session.getAttribute(DEFAULT_OIDC_USER);
         }
 
-//        if (idToken.containsClaim(ROLES)) {
-//            roles = idToken.getClaimAsStringList(ROLES)
-//                           .stream()
-//                           .filter(StringUtils::hasText)
-//                           .map(role -> APPROLE_PREFIX + role)
-//                           .collect(Collectors.toSet());
-//        }
-        Optional.ofNullable(idToken)
-                .map(token -> token.getClaimAsStringList(ROLES))
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .filter(StringUtils::hasText)
-                .map(role -> APPROLE_PREFIX + role)
-                .forEach(roles::add);
-        Set<String> groups = Optional.of(userRequest)
-                                     .filter(notUsed -> properties.allowedGroupsConfigured())
-                                     .map(OAuth2UserRequest::getAccessToken)
-                                     .map(AbstractOAuth2Token::getTokenValue)
-                                     .map(graphClient::getGroupsFromGraph)
-                                     .orElseGet(Collections::emptySet);
-        Set<String> groupRoles = groups.stream()
-                                       .filter(properties::isAllowedGroup)
-                                       .map(group -> ROLE_PREFIX + group)
-                                       .collect(Collectors.toSet());
-        roles.addAll(groupRoles);
+        extractRolesFromIdToken(idToken, roles);
+        extractGroupRolesFromAccessToken(userRequest.getAccessToken(), roles);
         Set<SimpleGrantedAuthority> authorities = roles.stream()
-                                                       .map(SimpleGrantedAuthority::new)
-                                                       .collect(Collectors.toSet());
+            .map(SimpleGrantedAuthority::new)
+            .collect(Collectors.toSet());
 
         if (authorities.isEmpty()) {
             authorities = DEFAULT_AUTHORITY_SET;
         }
         String nameAttributeKey =
             Optional.of(userRequest)
-                    .map(OAuth2UserRequest::getClientRegistration)
-                    .map(ClientRegistration::getProviderDetails)
-                    .map(ClientRegistration.ProviderDetails::getUserInfoEndpoint)
-                    .map(ClientRegistration.ProviderDetails.UserInfoEndpoint::getUserNameAttributeName)
-                    .filter(StringUtils::hasText)
-                    .orElse(AADTokenClaim.NAME);
+                .map(OAuth2UserRequest::getClientRegistration)
+                .map(ClientRegistration::getProviderDetails)
+                .map(ClientRegistration.ProviderDetails::getUserInfoEndpoint)
+                .map(ClientRegistration.ProviderDetails.UserInfoEndpoint::getUserNameAttributeName)
+                .filter(StringUtils::hasText)
+                .orElse(AADTokenClaim.NAME);
         // Create a copy of oidcUser but use the mappedAuthorities instead
         DefaultOidcUser defaultOidcUser = new DefaultOidcUser(authorities, idToken, nameAttributeKey);
 
         session.setAttribute(DEFAULT_OIDC_USER, defaultOidcUser);
         return defaultOidcUser;
+    }
+
+    public void extractRolesFromIdToken(OidcIdToken idToken, Set<String> rolesClaim) {
+        Optional.ofNullable(idToken)
+            .map(token -> (Collection<?>) token.getClaim(ROLES))
+            .filter(obj -> obj instanceof List<?>)
+            .map(Collection::stream)
+            .orElseGet(Stream::empty)
+            .filter(s -> StringUtils.hasText(s.toString()))
+            .map(role -> APPROLE_PREFIX + role)
+            .forEach(rolesClaim::add);
+    }
+
+    public void extractGroupRolesFromAccessToken(OAuth2AccessToken accessToken, Set<String> rolesClaim) {
+        Optional.of(accessToken)
+            .filter(notUsed -> properties.allowedGroupsConfigured())
+            .map(AbstractOAuth2Token::getTokenValue)
+            .map(graphClient::getGroupsFromGraph)
+            .orElseGet(Collections::emptySet)
+            .stream()
+            .filter(properties::isAllowedGroup)
+            .map(group -> ROLE_PREFIX + group)
+            .forEach(rolesClaim::add);
     }
 }
