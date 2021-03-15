@@ -707,6 +707,23 @@ public final class ServiceBusClientBuilder {
         /**
          * Enables session processing roll-over by processing at most {@code maxConcurrentSessions}.
          *
+         * @param maxAutoLockRenewDuration Maximum number of concurrent sessions to process at any given time.
+         *
+         * @return The modified {@link ServiceBusSessionProcessorClientBuilder} object.
+         * @throws IllegalArgumentException if {@code maxAutoLockRenewDuration} is less than 1.
+         */
+        public ServiceBusSessionProcessorClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
+            if (maxAutoLockRenewDuration.isNegative()) {
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("'maxAutoLockRenewDuration' cannot be negative"));
+            }
+            sessionReceiverClientBuilder.maxAutoLockRenewDuration(maxAutoLockRenewDuration);
+            return this;
+        }
+
+        /**
+         * Enables session processing roll-over by processing at most {@code maxConcurrentSessions}.
+         *
          * @param maxConcurrentSessions Maximum number of concurrent sessions to process at any given time.
          *
          * @return The modified {@link ServiceBusSessionProcessorClientBuilder} object.

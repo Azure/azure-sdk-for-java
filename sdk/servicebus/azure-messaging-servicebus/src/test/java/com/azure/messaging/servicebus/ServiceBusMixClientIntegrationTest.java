@@ -13,14 +13,14 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
     private ServiceBusSenderAsyncClient sender;
@@ -47,7 +47,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         }
 
         try {
-            if (receiver ==  null) {
+            if (receiver == null) {
                 return;
             }
             receiver.receiveMessages()
@@ -66,83 +66,115 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Test cross transaction entity
+     * Test cross entity transaction use case using processor client and sender.
+     * 1. Read messages from entity A.
+     * 2. complete the messages from entity A and write to entity B.
+     * 2. commit the transaction.
      */
-    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
+    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
     @ParameterizedTest
-    void crossEntityTransactionTest(MessagingEntityType entityType) throws InterruptedException {
+    void crossEntityTransactionWithProcessorTest(MessagingEntityType entityType, boolean isSessionEnabled) throws InterruptedException {
 
-        if (entityType == MessagingEntityType.SUBSCRIPTION) return;
         // Arrange
         final boolean useCredentials = false;
-        final Duration shortTimeout = Duration.ofSeconds(15);
-        final int receiveQueueAIndex = TestUtils.USE_CASE_TXN_QUEUE_1;
-        final int sendQueueBIndex = TestUtils.USE_CASE_TXN_QUEUE_2;
+        final int receiveQueueAIndex = TestUtils.USE_CASE_TXN_1;
+        final int sendQueueBIndex = TestUtils.USE_CASE_TXN_2;
+        final String queueA = isSessionEnabled ? getSessionQueueName(receiveQueueAIndex) : getQueueName(receiveQueueAIndex);
+        final String queueB = isSessionEnabled ? getSessionQueueName(sendQueueBIndex) : getQueueName(sendQueueBIndex);
+        final String topicA = getTopicName(receiveQueueAIndex);
+        final String topicB = getTopicName(sendQueueBIndex);
 
-        final boolean isSessionEnabled = false;
-        final int total = 1;
-        final Duration shortWait = Duration.ofSeconds(5);
+        //final boolean isSessionEnabled = false;
         final CountDownLatch countdownLatch = new CountDownLatch(1);
         final AtomicInteger receivedMessages = new AtomicInteger();
 
-        int destination1_Entity = 0;
-        int destination2_Entity = 2;
-        int destination3_Entity = 3;
-        String queueA = "queue-13"; // sender and receiver
-        String queueB = "queue-14"; // sender
-
         final String messageId = UUID.randomUUID().toString();
-        final byte[] CONTENTS_BYTES1 = "Some-contents 1".getBytes(StandardCharsets.UTF_8);
-
-        final List<ServiceBusMessage> messages1 = TestUtils.getServiceBusMessages(total, messageId, CONTENTS_BYTES1);
+        ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
+        message.setSessionId(sessionId);
+        final List<ServiceBusMessage> messages = Arrays.asList(message);
 
         ServiceBusClientBuilder builder = getBuilder(useCredentials).enableCrossEntityTransactions();
 
-        final ServiceBusSenderAsyncClient senderAsyncA = builder
-            .sender()
-            .queueName(queueA)
-            .buildAsyncClient();
+        final ServiceBusSenderAsyncClient senderAsyncA;
+        final ServiceBusSenderClient senderSyncB;
 
-        final ServiceBusSenderClient senderSyncB = builder
-            .sender()
-            .queueName(queueB)
-            .buildClient();
+        // Initialize sender
+        switch (entityType) {
+            case QUEUE:
+                senderAsyncA = builder.sender().queueName(queueA).buildAsyncClient();
+                senderSyncB = builder.sender().queueName(queueB).buildClient();
+                break;
+            case SUBSCRIPTION:
+                senderAsyncA = builder.sender().topicName(topicA).buildAsyncClient();
+                senderSyncB = builder.sender().topicName(topicB).buildClient();
+                break;
+            default:
+                logger.error("Invalid entity type {}.", entityType);
+                throw new RuntimeException("Invalid entity type.");
+        }
 
+        Consumer<ServiceBusReceivedMessageContext> processMessage = (context) -> {
+            receivedMessages.incrementAndGet();
+            messagesPending.incrementAndGet();
+            ServiceBusReceivedMessage myMessage = context.getMessage();
+            System.out.printf("Processing message. MessageId: %s, Sequence #: %s. Contents: %s %n", myMessage.getMessageId(),
+                myMessage.getSequenceNumber(), myMessage.getBody());
+            if (receivedMessages.get() == 1) {
 
-       // AtomicReference<>
+                //Start a transaction
+                ServiceBusTransactionContext transactionId = senderSyncB.createTransaction();
+                context.complete(new CompleteOptions().setTransactionContext(transactionId));
+                senderSyncB.sendMessage(new ServiceBusMessage(CONTENTS_BYTES).setMessageId(messageId).setSessionId(sessionId), transactionId);
+                senderSyncB.commitTransaction(transactionId);
+                countdownLatch.countDown();
+                logger.verbose("Transaction committed.");
+            }
+        };
+
+        Consumer<ServiceBusErrorContext> processError = context -> {
+            System.out.printf("Error when receiving messages from namespace: '%s'. Entity: '%s'. Error Source: '%s' %n",
+                context.getFullyQualifiedNamespace(), context.getEntityPath(), context.getErrorSource());
+            Assertions.fail("Failed processing of message.", context.getException());
+
+            if (!(context.getException() instanceof ServiceBusException)) {
+                System.out.printf("Non-ServiceBusException occurred: %s%n", context.getException());
+            }
+        };
+
+        final ServiceBusProcessorClient processorA;
+        // Initialize processor client
+        switch (entityType) {
+            case QUEUE:
+                if (isSessionEnabled) {
+                    processorA = builder.sessionProcessor().disableAutoComplete().queueName(queueA)
+                        .processMessage(processMessage).processError(processError)
+                        .buildProcessorClient();
+                } else {
+                    processorA = builder.processor().disableAutoComplete().queueName(queueA)
+                        .processMessage(processMessage).processError(processError)
+                        .buildProcessorClient();
+                }
+                break;
+            case SUBSCRIPTION:
+                if (isSessionEnabled) {
+                    processorA = builder.sessionProcessor().disableAutoComplete().topicName(topicA).subscriptionName("session-subscription")
+                        .processMessage(processMessage).processError(processError)
+                        .buildProcessorClient();
+                } else {
+                    processorA = builder.processor().disableAutoComplete().topicName(topicA).subscriptionName("subscription")
+                        .processMessage(processMessage).processError(processError)
+                        .buildProcessorClient();
+                }
+                break;
+            default:
+                logger.error("Invalid entity type {}.", entityType);
+                throw new RuntimeException("Invalid entity type.");
+        }
+
         // Send messages
-        StepVerifier.create(senderAsyncA.sendMessages(messages1)).verifyComplete();
+        StepVerifier.create(senderAsyncA.sendMessages(messages)).verifyComplete();
         // Create an instance of the processor through the ServiceBusClientBuilder
-        ServiceBusProcessorClient processorA = builder
-            .processor()
-            .disableAutoComplete()
-            .queueName(queueA)
-            .processMessage(context -> {
-                receivedMessages.incrementAndGet();
-                messagesPending.incrementAndGet();
-                ServiceBusReceivedMessage message = context.getMessage();
-                System.out.printf("Processing message. MessageId: %s, Sequence #: %s. Contents: %s %n", message.getMessageId(),
-                    message.getSequenceNumber(), message.getBody());
-                if (receivedMessages.get() == 1) {
-                    //Start a transaction
-                    ServiceBusTransactionContext transactionId = senderSyncB.createTransaction();
-                    context.complete(new CompleteOptions().setTransactionContext(transactionId));
-                    senderSyncB.sendMessage(new ServiceBusMessage("Order Processed").setMessageId(messageId), transactionId);
-                    senderSyncB.commitTransaction(transactionId);
-                    countdownLatch.countDown();
-                    logger.verbose("!!!! Test transaction committed.");
-                }
-            })
-            .processError(context -> {
-                System.out.printf("Error when receiving messages from namespace: '%s'. Entity: '%s'%n",
-                    context.getFullyQualifiedNamespace(), context.getEntityPath());
 
-                if (!(context.getException() instanceof ServiceBusException)) {
-                    System.out.printf("Non-ServiceBusException occurred: %s%n", context.getException());
-                    return;
-                }
-            })
-            .buildProcessorClient();
         System.out.println("Starting the processor");
         processorA.start();
 
@@ -151,23 +183,129 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
             System.out.println("Completed processing successfully.");
         } else {
             System.out.println("Closing processor.");
+            Assertions.fail("Failed to process message.");
         }
 
         processorA.close();
 
         // Assert & Act
-
         // Verify that message is received by queue B
-        /*setSenderAndReceiver(entityType, sendQueueBIndex, false);
-        StepVerifier.create(receiver.receiveMessages()
-           // .flatMap(receivedMessage -> receiver.complete(receivedMessage).thenReturn(receivedMessage))
-            .take(1))
-            .assertNext(receivedMessage -> {
-                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-                messagesPending.decrementAndGet();
-            }).verifyComplete();
-        */
-        System.out.println("Exit.");
+        if (!isSessionEnabled) {
+            setSenderAndReceiver(entityType, sendQueueBIndex, false);
+            StepVerifier.create(receiver.receiveMessages().take(1))
+                .assertNext(receivedMessage -> {
+                    assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                    messagesPending.decrementAndGet();
+                }).verifyComplete();
+        }
+    }
+
+    /**
+     * Test cross entity transaction use case using receiver and senders.
+     * 1. Read messages from entity A.
+     * 2. complete the messages from entity A and write to entity B.
+     * 2. commit the transaction.
+     */
+    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
+    @ParameterizedTest
+    void crossEntityTransactionWithReceiverSenderTest(MessagingEntityType entityType, boolean isSessionEnabled) throws InterruptedException {
+
+        // Arrange
+        final boolean useCredentials = false;
+        final int receiveQueueAIndex = TestUtils.USE_CASE_TXN_1;
+        final int sendQueueBIndex = TestUtils.USE_CASE_TXN_2;
+        final String queueA = isSessionEnabled ? getSessionQueueName(receiveQueueAIndex) : getQueueName(receiveQueueAIndex);
+        final String queueB = isSessionEnabled ? getSessionQueueName(sendQueueBIndex) : getQueueName(sendQueueBIndex);
+        final String topicA = getTopicName(receiveQueueAIndex);
+        final String topicB = getTopicName(sendQueueBIndex);
+
+        final CountDownLatch countdownLatch = new CountDownLatch(1);
+
+        final String messageId = UUID.randomUUID().toString();
+        ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
+        message.setSessionId(sessionId);
+        final List<ServiceBusMessage> messages = Arrays.asList(message);
+
+        ServiceBusClientBuilder builder = getBuilder(useCredentials).enableCrossEntityTransactions();
+
+        final ServiceBusSenderAsyncClient senderAsyncA;
+        final ServiceBusSenderClient senderSyncB;
+
+        // Initialize sender
+        switch (entityType) {
+            case QUEUE:
+                senderAsyncA = builder.sender().queueName(queueA).buildAsyncClient();
+                senderSyncB = builder.sender().queueName(queueB).buildClient();
+                break;
+            case SUBSCRIPTION:
+                senderAsyncA = builder.sender().topicName(topicA).buildAsyncClient();
+                senderSyncB = builder.sender().topicName(topicB).buildClient();
+                break;
+            default:
+                logger.error("Invalid entity type {}.", entityType);
+                throw new RuntimeException("Invalid entity type.");
+        }
+
+        // Send messages
+        StepVerifier.create(senderAsyncA.sendMessages(messages)).verifyComplete();
+
+        final ServiceBusReceiverAsyncClient receiverA;
+
+        switch (entityType) {
+            case QUEUE:
+                if (isSessionEnabled) {
+                    receiverA = builder.sessionReceiver().disableAutoComplete().queueName(queueA)
+                        .buildAsyncClient().acceptNextSession().block();
+                } else {
+                    receiverA = builder.receiver().disableAutoComplete().queueName(queueA)
+                        .buildAsyncClient();
+                }
+                break;
+            case SUBSCRIPTION:
+                if (isSessionEnabled) {
+                    receiverA = builder.sessionReceiver().disableAutoComplete().topicName(topicA).subscriptionName("session-subscription")
+                        .buildAsyncClient().acceptNextSession().block();
+                } else {
+                    receiverA = builder.receiver().disableAutoComplete().topicName(topicA).subscriptionName("subscription")
+                        .buildAsyncClient();
+                }
+                break;
+            default:
+                logger.error("Invalid entity type {}.", entityType);
+                throw new RuntimeException("Invalid entity type.");
+        }
+
+        receiverA.receiveMessages().flatMap(receivedMessage -> {
+            //Start a transaction
+            logger.verbose("Received message sequence number {}. Creating transaction", receivedMessage.getSequenceNumber());
+            ServiceBusTransactionContext transactionId = senderSyncB.createTransaction();
+            receiverA.complete(receivedMessage, new CompleteOptions().setTransactionContext(transactionId)).block();
+            senderSyncB.sendMessage(new ServiceBusMessage(CONTENTS_BYTES).setMessageId(messageId).setSessionId(sessionId), transactionId);
+            senderSyncB.commitTransaction(transactionId);
+            countdownLatch.countDown();
+            logger.verbose("Transaction committed.");
+            return Mono.just(receivedMessage);
+        }).subscribe();
+
+
+        System.out.println("Listening for 10 seconds...");
+        if (countdownLatch.await(10, TimeUnit.SECONDS)) {
+            System.out.println("Completed message processing successfully.");
+        } else {
+            System.out.println("Some error.");
+            Assertions.fail("Failed to process message.");
+        }
+
+        // Assert & Act
+        // Verify that message is received by entity B
+        if (!isSessionEnabled) {
+            setSenderAndReceiver(entityType, sendQueueBIndex, false);
+            StepVerifier.create(receiver.receiveMessages().take(1))
+                .assertNext(receivedMessage -> {
+                    assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                    messagesPending.decrementAndGet();
+                }).verifyComplete();
+        }
     }
 
     /**

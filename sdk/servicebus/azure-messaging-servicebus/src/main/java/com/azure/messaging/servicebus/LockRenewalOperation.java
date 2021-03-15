@@ -182,13 +182,14 @@ class LockRenewalOperation implements AutoCloseable {
 
         final OffsetDateTime now = OffsetDateTime.now();
         Duration initialInterval = Duration.between(now, initialLockedUntil);
-
+        System.out.println("!!!! 1 initialInterval : " + initialInterval);
         if (initialInterval.isNegative()) {
             logger.info("Duration was negative. now[{}] lockedUntil[{}]", now, initialLockedUntil);
             initialInterval = Duration.ZERO;
         } else {
             // Adjust the interval, so we can buffer time for the time it'll take to refresh.
             final Duration adjusted = MessageUtils.adjustServerTimeout(initialInterval);
+            System.out.println("!!!! 2 initialInterval : " + initialInterval);
             if (adjusted.isNegative()) {
                 logger.info("Adjusted duration is negative. Adjusted: {}ms", initialInterval.toMillis());
             } else {
@@ -200,7 +201,7 @@ class LockRenewalOperation implements AutoCloseable {
         final FluxSink<Duration> sink = emitterProcessor.sink();
 
         sink.next(initialInterval);
-
+        System.out.println("!!!! 3  initialInterval : " + initialInterval);
         final Flux<Object> cancellationSignals = Flux.first(cancellationProcessor, Mono.delay(maxLockRenewalDuration));
         return Flux.switchOnNext(emitterProcessor.map(interval -> Mono.delay(interval)
             .thenReturn(Flux.create(s -> s.next(interval)))))
