@@ -79,6 +79,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
                 logger.verbose("Token refreshed: {}", response);
                 hasAuthorized.set(true);
             }, error -> {
+                //TODO (conniey): Close reactor receiver because we are no longer authorized.
                 logger.info("connectionId[{}], path[{}], linkName[{}] - tokenRenewalFailure[{}]",
                     handler.getConnectionId(), this.entityPath, getLinkName(), error.getMessage());
                 hasAuthorized.set(false);
