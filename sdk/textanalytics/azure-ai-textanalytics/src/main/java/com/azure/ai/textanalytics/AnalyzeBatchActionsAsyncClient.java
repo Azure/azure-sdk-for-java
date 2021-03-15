@@ -7,6 +7,7 @@ import com.azure.ai.textanalytics.implementation.AnalyzeBatchActionsOperationDet
 import com.azure.ai.textanalytics.implementation.AnalyzeBatchActionsResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.ExtractKeyPhrasesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.RecognizeEntitiesActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.RecognizeLinkedEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.RecognizePiiEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
@@ -16,6 +17,9 @@ import com.azure.ai.textanalytics.implementation.models.AnalyzeJobState;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.EntitiesTask;
 import com.azure.ai.textanalytics.implementation.models.EntitiesTaskParameters;
+import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
+import com.azure.ai.textanalytics.implementation.models.EntityLinkingTask;
+import com.azure.ai.textanalytics.implementation.models.EntityLinkingTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.JobManifestTasks;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.KeyPhrasesTask;
@@ -27,6 +31,7 @@ import com.azure.ai.textanalytics.implementation.models.PiiTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.PiiTaskParametersDomain;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasks;
+import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityLinkingTasksItem;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityRecognitionPiiTasksItem;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityRecognitionTasksItem;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksKeyPhraseExtractionTasksItem;
@@ -36,6 +41,7 @@ import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesActionResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActionResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
@@ -73,14 +79,21 @@ import static com.azure.ai.textanalytics.implementation.Utility.getNonNullString
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
+import static com.azure.ai.textanalytics.implementation.Utility.toCategoriesFilter;
 import static com.azure.ai.textanalytics.implementation.Utility.toExtractKeyPhrasesResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeEntitiesResultCollectionResponse;
+import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeLinkedEntitiesResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizePiiEntitiesResultCollection;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 class AnalyzeBatchActionsAsyncClient {
+    private static final String ENTITY_RECOGNITION_TASKS = "entityRecognitionTasks";
+    private static final String ENTITY_RECOGNITION_PII_TASKS = "entityRecognitionPiiTasks";
+    private static final String KEY_PHRASE_EXTRACTION_TASKS = "keyPhraseExtractionTasks";
+    private static final String ENTITY_LINKING_TASKS = "entityLinkingTasks";
+
     private static final String REGEX_ACTION_ERROR_TARGET =
         "#/tasks/(keyPhraseExtractionTasks|entityRecognitionPiiTasks|entityRecognitionTasks)/(\\d+)";
 
@@ -205,6 +218,7 @@ class AnalyzeBatchActionsAsyncClient {
                                     action.getDomainFilter() == null ? null
                                         : action.getDomainFilter().toString()))
                                 .setStringIndexType(getNonNullStringIndexType(action.getStringIndexType()))
+                                .setPiiCategories(toCategoriesFilter(action.getCategoriesFilter()))
                         );
                         return piiTask;
                     }).collect(Collectors.toList()))
@@ -223,6 +237,22 @@ class AnalyzeBatchActionsAsyncClient {
                                 .setModelVersion(getNotNullModelVersion(action.getModelVersion()))
                         );
                         return keyPhrasesTask;
+                    }).collect(Collectors.toList()))
+            .setEntityLinkingTasks(actions.getRecognizeLinkedEntitiesOptions() == null ? null
+                : StreamSupport.stream(actions.getRecognizeLinkedEntitiesOptions().spliterator(), false).map(
+                    action -> {
+                        if (action == null) {
+                            return null;
+                        }
+                        final EntityLinkingTask entityLinkingTask = new EntityLinkingTask();
+                        entityLinkingTask.setParameters(
+                            // TODO: currently, service does not set their default values for model version, we
+                            // temporally set the default value to 'latest' until service correct it.
+                            // https://github.com/Azure/azure-sdk-for-java/issues/17625
+                            new EntityLinkingTaskParameters()
+                                .setModelVersion(getNotNullModelVersion(action.getModelVersion()))
+                        );
+                        return entityLinkingTask;
                     }).collect(Collectors.toList()));
     }
 
@@ -328,10 +358,13 @@ class AnalyzeBatchActionsAsyncClient {
             tasksStateTasks.getEntityRecognitionTasks();
         final List<TasksStateTasksKeyPhraseExtractionTasksItem> keyPhraseExtractionTasks =
             tasksStateTasks.getKeyPhraseExtractionTasks();
+        final List<TasksStateTasksEntityLinkingTasksItem> linkedEntityRecognitionTasksItems =
+            tasksStateTasks.getEntityLinkingTasks();
 
         List<RecognizeEntitiesActionResult> recognizeEntitiesActionResults = new ArrayList<>();
         List<RecognizePiiEntitiesActionResult> recognizePiiEntitiesActionResults = new ArrayList<>();
         List<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults = new ArrayList<>();
+        List<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesActionResults = new ArrayList<>();
         if (!CoreUtils.isNullOrEmpty(entityRecognitionTasksItems)) {
             for (int i = 0; i < entityRecognitionTasksItems.size(); i++) {
                 final TasksStateTasksEntityRecognitionTasksItem taskItem = entityRecognitionTasksItems.get(i);
@@ -375,6 +408,21 @@ class AnalyzeBatchActionsAsyncClient {
             }
         }
 
+        if (!CoreUtils.isNullOrEmpty(linkedEntityRecognitionTasksItems)) {
+            for (int i = 0; i < linkedEntityRecognitionTasksItems.size(); i++) {
+                final TasksStateTasksEntityLinkingTasksItem taskItem = linkedEntityRecognitionTasksItems.get(i);
+                final RecognizeLinkedEntitiesActionResult actionResult = new RecognizeLinkedEntitiesActionResult();
+                final EntityLinkingResult results = taskItem.getResults();
+                if (results != null) {
+                    RecognizeLinkedEntitiesActionResultPropertiesHelper.setResult(actionResult,
+                        toRecognizeLinkedEntitiesResultCollection(results));
+                }
+                TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
+                    taskItem.getLastUpdateDateTime());
+                recognizeLinkedEntitiesActionResults.add(actionResult);
+            }
+        }
+
         final List<TextAnalyticsError> errors = analyzeJobState.getErrors();
         if (!CoreUtils.isNullOrEmpty(errors)) {
             for (TextAnalyticsError error : errors) {
@@ -382,12 +430,14 @@ class AnalyzeBatchActionsAsyncClient {
                 final String taskName = targetPair[0];
                 final Integer taskIndex = Integer.valueOf(targetPair[1]);
                 final TextAnalyticsActionResult actionResult;
-                if ("entityRecognitionTasks".equals(taskName)) {
+                if (ENTITY_RECOGNITION_TASKS.equals(taskName)) {
                     actionResult = recognizeEntitiesActionResults.get(taskIndex);
-                } else if ("entityRecognitionPiiTasks".equals(taskName)) {
+                } else if (ENTITY_RECOGNITION_PII_TASKS.equals(taskName)) {
                     actionResult = recognizePiiEntitiesActionResults.get(taskIndex);
-                } else if ("keyPhraseExtractionTasks".equals(taskName)) {
+                } else if (KEY_PHRASE_EXTRACTION_TASKS.equals(taskName)) {
                     actionResult = extractKeyPhrasesActionResults.get(taskIndex);
+                } else if (ENTITY_LINKING_TASKS.equals(taskName)) {
+                    actionResult = recognizeLinkedEntitiesActionResults.get(taskIndex);
                 } else {
                     throw logger.logExceptionAsError(new RuntimeException(
                         "Invalid task name in target reference, " + taskName));
@@ -403,7 +453,6 @@ class AnalyzeBatchActionsAsyncClient {
         }
 
         final AnalyzeBatchActionsResult analyzeBatchActionsResult = new AnalyzeBatchActionsResult();
-
         final RequestStatistics requestStatistics = analyzeJobState.getStatistics();
         TextDocumentBatchStatistics batchStatistics = null;
         if (requestStatistics != null) {
@@ -420,6 +469,8 @@ class AnalyzeBatchActionsAsyncClient {
             IterableStream.of(recognizePiiEntitiesActionResults));
         AnalyzeBatchActionsResultPropertiesHelper.setExtractKeyPhrasesActionResults(analyzeBatchActionsResult,
             IterableStream.of(extractKeyPhrasesActionResults));
+        AnalyzeBatchActionsResultPropertiesHelper.setRecognizeLinkedEntitiesActionResults(analyzeBatchActionsResult,
+            IterableStream.of(recognizeLinkedEntitiesActionResults));
         return analyzeBatchActionsResult;
     }
 

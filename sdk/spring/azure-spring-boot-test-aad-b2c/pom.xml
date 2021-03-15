@@ -63,6 +63,13 @@
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13.2</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
 </project>

@@ -30,6 +30,8 @@ import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -215,6 +217,11 @@ class AmqpChannelProcessorTest {
         final AmqpChannelProcessor<TestObject> processor = publisher.next(connection1).flux()
             .subscribeWith(channelProcessor);
         final FluxSink<AmqpEndpointState> endpointSink = connection1.getSink();
+
+        /*
+         * Beginning in Mockito 3.4.0+ the default value for duration changed from null to Duration.ZERO
+         */
+        when(retryPolicy.calculateRetryDelay(any(), anyInt())).thenReturn(null);
 
         // Act & Assert
         // Verify that we get the first connection.

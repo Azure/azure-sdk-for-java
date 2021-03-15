@@ -54,6 +54,13 @@ public interface StorageTarget {
     List<NamespaceJunction> junctions();
 
     /**
+     * Gets the targetType property: Type of the Storage Target.
+     *
+     * @return the targetType value.
+     */
+    StorageTargetType targetType();
+
+    /**
      * Gets the provisioningState property: ARM provisioning state, see
      * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property.
      *
@@ -81,6 +88,13 @@ public interface StorageTarget {
      * @return the unknown value.
      */
     UnknownTarget unknown();
+
+    /**
+     * Gets the blobNfs property: Properties when targetType is blobNfs.
+     *
+     * @return the blobNfs value.
+     */
+    BlobNfsTarget blobNfs();
 
     /**
      * Gets the region of the resource.
@@ -130,10 +144,12 @@ public interface StorageTarget {
          */
         interface WithCreate
             extends DefinitionStages.WithJunctions,
+                DefinitionStages.WithTargetType,
                 DefinitionStages.WithProvisioningState,
                 DefinitionStages.WithNfs3,
                 DefinitionStages.WithClfs,
-                DefinitionStages.WithUnknown {
+                DefinitionStages.WithUnknown,
+                DefinitionStages.WithBlobNfs {
             /**
              * Executes the create request.
              *
@@ -159,6 +175,16 @@ public interface StorageTarget {
              * @return the next definition stage.
              */
             WithCreate withJunctions(List<NamespaceJunction> junctions);
+        }
+        /** The stage of the StorageTarget definition allowing to specify targetType. */
+        interface WithTargetType {
+            /**
+             * Specifies the targetType property: Type of the Storage Target..
+             *
+             * @param targetType Type of the Storage Target.
+             * @return the next definition stage.
+             */
+            WithCreate withTargetType(StorageTargetType targetType);
         }
         /** The stage of the StorageTarget definition allowing to specify provisioningState. */
         interface WithProvisioningState {
@@ -202,6 +228,16 @@ public interface StorageTarget {
              */
             WithCreate withUnknown(UnknownTarget unknown);
         }
+        /** The stage of the StorageTarget definition allowing to specify blobNfs. */
+        interface WithBlobNfs {
+            /**
+             * Specifies the blobNfs property: Properties when targetType is blobNfs..
+             *
+             * @param blobNfs Properties when targetType is blobNfs.
+             * @return the next definition stage.
+             */
+            WithCreate withBlobNfs(BlobNfsTarget blobNfs);
+        }
     }
     /**
      * Begins update for the StorageTarget resource.
@@ -213,10 +249,12 @@ public interface StorageTarget {
     /** The template for StorageTarget update. */
     interface Update
         extends UpdateStages.WithJunctions,
+            UpdateStages.WithTargetType,
             UpdateStages.WithProvisioningState,
             UpdateStages.WithNfs3,
             UpdateStages.WithClfs,
-            UpdateStages.WithUnknown {
+            UpdateStages.WithUnknown,
+            UpdateStages.WithBlobNfs {
         /**
          * Executes the update request.
          *
@@ -244,6 +282,16 @@ public interface StorageTarget {
              * @return the next definition stage.
              */
             Update withJunctions(List<NamespaceJunction> junctions);
+        }
+        /** The stage of the StorageTarget update allowing to specify targetType. */
+        interface WithTargetType {
+            /**
+             * Specifies the targetType property: Type of the Storage Target..
+             *
+             * @param targetType Type of the Storage Target.
+             * @return the next definition stage.
+             */
+            Update withTargetType(StorageTargetType targetType);
         }
         /** The stage of the StorageTarget update allowing to specify provisioningState. */
         interface WithProvisioningState {
@@ -287,6 +335,16 @@ public interface StorageTarget {
              */
             Update withUnknown(UnknownTarget unknown);
         }
+        /** The stage of the StorageTarget update allowing to specify blobNfs. */
+        interface WithBlobNfs {
+            /**
+             * Specifies the blobNfs property: Properties when targetType is blobNfs..
+             *
+             * @param blobNfs Properties when targetType is blobNfs.
+             * @return the next definition stage.
+             */
+            Update withBlobNfs(BlobNfsTarget blobNfs);
+        }
     }
     /**
      * Refreshes the resource to sync with Azure.
@@ -302,4 +360,22 @@ public interface StorageTarget {
      * @return the refreshed resource.
      */
     StorageTarget refresh(Context context);
+
+    /**
+     * Tells a storage target to refresh its DNS information.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void dnsRefresh();
+
+    /**
+     * Tells a storage target to refresh its DNS information.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void dnsRefresh(Context context);
 }

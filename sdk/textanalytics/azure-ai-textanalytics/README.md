@@ -58,7 +58,7 @@ az cognitiveservices account create \
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-textanalytics</artifactId>
-    <version>5.0.3</version>
+    <version>5.0.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -119,7 +119,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.2.3</version>
+    <version>1.2.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -367,9 +367,9 @@ syncPoller.getFinalResult().forEach(healthcareTaskResult -> healthcareTaskResult
 ```
 
 ### Analyze multiple actions
-The `Analyze` functionality allows to choose which of the supported Text Analytics features to execute in the same 
-set of documents. Currently, the supported features are: `entity recognition`, `key phrase extraction`, and 
-`Personally Identifiable Information (PII) recognition`. 
+The `Analyze` functionality allows to choose which of the supported Text Analytics features to execute in the same
+set of documents. Currently, the supported features are: `entity recognition`, `linked entity recognition`,
+`key phrase extraction`, and `Personally Identifiable Information (PII) recognition`. 
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L243-L291 -->
 ```java
 List<TextDocumentInput> documents = Arrays.asList(

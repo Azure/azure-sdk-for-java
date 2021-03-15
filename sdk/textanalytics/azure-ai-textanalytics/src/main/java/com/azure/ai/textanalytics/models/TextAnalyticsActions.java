@@ -14,6 +14,7 @@ import java.util.Arrays;
 public final class TextAnalyticsActions {
     private String displayName;
     private Iterable<RecognizeEntitiesOptions> recognizeEntitiesOptions;
+    private Iterable<RecognizeLinkedEntitiesOptions> recognizeLinkedEntitiesOptions;
     private Iterable<RecognizePiiEntitiesOptions> recognizePiiEntitiesOptions;
     private Iterable<ExtractKeyPhrasesOptions> extractKeyPhrasesOptions;
 
@@ -56,6 +57,28 @@ public final class TextAnalyticsActions {
      */
     public TextAnalyticsActions setRecognizeEntitiesOptions(RecognizeEntitiesOptions... recognizeEntitiesOptions) {
         this.recognizeEntitiesOptions = Arrays.asList(recognizeEntitiesOptions);
+        return this;
+    }
+
+    /**
+     * Get the list of {@link RecognizePiiEntitiesOptions} to be executed.
+     *
+     * @return the list of {@link RecognizePiiEntitiesOptions} to be executed.
+     */
+    public Iterable<RecognizeLinkedEntitiesOptions> getRecognizeLinkedEntitiesOptions() {
+        return this.recognizeLinkedEntitiesOptions;
+    }
+
+    /**
+     * Set the list of {@link RecognizeLinkedEntitiesOptions} to be executed.
+     *
+     * @param recognizeLinkedEntitiesOptions the list of {@link RecognizeLinkedEntitiesOptions} to be executed.
+     *
+     * @return the {@link TextAnalyticsActions} object itself.
+     */
+    public TextAnalyticsActions setRecognizeLinkedEntitiesOptions(
+        RecognizeLinkedEntitiesOptions... recognizeLinkedEntitiesOptions) {
+        this.recognizeLinkedEntitiesOptions = Arrays.asList(recognizeLinkedEntitiesOptions);
         return this;
     }
 

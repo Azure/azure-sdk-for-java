@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.datadog.MicrosoftDatadogManager;
 import com.azure.resourcemanager.datadog.fluent.TagRulesClient;
 import com.azure.resourcemanager.datadog.fluent.models.MonitoringTagRulesInner;
 import com.azure.resourcemanager.datadog.models.MonitoringTagRules;
@@ -21,9 +20,10 @@ public final class TagRulesImpl implements TagRules {
 
     private final TagRulesClient innerClient;
 
-    private final MicrosoftDatadogManager serviceManager;
+    private final com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager;
 
-    public TagRulesImpl(TagRulesClient innerClient, MicrosoftDatadogManager serviceManager) {
+    public TagRulesImpl(
+        TagRulesClient innerClient, com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -119,7 +119,7 @@ public final class TagRulesImpl implements TagRules {
         return this.innerClient;
     }
 
-    private MicrosoftDatadogManager manager() {
+    private com.azure.resourcemanager.datadog.MicrosoftDatadogManager manager() {
         return this.serviceManager;
     }
 
