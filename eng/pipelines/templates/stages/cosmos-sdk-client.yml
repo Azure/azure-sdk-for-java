@@ -135,16 +135,16 @@ stages:
               Invoke-WebRequest "https://aka.ms/cosmos-hadoop-for-spark-ci-pipeline" -OutFile $downloadTarget
               if (Test-Path $targetDir) { Remove-Item -Recurse -Force $targetDir }
               Expand-Archive -LiteralPath $downloadTarget -DestinationPath $targetDir
-              Write-Host "Updating environment variables for Hadoop usage (User scope)"
-              [System.Environment]::SetEnvironmentVariable('HADOOP_HOME', '$targetDir',[System.EnvironmentVariableTarget]::User)
-              $path = [System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::User)
+              Write-Host "Updating environment variables for Hadoop usage"
+              [System.Environment]::SetEnvironmentVariable('HADOOP_HOME', '$targetDir',[System.EnvironmentVariableTarget]::Machine)
+              $path = [System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::Machine)
               Write-Host "Original Path environment variable: $path"
               $binPath = Join-Path -Path $targetDir -ChildPath "bin"
               $newPath = $path + ";" + $binPath
-              [System.Environment]::SetEnvironmentVariable('Path', $newPath,[System.EnvironmentVariableTarget]::User)
-              $updatedPath = [System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::User)
+              [System.Environment]::SetEnvironmentVariable('Path', $newPath,[System.EnvironmentVariableTarget]::Machine)
+              $updatedPath = [System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::Machine)
               Write-Host "New Path environment variable: $updatedPath"
-            displayName: 'Download and Extract Hadoop winutils and update env variables for Hadoop usage (User scope)'
+            displayName: 'Download and Extract Hadoop winutils and update env variables for Hadoop usage'
 
           # We `install` separately from running `site:site site:stage` so that the `install` brings in the non-shipping-modules,
           # but we don't include them in the Maven site commands (so that we don't generate reports for the non-shipping modules).
