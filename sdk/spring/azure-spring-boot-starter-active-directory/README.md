@@ -185,6 +185,7 @@ To use **aad-starter** in this scenario, we need these steps:
 * Step 3: Write Java code:
   
     `AADResourceServerWebSecurityConfigurerAdapter` contains necessary web security configuration for resource server.
+
     (A). `DefaultAADResourceServerWebSecurityConfigurerAdapter` is configured automatically if you not provide one.
     
     (B). You can provide one by extending `AADResourceServerWebSecurityConfigurerAdapter` and call `super.configure(http)` explicitly
@@ -251,7 +252,9 @@ To use **aad-starter** in this scenario, we need these steps:
     ```
 
 * Step 3: Write Java code:
-Using `@RegisteredOAuth2AuthorizedClient` to access related resource server:
+
+    Using `@RegisteredOAuth2AuthorizedClient` to access related resource server:
+
     <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L60-L63 -->
     ```java
     @GetMapping("call-graph")
@@ -373,11 +376,13 @@ Here are some examples about how to use these properties:
     consented.
 
 ### Advanced features
+
 #### Support access control by id token in web application 
+
 This starter supports creating `GrantedAuthority` from id_token's `roles` claim to allow using `id_token` for authorization in web application. Developers can use the
 `appRoles` feature of Azure Active Directory to create `roles` claim and implement access control. 
-Follow the guide to 
-[add app roles in your application and assign to users or groups](https://docs.microsoft.com/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps).
+Follow the guide to [add app roles in your application and assign to users or groups](https://docs.microsoft.com/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps).
+
 * Step 1: Add below `appRoles` configuration in your application's manifest:
     ```
       "appRoles": [
