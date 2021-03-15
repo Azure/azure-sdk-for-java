@@ -39,6 +39,7 @@ public final class ChatClientBuilder {
     private HttpLogOptions logOptions = new HttpLogOptions();
     private HttpPipeline httpPipeline;
     private Configuration configuration;
+    private RetryPolicy retryPolicy;
 
     private static final String APP_CONFIG_PROPERTIES = "azure-communication-chat.properties";
     private static final String SDK_NAME = "name";
@@ -142,6 +143,18 @@ public final class ChatClientBuilder {
     }
 
     /**
+     * Sets the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * @param retryPolicy User's retry policy applied to each request.
+     * @return The updated {@link ChatClientBuilder} object.
+     * @throws NullPointerException If the specified {@code retryPolicy} is null.
+     */
+    public ChatClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        this.retryPolicy = Objects.requireNonNull(retryPolicy, "The retry policy cannot be null");
+        return this;
+    }
+
+    /**
      * Create synchronous client applying CommunicationTokenCredential, UserAgentPolicy,
      * RetryPolicy, and CookiePolicy.
      * Additional HttpPolicies specified by additionalPolicies will be applied after them
@@ -169,7 +182,7 @@ public final class ChatClientBuilder {
         } else {
             Objects.requireNonNull(communicationTokenCredential);
             Objects.requireNonNull(httpClient);
-            CommunicationBearerTokenCredential tokenCredential = 
+            CommunicationBearerTokenCredential tokenCredential =
                 new CommunicationBearerTokenCredential(communicationTokenCredential);
 
             pipeline = createHttpPipeline(httpClient,
@@ -203,7 +216,7 @@ public final class ChatClientBuilder {
 
     private void applyRequiredPolicies(List<HttpPipelinePolicy> policies) {
         policies.add(getUserAgentPolicy());
-        policies.add(new RetryPolicy());
+        policies.add(this.retryPolicy == null ? new RetryPolicy() : this.retryPolicy);
         policies.add(new CookiePolicy());
         policies.add(new HttpLoggingPolicy(logOptions));
     }

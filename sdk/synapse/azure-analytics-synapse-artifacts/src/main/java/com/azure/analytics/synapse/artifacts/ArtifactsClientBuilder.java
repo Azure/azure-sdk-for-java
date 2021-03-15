@@ -44,6 +44,7 @@ import java.util.Map;
             SqlPoolsClient.class,
             BigDataPoolsClient.class,
             IntegrationRuntimesClient.class,
+            LibraryClient.class,
             WorkspaceGitRepoManagementClient.class,
             LinkedServiceAsyncClient.class,
             DatasetAsyncClient.class,
@@ -60,6 +61,7 @@ import java.util.Map;
             SqlPoolsAsyncClient.class,
             BigDataPoolsAsyncClient.class,
             IntegrationRuntimesAsyncClient.class,
+            LibraryAsyncClient.class,
             WorkspaceGitRepoManagementAsyncClient.class
         })
 public final class ArtifactsClientBuilder {
@@ -422,6 +424,15 @@ public final class ArtifactsClientBuilder {
     }
 
     /**
+     * Builds an instance of LibraryAsyncClient async client.
+     *
+     * @return an instance of LibraryAsyncClient.
+     */
+    public LibraryAsyncClient buildLibraryAsyncClient() {
+        return new LibraryAsyncClient(buildInnerClient().getLibraries());
+    }
+
+    /**
      * Builds an instance of WorkspaceGitRepoManagementAsyncClient async client.
      *
      * @return an instance of WorkspaceGitRepoManagementAsyncClient.
@@ -563,6 +574,15 @@ public final class ArtifactsClientBuilder {
      */
     public IntegrationRuntimesClient buildIntegrationRuntimesClient() {
         return new IntegrationRuntimesClient(buildInnerClient().getIntegrationRuntimes());
+    }
+
+    /**
+     * Builds an instance of LibraryClient sync client.
+     *
+     * @return an instance of LibraryClient.
+     */
+    public LibraryClient buildLibraryClient() {
+        return new LibraryClient(buildInnerClient().getLibraries());
     }
 
     /**

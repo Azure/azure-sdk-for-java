@@ -4,7 +4,6 @@
 
 package com.azure.communication.phonenumbers.implementation;
 
-import com.azure.communication.phonenumbers.implementation.models.AcquiredPhoneNumbers;
 import com.azure.communication.phonenumbers.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberPurchaseRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberSearchRequest;
@@ -13,10 +12,11 @@ import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersPu
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReleasePhoneNumberResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersSearchAvailablePhoneNumbersResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUpdateCapabilitiesResponse;
-import com.azure.communication.phonenumbers.models.AcquiredPhoneNumber;
+import com.azure.communication.phonenumbers.implementation.models.PurchasedPhoneNumbers;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
+import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -116,7 +116,7 @@ public final class PhoneNumbersImpl {
         @Get("/phoneNumbers/{phoneNumber}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<AcquiredPhoneNumber>> getByNumber(
+        Mono<Response<PurchasedPhoneNumber>> getByNumber(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("phoneNumber") String phoneNumber,
                 @QueryParam("api-version") String apiVersion,
@@ -134,7 +134,7 @@ public final class PhoneNumbersImpl {
         @Get("/phoneNumbers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<AcquiredPhoneNumbers>> listPhoneNumbers(
+        Mono<Response<PurchasedPhoneNumbers>> listPhoneNumbers(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("skip") Integer skip,
                 @QueryParam("top") Integer top,
@@ -154,7 +154,7 @@ public final class PhoneNumbersImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<AcquiredPhoneNumbers>> listPhoneNumbersNext(
+        Mono<Response<PurchasedPhoneNumbers>> listPhoneNumbersNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -684,7 +684,7 @@ public final class PhoneNumbersImpl {
      * @return the details of the given acquired phone number.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AcquiredPhoneNumber>> getByNumberWithResponseAsync(String phoneNumber) {
+    public Mono<Response<PurchasedPhoneNumber>> getByNumberWithResponseAsync(String phoneNumber) {
         return FluxUtil.withContext(
                 context ->
                         service.getByNumber(
@@ -702,7 +702,7 @@ public final class PhoneNumbersImpl {
      * @return the details of the given acquired phone number.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AcquiredPhoneNumber>> getByNumberWithResponseAsync(String phoneNumber, Context context) {
+    public Mono<Response<PurchasedPhoneNumber>> getByNumberWithResponseAsync(String phoneNumber, Context context) {
         return service.getByNumber(this.client.getEndpoint(), phoneNumber, this.client.getApiVersion(), context);
     }
 
@@ -716,10 +716,10 @@ public final class PhoneNumbersImpl {
      * @return the details of the given acquired phone number.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcquiredPhoneNumber> getByNumberAsync(String phoneNumber) {
+    public Mono<PurchasedPhoneNumber> getByNumberAsync(String phoneNumber) {
         return getByNumberWithResponseAsync(phoneNumber)
                 .flatMap(
-                        (Response<AcquiredPhoneNumber> res) -> {
+                        (Response<PurchasedPhoneNumber> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -739,10 +739,10 @@ public final class PhoneNumbersImpl {
      * @return the details of the given acquired phone number.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcquiredPhoneNumber> getByNumberAsync(String phoneNumber, Context context) {
+    public Mono<PurchasedPhoneNumber> getByNumberAsync(String phoneNumber, Context context) {
         return getByNumberWithResponseAsync(phoneNumber, context)
                 .flatMap(
-                        (Response<AcquiredPhoneNumber> res) -> {
+                        (Response<PurchasedPhoneNumber> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -761,7 +761,7 @@ public final class PhoneNumbersImpl {
      * @return the details of the given acquired phone number.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AcquiredPhoneNumber getByNumber(String phoneNumber) {
+    public PurchasedPhoneNumber getByNumber(String phoneNumber) {
         return getByNumberAsync(phoneNumber).block();
     }
 
@@ -776,7 +776,7 @@ public final class PhoneNumbersImpl {
      * @return the details of the given acquired phone number.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AcquiredPhoneNumber getByNumber(String phoneNumber, Context context) {
+    public PurchasedPhoneNumber getByNumber(String phoneNumber, Context context) {
         return getByNumberAsync(phoneNumber, context).block();
     }
 
@@ -883,7 +883,7 @@ public final class PhoneNumbersImpl {
      * @return the list of all acquired phone numbers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<AcquiredPhoneNumber>> listPhoneNumbersSinglePageAsync(Integer skip, Integer top) {
+    public Mono<PagedResponse<PurchasedPhoneNumber>> listPhoneNumbersSinglePageAsync(Integer skip, Integer top) {
         return FluxUtil.withContext(
                         context ->
                                 service.listPhoneNumbers(
@@ -912,7 +912,7 @@ public final class PhoneNumbersImpl {
      * @return the list of all acquired phone numbers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<AcquiredPhoneNumber>> listPhoneNumbersSinglePageAsync(
+    public Mono<PagedResponse<PurchasedPhoneNumber>> listPhoneNumbersSinglePageAsync(
             Integer skip, Integer top, Context context) {
         return service.listPhoneNumbers(this.client.getEndpoint(), skip, top, this.client.getApiVersion(), context)
                 .map(
@@ -938,7 +938,7 @@ public final class PhoneNumbersImpl {
      * @return the list of all acquired phone numbers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AcquiredPhoneNumber> listPhoneNumbersAsync(Integer skip, Integer top) {
+    public PagedFlux<PurchasedPhoneNumber> listPhoneNumbersAsync(Integer skip, Integer top) {
         return new PagedFlux<>(
                 () -> listPhoneNumbersSinglePageAsync(skip, top),
                 nextLink -> listPhoneNumbersNextSinglePageAsync(nextLink));
@@ -957,7 +957,7 @@ public final class PhoneNumbersImpl {
      * @return the list of all acquired phone numbers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AcquiredPhoneNumber> listPhoneNumbersAsync(Integer skip, Integer top, Context context) {
+    public PagedFlux<PurchasedPhoneNumber> listPhoneNumbersAsync(Integer skip, Integer top, Context context) {
         return new PagedFlux<>(
                 () -> listPhoneNumbersSinglePageAsync(skip, top, context),
                 nextLink -> listPhoneNumbersNextSinglePageAsync(nextLink, context));
@@ -975,7 +975,7 @@ public final class PhoneNumbersImpl {
      * @return the list of all acquired phone numbers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AcquiredPhoneNumber> listPhoneNumbers(Integer skip, Integer top) {
+    public PagedIterable<PurchasedPhoneNumber> listPhoneNumbers(Integer skip, Integer top) {
         return new PagedIterable<>(listPhoneNumbersAsync(skip, top));
     }
 
@@ -992,7 +992,7 @@ public final class PhoneNumbersImpl {
      * @return the list of all acquired phone numbers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AcquiredPhoneNumber> listPhoneNumbers(Integer skip, Integer top, Context context) {
+    public PagedIterable<PurchasedPhoneNumber> listPhoneNumbers(Integer skip, Integer top, Context context) {
         return new PagedIterable<>(listPhoneNumbersAsync(skip, top, context));
     }
 
@@ -1047,7 +1047,7 @@ public final class PhoneNumbersImpl {
      * @return represents an acquired phone number.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcquiredPhoneNumber> updateCapabilitiesAsync(String phoneNumber, PhoneNumberCapabilitiesRequest body) {
+    public Mono<PurchasedPhoneNumber> updateCapabilitiesAsync(String phoneNumber, PhoneNumberCapabilitiesRequest body) {
         return updateCapabilitiesWithResponseAsync(phoneNumber, body)
                 .flatMap(
                         (PhoneNumbersUpdateCapabilitiesResponse res) -> {
@@ -1072,7 +1072,7 @@ public final class PhoneNumbersImpl {
      * @return represents an acquired phone number.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcquiredPhoneNumber> updateCapabilitiesAsync(
+    public Mono<PurchasedPhoneNumber> updateCapabilitiesAsync(
             String phoneNumber, PhoneNumberCapabilitiesRequest body, Context context) {
         return updateCapabilitiesWithResponseAsync(phoneNumber, body, context)
                 .flatMap(
@@ -1097,7 +1097,7 @@ public final class PhoneNumbersImpl {
      * @return represents an acquired phone number.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AcquiredPhoneNumber updateCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest body) {
+    public PurchasedPhoneNumber updateCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest body) {
         return updateCapabilitiesAsync(phoneNumber, body).block();
     }
 
@@ -1114,7 +1114,7 @@ public final class PhoneNumbersImpl {
      * @return represents an acquired phone number.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AcquiredPhoneNumber updateCapabilities(
+    public PurchasedPhoneNumber updateCapabilities(
             String phoneNumber, PhoneNumberCapabilitiesRequest body, Context context) {
         return updateCapabilitiesAsync(phoneNumber, body, context).block();
     }
@@ -1129,7 +1129,7 @@ public final class PhoneNumbersImpl {
      * @return the list of acquired phone numbers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<AcquiredPhoneNumber>> listPhoneNumbersNextSinglePageAsync(String nextLink) {
+    public Mono<PagedResponse<PurchasedPhoneNumber>> listPhoneNumbersNextSinglePageAsync(String nextLink) {
         return FluxUtil.withContext(context -> service.listPhoneNumbersNext(nextLink, context))
                 .map(
                         res ->
@@ -1153,7 +1153,7 @@ public final class PhoneNumbersImpl {
      * @return the list of acquired phone numbers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<AcquiredPhoneNumber>> listPhoneNumbersNextSinglePageAsync(
+    public Mono<PagedResponse<PurchasedPhoneNumber>> listPhoneNumbersNextSinglePageAsync(
             String nextLink, Context context) {
         return service.listPhoneNumbersNext(nextLink, context)
                 .map(

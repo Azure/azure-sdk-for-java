@@ -2,21 +2,23 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
+import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
+import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
+import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.domain.AuditableEntity;
-import com.azure.spring.data.cosmos.domain.Book;
-import com.azure.spring.data.cosmos.repository.StubAuditorProvider;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
+import com.azure.spring.data.cosmos.repository.repository.AddressRepository;
 import com.azure.spring.data.cosmos.repository.repository.AuditableRepository;
-import com.azure.spring.data.cosmos.repository.repository.BookRepository;
-import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -24,64 +26,41 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import static com.azure.spring.data.cosmos.common.PageTestUtils.validateLastPage;
+import static com.azure.spring.data.cosmos.common.PageTestUtils.validateNonLastPage;
+import static com.azure.spring.data.cosmos.common.TestConstants.PAGE_SIZE_1;
+import static com.azure.spring.data.cosmos.common.TestConstants.PAGE_SIZE_2;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class AnnotatedQueryIT {
 
-    private static final Book TEST_BOOK_1 = new Book(TestConstants.ID_1, UUID.randomUUID().toString(),
-                                                     "title1");
-    private static final Book TEST_BOOK_2 = new Book(TestConstants.ID_2, UUID.randomUUID().toString(),
-                                                     "title2");
-
-    private static final CosmosEntityInformation<Book, String> entityInformation =
-        new CosmosEntityInformation<>(Book.class);
-
-    private static CosmosTemplate staticTemplate;
-    private static boolean isSetupDone;
+    @ClassRule
+    public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
     private CosmosTemplate template;
 
     @Autowired
-    private BookRepository bookRepository;
-
-    @Autowired
     private AuditableRepository auditableRepository;
 
     @Autowired
-    private StubAuditorProvider stubAuditorProvider;
-
-    @AfterClass
-    public static void afterClassCleanup() {
-        staticTemplate.deleteContainer(entityInformation.getContainerName());
-    }
+    private AddressRepository addressRepository;
 
     @Before
     public void setUp() {
-        if (!isSetupDone) {
-            staticTemplate = template;
-            template.createContainerIfNotExists(entityInformation);
-        }
-        isSetupDone = true;
-    }
-
-    @After
-    public void cleanup() {
-        bookRepository.deleteAll();
+        collectionManager.ensureContainersCreatedAndEmpty(template, Address.class, AuditableEntity.class);
     }
 
     @Test
     public void testAnnotatedQuery() {
-        bookRepository.saveAll(Arrays.asList(TEST_BOOK_1, TEST_BOOK_2));
+        addressRepository.saveAll(Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS1_PARTITION2));
 
-        final List<Book> result = bookRepository.annotatedFindBookById(TEST_BOOK_1.getId());
+        final List<Address> result = addressRepository.annotatedFindListByCity(Address.TEST_ADDRESS1_PARTITION1.getCity());
         assertThat(result).isNotNull();
         assertThat(result.size()).isEqualTo(1);
-        assertThat(result.get(0).getId()).isEqualTo(TEST_BOOK_1.getId());
+        assertThat(result.get(0)).isEqualTo(Address.TEST_ADDRESS1_PARTITION1);
     }
 
     @Test
@@ -95,6 +74,61 @@ public class AnnotatedQueryIT {
         assertThat(result).isNotNull();
         assertThat(result.size()).isEqualTo(1);
         assertThat(result.get(0).getId()).isEqualTo(entity.getId());
+    }
+
+    @Test
+    public void testAnnotatedQueryWithPageable() {
+        addressRepository.saveAll(Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1));
+
+        final PageRequest pageRequest = CosmosPageRequest.of(0, PAGE_SIZE_1);
+        final Page<Address> page = addressRepository.annotatedFindByCity(TestConstants.CITY, pageRequest);
+
+        assertThat(page.getContent().size()).isEqualTo(PAGE_SIZE_1);
+        validateResultStreetMatch(page, Address.TEST_ADDRESS1_PARTITION1.getStreet());
+        validateNonLastPage(page, PAGE_SIZE_1);
+
+        final Page<Address> nextPage = addressRepository.annotatedFindByCity(TestConstants.CITY, page.nextPageable());
+
+        assertThat(nextPage.getContent().size()).isEqualTo(PAGE_SIZE_1);
+        validateResultStreetMatch(nextPage, Address.TEST_ADDRESS2_PARTITION1.getStreet());
+        validateLastPage(nextPage, PAGE_SIZE_1);
+    }
+
+    private void validateResultStreetMatch(Page<Address> page, String street) {
+        for (Address result : page.getContent()) {
+            assertThat(result.getStreet()).isEqualTo(street);
+        }
+    }
+
+    @Test
+    public void testAnnotatedQueryWithSort() {
+        addressRepository.saveAll(Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1));
+
+        final List<Address> resultsAsc = addressRepository.annotatedFindByCity(TestConstants.CITY, Sort.by(Sort.Direction.ASC, "street"));
+        assertAddressOrder(resultsAsc, Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1);
+
+        final List<Address> resultsDesc = addressRepository.annotatedFindByCity(TestConstants.CITY, Sort.by(Sort.Direction.DESC, "street"));
+        assertAddressOrder(resultsDesc, Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION1);
+    }
+
+    private void assertAddressOrder(List<Address> actualResults, Address ... expectedResults) {
+        assertThat(actualResults.size()).isEqualTo(expectedResults.length);
+        for (int i = 0; i < expectedResults.length; i++) {
+            assertThat(expectedResults[i]).isEqualTo(actualResults.get(i));
+        }
+    }
+
+    @Test
+    public void testAnnotatedQueryWithPageableSort() {
+        addressRepository.saveAll(Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1));
+
+        final PageRequest ascPageRequest = CosmosPageRequest.of(0, PAGE_SIZE_2, Sort.by(Sort.Direction.ASC, "street"));
+        final Page<Address> ascPage = addressRepository.annotatedFindByCity(TestConstants.CITY, ascPageRequest);
+        assertAddressOrder(ascPage.getContent(), Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1);
+
+        final PageRequest descPageRequest = CosmosPageRequest.of(0, PAGE_SIZE_2, Sort.by(Sort.Direction.DESC, "street"));
+        final Page<Address> descPage = addressRepository.annotatedFindByCity(TestConstants.CITY, descPageRequest);
+        assertAddressOrder(descPage.getContent(), Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION1);
     }
 
 }

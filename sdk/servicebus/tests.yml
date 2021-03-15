@@ -10,5 +10,4 @@ stages:
           safeName: azuremessagingservicebus
       Clouds: 'Public,Canary'
       EnvVars:
-        AZURE_TEST_MODE: RECORD
         AZURE_LOG_LEVEL: 2

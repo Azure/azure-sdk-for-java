@@ -4,15 +4,15 @@ package com.azure.spring.data.cosmos.repository;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.spring.data.cosmos.ReactiveIntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.assertj.core.api.Assertions;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +34,10 @@ public class MultiCosmosTemplateIT {
     private static final Person SECONDARY_TEST_PERSON = new Person(TestConstants.ID_2,
         TestConstants.NEW_FIRST_NAME,
         TestConstants.NEW_LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES, AGE);
-    private static CosmosEntityInformation<Person, String> personInfo;
-    private static boolean initialized;
+
+    @ClassRule
+    public static final ReactiveIntegrationTestCollectionManager primaryCollectionManager = new ReactiveIntegrationTestCollectionManager();
+
     @Autowired
     @Qualifier("secondaryReactiveCosmosTemplate")
     private ReactiveCosmosTemplate secondaryReactiveCosmosTemplate;
@@ -45,32 +47,15 @@ public class MultiCosmosTemplateIT {
     @Autowired
     @Qualifier("reactiveCosmosTemplate")
     private ReactiveCosmosTemplate primaryReactiveCosmosTemplate;
-
-    @Before
-    public void setUp() throws ClassNotFoundException {
-        if (!initialized) {
-            personInfo = new CosmosEntityInformation<>(Person.class);
-            initialized = true;
-        }
-    }
-
-    @After
-    public void cleanup() {
-    }
-
-    @AfterClass
-    public static void afterClassCleanup() {
-    }
+    private CosmosEntityInformation<Person, String> personInfo = new CosmosEntityInformation<>(Person.class);
 
     @Test
     public void testPrimaryTemplate() {
-        primaryReactiveCosmosTemplate.createContainerIfNotExists(personInfo).block();
+        primaryCollectionManager.ensureContainersCreatedAndEmpty(primaryReactiveCosmosTemplate, Person.class);
         primaryReactiveCosmosTemplate.insert(PRIMARY_TEST_PERSON,
             new PartitionKey(personInfo.getPartitionKeyFieldValue(PRIMARY_TEST_PERSON))).block();
         final Mono<Person> findById = primaryReactiveCosmosTemplate.findById(PRIMARY_TEST_PERSON.getId(), Person.class);
         Assertions.assertThat(findById.block().getFirstName()).isEqualTo(TestConstants.FIRST_NAME);
-        primaryReactiveCosmosTemplate.deleteAll(Person.class.getSimpleName(), Person.class).block();
-        primaryReactiveCosmosTemplate.deleteContainer(personInfo.getContainerName());
     }
 
     @Test
