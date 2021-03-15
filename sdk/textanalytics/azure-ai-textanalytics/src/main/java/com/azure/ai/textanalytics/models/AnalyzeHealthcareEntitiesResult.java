@@ -12,6 +12,7 @@ import com.azure.core.util.IterableStream;
 public final class AnalyzeHealthcareEntitiesResult extends TextAnalyticsResult {
     private IterableStream<TextAnalyticsWarning> warnings;
     private IterableStream<HealthcareEntity> entities;
+    private IterableStream<HealthcareEntityRelation> entityRelations;
 
     static {
         AnalyzeHealthcareEntitiesResultPropertiesHelper.setAccessor(
@@ -26,6 +27,12 @@ public final class AnalyzeHealthcareEntitiesResult extends TextAnalyticsResult {
                 public void setWarnings(AnalyzeHealthcareEntitiesResult entitiesResult,
                     IterableStream<TextAnalyticsWarning> warnings) {
                     entitiesResult.setWarnings(warnings);
+                }
+
+                @Override
+                public void setEntityRelations(AnalyzeHealthcareEntitiesResult entitiesResult,
+                    IterableStream<HealthcareEntityRelation> entityRelations) {
+                    entitiesResult.setEntityRelations(entityRelations);
                 }
             });
     }
@@ -64,11 +71,24 @@ public final class AnalyzeHealthcareEntitiesResult extends TextAnalyticsResult {
         return this.warnings;
     }
 
+    /**
+     * Get the {@link IterableStream} of {@link HealthcareEntityRelation}.
+     *
+     * @return the {@link IterableStream} of {@link HealthcareEntityRelation}.
+     */
+    public IterableStream<HealthcareEntityRelation> getEntityRelations() {
+        return this.entityRelations;
+    }
+
     private void setEntities(IterableStream<HealthcareEntity> entities) {
         this.entities = entities;
     }
 
     private void setWarnings(IterableStream<TextAnalyticsWarning> warnings) {
         this.warnings = warnings;
+    }
+
+    private void setEntityRelations(IterableStream<HealthcareEntityRelation> entityRelations) {
+        this.entityRelations = entityRelations;
     }
 }

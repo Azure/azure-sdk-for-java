@@ -59,6 +59,17 @@ public class PagedConverterTests {
     }
 
     @Test
+    public void testMapPageWithPagedIterable() {
+        PagedFlux<String> pagedFlux = mockPagedFlux("base", 0, 10, 4);
+        PagedIterable<String> pagedIterable = new PagedIterable<>(pagedFlux);
+
+        PagedIterable<String> convertedPagedIterable = PagedConverter.mapPage(pagedIterable, item -> item + "#");
+
+        PagedIterable<String> afterMapPage = convertedPagedIterable.mapPage(item -> item + "#");
+        Assertions.assertEquals(10, afterMapPage.stream().count());
+    }
+
+    @Test
     public void testMapPageIterator() {
         PagedFlux<String> pagedFlux = mockPagedFlux("base", 0, 10, 4);
         PagedFlux<String> convertedPagedFlux = PagedConverter.mapPage(pagedFlux, item -> item + "#");

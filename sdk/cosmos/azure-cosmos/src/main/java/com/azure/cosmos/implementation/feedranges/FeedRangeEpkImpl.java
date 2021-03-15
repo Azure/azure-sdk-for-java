@@ -68,7 +68,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
     }
 
     @Override
-    public Mono<Range<String>> getEffectiveRange(
+    protected Mono<Range<String>> getEffectiveRange(
         IRoutingMapProvider routingMapProvider,
         MetadataDiagnosticsContext metadataDiagnosticsCtx,
         Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {

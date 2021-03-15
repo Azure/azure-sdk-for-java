@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.ReadOnlyBufferException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -214,13 +215,7 @@ public final class BinaryData {
      * @see JsonSerializer
      */
     public static BinaryData fromObject(Object data) {
-        if (Objects.isNull(data)) {
-            return EMPTY_DATA;
-        }
-        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        getDefaultSerializer().serialize(outputStream, data);
-
-        return new BinaryData(outputStream.toByteArray());
+        return fromObject(data, getDefaultSerializer());
     }
 
     /**
@@ -241,7 +236,7 @@ public final class BinaryData {
      * @see JsonSerializer
      */
     public static Mono<BinaryData> fromObjectAsync(Object data) {
-        return Mono.fromCallable(() -> fromObject(data));
+        return fromObjectAsync(data, getDefaultSerializer());
     }
 
     /**
@@ -278,9 +273,7 @@ public final class BinaryData {
 
         Objects.requireNonNull(serializer, "'serializer' cannot be null.");
 
-        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        serializer.serialize(outputStream, data);
-        return new BinaryData(outputStream.toByteArray());
+        return new BinaryData(serializer.serializeToBytes(data));
     }
 
     /**
@@ -461,8 +454,7 @@ public final class BinaryData {
         Objects.requireNonNull(typeReference, "'typeReference' cannot be null.");
         Objects.requireNonNull(serializer, "'serializer' cannot be null.");
 
-        InputStream jsonStream = new ByteArrayInputStream(this.data);
-        return serializer.deserialize(jsonStream, typeReference);
+        return serializer.deserializeFromBytes(this.data, typeReference);
     }
 
     /**
@@ -515,7 +507,7 @@ public final class BinaryData {
      * @see JsonSerializer
      */
     public <T> Mono<T> toObjectAsync(TypeReference<T> typeReference) {
-        return Mono.fromCallable(() -> toObject(typeReference));
+        return toObjectAsync(typeReference, getDefaultSerializer());
     }
 
     /**
@@ -600,6 +592,21 @@ public final class BinaryData {
      */
     public InputStream toStream() {
         return new ByteArrayInputStream(this.data);
+    }
+
+    /**
+     * Returns a read-only {@link ByteBuffer} representation of this {@link BinaryData}.
+     * <p>
+     * Attempting to mutate the returned {@link ByteBuffer} will throw a {@link ReadOnlyBufferException}.
+     *
+     * <p><strong>Get a read-only ByteBuffer from the BinaryData</strong></p>
+     *
+     * {@codesnippet com.azure.util.BinaryData.toByteBuffer}
+     *
+     * @return A read-only {@link ByteBuffer} representing the {@link BinaryData}.
+     */
+    public ByteBuffer toByteBuffer() {
+        return ByteBuffer.wrap(this.data).asReadOnlyBuffer();
     }
 
     /* This will ensure lazy instantiation to avoid hard dependency on Json Serializer. */

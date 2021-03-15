@@ -23,9 +23,9 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.2
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/967da531665d4b51a7a5599324e5edd95489cc3d/specification/communication/data-plane/Microsoft.CommunicationServicesPhoneNumbers/stable/2021-03-07/phonenumbers.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a4d1e1516433894fca89f9600a6ac8a5471fc598/specification/communication/data-plane/Microsoft.CommunicationServicesPhoneNumbers/stable/2021-03-07/phonenumbers.json
 override-client-name: PhoneNumberAdminClient
-custom-types: AcquiredPhoneNumber,BillingFrequency,CommunicationError,PhoneNumberOperation,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberUpdateRequest,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilitiesRequest,PhoneNumberCapabilityValue,PhoneNumberCost,PhoneNumberSearchRequest,PhoneNumberSearchResult,PhoneNumberType
+custom-types: PurchasedPhoneNumber,BillingFrequency,CommunicationError,PhoneNumberOperation,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilitiesRequest,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability
 custom-types-subpackage: models
 models-subpackage: implementation.models
 java: true
@@ -50,8 +50,6 @@ directive:
       $["properties"]["capabilities"].readOnly = true;
       $["properties"]["assignmentType"].readOnly = true;
       $["properties"]["purchaseDate"].readOnly = true;
-      $["properties"]["callbackUri"].readOnly = true;
-      $["properties"]["applicationId"].readOnly = true;
       $["properties"]["cost"].readOnly = true;
 ```
 
@@ -94,4 +92,20 @@ directive:
       $["properties"]["phoneNumberType"].readOnly = true;
       $["properties"]["assignmentType"].readOnly = true;
       $["properties"]["capabilities"].readOnly = true;
+```
+
+### Rename AcquiredPhoneNumber to PurchasedPhoneNumber
+``` yaml
+directive:
+    - rename-model:
+        from: AcquiredPhoneNumber
+        to: PurchasedPhoneNumber
+```
+
+### Rename AcquiredPhoneNumbers to PurchasedPhoneNumbers
+``` yaml
+directive:
+    - rename-model:
+        from: AcquiredPhoneNumbers
+        to: PurchasedPhoneNumbers
 ```

@@ -26,14 +26,14 @@ public class PartitionKeyInternalHelper {
         false);
 
     static final int MaxPartitionKeyBinarySize =
-            (1 /*type marker */ +
-                    9 /* hash value*/ +
-                    1 /* type marker*/ + StringPartitionKeyComponent.MAX_STRING_BYTES_TO_APPEND +
-                    1 /*trailing zero*/
-            ) * 3;
-    private static final Int128 MaxHashV2Value = new Int128(new byte[] {
-            (byte) 0x3F, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,
-            (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF});
+        (1 /*type marker */ +
+            9 /* hash value*/ +
+            1 /* type marker*/ + StringPartitionKeyComponent.MAX_STRING_BYTES_TO_APPEND +
+            1 /*trailing zero*/
+        ) * 3;
+    public static final Int128 MaxHashV2Value = new Int128(new byte[] {
+        (byte) 0x3F, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,
+        (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF});
 
     static byte[] uIntToBytes(UInt128 unit) {
         ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES * 2);
@@ -52,7 +52,7 @@ public class PartitionKeyInternalHelper {
         return buffer.array();
     }
 
-    static String toHexEncodedBinaryString(IPartitionKeyComponent... components) {
+    public static String toHexEncodedBinaryString(IPartitionKeyComponent... components) {
         ByteBufferOutputStream stream = new ByteBufferOutputStream(MaxPartitionKeyBinarySize);
         for (IPartitionKeyComponent component: components) {
             component.writeForBinaryEncoding(stream);
@@ -109,7 +109,7 @@ public class PartitionKeyInternalHelper {
             int hashAsInt = MurmurHash3_32.hash(byteBuffer.array(), byteBuffer.limit(), 0);
             hash = (double) asUnsignedLong(hashAsInt);
         } catch (IOException e) {
-           throw new IllegalArgumentException(e);
+            throw new IllegalArgumentException(e);
         }
 
         IPartitionKeyComponent[] partitionKeyComponents = new IPartitionKeyComponent[partitionKeyInternal.components.size() + 1];
@@ -163,31 +163,6 @@ public class PartitionKeyInternalHelper {
 
             default:
                 return toHexEncodedBinaryString(partitionKeyInternal.components);
-        }
-    }
-
-    static class HexConvert {
-        final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
-
-        public static String bytesToHex(byte[] bytes) {
-            char[] hexChars = new char[bytes.length * 2];
-            for (int j = 0; j < bytes.length; j++) {
-                int v = bytes[j] & 0xFF;
-                hexChars[j * 2] = hexArray[v >>> 4];
-                hexChars[j * 2 + 1] = hexArray[v & 0x0F];
-            }
-            return new String(hexChars);
-        }
-
-        public static String bytesToHex(ByteBuffer byteBuffer) {
-            char[] hexChars = new char[byteBuffer.limit() * 2];
-            for (int j = 0; j < byteBuffer.limit(); j++) {
-                int v = byteBuffer.array()[j] & 0xFF;
-                hexChars[j * 2] = hexArray[v >>> 4];
-                hexChars[j * 2 + 1] = hexArray[v & 0x0F];
-            }
-
-            return new String(hexChars);
         }
     }
 }

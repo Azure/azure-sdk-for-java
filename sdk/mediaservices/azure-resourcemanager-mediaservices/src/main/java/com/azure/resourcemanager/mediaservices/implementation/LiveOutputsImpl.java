@@ -30,14 +30,14 @@ public final class LiveOutputsImpl implements LiveOutputs {
 
     public PagedIterable<LiveOutput> list(String resourceGroupName, String accountName, String liveEventName) {
         PagedIterable<LiveOutputInner> inner = this.serviceClient().list(resourceGroupName, accountName, liveEventName);
-        return inner.mapPage(inner1 -> new LiveOutputImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new LiveOutputImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LiveOutput> list(
         String resourceGroupName, String accountName, String liveEventName, Context context) {
         PagedIterable<LiveOutputInner> inner =
             this.serviceClient().list(resourceGroupName, accountName, liveEventName, context);
-        return inner.mapPage(inner1 -> new LiveOutputImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new LiveOutputImpl(inner1, this.manager()));
     }
 
     public LiveOutput get(String resourceGroupName, String accountName, String liveEventName, String liveOutputName) {

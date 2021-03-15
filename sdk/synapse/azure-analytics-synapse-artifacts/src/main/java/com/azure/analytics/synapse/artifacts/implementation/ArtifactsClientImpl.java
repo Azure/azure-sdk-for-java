@@ -242,6 +242,18 @@ public final class ArtifactsClientImpl {
         return this.integrationRuntimes;
     }
 
+    /** The LibrariesImpl object to access its operations. */
+    private final LibrariesImpl libraries;
+
+    /**
+     * Gets the LibrariesImpl object to access its operations.
+     *
+     * @return the LibrariesImpl object.
+     */
+    public LibrariesImpl getLibraries() {
+        return this.libraries;
+    }
+
     /** The WorkspaceGitRepoManagementsImpl object to access its operations. */
     private final WorkspaceGitRepoManagementsImpl workspaceGitRepoManagements;
 
@@ -310,6 +322,7 @@ public final class ArtifactsClientImpl {
         this.sqlPools = new SqlPoolsImpl(this);
         this.bigDataPools = new BigDataPoolsImpl(this);
         this.integrationRuntimes = new IntegrationRuntimesImpl(this);
+        this.libraries = new LibrariesImpl(this);
         this.workspaceGitRepoManagements = new WorkspaceGitRepoManagementsImpl(this);
     }
 }

@@ -66,9 +66,9 @@ class JdkAsyncHttpClient implements HttpClient {
                         int statusCode = innerResponse.statusCode();
                         HttpHeaders headers = fromJdkHttpHeaders(innerResponse.headers());
 
-                        return FluxUtil.collectBytesInByteBufferStream(JdkFlowAdapter
+                        return FluxUtil.collectBytesFromNetworkResponse(JdkFlowAdapter
                             .flowPublisherToFlux(innerResponse.body())
-                            .flatMapSequential(Flux::fromIterable))
+                            .flatMapSequential(Flux::fromIterable), headers)
                             .map(bytes -> new BufferedJdkHttpResponse(request, statusCode, headers, bytes));
                     } else {
                         return Mono.just(new JdkHttpResponse(request, innerResponse));
