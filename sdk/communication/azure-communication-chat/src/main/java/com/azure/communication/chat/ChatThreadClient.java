@@ -110,7 +110,7 @@ public final class ChatThreadClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void addParticipant(ChatParticipant participant) {
-        this.client.addParticipants(Collections.singletonList(participant)).block();
+        this.client.addParticipant(participant).block();
     }
 
     /**
@@ -118,13 +118,11 @@ public final class ChatThreadClient {
      *
      * @param participant The new participant.
      * @param context The context to associate with this operation.
-     * @return the completion.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AddChatParticipantsResult> addParticipantWithResponse(ChatParticipant participant,
-                                                                          Context context) {
-
-        return this.client.addParticipants(Collections.singletonList(participant), context).block();
+    public Response<Void> addParticipantWithResponse(ChatParticipant participant, Context context) {
+        return this.client.addParticipantWithResponse(participant, context).block();
     }
 
     /**

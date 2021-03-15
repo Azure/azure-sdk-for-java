@@ -160,71 +160,59 @@ public final class ChatThreadAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AddChatParticipantsResult>> addParticipantsWithResponse(Iterable<ChatParticipant> participants) {
-        try {
-            Objects.requireNonNull(participants, "'participants' cannot be null.");
-            return withContext(context -> addParticipants(participants, context));
-        } catch (RuntimeException ex) {
-
-            return monoError(logger, ex);
-        }
+        Objects.requireNonNull(participants, "'participants' cannot be null.");
+        return withContext(context -> addParticipants(participants, context));
     }
 
     /**
      * Adds a participant to a thread. If the participant already exists, no change occurs.
      *
      * @param participant The new participant.
-     * @return the result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> addParticipant(ChatParticipant participant) {
-        try {
-            return withContext(context -> addParticipants(Collections.singletonList(participant), context)
-                .flatMap((Response<AddChatParticipantsResult> res) -> {
-                    if (res.getValue().getInvalidParticipants() != null) {
-                        if (res.getValue().getInvalidParticipants().size() > 0) {
-                            ChatError error = res.getValue().getInvalidParticipants()
-                                .stream()
-                                .findFirst()
-                                .get();
-
-                            return Mono.error(new InvalidParticipantException(error));
-                        }
-                    }
-                    return Mono.empty();
-                }));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return withContext(context -> {
+            addParticipantWithResponse(participant, context);
+            return Mono.empty();
+        });
     }
 
     /**
      * Adds a participant to a thread. If the participant already exists, no change occurs.
      *
      * @param participant The new participant.
-     * @return the result.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addParticipantWithResponse(ChatParticipant participant) {
-        try {
-            return withContext(context -> addParticipants(Collections.singletonList(participant), context)
-                .flatMap((Response<AddChatParticipantsResult> res) -> {
-                    if (res.getValue().getInvalidParticipants() != null) {
-                        if (res.getValue().getInvalidParticipants().size() > 0) {
-                            ChatError error = res.getValue().getInvalidParticipants()
-                                .stream()
-                                .findFirst()
-                                .get();
+        return withContext(context -> addParticipantWithResponse(participant, context));
+    }
 
-                            return Mono.error(new InvalidParticipantException(error));
-                        }
+    /**
+     * Adds a participant to a thread. If the participant already exists, no change occurs.
+     *
+     * @param participant The new participant.
+     * @param context The context to associate with this operation.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> addParticipantWithResponse(ChatParticipant participant, Context context) {
+        context = context == null ? Context.NONE : context;
+        return addParticipants(Collections.singletonList(participant), context)
+            .flatMap((Response<AddChatParticipantsResult> res) -> {
+                if (res.getValue().getInvalidParticipants() != null) {
+                    if (res.getValue().getInvalidParticipants().size() > 0) {
+                        ChatError error = res.getValue().getInvalidParticipants()
+                            .stream()
+                            .findFirst()
+                            .get();
+
+                        return Mono.error(new InvalidParticipantException(error));
                     }
+                }
 
-                    return Mono.empty();
-                }));
-        } catch (RuntimeException ex) {
-
-            return monoError(logger, ex);
-        }
+                return Mono.empty();
+            });
     }
 
     /**
