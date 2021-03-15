@@ -17,9 +17,12 @@ public final class CommunicationCloudEnvironment extends ExpandableStringEnum<Co
 
     /**
      * Creates a default CommunicationCloudEnvironment
-     * @param environmentValue name of the cloud environment
      */
-    public CommunicationCloudEnvironment(String environmentValue) {
+    public CommunicationCloudEnvironment() {
+        this.environmentValue = PUBLIC_VALUE;
+    }
+
+    private CommunicationCloudEnvironment(String environmentValue) {
         Objects.requireNonNull(environmentValue);
         this.environmentValue = environmentValue;
     }
