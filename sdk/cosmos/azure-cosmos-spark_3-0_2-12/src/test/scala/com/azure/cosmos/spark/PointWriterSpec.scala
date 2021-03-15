@@ -18,25 +18,25 @@ import java.util.UUID
 
 //scalastyle:off multiple.string.literals
 //scalastyle:off magic.number
-class BulkWriterSpec extends IntegrationSpec with CosmosClient with AutoCleanableCosmosContainer {
+class PointWriterSpec extends IntegrationSpec with CosmosClient with AutoCleanableCosmosContainer {
   val objectMapper = new ObjectMapper()
 
-  "Bulk Writer" can "upsert item" taggedAs RequiresCosmosEndpoint in  {
+  "Point Writer" can "upsert item" taggedAs RequiresCosmosEndpoint in  {
     val container = getContainer
 
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 0, bulkEnabled = true, 100)
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 0, bulkEnabled = false, 100)
 
-    val bulkWriter = new BulkWriter(container, writeConfig)
+    val pointWriter = new PointWriter(container, writeConfig)
 
     val items = mutable.Map[String, ObjectNode]()
-    for(_ <- 0 until 100) {
+    for(_ <- 0 until 5000) {
       val item = getItem(UUID.randomUUID().toString)
       val id = item.get("id").textValue()
       items += (id -> item)
-      bulkWriter.scheduleWrite(new PartitionKey(item.get("id").textValue()), item)
+      pointWriter.scheduleWrite(new PartitionKey(item.get("id").textValue()), item)
     }
 
-    bulkWriter.flushAndClose()
+    pointWriter.flushAndClose()
     val allItems = readAllItems()
 
     allItems should have size items.size
@@ -48,20 +48,20 @@ class BulkWriterSpec extends IntegrationSpec with CosmosClient with AutoCleanabl
     }
   }
 
-  "Bulk Writer" can "create item with duplicates" taggedAs RequiresCosmosEndpoint in {
+  "Point Writer" can "create item with duplicates" taggedAs RequiresCosmosEndpoint in {
     val container = getContainer
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 0, bulkEnabled = true, 100)
-    val bulkWriter = new BulkWriter(container, writeConfig)
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 0, bulkEnabled = false, 1000)
+    val pointWriter = new PointWriter(container, writeConfig)
     val items = new mutable.HashMap[String, mutable.Set[ObjectNode]] with mutable.MultiMap[String, ObjectNode]
 
     for(i <- 0 until 1000) {
       val item = getItem((i % 100).toString)
       val id = item.get("id").textValue()
       items.addBinding(id, item)
-      bulkWriter.scheduleWrite(new PartitionKey(id), item)
+      pointWriter.scheduleWrite(new PartitionKey(id), item)
     }
 
-    bulkWriter.flushAndClose()
+    pointWriter.flushAndClose()
     val allItems = readAllItems()
 
     allItems should have size items.size

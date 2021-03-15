@@ -17,6 +17,10 @@ private object CosmosConstants {
     val ChangeFeedDataSourceShortName = "cosmos.changeFeed"
   }
 
+  object Properties {
+    val Id = "id"
+  }
+
   object StatusCodes {
     val Conflict = 409
     val ServiceUnavailable = 503

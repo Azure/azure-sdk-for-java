@@ -17,10 +17,13 @@ import org.apache.spark.sql.connector.read.streaming.ReadLimit
 
 import java.time.{Duration, Instant}
 import java.time.format.DateTimeFormatter
+import collection.immutable.Map
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
+
+// scalastyle:off multiple.string.literals
 
 // each config category will be a case class:
 // TODO moderakh more configs
@@ -141,7 +144,10 @@ private object ItemWriteStrategy extends Enumeration {
       throw new IllegalArgumentException("name is not a valid ItemWriteStrategy"))
 }
 
-private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy, maxRetryCount: Int, bulkEnabled: Boolean)
+private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy,
+                                     maxRetryCount: Int,
+                                     bulkEnabled: Boolean,
+                                     maxConcurrency: Int)
 
 private object CosmosWriteConfig {
   private val bulkEnabled = CosmosConfigEntry[Boolean](key = "spark.cosmos.write.bulkEnabled",
@@ -149,6 +155,15 @@ private object CosmosWriteConfig {
     mandatory = false,
     parseFromStringFunction = bulkEnabledAsString => bulkEnabledAsString.toBoolean,
     helpMessage = "Cosmos DB Item Write bulk enabled")
+
+  private val writeMaxConcurrency = 100
+  private val MaxRetryCount = 3
+
+  private val maxConcurrency = CosmosConfigEntry[Int](key = "spark.cosmos.write.maxConcurrency",
+    defaultValue = Option.apply(writeMaxConcurrency),
+    mandatory = false,
+    parseFromStringFunction = bulkMaxConcurrencyAsString => bulkMaxConcurrencyAsString.toInt,
+    helpMessage = s"Cosmos DB Item Write max concurrency, default is $writeMaxConcurrency")
 
   private val itemWriteStrategy = CosmosConfigEntry[ItemWriteStrategy](key = "spark.cosmos.write.strategy",
     defaultValue = Option.apply(ItemWriteStrategy.ItemOverwrite),
@@ -159,7 +174,7 @@ private object CosmosWriteConfig {
 
   private val maxRetryCount = CosmosConfigEntry[Int](key = "spark.cosmos.write.maxRetryCount",
     mandatory = false,
-    defaultValue = Option.apply(3),
+    defaultValue = Option.apply(MaxRetryCount),
     parseFromStringFunction = maxRetryAttempt => {
       val cnt = maxRetryAttempt.toInt
       if (cnt < 0) {
@@ -173,13 +188,15 @@ private object CosmosWriteConfig {
     val itemWriteStrategyOpt = CosmosConfigEntry.parse(cfg, itemWriteStrategy)
     val maxRetryCountOpt = CosmosConfigEntry.parse(cfg, maxRetryCount)
     val bulkEnabledOpt = CosmosConfigEntry.parse(cfg, bulkEnabled)
+    val maxConcurrencyOpt = CosmosConfigEntry.parse(cfg, maxConcurrency)
 
     // parsing above already validated this
     assert(itemWriteStrategyOpt.isDefined)
     assert(maxRetryCountOpt.isDefined)
     assert(bulkEnabledOpt.isDefined)
+    assert(maxConcurrencyOpt.isDefined)
 
-    CosmosWriteConfig(itemWriteStrategyOpt.get, maxRetryCountOpt.get, bulkEnabledOpt.get)
+    CosmosWriteConfig(itemWriteStrategyOpt.get, maxRetryCountOpt.get, bulkEnabledOpt.get, maxConcurrencyOpt.get)
   }
 }
 
@@ -215,6 +232,8 @@ private object CosmosContainerConfig {
 
 private case class CosmosSchemaInferenceConfig(inferSchemaSamplingSize: Int,
                                                inferSchemaEnabled: Boolean,
+                                               includeSystemProperties: Boolean,
+                                               includeTimestamp: Boolean,
                                                inferSchemaQuery: Option[String])
 
 private object CosmosSchemaInferenceConfig {
@@ -232,6 +251,18 @@ private object CosmosSchemaInferenceConfig {
     parseFromStringFunction = enabled => enabled.toBoolean,
     helpMessage = "Whether schema inference is enabled or should return raw json")
 
+  private val inferSchemaIncludeSystemProperties = CosmosConfigEntry[Boolean](key = "spark.cosmos.read.inferSchemaIncludeSystemProperties",
+    mandatory = false,
+    defaultValue = Some(false),
+    parseFromStringFunction = include => include.toBoolean,
+    helpMessage = "Whether schema inference should include the system properties in the schema")
+
+  private val inferSchemaIncludeTimestamp = CosmosConfigEntry[Boolean](key = "spark.cosmos.read.inferSchemaIncludeTimestamp",
+    mandatory = false,
+    defaultValue = Some(false),
+    parseFromStringFunction = include => include.toBoolean,
+    helpMessage = "Whether schema inference should include the timestamp (_ts) property")
+
   private val inferSchemaQuery = CosmosConfigEntry[String](key = "spark.cosmos.read.inferSchemaQuery",
     mandatory = false,
     parseFromStringFunction = query => query,
@@ -241,12 +272,16 @@ private object CosmosSchemaInferenceConfig {
     val samplingSize = CosmosConfigEntry.parse(cfg, inferSchemaSamplingSize)
     val enabled = CosmosConfigEntry.parse(cfg, inferSchemaEnabled)
     val query = CosmosConfigEntry.parse(cfg, inferSchemaQuery)
+    val includeSystemProperties = CosmosConfigEntry.parse(cfg, inferSchemaIncludeSystemProperties)
+    val includeTimestamp = CosmosConfigEntry.parse(cfg, inferSchemaIncludeTimestamp)
 
     assert(samplingSize.isDefined)
     assert(enabled.isDefined)
     CosmosSchemaInferenceConfig(
       samplingSize.get,
       enabled.get,
+      includeSystemProperties.get,
+      includeTimestamp.get,
       query)
   }
 }
@@ -455,8 +490,8 @@ private case class CosmosThroughputControlConfig(groupName: String,
                                                  globalControlExpireInterval: Option[Duration])
 
 private object CosmosThroughputControlConfig {
-    private val enableThroughputControlSupplier = CosmosConfigEntry[Boolean](
-        key = "spark.cosmos.enableThroughputControl",
+    private val throughputControlEnabledSupplier = CosmosConfigEntry[Boolean](
+        key = "spark.cosmos.throughputControlEnabled",
         mandatory = false,
         defaultValue = Some(false),
         parseFromStringFunction = enableThroughputControl => enableThroughputControl.toBoolean,
@@ -498,19 +533,21 @@ private object CosmosThroughputControlConfig {
         mandatory = false,
         parseFromStringFunction = renewIntervalInMilliseconds => Duration.ofMillis(renewIntervalInMilliseconds.toInt),
         helpMessage = "This controls how often the client is going to update the throughput usage of itself " +
-            "and adjust its own throughput share based on the throughput usage of other clients")
+            "and adjust its own throughput share based on the throughput usage of other clients. " +
+            "Default is 5s, the allowed min value is 5s.")
 
     private val globalControlItemExpireIntervalSupplier = CosmosConfigEntry[Duration](
         key = "spark.cosmos.throughputControl.globalControl.expireIntervalInMS",
         mandatory = false,
         parseFromStringFunction = expireIntervalInMilliseconds => Duration.ofMillis(expireIntervalInMilliseconds.toInt),
         helpMessage = "This controls how quickly we will detect the client has been offline " +
-            "and hence allow its throughput share to be taken by other clients.")
+            "and hence allow its throughput share to be taken by other clients. " +
+            "Default is 11s, the allowed min value is 2 * renewIntervalInMS + 1")
 
     def parseThroughputControlConfig(cfg: Map[String, String]): Option[CosmosThroughputControlConfig] = {
-        val enableThroughputControl = CosmosConfigEntry.parse(cfg, enableThroughputControlSupplier).get
+        val throughputControlEnabled = CosmosConfigEntry.parse(cfg, throughputControlEnabledSupplier).get
 
-        if (enableThroughputControl) {
+        if (throughputControlEnabled) {
             val groupName = CosmosConfigEntry.parse(cfg, groupNameSupplier)
             val targetThroughput = CosmosConfigEntry.parse(cfg, targetThroughputSupplier)
             val targetThroughputThreshold = CosmosConfigEntry.parse(cfg, targetThroughputThresholdSupplier)
@@ -582,3 +619,4 @@ private object CosmosConfigEntry {
     }
   }
 }
+// scalastyle:on multiple.string.literals
