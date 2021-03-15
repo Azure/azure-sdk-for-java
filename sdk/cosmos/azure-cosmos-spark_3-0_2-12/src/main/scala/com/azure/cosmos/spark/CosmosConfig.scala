@@ -153,7 +153,6 @@ private object CosmosWriteConfig {
     parseFromStringFunction = bulkEnabledAsString => bulkEnabledAsString.toBoolean,
     helpMessage = "Cosmos DB Item Write bulk enabled")
 
-  // TODO: moderakh this should be dynamic based on the number of CPU cores
   private val MaxRetryCount = 3
 
   private val writeConcurrency = CosmosConfigEntry[Int](key = "spark.cosmos.write.maxConcurrency",
