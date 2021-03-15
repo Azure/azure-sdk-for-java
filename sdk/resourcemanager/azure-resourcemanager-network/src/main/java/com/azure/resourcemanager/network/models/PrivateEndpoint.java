@@ -111,6 +111,13 @@ public interface PrivateEndpoint extends
                  */
                 PrivateLinkServiceConnection.DefinitionStages.WithAttach<ParentT> withSubResource(
                     PrivateLinkSubResourceName subResourceName);
+
+                /**
+                 * Specifies no sub resource, used for Private Link service.
+                 *
+                 * @return the next stage of the definition
+                 */
+                PrivateLinkServiceConnection.DefinitionStages.WithAttach<ParentT> withoutSubResource();
             }
 
             /**

@@ -122,6 +122,12 @@ class PrivateEndpointImpl extends
         }
 
         @Override
+        public PrivateEndpointConnectionImpl withoutSubResource() {
+            this.innerModel().withGroupIds(null);
+            return this;
+        }
+
+        @Override
         public PrivateEndpointConnectionImpl withManualApproval(String requestMessage) {
             this.manualApproval = true;
             this.innerModel().withRequestMessage(requestMessage);
