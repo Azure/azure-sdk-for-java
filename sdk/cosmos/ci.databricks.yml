@@ -1,0 +1,42 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger: None
+
+pr: None
+
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-pom-only.yml
+    parameters:
+      ServiceDirectory: cosmos
+      SDKType: client
+      Artifacts:
+        - name: azure-cosmos
+          groupId: com.azure
+          safeName: azurecosmos
+        - name: azure-cosmos-spark_3-0_2-12
+          groupId: com.azure
+          safeName: azurecosmosspark3
+  - stage: 'Databricks'
+    jobs:
+    - job: 'Process dependencies'
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: "3.8"
+          architecture: "x64"
+      - script: |
+          python -m pip install setuptools wheel databricks-cli
+        displayName: 'Install Databricks CLI' 
+      - script: |
+          databricks configure --token $(DatabricksEndpoint) $(DatabricksToken)
+        displayName: 'Connect to Databricks workspace'
+      - task: ShellScript@2
+        inputs:
+          scriptPath: azure-cosmos-spark_3-0_2-12/databricks/pipeline/databricks-jar-install.sh
+          args: 'ava-spark-oltp-ci $(Build.ArtifactStagingDirectory)/packages/com.azure/azure-cosmos-spark_3-0_2-12/azure-cosmos-spark_3-0_2-12-4.0.0-beta.1.jar'
+        displayName: 'Importing Jars'
+      - task: ShellScript@2
+        inputs:
+          scriptPath: azure-cosmos-spark_3-0_2-12/databricks/pipeline/databricks-notebooks-install.sh
+          args: 'ava-spark-oltp-ci azure-cosmos-spark_3-0_2-12/databricks/notebooks'
+        displayName: 'Importing Notebooks'
