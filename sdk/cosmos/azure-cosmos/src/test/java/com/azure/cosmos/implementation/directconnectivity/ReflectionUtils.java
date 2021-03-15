@@ -9,7 +9,9 @@ import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.DocumentServiceRequestContext;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.TracerProvider;
@@ -205,6 +207,10 @@ public class ReflectionUtils {
 
     public static ConsistencyWriter getConsistencyWriter(ReplicatedResourceClient replicatedResourceClient) {
         return get(ConsistencyWriter.class, replicatedResourceClient, "consistencyWriter");
+    }
+
+    public static void setRetryCount(RetryContext retryContext, int retryCount) {
+        set(retryContext, retryCount, "retryCount");
     }
 
     public static StoreReader getStoreReader(ConsistencyReader consistencyReader) {

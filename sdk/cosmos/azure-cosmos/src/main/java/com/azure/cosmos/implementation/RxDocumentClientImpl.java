@@ -346,7 +346,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 userAgentContainer.setSuffix(userAgentSuffix);
             }
 
-            this.httpClientInterceptor = httpClientInterceptor;
+            this.httpClientInterceptor = null;
             this.reactorHttpClient = httpClient();
 
             this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, /**/configs);
