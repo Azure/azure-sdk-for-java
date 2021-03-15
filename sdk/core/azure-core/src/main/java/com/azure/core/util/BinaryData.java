@@ -3,6 +3,7 @@
 
 package com.azure.core.util;
 
+import com.azure.core.implementation.serializer.JacksonSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
@@ -59,13 +60,21 @@ public final class BinaryData {
     private static final BinaryData EMPTY_DATA = new BinaryData(new byte[0]);
     private static final int STREAM_READ_SIZE = 1024;
 
-    private static final Object LOCK = new Object();
-
-    private static volatile JsonSerializer defaultJsonSerializer;
+    private static final JsonSerializer SERIALIZER;
+    static {
+        JsonSerializer tmp;
+        try {
+            tmp = JsonSerializerProviders.createInstance();
+        } catch (IllegalStateException e) {
+            tmp = new JacksonSerializer();
+        }
+        SERIALIZER = tmp;
+    }
 
     private final byte[] data;
 
     private String dataAsStringCache;
+
 
     /**
      * Create an instance of {@link BinaryData} from the given byte array.
@@ -215,7 +224,7 @@ public final class BinaryData {
      * @see JsonSerializer
      */
     public static BinaryData fromObject(Object data) {
-        return fromObject(data, getDefaultSerializer());
+        return fromObject(data, SERIALIZER);
     }
 
     /**
@@ -224,7 +233,8 @@ public final class BinaryData {
      * <p>
      * If {@code data} is null an empty {@link BinaryData} will be returned.
      * <p>
-     * <b>Note:</b> A {@link JsonSerializer} implementation must be available on the classpath.
+     * <b>Note:</b> This method first looks for a {@link JsonSerializer} implementation on the classpath. If no
+     * implementation is found, a default Jackson-based implementation will be used.
      *
      * <p><strong>Creating an instance from an Object</strong></p>
      *
@@ -236,7 +246,7 @@ public final class BinaryData {
      * @see JsonSerializer
      */
     public static Mono<BinaryData> fromObjectAsync(Object data) {
-        return fromObjectAsync(data, getDefaultSerializer());
+        return fromObjectAsync(data, SERIALIZER);
     }
 
     /**
@@ -337,7 +347,8 @@ public final class BinaryData {
      * The type, represented by {@link Class}, should be a non-generic class, for generic classes use {@link
      * #toObject(TypeReference)}.
      * <p>
-     * <b>Note:</b> A {@link JsonSerializer} implementation must be available on the classpath.
+     * <b>Note:</b> This method first looks for a {@link JsonSerializer} implementation on the classpath. If no
+     * implementation is found, a default Jackson-based implementation will be used.
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
@@ -351,7 +362,7 @@ public final class BinaryData {
      * @see JsonSerializer
      */
     public <T> T toObject(Class<T> clazz) {
-        return toObject(TypeReference.createInstance(clazz), getDefaultSerializer());
+        return toObject(TypeReference.createInstance(clazz), SERIALIZER);
     }
 
     /**
@@ -362,7 +373,8 @@ public final class BinaryData {
      * generic create a sub-type of {@link TypeReference}, if the type is non-generic use {@link
      * TypeReference#createInstance(Class)}.
      * <p>
-     * <b>Note:</b> A {@link JsonSerializer} implementation must be available on the classpath.
+     * <b>Note:</b> This method first looks for a {@link JsonSerializer} implementation on the classpath. If no
+     * implementation is found, a default Jackson-based implementation will be used.
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
@@ -380,7 +392,7 @@ public final class BinaryData {
      * @see JsonSerializer
      */
     public <T> T toObject(TypeReference<T> typeReference) {
-        return toObject(typeReference, getDefaultSerializer());
+        return toObject(typeReference, SERIALIZER);
     }
 
     /**
@@ -464,7 +476,8 @@ public final class BinaryData {
      * The type, represented by {@link Class}, should be a non-generic class, for generic classes use {@link
      * #toObject(TypeReference)}.
      * <p>
-     * <b>Note:</b> A {@link JsonSerializer} implementation must be available on the classpath.
+     * <b>Note:</b> This method first looks for a {@link JsonSerializer} implementation on the classpath. If no
+     * implementation is found, a default Jackson-based implementation will be used.
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
@@ -478,7 +491,7 @@ public final class BinaryData {
      * @see JsonSerializer
      */
     public <T> Mono<T> toObjectAsync(Class<T> clazz) {
-        return toObjectAsync(TypeReference.createInstance(clazz), getDefaultSerializer());
+        return toObjectAsync(TypeReference.createInstance(clazz), SERIALIZER);
     }
 
     /**
@@ -489,7 +502,8 @@ public final class BinaryData {
      * generic create a sub-type of {@link TypeReference}, if the type is non-generic use {@link
      * TypeReference#createInstance(Class)}.
      * <p>
-     * <b>Note:</b> A {@link JsonSerializer} implementation must be available on the classpath.
+     * <b>Note:</b> This method first looks for a {@link JsonSerializer} implementation on the classpath. If no
+     * implementation is found, a default Jackson-based implementation will be used.
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
@@ -507,7 +521,7 @@ public final class BinaryData {
      * @see JsonSerializer
      */
     public <T> Mono<T> toObjectAsync(TypeReference<T> typeReference) {
-        return toObjectAsync(typeReference, getDefaultSerializer());
+        return toObjectAsync(typeReference, SERIALIZER);
     }
 
     /**
@@ -607,17 +621,5 @@ public final class BinaryData {
      */
     public ByteBuffer toByteBuffer() {
         return ByteBuffer.wrap(this.data).asReadOnlyBuffer();
-    }
-
-    /* This will ensure lazy instantiation to avoid hard dependency on Json Serializer. */
-    private static JsonSerializer getDefaultSerializer() {
-        if (defaultJsonSerializer == null) {
-            synchronized (LOCK) {
-                if (defaultJsonSerializer == null) {
-                    defaultJsonSerializer = JsonSerializerProviders.createInstance();
-                }
-            }
-        }
-        return defaultJsonSerializer;
     }
 }
