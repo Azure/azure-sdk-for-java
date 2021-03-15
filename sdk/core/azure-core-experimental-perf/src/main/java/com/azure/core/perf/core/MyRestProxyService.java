@@ -9,8 +9,10 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.ServiceInterface;
 import reactor.core.publisher.Mono;
 
-import java.nio.ByteBuffer;
 
+/**
+ * Mock Rest Proxy Service for Performance Testing.
+ */
 @Host("https://unused")
 @ServiceInterface(name = "MyMockService")
 public interface MyRestProxyService {

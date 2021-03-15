@@ -6,6 +6,7 @@ package com.azure.identity.perf.core;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.InteractiveBrowserCredential;
 import com.azure.identity.InteractiveBrowserCredentialBuilder;
+import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
 import reactor.core.publisher.Mono;
@@ -14,9 +15,12 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
     protected static final String CLI_CLIENT_ID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46";
     protected static final TokenRequestContext ARM_TOKEN_REQUEST_CONTEXT = new TokenRequestContext()
             .addScopes("https://management.azure.com/.default");
+    protected static final TokenCachePersistenceOptions TOKEN_CACHE_PERSISTENCE_OPTIONS =
+        new TokenCachePersistenceOptions().setName("azure-identity-perf-test");
 
     private InteractiveBrowserCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder()
             .port(8765)
+            .tokenCachePersistenceOptions(TOKEN_CACHE_PERSISTENCE_OPTIONS)
             .clientId(CLI_CLIENT_ID)
             .build();
 

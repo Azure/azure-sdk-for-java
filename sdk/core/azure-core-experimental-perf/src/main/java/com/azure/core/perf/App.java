@@ -21,7 +21,7 @@ public class App {
 
         try {
             testClasses = new Class<?>[]{
-                Class.forName("com.azure.core.perf.BearerTokenAuthenticationChallengePolicyTest")
+                Class.forName("com.azure.core.perf.ARMChallengeAuthenticationChallengePolicyTest")
             };
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);

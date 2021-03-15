@@ -16,6 +16,7 @@ public class ReadCache extends ServiceTest<PerfStressOptions> {
         super(options);
         credential = new SharedTokenCacheCredentialBuilder()
                 .clientId(CLI_CLIENT_ID)
+                .tokenCachePersistenceOptions(TOKEN_CACHE_PERSISTENCE_OPTIONS)
                 .build();
     }
 

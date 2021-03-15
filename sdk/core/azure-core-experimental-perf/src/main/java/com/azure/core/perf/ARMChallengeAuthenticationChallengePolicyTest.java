@@ -1,9 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.core.perf;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.experimental.http.policy.ARMChallengeAuthenticationPolicy;
 import com.azure.core.experimental.http.policy.BearerTokenAuthenticationChallengePolicy;
+import com.azure.core.experimental.implementation.AzureEnvironment;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
@@ -19,17 +24,18 @@ import com.azure.perf.test.core.PerfStressTest;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
+import java.util.HashMap;
 
 /**
  * The Performance Test class for Bearer Token Authentication Challenge Policy.
  */
-public class BearerTokenAuthenticationChallengePolicyTest extends PerfStressTest<PerfStressOptions> {
+public class ARMChallengeAuthenticationChallengePolicyTest extends PerfStressTest<PerfStressOptions> {
     private static final String CLAIMS_ACCESS_TOKEN = "CLAIMS-ACCESS-TOKEN";
     private static final String ACCESS_TOKEN = "ACCESS-TOKEN";
     private static final String AUTHORIZATION = "Authorization";
     private static final String APPLICATION_JSON = "application/json";
     private static final String CONTENT_TYPE = "Content-Type";
-    private static final String CAE_SESSIONS_REVOKED_CLAIMS_CHALLENGE = "Bearer authorization_uri="
+    private static final String MOCK_CHALLENGE = "Bearer authorization_uri="
         + "\"https://login.windows-ppe.net/\", error=\"invalid_token\","
         + " error_description=\"User session has been revoked\","
         + " claims=\"eyJhY2Nlc3NfdG9rZW4iOnsibmJmIjp7ImVzc2VudGlhbCI6dHJ1ZSwgInZhbHVlIjoiMTYwMzc0MjgwMCJ9fX0=\"";
@@ -39,10 +45,10 @@ public class BearerTokenAuthenticationChallengePolicyTest extends PerfStressTest
     private boolean trigger = false;
 
     /**
-     * Creates an instance of the BearerTokenAuthenticationChallengePolicyTest class.
+     * Creates an instance of the ARMChallengeAuthenticationChallengePolicyTest class.
      * @param options the command line options to run the performance test.
      */
-    public BearerTokenAuthenticationChallengePolicyTest(PerfStressOptions options) {
+    public ARMChallengeAuthenticationChallengePolicyTest(PerfStressOptions options) {
         super(options);
         mockHTTPClient = new MockHttpClient((httpRequest) -> {
             String bearerToken = httpRequest.getHeaders().getValue(AUTHORIZATION);
@@ -53,7 +59,7 @@ public class BearerTokenAuthenticationChallengePolicyTest extends PerfStressTest
             }
         });
         final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new BearerTokenAuthenticationChallengePolicy(new TokenCredential() {
+            .policies(new ARMChallengeAuthenticationPolicy(new TokenCredential() {
                 @Override
                 public Mono<AccessToken> getToken(TokenRequestContext request) {
                     return Mono.defer(() -> {
@@ -66,7 +72,7 @@ public class BearerTokenAuthenticationChallengePolicyTest extends PerfStressTest
                         return Mono.just(token);
                     });
                 }
-            }, "Dummy-Scope"))
+            }, new AzureEnvironment(new HashMap<>()), "Dummy-Scope"))
             .httpClient(mockHTTPClient)
             .build();
 
@@ -80,7 +86,7 @@ public class BearerTokenAuthenticationChallengePolicyTest extends PerfStressTest
 
     @Override
     public Mono<Void> runAsync() {
-        if(!trigger) {
+        if (!trigger) {
             trigger = true;
             return service.listSubscriptions().then();
         } else {
@@ -90,14 +96,14 @@ public class BearerTokenAuthenticationChallengePolicyTest extends PerfStressTest
     }
 
     private HttpResponse createMockClaimsResponse(HttpRequest httpRequest, String contentType) {
-        HttpHeaders headers = new HttpHeaders().put(CONTENT_TYPE, contentType);
-        headers.put(BearerTokenAuthenticationChallengePolicy.WWW_AUTHENTICATE, CAE_SESSIONS_REVOKED_CLAIMS_CHALLENGE);
+        HttpHeaders headers = new HttpHeaders().set(CONTENT_TYPE, contentType);
+        headers.set(BearerTokenAuthenticationChallengePolicy.WWW_AUTHENTICATE, MOCK_CHALLENGE);
         HttpResponse res = new MockHttpResponse(httpRequest, 401, headers);
         return res;
     }
 
     private HttpResponse createMockSuccessResponse(HttpRequest httpRequest, String contentType) {
-        HttpHeaders headers = new HttpHeaders().put(CONTENT_TYPE, contentType);
+        HttpHeaders headers = new HttpHeaders().set(CONTENT_TYPE, contentType);
         HttpResponse res = new MockHttpResponse(httpRequest, 200, headers);
         return res;
     }

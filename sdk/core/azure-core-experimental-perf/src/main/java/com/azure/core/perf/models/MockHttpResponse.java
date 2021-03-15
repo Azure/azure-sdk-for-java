@@ -3,6 +3,9 @@
 
 package com.azure.core.perf.models;
 
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -26,6 +29,14 @@ public class MockHttpResponse extends HttpResponse {
 
     private final byte[] bodyBytes;
 
+    /**
+     * Creates an instance of {@link MockHttpResponse}
+     *
+     * @param request The Incoming request
+     * @param statusCode The response status code
+     * @param headers The headers of the response
+     * @param bodyBytes the body of the response
+     */
     public MockHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers, byte[] bodyBytes) {
         super(request);
         this.statusCode = statusCode;
@@ -33,18 +44,46 @@ public class MockHttpResponse extends HttpResponse {
         this.bodyBytes = bodyBytes;
     }
 
+    /**
+     * Creates an instance of {@link MockHttpResponse}
+     *
+     * @param request The Incoming request
+     * @param statusCode The response status code
+     */
     public MockHttpResponse(HttpRequest request, int statusCode) {
         this(request, statusCode, new HttpHeaders(), new byte[0]);
     }
 
+    /**
+     * Creates an instance of {@link MockHttpResponse}
+     *
+     * @param request The Incoming request
+     * @param statusCode The response status code
+     * @param headers The headers of the response
+     */
     public MockHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers) {
         this(request, statusCode, headers, new byte[0]);
     }
 
+    /**
+     * Creates an instance of {@link MockHttpResponse}
+     *
+     * @param request The Incoming request
+     * @param statusCode The response status code
+     * @param headers The headers of the response
+     * @param serializable the serializable body data
+     */
     public MockHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers, Object serializable) {
         this(request, statusCode, headers, serialize(serializable));
     }
 
+    /**
+     * Creates an instance of {@link MockHttpResponse}
+     *
+     * @param request The Incoming request
+     * @param statusCode The response status code
+     * @param serializable the serializable body data
+     */
     public MockHttpResponse(HttpRequest request, int statusCode, Object serializable) {
         this(request, statusCode, new HttpHeaders(), serialize(serializable));
     }
@@ -53,7 +92,7 @@ public class MockHttpResponse extends HttpResponse {
         byte[] result = null;
         try {
             final String serializedString = SERIALIZER.serialize(serializable, SerializerEncoding.JSON);
-            result = serializedString == null ? null : serializedString.getBytes();
+            result = serializedString == null ? null : serializedString.getBytes(StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
         }
