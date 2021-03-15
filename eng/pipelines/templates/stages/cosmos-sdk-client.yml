@@ -136,7 +136,9 @@ stages:
               if (Test-Path $targetDir) { Remove-Item -Recurse -Force $targetDir }
               Expand-Archive -LiteralPath $downloadTarget -DestinationPath $targetDir
               Write-Host "Updating environment variables for Hadoop usage"
-              [System.Environment]::SetEnvironmentVariable('HADOOP_HOME', '$targetDir',[System.EnvironmentVariableTarget]::Machine)
+              [System.Environment]::SetEnvironmentVariable('HADOOP_HOME', $targetDir, [System.EnvironmentVariableTarget]::Machine)
+              $hadoopHome = [System.Environment]::GetEnvironmentVariable('HADOOP_HOME', [System.EnvironmentVariableTarget]::Machine)
+              Write-Host "New HADOOP_HOME environment variable: $hadoopHome"
               $path = [System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::Machine)
               Write-Host "Original Path environment variable: $path"
               $binPath = Join-Path -Path $targetDir -ChildPath "bin"
