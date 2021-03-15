@@ -92,7 +92,7 @@ public interface PrivateEndpoint extends
                  * @param privateLinkServiceResourceId the resource ID of the private link service
                  * @return the next stage of the definition
                  */
-                PrivateLinkServiceConnection.DefinitionStages.WithSubResource<ParentT> withResource(
+                PrivateLinkServiceConnection.DefinitionStages.WithSubResource<ParentT> withResourceId(
                     String privateLinkServiceResourceId);
             }
 
@@ -158,6 +158,11 @@ public interface PrivateEndpoint extends
     }
 
     /**
+     * @return the resource collection API of private DNS zone group.
+     */
+    PrivateDnsZoneGroups privateDnsZoneGroups();
+
+    /**
      * @return the reference of the subnet.
      */
     SubResource subnet();
@@ -176,6 +181,11 @@ public interface PrivateEndpoint extends
      * @return the collection of the private link service connections.
      */
     Map<String, PrivateLinkServiceConnection> privateLinkServiceConnections();
+
+    /**
+     * @return the collection of custom DNS configurations.
+     */
+    List<CustomDnsConfigPropertiesFormat> customDnsConfigurations();
 
     /**
      * Container interface for all the definitions that need to be implemented.
@@ -222,7 +232,7 @@ public interface PrivateEndpoint extends
              * @param subnetId the ID of subnet from which the private IP will be allocated
              * @return the next stage of private endpoint definition
              */
-            WithPrivateLinkServiceConnection withSubnet(String subnetId);
+            WithPrivateLinkServiceConnection withSubnetId(String subnetId);
         }
 
         /**

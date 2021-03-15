@@ -7,6 +7,8 @@ import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.models.PrivateEndpointInner;
 import com.azure.resourcemanager.network.fluent.models.SubnetInner;
+import com.azure.resourcemanager.network.models.CustomDnsConfigPropertiesFormat;
+import com.azure.resourcemanager.network.models.PrivateDnsZoneGroups;
 import com.azure.resourcemanager.network.models.PrivateEndpoint;
 import com.azure.resourcemanager.network.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.network.models.PrivateLinkSubResourceName;
@@ -32,6 +34,8 @@ class PrivateEndpointImpl extends
     PrivateEndpoint,
     PrivateEndpoint.Definition,
     PrivateEndpoint.Update {
+
+    private PrivateDnsZoneGroups privateDnsZoneGroups;
 
     static class PrivateEndpointConnectionImpl extends
         ChildResourceImpl<com.azure.resourcemanager.network.models.PrivateLinkServiceConnection,
@@ -105,7 +109,7 @@ class PrivateEndpointImpl extends
         }
 
         @Override
-        public PrivateEndpointConnectionImpl withResource(String privateLinkServiceResourceId) {
+        public PrivateEndpointConnectionImpl withResourceId(String privateLinkServiceResourceId) {
             this.innerModel().withPrivateLinkServiceId(Objects.requireNonNull(privateLinkServiceResourceId));
             return this;
         }
@@ -130,12 +134,23 @@ class PrivateEndpointImpl extends
     }
 
     @Override
+    public PrivateDnsZoneGroups privateDnsZoneGroups() {
+        if (privateDnsZoneGroups == null) {
+            privateDnsZoneGroups = new PrivateDnsZoneGroupsImpl(this);
+        }
+        return privateDnsZoneGroups;
+    }
+
+    @Override
     public SubResource subnet() {
         return new SubResource().withId(this.innerModel().subnet().id());
     }
 
     @Override
     public List<SubResource> networkInterfaces() {
+        if (this.innerModel().networkInterfaces() == null) {
+            return Collections.emptyList();
+        }
         return this.innerModel().networkInterfaces().stream()
             .map(ni -> new SubResource().withId(ni.id()))
             .collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
@@ -163,13 +178,21 @@ class PrivateEndpointImpl extends
     }
 
     @Override
+    public List<CustomDnsConfigPropertiesFormat> customDnsConfigurations() {
+        if (this.innerModel().networkInterfaces() == null) {
+            return Collections.emptyList();
+        }
+        return Collections.unmodifiableList(this.innerModel().customDnsConfigs());
+    }
+
+    @Override
     public PrivateEndpointImpl withSubnet(Subnet subnet) {
         this.innerModel().withSubnet(Objects.requireNonNull(subnet).innerModel());
         return this;
     }
 
     @Override
-    public PrivateEndpointImpl withSubnet(String subnetId) {
+    public PrivateEndpointImpl withSubnetId(String subnetId) {
         this.innerModel().withSubnet(new SubnetInner().withId(Objects.requireNonNull(subnetId)));
         return this;
     }
