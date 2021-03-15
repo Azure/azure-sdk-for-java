@@ -6,8 +6,6 @@ import com.azure.cosmos.CosmosAsyncClient
 import com.azure.cosmos.models.{CosmosQueryRequestOptions, FeedResponse}
 import com.fasterxml.jackson.databind.JsonNode
 
-import java.util.concurrent.atomic.AtomicLong
-
 // scalastyle:off underscore.import
 import com.fasterxml.jackson.databind.node._
 
@@ -81,7 +79,6 @@ private object CosmosTableSchemaInferrer
         case _ => cosmosReadConfig.inferSchemaQuery.get
       }
 
-      val totalResults = new AtomicLong(0)
       val pagedFluxResponse =
         sourceContainer.queryItems(queryText, queryOptions, classOf[ObjectNode])
 
