@@ -114,7 +114,7 @@ public final class ChatClientBuilder {
      * @return The updated ChatClientBuilder object.
      */
     public ChatClientBuilder retryPolicy(RetryPolicy retryPolicy) {
-        this.retryPolicy = retryPolicy;
+        this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
         return this;
     }
 
