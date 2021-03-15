@@ -68,7 +68,7 @@ public class AADRoleIT {
             return ResponseEntity.ok("group1");
         }
 
-        @PreAuthorize("hasRole('ROLE_User')")
+        @PreAuthorize("hasAuthority('APPROLE_User')")
         @GetMapping(value = "/api/user")
         public ResponseEntity<String> user() {
             return ResponseEntity.ok("user");

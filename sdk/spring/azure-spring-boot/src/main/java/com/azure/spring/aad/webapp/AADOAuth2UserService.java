@@ -24,11 +24,13 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.azure.spring.autoconfigure.aad.Constants.APPROLE_PREFIX;
 import static com.azure.spring.autoconfigure.aad.Constants.DEFAULT_AUTHORITY_SET;
@@ -68,13 +70,20 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
             return (DefaultOidcUser) session.getAttribute(DEFAULT_OIDC_USER);
         }
 
-        if (idToken.containsClaim(ROLES)) {
-            roles = idToken.getClaimAsStringList(ROLES)
-                           .stream()
-                           .filter(s -> StringUtils.hasText(s))
-                           .map(role -> APPROLE_PREFIX + role)
-                           .collect(Collectors.toSet());
-        }
+//        if (idToken.containsClaim(ROLES)) {
+//            roles = idToken.getClaimAsStringList(ROLES)
+//                           .stream()
+//                           .filter(StringUtils::hasText)
+//                           .map(role -> APPROLE_PREFIX + role)
+//                           .collect(Collectors.toSet());
+//        }
+        Optional.ofNullable(idToken)
+                .map(token -> token.getClaimAsStringList(ROLES))
+                .map(Collection::stream)
+                .orElseGet(Stream::empty)
+                .filter(StringUtils::hasText)
+                .map(role -> APPROLE_PREFIX + role)
+                .forEach(roles::add);
         Set<String> groups = Optional.of(userRequest)
                                      .filter(notUsed -> properties.allowedGroupsConfigured())
                                      .map(OAuth2UserRequest::getAccessToken)

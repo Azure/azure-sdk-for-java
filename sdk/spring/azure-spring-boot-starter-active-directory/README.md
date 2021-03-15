@@ -130,13 +130,15 @@ example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot 
     Here, `graph` is the name of `OAuth2AuthorizedClient`, `scopes` means the scopes need to consent when login.
 
 * Step 4: Write your Java code:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/AADOAuth2LoginConfigSample.java#L53-L59 -->
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/ClientController.java#L30-L38 -->
     ```java
     @GetMapping("/graph")
     @ResponseBody
-    public String graph(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graphClient) {
+    public String graph(
+        @RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graphClient
+    ) {
         // toJsonString() is just a demo.
-        // graphClient contains access_token. We can use this access_token to access resource server.
+        // oAuth2AuthorizedClient contains access_token. We can use this access_token to access resource server.
         return toJsonString(graphClient);
     }
     ```
@@ -187,11 +189,15 @@ To use **aad-starter** in this scenario, we need these steps:
     
     (B). You can provide one by extending `AADResourceServerWebSecurityConfigurerAdapter` and call `super.configure(http)` explicitly
     in the `configure(HttpSecurity http)` function. Here is an example:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/CustomWebServerSecurityConfig.java#L8-L16 -->
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/security/AADOAuth2LoginSecurityConfig.java#L11-L23 -->
     ```java
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
-    public class CustomWebServerSecurityConfig extends AADResourceServerWebSecurityConfigurerAdapter {
+    public class AADOAuth2LoginSecurityConfig extends AADWebSecurityConfigurerAdapter {
+    
+        /**
+         * Add configuration logic as needed.
+         */
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             super.configure(http);
@@ -246,7 +252,7 @@ To use **aad-starter** in this scenario, we need these steps:
 
 * Step 3: Write Java code:
 Using `@RegisteredOAuth2AuthorizedClient` to access related resource server:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/SampleController.java#L48-L51 -->
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L60-L63 -->
     ```java
     @GetMapping("call-graph")
     public String callGraph(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph) {
@@ -313,7 +319,7 @@ Here are some examples about how to use these properties:
     ```
 
     Then we can protect the method by `@PreAuthorize` annotation:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/SampleController.java#L17-L29 -->
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/RoleController.java#L13-L25 -->
     ```java
     @GetMapping("group1")
     @ResponseBody
@@ -345,16 +351,16 @@ Here are some examples about how to use these properties:
     ```
 
 * Step 2: Write Java code:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/SampleController.java#L38-L46 -->
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/OnDemandClientController.java#L17-L25 -->
     ```java
     @GetMapping("/arm")
     @ResponseBody
     public String arm(
-        @RegisteredOAuth2AuthorizedClient("arm") OAuth2AuthorizedClient oAuth2AuthorizedClient
+        @RegisteredOAuth2AuthorizedClient("arm") OAuth2AuthorizedClient armClient
     ) {
         // toJsonString() is just a demo.
         // oAuth2AuthorizedClient contains access_token. We can use this access_token to access resource server.
-        return toJsonString(oAuth2AuthorizedClient);
+        return toJsonString(armClient);
     }
     ```
 
@@ -388,11 +394,11 @@ Follow the guide to
       ]
     ```
 * Step 2: Write Java code:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/SampleController.java#L31-L36 -->
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/RoleController.java#L27-L32 -->
     ```java
     @GetMapping("Admin")
     @ResponseBody
-    @PreAuthorize("hasRole('APPROLE_Admin')")
+    @PreAuthorize("hasAuthority('APPROLE_Admin')")
     public String Admin() {
         return "Admin message";
     }
