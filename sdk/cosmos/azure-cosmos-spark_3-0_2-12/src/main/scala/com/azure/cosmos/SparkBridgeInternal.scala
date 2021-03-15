@@ -8,6 +8,10 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl
 import com.azure.cosmos.implementation.routing.Range
 import com.azure.cosmos.spark.NormalizedRange
 
+// scalastyle:off underscore.import
+import scala.collection.JavaConverters._
+// scalastyle:on underscore.import
+
 private[cosmos] object SparkBridgeInternal {
   def trySplitFeedRange
   (
@@ -20,11 +24,7 @@ private[cosmos] object SparkBridgeInternal {
       .trySplitFeedRange(new FeedRangeEpkImpl(toCosmosRange(feedRange)), targetedCountAfterSplit)
       .block
 
-    val array = new Array[NormalizedRange](list.size)
-    for (i <- 0 until list.size) {
-      array(i) = SparkBridgeImplementationInternal.toNormalizedRange(list.get(i))
-    }
-    array
+    list.asScala.map(e => SparkBridgeImplementationInternal.toNormalizedRange(e)).toArray
   }
 
   private[this] def toCosmosRange(range: NormalizedRange): Range[String] = {
