@@ -4,18 +4,18 @@
 
 package com.azure.resourcemanager.netapp.implementation;
 
-import com.azure.resourcemanager.netapp.fluent.models.ReplicationStatusInner;
+import com.azure.resourcemanager.netapp.fluent.models.BackupStatusInner;
+import com.azure.resourcemanager.netapp.models.BackupStatus;
 import com.azure.resourcemanager.netapp.models.MirrorState;
 import com.azure.resourcemanager.netapp.models.RelationshipStatus;
-import com.azure.resourcemanager.netapp.models.ReplicationStatus;
 
-public final class ReplicationStatusImpl implements ReplicationStatus {
-    private ReplicationStatusInner innerObject;
+public final class BackupStatusImpl implements BackupStatus {
+    private BackupStatusInner innerObject;
 
     private final com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager;
 
-    ReplicationStatusImpl(
-        ReplicationStatusInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
+    BackupStatusImpl(
+        BackupStatusInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -32,15 +32,15 @@ public final class ReplicationStatusImpl implements ReplicationStatus {
         return this.innerModel().mirrorState();
     }
 
-    public String totalProgress() {
-        return this.innerModel().totalProgress();
+    public String unhealthyReason() {
+        return this.innerModel().unhealthyReason();
     }
 
     public String errorMessage() {
         return this.innerModel().errorMessage();
     }
 
-    public ReplicationStatusInner innerModel() {
+    public BackupStatusInner innerModel() {
         return this.innerObject;
     }
 

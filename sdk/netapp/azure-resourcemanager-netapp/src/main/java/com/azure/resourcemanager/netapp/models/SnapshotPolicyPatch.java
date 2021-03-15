@@ -48,12 +48,6 @@ public class SnapshotPolicyPatch {
     private Map<String, String> tags;
 
     /*
-     * Snapshot policy name
-     */
-    @JsonProperty(value = "properties.name", access = JsonProperty.Access.WRITE_ONLY)
-    private String namePropertiesName;
-
-    /*
      * Schedule for hourly snapshots
      */
     @JsonProperty(value = "properties.hourlySchedule")
@@ -154,15 +148,6 @@ public class SnapshotPolicyPatch {
     public SnapshotPolicyPatch withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
-    }
-
-    /**
-     * Get the namePropertiesName property: Snapshot policy name.
-     *
-     * @return the namePropertiesName value.
-     */
-    public String namePropertiesName() {
-        return this.namePropertiesName;
     }
 
     /**
