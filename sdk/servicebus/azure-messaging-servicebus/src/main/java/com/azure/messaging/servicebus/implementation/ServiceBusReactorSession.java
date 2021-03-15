@@ -69,9 +69,10 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
      */
     ServiceBusReactorSession(Session session, SessionHandler sessionHandler, String sessionName,
         ReactorProvider provider, ReactorHandlerProvider handlerProvider, Mono<ClaimsBasedSecurityNode> cbsNodeSupplier,
-        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, AmqpRetryOptions retryOptions) {
+        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, AmqpRetryOptions retryOptions,
+        boolean coordinatorRequired) {
         super(session, sessionHandler, sessionName, provider, handlerProvider, cbsNodeSupplier, tokenManagerProvider,
-            messageSerializer, retryOptions);
+            messageSerializer, retryOptions, coordinatorRequired);
         this.retryOptions = retryOptions;
         this.retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
         this.tokenManagerProvider = tokenManagerProvider;

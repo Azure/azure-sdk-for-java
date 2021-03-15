@@ -134,6 +134,7 @@ public final class ServiceBusClientBuilder {
     private Scheduler scheduler;
     private AmqpTransportType transport = AmqpTransportType.AMQP;
     private SslDomain.VerifyMode verifyMode;
+    private boolean crossEntityTransactions;
 
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
@@ -185,6 +186,20 @@ public final class ServiceBusClientBuilder {
         }
 
         return credential(properties.getEndpoint().getHost(), tokenCredential);
+    }
+
+    /**
+     * Enable cross entity transaction on the connection to Service bus. Use this feature when your transaction is
+     * involved in different Service Bus entities. You should avoid using non transaction activities on the clients
+     * which have this feature enabled.
+     *
+     * @return The updated {@link ServiceBusSenderClientBuilder} object.
+     *
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via">Service Bus transactions</a>
+     */
+    public ServiceBusClientBuilder enableCrossEntityTransactions() {
+        this.crossEntityTransactions = true;
+        return this;
     }
 
     private TokenCredential getTokenCredential(ConnectionStringProperties properties) {
@@ -391,7 +406,8 @@ public final class ServiceBusClientBuilder {
                     final String connectionId = StringUtil.getRandomString("MF");
 
                     return (ServiceBusAmqpConnection) new ServiceBusReactorAmqpConnection(connectionId,
-                        connectionOptions, provider, handlerProvider, tokenManagerProvider, serializer);
+                        connectionOptions, provider, handlerProvider, tokenManagerProvider, serializer,
+                        crossEntityTransactions);
                 }).repeat();
 
                 sharedConnection = connectionFlux.subscribeWith(new ServiceBusConnectionProcessor(

@@ -82,8 +82,29 @@ public class ReactorSession implements AmqpSession {
      */
     public ReactorSession(Session session, SessionHandler sessionHandler, String sessionName, ReactorProvider provider,
         ReactorHandlerProvider handlerProvider, Mono<ClaimsBasedSecurityNode> cbsNodeSupplier,
+        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, AmqpRetryOptions retryOptions) {
+        this(session, sessionHandler, sessionName, provider, handlerProvider, cbsNodeSupplier, tokenManagerProvider,
+            messageSerializer, retryOptions, false);
+    }
+
+    /**
+     * Creates a new AMQP session using proton-j.
+     *
+     * @param session Proton-j session for this AMQP session.
+     * @param sessionHandler Handler for events that occur in the session.
+     * @param sessionName Name of the session.
+     * @param provider Provides reactor instances for messages to sent with.
+     * @param handlerProvider Providers reactor handlers for listening to proton-j reactor events.
+     * @param cbsNodeSupplier Mono that returns a reference to the {@link ClaimsBasedSecurityNode}.
+     * @param tokenManagerProvider Provides {@link TokenManager} that authorizes the client when performing
+     *     operations on the message broker.
+     * @param coordinatorRequired if {@link Coordinator} is required for the session.
+     * @param retryOptions for the session operations.
+     */
+    public ReactorSession(Session session, SessionHandler sessionHandler, String sessionName, ReactorProvider provider,
+        ReactorHandlerProvider handlerProvider, Mono<ClaimsBasedSecurityNode> cbsNodeSupplier,
         TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
-        AmqpRetryOptions retryOptions) {
+        AmqpRetryOptions retryOptions, boolean coordinatorRequired) {
         this.session = session;
         this.sessionHandler = sessionHandler;
         this.handlerProvider = handlerProvider;
@@ -106,6 +127,14 @@ public class ReactorSession implements AmqpSession {
             .subscribeWith(ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED));
 
         session.open();
+
+        // setup coordinator only if enable cross Entity transaction is setup.
+        if (coordinatorRequired) {
+            LinkSubscription<AmqpSendLink> sendLinkCoordinator = getSubscription(TRANSACTION_LINK_NAME,
+                TRANSACTION_LINK_NAME, new Coordinator(), null, retryOptions, null);
+            openSendLinks.put(TRANSACTION_LINK_NAME, sendLinkCoordinator);
+            transactionCoordinator.set(new TransactionCoordinator(sendLinkCoordinator.getLink(), messageSerializer));
+        }
     }
 
     Session session() {
@@ -148,6 +177,10 @@ public class ReactorSession implements AmqpSession {
 
         openReceiveLinks.forEach((key, link) -> link.dispose(errorCondition));
         openSendLinks.forEach((key, link) -> link.dispose(errorCondition));
+
+        if (transactionCoordinator.get() != null) {
+            transactionCoordinator.get().dispose();
+        }
     }
 
     /**

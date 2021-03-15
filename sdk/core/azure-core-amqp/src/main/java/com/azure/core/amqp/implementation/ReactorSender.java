@@ -304,7 +304,9 @@ class ReactorSender implements AmqpSendLink {
         }
 
         subscriptions.dispose();
-        tokenManager.close();
+        if (tokenManager != null) {
+            tokenManager.close();
+        }
 
         if (sender.getLocalState() == EndpointState.CLOSED) {
             return;
