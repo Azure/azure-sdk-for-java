@@ -19,9 +19,13 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
+/**
+ * Test where various clients are involved for example Server, Receiver and Processor client.
+ */
 public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
     private ServiceBusSenderAsyncClient sender;
     private ServiceBusReceiverAsyncClient receiver;
@@ -83,6 +87,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         final String queueB = isSessionEnabled ? getSessionQueueName(sendQueueBIndex) : getQueueName(sendQueueBIndex);
         final String topicA = getTopicName(receiveQueueAIndex);
         final String topicB = getTopicName(sendQueueBIndex);
+        final AtomicBoolean transactionComplete = new AtomicBoolean();
 
         //final boolean isSessionEnabled = false;
         final CountDownLatch countdownLatch = new CountDownLatch(1);
@@ -126,6 +131,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
                 context.complete(new CompleteOptions().setTransactionContext(transactionId));
                 senderSyncB.sendMessage(new ServiceBusMessage(CONTENTS_BYTES).setMessageId(messageId).setSessionId(sessionId), transactionId);
                 senderSyncB.commitTransaction(transactionId);
+                transactionComplete.set(true);
                 countdownLatch.countDown();
                 logger.verbose("Transaction committed.");
             }
@@ -175,12 +181,15 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         StepVerifier.create(senderAsyncA.sendMessages(messages)).verifyComplete();
         // Create an instance of the processor through the ServiceBusClientBuilder
 
+        // Act
         System.out.println("Starting the processor");
         processorA.start();
 
+        // Assert
         System.out.println("Listening for 10 seconds...");
         if (countdownLatch.await(10, TimeUnit.SECONDS)) {
             System.out.println("Completed processing successfully.");
+            Assertions.assertTrue(transactionComplete.get());
         } else {
             System.out.println("Closing processor.");
             Assertions.fail("Failed to process message.");
@@ -188,7 +197,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
 
         processorA.close();
 
-        // Assert & Act
+
         // Verify that message is received by queue B
         if (!isSessionEnabled) {
             setSenderAndReceiver(entityType, sendQueueBIndex, false);
@@ -218,6 +227,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         final String queueB = isSessionEnabled ? getSessionQueueName(sendQueueBIndex) : getQueueName(sendQueueBIndex);
         final String topicA = getTopicName(receiveQueueAIndex);
         final String topicB = getTopicName(sendQueueBIndex);
+        final AtomicBoolean transactionComplete = new AtomicBoolean();
 
         final CountDownLatch countdownLatch = new CountDownLatch(1);
 
@@ -282,21 +292,24 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
             receiverA.complete(receivedMessage, new CompleteOptions().setTransactionContext(transactionId)).block();
             senderSyncB.sendMessage(new ServiceBusMessage(CONTENTS_BYTES).setMessageId(messageId).setSessionId(sessionId), transactionId);
             senderSyncB.commitTransaction(transactionId);
+            transactionComplete.set(true);
             countdownLatch.countDown();
             logger.verbose("Transaction committed.");
             return Mono.just(receivedMessage);
         }).subscribe();
 
 
+        // Act
         System.out.println("Listening for 10 seconds...");
         if (countdownLatch.await(10, TimeUnit.SECONDS)) {
             System.out.println("Completed message processing successfully.");
+            Assertions.assertTrue(transactionComplete.get());
         } else {
             System.out.println("Some error.");
             Assertions.fail("Failed to process message.");
         }
 
-        // Assert & Act
+        // Assert
         // Verify that message is received by entity B
         if (!isSessionEnabled) {
             setSenderAndReceiver(entityType, sendQueueBIndex, false);
