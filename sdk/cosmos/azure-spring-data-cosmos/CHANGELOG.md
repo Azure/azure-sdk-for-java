@@ -1,5 +1,7 @@
 ## Release History
 
+### 3.6.0-beta.1 (Unreleased)
+
 ### 3.5.0 (2021-03-11)
 #### NOTE: THIS RELEASE SUPPORTS SPRING BOOT 2.4.3 AND ABOVE
 #### New Features
