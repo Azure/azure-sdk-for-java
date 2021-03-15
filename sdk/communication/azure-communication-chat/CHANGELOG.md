@@ -10,6 +10,10 @@
 - Renamed `CommunicationError` to `ChatError`
 - Renamed `CommunicationErrorResponse` to `ChatErrorResponse`
 - Moved `getChatThread` to `ChatThreadClient` and renamed to `getProperties`
+- Removed `AddChatParticipantsOptions`
+- Changed `addParticipants` to take `Iterable<ChatParticipant>` instead of `AddChatParticipantsOptions`
+- Added `context` parameter to the max overloads of `listParticipants`, `listReadReceipts`
+
 
 ## 1.0.0-beta.6 (2021-03-09)
 Updated `azure-communication-chat` version
