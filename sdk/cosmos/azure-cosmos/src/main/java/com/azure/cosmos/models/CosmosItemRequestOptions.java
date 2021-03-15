@@ -24,7 +24,6 @@ public class CosmosItemRequestOptions {
     private Boolean contentResponseOnWriteEnabled;
     private String throughputControlGroupName;
 
-
     /**
      * copy constructor
      */

@@ -4,6 +4,7 @@
 package com.azure.messaging.eventgrid.samples;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.BinaryData;
 import com.azure.messaging.eventgrid.EventGridEvent;
 import com.azure.messaging.eventgrid.EventGridPublisherClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClientBuilder;
@@ -20,7 +21,7 @@ public class PublishEventsToDomain {
             .buildEventGridEventPublisherClient();
 
         User newUser = new User("John2", "James");
-        EventGridEvent eventModelClass = new EventGridEvent("A user is created", "User.Created.Object", newUser, "0.1")
+        EventGridEvent eventModelClass = new EventGridEvent("A user is created", "User.Created.Object", BinaryData.fromObject(newUser), "0.1")
             .setTopic("usertopic");  // topic must be set when sending to an Event Grid Domain.
 
         List<EventGridEvent> events = new ArrayList<>();

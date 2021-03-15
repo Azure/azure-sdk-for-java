@@ -76,15 +76,6 @@ public abstract class LocalCryptographyClientTestBase extends TestBase {
     public abstract void encryptDecryptLocalAes256CbcPad() throws Exception;
 
     @Test
-    public abstract void encryptDecryptLocalAes128Gcm() throws Exception;
-
-    @Test
-    public abstract void encryptDecryptLocalAes192Gcm() throws Exception;
-
-    @Test
-    public abstract void encryptDecryptLocalAes256Gcm() throws Exception;
-
-    @Test
     public abstract void signVerifyEc() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException;
 
     @Test
@@ -116,22 +107,6 @@ public abstract class LocalCryptographyClientTestBase extends TestBase {
         EncryptResult encryptResult =
             localCryptographyClient.encrypt(encryptOptions);
         DecryptOptions decryptOptions = new DecryptOptions(algorithm, encryptResult.getCipherText(), iv, null, null);
-        DecryptResult decryptResult =
-            localCryptographyClient.decrypt(decryptOptions);
-
-        assertArrayEquals(plaintext, decryptResult.getPlainText());
-    }
-
-    static void encryptDecryptAesGcm(int keySize, EncryptionAlgorithm algorithm) throws NoSuchAlgorithmException {
-        byte[] plaintext = "My16BitPlaintext".getBytes();
-        byte[] iv = "My12BytesIv.".getBytes();
-        LocalCryptographyClient localCryptographyClient = initializeCryptographyClient(getTestJsonWebKey(keySize));
-        EncryptOptions encryptOptions = new EncryptOptions(algorithm, plaintext, iv, null);
-        EncryptResult encryptResult =
-            localCryptographyClient.encrypt(encryptOptions);
-        byte[] authenticationTag = encryptResult.getAuthenticationTag();
-        DecryptOptions decryptOptions = new DecryptOptions(algorithm, encryptResult.getCipherText(), iv,
-            authenticationTag, null);
         DecryptResult decryptResult =
             localCryptographyClient.decrypt(decryptOptions);
 

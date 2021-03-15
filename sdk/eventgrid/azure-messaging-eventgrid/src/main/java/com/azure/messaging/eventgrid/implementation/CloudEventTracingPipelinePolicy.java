@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.eventgrid.implementation;
 
 import com.azure.core.http.HttpHeader;
@@ -23,20 +26,19 @@ import com.azure.core.models.CloudEvent;
  *
  * The place holders won't exist in the json string if the {@link TracerProxy#isTracingEnabled()} returns false.
  */
-public class CloudEventTracingPipelinePolicy implements HttpPipelinePolicy {
+public final class CloudEventTracingPipelinePolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         final HttpRequest request = context.getHttpRequest();
         final HttpHeader contentType = request.getHeaders().get(Constants.CONTENT_TYPE);
         StringBuilder bodyStringBuilder = new StringBuilder();
-        if (TracerProxy.isTracingEnabled() && contentType != null &&
-            Constants.CLOUD_EVENT_CONTENT_TYPE.equals(contentType.getValue())) {
+        if (TracerProxy.isTracingEnabled() && contentType != null
+            && Constants.CLOUD_EVENT_CONTENT_TYPE.equals(contentType.getValue())) {
             return request.getBody().map(byteBuffer -> bodyStringBuilder.append(new String(byteBuffer.array(),
                 StandardCharsets.UTF_8)))
                 .then(Mono.fromCallable(() -> replaceTracingPlaceHolder(request, bodyStringBuilder)))
                 .then(next.process());
-        }
-        else {
+        } else {
             return next.process();
         }
     }
