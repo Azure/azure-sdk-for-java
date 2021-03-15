@@ -28,8 +28,6 @@ public class EventHubProducerDestination implements ProducerDestination {
 
     @Override
     public String toString() {
-        return "EventHubProducerDestination{" +
-            "name='" + name + '\'' +
-            '}';
+        return "EventHubProducerDestination{" + "name='" + name + '\'' + '}';
     }
 }

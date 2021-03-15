@@ -11,6 +11,9 @@ import org.springframework.boot.actuate.health.HealthIndicator;
 import java.time.Duration;
 import java.util.Optional;
 
+/**
+ * Health indicator for Event Hubs.
+ */
 public class EventHubHealthIndicator implements HealthIndicator {
 
     private static final int DEFAULT_TIMEOUT = 30;

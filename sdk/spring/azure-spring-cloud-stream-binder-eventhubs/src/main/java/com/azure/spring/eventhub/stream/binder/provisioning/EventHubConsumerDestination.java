@@ -23,8 +23,6 @@ public class EventHubConsumerDestination implements ConsumerDestination {
 
     @Override
     public String toString() {
-        return "EventHubConsumerDestination{" +
-            "name='" + name + '\'' +
-            '}';
+        return "EventHubConsumerDestination{" + "name='" + name + '\'' + '}';
     }
 }

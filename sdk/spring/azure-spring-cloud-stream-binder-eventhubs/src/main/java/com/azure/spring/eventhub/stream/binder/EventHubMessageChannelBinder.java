@@ -43,7 +43,7 @@ public class EventHubMessageChannelBinder extends
 
     private EventHubExtendedBindingProperties bindingProperties = new EventHubExtendedBindingProperties();
 
-    private Map<String, EventHubInformation> eventHubsInUse = new ConcurrentHashMap<>();
+    private final Map<String, EventHubInformation> eventHubsInUse = new ConcurrentHashMap<>();
 
     public EventHubMessageChannelBinder(String[] headersToEmbed, EventHubChannelProvisioner provisioningProvider,
             EventHubOperation eventHubOperation) {
