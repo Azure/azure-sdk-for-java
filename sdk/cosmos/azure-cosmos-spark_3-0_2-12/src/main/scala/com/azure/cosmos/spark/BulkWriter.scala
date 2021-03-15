@@ -4,6 +4,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.guava25.base.Preconditions
 import com.azure.cosmos.models.PartitionKey
+import com.azure.cosmos.spark.BulkWriter.MaxNumberOfThreadsPerCPUCore
 import com.azure.cosmos.{BulkOperations, CosmosAsyncContainer, CosmosBulkOperationResponse, CosmosException, CosmosItemOperation}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import reactor.core.Disposable
@@ -27,6 +28,11 @@ class BulkWriter(container: CosmosAsyncContainer,
   // TODO: moderakh add a mocking unit test for Bulk where CosmosClient is mocked to simulator failure/retry scenario
   logInfo("BulkWriter instantiated ....")
 
+  // TODO: moderakh this requires tuning.
+  // TODO: moderakh should we do a max on the max memory to ensure we don't run out of memory?
+  private val maxConcurrency = writeConfig.maxConcurrencyOpt
+    .getOrElse(SparkUtils.getNumberOfHostCPUCores() * MaxNumberOfThreadsPerCPUCore)
+
   private val closed = new AtomicBoolean(false)
   private val lock = new ReentrantLock
   private val pendingTasksCompleted = lock.newCondition
@@ -47,7 +53,7 @@ class BulkWriter(container: CosmosAsyncContainer,
   // TODO: moderakh once that is added in the core SDK, drop activeOperations and rely on the core SDK
   // context passing for bulk
   private val activeOperations = new TrieMap[CosmosItemOperation, OperationContext]()
-  private val semaphore = new Semaphore(writeConfig.maxConcurrency)
+  private val semaphore = new Semaphore(maxConcurrency)
 
   private val totalScheduledMetrics = new AtomicLong(0)
   private val totalSuccessfulIngestionMetrics = new AtomicLong(0)
@@ -208,6 +214,7 @@ class BulkWriter(container: CosmosAsyncContainer,
 
         assume(activeTasks.get() == 0)
         assume(activeOperations.isEmpty)
+        assume(semaphore.availablePermits() == maxConcurrency)
 
         logInfo(s"flushAndClose completed with no error. " +
           s"totalSuccessfulIngestionMetrics=${totalSuccessfulIngestionMetrics.get()}, totalScheduled=${totalScheduledMetrics}")
@@ -263,6 +270,17 @@ class BulkWriter(container: CosmosAsyncContainer,
     assume(idField != null && idField.isTextual)
     idField.textValue()
   }
+}
+
+private object BulkWriter {
+  // let's say the spark executor VM has 16 CPU cores.
+  // let's say we have a cosmos container with 1M RU which is 167 partitions
+  // let's say we are ingesting items of size 1KB
+  // let's say max request size is 1MB
+  // hence we want 2MB/ 1KB items per partition to be buffered
+  // 2 * 1024 * 167 items should get buffered on a 16 CPU core VM
+  // so per CPU core we want (2 * 1024 * 167 / 16) max items to be buffered
+  val MaxNumberOfThreadsPerCPUCore = 2 * 1024 * 167 / 16
 }
 
 //scalastyle:on multiple.string.literals

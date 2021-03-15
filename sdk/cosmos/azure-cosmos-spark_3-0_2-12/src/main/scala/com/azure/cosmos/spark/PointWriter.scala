@@ -5,11 +5,12 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.guava25.base.Preconditions.checkState
 import com.azure.cosmos.models.{CosmosItemRequestOptions, PartitionKey}
+import com.azure.cosmos.spark.PointWriter.MaxNumberOfThreadsPerCPUCore
 import com.azure.cosmos.{CosmosAsyncContainer, CosmosException}
 import com.fasterxml.jackson.databind.node.ObjectNode
 
 import java.util.concurrent.atomic.{AtomicBoolean, AtomicReference}
-import java.util.concurrent.{Callable, CompletableFuture, ExecutorService, Executors, ThreadFactory}
+import java.util.concurrent.{Callable, CompletableFuture, ExecutorService, Executors, SynchronousQueue, ThreadFactory, ThreadPoolExecutor, TimeUnit}
 import scala.collection.concurrent.TrieMap
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
@@ -24,9 +25,23 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
   extends AsyncItemWriter
     with CosmosLoggingTrait {
 
-  val executorService: ExecutorService = Executors.newFixedThreadPool(
-    cosmosWriteConfig.maxConcurrency,
-    SparkUtils.daemonThreadFactory())
+  private val maxConcurrency = cosmosWriteConfig.maxConcurrencyOpt
+    .getOrElse(SparkUtils.getNumberOfHostCPUCores() * MaxNumberOfThreadsPerCPUCore)
+
+  // TODO: moderakh do perf tuning on the maxConcurrency and also the thread pool config
+  val executorService: ExecutorService = new ThreadPoolExecutor(
+    maxConcurrency,
+    maxConcurrency,
+    0L,
+    TimeUnit.MILLISECONDS,
+    // A synchronous queue does not have any internal capacity, not even a capacity of one.
+    new SynchronousQueue(),
+    SparkUtils.daemonThreadFactory(),
+    // if all worker threads are busy,
+    // this policy makes the caller thread execute the task.
+    // This provides a simple feedback control mechanism that will slow down the rate that new tasks are submitted.
+    new ThreadPoolExecutor.CallerRunsPolicy()
+  )
 
   private val capturedFailure = new AtomicReference[Throwable]()
   private val pendingPointWrites = new TrieMap[Future[Unit], Boolean]()
@@ -164,4 +179,8 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
     })
     future.toScala
   }
+}
+
+private object PointWriter {
+  val MaxNumberOfThreadsPerCPUCore = 50
 }

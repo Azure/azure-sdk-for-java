@@ -24,7 +24,7 @@ class BulkWriterSpec extends IntegrationSpec with CosmosClient with AutoCleanabl
   "Bulk Writer" can "upsert item" taggedAs RequiresCosmosEndpoint in  {
     val container = getContainer
 
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 5, bulkEnabled = true, 900)
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 5, bulkEnabled = true, Some(900))
 
     val bulkWriter = new BulkWriter(container, writeConfig)
 
@@ -50,7 +50,7 @@ class BulkWriterSpec extends IntegrationSpec with CosmosClient with AutoCleanabl
 
   "Bulk Writer" can "create item with duplicates" taggedAs RequiresCosmosEndpoint in   {
     val container = getContainer
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 5, bulkEnabled = true, 900)
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 5, bulkEnabled = true, Some(900))
     val bulkWriter = new BulkWriter(container, writeConfig)
     val items = new mutable.HashMap[String, mutable.Set[ObjectNode]] with mutable.MultiMap[String, ObjectNode]
 

@@ -3,6 +3,9 @@
 
 package com.azure.cosmos.spark
 
+import org.apache.spark
+import org.apache.spark.sql.SparkSession
+
 import java.util.concurrent.{Executors, ThreadFactory}
 
 object SparkUtils {
@@ -15,5 +18,9 @@ object SparkUtils {
         t
       }
     }
+  }
+
+  def getNumberOfHostCPUCores(): Int = {
+    Runtime.getRuntime().availableProcessors
   }
 }
