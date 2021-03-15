@@ -4,60 +4,60 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The PurchasedPhoneNumber model. */
-@Fluent
+@Immutable
 public final class PurchasedPhoneNumber {
     /*
      * The id of the phone number, e.g. 11234567890.
      */
-    @JsonProperty(value = "id", required = true)
+    @JsonProperty(value = "id", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * String of the E.164 format of the phone number, e.g. +11234567890.
      */
-    @JsonProperty(value = "phoneNumber", required = true)
+    @JsonProperty(value = "phoneNumber", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String phoneNumber;
 
     /*
      * The ISO 3166-2 code of the phone number's country, e.g. US.
      */
-    @JsonProperty(value = "countryCode", required = true)
+    @JsonProperty(value = "countryCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String countryCode;
 
     /*
      * The phone number's type, e.g. Geographic, TollFree.
      */
-    @JsonProperty(value = "phoneNumberType", required = true)
+    @JsonProperty(value = "phoneNumberType", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberType phoneNumberType;
 
     /*
      * Capabilities of a phone number.
      */
-    @JsonProperty(value = "capabilities", required = true)
+    @JsonProperty(value = "capabilities", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberCapabilities capabilities;
 
     /*
      * The assignment type of the phone number. A phone number can be assigned
      * to a person, or to an application.
      */
-    @JsonProperty(value = "assignmentType", required = true)
+    @JsonProperty(value = "assignmentType", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberAssignmentType assignmentType;
 
     /*
      * The date and time that the phone number was purchased.
      */
-    @JsonProperty(value = "purchaseDate", required = true)
+    @JsonProperty(value = "purchaseDate", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime purchaseDate;
 
     /*
      * The incurred cost for a single phone number.
      */
-    @JsonProperty(value = "cost", required = true)
+    @JsonProperty(value = "cost", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberCost cost;
 
     /**
@@ -70,34 +70,12 @@ public final class PurchasedPhoneNumber {
     }
 
     /**
-     * Set the id property: The id of the phone number, e.g. 11234567890.
-     *
-     * @param id the id value to set.
-     * @return the PurchasedPhoneNumber object itself.
-     */
-    public PurchasedPhoneNumber setId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
      * Get the phoneNumber property: String of the E.164 format of the phone number, e.g. +11234567890.
      *
      * @return the phoneNumber value.
      */
     public String getPhoneNumber() {
         return this.phoneNumber;
-    }
-
-    /**
-     * Set the phoneNumber property: String of the E.164 format of the phone number, e.g. +11234567890.
-     *
-     * @param phoneNumber the phoneNumber value to set.
-     * @return the PurchasedPhoneNumber object itself.
-     */
-    public PurchasedPhoneNumber setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-        return this;
     }
 
     /**
@@ -110,17 +88,6 @@ public final class PurchasedPhoneNumber {
     }
 
     /**
-     * Set the countryCode property: The ISO 3166-2 code of the phone number's country, e.g. US.
-     *
-     * @param countryCode the countryCode value to set.
-     * @return the PurchasedPhoneNumber object itself.
-     */
-    public PurchasedPhoneNumber setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
-        return this;
-    }
-
-    /**
      * Get the phoneNumberType property: The phone number's type, e.g. Geographic, TollFree.
      *
      * @return the phoneNumberType value.
@@ -130,34 +97,12 @@ public final class PurchasedPhoneNumber {
     }
 
     /**
-     * Set the phoneNumberType property: The phone number's type, e.g. Geographic, TollFree.
-     *
-     * @param phoneNumberType the phoneNumberType value to set.
-     * @return the PurchasedPhoneNumber object itself.
-     */
-    public PurchasedPhoneNumber setPhoneNumberType(PhoneNumberType phoneNumberType) {
-        this.phoneNumberType = phoneNumberType;
-        return this;
-    }
-
-    /**
      * Get the capabilities property: Capabilities of a phone number.
      *
      * @return the capabilities value.
      */
     public PhoneNumberCapabilities getCapabilities() {
         return this.capabilities;
-    }
-
-    /**
-     * Set the capabilities property: Capabilities of a phone number.
-     *
-     * @param capabilities the capabilities value to set.
-     * @return the PurchasedPhoneNumber object itself.
-     */
-    public PurchasedPhoneNumber setCapabilities(PhoneNumberCapabilities capabilities) {
-        this.capabilities = capabilities;
-        return this;
     }
 
     /**
@@ -171,18 +116,6 @@ public final class PurchasedPhoneNumber {
     }
 
     /**
-     * Set the assignmentType property: The assignment type of the phone number. A phone number can be assigned to a
-     * person, or to an application.
-     *
-     * @param assignmentType the assignmentType value to set.
-     * @return the PurchasedPhoneNumber object itself.
-     */
-    public PurchasedPhoneNumber setAssignmentType(PhoneNumberAssignmentType assignmentType) {
-        this.assignmentType = assignmentType;
-        return this;
-    }
-
-    /**
      * Get the purchaseDate property: The date and time that the phone number was purchased.
      *
      * @return the purchaseDate value.
@@ -192,33 +125,11 @@ public final class PurchasedPhoneNumber {
     }
 
     /**
-     * Set the purchaseDate property: The date and time that the phone number was purchased.
-     *
-     * @param purchaseDate the purchaseDate value to set.
-     * @return the PurchasedPhoneNumber object itself.
-     */
-    public PurchasedPhoneNumber setPurchaseDate(OffsetDateTime purchaseDate) {
-        this.purchaseDate = purchaseDate;
-        return this;
-    }
-
-    /**
      * Get the cost property: The incurred cost for a single phone number.
      *
      * @return the cost value.
      */
     public PhoneNumberCost getCost() {
         return this.cost;
-    }
-
-    /**
-     * Set the cost property: The incurred cost for a single phone number.
-     *
-     * @param cost the cost value to set.
-     * @return the PurchasedPhoneNumber object itself.
-     */
-    public PurchasedPhoneNumber setCost(PhoneNumberCost cost) {
-        this.cost = cost;
-        return this;
     }
 }

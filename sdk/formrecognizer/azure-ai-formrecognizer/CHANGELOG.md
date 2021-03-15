@@ -2,6 +2,9 @@
 
 ## 3.1.0-beta.3 (Unreleased)
 
+## 3.0.6 (2021-03-10)
+### Dependency updates
+- Update dependency version, `azure-core` to `1.14.0`, `azure-core-http-netty` to `1.9.0` and `azure-identity` to `1.2.4`.
 
 ## 3.1.0-beta.2 (2021-02-10)
 

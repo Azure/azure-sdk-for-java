@@ -6,7 +6,6 @@ package com.azure.resourcemanager.netapp.implementation;
 
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.fluent.models.BackupPolicyInner;
 import com.azure.resourcemanager.netapp.models.BackupPolicy;
 import com.azure.resourcemanager.netapp.models.BackupPolicyPatch;
@@ -18,7 +17,7 @@ import java.util.Map;
 public final class BackupPolicyImpl implements BackupPolicy, BackupPolicy.Definition, BackupPolicy.Update {
     private BackupPolicyInner innerObject;
 
-    private final NetAppFilesManager serviceManager;
+    private final com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -94,7 +93,7 @@ public final class BackupPolicyImpl implements BackupPolicy, BackupPolicy.Defini
         return this.innerObject;
     }
 
-    private NetAppFilesManager manager() {
+    private com.azure.resourcemanager.netapp.NetAppFilesManager manager() {
         return this.serviceManager;
     }
 
@@ -130,7 +129,7 @@ public final class BackupPolicyImpl implements BackupPolicy, BackupPolicy.Defini
         return this;
     }
 
-    BackupPolicyImpl(String name, NetAppFilesManager serviceManager) {
+    BackupPolicyImpl(String name, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = new BackupPolicyInner();
         this.serviceManager = serviceManager;
         this.backupPolicyName = name;
@@ -161,7 +160,8 @@ public final class BackupPolicyImpl implements BackupPolicy, BackupPolicy.Defini
         return this;
     }
 
-    BackupPolicyImpl(BackupPolicyInner innerObject, NetAppFilesManager serviceManager) {
+    BackupPolicyImpl(
+        BackupPolicyInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

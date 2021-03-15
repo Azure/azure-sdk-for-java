@@ -105,6 +105,22 @@ public final class PhoneNumbersAsyncClient {
      * @param phoneNumberType {@link PhoneNumberType} The phone number type.
      * @param assignmentType {@link PhoneNumberAssignmentType} The phone number assignment type.
      * @param capabilities {@link PhoneNumberCapabilities} The phone number capabilities.
+     * @return A {@link PollerFlux} object with the reservation result.
+     * @throws NullPointerException if {@code countryCode} or {@code searchRequest} is null.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
+        String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType, PhoneNumberCapabilities capabilities) {
+        return beginSearchAvailablePhoneNumbers(countryCode, phoneNumberType, assignmentType, capabilities, null, null);
+    }
+
+    /**
+     * Starts the search for available phone numbers to purchase.
+     *
+     * @param countryCode The ISO 3166-2 country code.
+     * @param phoneNumberType {@link PhoneNumberType} The phone number type.
+     * @param assignmentType {@link PhoneNumberAssignmentType} The phone number assignment type.
+     * @param capabilities {@link PhoneNumberCapabilities} The phone number capabilities.
      * @param searchOptions The phone number search options.
      * @return A {@link PollerFlux} object with the reservation result.
      * @throws NullPointerException if {@code countryCode} or {@code searchRequest} is null.
