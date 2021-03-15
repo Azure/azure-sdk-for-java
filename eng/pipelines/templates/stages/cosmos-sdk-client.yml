@@ -105,7 +105,7 @@ stages:
           TimeoutInMinutes: 90
           TestStepMavenInputs:
             goals: clean verify
-            options: '$(ProfileFlag) -Dgpg.skip -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false $(AdditionalArgs) -pl $(ProjectList)'
+            options: '$(ProfileFlag) -Dgpg.skip -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dhadoop.home.dir=C:\Users\cloudtest\AppData\Local\Temp\hadoop-for-cosmos-ci -DtrimStackTrace=false $(AdditionalArgs) -pl $(ProjectList)'
             mavenAuthenticateFeed: true
             jdkVersionOption: $(JavaTestVersion)
 
