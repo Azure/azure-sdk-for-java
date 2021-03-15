@@ -390,7 +390,6 @@ public class BinaryDataTest {
 
         @Override
         public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
-            System.out.println("Using custom deserializer");
             if (stream == null) {
                 return null;
             }
@@ -410,7 +409,6 @@ public class BinaryDataTest {
 
         @Override
         public void serialize(OutputStream stream, Object value) {
-            System.out.println("Using custom serializer");
             try {
                 mapper.writeValue(stream, value);
             } catch (IOException ex) {
