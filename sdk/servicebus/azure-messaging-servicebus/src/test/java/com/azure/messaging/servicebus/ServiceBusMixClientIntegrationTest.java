@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 /**
- * Test where various clients are involved for example Server, Receiver and Processor client.
+ * Test where various clients are involved for example Sender, Receiver and Processor client.
  */
 public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
     private ServiceBusSenderAsyncClient sender;
@@ -70,7 +70,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Test cross entity transaction use case using processor client and sender.
+     * Use case: Test cross entity transaction using processor client and sender.
      * 1. Read messages from entity A.
      * 2. complete the messages from entity A and write to entity B.
      * 2. commit the transaction.
@@ -89,7 +89,6 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         final String topicB = getTopicName(sendQueueBIndex);
         final AtomicBoolean transactionComplete = new AtomicBoolean();
 
-        //final boolean isSessionEnabled = false;
         final CountDownLatch countdownLatch = new CountDownLatch(1);
         final AtomicInteger receivedMessages = new AtomicInteger();
 
@@ -210,7 +209,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Test cross entity transaction use case using receiver and senders.
+     * Use case: Test cross entity transaction using receiver and senders.
      * 1. Read messages from entity A.
      * 2. complete the messages from entity A and write to entity B.
      * 2. commit the transaction.
