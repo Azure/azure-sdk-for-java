@@ -102,6 +102,9 @@ public class BlobStorageCustomization extends Customization {
         modifyUnexpectedResponseExceptionType(servicesImpl.getMethod("filterBlobs"));
 
         PackageCustomization implementationModels = customization.getPackage("com.azure.storage.blob.implementation.models");
+
+        implementationModels.getClass("DataLakeStorageErrorError").rename("DataLakeStorageErrorDetails");
+
         implementationModels.getClass("BlobHierarchyListSegment").addAnnotation("@JsonDeserialize(using = com.azure.storage.blob.implementation.util.CustomHierarchicalListingDeserializer.class)");
 
         ClassCustomization blobItemInternal = implementationModels.getClass("BlobItemInternal");

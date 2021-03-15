@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** The service error response object. */
-@JacksonXmlRootElement(localName = "DataLakeStorageErrorDetails")
+@JacksonXmlRootElement(localName = "DataLakeStorageErrorError")
 @Fluent
 public final class DataLakeStorageErrorDetails {
     /*
@@ -37,7 +37,7 @@ public final class DataLakeStorageErrorDetails {
      * Set the code property: The service error code.
      *
      * @param code the code value to set.
-     * @return the DataLakeStorageErrorDetails object itself.
+     * @return the DataLakeStorageErrorError object itself.
      */
     public DataLakeStorageErrorDetails setCode(String code) {
         this.code = code;
@@ -57,7 +57,7 @@ public final class DataLakeStorageErrorDetails {
      * Set the message property: The service error message.
      *
      * @param message the message value to set.
-     * @return the DataLakeStorageErrorDetails object itself.
+     * @return the DataLakeStorageErrorError object itself.
      */
     public DataLakeStorageErrorDetails setMessage(String message) {
         this.message = message;

@@ -81,11 +81,6 @@ public final class BlobsCopyFromURLHeaders {
     @JsonProperty(value = "Content-MD5")
     private byte[] contentMD5;
 
-    /** Creates an instance of BlobsCopyFromURLHeaders class. */
-    public BlobsCopyFromURLHeaders() {
-        xMsCopyStatus = "success";
-    }
-
     /**
      * Get the xMsVersion property: The x-ms-version property.
      *

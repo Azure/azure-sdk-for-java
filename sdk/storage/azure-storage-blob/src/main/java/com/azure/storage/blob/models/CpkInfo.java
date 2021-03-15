@@ -28,6 +28,14 @@ public final class CpkInfo {
     @JsonProperty(value = "encryptionKeySha256")
     private String encryptionKeySha256;
 
+    /*
+     * The algorithm used to produce the encryption key hash. Currently, the
+     * only accepted value is "AES256". Must be provided if the
+     * x-ms-encryption-key header is provided.
+     */
+    @JsonProperty(value = "encryptionAlgorithm")
+    private EncryptionAlgorithmType encryptionAlgorithm;
+
     /**
      * Get the encryptionKey property: Optional. Specifies the encryption key to use to encrypt the data provided in the
      * request. If not specified, encryption is performed with the root account encryption key. For more information,
@@ -71,6 +79,28 @@ public final class CpkInfo {
      */
     public CpkInfo setEncryptionKeySha256(String encryptionKeySha256) {
         this.encryptionKeySha256 = encryptionKeySha256;
+        return this;
+    }
+
+    /**
+     * Get the encryptionAlgorithm property: The algorithm used to produce the encryption key hash. Currently, the only
+     * accepted value is "AES256". Must be provided if the x-ms-encryption-key header is provided.
+     *
+     * @return the encryptionAlgorithm value.
+     */
+    public EncryptionAlgorithmType getEncryptionAlgorithm() {
+        return this.encryptionAlgorithm;
+    }
+
+    /**
+     * Set the encryptionAlgorithm property: The algorithm used to produce the encryption key hash. Currently, the only
+     * accepted value is "AES256". Must be provided if the x-ms-encryption-key header is provided.
+     *
+     * @param encryptionAlgorithm the encryptionAlgorithm value to set.
+     * @return the CpkInfo object itself.
+     */
+    public CpkInfo setEncryptionAlgorithm(EncryptionAlgorithmType encryptionAlgorithm) {
+        this.encryptionAlgorithm = encryptionAlgorithm;
         return this;
     }
 }
