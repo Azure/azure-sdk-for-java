@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosAsyncClient
-import com.azure.cosmos.models.{CosmosQueryRequestOptions, FeedResponse}
+import com.azure.cosmos.models.CosmosQueryRequestOptions
 import com.fasterxml.jackson.databind.JsonNode
 
 // scalastyle:off underscore.import
