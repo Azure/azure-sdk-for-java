@@ -276,6 +276,52 @@ class SparkE2EQuerySpec extends IntegrationSpec with Spark with CosmosClient wit
     fieldNames.contains(CosmosTableSchemaInferrer.AttachmentsAttributeName) shouldBe false
   }
 
+  "spark query" can "use custom sampling size" taggedAs RequiresCosmosEndpoint in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+    val samplingSize = 100
+    val expectedResults = samplingSize * 2
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+
+    // Inserting documents with slightly different schema
+    for( _ <- 1 to expectedResults) {
+      val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+      objectNode.put("legs", 4)
+      objectNode.put("name", "Shrodigner's cat")
+      objectNode.put("type", "animal")
+      objectNode.put("id", UUID.randomUUID().toString)
+      container.createItem(objectNode).block()
+    }
+
+    for( _ <- 1 to samplingSize) {
+      val objectNode2 = Utils.getSimpleObjectMapper.createObjectNode()
+      objectNode2.put("wheels", 4)
+      objectNode2.put("name", "Shrodigner's car")
+      objectNode2.put("type", "car")
+      objectNode2.put("id", UUID.randomUUID().toString)
+      container.createItem(objectNode2).block()
+    }
+
+    val cfgWithInference = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.inferSchemaEnabled" -> "true",
+      "spark.cosmos.read.inferSchemaSamplingSize" -> samplingSize.toString,
+      "spark.cosmos.read.inferSchemaQuery" -> "SELECT * FROM c ORDER BY c._ts",
+      "spark.cosmos.partitioning.strategy" -> "Restrictive"
+    )
+
+    val dfWithInference = spark.read.format("cosmos.items").options(cfgWithInference).load()
+    val rows = dfWithInference.where("type = 'animal'").collect()
+    rows should have size expectedResults
+
+    // Schema inference should not have picked up the cars even though the query was *
+    val fieldNames = rows(0).schema.fields.map(field => field.name)
+    fieldNames.contains("legs") shouldBe true
+    fieldNames.contains("wheels") shouldBe false
+  }
+
   //scalastyle:on magic.number
   //scalastyle:on multiple.string.literals
 }
