@@ -31,12 +31,19 @@ It means cloning the master branch, all the code, dependencies, and readme files
 
 2. Traverse to the root directory
 
-3. Build the whole product by executing the following command which may take several minutes
+3. Build modules
+
+   1. Build all modules under the `spring` module by executing the following command which may take several minutes.
 
    ```
-   mvn clean install -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Djacoco.skip=true -DskipTests -Dparallel-test-playback
+   mvn clean install -f sdk/spring/pom.xml -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Djacoco.skip=true -DskipTests -Dparallel-test-playback
    ```
-
+   
+   2. Only build the modules associated with the current module, such as `azure-spring-boot-sample-active-directory-webapp`.
+    
+   ```
+   mvn clean install -pl .\sdk\spring\azure-spring-boot-samples\azure-spring-boot-sample-active-directory-webapp\ -am -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Djacoco.skip=true -DskipTests -Dparallel-test-playback
+   ```
 
 #### Clone from specific version tag (recommend)
 
