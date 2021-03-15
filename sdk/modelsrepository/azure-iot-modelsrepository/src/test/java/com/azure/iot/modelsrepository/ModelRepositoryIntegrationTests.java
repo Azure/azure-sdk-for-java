@@ -28,7 +28,19 @@ public class ModelRepositoryIntegrationTests extends ModelsRepositoryTestBase {
         Map<String, String> result = client.getModels(dtmi).block();
         Assertions.assertTrue(result.keySet().stream().count() == 1);
         Assertions.assertTrue(result.keySet().contains(dtmi));
+    }
 
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.iot.modelsrepository.TestHelper#getTestParameters")
+    public void getModelsSingleDtmiDoesNotExist(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion) throws URISyntaxException {
+        final String dtmi = "dtmi:com:example:Thermostatddd;1";
+
+        ModelsRepositoryAsyncClient client = getAsyncClient(httpClient, serviceVersion);
+
+        Map<String, String> result = client.getModels(dtmi).block();
+        Assertions.assertTrue(result.keySet().stream().count() == 1);
+        Assertions.assertTrue(result.keySet().contains(dtmi));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

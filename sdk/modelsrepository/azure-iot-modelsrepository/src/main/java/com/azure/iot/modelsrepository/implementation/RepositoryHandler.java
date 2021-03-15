@@ -24,9 +24,9 @@ public final class RepositoryHandler {
         this.protocolLayer = protocolLayer;
 
         if (this.repositoryUri.getScheme() != "file") {
-            this.modelFetcher = new RemoteModelFetcher(protocolLayer);
+            this.modelFetcher = new HttpModelFetcher(protocolLayer);
         } else {
-            this.modelFetcher = new LocalModelFetcher();
+            this.modelFetcher = new FileModelFetcher();
         }
     }
 

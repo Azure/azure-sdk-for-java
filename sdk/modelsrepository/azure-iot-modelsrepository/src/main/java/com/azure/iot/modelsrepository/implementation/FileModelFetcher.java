@@ -18,15 +18,15 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- * The {@link LocalModelFetcher} is an implementation of {@link ModelFetcher}
+ * The {@link FileModelFetcher} is an implementation of {@link ModelFetcher}
  * for supporting local filesystem based model content fetching.
  */
-class LocalModelFetcher implements ModelFetcher {
+class FileModelFetcher implements ModelFetcher {
 
     /**
-     * Creates an instance of {@link LocalModelFetcher}
+     * Creates an instance of {@link FileModelFetcher}
      */
-    public LocalModelFetcher() {
+    public FileModelFetcher() {
     }
 
     @Override
@@ -47,11 +47,11 @@ class LocalModelFetcher implements ModelFetcher {
                         .setDefinition(new String(Files.readAllBytes(path)))
                         .setPath(tryContentPath));
             }
-            // TODO: azabbasi: Error messages
-            fnfError = "FileNotFound";
+
+            fnfError = String.format(ErrorMessageConstants.ErrorFetchingModelContent, tryContentPath);
         }
 
-        throw new FileNotFoundException(fnfError);
+        return Mono.error(new FileNotFoundException(fnfError));
     }
 
     private String GetPath(String dtmi, URI repositoryUri, boolean expanded) {

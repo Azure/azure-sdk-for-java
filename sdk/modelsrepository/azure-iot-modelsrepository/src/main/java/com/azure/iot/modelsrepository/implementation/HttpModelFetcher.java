@@ -16,11 +16,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.Queue;
 
-class RemoteModelFetcher implements ModelFetcher {
+class HttpModelFetcher implements ModelFetcher {
     private final ModelsRepositoryAPIImpl protocolLayer;
     private final ObjectMapper mapper;
 
-    public RemoteModelFetcher(ModelsRepositoryAPIImpl protocolLayer) {
+    public HttpModelFetcher(ModelsRepositoryAPIImpl protocolLayer) {
         this.protocolLayer = protocolLayer;
         mapper = new JacksonAdapter().serializer();
     }
@@ -37,13 +37,12 @@ class RemoteModelFetcher implements ModelFetcher {
 
         String tryContentPath = work.poll();
 
-        // TODO: azabbasi: error handling
         Mono<FetchResult> result = evaluatePath(tryContentPath, context)
-            .onErrorResume(s -> {
+            .onErrorResume(error -> {
                 if (work.stream().count() != 0) {
                     return evaluatePath(work.poll(), context);
                 } else {
-                    return Mono.error(s);
+                    return Mono.error(error);
                 }
             })
             .map(s -> new FetchResult().setPath(tryContentPath).setDefinition(s));
