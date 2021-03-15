@@ -3,7 +3,9 @@
 
 package com.azure.core.amqp.implementation;
 
+import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
@@ -39,12 +41,14 @@ import java.time.Duration;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -62,7 +66,9 @@ class RequestResponseChannelTest {
 
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
     private final TestPublisher<Delivery> deliveryProcessor = TestPublisher.createCold();
-    private final TestPublisher<EndpointState> endpointStates = TestPublisher.createCold();
+    private final TestPublisher<EndpointState> receiveEndpoints = TestPublisher.createCold();
+    private final TestPublisher<EndpointState> sendEndpoints = TestPublisher.createCold();
+    private final TestPublisher<AmqpShutdownSignal> shutdownSignals = TestPublisher.create();
 
     @Mock
     private ReactorHandlerProvider handlerProvider;
@@ -74,6 +80,8 @@ class RequestResponseChannelTest {
     private ReceiveLinkHandler receiveLinkHandler;
     @Mock
     private SendLinkHandler sendLinkHandler;
+    @Mock
+    private AmqpConnection amqpConnection;
 
     @Mock
     private Session session;
@@ -115,12 +123,11 @@ class RequestResponseChannelTest {
         when(handlerProvider.createSendLinkHandler(CONNECTION_ID, NAMESPACE, LINK_NAME, ENTITY_PATH))
             .thenReturn(sendLinkHandler);
 
-        when(receiveLinkHandler.getEndpointStates()).thenReturn(endpointStates.flux());
+        when(receiveLinkHandler.getEndpointStates()).thenReturn(receiveEndpoints.flux());
         when(receiveLinkHandler.getDeliveredMessages()).thenReturn(deliveryProcessor.flux());
+        when(sendLinkHandler.getEndpointStates()).thenReturn(sendEndpoints.flux());
 
-        when(sendLinkHandler.getEndpointStates()).thenReturn(endpointStates.flux());
-
-        endpointStates.next(EndpointState.ACTIVE);
+        when(amqpConnection.getShutdownSignals()).thenReturn(shutdownSignals.flux());
     }
 
     @AfterEach
@@ -143,13 +150,21 @@ class RequestResponseChannelTest {
         AmqpErrorContext expected = new AmqpErrorContext("namespace-test");
         when(receiveLinkHandler.getErrorContext(receiver)).thenReturn(expected);
 
+        receiveEndpoints.next(EndpointState.ACTIVE);
+        sendEndpoints.next(EndpointState.ACTIVE);
+
         // Act
-        final RequestResponseChannel channel = new RequestResponseChannel(CONNECTION_ID, NAMESPACE, LINK_NAME,
+        final RequestResponseChannel channel = new RequestResponseChannel(amqpConnection, CONNECTION_ID, NAMESPACE, LINK_NAME,
             ENTITY_PATH, session, retryOptions, handlerProvider, reactorProvider, serializer, settleMode,
             receiverSettleMode);
         final AmqpErrorContext errorContext = channel.getErrorContext();
 
-        channel.dispose();
+        StepVerifier.create(channel.disposeAsync())
+            .then(() -> {
+                sendEndpoints.complete();
+                receiveEndpoints.complete();
+            })
+            .verifyComplete();
 
         // Assert
         assertEquals(expected, errorContext);
@@ -165,12 +180,22 @@ class RequestResponseChannelTest {
     @Test
     void disposes() {
         // Arrange
-        final RequestResponseChannel channel = new RequestResponseChannel(CONNECTION_ID, NAMESPACE, LINK_NAME,
+        final RequestResponseChannel channel = new RequestResponseChannel(amqpConnection, CONNECTION_ID, NAMESPACE, LINK_NAME,
             ENTITY_PATH, session, retryOptions, handlerProvider, reactorProvider, serializer, SenderSettleMode.SETTLED,
             ReceiverSettleMode.SECOND);
 
+        receiveEndpoints.next(EndpointState.ACTIVE);
+        sendEndpoints.next(EndpointState.ACTIVE);
+
         // Act
-        channel.dispose();
+        StepVerifier.create(channel.disposeAsync())
+            .then(() -> {
+                sendEndpoints.complete();
+                receiveEndpoints.complete();
+            })
+            .verifyComplete();
+
+        invokeDispatcher();
 
         // Assert
         verify(sender).close();
@@ -183,9 +208,12 @@ class RequestResponseChannelTest {
     @Test
     void sendNull() {
         // Arrange
-        final RequestResponseChannel channel = new RequestResponseChannel(CONNECTION_ID, NAMESPACE, LINK_NAME,
+        final RequestResponseChannel channel = new RequestResponseChannel(amqpConnection, CONNECTION_ID, NAMESPACE, LINK_NAME,
             ENTITY_PATH, session, retryOptions, handlerProvider, reactorProvider, serializer, SenderSettleMode.SETTLED,
             ReceiverSettleMode.SECOND);
+
+        receiveEndpoints.next(EndpointState.ACTIVE);
+        sendEndpoints.next(EndpointState.ACTIVE);
 
         // Act & Assert
         StepVerifier.create(channel.sendWithAck(null))
@@ -199,7 +227,7 @@ class RequestResponseChannelTest {
     @Test
     void sendReplyToSet() {
         // Arrange
-        final RequestResponseChannel channel = new RequestResponseChannel(CONNECTION_ID, NAMESPACE, LINK_NAME,
+        final RequestResponseChannel channel = new RequestResponseChannel(amqpConnection, CONNECTION_ID, NAMESPACE, LINK_NAME,
             ENTITY_PATH, session, retryOptions, handlerProvider, reactorProvider, serializer, SenderSettleMode.SETTLED,
             ReceiverSettleMode.SECOND);
         final Message message = mock(Message.class);
@@ -217,17 +245,21 @@ class RequestResponseChannelTest {
     @Test
     void sendMessageIdSet() {
         // Arrange
-        final RequestResponseChannel channel = new RequestResponseChannel(CONNECTION_ID, NAMESPACE, LINK_NAME,
+        final RequestResponseChannel channel = new RequestResponseChannel(amqpConnection, CONNECTION_ID, NAMESPACE, LINK_NAME,
             ENTITY_PATH, session, retryOptions, handlerProvider, reactorProvider, serializer, SenderSettleMode.SETTLED,
             ReceiverSettleMode.SECOND);
         final Message message = mock(Message.class);
         when(message.getMessageId()).thenReturn(10L);
+
+        receiveEndpoints.next(EndpointState.ACTIVE);
+        sendEndpoints.next(EndpointState.ACTIVE);
 
         // Act & Assert
         StepVerifier.create(channel.sendWithAck(message))
             .expectError(IllegalArgumentException.class)
             .verify();
     }
+
     /**
      * Verifies a message is received.
      */
@@ -242,9 +274,9 @@ class RequestResponseChannelTest {
             64, 64, 0, 83, 116, -63, 49, 4, -95, 11, 115, 116, 97, 116, 117, 115, 45, 99, 111, 100, 101, 113, 0, 0, 0,
             -54, -95, 18, 115, 116, 97, 116, 117, 115, 45, 100, 101, 115, 99, 114, 105, 112, 116, 105, 111, 110, -95, 8,
             65, 99, 99, 101, 112, 116, 101, 100};
-        final RequestResponseChannel channel = new RequestResponseChannel(CONNECTION_ID, NAMESPACE, LINK_NAME,
-            ENTITY_PATH, session, retryOptions, handlerProvider, reactorProvider, serializer, SenderSettleMode.SETTLED,
-            ReceiverSettleMode.SECOND);
+        final RequestResponseChannel channel = new RequestResponseChannel(amqpConnection, CONNECTION_ID, NAMESPACE,
+            LINK_NAME, ENTITY_PATH, session, retryOptions, handlerProvider, reactorProvider, serializer,
+            SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND);
         final UnsignedLong messageId = UnsignedLong.valueOf(1);
         final Message message = mock(Message.class);
         final int encodedSize = 143;
@@ -266,18 +298,16 @@ class RequestResponseChannelTest {
             return messageBytes.length;
         });
 
+        receiveEndpoints.next(EndpointState.ACTIVE);
+        sendEndpoints.next(EndpointState.ACTIVE);
+
         // Act
         StepVerifier.create(channel.sendWithAck(message, transactionalState))
             .then(() -> deliveryProcessor.next(delivery))
             .assertNext(received -> assertEquals(messageId, received.getCorrelationId()))
             .verifyComplete();
 
-        // Getting the runnable so we can manually invoke it and verify contents are correct.
-        verify(reactorDispatcher, atLeastOnce()).invoke(dispatcherCaptor.capture());
-        dispatcherCaptor.getAllValues().forEach(work -> {
-            assertNotNull(work);
-            work.run();
-        });
+        invokeDispatcher();
 
         // Assert
         verify(message).setMessageId(argThat(e -> e instanceof UnsignedLong && messageId.equals(e)));
@@ -295,16 +325,16 @@ class RequestResponseChannelTest {
      * Verifies a message is received.
      */
     @Test
-    void sendMessage() throws IOException {
+    void sendMessage() {
         // Arrange
         // This message was copied from one that was received.
         final byte[] messageBytes = new byte[]{0, 83, 115, -64, 15, 13, 64, 64, 64, 64, 64, 83, 1, 64, 64, 64, 64, 64,
             64, 64, 0, 83, 116, -63, 49, 4, -95, 11, 115, 116, 97, 116, 117, 115, 45, 99, 111, 100, 101, 113, 0, 0, 0,
             -54, -95, 18, 115, 116, 97, 116, 117, 115, 45, 100, 101, 115, 99, 114, 105, 112, 116, 105, 111, 110, -95, 8,
             65, 99, 99, 101, 112, 116, 101, 100};
-        final RequestResponseChannel channel = new RequestResponseChannel(CONNECTION_ID, NAMESPACE, LINK_NAME,
-            ENTITY_PATH, session, retryOptions, handlerProvider, reactorProvider, serializer, SenderSettleMode.SETTLED,
-            ReceiverSettleMode.SECOND);
+        final RequestResponseChannel channel = new RequestResponseChannel(amqpConnection, CONNECTION_ID, NAMESPACE,
+            LINK_NAME, ENTITY_PATH, session, retryOptions, handlerProvider, reactorProvider, serializer,
+            SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND);
         final UnsignedLong messageId = UnsignedLong.valueOf(1);
         final Message message = mock(Message.class);
         final int encodedSize = 143;
@@ -326,18 +356,16 @@ class RequestResponseChannelTest {
             return messageBytes.length;
         });
 
+        receiveEndpoints.next(EndpointState.ACTIVE);
+        sendEndpoints.next(EndpointState.ACTIVE);
+
         // Act
         StepVerifier.create(channel.sendWithAck(message))
             .then(() -> deliveryProcessor.next(delivery))
             .assertNext(received -> assertEquals(messageId, received.getCorrelationId()))
             .verifyComplete();
 
-        // Getting the runnable so we can manually invoke it and verify contents are correct.
-        verify(reactorDispatcher, atLeastOnce()).invoke(dispatcherCaptor.capture());
-        dispatcherCaptor.getAllValues().forEach(work -> {
-            assertNotNull(work);
-            work.run();
-        });
+        invokeDispatcher();
 
         // Assert
         verify(message).setMessageId(argThat(e -> e instanceof UnsignedLong && messageId.equals(e)));
@@ -352,7 +380,7 @@ class RequestResponseChannelTest {
     @Test
     void clearMessagesOnError() {
         // Arrange
-        final RequestResponseChannel channel = new RequestResponseChannel(CONNECTION_ID, NAMESPACE, LINK_NAME,
+        final RequestResponseChannel channel = new RequestResponseChannel(amqpConnection, CONNECTION_ID, NAMESPACE, LINK_NAME,
             ENTITY_PATH, session, retryOptions, handlerProvider, reactorProvider, serializer, SenderSettleMode.SETTLED,
             ReceiverSettleMode.SECOND);
         final AmqpException error = new AmqpException(true, "Message", new AmqpErrorContext("some-context"));
@@ -360,13 +388,68 @@ class RequestResponseChannelTest {
         when(serializer.getSize(message)).thenReturn(150);
         when(message.encode(any(), eq(0), anyInt())).thenReturn(143);
 
+        receiveEndpoints.next(EndpointState.ACTIVE);
+        sendEndpoints.next(EndpointState.ACTIVE);
+
         // Act
         StepVerifier.create(channel.sendWithAck(message))
-            .then(() -> endpointStates.error(error))
+            .then(() -> sendEndpoints.error(error))
             .verifyError(AmqpException.class);
 
         // Assert
         assertTrue(channel.isDisposed());
     }
 
+    /**
+     * Verifies that when an exception occurs in the parent, the connection is also closed.
+     */
+    @Test
+    void parentDisposesConnection() {
+        // Arrange
+        final RequestResponseChannel channel = new RequestResponseChannel(amqpConnection, CONNECTION_ID, NAMESPACE,
+            LINK_NAME, ENTITY_PATH, session, retryOptions, handlerProvider, reactorProvider, serializer,
+            SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND);
+        final AmqpShutdownSignal shutdownSignal = new AmqpShutdownSignal(false, false, "Test-shutdown-signal");
+
+        doAnswer(invocationOnMock -> {
+            sendEndpoints.complete();
+            return null;
+        }).when(sender).close();
+
+        doAnswer(invocationOnMock -> {
+            receiveEndpoints.complete();
+            return null;
+        }).when(receiver).close();
+
+        // Act
+        shutdownSignals.next(shutdownSignal);
+
+        invokeDispatcher();
+
+        // Assert
+        assertTrue(channel.isDisposed());
+
+        verify(receiver).close();
+        verify(sender).close();
+
+        receiveEndpoints.assertNoSubscribers();
+        sendEndpoints.assertNoSubscribers();
+        shutdownSignals.assertNoSubscribers();
+    }
+
+    /**
+     * Manually captures the Runnable in the dispatcher so we can invoke it to verify contents.
+     */
+    private void invokeDispatcher() {
+        try {
+            verify(reactorDispatcher, atLeastOnce()).invoke(dispatcherCaptor.capture());
+        } catch (IOException e) {
+            fail("Should not have caused an IOException. " + e);
+        }
+
+        dispatcherCaptor.getAllValues().forEach(work -> {
+            assertNotNull(work);
+            work.run();
+        });
+    }
 }
