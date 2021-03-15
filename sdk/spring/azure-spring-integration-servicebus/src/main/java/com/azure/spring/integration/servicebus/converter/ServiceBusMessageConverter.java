@@ -133,7 +133,6 @@ public class ServiceBusMessageConverter extends AbstractAzureMessageConverter<IM
         setValueIfHasText(headers, CORRELATION_ID, message.getCorrelationId());
         setValueIfHasText(headers, MESSAGE_ID, message.getMessageId());
         setValueIfHasText(headers, PARTITION_KEY, message.getPartitionKey());
-        setValueIfPresent(headers, TIME_TO_LIVE, message.getTimeToLive());
         setValueIfHasText(headers, TO, message.getTo());
         setValueIfPresent(headers, TIME_TO_LIVE, message.getTimeToLive());
         setValueIfPresent(headers, SCHEDULED_ENQUEUE_TIME, message.getScheduledEnqueueTimeUtc());
