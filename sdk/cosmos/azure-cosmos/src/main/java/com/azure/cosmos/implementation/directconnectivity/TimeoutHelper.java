@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.RequestTimeoutException;
-import com.azure.cosmos.implementation.RetryContext;
 
 import java.time.Duration;
 import java.time.Instant;

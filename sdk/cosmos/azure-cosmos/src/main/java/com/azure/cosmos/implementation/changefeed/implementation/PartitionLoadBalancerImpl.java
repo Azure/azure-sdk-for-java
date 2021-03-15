@@ -124,7 +124,7 @@ class PartitionLoadBalancerImpl implements PartitionLoadBalancer {
 
                             Instant stopTimer = Instant.now().plus(this.leaseAcquireInterval);
                             return Mono.just(value)
-                                .delayElement(Duration.ofMillis(100), CosmosSchedulers.Parallel)
+                                .delayElement(Duration.ofMillis(100), CosmosSchedulers.COSMOS_PARALLEL)
                                 .repeat( () -> {
                                     Instant currentTime = Instant.now();
                                     return !cancellationToken.isCancellationRequested() && currentTime.isBefore(stopTimer);

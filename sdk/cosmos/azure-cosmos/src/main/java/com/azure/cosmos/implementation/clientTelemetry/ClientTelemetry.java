@@ -122,7 +122,7 @@ public class ClientTelemetry {
     }
 
     private Mono<Void> sendClientTelemetry() {
-        return Mono.delay(Duration.ofSeconds(clientTelemetrySchedulingSec), CosmosSchedulers.Parallel)
+        return Mono.delay(Duration.ofSeconds(clientTelemetrySchedulingSec), CosmosSchedulers.COSMOS_PARALLEL)
                    .flatMap(t -> {
                        if (this.isClosed) {
                            logger.warn("client already closed");
@@ -181,7 +181,7 @@ public class ClientTelemetry {
             return OBJECT_MAPPER.readValue(itemResponseBodyAsString, itemClassType);
         } catch (IOException e) {
             throw new IllegalStateException(
-                String.format("Failed to parse string [%s] to POJO.", itemResponseBodyAsString), e);
+                "Failed to parse string [" + itemResponseBodyAsString + "] to POJO.", e);
         }
     }
 

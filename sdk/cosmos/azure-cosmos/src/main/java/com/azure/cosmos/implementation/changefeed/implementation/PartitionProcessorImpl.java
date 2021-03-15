@@ -81,7 +81,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
 
                 Instant stopTimer = Instant.now().plus(this.settings.getFeedPollDelay());
                 return Mono.just(value)
-                    .delayElement(Duration.ofMillis(100), CosmosSchedulers.Parallel)
+                    .delayElement(Duration.ofMillis(100), CosmosSchedulers.COSMOS_PARALLEL)
                     .repeat( () -> {
                         Instant currentTime = Instant.now();
                         return !cancellationToken.isCancellationRequested() && currentTime.isBefore(stopTimer);
@@ -185,7 +185,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                                 Instant stopTimer = Instant.now().plus(clientException.getRetryAfterDuration().toMillis(), MILLIS);
                                 return Mono.just(clientException.getRetryAfterDuration().toMillis()) // set some seed value to be able to run
                                            // the repeat loop
-                                           .delayElement(Duration.ofMillis(100), CosmosSchedulers.Parallel)
+                                           .delayElement(Duration.ofMillis(100), CosmosSchedulers.COSMOS_PARALLEL)
                                            .repeat(() -> {
                                                Instant currentTime = Instant.now();
                                         return !cancellationToken.isCancellationRequested() && currentTime.isBefore(stopTimer);

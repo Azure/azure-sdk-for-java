@@ -5,13 +5,11 @@ package com.azure.cosmos.implementation.throughputControl.controller.group.local
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.implementation.CosmosSchedulers;
-import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.throughputControl.LinkedCancellationToken;
 import com.azure.cosmos.implementation.throughputControl.config.LocalThroughputControlGroup;
 import com.azure.cosmos.implementation.throughputControl.controller.group.ThroughputGroupControllerBase;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 public class LocalThroughputControlGroupController extends ThroughputGroupControllerBase {
 
@@ -32,7 +30,7 @@ public class LocalThroughputControlGroupController extends ThroughputGroupContro
         return this.resolveRequestController()
             .doOnSuccess(dummy -> {
                 this.throughputUsageCycleRenewTask(this.cancellationTokenSource.getToken())
-                    .publishOn(CosmosSchedulers.Parallel)
+                    .publishOn(CosmosSchedulers.COSMOS_PARALLEL)
                     .subscribe();
             })
             .thenReturn((T)this);

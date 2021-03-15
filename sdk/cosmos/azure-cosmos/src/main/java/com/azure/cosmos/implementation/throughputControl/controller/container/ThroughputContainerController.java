@@ -10,7 +10,6 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.CosmosSchedulers;
-import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
@@ -32,7 +31,6 @@ import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 import reactor.util.retry.RetrySpec;
 
 import java.time.Duration;
@@ -118,7 +116,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
             .flatMap(containerRid -> this.resolveContainerMaxThroughput())
             .flatMap(controller -> this.createAndInitializeGroupControllers())
             .doOnSuccess(controller -> {
-                CosmosSchedulers.Parallel.schedule(() ->
+                CosmosSchedulers.COSMOS_PARALLEL.schedule(() ->
                     this.refreshContainerMaxThroughputTask(this.cancellationTokenSource.getToken()).subscribe());
             })
             .thenReturn((T) this);
@@ -355,7 +353,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
             return Flux.empty();
         }
 
-        return Mono.delay(DEFAULT_THROUGHPUT_REFRESH_INTERVAL, CosmosSchedulers.Parallel)
+        return Mono.delay(DEFAULT_THROUGHPUT_REFRESH_INTERVAL, CosmosSchedulers.COSMOS_PARALLEL)
             .flatMap(t -> {
                 if (cancellationToken.isCancellationRequested()) {
                     return Mono.empty();

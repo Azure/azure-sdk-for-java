@@ -70,7 +70,7 @@ class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
             .subscribe());
 
         return Mono.just(this)
-            .delayElement(Duration.ofMillis(100), CosmosSchedulers.Parallel)
+            .delayElement(Duration.ofMillis(100), CosmosSchedulers.COSMOS_PARALLEL)
             .repeat( () -> !shutdownToken.isCancellationRequested() && this.processor.getResultException() == null && this.renewer.getResultException() == null)
             .last()
             .flatMap( value -> this.afterRun(context, shutdownToken));

@@ -69,7 +69,7 @@ class BootstrapperImpl implements Bootstrapper {
 
                             if (!this.isLockAcquired) {
                                 logger.info("Another instance is initializing the store");
-                                return Mono.just(isLockAcquired).delayElement(this.sleepTime, CosmosSchedulers.Parallel);
+                                return Mono.just(isLockAcquired).delayElement(this.sleepTime, CosmosSchedulers.COSMOS_PARALLEL);
                             } else {
                                 return this.synchronizer.createMissingLeases()
                                     .then(this.leaseStore.markInitialized());

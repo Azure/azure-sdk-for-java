@@ -12,7 +12,7 @@ public class CosmosSchedulers {
     // Using a custom parallel scheduler to be able to schedule retries etc.
     // without being vulnerable to scenarios where applications abuse the
     // Parallel scheduler and cause thread starvation on Reactor Core parallel scheduler
-    public final static Scheduler Parallel = Schedulers.newParallel(
+    public final static Scheduler COSMOS_PARALLEL = Schedulers.newParallel(
         COSMOS_PARALLEL_THREAD_NAME,
         Schedulers.DEFAULT_POOL_SIZE,
         true);

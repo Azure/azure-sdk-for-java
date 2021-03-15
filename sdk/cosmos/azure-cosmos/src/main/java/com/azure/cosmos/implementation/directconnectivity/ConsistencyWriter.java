@@ -348,11 +348,11 @@ public class ConsistencyWriter {
             if ((ConsistencyWriter.MAX_NUMBER_OF_WRITE_BARRIER_READ_RETRIES - writeBarrierRetryCount.get()) > ConsistencyWriter.MAX_SHORT_BARRIER_RETRIES_FOR_MULTI_REGION) {
                 return Mono.delay(
                     Duration.ofMillis(ConsistencyWriter.DELAY_BETWEEN_WRITE_BARRIER_CALLS_IN_MS),
-                    CosmosSchedulers.Parallel).flux();
+                    CosmosSchedulers.COSMOS_PARALLEL).flux();
             } else {
                 return Mono.delay(
                     Duration.ofMillis(ConsistencyWriter.SHORT_BARRIER_RETRY_INTERVAL_IN_MS_FOR_MULTI_REGION),
-                    CosmosSchedulers.Parallel).flux();
+                    CosmosSchedulers.COSMOS_PARALLEL).flux();
             }
         })
         ).take(1).single();

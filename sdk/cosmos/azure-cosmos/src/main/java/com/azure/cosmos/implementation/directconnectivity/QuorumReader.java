@@ -497,7 +497,7 @@ public class QuorumReader {
 
                             return Flux.just(0L).delayElements(
                                 Duration.ofMillis(delayBetweenReadBarrierCallsInMs),
-                                CosmosSchedulers.Parallel).flatMap(dummy -> Flux.empty());
+                                CosmosSchedulers.COSMOS_PARALLEL).flatMap(dummy -> Flux.empty());
                     }
 
                         return Flux.just(PrimaryReadOutcome.QuorumMet);
@@ -569,7 +569,7 @@ public class QuorumReader {
         }).repeatWhen(obs -> obs.flatMap(aVoid -> Flux.just(0L)
                                                       .delayElements(
                                                           Duration.ofMillis(delayBetweenReadBarrierCallsInMs),
-                                                          CosmosSchedulers.Parallel)))
+                                                          CosmosSchedulers.COSMOS_PARALLEL)))
                 .take(1) // Retry loop
                    .flatMap(barrierRequestSucceeded ->
                         Flux.defer(() -> {
@@ -621,11 +621,11 @@ public class QuorumReader {
                                        if ((maxBarrierRetriesForMultiRegion - readBarrierRetryCountMultiRegion.get()) > maxShortBarrierRetriesForMultiRegion) {
                                                       return Flux.just(0L).delayElements(
                                                           Duration.ofMillis(barrierRetryIntervalInMsForMultiRegion),
-                                                          CosmosSchedulers.Parallel);
+                                                          CosmosSchedulers.COSMOS_PARALLEL);
                                        } else {
                                                       return Flux.just(0L).delayElements(
                                                           Duration.ofMillis(shortBarrierRetryIntervalInMsForMultiRegion),
-                                                          CosmosSchedulers.Parallel);
+                                                          CosmosSchedulers.COSMOS_PARALLEL);
                                        }
 
                                    })

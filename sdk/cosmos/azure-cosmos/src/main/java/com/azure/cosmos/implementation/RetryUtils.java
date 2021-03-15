@@ -37,7 +37,7 @@ public class RetryUtils {
 
                 if (s.backOffTime != null) {
                     policy.incrementRetry();
-                    return Mono.delay(Duration.ofMillis(s.backOffTime.toMillis()), CosmosSchedulers.Parallel).flux();
+                    return Mono.delay(Duration.ofMillis(s.backOffTime.toMillis()), CosmosSchedulers.COSMOS_PARALLEL).flux();
                 } else if (s.exception != null) {
                     return Flux.error(s.exception);
                 } else {
@@ -121,7 +121,7 @@ public class RetryUtils {
                         shouldRetryResult, minBackoffForInBackoffCallback, rxDocumentServiceRequest, addressSelector)
                         .delaySubscription(
                             Duration.ofMillis(shouldRetryResult.backOffTime.toMillis()),
-                            CosmosSchedulers.Parallel);
+                            CosmosSchedulers.COSMOS_PARALLEL);
                 }
             });
         };
@@ -179,8 +179,8 @@ public class RetryUtils {
             return recursiveFunc(callbackMethod, retryPolicy, inBackoffAlternateCallbackMethod, shouldRetryResult,
                     minBackoffForInBackoffCallback, rxDocumentServiceRequest, addressSelector)
                     .delaySubscription(
-                        Flux.just(0L).delayElements(
-                            Duration.ofMillis(backoffTime.toMillis()), CosmosSchedulers.Parallel));
+                        Duration.ofMillis(backoffTime.toMillis()),
+                        CosmosSchedulers.COSMOS_PARALLEL);
         };
     }
 

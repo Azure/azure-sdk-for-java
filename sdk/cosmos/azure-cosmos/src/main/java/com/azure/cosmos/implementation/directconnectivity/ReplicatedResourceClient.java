@@ -157,7 +157,6 @@ public class ReplicatedResourceClient {
         int retryTimeout = this.serviceConfigReader.getDefaultConsistencyLevel() == ConsistencyLevel.STRONG ?
                 ReplicatedResourceClient.STRONG_GONE_AND_RETRY_WITH_RETRY_TIMEOUT_SECONDS :
                 ReplicatedResourceClient.GONE_AND_RETRY_WITH_TIMEOUT_IN_SECONDS;
-        logger.info("RetryTimeout: {}", retryTimeout);
 
         return BackoffRetryUtility.executeAsync(
             funcDelegate,

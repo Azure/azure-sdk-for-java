@@ -247,7 +247,7 @@ public class ClientSideRequestStatistics {
         String usedMemory;
         String availableMemory;
         String systemCpuLoad;
-        Integer availableProcessors;
+        int availableProcessors;
 
         public String getUsedMemory() {
             return usedMemory;
@@ -261,7 +261,7 @@ public class ClientSideRequestStatistics {
             return systemCpuLoad;
         }
 
-        public Integer getAvailableProcessors() {
+        public int getAvailableProcessors() {
             return availableProcessors;
         }
     }
