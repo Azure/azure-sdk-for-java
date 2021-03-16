@@ -187,7 +187,7 @@ public final class BulkExecutor<TContext> {
         }
 
         return Flux.just(serverOperationBatchRequest.getBatchRequest())
-            .publishOn(Schedulers.elastic())
+            .publishOn(Schedulers.boundedElastic())
             .flatMap((PartitionKeyRangeServerBatchRequest serverRequest) -> {
                 return this.executePartitionKeyRangeServerBatchRequest(serverRequest, groupSink);
             });
