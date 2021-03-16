@@ -4,7 +4,15 @@
 package com.azure.cosmos.spark
 
 import java.util
-import com.azure.cosmos.models.{CosmosContainerProperties, ThroughputProperties}
+import com.azure.cosmos.models.{
+  CosmosContainerProperties,
+  ExcludedPath,
+  IncludedPath,
+  IndexingMode,
+  IndexingPolicy,
+  SparkModelBridgeInternal,
+  ThroughputProperties
+}
 import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, CosmosException}
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.analysis.{NamespaceAlreadyExistsException, NoSuchNamespaceException, NoSuchTableException}
@@ -12,6 +20,8 @@ import org.apache.spark.sql.connector.catalog.{CatalogPlugin, Identifier, Namesp
 import org.apache.spark.sql.connector.expressions.Transform
 import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.util.CaseInsensitiveStringMap
+
+import java.util.Collections
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -258,17 +268,20 @@ class CosmosCatalog
     val databaseName = toCosmosDatabaseName(ident.namespace().head)
     val containerName = toCosmosContainerName(ident.name())
 
+    val indexingPolicy = CosmosContainerProperties.getIndexingPolicy(containerProperties)
+    val cosmosContainerProperties = new CosmosContainerProperties(containerName, partitionKeyPath)
+    cosmosContainerProperties.setIndexingPolicy(indexingPolicy)
+
     if (throughputPropertiesOpt.isDefined) {
       getClient
         .getDatabase(databaseName)
-        .createContainer(containerName,
-                         partitionKeyPath,
+        .createContainer(cosmosContainerProperties,
                          throughputPropertiesOpt.get)
         .block()
     } else {
       getClient
         .getDatabase(databaseName)
-        .createContainer(containerName, partitionKeyPath)
+        .createContainer(cosmosContainerProperties)
         .block()
     }
 
@@ -342,10 +355,37 @@ class CosmosCatalog
   }
 
   private object CosmosContainerProperties {
+    val OnlySystemPropertiesIndexingPolicyName: String = "OnlySystemProperties"
+    val AllPropertiesIndexingPolicyName: String = "AllProperties"
+
     private val partitionKeyPath = "partitionKeyPath"
+    private val indexingPolicy = "indexingPolicy"
     private val defaultPartitionKeyPath = "/id"
+    private val defaultIndexingPolicy = AllPropertiesIndexingPolicyName
     def getPartitionKeyPath(properties: Map[String, String]): String = {
       properties.getOrElse(partitionKeyPath, defaultPartitionKeyPath)
+    }
+
+    def getIndexingPolicy(properties: Map[String, String]): IndexingPolicy = {
+      val indexingPolicySpecification = properties.getOrElse(indexingPolicy, defaultIndexingPolicy)
+
+      //scalastyle:off multiple.string.literals
+      if (AllPropertiesIndexingPolicyName.equalsIgnoreCase(indexingPolicySpecification)) {
+        new IndexingPolicy()
+          .setAutomatic(true)
+          .setIndexingMode(IndexingMode.CONSISTENT)
+          .setIncludedPaths(util.Arrays.asList(new IncludedPath("/*")))
+          .setExcludedPaths(util.Arrays.asList(new ExcludedPath(raw"""/"_etag"/?""")))
+      } else if (OnlySystemPropertiesIndexingPolicyName.equalsIgnoreCase(indexingPolicySpecification)) {
+        new IndexingPolicy()
+          .setAutomatic(true)
+          .setIndexingMode(IndexingMode.CONSISTENT)
+          .setIncludedPaths(Collections.emptyList())
+          .setExcludedPaths(util.Arrays.asList(new ExcludedPath("/*")))
+      } else {
+        SparkModelBridgeInternal.createIndexingPolicyFromJson(indexingPolicySpecification)
+      }
+      //scalastyle:on multiple.string.literals
     }
 
     // TODO: add support for other container properties, indexing policy?
