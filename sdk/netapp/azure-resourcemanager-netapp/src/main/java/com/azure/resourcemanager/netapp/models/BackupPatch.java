@@ -66,6 +66,12 @@ public class BackupPatch {
     @JsonProperty(value = "properties.failureReason", access = JsonProperty.Access.WRITE_ONLY)
     private String failureReason;
 
+    /*
+     * Volume name
+     */
+    @JsonProperty(value = "properties.volumeName", access = JsonProperty.Access.WRITE_ONLY)
+    private String volumeName;
+
     /**
      * Get the tags property: Resource tags.
      *
@@ -158,6 +164,15 @@ public class BackupPatch {
      */
     public String failureReason() {
         return this.failureReason;
+    }
+
+    /**
+     * Get the volumeName property: Volume name.
+     *
+     * @return the volumeName value.
+     */
+    public String volumeName() {
+        return this.volumeName;
     }
 
     /**

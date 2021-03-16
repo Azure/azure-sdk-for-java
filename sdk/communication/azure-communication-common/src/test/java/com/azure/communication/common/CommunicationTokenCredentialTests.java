@@ -72,7 +72,7 @@ public class CommunicationTokenCredentialTests {
         }
 
         @Override
-        public Mono<String> getTokenAsync() {
+        public Mono<String> getToken() {
             numCalls++;
             if (this.onCallReturn != null) {
                 this.onCallReturn.run();
@@ -254,7 +254,7 @@ public class CommunicationTokenCredentialTests {
         }
 
         @Override
-        public Mono<String> getTokenAsync() {
+        public Mono<String> getToken() {
             numCalls++;
             if (this.onCallReturn != null) {
                 this.onCallReturn.run();
@@ -296,7 +296,7 @@ public class CommunicationTokenCredentialTests {
         assertEquals(1, exceptionRefresher.numCalls());
         tokenCredential.close();
     }
-   
+
     @Test
     public void shouldThrowWhenGetTokenCalledOnClosedObject() throws IOException, InterruptedException,
             ExecutionException {
@@ -306,6 +306,6 @@ public class CommunicationTokenCredentialTests {
 
         StepVerifier.create(tokenCredential.getToken())
             .verifyError(RuntimeException.class);
-        
+
     }
 }

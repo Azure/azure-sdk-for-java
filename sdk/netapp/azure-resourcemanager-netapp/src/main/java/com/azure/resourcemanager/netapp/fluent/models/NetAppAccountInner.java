@@ -7,10 +7,10 @@ package com.azure.resourcemanager.netapp.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.AccountEncryption;
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
-import com.azure.resourcemanager.netapp.models.SystemData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -124,9 +124,6 @@ public class NetAppAccountInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (systemData() != null) {
-            systemData().validate();
-        }
         if (activeDirectories() != null) {
             activeDirectories().forEach(e -> e.validate());
         }

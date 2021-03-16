@@ -210,6 +210,13 @@ public interface Volume {
     String encryptionKeySource();
 
     /**
+     * Gets the ldapEnabled property: Specifies whether LDAP is enabled or not for a given NFS volume.
+     *
+     * @return the ldapEnabled value.
+     */
+    Boolean ldapEnabled();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -330,7 +337,8 @@ public interface Volume {
                 DefinitionStages.WithSmbEncryption,
                 DefinitionStages.WithSmbContinuouslyAvailable,
                 DefinitionStages.WithThroughputMibps,
-                DefinitionStages.WithEncryptionKeySource {
+                DefinitionStages.WithEncryptionKeySource,
+                DefinitionStages.WithLdapEnabled {
             /**
              * Executes the create request.
              *
@@ -518,6 +526,16 @@ public interface Volume {
              * @return the next definition stage.
              */
             WithCreate withEncryptionKeySource(String encryptionKeySource);
+        }
+        /** The stage of the Volume definition allowing to specify ldapEnabled. */
+        interface WithLdapEnabled {
+            /**
+             * Specifies the ldapEnabled property: Specifies whether LDAP is enabled or not for a given NFS volume..
+             *
+             * @param ldapEnabled Specifies whether LDAP is enabled or not for a given NFS volume.
+             * @return the next definition stage.
+             */
+            WithCreate withLdapEnabled(Boolean ldapEnabled);
         }
     }
     /**

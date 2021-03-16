@@ -63,7 +63,7 @@ class GetExecutor<K, V> {
         final String id = _keyExtractor.getId(key);
         final PartitionKey partitioningKey = new PartitionKey(_keyExtractor.getPartitioningKey(key));
         final CollectionKey activeCollection = _dataLocator.getCollection();
-        _metrics.logCounterMetric(Metrics.MetricType.CALL_COUNT);
+        _metrics.logCounterMetric(Metrics.Type.CALL_COUNT);
         final long startTime = _clock.millis();
 
         try {
@@ -81,7 +81,7 @@ class GetExecutor<K, V> {
             return _responseHandler.convertResponse(key, response, requestOptions.shouldFetchTombstone());
         } catch (CosmosException ex) {
             if (ex.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
-                _metrics.logCounterMetric(Metrics.MetricType.NOT_FOUND);
+                _metrics.logCounterMetric(Metrics.Type.NOT_FOUND);
                 return _responseHandler.convertException(key, ex);
             }
 

@@ -56,6 +56,24 @@ import java.util.regex.Pattern;
 /**
  * The builder to create Service Bus clients:
  *
+ * <p><strong>Instantiate a synchronous sender</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.sender.sync.client.instantiation}
+ *
+ * <p><strong>Instantiate an asynchronous receiver</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.receiver.async.client.instantiation}
+ *
+ * <p><strong>Instantiate an asynchronous session receiver</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.session.receiver.async.client.instantiation}
+ *
+ * <p><strong>Instantiate the processor</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.processor.client.instantiation}
+
+ * <p><strong>Sharing a connection between clients</strong></p>
+ * The creation of physical connection to Service Bus requires resources. If your architecture allows, an application
+ * should share connection between clients which can be achieved by sharing the top level builder as shown below.
+ *
+ * {@codesnippet com.azure.messaging.servicebus.connection.sharing}
+ *
  * <p><strong>Clients for sending messages</strong></p>
  * <ul>
  * <li>{@link ServiceBusSenderAsyncClient}</li>

@@ -10,6 +10,7 @@ import com.azure.communication.sms.implementation.models.SendMessageRequest;
 import com.azure.communication.sms.implementation.models.SmsRecipient;
 import com.azure.communication.sms.implementation.models.SmsSendResponse;
 import com.azure.communication.sms.models.SmsSendOptions;
+import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -47,9 +48,7 @@ public final class SmsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SmsSendResult> send(String from, String to, String message) {
-        return sendWithResponse(from, to, message, null, null).flatMap(response -> {
-            return Mono.just(response.getValue());
-        });
+        return send(from, to, message, null, null);
     }
 
     /**
@@ -60,14 +59,14 @@ public final class SmsAsyncClient {
      * @param message message to send to recipient.
      * @param options set options on the SMS request, like enable delivery report, which sends a report
      *                   for this message to the Azure Resource Event Grid.
-     * @return response for a successful send Sms request.
+     * @return The Sms send result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SmsSendResult>> sendWithResponse(String from, String to, String message, SmsSendOptions options) {
-        return sendWithResponse(from, to, message, options, null);
+    public Mono<SmsSendResult> send(String from, String to, String message, SmsSendOptions options) {
+        return send(from, to, message, options, null);
     }
 
-    Mono<Response<SmsSendResult>> sendWithResponse(String from, String to, String message, SmsSendOptions options, Context context) {
+    Mono<SmsSendResult> send(String from, String to, String message, SmsSendOptions options, Context context) {
         try {
             Objects.requireNonNull(from, "'from' cannot be null.");
             Objects.requireNonNull(to, "'to' cannot be null.");
@@ -77,16 +76,15 @@ public final class SmsAsyncClient {
                 if (context != null) {
                     contextValue = context;
                 }
-                return smsClient.sendWithResponseAsync(request, contextValue)
-                    .flatMap((Response<SmsSendResponse> response) -> {
-                        List<SmsSendResult> smsSendResults = convertSmsSendResults(response.getValue().getValue());
-                        return Mono.just(new SimpleResponse<SmsSendResult>(response, smsSendResults.get(0)));
+                return smsClient.sendAsync(request, contextValue)
+                    .flatMap((SmsSendResponse response) -> {
+                        List<SmsSendResult> smsSendResults = convertSmsSendResults(response.getValue());
+                        return Mono.just(smsSendResults.get(0));
                     });
             });
         } catch (RuntimeException  ex) {
             return monoError(logger, ex);
         }
-
     }
 
     /**
@@ -143,7 +141,12 @@ public final class SmsAsyncClient {
     private List<SmsSendResult> convertSmsSendResults(Iterable<SmsSendResponseItem> resultsIterable) {
         List<SmsSendResult> iterableWrapper = new ArrayList<>();
         for (SmsSendResponseItem item : resultsIterable) {
-            iterableWrapper.add(new SmsSendResult(item));
+            iterableWrapper.add(new SmsSendResult(
+                item.getTo(),
+                item.getMessageId(),
+                item.getHttpStatusCode(),
+                item.isSuccessful(),
+                item.getErrorMessage()));
         }
         return iterableWrapper;
     }
