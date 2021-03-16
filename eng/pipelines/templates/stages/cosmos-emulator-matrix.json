@@ -32,7 +32,7 @@
           "ProfileFlag": "-PsparkE2E",
           "PROTOCOLS": "[\"Tcp\"]",
           "DESIRED_CONSISTENCIES": "[\"Session\"]",
-          "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=C:\\Users\\cloudtest\\AppData\\Local\\Temp\\hadoop-for-cosmos-ci\""
+          "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop\""
       }
     }
   }
