@@ -79,11 +79,15 @@ private object CosmosTableSchemaInferrer
         case _ => cosmosReadConfig.inferSchemaQuery.get
       }
 
-      val queryObservable =
+      val pagedFluxResponse =
         sourceContainer.queryItems(queryText, queryOptions, classOf[ObjectNode])
 
-      val feedResponseList = queryObservable.byPage.collectList.block
-      inferSchema(feedResponseList.asScala.flatten(feedResponse => feedResponse.getResults.asScala),
+      val feedResponseList = pagedFluxResponse
+        .take(cosmosReadConfig.inferSchemaSamplingSize)
+        .collectList
+        .block
+
+      inferSchema(feedResponseList.asScala,
         cosmosReadConfig.inferSchemaQuery.isDefined || cosmosReadConfig.includeSystemProperties,
         cosmosReadConfig.inferSchemaQuery.isDefined || cosmosReadConfig.includeTimestamp)
     } else {

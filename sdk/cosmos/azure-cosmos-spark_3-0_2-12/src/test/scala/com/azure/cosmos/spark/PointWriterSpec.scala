@@ -24,7 +24,7 @@ class PointWriterSpec extends IntegrationSpec with CosmosClient with AutoCleanab
   "Point Writer" can "upsert item" taggedAs RequiresCosmosEndpoint in  {
     val container = getContainer
 
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 0, bulkEnabled = false, 100)
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false, Some(100))
 
     val pointWriter = new PointWriter(container, writeConfig)
 
@@ -50,11 +50,11 @@ class PointWriterSpec extends IntegrationSpec with CosmosClient with AutoCleanab
 
   "Point Writer" can "create item with duplicates" taggedAs RequiresCosmosEndpoint in {
     val container = getContainer
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 0, bulkEnabled = false, 1000)
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 0, bulkEnabled = false, Some(100))
     val pointWriter = new PointWriter(container, writeConfig)
     val items = new mutable.HashMap[String, mutable.Set[ObjectNode]] with mutable.MultiMap[String, ObjectNode]
 
-    for(i <- 0 until 1000) {
+    for(i <- 0 until 5000) {
       val item = getItem((i % 100).toString)
       val id = item.get("id").textValue()
       items.addBinding(id, item)
