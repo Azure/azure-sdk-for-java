@@ -84,7 +84,6 @@ public final class RepositoryHandler {
         Queue<String> modelsToProcess = prepareWork(dtmis);
 
         return accumulateProcess(modelsToProcess, resolutionOptions, context, processedModels)
-            .filter(customType -> customType.getFetchResult() == null)
             .last()
             .map(s -> s.getMap());
     }
@@ -94,13 +93,13 @@ public final class RepositoryHandler {
             context, Map<String, String> currentResults) {
 
         if (remainingWork.isEmpty()) {
-            return Flux.just(new TempCustomType(null, currentResults));
+            return Flux.empty();
         }
 
         String targetDtmi = remainingWork.poll();
         return modelFetcher.fetchAsync(targetDtmi, repositoryUri, resolutionOption, context)
             .map(result -> new TempCustomType(result, currentResults))
-            .expandDeep(customType -> {
+            .expand(customType -> {
                 Map<String, String> results = customType.getMap();
                 FetchResult response = customType.getFetchResult();
 
