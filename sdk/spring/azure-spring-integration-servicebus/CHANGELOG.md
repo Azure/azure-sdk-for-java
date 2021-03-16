@@ -1,7 +1,9 @@
 # Release History
 
-## 2.3.0-beta.1 (Unreleased)
-
+## 2.3.0 (2021-03-16)
+### New Features
+- Upgrade to `Spring Boot` [2.4.3](https://github.com/spring-projects/spring-boot/releases/tag/v2.4.3).
+- Upgrade to `Spring Integration` [5.4.4](https://github.com/spring-projects/spring-integration/releases/tag/v5.4.4).
 
 ## 2.2.0 (2021-03-03)
 ### New Features
