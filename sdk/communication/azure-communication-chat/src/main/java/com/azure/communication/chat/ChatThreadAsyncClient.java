@@ -174,6 +174,7 @@ public final class ChatThreadAsyncClient {
      * Adds a participant to a thread. If the participant already exists, no change occurs.
      *
      * @param participant The new participant.
+     * @return nothing.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> addParticipant(ChatParticipant participant) {
