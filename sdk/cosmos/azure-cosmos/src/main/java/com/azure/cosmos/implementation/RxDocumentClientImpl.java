@@ -3811,9 +3811,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     this.partitionKeyRangeCache);
 
             this.storeModel.enableThroughputControl(throughputControlStore);
+            this.throughputControlStore.enableThroughputControlGroup(group);
         }
-
-        this.throughputControlStore.enableThroughputControlGroup(group);
     }
 
     private static SqlQuerySpec createLogicalPartitionScanQuerySpec(
