@@ -183,6 +183,12 @@ jobs:
         inputs:
           versionSpec: '3.6'
 
+      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+        parameters:
+          PackageName: "azure-sdk-template"
+          ServiceDirectory: "template"
+          TestPipeline: ${{ parameters.TestPipeline }}
+
       - script: |
           pip install setuptools wheel
           pip install doc-warden==$(DocWardenVersion)
