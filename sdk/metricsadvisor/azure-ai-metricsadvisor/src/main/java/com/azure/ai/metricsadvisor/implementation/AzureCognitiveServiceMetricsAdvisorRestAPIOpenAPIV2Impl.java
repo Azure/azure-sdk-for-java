@@ -4,6 +4,7 @@
 
 package com.azure.ai.metricsadvisor.implementation;
 
+import com.azure.ai.metricsadvisor.implementation.models.AlertResult;
 import com.azure.ai.metricsadvisor.implementation.models.AlertResultList;
 import com.azure.ai.metricsadvisor.implementation.models.AlertingResultQuery;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfiguration;
@@ -53,7 +54,6 @@ import com.azure.ai.metricsadvisor.implementation.models.MetricSeriesQueryOption
 import com.azure.ai.metricsadvisor.implementation.models.RootCauseList;
 import com.azure.ai.metricsadvisor.implementation.models.SeriesResultList;
 import com.azure.ai.metricsadvisor.implementation.models.UsageStats;
-import com.azure.ai.metricsadvisor.models.AnomalyAlert;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionProgress;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionStatus;
 import com.azure.ai.metricsadvisor.models.EnrichmentStatus;
@@ -1243,7 +1243,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<AnomalyAlert>> getAlertsByAnomalyAlertingConfigurationSinglePageAsync(
+    public Mono<PagedResponse<AlertResult>> getAlertsByAnomalyAlertingConfigurationSinglePageAsync(
             UUID configurationId, AlertingResultQuery body, Integer skip, Integer top) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1275,7 +1275,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<AnomalyAlert>> getAlertsByAnomalyAlertingConfigurationSinglePageAsync(
+    public Mono<PagedResponse<AlertResult>> getAlertsByAnomalyAlertingConfigurationSinglePageAsync(
             UUID configurationId, AlertingResultQuery body, Integer skip, Integer top, Context context) {
         final String accept = "application/json";
         return service.getAlertsByAnomalyAlertingConfiguration(
@@ -1304,7 +1304,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AnomalyAlert> getAlertsByAnomalyAlertingConfigurationAsync(
+    public PagedFlux<AlertResult> getAlertsByAnomalyAlertingConfigurationAsync(
             UUID configurationId, AlertingResultQuery body, Integer skip, Integer top) {
         return new PagedFlux<>(
                 () -> getAlertsByAnomalyAlertingConfigurationSinglePageAsync(configurationId, body, skip, top),
@@ -1325,7 +1325,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AnomalyAlert> getAlertsByAnomalyAlertingConfigurationAsync(
+    public PagedFlux<AlertResult> getAlertsByAnomalyAlertingConfigurationAsync(
             UUID configurationId, AlertingResultQuery body, Integer skip, Integer top, Context context) {
         return new PagedFlux<>(
                 () -> getAlertsByAnomalyAlertingConfigurationSinglePageAsync(configurationId, body, skip, top, context),
@@ -1345,7 +1345,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnomalyAlert> getAlertsByAnomalyAlertingConfiguration(
+    public PagedIterable<AlertResult> getAlertsByAnomalyAlertingConfiguration(
             UUID configurationId, AlertingResultQuery body, Integer skip, Integer top) {
         return new PagedIterable<>(getAlertsByAnomalyAlertingConfigurationAsync(configurationId, body, skip, top));
     }
@@ -1364,7 +1364,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnomalyAlert> getAlertsByAnomalyAlertingConfiguration(
+    public PagedIterable<AlertResult> getAlertsByAnomalyAlertingConfiguration(
             UUID configurationId, AlertingResultQuery body, Integer skip, Integer top, Context context) {
         return new PagedIterable<>(
                 getAlertsByAnomalyAlertingConfigurationAsync(configurationId, body, skip, top, context));
@@ -5405,7 +5405,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<AnomalyAlert>> getAlertsByAnomalyAlertingConfigurationNextSinglePageAsync(
+    public Mono<PagedResponse<AlertResult>> getAlertsByAnomalyAlertingConfigurationNextSinglePageAsync(
             String nextLink, AlertingResultQuery body) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -5435,7 +5435,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<AnomalyAlert>> getAlertsByAnomalyAlertingConfigurationNextSinglePageAsync(
+    public Mono<PagedResponse<AlertResult>> getAlertsByAnomalyAlertingConfigurationNextSinglePageAsync(
             String nextLink, AlertingResultQuery body, Context context) {
         final String accept = "application/json";
         return service.getAlertsByAnomalyAlertingConfigurationNext(this.getEndpoint(), nextLink, body, accept, context)

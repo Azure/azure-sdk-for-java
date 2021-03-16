@@ -4,7 +4,6 @@
 package com.azure.ai.metricsadvisor.implementation.util;
 
 import com.azure.ai.metricsadvisor.implementation.models.IncidentResult;
-import com.azure.ai.metricsadvisor.implementation.models.Severity;
 import com.azure.ai.metricsadvisor.models.AnomalyIncident;
 import com.azure.ai.metricsadvisor.models.AnomalyIncidentStatus;
 import com.azure.ai.metricsadvisor.models.AnomalySeverity;

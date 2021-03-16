@@ -28,6 +28,7 @@ import com.azure.ai.metricsadvisor.implementation.models.PeriodFeedback;
 import com.azure.ai.metricsadvisor.implementation.models.PeriodFeedbackValue;
 import com.azure.ai.metricsadvisor.implementation.models.SeriesIdentity;
 import com.azure.ai.metricsadvisor.implementation.models.TimeMode;
+import com.azure.ai.metricsadvisor.implementation.util.AnomalyAlertTransforms;
 import com.azure.ai.metricsadvisor.implementation.util.AnomalyTransforms;
 import com.azure.ai.metricsadvisor.implementation.util.DetectionConfigurationTransforms;
 import com.azure.ai.metricsadvisor.implementation.util.IncidentHelper;
@@ -1064,7 +1065,8 @@ public class MetricsAdvisorAsyncClient {
             withTracing)
             .doOnRequest(ignoredValue -> logger.info("Listing alerts"))
             .doOnSuccess(response -> logger.info("Listed alerts {}", response))
-            .doOnError(error -> logger.warning("Failed to list the alerts", error));
+            .doOnError(error -> logger.warning("Failed to list the alerts", error))
+            .map(alertResultPagedResponse -> AnomalyAlertTransforms.fromInnerResponse(alertResultPagedResponse));
     }
 
     private Mono<PagedResponse<AnomalyAlert>> listAlertsNextPageAsync(
@@ -1087,7 +1089,8 @@ public class MetricsAdvisorAsyncClient {
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
-                error));
+                error))
+            .map(alertResultPagedResponse -> AnomalyAlertTransforms.fromInnerResponse(alertResultPagedResponse));
     }
 
     /**

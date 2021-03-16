@@ -3,11 +3,9 @@
 
 package com.azure.ai.metricsadvisor.models;
 
-import com.azure.core.annotation.Immutable;
 import java.time.OffsetDateTime;
 
 /** The AnomalyAlert model. */
-@Immutable
 public final class AnomalyAlert {
     /*
      * alert id
