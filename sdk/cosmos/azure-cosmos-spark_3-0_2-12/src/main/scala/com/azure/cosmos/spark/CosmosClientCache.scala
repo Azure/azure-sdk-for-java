@@ -7,7 +7,6 @@ import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilde
 import org.apache.spark.broadcast.Broadcast
 
 import java.time.Duration
-import java.time.temporal.ChronoUnit
 import java.util.ConcurrentModificationException
 import scala.collection.concurrent.TrieMap
 
@@ -46,7 +45,7 @@ private[spark] object CosmosClientCache {
             .throttlingRetryOptions(
                 new ThrottlingRetryOptions()
                     .setMaxRetryAttemptsOnThrottledRequests(Int.MaxValue)
-                    .setMaxRetryWaitTime(Duration.ofSeconds(Integer.MAX_VALUE/1000)))
+                    .setMaxRetryWaitTime(Duration.ofSeconds((Integer.MAX_VALUE/1000) - 1)))
 
         if (cosmosClientConfiguration.useEventualConsistency){
           builder = builder.consistencyLevel(ConsistencyLevel.EVENTUAL)
