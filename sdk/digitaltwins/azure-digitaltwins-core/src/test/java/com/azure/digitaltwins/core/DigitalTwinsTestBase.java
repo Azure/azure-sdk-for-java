@@ -22,13 +22,13 @@ public class DigitalTwinsTestBase extends TestBase {
     private static final String PLAYBACK_ENDPOINT = "https://playback.api.wus2.digitaltwins.azure.net";
 
     protected static final String TENANT_ID = Configuration.getGlobalConfiguration()
-        .get("TENANT_ID", "tenantId");
+        .get("DIGITALTWINS_TENANT_ID", "tenantId");
 
     protected static final String CLIENT_SECRET = Configuration.getGlobalConfiguration()
-        .get("CLIENT_SECRET", "clientSecret");
+        .get("DIGITALTWINS_CLIENT_SECRET", "clientSecret");
 
     protected static final String CLIENT_ID = Configuration.getGlobalConfiguration()
-        .get("CLIENT_ID", "clientId");
+        .get("DIGITALTWINS_CLIENT_ID", "clientId");
 
     protected static final String DIGITALTWINS_URL = Configuration.getGlobalConfiguration()
         .get("DIGITALTWINS_URL", PLAYBACK_ENDPOINT);
