@@ -53,6 +53,7 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
     private Expression sendTimeoutExpression = new ValueExpression<>(DEFAULT_SEND_TIMEOUT);
     private ErrorMessageStrategy errorMessageStrategy = new DefaultErrorMessageStrategy();
     private Expression partitionKeyExpression;
+    private Expression partitionIdExpression;
     private MessageChannel sendFailureChannel;
     private String sendFailureChannelName;
 
@@ -148,8 +149,12 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
         this.partitionKeyExpression = partitionKeyExpression;
     }
 
-    public void setPartitionKeyExpressionString(String partitionKeyExpression) {
-        setPartitionKeyExpression(EXPRESSION_PARSER.parseExpression(partitionKeyExpression));
+    public void setPartitionIdExpression(Expression partitionIdExpression) {
+        this.partitionIdExpression = partitionIdExpression;
+    }
+
+    public void setPartitionIdExpressionString(String partitionIdExpressionString) {
+        setPartitionIdExpression(EXPRESSION_PARSER.parseExpression(partitionIdExpressionString));
     }
 
     private String toDestination(Message<?> message) {
@@ -164,12 +169,9 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
         PartitionSupplier partitionSupplier = new PartitionSupplier();
         MessageHeaders headers = message.getHeaders();
         // Priority setting partitionId
-        String partitionId = headers.get(AzureHeaders.PARTITION_ID, String.class);
-        if (!StringUtils.hasText(partitionId) && headers.containsKey(AzureHeaders.PARTITION_OVERRIDE)) {
-            partitionId = String.valueOf(headers.get(AzureHeaders.PARTITION_OVERRIDE));
-        } else if (!StringUtils.hasText(partitionId) && headers.containsKey(AzureHeaders.PARTITION_HEADER)) {
-            partitionId = String.valueOf(headers.get(AzureHeaders.PARTITION_HEADER, Integer.class));
-        }
+        String partitionId = this.partitionIdExpression != null
+            ? String.valueOf(this.partitionIdExpression.getValue(this.evaluationContext, message, Integer.class))
+            : headers.get(AzureHeaders.PARTITION_ID, String.class);
         if (StringUtils.hasText(partitionId)) {
             partitionSupplier.setPartitionId(partitionId);
         } else {
