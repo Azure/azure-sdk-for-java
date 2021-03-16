@@ -102,10 +102,14 @@ public final class ChatAsyncClient {
      */
     Mono<Response<CreateChatThreadResult>> createChatThread(CreateChatThreadOptions options, Context context) {
         context = context == null ? Context.NONE : context;
-        return this.chatClient.createChatThreadWithResponseAsync(
-            CreateChatThreadOptionsConverter.convert(options), options.getIdempotencyToken(), context).map(
-                result -> new SimpleResponse<CreateChatThreadResult>(
-                    result, CreateChatThreadResultConverter.convert(result.getValue())));
+        try {
+            return this.chatClient.createChatThreadWithResponseAsync(
+                CreateChatThreadOptionsConverter.convert(options), options.getIdempotencyToken(), context).map(
+                    result -> new SimpleResponse<CreateChatThreadResult>(
+                        result, CreateChatThreadResultConverter.convert(result.getValue())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -158,9 +162,12 @@ public final class ChatAsyncClient {
         final Context serviceContext = context == null ? Context.NONE : context;
         final ListChatThreadsOptions serviceListThreadsOptions
             = listThreadsOptions == null ? new ListChatThreadsOptions() : listThreadsOptions;
-
-        return this.chatClient.listChatThreadsAsync(
-            serviceListThreadsOptions.getMaxPageSize(), serviceListThreadsOptions.getStartTime(), serviceContext);
+        try {
+            return this.chatClient.listChatThreadsAsync(
+                serviceListThreadsOptions.getMaxPageSize(), serviceListThreadsOptions.getStartTime(), serviceContext);
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
     }
 
     /**
@@ -207,7 +214,11 @@ public final class ChatAsyncClient {
      */
     Mono<Response<Void>> deleteChatThread(String chatThreadId, Context context) {
         context = context == null ? Context.NONE : context;
-        return this.chatClient.deleteChatThreadWithResponseAsync(chatThreadId, context);
+        try {
+            return this.chatClient.deleteChatThreadWithResponseAsync(chatThreadId, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
 }
