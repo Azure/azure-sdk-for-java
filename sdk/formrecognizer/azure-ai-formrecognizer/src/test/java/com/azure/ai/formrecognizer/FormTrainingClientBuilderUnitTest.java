@@ -6,10 +6,14 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Test;
+
+import java.time.Duration;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.HTTPS_EXCEPTION_MESSAGE;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
@@ -96,6 +100,7 @@ public class FormTrainingClientBuilderUnitTest {
     public void httpsProtocolRequiredException() {
         FormRecognizerClientBuilder clientBuilder = new FormRecognizerClientBuilder()
             .credential(new AzureKeyCredential(INVALID_KEY)).endpoint(VALID_HTTP_LOCALHOST)
+            .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
             .configuration(Configuration.getGlobalConfiguration())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 

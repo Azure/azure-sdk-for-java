@@ -61,6 +61,7 @@ public final class TableAsyncClient {
     private final SerializerAdapter serializerAdapter;
     private final String accountName;
     private final String tableUrl;
+    private final HttpPipeline pipeline;
 
     private TableAsyncClient(String tableName, AzureTableImpl implementation, SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
@@ -78,6 +79,7 @@ public final class TableAsyncClient {
 
         this.implementation = implementation;
         this.tableName = tableName;
+        this.pipeline = implementation.getHttpPipeline();
     }
 
     TableAsyncClient(String tableName, HttpPipeline pipeline, String serviceUrl, TablesServiceVersion serviceVersion,
@@ -117,6 +119,15 @@ public final class TableAsyncClient {
      */
     public String getTableUrl() {
         return tableUrl;
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    HttpPipeline getHttpPipeline() {
+        return this.pipeline;
     }
 
     /**

@@ -7,7 +7,6 @@ stages:
       # When migrating use ServiceDirectory
       PomFilePath: './storage/data-plane/pom.xml'
       EnvVars:
-        AZURE_TEST_MODE: RECORD
         MICROSOFT_AD_TENANT_ID: $(microsoft-active-directory-tenant-id)
         PRIMARY_STORAGE_ACCOUNT_NAME: $(java-storage-test-primary-account-name)
         PRIMARY_STORAGE_ACCOUNT_KEY: $(java-storage-test-primary-account-key)

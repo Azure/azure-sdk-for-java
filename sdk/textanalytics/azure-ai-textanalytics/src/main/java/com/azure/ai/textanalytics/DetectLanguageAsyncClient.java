@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
+import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExists;
 import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
 import static com.azure.ai.textanalytics.implementation.Utility.toLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsError;
@@ -161,6 +162,6 @@ class DetectLanguageAsyncClient {
                 response.getValue()))
             .doOnError(error -> logger.warning("Failed to detect language - {}", error))
             .map(this::toTextAnalyticsResultDocumentResponse)
-            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
     }
 }

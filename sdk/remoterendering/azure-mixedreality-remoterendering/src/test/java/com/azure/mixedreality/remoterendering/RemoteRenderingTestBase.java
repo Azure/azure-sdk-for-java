@@ -12,9 +12,12 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.mixedreality.authentication.MixedRealityStsAsyncClient;
 import com.azure.mixedreality.authentication.MixedRealityStsClientBuilder;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -23,14 +26,14 @@ public class RemoteRenderingTestBase extends TestBase {
     static final String RESPONSE_CODE_400 = "400";
     static final String RESPONSE_CODE_403 = "403";
 
-    private final String accountId = Configuration.getGlobalConfiguration().get("MIXEDREALITY_ARR_ACCOUNT_ID");
-    private final String accountDomain = Configuration.getGlobalConfiguration().get("MIXEDREALITY_ARR_ACCOUNT_DOMAIN");
-    private final String accountKey = Configuration.getGlobalConfiguration().get("MIXEDREALITY_ARR_ACCOUNT_KEY");
-    private final String storageAccountName = Configuration.getGlobalConfiguration().get("MIXEDREALITY_ARR_STORAGE_ACCOUNT_NAME");
-    private final String storageAccountKey = Configuration.getGlobalConfiguration().get("MIXEDREALITY_ARR_STORAGE_ACCOUNT_KEY");
-    private final String blobContainerName = Configuration.getGlobalConfiguration().get("MIXEDREALITY_ARR_BLOB_CONTAINER_NAME");
-    private final String blobContainerSasToken = Configuration.getGlobalConfiguration().get("MIXEDREALITY_ARR_SAS_TOKEN");
-    private final String serviceEndpoint = Configuration.getGlobalConfiguration().get("MIXEDREALITY_ARR_SERVICE_ENDPOINT");
+    private final String accountId = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_ACCOUNT_ID");
+    private final String accountDomain = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_ACCOUNT_DOMAIN");
+    private final String accountKey = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_ACCOUNT_KEY");
+    private final String storageAccountName = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_STORAGE_ACCOUNT_NAME");
+    private final String storageAccountKey = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_STORAGE_ACCOUNT_KEY");
+    private final String blobContainerName = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_BLOB_CONTAINER_NAME");
+    private final String blobContainerSasToken = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_SAS_TOKEN");
+    private final String serviceEndpoint = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_SERVICE_ENDPOINT");
 
     // NOT REAL ACCOUNT DETAILS
     private final String playbackAccountId = "d879da79-415d-45f0-b641-1cfec1386ddf";
@@ -120,5 +123,13 @@ public class RemoteRenderingTestBase extends TestBase {
         else {
             return playback;
         }
+    }
+
+    <T, U> SyncPoller<T, U> setSyncPollerPollInterval(SyncPoller<T, U> syncPoller) {
+        return interceptorManager.isPlaybackMode() ? syncPoller.setPollInterval(Duration.ofMillis(1)) : syncPoller;
+    }
+
+    <T, U> PollerFlux<T, U> setPollerFluxPollInterval(PollerFlux<T, U> pollerFlux) {
+        return interceptorManager.isPlaybackMode() ? pollerFlux.setPollInterval(Duration.ofMillis(1)) : pollerFlux;
     }
 }

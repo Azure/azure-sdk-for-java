@@ -7,11 +7,13 @@ package com.azure.resourcemanager.storagecache.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.storagecache.models.BlobNfsTarget;
 import com.azure.resourcemanager.storagecache.models.ClfsTarget;
 import com.azure.resourcemanager.storagecache.models.NamespaceJunction;
 import com.azure.resourcemanager.storagecache.models.Nfs3Target;
 import com.azure.resourcemanager.storagecache.models.ProvisioningStateType;
 import com.azure.resourcemanager.storagecache.models.StorageTargetResource;
+import com.azure.resourcemanager.storagecache.models.StorageTargetType;
 import com.azure.resourcemanager.storagecache.models.UnknownTarget;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -28,6 +30,12 @@ public class StorageTargetInner extends StorageTargetResource {
      */
     @JsonProperty(value = "properties.junctions")
     private List<NamespaceJunction> junctions;
+
+    /*
+     * Type of the Storage Target.
+     */
+    @JsonProperty(value = "properties.targetType")
+    private StorageTargetType targetType;
 
     /*
      * ARM provisioning state, see
@@ -54,6 +62,12 @@ public class StorageTargetInner extends StorageTargetResource {
     @JsonProperty(value = "properties.unknown")
     private UnknownTarget unknown;
 
+    /*
+     * Properties when targetType is blobNfs.
+     */
+    @JsonProperty(value = "properties.blobNfs")
+    private BlobNfsTarget blobNfs;
+
     /**
      * Get the junctions property: List of Cache namespace junctions to target for namespace associations.
      *
@@ -71,6 +85,26 @@ public class StorageTargetInner extends StorageTargetResource {
      */
     public StorageTargetInner withJunctions(List<NamespaceJunction> junctions) {
         this.junctions = junctions;
+        return this;
+    }
+
+    /**
+     * Get the targetType property: Type of the Storage Target.
+     *
+     * @return the targetType value.
+     */
+    public StorageTargetType targetType() {
+        return this.targetType;
+    }
+
+    /**
+     * Set the targetType property: Type of the Storage Target.
+     *
+     * @param targetType the targetType value to set.
+     * @return the StorageTargetInner object itself.
+     */
+    public StorageTargetInner withTargetType(StorageTargetType targetType) {
+        this.targetType = targetType;
         return this;
     }
 
@@ -157,6 +191,26 @@ public class StorageTargetInner extends StorageTargetResource {
     }
 
     /**
+     * Get the blobNfs property: Properties when targetType is blobNfs.
+     *
+     * @return the blobNfs value.
+     */
+    public BlobNfsTarget blobNfs() {
+        return this.blobNfs;
+    }
+
+    /**
+     * Set the blobNfs property: Properties when targetType is blobNfs.
+     *
+     * @param blobNfs the blobNfs value to set.
+     * @return the StorageTargetInner object itself.
+     */
+    public StorageTargetInner withBlobNfs(BlobNfsTarget blobNfs) {
+        this.blobNfs = blobNfs;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -175,6 +229,9 @@ public class StorageTargetInner extends StorageTargetResource {
         }
         if (unknown() != null) {
             unknown().validate();
+        }
+        if (blobNfs() != null) {
+            blobNfs().validate();
         }
     }
 }
