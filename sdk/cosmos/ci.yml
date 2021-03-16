@@ -51,7 +51,7 @@ extends:
       - name: azure-cosmos-encryption
         groupId: com.azure
         safeName: azurecosmosencryption
-      - name: azure-cosmos-spark_3-0_2-12
+      - name: azure-cosmos-spark_3-1_2-12
         groupId: com.azure
         safeName: azurecosmosspark3
     AdditionalModules:
