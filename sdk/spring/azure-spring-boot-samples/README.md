@@ -23,26 +23,21 @@ If you just want to run sample code with released version(not current), instead 
 #### Clone project from master branch
 It means cloning the master branch, all the code, dependencies, and readme files are up to date.
 
-1. Clone code to local repo 
+1. Clone code to local repo.
 
    ```
    git clone https://github.com/Azure/azure-sdk-for-java.git
    ```
 
-2. Traverse to the root directory
+2. Traverse to the root directory.
 
-3. Build modules
-
-   1. Build all modules under the `spring` module by executing the following command which may take several minutes.
-
+3. Build the modules associated with the current module, such as `azure-spring-boot-sample-active-directory-webapp`.
    ```
-   mvn clean install -f sdk/spring/pom.xml -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Djacoco.skip=true -DskipTests -Dparallel-test-playback
+   mvn clean install -pl .\sdk\spring\azure-spring-boot-samples\azure-spring-boot-sample-active-directory-webapp\ -am
    ```
-   
-   2. Only build the modules associated with the current module, such as `azure-spring-boot-sample-active-directory-webapp`.
-    
+   If you want to build faster, you can append the following Maven parameters.
    ```
-   mvn clean install -pl .\sdk\spring\azure-spring-boot-samples\azure-spring-boot-sample-active-directory-webapp\ -am -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Djacoco.skip=true -DskipTests -Dparallel-test-playback
+   -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Djacoco.skip=true -DskipTests -Dparallel-test-playback
    ```
 
 #### Clone from specific version tag (recommend)
