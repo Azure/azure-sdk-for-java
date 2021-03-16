@@ -4,7 +4,6 @@
 package com.azure.communication.chat.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,8 +101,10 @@ public final class CreateChatThreadOptions {
 
     /**
      * Creates a new instance of CreateChatThreadOptions
+     * @param topic the topic value to set.
      */
-    public CreateChatThreadOptions() {
+    public CreateChatThreadOptions(String topic) {
+        this.topic = topic;
         this.idempotencyToken = UUID.randomUUID().toString();
     }
 }

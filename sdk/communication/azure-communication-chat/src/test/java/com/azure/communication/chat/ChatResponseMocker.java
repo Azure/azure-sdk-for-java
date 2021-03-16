@@ -9,7 +9,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.azure.communication.chat.implementation.models.AddChatParticipantsOptions;
 import com.azure.communication.chat.implementation.models.ChatThreadProperties;
 import com.azure.communication.chat.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.chat.implementation.models.CommunicationUserIdentifierModel;
@@ -60,7 +59,8 @@ public class ChatResponseMocker {
         return generateMockResponse(body, request, 201);
     }
 
-    public static HttpResponse addParticipantsInvalidParticipantResponse(HttpRequest request, CommunicationUserIdentifier invalidUser) {        List<MockCommunicationError> invalidParticipants = new ArrayList<>();
+    public static HttpResponse addParticipantsInvalidParticipantResponse(HttpRequest request, CommunicationUserIdentifier invalidUser) {
+        List<MockCommunicationError> invalidParticipants = new ArrayList<>();
         invalidParticipants.add(new MockCommunicationError()
             .setTarget(invalidUser.getId()));
 

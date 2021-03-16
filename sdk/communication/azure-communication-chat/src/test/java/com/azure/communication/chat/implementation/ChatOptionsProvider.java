@@ -10,8 +10,7 @@ import java.util.*;
 public class ChatOptionsProvider {
 
     public static CreateChatThreadOptions createThreadOptions(String userId1, String userId2) {
-        CreateChatThreadOptions options = new CreateChatThreadOptions()
-            .setTopic("Test");
+        CreateChatThreadOptions options = new CreateChatThreadOptions("Test");
 
         options.addParticipant(generateParticipant(
             userId1,

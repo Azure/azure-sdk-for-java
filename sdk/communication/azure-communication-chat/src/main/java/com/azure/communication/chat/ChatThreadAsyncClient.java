@@ -206,8 +206,7 @@ public final class ChatThreadAsyncClient {
      * @param context The context to associate with this operation.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addParticipantWithResponse(ChatParticipant participant, Context context) {
+    Mono<Response<Void>> addParticipantWithResponse(ChatParticipant participant, Context context) {
         context = context == null ? Context.NONE : context;
         try {
             return addParticipants(Collections.singletonList(participant), context)

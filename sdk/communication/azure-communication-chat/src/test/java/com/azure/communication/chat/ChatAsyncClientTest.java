@@ -192,9 +192,10 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
     public void cannotCreateThreadWithNullOptions(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "cannotCreateThreadWithNullOptions");
+        CreateChatThreadOptions options = null;
 
         // Act & Assert
-        StepVerifier.create(client.createChatThread(null))
+        StepVerifier.create(client.createChatThread(options))
             .verifyError(NullPointerException.class);
     }
 
@@ -203,9 +204,10 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
     public void cannotCreateThreadWithResponseWithNullOptions(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "cannotCreateThreadWithResponseWithNullOptions");
+        CreateChatThreadOptions options = null;
 
         // Act & Assert
-        StepVerifier.create(client.createChatThread(null))
+        StepVerifier.create(client.createChatThread(options))
             .verifyError(NullPointerException.class);
     }
 
@@ -393,8 +395,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canProcessInvalidParticipantsOnCreateChatThread(HttpClient httpClient) {
 
-        CreateChatThreadOptions threadRequest = new CreateChatThreadOptions()
-            .setTopic("topic");
+        CreateChatThreadOptions threadRequest = new CreateChatThreadOptions("topic");
 
         threadRequest.addParticipant(new ChatParticipant()
             .setCommunicationIdentifier(new CommunicationUserIdentifier("valid"))

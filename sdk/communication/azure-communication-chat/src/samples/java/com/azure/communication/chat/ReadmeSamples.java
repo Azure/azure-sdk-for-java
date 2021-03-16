@@ -81,10 +81,10 @@ public class ReadmeSamples {
         participants.add(firstParticipant);
         participants.add(secondParticipant);
 
-        CreateChatThreadOptions createChatThreadOptions = new CreateChatThreadOptions()
-            .setTopic("Topic")
+        CreateChatThreadOptions createChatThreadOptions = new CreateChatThreadOptions("Topic")
             .setParticipants(participants);
         CreateChatThreadResult result = chatClient.createChatThread(createChatThreadOptions);
+
         String chatThreadId = result.getChatThread().getId();
     }
 
