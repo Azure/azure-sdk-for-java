@@ -48,7 +48,7 @@ public class QueryTests extends QueryTestBase {
 
             Thread.sleep(10 * 1000);
 
-            String queryString = "SELECT * FROM digitaltwins";
+            String queryString = "SELECT * FROM digitaltwins where IsOccupied = true";
 
             PagedIterable<BasicDigitalTwin> pagedQueryResponse = client.query(queryString, BasicDigitalTwin.class, new QueryOptions().setMaxItemsPerPage(pageSize), Context.NONE);
 
