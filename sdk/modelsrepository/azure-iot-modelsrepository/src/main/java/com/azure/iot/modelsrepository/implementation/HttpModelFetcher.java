@@ -39,7 +39,7 @@ class HttpModelFetcher implements ModelFetcher {
 
         Mono<FetchResult> result = evaluatePath(tryContentPath, context)
             .onErrorResume(error -> {
-                if (work.stream().count() != 0) {
+                if (work.size() != 0) {
                     return evaluatePath(work.poll(), context);
                 } else {
                     return Mono.error(error);

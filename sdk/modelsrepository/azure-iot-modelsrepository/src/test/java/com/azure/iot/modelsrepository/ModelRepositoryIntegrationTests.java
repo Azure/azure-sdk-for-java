@@ -26,7 +26,7 @@ public class ModelRepositoryIntegrationTests extends ModelsRepositoryTestBase {
         ModelsRepositoryAsyncClient client = getAsyncClient(httpClient, serviceVersion);
 
         Map<String, String> result = client.getModels(dtmi).block();
-        Assertions.assertTrue(result.keySet().stream().count() == 1);
+        Assertions.assertTrue(result.keySet().size() == 1);
         Assertions.assertTrue(result.keySet().contains(dtmi));
     }
 
@@ -39,7 +39,7 @@ public class ModelRepositoryIntegrationTests extends ModelsRepositoryTestBase {
         ModelsRepositoryAsyncClient client = getAsyncClient(httpClient, serviceVersion);
 
         Map<String, String> result = client.getModels(dtmi).block();
-        Assertions.assertTrue(result.keySet().stream().count() == 1);
+        Assertions.assertTrue(result.keySet().size() == 1);
         Assertions.assertTrue(result.keySet().contains(dtmi));
     }
 
@@ -55,7 +55,7 @@ public class ModelRepositoryIntegrationTests extends ModelsRepositoryTestBase {
 
         Map<String, String> result = client.getModels(dtmi).block();
 
-        Assertions.assertTrue(result.keySet().stream().count() == expectedDtmis.stream().count());
+        Assertions.assertTrue(result.keySet().size() == expectedDtmis.size());
         Assertions.assertTrue(result.keySet().containsAll(expectedDependencies));
     }
 
@@ -70,7 +70,7 @@ public class ModelRepositoryIntegrationTests extends ModelsRepositoryTestBase {
         ModelsRepositoryAsyncClient client = getAsyncClient(httpClient, serviceVersion);
 
         Map<String, String> result = client.getModels(inputDtmis).block();
-        Assertions.assertTrue(result.keySet().stream().count() == 1);
+        Assertions.assertTrue(result.keySet().size() == 1);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -81,7 +81,7 @@ public class ModelRepositoryIntegrationTests extends ModelsRepositoryTestBase {
 
         Map<String, String> result = client.getModels(dtmi, ModelsDependencyResolution.DISABLED).block();
 
-        Assertions.assertTrue(result.keySet().stream().count() == 1);
+        Assertions.assertTrue(result.keySet().size() == 1);
         Assertions.assertTrue(result.keySet().contains(dtmi));
     }
 }

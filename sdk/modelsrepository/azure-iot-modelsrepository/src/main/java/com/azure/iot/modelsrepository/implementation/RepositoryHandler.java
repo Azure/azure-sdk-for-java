@@ -36,46 +36,6 @@ public final class RepositoryHandler {
         return processAsync(Arrays.asList(dtmi), resolutionOptions, context);
     }
 
-    // This one works but blocks the call.
-    public Mono<Map<String, String>> processAsyncWorksBlocks(Iterable<String> dtmis, ModelsDependencyResolution resolutionOptions, Context context) {
-        Map<String, String> processedModels = new HashMap<>();
-        Queue<String> modelsToProcess = prepareWork(dtmis);
-        List<Mono> monos = new ArrayList<>();
-        while (modelsToProcess.stream().count() != 0) {
-            String targetDtmi = modelsToProcess.poll();
-            if (processedModels.containsKey(targetDtmi)) {
-                continue;
-            }
-            try {
-                FetchResult result = this.modelFetcher.fetchAsync(targetDtmi, repositoryUri, resolutionOptions, context).block();
-                if (result.isFromExpanded()) {
-                    Map<String, String> expanded = new ModelsQuery(result.getDefinition()).listToMap();
-                    for (Map.Entry<String, String> item : expanded.entrySet()) {
-                        if (!processedModels.containsKey(item.getKey())) {
-                            processedModels.put(item.getKey(), item.getValue());
-                        }
-                    }
-                    continue;
-                }
-                ModelMetadata metadata = new ModelsQuery(result.getDefinition()).parseModel();
-                if (resolutionOptions == ModelsDependencyResolution.ENABLED || resolutionOptions == ModelsDependencyResolution.TRY_FROM_EXPANDED) {
-                    List<String> dependencies = metadata.getDependencies();
-                    for (String dependency : dependencies) {
-                        modelsToProcess.add(dependency);
-                    }
-                }
-                String parsedDtmi = metadata.getId();
-                if (!parsedDtmi.equals(targetDtmi)) {
-                    //TODO: azabbasi: throw exception
-                }
-                processedModels.put(targetDtmi, result.getDefinition());
-            } catch (Exception e) {
-                // TODO: azabbasi: fix error handling.
-            }
-        }
-        return Mono.just(processedModels);
-    }
-
     // This doesn't work as it throws it into an infinite loop
     public Mono<Map<String, String>> processAsync(Iterable<String> dtmis, ModelsDependencyResolution
         resolutionOptions, Context context) {
@@ -136,7 +96,6 @@ public final class RepositoryHandler {
                     }
                 }
             });
-
     }
 
     private Queue<String> prepareWork(Iterable<String> dtmis) {

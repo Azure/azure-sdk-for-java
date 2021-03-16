@@ -38,7 +38,7 @@ class FileModelFetcher implements ModelFetcher {
         }
 
         String fnfError = "";
-        while (work.stream().count() != 0) {
+        while (work.size() != 0) {
             String tryContentPath = work.poll();
             Path path = Path.of(tryContentPath);
             if (Files.exists(path)) {

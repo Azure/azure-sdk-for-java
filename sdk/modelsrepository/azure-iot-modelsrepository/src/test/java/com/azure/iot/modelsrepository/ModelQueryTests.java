@@ -98,7 +98,7 @@ public class ModelQueryTests {
         ModelsQuery query = new ModelsQuery(modelContent);
         List<String> componentSchemas = query.parseModel().getComponentSchemas();
 
-        Assertions.assertTrue(componentSchemas.stream().count() == expectedDtmis.stream().count(), "number of expected dtmis should match the parsed version");
+        Assertions.assertTrue(componentSchemas.size() == expectedDtmis.size(), "number of expected dtmis should match the parsed version");
 
         Assertions.assertTrue(expectedDtmis.containsAll(componentSchemas));
     }
@@ -126,7 +126,7 @@ public class ModelQueryTests {
         ModelsQuery query = new ModelsQuery(modelContent);
         List<String> componentSchemas = query.parseModel().getExtend();
 
-        Assertions.assertTrue(componentSchemas.stream().count() == expectedDtmis.stream().count(), "number of expected dtmis should match the parsed value");
+        Assertions.assertTrue(componentSchemas.size() == expectedDtmis.size(), "number of expected dtmis should match the parsed value");
 
         Assertions.assertTrue(expectedDtmis.containsAll(componentSchemas));
     }
@@ -208,7 +208,7 @@ public class ModelQueryTests {
         ModelsQuery query = new ModelsQuery(modelContent);
         ModelMetadata metadata = query.parseModel();
 
-        Assertions.assertTrue(metadata.getDependencies().stream().count() == expectedDtmis.stream().count());
+        Assertions.assertTrue(metadata.getDependencies().size() == expectedDtmis.size());
         Assertions.assertTrue(expectedDtmis.containsAll(metadata.getDependencies()));
     }
 
@@ -228,7 +228,7 @@ public class ModelQueryTests {
             "dtmi:com:example:Thermostat;1",
             "dtmi:com:example:TemperatureController;1");
 
-        Assertions.assertTrue(expectedDtmis.stream().count() == transformResult.keySet().stream().count());
+        Assertions.assertTrue(expectedDtmis.size() == transformResult.keySet().size());
         transformResult.keySet().containsAll(expectedDtmis);
     }
 }
