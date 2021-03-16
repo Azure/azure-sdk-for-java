@@ -135,6 +135,8 @@ stages:
               Invoke-WebRequest "https://aka.ms/cosmos-hadoop-for-spark-ci-pipeline" -OutFile $downloadTarget
               if (Test-Path $targetDir) { Remove-Item -Recurse -Force $targetDir }
               Expand-Archive -LiteralPath $downloadTarget -DestinationPath $targetDir
+              Write-Host "Copying binaries to windows sytem32 folder"
+              Copy-Item -Path "D:\Hadoop\bin\*" -Destination "C:\Windows\System32" -Recurse
               Write-Host "Updating environment variables for Hadoop usage"
               [System.Environment]::SetEnvironmentVariable("HADOOP_HOME", "D:\Hadoop", [System.EnvironmentVariableTarget]::Machine)
               $hadoopHome = [System.Environment]::GetEnvironmentVariable("HADOOP_HOME", [System.EnvironmentVariableTarget]::Machine)
