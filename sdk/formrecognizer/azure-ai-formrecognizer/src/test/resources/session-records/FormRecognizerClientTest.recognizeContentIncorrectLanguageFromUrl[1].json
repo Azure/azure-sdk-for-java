@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//layout/analyze?language=language",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cb1d2855-90e7-4fb7-ae28-6373b8f2500b",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-envoy-upstream-service-time" : "5",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "cd2e19cb-050e-4a3b-821d-a090e2479f4e",
+      "retry-after" : "0",
+      "Content-Length" : "121",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"NotSupportedLanguage\",\"message\":\"The requested operation is not supported in the language specified.\"}}",
+      "Date" : "Tue, 16 Mar 2021 17:15:20 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

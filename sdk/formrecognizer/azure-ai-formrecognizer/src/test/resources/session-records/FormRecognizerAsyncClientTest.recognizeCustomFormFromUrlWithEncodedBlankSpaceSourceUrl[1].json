@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/00000000-0000-0000-0000-000000000000/analyze?includeTextDetails=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0a766daf-3219-4724-9336-2e6e2bcd233f",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-envoy-upstream-service-time" : "5187",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "fac0200c-1159-480a-97cc-1580777fe268",
+      "retry-after" : "0",
+      "Content-Length" : "80",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"1001\",\"message\":\"Could not retrieve user-provided resource.\"}}",
+      "Date" : "Tue, 16 Mar 2021 17:10:27 GMT",
+      "Content-Type" : "application/json; charset=utf-8",
+      "ms-azure-ai-errorcode" : "UserResourceNotAvailable"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

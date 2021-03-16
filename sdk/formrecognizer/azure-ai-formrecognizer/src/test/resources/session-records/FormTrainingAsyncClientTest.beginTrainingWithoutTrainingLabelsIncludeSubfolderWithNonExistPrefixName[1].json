@@ -1,0 +1,45 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "279c3bdf-d9ae-4903-b2a7-62879dc85f59",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-envoy-upstream-service-time" : "485",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "4a703d03-c83d-4e47-abaf-6496377646aa",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "Date" : "Tue, 16 Mar 2021 17:11:36 GMT",
+      "Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3/custom/models/51854163-6561-490d-b2a1-cb2d78224c85"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/51854163-6561-490d-b2a1-cb2d78224c85?includeKeys=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1d6dd6f5-fc78-4487-85d8-d5dc5c3a02a3"
+    },
+    "Response" : {
+      "x-envoy-upstream-service-time" : "25",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "0c44fe06-535d-46e8-993c-4e457603ba90",
+      "retry-after" : "0",
+      "Content-Length" : "403",
+      "StatusCode" : "200",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"51854163-6561-490d-b2a1-cb2d78224c85\",\"status\":\"invalid\",\"createdDateTime\":\"2021-03-16T17:11:36Z\",\"lastUpdatedDateTime\":\"2021-03-16T17:11:38Z\"},\"keys\":{\"clusters\":{}},\"trainResult\":{\"trainingDocuments\":[],\"errors\":[{\"code\":\"2014\",\"message\":\"No valid blobs found in the specified Azure blob container. Please conform to the document format/size/page/dimensions requirements.\"}]}}",
+      "Date" : "Tue, 16 Mar 2021 17:11:42 GMT",
+      "Content-Type" : "application/json; charset=utf-8",
+      "ms-azure-ai-errorcode" : "2014"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

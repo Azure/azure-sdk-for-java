@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//layout/analyze",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d7368093-7c85-4cd4-b336-6ea89754bdf4",
+      "Content-Type" : "application/pdf"
+    },
+    "Response" : {
+      "x-envoy-upstream-service-time" : "21",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "f29d6a5d-3098-41d8-9eb0-1164b815025d",
+      "retry-after" : "0",
+      "Content-Length" : "270",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"InvalidImage\",\"message\":\"The file submitted couldn't be parsed. This can be due to one of the following reasons: the file format is not supported ( Supported formats include JPEG, PNG, BMP, PDF and TIFF), the file is corrupted or password protected.\"}}",
+      "Date" : "Tue, 16 Mar 2021 17:14:15 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

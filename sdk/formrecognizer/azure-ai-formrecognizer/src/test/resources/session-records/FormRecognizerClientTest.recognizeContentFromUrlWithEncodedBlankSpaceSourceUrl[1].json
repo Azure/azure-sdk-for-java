@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//layout/analyze",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b30c8dfe-7c74-4b38-96cc-8a497d12cbb2",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-envoy-upstream-service-time" : "509",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "a8e50f87-9e4a-4d52-a861-ba91ce3fad0f",
+      "retry-after" : "0",
+      "Content-Length" : "95",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"FailedToDownloadImage\",\"message\":\"Failed to download image from input URL.\"}}",
+      "Date" : "Tue, 16 Mar 2021 17:14:36 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
