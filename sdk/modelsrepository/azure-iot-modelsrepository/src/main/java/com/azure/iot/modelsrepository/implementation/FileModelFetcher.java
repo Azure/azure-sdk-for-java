@@ -11,14 +11,16 @@ import reactor.core.publisher.Mono;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- * The {@link FileModelFetcher} is an implementation of {@link ModelFetcher}
+ * The {@link FileModelFetcher} is an implementation of {@link ModelFetcher} interface
  * for supporting local filesystem based model content fetching.
  */
 class FileModelFetcher implements ModelFetcher {
@@ -33,8 +35,14 @@ class FileModelFetcher implements ModelFetcher {
     public Mono<FetchResult> fetchAsync(String dtmi, URI repositoryUri, ModelsDependencyResolution resolutionOption, Context context) {
         Queue<String> work = new LinkedList<>();
 
-        if (resolutionOption == ModelsDependencyResolution.TRY_FROM_EXPANDED) {
-            work.add(GetPath(dtmi, repositoryUri, true));
+        try {
+            if (resolutionOption == ModelsDependencyResolution.TRY_FROM_EXPANDED) {
+                work.add(GetPath(dtmi, repositoryUri, true).getPath());
+            }
+
+            work.add(GetPath(dtmi, repositoryUri, false).getPath());
+        } catch (Exception e) {
+            return Mono.error(e);
         }
 
         String fnfError = "";
@@ -48,7 +56,7 @@ class FileModelFetcher implements ModelFetcher {
                             .setDefinition(new String(Files.readAllBytes(path)))
                             .setPath(tryContentPath));
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    return Mono.error(e);
                 }
             }
 
@@ -58,10 +66,10 @@ class FileModelFetcher implements ModelFetcher {
         return Mono.error(new FileNotFoundException(fnfError));
     }
 
-    private String GetPath(String dtmi, URI repositoryUri, boolean expanded) {
-        return DtmiConventions.dtmiToQualifiedPath(
+    private URI GetPath(String dtmi, URI repositoryUri, boolean expanded) throws MalformedURLException, URISyntaxException {
+        return DtmiConventions.getModelUri(
             dtmi,
-            repositoryUri.getPath(),
+            repositoryUri,
             expanded);
     }
 }

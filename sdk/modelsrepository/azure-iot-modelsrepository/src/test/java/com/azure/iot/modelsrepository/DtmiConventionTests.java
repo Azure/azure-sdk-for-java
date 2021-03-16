@@ -7,6 +7,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 public class DtmiConventionTests {
 
     @ParameterizedTest
@@ -18,36 +22,39 @@ public class DtmiConventionTests {
         ","
     })
     public void dtmiToPathTest(String input, String expected) {
+
+        if (expected == null) {
+            Assertions.assertThrows(IllegalArgumentException.class, () -> DtmiConventions.dtmiToPath(input));
+            return;
+        }
+
         String actualValue = DtmiConventions.dtmiToPath(input);
         Assertions.assertEquals(expected, actualValue);
     }
 
     @ParameterizedTest
     @CsvSource({
-        "dtmi:com:example:Thermostat;1, dtmi/com/example/thermostat-1.json, https://localhost/repository",
-        "dtmi:com:example:Model;1, dtmi/com/example/model-1.json, C:\\fakeRegistry",
-        "dtmi:com:example:Thermostat;1, dtmi/com/example/thermostat-1.json, /me/fakeRegistry",
-        "dtmi:com:example:Thermostat:1, ,https://localhost/repository",
-        "dtmi:com:example:Thermostat:1, ,/me/fakeRegistry"
+        "https://localhost/repository/, https://localhost/repository/dtmi/com/example/thermostat-1.json",
+        "https://localhost/REPOSITORY,  https://localhost/REPOSITORY/dtmi/com/example/thermostat-1.json",
+        "file:///path/to/repository/,   file:///path/to/repository/dtmi/com/example/thermostat-1.json",
+        "file://path/to/RepoSitory,     file://path/to/RepoSitory/dtmi/com/example/thermostat-1.json",
+        "C:\\path\\to\\repository\\, file:///C:/path/to/repository/dtmi/com/example/thermostat-1.json",
+        "\\\\server\\repository,    file:////server/repository/dtmi/com/example/thermostat-1.json"
     })
-    public void dtmiToQualifiedPathTests(String dtmi, String expectedPath, String repository) {
+    public void getModelUriTests(String repository, String expectedUri) throws URISyntaxException, MalformedURLException {
+        final String dtmi = "dtmi:com:example:Thermostat;1";
 
-        if (System.getProperty("os.name").startsWith("Windows")) {
-            repository = repository.replace("\\", "/");
-        }
+        URI repositoryUri = DtmiConventions.convertToUri(repository);
 
-        if (expectedPath == null || expectedPath.isEmpty()) {
-            String finalRepository = repository;
-            Assertions.assertThrows(IllegalArgumentException.class, () -> DtmiConventions.dtmiToQualifiedPath(dtmi, finalRepository, false));
+        if (expectedUri == null || expectedUri.isEmpty()) {
+            Assertions.assertThrows(IllegalArgumentException.class, () -> DtmiConventions.getModelUri(dtmi, repositoryUri, false));
             return;
         }
 
-        String modelPath = DtmiConventions.dtmiToQualifiedPath(dtmi, repository, false);
-        Assertions.assertEquals(modelPath, repository.concat("/").concat(expectedPath));
-
-        String expandedModelPath = DtmiConventions.dtmiToQualifiedPath(dtmi, repository, true);
-        Assertions.assertEquals(expandedModelPath, repository.concat("/").concat(expectedPath.replace(".json", ".expanded.json")));
+        URI modelUri = DtmiConventions.getModelUri(dtmi, repositoryUri, false);
+        Assertions.assertTrue(modelUri.toString().equals(expectedUri));
     }
+
 
     @ParameterizedTest
     @CsvSource({

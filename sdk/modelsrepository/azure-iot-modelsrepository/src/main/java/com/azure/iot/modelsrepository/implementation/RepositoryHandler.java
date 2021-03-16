@@ -43,14 +43,16 @@ public final class RepositoryHandler {
         Map<String, String> processedModels = new HashMap<>();
         Queue<String> modelsToProcess = prepareWork(dtmis);
 
-        return accumulateProcess(modelsToProcess, resolutionOptions, context, processedModels)
+        return processAsync(modelsToProcess, resolutionOptions, context, processedModels)
             .last()
             .map(s -> s.getMap());
     }
 
-    public Flux<TempCustomType> accumulateProcess
-        (Queue<String> remainingWork, ModelsDependencyResolution resolutionOption, Context
-            context, Map<String, String> currentResults) {
+    private Flux<TempCustomType> processAsync(
+        Queue<String> remainingWork,
+        ModelsDependencyResolution resolutionOption,
+        Context context,
+        Map<String, String> currentResults) {
 
         if (remainingWork.isEmpty()) {
             return Flux.empty();
@@ -72,7 +74,7 @@ public final class RepositoryHandler {
                             }
                         }
 
-                        return accumulateProcess(remainingWork, resolutionOption, context, results);
+                        return processAsync(remainingWork, resolutionOption, context, results);
                     } catch (Exception e) {
                         return Mono.error(e);
                     }
@@ -89,7 +91,7 @@ public final class RepositoryHandler {
                         }
 
                         results.put(targetDtmi, response.getDefinition());
-                        return accumulateProcess(remainingWork, resolutionOption, context, results);
+                        return processAsync(remainingWork, resolutionOption, context, results);
 
                     } catch (Exception e) {
                         return Mono.error(e);
