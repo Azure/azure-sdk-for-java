@@ -77,9 +77,9 @@ public class CommunicationIdentityClientTestBase extends TestBase {
             builder.credential(new FakeCredentials());
         } else {
             Configuration configuration = Configuration.getGlobalConfiguration().clone();
-            String clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
-            String tenantId = configuration.get("COMMUNICATION_TENANT_ID");// Configuration.PROPERTY_AZURE_TENANT_ID);
-            String clientSecret = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SECRET);
+            String clientId = configuration.get("COMMUNICATION_CLIENT_ID"); //Configuration.PROPERTY_AZURE_CLIENT_ID);
+            String tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);//"COMMUNICATION_TENANT_ID");// Configuration.PROPERTY_AZURE_TENANT_ID);
+            String clientSecret = configuration.get("COMMUNICATION_CLIENT_SECRET"); //Configuration.PROPERTY_AZURE_CLIENT_SECRET);
 
             //builder.credential(new DefaultAzureCredentialBuilder().build());
             builder.credential(new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId).clientSecret(clientSecret).authorityHost("https://login.windows-ppe.net").build());
