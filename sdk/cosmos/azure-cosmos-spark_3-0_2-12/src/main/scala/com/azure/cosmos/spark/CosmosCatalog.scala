@@ -13,7 +13,7 @@ import com.azure.cosmos.models.{
   SparkModelBridgeInternal,
   ThroughputProperties
 }
-import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, CosmosException}
+import com.azure.cosmos.{CosmosAsyncClient, CosmosException}
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.analysis.{NamespaceAlreadyExistsException, NoSuchNamespaceException, NoSuchTableException}
 import org.apache.spark.sql.connector.catalog.{CatalogPlugin, Identifier, NamespaceChange, SupportsNamespaces, Table, TableCatalog, TableChange}
@@ -272,6 +272,11 @@ class CosmosCatalog
     val cosmosContainerProperties = new CosmosContainerProperties(containerName, partitionKeyPath)
     cosmosContainerProperties.setIndexingPolicy(indexingPolicy)
 
+    CosmosContainerProperties.getDefaultTtlInSeconds(containerProperties) match {
+      case Some(ttl) => cosmosContainerProperties.setDefaultTimeToLiveInSeconds(ttl)
+      case None =>
+    }
+
     if (throughputPropertiesOpt.isDefined) {
       getClient
         .getDatabase(databaseName)
@@ -360,8 +365,10 @@ class CosmosCatalog
 
     private val partitionKeyPath = "partitionKeyPath"
     private val indexingPolicy = "indexingPolicy"
+    private val defaultTtlPropertyName = "defaultTtlInSeconds"
     private val defaultPartitionKeyPath = "/id"
     private val defaultIndexingPolicy = AllPropertiesIndexingPolicyName
+
     def getPartitionKeyPath(properties: Map[String, String]): String = {
       properties.getOrElse(partitionKeyPath, defaultPartitionKeyPath)
     }
@@ -386,6 +393,14 @@ class CosmosCatalog
         SparkModelBridgeInternal.createIndexingPolicyFromJson(indexingPolicySpecification)
       }
       //scalastyle:on multiple.string.literals
+    }
+
+    def getDefaultTtlInSeconds(properties: Map[String, String]): Option[Int] = {
+      if (properties.contains(defaultTtlPropertyName)) {
+        Some(properties(defaultTtlPropertyName).toInt)
+      } else {
+        None
+      }
     }
 
     // TODO: add support for other container properties, indexing policy?
