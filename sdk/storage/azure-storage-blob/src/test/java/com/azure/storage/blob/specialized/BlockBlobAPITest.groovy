@@ -8,8 +8,6 @@ import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
-import com.azure.core.http.RequestConditions
-import com.azure.core.util.BinaryData
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
 import com.azure.identity.DefaultAzureCredentialBuilder
@@ -53,7 +51,6 @@ import java.nio.file.Files
 import java.security.MessageDigest
 import java.time.Duration
 import java.time.OffsetDateTime
-import java.util.function.Consumer
 
 class BlockBlobAPITest extends APISpec {
     BlockBlobClient blockBlobClient
