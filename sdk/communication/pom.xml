@@ -88,6 +88,7 @@
         <module>azure-communication-identity</module>
         <module>azure-communication-phonenumbers</module>
         <module>azure-communication-sms</module>
+        <module>azure-resourcemanager-communication</module>
       </modules>
     </profile>
   </profiles>
