@@ -26,7 +26,7 @@ class HttpModelFetcher implements ModelFetcher {
     }
 
     @Override
-    public Mono<FetchResult> fetchAsync(String dtmi, URI repositoryUri, ModelsDependencyResolution resolutionOption, Context context) throws Exception {
+    public Mono<FetchResult> fetchAsync(String dtmi, URI repositoryUri, ModelsDependencyResolution resolutionOption, Context context) {
         Queue<String> work = new LinkedList<>();
 
         if (resolutionOption == ModelsDependencyResolution.TRY_FROM_EXPANDED) {

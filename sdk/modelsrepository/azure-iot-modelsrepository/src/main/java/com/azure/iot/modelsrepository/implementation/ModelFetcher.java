@@ -12,5 +12,5 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 
 interface ModelFetcher {
-    Mono<FetchResult> fetchAsync(String dtmi, URI repositoryUri, ModelsDependencyResolution resolutionOption, Context context) throws Exception;
+    Mono<FetchResult> fetchAsync(String dtmi, URI repositoryUri, ModelsDependencyResolution resolutionOption, Context context);
 }

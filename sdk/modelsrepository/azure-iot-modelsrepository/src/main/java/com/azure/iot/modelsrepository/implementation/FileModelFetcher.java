@@ -30,7 +30,7 @@ class FileModelFetcher implements ModelFetcher {
     }
 
     @Override
-    public Mono<FetchResult> fetchAsync(String dtmi, URI repositoryUri, ModelsDependencyResolution resolutionOption, Context context) throws IOException {
+    public Mono<FetchResult> fetchAsync(String dtmi, URI repositoryUri, ModelsDependencyResolution resolutionOption, Context context) {
         Queue<String> work = new LinkedList<>();
 
         if (resolutionOption == ModelsDependencyResolution.TRY_FROM_EXPANDED) {
@@ -42,10 +42,14 @@ class FileModelFetcher implements ModelFetcher {
             String tryContentPath = work.poll();
             Path path = Path.of(tryContentPath);
             if (Files.exists(path)) {
-                return Mono.just(
-                    new FetchResult()
-                        .setDefinition(new String(Files.readAllBytes(path)))
-                        .setPath(tryContentPath));
+                try {
+                    return Mono.just(
+                        new FetchResult()
+                            .setDefinition(new String(Files.readAllBytes(path)))
+                            .setPath(tryContentPath));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             fnfError = String.format(ErrorMessageConstants.ErrorFetchingModelContent, tryContentPath);
