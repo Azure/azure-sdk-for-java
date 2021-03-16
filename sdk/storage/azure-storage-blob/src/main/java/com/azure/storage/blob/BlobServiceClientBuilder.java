@@ -158,7 +158,8 @@ public final class BlobServiceClientBuilder {
         } else {
             this.customerProvidedKey = new CpkInfo()
                 .setEncryptionKey(customerProvidedKey.getKey())
-                .setEncryptionKeySha256(customerProvidedKey.getKeySha256());
+                .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
+                .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
         }
 
         return this;
