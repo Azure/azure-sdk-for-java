@@ -103,7 +103,7 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
             String clientSecret = configuration.get("COMMUNICATION_CLIENT_SECRET"); //Configuration.PROPERTY_AZURE_CLIENT_SECRET);
 
             //builder.credential(new DefaultAzureCredentialBuilder().build());
-            builder.credential(new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId).clientSecret(clientSecret).authorityHost("https://login.windows-ppe.net").build());
+            builder.credential(new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId).clientSecret(clientSecret).build());
 
 
             //builder.credential(new DefaultAzureCredentialBuilder().build());
