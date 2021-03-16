@@ -330,7 +330,7 @@ Here are some examples about how to use these properties:
     public String group1() {
         return "group1 message";
     }
-
+    
     @GetMapping("group2")
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_group2')")
