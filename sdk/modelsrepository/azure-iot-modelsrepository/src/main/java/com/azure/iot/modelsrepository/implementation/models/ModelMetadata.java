@@ -11,10 +11,10 @@ import java.util.List;
  * ModelMetadata is designated to store KPIs from model parsing.
  */
 public class ModelMetadata {
-    private String id;
-    private List<String> extend;
-    private List<String> componentSchemas;
-    private List<String> dependencies;
+    private final String id;
+    private final List<String> extend;
+    private final List<String> componentSchemas;
+    private final List<String> dependencies;
 
     public ModelMetadata(String id, List<String> extend, List<String> componentSchemas) {
         this.id = id;

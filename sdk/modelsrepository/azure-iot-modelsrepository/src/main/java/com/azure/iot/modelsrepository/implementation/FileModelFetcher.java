@@ -11,7 +11,6 @@ import reactor.core.publisher.Mono;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -66,7 +65,7 @@ class FileModelFetcher implements ModelFetcher {
         return Mono.error(new FileNotFoundException(fnfError));
     }
 
-    private URI GetPath(String dtmi, URI repositoryUri, boolean expanded) throws MalformedURLException, URISyntaxException {
+    private URI GetPath(String dtmi, URI repositoryUri, boolean expanded) throws URISyntaxException {
         return DtmiConventions.getModelUri(
             dtmi,
             repositoryUri,

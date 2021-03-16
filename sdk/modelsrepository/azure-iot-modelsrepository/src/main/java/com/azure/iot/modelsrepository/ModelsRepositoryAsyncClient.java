@@ -28,7 +28,6 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  *
  * <p><strong>Code Samples</strong></p>
  * <p>
- * {@codesnippet com.azure.iot.modelsrepository.asyncClient.instantiation}
  *
  * <p>
  * This client allows for TODO: azabbasi
@@ -39,7 +38,6 @@ public final class ModelsRepositoryAsyncClient {
     private static final ClientLogger logger = new ClientLogger(ModelsRepositoryAsyncClient.class);
     private static final String MODELS_REPOSITORY_TRACING_NAMESPACE_VALUE = "Azure.Iot.ModelsRepository";
     private final ModelsRepositoryServiceVersion serviceVersion;
-    private final ModelsRepositoryAPIImpl protocolLayer;
     private final RepositoryHandler repositoryHandler;
     private final ModelsDependencyResolution defaultDependencyResolutionOption;
 
@@ -55,7 +53,7 @@ public final class ModelsRepositoryAsyncClient {
 
         this.defaultDependencyResolutionOption = dependencyResolutionOption;
 
-        this.protocolLayer = new ModelsRepositoryAPIImplBuilder()
+        ModelsRepositoryAPIImpl protocolLayer = new ModelsRepositoryAPIImplBuilder()
             .host(repositoryUri.toString())
             .pipeline(pipeline)
             .serializerAdapter(jacksonAdapter)

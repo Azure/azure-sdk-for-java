@@ -39,7 +39,7 @@ public final class ModelsRepositoryClientBuilder {
     // Fields with default values.
     private URI repositoryEndpoint;
 
-    private ModelsDependencyResolution dependencyResolutionOption = ModelsDependencyResolution.TRY_FROM_EXPANDED;
+    private ModelsDependencyResolution modelDependencyResolution = ModelsDependencyResolution.TRY_FROM_EXPANDED;
 
     // optional/have default values
     private ModelsRepositoryServiceVersion serviceVersion;
@@ -78,7 +78,6 @@ public final class ModelsRepositoryClientBuilder {
     }
 
     private static HttpPipeline buildPipeline(
-        String endpoint,
         HttpLogOptions httpLogOptions,
         ClientOptions clientOptions,
         HttpClient httpClient,
@@ -143,7 +142,7 @@ public final class ModelsRepositoryClientBuilder {
      *
      * @return the created synchronous ModelsRepotioryClient
      */
-    public ModelsRepositoryClient buildClient() throws URISyntaxException {
+    public ModelsRepositoryClient buildClient() {
         return new ModelsRepositoryClient(buildAsyncClient());
     }
 
@@ -172,7 +171,6 @@ public final class ModelsRepositoryClientBuilder {
 
         if (this.httpPipeline == null) {
             this.httpPipeline = buildPipeline(
-                this.repositoryEndpoint.toString(),
                 this.httpLogOptions,
                 this.clientOptions,
                 this.httpClient,
@@ -186,18 +184,18 @@ public final class ModelsRepositoryClientBuilder {
             this.repositoryEndpoint,
             this.httpPipeline,
             serviceVersion,
-            this.dependencyResolutionOption,
+            this.modelDependencyResolution,
             this.jsonSerializer);
     }
 
     /**
      * Set the default dependency resolution option that the built client will use. This field will have a default value.
      *
-     * @param dependencyResolutionOption A DependencyResolutionOption value to force model resolution behavior.
+     * @param modelDependencyResolution A DependencyResolutionOption value to force model resolution behavior.
      * @return the updated ModelsRepositoryClientBuilder instance for fluent building.
      */
-    public ModelsRepositoryClientBuilder dependencyResolutionOption(ModelsDependencyResolution dependencyResolutionOption) {
-        this.dependencyResolutionOption = dependencyResolutionOption;
+    public ModelsRepositoryClientBuilder modelDependencyResolution(ModelsDependencyResolution modelDependencyResolution) {
+        this.modelDependencyResolution = modelDependencyResolution;
         return this;
     }
 

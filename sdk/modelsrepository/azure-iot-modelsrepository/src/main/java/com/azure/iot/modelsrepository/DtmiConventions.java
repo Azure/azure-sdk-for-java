@@ -42,10 +42,6 @@ public class DtmiConventions {
     public static URI getModelUri(String dtmi, URI repositoryUri, boolean fromExpanded) throws URISyntaxException {
         String dtmiPath = dtmiToPath(dtmi);
 
-        if (dtmiPath == null) {
-            throw new IllegalArgumentException(String.format(ErrorMessageConstants.InvalidDtmiFormat, dtmi));
-        }
-
         if (fromExpanded) {
             dtmiPath = dtmiPath.replace(".json", ".expanded.json");
         }
@@ -63,7 +59,7 @@ public class DtmiConventions {
         String path = urlBuilder.getPath();
 
         if (path != null && !path.endsWith("/")) {
-            urlBuilder.setPath(path += "/");
+            urlBuilder.setPath(path + "/");
         }
 
         if (urlBuilder.getPath() == null) {

@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ModelQueryTests {
-    public static String MODEL_TEMPLATE = "" +
+    public static final String MODEL_TEMPLATE = "" +
         "{\n" +
         "%s \n" +
         "\"@type\": \"Interface\",\n" +
@@ -98,7 +97,7 @@ public class ModelQueryTests {
         ModelsQuery query = new ModelsQuery(modelContent);
         List<String> componentSchemas = query.parseModel().getComponentSchemas();
 
-        Assertions.assertTrue(componentSchemas.size() == expectedDtmis.size(), "number of expected dtmis should match the parsed version");
+        Assertions.assertEquals(expectedDtmis.size(), componentSchemas.size(), "number of expected dtmis should match the parsed version");
 
         Assertions.assertTrue(expectedDtmis.containsAll(componentSchemas));
     }
@@ -126,7 +125,7 @@ public class ModelQueryTests {
         ModelsQuery query = new ModelsQuery(modelContent);
         List<String> componentSchemas = query.parseModel().getExtend();
 
-        Assertions.assertTrue(componentSchemas.size() == expectedDtmis.size(), "number of expected dtmis should match the parsed value");
+        Assertions.assertEquals(expectedDtmis.size(), componentSchemas.size(), "number of expected dtmis should match the parsed value");
 
         Assertions.assertTrue(expectedDtmis.containsAll(componentSchemas));
     }
@@ -208,16 +207,12 @@ public class ModelQueryTests {
         ModelsQuery query = new ModelsQuery(modelContent);
         ModelMetadata metadata = query.parseModel();
 
-        Assertions.assertTrue(metadata.getDependencies().size() == expectedDtmis.size());
+        Assertions.assertEquals(expectedDtmis.size(), metadata.getDependencies().size());
         Assertions.assertTrue(expectedDtmis.containsAll(metadata.getDependencies()));
     }
 
     @Test
     public void ListToMapTest() throws IOException {
-        String path = "src/TestModelRepo/dtmi/com/example/temperaturecontroller-1.expanded.json";
-        File file = new File(path);
-        String directory = System.getProperty("user.dir");
-
         String expandedContent = TestsAssetsHelpers.readResourceFile("/TestModelRepo/dtmi/com/example/temperaturecontroller-1.expanded.json");
 
         ModelsQuery query = new ModelsQuery(expandedContent);
@@ -228,7 +223,7 @@ public class ModelQueryTests {
             "dtmi:com:example:Thermostat;1",
             "dtmi:com:example:TemperatureController;1");
 
-        Assertions.assertTrue(expectedDtmis.size() == transformResult.keySet().size());
+        Assertions.assertEquals(transformResult.keySet().size(), expectedDtmis.size());
         transformResult.keySet().containsAll(expectedDtmis);
     }
 }

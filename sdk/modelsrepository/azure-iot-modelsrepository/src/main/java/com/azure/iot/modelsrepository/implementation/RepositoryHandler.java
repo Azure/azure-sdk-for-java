@@ -18,22 +18,20 @@ import java.util.*;
 public final class RepositoryHandler {
 
     private final URI repositoryUri;
-    private final ModelsRepositoryAPIImpl protocolLayer;
     private final ModelFetcher modelFetcher;
 
     public RepositoryHandler(URI repositoryUri, ModelsRepositoryAPIImpl protocolLayer) {
         this.repositoryUri = repositoryUri;
-        this.protocolLayer = protocolLayer;
 
-        if (this.repositoryUri.getScheme() != "file") {
-            this.modelFetcher = new HttpModelFetcher(protocolLayer);
-        } else {
+        if (this.repositoryUri.getScheme().toLowerCase().startsWith("file")) {
             this.modelFetcher = new FileModelFetcher();
+        } else {
+            this.modelFetcher = new HttpModelFetcher(protocolLayer);
         }
     }
 
     public Mono<Map<String, String>> processAsync(String dtmi, ModelsDependencyResolution resolutionOptions, Context context) {
-        return processAsync(Arrays.asList(dtmi), resolutionOptions, context);
+        return processAsync(Collections.singletonList(dtmi), resolutionOptions, context);
     }
 
     // This doesn't work as it throws it into an infinite loop
@@ -45,7 +43,7 @@ public final class RepositoryHandler {
 
         return processAsync(modelsToProcess, resolutionOptions, context, processedModels)
             .last()
-            .map(s -> s.getMap());
+            .map(TempCustomType::getMap);
     }
 
     private Flux<TempCustomType> processAsync(
@@ -85,9 +83,7 @@ public final class RepositoryHandler {
                         if (resolutionOption == ModelsDependencyResolution.ENABLED || resolutionOption == ModelsDependencyResolution.TRY_FROM_EXPANDED) {
                             List<String> dependencies = metadata.getDependencies();
 
-                            for (String dependency : dependencies) {
-                                remainingWork.add(dependency);
-                            }
+                            remainingWork.addAll(dependencies);
                         }
 
                         results.put(targetDtmi, response.getDefinition());

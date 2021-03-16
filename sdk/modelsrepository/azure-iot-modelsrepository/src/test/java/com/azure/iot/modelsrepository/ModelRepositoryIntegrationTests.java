@@ -13,7 +13,6 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import static com.azure.iot.modelsrepository.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.iot.modelsrepository.TestHelper.assertRestException;
@@ -29,7 +28,7 @@ public class ModelRepositoryIntegrationTests extends ModelsRepositoryTestBase {
 
         StepVerifier
             .create(client.getModels(dtmi))
-            .assertNext(model -> Assertions.assertTrue(model.keySet().size() == 1 && model.keySet().contains(dtmi)))
+            .assertNext(model -> Assertions.assertTrue(model.keySet().size() == 1 && model.containsKey(dtmi)))
             .verifyComplete();
     }
 
@@ -74,7 +73,7 @@ public class ModelRepositoryIntegrationTests extends ModelsRepositoryTestBase {
 
         StepVerifier
             .create(client.getModels(inputDtmis))
-            .assertNext(model -> Assertions.assertTrue(model.keySet().size() == 1))
+            .assertNext(model -> Assertions.assertEquals(model.keySet().size(), 1))
             .verifyComplete();
     }
 
@@ -84,11 +83,9 @@ public class ModelRepositoryIntegrationTests extends ModelsRepositoryTestBase {
         final String dtmi = "dtmi:com:example:Thermostat;1";
         ModelsRepositoryAsyncClient client = getAsyncClient(httpClient, serviceVersion);
 
-        Map<String, String> result = client.getModels(dtmi, ModelsDependencyResolution.DISABLED).block();
-
         StepVerifier
             .create(client.getModels(dtmi, ModelsDependencyResolution.DISABLED))
-            .assertNext(model -> Assertions.assertTrue(model.keySet().size() == 1 && model.keySet().contains(dtmi)))
+            .assertNext(model -> Assertions.assertTrue(model.keySet().size() == 1 && model.containsKey(dtmi)))
             .verifyComplete();
     }
 }

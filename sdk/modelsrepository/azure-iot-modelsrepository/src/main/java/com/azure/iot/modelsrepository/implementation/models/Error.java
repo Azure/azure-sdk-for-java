@@ -95,7 +95,7 @@ public final class Error {
      */
     public void validate() {
         if (getDetails() != null) {
-            getDetails().forEach(e -> e.validate());
+            getDetails().forEach(Error::validate);
         }
         if (getInnererror() != null) {
             getInnererror().validate();

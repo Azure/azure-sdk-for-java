@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -41,7 +40,7 @@ public class DtmiConventionTests {
         "C:\\path\\to\\repository\\, file:///C:/path/to/repository/dtmi/com/example/thermostat-1.json",
         "\\\\server\\repository,    file:////server/repository/dtmi/com/example/thermostat-1.json"
     })
-    public void getModelUriTests(String repository, String expectedUri) throws URISyntaxException, MalformedURLException {
+    public void getModelUriTests(String repository, String expectedUri) throws URISyntaxException {
         final String dtmi = "dtmi:com:example:Thermostat;1";
 
         URI repositoryUri = DtmiConventions.convertToUri(repository);
@@ -52,7 +51,7 @@ public class DtmiConventionTests {
         }
 
         URI modelUri = DtmiConventions.getModelUri(dtmi, repositoryUri, false);
-        Assertions.assertTrue(modelUri.toString().equals(expectedUri));
+        Assertions.assertEquals(expectedUri, modelUri.toString());
     }
 
 

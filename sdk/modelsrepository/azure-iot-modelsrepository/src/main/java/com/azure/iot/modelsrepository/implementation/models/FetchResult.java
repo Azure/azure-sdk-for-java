@@ -39,7 +39,7 @@ public class FetchResult {
     /**
      * Gets the dtmi path.
      *
-     * @return
+     * @return dtmi path.
      */
     public String getPath() {
         return this.path;

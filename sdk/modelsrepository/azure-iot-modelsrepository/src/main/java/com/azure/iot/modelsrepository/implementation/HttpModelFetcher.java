@@ -4,14 +4,11 @@
 package com.azure.iot.modelsrepository.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.iot.modelsrepository.DtmiConventions;
 import com.azure.iot.modelsrepository.ModelsDependencyResolution;
 import com.azure.iot.modelsrepository.implementation.models.FetchResult;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
@@ -24,11 +21,9 @@ import java.util.Queue;
  */
 class HttpModelFetcher implements ModelFetcher {
     private final ModelsRepositoryAPIImpl protocolLayer;
-    private final ObjectMapper mapper;
 
     public HttpModelFetcher(ModelsRepositoryAPIImpl protocolLayer) {
         this.protocolLayer = protocolLayer;
-        mapper = new JacksonAdapter().serializer();
     }
 
     @Override
@@ -47,7 +42,7 @@ class HttpModelFetcher implements ModelFetcher {
 
         String tryContentPath = work.poll();
 
-        Mono<FetchResult> result = evaluatePath(tryContentPath, context)
+        return evaluatePath(tryContentPath, context)
             .onErrorResume(error -> {
                 if (work.size() != 0) {
                     return evaluatePath(work.poll(), context);
@@ -56,8 +51,6 @@ class HttpModelFetcher implements ModelFetcher {
                 }
             })
             .map(s -> new FetchResult().setPath(tryContentPath).setDefinition(s));
-
-        return result;
     }
 
     private Mono<String> evaluatePath(String tryContentPath, Context context) {
@@ -70,7 +63,7 @@ class HttpModelFetcher implements ModelFetcher {
             });
     }
 
-    private URI getPath(String dtmi, URI repositoryUri, boolean expanded) throws MalformedURLException, URISyntaxException {
+    private URI getPath(String dtmi, URI repositoryUri, boolean expanded) throws URISyntaxException {
         return DtmiConventions.getModelUri(dtmi, repositoryUri, expanded);
     }
 }
