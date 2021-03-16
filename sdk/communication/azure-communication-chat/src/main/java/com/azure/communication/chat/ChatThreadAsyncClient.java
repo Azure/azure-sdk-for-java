@@ -55,7 +55,7 @@ import static com.azure.core.util.FluxUtil.withContext;
 /**
  * Async Client that supports chat thread operations.
  */
-@ServiceClient(builder = ChatClientBuilder.class, isAsync = true)
+@ServiceClient(builder = ChatThreadClientBuilder.class, isAsync = true)
 public final class ChatThreadAsyncClient {
     private final ClientLogger logger = new ClientLogger(ChatThreadAsyncClient.class);
 

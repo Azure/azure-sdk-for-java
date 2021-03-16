@@ -25,7 +25,7 @@ import com.azure.core.util.logging.ClientLogger;
 /**
  * Sync Client that supports chat thread operations.
  */
-@ServiceClient(builder = ChatClientBuilder.class, isAsync = false)
+@ServiceClient(builder = ChatThreadClientBuilder.class, isAsync = false)
 public final class ChatThreadClient {
     private final ClientLogger logger = new ClientLogger(ChatThreadClient.class);
 

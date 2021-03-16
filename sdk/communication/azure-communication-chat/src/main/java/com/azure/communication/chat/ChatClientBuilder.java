@@ -151,7 +151,7 @@ public final class ChatClientBuilder {
      * If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint}.
      *
      * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
-     * @return the updated BlobServiceClientBuilder object
+     * @return the updated ChatClientBuilder object
      */
     public ChatClientBuilder pipeline(HttpPipeline httpPipeline) {
         this.httpPipeline = httpPipeline;
@@ -162,7 +162,7 @@ public final class ChatClientBuilder {
      * Sets the configuration object used to retrieve environment configuration values during building of the client.
      *
      * @param configuration Configuration store used to retrieve environment configurations.
-     * @return the updated BlobServiceClientBuilder object
+     * @return the updated ChatClientBuilder object
      */
     public ChatClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
