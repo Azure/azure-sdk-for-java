@@ -15,7 +15,6 @@ Configuration Reference:
 ### Additional Tuning
 
 
-
 | Config Property Name      | Default | Description |
 | :---        |    :----   |         :--- | 
 | `spark.cosmos.useGatewayMode`      | `false`    | Use gateway mode for the client operations  |
@@ -30,7 +29,8 @@ Configuration Reference:
 | :---        |    :----   |         :--- | 
 | `spark.cosmos.write.strategy`      | `ItemOverwrite`    | Cosmos DB Item write Strategy: ItemOverwrite (using upsert), ItemAppend (using create, ignore Conflicts)  |
 | `spark.cosmos.write.maxRetryCount`      | `3`    | Cosmos DB Write Max Retry Attempts on failure  |
-| `spark.cosmos.write.bulkEnabled`      | `false`   | Cosmos DB Item Write bulk enabled |
+| `spark.cosmos.write.maxConcurrency`   | None   | Cosmos DB Item Write Max concurrency. If not specified it will be determined based on the Spark executor VM Size |
+| `spark.cosmos.write.bulkEnabled`      | `true`   | Cosmos DB Item Write bulk enabled |
 
 ### Query Config
 

@@ -151,18 +151,14 @@ private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy,
 
 private object CosmosWriteConfig {
   private val bulkEnabled = CosmosConfigEntry[Boolean](key = "spark.cosmos.write.bulkEnabled",
-    defaultValue = Option.apply(false),
+    defaultValue = Option.apply(true),
     mandatory = false,
     parseFromStringFunction = bulkEnabledAsString => bulkEnabledAsString.toBoolean,
     helpMessage = "Cosmos DB Item Write bulk enabled")
 
-  // TODO: moderakh this should be dynamic based on the number of CPU cores
-  private val MaxPointWriteConcurrency = 100
-  private val MaxBulkWriteConcurrency = 100000
   private val MaxRetryCount = 3
 
   private val writeConcurrency = CosmosConfigEntry[Int](key = "spark.cosmos.write.maxConcurrency",
-    defaultValue = Option.apply(MaxPointWriteConcurrency),
     mandatory = false,
     parseFromStringFunction = bulkMaxConcurrencyAsString => bulkMaxConcurrencyAsString.toInt,
     helpMessage = s"Cosmos DB Item Write Max concurrency." +

@@ -10,7 +10,7 @@ import com.azure.cosmos.{CosmosAsyncContainer, CosmosException}
 import com.fasterxml.jackson.databind.node.ObjectNode
 
 import java.util.concurrent.atomic.{AtomicBoolean, AtomicReference}
-import java.util.concurrent.{Callable, CompletableFuture, ExecutorService, Executors, SynchronousQueue, ThreadFactory, ThreadPoolExecutor, TimeUnit}
+import java.util.concurrent.{Callable, CompletableFuture, ExecutorService, SynchronousQueue, ThreadPoolExecutor, TimeUnit}
 import scala.collection.concurrent.TrieMap
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
