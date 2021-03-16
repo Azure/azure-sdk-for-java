@@ -16,6 +16,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.ClientSecretCredentialBuilder;
+
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -74,7 +76,14 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new FakeCredentials());
         } else {
-            builder.credential(new DefaultAzureCredentialBuilder().authorityHost("https://login.windows-ppe.net").build());
+            Configuration configuration = Configuration.getGlobalConfiguration().clone();
+            String clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
+            String tenantId = configuration.get("COMMUNICATION_TENANT_ID");// Configuration.PROPERTY_AZURE_TENANT_ID);
+            String clientSecret = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SECRET);
+
+            //builder.credential(new DefaultAzureCredentialBuilder().build());
+            builder.credential(new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId).clientSecret(clientSecret).authorityHost("https://login.windows-ppe.net").build());
+
         }
 
         if (getTestMode() == TestMode.RECORD) {
