@@ -45,6 +45,7 @@ public class TestConstants {
     public static final String TEST_ENDPOINT = "https://fake.test.config.io";
     public static final String TEST_KV_API = TEST_ENDPOINT + "/kv?key=fake-key*&label=fake-label";
     public static final String TEST_ID = "fake-conn-id";
+    // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="...")]
     public static final String TEST_SECRET = "ZmFrZS1jb25uLXNlY3JldA=="; // Base64 encoded from fake-conn-secret
 
     public static final String TEST_ACCESS_TOKEN = "fake_token";
