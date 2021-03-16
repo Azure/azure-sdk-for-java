@@ -3,6 +3,7 @@
 
 package com.azure.spring.aad.webapi;
 
+import com.azure.spring.aad.AADAuthorizationGrantType;
 import com.azure.spring.aad.AADAuthorizationServerEndpoints;
 import com.azure.spring.aad.webapp.AuthorizationClientProperties;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
@@ -57,6 +58,12 @@ public class AADResourceServerClientConfiguration {
         return new InMemoryClientRegistrationRepository(oboClients);
     }
 
+    @Bean
+    @ConditionalOnMissingBean
+    OAuth2AuthorizedClientService authorizedClientService(ClientRegistrationRepository clientRegistrationRepository) {
+        return new InMemoryOAuth2AuthorizedClientService(clientRegistrationRepository);
+    }
+
     /**
      * Use InMemoryClientRegistrationRepository to create AADOAuth2AuthorizedClientRepository
      *
@@ -71,32 +78,27 @@ public class AADResourceServerClientConfiguration {
         return new AADOAuth2AuthorizedClientRepository(oAuth2AuthorizedClientService, repo);
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    OAuth2AuthorizedClientService authorizedClientService(ClientRegistrationRepository clientRegistrationRepository) {
-        return new InMemoryOAuth2AuthorizedClientService(clientRegistrationRepository);
-    }
-
     public List<ClientRegistration> createClients() {
         List<ClientRegistration> result = new ArrayList<>();
-        for (String name : properties.getAuthorizationClients().keySet()) {
-            AuthorizationClientProperties authorizationProperties = properties.getAuthorizationClients().get(name);
-            if (authorizationProperties.getAuthorizationGrantType().equals("on-behalf-of")) {
-                ClientRegistration.Builder builder = createOboClientBuilder(name);
-                builder.scope(authorizationProperties.getScopes());
-                result.add(builder.build());
-            } else if (authorizationProperties.getAuthorizationGrantType().equals("client_credentials")) {
-                ClientRegistration.Builder builder = createWebClientBuilder(name);
-                builder.scope(authorizationProperties.getScopes());
-                result.add(builder.build());
+        for (String id : properties.getAuthorizationClients().keySet()) {
+            AuthorizationClientProperties authorizationProperties = properties.getAuthorizationClients().get(id);
+            if (authorizationProperties.getAuthorizationGrantType() == null) {
+                authorizationProperties.setAuthorizationGrantType(AADAuthorizationGrantType.ON_BEHALF_OF
+                    .getValue());
+                result.add(createOboClientBuilder(id, authorizationProperties));
+            } else if (authorizationProperties.getAuthorizationGrantType().equals(AADAuthorizationGrantType
+                .CLIENT_CREDENTIALS.getValue())) {
+                result.add(createWebClientBuilder(id, authorizationProperties));
             }
         }
         return result;
     }
 
-    private ClientRegistration.Builder createOboClientBuilder(String id) {
+    private ClientRegistration createOboClientBuilder(String id,
+                                                      AuthorizationClientProperties authorizationProperties) {
         ClientRegistration.Builder result = ClientRegistration.withRegistrationId(id);
-        result.authorizationGrantType(new AuthorizationGrantType("on-behalf-of"));
+        result.authorizationGrantType(new AuthorizationGrantType(AADAuthorizationGrantType.ON_BEHALF_OF
+            .getValue()));
         result.redirectUri("{baseUrl}/login/oauth2/code/");
         result.clientId(properties.getClientId());
         result.clientSecret(properties.getClientSecret());
@@ -104,10 +106,12 @@ public class AADResourceServerClientConfiguration {
         AADAuthorizationServerEndpoints endpoints = new AADAuthorizationServerEndpoints(
             properties.getBaseUri(), properties.getTenantId());
         result.authorizationUri(endpoints.authorizationEndpoint());
-        return result;
+        result.scope(authorizationProperties.getScopes());
+        return result.build();
     }
 
-    private ClientRegistration.Builder createWebClientBuilder(String id) {
+    private ClientRegistration createWebClientBuilder(String id,
+                                                      AuthorizationClientProperties authorizationProperties) {
         ClientRegistration.Builder result = ClientRegistration.withRegistrationId(id);
         result.authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS);
         result.clientId(properties.getClientId());
@@ -115,7 +119,8 @@ public class AADResourceServerClientConfiguration {
         AADAuthorizationServerEndpoints endpoints = new AADAuthorizationServerEndpoints(
             properties.getBaseUri(), properties.getTenantId());
         result.tokenUri(endpoints.tokenEndpoint());
-        return result;
+        result.scope(authorizationProperties.getScopes());
+        return result.build();
     }
 
 }

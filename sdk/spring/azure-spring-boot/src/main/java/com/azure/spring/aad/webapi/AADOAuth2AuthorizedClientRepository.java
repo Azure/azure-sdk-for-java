@@ -3,6 +3,7 @@
 
 package com.azure.spring.aad.webapi;
 
+import com.azure.spring.aad.AADAuthorizationGrantType;
 import com.azure.spring.autoconfigure.aad.Constants;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
@@ -85,7 +86,8 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
             LOGGER.warn("Not found the ClientRegistration, registrationId={}", registrationId);
             return null;
         }
-        if (clientRegistration.getAuthorizationGrantType().getValue().equals("on-behalf-of")) {
+        if (clientRegistration.getAuthorizationGrantType().getValue().equals(
+            AADAuthorizationGrantType.ON_BEHALF_OF.getValue())) {
             String oboAuthorizedClientAttributeName = OBO_AUTHORIZEDCLIENT_PREFIX + registrationId;
             if (request.getAttribute(oboAuthorizedClientAttributeName) != null) {
                 return (T) request.getAttribute(oboAuthorizedClientAttributeName);
@@ -133,7 +135,7 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
             }
             return null;
         } else if (clientRegistration.getAuthorizationGrantType().getValue().equals
-            ("client_credentials")) {
+            (AADAuthorizationGrantType.CLIENT_CREDENTIALS.getValue())) {
             if (this.isPrincipalAuthenticated(principal)) {
                 return this.authorizedClientService.loadAuthorizedClient(registrationId, principal
                     .getName());
