@@ -9,7 +9,6 @@ import com.azure.core.http.policy.*;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JsonSerializer;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -48,7 +47,6 @@ public final class ModelsRepositoryClientBuilder {
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private RetryPolicy retryPolicy;
-    private JsonSerializer jsonSerializer;
 
     // Right now, Azure Models Repository does not send a retry-after header on its throttling messages. If it adds support later, then
     // these values should match the header name (for instance, "x-ms-retry-after-ms" or "Retry-After") and the time unit
@@ -184,8 +182,7 @@ public final class ModelsRepositoryClientBuilder {
             this.repositoryEndpoint,
             this.httpPipeline,
             serviceVersion,
-            this.modelDependencyResolution,
-            this.jsonSerializer);
+            this.modelDependencyResolution);
     }
 
     /**
@@ -301,17 +298,6 @@ public final class ModelsRepositoryClientBuilder {
      */
     public ModelsRepositoryClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
-        return this;
-    }
-
-    /**
-     * Custom JSON serializer that is used to handle model types that are not contained in the Azure Models Repository library.
-     *
-     * @param jsonSerializer The serializer to deserialize response payloads into user defined models.
-     * @return The updated ModelsRepositoryClientBuilder object.
-     */
-    public ModelsRepositoryClientBuilder serializer(JsonSerializer jsonSerializer) {
-        this.jsonSerializer = jsonSerializer;
         return this;
     }
 

@@ -10,7 +10,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.iot.modelsrepository.implementation.ModelsRepositoryAPIImpl;
 import com.azure.iot.modelsrepository.implementation.ModelsRepositoryAPIImplBuilder;
 import com.azure.iot.modelsrepository.implementation.RepositoryHandler;
@@ -25,13 +24,6 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 /**
  * This class provides a client for interacting asynchronously with a ModelsRepository instance.
  * This client is instantiated through {@link ModelsRepositoryClientBuilder}.
- *
- * <p><strong>Code Samples</strong></p>
- * <p>
- *
- * <p>
- * This client allows for TODO: azabbasi
- * </p>
  */
 @ServiceClient(builder = ModelsRepositoryClientBuilder.class, isAsync = true)
 public final class ModelsRepositoryAsyncClient {
@@ -45,8 +37,7 @@ public final class ModelsRepositoryAsyncClient {
         URI repositoryUri,
         HttpPipeline pipeline,
         ModelsRepositoryServiceVersion serviceVersion,
-        ModelsDependencyResolution dependencyResolutionOption,
-        JsonSerializer jsonSerializer) {
+        ModelsDependencyResolution dependencyResolutionOption) {
 
         JacksonAdapter jacksonAdapter = new JacksonAdapter();
         this.serviceVersion = serviceVersion;

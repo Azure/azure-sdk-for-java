@@ -8,10 +8,6 @@ import com.azure.core.annotation.ServiceClient;
 /**
  * This class provides a client for interacting synchronously with a ModelsRepository instance.
  * This client is instantiated through {@link ModelsRepositoryClientBuilder}.
- *
- * <p>
- * This client allows for TODO: azabbasi
- * </p>
  */
 @ServiceClient(builder = ModelsRepositoryClientBuilder.class)
 public final class ModelsRepositoryClient {

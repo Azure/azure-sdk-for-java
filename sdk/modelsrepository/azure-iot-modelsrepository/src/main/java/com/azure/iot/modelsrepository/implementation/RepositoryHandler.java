@@ -100,12 +100,12 @@ public final class RepositoryHandler {
         Queue<String> modelsToProcess = new LinkedList<>();
         for (String dtmi : dtmis) {
             if (!DtmiConventions.isValidDtmi(dtmi)) {
-                // TODO: azabbasi : error handling
-                throw new IllegalArgumentException(dtmi);
+                throw new IllegalArgumentException(String.format(ErrorMessageConstants.InvalidDtmiFormat, dtmi));
             }
 
             modelsToProcess.add(dtmi);
         }
+
         return modelsToProcess;
     }
 }
