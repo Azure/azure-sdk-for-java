@@ -9,12 +9,19 @@ import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Test performance of sending custom events
+ */
 public class SendCustomEventsTest extends ServiceTest<PerfStressOptions> {
 
+    /**
+     * Create the SendCustomEventsTest
+     * @param options options.
+     */
     public SendCustomEventsTest(PerfStressOptions options) {
         super(options);
     }
@@ -33,7 +40,7 @@ public class SendCustomEventsTest extends ServiceTest<PerfStressOptions> {
     private List<BinaryData> createEvents() {
         List<BinaryData> events = new ArrayList<>();
         for (int i = 0; i < options.getCount(); i++) {
-            String dataPayload = "A".repeat(options.getCount());
+            String dataPayload = String.join("", Collections.nCopies(options.getCount(), "A"));
             CustomEvent customEvent = new CustomEvent(
                 UUID.randomUUID().toString(),
                 OffsetDateTime.now(),
@@ -46,26 +53,5 @@ public class SendCustomEventsTest extends ServiceTest<PerfStressOptions> {
             events.add(BinaryData.fromObject(customEvent));
         }
         return events;
-    }
-
-    private static class CustomEvent {
-        private final String id;
-        private final OffsetDateTime time;
-        private final String subject;
-        private final String foo;
-        private final String type;
-        private final String data;
-        private final String dataVersion;
-
-        public CustomEvent(String id, OffsetDateTime time, String subject, String foo,
-            String type, String data, String dataVersion) {
-            this.id = id;
-            this.time = time;
-            this.subject = subject;
-            this.foo = foo;
-            this.type = type;
-            this.data = data;
-            this.dataVersion = dataVersion;
-        }
     }
 }

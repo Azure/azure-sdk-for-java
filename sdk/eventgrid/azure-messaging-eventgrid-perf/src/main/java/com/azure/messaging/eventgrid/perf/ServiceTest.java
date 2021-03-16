@@ -13,6 +13,10 @@ import com.azure.messaging.eventgrid.EventGridPublisherClientBuilder;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
 
+/**
+ * Parent class of EventGrid service tests.
+ * @param <TOptions> options.
+ */
 public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
     protected final EventGridPublisherClient<CloudEvent> cloudEventPublisherClient;
     protected final EventGridPublisherAsyncClient<CloudEvent> cloudEventPublisherAsyncClient;
@@ -24,6 +28,10 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
     protected final EventGridPublisherAsyncClient<BinaryData> customEventPublisherAsyncClient;
 
 
+    /**
+     * Create a ServiceTest
+     * @param options otpions.
+     */
     public ServiceTest(TOptions options) {
         super(options);
 

@@ -9,10 +9,18 @@ import com.azure.perf.test.core.PerfStressOptions;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+/**
+ * Test performance of sending event grid events
+ */
 public class SendEventGridEventsTest extends ServiceTest<PerfStressOptions> {
 
+    /**
+     * Create the SendEventGridEventsTest
+     * @param options options
+     */
     public SendEventGridEventsTest(PerfStressOptions options) {
         super(options);
     }
@@ -31,7 +39,7 @@ public class SendEventGridEventsTest extends ServiceTest<PerfStressOptions> {
     private List<EventGridEvent> createEvents() {
         List<EventGridEvent> events = new ArrayList<>();
         for (int i = 0; i < options.getCount(); i++) {
-            String dataPayload = "A".repeat(options.getCount());
+            String dataPayload = String.join("", Collections.nCopies(options.getCount(), "A"));
             EventGridEvent event = new EventGridEvent("https://www.eventgrid.com/", "EG.Perf",
                 BinaryData.fromObject(new TestModelClass(dataPayload)), "v1");
             events.add(event);

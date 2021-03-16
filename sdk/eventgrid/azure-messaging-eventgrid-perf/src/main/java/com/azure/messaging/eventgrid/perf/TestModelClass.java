@@ -3,18 +3,14 @@
 
 package com.azure.messaging.eventgrid.perf;
 
-public class TestModelClass {
-    private String data;
+class TestModelClass {
+    private final String data;
 
-    public TestModelClass(String data) {
+    TestModelClass(String data) {
         this.data = data;
     }
 
-    public String getData() {
+    String getData() {
         return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
     }
 }
