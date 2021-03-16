@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.fluent.BackupsClient;
 import com.azure.resourcemanager.netapp.fluent.models.BackupInner;
 import com.azure.resourcemanager.netapp.models.Backup;
@@ -21,9 +20,9 @@ public final class BackupsImpl implements Backups {
 
     private final BackupsClient innerClient;
 
-    private final NetAppFilesManager serviceManager;
+    private final com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager;
 
-    public BackupsImpl(BackupsClient innerClient, NetAppFilesManager serviceManager) {
+    public BackupsImpl(BackupsClient innerClient, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -259,7 +258,7 @@ public final class BackupsImpl implements Backups {
         return this.innerClient;
     }
 
-    private NetAppFilesManager manager() {
+    private com.azure.resourcemanager.netapp.NetAppFilesManager manager() {
         return this.serviceManager;
     }
 
