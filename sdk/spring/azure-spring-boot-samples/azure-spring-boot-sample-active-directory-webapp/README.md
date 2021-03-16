@@ -24,7 +24,9 @@ In order to try the authorization action with this sample with minimum effort, [
 
 ### Configure AppRole for web application
 If you want to use `id_token` for authorization, we can use 
-`appRoles` feature which AAD provides and create `GrantedAuthority` from id_token's `roles` claim to implement access control. 
+`appRoles` feature of AAD to generate id_token's `roles` claim and then create `GrantedAuthority` from `roles` to implement access control. 
+Note the `roles` claim generated from `appRoles` is decorated with prefix `APPROLE`.
+
 Follow the guide to 
 [add app roles in your application](https://docs.microsoft.com/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps).
 1. In this example you need to create following `appRoles` in your application's manifest:

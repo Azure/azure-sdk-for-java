@@ -380,7 +380,8 @@ Here are some examples about how to use these properties:
 #### Support access control by id token in web application 
 
 This starter supports creating `GrantedAuthority` from id_token's `roles` claim to allow using `id_token` for authorization in web application. Developers can use the
-`appRoles` feature of Azure Active Directory to create `roles` claim and implement access control. 
+`appRoles` feature of Azure Active Directory to create `roles` claim and implement access control. Note the `roles` claim generated from `appRoles` is decorated with prefix `APPROLE`.
+
 Follow the guide to [add app roles in your application and assign to users or groups](https://docs.microsoft.com/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps).
 
 * Step 1: Add below `appRoles` configuration in your application's manifest:

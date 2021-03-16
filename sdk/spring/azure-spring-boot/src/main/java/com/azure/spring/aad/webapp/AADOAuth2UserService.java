@@ -25,7 +25,12 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -78,12 +83,12 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
         }
         String nameAttributeKey =
             Optional.of(userRequest)
-                .map(OAuth2UserRequest::getClientRegistration)
-                .map(ClientRegistration::getProviderDetails)
-                .map(ClientRegistration.ProviderDetails::getUserInfoEndpoint)
-                .map(ClientRegistration.ProviderDetails.UserInfoEndpoint::getUserNameAttributeName)
-                .filter(StringUtils::hasText)
-                .orElse(AADTokenClaim.NAME);
+                    .map(OAuth2UserRequest::getClientRegistration)
+                    .map(ClientRegistration::getProviderDetails)
+                    .map(ClientRegistration.ProviderDetails::getUserInfoEndpoint)
+                    .map(ClientRegistration.ProviderDetails.UserInfoEndpoint::getUserNameAttributeName)
+                    .filter(StringUtils::hasText)
+                    .orElse(AADTokenClaim.NAME);
         // Create a copy of oidcUser but use the mappedAuthorities instead
         DefaultOidcUser defaultOidcUser = new DefaultOidcUser(authorities, idToken, nameAttributeKey);
 
