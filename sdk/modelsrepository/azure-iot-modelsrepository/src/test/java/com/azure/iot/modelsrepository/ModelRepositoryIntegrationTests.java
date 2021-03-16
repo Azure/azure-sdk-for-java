@@ -7,6 +7,7 @@ import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.test.StepVerifier;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.azure.iot.modelsrepository.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.iot.modelsrepository.TestHelper.assertRestException;
 
 public class ModelRepositoryIntegrationTests extends ModelsRepositoryTestBase {
 
@@ -25,9 +27,10 @@ public class ModelRepositoryIntegrationTests extends ModelsRepositoryTestBase {
 
         ModelsRepositoryAsyncClient client = getAsyncClient(httpClient, serviceVersion);
 
-        Map<String, String> result = client.getModels(dtmi).block();
-        Assertions.assertTrue(result.keySet().size() == 1);
-        Assertions.assertTrue(result.keySet().contains(dtmi));
+        StepVerifier
+            .create(client.getModels(dtmi))
+            .assertNext(model -> Assertions.assertTrue(model.keySet().size() == 1 && model.keySet().contains(dtmi)))
+            .verifyComplete();
     }
 
 
@@ -38,9 +41,9 @@ public class ModelRepositoryIntegrationTests extends ModelsRepositoryTestBase {
 
         ModelsRepositoryAsyncClient client = getAsyncClient(httpClient, serviceVersion);
 
-        Map<String, String> result = client.getModels(dtmi).block();
-        Assertions.assertTrue(result.keySet().size() == 1);
-        Assertions.assertTrue(result.keySet().contains(dtmi));
+        StepVerifier
+            .create(client.getModels(dtmi))
+            .verifyErrorSatisfies(error -> assertRestException(error, 400));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -53,10 +56,10 @@ public class ModelRepositoryIntegrationTests extends ModelsRepositoryTestBase {
 
         ModelsRepositoryAsyncClient client = getAsyncClient(httpClient, serviceVersion);
 
-        Map<String, String> result = client.getModels(dtmi).block();
-
-        Assertions.assertTrue(result.keySet().size() == expectedDtmis.size());
-        Assertions.assertTrue(result.keySet().containsAll(expectedDependencies));
+        StepVerifier
+            .create(client.getModels(dtmi))
+            .assertNext(model -> Assertions.assertTrue(model.keySet().size() == expectedDtmis.size() && model.keySet().containsAll(expectedDependencies)))
+            .verifyComplete();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -69,8 +72,10 @@ public class ModelRepositoryIntegrationTests extends ModelsRepositoryTestBase {
 
         ModelsRepositoryAsyncClient client = getAsyncClient(httpClient, serviceVersion);
 
-        Map<String, String> result = client.getModels(inputDtmis).block();
-        Assertions.assertTrue(result.keySet().size() == 1);
+        StepVerifier
+            .create(client.getModels(inputDtmis))
+            .assertNext(model -> Assertions.assertTrue(model.keySet().size() == 1))
+            .verifyComplete();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -81,7 +86,9 @@ public class ModelRepositoryIntegrationTests extends ModelsRepositoryTestBase {
 
         Map<String, String> result = client.getModels(dtmi, ModelsDependencyResolution.DISABLED).block();
 
-        Assertions.assertTrue(result.keySet().size() == 1);
-        Assertions.assertTrue(result.keySet().contains(dtmi));
+        StepVerifier
+            .create(client.getModels(dtmi, ModelsDependencyResolution.DISABLED))
+            .assertNext(model -> Assertions.assertTrue(model.keySet().size() == 1 && model.keySet().contains(dtmi)))
+            .verifyComplete();
     }
 }

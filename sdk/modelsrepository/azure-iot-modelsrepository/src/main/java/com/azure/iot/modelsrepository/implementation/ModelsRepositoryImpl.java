@@ -4,10 +4,18 @@
 package com.azure.iot.modelsrepository.implementation;
 
 import com.azure.core.annotation.*;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.iot.modelsrepository.implementation.models.ErrorResponseException;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 
 /**
  * An instance of this class provides access to all the operations defined in ModelsRepository.
@@ -55,7 +63,46 @@ public final class ModelsRepositoryImpl {
         }
 
         return service.getModelFromPath(
-            this.client.getHost(), path, context);
+            this.client.getHost(), path, context)
+            .onErrorMap(s -> new ErrorResponseException(
+                "No!",
+                new HttpResponse(new HttpRequest(HttpMethod.GET, this.client.getHost() + path)) {
+                    @Override
+                    public int getStatusCode() {
+                        return 400;
+                    }
+
+                    @Override
+                    public String getHeaderValue(String s) {
+                        return null;
+                    }
+
+                    @Override
+                    public HttpHeaders getHeaders() {
+                        return null;
+                    }
+
+                    @Override
+                    public Flux<ByteBuffer> getBody() {
+                        return null;
+                    }
+
+                    @Override
+                    public Mono<byte[]> getBodyAsByteArray() {
+                        return null;
+                    }
+
+                    @Override
+                    public Mono<String> getBodyAsString() {
+                        return null;
+                    }
+
+                    @Override
+                    public Mono<String> getBodyAsString(Charset charset) {
+                        return null;
+                    }
+                }
+            ));
     }
 
     /**
@@ -68,7 +115,6 @@ public final class ModelsRepositoryImpl {
 
         @Get("{path}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<byte[]> getModelFromPath(
             @HostParam("$host") String host,
             @PathParam("path") String path,
