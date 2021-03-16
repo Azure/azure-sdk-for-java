@@ -1,428 +1,349 @@
-spring:
-  - name: Azure Spring Boot Bom
-    content:
-      - name: Azure Spring Boot Bom
-        id: spring-boot-bom
-        description: BOM for Microsoft Azure Spring Boot support.
-        artifacts:
-          - artifactId: azure-spring-boot-bom
-            groupId: com.azure.spring
-            versionGA: 3.2.0
-            versionPreview: 3.0.0-beta.1
-            bom:
+- name: Azure Spring Boot Bom
+  content:
+    - name: Azure Spring Boot Bom
+      id: spring-boot-bom
+      description: BOM for Microsoft Azure Spring Boot support.
+      artifacts:
+        - artifactId: azure-spring-boot-bom
+          groupId: com.azure.spring
+          versionGA: 3.2.0
+          versionPreview: 3.0.0-beta.1
+          type: spring
+          links:
+            repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-bom/3.2.0/jar/
+            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/boms/azure-spring-boot-bom
+          springProperties:
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             mappings:
               - compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
                 groupId: com.microsoft.azure
                 artifactId: azure-spring-boot-bom
-            scope:
-            alias:
-            facets:
-            starter: false
-            links:
-              - rel: repopath
-                href: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-bom/3.2.0/jar/
-              - rel: msdocs
-                href:
-              - rel: ghdocs
-                href:
-  - name: Active Directory
-    content:
-      - name: Active Directory
-        id: active-directory
-        description: Azure Active Directory (Azure AD) is Microsoft’s cloud-based identity and access management service, which helps your employees sign in and access resources.
-        artifacts:
-          - artifactId: azure-spring-boot-starter-active-directory
-            groupId: com.azure.spring
-            versionGA: 3.2.0
-            versionPreview:
+                version: 2.2.4
+- name: Active Directory
+  content:
+    - name: Active Directory
+      id: active-directory
+      description: Azure Active Directory (Azure AD) is Microsoft’s cloud-based identity and access management service, which helps your employees sign in and access resources.
+      msdocs: https://docs.microsoft.com/azure/active-directory/fundamentals/
+      artifacts:
+        - artifactId: azure-spring-boot-starter-active-directory
+          groupId: com.azure.spring
+          versionGA: 3.2.0
+          type: starter
+          links:
+            repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-active-directory/3.2.0/jar
+            msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-active-directory-readme?view=azure-java-stable
+            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-active-directory
+          springProperties:
             bom: spring-boot-bom
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             mappings:
               - compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
                 groupId: com.microsoft.azure
                 artifactId: azure-active-directory-spring-boot-starter
-            scope:
-            alias:
-            facets:
-            starter: true
-            links:
-              - rel: repopath
-                href: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-active-directory/3.2.0/jar
-              - rel: msdocs
-                href: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-active-directory-readme?view=azure-java-stable
-              - rel: ghdocs
-                href:
-  - name: Active Directory B2C
-    content:
-      - name: Active Directory B2C
-        id: active-directory-b2c
-        description: Azure Active Directory B2C provides business-to-customer identity as a service. Your customers use their preferred social, enterprise, or local account identities to get single sign-on access to your applications and APIs.
-        artifacts:
-          - artifactId: azure-spring-boot-starter-active-directory-b2c
-            groupId: com.azure.spring
-            versionGA: 3.2.0
-            versionPreview: 3.0.0-beta.1
+                version: 2.2.4
+- name: Active Directory B2C
+  content:
+    - name: Active Directory B2C
+      id: active-directory-b2c
+      description: Azure Active Directory B2C provides business-to-customer identity as a service. Your customers use their preferred social, enterprise, or local account identities to get single sign-on access to your applications and APIs.
+      msdocs: https://docs.microsoft.com/azure/active-directory-b2c/
+      artifacts:
+        - artifactId: azure-spring-boot-starter-active-directory-b2c
+          groupId: com.azure.spring
+          versionGA: 3.2.0
+          versionPreview: 3.0.0-beta.1
+          type: starter
+          links:
+            repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-active-directory-b2c/3.2.0/jar
+            msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-active-directory-b2c-readme?view=azure-java-stable
+            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-active-directory-b2c
+          springProperties:
             bom: spring-boot-bom
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             mappings:
               - compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
                 groupId: com.microsoft.azure
                 artifactId: azure-active-directory-b2c-spring-boot-starter
-            scope:
-            alias:
-            facets:
-            starter: true
-            links:
-              - rel: repopath
-                href: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-active-directory-b2c/3.2.0/jar
-              - rel: msdocs
-                href: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-active-directory-b2c-readme?view=azure-java-stable
-              - rel: ghdocs
-                href:
-  - name: Cosmos DB
-    content:
-      - name: Spring Data Cosmos
-        id: spring-data-cosmos
-        description: Azure Cosmos DB is a fully managed NoSQL database for modern app development. Single-digit millisecond response times, and automatic and instant scalability, guarantee speed at any scale. Business continuity is assured with SLA-backed availability and enterprise-grade security.
-        artifacts:
-          - artifactId: azure-spring-boot-starter-cosmos
-            groupId: com.azure.spring
-            versionGA: 3.2.0
-            versionPreview: 3.0.0-beta.1
+                version: 2.2.4
+- name: Cosmos DB
+  content:
+    - name: Spring Data Cosmos
+      id: spring-data-cosmos
+      description: Azure Cosmos DB is a fully managed NoSQL database for modern app development. Single-digit millisecond response times, and automatic and instant scalability, guarantee speed at any scale. Business continuity is assured with SLA-backed availability and enterprise-grade security.
+      msdocs: https://docs.microsoft.com/azure/cosmos-db/
+      artifacts:
+        - artifactId: azure-spring-boot-starter-cosmos
+          groupId: com.azure.spring
+          versionGA: 3.2.0
+          versionPreview: 3.0.0-beta.1
+          type: starter
+          links:
+            repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-cosmos/3.2.0/jar
+            msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-cosmos-readme?view=azure-java-stable
+            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-cosmos
+          springProperties:
             bom: spring-boot-bom
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             mappings:
               - compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
                 groupId: com.microsoft.azure
                 artifactId: azure-cosmosdb-spring-boot-starter
-            scope:
-            alias:
-            facets:
-            starter: true
-            links:
-              - rel: repopath
-                href: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-cosmos/3.2.0/jar
-              - rel: msdocs
-                href: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-cosmos-readme?view=azure-java-stable
-              - rel: ghdocs
-                href:
-  - name: Key Vault
-    content:
-      - name: Key Vault - JCA
-        id: key-vault-jca
-        description: The JCA Provider for Azure Key Vault is a Java Cryptography Architecture provider for certificates in Azure Key Vault.
-        artifacts:
-          - artifactId: azure-security-keyvault-jca
-            groupId: com.azure
-            versionGA:
-            versionPreview: 1.0.0-beta.4
-            bom:
-            compatibilityRange:
-            mappings:
-              - compatibilityRange:
-                groupId:
-                artifactId:
-            scope:
-            alias:
-            facets:
-            starter: false
-            links:
-              - rel: repopath
-                href: https://search.maven.org/artifact/com.azure/azure-security-keyvault-jca/1.0.0-beta.4/jar
-              - rel: msdocs
-                href: https://docs.microsoft.com/java/api/overview/azure/security-keyvault-jca-readme?view=azure-java-preview
-              - rel: ghdocs
-                href: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-security-keyvault-jca/1.0.0-beta.4/index.html
-          - artifactId: azure-spring-boot-starter-keyvault-certificates
-            groupId: com.azure.spring
-            versionGA:
-            versionPreview: 3.0.0-beta.4
-            bom:
+                version: 2.2.4
+- name: Key Vault
+  content:
+    - name: Key Vault - JCA
+      id: key-vault-jca
+      description: The JCA Provider for Azure Key Vault is a Java Cryptography Architecture provider for certificates in Azure Key Vault.
+      msdocs: https://docs.microsoft.com/azure/key-vault/
+      artifacts:
+        - artifactId: azure-security-keyvault-jca
+          groupId: com.azure
+          versionPreview: 1.0.0-beta.4
+          type: client
+          links:
+            repopath: https://search.maven.org/artifact/com.azure/azure-security-keyvault-jca/1.0.0-beta.4/jar
+            msdocs: https://docs.microsoft.com/java/api/overview/azure/security-keyvault-jca-readme?view=azure-java-preview
+            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-security-keyvault-jca/1.0.0-beta.4/index.html
+            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-security-keyvault-jca
+        - artifactId: azure-spring-boot-starter-keyvault-certificates
+          groupId: com.azure.spring
+          versionPreview: 3.0.0-beta.4
+          type: starter
+          links:
+            repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-keyvault-certificates/3.0.0-beta.4/jar
+            msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-keyvault-certificates-readme?view=azure-java-preview
+            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-spring-boot-starter-keyvault-certificates/3.0.0-beta.4/index.html
+            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates
+          springProperties:
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
-            mappings:
-              - compatibilityRange:
-                groupId:
-                artifactId:
-            scope:
-            alias:
-            facets:
-            starter: true
-            links:
-              - rel: repopath
-                href: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-keyvault-certificates/3.0.0-beta.4/jar
-              - rel: msdocs
-                href: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-keyvault-certificates-readme?view=azure-java-preview
-              - rel: ghdocs
-                href: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-spring-boot-starter-keyvault-certificates/3.0.0-beta.4/index.html
-      - name: Key Vault - Secrets
-        id: key-vault-secrets
-        description: Azure Key Vault Secrets allows you to securely store and tightly control the access to tokens, passwords, API keys, and other secrets. This library offers operations to create, retrieve, update, delete, purge, backup, restore, and list the secrets and its versions.
-        artifacts:
-          - artifactId: azure-spring-boot-starter-keyvault-secrets
-            groupId: com.azure.spring
-            versionGA: 3.2.0
-            versionPreview: 3.0.0-beta.1
+    - name: Key Vault - Secrets
+      id: key-vault-secrets
+      description: Azure Key Vault Secrets allows you to securely store and tightly control the access to tokens, passwords, API keys, and other secrets. This library offers operations to create, retrieve, update, delete, purge, backup, restore, and list the secrets and its versions.
+      msdocs: https://docs.microsoft.com/azure/key-vault/secrets/about-secrets
+      artifacts:
+        - artifactId: azure-spring-boot-starter-keyvault-secrets
+          groupId: com.azure.spring
+          versionGA: 3.2.0
+          versionPreview: 3.0.0-beta.1
+          type: starter
+          links:
+            repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-keyvault-secrets/3.2.0/jar
+            msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-keyvault-secrets-readme?view=azure-java-stable
+            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-keyvault-secrets
+          springProperties:
             bom: spring-boot-bom
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             mappings:
               - compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
                 groupId: com.microsoft.azure
                 artifactId: azure-keyvault-secrets-spring-boot-starter
-            scope:
-            alias:
-            facets:
-            starter: true
-            links:
-              - rel: repopath
-                href: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-keyvault-secrets/3.2.0/jar
-              - rel: msdocs
-                href: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-keyvault-secrets-readme?view=azure-java-stable
-              - rel: ghdocs
-                href:
-  - name: Storage
-    content:
-      - name: Storage - Blobs
-        id: storage-blobs
-        description: Azure Blob Storage is Microsoft's object storage solution for the cloud. Blob Storage is optimized for storing massive amounts of unstructured data. Unstructured data is data that does not adhere to a particular data model or definition, such as text or binary data.
-        artifacts:
-          - artifactId: azure-spring-boot-starter-storage
-            groupId: com.azure.spring
-            versionGA: 3.2.0
-            versionPreview: 3.0.0-beta.1
+                version: 2.2.4
+- name: Storage
+  content:
+    - name: Storage - Blobs
+      id: storage-blobs
+      description: Azure Blob Storage is Microsoft's object storage solution for the cloud. Blob Storage is optimized for storing massive amounts of unstructured data. Unstructured data is data that does not adhere to a particular data model or definition, such as text or binary data.
+      msdocs: https://docs.microsoft.com/azure/storage/blobs/
+      artifacts:
+        - artifactId: azure-spring-boot-starter-storage
+          groupId: com.azure.spring
+          versionGA: 3.2.0
+          versionPreview: 3.0.0-beta.1
+          type: starter
+          links:
+            repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-storage/3.2.0/jar/
+            msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-storage-readme?view=azure-java-stable
+            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-storage
+          springProperties:
             bom: spring-boot-bom
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             mappings:
               - compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
                 groupId: com.microsoft.azure
                 artifactId: azure-storage-spring-boot-starter
-            scope:
-            alias:
-            facets:
-            starter: true
-            links:
-              - rel: repopath
-                href: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-storage/3.2.0/jar/
-              - rel: msdocs
-                href: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-storage-readme?view=azure-java-stable
-              - rel: ghdocs
-                href:
-      - name: Storage - Queues
-        id: storage-queues
-        description: Azure Queue Storage is a service for storing large numbers of messages. You access messages from anywhere in the world via authenticated calls using HTTP or HTTPS. A queue message can be up to 64 KB in size. A queue may contain millions of messages, up to the total capacity limit of a storage account. Queues are commonly used to create a backlog of work to process asynchronously.
-        artifacts:
-          - artifactId: azure-spring-cloud-starter-storage-queue
-            groupId: com.azure.spring
-            versionGA: 2.2.0
-            versionPreview: 2.0.0-beta.1
-            bom:
+                version: 2.2.4
+    - name: Storage - Queues
+      id: storage-queues
+      description: Azure Queue Storage is a service for storing large numbers of messages. You access messages from anywhere in the world via authenticated calls using HTTP or HTTPS. A queue message can be up to 64 KB in size. A queue may contain millions of messages, up to the total capacity limit of a storage account. Queues are commonly used to create a backlog of work to process asynchronously.
+      msdocs: https://docs.microsoft.com/azure/storage/queues/
+      artifacts:
+        - artifactId: azure-spring-cloud-starter-storage-queue
+          groupId: com.azure.spring
+          versionGA: 2.2.0
+          versionPreview: 2.0.0-beta.1
+          type: starter
+          links:
+            repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-starter-storage-queue/2.2.0/jar/
+            msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-starter-storage-queue-readme?view=azure-java-stable
+            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-storage-queue
+          springProperties:
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             mappings:
               - compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
                 groupId: com.microsoft.azure
                 artifactId: spring-cloud-starter-azure-storage-queue
-            scope:
-            alias:
-            facets:
-            starter: true
-            links:
-              - rel: repopath
-                href: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-starter-storage-queue/2.2.0/jar/
-              - rel: msdocs
-                href: https://docs.microsoft.com/en-gb/java/api/overview/azure/spring-cloud-starter-storage-queue-readme?view=azure-java-stable
-              - rel: ghdocs
-                href:
-  - name: Service Bus
-    content:
-      - name: Service Bus
-        id: service-bus
-        description: Microsoft Azure Service Bus is a fully managed enterprise integration message broker. Service Bus can decouple applications and services. Service Bus offers a reliable and secure platform for asynchronous transfer of data and state. Data is transferred between different applications and services using messages.
-        artifacts:
-          - artifactId: azure-spring-cloud-stream-binder-servicebus-topic
-            groupId: com.azure.spring
-            versionGA: 2.2.0
-            versionPreview: 2.0.0-beta.1
-            bom:
+                version: 1.2.4
+- name: Service Bus
+  content:
+    - name: Service Bus
+      id: service-bus
+      description: Microsoft Azure Service Bus is a fully managed enterprise integration message broker. Service Bus can decouple applications and services. Service Bus offers a reliable and secure platform for asynchronous transfer of data and state. Data is transferred between different applications and services using messages.
+      msdocs: https://docs.microsoft.com/azure/service-bus-messaging/
+      artifacts:
+        - artifactId: azure-spring-cloud-stream-binder-servicebus-topic
+          groupId: com.azure.spring
+          versionGA: 2.2.0
+          versionPreview: 2.0.0-beta.1
+          type: spring
+          links:
+            repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-stream-binder-servicebus-topic/2.2.0/jar
+            msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-stream-binder-servicebus-topic-readme?view=azure-java-stable
+            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-spring-cloud-stream-binder-servicebus-topic/2.2.0/index.html
+            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-stream-binder-servicebus-topic
+          springProperties:
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             mappings:
               - compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
                 groupId: com.microsoft.azure
                 artifactId: spring-cloud-azure-servicebus-topic-stream-binder
-            scope:
-            alias:
-            facets:
-            starter: false
-            links:
-              - rel: repopath
-                href: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-stream-binder-servicebus-topic/2.2.0/jar
-              - rel: msdocs
-                href: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-stream-binder-servicebus-topic-readme?view=azure-java-stable
-              - rel: ghdocs
-                href: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-spring-cloud-stream-binder-servicebus-topic/2.2.0/index.html
-          - artifactId: azure-spring-cloud-stream-binder-servicebus-queue
-            groupId: com.azure.spring
-            versionGA: 2.2.0
-            versionPreview: 2.0.0-beta.1
-            bom:
+                version: 1.2.4
+        - artifactId: azure-spring-cloud-stream-binder-servicebus-queue
+          groupId: com.azure.spring
+          versionGA: 2.2.0
+          versionPreview: 2.0.0-beta.1
+          type: spring
+          links:
+            repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-stream-binder-servicebus-queue/2.2.0/jar
+            msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-stream-binder-servicebus-queue-readme?view=azure-java-stable
+            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-spring-cloud-stream-binder-servicebus-queue/2.2.0/index.html
+            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-stream-binder-servicebus-queue
+          springProperties:
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             mappings:
               - compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
                 groupId: com.microsoft.azure
                 artifactId: spring-cloud-azure-servicebus-queue-stream-binder
-            scope:
-            alias:
-            facets:
-            starter: false
-            links:
-              - rel: repopath
-                href: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-stream-binder-servicebus-queue/2.2.0/jar
-              - rel: msdocs
-                href: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-stream-binder-servicebus-queue-readme?view=azure-java-stable
-              - rel: ghdocs
-                href: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-spring-cloud-stream-binder-servicebus-queue/2.2.0/index.html
-          - artifactId: azure-spring-cloud-starter-servicebus
-            groupId: com.azure.spring
-            versionGA: 2.2.0
-            versionPreview: 2.0.0-beta.1
-            bom:
+                version: 1.2.4
+        - artifactId: azure-spring-cloud-starter-servicebus
+          groupId: com.azure.spring
+          versionGA: 2.2.0
+          versionPreview: 2.0.0-beta.1
+          type: starter
+          links:
+            repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-starter-servicebus/2.2.0/jar
+            msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-starter-servicebus-readme?view=azure-java-stable
+            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-servicebus
+          springProperties:
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             mappings:
               - compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
                 groupId: com.microsoft.azure
                 artifactId: spring-cloud-starter-azure-servicebus
-            scope:
-            alias:
-            facets:
-            starter: true
-            links:
-              - rel: repopath
-                href: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-starter-servicebus/2.2.0/jar
-              - rel: msdocs
-                href: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-starter-servicebus-readme?view=azure-java-stable
-              - rel: ghdocs
-                href:
-      - name: Service Bus Jms
-        id: service-bus-jms
-        description: Microsoft Azure Service Bus is a fully managed enterprise integration message broker. Service Bus can decouple applications and services. Service Bus offers a reliable and secure platform for asynchronous transfer of data and state. Data is transferred between different applications and services using messages.
-        artifacts:
-          - artifactId: azure-spring-boot-starter-servicebus-jms
-            groupId: com.azure.spring
-            versionGA: 3.2.0
-            versionPreview: 3.0.0-beta.1
+                version: 1.2.4
+    - name: Service Bus Jms
+      id: service-bus-jms
+      description: Microsoft Azure Service Bus is a fully managed enterprise integration message broker. Service Bus can decouple applications and services. Service Bus offers a reliable and secure platform for asynchronous transfer of data and state. Data is transferred between different applications and services using messages.
+      msdocs: https://docs.microsoft.com/azure/service-bus-messaging/how-to-use-java-message-service-20
+      artifacts:
+        - artifactId: azure-spring-boot-starter-servicebus-jms
+          groupId: com.azure.spring
+          versionGA: 3.2.0
+          versionPreview: 3.0.0-beta.1
+          type: starter
+          links:
+            repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-servicebus-jms/3.2.0/jar
+            msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-servicebus-jms-readme?view=azure-java-stable
+            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-servicebus-jms
+          springProperties:
             bom: spring-boot-bom
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             mappings:
               - compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
                 groupId: com.microsoft.azure
                 artifactId: azure-servicebus-jms-spring-boot-starter
-            scope:
-            alias:
-            facets:
-            starter: true
-            links:
-              - rel: repopath
-                href: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-servicebus-jms/3.2.0/jar
-              - rel: msdocs
-                href: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-servicebus-jms-readme?view=azure-java-stable
-              - rel: ghdocs
-                href:
-  - name: Redis Cache
-    content:
-      - name: Azure Spring Cloud Starter Cache
-        id: azure-spring-cloud-starter-cache
-        description: Azure Cache for Redis provides an in-memory data store based on the open-source software Redis.
-        artifacts:
-          - artifactId: azure-spring-cloud-starter-cache
-            groupId: com.azure.spring
-            versionGA: 2.2.0
-            versionPreview: 2.0.0-beta.1
-            bom:
+                version: 2.2.4
+- name: Redis Cache
+  content:
+    - name: Azure Spring Cloud Starter Cache
+      id: azure-spring-cloud-starter-cache
+      description: Azure Cache for Redis provides an in-memory data store based on the open-source software Redis.
+      msdocs: https://docs.microsoft.com/azure/azure-cache-for-redis/
+      artifacts:
+        - artifactId: azure-spring-cloud-starter-cache
+          groupId: com.azure.spring
+          versionGA: 2.2.0
+          versionPreview: 2.0.0-beta.1
+          type: starter
+          links:
+            repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-starter-cache/2.2.0/jar
+            msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-starter-cache-readme?view=azure-java-stable
+            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-cache
+          springProperties:
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             mappings:
               - compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
                 groupId: com.microsoft.azure
                 artifactId: spring-starter-azure-cache
-            scope:
-            alias:
-            facets:
-            starter: true
-            links:
-              - rel: repopath
-                href: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-starter-cache/2.2.0/jar
-              - rel: msdocs
-                href: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-starter-cache-readme?view=azure-java-stable
-              - rel: ghdocs
-                href:
-  - name: Event Hubs
-    content:
-      - name: Event Hubs
-        id: event-hubs
-        description: Azure Event Hubs is a big data streaming platform and event ingestion service. It can receive and process millions of events per second. Data sent to an event hub can be transformed and stored by using any real-time analytics provider or batching/storage adapters.
-        artifacts:
-          - artifactId: azure-spring-cloud-starter-eventhubs
-            groupId: com.azure.spring
-            versionGA: 2.2.0
-            versionPreview: 2.0.0-beta.1
-            bom:
+                version: 1.2.4
+- name: Event Hubs
+  content:
+    - name: Event Hubs
+      id: event-hubs
+      description: Azure Event Hubs is a big data streaming platform and event ingestion service. It can receive and process millions of events per second. Data sent to an event hub can be transformed and stored by using any real-time analytics provider or batching/storage adapters.
+      msdocs: https://docs.microsoft.com/azure/event-hubs/
+      artifacts:
+        - artifactId: azure-spring-cloud-starter-eventhubs
+          groupId: com.azure.spring
+          versionGA: 2.2.0
+          versionPreview: 2.0.0-beta.1
+          type: starter
+          links:
+            repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-starter-eventhubs/2.2.0/jar
+            msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-starter-eventhubs-readme?view=azure-java-stable
+            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-eventhubs
+          springProperties:
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             mappings:
               - compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
                 groupId: com.microsoft.azure
                 artifactId: spring-cloud-starter-azure-eventhubs
-            scope:
-            alias:
-            facets:
-            starter: true
-            links:
-              - rel: repopath
-                href: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-starter-eventhubs/2.2.0/jar
-              - rel: msdocs
-                href: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-starter-eventhubs-readme?view=azure-java-stable
-              - rel: ghdocs
-                href:
-          - artifactId: azure-spring-cloud-stream-binder-eventhubs
-            groupId: com.azure.spring
-            versionGA: 2.2.0
-            versionPreview: 2.0.0-beta.1
-            bom:
+                version: 1.2.4
+        - artifactId: azure-spring-cloud-stream-binder-eventhubs
+          groupId: com.azure.spring
+          versionGA: 2.2.0
+          versionPreview: 2.0.0-beta.1
+          type: spring
+          links:
+            repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-stream-binder-eventhubs/2.2.0/jar/
+            msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-stream-binder-eventhubs-readme?view=azure-java-stable
+            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-spring-cloud-stream-binder-eventhubs/2.2.0/index.html
+            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-stream-binder-eventhubs
+          springProperties:
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             mappings:
               - compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
                 groupId: com.microsoft.azure
                 artifactId: spring-cloud-azure-eventhubs-stream-binder
-            scope:
-            alias:
-            facets:
-            starter: false
-            links:
-              - rel: repopath
-                href: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-stream-binder-eventhubs/2.2.0/jar/
-              - rel: msdocs
-                href: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-stream-binder-eventhubs-readme?view=azure-java-stable
-              - rel: ghdocs
-                href: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-spring-cloud-stream-binder-eventhubs/2.2.0/index.html
-      - name: Event Hubs - Kafka
-        id: event-hubs-kafka
-        description: The Event Hubs for Apache Kafka feature provides a protocol head on top of Azure Event Hubs that is protocol compatible with Apache Kafka clients built for Apache Kafka server versions 1.0 and later and supports for both reading from and writing to Event Hubs, which are equivalent to Apache Kafka topics.
-        artifacts:
-          - artifactId: azure-spring-cloud-starter-eventhubs-kafka
-            groupId: com.azure.spring
-            versionGA: 2.2.0
-            versionPreview: 2.0.0-beta.1
-            bom:
+                version: 1.2.4
+    - name: Event Hubs - Kafka
+      id: event-hubs-kafka
+      description: The Event Hubs for Apache Kafka feature provides a protocol head on top of Azure Event Hubs that is protocol compatible with Apache Kafka clients built for Apache Kafka server versions 1.0 and later and supports for both reading from and writing to Event Hubs, which are equivalent to Apache Kafka topics.
+      msdocs: https://docs.microsoft.com/azure/event-hubs/event-hubs-for-kafka-ecosystem-overview
+      artifacts:
+        - artifactId: azure-spring-cloud-starter-eventhubs-kafka
+          groupId: com.azure.spring
+          versionGA: 2.2.0
+          versionPreview: 2.0.0-beta.1
+          type: starter
+          links:
+            repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-starter-eventhubs/2.2.0/jar
+            msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-starter-eventhubs-kafka-readme?view=azure-java-stable
+            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-eventhubs-kafka
+          springProperties:
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             mappings:
               - compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
                 groupId: com.microsoft.azure
                 artifactId: spring-cloud-starter-azure-eventhubs-kafka
-            scope:
-            alias:
-            facets:
-            starter: true
-            links:
-              - rel: repopath
-                href: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-starter-eventhubs/2.2.0/jar
-              - rel: msdocs
-                href: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-starter-eventhubs-kafka-readme?view=azure-java-stable
-              - rel: ghdocs
-                href:
+                version: 1.2.4
