@@ -5,6 +5,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.connector.read.streaming.MicroBatchStream
 import org.apache.spark.sql.connector.read.{Batch, Scan}
 import org.apache.spark.sql.types.StructType
 
@@ -43,4 +44,21 @@ private case class ChangeFeedScan
   override def toBatch: Batch = {
     new ChangeFeedBatch(session, schema, config, cosmosClientStateHandle)
   }
+
+  /**
+   * Returns the physical representation of this scan for streaming query with micro-batch mode. By
+   * default this method throws exception, data sources must overwrite this method to provide an
+   * implementation, if the `Table` that creates this scan returns
+   * `TableCapability` support in its `Table`.
+   *
+   * @param checkpointLocation a path to Hadoop FS scratch space that can be used for failure
+   *                           recovery. Data streams for the same logical source in the same query
+   *                           will be given the same checkpointLocation.
+   * @throws UnsupportedOperationException throws an UnsupportedException when not supporting
+   *                                       `TableCapability.MICRO_BATCH_READ`
+   */
+  override def toMicroBatchStream(checkpointLocation: String): MicroBatchStream = {
+    new ChangeFeedMicroBatchStream(session, schema, config, cosmosClientStateHandle, checkpointLocation: String)
+  }
+
 }

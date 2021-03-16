@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, FeedRange}
 import com.azure.cosmos.spark.ItemWriteStrategy.ItemWriteStrategy
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
@@ -12,6 +13,8 @@ import java.util.Locale
 
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.connector.read.streaming.ReadLimit
+
 import java.time.{Duration, Instant}
 import java.time.format.DateTimeFormatter
 import collection.immutable.Map
@@ -130,7 +133,7 @@ private object CosmosReadConfig {
   }
 }
 
-private case class CosmosContainerConfig(database: String, container: String)
+private[cosmos] case class CosmosContainerConfig(database: String, container: String)
 
 private object ItemWriteStrategy extends Enumeration {
   type ItemWriteStrategy = Value
@@ -377,7 +380,31 @@ private case class CosmosChangeFeedConfig
   startFrom: ChangeFeedStartFromMode,
   startFromPointInTime: Option[Instant],
   maxItemCountPerTrigger: Option[Long]
-)
+) {
+
+  def toRequestOptions(feedRange: FeedRange): CosmosChangeFeedRequestOptions = {
+    val options = this.startFrom match {
+      case ChangeFeedStartFromModes.Now =>
+        CosmosChangeFeedRequestOptions.createForProcessingFromNow(feedRange)
+      case ChangeFeedStartFromModes.Beginning =>
+        CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRange)
+      case ChangeFeedStartFromModes.PointInTime =>
+        CosmosChangeFeedRequestOptions.createForProcessingFromPointInTime(this.startFromPointInTime.get, feedRange)
+    }
+
+    this.changeFeedMode match {
+      case ChangeFeedModes.Incremental => options
+      case ChangeFeedModes.FullFidelity => options.fullFidelity()
+    }
+  }
+
+  def toReadLimit: ReadLimit = {
+    this.maxItemCountPerTrigger match {
+      case Some(maxItemCount) => ReadLimit.maxRows(maxItemCount)
+      case None => ReadLimit.allAvailable()
+    }
+  }
+}
 
 private object CosmosChangeFeedConfig {
   private val DefaultChangeFeedMode: ChangeFeedMode = ChangeFeedModes.Incremental

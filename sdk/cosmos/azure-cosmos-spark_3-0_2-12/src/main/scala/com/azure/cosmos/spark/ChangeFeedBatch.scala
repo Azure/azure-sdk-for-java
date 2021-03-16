@@ -2,11 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.connector.read.{Batch, InputPartition, PartitionReaderFactory}
 import org.apache.spark.sql.types.StructType
+
+import java.time.Duration
 
 private class ChangeFeedBatch
 (
@@ -25,20 +27,40 @@ private class ChangeFeedBatch
     val clientConfiguration = CosmosClientConfiguration.apply(config, readConfig.forceEventualConsistency)
     val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
     val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
+    val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(config)
 
-    val defaultMaxPartitionSizeInMB = (session.sessionState.conf.filesMaxPartitionBytes / (1024 * 1024)).toInt
+    val client =
+      CosmosClientCache.apply(clientConfiguration, Some(cosmosClientStateHandle))
+    val container = ThroughputControlHelper.getContainer(config, containerConfig, client)
 
-    val defaultMinPartitionCount = 1 + (2 * session.sparkContext.defaultParallelism)
+    // This maps the StartFrom settings to concrete LSNs
+    val initialOffsetJson = CosmosPartitionPlanner.createInitialOffset(container, changeFeedConfig, None)
 
-    CosmosPartitionPlanner.createInputPartitions(
+    // Calculates the Input partitions based on start Lsn and latest Lsn
+    val latestOffset = CosmosPartitionPlanner.getLatestOffset(
+      config,
+      ChangeFeedOffset(initialOffsetJson, None),
+      changeFeedConfig.toReadLimit,
+      // ok to use from cache because endLsn is ignored in batch mode
+      Duration.ofMillis(PartitionMetadataCache.refreshIntervalInMsDefault),
       clientConfiguration,
-      Some(cosmosClientStateHandle),
+      this.cosmosClientStateHandle,
       containerConfig,
       partitioningConfig,
-      None, // In batch mode always start a new query - without previous continuation state
-      defaultMinPartitionCount,
-      defaultMaxPartitionSizeInMB
+      this.session,
+      container
     )
+
+    // Latest offset above has the EndLsn specified based on the point-in-time latest offset
+    // For batch mode instead we need to reset it so that the change feed will get fully drained
+    latestOffset
+      .inputPartitions
+      .get
+      .map(partition => partition
+        .withContinuationState(
+          SparkBridgeImplementationInternal
+            .extractChangeFeedStateForRange(initialOffsetJson, partition.feedRange),
+          clearEndLsn = true))
   }
 
   override def createReaderFactory(): PartitionReaderFactory = {

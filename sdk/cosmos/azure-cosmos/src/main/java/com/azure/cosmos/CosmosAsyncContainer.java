@@ -21,8 +21,10 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.batch.BulkExecutor;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.QueryInfo;
+import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupFactory;
 import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
 import com.azure.cosmos.implementation.throughputControl.config.LocalThroughputControlGroup;
@@ -1446,7 +1448,7 @@ public class CosmosAsyncContainer {
      * @param targetedCountAfterSplit
      * @return list of feed ranges after attempted split operation
      */
-    Mono<List<FeedRange>> trySplitFeedRange(FeedRange feedRange, int targetedCountAfterSplit) {
+    Mono<List<FeedRangeEpkImpl>> trySplitFeedRange(FeedRange feedRange, int targetedCountAfterSplit) {
         checkNotNull(feedRange, "Argument 'feedRange' must not be null.");
 
         final AsyncDocumentClient clientWrapper = this.database.getDocClientWrapper();
@@ -1463,6 +1465,23 @@ public class CosmosAsyncContainer {
                 getCollectionObservable,
                 targetedCountAfterSplit
             );
+    }
+
+    Mono<Range<String>> getNormalizedEffectiveRange(FeedRange feedRange) {
+        checkNotNull(feedRange, "Argument 'feedRange' must not be null.");
+
+        final AsyncDocumentClient clientWrapper = this.database.getDocClientWrapper();
+        Mono<Utils.ValueHolder<DocumentCollection>> getCollectionObservable = clientWrapper
+            .getCollectionCache()
+            .resolveByNameAsync(null, this.link, null)
+            .map(collection -> Utils.ValueHolder.initialize(collection));
+
+        return FeedRangeInternal
+            .convert(feedRange)
+            .getNormalizedEffectiveRange(
+                clientWrapper.getPartitionKeyRangeCache(),
+                null,
+                getCollectionObservable);
     }
 
      /**

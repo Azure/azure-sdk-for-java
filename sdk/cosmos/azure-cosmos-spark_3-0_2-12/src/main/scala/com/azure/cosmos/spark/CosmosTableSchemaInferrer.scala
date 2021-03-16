@@ -28,6 +28,7 @@ private object CosmosTableSchemaInferrer
   private[spark] val PreviousRawJsonBodyAttributeName = "_previousRawBody"
   private[spark] val TtlExpiredAttributeName = "_ttlExpired"
   private[spark] val OperationTypeAttributeName = "_operationType"
+  private[spark] val LsnAttributeName = "_lsn"
 
   private val systemProperties = List(
     ETagAttributeName,
@@ -70,8 +71,7 @@ private object CosmosTableSchemaInferrer
     val cosmosReadConfig = CosmosSchemaInferenceConfig.parseCosmosReadConfig(userConfig)
     if (cosmosReadConfig.inferSchemaEnabled) {
       val cosmosContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
-      val sourceContainer = client.getDatabase(cosmosContainerConfig.database).getContainer(cosmosContainerConfig.container)
-
+      val sourceContainer = ThroughputControlHelper.getContainer(userConfig, cosmosContainerConfig, client)
       val queryOptions = new CosmosQueryRequestOptions()
       queryOptions.setMaxBufferedItemCount(cosmosReadConfig.inferSchemaSamplingSize)
       val queryText = cosmosReadConfig.inferSchemaQuery match {

@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, Strings}
-import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, FeedRange}
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal, Strings}
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver, requireNotNull}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
@@ -11,9 +11,9 @@ import reactor.core.scala.publisher.SMono
 import reactor.core.scala.publisher.SMono.PimpJMono
 import reactor.core.scheduler.Schedulers
 
-import java.time.Instant
-import java.util.{Timer, TimerTask}
+import java.time.{Duration, Instant}
 import java.util.concurrent.atomic.{AtomicLong, AtomicReference}
+import java.util.{Timer, TimerTask}
 import scala.collection.concurrent.TrieMap
 
 // The partition metadata here is used purely for a best effort
@@ -24,10 +24,6 @@ import scala.collection.concurrent.TrieMap
 private object PartitionMetadataCache extends CosmosLoggingTrait {
   private[this] val Nothing = 0
   private[this] val cache = new TrieMap[String, PartitionMetadata]
-  // TODO @fabianm reevaluate usage of test hooks over reflection and/or making the fields vars
-  // so that they can simply be changed under test
-  private[this] var cacheTestOverride: Option[TrieMap[String, PartitionMetadata]] = None
-
   // purpose of the time is to update partition metadata
   // additional throughput when more RUs are getting provisioned
   private[this] val timerName = "partition-metadata-refresh-timer"
@@ -35,26 +31,24 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
   // TODO @fabianm consider switching to ScheduledThreadExecutor or ExecutorService
   // see https://stackoverflow.com/questions/409932/java-timer-vs-executorservice
   private[this] val timer: Timer = new Timer(timerName, true)
-  private[this] var testTimerOverride: Option[Timer] = None
-  private[this] val refreshIntervalInMsDefault : Long = 60 * 1000 // refresh cache every minute after initialization
-  private[this] var refreshIntervalInMsOverride: Option[Long] = None
-  private[this] def refreshIntervalInMs : Long= refreshIntervalInMsOverride.getOrElse(refreshIntervalInMsDefault)
-
+  private[spark] val refreshIntervalInMsDefault: Long = 5 * 1000 // refresh cache every minute after initialization
+  // while retrieved within this interval the last time the data will be updated every
+  // refresh cycle
+  private[this] val hotThresholdIntervalInMs: Long = 60 * 1000 // refresh cache every minute after initialization
   // update cached items which haven't been retrieved in the last refreshPeriod only if they
   // have been last updated longer than 15 minutes ago
   // any cached item which has been retrieved within the last refresh period will
   // automatically kept being updated
-  private[this] val staleCachedItemRefreshPeriodInMsDefault : Long = 15 * 60 * 1000
-  private[this] var staleCachedItemRefreshPeriodInMsOverride : Option[Long] = None
-  private[this] def staleCachedItemRefreshPeriodInMs: Long =
-    staleCachedItemRefreshPeriodInMsOverride.getOrElse(staleCachedItemRefreshPeriodInMsDefault)
-
+  private[this] val staleCachedItemRefreshPeriodInMsDefault: Long = 15 * 60 * 1000
   // purged cached items if they haven't been retrieved within 2 hours
-  private[this] val cachedItemTtlInMsDefault : Long = 2 * 60 * 60 * 1000
-  private[this] var cachedItemTtlInMsOverride : Option[Long] = None
-  private[this] def cachedItemTtlInMs: Long = cachedItemTtlInMsOverride.getOrElse(cachedItemTtlInMsDefault)
-
-  this.startRefreshTimer()
+  private[this] val cachedItemTtlInMsDefault: Long = 2 * 60 * 60 * 1000
+  // TODO @fabianm reevaluate usage of test hooks over reflection and/or making the fields vars
+  // so that they can simply be changed under test
+  private[this] var cacheTestOverride: Option[TrieMap[String, PartitionMetadata]] = None
+  private[this] var testTimerOverride: Option[Timer] = None
+  private[this] var refreshIntervalInMsOverride: Option[Long] = None
+  private[this] var staleCachedItemRefreshPeriodInMsOverride: Option[Long] = None
+  private[this] var cachedItemTtlInMsOverride: Option[Long] = None
 
   // NOTE
   // This method can only be used from the Spark driver
@@ -62,10 +56,12 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
   // to retrieve the metadata for the partitioning should only ever need
   // to happen on the driver and not the executors.
   // This also helps reducing the RU consumption of the Cosmos DB call to get the metadata
-  def apply(cosmosClientConfig: CosmosClientConfiguration,
+  def apply(userConfig: Map[String, String],
+            cosmosClientConfig: CosmosClientConfiguration,
             cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
             cosmosContainerConfig: CosmosContainerConfig,
-            feedRange: String): SMono[PartitionMetadata] = {
+            feedRange: NormalizedRange,
+            maxStaleness: Option[Duration] = None): SMono[PartitionMetadata] = {
 
     assertOnSparkDriver()
     requireNotNull(cosmosClientConfig, "cosmosClientConfig")
@@ -75,11 +71,12 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
       cosmosContainerConfig.container,
       feedRange)
 
-    val getKey = (key: String) =>  cache.get(key) match {
+    val getOrCreate = (key: String) => this.getFromCacheIfNotStale(key, maxStaleness) match {
       case Some(metadata) =>
         metadata.lastRetrieved.set(Instant.now.toEpochMilli)
         SMono.just(metadata)
       case None => this.create(
+        userConfig,
         cosmosClientConfig,
         cosmosClientStateHandle,
         cosmosContainerConfig,
@@ -88,134 +85,73 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
     }
 
     cacheTestOverride match {
-      case Some(testCache) => {
+      case Some(testCache) =>
         testCache.get(key) match {
-          case Some(testMetadata) => {
+          case Some(testMetadata) =>
             testMetadata.lastRetrieved.set(Instant.now.toEpochMilli)
             SMono.just(testMetadata)
-          }
-          case None  => getKey(key)
+          case None => getOrCreate(key)
         }
-      }
-      case None => getKey(key)
+      case None => getOrCreate(key)
     }
   }
 
-  def purge(cosmosContainerConfig: CosmosContainerConfig, feedRange: String): Boolean = {
-    assertOnSparkDriver()
-    val key = PartitionMetadata.createKey(
-      cosmosContainerConfig.database,
-      cosmosContainerConfig.container,
-      feedRange)
-
+  private def getFromCacheIfNotStale(key: String, maxStaleness: Option[Duration]): Option[PartitionMetadata] = {
+    val nowEpochMs = Instant.now.toEpochMilli
     cache.get(key) match {
-      case None => false
-      case Some(_) =>
-        cache.remove(key).isDefined
-    }
-  }
+      case Some(metadata) => if (maxStaleness.isEmpty ||
+        nowEpochMs - metadata.lastUpdated.get() <= maxStaleness.get.toMillis) {
 
-  def injectTestData(cosmosContainerConfig: CosmosContainerConfig,
-                     feedRange: String,
-                     partitionMetadata: PartitionMetadata): Unit = {
-
-    val key = PartitionMetadata.createKey(cosmosContainerConfig.database, cosmosContainerConfig.container, feedRange)
-    val effectiveTestCache = this.cacheTestOverride match {
-      case None => {
-        val newCache = new TrieMap[String, PartitionMetadata]()
-        this.cacheTestOverride = Some(newCache)
-        newCache
+        Some(metadata)
+      } else {
+        None
       }
-      case Some(existingCache) => existingCache
+      case None => None
     }
-
-    effectiveTestCache.put(key, partitionMetadata)
-  }
-
-  def resetTestOverrides(): Unit = {
-    val timerOverrideSnapshot = this.testTimerOverride
-    timerOverrideSnapshot match {
-      case Some(testTimer) =>
-        testTimer.cancel()
-        this.testTimerOverride = None
-      case None => Unit
-    }
-
-    this.cacheTestOverride match {
-      case Some(cacheOverrideSnapshot) => {
-        this.cacheTestOverride = None
-        cacheOverrideSnapshot.clear()
-      }
-      case None => Unit
-    }
-    this.refreshIntervalInMsOverride = None
-    this.cachedItemTtlInMsOverride = None
-    this.staleCachedItemRefreshPeriodInMsOverride = None
-  }
-
-  def applyTestOverrides
-  (
-      newRefreshIntervalInMsOverride: Option[Long],
-      newStaleCachedItemRefreshPeriodInMsOverride: Option[Long],
-      newCachedItemTtlInMsOverride: Option[Long]
-  ): Unit = {
-    this.refreshIntervalInMsOverride = newRefreshIntervalInMsOverride
-    this.cachedItemTtlInMsOverride = newCachedItemTtlInMsOverride
-    this.staleCachedItemRefreshPeriodInMsOverride = newStaleCachedItemRefreshPeriodInMsOverride
-    this.testTimerOverride = Some(new Timer(timerOverrideName, true))
-    this.startRefreshTimer()
   }
 
   private[this] def create
   (
+    userConfig: Map[String, String],
     cosmosClientConfiguration: CosmosClientConfiguration,
     cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
     cosmosContainerConfig: CosmosContainerConfig,
-    feedRange: String,
+    feedRange: NormalizedRange,
     key: String
   ): SMono[PartitionMetadata] = {
 
     assertOnSparkDriver()
-    cache.get(key) match {
-      case Some(metadata) =>
-        metadata.lastRetrieved.set(Instant.now.toEpochMilli)
-        SMono.just(metadata)
-      case None =>
-        val metadataObservable = readPartitionMetadata(
-          cosmosClientConfiguration: CosmosClientConfiguration,
-          cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
-          cosmosContainerConfig: CosmosContainerConfig,
-          feedRange: String
-        )
+    val metadataObservable = readPartitionMetadata(
+      userConfig,
+      cosmosClientConfiguration,
+      cosmosClientStateHandle,
+      cosmosContainerConfig,
+      feedRange
+    )
 
-        metadataObservable
-          .map(metadata => {
-            cache.putIfAbsent(key, metadata) match {
-              case None =>
-                metadata
-              case Some(metadataAddedConcurrently) =>
-                metadataAddedConcurrently.lastRetrieved.set(Instant.now.toEpochMilli)
-
-                metadataAddedConcurrently
-            }
-          })
-          .subscribeOn(Schedulers.boundedElastic())
-    }
+    metadataObservable
+      .map(metadata => {
+        cache.put(key, metadata)
+        metadata
+      })
+      .subscribeOn(Schedulers.boundedElastic())
   }
+
+  this.startRefreshTimer()
 
   private def readPartitionMetadata
   (
+    userConfig: Map[String, String],
     cosmosClientConfiguration: CosmosClientConfiguration,
     cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
     cosmosContainerConfig: CosmosContainerConfig,
-    feedRange: String
+    feedRange: NormalizedRange
   ): SMono[PartitionMetadata] = {
     val client = CosmosClientCache.apply(cosmosClientConfiguration, cosmosClientStateHandle)
-    val container = client
-      .getDatabase(cosmosContainerConfig.database)
-      .getContainer(cosmosContainerConfig.container)
+    val container = ThroughputControlHelper.getContainer(userConfig, cosmosContainerConfig, client)
 
-    val options = CosmosChangeFeedRequestOptions.createForProcessingFromNow(FeedRange.fromString(feedRange))
+    val options = CosmosChangeFeedRequestOptions.createForProcessingFromNow(
+      SparkBridgeImplementationInternal.toFeedRange(feedRange))
     options.setMaxItemCount(1)
     options.setMaxPrefetchPageCount(1)
     options.setQuotaInfoEnabled(true)
@@ -238,6 +174,7 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
       .asScala
       .map(_ => {
         PartitionMetadata(
+          userConfig,
           cosmosClientConfiguration,
           cosmosClientStateHandle,
           cosmosContainerConfig,
@@ -249,17 +186,73 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
       })
   }
 
-  private def startRefreshTimer() : Unit = {
+  def injectTestData(cosmosContainerConfig: CosmosContainerConfig,
+                     feedRange: NormalizedRange,
+                     partitionMetadata: PartitionMetadata): Unit = {
+
+    val key = PartitionMetadata.createKey(
+      cosmosContainerConfig.database,
+      cosmosContainerConfig.container,
+      feedRange)
+    val effectiveTestCache = this.cacheTestOverride match {
+      case None =>
+        val newCache = new TrieMap[String, PartitionMetadata]()
+        this.cacheTestOverride = Some(newCache)
+        newCache
+      case Some(existingCache) => existingCache
+    }
+
+    effectiveTestCache.put(key, partitionMetadata)
+  }
+
+  def resetTestOverrides(): Unit = {
+    val timerOverrideSnapshot = this.testTimerOverride
+    timerOverrideSnapshot match {
+      case Some(testTimer) =>
+        testTimer.cancel()
+        this.testTimerOverride = None
+      case None => Unit
+    }
+
+    this.cacheTestOverride match {
+      case Some(cacheOverrideSnapshot) =>
+        this.cacheTestOverride = None
+        cacheOverrideSnapshot.clear()
+      case None => Unit
+    }
+    this.refreshIntervalInMsOverride = None
+    this.cachedItemTtlInMsOverride = None
+    this.staleCachedItemRefreshPeriodInMsOverride = None
+  }
+
+  def applyTestOverrides
+  (
+    newRefreshIntervalInMsOverride: Option[Long],
+    newStaleCachedItemRefreshPeriodInMsOverride: Option[Long],
+    newCachedItemTtlInMsOverride: Option[Long]
+  ): Unit = {
+    this.refreshIntervalInMsOverride = newRefreshIntervalInMsOverride
+    this.cachedItemTtlInMsOverride = newCachedItemTtlInMsOverride
+    this.staleCachedItemRefreshPeriodInMsOverride = newStaleCachedItemRefreshPeriodInMsOverride
+    this.testTimerOverride = Some(new Timer(timerOverrideName, true))
+    this.startRefreshTimer()
+  }
+
+  private def startRefreshTimer(): Unit = {
     logInfo(s"$timerName: scheduling timer - delay: $refreshIntervalInMs ms, period: $refreshIntervalInMs ms")
     // TODO @fabianm consider switching to ScheduledThreadExecutor or ExecutorService
     // see https://stackoverflow.com/questions/409932/java-timer-vs-executorservice
     testTimerOverride.getOrElse(timer).schedule(
-      new TimerTask { def run(): Unit = onRunRefreshTimer() },
+      new TimerTask {
+        def run(): Unit = onRunRefreshTimer()
+      },
       refreshIntervalInMs,
       refreshIntervalInMs)
   }
 
-  private def onRunRefreshTimer() : Unit = {
+  private[this] def refreshIntervalInMs: Long = refreshIntervalInMsOverride.getOrElse(refreshIntervalInMsDefault)
+
+  private def onRunRefreshTimer(): Unit = {
     logTrace(s"--> $timerName: onRunRefreshTimer")
     val snapshot = cache.readOnlySnapshot()
     val updateObservables = snapshot.map(metadataSnapshot => updateIfNecessary(metadataSnapshot._2))
@@ -273,9 +266,12 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
     logTrace(s"<-- $timerName: onRunRefreshTimer")
   }
 
-  private def updateIfNecessary(metadataSnapshot: PartitionMetadata):SMono[Int] = {
+  private def updateIfNecessary
+  (
+    metadataSnapshot: PartitionMetadata
+  ): SMono[Int] = {
     val nowEpochMs = Instant.now.toEpochMilli
-    val hotThreshold = nowEpochMs - refreshIntervalInMs
+    val hotThreshold = nowEpochMs - hotThresholdIntervalInMs
     val staleThreshold = nowEpochMs - staleCachedItemRefreshPeriodInMs
     val ttlThreshold = nowEpochMs - cachedItemTtlInMs
 
@@ -285,6 +281,7 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
       SMono.just(Nothing)
     } else if (lastRetrievedSnapshot < staleThreshold || lastRetrievedSnapshot > hotThreshold) {
       readPartitionMetadata(
+        metadataSnapshot.userConfig,
         metadataSnapshot.cosmosClientConfig,
         metadataSnapshot.cosmosClientStateHandle,
         metadataSnapshot.cosmosContainerConfig,
@@ -295,6 +292,7 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
           metadataSnapshot.cosmosContainerConfig.container,
           metadataSnapshot.feedRange
         )
+        metadata.lastRetrieved.set(metadataSnapshot.lastRetrieved.get())
         if (cache.replace(key, metadataSnapshot, metadata)) {
           logTrace(s"Updated partition metadata '$key'")
         } else {
@@ -305,6 +303,25 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
       })
     } else {
       SMono.just(Nothing)
+    }
+  }
+
+  private[this] def staleCachedItemRefreshPeriodInMs: Long =
+    staleCachedItemRefreshPeriodInMsOverride.getOrElse(staleCachedItemRefreshPeriodInMsDefault)
+
+  private[this] def cachedItemTtlInMs: Long = cachedItemTtlInMsOverride.getOrElse(cachedItemTtlInMsDefault)
+
+  def purge(cosmosContainerConfig: CosmosContainerConfig, feedRange: NormalizedRange): Boolean = {
+    assertOnSparkDriver()
+    val key = PartitionMetadata.createKey(
+      cosmosContainerConfig.database,
+      cosmosContainerConfig.container,
+      feedRange)
+
+    cache.get(key) match {
+      case None => false
+      case Some(_) =>
+        cache.remove(key).isDefined
     }
   }
 }

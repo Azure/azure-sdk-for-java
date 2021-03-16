@@ -6,12 +6,13 @@ import com.azure.cosmos.spark.CosmosPredicates.{requireNotNull, requireNotNullOr
 
 private case class PartitionPlanningInfo
 (
-  feedRange: String,
+  feedRange: NormalizedRange,
   storageSizeInMB: Double,
   progressWeightFactor: Double,
-  scaleFactor: Double
+  scaleFactor: Double,
+  endLsn: Option[Long]
 ) {
-  requireNotNullOrEmpty(feedRange, "feedRange")
+  requireNotNull(feedRange, "feedRange")
   requireNotNull(storageSizeInMB, "storageSizeInMB")
   requireNotNull(scaleFactor, "scaleFactor")
 }

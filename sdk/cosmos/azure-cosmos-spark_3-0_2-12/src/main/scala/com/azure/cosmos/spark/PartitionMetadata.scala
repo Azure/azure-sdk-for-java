@@ -3,14 +3,8 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{
-  CosmosClientMetadataCachesSnapshot,
-  SparkBridgeImplementationInternal
-}
-import com.azure.cosmos.spark.CosmosPredicates.{
-  requireNotNull,
-  requireNotNullOrEmpty
-}
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
+import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
 import org.apache.spark.broadcast.Broadcast
 
 import java.time.Instant
@@ -19,48 +13,109 @@ import java.util.concurrent.atomic.AtomicLong
 private object PartitionMetadata {
   def createKey(databaseId: String,
                 containerId: String,
-                feedRange: String): String =
-    s"$databaseId/$containerId/$feedRange"
+                feedRange: NormalizedRange): String =
+    s"$databaseId/$containerId/${feedRange.min}-${feedRange.max}"
 
-  def apply(cosmosClientConfig: CosmosClientConfiguration,
+  // scalastyle:off parameter.number
+  def apply(userConfig: Map[String, String],
+            cosmosClientConfig: CosmosClientConfiguration,
             cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
             cosmosContainerConfig: CosmosContainerConfig,
-            feedRange: String,
+            feedRange: NormalizedRange,
             documentCount: Long,
             totalDocumentSizeInKB: Long,
-            continuationToken: String): PartitionMetadata = {
+            continuationToken: String,
+            startLsn: Long = 0,
+            endLsn: Option[Long] = None): PartitionMetadata = {
+    // scalastyle:on parameter.number
 
     val nowEpochMs = Instant.now().toEpochMilli
 
+    val latestLsn = SparkBridgeImplementationInternal.extractLsnFromChangeFeedContinuation(
+      continuationToken)
+
     PartitionMetadata(
+      userConfig,
       cosmosClientConfig,
       cosmosClientStateHandle,
       cosmosContainerConfig,
       feedRange,
       documentCount,
       totalDocumentSizeInKB,
-      SparkBridgeImplementationInternal.extractLsnFromChangeFeedContinuation(
-        continuationToken),
+      latestLsn,
+      startLsn,
+      endLsn,
       new AtomicLong(nowEpochMs),
       new AtomicLong(nowEpochMs)
     )
   }
 }
 
-private case class PartitionMetadata(
-    cosmosClientConfig: CosmosClientConfiguration,
-    cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
-    cosmosContainerConfig: CosmosContainerConfig,
-    feedRange: String,
-    documentCount: Long,
-    totalDocumentSizeInKB: Long,
-    latestLsn: Long,
-    lastRetrieved: AtomicLong,
-    lastUpdated: AtomicLong
+private[cosmos] case class PartitionMetadata
+(
+  userConfig: Map[String, String],
+  cosmosClientConfig: CosmosClientConfiguration,
+  cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+  cosmosContainerConfig: CosmosContainerConfig,
+  feedRange: NormalizedRange,
+  documentCount: Long,
+  totalDocumentSizeInKB: Long,
+  latestLsn: Long,
+  startLsn: Long,
+  endLsn: Option[Long],
+  lastRetrieved: AtomicLong,
+  lastUpdated: AtomicLong
 ) {
-  requireNotNullOrEmpty(feedRange, "feedRange")
+
+  requireNotNull(feedRange, "feedRange")
   requireNotNull(cosmosClientConfig, "cosmosClientConfig")
   requireNotNull(cosmosContainerConfig, "cosmosContainerConfig")
+  requireNotNull(startLsn, "startLsn")
   requireNotNull(lastRetrieved, "lastRetrieved")
   requireNotNull(lastUpdated, "lastUpdated")
+
+  def cloneForSubRange(subRange: NormalizedRange, startLsn: Long): PartitionMetadata = {
+    new PartitionMetadata(
+      this.userConfig,
+      this.cosmosClientConfig,
+      this.cosmosClientStateHandle,
+      this.cosmosContainerConfig,
+      subRange,
+      this.documentCount,
+      this.totalDocumentSizeInKB,
+      this.latestLsn,
+      startLsn,
+      this.endLsn,
+      new AtomicLong(this.lastRetrieved.get),
+      new AtomicLong(this.lastUpdated.get)
+    )
+  }
+
+  def withEndLsn(explicitEndLsn: Long): PartitionMetadata = {
+    new PartitionMetadata(
+      this.userConfig,
+      this.cosmosClientConfig,
+      this.cosmosClientStateHandle,
+      this.cosmosContainerConfig,
+      this.feedRange,
+      this.documentCount,
+      this.totalDocumentSizeInKB,
+      this.latestLsn,
+      startLsn,
+      Some(explicitEndLsn),
+      new AtomicLong(this.lastRetrieved.get),
+      new AtomicLong(this.lastUpdated.get)
+    )
+  }
+
+  def getWeightedLsnGap: Long = {
+    val progressFactor = math.max(this.latestLsn - this.startLsn, 0)
+    val averageItemsPerLsn = if (this.documentCount == 0) {
+      1d
+    } else {
+      this.latestLsn / this.documentCount.toDouble
+    }
+
+    (progressFactor * averageItemsPerLsn).toLong
+  }
 }

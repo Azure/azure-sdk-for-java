@@ -41,6 +41,10 @@ trait CosmosLoggingTrait {
     if (log.isInfoEnabled) log.info(msg, throwable)
   }
 
+  protected def isDebugLogEnabled: Boolean = {
+    log.isDebugEnabled()
+  }
+
   protected def logDebug(msg: => String, throwable: Throwable) {
     if (log.isDebugEnabled) log.debug(msg, throwable)
   }

@@ -78,7 +78,9 @@ private class ChangeFeedTable(val session: SparkSession,
   override def name(): String = tableName
 
   override def capabilities(): util.Set[TableCapability] = Set(
-    TableCapability.BATCH_READ).asJava
+    TableCapability.BATCH_READ,
+    TableCapability.MICRO_BATCH_READ
+  ).asJava
 
   override def newScanBuilder(options: CaseInsensitiveStringMap): ScanBuilder = {
     ChangeFeedScanBuilder(
@@ -103,7 +105,10 @@ private class ChangeFeedTable(val session: SparkSession,
         ChangeFeedTable.defaultFullFidelityChangeFeedSchemaForInferenceDisabled
     }
 
-    CosmosTableSchemaInferrer.inferSchema(client, userConfig, defaultSchema)
+    CosmosTableSchemaInferrer.inferSchema(
+      client,
+      userConfig,
+      defaultSchema)
   }
 
   // This can be used only when databaseName and ContainerName are specified.

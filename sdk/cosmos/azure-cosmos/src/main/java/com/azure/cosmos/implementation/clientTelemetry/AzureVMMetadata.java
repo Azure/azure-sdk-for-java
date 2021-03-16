@@ -3,7 +3,9 @@
 package com.azure.cosmos.implementation.clientTelemetry;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AzureVMMetadata {
     private Compute compute;
 
@@ -35,6 +37,7 @@ public class AzureVMMetadata {
         this.compute = compute;
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Compute {
         private String location;
         private String sku;

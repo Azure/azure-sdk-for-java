@@ -3,9 +3,10 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.TestConfigurations
+import com.azure.cosmos.SparkBridgeInternal
+import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, TestConfigurations}
 
-import java.time.Instant
+import java.time.{Duration, Instant}
 import java.util.concurrent.atomic.AtomicLong
 
 class PartitionMetadataCacheSpec
@@ -24,14 +25,19 @@ class PartitionMetadataCacheSpec
   )
   private[this] val clientConfig = CosmosClientConfiguration(userConfig, useEventualConsistency = true)
   private[this] val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
-  private[this] var feedRange: String = ""
+  private[this] var feedRange: NormalizedRange = NormalizedRange("", "FF")
 
   //scalastyle:off multiple.string.literals
   it should "create the partition metadata for the first physical partition" taggedAs RequiresCosmosEndpoint in {
     this.reinitialize()
     val startEpochMs = Instant.now.toEpochMilli
 
-    val newItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    val newItem = PartitionMetadataCache(
+      Map[String, String](),
+      clientConfig,
+      None,
+      containerConfig,
+      feedRange).block()
     newItem.feedRange shouldEqual feedRange
     newItem.lastRetrieved.get should be >= startEpochMs
     newItem.lastUpdated.get should be >= startEpochMs
@@ -42,7 +48,7 @@ class PartitionMetadataCacheSpec
     this.reinitialize()
     val startEpochMs = Instant.now.toEpochMilli
 
-    val newItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    val newItem = PartitionMetadataCache(Map[String, String](), clientConfig, None, containerConfig, feedRange).block()
     newItem.feedRange shouldEqual feedRange
     newItem.lastUpdated.get should be >= startEpochMs
     newItem.lastRetrieved.get should be >=  startEpochMs
@@ -54,7 +60,8 @@ class PartitionMetadataCacheSpec
     Thread.sleep(10)
     //scalastyle:on magic.number
 
-    val nextRetrievedItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    val nextRetrievedItem =
+      PartitionMetadataCache(Map[String, String](), clientConfig, None, containerConfig, feedRange).block()
     nextRetrievedItem.feedRange shouldEqual feedRange
     nextRetrievedItem.lastUpdated.get shouldEqual initialLastUpdated
     nextRetrievedItem.lastRetrieved.get should be > initialLastRetrieved
@@ -64,7 +71,7 @@ class PartitionMetadataCacheSpec
   it should "retrieve new item after purge" taggedAs RequiresCosmosEndpoint in {
     this.reinitialize()
 
-    val newItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    val newItem = PartitionMetadataCache(Map[String, String](), clientConfig, None, containerConfig, feedRange).block()
     val initialLastUpdated = newItem.lastUpdated.get
     PartitionMetadataCache.purge(containerConfig, feedRange) shouldEqual true
 
@@ -72,7 +79,8 @@ class PartitionMetadataCacheSpec
     Thread.sleep(10)
     //scalastyle:on magic.number
 
-    val nextRetrievedItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    val nextRetrievedItem =
+      PartitionMetadataCache(Map[String, String](), clientConfig, None, containerConfig, feedRange).block()
     nextRetrievedItem.lastUpdated.get should be > initialLastUpdated
   }
 
@@ -80,7 +88,7 @@ class PartitionMetadataCacheSpec
   it should "delete cached item after TTL elapsed" taggedAs RequiresCosmosEndpoint in {
     this.reinitialize()
 
-    val newItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    val newItem = PartitionMetadataCache(Map[String, String](), clientConfig, None, containerConfig, feedRange).block()
     val initialLastUpdated = newItem.lastUpdated.get
 
     //scalastyle:off magic.number
@@ -100,7 +108,7 @@ class PartitionMetadataCacheSpec
   it should "automatically update the cached item after staleness threshold elapsed" taggedAs RequiresCosmosEndpoint in {
     this.reinitialize()
 
-    val newItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    val newItem = PartitionMetadataCache(Map[String, String](), clientConfig, None, containerConfig, feedRange).block()
     val initialLastUpdated = newItem.lastUpdated.get
 
     //scalastyle:off magic.number
@@ -112,7 +120,34 @@ class PartitionMetadataCacheSpec
     Thread.sleep(500)
     //scalastyle:on magic.number
 
-    val candidate = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    val candidate =
+      PartitionMetadataCache(Map[String, String](), clientConfig, None, containerConfig, feedRange).block()
+    candidate.lastUpdated.get should be > initialLastUpdated
+
+    PartitionMetadataCache.purge(containerConfig, feedRange) shouldEqual true
+    this.reinitialize()
+  }
+
+  //scalastyle:off multiple.string.literals
+  it should "honor maxStaleness" taggedAs RequiresCosmosEndpoint in {
+    this.reinitialize()
+
+    val newItem =
+      PartitionMetadataCache(Map[String, String](), clientConfig, None, containerConfig, feedRange).block()
+    var initialLastUpdated = newItem.lastUpdated.get
+
+    //scalastyle:off magic.number
+    Thread.sleep(500)
+
+    var candidate: PartitionMetadata = PartitionMetadataCache(
+      Map[String, String](), clientConfig, None, containerConfig, feedRange, Some(Duration.ofMillis(400))).block()
+
+    candidate.lastUpdated.get should be > initialLastUpdated
+    initialLastUpdated = candidate.lastUpdated.get
+    Thread.sleep(1)
+    //scalastyle:on magic.number
+    candidate = PartitionMetadataCache(
+      Map[String, String](), clientConfig, None, containerConfig, feedRange, Some(Duration.ZERO)).block()
     candidate.lastUpdated.get should be > initialLastUpdated
 
     PartitionMetadataCache.purge(containerConfig, feedRange) shouldEqual true
@@ -129,6 +164,7 @@ class PartitionMetadataCacheSpec
     val lastLsn = rnd.nextInt()
 
     val testMetadata = PartitionMetadata(
+      Map[String, String](),
       clientConfig,
       None,
       containerConfig,
@@ -136,6 +172,8 @@ class PartitionMetadataCacheSpec
       docCount,
       docSize,
       lastLsn,
+      0,
+      None,
       new AtomicLong(startEpochMs),
       new AtomicLong(startEpochMs))
 
@@ -145,7 +183,7 @@ class PartitionMetadataCacheSpec
     Thread.sleep(10)
     //scalastyle:on magic.number
 
-    val newItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    val newItem = PartitionMetadataCache(Map[String, String](), clientConfig, None, containerConfig, feedRange).block()
     newItem.feedRange shouldEqual feedRange
     newItem.lastRetrieved.get should be >= startEpochMs
     newItem.lastUpdated.get shouldEqual startEpochMs
@@ -154,14 +192,16 @@ class PartitionMetadataCacheSpec
     val reinitializedEpochMs = Instant.now.toEpochMilli
     this.reinitialize()
 
-    val realItem = PartitionMetadataCache(clientConfig, None, containerConfig, feedRange).block()
+    val realItem = PartitionMetadataCache(Map[String, String](), clientConfig, None, containerConfig, feedRange).block()
     realItem.lastUpdated.get should be >= reinitializedEpochMs
     realItem should not (be theSameInstanceAs testMetadata)
   }
 
   private[this] def reinitialize() = {
     val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
-    this.feedRange = container.getFeedRanges.block.get(0).toString
+
+    val cosmosFeedRange = container.getFeedRanges.block.get(0)
+    this.feedRange = SparkBridgeImplementationInternal.toNormalizedRange(cosmosFeedRange)
     PartitionMetadataCache.purge(containerConfig, feedRange)
     PartitionMetadataCache.resetTestOverrides()
   }

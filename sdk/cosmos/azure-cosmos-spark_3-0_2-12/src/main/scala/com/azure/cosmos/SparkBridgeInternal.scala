@@ -3,24 +3,31 @@
 
 package com.azure.cosmos
 
-import com.azure.cosmos.models.FeedRange
+import com.azure.cosmos.implementation.SparkBridgeImplementationInternal
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl
+import com.azure.cosmos.implementation.routing.Range
+import com.azure.cosmos.spark.NormalizedRange
+
+// scalastyle:off underscore.import
+import scala.collection.JavaConverters._
+// scalastyle:on underscore.import
 
 private[cosmos] object SparkBridgeInternal {
   def trySplitFeedRange
   (
     container: CosmosAsyncContainer,
-    feedRange: String,
+    feedRange: NormalizedRange,
     targetedCountAfterSplit: Int
-  ): Array[String] = {
+  ): Array[NormalizedRange] = {
 
     val list = container
-      .trySplitFeedRange(FeedRange.fromString(feedRange), targetedCountAfterSplit)
+      .trySplitFeedRange(new FeedRangeEpkImpl(toCosmosRange(feedRange)), targetedCountAfterSplit)
       .block
 
-    val array = new Array[String](list.size)
-    for (i <- 0 until list.size) {
-      array(i) = list.get(i).toString
-    }
-    array
+    list.asScala.map(e => SparkBridgeImplementationInternal.toNormalizedRange(e)).toArray
+  }
+
+  private[this] def toCosmosRange(range: NormalizedRange): Range[String] = {
+    new Range[String](range.min, range.max, true, false)
   }
 }

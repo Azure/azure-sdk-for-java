@@ -455,6 +455,26 @@ class CosmosRowConverterSpec extends UnitSpec {
         row.getString(0) shouldEqual objectNode.toString
     }
 
+    "lsn in ObjectNode" should "translate to Row" in {
+      val colName1 = "testCol1"
+      val colVal1 = "testVal1"
+
+      val objectNode: ObjectNode = objectMapper.createObjectNode()
+      objectNode.put(colName1, colVal1)
+      objectNode.put(CosmosTableSchemaInferrer.LsnAttributeName, "12345")
+      val schemaIncorrectType = StructType(Seq(StructField(CosmosTableSchemaInferrer.LsnAttributeName, StringType)))
+      schemaIncorrectType.size shouldEqual 1
+      schemaIncorrectType.head.dataType shouldEqual StringType
+      val rowIncorrectType = CosmosRowConverter.fromObjectNodeToRow(schemaIncorrectType, objectNode)
+      rowIncorrectType.getString(0) shouldEqual "12345"
+
+      val schema = StructType(Seq(StructField(CosmosTableSchemaInferrer.LsnAttributeName, LongType)))
+      schema.size shouldEqual 1
+      schema.head.dataType shouldEqual LongType
+      val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
+      row.getLong(0) shouldEqual 12345
+    }
+
   //scalastyle:on null
   //scalastyle:on multiple.string.literals
 }

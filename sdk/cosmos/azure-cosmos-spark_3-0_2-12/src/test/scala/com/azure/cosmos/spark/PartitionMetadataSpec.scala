@@ -11,12 +11,29 @@ class PartitionMetadataSpec extends UnitSpec {
   private[this] val rnd = scala.util.Random
 
   //scalastyle:off multiple.string.literals
+  private[this] val clientCfg = CosmosClientConfiguration(
+    UUID.randomUUID().toString,
+    UUID.randomUUID().toString,
+    UUID.randomUUID().toString,
+    useGatewayMode = false,
+    useEventualConsistency = true)
+
+  private[this] val contCfg = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
+  private[this] val lLsn = rnd.nextInt()
+  private[this] val fr = NormalizedRange("", UUID.randomUUID().toString)
+  private[this] val dc = rnd.nextInt()
+  private[this] val ds = rnd.nextInt()
+
+  private[this] val nowEpochMs = Instant.now.toEpochMilli
+  private[this] val cAt = new AtomicLong(nowEpochMs)
+  private[this] val lrAt = new AtomicLong(nowEpochMs)
+
   it should "calculate the correct cache key" in {
     val databaseName = UUID.randomUUID().toString
     val collectionName = UUID.randomUUID().toString
-    val feedRange = UUID.randomUUID().toString
-    val key = PartitionMetadata.createKey(databaseName, collectionName, feedRange)
-    key shouldEqual s"$databaseName/$collectionName/$feedRange"
+    val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val key = PartitionMetadata.createKey(databaseName, collectionName, normalizedRange)
+    key shouldEqual s"$databaseName/$collectionName/${normalizedRange.min}-${normalizedRange.max}"
   }
 
   it should "create instance with valid parameters via apply" in {
@@ -30,7 +47,7 @@ class PartitionMetadataSpec extends UnitSpec {
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val latestLsn = rnd.nextInt()
-    val feedRange = UUID.randomUUID().toString
+    val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val docCount = rnd.nextInt()
     val docSizeInKB = rnd.nextInt()
 
@@ -39,21 +56,25 @@ class PartitionMetadataSpec extends UnitSpec {
     val lastRetrievedAt = new AtomicLong(nowEpochMs)
 
     val viaCtor = PartitionMetadata(
+      Map[String, String](),
       clientConfig,
       None,
       containerConfig,
-      feedRange,
+      normalizedRange,
       docCount,
       docSizeInKB,
       latestLsn,
+      0,
+      None,
       createdAt,
       lastRetrievedAt)
 
     val viaApply = PartitionMetadata(
+      Map[String, String](),
       clientConfig,
       None,
       containerConfig,
-      feedRange,
+      normalizedRange,
       docCount,
       docSizeInKB,
       createChangeFeedState(latestLsn))
@@ -63,7 +84,7 @@ class PartitionMetadataSpec extends UnitSpec {
     viaCtor.cosmosContainerConfig should be theSameInstanceAs viaApply.cosmosContainerConfig
     viaCtor.cosmosContainerConfig should be theSameInstanceAs containerConfig
     viaCtor.feedRange shouldEqual viaApply.feedRange
-    viaCtor.feedRange shouldEqual feedRange
+    viaCtor.feedRange shouldEqual normalizedRange
     viaCtor.documentCount shouldEqual viaApply.documentCount
     viaCtor.documentCount shouldEqual docCount
     viaCtor.totalDocumentSizeInKB shouldEqual viaApply.totalDocumentSizeInKB
@@ -76,52 +97,118 @@ class PartitionMetadataSpec extends UnitSpec {
     viaApply.lastUpdated.get shouldEqual viaApply.lastRetrieved.get
   }
 
-  private[this] val clientCfg = CosmosClientConfiguration(
-    UUID.randomUUID().toString,
-    UUID.randomUUID().toString,
-    UUID.randomUUID().toString,
-    useGatewayMode = false,
-    useEventualConsistency = true)
+  it should "withEndLsn honors the new end LSN" in {
 
-  private[this] val contCfg = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
-  private[this] val lLsn = rnd.nextInt()
-  private[this] val fr = UUID.randomUUID().toString
-  private[this] val dc = rnd.nextInt()
-  private[this] val ds = rnd.nextInt()
+    val clientConfig = CosmosClientConfiguration(
+      UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
+      useGatewayMode = false,
+      useEventualConsistency = true)
 
-  private[this] val nowEpochMs = Instant.now.toEpochMilli
-  private[this] val cAt = new AtomicLong(nowEpochMs)
-  private[this] val lrAt = new AtomicLong(nowEpochMs)
+    val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val latestLsn = rnd.nextInt()
+    val startLsn = rnd.nextInt()
+    val endLsn = rnd.nextInt()
+    val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val docCount = rnd.nextInt()
+    val docSizeInKB = rnd.nextInt()
+
+    val nowEpochMs = Instant.now.toEpochMilli
+    val createdAt = new AtomicLong(nowEpochMs)
+    val lastRetrievedAt = new AtomicLong(nowEpochMs)
+
+    val original = PartitionMetadata(
+      Map[String, String](),
+      clientConfig,
+      None,
+      containerConfig,
+      normalizedRange,
+      docCount,
+      docSizeInKB,
+      latestLsn,
+      startLsn,
+      Some(endLsn),
+      createdAt,
+      lastRetrievedAt)
+
+    original.latestLsn shouldEqual latestLsn
+    original.startLsn shouldEqual startLsn
+    original.endLsn shouldEqual Some(endLsn)
+
+    val newEndLsn = rnd.nextInt()
+    val withNewEndLsn = original.withEndLsn(newEndLsn)
+    withNewEndLsn.latestLsn shouldEqual latestLsn
+    withNewEndLsn.startLsn shouldEqual startLsn
+    withNewEndLsn.endLsn shouldEqual Some(newEndLsn)
+  }
+
+  it should "clone the meta data for a new sub range" in {
+    val clientConfig = CosmosClientConfiguration(
+      UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
+      useGatewayMode = false,
+      useEventualConsistency = true)
+
+    val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val latestLsn = rnd.nextInt()
+    val startLsn = rnd.nextInt()
+    val endLsn = rnd.nextInt()
+    val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val docCount = rnd.nextInt()
+    val docSizeInKB = rnd.nextInt()
+
+    val nowEpochMs = Instant.now.toEpochMilli
+    val createdAt = new AtomicLong(nowEpochMs)
+    val lastRetrievedAt = new AtomicLong(nowEpochMs)
+
+    val original = PartitionMetadata(
+      Map[String, String](),
+      clientConfig,
+      None,
+      containerConfig,
+      normalizedRange,
+      docCount,
+      docSizeInKB,
+      latestLsn,
+      startLsn,
+      Some(endLsn),
+      createdAt,
+      lastRetrievedAt)
+
+    val newRange = NormalizedRange("AA", "AB")
+    val newStartLsn = rnd.nextInt()
+
+    val cloned = original.cloneForSubRange(newRange, newStartLsn)
+    cloned.feedRange shouldEqual newRange
+    cloned.startLsn shouldEqual newStartLsn
+  }
 
   //scalastyle:off null
   it should "throw due to missing clientConfig" in {
     assertThrows[IllegalArgumentException](
-      PartitionMetadata(null, None, contCfg, fr, dc, ds, lLsn, lrAt, cAt))
+      PartitionMetadata(Map[String, String](), null, None, contCfg, fr, dc, ds, lLsn, 0, None, lrAt, cAt))
   }
 
   it should "throw due to missing containerConfig" in {
     assertThrows[IllegalArgumentException](
-      PartitionMetadata(clientCfg, None, null, fr, dc, ds, lLsn, lrAt, cAt))
+      PartitionMetadata(Map[String, String](), clientCfg, None, null, fr, dc, ds, lLsn, 0, None, lrAt, cAt))
   }
 
   it should "throw due to missing feedRange" in {
     assertThrows[IllegalArgumentException](
-      PartitionMetadata(clientCfg, None, contCfg, null, dc, ds, lLsn, lrAt, cAt))
-  }
-
-  it should "throw due to empty feedRange" in {
-    assertThrows[IllegalArgumentException](
-      PartitionMetadata(clientCfg, None, contCfg, "", dc, ds, lLsn, lrAt, cAt))
+      PartitionMetadata(Map[String, String](), clientCfg, None, contCfg, null, dc, ds, lLsn, 0, None, lrAt, cAt))
   }
 
   it should "throw due to missing lastRetrievedAt" in {
     assertThrows[IllegalArgumentException](
-      PartitionMetadata(clientCfg, None, contCfg, fr, dc, ds, lLsn, null, cAt))
+      PartitionMetadata(Map[String, String](), clientCfg, None, contCfg, fr, dc, ds, lLsn, 0, None, null, cAt))
   }
 
   it should "throw due to missing lastUpdatedAt" in {
     assertThrows[IllegalArgumentException](
-      PartitionMetadata(clientCfg, None, contCfg, fr, dc, ds, lLsn, lrAt, null))
+      PartitionMetadata(Map[String, String](), clientCfg, None, contCfg, fr, dc, ds, lLsn, 0, None, lrAt, null))
   }
   //scalastyle:on null
   //scalastyle:on multiple.string.literals

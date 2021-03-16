@@ -3,10 +3,10 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
-import com.azure.cosmos.models.{CosmosParameterizedQuery, FeedRange}
-import com.fasterxml.jackson.databind.node.ObjectNode
+import com.azure.cosmos.models.CosmosParameterizedQuery
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.connector.read.streaming.ReadLimit
 import org.apache.spark.sql.connector.read.{Batch, InputPartition, PartitionReaderFactory, Scan}
 import org.apache.spark.sql.types.StructType
 
@@ -33,19 +33,27 @@ private case class ItemsScan(session: SparkSession,
     val clientConfiguration = CosmosClientConfiguration.apply(config, readConfig.forceEventualConsistency)
     val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
     val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
-    val defaultMaxPartitionSizeInMB = (session.sessionState.conf.filesMaxPartitionBytes / (1024 * 1024)).toInt
-
     val defaultMinPartitionCount = 1 + (2 * session.sparkContext.defaultParallelism)
 
-    CosmosPartitionPlanner.createInputPartitions(
+    val partitionMetadata = CosmosPartitionPlanner.getPartitionMetadata(
+      config,
       clientConfiguration,
       Some(cosmosClientStateHandle),
-      containerConfig,
-      partitioningConfig,
-      None, // In batch mode always start a new query - without previous continuation state
-      defaultMinPartitionCount,
-      defaultMaxPartitionSizeInMB
+      containerConfig
     )
+
+    val client =
+      CosmosClientCache.apply(clientConfiguration, Some(cosmosClientStateHandle))
+    val container = ThroughputControlHelper.getContainer(config, containerConfig, client)
+
+    CosmosPartitionPlanner.createInputPartitions(
+      partitioningConfig,
+      container,
+      partitionMetadata,
+      defaultMinPartitionCount,
+      CosmosPartitionPlanner.DefaultPartitionSizeInMB,
+      ReadLimit.allAvailable()
+    ).map(_.asInstanceOf[InputPartition])
   }
 
   override def createReaderFactory(): PartitionReaderFactory = {

@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import java.time.Duration
-import java.util.ConcurrentModificationException
-
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
 import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, ThrottlingRetryOptions}
 import org.apache.spark.broadcast.Broadcast
 
+import java.time.Duration
+import java.time.temporal.ChronoUnit
+import java.util.ConcurrentModificationException
 import scala.collection.concurrent.TrieMap
 
 private[spark] object CosmosClientCache {
