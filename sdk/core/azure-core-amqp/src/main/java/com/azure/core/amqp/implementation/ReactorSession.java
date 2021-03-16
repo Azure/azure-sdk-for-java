@@ -55,6 +55,7 @@ public class ReactorSession implements AmqpSession {
     private final ClientLogger logger = new ClientLogger(ReactorSession.class);
     private final Flux<AmqpEndpointState> endpointStates;
 
+    private final AmqpConnection amqpConnection;
     private final Session session;
     private final SessionHandler sessionHandler;
     private final String sessionName;
@@ -87,6 +88,7 @@ public class ReactorSession implements AmqpSession {
         String sessionName, ReactorProvider provider, ReactorHandlerProvider handlerProvider,
         Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
         MessageSerializer messageSerializer, AmqpRetryOptions retryOptions) {
+        this.amqpConnection = amqpConnection;
 
         this.session = session;
         this.sessionHandler = sessionHandler;
@@ -449,8 +451,8 @@ public class ReactorSession implements AmqpSession {
 
         sender.open();
 
-        final ReactorSender reactorSender = new ReactorSender(entityPath, sender, sendLinkHandler, provider,
-            tokenManager, messageSerializer, options);
+        final ReactorSender reactorSender = new ReactorSender(amqpConnection, entityPath, sender, sendLinkHandler,
+            provider, tokenManager, messageSerializer, options);
 
         //@formatter:off
         final Disposable subscription = reactorSender.getEndpointStates().subscribe(state -> {
@@ -593,7 +595,7 @@ public class ReactorSession implements AmqpSession {
                 reactorReceiver.dispose(errorCondition);
             } else if (link instanceof ReactorSender) {
                 final ReactorSender reactorSender = (ReactorSender) link;
-                reactorSender.dispose(errorCondition);
+                reactorSender.disposeAsync("Error in session. Disposing receiver.", errorCondition);
             } else {
                 link.dispose();
             }
