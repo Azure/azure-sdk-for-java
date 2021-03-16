@@ -49,7 +49,7 @@ extends:
         groupId: com.azure
         safeName: azurespringdatacosmos
       - name: azure-cosmos-encryption
-        groupId: com.azure
+        groupId: com.azure.cosmos.spark
         safeName: azurecosmosencryption
       - name: azure-cosmos-spark_3-1_2-12
         groupId: com.azure
