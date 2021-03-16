@@ -29,12 +29,13 @@
         - artifactId: azure-spring-boot-starter-active-directory
           groupId: com.azure.spring
           versionGA: 3.2.0
-          type: starter
+          type: spring
           links:
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-active-directory/3.2.0/jar
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-active-directory-readme?view=azure-java-stable
             github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-active-directory
           springProperties:
+            starter: true
             bom: spring-boot-bom
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             mappings:
@@ -53,12 +54,13 @@
           groupId: com.azure.spring
           versionGA: 3.2.0
           versionPreview: 3.0.0-beta.1
-          type: starter
+          type: spring
           links:
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-active-directory-b2c/3.2.0/jar
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-active-directory-b2c-readme?view=azure-java-stable
             github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-active-directory-b2c
           springProperties:
+            starter: true
             bom: spring-boot-bom
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             mappings:
@@ -77,12 +79,13 @@
           groupId: com.azure.spring
           versionGA: 3.2.0
           versionPreview: 3.0.0-beta.1
-          type: starter
+          type: spring
           links:
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-cosmos/3.2.0/jar
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-cosmos-readme?view=azure-java-stable
             github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-cosmos
           springProperties:
+            starter: true
             bom: spring-boot-bom
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             mappings:
@@ -109,13 +112,14 @@
         - artifactId: azure-spring-boot-starter-keyvault-certificates
           groupId: com.azure.spring
           versionPreview: 3.0.0-beta.4
-          type: starter
+          type: spring
           links:
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-keyvault-certificates/3.0.0-beta.4/jar
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-keyvault-certificates-readme?view=azure-java-preview
             javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-spring-boot-starter-keyvault-certificates/3.0.0-beta.4/index.html
             github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates
           springProperties:
+            starter: true
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
     - name: Key Vault - Secrets
       id: key-vault-secrets
@@ -126,12 +130,13 @@
           groupId: com.azure.spring
           versionGA: 3.2.0
           versionPreview: 3.0.0-beta.1
-          type: starter
+          type: spring
           links:
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-keyvault-secrets/3.2.0/jar
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-keyvault-secrets-readme?view=azure-java-stable
             github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-keyvault-secrets
           springProperties:
+            starter: true
             bom: spring-boot-bom
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             mappings:
@@ -150,12 +155,13 @@
           groupId: com.azure.spring
           versionGA: 3.2.0
           versionPreview: 3.0.0-beta.1
-          type: starter
+          type: spring
           links:
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-storage/3.2.0/jar/
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-storage-readme?view=azure-java-stable
             github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-storage
           springProperties:
+            starter: true
             bom: spring-boot-bom
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             mappings:
@@ -172,12 +178,13 @@
           groupId: com.azure.spring
           versionGA: 2.2.0
           versionPreview: 2.0.0-beta.1
-          type: starter
+          type: spring
           links:
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-starter-storage-queue/2.2.0/jar/
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-starter-storage-queue-readme?view=azure-java-stable
             github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-storage-queue
           springProperties:
+            starter: true
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             mappings:
               - compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
@@ -229,12 +236,13 @@
           groupId: com.azure.spring
           versionGA: 2.2.0
           versionPreview: 2.0.0-beta.1
-          type: starter
+          type: spring
           links:
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-starter-servicebus/2.2.0/jar
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-starter-servicebus-readme?view=azure-java-stable
             github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-servicebus
           springProperties:
+            starter: true
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             mappings:
               - compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
@@ -250,12 +258,13 @@
           groupId: com.azure.spring
           versionGA: 3.2.0
           versionPreview: 3.0.0-beta.1
-          type: starter
+          type: spring
           links:
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-servicebus-jms/3.2.0/jar
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-servicebus-jms-readme?view=azure-java-stable
             github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-servicebus-jms
           springProperties:
+            starter: true
             bom: spring-boot-bom
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             mappings:
@@ -274,12 +283,13 @@
           groupId: com.azure.spring
           versionGA: 2.2.0
           versionPreview: 2.0.0-beta.1
-          type: starter
+          type: spring
           links:
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-starter-cache/2.2.0/jar
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-starter-cache-readme?view=azure-java-stable
             github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-cache
           springProperties:
+            starter: true
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             mappings:
               - compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
@@ -297,12 +307,13 @@
           groupId: com.azure.spring
           versionGA: 2.2.0
           versionPreview: 2.0.0-beta.1
-          type: starter
+          type: spring
           links:
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-starter-eventhubs/2.2.0/jar
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-starter-eventhubs-readme?view=azure-java-stable
             github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-eventhubs
           springProperties:
+            starter: true
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             mappings:
               - compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
@@ -335,12 +346,13 @@
           groupId: com.azure.spring
           versionGA: 2.2.0
           versionPreview: 2.0.0-beta.1
-          type: starter
+          type: spring
           links:
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-starter-eventhubs/2.2.0/jar
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-starter-eventhubs-kafka-readme?view=azure-java-stable
             github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-eventhubs-kafka
           springProperties:
+            starter: true
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             mappings:
               - compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
