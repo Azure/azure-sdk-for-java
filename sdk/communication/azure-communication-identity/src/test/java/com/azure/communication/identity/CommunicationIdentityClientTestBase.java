@@ -78,7 +78,7 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         } else {
             Configuration configuration = Configuration.getGlobalConfiguration().clone();
             String clientId = configuration.get("COMMUNICATION_CLIENT_ID"); //Configuration.PROPERTY_AZURE_CLIENT_ID);
-            String tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);//"COMMUNICATION_TENANT_ID");// Configuration.PROPERTY_AZURE_TENANT_ID);
+            String tenantId = configuration.get("COMMUNICATION_TENANT_ID");//"COMMUNICATION_TENANT_ID");// Configuration.PROPERTY_AZURE_TENANT_ID);
             String clientSecret = configuration.get("COMMUNICATION_CLIENT_SECRET"); //Configuration.PROPERTY_AZURE_CLIENT_SECRET);
 
             //builder.credential(new DefaultAzureCredentialBuilder().build());
