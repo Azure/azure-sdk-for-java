@@ -56,30 +56,6 @@ public final class ChatAsyncClient {
     /**
      * Creates a chat thread.
      *
-     * @param topic Topic of the chat thread
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateChatThreadResult> createChatThread(String topic) {
-        try {
-            Objects.requireNonNull(topic, "'topic' cannot be null.");
-            return withContext(context -> createChatThread(new CreateChatThreadOptions(topic), context)
-                .flatMap(
-                    (Response<CreateChatThreadResult> res) -> {
-                        if (res.getValue() != null) {
-                            return Mono.just(res.getValue());
-                        } else {
-                            return Mono.empty();
-                        }
-                    }));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Creates a chat thread.
-     *
      * @param options Options for creating a chat thread.
      * @return the response.
      */

@@ -14,6 +14,7 @@
 - Changed `addParticipants` to take `Iterable<ChatParticipant>` instead of `AddChatParticipantsOptions`
 - Added `context` parameter to the max overloads of `listParticipants`, `listReadReceipts`
 - `CreateChatThreadOptions` constructor now requires `topic`
+- Removed `setTopic` from `CreateChatThreadOptions` 
 
 ## 1.0.0-beta.6 (2021-03-09)
 Updated `azure-communication-chat` version

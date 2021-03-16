@@ -51,17 +51,6 @@ public final class ChatClient {
     /**
      * Creates a chat thread.
      *
-     * @param topic Topic of the chat thread.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateChatThreadResult createChatThread(String topic) {
-        return this.client.createChatThread(topic).block();
-    }
-
-    /**
-     * Creates a chat thread.
-     *
      * @param options Options for creating a chat thread.
      * @return the response.
      */

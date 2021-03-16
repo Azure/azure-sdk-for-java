@@ -10,7 +10,7 @@ import com.azure.core.exception.AzureException;
  */
 public final class InvalidParticipantException extends AzureException {
 
-    private transient ChatError chatError;
+    private final transient ChatError chatError;
 
     /**
      * Constructs a new InvalidParticipantException

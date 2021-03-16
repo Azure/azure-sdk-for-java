@@ -15,7 +15,7 @@ public final class CreateChatThreadOptions {
     /*
      * The chat thread topic.
      */
-    private String topic;
+    private final String topic;
 
     /*
      * Members to be added to the chat thread.
@@ -31,17 +31,6 @@ public final class CreateChatThreadOptions {
      */
     public String getTopic() {
         return this.topic;
-    }
-
-    /**
-     * Set the topic property: The chat thread topic.
-     *
-     * @param topic the topic value to set.
-     * @return the CreateChatThreadOptions object itself.
-     */
-    public CreateChatThreadOptions setTopic(String topic) {
-        this.topic = topic;
-        return this;
     }
 
     /**
