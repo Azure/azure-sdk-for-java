@@ -10,13 +10,13 @@
     <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
 
-  <groupId>com.azure</groupId>
-  <artifactId>azure-cosmos-spark_3-0_2-12</artifactId>
-  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-spark_3-0_2-12;current} -->
+  <groupId>com.azure.cosmos.spark</groupId>
+  <artifactId>azure-cosmos-spark_3-1_2-12</artifactId>
+  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-spark_3-1_2-12;current} -->
   <packaging>jar</packaging>
   <name>OLTP Spark Connector for Azure Cosmos DB SQL API</name>
   <description>OLTP Spark Connector for Azure Cosmos DB SQL API</description>
-  <url>https://github.com/Azure/azure-sdk-for-java/tree/feature/cosmos/spark30/sdk/cosmos/azure-cosmos-spark_3-0_2-12</url>
+  <url>https://github.com/Azure/azure-sdk-for-java/tree/feature/cosmos/spark30/sdk/cosmos/azure-cosmos-spark_3-1_2-12</url>
 
   <properties>
     <maven.build.timestamp.format>MM-dd-HH-mm-ss</maven.build.timestamp.format>
