@@ -78,6 +78,10 @@ public class ChatResponseMocker {
         return generateMockResponse(body, request, 201);
     }
 
+    public static HttpResponse createErrorResponse(HttpRequest request, int code) {
+        return generateMockResponse("", request, code);
+    }
+
     public static HttpResponse createSendReceiptsResponse(HttpRequest request) {
         return generateMockResponse("testBody", request, 200);
     }

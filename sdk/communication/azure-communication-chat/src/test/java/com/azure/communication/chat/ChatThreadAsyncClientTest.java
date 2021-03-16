@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.azure.core.exception.HttpResponseException;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -887,4 +888,21 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         StepVerifier.create(chatThreadClient.sendReadReceiptWithResponse(null))
             .verifyError(NullPointerException.class);
     }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void throwsExceptionOnBadRequest(HttpClient httpClient) {
+        HttpClient mockHttpClient = new NoOpHttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                return Mono.just(ChatResponseMocker.createErrorResponse(request, 400));
+            }
+        };
+        setupUnitTest(mockHttpClient);
+
+        StepVerifier.create(chatThreadClient.sendMessage(new SendChatMessageOptions()))
+            .verifyError(HttpResponseException.class);
+    }
+
+
 }
