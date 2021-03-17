@@ -2,6 +2,7 @@
 
 ## 2.3.0-beta.1 (Unreleased)
 
+- Supported `PrivateEndpoint` and `PrivateDnsZone`
 
 ## 2.2.0 (2021-02-24)
 
