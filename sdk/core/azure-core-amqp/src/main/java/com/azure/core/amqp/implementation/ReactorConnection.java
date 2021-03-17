@@ -119,7 +119,11 @@ public class ReactorConnection implements AmqpConnection {
                 final String message = String.format(
                     "connectionId[%s] Error occurred while connection was starting. Error: %s", connectionId, error);
 
-                dispose(new AmqpShutdownSignal(false, false, message));
+                if (isDisposed.getAndSet(true)) {
+                    logger.verbose("connectionId[{}] was already disposed. {}", connectionId, message);
+                } else {
+                    dispose(new AmqpShutdownSignal(false, false, message));
+                }
             });
 
         this.endpointStates = this.handler.getEndpointStates()
@@ -288,6 +292,11 @@ public class ReactorConnection implements AmqpConnection {
      */
     @Override
     public void dispose() {
+        if (isDisposed.getAndSet(true)) {
+            logger.verbose("connectionId[{}] Was already closed. Not disposing again.", connectionId);
+            return;
+        }
+
         // Because the reactor executor schedules the pending close after the timeout, we want to give sufficient time
         // for the rest of the tasks to run.
         final Duration timeout = operationTimeout.plus(operationTimeout);
@@ -356,10 +365,6 @@ public class ReactorConnection implements AmqpConnection {
     }
 
     private Mono<Void> dispose(AmqpShutdownSignal shutdownSignal) {
-        if (isDisposed.getAndSet(true)) {
-            return isClosedMono.asMono();
-        }
-
         logger.info("connectionId[{}] signal[{}]: Disposing of ReactorConnection.", connectionId, shutdownSignal);
 
         final Sinks.EmitResult result = shutdownSignalSink.tryEmitValue(shutdownSignal);
@@ -392,6 +397,8 @@ public class ReactorConnection implements AmqpConnection {
         synchronized (closeLock) {
             sessionMap.forEach((key, link) -> closingSessions.add(link.isClosed()));
         }
+
+        executor.close();
 
         // Close all the children.
         closeSessionsMono = Mono.when(closingSessions)
@@ -441,9 +448,10 @@ public class ReactorConnection implements AmqpConnection {
             // Use a new single-threaded scheduler for this connection as QPID's Reactor is not thread-safe.
             // Using Schedulers.single() will use the same thread for all connections in this process which
             // limits the scalability of the no. of concurrent connections a single process can have.
+            final Duration pendingTasksScheduler = connectionOptions.getRetry().getTryTimeout().dividedBy(2);
             final Scheduler scheduler = Schedulers.newSingle("reactor-executor");
             executor = new ReactorExecutor(reactor, scheduler, connectionId,
-                reactorExceptionHandler, connectionOptions.getRetry().getTryTimeout(),
+                reactorExceptionHandler, pendingTasksScheduler,
                 connectionOptions.getFullyQualifiedNamespace());
 
             executor.start();
@@ -463,18 +471,22 @@ public class ReactorConnection implements AmqpConnection {
                 "onConnectionError connectionId[{}], hostName[{}], message[Starting new reactor], error[{}]",
                 getId(), getFullyQualifiedNamespace(), exception.getMessage(), exception);
 
-            dispose(new AmqpShutdownSignal(false, false,
-                "onReactorError: " + exception.toString()))
-                .subscribe();
+            if (!isDisposed.getAndSet(true)) {
+                dispose(new AmqpShutdownSignal(false, false,
+                    "onReactorError: " + exception.toString()))
+                    .subscribe();
+            }
         }
 
         @Override
         void onConnectionShutdown(AmqpShutdownSignal shutdownSignal) {
-            logger.warning(
+            logger.info(
                 "onConnectionShutdown connectionId[{}], hostName[{}], message[Shutting down], shutdown signal[{}]",
                 getId(), getFullyQualifiedNamespace(), shutdownSignal.isInitiatedByClient(), shutdownSignal);
 
-            dispose(shutdownSignal).subscribe();
+            if (!isDisposed.getAndSet(true)) {
+                dispose(shutdownSignal).subscribe();
+            }
         }
     }
 
