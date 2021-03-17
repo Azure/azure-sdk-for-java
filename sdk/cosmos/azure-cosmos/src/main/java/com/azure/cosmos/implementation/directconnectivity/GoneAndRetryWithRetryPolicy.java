@@ -198,6 +198,11 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics{
             long timeoutInMillSec = remainingSeconds*1000 - backoffTime.toMillis();
             timeout = timeoutInMillSec > 0 ? Duration.ofMillis(timeoutInMillSec)
                 : Duration.ofSeconds(GoneRetryPolicy.MAXIMUM_BACKOFF_TIME_IN_SECONDS);
+            logger.debug("Timeout. {} - BackoffTime {} - currentBackoffSeconds {} - CurrentRetryAttemptCount {}",
+                timeout.toMillis(),
+                backoffTime,
+                this.currentBackoffSeconds,
+                currentRetryAttemptCount);
 
             Pair<Mono<ShouldRetryResult>, Boolean> exceptionHandlingResult = handleException(exception);
             Mono<ShouldRetryResult> result = exceptionHandlingResult.getLeft();

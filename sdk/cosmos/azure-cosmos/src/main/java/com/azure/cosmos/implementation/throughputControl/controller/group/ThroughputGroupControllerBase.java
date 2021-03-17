@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.throughputControl.controller.group;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -103,7 +103,7 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
 
     public Flux<Void> throughputUsageCycleRenewTask(LinkedCancellationToken cancellationToken) {
         checkNotNull(cancellationToken, "Cancellation token can not be null");
-        return Mono.delay(DEFAULT_THROUGHPUT_USAGE_RESET_DURATION)
+        return Mono.delay(DEFAULT_THROUGHPUT_USAGE_RESET_DURATION, CosmosSchedulers.COSMOS_PARALLEL)
             .flatMap(t -> {
                 if (cancellationToken.isCancellationRequested()) {
                     return Mono.empty();

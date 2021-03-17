@@ -4,6 +4,6 @@
 
 /**
  * Package containing classes for PhoneNumberAdminClient. The phone numbers client uses Azure Communication Services to
- * acquire and manage phone numbers.
+ * purchase and manage phone numbers.
  */
 package com.azure.communication.phonenumbers.models;

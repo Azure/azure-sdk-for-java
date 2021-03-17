@@ -46,7 +46,7 @@ public final class SmsClient {
      * @param options set options on the SMS request, like enable delivery report, which sends a report
      * for this message to the Azure Resource Event Grid.
      * @param context A {@link Context} representing the request context
-     * @return Send Sms request.
+     * @return The Sms send result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SmsSendResult send(String from, String to, String message, SmsSendOptions options, Context context) {

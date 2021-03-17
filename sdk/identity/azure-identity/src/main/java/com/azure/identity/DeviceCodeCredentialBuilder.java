@@ -4,7 +4,6 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.identity.implementation.AuthenticationRecord;
 import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.ValidationUtil;
 
@@ -37,25 +36,16 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
     }
 
     /**
-     * Allows to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
-     * Gnome keyring on Linux. This is restricted by default.
+     * Configures the persistent shared token cache options and enables the persistent token cache which is disabled
+     * by default. If configured, the credential will store tokens in a cache persisted to the machine, protected to
+     * the current user, which can be shared by other credentials and processes.
      *
-     * @return An updated instance of this builder.
+     * @param tokenCachePersistenceOptions the token cache configuration options
+     * @return An updated instance of this builder with the token cache options configured.
      */
-    DeviceCodeCredentialBuilder allowUnencryptedCache() {
-        this.identityClientOptions.setAllowUnencryptedCache(true);
-        return this;
-    }
-
-    /**
-     * Enables the shared token cache which is disabled by default. If enabled, the credential will store tokens
-     * in a cache persisted to the machine, protected to the current user, which can be shared by other credentials
-     * and processes.
-     *
-     * @return An updated instance of this builder with if the shared token cache enabled specified.
-     */
-    DeviceCodeCredentialBuilder enablePersistentCache() {
-        this.identityClientOptions.enablePersistentCache();
+    public DeviceCodeCredentialBuilder tokenCachePersistenceOptions(TokenCachePersistenceOptions
+                                                                          tokenCachePersistenceOptions) {
+        this.identityClientOptions.setTokenCacheOptions(tokenCachePersistenceOptions);
         return this;
     }
 
@@ -66,7 +56,7 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      *
      * @return An updated instance of this builder with the configured authentication record.
      */
-    DeviceCodeCredentialBuilder authenticationRecord(AuthenticationRecord authenticationRecord) {
+    public DeviceCodeCredentialBuilder authenticationRecord(AuthenticationRecord authenticationRecord) {
         this.identityClientOptions.setAuthenticationRecord(authenticationRecord);
         return this;
     }
@@ -81,7 +71,7 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      *
      * @return An updated instance of this builder with automatic authentication disabled.
      */
-    DeviceCodeCredentialBuilder disableAutomaticAuthentication() {
+    public DeviceCodeCredentialBuilder disableAutomaticAuthentication() {
         this.automaticAuthentication = false;
         return this;
     }

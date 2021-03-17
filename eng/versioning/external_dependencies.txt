@@ -135,8 +135,7 @@ org.springframework:spring-web;5.3.4
 org.springframework:spring-webmvc;5.3.4
 org.springframework:spring-webflux;5.3.4
 
-# spring-boot-starter-parent is not managed by spring-boot-dependencies or spring-cloud-dependencies.
-org.springframework.boot:spring-boot-starter-parent;2.4.0
+org.springframework.boot:spring-boot-starter-parent;2.4.3
 
 ## Spring cloud dependency versions
 org.springframework.cloud:spring-cloud-dependencies;2020.0.1
