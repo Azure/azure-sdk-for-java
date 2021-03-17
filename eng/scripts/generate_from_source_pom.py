@@ -68,6 +68,8 @@ def create_from_source_pom(service_directory: str):
             if (file_name.startswith('pom') and file_name.endswith('.xml')):
                 modules = add_modules_to_pom(file_path, modules, dependency_to_project_mapping, project_to_pom_path_mapping)
 
+    modules.sort()
+    
     with open(file=client_from_source_pom_path, mode='w') as fromSourcePom:
         fromSourcePom.write(pom_file_start)
 
@@ -118,7 +120,7 @@ def add_project_to_dependency_and_module_mappings(file_path: str, artifact_ident
     if dependencies is None:
         return
 
-    for dependency in dependencies.getchildren():
+    for dependency in dependencies:
         dependency_identifier = create_artifact_identifier(dependency)
         if not dependency_identifier in artifact_identifier_to_source_version:
             continue
@@ -177,11 +179,15 @@ def main():
     parser.add_argument('--service-directory', '--sd', type=str)
     args = parser.parse_args()
     if args.service_directory == None:
-        print('Missing service directory.')
-        #raise ValueError('Missing service directory.')
+        raise ValueError('Missing service directory.')
     start_time = time.time()
-    create_from_source_pom('storage')
+    create_from_source_pom(args.service_directory)
     elapsed_time = time.time() - start_time
+
+    print('Effective From Source POM File')
+    with open(file=client_from_source_pom_path, mode='r') as fromSourcePom:
+        print(fromSourcePom.read())
+
     print('elapsed_time={}'.format(elapsed_time))
     print('Total time for replacement: {}'.format(str(timedelta(seconds=elapsed_time))))
 
