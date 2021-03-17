@@ -3,6 +3,8 @@
 
 package com.azure.core.experimental.geojson;
 
+import com.azure.core.annotation.Immutable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.Objects;
 /**
  * Represents a collection of {@link GeoLineString GeoLines}.
  */
+@Immutable
 public final class GeoLineStringCollection extends GeoObject {
     private final List<GeoLineString> lines;
 

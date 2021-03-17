@@ -3,12 +3,18 @@
 
 package com.azure.core.experimental.geojson;
 
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+
 import java.util.Objects;
 
 /**
  * Represents a geometric bounding box.
  */
+@Immutable
 public final class GeoBoundingBox {
+    private final ClientLogger logger = new ClientLogger(GeoBoundingBox.class);
+
     private final double west;
     private final double south;
     private final double east;
@@ -26,7 +32,7 @@ public final class GeoBoundingBox {
      * @param north North latitudinal boundary.
      */
     public GeoBoundingBox(double west, double south, double east, double north) {
-        this(west, south, east, north, null, null);
+        this(west, south, east, north, null, null, null);
     }
 
     /**
@@ -39,8 +45,16 @@ public final class GeoBoundingBox {
      * @param minAltitude Minimum altitude boundary.
      * @param maxAltitude Maximum altitude boundary.
      */
-    public GeoBoundingBox(double west, double south, double east, double north, Double minAltitude,
-        Double maxAltitude) {
+    public GeoBoundingBox(double west, double south, double east, double north, double minAltitude,
+        double maxAltitude) {
+        this(west, south, east, north, minAltitude, maxAltitude, null);
+    }
+
+    /*
+     * This constructor allows the one above to require both min altitude and max altitude to be non-null.
+     */
+    private GeoBoundingBox(double west, double south, double east, double north, Double minAltitude,
+        Double maxAltitude, String ignored) {
         this.west = west;
         this.south = south;
         this.east = east;
@@ -119,10 +133,10 @@ public final class GeoBoundingBox {
         }
 
         GeoBoundingBox other = (GeoBoundingBox) obj;
-        return west == other.west
-            && south == other.south
-            && east == other.east
-            && north == other.north
+        return Double.compare(west, other.west) == 0
+            && Double.compare(south, other.south) == 0
+            && Double.compare(east, other.east) == 0
+            && Double.compare(north, other.north) == 0
             && Objects.equals(minAltitude, other.minAltitude)
             && Objects.equals(maxAltitude, other.maxAltitude);
     }
@@ -144,7 +158,7 @@ public final class GeoBoundingBox {
                 case 3: return east;
                 case 4: return north;
                 case 5: return maxAltitude;
-                default: throw new IndexOutOfBoundsException();
+                default: throw logger.logExceptionAsWarning(new IndexOutOfBoundsException());
             }
         } else {
             switch (i) {
@@ -152,7 +166,7 @@ public final class GeoBoundingBox {
                 case 1: return south;
                 case 2: return east;
                 case 3: return north;
-                default: throw new IndexOutOfBoundsException();
+                default: throw logger.logExceptionAsWarning(new IndexOutOfBoundsException());
             }
         }
     }

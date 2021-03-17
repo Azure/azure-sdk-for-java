@@ -3,6 +3,8 @@
 
 package com.azure.core.experimental.geojson;
 
+import com.azure.core.annotation.Immutable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +13,7 @@ import java.util.Objects;
 /**
  * Represents a geometric line.
  */
+@Immutable
 public final class GeoLineString extends GeoObject {
     private final GeoArray<GeoPosition> coordinates;
 

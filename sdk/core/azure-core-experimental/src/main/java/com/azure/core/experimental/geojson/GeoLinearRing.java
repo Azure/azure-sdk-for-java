@@ -3,6 +3,7 @@
 
 package com.azure.core.experimental.geojson;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.Objects;
 /**
  * Represents a linear ring that is part of a {@link GeoPolygon}.
  */
+@Immutable
 public final class GeoLinearRing {
     private final GeoArray<GeoPosition> coordinates;
 

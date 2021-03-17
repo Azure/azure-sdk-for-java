@@ -3,6 +3,7 @@
 
 package com.azure.core.experimental.geojson;
 
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 import java.util.Collections;
@@ -22,6 +23,7 @@ import java.util.Objects;
     @JsonSubTypes.Type(GeoPolygonCollection.class),
     @JsonSubTypes.Type(GeoCollection.class)
 })
+@Immutable
 public abstract class GeoObject {
     private final GeoBoundingBox boundingBox;
     private final Map<String, Object> customProperties;

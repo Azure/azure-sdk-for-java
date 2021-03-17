@@ -3,6 +3,7 @@
 
 package com.azure.core.experimental.geojson;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Objects;
@@ -10,6 +11,7 @@ import java.util.Objects;
 /**
  * Represents a geo position.
  */
+@Immutable
 public final class GeoPosition {
     private final ClientLogger logger = new ClientLogger(GeoPosition.class);
 
