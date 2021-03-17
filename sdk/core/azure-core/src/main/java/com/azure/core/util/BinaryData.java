@@ -211,7 +211,6 @@ public final class BinaryData {
      *
      * @param data The object that will be JSON serialized that {@link BinaryData} will represent.
      * @return A {@link BinaryData} representing the JSON serialized object.
-     * @throws IllegalStateException If a {@link JsonSerializer} implementation cannot be found on the classpath.
      * @see JsonSerializer
      */
     public static BinaryData fromObject(Object data) {
@@ -233,7 +232,6 @@ public final class BinaryData {
      *
      * @param data The object that will be JSON serialized that {@link BinaryData} will represent.
      * @return A {@link Mono} of {@link BinaryData} representing the JSON serialized object.
-     * @throws IllegalStateException If a {@link JsonSerializer} implementation cannot be found on the classpath.
      * @see JsonSerializer
      */
     public static Mono<BinaryData> fromObjectAsync(Object data) {
@@ -349,7 +347,6 @@ public final class BinaryData {
      * @param <T> Type of the deserialized Object.
      * @return An {@link Object} representing the JSON deserialized {@link BinaryData}.
      * @throws NullPointerException If {@code clazz} is null.
-     * @throws IllegalStateException If a {@link JsonSerializer} implementation cannot be found on the classpath.
      * @see JsonSerializer
      */
     public <T> T toObject(Class<T> clazz) {
@@ -379,7 +376,6 @@ public final class BinaryData {
      * @param <T> Type of the deserialized Object.
      * @return An {@link Object} representing the JSON deserialized {@link BinaryData}.
      * @throws NullPointerException If {@code typeReference} is null.
-     * @throws IllegalStateException If a {@link JsonSerializer} implementation cannot be found on the classpath.
      * @see JsonSerializer
      */
     public <T> T toObject(TypeReference<T> typeReference) {
@@ -478,7 +474,6 @@ public final class BinaryData {
      * @param <T> Type of the deserialized Object.
      * @return A {@link Mono} of {@link Object} representing the JSON deserialized {@link BinaryData}.
      * @throws NullPointerException If {@code clazz} is null.
-     * @throws IllegalStateException If a {@link JsonSerializer} implementation cannot be found on the classpath.
      * @see JsonSerializer
      */
     public <T> Mono<T> toObjectAsync(Class<T> clazz) {
@@ -508,7 +503,6 @@ public final class BinaryData {
      * @param <T> Type of the deserialized Object.
      * @return A {@link Mono} of {@link Object} representing the JSON deserialized {@link BinaryData}.
      * @throws NullPointerException If {@code typeReference} is null.
-     * @throws IllegalStateException If a {@link JsonSerializer} implementation cannot be found on the classpath.
      * @see JsonSerializer
      */
     public <T> Mono<T> toObjectAsync(TypeReference<T> typeReference) {
