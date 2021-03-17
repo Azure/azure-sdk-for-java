@@ -32,9 +32,11 @@ import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -52,6 +54,14 @@ public class ReactorSession implements AmqpSession {
     private final ConcurrentMap<String, LinkSubscription<AmqpReceiveLink>> openReceiveLinks = new ConcurrentHashMap<>();
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();
+    private final Object closeLock = new Object();
+
+    /**
+     * Mono that completes when the session is completely closed, that is that the session remote
+     */
+    private final Sinks.Empty<Void> isClosedMono = Sinks.empty();
+    private Mono<Void> closeLinksMono = null;
+
     private final ClientLogger logger = new ClientLogger(ReactorSession.class);
     private final Flux<AmqpEndpointState> endpointStates;
 
@@ -89,7 +99,6 @@ public class ReactorSession implements AmqpSession {
         Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
         MessageSerializer messageSerializer, AmqpRetryOptions retryOptions) {
         this.amqpConnection = amqpConnection;
-
         this.session = session;
         this.sessionHandler = sessionHandler;
         this.handlerProvider = handlerProvider;
@@ -109,29 +118,17 @@ public class ReactorSession implements AmqpSession {
                     sessionName, state);
                 return AmqpEndpointStateUtil.getConnectionState(state);
             })
+            .doOnError(error -> handleError(error))
+            .doOnComplete(() -> handleClose())
             .cache(1);
 
         this.connectionSubscriptions = Disposables.composite(
-            amqpConnection.getEndpointStates().subscribe(state -> {
-                },
-                error -> {
-                    if (error instanceof AmqpException) {
-                        final AmqpException amqpException = (AmqpException) error;
-                        final ErrorCondition condition = new ErrorCondition(
-                            Symbol.getSymbol(amqpException.getErrorCondition().getErrorCondition()),
-                            amqpException.getMessage());
-                        dispose(condition);
-                    } else {
-                        logger.warning("Exception was not an AmqpException.", error);
-                        dispose(new ErrorCondition(Symbol.getSymbol("connection-error"), error.getMessage()));
-                    }
-                }, () -> {
-                    logger.verbose("Connection states closed. Disposing normally.");
-                    dispose();
-                }),
+            this.endpointStates.subscribe(),
+
             amqpConnection.getShutdownSignals().subscribe(signal -> {
-                logger.verbose("Connection shutdown signal. Disposing of children.");
-                dispose();
+                logger.verbose("connectionId[{}] session[{}]: Shutdown signal received.",
+                    amqpConnection.getId(), sessionName);
+                dispose("Shutdown signal received", null, false).subscribe();
             }));
 
         session.open();
@@ -156,20 +153,8 @@ public class ReactorSession implements AmqpSession {
      */
     @Override
     public void dispose() {
-        dispose(null);
-    }
-
-    void dispose(ErrorCondition errorCondition) {
-        if (isDisposed.getAndSet(true)) {
-            return;
-        }
-
-        try {
-            provider.getReactorDispatcher().invoke(() -> disposeWork(errorCondition));
-        } catch (IOException e) {
-            logger.warning("Error occurred while scheduling work. Manually disposing.", e);
-            disposeWork(errorCondition);
-        }
+        dispose("Dispose called.", null, true)
+            .block(retryOptions.getTryTimeout());
     }
 
     /**
@@ -239,6 +224,36 @@ public class ReactorSession implements AmqpSession {
     @Override
     public boolean removeLink(String linkName) {
         return removeLink(openSendLinks, linkName) || removeLink(openReceiveLinks, linkName);
+    }
+
+    /**
+     * A Mono that completes when the session has completely closed.
+     *
+     * @return Mono that completes when the session has completely closed.
+     */
+    Mono<Void> isClosed() {
+        return isClosedMono.asMono();
+    }
+
+    Mono<Void> dispose(String message, ErrorCondition errorCondition, boolean disposeLinks) {
+        if (isDisposed.getAndSet(true)) {
+            return isClosedMono.asMono();
+        }
+
+        final String condition = errorCondition != null ? errorCondition.toString() : NOT_APPLICABLE;
+        logger.verbose("connectionId[{}], sessionName[{}], errorCondition[{}]. Setting error condition and "
+                + "disposing. {}",
+            sessionHandler.getConnectionId(), sessionName, condition, message);
+
+        return Mono.fromRunnable(() -> {
+            try {
+                provider.getReactorDispatcher().invoke(() -> disposeWork(errorCondition, disposeLinks));
+            } catch (IOException e) {
+                logger.warning("connectionId[{}] sessionName[{}] Error while scheduling work. Manually disposing.",
+                    sessionHandler.getConnectionId(), sessionName, e);
+                disposeWork(errorCondition, disposeLinks);
+            }
+        }).then(isClosedMono.asMono());
     }
 
     /**
@@ -339,8 +354,8 @@ public class ReactorSession implements AmqpSession {
      */
     protected ReactorReceiver createConsumer(String entityPath, Receiver receiver,
         ReceiveLinkHandler receiveLinkHandler, TokenManager tokenManager, ReactorProvider reactorProvider) {
-        return new ReactorReceiver(entityPath, receiver, receiveLinkHandler, tokenManager,
-            reactorProvider.getReactorDispatcher());
+        return new ReactorReceiver(amqpConnection, entityPath, receiver, receiveLinkHandler, tokenManager,
+            reactorProvider.getReactorDispatcher(), retryOptions);
     }
 
     /**
@@ -466,7 +481,9 @@ public class ReactorSession implements AmqpSession {
         });
         //@formatter:on
 
-        return new LinkSubscription<>(reactorSender, subscription);
+        return new LinkSubscription<>(reactorSender, subscription,
+            String.format("connectionId[%s] session[%s]: Setting error on receive link.",
+                sessionHandler.getConnectionId(), sessionName));
     }
 
     /**
@@ -525,7 +542,9 @@ public class ReactorSession implements AmqpSession {
             removeLink(openReceiveLinks, linkName);
         });
 
-        return new LinkSubscription<>(reactorReceiver, subscription);
+        return new LinkSubscription<>(reactorReceiver, subscription,
+            String.format("connectionId[%s] session[%s]: Setting error on receive link.", amqpConnection.getId(),
+                sessionName));
     }
 
     /**
@@ -539,13 +558,37 @@ public class ReactorSession implements AmqpSession {
             .then();
     }
 
-    private void disposeWork(ErrorCondition errorCondition) {
-        logger.info("connectionId[{}], sessionId[{}], errorCondition[{}]: Disposing of session.",
-            sessionHandler.getConnectionId(), sessionName,
-            errorCondition != null ? errorCondition : NOT_APPLICABLE);
+    private void handleClose() {
+        logger.verbose("connectionId[{}] sessionName[{}]  Disposing of active links due to session close.",
+            sessionHandler.getConnectionId(), sessionName);
 
-        connectionSubscriptions.dispose();
+        dispose("Session closed.", null, true);
+    }
 
+    private void handleError(Throwable error) {
+        logger.verbose("connectionId[{}] sessionName[{}]  Disposing of active links due to error.",
+            sessionHandler.getConnectionId(), sessionName, error);
+        final ErrorCondition condition;
+        if (error instanceof AmqpException) {
+            final AmqpException exception = ((AmqpException) error);
+            condition = new ErrorCondition(
+                Symbol.getSymbol(exception.getErrorCondition().getErrorCondition()), exception.getMessage());
+            dispose(exception.getMessage(), condition, true);
+        } else {
+            condition = null;
+        }
+
+        dispose(error.getMessage(), condition, true);
+    }
+
+    /**
+     * Takes care of setting the error condition on the session, closing the children if specified and then waiting
+     *
+     * @param errorCondition Condition to set on the session.
+     * @param disposeLinks {@code true} to dispose of children. {@code false} to ignore them, this may be the case
+     *     when the {@link AmqpConnection} passes a shutdown signal.
+     */
+    private void disposeWork(ErrorCondition errorCondition, boolean disposeLinks) {
         if (session.getLocalState() != EndpointState.CLOSED) {
             session.close();
 
@@ -554,8 +597,39 @@ public class ReactorSession implements AmqpSession {
             }
         }
 
-        openReceiveLinks.forEach((key, link) -> link.dispose(errorCondition));
-        openSendLinks.forEach((key, link) -> link.dispose(errorCondition));
+        final ArrayList<Mono<Void>> closingLinks = new ArrayList<>();
+        if (disposeLinks) {
+            synchronized (closeLock) {
+                openReceiveLinks.forEach((key, link) -> {
+                    closingLinks.add(link.isClosed());
+                    link.dispose(errorCondition);
+                });
+                openSendLinks.forEach((key, link) -> {
+                    closingLinks.add(link.isClosed());
+                    link.dispose(errorCondition);
+                });
+            }
+        }
+
+        // We want to complete the session so that the parent connection isn't waiting.
+        closeLinksMono = Mono.when(closingLinks).timeout(retryOptions.getTryTimeout())
+            .onErrorResume(error -> {
+                logger.warning("connectionId[{}], sessionName[{}]: Timed out waiting for all links to close.",
+                    sessionHandler.getConnectionId(), sessionName, error);
+                return Mono.empty();
+            })
+            .then(Mono.fromRunnable(() -> {
+                isClosedMono.emitEmpty((signalType, result) -> {
+                    logger.warning("connectionId[{}], signal[{}], result[{}]. Unable to emit shutdown signal.",
+                        sessionHandler.getConnectionId(), signalType, result);
+                    return false;
+                });
+
+                sessionHandler.close();
+                connectionSubscriptions.dispose();
+            }));
+
+        connectionSubscriptions.add(closeLinksMono.subscribe());
     }
 
     private <T extends AmqpLink> boolean removeLink(ConcurrentMap<String, LinkSubscription<T>> openLinks, String key) {
@@ -575,10 +649,12 @@ public class ReactorSession implements AmqpSession {
         private final AtomicBoolean isDisposed = new AtomicBoolean();
         private final T link;
         private final Disposable subscription;
+        private final String errorMessage;
 
-        private LinkSubscription(T link, Disposable subscription) {
+        private LinkSubscription(T link, Disposable subscription, String errorMessage) {
             this.link = link;
             this.subscription = subscription;
+            this.errorMessage = errorMessage;
         }
 
         public T getLink() {
@@ -592,15 +668,25 @@ public class ReactorSession implements AmqpSession {
 
             if (link instanceof ReactorReceiver) {
                 final ReactorReceiver reactorReceiver = (ReactorReceiver) link;
-                reactorReceiver.dispose(errorCondition);
+                reactorReceiver.dispose(errorMessage, errorCondition).subscribe();
             } else if (link instanceof ReactorSender) {
                 final ReactorSender reactorSender = (ReactorSender) link;
-                reactorSender.disposeAsync("Error in session. Disposing receiver.", errorCondition);
+                reactorSender.dispose(errorMessage, errorCondition).subscribe();
             } else {
                 link.dispose();
             }
 
             subscription.dispose();
+        }
+
+        Mono<Void> isClosed() {
+            if (link instanceof ReactorReceiver) {
+                return ((ReactorReceiver) link).isClosed();
+            } else if (link instanceof ReactorSender) {
+                return ((ReactorSender) link).isClosed();
+            } else {
+                return Mono.empty();
+            }
         }
     }
 }
