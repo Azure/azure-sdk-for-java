@@ -154,7 +154,7 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
         privateEndpoint.refresh();
         Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
 
-        // update
+        // update private endpoint
         StorageAccount storageAccount2 = azureResourceManager.storageAccounts().define(saName2)
             .withRegion(region)
             .withNewResourceGroup(rgName)
@@ -222,6 +222,7 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
         String vnlName = generateRandomResourceName("vnl", 10);
         String pdzgName = "default";
         String pdzcName = generateRandomResourceName("pdzcName", 10);
+        String pdzcName2 = generateRandomResourceName("pdzcName", 10);
 
         String vmName = generateRandomResourceName("vm", 10);
 
@@ -321,5 +322,18 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
         // verify list and get for private dns zone group
         Assertions.assertEquals(1, privateEndpoint.privateDnsZoneGroups().list().stream().count());
         Assertions.assertEquals(pdzgName, privateEndpoint.privateDnsZoneGroups().getById(privateDnsZoneGroup.id()).name());
+
+        // update private dns zone group
+        PrivateDnsZone privateDnsZone2 = azureResourceManager.privateDnsZones().define("link.blob.core.windows.net")
+            .withExistingResourceGroup(rgName)
+            .create();
+
+        privateDnsZoneGroup.update()
+            .withoutPrivateDnsZoneConfigure(pdzcName)
+            .withPrivateDnsZoneConfigure(pdzcName2, privateDnsZone2.id())
+            .apply();
+
+        // delete private dns zone group
+        privateEndpoint.privateDnsZoneGroups().deleteById(privateDnsZoneGroup.id());
     }
 }

@@ -41,6 +41,12 @@ public class PrivateDnsZoneGroupImpl extends IndependentChildImpl<
     }
 
     @Override
+    public Update withoutPrivateDnsZoneConfigure(String name) {
+        innerModel().privateDnsZoneConfigs().removeIf(config -> config.name().equals(name));
+        return this;
+    }
+
+    @Override
     public String id() {
         return this.innerModel().id();
     }
