@@ -4,7 +4,7 @@
 package com.azure.communication.phonenumbers.models;
 
 
-/** The ReleasePhoneNumbersResult model. */
-public final class ReleasePhoneNumbersResult {
+/** The ReleasePhoneNumberResult model. */
+public final class ReleasePhoneNumberResult {
 
 }

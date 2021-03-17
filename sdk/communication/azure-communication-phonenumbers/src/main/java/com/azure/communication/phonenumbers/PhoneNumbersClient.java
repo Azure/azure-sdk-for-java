@@ -15,7 +15,7 @@ import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.communication.phonenumbers.models.PurchasePhoneNumbersResult;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
-import com.azure.communication.phonenumbers.models.ReleasePhoneNumbersResult;
+import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -170,11 +170,11 @@ public final class PhoneNumbersClient {
      *
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
      *                    as %2B.
-     * @return A {@link SyncPoller} object with ReleasePhoneNumbersResult.
+     * @return A {@link SyncPoller} object with ReleasePhoneNumberResult.
      * @throws NullPointerException if {@code phoneNumber} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PhoneNumberOperation, ReleasePhoneNumbersResult> beginReleasePhoneNumber(String phoneNumber) {
+    public SyncPoller<PhoneNumberOperation, ReleasePhoneNumberResult> beginReleasePhoneNumber(String phoneNumber) {
         return asyncClient.beginReleasePhoneNumber(phoneNumber).getSyncPoller();
     }
 
@@ -188,11 +188,11 @@ public final class PhoneNumbersClient {
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
      *                    as %2B.
      * @param context A {@link Context} representing the request context.
-     * @return A {@link SyncPoller} object with ReleasePhoneNumbersResult.
+     * @return A {@link SyncPoller} object with ReleasePhoneNumberResult.
      * @throws NullPointerException if {@code phoneNumber} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PhoneNumberOperation, ReleasePhoneNumbersResult> beginReleasePhoneNumber(String phoneNumber, Context context) {
+    public SyncPoller<PhoneNumberOperation, ReleasePhoneNumberResult> beginReleasePhoneNumber(String phoneNumber, Context context) {
         return asyncClient.beginReleasePhoneNumber(phoneNumber, context).getSyncPoller();
     }
 

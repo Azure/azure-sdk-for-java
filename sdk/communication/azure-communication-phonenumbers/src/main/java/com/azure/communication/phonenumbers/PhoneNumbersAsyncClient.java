@@ -11,7 +11,7 @@ import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersSe
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReleasePhoneNumberResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUpdateCapabilitiesResponse;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
-import com.azure.communication.phonenumbers.models.ReleasePhoneNumbersResult;
+import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
@@ -281,18 +281,18 @@ public final class PhoneNumbersAsyncClient {
      * @throws NullPointerException if {@code phoneNumber} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PhoneNumberOperation, ReleasePhoneNumbersResult> beginReleasePhoneNumber(String phoneNumber) {
+    public PollerFlux<PhoneNumberOperation, ReleasePhoneNumberResult> beginReleasePhoneNumber(String phoneNumber) {
         return beginReleasePhoneNumber(phoneNumber, null);
     }
 
-    PollerFlux<PhoneNumberOperation, ReleasePhoneNumbersResult> beginReleasePhoneNumber(String phoneNumber, Context context) {
+    PollerFlux<PhoneNumberOperation, ReleasePhoneNumberResult> beginReleasePhoneNumber(String phoneNumber, Context context) {
         try {
             Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
             return new PollerFlux<>(defaultPollInterval,
                 releaseNumberInitOperation(phoneNumber, context),
                 pollOperation(),
                 (pollingContext, firstResponse) -> Mono.error(logger.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
-                (pollingContext) -> Mono.just(new ReleasePhoneNumbersResult()));
+                (pollingContext) -> Mono.just(new ReleasePhoneNumberResult()));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
