@@ -14,12 +14,16 @@ import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 
 import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
+
+import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
 
 /**
  * Handles receiving events from Event Hubs service and translating them to proton-j messages.
@@ -36,6 +40,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
     private final ReactorDispatcher dispatcher;
     private final Disposable subscriptions;
     private final AtomicBoolean isDisposed = new AtomicBoolean();
+    private final Sinks.Empty<Void> isClosedMono = Sinks.empty();
     private final Flux<Message> messagesProcessor;
     private final ClientLogger logger = new ClientLogger(ReactorReceiver.class);
     private final Flux<AmqpEndpointState> endpointStates;
@@ -71,6 +76,29 @@ public class ReactorReceiver implements AmqpReceiveLink {
                 logger.verbose("connectionId[{}], path[{}], linkName[{}]: State {}", handler.getConnectionId(),
                     entityPath, getLinkName(), state);
                 return AmqpEndpointStateUtil.getConnectionState(state);
+            })
+            .doOnError(error -> {
+                if (isDisposed.getAndSet(true)) {
+                    logger.warning("connectionId[{}] entityPath[{}] linkName[{}] This was already disposed. "
+                            + " Dropping error.",
+                        handler.getConnectionId(), entityPath, getLinkName(), error);
+                    return;
+                }
+
+                logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Freeing resources due to error.",
+                    handler.getConnectionId(), entityPath, getLinkName(), error);
+                completeClose();
+            })
+            .doOnComplete(() -> {
+                if (isDisposed.getAndSet(true)) {
+                    logger.warning("connectionId[{}] entityPath[{}] linkName[{}] This was already disposed. Not "
+                            + "completing.", handler.getConnectionId(), entityPath, getLinkName());
+                    return;
+                }
+
+                logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Freeing resources.",
+                    handler.getConnectionId(), entityPath, getLinkName());
+                completeClose();
             })
             .cache(1);
 
@@ -164,40 +192,6 @@ public class ReactorReceiver implements AmqpReceiveLink {
         }
     }
 
-    /**
-     * Disposes of the sender when an exception is encountered.
-     *
-     * @param condition Error condition associated with close operation.
-     */
-    void dispose(ErrorCondition condition) {
-        if (isDisposed.getAndSet(true)) {
-            return;
-        }
-
-        logger.verbose("connectionId[{}], path[{}], linkName[{}]: setting error condition {}",
-            handler.getConnectionId(), entityPath, getLinkName(), condition);
-
-        if (receiver.getLocalState() != EndpointState.CLOSED) {
-            receiver.close();
-
-            if (receiver.getCondition() == null) {
-                receiver.setCondition(condition);
-            }
-        }
-
-        try {
-            dispatcher.invoke(() -> {
-                receiver.free();
-                handler.close();
-            });
-        } catch (IOException e) {
-            logger.warning("Could not schedule disposing of receiver on ReactorDispatcher.", e);
-            handler.close();
-        }
-
-        tokenManager.close();
-    }
-
     protected Message decodeDelivery(Delivery delivery) {
         final int messageSize = delivery.pending();
         final byte[] buffer = new byte[messageSize];
@@ -209,6 +203,70 @@ public class ReactorReceiver implements AmqpReceiveLink {
 
         delivery.settle();
         return message;
+    }
+
+    /**
+     * Disposes of the receiver when an exception is encountered.
+     *
+     * @param message Message to log.
+     * @param errorCondition Error condition associated with close operation.
+     */
+    Mono<Void> dispose(String message, ErrorCondition errorCondition) {
+        if (isDisposed.getAndSet(true)) {
+            return isClosedMono.asMono();
+        }
+
+        final String condition = errorCondition != null ? errorCondition.toString() : NOT_APPLICABLE;
+        logger.verbose("connectionId[{}], path[{}], linkName[{}] errorCondition[{}]: Setting error condition and "
+                + "disposing. {}",
+            handler.getConnectionId(), entityPath, getLinkName(), condition, message);
+
+        final Runnable closeReceiver = () -> {
+            if (receiver.getLocalState() != EndpointState.CLOSED) {
+                receiver.close();
+
+                if (receiver.getCondition() == null) {
+                    receiver.setCondition(errorCondition);
+                }
+            }
+        };
+
+        return Mono.fromRunnable(() -> {
+            try {
+                dispatcher.invoke(closeReceiver);
+            } catch (IOException e) {
+                logger.warning("Could not schedule disposing of receiver on ReactorDispatcher.", e);
+                closeReceiver.run();
+            }
+        }).then(isClosedMono.asMono());
+    }
+
+    /**
+     * A mono that completes when the sender has completely closed.
+     *
+     * @return mono that completes when the sender has completely closed.
+     */
+    Mono<Void> isClosed() {
+        return isClosedMono.asMono();
+    }
+
+    /**
+     * Takes care of disposing of subscriptions, reactor resources after they've been closed.
+     */
+    private void completeClose() {
+        isClosedMono.emitEmpty((signalType, result) -> {
+            logger.warning("connectionId[{}], signal[{}], result[{}]. Unable to emit shutdown signal.",
+                handler.getConnectionId(), signalType, result);
+            return false;
+        });
+
+        subscriptions.dispose();
+
+        if (tokenManager != null) {
+            tokenManager.close();
+        }
+
+        receiver.free();
     }
 
     @Override
