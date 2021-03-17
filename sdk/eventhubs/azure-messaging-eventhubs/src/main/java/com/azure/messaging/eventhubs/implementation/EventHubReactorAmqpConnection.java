@@ -133,8 +133,6 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
             return;
         }
 
-        logger.info("connectionId[{}]: Disposing of connection.", connectionId);
-
         if (managementChannel != null) {
             managementChannel.close();
         }
