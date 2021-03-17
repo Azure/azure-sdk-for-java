@@ -115,8 +115,14 @@ class ReactorSender implements AmqpSendLink {
                 this.hasConnected.set(state == EndpointState.ACTIVE);
                 return AmqpEndpointStateUtil.getConnectionState(state);
             })
-            .doOnError(error -> handleError(error))
-            .doOnComplete(() -> handleClose())
+            .doOnError(error -> {
+                hasConnected.set(false);
+                handleError(error);
+            })
+            .doOnComplete(() -> {
+                hasConnected.set(false);
+                handleClose();
+            })
             .cache(1);
 
         this.subscriptions = Disposables.composite(
@@ -133,6 +139,8 @@ class ReactorSender implements AmqpSendLink {
             amqpConnection.getShutdownSignals().subscribe(signal -> {
                 logger.verbose("connectionId[{}] linkName[{}]: Shutdown signal received.", handler.getConnectionId(),
                     getLinkName());
+
+                hasConnected.set(false);
                 disposeAsync("Connection shutdown.", null).subscribe();
             })
         );
@@ -301,19 +309,22 @@ class ReactorSender implements AmqpSendLink {
         return isDisposed.get();
     }
 
+    /**
+     * Blocking call that disposes of the sender. See {@link #disposeAsync(String, ErrorCondition)}.
+     */
     @Override
     public void dispose() {
-        disposeAsync().block(retryOptions.getTryTimeout());
-    }
-
-    Mono<Void> disposeAsync() {
-        return disposeAsync("Dispose called", null);
+        disposeAsync("Dispose called", null)
+            .block(retryOptions.getTryTimeout());
     }
 
     /**
-     * Disposes of the sender when an exception is encountered.
+     * Disposes of the sender.
      *
      * @param errorCondition Error condition associated with close operation.
+     * @param message Message associated with why the sender was closed.
+     *
+     * @return A mono that completes when the send link has closed.
      */
     Mono<Void> disposeAsync(String message, ErrorCondition errorCondition) {
         if (isDisposed.getAndSet(true)) {
@@ -382,7 +393,7 @@ class ReactorSender implements AmqpSendLink {
         }
 
         if (isDisposed.get()) {
-            logger.warning("Sender is closed. Clearing work.");
+            logger.info("Sender is closed. Not executing work.");
             return;
         }
 
