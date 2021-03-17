@@ -5,7 +5,6 @@ package com.azure.communication.chat;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClientBuilder;
-import com.azure.communication.chat.models.ErrorException;
 import com.azure.communication.chat.models.*;
 import com.azure.communication.common.CommunicationTokenCredential;
 import com.azure.core.credential.AzureKeyCredential;
@@ -79,6 +78,29 @@ public class ChatClientTestBase extends TestBase {
         return builder;
     }
 
+    protected ChatThreadClientBuilder getChatThreadClientBuilder(String token, HttpClient httpClient) {
+        ChatThreadClientBuilder builder = new ChatThreadClientBuilder();
+
+        builder
+            .endpoint(ENDPOINT)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+
+        if (interceptorManager.isPlaybackMode()) {
+            builder.credential(new CommunicationTokenCredential(generateRawToken()));
+            return builder;
+        } else {
+            builder.credential(new CommunicationTokenCredential(token));
+        }
+
+        if (getTestMode() == TestMode.RECORD) {
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        }
+
+        return builder;
+    }
+
     protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilder(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder.endpoint(ENDPOINT)
@@ -113,7 +135,7 @@ public class ChatClientTestBase extends TestBase {
      * @param expectedStatusCode Expected HTTP status code contained in the error response
      */
     static void assertRestException(Throwable exception, int expectedStatusCode) {
-        assertRestException(exception, ErrorException.class, expectedStatusCode);
+        assertRestException(exception, HttpResponseException.class, expectedStatusCode);
     }
 
     static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
