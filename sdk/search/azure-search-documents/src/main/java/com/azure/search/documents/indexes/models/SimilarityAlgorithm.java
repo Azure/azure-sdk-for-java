@@ -29,4 +29,4 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonFlatten
 @Immutable
 @JsonTypeName("Similarity")
-public abstract class SimilarityAlgorithm {}
+public abstract class SimilarityAlgorithm { }
