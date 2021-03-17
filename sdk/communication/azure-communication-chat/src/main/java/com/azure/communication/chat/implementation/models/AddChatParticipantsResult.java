@@ -4,26 +4,25 @@
 
 package com.azure.communication.chat.implementation.models;
 
-import com.azure.communication.chat.models.Error;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CreateChatThreadErrors model. */
+/** Result of the add chat participants operation. */
 @Immutable
-public final class CreateChatThreadErrors {
+public final class AddChatParticipantsResult {
     /*
      * The participants that failed to be added to the chat thread.
      */
     @JsonProperty(value = "invalidParticipants", access = JsonProperty.Access.WRITE_ONLY)
-    private List<Error> invalidParticipants;
+    private List<CommunicationError> invalidParticipants;
 
     /**
      * Get the invalidParticipants property: The participants that failed to be added to the chat thread.
      *
      * @return the invalidParticipants value.
      */
-    public List<Error> getInvalidParticipants() {
+    public List<CommunicationError> getInvalidParticipants() {
         return this.invalidParticipants;
     }
 }
