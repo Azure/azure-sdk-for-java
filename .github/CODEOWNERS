@@ -122,6 +122,7 @@
 /eng/spotbugs-aggregate-report/                     @srnagar @JonathanGiles
 /eng/mgmt/                                          @JimSuplizio @mitchdenny @weshaggard @danieljurek @ChenTanyi @weidongxu-microsoft @yungezz @xccc-msft
 /eng/versioning/                                    @JimSuplizio @mitchdenny @danieljurek @alzimmermsft @samvaity @g2vinay
+/eng/versioning/external_dependencies.txt           @JimSuplizio @mitchdenny @danieljurek @alzimmermsft @samvaity @g2vinay @saragluna @yiliuTo @chenrujun @backwind1233 @stliu
 /parent/                                            @JimSuplizio @alzimmermsft
 
 /**/tests.yml                                       @danieljurek
