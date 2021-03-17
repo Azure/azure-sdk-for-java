@@ -54,7 +54,7 @@ class OrderByUtils {
                                                                                                  List<ClientSideRequestStatistics> clientSideRequestStatisticsList) {
         return producer
                 .produceAsync()
-                   .compose(new OrderByUtils.PageToItemTransformer<T>(klass, tracker, queryMetricsMap,
+                   .transformDeferred(new OrderByUtils.PageToItemTransformer<T>(klass, tracker, queryMetricsMap,
                                                                       targetRangeToOrderByContinuationTokenMap,
                                                                       sortOrders, clientSideRequestStatisticsList));
     }

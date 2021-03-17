@@ -61,13 +61,16 @@ public class HttpResponseBodyDecoderTests {
     private static final HttpRequest GET_REQUEST = new HttpRequest(HttpMethod.GET, "https://localhost");
     private static final HttpRequest HEAD_REQUEST = new HttpRequest(HttpMethod.HEAD, "https://localhost");
 
+    private AutoCloseable openMocks;
+
     @BeforeEach
     public void prepareForMocking() {
-        MockitoAnnotations.initMocks(this);
+        this.openMocks = MockitoAnnotations.openMocks(this);
     }
 
     @AfterEach
-    public void clearMocks() {
+    public void clearMocks() throws Exception {
+        openMocks.close();
         Mockito.framework().clearInlineMocks();
     }
 

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.netapp.implementation;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.fluent.OperationsClient;
 import com.azure.resourcemanager.netapp.fluent.models.OperationInner;
 import com.azure.resourcemanager.netapp.models.Operation;
@@ -19,9 +18,10 @@ public final class OperationsImpl implements Operations {
 
     private final OperationsClient innerClient;
 
-    private final NetAppFilesManager serviceManager;
+    private final com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager;
 
-    public OperationsImpl(OperationsClient innerClient, NetAppFilesManager serviceManager) {
+    public OperationsImpl(
+        OperationsClient innerClient, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -40,7 +40,7 @@ public final class OperationsImpl implements Operations {
         return this.innerClient;
     }
 
-    private NetAppFilesManager manager() {
+    private com.azure.resourcemanager.netapp.NetAppFilesManager manager() {
         return this.serviceManager;
     }
 }

@@ -40,6 +40,40 @@ license-header: MICROSOFT_MIT_SMALL
 generate-client-as-impl: true
 context-client-method-parameter: true
 models-subpackage: systemevents
+directive:
+    - rename-model:
+        from: ResourceActionCancelData
+        to: ResourceActionCancelEventData
+    - rename-model:
+        from: ResourceActionFailureData
+        to: ResourceActionFailureEventData
+    - rename-model:
+        from: ResourceActionSuccessData
+        to: ResourceActionSuccessEventData
+    - rename-model:
+        from: ResourceDeleteCancelData
+        to: ResourceDeleteCancelEventData
+    - rename-model:
+        from: ResourceDeleteFailureData
+        to: ResourceDeleteFailureEventData
+    - rename-model:
+        from: ResourceDeleteSuccessData
+        to: ResourceDeleteSuccessEventData
+    - rename-model:
+        from: ResourceWriteCancelData
+        to: ResourceWriteCancelEventData
+    - rename-model:
+        from: ResourceWriteFailureData
+        to: ResourceWriteFailureEventData
+    - rename-model:
+        from: ResourceWriteSuccessData
+        to: ResourceWriteSuccessEventData
+    - rename-model:
+        from: RedisImportRDBCompletedEventData
+        to: RedisImportRdbCompletedEventData
+    - rename-model:
+        from: RedisExportRDBCompletedEventData
+        to: RedisExportRdbCompletedEventData
 
 custom-types-subpackage: implementation.models
 custom-types: CloudEvent,EventGridEvent

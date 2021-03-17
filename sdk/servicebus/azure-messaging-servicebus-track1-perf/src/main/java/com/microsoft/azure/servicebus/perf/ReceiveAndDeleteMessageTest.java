@@ -3,7 +3,6 @@
 
 package com.microsoft.azure.servicebus.perf;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.perf.test.core.TestDataCreationHelper;
 import com.microsoft.azure.servicebus.perf.core.ServiceBusStressOptions;
 import com.microsoft.azure.servicebus.perf.core.ServiceTest;
@@ -22,7 +21,6 @@ import java.util.concurrent.CompletableFuture;
  * Performance test.
  */
 public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOptions> {
-    private final ClientLogger logger = new ClientLogger(ReceiveAndDeleteMessageTest.class);
     private final ServiceBusStressOptions options;
     private final String messageContent;
 
@@ -68,10 +66,10 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
         try {
             messages = receiver.receiveBatch(options.getMessagesToReceive());
             if (messages.size() <= 0) {
-                throw logger.logExceptionAsWarning(new RuntimeException("Error. Should have received some messages."));
+                throw new RuntimeException("Error. Should have received some messages.");
             }
         } catch (Exception e) {
-            throw logger.logExceptionAsWarning(new RuntimeException(e));
+            throw new RuntimeException(e);
         }
     }
 
@@ -80,7 +78,6 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
         return Mono.fromFuture(receiver.receiveBatchAsync(options.getMessagesToReceive()))
             .handle((messages, synchronousSink) -> {
                 int count = messages.size();
-                logger.verbose(" Async received  size of received : {}", count);
                 if (count <= 0) {
                     synchronousSink.error(new RuntimeException("Error. Should have received some messages."));
                 }
