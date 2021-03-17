@@ -96,6 +96,11 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
         return services;
     }
 
+    @Override
+    public String id() {
+        return this.innerModel().id();
+    }
+
     // Fluent setters
 
     @Override

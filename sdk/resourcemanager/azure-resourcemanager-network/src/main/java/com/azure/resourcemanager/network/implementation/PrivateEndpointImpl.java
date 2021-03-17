@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.models.PrivateEndpointInner;
 import com.azure.resourcemanager.network.fluent.models.SubnetInner;
@@ -25,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -35,6 +37,8 @@ class PrivateEndpointImpl extends
     PrivateEndpoint.Definition,
     PrivateEndpoint.Update {
 
+    private final ClientLogger logger = new ClientLogger(PrivateEndpointImpl.class);
+
     private PrivateDnsZoneGroups privateDnsZoneGroups;
 
     static class PrivateEndpointConnectionImpl extends
@@ -42,7 +46,8 @@ class PrivateEndpointImpl extends
             PrivateEndpointImpl, PrivateEndpoint>
         implements
         PrivateLinkServiceConnection,
-        PrivateLinkServiceConnection.Definition<PrivateEndpoint.DefinitionStages.WithCreate> {
+        PrivateLinkServiceConnection.Definition<PrivateEndpointImpl>,
+        PrivateLinkServiceConnection.Update {
 
         private boolean manualApproval = false;
 
@@ -133,6 +138,12 @@ class PrivateEndpointImpl extends
             this.innerModel().withRequestMessage(requestMessage);
             return this;
         }
+
+        @Override
+        public PrivateEndpointConnectionImpl withRequestMessage(String requestMessage) {
+            this.innerModel().withRequestMessage(requestMessage);
+            return this;
+        }
     }
 
     protected PrivateEndpointImpl(String name, PrivateEndpointInner innerObject, NetworkManager manager) {
@@ -204,8 +215,45 @@ class PrivateEndpointImpl extends
     }
 
     @Override
+    public PrivateEndpointImpl withoutPrivateLinkServiceConnection(String name) {
+        if (this.innerModel().privateLinkServiceConnections() != null) {
+            this.innerModel().privateLinkServiceConnections()
+                .removeIf(connection -> connection.name().equals(name));
+        }
+        if (this.innerModel().manualPrivateLinkServiceConnections() != null) {
+            this.innerModel().manualPrivateLinkServiceConnections()
+                .removeIf(connection -> connection.name().equals(name));
+        }
+        return this;
+    }
+
+    @Override
     public PrivateEndpointConnectionImpl definePrivateLinkServiceConnection(String name) {
         return new PrivateEndpointConnectionImpl(Objects.requireNonNull(name), this);
+    }
+
+    @Override
+    public PrivateLinkServiceConnection.Update updatePrivateLinkServiceConnection(String name) {
+        if (this.innerModel().privateLinkServiceConnections() != null) {
+            Optional<com.azure.resourcemanager.network.models.PrivateLinkServiceConnection> inner =
+                this.innerModel().privateLinkServiceConnections().stream()
+                    .filter(c -> c.name().equals(name))
+                    .findAny();
+            if (inner.isPresent()) {
+                return new PrivateEndpointConnectionImpl(inner.get(), this, false);
+            }
+        }
+        if (this.innerModel().manualPrivateLinkServiceConnections() != null) {
+            Optional<com.azure.resourcemanager.network.models.PrivateLinkServiceConnection> inner =
+                this.innerModel().manualPrivateLinkServiceConnections().stream()
+                    .filter(c -> c.name().equals(name))
+                    .findAny();
+            if (inner.isPresent()) {
+                return new PrivateEndpointConnectionImpl(inner.get(), this, true);
+            }
+        }
+        throw logger.logExceptionAsError(new IllegalArgumentException(
+            String.format("Private link service connection not found for name '%s'", name)));
     }
 
     PrivateEndpointImpl withPrivateEndpointConnection(PrivateEndpointConnectionImpl connection) {

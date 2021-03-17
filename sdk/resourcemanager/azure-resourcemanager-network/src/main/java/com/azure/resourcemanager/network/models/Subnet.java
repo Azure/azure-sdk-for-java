@@ -55,6 +55,9 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
     /** @return the services that has access to the subnet. */
     Map<ServiceEndpointType, List<Region>> servicesWithAccess();
 
+    /** @return the ID of the subnet. */
+    String id();
+
     /** Grouping of subnet definition stages. */
     interface DefinitionStages {
         /**
