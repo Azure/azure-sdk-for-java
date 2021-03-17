@@ -4,18 +4,10 @@
 package com.azure.iot.modelsrepository.implementation;
 
 import com.azure.core.annotation.*;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
+import com.azure.core.exception.ServiceResponseException;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.iot.modelsrepository.implementation.models.ErrorResponseException;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 
 /**
  * An instance of this class provides access to all the operations defined in ModelsRepository.
@@ -38,7 +30,7 @@ public final class ModelsRepositoryImpl {
      */
     ModelsRepositoryImpl(ModelsRepositoryAPIImpl client) {
         this.service =
-                RestProxy.create(ModelsRepositoryService.class, client.getHttpPipeline());
+            RestProxy.create(ModelsRepositoryService.class, client.getHttpPipeline());
         this.client = client;
     }
 
@@ -53,57 +45,21 @@ public final class ModelsRepositoryImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<byte[]> getModelFromPathWithResponseAsync(
-            String path, Context context) {
+        String path, Context context) {
         if (this.client.getHost() == null) {
             return Mono.error(
-                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (path == null) {
             return Mono.error(new IllegalArgumentException("Parameter 'path' is required and cannot be null."));
         }
 
-        // TODO: azabbasi : Look into error handling a bit more. This is a temporary poc.
         return service.getModelFromPath(
-                this.client.getHost(), path, context)
-                .onErrorMap(s -> new ErrorResponseException(
-                        String.format(LoggerStandardStrings.GenericGetModelsError, path),
-                        new HttpResponse(new HttpRequest(HttpMethod.GET, this.client.getHost() + path)) {
-                            @Override
-                            public int getStatusCode() {
-                                return 400;
-                            }
-
-                            @Override
-                            public String getHeaderValue(String s) {
-                                return null;
-                            }
-
-                            @Override
-                            public HttpHeaders getHeaders() {
-                                return null;
-                            }
-
-                            @Override
-                            public Flux<ByteBuffer> getBody() {
-                                return null;
-                            }
-
-                            @Override
-                            public Mono<byte[]> getBodyAsByteArray() {
-                                return null;
-                            }
-
-                            @Override
-                            public Mono<String> getBodyAsString() {
-                                return null;
-                            }
-
-                            @Override
-                            public Mono<String> getBodyAsString(Charset charset) {
-                                return null;
-                            }
-                        }
-                ));
+            this.client.getHost(), path, context)
+            .onErrorMap(error ->
+                new ServiceResponseException(
+                    String.format(LoggerStandardStrings.ErrorFetchingModelContent, path),
+                    error));
     }
 
     /**
@@ -117,8 +73,8 @@ public final class ModelsRepositoryImpl {
         @Get("{path}")
         @ExpectedResponses({200})
         Mono<byte[]> getModelFromPath(
-                @HostParam("$host") String host,
-                @PathParam("path") String path,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("path") String path,
+            Context context);
     }
 }

@@ -6,7 +6,6 @@ package com.azure.iot.modelsrepository;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.iot.modelsrepository.implementation.models.ErrorResponseException;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.util.ArrayList;
@@ -16,36 +15,12 @@ import java.util.stream.Stream;
 
 import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
 import static com.azure.core.test.TestBase.getHttpClients;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
 public class TestHelper {
     public static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final String AZURE_IOT_MODELSREPOSITORY_TEST_SERVICE_VERSIONS = "AZURE_IOT_MODELSREPOSITORY_TEST_SERVICE_VERSIONS";
     private static final String SERVICE_VERSION_FROM_ENV =
         Configuration.getGlobalConfiguration().get(AZURE_IOT_MODELSREPOSITORY_TEST_SERVICE_VERSIONS);
-
-    static void assertRestException(Runnable exceptionThrower, int expectedStatusCode) {
-        assertRestException(exceptionThrower, ErrorResponseException.class, expectedStatusCode);
-    }
-
-    static void assertRestException(Runnable exceptionThrower, Class<? extends ErrorResponseException> expectedExceptionType, int expectedStatusCode) {
-        try {
-            exceptionThrower.run();
-            fail("Expected exception was not thrown");
-        } catch (Throwable ex) {
-            assertRestException(ex, expectedExceptionType, expectedStatusCode);
-        }
-    }
-
-    static void assertRestException(Throwable exception, int expectedStatusCode) {
-        assertRestException(exception, ErrorResponseException.class, expectedStatusCode);
-    }
-
-    static void assertRestException(Throwable exception, Class<? extends ErrorResponseException> expectedExceptionType, int expectedStatusCode) {
-        assertEquals(expectedExceptionType, exception.getClass());
-        assertEquals(expectedStatusCode, ((ErrorResponseException) exception).getResponse().getStatusCode());
-    }
 
     /**
      * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients} and

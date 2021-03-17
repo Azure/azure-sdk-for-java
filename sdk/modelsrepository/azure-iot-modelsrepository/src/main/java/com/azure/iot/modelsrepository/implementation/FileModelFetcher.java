@@ -3,6 +3,7 @@
 
 package com.azure.iot.modelsrepository.implementation;
 
+import com.azure.core.exception.AzureException;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.iot.modelsrepository.DtmiConventions;
@@ -10,7 +11,6 @@ import com.azure.iot.modelsrepository.ModelsDependencyResolution;
 import com.azure.iot.modelsrepository.implementation.models.FetchResult;
 import reactor.core.publisher.Mono;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -45,7 +45,7 @@ class FileModelFetcher implements ModelFetcher {
 
             work.add(getPath(dtmi, repositoryUri, false));
         } catch (Exception e) {
-            return Mono.error(e);
+            return Mono.error(new AzureException(e));
         }
 
         String fnfError = "";
@@ -58,11 +58,11 @@ class FileModelFetcher implements ModelFetcher {
             if (Files.exists(path)) {
                 try {
                     return Mono.just(
-                            new FetchResult()
-                                    .setDefinition(new String(Files.readAllBytes(path)))
-                                    .setPath(tryContentPath));
+                        new FetchResult()
+                            .setDefinition(new String(Files.readAllBytes(path)))
+                            .setPath(tryContentPath));
                 } catch (IOException e) {
-                    return Mono.error(e);
+                    return Mono.error(new AzureException(e));
                 }
             }
 
@@ -71,14 +71,14 @@ class FileModelFetcher implements ModelFetcher {
             fnfError = String.format(LoggerStandardStrings.ErrorFetchingModelContent, tryContentPath);
         }
 
-        return Mono.error(new FileNotFoundException(fnfError));
+        return Mono.error(new AzureException(fnfError));
     }
 
     private String getPath(String dtmi, URI repositoryUri, boolean expanded) throws URISyntaxException {
         return DtmiConventions.getModelUri(
-                dtmi,
-                repositoryUri,
-                expanded)
-                .getPath();
+            dtmi,
+            repositoryUri,
+            expanded)
+            .getPath();
     }
 }
