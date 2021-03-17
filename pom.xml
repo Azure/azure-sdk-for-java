@@ -26,9 +26,9 @@
         <module>sdk/communication/azure-communication-identity</module>
         <module>sdk/communication/azure-communication-phonenumbers</module>
         <module>sdk/communication/azure-communication-sms</module>
-		
-		<!-- Azure Container Registry -->
-		<module>sdk/containerregistry/azure-containers-containerregistry</module>
+
+        <!-- Azure Container Registry -->
+        <module>sdk/containerregistry/azure-containers-containerregistry</module>
 
         <!-- Azure Core -->
         <module>sdk/core/azure-core</module>
@@ -490,7 +490,7 @@
                       So, path for aggregate reports have to be defined relative to parent pom -->
                   <additionalOptions>-maxLineLength 120
                     -snippetpath ${project.basedir}/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java
-					-snippetpath ${project.basedir}/sdk/containerregistry/azure-containers-containerregistry/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/containerregistry/azure-containers-containerregistry/src/samples/java
                     -snippetpath ${project.basedir}/sdk/core/azure-core/src/samples/java
                     -snippetpath ${project.basedir}/sdk/core/azure-core-amqp/src/samples/java
                     -snippetpath ${project.basedir}/sdk/core/azure-core-http-netty/src/samples/java
@@ -503,7 +503,6 @@
                     -snippetpath ${project.basedir}/sdk/digitaltwins/azure-digitaltwins-core/src/samples/java
                     -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
 <!--                    -snippetpath ${project.basedir}/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java-->
-
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-keys/src/samples/java
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java
@@ -600,7 +599,7 @@
         <module>sdk/cognitiveservices</module>
         <module>sdk/communication</module>
         <module>sdk/confluent</module>
-		<module>sdk/containerregistry</module>
+        <module>sdk/containerregistry</module>
         <module>sdk/core</module>
         <module>sdk/cosmos</module>
         <module>sdk/costmanagement</module>
