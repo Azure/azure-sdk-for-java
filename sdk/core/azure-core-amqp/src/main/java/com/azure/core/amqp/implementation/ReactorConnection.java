@@ -22,11 +22,9 @@ import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.message.Message;
 import org.apache.qpid.proton.reactor.Reactor;
 import reactor.core.Disposable;
-import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.ReplayProcessor;
+import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
@@ -48,9 +46,8 @@ public class ReactorConnection implements AmqpConnection {
     private final ConcurrentMap<String, SessionSubscription> sessionMap = new ConcurrentHashMap<>();
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();
-    private final DirectProcessor<AmqpShutdownSignal> shutdownSignals = DirectProcessor.create();
-    private final FluxSink<AmqpShutdownSignal> shutdownSignalsSink = shutdownSignals.sink();
-    private final ReplayProcessor<AmqpEndpointState> endpointStates;
+    private final Sinks.One<AmqpShutdownSignal> shutdownSignalSink = Sinks.one();
+    private final Flux<AmqpEndpointState> endpointStates;
 
     private final String connectionId;
     private final Mono<Connection> connectionMono;
@@ -104,11 +101,12 @@ public class ReactorConnection implements AmqpConnection {
         this.connectionMono = Mono.fromCallable(this::getOrCreateConnection);
 
         this.endpointStates = this.handler.getEndpointStates()
-            .takeUntilOther(shutdownSignals)
+            .takeUntilOther(shutdownSignalSink.asMono())
             .map(state -> {
                 logger.verbose("connectionId[{}]: State {}", connectionId, state);
                 return AmqpEndpointStateUtil.getConnectionState(state);
-            }).subscribeWith(ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED));
+            })
+            .cache(1);
     }
 
     /**
@@ -121,7 +119,7 @@ public class ReactorConnection implements AmqpConnection {
 
     @Override
     public Flux<AmqpShutdownSignal> getShutdownSignals() {
-        return shutdownSignals;
+        return shutdownSignalSink.asMono().cache().flux();
     }
 
     /**
@@ -245,8 +243,13 @@ public class ReactorConnection implements AmqpConnection {
     @Override
     public void dispose() {
         dispose(null);
-        shutdownSignalsSink.next(new AmqpShutdownSignal(false, true,
-            "Disposed by client."));
+        shutdownSignalSink.emitValue(new AmqpShutdownSignal(false, true,
+            "Disposed by client."),
+            (signalType, emitResult) -> {
+                logger.warning("connectionId[{}] signal[{}] result[{}] Could not emit shutdown signal for dispose()"
+                    + " call.", connectionId, signalType, emitResult);
+                return false;
+            });
     }
 
     void dispose(ErrorCondition errorCondition) {
@@ -371,10 +374,9 @@ public class ReactorConnection implements AmqpConnection {
             }
 
             logger.warning(
-                "onReactorError connectionId[{}], hostName[{}], message[Starting new reactor], error[{}]",
+                "onConnectionError connectionId[{}], hostName[{}], message[Starting new reactor], error[{}]",
                 getId(), getFullyQualifiedNamespace(), exception.getMessage());
 
-            endpointStates.onError(exception);
             ReactorConnection.this.dispose();
         }
 
@@ -386,11 +388,15 @@ public class ReactorConnection implements AmqpConnection {
             }
 
             logger.warning(
-                "onReactorError connectionId[{}], hostName[{}], message[Shutting down], shutdown signal[{}]",
+                "onConnectionShutdown connectionId[{}], hostName[{}], message[Shutting down], shutdown signal[{}]",
                 getId(), getFullyQualifiedNamespace(), shutdownSignal.isInitiatedByClient(), shutdownSignal);
 
-            dispose(new ErrorCondition(Symbol.getSymbol("onReactorError"), shutdownSignal.toString()));
-            shutdownSignalsSink.next(shutdownSignal);
+            dispose(new ErrorCondition(Symbol.getSymbol("onConnectionShutdown"), shutdownSignal.toString()));
+            shutdownSignalSink.emitValue(shutdownSignal, (signalType, emitResult) -> {
+                logger.warning("connectionId[{}] signal[{}] result[{}] onConnectionShutdown could not emit signal.",
+                    connectionId, signalType, emitResult);
+                return false;
+            });
         }
     }
 
