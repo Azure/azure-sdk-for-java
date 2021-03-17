@@ -87,6 +87,10 @@ public final class GenericResourcesImpl
 
     @Override
     public boolean checkExistenceById(String id) {
+        if (CoreUtils.isNullOrEmpty(id)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Parameter 'id' is required and cannot be null."));
+        }
         String apiVersion = getApiVersionFromIdAsync(id).block();
         return this.checkExistenceById(id, apiVersion);
     }
@@ -111,6 +115,10 @@ public final class GenericResourcesImpl
 
     @Override
     public Mono<GenericResource> getByIdAsync(String id) {
+        if (CoreUtils.isNullOrEmpty(id)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'id' is required and cannot be null."));
+        }
         return this.getApiVersionFromIdAsync(id)
             .flatMap(apiVersion -> this.getByIdAsync(id, apiVersion));
     }
@@ -137,6 +145,10 @@ public final class GenericResourcesImpl
 
     @Override
     public Mono<Void> deleteByIdAsync(final String id) {
+        if (CoreUtils.isNullOrEmpty(id)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'id' is required and cannot be null."));
+        }
         return getApiVersionFromIdAsync(id)
             .flatMap(apiVersion -> this.deleteByIdAsync(id, apiVersion));
     }
@@ -277,6 +289,10 @@ public final class GenericResourcesImpl
 
     @Override
     public Accepted<Void> beginDeleteById(String id) {
+        if (CoreUtils.isNullOrEmpty(id)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Parameter 'id' is required and cannot be null."));
+        }
         String apiVersion = getApiVersionFromIdAsync(id).block();
         return this.beginDeleteById(id, apiVersion);
     }
