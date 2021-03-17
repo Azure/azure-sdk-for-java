@@ -167,6 +167,12 @@ public class VolumeInner extends Resource {
     @JsonProperty(value = "properties.encryptionKeySource")
     private String encryptionKeySource;
 
+    /*
+     * Specifies whether LDAP is enabled or not for a given NFS volume.
+     */
+    @JsonProperty(value = "properties.ldapEnabled")
+    private Boolean ldapEnabled;
+
     /**
      * Get the fileSystemId property: Unique FileSystem Identifier.
      *
@@ -576,6 +582,26 @@ public class VolumeInner extends Resource {
      */
     public VolumeInner withEncryptionKeySource(String encryptionKeySource) {
         this.encryptionKeySource = encryptionKeySource;
+        return this;
+    }
+
+    /**
+     * Get the ldapEnabled property: Specifies whether LDAP is enabled or not for a given NFS volume.
+     *
+     * @return the ldapEnabled value.
+     */
+    public Boolean ldapEnabled() {
+        return this.ldapEnabled;
+    }
+
+    /**
+     * Set the ldapEnabled property: Specifies whether LDAP is enabled or not for a given NFS volume.
+     *
+     * @param ldapEnabled the ldapEnabled value to set.
+     * @return the VolumeInner object itself.
+     */
+    public VolumeInner withLdapEnabled(Boolean ldapEnabled) {
+        this.ldapEnabled = ldapEnabled;
         return this;
     }
 
