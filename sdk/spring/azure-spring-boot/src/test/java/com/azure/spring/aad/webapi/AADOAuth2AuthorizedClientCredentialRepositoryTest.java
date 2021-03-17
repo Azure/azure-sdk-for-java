@@ -50,7 +50,7 @@ public class AADOAuth2AuthorizedClientCredentialRepositoryTest {
 
     private InMemoryClientRegistrationRepository clientRegistrationsRepo;
     private OAuth2AuthorizedClient authorizedClient;
-    private AADOAuth2AuthorizedClientRepository authorizedRepo;
+    private AADResourceServerOAuth2AuthorizedClientRepository authorizedRepo;
     private JwtAuthenticationToken jwtAuthenticationToken;
     private MockHttpServletRequest mockHttpServletRequest;
 
@@ -96,7 +96,7 @@ public class AADOAuth2AuthorizedClientCredentialRepositoryTest {
         doReturn(authorizedClient).when(oAuth2AuthorizedClientService).loadAuthorizedClient("fake",
             jwtAuthenticationToken.getName());
 
-        authorizedRepo = new AADOAuth2AuthorizedClientRepository(oAuth2AuthorizedClientService,
+        authorizedRepo = new AADResourceServerOAuth2AuthorizedClientRepository(oAuth2AuthorizedClientService,
             clientRegistrationsRepo) {
             @Override
             @SuppressWarnings({ "unchecked", "rawtypes" })

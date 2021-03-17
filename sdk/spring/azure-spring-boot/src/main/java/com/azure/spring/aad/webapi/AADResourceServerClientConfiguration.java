@@ -75,7 +75,7 @@ public class AADResourceServerClientConfiguration {
     public OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository(
         ClientRegistrationRepository repo,
         OAuth2AuthorizedClientService oAuth2AuthorizedClientService) {
-        return new AADOAuth2AuthorizedClientRepository(oAuth2AuthorizedClientService, repo);
+        return new AADResourceServerOAuth2AuthorizedClientRepository(oAuth2AuthorizedClientService, repo);
     }
 
     public List<ClientRegistration> createClients() {

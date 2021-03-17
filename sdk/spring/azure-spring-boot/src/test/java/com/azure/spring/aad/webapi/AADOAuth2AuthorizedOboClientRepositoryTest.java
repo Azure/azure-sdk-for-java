@@ -41,7 +41,7 @@ public class AADOAuth2AuthorizedOboClientRepositoryTest {
     private InMemoryClientRegistrationRepository clientRegistrationsRepo;
     private OAuth2AuthorizedClient client;
     private IAuthenticationResult authenticationResult;
-    private AADOAuth2AuthorizedClientRepository authorizedRepo;
+    private AADResourceServerOAuth2AuthorizedClientRepository authorizedRepo;
     private JwtAuthenticationToken jwtAuthenticationToken;
     private MockHttpServletRequest mockHttpServletRequest;
 
@@ -87,7 +87,7 @@ public class AADOAuth2AuthorizedOboClientRepositoryTest {
                 + ".0/authorize")
             .scope("User.read")
             .clientId("2c47b831-d838-464f-a684-fa79cbd64f20").build());
-        authorizedRepo = new AADOAuth2AuthorizedClientRepository(
+        authorizedRepo = new AADResourceServerOAuth2AuthorizedClientRepository(
             clientRegistrationsRepo) {
 
             @Override
@@ -140,7 +140,7 @@ public class AADOAuth2AuthorizedOboClientRepositoryTest {
     @SuppressWarnings("unchecked")
     public void testLoadNotExistClientRegistration() {
 
-        AADOAuth2AuthorizedClientRepository authorizedRepo = new AADOAuth2AuthorizedClientRepository(
+        AADResourceServerOAuth2AuthorizedClientRepository authorizedRepo = new AADResourceServerOAuth2AuthorizedClientRepository(
             clientRegistrationsRepo);
 
         final Jwt mockJwt = mock(Jwt.class);
@@ -153,7 +153,7 @@ public class AADOAuth2AuthorizedOboClientRepositoryTest {
     @SuppressWarnings("unchecked")
     public void testUnsupportedTokenImplementation() {
 
-        AADOAuth2AuthorizedClientRepository authorizedRepo = new AADOAuth2AuthorizedClientRepository(
+        AADResourceServerOAuth2AuthorizedClientRepository authorizedRepo = new AADResourceServerOAuth2AuthorizedClientRepository(
             clientRegistrationsRepo);
 
         PreAuthenticatedAuthenticationToken preToken = mock(PreAuthenticatedAuthenticationToken.class);
@@ -169,7 +169,7 @@ public class AADOAuth2AuthorizedOboClientRepositoryTest {
     @SuppressWarnings("unchecked")
     public void testNotExistClientApplication() {
 
-        AADOAuth2AuthorizedClientRepository authorizedRepo = new AADOAuth2AuthorizedClientRepository(
+        AADResourceServerOAuth2AuthorizedClientRepository authorizedRepo = new AADResourceServerOAuth2AuthorizedClientRepository(
             clientRegistrationsRepo) {
             @Override
             ConfidentialClientApplication createApp(ClientRegistration clientRegistration) {

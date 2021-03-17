@@ -44,12 +44,12 @@ import java.util.concurrent.ExecutionException;
 
 /**
  * <p>
- * OAuth2AuthorizedClientRepository for obo flow
+ * AADResourceServerOAuth2AuthorizedClientRepository for obo flow and client credential flow
  * </p>
  */
-public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClientRepository {
+public class AADResourceServerOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClientRepository {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AADOAuth2AuthorizedClientRepository.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADResourceServerOAuth2AuthorizedClientRepository.class);
 
     private static final String OBO_AUTHORIZEDCLIENT_PREFIX = "obo_authorizedclient_";
 
@@ -57,12 +57,12 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
 
     private final OAuth2AuthorizedClientService authorizedClientService;
 
-    public AADOAuth2AuthorizedClientRepository(ClientRegistrationRepository repository) {
+    public AADResourceServerOAuth2AuthorizedClientRepository(ClientRegistrationRepository repository) {
         this(null, repository);
     }
 
-    public AADOAuth2AuthorizedClientRepository(OAuth2AuthorizedClientService oAuth2AuthorizedClientService,
-                                               ClientRegistrationRepository repository) {
+    public AADResourceServerOAuth2AuthorizedClientRepository(OAuth2AuthorizedClientService oAuth2AuthorizedClientService,
+                                                             ClientRegistrationRepository repository) {
         this.repository = repository;
         this.authorizedClientService = oAuth2AuthorizedClientService;
     }
