@@ -43,6 +43,10 @@ public class ReactorConnection implements AmqpConnection {
     private static final String CBS_SESSION_NAME = "cbs-session";
     private static final String CBS_ADDRESS = "$cbs";
     private static final String CBS_LINK_NAME = "cbs";
+    /**
+     * Taken from {@link AmqpRetryPolicy} where MAX_SERVER_BUSY_TIME
+     */
+    private static final Duration MAX_BUSY_SERVER_TIME = Duration.ofSeconds(3);
 
     private final ClientLogger logger = new ClientLogger(ReactorConnection.class);
     private final Object closeLock = new Object();
@@ -68,9 +72,9 @@ public class ReactorConnection implements AmqpConnection {
     private final Composite subscriptions;
 
     private ReactorExecutor executor;
-    private Mono<Void> closeSessionsMono;
 
     private volatile ClaimsBasedSecurityChannel cbsChannel;
+    private volatile AmqpChannelProcessor<RequestResponseChannel> cbsChannelProcessor;
     private volatile Connection connection;
 
     /**
@@ -133,15 +137,20 @@ public class ReactorConnection implements AmqpConnection {
                 return AmqpEndpointStateUtil.getConnectionState(state);
             })
             .doOnError(error -> {
-                logger.verbose("connectionId[{}]: Disposing of active sessions due to error.", connectionId);
-                dispose(new AmqpShutdownSignal(false, false,
-                    error.getMessage()));
+                if (!isDisposed.getAndSet(true)) {
+                    logger.verbose("connectionId[{}]: Disposing of active sessions due to error.", connectionId);
+                    dispose(new AmqpShutdownSignal(false, false,
+                        error.getMessage()));
+                }
             })
             .doOnComplete(() -> {
-                logger.verbose("connectionId[{}]: Disposing of active sessions due to connection close.",
-                    connectionId);
-                dispose(new AmqpShutdownSignal(false, false,
-                    "Connection handler closed."));
+                if (!isDisposed.getAndSet(true)) {
+                    logger.verbose("connectionId[{}]: Disposing of active sessions due to connection close.",
+                        connectionId);
+
+                    dispose(new AmqpShutdownSignal(false, false,
+                        "Connection handler closed."));
+                }
             })
             .cache(1);
 
@@ -325,10 +334,14 @@ public class ReactorConnection implements AmqpConnection {
      *
      * @return A new {@link RequestResponseChannel} to communicate with the message broker.
      */
-    protected Mono<RequestResponseChannel> createRequestResponseChannel(String sessionName, String linkName,
-        String entityPath) {
+    protected AmqpChannelProcessor<RequestResponseChannel> createRequestResponseChannel(String sessionName,
+        String linkName, String entityPath) {
 
         final Flux<RequestResponseChannel> createChannel = createSession(sessionName)
+            .onErrorResume(error -> {
+                final boolean isAmqpException = error instanceof AmqpException;
+                return isDisposed.get() && isAmqpException;
+            }, error -> Mono.empty())
             .cast(ReactorSession.class)
             .map(reactorSession -> new RequestResponseChannel(this, getId(), getFullyQualifiedNamespace(), linkName,
                 entityPath, reactorSession.session(), connectionOptions.getRetry(), handlerProvider, reactorProvider,
@@ -337,7 +350,7 @@ public class ReactorConnection implements AmqpConnection {
                 logger.info("connectionId[{}] entityPath[{}] linkName[{}] Emitting new response channel.",
                     getId(), entityPath, linkName);
             })
-            .repeat();
+            .repeat(() -> !isDisposed.get());
 
         return createChannel.subscribeWith(new AmqpChannelProcessor<>(connectionId, entityPath,
             channel -> channel.getEndpointStates(), retryPolicy,
@@ -366,6 +379,10 @@ public class ReactorConnection implements AmqpConnection {
 
     private Mono<Void> dispose(AmqpShutdownSignal shutdownSignal) {
         logger.info("connectionId[{}] signal[{}]: Disposing of ReactorConnection.", connectionId, shutdownSignal);
+
+        if (cbsChannelProcessor != null) {
+            cbsChannelProcessor.dispose();
+        }
 
         final Sinks.EmitResult result = shutdownSignalSink.tryEmitValue(shutdownSignal);
         if (result.isFailure()) {
@@ -401,7 +418,7 @@ public class ReactorConnection implements AmqpConnection {
         executor.close();
 
         // Close all the children.
-        closeSessionsMono = Mono.when(closingSessions)
+        Mono<Void> closeSessionsMono = Mono.when(closingSessions)
             .timeout(operationTimeout)
             .onErrorResume(error -> {
                 logger.warning("connectionId[{}]: Timed out waiting for all sessions to close.", connectionId, error);
@@ -425,9 +442,9 @@ public class ReactorConnection implements AmqpConnection {
     private synchronized ClaimsBasedSecurityNode getOrCreateCBSNode() {
         if (cbsChannel == null) {
             logger.info("Setting CBS channel.");
-
+            cbsChannelProcessor = createRequestResponseChannel(CBS_SESSION_NAME, CBS_LINK_NAME, CBS_ADDRESS);
             cbsChannel = new ClaimsBasedSecurityChannel(
-                createRequestResponseChannel(CBS_SESSION_NAME, CBS_LINK_NAME, CBS_ADDRESS),
+                cbsChannelProcessor,
                 connectionOptions.getTokenCredential(), connectionOptions.getAuthorizationType(),
                 connectionOptions.getRetry());
         }
@@ -448,10 +465,15 @@ public class ReactorConnection implements AmqpConnection {
             // Use a new single-threaded scheduler for this connection as QPID's Reactor is not thread-safe.
             // Using Schedulers.single() will use the same thread for all connections in this process which
             // limits the scalability of the no. of concurrent connections a single process can have.
-            final Duration pendingTasksScheduler = connectionOptions.getRetry().getTryTimeout().dividedBy(2);
+            // This could be a long timeout depending on the user's operation timeout. It's probable that the
+            // connection's long disposed.
+            final Duration timeoutDivided = connectionOptions.getRetry().getTryTimeout().dividedBy(2);
+            final Duration pendingTasksDuration = MAX_BUSY_SERVER_TIME.compareTo(timeoutDivided) < 0
+                ? MAX_BUSY_SERVER_TIME
+                : timeoutDivided;
             final Scheduler scheduler = Schedulers.newSingle("reactor-executor");
             executor = new ReactorExecutor(reactor, scheduler, connectionId,
-                reactorExceptionHandler, pendingTasksScheduler,
+                reactorExceptionHandler, pendingTasksDuration,
                 connectionOptions.getFullyQualifiedNamespace());
 
             executor.start();
@@ -472,6 +494,7 @@ public class ReactorConnection implements AmqpConnection {
                 getId(), getFullyQualifiedNamespace(), exception.getMessage(), exception);
 
             if (!isDisposed.getAndSet(true)) {
+                logger.verbose("onReactorError connectionId[{}], hostName[{}]: disposing.");
                 dispose(new AmqpShutdownSignal(false, false,
                     "onReactorError: " + exception.toString()))
                     .subscribe();
@@ -485,6 +508,7 @@ public class ReactorConnection implements AmqpConnection {
                 getId(), getFullyQualifiedNamespace(), shutdownSignal.isInitiatedByClient(), shutdownSignal);
 
             if (!isDisposed.getAndSet(true)) {
+                logger.verbose("onConnectionShutdown connectionId[{}], hostName[{}]: disposing.");
                 dispose(shutdownSignal).subscribe();
             }
         }
