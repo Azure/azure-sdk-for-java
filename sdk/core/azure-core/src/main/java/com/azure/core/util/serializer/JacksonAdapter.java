@@ -93,7 +93,10 @@ public class JacksonAdapter implements SerializerAdapter {
             coercionActionAsNull = publicLookup.findStaticGetter(coercionActionClass, "AsNull", coercionActionClass)
                 .invoke();
             useReflectionToSetCoercion = true;
-        } catch (Throwable ignored) {
+        } catch (Throwable ex) {
+            new ClientLogger(JacksonAdapter.class)
+                .verbose("Failed to retrieve MethodHandles used to set coercion configurations. "
+                    + "Setting coercion configurations will be skipped.", ex);
         }
 
         COERCION_CONFIG_DEFAULTS = coercionConfigDefaults;

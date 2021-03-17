@@ -67,7 +67,10 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
             findNameForRegularGetter = publicLookup.findVirtual(accessorNamingStrategyClass, "findNameForRegularGetter",
                 MethodType.methodType(String.class, AnnotatedMethod.class, String.class));
             useReflectionForMemberName = true;
-        } catch (Throwable ignored) {
+        } catch (Throwable ex) {
+            new ClientLogger(JacksonJsonSerializer.class)
+                .verbose("Failed to retrieve MethodHandles used to get naming strategy. Falling back to BeanUtils.",
+                    ex);
         }
 
         GET_ACCESSOR_NAMING = getAccessorNaming;
