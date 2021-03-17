@@ -365,7 +365,7 @@ class CosmosRowConverterSpec extends UnitSpec {
     val colVal3AsTime = Timestamp.valueOf(OffsetDateTime.parse(colVal3, DateTimeFormatter.ISO_OFFSET_DATE_TIME).toLocalDateTime)
     val colVal4 = "2021-01-20T20:10:15Z"
     val ff = DateTimeFormatter
-      .ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'").withZone(ZoneId.of("UTC"))
+      .ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'").withZone(ZoneOffset.UTC)
 
     val colVal4AsTime = Timestamp.valueOf(LocalDateTime.parse(colVal4, ff))
 
