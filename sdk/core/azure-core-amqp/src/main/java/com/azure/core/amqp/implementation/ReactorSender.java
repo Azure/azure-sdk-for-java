@@ -71,7 +71,7 @@ class ReactorSender implements AmqpSendLink {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicBoolean hasAuthorized = new AtomicBoolean(true);
     private final AtomicInteger retryAttempts = new AtomicInteger();
-    private final Sinks.Empty<Void> closeMono = Sinks.empty();
+    private final Sinks.Empty<Void> isClosedMono = Sinks.empty();
 
     private final Object pendingSendLock = new Object();
     private final ConcurrentHashMap<String, RetriableWorkItem> pendingSendsMap = new ConcurrentHashMap<>();
@@ -141,7 +141,7 @@ class ReactorSender implements AmqpSendLink {
                     getLinkName());
 
                 hasConnected.set(false);
-                disposeAsync("Connection shutdown.", null).subscribe();
+                dispose("Connection shutdown.", null).subscribe();
             })
         );
 
@@ -310,11 +310,11 @@ class ReactorSender implements AmqpSendLink {
     }
 
     /**
-     * Blocking call that disposes of the sender. See {@link #disposeAsync(String, ErrorCondition)}.
+     * Blocking call that disposes of the sender. See {@link #dispose(String, ErrorCondition)}.
      */
     @Override
     public void dispose() {
-        disposeAsync("Dispose called", null)
+        dispose("Dispose called", null)
             .block(retryOptions.getTryTimeout());
     }
 
@@ -326,15 +326,15 @@ class ReactorSender implements AmqpSendLink {
      *
      * @return A mono that completes when the send link has closed.
      */
-    Mono<Void> disposeAsync(String message, ErrorCondition errorCondition) {
+    Mono<Void> dispose(String message, ErrorCondition errorCondition) {
         if (isDisposed.getAndSet(true)) {
-            return closeMono.asMono();
+            return isClosedMono.asMono();
         }
 
-        final String name = errorCondition != null ? errorCondition.toString() : NOT_APPLICABLE;
+        final String condition = errorCondition != null ? errorCondition.toString() : NOT_APPLICABLE;
         logger.verbose("connectionId[{}], path[{}], linkName[{}] errorCondition[{}]. Setting error condition and "
                 + "disposing. {}",
-            handler.getConnectionId(), entityPath, getLinkName(), name, message);
+            handler.getConnectionId(), entityPath, getLinkName(), condition, message);
 
         final Runnable closeWork = () -> {
             if (errorCondition != null && sender.getCondition() == null) {
@@ -346,13 +346,22 @@ class ReactorSender implements AmqpSendLink {
 
         return Mono.fromRunnable(() -> {
             try {
-                reactorProvider.getReactorDispatcher().invoke(() -> closeWork.run());
+                reactorProvider.getReactorDispatcher().invoke(closeWork);
             } catch (IOException e) {
                 logger.warning("connectionId[{}] entityPath[{}] linkName[{}]: Could not schedule close work. Running"
                     + " manually.", handler.getConnectionId(), entityPath, getLinkName(), e);
                 closeWork.run();
             }
-        }).then(closeMono.asMono());
+        }).then(isClosedMono.asMono());
+    }
+
+    /**
+     * A mono that completes when the sender has completely closed.
+     *
+     * @return mono that completes when the sender has completely closed.
+     */
+    Mono<Void> isClosed() {
+        return isClosedMono.asMono();
     }
 
     @Override
@@ -565,7 +574,7 @@ class ReactorSender implements AmqpSendLink {
     }
 
     private void completeClose() {
-        closeMono.emitEmpty((signalType, result) -> {
+        isClosedMono.emitEmpty((signalType, result) -> {
             logger.warning("connectionId[{}], signal[{}], result[{}]. Unable to emit shutdown signal.",
                 handler.getConnectionId(), signalType, result);
             return false;
@@ -584,10 +593,6 @@ class ReactorSender implements AmqpSendLink {
      * @param error Error to pass to pending sends.
      */
     private void handleError(Throwable error) {
-        if (!subscriptions.isDisposed()) {
-            subscriptions.dispose();
-        }
-
         if (isDisposed.getAndSet(true)) {
             logger.warning("connectionId[{}] entityPath[{}] linkName[{}] This was already disposed. Dropping error.",
                 handler.getConnectionId(), entityPath, getLinkName(), error);
@@ -607,10 +612,6 @@ class ReactorSender implements AmqpSendLink {
     }
 
     private void handleClose() {
-        if (!subscriptions.isDisposed()) {
-            subscriptions.dispose();
-        }
-
         if (isDisposed.getAndSet(true)) {
             logger.warning("connectionId[{}] entityPath[{}] linkName[{}] This was already disposed.",
                 handler.getConnectionId(), entityPath, getLinkName());
