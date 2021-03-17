@@ -23,9 +23,8 @@ See [Register app], [Grant scoped permission] for more information about web app
 In order to try the authorization action with this sample with minimum effort, [configure the user and groups in Azure Active Directory], configure the user with `group1`.
 
 ### Configure AppRole for web application
-If you want to use `id_token` for authorization, we can use 
-`appRoles` feature of AAD to generate id_token's `roles` claim and then create `GrantedAuthority` from `roles` to implement access control. 
-Note the `roles` claim generated from `appRoles` is decorated with prefix `APPROLE`.
+If you want to use `id_token` for authorization, we can use `appRoles` feature of AAD to generate id_token's `roles` claim and then create `GrantedAuthority` from `roles` to implement access control. 
+Note the `roles` claim generated from `appRoles` is decorated with prefix `APPROLE_`.
 
 Follow the guide to 
 [add app roles in your application](https://docs.microsoft.com/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps).

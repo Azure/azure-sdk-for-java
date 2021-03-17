@@ -380,7 +380,7 @@ Here are some examples about how to use these properties:
 #### Support access control by id token in web application 
 
 This starter supports creating `GrantedAuthority` from id_token's `roles` claim to allow using `id_token` for authorization in web application. Developers can use the
-`appRoles` feature of Azure Active Directory to create `roles` claim and implement access control. Note the `roles` claim generated from `appRoles` is decorated with prefix `APPROLE`.
+`appRoles` feature of Azure Active Directory to create `roles` claim and implement access control. Note the `roles` claim generated from `appRoles` is decorated with prefix `APPROLE_`.
 
 Follow the guide to [add app roles in your application and assign to users or groups](https://docs.microsoft.com/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps).
 
@@ -400,7 +400,7 @@ Follow the guide to [add app roles in your application and assign to users or gr
       ]
     ```
 * Step 2: Write Java code:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/RoleController.java#L27-L32 -->
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/AuthorityController.java#L13-L18 -->
     ```java
     @GetMapping("Admin")
     @ResponseBody

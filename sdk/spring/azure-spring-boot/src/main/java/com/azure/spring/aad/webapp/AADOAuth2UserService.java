@@ -39,8 +39,8 @@ import static com.azure.spring.autoconfigure.aad.Constants.DEFAULT_AUTHORITY_SET
 import static com.azure.spring.autoconfigure.aad.Constants.ROLE_PREFIX;
 
 /**
- * This implementation will retrieve group info of user from Microsoft Graph.
- * Then map group to {@link GrantedAuthority}.
+ * This implementation will retrieve group info of user from Microsoft Graph. Then map group to {@link
+ * GrantedAuthority}.
  */
 public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, OidcUser> {
 
@@ -63,7 +63,7 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
         // Delegate to the default implementation for loading a user
         OidcUser oidcUser = oidcUserService.loadUser(userRequest);
         OidcIdToken idToken = oidcUser.getIdToken();
-        Set<String> roles = new HashSet<>();
+        Set<String> authorityStrings = new HashSet<>();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(true);
@@ -72,11 +72,11 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
             return (DefaultOidcUser) session.getAttribute(DEFAULT_OIDC_USER);
         }
 
-        extractRolesFromIdToken(idToken, roles);
-        extractGroupRolesFromAccessToken(userRequest.getAccessToken(), roles);
-        Set<SimpleGrantedAuthority> authorities = roles.stream()
-            .map(SimpleGrantedAuthority::new)
-            .collect(Collectors.toSet());
+        authorityStrings.addAll(extractRolesFromIdToken(idToken));
+        authorityStrings.addAll(extractGroupRolesFromAccessToken(userRequest.getAccessToken()));
+        Set<SimpleGrantedAuthority> authorities = authorityStrings.stream()
+                                                                  .map(SimpleGrantedAuthority::new)
+                                                                  .collect(Collectors.toSet());
 
         if (authorities.isEmpty()) {
             authorities = DEFAULT_AUTHORITY_SET;
@@ -96,26 +96,28 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
         return defaultOidcUser;
     }
 
-    void extractRolesFromIdToken(OidcIdToken idToken, Set<String> rolesClaim) {
-        Optional.ofNullable(idToken)
-            .map(token -> (Collection<?>) token.getClaim(ROLES))
-            .filter(obj -> obj instanceof List<?>)
-            .map(Collection::stream)
-            .orElseGet(Stream::empty)
-            .filter(s -> StringUtils.hasText(s.toString()))
-            .map(role -> APPROLE_PREFIX + role)
-            .forEach(rolesClaim::add);
+    Set<String> extractRolesFromIdToken(OidcIdToken idToken) {
+        Set<String> roles = Optional.ofNullable(idToken)
+                                    .map(token -> (Collection<?>) token.getClaim(ROLES))
+                                    .filter(obj -> obj instanceof List<?>)
+                                    .map(Collection::stream)
+                                    .orElseGet(Stream::empty)
+                                    .filter(s -> StringUtils.hasText(s.toString()))
+                                    .map(role -> APPROLE_PREFIX + role)
+                                    .collect(Collectors.toSet());
+        return roles;
     }
 
-    void extractGroupRolesFromAccessToken(OAuth2AccessToken accessToken, Set<String> rolesClaim) {
-        Optional.of(accessToken)
-            .filter(notUsed -> properties.allowedGroupsConfigured())
-            .map(AbstractOAuth2Token::getTokenValue)
-            .map(graphClient::getGroupsFromGraph)
-            .orElseGet(Collections::emptySet)
-            .stream()
-            .filter(properties::isAllowedGroup)
-            .map(group -> ROLE_PREFIX + group)
-            .forEach(rolesClaim::add);
+    Set<String> extractGroupRolesFromAccessToken(OAuth2AccessToken accessToken) {
+        Set<String> roles = Optional.of(accessToken)
+                                    .filter(notUsed -> properties.allowedGroupsConfigured())
+                                    .map(AbstractOAuth2Token::getTokenValue)
+                                    .map(graphClient::getGroupsFromGraph)
+                                    .orElseGet(Collections::emptySet)
+                                    .stream()
+                                    .filter(properties::isAllowedGroup)
+                                    .map(group -> ROLE_PREFIX + group)
+                                    .collect(Collectors.toSet());
+        return roles;
     }
 }

@@ -25,26 +25,23 @@ public class AADIdTokenRolesExtractionTest {
     @Test
     public void testNoRolesClaim() {
         when(idToken.getClaim(ROLES)).thenReturn(null);
-        Set<String> roles = new HashSet<>();
-        userService.extractRolesFromIdToken(idToken, roles);
-        assertThat(roles).hasSize(0);
+        Set<String> authorityStrings = userService.extractRolesFromIdToken(idToken);
+        assertThat(authorityStrings).hasSize(0);
     }
 
     @Test
     public void testRolesClaimAsList() {
         JSONArray rolesClaim = new JSONArray().appendElement("Admin");
         when(idToken.getClaim(ROLES)).thenReturn(rolesClaim);
-        Set<String> roles = new HashSet<>();
-        userService.extractRolesFromIdToken(idToken, roles);
-        assertThat(roles).hasSize(1);
+        Set<String> authorityStrings = userService.extractRolesFromIdToken(idToken);
+        assertThat(authorityStrings).hasSize(1);
     }
 
     @Test
     public void testRolesClaimIllegal() {
         Set<String> rolesClaim = new HashSet<>(Arrays.asList("Admin"));
         when(idToken.getClaim(ROLES)).thenReturn(rolesClaim);
-        Set<String> roles = new HashSet<>();
-        userService.extractRolesFromIdToken(idToken, roles);
-        assertThat(roles).hasSize(0);
+        Set<String> authorityStrings = userService.extractRolesFromIdToken(idToken);
+        assertThat(authorityStrings).hasSize(0);
     }
 }

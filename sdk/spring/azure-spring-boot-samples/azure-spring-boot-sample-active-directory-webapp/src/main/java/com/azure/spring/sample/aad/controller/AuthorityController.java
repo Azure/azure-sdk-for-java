@@ -9,18 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class RoleController {
-    @GetMapping("group1")
+public class AuthorityController {
+    @GetMapping("Admin")
     @ResponseBody
-    @PreAuthorize("hasRole('ROLE_group1')")
-    public String group1() {
-        return "group1 message";
-    }
-
-    @GetMapping("group2")
-    @ResponseBody
-    @PreAuthorize("hasRole('ROLE_group2')")
-    public String group2() {
-        return "group2 message";
+    @PreAuthorize("hasAuthority('APPROLE_Admin')")
+    public String Admin() {
+        return "Admin message";
     }
 }
