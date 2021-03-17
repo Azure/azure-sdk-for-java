@@ -30,10 +30,8 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import reactor.core.publisher.DirectProcessor;
-import reactor.core.publisher.FluxSink;
-import reactor.core.publisher.ReplayProcessor;
 import reactor.test.StepVerifier;
+import reactor.test.publisher.TestPublisher;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -63,9 +61,8 @@ class RequestResponseChannelTest {
     private static final Duration TIMEOUT = Duration.ofSeconds(23);
 
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
-    private final DirectProcessor<Delivery> deliveryProcessor = DirectProcessor.create();
-    private final FluxSink<Delivery> deliverySink = deliveryProcessor.sink();
-    private final ReplayProcessor<EndpointState> endpointStateReplayProcessor = ReplayProcessor.cacheLast();
+    private final TestPublisher<Delivery> deliveryProcessor = TestPublisher.createCold();
+    private final TestPublisher<EndpointState> endpointStates = TestPublisher.createCold();
 
     @Mock
     private ReactorHandlerProvider handlerProvider;
@@ -117,12 +114,12 @@ class RequestResponseChannelTest {
         when(handlerProvider.createSendLinkHandler(CONNECTION_ID, NAMESPACE, LINK_NAME, ENTITY_PATH))
             .thenReturn(sendLinkHandler);
 
-        FluxSink<EndpointState> sink1 = endpointStateReplayProcessor.sink();
-        sink1.next(EndpointState.ACTIVE);
-        when(receiveLinkHandler.getEndpointStates()).thenReturn(endpointStateReplayProcessor);
-        when(receiveLinkHandler.getDeliveredMessages()).thenReturn(deliveryProcessor);
+        when(receiveLinkHandler.getEndpointStates()).thenReturn(endpointStates.flux());
+        when(receiveLinkHandler.getDeliveredMessages()).thenReturn(deliveryProcessor.flux());
 
-        when(sendLinkHandler.getEndpointStates()).thenReturn(endpointStateReplayProcessor);
+        when(sendLinkHandler.getEndpointStates()).thenReturn(endpointStates.flux());
+
+        endpointStates.next(EndpointState.ACTIVE);
     }
 
     @AfterEach
@@ -266,7 +263,7 @@ class RequestResponseChannelTest {
 
         // Act
         StepVerifier.create(channel.sendWithAck(message, transactionalState))
-            .then(() -> deliverySink.next(delivery))
+            .then(() -> deliveryProcessor.next(delivery))
             .assertNext(received -> assertEquals(messageId, received.getCorrelationId()))
             .verifyComplete();
 
@@ -326,7 +323,7 @@ class RequestResponseChannelTest {
 
         // Act
         StepVerifier.create(channel.sendWithAck(message))
-            .then(() -> deliverySink.next(delivery))
+            .then(() -> deliveryProcessor.next(delivery))
             .assertNext(received -> assertEquals(messageId, received.getCorrelationId()))
             .verifyComplete();
 
@@ -360,7 +357,7 @@ class RequestResponseChannelTest {
 
         // Act
         StepVerifier.create(channel.sendWithAck(message))
-            .then(() -> endpointStateReplayProcessor.sink().error(error))
+            .then(() -> endpointStates.error(error))
             .verifyError(AmqpException.class);
 
         // Assert

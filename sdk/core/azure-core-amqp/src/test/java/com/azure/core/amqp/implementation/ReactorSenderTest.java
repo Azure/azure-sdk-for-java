@@ -32,10 +32,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.ReplayProcessor;
 import reactor.test.StepVerifier;
+import reactor.test.publisher.TestPublisher;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -98,10 +97,9 @@ public class ReactorSenderTest {
 
         when(handler.getLinkCredits()).thenReturn(Flux.just(100));
 
-        final ReplayProcessor<EndpointState> endpointStateReplayProcessor = ReplayProcessor.cacheLast();
-        when(handler.getEndpointStates()).thenReturn(endpointStateReplayProcessor);
-        FluxSink<EndpointState> sink1 = endpointStateReplayProcessor.sink();
-        sink1.next(EndpointState.ACTIVE);
+        final TestPublisher<EndpointState> endpointStates = TestPublisher.createCold();
+        when(handler.getEndpointStates()).thenReturn(endpointStates.flux());
+        endpointStates.next(EndpointState.ACTIVE);
 
         when(tokenManager.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.ACCEPTED));
         when(sender.getCredit()).thenReturn(100);
