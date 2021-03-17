@@ -102,7 +102,6 @@ public class ModelsQuery {
         return dependencies;
     }
 
-
     private static List<String> parseComponent(JsonNode root) {
         List<String> dependencies = new ArrayList<>();
 

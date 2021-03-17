@@ -38,7 +38,7 @@ public final class ModelsRepositoryImpl {
      */
     ModelsRepositoryImpl(ModelsRepositoryAPIImpl client) {
         this.service =
-            RestProxy.create(ModelsRepositoryService.class, client.getHttpPipeline());
+                RestProxy.create(ModelsRepositoryService.class, client.getHttpPipeline());
         this.client = client;
     }
 
@@ -53,10 +53,10 @@ public final class ModelsRepositoryImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<byte[]> getModelFromPathWithResponseAsync(
-        String path, Context context) {
+            String path, Context context) {
         if (this.client.getHost() == null) {
             return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (path == null) {
             return Mono.error(new IllegalArgumentException("Parameter 'path' is required and cannot be null."));
@@ -64,46 +64,46 @@ public final class ModelsRepositoryImpl {
 
         // TODO: azabbasi : Look into error handling a bit more. This is a temporary poc.
         return service.getModelFromPath(
-            this.client.getHost(), path, context)
-            .onErrorMap(s -> new ErrorResponseException(
-                String.format(ErrorMessageConstants.GenericGetModelsError, path),
-                new HttpResponse(new HttpRequest(HttpMethod.GET, this.client.getHost() + path)) {
-                    @Override
-                    public int getStatusCode() {
-                        return 400;
-                    }
+                this.client.getHost(), path, context)
+                .onErrorMap(s -> new ErrorResponseException(
+                        String.format(LoggerStandardStrings.GenericGetModelsError, path),
+                        new HttpResponse(new HttpRequest(HttpMethod.GET, this.client.getHost() + path)) {
+                            @Override
+                            public int getStatusCode() {
+                                return 400;
+                            }
 
-                    @Override
-                    public String getHeaderValue(String s) {
-                        return null;
-                    }
+                            @Override
+                            public String getHeaderValue(String s) {
+                                return null;
+                            }
 
-                    @Override
-                    public HttpHeaders getHeaders() {
-                        return null;
-                    }
+                            @Override
+                            public HttpHeaders getHeaders() {
+                                return null;
+                            }
 
-                    @Override
-                    public Flux<ByteBuffer> getBody() {
-                        return null;
-                    }
+                            @Override
+                            public Flux<ByteBuffer> getBody() {
+                                return null;
+                            }
 
-                    @Override
-                    public Mono<byte[]> getBodyAsByteArray() {
-                        return null;
-                    }
+                            @Override
+                            public Mono<byte[]> getBodyAsByteArray() {
+                                return null;
+                            }
 
-                    @Override
-                    public Mono<String> getBodyAsString() {
-                        return null;
-                    }
+                            @Override
+                            public Mono<String> getBodyAsString() {
+                                return null;
+                            }
 
-                    @Override
-                    public Mono<String> getBodyAsString(Charset charset) {
-                        return null;
-                    }
-                }
-            ));
+                            @Override
+                            public Mono<String> getBodyAsString(Charset charset) {
+                                return null;
+                            }
+                        }
+                ));
     }
 
     /**
@@ -117,8 +117,8 @@ public final class ModelsRepositoryImpl {
         @Get("{path}")
         @ExpectedResponses({200})
         Mono<byte[]> getModelFromPath(
-            @HostParam("$host") String host,
-            @PathParam("path") String path,
-            Context context);
+                @HostParam("$host") String host,
+                @PathParam("path") String path,
+                Context context);
     }
 }

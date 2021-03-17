@@ -28,7 +28,7 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 @ServiceClient(builder = ModelsRepositoryClientBuilder.class, isAsync = true)
 public final class ModelsRepositoryAsyncClient {
     private static final ClientLogger logger = new ClientLogger(ModelsRepositoryAsyncClient.class);
-    private static final String MODELS_REPOSITORY_TRACING_NAMESPACE_VALUE = "Azure.Iot.ModelsRepository";
+    private static final String MODELS_REPOSITORY_TRACING_NAMESPACE_VALUE = "Azure.IoT.ModelsRepository";
     private final ModelsRepositoryServiceVersion serviceVersion;
     private final RepositoryHandler repositoryHandler;
     private final ModelsDependencyResolution defaultDependencyResolutionOption;
@@ -50,7 +50,7 @@ public final class ModelsRepositoryAsyncClient {
             .serializerAdapter(jacksonAdapter)
             .buildClient();
 
-        this.repositoryHandler = new RepositoryHandler(repositoryUri, protocolLayer);
+        this.repositoryHandler = new RepositoryHandler(repositoryUri, protocolLayer, logger);
     }
 
     /**

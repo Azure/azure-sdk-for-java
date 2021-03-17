@@ -4,6 +4,7 @@
 package com.azure.iot.modelsrepository.implementation;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.iot.modelsrepository.DtmiConventions;
 import com.azure.iot.modelsrepository.ModelsDependencyResolution;
 import com.azure.iot.modelsrepository.implementation.models.FetchResult;
@@ -24,10 +25,13 @@ import java.util.Queue;
  */
 class FileModelFetcher implements ModelFetcher {
 
+    private final ClientLogger logger;
+
     /**
      * Creates an instance of {@link FileModelFetcher}
      */
-    public FileModelFetcher() {
+    public FileModelFetcher(ClientLogger logger) {
+        this.logger = logger;
     }
 
     @Override
@@ -48,18 +52,23 @@ class FileModelFetcher implements ModelFetcher {
         while (work.size() != 0) {
             String tryContentPath = work.poll();
             Path path = Path.of(tryContentPath);
+
+            logger.info(String.format(LoggerStandardStrings.FetchingModelContent, path.toString()));
+
             if (Files.exists(path)) {
                 try {
                     return Mono.just(
-                        new FetchResult()
-                            .setDefinition(new String(Files.readAllBytes(path)))
-                            .setPath(tryContentPath));
+                            new FetchResult()
+                                    .setDefinition(new String(Files.readAllBytes(path)))
+                                    .setPath(tryContentPath));
                 } catch (IOException e) {
                     return Mono.error(e);
                 }
             }
 
-            fnfError = String.format(ErrorMessageConstants.ErrorFetchingModelContent, tryContentPath);
+            logger.error(String.format(LoggerStandardStrings.ErrorFetchingModelContent, path.toString()));
+
+            fnfError = String.format(LoggerStandardStrings.ErrorFetchingModelContent, tryContentPath);
         }
 
         return Mono.error(new FileNotFoundException(fnfError));
@@ -67,9 +76,9 @@ class FileModelFetcher implements ModelFetcher {
 
     private String getPath(String dtmi, URI repositoryUri, boolean expanded) throws URISyntaxException {
         return DtmiConventions.getModelUri(
-            dtmi,
-            repositoryUri,
-            expanded)
-            .getPath();
+                dtmi,
+                repositoryUri,
+                expanded)
+                .getPath();
     }
 }
