@@ -596,11 +596,10 @@ class ReactorSender implements AmqpSendLink {
         if (isDisposed.getAndSet(true)) {
             logger.warning("connectionId[{}] entityPath[{}] linkName[{}] This was already disposed. Dropping error.",
                 handler.getConnectionId(), entityPath, getLinkName(), error);
-            return;
+        } else {
+            logger.warning("connectionId[{}] entityPath[{}] linkName[{}] Disposing pending sends.",
+                handler.getConnectionId(), entityPath, getLinkName(), error);
         }
-
-        logger.warning("connectionId[{}] entityPath[{}] linkName[{}] Disposing pending sends.",
-            handler.getConnectionId(), entityPath, getLinkName(), error);
 
         synchronized (pendingSendLock) {
             pendingSendsMap.forEach((key, value) -> value.error(error));
@@ -613,9 +612,11 @@ class ReactorSender implements AmqpSendLink {
 
     private void handleClose() {
         if (isDisposed.getAndSet(true)) {
-            logger.warning("connectionId[{}] entityPath[{}] linkName[{}] This was already disposed.",
+            logger.warning("connectionId[{}] entityPath[{}] linkName[{}] This was already disposed. Can't complete.",
                 handler.getConnectionId(), entityPath, getLinkName());
-            return;
+        } else {
+            logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Disposing pending sends.",
+                handler.getConnectionId(), entityPath, getLinkName());
         }
 
         final String message = String.format("Could not complete sends because link '%s' for '%s' is closed.",
