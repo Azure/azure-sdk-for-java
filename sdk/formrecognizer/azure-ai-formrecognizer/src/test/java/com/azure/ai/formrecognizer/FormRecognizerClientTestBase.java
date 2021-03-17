@@ -864,7 +864,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         Map<String, FormField> businessCard2Fields = businessCard2.getFields();
         List<FormField> email2List = businessCard2Fields.get("Emails").getValue().asList();
         assertEquals("avery.smith@contoso.com", email2List.get(0).getValue().asString());
-        List<FormField> phoneNumber2List = businessCard2Fields.get("OtherPhones").getValue().asList();
+        List<FormField> phoneNumber2List = businessCard2Fields.get("WorkPhones").getValue().asList();
         assertEquals("+44 (0) 20 9876 5432", phoneNumber2List.get(0).getValueData().getText());
         assertNotNull(businessCard2.getPages());
 
