@@ -88,7 +88,7 @@ public class ReactorSenderTest {
 
     @BeforeEach
     public void setup() throws IOException {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         Delivery delivery = mock(Delivery.class);
         when(delivery.getRemoteState()).thenReturn(Accepted.getInstance());

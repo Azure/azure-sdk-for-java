@@ -48,7 +48,7 @@ class StrictTlsContextSpiTest {
 
     @BeforeEach
     void beforeEach() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         contextSpi = new StrictTlsContextSpi(sslContext);
     }
 

@@ -94,7 +94,7 @@ public class ReactorHandlerProviderTest {
 
     @BeforeEach
     public void setup() throws IOException {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         when(reactorProvider.createReactor(eq(CONNECTION_ID), anyInt())).thenReturn(reactor);
         when(reactorProvider.getReactor()).thenReturn(reactor);

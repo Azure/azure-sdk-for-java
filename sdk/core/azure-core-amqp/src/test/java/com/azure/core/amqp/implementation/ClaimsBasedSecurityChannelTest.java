@@ -80,7 +80,7 @@ class ClaimsBasedSecurityChannelTest {
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         acceptedResponse = Proton.message();
         final Map<String, Object> responseProperties = new HashMap<>();

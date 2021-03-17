@@ -101,7 +101,7 @@ class RequestResponseChannelTest {
 
     @BeforeEach
     void beforeEach() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
 

@@ -87,7 +87,7 @@ public class ReactorSessionTest {
 
     @BeforeEach
     public void setup() throws IOException {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         this.handler = new SessionHandler(ID, HOST, ENTITY_PATH, reactorDispatcher, Duration.ofSeconds(60));
         this.cbsNodeSupplier = Mono.just(cbsNode);

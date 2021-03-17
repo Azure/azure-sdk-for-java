@@ -64,7 +64,7 @@ class LinkHandlerTest {
 
     @BeforeEach
     void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         when(event.getLink()).thenReturn(link);
     }

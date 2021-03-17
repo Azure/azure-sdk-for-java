@@ -85,7 +85,7 @@ class ReactorReceiverTest {
 
     @BeforeEach
     void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         when(cbsNode.authorize(any(), any())).thenReturn(Mono.empty());
 

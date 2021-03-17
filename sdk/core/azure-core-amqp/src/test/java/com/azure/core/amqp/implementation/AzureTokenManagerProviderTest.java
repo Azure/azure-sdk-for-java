@@ -34,7 +34,7 @@ class AzureTokenManagerProviderTest {
 
     @BeforeEach
     void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @AfterEach
