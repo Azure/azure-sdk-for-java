@@ -91,11 +91,126 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient {
 
     val containerProperties = cosmosClient.getDatabase(databaseName).getContainer(containerName).read().block().getProperties
     containerProperties.getPartitionKeyDefinition.getPaths.asScala.toArray should equal(Array("/mypk"))
+    // scalastyle:off null
+    containerProperties.getDefaultTimeToLiveInSeconds shouldEqual null
+    // scalastyle:on null
 
     // validate throughput
     val throughput = cosmosClient.getDatabase(databaseName).getContainer(containerName).readThroughput().block().getProperties
     throughput.getManualThroughput shouldEqual 1100
+  }
 
+  it can "create a table with well known indexing policy 'AllProperties'" taggedAs (RequiresCosmosEndpoint) in {
+    val databaseName = getAutoCleanableDatabaseName()
+    val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
+
+    spark.sql(s"CREATE DATABASE testCatalog.${databaseName};")
+    spark.sql(s"CREATE TABLE testCatalog.${databaseName}.${containerName} (word STRING, number INT) using cosmos.items " +
+      s"TBLPROPERTIES(partitionKeyPath = '/mypk', manualThroughput = '1100', indexingPolicy = 'AllProperties')")
+
+    val containerProperties = cosmosClient.getDatabase(databaseName).getContainer(containerName).read().block().getProperties
+    containerProperties.getPartitionKeyDefinition.getPaths.asScala.toArray should equal(Array("/mypk"))
+    containerProperties
+      .getIndexingPolicy
+      .getIncludedPaths
+      .asScala
+      .map(p => p.getPath)
+      .toArray should equal(Array("/*"))
+    containerProperties
+      .getIndexingPolicy
+      .getExcludedPaths
+      .asScala
+      .map(p => p.getPath)
+      .toArray should equal(Array(raw"""/"_etag"/?"""))
+
+    // validate throughput
+    val throughput = cosmosClient.getDatabase(databaseName).getContainer(containerName).readThroughput().block().getProperties
+    throughput.getManualThroughput shouldEqual 1100
+  }
+
+  it can "create a table with well known indexing policy 'OnlySystemProperties'" taggedAs (RequiresCosmosEndpoint) in {
+    val databaseName = getAutoCleanableDatabaseName()
+    val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
+
+    spark.sql(s"CREATE DATABASE testCatalog.${databaseName};")
+    spark.sql(s"CREATE TABLE testCatalog.${databaseName}.${containerName} (word STRING, number INT) using cosmos.items " +
+      s"TBLPROPERTIES(partitionKeyPath = '/mypk', manualThroughput = '1100', indexingPolicy = 'ONLYSystemproperties')")
+
+    val containerProperties = cosmosClient.getDatabase(databaseName).getContainer(containerName).read().block().getProperties
+    containerProperties.getPartitionKeyDefinition.getPaths.toArray should equal(Array("/mypk"))
+    containerProperties
+      .getIndexingPolicy
+      .getIncludedPaths
+      .asScala.map(p => p.getPath)
+      .toArray
+      .size shouldEqual 0
+    containerProperties
+      .getIndexingPolicy
+      .getExcludedPaths
+      .asScala
+      .map(p => p.getPath)
+      .toArray should equal(Array("/*", raw"""/"_etag"/?"""))
+
+    // validate throughput
+    val throughput = cosmosClient.getDatabase(databaseName).getContainer(containerName).readThroughput().block().getProperties
+    throughput.getManualThroughput shouldEqual 1100
+  }
+
+  it can "create a table with custom indexing policy" taggedAs (RequiresCosmosEndpoint) in {
+    val databaseName = getAutoCleanableDatabaseName()
+    val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
+
+    val indexPolicyJson = raw"""{"indexingMode":"consistent","automatic":true,"includedPaths":""" +
+      raw"""[{"path":"\/helloWorld\/?"},{"path":"\/mypk\/?"}],"excludedPaths":[{"path":"\/*"}]}"""
+
+    spark.sql(s"CREATE DATABASE testCatalog.${databaseName};")
+    spark.sql(s"CREATE TABLE testCatalog.${databaseName}.${containerName} (word STRING, number INT) using cosmos.items " +
+      s"TBLPROPERTIES(partitionKeyPath = '/mypk', manualThroughput = '1100', indexingPolicy = '$indexPolicyJson')")
+
+    val containerProperties = cosmosClient.getDatabase(databaseName).getContainer(containerName).read().block().getProperties
+    containerProperties.getPartitionKeyDefinition.getPaths.asScala.toArray should equal(Array("/mypk"))
+    containerProperties
+      .getIndexingPolicy
+      .getIncludedPaths
+      .asScala
+      .map(p => p.getPath)
+      .toArray should equal(Array("/helloWorld/?", "/mypk/?"))
+    containerProperties
+      .getIndexingPolicy
+      .getExcludedPaths
+      .asScala
+      .map(p => p.getPath)
+      .toArray should equal(Array("/*", raw"""/"_etag"/?"""))
+
+    // validate throughput
+    val throughput = cosmosClient.getDatabase(databaseName).getContainer(containerName).readThroughput().block().getProperties
+    throughput.getManualThroughput shouldEqual 1100
+  }
+
+  it can "create a table with TTL -1" taggedAs (RequiresCosmosEndpoint) in {
+    val databaseName = getAutoCleanableDatabaseName()
+    val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
+
+    spark.sql(s"CREATE DATABASE testCatalog.${databaseName};")
+    spark.sql(s"CREATE TABLE testCatalog.${databaseName}.${containerName} (word STRING, number INT) using cosmos.items " +
+      s"TBLPROPERTIES(partitionKeyPath = '/mypk', defaultTtlInSeconds = '-1')")
+
+    val containerProperties = cosmosClient.getDatabase(databaseName).getContainer(containerName).read().block().getProperties
+    containerProperties.getPartitionKeyDefinition.getPaths.asScala.toArray should equal(Array("/mypk"))
+    containerProperties.getDefaultTimeToLiveInSeconds shouldEqual -1
+  }
+
+  it can "create a table with positive TTL" taggedAs (RequiresCosmosEndpoint) in {
+    val databaseName = getAutoCleanableDatabaseName()
+    val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
+
+    spark.sql(s"CREATE DATABASE testCatalog.${databaseName};")
+    spark.sql(s"CREATE TABLE testCatalog.${databaseName}.${containerName} (word STRING, number INT) using cosmos.items " +
+      s"TBLPROPERTIES(partitionKeyPath = '/mypk', defaultTtlInSeconds = '5')")
+
+    val containerProperties = cosmosClient.getDatabase(databaseName).getContainer(containerName).read().block().getProperties
+    containerProperties.getPartitionKeyDefinition.getPaths.asScala.toArray should equal(Array("/mypk"))
+    containerProperties.getDefaultTimeToLiveInSeconds shouldEqual 5
   }
 
   private def createDatabase(spark: SparkSession, databaseName: String) = {
