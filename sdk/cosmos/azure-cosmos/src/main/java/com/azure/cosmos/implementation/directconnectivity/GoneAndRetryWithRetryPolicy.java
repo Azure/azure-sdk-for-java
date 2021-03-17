@@ -226,12 +226,12 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics{
         }
 
         private Pair<Mono<ShouldRetryResult>, Boolean> handleGoneException(GoneException exception) {
-            logger.info("Received gone exception, will retry, {}", exception.toString());
+            logger.debug("Received gone exception, will retry, {}", exception.toString());
             return Pair.of(null, true); // indicate we are in retry.
         }
 
         private Pair<Mono<ShouldRetryResult>, Boolean> handlePartitionIsMigratingException(PartitionIsMigratingException exception) {
-            logger.info("Received PartitionIsMigratingException, will retry, {}", exception.toString());
+            logger.debug("Received PartitionIsMigratingException, will retry, {}", exception.toString());
             this.request.forceCollectionRoutingMapRefresh = true;
             return Pair.of(null, true);
         }
@@ -240,7 +240,7 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics{
             this.request.requestContext.resolvedPartitionKeyRange = null;
             this.request.requestContext.quorumSelectedLSN = -1;
             this.request.requestContext.quorumSelectedStoreResponse = null;
-            logger.info("Received partition key range splitting exception, will retry, {}", exception.toString());
+            logger.debug("Received partition key range splitting exception, will retry, {}", exception.toString());
             this.request.forcePartitionKeyRangeRefresh = true;
             return Pair.of(null, false);
         }
@@ -259,7 +259,7 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics{
                     false);
             }
 
-            logger.info("Received invalid collection exception, will retry, {}", exception.toString());
+            logger.debug("Received invalid collection exception, will retry, {}", exception.toString());
             this.request.forceNameCacheRefresh = true;
 
             return Pair.of(null, false);
@@ -320,7 +320,7 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics{
             timeout = timeoutInMillSec > 0 ? Duration.ofMillis(timeoutInMillSec)
                 : Duration.ofMillis(RetryWithRetryPolicy.MAXIMUM_BACKOFF_TIME_IN_MS);
 
-            logger.info("Received RetryWithException, will retry, ", exception);
+            logger.debug("Received RetryWithException, will retry, ", exception);
 
             // For RetryWithException, prevent the caller
             // from refreshing any caches.
