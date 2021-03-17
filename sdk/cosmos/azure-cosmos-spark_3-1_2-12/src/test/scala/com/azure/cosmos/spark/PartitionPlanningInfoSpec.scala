@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import java.util.{Base64, UUID}
+import java.util.UUID
 
 class PartitionPlanningInfoSpec extends UnitSpec {
   private[this] val rnd = scala.util.Random

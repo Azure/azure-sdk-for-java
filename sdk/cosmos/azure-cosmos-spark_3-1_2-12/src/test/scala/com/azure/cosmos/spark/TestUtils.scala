@@ -50,6 +50,12 @@ trait Spark extends BeforeAndAfterAll {
 trait CosmosClient extends BeforeAndAfterAll with BeforeAndAfterEach {
   this: Suite =>
   //scalastyle:off
+  private val Suffix = "ITest"
+  if (!this.getClass.getName.endsWith(Suffix)) {
+    throw new RuntimeException(s"All test classes which have dependency" +
+      s" on Cosmos DB Endpoint must have $Suffix suffix")
+  }
+
   var cosmosClient : CosmosAsyncClient = _
 
   private val databasesToCleanUp = new ListBuffer[String]()

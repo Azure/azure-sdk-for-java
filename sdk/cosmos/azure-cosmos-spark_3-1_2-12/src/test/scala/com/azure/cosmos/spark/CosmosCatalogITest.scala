@@ -9,7 +9,7 @@ import org.apache.spark.sql.SparkSession
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-class CosmosCatalogSpec extends IntegrationSpec with CosmosClient {
+class CosmosCatalogITest extends IntegrationSpec with CosmosClient {
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
 
@@ -36,7 +36,7 @@ class CosmosCatalogSpec extends IntegrationSpec with CosmosClient {
     finally super.afterAll()
   }
 
-  "Cosmos Catalog" can "create a database with shared throughput" taggedAs (RequiresCosmosEndpoint) in {
+  "Cosmos Catalog" can "create a database with shared throughput" in {
     val databaseName = getAutoCleanableDatabaseName()
 
     spark.sql(s"CREATE DATABASE testCatalog.${databaseName} WITH DBPROPERTIES ('manualThroughput' = '1000');")
@@ -50,7 +50,7 @@ class CosmosCatalogSpec extends IntegrationSpec with CosmosClient {
   // TODO: moderakh spark on windows has issue with this test.
   // java.lang.RuntimeException: java.io.IOException: (null) entry in command string: null chmod 0733 D:\tmp\hive;
   // once we move Linux CI re-enable the test:
-  it can "drops a database" taggedAs (RequiresCosmosEndpoint) in {
+  it can "drops a database" in {
     assume(!Platform.isWindows())
 
     val databaseName = getAutoCleanableDatabaseName()
@@ -63,7 +63,7 @@ class CosmosCatalogSpec extends IntegrationSpec with CosmosClient {
     spark.catalog.databaseExists(databaseName) shouldEqual false
   }
 
-  it can "create a table with defaults" taggedAs (RequiresCosmosEndpoint) in {
+  it can "create a table with defaults" in {
     val databaseName = getAutoCleanableDatabaseName()
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
     cleanupDatabaseLater(databaseName)
@@ -81,7 +81,7 @@ class CosmosCatalogSpec extends IntegrationSpec with CosmosClient {
     throughput.getManualThroughput shouldEqual 400
   }
 
-  it can "create a table with customized properties" taggedAs (RequiresCosmosEndpoint) in {
+  it can "create a table with customized properties" in {
     val databaseName = getAutoCleanableDatabaseName()
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
 
@@ -100,7 +100,7 @@ class CosmosCatalogSpec extends IntegrationSpec with CosmosClient {
     throughput.getManualThroughput shouldEqual 1100
   }
 
-  it can "create a table with well known indexing policy 'AllProperties'" taggedAs (RequiresCosmosEndpoint) in {
+  it can "create a table with well known indexing policy 'AllProperties'" in {
     val databaseName = getAutoCleanableDatabaseName()
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
 
@@ -128,7 +128,7 @@ class CosmosCatalogSpec extends IntegrationSpec with CosmosClient {
     throughput.getManualThroughput shouldEqual 1100
   }
 
-  it can "create a table with well known indexing policy 'OnlySystemProperties'" taggedAs (RequiresCosmosEndpoint) in {
+  it can "create a table with well known indexing policy 'OnlySystemProperties'" in {
     val databaseName = getAutoCleanableDatabaseName()
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
 
@@ -156,7 +156,7 @@ class CosmosCatalogSpec extends IntegrationSpec with CosmosClient {
     throughput.getManualThroughput shouldEqual 1100
   }
 
-  it can "create a table with custom indexing policy" taggedAs (RequiresCosmosEndpoint) in {
+  it can "create a table with custom indexing policy" in {
     val databaseName = getAutoCleanableDatabaseName()
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
 
@@ -187,7 +187,7 @@ class CosmosCatalogSpec extends IntegrationSpec with CosmosClient {
     throughput.getManualThroughput shouldEqual 1100
   }
 
-  it can "create a table with TTL -1" taggedAs (RequiresCosmosEndpoint) in {
+  it can "create a table with TTL -1" in {
     val databaseName = getAutoCleanableDatabaseName()
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
 
@@ -200,7 +200,7 @@ class CosmosCatalogSpec extends IntegrationSpec with CosmosClient {
     containerProperties.getDefaultTimeToLiveInSeconds shouldEqual -1
   }
 
-  it can "create a table with positive TTL" taggedAs (RequiresCosmosEndpoint) in {
+  it can "create a table with positive TTL" in {
     val databaseName = getAutoCleanableDatabaseName()
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
 

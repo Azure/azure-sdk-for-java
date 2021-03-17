@@ -3,13 +3,12 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.SparkBridgeInternal
 import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, TestConfigurations}
 
 import java.time.{Duration, Instant}
 import java.util.concurrent.atomic.AtomicLong
 
-class PartitionMetadataCacheSpec
+class PartitionMetadataCacheITest
   extends UnitSpec
   with CosmosClient
   with CosmosContainer
@@ -28,7 +27,7 @@ class PartitionMetadataCacheSpec
   private[this] var feedRange: NormalizedRange = NormalizedRange("", "FF")
 
   //scalastyle:off multiple.string.literals
-  it should "create the partition metadata for the first physical partition" taggedAs RequiresCosmosEndpoint in {
+  it should "create the partition metadata for the first physical partition" in {
     this.reinitialize()
     val startEpochMs = Instant.now.toEpochMilli
 
@@ -44,7 +43,7 @@ class PartitionMetadataCacheSpec
   }
 
   //scalastyle:off multiple.string.literals
-  it should "update lastRetrievedAt timestamp every time" taggedAs RequiresCosmosEndpoint in {
+  it should "update lastRetrievedAt timestamp every time" in {
     this.reinitialize()
     val startEpochMs = Instant.now.toEpochMilli
 
@@ -68,7 +67,7 @@ class PartitionMetadataCacheSpec
   }
 
   //scalastyle:off multiple.string.literals
-  it should "retrieve new item after purge" taggedAs RequiresCosmosEndpoint in {
+  it should "retrieve new item after purge" in {
     this.reinitialize()
 
     val newItem = PartitionMetadataCache(Map[String, String](), clientConfig, None, containerConfig, feedRange).block()
@@ -85,7 +84,7 @@ class PartitionMetadataCacheSpec
   }
 
   //scalastyle:off multiple.string.literals
-  it should "delete cached item after TTL elapsed" taggedAs RequiresCosmosEndpoint in {
+  it should "delete cached item after TTL elapsed" in {
     this.reinitialize()
 
     val newItem = PartitionMetadataCache(Map[String, String](), clientConfig, None, containerConfig, feedRange).block()
@@ -105,7 +104,7 @@ class PartitionMetadataCacheSpec
   }
 
   //scalastyle:off multiple.string.literals
-  it should "automatically update the cached item after staleness threshold elapsed" taggedAs RequiresCosmosEndpoint in {
+  it should "automatically update the cached item after staleness threshold elapsed" in {
     this.reinitialize()
 
     val newItem = PartitionMetadataCache(Map[String, String](), clientConfig, None, containerConfig, feedRange).block()
@@ -129,7 +128,7 @@ class PartitionMetadataCacheSpec
   }
 
   //scalastyle:off multiple.string.literals
-  it should "honor maxStaleness" taggedAs RequiresCosmosEndpoint in {
+  it should "honor maxStaleness" in {
     this.reinitialize()
 
     val newItem =
@@ -154,7 +153,7 @@ class PartitionMetadataCacheSpec
     this.reinitialize()
   }
 
-  it should "honor test data overrides" taggedAs RequiresCosmosEndpoint in {
+  it should "honor test data overrides" in {
     this.reinitialize()
     val startEpochMs = Instant.now.toEpochMilli
 

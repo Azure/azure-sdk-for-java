@@ -6,7 +6,7 @@ import java.util.UUID
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import org.apache.spark.sql.types.{BooleanType, IntegerType, StringType, StructField, StructType}
 
-class SparkE2EChangeFeedSpec
+class SparkE2EChangeFeedITest
   extends IntegrationSpec
     with Spark
     with CosmosClient
@@ -19,7 +19,7 @@ class SparkE2EChangeFeedSpec
     this.reinitializeContainer()
   }
 
-  "spark change feed query (incremental)" can "use default schema" taggedAs RequiresCosmosEndpoint in {
+  "spark change feed query (incremental)" can "use default schema" in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
@@ -63,7 +63,7 @@ class SparkE2EChangeFeedSpec
       ChangeFeedTable.defaultIncrementalChangeFeedSchemaForInferenceDisabled) shouldEqual true
   }
 
-  "spark change feed query (incremental)" can "use user provided schema" taggedAs RequiresCosmosEndpoint in {
+  "spark change feed query (incremental)" can "use user provided schema" in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
@@ -99,7 +99,7 @@ class SparkE2EChangeFeedSpec
     df.schema.equals(customSchema) shouldEqual true
   }
 
-  "spark change feed query (full fidelity)" can "use default schema" taggedAs RequiresCosmosEndpoint in {
+  "spark change feed query (full fidelity)" can "use default schema" in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
@@ -130,7 +130,7 @@ class SparkE2EChangeFeedSpec
       ChangeFeedTable.defaultFullFidelityChangeFeedSchemaForInferenceDisabled) shouldEqual true
   }
 
-  "spark change feed micro batch (incremental)" can "use default schema" taggedAs RequiresCosmosEndpoint in {
+  "spark change feed micro batch (incremental)" can "use default schema" in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
