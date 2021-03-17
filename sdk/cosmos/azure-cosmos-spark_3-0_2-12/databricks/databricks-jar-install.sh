@@ -7,7 +7,7 @@ JARFILE=$3
 [[ -z "$JARFILE" ]] && exit 1
 [[ -z "$JARFILE" ]] && exit 1
 
-echo "Looking for cluster $CLUSTER_NAME"
+echo "Looking for cluster '$CLUSTER_NAME'"
 
 export CLUSTER_ID=$(databricks clusters list --output json | jq -r --arg N "$CLUSTER_NAME" '.clusters[] | select(.cluster_name == $N) | .cluster_id')
 
