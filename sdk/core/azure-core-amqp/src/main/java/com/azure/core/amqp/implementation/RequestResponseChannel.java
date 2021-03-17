@@ -28,10 +28,10 @@ import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
-import reactor.core.publisher.ReplayProcessor;
+import reactor.core.publisher.SignalType;
+import reactor.core.publisher.Sinks;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -51,10 +51,7 @@ public class RequestResponseChannel implements Disposable {
     private final ConcurrentSkipListMap<UnsignedLong, MonoSink<Message>> unconfirmedSends =
         new ConcurrentSkipListMap<>();
     private final AtomicBoolean hasError = new AtomicBoolean();
-    private final ReplayProcessor<AmqpEndpointState> endpointStates =
-        ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
-    private final FluxSink<AmqpEndpointState> endpointStatesSink =
-        endpointStates.sink(FluxSink.OverflowStrategy.BUFFER);
+    private final Sinks.Many<AmqpEndpointState> endpointStates = Sinks.many().multicast().onBackpressureBuffer();
     private final ClientLogger logger = new ClientLogger(RequestResponseChannel.class);
 
     private final Sender sendLink;
@@ -144,11 +141,15 @@ public class RequestResponseChannel implements Disposable {
                 }),
 
             receiveLinkHandler.getEndpointStates().subscribe(
-                state -> endpointStatesSink.next(AmqpEndpointStateUtil.getConnectionState(state)),
+                state -> endpointStates.emitNext(AmqpEndpointStateUtil.getConnectionState(state),
+                    (signalType, emitResult) -> onEmitSinkFailure(signalType, emitResult,
+                        "ReceiveLinkHandler. Error emitting endpoint state.")),
                 this::handleError, this::dispose),
 
-            sendLinkHandler.getEndpointStates().subscribe(state ->
-                endpointStatesSink.next(AmqpEndpointStateUtil.getConnectionState(state)),
+            sendLinkHandler.getEndpointStates().subscribe(
+                state -> endpointStates.emitNext(AmqpEndpointStateUtil.getConnectionState(state),
+                    (signalType, emitResult) -> onEmitSinkFailure(signalType, emitResult,
+                        "ReceiveLinkHandler. Error emitting endpoint state.")),
                 this::handleError, this::dispose)
         );
 
@@ -173,7 +174,7 @@ public class RequestResponseChannel implements Disposable {
      * @return The endpoint states for the request/response channel.
      */
     public Flux<AmqpEndpointState> getEndpointStates() {
-        return endpointStates;
+        return endpointStates.asFlux();
     }
 
     @Override
@@ -314,12 +315,21 @@ public class RequestResponseChannel implements Disposable {
             return;
         }
 
-        endpointStatesSink.error(error);
+        endpointStates.emitError(error,
+            (signalType, emitResult) -> onEmitSinkFailure(signalType, emitResult,
+                "Could not emit error. " + error));
         logger.error("{} - Exception in RequestResponse links. Disposing and clearing unconfirmed sends.", linkName,
             error);
         dispose();
 
         unconfirmedSends.forEach((key, value) -> value.error(error));
         unconfirmedSends.clear();
+    }
+
+    private boolean onEmitSinkFailure(SignalType signalType, Sinks.EmitResult emitResult, String message) {
+        logger.warning("connectionId[{}] linkName[{}] signal[{}] result[{}] {}",
+            connectionId, linkName, signalType, emitResult, message);
+
+        return false;
     }
 }
