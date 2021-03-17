@@ -143,7 +143,6 @@ class ReactorReceiverTest {
             .then(() -> receiverHandler.onLinkRemoteOpen(event))
             .expectNext(AmqpEndpointState.ACTIVE)
             .then(() -> receiverHandler.close())
-            .expectNext(AmqpEndpointState.CLOSED)
             .verifyComplete();
     }
 

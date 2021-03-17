@@ -150,7 +150,6 @@ class LinkHandlerTest {
         StepVerifier.create(handler.getEndpointStates())
             .expectNext(EndpointState.UNINITIALIZED)
             .then(() -> handler.onLinkRemoteClose(event))
-            .expectNext(EndpointState.CLOSED)
             .expectErrorSatisfies(error -> {
                 Assertions.assertTrue(error instanceof AmqpException);
 
@@ -184,7 +183,6 @@ class LinkHandlerTest {
         StepVerifier.create(handler.getEndpointStates())
             .expectNext(EndpointState.UNINITIALIZED)
             .then(() -> handler.onLinkRemoteDetach(event))
-            .expectNext(EndpointState.CLOSED)
             .expectErrorSatisfies(error -> {
                 Assertions.assertTrue(error instanceof AmqpException);
 
@@ -217,7 +215,6 @@ class LinkHandlerTest {
         StepVerifier.create(handler.getEndpointStates())
             .expectNext(EndpointState.UNINITIALIZED)
             .then(() -> handler.onLinkRemoteClose(event))
-            .expectNext(EndpointState.CLOSED)
             .expectErrorSatisfies(error -> {
                 Assertions.assertTrue(error instanceof AmqpException);
 
@@ -250,9 +247,10 @@ class LinkHandlerTest {
         // Act & Assert
         StepVerifier.create(handler.getEndpointStates())
             .expectNext(EndpointState.UNINITIALIZED)
-            .then(() -> handler.onLinkRemoteClose(event))
-            .expectNext(EndpointState.CLOSED)
-            .then(() -> handler.onLinkFinal(finalEvent))
+            .then(() -> {
+                handler.onLinkRemoteClose(event);
+                handler.onLinkFinal(finalEvent);
+            })
             .expectComplete()
             .verify();
 
