@@ -60,16 +60,7 @@ public final class BinaryData {
     private static final BinaryData EMPTY_DATA = new BinaryData(new byte[0]);
     private static final int STREAM_READ_SIZE = 1024;
 
-    private static final JsonSerializer SERIALIZER;
-    static {
-        JsonSerializer tmp;
-        try {
-            tmp = JsonSerializerProviders.createInstance();
-        } catch (IllegalStateException e) {
-            tmp = new JacksonSerializer();
-        }
-        SERIALIZER = tmp;
-    }
+    private static final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
 
     private final byte[] data;
 

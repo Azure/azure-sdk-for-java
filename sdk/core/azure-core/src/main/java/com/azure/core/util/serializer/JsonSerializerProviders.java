@@ -3,6 +3,8 @@
 
 package com.azure.core.util.serializer;
 
+import com.azure.core.implementation.serializer.JacksonSerializerProvider;
+
 import java.util.Iterator;
 import java.util.ServiceLoader;
 
@@ -17,7 +19,7 @@ public final class JsonSerializerProviders {
         + "Additionally, refer to https://aka.ms/azsdk/java/docs/custom-jsonserializer to learn about writing your own "
         + "implementation.";
 
-    private static JsonSerializerProvider defaultProvider;
+    private static JsonSerializerProvider jsonSerializerProvider;
     private static boolean attemptedLoad;
 
     /**
@@ -25,17 +27,33 @@ public final class JsonSerializerProviders {
      * classpath.
      *
      * @return A new instance of {@link JsonSerializer}.
+     * @throws IllegalStateException if a {@link JsonSerializerProvider} is not found in the classpath.
      */
     public static JsonSerializer createInstance() {
-        if (defaultProvider == null) {
-            loadFromClasspath();
-        }
-
-        return defaultProvider.createInstance();
+        return createInstance(false);
     }
 
-    private static synchronized void loadFromClasspath() {
-        if (attemptedLoad && defaultProvider != null) {
+    /**
+     * Creates an instance of {@link JsonSerializer} using the first {@link JsonSerializerProvider} found in the
+     * classpath. If no provider is found in classpath, a default provider will be included if {@code useDefaultIfAbsent}
+     * is set to true.
+     *
+     * @param useDefaultIfAbsent If no provider is found in classpath, a default provider will be used.
+     * if {@code useDefaultIfAbsent} is set to true.
+     * @return A new instance of {@link JsonSerializer}.
+     * @throws IllegalStateException if a {@link JsonSerializerProvider} is not found in the classpath and
+     * {@code useDefaultIfAbsent} is set to false.
+     */
+    public static JsonSerializer createInstance(boolean useDefaultIfAbsent) {
+        if (jsonSerializerProvider == null) {
+            loadDefaultSerializer(useDefaultIfAbsent);
+        }
+
+        return jsonSerializerProvider.createInstance();
+    }
+
+    private static synchronized void loadDefaultSerializer(boolean useDefaultIfAbsent) {
+        if (attemptedLoad && jsonSerializerProvider != null) {
             return;
         } else if (attemptedLoad) {
             throw new IllegalStateException(CANNOT_FIND_JSON_SERIALIZER_PROVIDER);
@@ -44,7 +62,12 @@ public final class JsonSerializerProviders {
         attemptedLoad = true;
         Iterator<JsonSerializerProvider> iterator = ServiceLoader.load(JsonSerializerProvider.class).iterator();
         if (iterator.hasNext()) {
-            defaultProvider = iterator.next();
+            jsonSerializerProvider = iterator.next();
+            return;
+        }
+
+        if (useDefaultIfAbsent) {
+            jsonSerializerProvider = new JacksonSerializerProvider();
         } else {
             throw new IllegalStateException(CANNOT_FIND_JSON_SERIALIZER_PROVIDER);
         }

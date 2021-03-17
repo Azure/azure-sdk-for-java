@@ -4,7 +4,6 @@
 package com.azure.core.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.implementation.serializer.JacksonSerializer;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
@@ -67,21 +66,11 @@ import java.util.UUID;
 public final class CloudEvent {
     private static final String SPEC_VERSION = "1.0";
 
-    private static final JsonSerializer SERIALIZER;
-    static {
-        JsonSerializer tmp;
-        try {
-            tmp = JsonSerializerProviders.createInstance();
-        } catch (IllegalStateException e) {
-            tmp = new JacksonSerializer();
-        }
-        SERIALIZER = tmp;
-    }
+    private static final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
 
     // May get SERIALIZER's object mapper in the future.
     private static final ObjectMapper BINARY_DATA_OBJECT_MAPPER = new ObjectMapper();
-    private static final Map<String, Object> EMPTY_ATTRIBUTES_MAP = Collections.unmodifiableMap(
-        new HashMap<String, Object>());
+    private static final Map<String, Object> EMPTY_ATTRIBUTES_MAP = Collections.unmodifiableMap(new HashMap<>());
 
     private static final TypeReference<List<CloudEvent>> DESERIALIZER_TYPE_REFERENCE =
         new TypeReference<List<CloudEvent>>() {
