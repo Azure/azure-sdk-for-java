@@ -3,17 +3,15 @@
 package com.azure.cosmos.spark
 
 import com.fasterxml.jackson.databind.ObjectMapper
-
-import java.sql.{Date, Timestamp}
 import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, BooleanNode, ObjectNode}
 import org.apache.spark.sql.catalyst.expressions.GenericRowWithSchema
-import org.apache.spark.sql.types.{
-  ArrayType, BinaryType, BooleanType, DateType, Decimal, DecimalType, DoubleType,
-  FloatType, IntegerType, LongType, MapType, NullType, StringType, StructField, StructType, TimestampType
-}
+import org.apache.spark.sql.types.{ArrayType, BinaryType, BooleanType, DateType,
+  Decimal, DecimalType, DoubleType, FloatType, IntegerType, LongType, MapType,
+  NullType, StringType, StructField, StructType, TimestampType}
 
-import java.time.{OffsetDateTime, ZoneOffset}
+import java.sql.{Date, Timestamp}
 import java.time.format.DateTimeFormatter
+import java.time.{LocalDateTime, OffsetDateTime, ZoneId, ZoneOffset}
 
 class CosmosRowConverterSpec extends UnitSpec {
   //scalastyle:off null
@@ -367,8 +365,9 @@ class CosmosRowConverterSpec extends UnitSpec {
     val colVal3AsTime = Timestamp.valueOf(OffsetDateTime.parse(colVal3, DateTimeFormatter.ISO_OFFSET_DATE_TIME).toLocalDateTime)
     val colVal4 = "2021-01-20T20:10:15Z"
     val ff = DateTimeFormatter
-      .ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'").withZone(ZoneOffset.UTC)
-    val colVal4AsTime = Timestamp.valueOf(OffsetDateTime.parse(colVal4, ff).toLocalDateTime)
+      .ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'").withZone(ZoneId.of("UTC"))
+
+    val colVal4AsTime = Timestamp.valueOf(LocalDateTime.parse(colVal4, ff))
 
     val objectNode: ObjectNode = objectMapper.createObjectNode()
     objectNode.put(colName1, colVal1)
@@ -405,7 +404,7 @@ class CosmosRowConverterSpec extends UnitSpec {
     val colVal4 = "2021-01-20T20:10:15Z"
     val ff = DateTimeFormatter
       .ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'").withZone(ZoneOffset.UTC)
-    val colVal4AsTime = Date.valueOf(OffsetDateTime.parse(colVal4, ff).toLocalDate)
+    val colVal4AsTime = Date.valueOf(LocalDateTime.parse(colVal4, ff).toLocalDate)
 
     val objectNode: ObjectNode = objectMapper.createObjectNode()
     objectNode.put(colName1, colVal1)
