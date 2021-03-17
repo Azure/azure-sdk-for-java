@@ -20,7 +20,7 @@ abstract class LinkHandler extends Handler {
     final ClientLogger logger;
 
     LinkHandler(String connectionId, String hostname, String entityPath, ClientLogger logger) {
-        super(connectionId, hostname);
+        super(connectionId, hostname, logger);
         this.entityPath = entityPath;
         this.logger = logger;
     }
