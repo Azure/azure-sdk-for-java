@@ -161,7 +161,8 @@ try {
 
 ## Next steps
 
-Check out other client libraries for Azure Communication Services
+- [Read more about SMS in Azure Communication Services][next_steps]
+- For a basic guide on how to configure Delivery Reporting for your SMS messages please refer to the [Handle SMS Events quickstart][handle_sms_events].
 
 <!-- LINKS -->
 [cla]: https://cla.microsoft.com
@@ -172,6 +173,8 @@ Check out other client libraries for Azure Communication Services
 [package]: https://search.maven.org/artifact/com.azure/azure-communication-sms
 [api_documentation]: https://aka.ms/java-docs
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/communication/azure-communication-sms/src
+[handle_sms_events]: https://docs.microsoft.com/azure/communication-services/quickstarts/telephony-sms/handle-sms-events
+[next_steps]:https://docs.microsoft.com/azure/communication-services/quickstarts/telephony-sms/send?pivots=programming-language-java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Feng%2Fazure-communications-sms%2FREADME.png)
 
