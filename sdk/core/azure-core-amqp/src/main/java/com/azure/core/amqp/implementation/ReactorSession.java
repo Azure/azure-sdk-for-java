@@ -126,8 +126,6 @@ public class ReactorSession implements AmqpSession {
             this.endpointStates.subscribe(),
 
             amqpConnection.getShutdownSignals().subscribe(signal -> {
-                logger.verbose("connectionId[{}] session[{}]: Shutdown signal received.",
-                    amqpConnection.getId(), sessionName);
                 dispose("Shutdown signal received", null, false).subscribe();
             }));
 
@@ -242,7 +240,7 @@ public class ReactorSession implements AmqpSession {
 
         final String condition = errorCondition != null ? errorCondition.toString() : NOT_APPLICABLE;
         logger.verbose("connectionId[{}], sessionName[{}], errorCondition[{}]. Setting error condition and "
-                + "disposing. {}",
+                + "disposing session. {}",
             sessionHandler.getConnectionId(), sessionName, condition, message);
 
         return Mono.fromRunnable(() -> {
