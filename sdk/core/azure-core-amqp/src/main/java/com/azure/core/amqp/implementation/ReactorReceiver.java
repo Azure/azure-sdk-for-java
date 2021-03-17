@@ -14,7 +14,6 @@ import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.ReplayProcessor;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -39,7 +38,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final Flux<Message> messagesProcessor;
     private final ClientLogger logger = new ClientLogger(ReactorReceiver.class);
-    private final ReplayProcessor<AmqpEndpointState> endpointStates;
+    private final Flux<AmqpEndpointState> endpointStates;
 
     private final AtomicReference<Supplier<Integer>> creditSupplier = new AtomicReference<>();
 
@@ -73,7 +72,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
                     entityPath, getLinkName(), state);
                 return AmqpEndpointStateUtil.getConnectionState(state);
             })
-            .subscribeWith(ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED));
+            .cache(1);
 
         this.subscriptions = this.tokenManager.getAuthorizationResults().subscribe(
             response -> {
