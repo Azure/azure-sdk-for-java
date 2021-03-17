@@ -29,7 +29,7 @@ public final class ClientEncryptionIncludedPath {
      *
      * @return path
      */
-    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getPath() {
         return path;
     }
@@ -39,9 +39,10 @@ public final class ClientEncryptionIncludedPath {
      *
      * @param path path to be encrypted
      */
-    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public void setPath(String path) {
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ClientEncryptionIncludedPath setPath(String path) {
         this.path = path;
+        return this;
     }
 
     /**
@@ -49,7 +50,7 @@ public final class ClientEncryptionIncludedPath {
      *
      * @return clientEncryptionKeyId
      */
-    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getClientEncryptionKeyId() {
         return clientEncryptionKeyId;
     }
@@ -59,9 +60,10 @@ public final class ClientEncryptionIncludedPath {
      *
      * @param clientEncryptionKeyId identifier of the Data Encryption Key
      */
-    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public void setClientEncryptionKeyId(String clientEncryptionKeyId) {
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ClientEncryptionIncludedPath setClientEncryptionKeyId(String clientEncryptionKeyId) {
         this.clientEncryptionKeyId = clientEncryptionKeyId;
+        return this;
     }
 
     /**
@@ -69,7 +71,7 @@ public final class ClientEncryptionIncludedPath {
      *
      * @return encryptionType
      */
-    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getEncryptionType() {
         return encryptionType;
     }
@@ -79,9 +81,10 @@ public final class ClientEncryptionIncludedPath {
      *
      * @param encryptionType type of encryption
      */
-    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public void setEncryptionType(String encryptionType) {
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ClientEncryptionIncludedPath setEncryptionType(String encryptionType) {
         this.encryptionType = encryptionType;
+        return this;
     }
 
     /**
@@ -89,7 +92,7 @@ public final class ClientEncryptionIncludedPath {
      *
      * @return encryptionAlgorithm
      */
-    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getEncryptionAlgorithm() {
         return encryptionAlgorithm;
     }
@@ -99,8 +102,9 @@ public final class ClientEncryptionIncludedPath {
      *
      * @param encryptionAlgorithm type of encryption algorithm
      */
-    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public void setEncryptionAlgorithm(String encryptionAlgorithm) {
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ClientEncryptionIncludedPath setEncryptionAlgorithm(String encryptionAlgorithm) {
         this.encryptionAlgorithm = encryptionAlgorithm;
+        return this;
     }
 }

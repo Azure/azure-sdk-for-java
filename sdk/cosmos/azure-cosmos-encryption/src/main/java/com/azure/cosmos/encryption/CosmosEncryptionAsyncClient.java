@@ -1,8 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.encryption;
 
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncClientEncryptionKey;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
@@ -106,15 +110,15 @@ public class CosmosEncryptionAsyncClient {
     }
 
     /**
-     * Get Cosmos Client with Encryption support for performing operations using client-side encryption.
+     * Create Cosmos Client with Encryption support for performing operations using client-side encryption.
      *
      * @param cosmosAsyncClient          Regular Cosmos Client.
      * @param encryptionKeyStoreProvider encryptionKeyStoreProvider, provider that allows interaction with the master
      *                                   keys.
      * @return encryptionAsyncCosmosClient to perform operations supporting client-side encryption / decryption.
      */
-    public static CosmosEncryptionAsyncClient buildEncryptionCosmosAsyncClient(CosmosAsyncClient cosmosAsyncClient,
-                                                                               EncryptionKeyStoreProvider encryptionKeyStoreProvider) {
+    public static CosmosEncryptionAsyncClient createEncryptionCosmosAsyncClient(CosmosAsyncClient cosmosAsyncClient,
+                                                                                EncryptionKeyStoreProvider encryptionKeyStoreProvider) {
         return new CosmosEncryptionAsyncClient(cosmosAsyncClient, encryptionKeyStoreProvider);
     }
 

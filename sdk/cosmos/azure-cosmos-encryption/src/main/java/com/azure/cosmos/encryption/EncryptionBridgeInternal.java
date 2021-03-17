@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.encryption;
 
+import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.encryption.implementation.EncryptionProcessor;
 import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.models.ClientEncryptionPolicy;

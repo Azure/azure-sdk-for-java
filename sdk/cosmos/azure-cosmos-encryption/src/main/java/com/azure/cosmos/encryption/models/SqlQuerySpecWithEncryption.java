@@ -1,15 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.models;
+package com.azure.cosmos.encryption.models;
 
-import com.azure.cosmos.CosmosEncryptionAsyncContainer;
-import com.azure.cosmos.EncryptionBridgeInternal;
+import com.azure.cosmos.encryption.CosmosEncryptionAsyncContainer;
+import com.azure.cosmos.encryption.EncryptionBridgeInternal;
 import com.azure.cosmos.encryption.implementation.EncryptionProcessor;
 import com.azure.cosmos.encryption.implementation.EncryptionUtils;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.microsoft.data.encryption.cryptography.EncryptionType;
 import com.microsoft.data.encryption.cryptography.MicrosoftDataEncryptionException;
@@ -21,7 +23,7 @@ import java.util.List;
 /**
  * Represents a SQL query with encryption parameters in the Azure Cosmos DB database service.
  */
-public class SqlQuerySpecWithEncryption {
+public final class SqlQuerySpecWithEncryption {
     private SqlQuerySpec sqlQuerySpec;
     private HashMap<String, SqlParameter> encryptionParamMap = new HashMap<>();
 
@@ -66,7 +68,7 @@ public class SqlQuerySpecWithEncryption {
                         System.arraycopy(cipherText, 0, cipherTextWithTypeMarker, 1, cipherText.length);
                         SqlParameter encryptedParameter = new SqlParameter(sqlParameter.getName(),
                             cipherTextWithTypeMarker);
-                        this.sqlQuerySpec.addSqlParameter(encryptedParameter);
+                        this.sqlQuerySpec.getParameters().add(encryptedParameter);
                     } catch (MicrosoftDataEncryptionException ex) {
                         return Mono.error(ex);
                     }

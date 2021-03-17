@@ -4,6 +4,9 @@
 package com.azure.cosmos;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
+import com.azure.cosmos.encryption.CosmosEncryptionAsyncContainer;
+import com.azure.cosmos.encryption.CosmosEncryptionAsyncDatabase;
 import com.azure.cosmos.encryption.implementation.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.implementation.CosmosEncryptionType;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -20,7 +23,7 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.models.SqlQuerySpecWithEncryption;
+import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -97,7 +100,7 @@ public class Program {
         TokenCredential tokenCredentials = Program.getTokenCredential(configuration);
         AzureKeyVaultKeyStoreProvider encryptionKeyStoreProvider = new AzureKeyVaultKeyStoreProvider(tokenCredentials);
 
-        return CosmosEncryptionAsyncClient.buildEncryptionCosmosAsyncClient(asyncClient, encryptionKeyStoreProvider);
+        return CosmosEncryptionAsyncClient.createEncryptionCosmosAsyncClient(asyncClient, encryptionKeyStoreProvider);
     }
 
     /**

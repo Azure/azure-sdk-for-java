@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
+import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -12,7 +13,7 @@ import java.util.Objects;
 /**
  * Metadata that a key wrapping provider can use to wrap/unwrap data encryption keys.
  */
-public class EncryptionKeyWrapMetadata {
+public final class EncryptionKeyWrapMetadata {
 
     /**
      * For JSON deserialize
@@ -56,23 +57,35 @@ public class EncryptionKeyWrapMetadata {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     String algorithm;
 
-    /**
-     * Serialized form of metadata.
-     * Note: This value is saved in the Cosmos DB service.
-     * implementors of derived implementations should ensure that this does not have (private) key material or credential information.
-     */
     @JsonProperty("value")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String value;
+    String value;
+
+    @JsonProperty("name")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    String name;
 
     /**
      * Serialized form of metadata.
      * Note: This value is saved in the Cosmos DB service.
-     * implementors of derived implementations should ensure that this does not have (private) key material or credential information.
+     * implementors of derived implementations should ensure that this does not have (private) key material or
+     * credential information.
      */
-    @JsonProperty("name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String name;
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public String getValue() {
+        return value;
+    }
+
+    /**
+     * Serialized form of metadata.
+     * Note: This value is saved in the Cosmos DB service.
+     * implementors of derived implementations should ensure that this does not have (private) key material or
+     * credential information.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public String getName() {
+        return name;
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -1,8 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.encryption;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.encryption.implementation.CosmosResponseFactory;
 import com.azure.cosmos.encryption.implementation.EncryptionProcessor;
 import com.azure.cosmos.encryption.implementation.EncryptionUtils;
@@ -14,13 +17,13 @@ import com.azure.cosmos.implementation.query.Transformer;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.EncryptionModelBridgeInternal;
+import com.azure.cosmos.encryption.models.EncryptionModelBridgeInternal;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.models.SqlQuerySpecWithEncryption;
+import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Flux;
@@ -87,7 +90,7 @@ public class CosmosEncryptionAsyncContainer {
                 finalRequestOptions)
                 .publishOn(encryptionScheduler)
                 .flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
-                    this.encryptionProcessor.decrypt(EncryptionModelBridgeInternal.getByteArrayContent(cosmosItemResponse)))
+                    this.encryptionProcessor.decrypt(ModelBridgeInternal.getByteArrayContent(cosmosItemResponse)))
                     .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse,
                         (Class<T>) item.getClass()))));
     }
@@ -139,7 +142,7 @@ public class CosmosEncryptionAsyncContainer {
             partitionKey,
             finalRequestOptions)
             .publishOn(encryptionScheduler).flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
-                this.encryptionProcessor.decrypt(EncryptionModelBridgeInternal.getByteArrayContent(cosmosItemResponse)))
+                this.encryptionProcessor.decrypt(ModelBridgeInternal.getByteArrayContent(cosmosItemResponse)))
                 .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse, (Class<T>) item.getClass()))));
     }
 
@@ -175,7 +178,7 @@ public class CosmosEncryptionAsyncContainer {
             partitionKey,
             finalRequestOptions)
             .publishOn(encryptionScheduler).flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
-                this.encryptionProcessor.decrypt(EncryptionModelBridgeInternal.getByteArrayContent(cosmosItemResponse)))
+                this.encryptionProcessor.decrypt(ModelBridgeInternal.getByteArrayContent(cosmosItemResponse)))
                 .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse, (Class<T>) item.getClass()))));
     }
 
@@ -199,7 +202,7 @@ public class CosmosEncryptionAsyncContainer {
             requestOptions, byte[].class);
 
         return responseMessageMono.publishOn(encryptionScheduler).flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
-            this.encryptionProcessor.decrypt(EncryptionModelBridgeInternal.getByteArrayContent(cosmosItemResponse)))
+            this.encryptionProcessor.decrypt(ModelBridgeInternal.getByteArrayContent(cosmosItemResponse)))
             .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse, classType)));
     }
 
@@ -340,7 +343,7 @@ public class CosmosEncryptionAsyncContainer {
                                                                  Mono<byte[]> bytesMono) {
         return bytesMono.flatMap(
             bytes -> {
-                EncryptionModelBridgeInternal.setByteArrayContent(rsp, bytes);
+                ModelBridgeInternal.setByteArrayContent(rsp, bytes);
                 return Mono.just(rsp);
             }
         );

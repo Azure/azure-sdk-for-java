@@ -3,14 +3,13 @@
 
 package com.azure.cosmos.encryption.implementation;
 
-import com.azure.cosmos.CosmosEncryptionAsyncClient;
-import com.azure.cosmos.CosmosEncryptionAsyncContainer;
+import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
+import com.azure.cosmos.encryption.CosmosEncryptionAsyncContainer;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-import java.time.Instant;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 

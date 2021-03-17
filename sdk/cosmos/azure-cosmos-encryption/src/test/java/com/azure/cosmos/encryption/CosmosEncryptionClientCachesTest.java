@@ -1,8 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.encryption;
 
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.EncryptionCodeSnippet;
 import com.azure.cosmos.encryption.implementation.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.implementation.ReflectionUtils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
@@ -52,7 +57,7 @@ public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
         //Creating DB
         CosmosDatabaseProperties cosmosDatabaseProperties = this.client.createDatabase("TestDBForEncryptionCacheTest"
             , ThroughputProperties.createManualThroughput(1000)).block().getProperties();
-        cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.buildEncryptionCosmosAsyncClient(this.client,
+        cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.createEncryptionCosmosAsyncClient(this.client,
             new EncryptionCrudTest.TestEncryptionKeyStoreProvider());
         cosmosEncryptionAsyncDatabase =
             cosmosEncryptionAsyncClient.getEncryptedCosmosAsyncDatabase(cosmosDatabaseProperties.getId());
@@ -120,7 +125,7 @@ public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
         clientEncryptionKeyMonoSingle1.setAccessible(true);
         Mono<CosmosClientEncryptionKeyProperties> clientEncryptionKeyMono1 = (Mono<CosmosClientEncryptionKeyProperties>) clientEncryptionKeyMonoSingle1.get(ClientEncryptionKeyAyncLazy1);
         CosmosClientEncryptionKeyProperties clientEncryptionKey1 = clientEncryptionKeyMono1.block();
-        assertThat(clientEncryptionKey1.getEncryptionKeyWrapMetadata().name).isEqualTo("key1");
+        assertThat(clientEncryptionKey1.getEncryptionKeyWrapMetadata().getName()).isEqualTo("key1");
 
         Object ClientEncryptionKeyAyncLazy2 = clientEncryptionKeyMap.get(cosmosEncryptionAsyncDatabase.getCosmosAsyncDatabase().getId()+"/"+"key2");
         AsyncLazyClass = Class.forName("com.azure.cosmos.implementation.caches.AsyncLazy");
@@ -129,7 +134,7 @@ public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
         spyCosmosEncryptionAsyncClient = Mockito.spy(cosmosEncryptionAsyncClient);
         Mono<CosmosClientEncryptionKeyProperties> clientEncryptionKeyMono2 = (Mono<CosmosClientEncryptionKeyProperties>) clientEncryptionKeyMonoSingle2.get(ClientEncryptionKeyAyncLazy2);
         CosmosClientEncryptionKeyProperties clientEncryptionKey2 = clientEncryptionKeyMono2.block();
-        assertThat(clientEncryptionKey2.getEncryptionKeyWrapMetadata().name).isEqualTo("key2");
+        assertThat(clientEncryptionKey2.getEncryptionKeyWrapMetadata().getName()).isEqualTo("key2");
 
         cosmosEncryptionAsyncContainer =
             cosmosEncryptionAsyncDatabase.getCosmosEncryptionAsyncContainer("TestCollForEncryptionCacheTest");

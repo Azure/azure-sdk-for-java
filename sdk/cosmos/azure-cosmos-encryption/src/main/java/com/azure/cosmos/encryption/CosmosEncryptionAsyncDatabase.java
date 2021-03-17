@@ -1,8 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.encryption;
 
+import com.azure.cosmos.CosmosAsyncClientEncryptionKey;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyResponse;
@@ -76,8 +79,8 @@ public class CosmosEncryptionAsyncDatabase {
         EncryptionKeyStoreProvider encryptionKeyStoreProvider =
             this.cosmosEncryptionAsyncClient.getEncryptionKeyStoreProvider();
         try {
-            KeyEncryptionKey keyEncryptionKey = KeyEncryptionKey.getOrCreate(encryptionKeyWrapMetadata.name,
-                encryptionKeyWrapMetadata.value, encryptionKeyStoreProvider, false);
+            KeyEncryptionKey keyEncryptionKey = KeyEncryptionKey.getOrCreate(encryptionKeyWrapMetadata.getName(),
+                encryptionKeyWrapMetadata.getValue(), encryptionKeyStoreProvider, false);
             ProtectedDataEncryptionKey protectedDataEncryptionKey =
                 new ProtectedDataEncryptionKey(clientEncryptionKeyId, keyEncryptionKey);
             byte[] wrappedDataEncryptionKey = protectedDataEncryptionKey.getEncryptedValue();
@@ -113,13 +116,13 @@ public class CosmosEncryptionAsyncDatabase {
                     cosmosClientEncryptionKeyResponse.getProperties();
                 try {
                     KeyEncryptionKey keyEncryptionKey =
-                        KeyEncryptionKey.getOrCreate(clientEncryptionKeyProperties.getEncryptionKeyWrapMetadata().name,
-                            clientEncryptionKeyProperties.getEncryptionKeyWrapMetadata().value,
+                        KeyEncryptionKey.getOrCreate(clientEncryptionKeyProperties.getEncryptionKeyWrapMetadata().getName(),
+                            clientEncryptionKeyProperties.getEncryptionKeyWrapMetadata().getValue(),
                             encryptionKeyStoreProvider, false);
                     byte[] unwrappedKey =
                         keyEncryptionKey.decryptEncryptionKey(clientEncryptionKeyProperties.getWrappedDataEncryptionKey());
-                    keyEncryptionKey = KeyEncryptionKey.getOrCreate(newEncryptionKeyWrapMetadata.name,
-                        newEncryptionKeyWrapMetadata.value, encryptionKeyStoreProvider, false);
+                    keyEncryptionKey = KeyEncryptionKey.getOrCreate(newEncryptionKeyWrapMetadata.getName(),
+                        newEncryptionKeyWrapMetadata.getValue(), encryptionKeyStoreProvider, false);
                     byte[] rewrappedKey = keyEncryptionKey.encryptEncryptionKey(unwrappedKey);
                     clientEncryptionKeyProperties = new CosmosClientEncryptionKeyProperties(clientEncryptionKeyId,
                         clientEncryptionKeyProperties.getEncryptionAlgorithm(),

@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.encryption.implementation;
 
-import com.azure.cosmos.EncryptionBridgeInternal;
+import com.azure.cosmos.encryption.EncryptionBridgeInternal;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
@@ -76,7 +76,7 @@ public final class EncryptionSettings {
                             propertyToEncrypt.getClientEncryptionKeyId(),
                             encryptionProcessor.getCosmosAsyncContainer(),
                             forceRefreshClientEncryptionKey.get())
-                            .publishOn(Schedulers.elastic())
+                            .publishOn(Schedulers.boundedElastic())
                             .flatMap(keyProperties -> {
                                 ProtectedDataEncryptionKey protectedDataEncryptionKey;
                                 try {
@@ -139,8 +139,8 @@ public final class EncryptionSettings {
                                                                String keyId) throws Exception {
 
         KeyEncryptionKey keyEncryptionKey =
-            KeyEncryptionKey.getOrCreate(keyProperties.getEncryptionKeyWrapMetadata().name,
-                keyProperties.getEncryptionKeyWrapMetadata().value, encryptionKeyStoreProvider, false);
+            KeyEncryptionKey.getOrCreate(keyProperties.getEncryptionKeyWrapMetadata().getName(),
+                keyProperties.getEncryptionKeyWrapMetadata().getValue(), encryptionKeyStoreProvider, false);
         return ProtectedDataEncryptionKey.getOrCreate(keyId, keyEncryptionKey,
             keyProperties.getWrappedDataEncryptionKey());
     }

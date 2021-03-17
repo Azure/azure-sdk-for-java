@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.util.Beta;
 import reactor.core.publisher.Mono;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -66,7 +67,8 @@ public class CosmosAsyncClientEncryptionKey {
      * @param keyProperties the client encryption key properties to create.
      * @return a {@link Mono} containing the single resource response with the read client encryption key or an error.
      */
-    Mono<CosmosClientEncryptionKeyResponse> replace(CosmosClientEncryptionKeyProperties keyProperties) {
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public Mono<CosmosClientEncryptionKeyResponse> replace(CosmosClientEncryptionKeyProperties keyProperties) {
         return withContext(context -> replaceInternal(keyProperties, context));
     }
 

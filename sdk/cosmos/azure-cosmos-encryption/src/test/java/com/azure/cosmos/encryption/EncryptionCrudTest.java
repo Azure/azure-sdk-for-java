@@ -1,8 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.encryption;
 
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
+import com.azure.cosmos.encryption.CosmosEncryptionAsyncContainer;
+import com.azure.cosmos.encryption.CosmosEncryptionAsyncDatabase;
 import com.azure.cosmos.encryption.implementation.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.implementation.CosmosEncryptionType;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
@@ -16,7 +22,7 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.models.SqlQuerySpecWithEncryption;
+import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -57,7 +63,7 @@ public class EncryptionCrudTest extends TestSuiteBase {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildAsyncClient();
         cosmosAsyncDatabase = getSharedCosmosDatabase(this.client);
-        cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.buildEncryptionCosmosAsyncClient(this.client,
+        cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.createEncryptionCosmosAsyncClient(this.client,
             new TestEncryptionKeyStoreProvider());
         cosmosEncryptionAsyncDatabase =
             cosmosEncryptionAsyncClient.getEncryptedCosmosAsyncDatabase(cosmosAsyncDatabase);
@@ -149,7 +155,7 @@ public class EncryptionCrudTest extends TestSuiteBase {
             "@nonSensitive and c.sensitiveLong = @sensitiveLong");
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
         SqlParameter parameter1 = new SqlParameter("@nonSensitive", properties.nonSensitive);
-        querySpec.addSqlParameter(parameter1);
+        querySpec.getParameters().add(parameter1);
 
         SqlParameter parameter2 = new SqlParameter("@sensitiveString", properties.sensitiveString);
         SqlParameter parameter3 = new SqlParameter("@sensitiveLong", properties.sensitiveLong);
@@ -184,7 +190,7 @@ public class EncryptionCrudTest extends TestSuiteBase {
             "@nonSensitive and c.sensitiveDouble = @sensitiveDouble");
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
         SqlParameter parameter1 = new SqlParameter("@nonSensitive", properties.nonSensitive);
-        querySpec.addSqlParameter(parameter1);
+        querySpec.getParameters().add(parameter1);
 
         SqlParameter parameter2 = new SqlParameter("@sensitiveString", properties.sensitiveString);
         SqlParameter parameter3 = new SqlParameter("@sensitiveDouble", properties.sensitiveDouble);

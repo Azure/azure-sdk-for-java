@@ -5,9 +5,9 @@ package com.azure.cosmos.encryption.implementation;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosEncryptionAsyncClient;
-import com.azure.cosmos.EncryptionBridgeInternal;
-import com.azure.cosmos.EncryptionCrudTest;
+import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
+import com.azure.cosmos.encryption.EncryptionBridgeInternal;
+import com.azure.cosmos.encryption.EncryptionCrudTest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
