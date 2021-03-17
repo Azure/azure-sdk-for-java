@@ -3,11 +3,11 @@
 
 package com.azure.core.amqp.implementation.handler;
 
+import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.EndpointState;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
-import reactor.core.publisher.ReplayProcessor;
+import reactor.core.publisher.Sinks;
 
 import java.io.Closeable;
 import java.util.Objects;
@@ -18,11 +18,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public abstract class Handler extends BaseHandler implements Closeable {
     private final AtomicBoolean isTerminal = new AtomicBoolean();
-    private final ReplayProcessor<EndpointState> endpointStateProcessor =
-        ReplayProcessor.cacheLastOrDefault(EndpointState.UNINITIALIZED);
-    private final FluxSink<EndpointState> endpointSink = endpointStateProcessor.sink();
+    private final Sinks.Many<EndpointState> endpointStates = Sinks.many().replay()
+        .latestOrDefault(EndpointState.UNINITIALIZED);
     private final String connectionId;
     private final String hostname;
+    private final ClientLogger logger;
 
     /**
      * Creates an instance with the parameters.
@@ -32,11 +32,13 @@ public abstract class Handler extends BaseHandler implements Closeable {
      *     connection. Usually of the form {@literal "<your-namespace>.service.windows.net"} but can change if the
      *     messages are brokered through an intermediary.
      *
+     * @param logger
      * @throws NullPointerException if {@code connectionId} or {@code hostname} is null.
      */
-    Handler(final String connectionId, final String hostname) {
+    Handler(final String connectionId, final String hostname, ClientLogger logger) {
         this.connectionId = Objects.requireNonNull(connectionId, "'connectionId' cannot be null.");
         this.hostname = Objects.requireNonNull(hostname, "'hostname' cannot be null.");
+        this.logger = logger;
     }
 
     /**
@@ -65,11 +67,16 @@ public abstract class Handler extends BaseHandler implements Closeable {
      * @return The endpoint states of the handler.
      */
     public Flux<EndpointState> getEndpointStates() {
-        return endpointStateProcessor.distinct();
+        return endpointStates.asFlux().distinct();
     }
 
     void onNext(EndpointState state) {
-        endpointSink.next(state);
+        endpointStates.emitNext(state, (signalType, emitResult) -> {
+            logger.warning("connectionId[{}] signal[{}] result[{}] could not emit endpoint state.", connectionId,
+                signalType, emitResult);
+
+            return false;
+        });
     }
 
     void onError(Throwable error) {
@@ -77,8 +84,12 @@ public abstract class Handler extends BaseHandler implements Closeable {
             return;
         }
 
-        endpointSink.next(EndpointState.CLOSED);
-        endpointSink.error(error);
+        endpointStates.emitError(error, (signalType, emitResult) -> {
+            logger.warning("connectionId[{}] signal[{}] result[{}] Could not emit error.", connectionId,
+                signalType, emitResult, error);
+
+            return false;
+        });
     }
 
     /**
@@ -91,7 +102,11 @@ public abstract class Handler extends BaseHandler implements Closeable {
             return;
         }
 
-        endpointSink.next(EndpointState.CLOSED);
-        endpointSink.complete();
+        endpointStates.emitComplete((signalType, emitResult) -> {
+            logger.warning("connectionId[{}] signal[{}] result[{}] Could not emit complete.", connectionId,
+                signalType, emitResult);
+
+            return false;
+        });
     }
 }
