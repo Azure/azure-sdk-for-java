@@ -33,6 +33,8 @@ public final class BlobChangefeedClientBuilder {
         CoreUtils.getProperties("azure-storage-blob-changefeed.properties");
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
+    private static final String CLIENT_NAME = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+    private static final String CLIENT_VERSION = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
 
     static final String CHANGEFEED_CONTAINER_NAME = "$blobchangefeed";
 
@@ -108,10 +110,7 @@ public final class BlobChangefeedClientBuilder {
             HttpPipelinePolicy currPolicy = pipeline.getPolicy(i);
             policies.add(currPolicy);
             if (currPolicy instanceof UserAgentPolicy) {
-                String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
-                String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
-
-                policies.add(new BlobUserAgentModificationPolicy(clientName, clientVersion));
+                policies.add(new BlobUserAgentModificationPolicy(CLIENT_NAME, CLIENT_VERSION));
             }
         }
 

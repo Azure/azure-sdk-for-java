@@ -136,6 +136,8 @@ public final class AzureFileSystem extends FileSystem {
         CoreUtils.getProperties("azure-storage-blob-nio.properties");
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
+    private static final String CLIENT_NAME = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+    private static final String CLIENT_VERSION = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
 
     static final Map<Class<? extends FileAttributeView>, String> SUPPORTED_ATTRIBUTE_VIEWS;
     static {
@@ -412,9 +414,7 @@ public final class AzureFileSystem extends FileSystem {
         builder.httpClient((HttpClient) config.get(AZURE_STORAGE_HTTP_CLIENT));
 
         // Add BlobUserAgentModificationPolicy
-        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
-        builder.addPolicy(new BlobUserAgentModificationPolicy(clientName, clientVersion));
+        builder.addPolicy(new BlobUserAgentModificationPolicy(CLIENT_NAME, CLIENT_VERSION));
 
         if (config.containsKey(AZURE_STORAGE_HTTP_POLICIES)) {
             for (HttpPipelinePolicy policy : (HttpPipelinePolicy[]) config.get(AZURE_STORAGE_HTTP_POLICIES)) {
