@@ -18,4 +18,3 @@ steps:
         workingDirectory: $(Pipeline.Workspace)
       displayName: Create API Review ${{ artifact.name}}
       condition: and(succeededOrFailed(), ne(variables['Skip.CreateApiReview'], 'true') , ne(variables['Build.Reason'],'PullRequest'), eq(variables['System.TeamProject'], 'internal'))
-      continueOnError: true

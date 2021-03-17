@@ -7,10 +7,11 @@ import reactor.core.publisher.Mono;
 /**
  * Interface to provide capacity to fetch fresh token
  */
+@FunctionalInterface
 public interface TokenRefresher {
     /**
      * Asynchronous call to fetch a fresh token
      * @return Wrapper for asynchronous call
      */
-    Mono<String> getTokenAsync();
+    Mono<String> getToken();
 }

@@ -55,7 +55,7 @@ public class AscOperationInner {
     private ErrorResponse error;
 
     /*
-     * Additional Operation Specific Properties
+     * Additional operation-specific output.
      */
     @JsonProperty(value = "properties.output")
     private Map<String, Object> output;
@@ -181,7 +181,7 @@ public class AscOperationInner {
     }
 
     /**
-     * Get the output property: Additional Operation Specific Properties.
+     * Get the output property: Additional operation-specific output.
      *
      * @return the output value.
      */
@@ -190,7 +190,7 @@ public class AscOperationInner {
     }
 
     /**
-     * Set the output property: Additional Operation Specific Properties.
+     * Set the output property: Additional operation-specific output.
      *
      * @param output the output value to set.
      * @return the AscOperationInner object itself.

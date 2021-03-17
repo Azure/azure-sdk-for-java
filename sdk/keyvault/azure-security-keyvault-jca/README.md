@@ -18,7 +18,7 @@ Maven dependency for the Azure Key Vault JCA client library. Add it to your proj
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>1.0.0-beta.3</version>
+    <version>1.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -28,9 +28,9 @@ Maven dependency for the Azure Key Vault JCA client library. Add it to your proj
 - [Azure Subscription][azure_subscription]
 - An existing [Azure Key Vault][azure_keyvault]. If you need to create a Key Vault, you can use the [Azure Cloud Shell][azure_cloud_shell] to create one with this Azure CLI command. Replace `<your-resource-group-name>` and `<your-key-vault-name>` with your own, unique names:
 
-    ```Bash
-    az keyvault create --resource-group <your-resource-group-name> --name <your-key-vault-name>
-    ```
+```Bash
+az keyvault create --resource-group <your-resource-group-name> --name <your-key-vault-name>
+```
 
 ## Key concepts
 
@@ -38,26 +38,28 @@ Maven dependency for the Azure Key Vault JCA client library. Add it to your proj
 ### Server side SSL
 If you are looking to integrate the JCA provider to create an SSLServerSocket see the example below.
 
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/jca/ServerSSLSample.java#L18-L37 -->
 ```java
 KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
 Security.addProvider(provider);
 
-KeyStore ks = KeyStore.getInstance("AzureKeyVault");
+KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
 KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
     System.getProperty("azure.keyvault.uri"),
+    System.getProperty("azure.keyvault.aad-authentication-url"),
     System.getProperty("azure.keyvault.tenant-id"),
     System.getProperty("azure.keyvault.client-id"),
     System.getProperty("azure.keyvault.client-secret"));
-ks.load(parameter);
+keyStore.load(parameter);
 
-KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-kmf.init(ks, "".toCharArray());
+KeyManagerFactory managerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+managerFactory.init(keyStore, "".toCharArray());
 
 SSLContext context = SSLContext.getInstance("TLS");
-context.init(kmf.getKeyManagers(), null, null);
+context.init(managerFactory.getKeyManagers(), null, null);
 
-SSLServerSocketFactory factory = context.getServerSocketFactory();
-SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(8765);
+SSLServerSocketFactory socketFactory = context.getServerSocketFactory();
+SSLServerSocket serverSocket = (SSLServerSocket) socketFactory.createServerSocket(8765);
 ```
 
 Note if you want to use Azure Managed Identity, you should set the value of `azure.keyvault.uri`, and the rest of the parameters would be `null`.
@@ -65,37 +67,39 @@ Note if you want to use Azure Managed Identity, you should set the value of `azu
 ### Client side SSL
 If you are looking to integrate the JCA provider for client side socket connections, see the Apache HTTP client example below.
 
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/jca/ClientSSLSample.java#L28-L71 -->
 ```java
 KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
 Security.addProvider(provider);
 
-KeyStore ks = KeyStore.getInstance("AzureKeyVault");
+KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
 KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-        System.getProperty("azure.keyvault.uri"),
-        System.getProperty("azure.keyvault.tenant-id"),
-        System.getProperty("azure.keyvault.client-id"),
-        System.getProperty("azure.keyvault.client-secret"));
-ks.load(parameter);
+    System.getProperty("azure.keyvault.uri"),
+    System.getProperty("azure.keyvault.aad-authentication-url"),
+    System.getProperty("azure.keyvault.tenant-id"),
+    System.getProperty("azure.keyvault.client-id"),
+    System.getProperty("azure.keyvault.client-secret"));
+keyStore.load(parameter);
 
 SSLContext sslContext = SSLContexts
     .custom()
-    .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
+    .loadTrustMaterial(keyStore, new TrustSelfSignedStrategy())
     .build();
 
-SSLConnectionSocketFactory sslSocketFactory = SSLConnectionSocketFactoryBuilder
+SSLConnectionSocketFactory factory = SSLConnectionSocketFactoryBuilder
     .create()
     .setSslContext(sslContext)
     .setHostnameVerifier((hostname, session) -> true)
     .build();
 
-PoolingHttpClientConnectionManager cm = PoolingHttpClientConnectionManagerBuilder
+PoolingHttpClientConnectionManager manager = PoolingHttpClientConnectionManagerBuilder
     .create()
-    .setSSLSocketFactory(sslSocketFactory)
+    .setSSLSocketFactory(factory)
     .build();
 
 String result = null;
 
-try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(cm).build()) {
+try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
     HttpGet httpGet = new HttpGet("https://localhost:8766");
     HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
         int status = response.getCode();

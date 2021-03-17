@@ -84,7 +84,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * List of custom libraries/packages associated with the spark pool.
      */
     @JsonProperty(value = "properties.customLibraries")
-    private List<LibraryResourceProperties> customLibraries;
+    private List<LibraryInfo> customLibraries;
 
     /*
      * Spark configuration file to specify additional properties
@@ -115,6 +115,12 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      */
     @JsonProperty(value = "properties.nodeSizeFamily")
     private NodeSizeFamily nodeSizeFamily;
+
+    /*
+     * The time when the Big Data pool was updated successfully.
+     */
+    @JsonProperty(value = "properties.lastSucceededTimestamp", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime lastSucceededTimestamp;
 
     /**
      * Get the provisioningState property: The state of the Big Data pool.
@@ -341,7 +347,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      *
      * @return the customLibraries value.
      */
-    public List<LibraryResourceProperties> getCustomLibraries() {
+    public List<LibraryInfo> getCustomLibraries() {
         return this.customLibraries;
     }
 
@@ -351,7 +357,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * @param customLibraries the customLibraries value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
-    public BigDataPoolResourceInfo setCustomLibraries(List<LibraryResourceProperties> customLibraries) {
+    public BigDataPoolResourceInfo setCustomLibraries(List<LibraryInfo> customLibraries) {
         this.customLibraries = customLibraries;
         return this;
     }
@@ -454,5 +460,14 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     public BigDataPoolResourceInfo setNodeSizeFamily(NodeSizeFamily nodeSizeFamily) {
         this.nodeSizeFamily = nodeSizeFamily;
         return this;
+    }
+
+    /**
+     * Get the lastSucceededTimestamp property: The time when the Big Data pool was updated successfully.
+     *
+     * @return the lastSucceededTimestamp value.
+     */
+    public OffsetDateTime getLastSucceededTimestamp() {
+        return this.lastSucceededTimestamp;
     }
 }

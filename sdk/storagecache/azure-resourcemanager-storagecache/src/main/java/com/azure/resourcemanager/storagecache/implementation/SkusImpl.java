@@ -7,7 +7,6 @@ package com.azure.resourcemanager.storagecache.implementation;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storagecache.StorageCacheManager;
 import com.azure.resourcemanager.storagecache.fluent.SkusClient;
 import com.azure.resourcemanager.storagecache.fluent.models.ResourceSkuInner;
 import com.azure.resourcemanager.storagecache.models.ResourceSku;
@@ -19,9 +18,9 @@ public final class SkusImpl implements Skus {
 
     private final SkusClient innerClient;
 
-    private final StorageCacheManager serviceManager;
+    private final com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager;
 
-    public SkusImpl(SkusClient innerClient, StorageCacheManager serviceManager) {
+    public SkusImpl(SkusClient innerClient, com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -40,7 +39,7 @@ public final class SkusImpl implements Skus {
         return this.innerClient;
     }
 
-    private StorageCacheManager manager() {
+    private com.azure.resourcemanager.storagecache.StorageCacheManager manager() {
         return this.serviceManager;
     }
 }
