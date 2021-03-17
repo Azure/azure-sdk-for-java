@@ -85,25 +85,20 @@ public class ReactorReceiver implements AmqpReceiveLink {
                 return AmqpEndpointStateUtil.getConnectionState(state);
             })
             .doOnError(error -> {
-                if (isDisposed.getAndSet(true)) {
-                    logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] This was already disposed. "
-                            + " Dropping error.",
-                        handler.getConnectionId(), entityPath, getLinkName(), error);
-                } else {
-                    logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Freeing resources due to error.",
-                        handler.getConnectionId(), entityPath, getLinkName(), error);
-                }
+                final String message = isDisposed.getAndSet(true)
+                    ? "This was already disposed. Dropping error."
+                    : "Freeing resources due to error.";
+                logger.warning("connectionId[{}] entityPath[{}] linkName[{}] {}",
+                    handler.getConnectionId(), entityPath, getLinkName(), message, error);
 
                 completeClose();
             })
             .doOnComplete(() -> {
-                if (isDisposed.getAndSet(true)) {
-                    logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] This was already disposed.",
-                        handler.getConnectionId(), entityPath, getLinkName());
-                } else {
-                    logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Freeing resources.",
-                        handler.getConnectionId(), entityPath, getLinkName());
-                }
+                final String message = isDisposed.getAndSet(true)
+                    ? "This was already disposed."
+                    : "Freeing resources.";
+                logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] {}", handler.getConnectionId(),
+                    entityPath, getLinkName(), message);
 
                 completeClose();
             })

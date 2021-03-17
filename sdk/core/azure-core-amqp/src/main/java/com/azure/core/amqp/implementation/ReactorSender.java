@@ -593,13 +593,11 @@ class ReactorSender implements AmqpSendLink {
      * @param error Error to pass to pending sends.
      */
     private void handleError(Throwable error) {
-        if (isDisposed.getAndSet(true)) {
-            logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] This was already disposed. Dropping error.",
-                handler.getConnectionId(), entityPath, getLinkName(), error);
-        } else {
-            logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Disposing pending sends.",
-                handler.getConnectionId(), entityPath, getLinkName(), error);
-        }
+        final String logMessage = isDisposed.getAndSet(true)
+            ? "This was already disposed. Dropping error."
+            : "Disposing pending sends with error.";
+        logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] {}", handler.getConnectionId(), entityPath,
+            getLinkName(), logMessage, error);
 
         synchronized (pendingSendLock) {
             pendingSendsMap.forEach((key, value) -> value.error(error));
@@ -611,13 +609,11 @@ class ReactorSender implements AmqpSendLink {
     }
 
     private void handleClose() {
-        if (isDisposed.getAndSet(true)) {
-            logger.warning("connectionId[{}] entityPath[{}] linkName[{}] This was already disposed. Can't complete.",
-                handler.getConnectionId(), entityPath, getLinkName());
-        } else {
-            logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Disposing pending sends.",
-                handler.getConnectionId(), entityPath, getLinkName());
-        }
+        final String logMessage = isDisposed.getAndSet(true)
+            ? "This was already disposed."
+            : "Disposing pending sends.";
+        logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] {}", handler.getConnectionId(), entityPath,
+            getLinkName(), logMessage);
 
         final String message = String.format("Could not complete sends because link '%s' for '%s' is closed.",
             getLinkName(), entityPath);
