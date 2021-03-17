@@ -217,11 +217,7 @@ trait CosmosContainerWithRetention extends CosmosContainer {
 
 trait AutoCleanableCosmosContainer extends CosmosContainer with BeforeAndAfterEach {
   this: Suite =>
-
-  private val MaxConcurrencyForItemDeletion = 10
-
-
-
+  
   override def afterEach(): Unit = {
 
     try {
