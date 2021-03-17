@@ -594,10 +594,10 @@ class ReactorSender implements AmqpSendLink {
      */
     private void handleError(Throwable error) {
         if (isDisposed.getAndSet(true)) {
-            logger.warning("connectionId[{}] entityPath[{}] linkName[{}] This was already disposed. Dropping error.",
+            logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] This was already disposed. Dropping error.",
                 handler.getConnectionId(), entityPath, getLinkName(), error);
         } else {
-            logger.warning("connectionId[{}] entityPath[{}] linkName[{}] Disposing pending sends.",
+            logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Disposing pending sends.",
                 handler.getConnectionId(), entityPath, getLinkName(), error);
         }
 
