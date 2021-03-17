@@ -220,6 +220,7 @@ com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration;1.0.0-be
 # Format;
 # unreleased_<groupId>:<artifactId>;dependency-version
 # note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
+unreleased_com.azure:azure-core-amqp;2.1.0-beta.1
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid
