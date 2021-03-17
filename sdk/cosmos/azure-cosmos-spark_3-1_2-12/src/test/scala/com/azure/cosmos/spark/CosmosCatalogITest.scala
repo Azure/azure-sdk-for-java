@@ -100,7 +100,7 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient {
     throughput.getManualThroughput shouldEqual 1100
   }
 
-  it can "create a table with well known indexing policy 'AllProperties'" taggedAs (RequiresCosmosEndpoint) in {
+  it can "create a table with well known indexing policy 'AllProperties'" in {
     val databaseName = getAutoCleanableDatabaseName()
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
 
@@ -128,7 +128,7 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient {
     throughput.getManualThroughput shouldEqual 1100
   }
 
-  it can "create a table with well known indexing policy 'OnlySystemProperties'" taggedAs (RequiresCosmosEndpoint) in {
+  it can "create a table with well known indexing policy 'OnlySystemProperties'" in {
     val databaseName = getAutoCleanableDatabaseName()
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
 
@@ -156,7 +156,7 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient {
     throughput.getManualThroughput shouldEqual 1100
   }
 
-  it can "create a table with custom indexing policy" taggedAs (RequiresCosmosEndpoint) in {
+  it can "create a table with custom indexing policy" in {
     val databaseName = getAutoCleanableDatabaseName()
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
 
@@ -187,7 +187,7 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient {
     throughput.getManualThroughput shouldEqual 1100
   }
 
-  it can "create a table with TTL -1" taggedAs (RequiresCosmosEndpoint) in {
+  it can "create a table with TTL -1" in {
     val databaseName = getAutoCleanableDatabaseName()
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
 
@@ -200,7 +200,7 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient {
     containerProperties.getDefaultTimeToLiveInSeconds shouldEqual -1
   }
 
-  it can "create a table with positive TTL" taggedAs (RequiresCosmosEndpoint) in {
+  it can "create a table with positive TTL" in {
     val databaseName = getAutoCleanableDatabaseName()
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
 
