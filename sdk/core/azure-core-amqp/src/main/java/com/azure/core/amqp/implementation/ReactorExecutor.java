@@ -10,6 +10,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.engine.HandlerException;
 import org.apache.qpid.proton.reactor.Reactor;
+import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Scheduler;
 
 import java.io.Closeable;
@@ -27,6 +29,7 @@ class ReactorExecutor implements Closeable {
     private final ClientLogger logger = new ClientLogger(ReactorExecutor.class);
     private final AtomicBoolean hasStarted = new AtomicBoolean();
     private final AtomicBoolean isDisposed = new AtomicBoolean();
+    private final Sinks.Empty<Void> isClosedMono = Sinks.empty();
 
     private final Object lock = new Object();
     private final Reactor reactor;
@@ -125,6 +128,7 @@ class ReactorExecutor implements Closeable {
         } finally {
             if (!rescheduledReactor) {
                 if (hasStarted.getAndSet(false)) {
+                    logger.verbose("Scheduling reactor to complete pending tasks.");
                     scheduleCompletePendingTasks();
                 } else {
                     final String reason =
@@ -132,10 +136,14 @@ class ReactorExecutor implements Closeable {
                             + "process.";
 
                     logger.info(LOG_MESSAGE, connectionId, reason);
-                    close(false, reason);
+                    close(reason);
                 }
             }
         }
+    }
+
+    Mono<Void> isClosed() {
+        return isClosedMono.asMono();
     }
 
     /**
@@ -145,7 +153,10 @@ class ReactorExecutor implements Closeable {
         this.scheduler.schedule(() -> {
             logger.info(LOG_MESSAGE, connectionId, "Processing all pending tasks and closing old reactor.");
             try {
-                reactor.process();
+                if (reactor.process()) {
+                    logger.verbose("Had more tasks to process on reactor but it is shutting down.");
+                }
+
                 reactor.stop();
             } catch (HandlerException e) {
                 logger.warning(LOG_MESSAGE, connectionId,
@@ -158,6 +169,8 @@ class ReactorExecutor implements Closeable {
                     // Since reactor is not thread safe, it is possible that another thread has already disposed of the
                     // session before we were able to schedule this work.
                 }
+
+                close("Finished processing pending tasks.");
             }
         }, timeout.toMillis(), TimeUnit.MILLISECONDS);
     }
@@ -169,16 +182,19 @@ class ReactorExecutor implements Closeable {
         }
 
         if (hasStarted.get()) {
-            close(true, "ReactorExecutor.close() was called.");
+            scheduleCompletePendingTasks();
         }
     }
 
-    private void close(boolean isUserInitialized, String reason) {
-        if (isUserInitialized) {
-            scheduleCompletePendingTasks();
-        }
+    private void close(String reason) {
+        logger.verbose("Completing close and disposing scheduler. {}", reason);
 
-        exceptionHandler.onConnectionShutdown(new AmqpShutdownSignal(false, isUserInitialized, reason));
+        isClosedMono.emitEmpty((signalType, emitResult) -> {
+            logger.verbose("signalType[{}] emitResult[{}]: Unable to emit close event on reactor", signalType,
+                emitResult);
+            return false;
+        });
+        exceptionHandler.onConnectionShutdown(new AmqpShutdownSignal(false, false, reason));
         scheduler.dispose();
     }
 }
