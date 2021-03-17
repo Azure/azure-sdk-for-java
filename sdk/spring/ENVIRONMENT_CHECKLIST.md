@@ -20,20 +20,20 @@ Here are the steps to get `README.md` files of the released version:
 ![Tag main page](images/tag-main-page.png "Main page of a tag")  
 1. Then check the README.md file there.  
 
-#### Clone the source
+#### Clone from specific version tag (recommend)
 It means cloning the branch of the specific release version, replace the tag name you found in the following command.
 
 ```shell script
-git clone -b <replace-the-tag> https://github.com/Azure/azure-sdk-for-java.git
+git clone -b <replace-the-tag> --depth 1 https://github.com/Azure/azure-sdk-for-java.git
 ```
 
 ### Use development version
 
-#### Clone the source
+#### Clone project from master branch
 It means cloning the master branch, all the code, dependencies, and readme files are up to date.
 
 ```shell script
-git clone https://github.com/Azure/azure-sdk-for-java.git
+git clone -b master --depth 1 https://github.com/Azure/azure-sdk-for-java.git
 ```
 
 #### Build module
