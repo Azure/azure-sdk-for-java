@@ -88,16 +88,76 @@ public final class GenericResourcesImpl
 
     @Override
     public boolean checkExistenceById(String id) {
-        String apiVersion = getApiVersionFromId(id).block();
+        String apiVersion = getApiVersionFromIdAsync(id).block();
+        return this.checkExistenceById(id, apiVersion);
+    }
+
+    @Override
+    public boolean checkExistenceById(String id, String apiVersion) {
+        if (CoreUtils.isNullOrEmpty(id)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Parameter 'id' is required and cannot be null."));
+        }
+        if (CoreUtils.isNullOrEmpty(apiVersion)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Parameter 'apiVersion' is required and cannot be null."));
+        }
         return this.inner().checkExistenceById(id, apiVersion);
     }
 
     @Override
     public GenericResource getById(String id) {
-        Provider provider = this.manager().providers().getByName(ResourceUtils.resourceProviderFromResourceId(id));
-        String apiVersion = ResourceUtils.defaultApiVersion(id, provider);
-        GenericResourceImpl genericResource = wrapModel(this.inner().getById(id, apiVersion));
-        return genericResource.withApiVersion(apiVersion);
+        return this.getByIdAsync(id).block();
+    }
+
+    @Override
+    public Mono<GenericResource> getByIdAsync(String id) {
+        return this.getApiVersionFromIdAsync(id)
+            .flatMap(apiVersion -> this.getByIdAsync(id, apiVersion));
+    }
+
+    @Override
+    public GenericResource getById(String id, String apiVersion) {
+        return this.getByIdAsync(id, apiVersion).block();
+    }
+
+    @Override
+    public Mono<GenericResource> getByIdAsync(String id, String apiVersion) {
+        if (CoreUtils.isNullOrEmpty(id)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'id' is required and cannot be null."));
+        }
+        if (CoreUtils.isNullOrEmpty(apiVersion)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'apiVersion' is required and cannot be null."));
+        }
+        return this.inner().getByIdAsync(id, apiVersion)
+            .map(this::wrapModel)
+            .map(r -> r.withApiVersion(apiVersion));
+    }
+
+    @Override
+    public Mono<Void> deleteByIdAsync(final String id) {
+        return getApiVersionFromIdAsync(id)
+            .flatMap(apiVersion -> this.deleteByIdAsync(id, apiVersion));
+    }
+
+    @Override
+    public void deleteById(String id, String apiVersion) {
+        this.deleteByIdAsync(id, apiVersion).block();
+    }
+
+    @Override
+    public Mono<Void> deleteByIdAsync(String id, String apiVersion) {
+        if (CoreUtils.isNullOrEmpty(id)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'id' is required and cannot be null."));
+        }
+        if (CoreUtils.isNullOrEmpty(apiVersion)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'apiVersion' is required and cannot be null."));
+        }
+        return this.inner().deleteByIdAsync(id, apiVersion);
     }
 
     @Override
@@ -217,16 +277,21 @@ public final class GenericResourcesImpl
     }
 
     @Override
-    public Mono<Void> deleteByIdAsync(final String id) {
-        final ResourcesClient inner = this.inner();
-        return getApiVersionFromId(id)
-                .flatMap(apiVersion -> inner.deleteByIdAsync(id, apiVersion));
+    public Accepted<Void> beginDeleteById(String id) {
+        String apiVersion = getApiVersionFromIdAsync(id).block();
+        return this.beginDeleteById(id, apiVersion);
     }
 
     @Override
-    public Accepted<Void> beginDeleteById(String id) {
-        String apiVersion = getApiVersionFromId(id).block();
-
+    public Accepted<Void> beginDeleteById(String id, String apiVersion) {
+        if (CoreUtils.isNullOrEmpty(id)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Parameter 'id' is required and cannot be null."));
+        }
+        if (CoreUtils.isNullOrEmpty(apiVersion)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Parameter 'apiVersion' is required and cannot be null."));
+        }
         return AcceptedImpl.newAccepted(logger,
             this.manager().serviceClient().getHttpPipeline(),
             this.manager().serviceClient().getDefaultPollInterval(),
@@ -236,7 +301,7 @@ public final class GenericResourcesImpl
             null);
     }
 
-    private Mono<String> getApiVersionFromId(final String id) {
+    private Mono<String> getApiVersionFromIdAsync(final String id) {
         return this.manager().providers().getByNameAsync(ResourceUtils.resourceProviderFromResourceId(id))
                 .map(provider -> ResourceUtils.defaultApiVersion(id, provider));
     }
