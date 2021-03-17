@@ -7,14 +7,13 @@ import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, Test
 import org.apache.spark.broadcast.Broadcast
 import org.mockito.Mockito.{mock, verify}
 
-class CosmosClientCacheSpec extends IntegrationSpec {
+class CosmosClientCacheITest extends IntegrationSpec with CosmosClient {
   //scalastyle:off multiple.string.literals
 
   private val cosmosEndpoint = TestConfigurations.HOST
   private val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
-
-  "CosmosClientCache" should "get cached object with same config" taggedAs RequiresCosmosEndpoint in {
+  "CosmosClientCache" should "get cached object with same config" in {
     val userConfig = CosmosClientConfiguration(Map(
       "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
       "spark.cosmos.accountKey" -> cosmosMasterKey
@@ -27,7 +26,7 @@ class CosmosClientCacheSpec extends IntegrationSpec {
     CosmosClientCache.purge(userConfig)
   }
 
-  it should "return a new instance after purging" taggedAs RequiresCosmosEndpoint in {
+  it should "return a new instance after purging" in {
     val userConfig = CosmosClientConfiguration(Map(
       "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
       "spark.cosmos.accountKey" -> cosmosMasterKey
@@ -41,7 +40,7 @@ class CosmosClientCacheSpec extends IntegrationSpec {
     CosmosClientCache.purge(userConfig)
   }
 
-  it should "use state during initialization" taggedAs RequiresCosmosEndpoint in {
+  it should "use state during initialization" in {
     val userConfig = CosmosClientConfiguration(Map(
       "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
       "spark.cosmos.accountKey" -> cosmosMasterKey

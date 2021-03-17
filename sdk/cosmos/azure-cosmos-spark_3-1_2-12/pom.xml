@@ -504,21 +504,16 @@
               <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
               <junitxml>.</junitxml>
               <filereports>SparkTestSuite.txt</filereports>
+              <suffixes>(Spec|[^I]Test|Suite|[^I]T)</suffixes> <!-- unit tests which do not require cosmos db -->
             </configuration>
             <executions>
               <execution>
-                <configuration>
-                  <tagsToExclude>requiresCosmosEndpoint</tagsToExclude>
-                </configuration>
                 <id>test</id>
                 <goals>
                   <goal>test</goal>
                 </goals>
               </execution>
               <execution>
-                <configuration>
-                  <tagsToExclude>requiresCosmosEndpoint</tagsToExclude>
-                </configuration>
                 <id>scala-test</id>
                 <goals>
                   <goal>test</goal>
@@ -559,21 +554,16 @@
               <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
               <junitxml>.</junitxml>
               <filereports>SparkTestSuite.txt</filereports>
+              <suffixes>(ITest|IT|Test|Spec|Suite)</suffixes> <!-- every test -->
             </configuration>
             <executions>
               <execution>
-                <configuration>
-                  <tagsToInclude>requiresCosmosEndpoint</tagsToInclude>
-                </configuration>
                 <id>test</id>
                 <goals>
                   <goal>test</goal>
                 </goals>
               </execution>
               <execution>
-                <configuration>
-                  <tagsToInclude>requiresCosmosEndpoint</tagsToInclude>
-                </configuration>
                 <id>scala-test</id>
                 <goals>
                   <goal>test</goal>

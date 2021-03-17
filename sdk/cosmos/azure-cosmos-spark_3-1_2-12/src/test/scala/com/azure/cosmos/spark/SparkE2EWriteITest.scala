@@ -6,7 +6,7 @@ import com.azure.cosmos.implementation.TestConfigurations
 import com.azure.cosmos.spark.ItemWriteStrategy.{ItemAppend, ItemOverwrite, ItemWriteStrategy}
 import org.scalatest.Succeeded
 
-class SparkE2EWriteSpec extends IntegrationSpec with Spark with CosmosClient with AutoCleanableCosmosContainer {
+class SparkE2EWriteITest extends IntegrationSpec with Spark with CosmosClient with AutoCleanableCosmosContainer {
 
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
@@ -21,7 +21,7 @@ class SparkE2EWriteSpec extends IntegrationSpec with Spark with CosmosClient wit
   )
 
   for (UpsertParameterTest(bulkEnabled, itemWriteStrategy, hasId) <- upsertParameterTest) {
-    it should s"support bulkEnabled = ${bulkEnabled} itemWriteStrategy = ${itemWriteStrategy} hasId = ${hasId}" taggedAs (RequiresCosmosEndpoint) in {
+    it should s"support bulkEnabled = ${bulkEnabled} itemWriteStrategy = ${itemWriteStrategy} hasId = ${hasId}" in {
       val cosmosEndpoint = TestConfigurations.HOST
       val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
@@ -124,7 +124,7 @@ class SparkE2EWriteSpec extends IntegrationSpec with Spark with CosmosClient wit
 
   for (SaveModeTestParameter(saveMode, success, tableExists) <- saveModeTestParameters) {
     s"write with $saveMode" should
-      s"${if (success) "success" else "fail"} when table ${if (tableExists) "exists" else "doesn't exist"}" taggedAs (RequiresCosmosEndpoint) in {
+      s"${if (success) "success" else "fail"} when table ${if (tableExists) "exists" else "doesn't exist"}" in {
       val cosmosEndpoint = TestConfigurations.HOST
       val cosmosMasterKey = TestConfigurations.MASTER_KEY
 

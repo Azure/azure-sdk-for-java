@@ -21,6 +21,7 @@ ACCOUNT_HOST=https://localhost:8081
 ACCOUNT_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==
 ```
 
+Integration tests are expected to have ITest or IT suffix.
 run the following command to run end to end integration tests:
 
 ```bash

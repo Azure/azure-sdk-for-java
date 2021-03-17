@@ -9,12 +9,12 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import java.util.UUID
 
 // TODO: moderakh once BE support patch enable this, for now the code is parked
-class PatchWriterSpec extends IntegrationSpec with CosmosClient with AutoCleanableCosmosContainer {
+class PatchWriterITest extends IntegrationSpec with CosmosClient with AutoCleanableCosmosContainer {
 
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
 
-  it should "support patch" taggedAs (RequiresCosmosEndpoint) ignore  {
+  it should "support patch" ignore  {
     val container = cosmosClient.getDatabase(cosmosDatabase)
       .getContainer(cosmosContainer)
 

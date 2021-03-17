@@ -6,7 +6,7 @@ import java.util.UUID
 
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 
-class SparkE2EQuerySpec extends IntegrationSpec with Spark with CosmosClient with AutoCleanableCosmosContainer {
+class SparkE2EQueryITest extends IntegrationSpec with Spark with CosmosClient with AutoCleanableCosmosContainer {
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
 
@@ -15,7 +15,7 @@ class SparkE2EQuerySpec extends IntegrationSpec with Spark with CosmosClient wit
   // to ensure we don't do sub-range feed-range
   // once emulator fixed switch back to default partitioning.
 
-  "spark query" can "use user provided schema" taggedAs RequiresCosmosEndpoint in {
+  "spark query" can "use user provided schema" in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
@@ -70,7 +70,7 @@ class SparkE2EQuerySpec extends IntegrationSpec with Spark with CosmosClient wit
     }
   }
 
-  "spark query" can "use schema inference with system properties and timestamp" taggedAs RequiresCosmosEndpoint in {
+  "spark query" can "use schema inference with system properties and timestamp" in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
@@ -113,7 +113,7 @@ class SparkE2EQuerySpec extends IntegrationSpec with Spark with CosmosClient wit
     fieldNames.contains(CosmosTableSchemaInferrer.AttachmentsAttributeName) shouldBe true
   }
 
-  "spark query" can "use schema inference with just timestamp" taggedAs RequiresCosmosEndpoint in {
+  "spark query" can "use schema inference with just timestamp" in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
@@ -156,7 +156,7 @@ class SparkE2EQuerySpec extends IntegrationSpec with Spark with CosmosClient wit
     fieldNames.contains(CosmosTableSchemaInferrer.AttachmentsAttributeName) shouldBe false
   }
 
-  "spark query" can "use schema inference with no system properties or timestamp" taggedAs RequiresCosmosEndpoint in {
+  "spark query" can "use schema inference with no system properties or timestamp" in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
@@ -198,7 +198,7 @@ class SparkE2EQuerySpec extends IntegrationSpec with Spark with CosmosClient wit
     fieldNames.contains(CosmosTableSchemaInferrer.AttachmentsAttributeName) shouldBe false
   }
 
-  "spark query" can "use schema inference with custom query" taggedAs RequiresCosmosEndpoint in {
+  "spark query" can "use schema inference with custom query" in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
@@ -234,7 +234,7 @@ class SparkE2EQuerySpec extends IntegrationSpec with Spark with CosmosClient wit
     rowWithInference.getAs[Boolean]("isAlive") shouldEqual true
   }
 
-  "spark query" can "use schema inference with custom query and system properties" taggedAs RequiresCosmosEndpoint in {
+  "spark query" can "use schema inference with custom query and system properties" in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
@@ -276,7 +276,7 @@ class SparkE2EQuerySpec extends IntegrationSpec with Spark with CosmosClient wit
     fieldNames.contains(CosmosTableSchemaInferrer.AttachmentsAttributeName) shouldBe false
   }
 
-  "spark query" can "use custom sampling size" taggedAs RequiresCosmosEndpoint in {
+  "spark query" can "use custom sampling size" in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
     val samplingSize = 100

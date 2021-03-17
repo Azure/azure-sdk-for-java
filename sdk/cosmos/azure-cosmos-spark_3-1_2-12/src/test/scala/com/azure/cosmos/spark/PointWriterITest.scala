@@ -18,10 +18,10 @@ import java.util.UUID
 
 //scalastyle:off multiple.string.literals
 //scalastyle:off magic.number
-class PointWriterSpec extends IntegrationSpec with CosmosClient with AutoCleanableCosmosContainer {
+class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleanableCosmosContainer {
   val objectMapper = new ObjectMapper()
 
-  "Point Writer" can "upsert item" taggedAs RequiresCosmosEndpoint in  {
+  "Point Writer" can "upsert item" in  {
     val container = getContainer
 
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false, Some(100))
@@ -48,7 +48,7 @@ class PointWriterSpec extends IntegrationSpec with CosmosClient with AutoCleanab
     }
   }
 
-  "Point Writer" can "create item with duplicates" taggedAs RequiresCosmosEndpoint in {
+  "Point Writer" can "create item with duplicates" in {
     val container = getContainer
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 0, bulkEnabled = false, Some(100))
     val pointWriter = new PointWriter(container, writeConfig)
