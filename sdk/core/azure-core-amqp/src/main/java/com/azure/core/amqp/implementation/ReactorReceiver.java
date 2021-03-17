@@ -13,7 +13,6 @@ import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
-import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.ReplayProcessor;
 
@@ -38,7 +37,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
     private final ReactorDispatcher dispatcher;
     private final Disposable subscriptions;
     private final AtomicBoolean isDisposed = new AtomicBoolean();
-    private final EmitterProcessor<Message> messagesProcessor;
+    private final Flux<Message> messagesProcessor;
     private final ClientLogger logger = new ClientLogger(ReactorReceiver.class);
     private final ReplayProcessor<AmqpEndpointState> endpointStates;
 
@@ -66,7 +65,8 @@ public class ReactorReceiver implements AmqpReceiveLink {
                     }
                 }
             })
-            .subscribeWith(EmitterProcessor.create());
+            .publish()
+            .autoConnect();
         this.endpointStates = this.handler.getEndpointStates()
             .map(state -> {
                 logger.verbose("connectionId[{}], path[{}], linkName[{}]: State {}", handler.getConnectionId(),
@@ -150,7 +150,6 @@ public class ReactorReceiver implements AmqpReceiveLink {
         }
 
         subscriptions.dispose();
-        messagesProcessor.onComplete();
         tokenManager.close();
         receiver.close();
 
@@ -196,7 +195,6 @@ public class ReactorReceiver implements AmqpReceiveLink {
             handler.close();
         }
 
-        messagesProcessor.onComplete();
         tokenManager.close();
     }
 
