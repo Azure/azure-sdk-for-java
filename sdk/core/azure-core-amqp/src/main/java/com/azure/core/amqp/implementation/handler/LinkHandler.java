@@ -17,12 +17,10 @@ import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
 
 abstract class LinkHandler extends Handler {
     private final String entityPath;
-    final ClientLogger logger;
 
     LinkHandler(String connectionId, String hostname, String entityPath, ClientLogger logger) {
         super(connectionId, hostname, logger);
         this.entityPath = entityPath;
-        this.logger = logger;
     }
 
     @Override

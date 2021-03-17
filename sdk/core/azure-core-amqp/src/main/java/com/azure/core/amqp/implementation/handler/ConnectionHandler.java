@@ -44,7 +44,6 @@ public class ConnectionHandler extends Handler {
     static final int MAX_FRAME_SIZE = 65536;
 
     private final Map<String, Object> connectionProperties;
-    private final ClientLogger logger = new ClientLogger(ConnectionHandler.class);
     private final ConnectionOptions connectionOptions;
     private final SslPeerDetails peerDetails;
 
@@ -57,7 +56,8 @@ public class ConnectionHandler extends Handler {
     public ConnectionHandler(final String connectionId, final ConnectionOptions connectionOptions,
         SslPeerDetails peerDetails) {
         super(connectionId,
-            Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.").getHostname());
+            Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.").getHostname(),
+            new ClientLogger(ConnectionHandler.class));
         add(new Handshaker());
 
         this.connectionOptions = connectionOptions;

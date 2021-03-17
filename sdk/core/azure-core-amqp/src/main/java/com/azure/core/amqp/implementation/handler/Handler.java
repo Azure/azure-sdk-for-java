@@ -22,7 +22,8 @@ public abstract class Handler extends BaseHandler implements Closeable {
         .latestOrDefault(EndpointState.UNINITIALIZED);
     private final String connectionId;
     private final String hostname;
-    private final ClientLogger logger;
+
+    final ClientLogger logger;
 
     /**
      * Creates an instance with the parameters.
