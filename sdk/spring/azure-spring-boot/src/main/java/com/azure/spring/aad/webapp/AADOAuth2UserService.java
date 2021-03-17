@@ -96,7 +96,7 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
         return defaultOidcUser;
     }
 
-    public void extractRolesFromIdToken(OidcIdToken idToken, Set<String> rolesClaim) {
+    void extractRolesFromIdToken(OidcIdToken idToken, Set<String> rolesClaim) {
         Optional.ofNullable(idToken)
             .map(token -> (Collection<?>) token.getClaim(ROLES))
             .filter(obj -> obj instanceof List<?>)
@@ -107,7 +107,7 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
             .forEach(rolesClaim::add);
     }
 
-    public void extractGroupRolesFromAccessToken(OAuth2AccessToken accessToken, Set<String> rolesClaim) {
+    void extractGroupRolesFromAccessToken(OAuth2AccessToken accessToken, Set<String> rolesClaim) {
         Optional.of(accessToken)
             .filter(notUsed -> properties.allowedGroupsConfigured())
             .map(AbstractOAuth2Token::getTokenValue)
