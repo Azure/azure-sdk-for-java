@@ -4,9 +4,6 @@
 - [Azure Subscription][azure_subscription]
 - [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Maven][maven] 3.0 or above
-- A Windows machine (necessary if you want to run the app on Windows)
-- An OS X machine (necessary if you want to run the app on Mac)
-- A Linux machine (necessary if you want to run the app on Linux)
 - Git
 
 ### Use the released version
@@ -46,11 +43,6 @@ For example, if you want to build `azure-spring-boot-starter-active-directory`, 
 ```shell script
 cd azure-sdk-for-java
 mvn clean install -pl .\sdk\spring\azure-spring-boot-starter-active-directory\ -am
-```
-
-If you want to build faster, you can append the following Maven parameters.
-```shell script
--Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Djacoco.skip=true -DskipTests -Dparallel-test-playback
 ```
 
 You can refer [Maven CLI Options] for more detail about `-pl` and `-am`.
