@@ -65,10 +65,10 @@ public class AADResourceServerClientConfiguration {
     }
 
     /**
-     * Use InMemoryClientRegistrationRepository to create AADOAuth2AuthorizedClientRepository
+     * Use InMemoryClientRegistrationRepository to create AADResourceServerOAuth2AuthorizedClientRepository
      *
      * @param repo client registration
-     * @return AADOAuth2AuthorizedClientRepository Bean
+     * @return AADResourceServerOAuth2AuthorizedClientRepository Bean
      */
     @Bean
     @ConditionalOnMissingBean

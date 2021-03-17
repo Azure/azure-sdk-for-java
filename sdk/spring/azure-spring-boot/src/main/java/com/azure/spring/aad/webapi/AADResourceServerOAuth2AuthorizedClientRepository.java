@@ -87,6 +87,7 @@ public class AADResourceServerOAuth2AuthorizedClientRepository implements OAuth2
         return null;
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private <T extends OAuth2AuthorizedClient> T loadOboAuthorizedClient(ClientRegistration clientRegistration,
                                                                          String registrationId,
                                                                          Authentication principal,
