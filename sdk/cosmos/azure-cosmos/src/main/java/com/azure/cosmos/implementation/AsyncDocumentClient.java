@@ -228,7 +228,7 @@ public interface AsyncDocumentClient {
                 transportClientSharing,
                 contentResponseOnWriteEnabled);
 
-            client.init();
+            client.init(null);
             return client;
         }
 

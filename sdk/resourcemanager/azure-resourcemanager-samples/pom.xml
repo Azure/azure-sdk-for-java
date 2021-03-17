@@ -108,12 +108,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.12.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.13.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-certificates</artifactId>
-      <version>4.1.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
+      <version>4.1.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
