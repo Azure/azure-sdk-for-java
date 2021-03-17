@@ -13,6 +13,10 @@
         "defaultValue": "communication",
         "type": "string"
       },
+      "communicationServicesEndpointSuffix": {
+        "defaultValue": ".communication.azure.com",
+        "type": "string"
+      },
       "testApplicationOid": {
         "type": "string",
         "metadata": {
@@ -52,7 +56,7 @@
       },
       "COMMUNICATION_SERVICE_ENDPOINT": {
         "type": "string",
-        "value": "[concat('https://', parameters('baseName'), '-', parameters('endpointPrefix'), '.communication.azure.com')]"
+        "value": "[concat('https://', parameters('baseName'), '-', parameters('endpointPrefix'), parameters('communicationServicesEndpointSuffix'))]"
       },
       "COMMUNICATION_SERVICE_ACCESS_KEY": {
         "type": "string",
