@@ -14,7 +14,6 @@ import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.models.GenericResources;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.models.ResourcesMoveInfo;
-import com.azure.resourcemanager.resources.models.Provider;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
