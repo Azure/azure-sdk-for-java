@@ -168,14 +168,15 @@ public class ProxyOptions {
      * @throws IllegalArgumentException If {@code configuration} is {@link Configuration#NONE}.
      */
     public static ProxyOptions fromConfiguration(Configuration configuration) {
-        return fromConfiguration(configuration, true);
+        return fromConfiguration(configuration, false);
     }
 
     /**
      * Attempts to load a proxy from the environment.
      * <p>
-     * If a proxy is found and loaded, the proxy address is DNS resolved based on {@code resolveProxy}. When {@code
-     * resolveProxy} is false resolving it before usage may be required.
+     * If a proxy is found and loaded, the proxy address is DNS resolved based on {@code createUnresolved}. When {@code
+     * createUnresolved} is true resolving {@link #getAddress()} may be required before using the address in network
+     * calls.
      * <p>
      * Environment configurations are loaded in this order:
      * <ol>
@@ -194,12 +195,12 @@ public class ProxyOptions {
      * @param configuration The {@link Configuration} that is used to load proxy configurations from the environment. If
      * {@code null} is passed then {@link Configuration#getGlobalConfiguration()} will be used. If {@link
      * Configuration#NONE} is passed {@link IllegalArgumentException} will be thrown.
-     * @param resolveProxy Flag determining whether the returned {@link ProxyOptions} is resolved.
+     * @param createUnresolved Flag determining whether the returned {@link ProxyOptions} is unresolved.
      * @return A {@link ProxyOptions} reflecting a proxy loaded from the environment, if no proxy is found {@code null}
      * will be returned.
      * @throws IllegalArgumentException If {@code configuration} is {@link Configuration#NONE}.
      */
-    public static ProxyOptions fromConfiguration(Configuration configuration, boolean resolveProxy) {
+    public static ProxyOptions fromConfiguration(Configuration configuration, boolean createUnresolved) {
         if (configuration == Configuration.NONE) {
             throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(INVALID_CONFIGURATION_MESSAGE));
         }
@@ -209,7 +210,7 @@ public class ProxyOptions {
             : configuration;
 
         for (BiFunction<Configuration, Boolean, ProxyOptions> loader : ENVIRONMENT_LOAD_ORDER) {
-            ProxyOptions proxyOptions = loader.apply(proxyConfiguration, resolveProxy);
+            ProxyOptions proxyOptions = loader.apply(proxyConfiguration, createUnresolved);
             if (proxyOptions != null) {
                 return proxyOptions;
             }
@@ -218,7 +219,7 @@ public class ProxyOptions {
         return null;
     }
 
-    private static ProxyOptions attemptToLoadAzureProxy(Configuration configuration, boolean resolveProxy,
+    private static ProxyOptions attemptToLoadAzureProxy(Configuration configuration, boolean createUnresolved,
         String proxyProperty) {
         String proxyConfiguration = configuration.get(proxyProperty);
 
@@ -231,9 +232,9 @@ public class ProxyOptions {
             URL proxyUrl = new URL(proxyConfiguration);
             int port = (proxyUrl.getPort() == -1) ? proxyUrl.getDefaultPort() : proxyUrl.getPort();
 
-            InetSocketAddress socketAddress = (resolveProxy)
-                ? new InetSocketAddress(proxyUrl.getHost(), port)
-                : InetSocketAddress.createUnresolved(proxyUrl.getHost(), port);
+            InetSocketAddress socketAddress = (createUnresolved)
+                ? InetSocketAddress.createUnresolved(proxyUrl.getHost(), port)
+                : new InetSocketAddress(proxyUrl.getHost(), port);
 
             ProxyOptions proxyOptions = new ProxyOptions(Type.HTTP, socketAddress);
 
@@ -322,7 +323,8 @@ public class ProxyOptions {
         return String.join("|", nonProxyHosts);
     }
 
-    private static ProxyOptions attemptToLoadJavaProxy(Configuration configuration, boolean resolveProxy, String type) {
+    private static ProxyOptions attemptToLoadJavaProxy(Configuration configuration, boolean createUnresolved,
+        String type) {
         // Not allowed to use Java proxies
         if (!Boolean.parseBoolean(configuration.get(JAVA_PROXY_PREREQUISITE))) {
             return null;
@@ -342,9 +344,9 @@ public class ProxyOptions {
             port = HTTPS.equals(type) ? DEFAULT_HTTPS_PORT : DEFAULT_HTTP_PORT;
         }
 
-        InetSocketAddress socketAddress = (resolveProxy)
-            ? new InetSocketAddress(host, port)
-            : InetSocketAddress.createUnresolved(host, port);
+        InetSocketAddress socketAddress = (createUnresolved)
+            ? InetSocketAddress.createUnresolved(host, port)
+            : new InetSocketAddress(host, port);
 
         ProxyOptions proxyOptions = new ProxyOptions(Type.HTTP, socketAddress);
 

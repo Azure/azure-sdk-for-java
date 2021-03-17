@@ -89,7 +89,7 @@ public class ProxyOptionsTests {
     @MethodSource("loadFromEnvironmentSupplier")
     public void loadFromEnvironmentUnresolved(Configuration configuration, String expectedHost, int expectedPort,
         String expectedUsername, String expectedPassword, String expectedNonProxyHosts) {
-        ProxyOptions proxyOptions = fromConfiguration(configuration, false);
+        ProxyOptions proxyOptions = fromConfiguration(configuration, true);
 
         assertNotNull(proxyOptions);
         assertTrue(proxyOptions.getAddress().isUnresolved());
@@ -184,7 +184,7 @@ public class ProxyOptionsTests {
     @Test
     public void loadFromEnvironmentThrowsWhenPassedConfigurationNone() {
         assertThrows(IllegalArgumentException.class, () -> fromConfiguration(Configuration.NONE));
-        assertThrows(IllegalArgumentException.class, () -> fromConfiguration(Configuration.NONE, false));
+        assertThrows(IllegalArgumentException.class, () -> fromConfiguration(Configuration.NONE, true));
     }
 
     /**
@@ -194,7 +194,7 @@ public class ProxyOptionsTests {
     @MethodSource("javaProxiesRequireUseSystemProxiesSupplier")
     public void javaProxiesRequireUseSystemProxies(Configuration configuration) {
         assertNull(fromConfiguration(configuration));
-        assertNull(fromConfiguration(configuration, false));
+        assertNull(fromConfiguration(configuration, true));
     }
 
     private static Stream<Arguments> javaProxiesRequireUseSystemProxiesSupplier() {
