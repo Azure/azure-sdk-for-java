@@ -3,7 +3,9 @@
 
 package com.azure.core.amqp.implementation;
 
+import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
@@ -13,6 +15,7 @@ import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
+import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
@@ -42,13 +45,15 @@ public class ReactorReceiver implements AmqpReceiveLink {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final Sinks.Empty<Void> isClosedMono = Sinks.empty();
     private final Flux<Message> messagesProcessor;
+    private final AmqpRetryOptions retryOptions;
     private final ClientLogger logger = new ClientLogger(ReactorReceiver.class);
     private final Flux<AmqpEndpointState> endpointStates;
 
     private final AtomicReference<Supplier<Integer>> creditSupplier = new AtomicReference<>();
 
-    protected ReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler,
-        TokenManager tokenManager, ReactorDispatcher dispatcher) {
+    protected ReactorReceiver(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
+        ReceiveLinkHandler handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
+        AmqpRetryOptions retryOptions) {
         this.entityPath = entityPath;
         this.receiver = receiver;
         this.handler = handler;
@@ -71,6 +76,8 @@ public class ReactorReceiver implements AmqpReceiveLink {
             })
             .publish()
             .autoConnect();
+
+        this.retryOptions = retryOptions;
         this.endpointStates = this.handler.getEndpointStates()
             .map(state -> {
                 logger.verbose("connectionId[{}], path[{}], linkName[{}]: State {}", handler.getConnectionId(),
@@ -79,31 +86,34 @@ public class ReactorReceiver implements AmqpReceiveLink {
             })
             .doOnError(error -> {
                 if (isDisposed.getAndSet(true)) {
-                    logger.warning("connectionId[{}] entityPath[{}] linkName[{}] This was already disposed. "
+                    logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] This was already disposed. "
                             + " Dropping error.",
                         handler.getConnectionId(), entityPath, getLinkName(), error);
-                    return;
+                } else {
+                    logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Freeing resources due to error.",
+                        handler.getConnectionId(), entityPath, getLinkName(), error);
                 }
 
-                logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Freeing resources due to error.",
-                    handler.getConnectionId(), entityPath, getLinkName(), error);
                 completeClose();
             })
             .doOnComplete(() -> {
                 if (isDisposed.getAndSet(true)) {
-                    logger.warning("connectionId[{}] entityPath[{}] linkName[{}] This was already disposed. Not "
-                            + "completing.", handler.getConnectionId(), entityPath, getLinkName());
-                    return;
+                    logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] This was already disposed.",
+                        handler.getConnectionId(), entityPath, getLinkName());
+                } else {
+                    logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Freeing resources.",
+                        handler.getConnectionId(), entityPath, getLinkName());
                 }
 
-                logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Freeing resources.",
-                    handler.getConnectionId(), entityPath, getLinkName());
                 completeClose();
             })
             .cache(1);
 
-        this.subscriptions = this.tokenManager.getAuthorizationResults().subscribe(
-            response -> {
+        this.subscriptions = Disposables.composite(
+            this.endpointStates.subscribe(),
+
+            this.tokenManager.getAuthorizationResults().subscribe(
+                response -> {
                 logger.verbose("Token refreshed: {}", response);
                 hasAuthorized.set(true);
             }, error -> {
@@ -111,7 +121,14 @@ public class ReactorReceiver implements AmqpReceiveLink {
                 logger.info("connectionId[{}], path[{}], linkName[{}] - tokenRenewalFailure[{}]",
                     handler.getConnectionId(), this.entityPath, getLinkName(), error.getMessage());
                 hasAuthorized.set(false);
-            }, () -> hasAuthorized.set(false));
+            }, () -> hasAuthorized.set(false)),
+
+            amqpConnection.getShutdownSignals().subscribe(signal -> {
+                logger.verbose("connectionId[{}] linkName[{}]: Shutdown signal received.", handler.getConnectionId(),
+                    getLinkName());
+
+                dispose("Connection shutdown.", null).subscribe();
+            }));
     }
 
     @Override
@@ -173,23 +190,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
 
     @Override
     public void dispose() {
-        if (isDisposed.getAndSet(true)) {
-            return;
-        }
-
-        subscriptions.dispose();
-        tokenManager.close();
-        receiver.close();
-
-        try {
-            dispatcher.invoke(() -> {
-                receiver.free();
-                handler.close();
-            });
-        } catch (IOException e) {
-            logger.warning("Could not schedule disposing of receiver on ReactorDispatcher.", e);
-            handler.close();
-        }
+        dispose("Dispose invoked", null).block(retryOptions.getTryTimeout());
     }
 
     protected Message decodeDelivery(Delivery delivery) {
@@ -266,6 +267,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
             tokenManager.close();
         }
 
+        handler.close();
         receiver.free();
     }
 
