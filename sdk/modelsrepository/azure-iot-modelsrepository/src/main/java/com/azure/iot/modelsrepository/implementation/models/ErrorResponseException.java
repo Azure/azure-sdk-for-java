@@ -19,21 +19,5 @@ public final class ErrorResponseException extends HttpResponseException {
     public ErrorResponseException(String message, HttpResponse response) {
         super(message, response);
     }
-
-    /**
-     * Initializes a new instance of the ErrorResponseException class.
-     *
-     * @param message  the exception message or the response content if a message is not available.
-     * @param response the HTTP response.
-     * @param value    the deserialized response value.
-     */
-    public ErrorResponseException(String message, HttpResponse response, ErrorResponse value) {
-        super(message, response, value);
-    }
-
-    @Override
-    public ErrorResponse getValue() {
-        return (ErrorResponse) super.getValue();
-    }
 }
 
