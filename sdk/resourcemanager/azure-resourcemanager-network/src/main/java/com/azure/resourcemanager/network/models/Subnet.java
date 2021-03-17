@@ -175,6 +175,20 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
         }
 
         /**
+         * The stage of a subnet definition for applying network policies on private link service.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
+        interface WithPrivateLinkServiceNetworkPolicies<ParentT> {
+            /**
+             * Disables applying network policies on private link service.
+             *
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> disableNetworkPoliciesOnPrivateLinkService();
+        }
+
+        /**
          * The final stage of the subnet definition.
          *
          * <p>At this stage, any remaining optional settings can be specified, or the subnet definition can be attached
@@ -188,7 +202,8 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
                 WithRouteTable<ParentT>,
                 WithDelegation<ParentT>,
                 WithServiceEndpoint<ParentT>,
-                WithPrivateEndpointNetworkPolicies<ParentT> {
+                WithPrivateEndpointNetworkPolicies<ParentT>,
+                WithPrivateLinkServiceNetworkPolicies<ParentT> {
         }
     }
 
@@ -330,6 +345,25 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
              */
             Update disableNetworkPoliciesOnPrivateEndpoint();
         }
+
+        /**
+         * The stage of a subnet definition for applying network policies on private link service.
+         */
+        interface WithPrivateLinkServiceNetworkPolicies {
+            /**
+             * Enables applying network policies on private link service.
+             *
+             * @return the next stage of the update
+             */
+            Update enableNetworkPoliciesOnPrivateLinkService();
+
+            /**
+             * Disables applying network policies on private link service.
+             *
+             * @return the next stage of the definition
+             */
+            Update disableNetworkPoliciesOnPrivateLinkService();
+        }
     }
 
     /** The entirety of a subnet update as part of a network update. */
@@ -340,6 +374,7 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
             UpdateStages.WithDelegation,
             UpdateStages.WithServiceEndpoint,
             UpdateStages.WithPrivateEndpointNetworkPolicies,
+            UpdateStages.WithPrivateLinkServiceNetworkPolicies,
             Settable<Network.Update> {
     }
 

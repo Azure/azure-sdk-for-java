@@ -235,21 +235,21 @@ class PrivateEndpointImpl extends
     @Override
     public PrivateLinkServiceConnection.Update updatePrivateLinkServiceConnection(String name) {
         if (this.innerModel().privateLinkServiceConnections() != null) {
-            Optional<com.azure.resourcemanager.network.models.PrivateLinkServiceConnection> inner =
+            Optional<com.azure.resourcemanager.network.models.PrivateLinkServiceConnection> connection =
                 this.innerModel().privateLinkServiceConnections().stream()
                     .filter(c -> c.name().equals(name))
                     .findAny();
-            if (inner.isPresent()) {
-                return new PrivateEndpointConnectionImpl(inner.get(), this, false);
+            if (connection.isPresent()) {
+                return new PrivateEndpointConnectionImpl(connection.get(), this, false);
             }
         }
         if (this.innerModel().manualPrivateLinkServiceConnections() != null) {
-            Optional<com.azure.resourcemanager.network.models.PrivateLinkServiceConnection> inner =
+            Optional<com.azure.resourcemanager.network.models.PrivateLinkServiceConnection> connection =
                 this.innerModel().manualPrivateLinkServiceConnections().stream()
                     .filter(c -> c.name().equals(name))
                     .findAny();
-            if (inner.isPresent()) {
-                return new PrivateEndpointConnectionImpl(inner.get(), this, true);
+            if (connection.isPresent()) {
+                return new PrivateEndpointConnectionImpl(connection.get(), this, true);
             }
         }
         throw logger.logExceptionAsError(new IllegalArgumentException(

@@ -18,6 +18,7 @@ import com.azure.resourcemanager.network.fluent.models.RouteTableInner;
 import com.azure.resourcemanager.network.fluent.models.SubnetInner;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.network.models.VirtualNetworkPrivateEndpointNetworkPolicies;
+import com.azure.resourcemanager.network.models.VirtualNetworkPrivateLinkServiceNetworkPolicies;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import java.util.ArrayList;
@@ -307,6 +308,18 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
     @Override
     public SubnetImpl disableNetworkPoliciesOnPrivateEndpoint() {
         innerModel().withPrivateEndpointNetworkPolicies(VirtualNetworkPrivateEndpointNetworkPolicies.DISABLED);
+        return this;
+    }
+
+    @Override
+    public SubnetImpl enableNetworkPoliciesOnPrivateLinkService() {
+        innerModel().withPrivateLinkServiceNetworkPolicies(VirtualNetworkPrivateLinkServiceNetworkPolicies.ENABLED);
+        return this;
+    }
+
+    @Override
+    public SubnetImpl disableNetworkPoliciesOnPrivateLinkService() {
+        innerModel().withPrivateLinkServiceNetworkPolicies(VirtualNetworkPrivateLinkServiceNetworkPolicies.DISABLED);
         return this;
     }
 }

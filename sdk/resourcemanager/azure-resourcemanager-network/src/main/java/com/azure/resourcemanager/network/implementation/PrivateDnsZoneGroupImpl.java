@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PrivateDnsZoneGroupImpl extends IndependentChildImpl<
+class PrivateDnsZoneGroupImpl extends IndependentChildImpl<
     PrivateDnsZoneGroup, PrivateEndpoint, PrivateDnsZoneGroupInner, PrivateDnsZoneGroupImpl, NetworkManager>
     implements PrivateDnsZoneGroup, PrivateDnsZoneGroup.Definition, PrivateDnsZoneGroup.Update {
 
