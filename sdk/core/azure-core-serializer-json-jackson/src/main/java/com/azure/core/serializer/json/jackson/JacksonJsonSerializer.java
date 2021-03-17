@@ -244,7 +244,7 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
 
         String name = null;
         if (USE_REFLECTION_FOR_MEMBER_NAME) {
-            name = removePrefixWithReflection(config, annotatedClass, annotatedMethod, annotatedMethodName);
+            name = removePrefixWithReflection(config, annotatedClass, annotatedMethod, annotatedMethodName, logger);
         }
 
         if (name == null) {
@@ -255,7 +255,7 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
     }
 
     private static String removePrefixWithReflection(MapperConfig<?> config, AnnotatedClass annotatedClass,
-        AnnotatedMethod method, String methodName) {
+        AnnotatedMethod method, String methodName, ClientLogger logger) {
         try {
             Object accessorNamingStrategy = FOR_POJO.invoke(GET_ACCESSOR_NAMING.invoke(config), config, annotatedClass);
 
@@ -266,7 +266,8 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
             }
 
             return name;
-        } catch (Throwable ignored) {
+        } catch (Throwable ex) {
+            logger.verbose("Failed to find member name with AccessorNamingStrategy, returning null.", ex);
             return null;
         }
     }
