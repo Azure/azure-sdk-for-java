@@ -4,11 +4,9 @@ The Spring Cloud Stream Kafka binder for Azure Event Hubs helps developers to fi
 [Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs] | [Samples][sample]
 
 ## Getting started
+
 ### Prerequisites
-- [Java Development Kit (JDK)][jdk_link] with version 8 or above
-- [Azure Subscription][azure_subscription]
-- [Maven][maven] 3.0 and above
-- [Build developing version artifacts if needed][build-developing-version-artifacts-if-needed]
+- [Environment checklist][environment_checklist]
 
 ### Include the package
 [//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-starter-eventhubs-kafka;current})
@@ -62,10 +60,7 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-cloud-stream-binder-java-app-kafka-azure-event-hub
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-kafka
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
-[azure_subscription]: https://azure.microsoft.com/free
 [logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
-[maven]: https://maven.apache.org/
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[build-developing-version-artifacts-if-needed]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/build-developing-version-artifacts-if-needed.md
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 

@@ -4,8 +4,8 @@
 This sample illustrates how to use `azure-spring-boot-starter-active-directory` package to work with OAuth 2.0 and OpenID Connect protocols on Auzre. This sample will use Microsoft Graph API to retrieve user infomation.
 
 ## Getting started
-### Environment checklist
-We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
+### Prerequisites
+- [Environment checklist][environment_checklist]
 
 ### Configure web app
 1. Search for and select your tenant in **Azure Active Directory**.
@@ -76,7 +76,7 @@ In Azure portal, app registration manifest page, configure `oauth2AllowImplicitF
 ## Contributing
 
 <!-- LINKS -->
-[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [Register app]: https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app
 [Grant scoped permission]: https://docs.microsoft.com/azure/active-directory/develop/quickstart-configure-app-access-web-apis
 [configure the user and groups in Azure Active Directory]: https://docs.microsoft.com/azure/active-directory/active-directory-groups-create-azure-portal
