@@ -8,7 +8,6 @@ import com.azure.iot.modelsrepository.DtmiConventions;
 import com.azure.iot.modelsrepository.ModelsDependencyResolution;
 import com.azure.iot.modelsrepository.implementation.models.FetchResult;
 import com.azure.iot.modelsrepository.implementation.models.ModelMetadata;
-import com.azure.iot.modelsrepository.implementation.models.TempCustomType;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

@@ -31,14 +31,12 @@ class HttpModelFetcher implements ModelFetcher {
         Queue<String> work = new LinkedList<>();
         try {
             if (resolutionOption == ModelsDependencyResolution.TRY_FROM_EXPANDED) {
-                work.add(getPath(dtmi, repositoryUri, true).getPath());
+                work.add(getPath(dtmi, repositoryUri, true));
             }
-            work.add(getPath(dtmi, repositoryUri, false).getPath());
-
+            work.add(getPath(dtmi, repositoryUri, false));
         } catch (Exception e) {
             return Mono.error(e);
         }
-
 
         String tryContentPath = work.poll();
 
@@ -63,7 +61,7 @@ class HttpModelFetcher implements ModelFetcher {
             });
     }
 
-    private URI getPath(String dtmi, URI repositoryUri, boolean expanded) throws URISyntaxException {
-        return DtmiConventions.getModelUri(dtmi, repositoryUri, expanded);
+    private String getPath(String dtmi, URI repositoryUri, boolean expanded) throws URISyntaxException {
+        return DtmiConventions.getModelUri(dtmi, repositoryUri, expanded).getPath();
     }
 }

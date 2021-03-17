@@ -1,8 +1,10 @@
-package com.azure.iot.modelsrepository.implementation.models;
+package com.azure.iot.modelsrepository.implementation;
+
+import com.azure.iot.modelsrepository.implementation.models.FetchResult;
 
 import java.util.Map;
 
-public class TempCustomType {
+class TempCustomType {
     private final FetchResult fetchResult;
     private final Map<String, String> map;
 

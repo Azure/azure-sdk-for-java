@@ -62,10 +62,11 @@ public final class ModelsRepositoryImpl {
             return Mono.error(new IllegalArgumentException("Parameter 'path' is required and cannot be null."));
         }
 
+        // TODO: azabbasi : Look into error handling a bit more. This is a temporary poc.
         return service.getModelFromPath(
             this.client.getHost(), path, context)
             .onErrorMap(s -> new ErrorResponseException(
-                "No!",
+                String.format(ErrorMessageConstants.GenericGetModelsError, path),
                 new HttpResponse(new HttpRequest(HttpMethod.GET, this.client.getHost() + path)) {
                     @Override
                     public int getStatusCode() {

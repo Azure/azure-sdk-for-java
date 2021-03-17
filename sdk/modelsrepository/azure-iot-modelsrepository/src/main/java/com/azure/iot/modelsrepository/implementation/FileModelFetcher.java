@@ -36,10 +36,10 @@ class FileModelFetcher implements ModelFetcher {
 
         try {
             if (resolutionOption == ModelsDependencyResolution.TRY_FROM_EXPANDED) {
-                work.add(GetPath(dtmi, repositoryUri, true).getPath());
+                work.add(getPath(dtmi, repositoryUri, true));
             }
 
-            work.add(GetPath(dtmi, repositoryUri, false).getPath());
+            work.add(getPath(dtmi, repositoryUri, false));
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -65,10 +65,11 @@ class FileModelFetcher implements ModelFetcher {
         return Mono.error(new FileNotFoundException(fnfError));
     }
 
-    private URI GetPath(String dtmi, URI repositoryUri, boolean expanded) throws URISyntaxException {
+    private String getPath(String dtmi, URI repositoryUri, boolean expanded) throws URISyntaxException {
         return DtmiConventions.getModelUri(
             dtmi,
             repositoryUri,
-            expanded);
+            expanded)
+            .getPath();
     }
 }
