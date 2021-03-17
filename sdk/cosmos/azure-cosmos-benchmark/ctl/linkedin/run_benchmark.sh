@@ -87,9 +87,16 @@ fi
 
 if [ -z "$ctl_printing_interval" ]
 then
-printing_interval=60
+printing_interval=15
 else
 printing_interval=$ctl_printing_interval
+fi
+
+if [ -z "$ctl_heap_size" ]
+then
+heap_size=8g
+else
+heap_size=$ctl_heap_size
 fi
 
 log_filename="/tmp/javactl.log"
@@ -106,9 +113,9 @@ jvm_opt=""
 
 if [ -z "$ctl_graphite_endpoint" ]
 then
-java -Xmx8g -Xms8g  $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -jar "$jar_file" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$database_name"  -collectionId "$collection_name" -numberOfCollectionForCtl "$number_Of_collection" -throughput $throughput  -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -numberOfPreCreatedDocuments $number_of_precreated_documents -bulkloadBatchSize $bulk_load_batch_size -printingInterval $printing_interval 2>&1 | tee -a "$log_filename"
+java -Xmx$heap_size -Xms$heap_size  $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -jar "$jar_file" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$database_name"  -collectionId "$collection_name" -numberOfCollectionForCtl "$number_Of_collection" -throughput $throughput  -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -numberOfPreCreatedDocuments $number_of_precreated_documents -bulkloadBatchSize $bulk_load_batch_size -printingInterval $printing_interval 2>&1 | tee -a "$log_filename"
 else
-java -Xmx8g -Xms8g  $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -jar "$jar_file" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$database_name"  -collectionId "$collection_name" -numberOfCollectionForCtl "$number_Of_collection" -throughput $throughput  -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -graphiteEndpoint $ctl_graphite_endpoint -numberOfPreCreatedDocuments $number_of_precreated_documents -bulkloadBatchSize $bulk_load_batch_size -printingInterval $printing_interval 2>&1 | tee -a "$log_filename"
+java -Xmx$heap_size -Xms$heap_size  $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -jar "$jar_file" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$database_name"  -collectionId "$collection_name" -numberOfCollectionForCtl "$number_Of_collection" -throughput $throughput  -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -graphiteEndpoint $ctl_graphite_endpoint -numberOfPreCreatedDocuments $number_of_precreated_documents -bulkloadBatchSize $bulk_load_batch_size -printingInterval $printing_interval 2>&1 | tee -a "$log_filename"
 fi
 
 end=`date +%s`

@@ -71,8 +71,17 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void listPurchasedPhoneNumbersWithoutContext(HttpClient httpClient) {
+        PagedIterable<PurchasedPhoneNumber> numbers = this.getClientWithConnectionString(httpClient, "listPurchasedPhoneNumbersSync").listPurchasedPhoneNumbers();
+        PurchasedPhoneNumber number = numbers.iterator().next();
+        assertNotNull(number.getPhoneNumber());
+        assertEquals(COUNTRY_CODE, number.getCountryCode());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void beginSearchAvailablePhoneNumbers(HttpClient httpClient) {
-        PhoneNumberSearchResult searchResult = beginSearchAvailablePhoneNumbersHelper(httpClient, "beginSearchAvailablePhoneNumbersSync").getFinalResult();
+        PhoneNumberSearchResult searchResult = beginSearchAvailablePhoneNumbersHelper(httpClient, "beginSearchAvailablePhoneNumbersSync", true).getFinalResult();
         assertEquals(searchResult.getPhoneNumbers().size(), 1);
         assertNotNull(searchResult.getSearchId());
     }
@@ -82,58 +91,101 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @DisabledIfEnvironmentVariable(
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)")
-    public void beginPurchaseandReleasePhoneNumbers(HttpClient httpClient) {
-        PhoneNumberSearchResult searchResult = beginSearchAvailablePhoneNumbersHelper(httpClient, "beginPurchaseandReleasePhoneNumbers_beginSearchAvailablePhoneNumbersSync").getFinalResult();
+    public void beginPurchaseandReleasePhoneNumbersWithoutContext(HttpClient httpClient) {
+        PhoneNumberSearchResult searchResult = beginSearchAvailablePhoneNumbersHelper(httpClient, "beginPurchaseandReleasePhoneNumbers_beginSearchAvailablePhoneNumbersWithoutContextSync", false).getFinalResult();
         String phoneNumber = getTestPhoneNumber(searchResult.getPhoneNumbers().get(0));
-        PollResponse<PhoneNumberOperation> purchaseOperationResponse = beginPurchasePhoneNumbersHelper(httpClient, searchResult.getSearchId(), "beginPurchasePhoneNumbersSync").waitForCompletion();
+        PollResponse<PhoneNumberOperation> purchaseOperationResponse = beginPurchasePhoneNumbersHelper(httpClient, searchResult.getSearchId(), "beginPurchasePhoneNumbersWithoutContextSync", false).waitForCompletion();
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, purchaseOperationResponse.getStatus());
-        PollResponse<PhoneNumberOperation> releaseOperationResponse = beginReleasePhoneNumberHelper(httpClient, phoneNumber, "beginReleasePhoneNumberSunc").waitForCompletion();
+        PollResponse<PhoneNumberOperation> releaseOperationResponse = beginReleasePhoneNumberHelper(httpClient, phoneNumber, "beginReleasePhoneNumberWithoutContextSync", false).waitForCompletion();
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, releaseOperationResponse.getStatus());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)")
+    public void beginPurchaseandReleasePhoneNumbers(HttpClient httpClient) {
+        PhoneNumberSearchResult searchResult = beginSearchAvailablePhoneNumbersHelper(httpClient, "beginPurchaseandReleasePhoneNumbers_beginSearchAvailablePhoneNumbersSync", true).getFinalResult();
+        String phoneNumber = getTestPhoneNumber(searchResult.getPhoneNumbers().get(0));
+        PollResponse<PhoneNumberOperation> purchaseOperationResponse = beginPurchasePhoneNumbersHelper(httpClient, searchResult.getSearchId(), "beginPurchasePhoneNumbersSync", true).waitForCompletion();
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, purchaseOperationResponse.getStatus());
+        PollResponse<PhoneNumberOperation> releaseOperationResponse = beginReleasePhoneNumberHelper(httpClient, phoneNumber, "beginReleasePhoneNumberSync", true).waitForCompletion();
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, releaseOperationResponse.getStatus());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void beginUpdatePhoneNumberCapabilitiesWithoutContext(HttpClient httpClient) {
+        String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
+        PurchasedPhoneNumber acquiredPhoneNumber = beginUpdatePhoneNumberCapabilitiesHelper(httpClient, phoneNumber, "beginUpdatePhoneNumberCapabilitiesWithoutContextSync", false).getFinalResult();
+        assertEquals(PhoneNumberCapabilityType.INBOUND_OUTBOUND, acquiredPhoneNumber.getCapabilities().getSms());
+        assertEquals(PhoneNumberCapabilityType.INBOUND, acquiredPhoneNumber.getCapabilities().getCalling());
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void beginUpdatePhoneNumberCapabilities(HttpClient httpClient) {
         String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
-        PurchasedPhoneNumber acquiredPhoneNumber = beginUpdatePhoneNumberCapabilitiesHelper(httpClient, phoneNumber, "beginUpdatePhoneNumberCapabilitiesSync").getFinalResult();
+        PurchasedPhoneNumber acquiredPhoneNumber = beginUpdatePhoneNumberCapabilitiesHelper(httpClient, phoneNumber, "beginUpdatePhoneNumberCapabilitiesSync", true).getFinalResult();
         assertEquals(PhoneNumberCapabilityType.INBOUND_OUTBOUND, acquiredPhoneNumber.getCapabilities().getSms());
         assertEquals(PhoneNumberCapabilityType.INBOUND, acquiredPhoneNumber.getCapabilities().getCalling());
     }
 
-    private SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbersHelper(HttpClient httpClient, String testName) {
+    private SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbersHelper(HttpClient httpClient, String testName, boolean withContext) {
         PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
         capabilities.setCalling(PhoneNumberCapabilityType.INBOUND);
         capabilities.setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
         PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setAreaCode(AREA_CODE).setQuantity(1);
 
+        if (withContext) {
+            return setPollInterval(getClientWithConnectionString(httpClient, testName).beginSearchAvailablePhoneNumbers(
+                COUNTRY_CODE,
+                PhoneNumberType.TOLL_FREE,
+                PhoneNumberAssignmentType.APPLICATION,
+                capabilities,
+                searchOptions,
+                Context.NONE));
+        }
         return setPollInterval(getClientWithConnectionString(httpClient, testName).beginSearchAvailablePhoneNumbers(
             COUNTRY_CODE,
             PhoneNumberType.TOLL_FREE,
             PhoneNumberAssignmentType.APPLICATION,
-            capabilities,
-            searchOptions,
-            Context.NONE));
+            capabilities));
     }
 
-    private SyncPoller<PhoneNumberOperation, Void> beginPurchasePhoneNumbersHelper(HttpClient httpClient, String searchId, String testName) {
-        return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
+    private SyncPoller<PhoneNumberOperation, Void> beginPurchasePhoneNumbersHelper(HttpClient httpClient, String searchId, String testName, boolean withContext) {
+        if (withContext) {
+            return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
             .beginPurchasePhoneNumbers(searchId, Context.NONE));
+        }
+        return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
+        .beginPurchasePhoneNumbers(searchId));
     }
 
-    private SyncPoller<PhoneNumberOperation, Void> beginReleasePhoneNumberHelper(HttpClient httpClient, String phoneNumber, String testName) {
+    private SyncPoller<PhoneNumberOperation, Void> beginReleasePhoneNumberHelper(HttpClient httpClient, String phoneNumber, String testName, boolean withContext) {
         if (getTestMode() == TestMode.PLAYBACK) {
             phoneNumber = "+REDACTED";
         }
-        return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
+        if (withContext) {
+            return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
             .beginReleasePhoneNumber(phoneNumber, Context.NONE));
+        }
+        return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
+        .beginReleasePhoneNumber(phoneNumber));
     }
 
-    private SyncPoller<PhoneNumberOperation, PurchasedPhoneNumber> beginUpdatePhoneNumberCapabilitiesHelper(HttpClient httpClient, String phoneNumber, String testName) {
+    private SyncPoller<PhoneNumberOperation, PurchasedPhoneNumber>
+        beginUpdatePhoneNumberCapabilitiesHelper(HttpClient httpClient, String phoneNumber, String testName, boolean withContext) {
         PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest = new PhoneNumberCapabilitiesRequest();
         capabilitiesUpdateRequest.setCalling(PhoneNumberCapabilityType.INBOUND);
         capabilitiesUpdateRequest.setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
-        return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
+        if (withContext) {
+            return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
             .beginUpdatePhoneNumberCapabilities(phoneNumber, capabilitiesUpdateRequest, Context.NONE));
+        }
+        return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
+            .beginUpdatePhoneNumberCapabilities(phoneNumber, capabilitiesUpdateRequest));
     }
 
     private <T, U> SyncPoller<T, U> setPollInterval(SyncPoller<T, U> syncPoller) {
