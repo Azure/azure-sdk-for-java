@@ -10,7 +10,9 @@ import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
+import com.azure.communication.phonenumbers.models.PurchasePhoneNumbersResult;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
+import com.azure.communication.phonenumbers.models.ReleasePhoneNumbersResult;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -154,7 +156,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
             capabilities));
     }
 
-    private SyncPoller<PhoneNumberOperation, Void> beginPurchasePhoneNumbersHelper(HttpClient httpClient, String searchId, String testName, boolean withContext) {
+    private SyncPoller<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbersHelper(HttpClient httpClient, String searchId, String testName, boolean withContext) {
         if (withContext) {
             return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
             .beginPurchasePhoneNumbers(searchId, Context.NONE));
@@ -163,7 +165,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         .beginPurchasePhoneNumbers(searchId));
     }
 
-    private SyncPoller<PhoneNumberOperation, Void> beginReleasePhoneNumberHelper(HttpClient httpClient, String phoneNumber, String testName, boolean withContext) {
+    private SyncPoller<PhoneNumberOperation, ReleasePhoneNumbersResult> beginReleasePhoneNumberHelper(HttpClient httpClient, String phoneNumber, String testName, boolean withContext) {
         if (getTestMode() == TestMode.PLAYBACK) {
             phoneNumber = "+REDACTED";
         }
