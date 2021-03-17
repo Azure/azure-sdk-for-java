@@ -1,6 +1,7 @@
 # Release History
 
 ## 12.5.0-beta.2 (Unreleased)
+- Fixed a bug where files/directories in root directories could not be renamed.
 - Fixed a bug where more data would be buffered in buffered upload than expected due to Reactor's concatMap operator.
 
 ## 12.5.0-beta.1 (2021-02-10)
