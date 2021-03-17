@@ -36,42 +36,59 @@ public class DataLoader {
     private static final String COUNT_ALL_QUERY_RESULT_FIELD = "$1";
 
     private final Configuration _configuration;
+    private final EntityConfiguration _entityConfiguration;
     private final CosmosAsyncClient _client;
-    private final DataGenerationIterator _dataGenerator;
 
     public DataLoader(final Configuration configuration,
         final EntityConfiguration entityConfiguration,
         final CosmosAsyncClient client) {
-        Preconditions.checkNotNull(entityConfiguration, "The test entity configuration can not be null");
         _configuration = Preconditions.checkNotNull(configuration,
             "The Workload configuration defining the parameters can not be null");
+        _entityConfiguration = Preconditions.checkNotNull(entityConfiguration,
+            "The test entity configuration can not be null");
         _client = Preconditions.checkNotNull(client,
             "The CosmosAsyncClient needed for data loading can not be null");
-        _dataGenerator = new DataGenerationIterator(entityConfiguration.dataGenerator(),
-            _configuration.getNumberOfPreCreatedDocuments(),
-            _configuration.getBulkloadBatchSize());
     }
 
     public void loadData() {
-        LOGGER.info("Starting batched data loading, loading {} documents in each iteration",
+        final String containerName = _configuration.getCollectionId();
+        final CosmosAsyncDatabase database = _client.getDatabase(_configuration.getDatabaseId());
+        final CosmosAsyncContainer container = database.getContainer(containerName);
+
+        LOGGER.info("Check container {} for existing data", containerName);
+        final int documentCount = getDocumentCount(container);
+        final int documentsToLoad = _configuration.getNumberOfPreCreatedDocuments() - documentCount;
+
+        if (documentsToLoad <= 0) {
+            LOGGER.info("Container {} already has the requisite number of documents: {} [desired: {}]",
+                containerName, documentCount, _configuration.getNumberOfPreCreatedDocuments());
+            return;
+        }
+
+        LOGGER.info("Starting batched data loading to load {} documents, with {} documents in each iteration",
+            documentsToLoad,
             _configuration.getBulkloadBatchSize());
-        while (_dataGenerator.hasNext()) {
-            final Map<Key, ObjectNode> newDocuments = _dataGenerator.next();
-            bulkCreateItems(newDocuments);
+        final DataGenerationIterator dataGenerator =
+            new DataGenerationIterator(_entityConfiguration.dataGenerator(),
+                _configuration.getNumberOfPreCreatedDocuments(),
+                _configuration.getBulkloadBatchSize());
+
+        while (dataGenerator.hasNext()) {
+            final Map<Key, ObjectNode> newDocuments = dataGenerator.next();
+            bulkCreateItems(database, container, newDocuments);
             newDocuments.clear();
         }
 
         validateDataCreation(_configuration.getNumberOfPreCreatedDocuments());
     }
 
-    private void bulkCreateItems(final Map<Key, ObjectNode> records) {
+    private void bulkCreateItems(final CosmosAsyncDatabase database,
+        final CosmosAsyncContainer container,
+        final Map<Key, ObjectNode> records) {
         final List<CosmosItemOperation> cosmosItemOperations = mapToCosmosItemOperation(records);
-        final String containerName = _configuration.getCollectionId();
-        final CosmosAsyncDatabase database = _client.getDatabase(_configuration.getDatabaseId());
-        final CosmosAsyncContainer container = database.getContainer(containerName);
         LOGGER.info("Bulk loading {} documents in [{}:{}]", cosmosItemOperations.size(),
             database.getId(),
-            containerName);
+            container.getId());
 
         // We want to wait longer depending on the number of documents in each iteration
         final Duration blockingWaitTime = Duration.ofSeconds(120 *
@@ -84,7 +101,7 @@ public class DataLoader {
 
         LOGGER.info("Completed loading {} documents into [{}:{}]", cosmosItemOperations.size(),
             database.getId(),
-            containerName);
+            container.getId());
     }
 
     private void validateDataCreation(int expectedSize) {
@@ -94,18 +111,7 @@ public class DataLoader {
         LOGGER.info("Validating {} documents were loaded into [{}:{}]",
             expectedSize, _configuration.getDatabaseId(), containerName);
 
-        final List<FeedResponse<ObjectNode>> queryItemsResponseList = container
-            .queryItems(COUNT_ALL_QUERY, ObjectNode.class)
-            .byPage()
-            .collectList()
-            .block(VALIDATE_DATA_WAIT_DURATION);
-        final int resultCount = Optional.ofNullable(queryItemsResponseList)
-            .map(responseList -> responseList.get(0))
-            .map(FeedResponse::getResults)
-            .map(list -> list.get(0))
-            .map(objectNode -> objectNode.get(COUNT_ALL_QUERY_RESULT_FIELD).intValue())
-            .orElse(0);
-
+        final int resultCount = getDocumentCount(container);
         if (resultCount < (expectedSize * 0.90)) {
             throw new IllegalStateException(
                 String.format("Number of documents %d in the container %s is less than the expected threshold %f ",
@@ -114,6 +120,20 @@ public class DataLoader {
 
         LOGGER.info("Validated {} out of the {} expected documents were loaded into [{}:{}]",
             resultCount, expectedSize, _configuration.getDatabaseId(), containerName);
+    }
+
+    private int getDocumentCount(CosmosAsyncContainer container) {
+        final List<FeedResponse<ObjectNode>> queryItemsResponseList = container
+            .queryItems(COUNT_ALL_QUERY, ObjectNode.class)
+            .byPage()
+            .collectList()
+            .block(VALIDATE_DATA_WAIT_DURATION);
+        return Optional.ofNullable(queryItemsResponseList)
+            .map(responseList -> responseList.get(0))
+            .map(FeedResponse::getResults)
+            .map(list -> list.get(0))
+            .map(objectNode -> objectNode.get(COUNT_ALL_QUERY_RESULT_FIELD).intValue())
+            .orElse(0);
     }
 
     /**
