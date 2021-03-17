@@ -146,7 +146,6 @@ trait CosmosContainer extends CosmosDatabase {
   }
 
   def getId(objectNode: ObjectNode) : String = {
-    // assumes partitionKeyPath being "/id" hence pkValue is always string
     objectNode.get("id").textValue()
   }
 
@@ -217,7 +216,7 @@ trait CosmosContainerWithRetention extends CosmosContainer {
 
 trait AutoCleanableCosmosContainer extends CosmosContainer with BeforeAndAfterEach {
   this: Suite =>
-  
+
   override def afterEach(): Unit = {
 
     try {
