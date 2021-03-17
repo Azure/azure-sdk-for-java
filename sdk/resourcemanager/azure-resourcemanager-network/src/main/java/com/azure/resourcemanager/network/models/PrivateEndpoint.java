@@ -276,7 +276,7 @@ public interface PrivateEndpoint extends
              * @return the first stage of private link service connection definition
              */
             PrivateLinkServiceConnection.DefinitionStages.Blank<? extends WithCreate>
-            definePrivateLinkServiceConnection(String name);
+                definePrivateLinkServiceConnection(String name);
         }
 
         /**
@@ -317,7 +317,7 @@ public interface PrivateEndpoint extends
              * @return the first stage of private link service connection definition
              */
             PrivateLinkServiceConnection.DefinitionStages.Blank<? extends Update>
-            definePrivateLinkServiceConnection(String name);
+                definePrivateLinkServiceConnection(String name);
 
             /**
              * Updates the connection to remote resource.
