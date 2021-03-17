@@ -26,7 +26,7 @@ public class SessionHandler extends Handler {
 
     public SessionHandler(String connectionId, String hostname, String entityName, ReactorDispatcher reactorDispatcher,
                           Duration openTimeout) {
-        super(connectionId, hostname, new ClientLogger(ConnectionHandler.class));
+        super(connectionId, hostname, new ClientLogger(SessionHandler.class));
         this.entityName = entityName;
         this.openTimeout = openTimeout;
         this.reactorDispatcher = reactorDispatcher;
