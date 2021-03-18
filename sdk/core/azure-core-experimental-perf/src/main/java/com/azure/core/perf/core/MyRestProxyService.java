@@ -17,6 +17,10 @@ import reactor.core.publisher.Mono;
 @ServiceInterface(name = "MyMockService")
 public interface MyRestProxyService {
 
+    /**
+     * List all the subscriptions
+     * @return A {@link Mono} containing Void.
+     */
     @Get("ListSubscriptions")
     Mono<Void> listSubscriptions();
 }

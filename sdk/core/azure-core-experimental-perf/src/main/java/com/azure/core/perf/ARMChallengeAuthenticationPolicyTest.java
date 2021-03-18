@@ -19,6 +19,7 @@ import com.azure.core.perf.core.MockHttpClient;
 import com.azure.core.perf.core.MyRestProxyService;
 import com.azure.core.perf.models.MockHttpResponse;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
 import reactor.core.publisher.Mono;
@@ -29,7 +30,7 @@ import java.util.HashMap;
 /**
  * The Performance Test class for Bearer Token Authentication Challenge Policy.
  */
-public class ARMChallengeAuthenticationChallengePolicyTest extends PerfStressTest<PerfStressOptions> {
+public class ARMChallengeAuthenticationPolicyTest extends PerfStressTest<PerfStressOptions> {
     private static final String CLAIMS_ACCESS_TOKEN = "CLAIMS-ACCESS-TOKEN";
     private static final String ACCESS_TOKEN = "ACCESS-TOKEN";
     private static final String AUTHORIZATION = "Authorization";
@@ -40,15 +41,16 @@ public class ARMChallengeAuthenticationChallengePolicyTest extends PerfStressTes
         + " error_description=\"User session has been revoked\","
         + " claims=\"eyJhY2Nlc3NfdG9rZW4iOnsibmJmIjp7ImVzc2VudGlhbCI6dHJ1ZSwgInZhbHVlIjoiMTYwMzc0MjgwMCJ9fX0=\"";
 
+    private final ClientLogger logger = new ClientLogger(ARMChallengeAuthenticationPolicyTest.class);
     private final MockHttpClient mockHTTPClient;
     private final MyRestProxyService service;
     private boolean trigger = false;
 
     /**
-     * Creates an instance of the ARMChallengeAuthenticationChallengePolicyTest class.
+     * Creates an instance of the ARMChallengeAuthenticationPolicyTest class.
      * @param options the command line options to run the performance test.
      */
-    public ARMChallengeAuthenticationChallengePolicyTest(PerfStressOptions options) {
+    public ARMChallengeAuthenticationPolicyTest(PerfStressOptions options) {
         super(options);
         mockHTTPClient = new MockHttpClient((httpRequest) -> {
             String bearerToken = httpRequest.getHeaders().getValue(AUTHORIZATION);
@@ -81,7 +83,7 @@ public class ARMChallengeAuthenticationChallengePolicyTest extends PerfStressTes
 
     @Override
     public void run() {
-        throw new UnsupportedOperationException();
+        throw logger.logExceptionAsError(new UnsupportedOperationException());
     }
 
     @Override

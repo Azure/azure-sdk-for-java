@@ -16,12 +16,18 @@ import com.azure.perf.test.core.PerfStressProgram;
  * Then run the App's main method via IDE.</p>
  */
 public class App {
+
+    /**
+     * The main method for the performance testing package.
+     * @param args the command line arguments.
+     * @throws RuntimeException if the performance tests implementation classes cannot be found.
+     */
     public static void main(String[] args) {
         Class<?>[] testClasses;
 
         try {
             testClasses = new Class<?>[]{
-                Class.forName("com.azure.core.perf.ARMChallengeAuthenticationChallengePolicyTest")
+                Class.forName("com.azure.core.perf.ARMChallengeAuthenticationPolicyTest")
             };
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);

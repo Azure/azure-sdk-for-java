@@ -20,6 +20,9 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Represents a Mock {@link HttpResponse} for performance testing.
+ */
 public class MockHttpResponse extends HttpResponse {
     private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
 
