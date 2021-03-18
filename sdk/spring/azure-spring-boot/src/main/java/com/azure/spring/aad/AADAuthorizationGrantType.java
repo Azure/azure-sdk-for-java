@@ -5,9 +5,7 @@ package com.azure.spring.aad;
 public enum AADAuthorizationGrantType {
 
     CLIENT_CREDENTIALS("client_credentials"),
-    PASSWORD("password"),
     AUTHORIZATION_CODE("authorization_code"),
-    REFRESH_TOKEN("refresh_token"),
     ON_BEHALF_OF("on-behalf-of");
 
     private String authorizationGrantType;
