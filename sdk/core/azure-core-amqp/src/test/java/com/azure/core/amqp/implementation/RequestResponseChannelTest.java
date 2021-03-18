@@ -85,6 +85,7 @@ class RequestResponseChannelTest {
     private MessageSerializer serializer;
     @Captor
     private ArgumentCaptor<Runnable> dispatcherCaptor;
+    private AutoCloseable mocksCloseable;
 
     @BeforeAll
     static void beforeAll() {
@@ -98,7 +99,7 @@ class RequestResponseChannelTest {
 
     @BeforeEach
     void beforeEach() {
-        MockitoAnnotations.openMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
 
         when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
 
@@ -123,8 +124,12 @@ class RequestResponseChannelTest {
     }
 
     @AfterEach
-    void afterEach() {
+    void afterEach() throws Exception {
         Mockito.framework().clearInlineMocks();
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     /**

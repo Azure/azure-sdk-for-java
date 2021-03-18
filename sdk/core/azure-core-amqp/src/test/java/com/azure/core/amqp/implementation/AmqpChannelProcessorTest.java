@@ -47,6 +47,7 @@ class AmqpChannelProcessorTest {
     @Mock
     private AmqpRetryPolicy retryPolicy;
     private AmqpChannelProcessor<TestObject> channelProcessor;
+    private AutoCloseable mocksCloseable;
 
     @BeforeAll
     static void beforeAll() {
@@ -60,7 +61,7 @@ class AmqpChannelProcessorTest {
 
     @BeforeEach
     void setup() {
-        MockitoAnnotations.openMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
 
         channelProcessor = new AmqpChannelProcessor<>("connection-test", "test-path",
             TestObject::getStates, retryPolicy,
@@ -68,10 +69,14 @@ class AmqpChannelProcessorTest {
     }
 
     @AfterEach
-    void teardown() {
+    void teardown() throws Exception {
         // Tear down any inline mocks to avoid memory leaks.
         // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
         Mockito.framework().clearInlineMocks();
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     /**

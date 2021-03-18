@@ -40,18 +40,23 @@ public class TracerProviderTest {
 
     private List<Tracer> tracers;
     private TracerProvider tracerProvider;
+    private AutoCloseable mocksCloseable;
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.openMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
 
         tracers = Collections.singletonList(tracer);
         tracerProvider = new TracerProvider(tracers);
     }
 
     @AfterEach
-    public void teardown() {
+    public void teardown() throws Exception {
         Mockito.framework().clearInlineMocks();
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     @Test

@@ -51,6 +51,7 @@ class LinkHandlerTest {
     private final Symbol symbol = Symbol.getSymbol(linkStolen.getErrorCondition());
     private final String description = "test-description";
     private final LinkHandler handler = new MockLinkHandler(CONNECTION_ID, HOSTNAME, ENTITY_PATH, logger);
+    private AutoCloseable mocksCloseable;
 
     @BeforeAll
     static void beforeAll() {
@@ -64,16 +65,22 @@ class LinkHandlerTest {
 
     @BeforeEach
     void setup() {
-        MockitoAnnotations.openMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
 
         when(event.getLink()).thenReturn(link);
     }
 
     @AfterEach
-    void teardown() {
+    void teardown() throws Exception {
         Mockito.framework().clearInlineMocks();
 
-        handler.close();
+        if (handler != null) {
+            handler.close();
+        }
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     /**

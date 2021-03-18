@@ -100,6 +100,7 @@ class ReactorConnectionTest {
     private ReactorProvider reactorProvider;
     @Mock
     private ReactorHandlerProvider reactorHandlerProvider;
+    private AutoCloseable mocksCloseable;
 
     @BeforeAll
     static void beforeAll() {
@@ -113,7 +114,7 @@ class ReactorConnectionTest {
 
     @BeforeEach
     void setup() throws IOException {
-        MockitoAnnotations.openMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
 
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setMaxRetries(0).setTryTimeout(TEST_DURATION);
         final ConnectionOptions connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
@@ -147,11 +148,15 @@ class ReactorConnectionTest {
     }
 
     @AfterEach
-    void teardown() {
+    void teardown() throws Exception {
         connection.dispose();
         // Tear down any inline mocks to avoid memory leaks.
         // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
         Mockito.framework().clearInlineMocks();
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     /**

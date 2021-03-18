@@ -40,17 +40,22 @@ public class TransactionCoordinatorTest {
     private MessageSerializer messageSerializer;
     @Mock
     private AmqpSendLink sendLink;
+    private AutoCloseable mocksCloseable;
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.openMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
     }
 
     @AfterEach
-    void teardown() {
+    void teardown() throws Exception {
         // Tear down any inline mocks to avoid memory leaks.
         // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
         Mockito.framework().clearInlineMocks();
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     @ParameterizedTest

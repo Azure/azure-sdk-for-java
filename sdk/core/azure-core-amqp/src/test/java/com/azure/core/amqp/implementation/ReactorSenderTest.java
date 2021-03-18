@@ -84,10 +84,11 @@ public class ReactorSenderTest {
 
     private Message message;
     private AmqpRetryOptions options;
+    private AutoCloseable mocksCloseable;
 
     @BeforeEach
     public void setup() throws IOException {
-        MockitoAnnotations.openMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
 
         Delivery delivery = mock(Delivery.class);
         when(delivery.getRemoteState()).thenReturn(Accepted.getInstance());
@@ -139,10 +140,14 @@ public class ReactorSenderTest {
     }
 
     @AfterEach
-    void teardown() {
+    public void teardown() throws Exception {
         // Tear down any inline mocks to avoid memory leaks.
         // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
         Mockito.framework().clearInlineMocks();
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     @Test
