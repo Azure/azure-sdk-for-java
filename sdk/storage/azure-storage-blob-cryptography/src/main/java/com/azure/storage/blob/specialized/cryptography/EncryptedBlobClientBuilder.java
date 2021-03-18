@@ -57,6 +57,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.USER_AGENT_PROPERTIES;
+
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of Storage Blob clients.
  *
@@ -91,6 +93,8 @@ public final class EncryptedBlobClientBuilder {
     private static final String SDK_VERSION = "version";
     private static final String CLIENT_NAME = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
     private static final String CLIENT_VERSION = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+    private static final String BLOB_CLIENT_NAME = USER_AGENT_PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+    private static final String BLOB_CLIENT_VERSION = USER_AGENT_PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
 
     private String endpoint;
     private String accountName;
@@ -226,7 +230,7 @@ public final class EncryptedBlobClientBuilder {
         policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption));
         String applicationId = clientOptions.getApplicationId() != null ? clientOptions.getApplicationId()
             : logOptions.getApplicationId();
-        policies.add(new UserAgentPolicy(applicationId, CLIENT_NAME, CLIENT_VERSION, userAgentConfiguration));
+        policies.add(new UserAgentPolicy(applicationId, BLOB_CLIENT_NAME, BLOB_CLIENT_VERSION, userAgentConfiguration));
         policies.add(new RequestIdPolicy());
 
         policies.addAll(perCallPolicies);
