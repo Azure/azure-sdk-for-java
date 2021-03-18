@@ -65,7 +65,7 @@ public class DatabaseResourceManager implements ResourceManager {
 
     @Override
     public void deleteResources() {
-        // Followed by the main database used for testing
+        // Delete the database used for testing
         final CosmosAsyncDatabase database = _client.getDatabase(_configuration.getDatabaseId());
         try {
             LOGGER.info("Deleting the main database {} used in this test. Collection", _configuration.getDatabaseId());

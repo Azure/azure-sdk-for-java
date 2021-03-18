@@ -32,7 +32,6 @@ public class BackoffRetryUtility {
                                            IRetryPolicy retryPolicy) {
 
         return Mono.defer(() -> {
-            // TODO: is defer required?
             try {
                 return callbackMethod.call();
             } catch (Exception e) {
@@ -60,7 +59,6 @@ public class BackoffRetryUtility {
         AddressSelector addressSelector) {
 
         return Mono.defer(() -> {
-            // TODO: is defer required?
             return callbackMethod.apply(InitialArgumentValuePolicyArg).onErrorResume(
                 RetryUtils.toRetryWithAlternateFunc(
                     callbackMethod,
