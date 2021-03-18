@@ -174,8 +174,8 @@ def add_modules_to_pom(pom_path: str, modules: list, project_dependencies_mappin
     if pom_identifier in dependency_to_project_mapping:
         for dependency in dependency_to_project_mapping[pom_identifier]:
             if not project_to_pom_path_mapping[dependency] in modules:
+                modules = add_modules_to_pom(os.path.normpath(root_path + project_to_pom_path_mapping[dependency] + '/pom.xml'), modules, project_dependencies_mapping, dependency_to_project_mapping, project_to_pom_path_mapping)
                 modules.append(project_to_pom_path_mapping[dependency])
-                modules = add_modules_to_pom(os.path.normpath(root_path + project_to_pom_path_mapping[dependency] + '/pom.xml'), modules, project_to_pom_path_mapping, dependency_to_project_mapping, project_to_pom_path_mapping)
 
     # Add all dependencies of this library.
     if pom_identifier in project_dependencies_mapping: # This should be guaranteed based on earlier code but check anyway
@@ -210,10 +210,10 @@ def main():
     parser = argparse.ArgumentParser(description='Replace version numbers in poms and READMEs.')
     parser.add_argument('--service-directory', '--sd', type=str)
     args = parser.parse_args()
-    if args.service_directory == None:
-        raise ValueError('Missing service directory.')
+    #if args.service_directory == None:
+        #raise ValueError('Missing service directory.')
     start_time = time.time()
-    create_from_source_pom(args.service_directory)
+    create_from_source_pom('appconfiguration') #args.service_directory)
     elapsed_time = time.time() - start_time
 
     print('Effective From Source POM File')
