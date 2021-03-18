@@ -73,7 +73,6 @@ public class DtmiConventions {
     }
 
     public static URI convertToUri(String uri) {
-
         try {
             return new URI(uri);
         } catch (URISyntaxException ex) {

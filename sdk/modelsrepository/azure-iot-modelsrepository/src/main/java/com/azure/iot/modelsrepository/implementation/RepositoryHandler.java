@@ -37,7 +37,6 @@ public final class RepositoryHandler {
         return processAsync(Collections.singletonList(dtmi), resolutionOptions, context);
     }
 
-    // This doesn't work as it throws it into an infinite loop
     public Mono<Map<String, String>> processAsync(Iterable<String> dtmis, ModelsDependencyResolution
         resolutionOptions, Context context) {
 

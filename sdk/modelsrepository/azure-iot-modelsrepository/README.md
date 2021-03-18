@@ -4,7 +4,7 @@
 
 The complete Microsoft Azure SDK can be downloaded from the [Microsoft Azure downloads][microsoft_sdk_download] page, and it ships with support for building deployment packages, integrating with tooling, rich command line tooling, and more.
 
-For the best development experience, developers should use the official Microsoft Maven packages for libraries. Maven packages will be regularly with new functionality and hotfixes.
+For the best development experience, developers should use the official Microsoft Maven packages for libraries. Maven packages will be regularly updated with new functionality and hotfixes.
 
 ### Include the Package
 

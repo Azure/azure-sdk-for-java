@@ -21,7 +21,7 @@ import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link ModelsRepositoryClient}
- * and {@link ModelsRepositoryAsyncClient ModelsRepositoryAsyncClients}, call {@link #buildClient() buildClient} and {@link
+ * and {@link ModelsRepositoryAsyncClient}, call {@link #buildClient() buildClient} and {@link
  * #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
  */
 @ServiceClientBuilder(serviceClients = {ModelsRepositoryClient.class, ModelsRepositoryAsyncClient.class})

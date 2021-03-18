@@ -37,7 +37,7 @@ class TestHelper {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
-        getURIs()
+        getApplicableRepositoryUris()
             .forEach(uri ->
                 getHttpClients()
                     .forEach(httpClient -> Arrays
@@ -48,7 +48,7 @@ class TestHelper {
         return argumentsList.stream();
     }
 
-    static Stream<URI> getURIs() {
+    static Stream<URI> getApplicableRepositoryUris() {
         ArrayList<URI> uriList = new ArrayList<>();
         uriList.add(DtmiConventions.convertToUri(ModelsRepositoryConstants.DEFAULT_MODELS_REPOSITORY_ENDPOINT));
         uriList.add(DtmiConventions.convertToUri(LOCAL_TEST_REPOSITORY_PATH));
