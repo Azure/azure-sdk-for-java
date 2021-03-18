@@ -21,7 +21,7 @@ NOTEBOOKS=$(databricks workspace ls /notebooks)
 for f in $NOTEBOOKS
 do
 	echo "Creating job for $f"
-	JOB_ID=$(databricks jobs create --json "{\"existing_cluster_id\": \"$CLUSTER_ID\", \"run_name\": \"$f\",\"notebook_task\": { \"notebook_path\": \"/notebooks/$f\" }}" | jq '.job_id')
+	JOB_ID=$(databricks jobs create --json "{\"existing_cluster_id\": \"$CLUSTER_ID\", \"name\": \"$f\",\"notebook_task\": { \"notebook_path\": \"/notebooks/$f\" }}" | jq '.job_id')
   
 	if [[ -z "$JOB_ID" ]]
 	then
