@@ -9,7 +9,13 @@ JARFILE=$3
 
 echo "Looking for cluster '$CLUSTER_NAME'"
 
-export CLUSTER_ID=$(databricks clusters list --output json | jq -r --arg N "$CLUSTER_NAME" '.clusters[] | select(.cluster_name == $N) | .cluster_id')
+CLUSTER_ID=$(databricks clusters list --output json | jq -r --arg N "$CLUSTER_NAME" '.clusters[] | select(.cluster_name == $N) | .cluster_id')
+
+if [[ -z "$CLUSTER_ID" ]]
+then
+	echo "Cannot find a cluster named '$CLUSTER_NAME'"
+	exit 1
+fi
 
 echo "Uninstalling previous $JARFILE in $CLUSTER_ID"
 databricks libraries uninstall --cluster-id $CLUSTER_ID --jar dbfs:/tmp/libraries/$JARFILE

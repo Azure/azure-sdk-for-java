@@ -1,7 +1,9 @@
-// Databricks notebook source
-// configuration
-val cosmosEndpoint = "https://REPLACEME.documents.azure.com:443/"
-val cosmosMasterKey = "REPLACEME"
+// val cosmosEndpoint = "<inserted by environment>"
+// val cosmosMasterKey = "<inserted by environment>"
+
+val cosmosEndpoint = dbutils.widgets.get("cosmosEndpoint")
+val cosmosMasterKey = dbutils.widgets.get("cosmosMasterKey")
+
 val cosmosDatabaseName = "sampleDB"
 val cosmosContainerName = "sampleContainer"
 
