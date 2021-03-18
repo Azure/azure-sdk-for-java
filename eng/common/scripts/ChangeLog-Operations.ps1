@@ -27,6 +27,7 @@ function Get-ChangeLogEntries {
       if ($line -match $RELEASE_TITLE_REGEX) {
         $changeLogEntry = [pscustomobject]@{ 
           ReleaseVersion = $matches["version"]
+          ReleaseVersionSemVer = [AzureEngSemanticVersion]::new($matches["version"])
           ReleaseStatus  =  $matches["releaseStatus"]
           ReleaseTitle   = "## {0} {1}" -f $matches["version"], $matches["releaseStatus"]
           ReleaseContent = @()
@@ -193,7 +194,7 @@ function Set-ChangeLogContent {
 
   try
   {
-    $ChangeLogEntries = $ChangeLogEntries.Values | Sort-Object -Descending -Property ReleaseStatus, ReleaseVersion
+    $ChangeLogEntries = $ChangeLogEntries.Values | Sort-Object -Descending -Property ReleaseStatus, ReleaseVersionSemVer
   }
   catch {
     LogError "Problem sorting version in ChangeLogEntries"
