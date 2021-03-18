@@ -118,7 +118,7 @@ public final class CommunicationTokenCredential implements AutoCloseable {
         Mono<String> tokenAsync = refresher.get();
         if (tokenAsync == null) {
             return FluxUtil.monoError(logger,
-                new RuntimeException("get() function for token refresher is null"));
+                new RuntimeException("get() function of the token refresher should not return null."));
         }
         return tokenAsync;
     }
