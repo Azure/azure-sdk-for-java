@@ -12,15 +12,15 @@ echo "Looking for cluster '$CLUSTER_NAME'"
 export CLUSTER_ID=$(databricks clusters list --output json | jq -r --arg N "$CLUSTER_NAME" '.clusters[] | select(.cluster_name == $N) | .cluster_id')
 
 echo "Uninstalling previous $JARFILE in $CLUSTER_ID"
-databricks libraries uninstall --cluster-id $CLUSTER_ID --jar dbfs:/tmp/sparkconnector/$JARFILE
+databricks libraries uninstall --cluster-id $CLUSTER_ID --jar dbfs:/tmp/libraries/$JARFILE
 
 bash sdk/cosmos/azure-cosmos-spark_3-0_2-12/databricks/databricks-cluster-restart.sh $CLUSTER_ID
 
 echo "Copying files to DBFS $JARPATH/$JARFILE"
-dbfs cp --overwrite $JARPATH/$JARFILE dbfs:/tmp/sparkconnector/$JARFILE
-dbfs ls dbfs:/tmp/sparkconnector
+dbfs cp $JARPATH/$JARFILE dbfs:/tmp/libraries/$JARFILE --overwrite
+dbfs ls dbfs:/tmp/libraries/
 
 echo "Installing $JARFILE in $CLUSTER_ID"
-databricks libraries install --cluster-id $CLUSTER_ID --jar dbfs:/tmp/sparkconnector/$JARFILE
+databricks libraries install --cluster-id $CLUSTER_ID --jar dbfs:/tmp/libraries/$JARFILE
 
 bash sdk/cosmos/azure-cosmos-spark_3-0_2-12/databricks/databricks-cluster-restart.sh $CLUSTER_ID
