@@ -26,7 +26,7 @@ public final class ChatMessageContent {
     private List<ChatParticipant> participants;
 
     @JsonProperty(value = "initiatorCommunicationIdentifier")
-    private CommunicationIdentifier initiatorCommunicationIdentifier;
+    private CommunicationIdentifier initiator;
 
     /**
      * Get the message property: Chat message content for messages of types text or html.
@@ -93,19 +93,19 @@ public final class ChatMessageContent {
      *
      * @return the initiator value.
      */
-    public CommunicationIdentifier getInitiatorCommunicationIdentifier() {
-        return this.initiatorCommunicationIdentifier;
+    public CommunicationIdentifier getInitiator() {
+        return this.initiator;
     }
 
     /**
      * Set the initiator property: Chat message content for messages of types participantAdded or participantRemoved.
      *
-     * @param initiatorCommunicationIdentifier the initiator value to set.
+     * @param initiator the initiator value to set.
      * @return the ChatMessageContent object itself.
      */
-    public ChatMessageContent setInitiatorCommunicationIdentifier(
-        CommunicationIdentifier initiatorCommunicationIdentifier) {
-        this.initiatorCommunicationIdentifier = initiatorCommunicationIdentifier;
+    public ChatMessageContent setInitiator(
+        CommunicationIdentifier initiator) {
+        this.initiator = initiator;
         return this;
     }
 }

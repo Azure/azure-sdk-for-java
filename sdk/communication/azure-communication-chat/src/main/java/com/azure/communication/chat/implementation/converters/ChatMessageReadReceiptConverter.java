@@ -20,7 +20,7 @@ public final class ChatMessageReadReceiptConverter {
         }
 
         ChatMessageReadReceipt readReceipt = new ChatMessageReadReceipt()
-            .setSenderCommunicationIdentifier(
+            .setSender(
                 CommunicationIdentifierConverter.convert(obj.getSenderCommunicationIdentifier()))
             .setChatMessageId(obj.getChatMessageId())
             .setReadOn(obj.getReadOn());
