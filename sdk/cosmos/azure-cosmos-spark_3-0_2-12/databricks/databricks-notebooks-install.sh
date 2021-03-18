@@ -2,8 +2,12 @@
 
 CLUSTER_NAME=$1
 NOTEBOOKSFOLDER=$2
+COSMOSENDPOINT=$3
+COSMOSKEY=$4
 [[ -z "$CLUSTER_NAME" ]] && exit 1
 [[ -z "$NOTEBOOKSFOLDER" ]] && exit 1
+[[ -z "$COSMOSENDPOINT" ]] && exit 1
+[[ -z "$COSMOSKEY" ]] && exit 1
 
 CLUSTER_ID=$(databricks clusters list --output json | jq -r --arg N "$CLUSTER_NAME" '.clusters[] | select(.cluster_name == $N) | .cluster_id')
 
@@ -64,4 +68,8 @@ do
 	JOB_RESULT=$(databricks runs get --run-id $RUN_ID | jq '.state.result_state')
 	databricks jobs delete --job-id $JOB_ID
 	echo "Run $RUN_ID finished with state $JOB_STATE and result $JOB_RESULT with message $JOB_MESSAGE"
+	if [[ "$JOB_RESULT" != "\"SUCCESS\"" ]]
+	then
+		exit 1
+	fi
 done
