@@ -133,7 +133,7 @@ In this section, you clone a containerized Spring Boot application and test it l
     ```console
     {
     "clientId": "7da18cae-779c-41fc-992e-0527854c6583",
-    "clientSecret": "b421b443-1669-4cd7-b5b1-394d5c945002",
+    "clientSecret": "[generated client secret]",
     "subscriptionId": "443e30da-feca-47c4-b68f-1636b75e16b3",
     "tenantId": "35ad10f1-7799-4766-9acf-f2d946161b77",
     "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
