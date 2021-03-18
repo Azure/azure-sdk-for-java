@@ -20,7 +20,7 @@ public class SendLinkHandler extends LinkHandler {
     private final String entityPath;
     private final AtomicBoolean isFirstFlow = new AtomicBoolean(true);
     private final Sinks.Many<Integer> creditProcessor = Sinks.many().unicast().onBackpressureBuffer();
-    private final Sinks.Many<Delivery> deliveryProcessor = Sinks.many().multicast().onBackpressureBuffer();
+    private final Sinks.Many<Delivery> deliveryProcessor = Sinks.many().multicast().directBestEffort();
 
     public SendLinkHandler(String connectionId, String hostname, String linkName, String entityPath) {
         super(connectionId, hostname, entityPath, new ClientLogger(SendLinkHandler.class));
