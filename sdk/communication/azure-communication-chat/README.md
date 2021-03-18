@@ -174,7 +174,7 @@ chatThreadClient.updateTopic("New Topic");
 
 #### Send a chat message
 
-Use the `sendMessage` method to sends a chat message to a chat thread identified by chatThreadId.
+Use the `sendMessage` method to sends a chat message to the chat thread that the `chatThreadClient` was created with.
 `sendChatMessageOptions` is used to describe the chat message request, an example is shown in the code snippet below.
 
 - Use `content` to provide the chat message content;
@@ -262,7 +262,7 @@ chatThreadClient.updateMessage(chatMessageId, updateChatMessageOptions);
 
 #### Delete a chat message
 
-Use `updateMessage` to update a chat message identified by chatThreadId and chatMessageId.
+Use `updateMessage` to update a chat message identified by chatMessageId.
 `chatMessageId` is the unique ID of the chat message.
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L196-L197 -->
@@ -275,7 +275,7 @@ chatThreadClient.deleteMessage(chatMessageId);
 
 #### List chat participants
 
-Use `listParticipants` to retrieve a paged collection containing the participants of the chat thread identified by chatThreadId.
+Use `listParticipants` to retrieve a paged collection containing the participants of the chat thread.
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L206-L213 -->
 ```Java
@@ -291,7 +291,7 @@ chatParticipantsResponse.iterableByPage().forEach(resp -> {
 
 #### Add participants
 
-Use `addParticipants` method to add participants to the thread identified by threadId.
+Use `addParticipants` method to add participants to the chat thread.
 `participants` list of participants to be added to the thread;
 
 - `communicationIdentifier`, required, is the CommunicationIdentifier you've created by using the CommunicationIdentityClient. More info at: [Create A User](https://docs.microsoft.com/azure/communication-services/quickstarts/access-tokens?pivots=programming-language-java#create-a-user).
@@ -320,7 +320,7 @@ chatThreadClient.addParticipants(participants);
 
 #### Remove participant
 
-Use `removeParticipant` method to remove a participant from the chat thread identified by chatThreadId.
+Use `removeParticipant` method to remove a participant from the chat thread.
 `identifier` is the CommunicationIdentifier you've created.
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L251-L251 -->
