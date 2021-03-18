@@ -49,7 +49,7 @@ public final class ModelsRepositoryClient {
      * Gets a collection of model definitions.
      *
      * @param dtmi                 A well-formed DTDL model Id. See <a href="https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md">DTDL specs</a>. For example 'dtmi:com:example:Thermostat;1'.
-     * @param dependencyResolution A ModelDependencyResolution value to force model resolution behavior.
+     * @param dependencyResolution A {@link ModelsDependencyResolution} value to force model resolution behavior.
      * @return A Map containing the model definition(s) where the key is the dtmi
      * and the value is the raw model definition string.
      */
@@ -74,7 +74,7 @@ public final class ModelsRepositoryClient {
      * Gets a collection of model definitions.
      *
      * @param dtmis                An Iterable of well-formed DTDL model Ids. See <a href="https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md">DTDL specs</a>. For example 'dtmi:com:example:Thermostat;1'.
-     * @param dependencyResolution A DependencyResolutionOption value to force model resolution behavior.
+     * @param dependencyResolution A {@link ModelsDependencyResolution} value to force model resolution behavior.
      * @return A Map containing the model definition(s) where the key is the dtmi
      * and the value is the raw model definition string.
      */
