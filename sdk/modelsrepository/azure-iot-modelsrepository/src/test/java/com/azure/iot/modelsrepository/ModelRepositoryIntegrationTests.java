@@ -18,7 +18,7 @@ import java.util.List;
 
 import static com.azure.iot.modelsrepository.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 
-public class ModelRepositoryIntegrationTests extends ModelsRepositoryTestBase {
+class ModelRepositoryIntegrationTests extends ModelsRepositoryTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.iot.modelsrepository.TestHelper#getTestParameters")

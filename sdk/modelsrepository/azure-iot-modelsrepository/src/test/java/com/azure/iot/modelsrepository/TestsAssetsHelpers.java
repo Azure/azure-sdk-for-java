@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class TestsAssetsHelpers {
+class TestsAssetsHelpers {
     public static String readResourceFile(String filePathFromResources) throws IOException {
         String pathToResources = System.getProperty("user.dir") + "/src/test/resources/" + filePathFromResources;
 

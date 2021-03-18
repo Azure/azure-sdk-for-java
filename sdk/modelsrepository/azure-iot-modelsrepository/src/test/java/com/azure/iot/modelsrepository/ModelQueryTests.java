@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class ModelQueryTests {
+class ModelQueryTests {
     public static final String MODEL_TEMPLATE = "" +
         "{\n" +
         "%s \n" +

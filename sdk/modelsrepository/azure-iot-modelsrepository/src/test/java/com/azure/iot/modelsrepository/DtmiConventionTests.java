@@ -10,7 +10,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class DtmiConventionTests {
+class DtmiConventionTests {
 
     @ParameterizedTest
     @CsvSource({

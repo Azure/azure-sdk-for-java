@@ -11,7 +11,7 @@ import com.azure.core.test.TestBase;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class ModelsRepositoryTestBase extends TestBase {
+class ModelsRepositoryTestBase extends TestBase {
 
     private static final String PLAYBACK_ENDPOINT = "https://playback.net/";
 
