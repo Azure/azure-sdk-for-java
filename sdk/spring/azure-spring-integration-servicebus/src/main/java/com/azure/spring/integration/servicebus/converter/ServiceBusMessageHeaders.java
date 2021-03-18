@@ -5,7 +5,7 @@ package com.azure.spring.integration.servicebus.converter;
 import com.azure.spring.integration.core.AzureHeaders;
 
 /**
- * Azure service bus internal headers.
+ * Azure service bus message headers.
  *
  * <p>
  * Usage example:
