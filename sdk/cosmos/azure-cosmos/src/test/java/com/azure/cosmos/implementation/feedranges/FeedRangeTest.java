@@ -110,11 +110,11 @@ public class FeedRangeTest {
 
         StringBuilder sb = new StringBuilder();
         for (int targetSplitCount : testCases) {
-            List<FeedRange> feedRanges = FeedRangeInternal.trySplitWithHashV1(fullRange,
+            List<FeedRangeEpkImpl> feedRanges = FeedRangeInternal.trySplitWithHashV1(fullRange,
                 targetSplitCount);
 
             for (int i = 0; i < feedRanges.size() - 1; i++) {
-                FeedRangeEpkImpl epkFeedRange = (FeedRangeEpkImpl)feedRanges.get(i);
+                FeedRangeEpkImpl epkFeedRange = feedRanges.get(i);
 
                 if (i > 0) {
                     sb.append("|");
@@ -137,10 +137,10 @@ public class FeedRangeTest {
 
         StringBuilder sb = new StringBuilder();
         for (int targetSplitCount : testCases) {
-            List<FeedRange> feedRanges = FeedRangeInternal.trySplitWithHashV2(fullRange, targetSplitCount);
+            List<FeedRangeEpkImpl> feedRanges = FeedRangeInternal.trySplitWithHashV2(fullRange, targetSplitCount);
 
             for (int i = 0; i < feedRanges.size() - 1; i++) {
-                FeedRangeEpkImpl epkFeedRange = (FeedRangeEpkImpl)feedRanges.get(i);
+                FeedRangeEpkImpl epkFeedRange = feedRanges.get(i);
 
                 if (i > 0) {
                     sb.append("|");
@@ -172,10 +172,10 @@ public class FeedRangeTest {
             true,
             false);
 
-        List<FeedRange> feedRanges = FeedRangeInternal.trySplitWithHashV1(rangeToBeSplit,2);
+        List<FeedRangeEpkImpl> feedRanges = FeedRangeInternal.trySplitWithHashV1(rangeToBeSplit,2);
         assertThat(feedRanges).isNotNull().hasSize(2);
-        FeedRangeEpkImpl leftEpkFeedRange = (FeedRangeEpkImpl)feedRanges.get(0);
-        FeedRangeEpkImpl rightEpkFeedRange = (FeedRangeEpkImpl)feedRanges.get(1);
+        FeedRangeEpkImpl leftEpkFeedRange = feedRanges.get(0);
+        FeedRangeEpkImpl rightEpkFeedRange = feedRanges.get(1);
         assertThat(rangesForFour[1]).isEqualTo(leftEpkFeedRange.getRange().getMax());
         assertThat(rangesForFour[1]).isEqualTo(rightEpkFeedRange.getRange().getMin());
     }
@@ -198,10 +198,10 @@ public class FeedRangeTest {
             rangesForFour[2],
             true,
             false);
-        List<FeedRange> feedRanges = FeedRangeInternal.trySplitWithHashV2(rangeToBeSplit,2);
+        List<FeedRangeEpkImpl> feedRanges = FeedRangeInternal.trySplitWithHashV2(rangeToBeSplit,2);
         assertThat(feedRanges).isNotNull().hasSize(2);
-        FeedRangeEpkImpl leftEpkFeedRange = (FeedRangeEpkImpl)feedRanges.get(0);
-        FeedRangeEpkImpl rightEpkFeedRange = (FeedRangeEpkImpl)feedRanges.get(1);
+        FeedRangeEpkImpl leftEpkFeedRange = feedRanges.get(0);
+        FeedRangeEpkImpl rightEpkFeedRange = feedRanges.get(1);
         assertThat(rangesForFour[1]).isEqualTo(leftEpkFeedRange.getRange().getMax());
         assertThat(rangesForFour[1]).isEqualTo(rightEpkFeedRange.getRange().getMin());
     }

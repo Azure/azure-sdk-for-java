@@ -170,6 +170,7 @@ public class ClientTelemetry {
                 "|" + azureVMMetadata.getVmSize() + "|" + azureVMMetadata.getAzEnvironment());
         }).onErrorResume(throwable -> {
             logger.info("Unable to get azure vm metadata");
+            logger.debug("Unable to get azure vm metadata", throwable);
             return Mono.empty();
         }).subscribe();
     }
@@ -179,7 +180,7 @@ public class ClientTelemetry {
             return OBJECT_MAPPER.readValue(itemResponseBodyAsString, itemClassType);
         } catch (IOException e) {
             throw new IllegalStateException(
-                String.format("Failed to parse string [%s] to POJO.", itemResponseBodyAsString, e));
+                String.format("Failed to parse string [%s] to POJO.", itemResponseBodyAsString), e);
         }
     }
 

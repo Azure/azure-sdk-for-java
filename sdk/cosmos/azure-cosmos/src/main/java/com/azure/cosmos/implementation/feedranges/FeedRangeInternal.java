@@ -75,10 +75,33 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         return parsedRange;
     }
 
-    public abstract Mono<Range<String>> getEffectiveRange(
+    protected abstract Mono<Range<String>> getEffectiveRange(
         IRoutingMapProvider routingMapProvider,
         MetadataDiagnosticsContext metadataDiagnosticsCtx,
         Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono);
+
+    public static Range<String> normalizeRange(Range<String> range) {
+        if (range.isMinInclusive() && !range.isMaxInclusive()) {
+            return range;
+        }
+
+        String min;
+        String max;
+
+        if (range.isMinInclusive()) {
+            min = range.getMin();
+        } else {
+            min = addToEffectivePartitionKey(range.getMin(), -1);
+        }
+
+        if (!range.isMaxInclusive()) {
+            max = range.getMax();
+        } else {
+            max = addToEffectivePartitionKey(range.getMax(), 1);
+        }
+
+        return new Range<>(min, max, true, false);
+    }
 
     // Will return a normalized range with minInclusive and maxExclusive boundaries
     public Mono<Range<String>> getNormalizedEffectiveRange(
@@ -86,56 +109,13 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         MetadataDiagnosticsContext metadataDiagnosticsCtx,
         Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono
     ) {
-        return Mono.zip(
-            this.getEffectiveRange(
-                routingMapProvider,
-                metadataDiagnosticsCtx,
-                collectionResolutionMono),
-            collectionResolutionMono)
-                   .map(tuple -> {
-                       Range<String> effectiveRange = tuple.getT1();
-
-                       if (effectiveRange.isMinInclusive() && !effectiveRange.isMaxInclusive()) {
-                           return effectiveRange;
-                       }
-
-                       Utils.ValueHolder<DocumentCollection> collectionValueHolder = tuple.getT2();
-
-                       if (collectionValueHolder.v == null) {
-                           throw new IllegalStateException("Collection should have been resolved.");
-                       }
-
-                       PartitionKeyDefinition pkDefinition =
-                           collectionValueHolder.v.getPartitionKey();
-
-                       PartitionKeyDefinitionVersion effectivePKVersion =
-                           pkDefinition.getVersion() != null
-                               ? pkDefinition.getVersion()
-                               : PartitionKeyDefinitionVersion.V1;
-
-                       String min;
-                       String max;
-
-                       if (effectiveRange.isMinInclusive()) {
-                           min = effectiveRange.getMin();
-                       } else {
-                           min = addToEffectivePartitionKey(effectiveRange.getMin(), -1, effectivePKVersion);
-                       }
-
-                       if (!effectiveRange.isMaxInclusive()) {
-                           max = effectiveRange.getMax();
-                       } else {
-                           max = addToEffectivePartitionKey(effectiveRange.getMax(), 1, effectivePKVersion);
-                       }
-
-                       return new Range<>(min, max, true, false);
-                   });
+        return this.getEffectiveRange(routingMapProvider, metadataDiagnosticsCtx, collectionResolutionMono)
+                   .map(FeedRangeInternal::normalizeRange);
     }
 
-    private String addToEffectivePartitionKey(
+    private static String addToEffectivePartitionKey(
         String effectivePartitionKey,
-        int value,
-        PartitionKeyDefinitionVersion version) {
+        int value) {
 
         checkArgument(
             value == 1 || value == -1,
@@ -214,7 +194,7 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         }
     }
 
-    public Mono<List<FeedRange>> trySplit(
+    public Mono<List<FeedRangeEpkImpl>> trySplit(
         IRoutingMapProvider routingMapProvider,
         MetadataDiagnosticsContext metadataDiagnosticsCtx,
         Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono,
@@ -248,8 +228,8 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
 
                        PartitionKeyDefinitionVersion effectivePKVersion =
                            pkDefinition.getVersion() != null
-                               ? pkDefinition.getVersion()
-                               : PartitionKeyDefinitionVersion.V1;
+                           ? pkDefinition.getVersion()
+                           : PartitionKeyDefinitionVersion.V1;
                        switch (effectivePKVersion) {
                            case V1:
                                return trySplitWithHashV1(effectiveRange, targetedSplitCount);
@@ -263,7 +243,7 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
                    });
     }
 
-    static List<FeedRange> trySplitWithHashV1(
+    static List<FeedRangeEpkImpl> trySplitWithHashV1(
         Range<String> effectiveRange,
         int targetedSplitCount) {
 
@@ -284,7 +264,7 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
 
         String minRange = effectiveRange.getMin();
         long diff = max - min;
-        List<FeedRange> splitFeedRanges = new ArrayList<>(targetedSplitCount);
+        List<FeedRangeEpkImpl> splitFeedRanges = new ArrayList<>(targetedSplitCount);
         for (int i = 1; i < targetedSplitCount; i++) {
             long splitPoint = min + (i * (diff / targetedSplitCount));
             String maxRange = PartitionKeyInternalHelper.toHexEncodedBinaryString(
@@ -313,7 +293,7 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         return splitFeedRanges;
     }
 
-    static List<FeedRange> trySplitWithHashV2(
+    static List<FeedRangeEpkImpl> trySplitWithHashV2(
         Range<String> effectiveRange,
         int targetedSplitCount) {
 
@@ -343,7 +323,7 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         String minRange = effectiveRange.getMin();
         Int128 diff = Int128.subtract(max, min);
         Int128 splitCountInt128 = new Int128(targetedSplitCount);
-        List<FeedRange> splitFeedRanges = new ArrayList<>(targetedSplitCount);
+        List<FeedRangeEpkImpl> splitFeedRanges = new ArrayList<>(targetedSplitCount);
         for (int i = 1; i < targetedSplitCount; i++) {
             byte[] currentBlob = Int128.add(
                 min,

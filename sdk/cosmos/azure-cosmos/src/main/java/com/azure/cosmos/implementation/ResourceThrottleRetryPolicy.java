@@ -53,7 +53,7 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
         if (this.currentAttemptCount < this.maxAttemptCount &&
                 (retryDelay = checkIfRetryNeeded(exception)) != null) {
             this.currentAttemptCount++;
-            logger.warn(
+            logger.debug(
                     "Operation will be retried after {} milliseconds. Current attempt {}, Cumulative delay {}",
                     retryDelay.toMillis(),
                     this.currentAttemptCount,
@@ -61,7 +61,7 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
                     exception);
             return Mono.just(ShouldRetryResult.retryAfter(retryDelay));
         } else {
-            logger.debug(
+            logger.warn(
                     "Operation will NOT be retried. Current attempt {}",
                     this.currentAttemptCount,
                     exception);
