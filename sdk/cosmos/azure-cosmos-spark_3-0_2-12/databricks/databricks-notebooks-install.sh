@@ -54,7 +54,7 @@ do
 	
 	JOB_MESSAGE=$(databricks runs get --run-id $RUN_ID | jq '.state.state_message')
   
-	if [[ "$JOB_STATE" != "TERMINATED"]]
+	if [[ "$JOB_STATE" != "TERMINATED" ]]
 	then
 		echo "Run $RUN_ID failed with state $JOB_STATE and $JOB_MESSAGE"
 		databricks jobs delete --job-id $JOB_ID
