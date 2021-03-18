@@ -119,7 +119,7 @@ public final class ModelsRepositoryAsyncClient {
         return withContext(context -> getModels(dtmis, dependencyResolutionOption, context));
     }
 
-    private Mono<Map<String, String>> getModels(Iterable<String> dtmis, ModelsDependencyResolution dependencyResolutionOption, Context context) {
+    Mono<Map<String, String>> getModels(Iterable<String> dtmis, ModelsDependencyResolution dependencyResolutionOption, Context context) {
         context.addData(AZ_TRACING_NAMESPACE_KEY, MODELS_REPOSITORY_TRACING_NAMESPACE_VALUE);
         return repositoryHandler.processAsync(dtmis, dependencyResolutionOption, context);
     }
