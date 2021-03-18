@@ -77,6 +77,7 @@ import com.azure.resourcemanager.network.models.NetworkSecurityGroups;
 import com.azure.resourcemanager.network.models.NetworkUsages;
 import com.azure.resourcemanager.network.models.NetworkWatchers;
 import com.azure.resourcemanager.network.models.Networks;
+import com.azure.resourcemanager.network.models.PrivateEndpoints;
 import com.azure.resourcemanager.network.models.PublicIpAddresses;
 import com.azure.resourcemanager.network.models.PublicIpPrefixes;
 import com.azure.resourcemanager.network.models.RouteFilters;
@@ -838,5 +839,10 @@ public final class AzureResourceManager {
     /** @return the private DNS zone management API entry point */
     public PrivateDnsZones privateDnsZones() {
         return this.privateDnsZoneManager.privateZones();
+    }
+
+    /** @return entry point to private endpoints management */
+    public PrivateEndpoints privateEndpoints() {
+        return this.networkManager.privateEndpoints();
     }
 }

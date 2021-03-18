@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.Address;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.BridgeInternal;
@@ -143,7 +142,7 @@ public class RxDocumentServiceResponse {
                         ? fromJson(String.format("{\"%s\": %s}", Constants.Properties.VALUE, jToken.toString()))
                                 : jToken;
 
-               T resource = (T) ModelBridgeInternal.instantiateJsonSerializable((ObjectNode) resourceJson, c);
+               T resource = (T) JsonSerializable.instantiateFromObjectNodeAndType((ObjectNode) resourceJson, c);
                queryResults.add(resource);
             }
         }

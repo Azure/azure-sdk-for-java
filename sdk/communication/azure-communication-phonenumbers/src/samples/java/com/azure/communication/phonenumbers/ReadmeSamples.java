@@ -102,7 +102,7 @@ public class ReadmeSamples {
         PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setAreaCode("800").setQuantity(1);
 
         PhoneNumberSearchResult searchResult = phoneNumberClient
-            .beginSearchAvailablePhoneNumbers("US", PhoneNumberType.TOLL_FREE, PhoneNumberAssignmentType.PERSON, capabilities, searchOptions, Context.NONE)
+            .beginSearchAvailablePhoneNumbers("US", PhoneNumberType.TOLL_FREE, PhoneNumberAssignmentType.APPLICATION, capabilities, searchOptions, Context.NONE)
             .getFinalResult();
 
         System.out.println("Searched phone numbers: " + searchResult.getPhoneNumbers());

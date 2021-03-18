@@ -13,8 +13,8 @@ This sample illustrates how to protect a Java web API by restricting access to i
 ![Aad resource server protocol diagram](docs/image-add-resource-server.png "Aad resource server protocol diagram")
 
 ## Getting started
-### Environment checklist
-We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
+### Prerequisites
+- [Environment checklist][environment_checklist]
 
 ### Configure Web API
 1. In this section, you register your web API in App registrations in the Azure portal.
@@ -71,6 +71,5 @@ Authorization: Bearer eyJ0eXAiO ... 0X2tnSQLEANnSPHY0gKcgw
 ## Next steps
 ## Contributing
 <!-- LINKS -->
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [Expose scoped permission to web api]: https://docs.microsoft.com/azure/active-directory/develop/quickstart-configure-app-expose-web-apis
