@@ -20,6 +20,8 @@ import org.springframework.cloud.stream.binder.BinderHeaders;
 import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
 import org.springframework.cloud.stream.provisioning.ConsumerDestination;
 import org.springframework.cloud.stream.provisioning.ProducerDestination;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.integration.core.MessageProducer;
 import org.springframework.integration.expression.FunctionExpression;
 import org.springframework.messaging.Message;
@@ -41,6 +43,8 @@ public class EventHubMessageChannelBinder extends
 
     private EventHubExtendedBindingProperties bindingProperties = new EventHubExtendedBindingProperties();
 
+    private static final ExpressionParser EXPRESSION_PARSER = new SpelExpressionParser();
+
     public EventHubMessageChannelBinder(String[] headersToEmbed, EventHubChannelProvisioner provisioningProvider,
             EventHubOperation eventHubOperation) {
         super(headersToEmbed, provisioningProvider);
@@ -56,7 +60,8 @@ public class EventHubMessageChannelBinder extends
         handler.setSendTimeout(producerProperties.getExtension().getSendTimeout());
         handler.setSendFailureChannel(errorChannel);
         if (producerProperties.isPartitioned()) {
-            handler.setPartitionIdExpressionString("headers['" + BinderHeaders.PARTITION_HEADER + "']");
+            handler.setPartitionIdExpression(
+                EXPRESSION_PARSER.parseExpression("headers['" + BinderHeaders.PARTITION_HEADER + "']"));
         } else {
             handler.setPartitionKeyExpression(new FunctionExpression<Message<?>>(m -> m.getPayload().hashCode()));
         }
