@@ -34,6 +34,7 @@ import reactor.core.publisher.ReplayProcessor;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -84,7 +85,7 @@ public class ReactorSession implements AmqpSession {
         ReactorHandlerProvider handlerProvider, Mono<ClaimsBasedSecurityNode> cbsNodeSupplier,
         TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, AmqpRetryOptions retryOptions) {
         this(session, sessionHandler, sessionName, provider, handlerProvider, cbsNodeSupplier, tokenManagerProvider,
-            messageSerializer, retryOptions, false);
+            messageSerializer, retryOptions, new CreateSessionOptions(false));
     }
 
     /**
@@ -98,13 +99,15 @@ public class ReactorSession implements AmqpSession {
      * @param cbsNodeSupplier Mono that returns a reference to the {@link ClaimsBasedSecurityNode}.
      * @param tokenManagerProvider Provides {@link TokenManager} that authorizes the client when performing
      *     operations on the message broker.
-     * @param coordinatorRequired if {@link Coordinator} is required for the session.
+     * @param createSessionOptions options required to create the session.
      * @param retryOptions for the session operations.
      */
     public ReactorSession(Session session, SessionHandler sessionHandler, String sessionName, ReactorProvider provider,
         ReactorHandlerProvider handlerProvider, Mono<ClaimsBasedSecurityNode> cbsNodeSupplier,
         TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
-        AmqpRetryOptions retryOptions, boolean coordinatorRequired) {
+        AmqpRetryOptions retryOptions, CreateSessionOptions createSessionOptions) {
+        Objects.requireNonNull(createSessionOptions, "'createSessionOptions' cannot be null.");
+
         this.session = session;
         this.sessionHandler = sessionHandler;
         this.handlerProvider = handlerProvider;
@@ -128,8 +131,8 @@ public class ReactorSession implements AmqpSession {
 
         session.open();
 
-        // setup coordinator only if enable cross Entity transaction is setup.
-        if (coordinatorRequired) {
+        // setup 'Coordinator Send link' to enable cross entity transactions (i.e. distributed transaction).
+        if (createSessionOptions.isDistributedTransactionsSupported()) {
             LinkSubscription<AmqpSendLink> sendLinkCoordinator = getSubscription(TRANSACTION_LINK_NAME,
                 TRANSACTION_LINK_NAME, new Coordinator(), null, retryOptions, null);
             openSendLinks.put(TRANSACTION_LINK_NAME, sendLinkCoordinator);

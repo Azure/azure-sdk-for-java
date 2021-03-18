@@ -240,7 +240,7 @@ public class ReactorSessionTest {
         // Arrange
         final String TRANSACTION_LINK_NAME = "coordinator";
         final String entityPath = "coordinator";
-        final boolean coordinatorRequired = true;
+        final boolean distributedTransactionsSupport = true;
 
         final Duration timeout = Duration.ofSeconds(10);
         final AmqpRetryOptions options = new AmqpRetryOptions().setTryTimeout(timeout)
@@ -261,7 +261,7 @@ public class ReactorSessionTest {
             .thenReturn(sendLinkHandler);
 
         this.reactorSession = new ReactorSession(session, handler, NAME, reactorProvider, reactorHandlerProvider,
-            cbsNodeSupplier, tokenManagerProvider, serializer, options, coordinatorRequired);
+            cbsNodeSupplier, tokenManagerProvider, serializer, options, new CreateSessionOptions(distributedTransactionsSupport));
 
         verify(session).sender(TRANSACTION_LINK_NAME);
         verify(sender).setTarget(any(Coordinator.class));

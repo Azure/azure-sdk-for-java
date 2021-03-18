@@ -91,7 +91,7 @@ import java.util.regex.Pattern;
  * <li>{@link ServiceBusSessionReceiverAsyncClient}</li>
  * <li>{@link ServiceBusSessionReceiverClient}</li>
  * </ul>
- *
+ *ServiceBusClientBuilder
  * <p><strong>Client for receiving messages using a callback-based processor</strong></p>
  * <ul>
  * <li>{@link ServiceBusProcessorClient}</li>

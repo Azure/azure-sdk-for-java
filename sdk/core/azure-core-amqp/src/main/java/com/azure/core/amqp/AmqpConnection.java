@@ -7,7 +7,6 @@ import com.azure.core.amqp.exception.AmqpException;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import org.apache.qpid.proton.amqp.transaction.Coordinator;
 
 import java.util.Map;
 
@@ -59,15 +58,15 @@ public interface AmqpConnection extends Disposable {
     Mono<AmqpSession> createSession(String sessionName);
 
     /**
-     * Creates a new session with the given session name. It will set up {@link Coordinator} as needed for transactions.
+     * Creates a new session with the given session name and set it up for distributed transaction if required.
      *
      * @param sessionName Name of the session to be created.
-     * @param coordinatorRequired If coordinator is required for this session.
+     * @param distributedTransactionsSupport If this session should support distributed transactions across entities.
      * @return The AMQP session that was created.
      *
-     * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transactions-v1.0-os.html#section-coordination">Transactions-Coordinator</a>
+     * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transactions-v1.0-os.html#section-coordination">Distributed Transactions</a>
      */
-    Mono<AmqpSession> createSession(String sessionName, boolean coordinatorRequired);
+    Mono<AmqpSession> createSession(String sessionName, boolean distributedTransactionsSupport);
 
     /**
      * Removes a session with the {@code sessionName} from the AMQP connection.

@@ -8,6 +8,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.AmqpConstants;
+import com.azure.core.amqp.implementation.CreateSessionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
@@ -66,13 +67,14 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
      * @param tokenManagerProvider Provides {@link TokenManager} that authorizes the client when performing
      *     operations on the message broker.
      * @param retryOptions Retry options.
+     * @param distributedTransactionsSupport if the session require support for distributed transactions across entity.
      */
     ServiceBusReactorSession(Session session, SessionHandler sessionHandler, String sessionName,
         ReactorProvider provider, ReactorHandlerProvider handlerProvider, Mono<ClaimsBasedSecurityNode> cbsNodeSupplier,
         TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, AmqpRetryOptions retryOptions,
-        boolean coordinatorRequired) {
+        boolean distributedTransactionsSupport) {
         super(session, sessionHandler, sessionName, provider, handlerProvider, cbsNodeSupplier, tokenManagerProvider,
-            messageSerializer, retryOptions, coordinatorRequired);
+            messageSerializer, retryOptions, new CreateSessionOptions(distributedTransactionsSupport));
         this.retryOptions = retryOptions;
         this.retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
         this.tokenManagerProvider = tokenManagerProvider;

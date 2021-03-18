@@ -440,6 +440,11 @@
         "code": "java.method.defaultMethodAddedToInterface",
         "new": "method com.azure.core.util.polling.SyncPoller<T, U> com.azure.core.util.polling.SyncPoller<T, U>::setPollInterval(java.time.Duration)",
         "justification": "Default implementation"
+      },
+      {
+        "code": "java.method.addedToInterface",
+        "new": "method reactor.core.publisher.Mono<com.azure.core.amqp.AmqpSession> com.azure.core.amqp.AmqpConnection::createSession(java.lang.String, boolean)",
+        "justification": "Needed to support cross entity transaction."
       }
     ]
   }
