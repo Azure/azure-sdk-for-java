@@ -76,7 +76,7 @@ public class ActiveClientTokenManager implements TokenManager {
 
                 // If this is the first time authorize is called, the task will not have been scheduled yet.
                 if (!hasScheduled.getAndSet(true)) {
-                    logger.verbose("Scheduling refresh token task. scopes[{}]", scopes);
+                    logger.info("Scheduling refresh token task. scopes[{}]", scopes);
 
                     final Duration firstInterval = Duration.ofMillis(refreshIntervalMS);
                     lastRefreshInterval.set(firstInterval);
@@ -103,7 +103,7 @@ public class ActiveClientTokenManager implements TokenManager {
             return false;
         });
         durationSource.emitComplete((signalType, emitResult) -> {
-            logger.verbose("signalType[{}] result[{}] Could not close authorizationResults.", signalType, emitResult);
+            logger.verbose("signalType[{}] result[{}] Could not close durationSource.", signalType, emitResult);
             return false;
         });
 
@@ -115,7 +115,8 @@ public class ActiveClientTokenManager implements TokenManager {
     private Disposable scheduleRefreshTokenTask(Duration initialRefresh) {
         // EmitterProcessor can queue up an initial refresh interval before any subscribers are received.
         durationSource.emitNext(initialRefresh, (signalType, emitResult) -> {
-            logger.info("signalType[{}] result[{}] Could not emit initial refresh interval.", signalType, emitResult);
+            logger.verbose("signalType[{}] result[{}] Could not emit initial refresh interval.", signalType,
+                emitResult);
             return false;
         });
 
@@ -164,7 +165,7 @@ public class ActiveClientTokenManager implements TokenManager {
                     if (!hasDisposed.getAndSet(true)) {
                         hasScheduled.set(false);
                         durationSource.emitComplete((signalType, emitResult) -> {
-                            logger.verbose("signalType[{}] result[{}] Could not close durationSink.", signalType,
+                            logger.verbose("signalType[{}] result[{}] Could not close durationSource.", signalType,
                                 emitResult);
 
                             return false;
