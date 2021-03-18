@@ -8,11 +8,11 @@ import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 
-class SparkE2EConfigResolutionSpec extends IntegrationSpec with CosmosClient with AutoCleanableCosmosContainer {
+class SparkE2EConfigResolutionITest extends IntegrationSpec with CosmosClient with AutoCleanableCosmosContainer {
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
 
-  "config resolution" can "merge user config with spark config for write" taggedAs (RequiresCosmosEndpoint) in {
+  "config resolution" can "merge user config with spark config for write" in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
@@ -58,7 +58,7 @@ class SparkE2EConfigResolutionSpec extends IntegrationSpec with CosmosClient wit
     spark.close()
   }
 
-  it can "merge user config with spark config for query" taggedAs (RequiresCosmosEndpoint) in {
+  it can "merge user config with spark config for query" in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 

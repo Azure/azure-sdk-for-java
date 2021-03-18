@@ -21,7 +21,8 @@ ACCOUNT_HOST=https://localhost:8081
 ACCOUNT_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==
 ```
 
-run the following command to run end to end integration tests:
+Integration tests are expected to have ITest suffix.
+run the following command to run all tests including end to end integration tests:
 
 ```bash
 mvn -e -Dgpg.skip -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl ,azure-cosmos-spark_3-1_2-12 test package -PsparkE2E

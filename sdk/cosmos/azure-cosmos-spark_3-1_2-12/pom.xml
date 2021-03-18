@@ -10,9 +10,9 @@
     <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
 
-  <groupId>com.azure</groupId>
+  <groupId>com.azure.cosmos.spark</groupId>
   <artifactId>azure-cosmos-spark_3-1_2-12</artifactId>
-  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-spark_3-1_2-12;current} -->
+  <version>4.0.0-alpha.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12;current} -->
   <packaging>jar</packaging>
   <name>OLTP Spark Connector for Azure Cosmos DB SQL API</name>
   <description>OLTP Spark Connector for Azure Cosmos DB SQL API</description>
@@ -65,7 +65,8 @@
     <dependency>
       <groupId>org.scala-lang.modules</groupId>
       <artifactId>scala-java8-compat_2.12</artifactId>
-      <version>0.9.1</version> <!-- {x-version-update;cosmos_org.scala-lang.modules:scala-java8-compat_2.12;external_dependency} -->
+      <version>0.8.0</version> <!-- {x-version-update;cosmos_org.scala-lang.modules:scala-java8-compat_2.12;external_dependency} -->
+      <scope>provided</scope> <!-- Databricks Runtime8 has 0.8.0 jar https://docs.databricks.com/release-notes/runtime/8.0ml.html -->
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
@@ -229,7 +230,7 @@
                 <include>org.apache.spark:spark-sql_2.12:[3.1.1]</include> <!-- {x-include-update;cosmos_org.apache.spark:spark-sql_2.12;external_dependency} -->
                 <include>commons-io:commons-io:[2.4]</include> <!-- {x-include-update;cosmos_commons-io:commons-io;external_dependency} -->
                 <include>org.scala-lang:scala-library:[2.12.10]</include> <!-- {x-include-update;cosmos_org.scala-lang:scala-library;external_dependency} -->
-                <include>org.scala-lang.modules:scala-java8-compat_2.12:[0.9.1]</include> <!-- {x-include-update;cosmos_org.scala-lang.modules:scala-java8-compat_2.12;external_dependency} -->
+                <include>org.scala-lang.modules:scala-java8-compat_2.12:[0.8.0]</include> <!-- {x-include-update;cosmos_org.scala-lang.modules:scala-java8-compat_2.12;external_dependency} -->
                 <include>io.projectreactor:reactor-scala-extensions_2.12:[0.8.0]</include> <!-- {x-include-update;cosmos_io.projectreactor:reactor-scala-extensions_2.12;external_dependency} -->
                 <include>org.scalatest:scalatest_2.12:[3.2.2]</include> <!-- {x-include-update;cosmos_org.scalatest:scalatest_2.12;external_dependency} -->
                 <include>net.alchim31.maven:scala-maven-plugin:[4.4.0]</include> <!-- {x-include-update;cosmos_net.alchim31.maven:scala-maven-plugin;external_dependency} -->
@@ -504,21 +505,16 @@
               <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
               <junitxml>.</junitxml>
               <filereports>SparkTestSuite.txt</filereports>
+              <suffixes>(Spec|[^I]Test|Suite)</suffixes> <!-- unit tests which do not require cosmos db -->
             </configuration>
             <executions>
               <execution>
-                <configuration>
-                  <tagsToExclude>requiresCosmosEndpoint</tagsToExclude>
-                </configuration>
                 <id>test</id>
                 <goals>
                   <goal>test</goal>
                 </goals>
               </execution>
               <execution>
-                <configuration>
-                  <tagsToExclude>requiresCosmosEndpoint</tagsToExclude>
-                </configuration>
                 <id>scala-test</id>
                 <goals>
                   <goal>test</goal>
@@ -559,21 +555,16 @@
               <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
               <junitxml>.</junitxml>
               <filereports>SparkTestSuite.txt</filereports>
+              <suffixes>(ITest|Test|Spec|Suite)</suffixes> <!-- every test -->
             </configuration>
             <executions>
               <execution>
-                <configuration>
-                  <tagsToInclude>requiresCosmosEndpoint</tagsToInclude>
-                </configuration>
                 <id>test</id>
                 <goals>
                   <goal>test</goal>
                 </goals>
               </execution>
               <execution>
-                <configuration>
-                  <tagsToInclude>requiresCosmosEndpoint</tagsToInclude>
-                </configuration>
                 <id>scala-test</id>
                 <goals>
                   <goal>test</goal>

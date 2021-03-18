@@ -18,10 +18,11 @@ import java.util.UUID
 
 //scalastyle:off multiple.string.literals
 //scalastyle:off magic.number
-class BulkWriterSpec extends IntegrationSpec with CosmosClient with AutoCleanableCosmosContainer {
+
+class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanableCosmosContainer {
   val objectMapper = new ObjectMapper()
 
-  "Bulk Writer" can "upsert item" taggedAs RequiresCosmosEndpoint in  {
+  "Bulk Writer" can "upsert item" in  {
     val container = getContainer
 
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 5, bulkEnabled = true, Some(900))
@@ -48,7 +49,7 @@ class BulkWriterSpec extends IntegrationSpec with CosmosClient with AutoCleanabl
     }
   }
 
-  "Bulk Writer" can "create item with duplicates" taggedAs RequiresCosmosEndpoint in   {
+  "Bulk Writer" can "create item with duplicates" in {
     val container = getContainer
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 5, bulkEnabled = true, Some(900))
     val bulkWriter = new BulkWriter(container, writeConfig)

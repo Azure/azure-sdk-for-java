@@ -2,20 +2,22 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import java.util.UUID
 import com.azure.cosmos.implementation.TestConfigurations
-import com.azure.cosmos.models.{ChangeFeedPolicy, CosmosContainerProperties, CosmosItemRequestOptions, ThroughputProperties}
-import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, CosmosException}
+import com.azure.cosmos.models.{ChangeFeedPolicy, CosmosContainerProperties, PartitionKey, ThroughputProperties}
+import com.azure.cosmos.{BulkOperations, CosmosAsyncClient, CosmosClientBuilder, CosmosException, CosmosItemOperation}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.commons.lang3.RandomStringUtils
 import org.apache.spark.sql.SparkSession
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, Suite}
+import reactor.core.publisher.EmitterProcessor
+import reactor.core.scala.publisher.SMono.PimpJFlux
 
 import java.time.Duration
+import java.util.UUID
+import java.util.concurrent.atomic.AtomicInteger
 import scala.collection.mutable.ListBuffer
 import scala.jdk.CollectionConverters.iterableAsScalaIterableConverter
 // scalastyle:off underscore.import
-
 // scalastyle:on underscore.import
 
 // extending class will have a pre-created spark session
@@ -50,6 +52,12 @@ trait Spark extends BeforeAndAfterAll {
 trait CosmosClient extends BeforeAndAfterAll with BeforeAndAfterEach {
   this: Suite =>
   //scalastyle:off
+  private val Suffix = "ITest"
+  if (!this.getClass.getName.endsWith(Suffix)) {
+    throw new RuntimeException(s"All test classes which have dependency" +
+      s" on Cosmos DB Endpoint must have $Suffix suffix")
+  }
+
   var cosmosClient : CosmosAsyncClient = _
 
   private val databasesToCleanUp = new ListBuffer[String]()
@@ -130,6 +138,17 @@ trait CosmosContainer extends CosmosDatabase {
 
   var cosmosContainer = UUID.randomUUID().toString
 
+  val partitionKeyPath = "/id"
+
+  def getPartitionKeyValue(objectNode: ObjectNode) : Object = {
+    // assumes partitionKeyPath being "/id" hence pkValue is always string
+    objectNode.get("id").textValue()
+  }
+
+  def getId(objectNode: ObjectNode) : String = {
+    objectNode.get("id").textValue()
+  }
+
   override def beforeAll(): Unit = {
     super.beforeAll()
     this.createContainerCore()
@@ -151,7 +170,7 @@ trait CosmosContainer extends CosmosDatabase {
     val throughputProperties = ThroughputProperties.createManualThroughput(Defaults.DefaultContainerThroughput)
     cosmosClient
       .getDatabase(cosmosDatabase)
-      .createContainerIfNotExists(cosmosContainer, "/id", throughputProperties).block()
+      .createContainerIfNotExists(cosmosContainer, partitionKeyPath, throughputProperties).block()
   }
 
   override def afterAll(): Unit = {
@@ -180,9 +199,10 @@ trait CosmosContainerWithRetention extends CosmosContainer {
   this: Suite =>
   //scalastyle:off
 
+
   override def createContainerCore(): Unit = {
     val properties: CosmosContainerProperties =
-      new CosmosContainerProperties(cosmosContainer, "/id")
+      new CosmosContainerProperties(cosmosContainer, partitionKeyPath)
     properties.setChangeFeedPolicy(
       ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(10)))
 
@@ -198,14 +218,41 @@ trait AutoCleanableCosmosContainer extends CosmosContainer with BeforeAndAfterEa
   this: Suite =>
 
   override def afterEach(): Unit = {
-    try super.afterEach() // To be stackable, must call super.afterAll
-    finally {
+
+    try {
       // wait for data to get replicated
       Thread.sleep(1000)
+      System.out.println(s"cleaning the items in container ${cosmosContainer}")
       val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
-      container.queryItems("SELECT * FROM r", classOf[ObjectNode]).flatMap(
-        item => container.deleteItem(item, new CosmosItemRequestOptions())
-      ).blockLast()
+
+      try {
+        val emitter = EmitterProcessor.create[CosmosItemOperation]()
+        val bulkDeleteFlux = container.processBulkOperations(emitter)
+
+        val cnt = new AtomicInteger(0)
+        container.queryItems("SELECT * FROM r", classOf[ObjectNode])
+          .asScala
+          .doOnNext(item => {
+            val operation = BulkOperations.getDeleteItemOperation(getId(item), new PartitionKey(getPartitionKeyValue(item)))
+            cnt.incrementAndGet()
+            emitter.onNext(operation)
+
+          }).doOnComplete(
+          () => {
+            emitter.onComplete()
+          }).subscribe()
+
+        bulkDeleteFlux.blockLast()
+
+        System.out.println(s"Deleted ${cnt.get()} in container ${cosmosContainer}")
+      } catch {
+        case e: Exception => {
+          System.err.println(s"${this.getClass.getName}#afterEach: failed:" + e.getMessage)
+          throw e
+        }
+      }
+    } finally {
+      super.afterEach() // To be stackable, must call super.afterEach
     }
   }
 }
