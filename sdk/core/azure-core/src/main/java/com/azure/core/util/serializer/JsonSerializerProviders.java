@@ -3,7 +3,7 @@
 
 package com.azure.core.util.serializer;
 
-import com.azure.core.implementation.serializer.JacksonSerializerProvider;
+import com.azure.core.implementation.serializer.DefaultJsonSerializer;
 
 import java.util.Iterator;
 import java.util.ServiceLoader;
@@ -46,30 +46,28 @@ public final class JsonSerializerProviders {
      */
     public static JsonSerializer createInstance(boolean useDefaultIfAbsent) {
         if (jsonSerializerProvider == null) {
-            loadDefaultSerializer(useDefaultIfAbsent);
+            loadDefaultSerializer();
         }
 
-        return jsonSerializerProvider.createInstance();
+        if (jsonSerializerProvider != null) {
+            return jsonSerializerProvider.createInstance();
+        }
+
+        if (useDefaultIfAbsent) {
+            return new DefaultJsonSerializer();
+        }
+        throw new IllegalStateException(CANNOT_FIND_JSON_SERIALIZER_PROVIDER);
     }
 
-    private static synchronized void loadDefaultSerializer(boolean useDefaultIfAbsent) {
-        if (attemptedLoad && jsonSerializerProvider != null) {
+    private static synchronized void loadDefaultSerializer() {
+        if (attemptedLoad) {
             return;
-        } else if (attemptedLoad) {
-            throw new IllegalStateException(CANNOT_FIND_JSON_SERIALIZER_PROVIDER);
         }
 
         attemptedLoad = true;
         Iterator<JsonSerializerProvider> iterator = ServiceLoader.load(JsonSerializerProvider.class).iterator();
         if (iterator.hasNext()) {
             jsonSerializerProvider = iterator.next();
-            return;
-        }
-
-        if (useDefaultIfAbsent) {
-            jsonSerializerProvider = new JacksonSerializerProvider();
-        } else {
-            throw new IllegalStateException(CANNOT_FIND_JSON_SERIALIZER_PROVIDER);
         }
     }
 

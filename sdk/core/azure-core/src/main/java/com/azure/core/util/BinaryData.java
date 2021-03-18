@@ -5,6 +5,7 @@ package com.azure.core.util;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.JsonSerializerProvider;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
@@ -202,7 +203,8 @@ public final class BinaryData {
      * <p>
      * If {@code data} is null an empty {@link BinaryData} will be returned.
      * <p>
-     * <b>Note:</b> A {@link JsonSerializer} implementation must be available on the classpath.
+     * <b>Note:</b> This method first looks for a {@link JsonSerializerProvider} implementation on the classpath. If no
+     * implementation is found, a default Jackson-based implementation will be used to serialize the object.
      *
      * <p><strong>Creating an instance from an Object</strong></p>
      *
@@ -222,8 +224,8 @@ public final class BinaryData {
      * <p>
      * If {@code data} is null an empty {@link BinaryData} will be returned.
      * <p>
-     * <b>Note:</b> This method first looks for a {@link JsonSerializer} implementation on the classpath. If no
-     * implementation is found, a default Jackson-based implementation will be used.
+     * <b>Note:</b> This method first looks for a {@link JsonSerializerProvider} implementation on the classpath. If no
+     * implementation is found, a default Jackson-based implementation will be used to serialize the object.
      *
      * <p><strong>Creating an instance from an Object</strong></p>
      *
@@ -335,8 +337,8 @@ public final class BinaryData {
      * The type, represented by {@link Class}, should be a non-generic class, for generic classes use {@link
      * #toObject(TypeReference)}.
      * <p>
-     * <b>Note:</b> This method first looks for a {@link JsonSerializer} implementation on the classpath. If no
-     * implementation is found, a default Jackson-based implementation will be used.
+     * <b>Note:</b> This method first looks for a {@link JsonSerializerProvider} implementation on the classpath. If no
+     * implementation is found, a default Jackson-based implementation will be used to deserialize the object.
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
@@ -360,8 +362,8 @@ public final class BinaryData {
      * generic create a sub-type of {@link TypeReference}, if the type is non-generic use {@link
      * TypeReference#createInstance(Class)}.
      * <p>
-     * <b>Note:</b> This method first looks for a {@link JsonSerializer} implementation on the classpath. If no
-     * implementation is found, a default Jackson-based implementation will be used.
+     * <b>Note:</b> This method first looks for a {@link JsonSerializerProvider} implementation on the classpath. If no
+     * implementation is found, a default Jackson-based implementation will be used to deserialize the object.
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
@@ -462,8 +464,8 @@ public final class BinaryData {
      * The type, represented by {@link Class}, should be a non-generic class, for generic classes use {@link
      * #toObject(TypeReference)}.
      * <p>
-     * <b>Note:</b> This method first looks for a {@link JsonSerializer} implementation on the classpath. If no
-     * implementation is found, a default Jackson-based implementation will be used.
+     * <b>Note:</b> This method first looks for a {@link JsonSerializerProvider} implementation on the classpath. If no
+     * implementation is found, a default Jackson-based implementation will be used to deserialize the object.
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
@@ -487,8 +489,8 @@ public final class BinaryData {
      * generic create a sub-type of {@link TypeReference}, if the type is non-generic use {@link
      * TypeReference#createInstance(Class)}.
      * <p>
-     * <b>Note:</b> This method first looks for a {@link JsonSerializer} implementation on the classpath. If no
-     * implementation is found, a default Jackson-based implementation will be used.
+     * <b>Note:</b> This method first looks for a {@link JsonSerializerProvider} implementation on the classpath. If no
+     * implementation is found, a default Jackson-based implementation will be used to deserialize the object.
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
