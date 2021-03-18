@@ -23,6 +23,7 @@ databricks libraries uninstall --cluster-id $CLUSTER_ID --jar dbfs:/tmp/librarie
 bash sdk/cosmos/azure-cosmos-spark_3-1_2-12/databricks/databricks-cluster-restart.sh $CLUSTER_ID
 
 echo "Copying files to DBFS $JARPATH/$JARFILE"
+dbfs rm --recursive dbfs:/tmp/libraries
 dbfs cp $JARPATH/$JARFILE dbfs:/tmp/libraries/$JARFILE --overwrite
 dbfs ls dbfs:/tmp/libraries/
 
