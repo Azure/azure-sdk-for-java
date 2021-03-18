@@ -17,8 +17,12 @@ then
 	exit 1
 fi
 
-echo "Uninstalling previous $JARFILE in $CLUSTER_ID"
-databricks libraries uninstall --cluster-id $CLUSTER_ID --jar dbfs:/tmp/libraries/$JARFILE
+echo "Uninstalling libraries in $CLUSTER_ID"
+LIBRARIES=$(databricks libraries list --cluster-id $CLUSTER_ID | jq '.library_statuses[] | .library.jar')
+for library in $LIBRARIES
+do
+	databricks libraries uninstall --cluster-id $CLUSTER_ID --jar $library
+done
 
 bash sdk/cosmos/azure-cosmos-spark_3-1_2-12/databricks/databricks-cluster-restart.sh $CLUSTER_ID
 
