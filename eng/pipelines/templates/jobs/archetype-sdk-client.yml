@@ -311,6 +311,11 @@ jobs:
           arguments: '--update-type library --build-type client --sr'
         condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
 
+      - template: ../steps/generate-project-list.yml
+        parameters:
+          Artifacts: ${{parameters.Artifacts}}
+          AdditionalModules: ${{parameters.AdditionalModules}}
+
       - task: PythonScript@0
         # The root pom.xml contains both track 1, data, and track 2, client libraries.
         # This task calls a powershell script that will go through all of the pom files
@@ -321,13 +326,8 @@ jobs:
         displayName: 'Generate Aggregate Pom for From Source Build'
         inputs:
           scriptPath: eng/scripts/generate_from_source_pom.py
-          arguments: '--service-directory ${{parameters.ServiceDirectory}}'
+          arguments: '--project-list $(ProjectList)'
         condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
-
-      - template: ../steps/generate-project-list.yml
-        parameters:
-          Artifacts: ${{parameters.Artifacts}}
-          AdditionalModules: ${{parameters.AdditionalModules}}
 
       - task: Maven@3
         displayName: 'Run tests'

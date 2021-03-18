@@ -3,17 +3,17 @@
 
 # Python version 3.4 or higher is required to run this script.
 
-# Use case: Creates an aggregate POM which contains all modules that will be required in a "From Source" run for the passed service directory.
+# Use case: Creates an aggregate POM which contains all modules that will be required in a "From Source" run for the passed 
+# project list.
 #
 # Flags
-#   --service-directory/--sd: Short-hand name of an Azure SDK service group, such as 'core' or 'storage'. 
-#                             This must be a valid directory when used in the form '/sdk/{value}/'.
+#   --project-list/--pl: List of project included in the From Source run.
 #
 # For example: To create an aggregate POM for Azure Storage
-#    python eng/scripts/generate_from_source_pom.py --sd storage
+#    python eng/scripts/generate_from_source_pom.py --pl com.azure:azure-storage-blob,com.azure:azure-storage-common,...
 #
 # For example: To create an aggregate POM for Azure Core
-#    python eng/scripts/generate_from_source_pom.py --sd core
+#    python eng/scripts/generate_from_source_pom.py --pl com.azure:azure-core,com.azure:azure-core-amqp,com.azure:azure-core-test,...
 #
 # The script must be run at the root of azure-sdk-for-java.
 
@@ -53,25 +53,21 @@ pom_file_end = '''  </modules>
 '''
 
 # Function that creates the aggregate POM.
-def create_from_source_pom(service_directory: str):
-    # First the service directory needs to be determined.
-    client_service_directory = os.path.normpath(root_path + '/sdk/' + service_directory)
-
-    if not os.path.isdir(client_service_directory):
-        raise NotADirectoryError('{} is not a valid service directory.'.format(client_service_directory))
+def create_from_source_pom(project_list: str):
+    project_list_identifiers = project_list.split(',')
 
     # Get the artifact identifiers from client_versions.txt to act as our source of truth.
     artifact_identifier_to_source_version = load_client_artifact_identifiers()
 
-
-    project_dependencies_mapping, dependency_to_project_mapping, project_to_pom_path_mapping = create_dependency_and_path_mappings(artifact_identifier_to_source_version)
+    project_dependencies_mapping, dependency_to_project_mapping, project_to_pom_path_mapping = create_dependency_and_path_mappings(project_list_identifiers, artifact_identifier_to_source_version)
 
     modules = []
-    for root, _, files in os.walk(client_service_directory):
-        for file_name in files:
-            file_path = root + os.sep + file_name
-            if (file_name.startswith('pom') and file_name.endswith('.xml')):
-                modules = add_modules_to_pom(file_path, modules, project_dependencies_mapping, dependency_to_project_mapping, project_to_pom_path_mapping)
+    for project_identifier in project_list_identifiers:
+        if not project_identifier in project_to_pom_path_mapping:
+            continue
+
+        file_path = os.path.normpath(root_path + project_to_pom_path_mapping[project_identifier] + '/pom.xml')
+        modules = add_modules_to_pom(file_path, project_list_identifiers, modules, project_dependencies_mapping, dependency_to_project_mapping, project_to_pom_path_mapping)
 
     # Distinct the modules list.
     modules = list(set(modules))
@@ -107,7 +103,7 @@ def load_client_artifact_identifiers():
     return artifact_identifiers
 
 # Function which creates project dependencies mapping, dependencies to dependent projects mapping, and project to module relative path mapping.
-def create_dependency_and_path_mappings(artifact_identifier_to_source_version: dict):
+def create_dependency_and_path_mappings(project_list_identifiers: list, artifact_identifier_to_source_version: dict):
     project_dependencies_mapping = {}
     dependency_mapping = {}
     module_path_mapping = {}
@@ -118,23 +114,24 @@ def create_dependency_and_path_mappings(artifact_identifier_to_source_version: d
 
             # Only parse files that are pom.xml files.
             if (file_name.startswith('pom') and file_name.endswith('.xml')):
-                add_project_to_dependency_and_module_mappings(file_path, project_dependencies_mapping, artifact_identifier_to_source_version, dependency_mapping, module_path_mapping)
+                add_project_to_dependency_and_module_mappings(file_path, project_dependencies_mapping, project_list_identifiers, artifact_identifier_to_source_version, dependency_mapping, module_path_mapping)
 
     return project_dependencies_mapping, dependency_mapping, module_path_mapping
 
 # Function that constructs the project dependencies map and adds to dependency to project map and project to module relative path map for a track 2 project. 
-def add_project_to_dependency_and_module_mappings(file_path: str, project_dependencies_mapping: dict, artifact_identifier_to_source_version: dict, dependency_mapping: dict, module_path_mapping: dict):
+def add_project_to_dependency_and_module_mappings(file_path: str, project_dependencies_mapping: dict, project_list_identifiers: list, artifact_identifier_to_source_version: dict, dependency_mapping: dict, module_path_mapping: dict):
     if 'eng' in file_path.split(os.sep):
         return
 
     tree = ET.parse(file_path)
     tree_root = tree.getroot()
 
-    # If the project isn't a track 2 POM skip it.
-    if not is_track_two_pom(tree_root):
-        return
-
     project_identifier = create_artifact_identifier(tree_root)
+
+    # If the project isn't a track 2 POM skip it and not one of the project list identifiers.
+    if not project_identifier in project_list_identifiers and not is_track_two_pom(tree_root):
+        return
+    
     module_path_mapping[project_identifier] = os.path.dirname(file_path).replace(root_path, '').replace('\\', '/')
 
     dependencies = element_find(tree_root, 'dependencies')
@@ -158,15 +155,15 @@ def add_project_to_dependency_and_module_mappings(file_path: str, project_depend
         dependency_mapping[dependency_identifier].append(project_identifier)
 
 # Function which finds and adds all dependencies required for a project in the service directory.
-def add_modules_to_pom(pom_path: str, modules: list, project_dependencies_mapping: dict, dependency_to_project_mapping: dict, project_to_pom_path_mapping: dict):
+def add_modules_to_pom(pom_path: str, project_list_identifiers: list, modules: list, project_dependencies_mapping: dict, dependency_to_project_mapping: dict, project_to_pom_path_mapping: dict):
     tree = ET.parse(pom_path)
     tree_root = tree.getroot()
 
-    # If the project isn't a track 2 POM skip it.
-    if not is_track_two_pom(tree_root):
-        return modules
-    
     pom_identifier = create_artifact_identifier(tree_root)
+
+    # If the project isn't a track 2 POM skip it and not one of the project list identifiers.
+    if not pom_identifier in project_list_identifiers and not is_track_two_pom(tree_root):
+        return
 
     # If the project has already been included skip it.
     if project_to_pom_path_mapping[pom_identifier] in modules:
@@ -221,13 +218,13 @@ def element_find(element: ET.Element, path: str):
     return element.find('{http://maven.apache.org/POM/4.0.0}' + path)
 
 def main():
-    parser = argparse.ArgumentParser(description='Replace version numbers in poms and READMEs.')
-    parser.add_argument('--service-directory', '--sd', type=str)
+    parser = argparse.ArgumentParser(description='Generated an aggregate POM for a From Source run.')
+    parser.add_argument('--project-list', '--pl', type=str)
     args = parser.parse_args()
-    if args.service_directory == None:
-        raise ValueError('Missing service directory.')
+    if args.project_list == None:
+        raise ValueError('Missing project list.')
     start_time = time.time()
-    create_from_source_pom(args.service_directory)
+    create_from_source_pom(args.project_list)
     elapsed_time = time.time() - start_time
 
     print('Effective From Source POM File')
