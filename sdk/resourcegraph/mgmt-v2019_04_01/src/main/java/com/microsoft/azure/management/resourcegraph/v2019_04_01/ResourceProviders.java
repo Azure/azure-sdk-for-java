@@ -25,4 +25,12 @@ public interface ResourceProviders extends HasInner<ResourceProvidersInner> {
      */
     Observable<QueryResponse> resourcesAsync(QueryRequest query);
 
+    /**
+     * Queries the resources managed by Azure Resource Manager for all subscriptions specified in the request.
+     *
+     * @param query Request specifying query and its options.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the response
+     */
+    QueryResponse resources(QueryRequest query);
 }

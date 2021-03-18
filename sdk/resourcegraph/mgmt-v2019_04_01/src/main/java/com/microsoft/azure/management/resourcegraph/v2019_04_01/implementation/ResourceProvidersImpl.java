@@ -40,4 +40,9 @@ class ResourceProvidersImpl extends WrapperImpl<ResourceProvidersInner> implemen
         });
     }
 
+    @Override
+    public QueryResponse resources(QueryRequest query) {
+        return this.resourcesAsync(query).toBlocking().last();
+    }
+
 }
