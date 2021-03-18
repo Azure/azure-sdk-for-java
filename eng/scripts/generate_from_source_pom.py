@@ -24,7 +24,7 @@ import time
 import xml.etree.ElementTree as ET
 
 # Only azure-client-sdk-parent and spring-boot-starter-parent are valid parent POMs for Track 2 libraries.
-valid_parents = {"azure-client-sdk-parent": True, "spring-boot-starter-parent": True}
+valid_parents = ['azure-client-sdk-parent', 'spring-boot-starter-parent', 'azure-spring-boot-test-parent']
 
 # From this file get to the root path of the repo.
 root_path = os.path.normpath(os.path.abspath(__file__) + '/../../../')
@@ -66,8 +66,7 @@ def create_from_source_pom(project_list: str):
         if not project_identifier in project_to_pom_path_mapping:
             continue
 
-        file_path = os.path.normpath(root_path + project_to_pom_path_mapping[project_identifier] + '/pom.xml')
-        modules = add_modules_to_pom(file_path, project_list_identifiers, modules, project_dependencies_mapping, dependency_to_project_mapping, project_to_pom_path_mapping)
+        modules = add_modules_to_pom(project_identifier, modules, project_dependencies_mapping, dependency_to_project_mapping, project_to_pom_path_mapping)
 
     # Distinct the modules list.
     modules = list(set(modules))
@@ -155,39 +154,21 @@ def add_project_to_dependency_and_module_mappings(file_path: str, project_depend
         dependency_mapping[dependency_identifier].append(project_identifier)
 
 # Function which finds and adds all dependencies required for a project in the service directory.
-def add_modules_to_pom(pom_path: str, project_list_identifiers: list, modules: list, project_dependencies_mapping: dict, dependency_to_project_mapping: dict, project_to_pom_path_mapping: dict):
-    tree = ET.parse(pom_path)
-    tree_root = tree.getroot()
-
-    pom_identifier = create_artifact_identifier(tree_root)
-
-    # If the project isn't a track 2 POM skip it and not one of the project list identifiers.
-    if not pom_identifier in project_list_identifiers and not is_track_two_pom(tree_root):
-        return
-
+def add_modules_to_pom(pom_identifier: str, modules: list, project_dependencies_mapping: dict, dependency_to_project_mapping: dict, project_to_pom_path_mapping: dict):
     modules.append(project_to_pom_path_mapping[pom_identifier])
     
     # Add all project relative paths that require this library as a dependency.
     if pom_identifier in dependency_to_project_mapping:
         for dependency in dependency_to_project_mapping[pom_identifier]:
             if not project_to_pom_path_mapping[dependency] in modules:
-                modules = add_project_dependencies(dependency, modules, project_dependencies_mapping, project_to_pom_path_mapping)
+                modules = add_modules_to_pom(dependency, modules, project_dependencies_mapping, dependency_to_project_mapping, project_to_pom_path_mapping)
                 modules.append(project_to_pom_path_mapping[dependency])
 
     # Add all dependencies of this library.
-    if pom_identifier in project_dependencies_mapping: # This should be guaranteed based on earlier code but check anyway
-        for dependency in project_dependencies_mapping[pom_identifier]:
-            if not project_to_pom_path_mapping[dependency] in modules:
-                modules = add_project_dependencies(dependency, modules, project_dependencies_mapping, project_to_pom_path_mapping)
-                modules.append(project_to_pom_path_mapping[dependency])
-
-    return modules
-
-def add_project_dependencies(pom_identifier:str, modules: list, project_dependencies_mapping: dict, project_to_pom_path_mapping: dict):
     if pom_identifier in project_dependencies_mapping:
         for dependency in project_dependencies_mapping[pom_identifier]:
             if not project_to_pom_path_mapping[dependency] in modules:
-                modules = add_project_dependencies(dependency, modules, project_dependencies_mapping, project_to_pom_path_mapping)
+                modules = add_modules_to_pom(dependency, modules, project_dependencies_mapping, dependency_to_project_mapping, project_to_pom_path_mapping)
                 modules.append(project_to_pom_path_mapping[dependency])
 
     return modules
