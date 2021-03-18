@@ -73,6 +73,10 @@ def create_from_source_pom(service_directory: str):
             if (file_name.startswith('pom') and file_name.endswith('.xml')):
                 modules = add_modules_to_pom(file_path, modules, project_dependencies_mapping, dependency_to_project_mapping, project_to_pom_path_mapping)
 
+    # Distinct the modules list.
+    modules = list(set(modules))
+    
+    # Sort the modules list for easier reading.
     modules.sort()
     
     with open(file=client_from_source_pom_path, mode='w') as fromSourcePom:
@@ -210,10 +214,10 @@ def main():
     parser = argparse.ArgumentParser(description='Replace version numbers in poms and READMEs.')
     parser.add_argument('--service-directory', '--sd', type=str)
     args = parser.parse_args()
-    #if args.service_directory == None:
-        #raise ValueError('Missing service directory.')
+    if args.service_directory == None:
+        raise ValueError('Missing service directory.')
     start_time = time.time()
-    create_from_source_pom('appconfiguration') #args.service_directory)
+    create_from_source_pom(args.service_directory)
     elapsed_time = time.time() - start_time
 
     print('Effective From Source POM File')
