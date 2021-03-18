@@ -95,7 +95,7 @@ public class SendLinkHandler extends LinkHandler {
         final Sender sender = event.getSender();
         final int credits = sender.getRemoteCredit();
         creditProcessor.emitNext(credits, (signalType, emitResult) -> {
-            logger.info("connectionId[{}] linkName[{}] signal[{}] result[{}] Unable to emit credits [{}].",
+            logger.verbose("connectionId[{}] linkName[{}] signal[{}] result[{}] Unable to emit credits [{}].",
                 getConnectionId(), linkName, signalType, emitResult, credits);
             return false;
         });
@@ -118,7 +118,7 @@ public class SendLinkHandler extends LinkHandler {
                 delivery.getRemoteState(), delivery.isBuffered(), deliveryTag);
 
             deliveryProcessor.emitNext(delivery, (signalType, emitResult) -> {
-                logger.info("connectionId[{}] linkName[{}] signal[{}] result[{}] Unable to emit delivery [{}].",
+                logger.warning("connectionId[{}] linkName[{}] signal[{}] result[{}] Unable to emit delivery [{}].",
                     getConnectionId(), linkName, signalType, emitResult, deliveryTag);
                 return false;
             });

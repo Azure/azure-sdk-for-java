@@ -257,12 +257,12 @@ public class ReactorConnection implements AmqpConnection {
             return;
         }
 
-        logger.info("connectionId[{}], errorCondition[{}]: Disposing of ReactorConnection.", connectionId,
+        logger.verbose("connectionId[{}], errorCondition[{}]: Disposing of ReactorConnection.", connectionId,
             errorCondition != null ? errorCondition : NOT_APPLICABLE);
 
         final String[] keys = sessionMap.keySet().toArray(new String[0]);
         for (String key : keys) {
-            logger.info("connectionId[{}]: Removing session '{}'", connectionId, key);
+            logger.verbose("connectionId[{}]: Removing session '{}'", connectionId, key);
             removeSession(key, errorCondition);
         }
 

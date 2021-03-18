@@ -143,7 +143,7 @@ public class ReceiveLinkHandler extends LinkHandler {
     @Override
     public void onLinkRemoteClose(Event event) {
         deliveries.emitComplete((signalType, emitResult) -> {
-            logger.info("connectionId[{}], entityPath[{}], linkName[{}] Could not emit complete.",
+            logger.warning("connectionId[{}], entityPath[{}], linkName[{}] Could not emit complete.",
                 getConnectionId(), entityPath, linkName);
             return false;
         });

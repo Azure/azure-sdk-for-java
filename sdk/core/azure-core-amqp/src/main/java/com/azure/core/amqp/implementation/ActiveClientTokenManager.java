@@ -76,12 +76,12 @@ public class ActiveClientTokenManager implements TokenManager {
 
                 // If this is the first time authorize is called, the task will not have been scheduled yet.
                 if (!hasScheduled.getAndSet(true)) {
-                    logger.info("Scheduling refresh token task. scopes[{}]", scopes);
+                    logger.verbose("Scheduling refresh token task. scopes[{}]", scopes);
 
                     final Duration firstInterval = Duration.ofMillis(refreshIntervalMS);
                     lastRefreshInterval.set(firstInterval);
                     authorizationResults.emitNext(AmqpResponseCode.ACCEPTED, (signalType, emitResult) -> {
-                        logger.info("signalType[{}] result[{}] Could not emit ACCEPTED.", signalType, emitResult);
+                        logger.verbose("signalType[{}] result[{}] Could not emit ACCEPTED.", signalType, emitResult);
                         return false;
                     });
 
@@ -99,11 +99,11 @@ public class ActiveClientTokenManager implements TokenManager {
         }
 
         authorizationResults.emitComplete((signalType, emitResult) -> {
-            logger.info("signalType[{}] result[{}] Could not close authorizationResults.", signalType, emitResult);
+            logger.verbose("signalType[{}] result[{}] Could not close authorizationResults.", signalType, emitResult);
             return false;
         });
         durationSource.emitComplete((signalType, emitResult) -> {
-            logger.info("signalType[{}] result[{}] Could not close authorizationResults.", signalType, emitResult);
+            logger.verbose("signalType[{}] result[{}] Could not close authorizationResults.", signalType, emitResult);
             return false;
         });
 
@@ -132,16 +132,16 @@ public class ActiveClientTokenManager implements TokenManager {
                     logger.error("Error is transient. Rescheduling authorization task at interval {} ms. scopes[{}]",
                         lastRefresh.toMillis(), scopes, amqpException);
                     durationSource.emitNext(lastRefresh, (signalType, emitResult) -> {
-                        logger.info("signalType[{}] result[{}] Could not emit lastRefresh[{}].", signalType,
+                        logger.verbose("signalType[{}] result[{}] Could not emit lastRefresh[{}].", signalType,
                             emitResult, lastRefresh);
 
                         return false;
                     });
                 })
             .subscribe(interval -> {
-                logger.info("Authorization successful. Refreshing token in {} ms. scopes[{}]", interval, scopes);
+                logger.verbose("Authorization successful. Refreshing token in {} ms. scopes[{}]", interval, scopes);
                 authorizationResults.emitNext(AmqpResponseCode.ACCEPTED, (signalType, emitResult) -> {
-                    logger.info("signalType[{}] result[{}] Could not emit ACCEPTED after refresh.", signalType,
+                    logger.verbose("signalType[{}] result[{}] Could not emit ACCEPTED after refresh.", signalType,
                         emitResult);
                     return false;
                 });
@@ -150,7 +150,7 @@ public class ActiveClientTokenManager implements TokenManager {
                 lastRefreshInterval.set(nextRefresh);
 
                 durationSource.emitNext(nextRefresh, (signalType, emitResult) -> {
-                    logger.info("signalType[{}] result[{}] Could not emit nextRefresh[{}].", signalType,
+                    logger.verbose("signalType[{}] result[{}] Could not emit nextRefresh[{}].", signalType,
                         emitResult, nextRefresh);
 
                     return false;
@@ -164,14 +164,14 @@ public class ActiveClientTokenManager implements TokenManager {
                     if (!hasDisposed.getAndSet(true)) {
                         hasScheduled.set(false);
                         durationSource.emitComplete((signalType, emitResult) -> {
-                            logger.info("signalType[{}] result[{}] Could not close durationSink.", signalType,
+                            logger.verbose("signalType[{}] result[{}] Could not close durationSink.", signalType,
                                 emitResult);
 
                             return false;
                         });
 
                         authorizationResults.emitError(error, (signalType, emitResult) -> {
-                            logger.info("signalType[{}] result[{}] Could not emit authorization error.", signalType,
+                            logger.verbose("signalType[{}] result[{}] Could not emit authorization error.", signalType,
                                 emitResult, error);
 
                             return false;
