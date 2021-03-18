@@ -40,7 +40,7 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
                                      boolean contentResponseOnWriteEnabled) {
         super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential, null, false,
               false, contentResponseOnWriteEnabled);
-        init();
+        init(null);
     }
 
     RxGatewayStoreModel createRxGatewayProxy(

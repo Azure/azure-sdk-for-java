@@ -1,5 +1,5 @@
 # Azure Event Hubs Kafka Spring cloud starter client library for Java
-The Spring Cloud Stream Kafka binder for Azure Event Hubs helps developers to finish the auto-configuration of Event Hubs.  
+This starter for Apache Kafka with Azure Event Hubs helps developers to finish the auto-configuration of Event Hubs with Kafka protocol.  
 
 [Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs] | [Samples][sample]
 

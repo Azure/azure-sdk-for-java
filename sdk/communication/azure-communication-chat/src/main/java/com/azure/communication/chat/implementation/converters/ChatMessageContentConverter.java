@@ -26,7 +26,7 @@ public final class ChatMessageContentConverter {
             .setTopic(obj.getTopic());
 
         if (obj.getInitiatorCommunicationIdentifier() != null) {
-            chatMessageContent.setInitiatorCommunicationIdentifier(
+            chatMessageContent.setInitiator(
                 CommunicationIdentifierConverter.convert(obj.getInitiatorCommunicationIdentifier()));
         }
 
