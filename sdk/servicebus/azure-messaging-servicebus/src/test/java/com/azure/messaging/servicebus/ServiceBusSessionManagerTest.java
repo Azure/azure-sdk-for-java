@@ -14,6 +14,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.LockContainer;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
@@ -25,6 +26,7 @@ import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,6 +34,7 @@ import org.junit.jupiter.api.TestInfo;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
+import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.EmitterProcessor;
@@ -50,6 +53,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -217,6 +221,63 @@ class ServiceBusSessionManagerTest {
             .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
             .thenCancel()
             .verify(Duration.ofSeconds(45));
+    }
+
+    /**
+     * Verify that when we receive for a single, unnamed session, the session Lock renew is called once only.
+     */
+    @Test
+    void singleUnnamedSessionLockRenew() {
+        // Arrange
+        ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null,
+            1);
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+            tracerProvider, messageSerializer, receiverOptions);
+
+        final String sessionId = "session-1";
+        final String lockToken = "a-lock-token";
+        final String linkName = "my-link-name";
+        final OffsetDateTime sessionLockedUntil = OffsetDateTime.now().plus(Duration.ofSeconds(30));
+
+        final Message message = mock(Message.class);
+        final ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
+
+        when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
+        when(receivedMessage.getSessionId()).thenReturn(sessionId);
+        when(receivedMessage.getLockToken()).thenReturn(lockToken);
+
+        final int numberOfMessages = 2;
+
+        when(amqpReceiveLink.getLinkName()).thenReturn(linkName);
+        when(amqpReceiveLink.getSessionId()).thenReturn(Mono.just(sessionId));
+        when(amqpReceiveLink.getSessionLockedUntil())
+            .thenAnswer(invocation -> Mono.just(sessionLockedUntil));
+        when(amqpReceiveLink.updateDisposition(lockToken, Accepted.getInstance())).thenReturn(Mono.empty());
+
+        when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ServiceBusReceiveMode.class), isNull(),
+            any(MessagingEntityType.class), isNull())).thenReturn(Mono.just(amqpReceiveLink));
+
+        when(managementNode.renewSessionLock(sessionId, linkName)).thenReturn(
+            Mono.fromCallable(() -> OffsetDateTime.now().plus(Duration.ofSeconds(5))));
+
+        MockedConstruction<LockRenewalOperation> mockedLockRenewOperation = Mockito.mockConstructionWithAnswer(LockRenewalOperation.class,
+            invocationOnMock -> new LockRenewalOperation("lockToken", Duration.ofSeconds(30), true,
+                (lock) -> Mono.empty(), OffsetDateTime.now()));
+
+        // Act & Assert
+        StepVerifier.create(sessionManager.receive())
+            .then(() -> {
+                for (int i = 0; i < numberOfMessages; i++) {
+                    messageSink.next(message);
+                }
+            })
+            .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
+            .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
+            .thenCancel()
+            .verify(Duration.ofSeconds(45));
+
+        // message onNext should trigger `LockRenewalOperation` once only for one session.
+        Assertions.assertEquals(1, mockedLockRenewOperation.constructed().size());
     }
 
     /**
