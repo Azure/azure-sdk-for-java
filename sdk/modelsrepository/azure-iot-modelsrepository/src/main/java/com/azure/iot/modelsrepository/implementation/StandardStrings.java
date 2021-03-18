@@ -1,6 +1,6 @@
 package com.azure.iot.modelsrepository.implementation;
 
-public class LoggerStandardStrings {
+public class StandardStrings {
     public static final String GenericGetModelsError = "Failure handling \"%s\".";
     public static final String InvalidDtmiFormat = "Invalid DTMI format \"%s\".";
     public static final String ProcessingDtmi = "Processing DTMI \"%s\". ";

@@ -57,7 +57,7 @@ class FileModelFetcher implements ModelFetcher {
 
             Path path = Path.of(new File(tryContentPath).getPath());
 
-            logger.info(String.format(LoggerStandardStrings.FetchingModelContent, path.toString()));
+            logger.info(String.format(StandardStrings.FetchingModelContent, path.toString()));
 
             if (Files.exists(path)) {
                 try {
@@ -70,19 +70,16 @@ class FileModelFetcher implements ModelFetcher {
                 }
             }
 
-            logger.error(String.format(LoggerStandardStrings.ErrorFetchingModelContent, path.toString()));
+            logger.error(String.format(StandardStrings.ErrorFetchingModelContent, path.toString()));
 
-            fnfError = String.format(LoggerStandardStrings.ErrorFetchingModelContent, tryContentPath);
+            fnfError = String.format(StandardStrings.ErrorFetchingModelContent, tryContentPath);
         }
 
         return Mono.error(new ServiceResponseException(fnfError));
     }
 
     private String getPath(String dtmi, URI repositoryUri, boolean expanded) throws URISyntaxException, MalformedURLException {
-        return DtmiConventions.getModelUri(
-            dtmi,
-            repositoryUri,
-            expanded)
-            .toURL().getPath();
+        return DtmiConventions.getModelUri(dtmi, repositoryUri, expanded)
+            .getPath();
     }
 }

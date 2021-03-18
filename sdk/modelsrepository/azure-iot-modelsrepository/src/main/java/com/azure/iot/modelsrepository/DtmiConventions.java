@@ -4,8 +4,8 @@
 package com.azure.iot.modelsrepository;
 
 import com.azure.core.util.UrlBuilder;
-import com.azure.iot.modelsrepository.implementation.LoggerStandardStrings;
 import com.azure.iot.modelsrepository.implementation.ModelsRepositoryConstants;
+import com.azure.iot.modelsrepository.implementation.StandardStrings;
 
 import java.io.File;
 import java.net.URI;
@@ -84,7 +84,7 @@ public class DtmiConventions {
 
     static String dtmiToPath(String dtmi) {
         if (!isValidDtmi(dtmi)) {
-            throw new IllegalArgumentException(String.format(LoggerStandardStrings.InvalidDtmiFormat, dtmi));
+            throw new IllegalArgumentException(String.format(StandardStrings.InvalidDtmiFormat, dtmi));
         }
 
         return dtmi

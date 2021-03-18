@@ -58,7 +58,7 @@ public final class ModelsRepositoryImpl {
             this.client.getHost(), path, context)
             .onErrorMap(error ->
                 new ServiceResponseException(
-                    String.format(LoggerStandardStrings.ErrorFetchingModelContent, path),
+                    String.format(StandardStrings.ErrorFetchingModelContent, path),
                     error));
     }
 

@@ -61,7 +61,7 @@ public final class RepositoryHandler {
 
         String targetDtmi = remainingWork.poll();
 
-        logger.info(String.format(LoggerStandardStrings.ProcessingDtmi, targetDtmi));
+        logger.info(String.format(StandardStrings.ProcessingDtmi, targetDtmi));
 
         return modelFetcher.fetchAsync(targetDtmi, repositoryUri, resolutionOption, context)
             .map(result -> new TempCustomType(result, currentResults))
@@ -91,7 +91,7 @@ public final class RepositoryHandler {
                         List<String> dependencies = metadata.getDependencies();
 
                         if (dependencies.size() > 0) {
-                            logger.info(LoggerStandardStrings.DiscoveredDependencies, String.join("\", \"", dependencies));
+                            logger.info(StandardStrings.DiscoveredDependencies, String.join("\", \"", dependencies));
                         }
 
                         remainingWork.addAll(dependencies);
@@ -99,8 +99,8 @@ public final class RepositoryHandler {
 
                     String parsedDtmi = metadata.getId();
                     if (!parsedDtmi.equals(targetDtmi)) {
-                        logger.error(String.format(LoggerStandardStrings.IncorrectDtmiCasing, targetDtmi, parsedDtmi));
-                        String errorMessage = String.format(LoggerStandardStrings.GenericGetModelsError, targetDtmi) + String.format(LoggerStandardStrings.IncorrectDtmiCasing, targetDtmi, parsedDtmi);
+                        logger.error(String.format(StandardStrings.IncorrectDtmiCasing, targetDtmi, parsedDtmi));
+                        String errorMessage = String.format(StandardStrings.GenericGetModelsError, targetDtmi) + String.format(StandardStrings.IncorrectDtmiCasing, targetDtmi, parsedDtmi);
 
                         return Mono.error(new AzureException(errorMessage));
                     }
@@ -118,7 +118,7 @@ public final class RepositoryHandler {
         Queue<String> modelsToProcess = new LinkedList<>();
         for (String dtmi : dtmis) {
             if (!DtmiConventions.isValidDtmi(dtmi)) {
-                throw new IllegalArgumentException(String.format(LoggerStandardStrings.InvalidDtmiFormat, dtmi));
+                throw new IllegalArgumentException(String.format(StandardStrings.InvalidDtmiFormat, dtmi));
             }
 
             modelsToProcess.add(dtmi);
