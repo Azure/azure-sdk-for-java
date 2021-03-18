@@ -146,7 +146,7 @@ public abstract class TestRunner {
         return new CosmosDBDataAccessor<>(dataLocator,
             keyExtractor,
             new ResponseHandler<>(documentTransformer, keyExtractor),
-            new MetricsFactory(metricsRegistry, clock),
+            new MetricsFactory(metricsRegistry, clock, configuration.getEnvironment()),
             clock,
             new OperationsLogger(Duration.ofSeconds(10)));
     }

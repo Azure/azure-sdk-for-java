@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.benchmark.linkedin.impl.metrics;
 
+import com.azure.cosmos.benchmark.Configuration;
 import com.azure.cosmos.benchmark.linkedin.impl.Metrics;
 import com.azure.cosmos.benchmark.linkedin.impl.models.CollectionKey;
 import com.codahale.metrics.MetricRegistry;
@@ -19,17 +20,22 @@ public class MetricsFactory {
 
     private final MetricRegistry _metricsRegistry;
     private final Clock _clock;
+    private final Configuration.Environment _environment;
 
     // Local cache enables reusing the same Metric instance
     //   {CollectionKey -> {OperationName -> Metrics} map}
     private final Map<CollectionKey, Map<String, Metrics>> _collectionKeyToMetricsMap;
 
-    public MetricsFactory(final MetricRegistry metricsRegistry, final Clock clock) {
+    public MetricsFactory(final MetricRegistry metricsRegistry,
+        final Clock clock,
+        final Configuration.Environment environment) {
         Preconditions.checkNotNull(metricsRegistry, "The MetricsRegistry can not be null");
         Preconditions.checkNotNull(clock, "Need a non-null Clock instance for latency tracking");
+        Preconditions.checkNotNull(environment, "Need a valid value for the CTL environment");
 
         _metricsRegistry = metricsRegistry;
         _clock = clock;
+        _environment = environment;
         _collectionKeyToMetricsMap = new ConcurrentHashMap<>(DEFAULT_INITIAL_CAPACITY);
     }
 
@@ -42,6 +48,6 @@ public class MetricsFactory {
             key -> new ConcurrentHashMap<>(DEFAULT_INITIAL_CAPACITY));
 
         return operationMetricsMap.computeIfAbsent(operationName,
-            operation -> new MetricsImpl(_metricsRegistry, _clock, collectionKey, operation));
+            operation -> new MetricsImpl(_metricsRegistry, _clock, collectionKey, operation, _environment));
     }
 }
