@@ -9,6 +9,7 @@ import com.azure.core.http.policy.*;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.iot.modelsrepository.implementation.ModelsRepositoryConstants;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -27,7 +28,6 @@ import java.util.Objects;
 public final class ModelsRepositoryClientBuilder {
     // This is the name of the properties file in this repo that contains the default properties
     private static final String MODELS_REPOSITORY_PROPERTIES = "azure-iot-modelsrepository.properties";
-    private static final String DEFAULT_MODELS_REPOSITORY_ENDPOINT = "https://devicemodels.azure.com";
 
     // These are the keys to the above properties file that define the client library's name and version for use in the user agent string
     private static final String SDK_NAME = "name";
@@ -69,7 +69,7 @@ public final class ModelsRepositoryClientBuilder {
         properties = CoreUtils.getProperties(MODELS_REPOSITORY_PROPERTIES);
         httpLogOptions = new HttpLogOptions();
         try {
-            this.repositoryEndpoint = new URI(DEFAULT_MODELS_REPOSITORY_ENDPOINT);
+            this.repositoryEndpoint = new URI(ModelsRepositoryConstants.DEFAULT_MODELS_REPOSITORY_ENDPOINT);
         } catch (URISyntaxException e) {
             // We know it won't throw since it's a known endpoint and has been validated.
         }

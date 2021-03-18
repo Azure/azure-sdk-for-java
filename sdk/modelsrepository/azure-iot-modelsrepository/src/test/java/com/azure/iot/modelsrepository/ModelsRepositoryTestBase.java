@@ -15,7 +15,8 @@ public class ModelsRepositoryTestBase extends TestBase {
 
     private static final String PLAYBACK_ENDPOINT = "https://playback.net/";
 
-    protected ModelsRepositoryClientBuilder getModelsRepositoryClientbuilder(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion) throws URISyntaxException {
+
+    protected ModelsRepositoryClientBuilder getModelsRepositoryClientbuilder(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion, URI repositoryUri) throws URISyntaxException {
         ModelsRepositoryClientBuilder builder = new ModelsRepositoryClientBuilder();
         URI playbackRepositoryUri = new URI(PLAYBACK_ENDPOINT);
         builder.serviceVersion(serviceVersion);
@@ -34,19 +35,20 @@ public class ModelsRepositoryTestBase extends TestBase {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
+        builder.repositoryEndpoint(repositoryUri);
         builder.httpClient(httpClient);
         builder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
         return builder;
     }
 
-    protected ModelsRepositoryClient getClient(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion) throws URISyntaxException {
-        return getModelsRepositoryClientbuilder(httpClient, serviceVersion)
+    protected ModelsRepositoryClient getClient(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion, URI repositoryUri) throws URISyntaxException {
+        return getModelsRepositoryClientbuilder(httpClient, serviceVersion, repositoryUri)
             .buildClient();
     }
 
-    protected ModelsRepositoryAsyncClient getAsyncClient(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion) throws URISyntaxException {
-        return getModelsRepositoryClientbuilder(httpClient, serviceVersion)
+    protected ModelsRepositoryAsyncClient getAsyncClient(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion, URI repositoryUri) throws URISyntaxException {
+        return getModelsRepositoryClientbuilder(httpClient, serviceVersion, repositoryUri)
             .buildAsyncClient();
     }
 }

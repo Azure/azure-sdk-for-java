@@ -169,7 +169,7 @@ public final class ModelsRepositoryAPIImplBuilder {
      */
     public ModelsRepositoryAPIImpl buildClient() {
         if (host == null) {
-            this.host = "https://devicemodels.azure.com/";
+            this.host = ModelsRepositoryConstants.DEFAULT_MODELS_REPOSITORY_ENDPOINT;
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();

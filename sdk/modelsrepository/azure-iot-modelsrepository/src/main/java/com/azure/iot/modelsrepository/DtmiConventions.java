@@ -5,6 +5,7 @@ package com.azure.iot.modelsrepository;
 
 import com.azure.core.util.UrlBuilder;
 import com.azure.iot.modelsrepository.implementation.LoggerStandardStrings;
+import com.azure.iot.modelsrepository.implementation.ModelsRepositoryConstants;
 
 import java.io.File;
 import java.net.URI;
@@ -43,7 +44,7 @@ public class DtmiConventions {
         String dtmiPath = dtmiToPath(dtmi);
 
         if (fromExpanded) {
-            dtmiPath = dtmiPath.replace(".json", ".expanded.json");
+            dtmiPath = dtmiPath.replace(ModelsRepositoryConstants.JSON_EXTENSION, ModelsRepositoryConstants.JSON_EXPANDED_EXTENSION);
         }
 
         UrlBuilder urlBuilder = new UrlBuilder();
@@ -87,9 +88,9 @@ public class DtmiConventions {
         }
 
         return dtmi
-                .toLowerCase()
-                .replaceAll(":", "/")
-                .replaceAll(";", "-")
-                + ".json";
+            .toLowerCase()
+            .replaceAll(":", "/")
+            .replaceAll(";", "-")
+            + ModelsRepositoryConstants.JSON_EXTENSION;
     }
 }

@@ -4,6 +4,7 @@
 package com.azure.iot.modelsrepository.implementation;
 
 import com.azure.core.exception.AzureException;
+import com.azure.core.exception.ServiceResponseException;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.iot.modelsrepository.DtmiConventions;
@@ -11,7 +12,9 @@ import com.azure.iot.modelsrepository.ModelsDependencyResolution;
 import com.azure.iot.modelsrepository.implementation.models.FetchResult;
 import reactor.core.publisher.Mono;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -51,7 +54,8 @@ class FileModelFetcher implements ModelFetcher {
         String fnfError = "";
         while (work.size() != 0) {
             String tryContentPath = work.poll();
-            Path path = Path.of(tryContentPath);
+
+            Path path = Path.of(new File(tryContentPath).getPath());
 
             logger.info(String.format(LoggerStandardStrings.FetchingModelContent, path.toString()));
 
@@ -71,14 +75,14 @@ class FileModelFetcher implements ModelFetcher {
             fnfError = String.format(LoggerStandardStrings.ErrorFetchingModelContent, tryContentPath);
         }
 
-        return Mono.error(new AzureException(fnfError));
+        return Mono.error(new ServiceResponseException(fnfError));
     }
 
-    private String getPath(String dtmi, URI repositoryUri, boolean expanded) throws URISyntaxException {
+    private String getPath(String dtmi, URI repositoryUri, boolean expanded) throws URISyntaxException, MalformedURLException {
         return DtmiConventions.getModelUri(
             dtmi,
             repositoryUri,
             expanded)
-            .getPath();
+            .toURL().getPath();
     }
 }

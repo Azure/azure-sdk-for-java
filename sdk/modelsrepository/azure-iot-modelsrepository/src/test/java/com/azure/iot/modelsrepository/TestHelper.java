@@ -6,12 +6,15 @@ package com.azure.iot.modelsrepository;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.iot.modelsrepository.implementation.ModelsRepositoryConstants;
 import org.junit.jupiter.params.provider.Arguments;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
 import static com.azure.core.test.TestBase.getHttpClients;
@@ -19,8 +22,11 @@ import static com.azure.core.test.TestBase.getHttpClients;
 public class TestHelper {
     public static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final String AZURE_IOT_MODELSREPOSITORY_TEST_SERVICE_VERSIONS = "AZURE_IOT_MODELSREPOSITORY_TEST_SERVICE_VERSIONS";
+    private static final String LOCAL_TEST_REPOSITORY_PATH = System.getProperty("user.dir") + "/src/test/resources/TestModelRepo/";
+
     private static final String SERVICE_VERSION_FROM_ENV =
         Configuration.getGlobalConfiguration().get(AZURE_IOT_MODELSREPOSITORY_TEST_SERVICE_VERSIONS);
+
 
     /**
      * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients} and
@@ -32,12 +38,22 @@ public class TestHelper {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
-        getHttpClients()
-            .forEach(httpClient -> Arrays
-                .stream(ModelsRepositoryServiceVersion.values())
-                .filter(TestHelper::shouldServiceVersionBeTested)
-                .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion))));
+        getURIs()
+            .forEach(uri ->
+                getHttpClients()
+                    .forEach(httpClient -> Arrays
+                        .stream(ModelsRepositoryServiceVersion.values())
+                        .filter(TestHelper::shouldServiceVersionBeTested)
+                        .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion, uri)))));
+
         return argumentsList.stream();
+    }
+
+    static Stream<URI> getURIs() {
+        ArrayList<URI> uriList = new ArrayList<>();
+        uriList.add(DtmiConventions.convertToUri(ModelsRepositoryConstants.DEFAULT_MODELS_REPOSITORY_ENDPOINT));
+        uriList.add(DtmiConventions.convertToUri(LOCAL_TEST_REPOSITORY_PATH));
+        return StreamSupport.stream(uriList.spliterator(), false);
     }
 
     /**

@@ -4,6 +4,7 @@
 package com.azure.iot.modelsrepository.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.iot.modelsrepository.implementation.ModelsRepositoryConstants;
 
 /**
  * The FetchResult class has the purpose of containing key elements of
@@ -67,6 +68,6 @@ public class FetchResult {
             return false;
         }
 
-        return this.path.toLowerCase().endsWith(".expanded.json");
+        return this.path.toLowerCase().endsWith(ModelsRepositoryConstants.JSON_EXPANDED_EXTENSION);
     }
 }
