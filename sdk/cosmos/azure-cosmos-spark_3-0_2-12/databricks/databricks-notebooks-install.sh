@@ -36,6 +36,7 @@ do
 	fi
 
 	JOB_STATE=$(databricks runs get --run-id $RUN_ID | jq '.state.life_cycle_state')
+
 	if [[ -z "$JOB_STATE" ]]
 	then
 		echo "Could not find state for job $JOB_ID"
@@ -43,9 +44,10 @@ do
 		exit 1
 	fi
 	
+	echo "Run $RUN_ID is on state '$JOB_STATE'"
 	while [[ "$JOB_STATE" != "INTERNAL_ERROR" && "$JOB_STATE" != "TERMINATED" ]]
 	do
-		echo "Run $RUN_ID is on state $JOB_STATE"
+		echo "Run $RUN_ID is on state '$JOB_STATE'"
 		JOB_STATE=$(databricks runs get --run-id $RUN_ID | jq '.state.life_cycle_state')
 		sleep 10
 	done
