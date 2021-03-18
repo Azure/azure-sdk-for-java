@@ -40,6 +40,8 @@ public final class BuilderHelper {
         CoreUtils.getProperties("azure-storage-file-share.properties");
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
+    private static final String CLIENT_NAME = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+    private static final String CLIENT_VERSION = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
 
     private static final Pattern IP_URL_PATTERN = Pattern
         .compile("(?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})|(?:localhost)");
@@ -116,11 +118,9 @@ public final class BuilderHelper {
         ClientOptions clientOptions) {
         configuration = (configuration == null) ? Configuration.NONE : configuration;
 
-        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
         String applicationId = clientOptions.getApplicationId() != null ? clientOptions.getApplicationId()
             : logOptions.getApplicationId();
-        return new UserAgentPolicy(applicationId, clientName, clientVersion, configuration);
+        return new UserAgentPolicy(applicationId, CLIENT_NAME, CLIENT_VERSION, configuration);
     }
 
     /**

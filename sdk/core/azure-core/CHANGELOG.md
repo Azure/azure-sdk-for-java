@@ -2,6 +2,11 @@
 
 ## 1.15.0-beta.1 (Unreleased)
 
+### New Features
+
+- Added `Binary.toByteBuffer` which returns a read-only view of the `BinaryData`.
+- Added `ProxyOptions.fromConfiguration(Configuration, boolean)` which allows for configuring if the returned proxy
+  is resolved.
 
 ## 1.14.0 (2021-03-08)
 

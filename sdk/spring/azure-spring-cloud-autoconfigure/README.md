@@ -6,9 +6,9 @@ This package is for Spring Cloud Starters of Azure services. It helps Spring Clo
 ## Getting started
 
 ### Prerequisites
-- [Java Development Kit (JDK)][jdk_link] with version 8 or above
-- [Azure Subscription][azure_subscription]
-- [Maven][maven] 3.0 and above
+
+### Prerequisites
+- [Environment checklist][environment_checklist]
 
 ### Include the Package
 To start a new project using Azure, go on [start.spring.io][spring_io] and select "Azure
@@ -93,7 +93,6 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-cloud-azure-autoconfigure
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#azure-spring-cloud-autoconfigure
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
-[azure_subscription]: https://azure.microsoft.com/free
 [spring_io]: https://start.spring.io
 [logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
@@ -112,4 +111,4 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [event_hubs_kafka_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-kafka
 [service_bus_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus
 [storage_queue_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-storage-queue
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
