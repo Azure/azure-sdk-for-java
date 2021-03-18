@@ -43,7 +43,7 @@ public class ModelsQuery {
 
     private static String parseRootDtmi(JsonNode root) {
         if (root.isObject()) {
-            JsonNode id = root.get("@id");
+            JsonNode id = root.get(ModelsRepositoryConstants.DTDL_ID);
 
             if (id != null && id.isTextual()) {
                 return id.textValue();
@@ -61,21 +61,21 @@ public class ModelsQuery {
             return dependencies;
         }
 
-        JsonNode extend = root.get("extends");
+        JsonNode extend = root.get(ModelsRepositoryConstants.DTDL_EXTENDS);
         if (extend == null) {
             return dependencies;
         }
 
         if (extend.isTextual()) {
             dependencies.add(extend.textValue());
-        } else if (isOfDtdlType(extend, "Interface")) {
+        } else if (isOfDtdlType(extend, ModelsRepositoryConstants.DTDL_INTERFACE)) {
             ModelMetadata metadata = parseInterface(extend);
             dependencies.addAll(metadata.getDependencies());
         } else if (extend.isArray()) {
             for (JsonNode extendNode : extend) {
                 if (extendNode.isTextual()) {
                     dependencies.add(extendNode.textValue());
-                } else if (isOfDtdlType(extendNode, "Interface")) {
+                } else if (isOfDtdlType(extendNode, ModelsRepositoryConstants.DTDL_INTERFACE)) {
                     ModelMetadata metadata = parseInterface(extendNode);
                     dependencies.addAll(metadata.getDependencies());
                 }
@@ -89,10 +89,10 @@ public class ModelsQuery {
         List<String> dependencies = new ArrayList<>();
 
         if (root.isObject()) {
-            JsonNode contents = root.get("contents");
+            JsonNode contents = root.get(ModelsRepositoryConstants.DTDL_CONTENTS);
             if (contents != null && contents.isArray()) {
                 for (JsonNode contentNode : contents) {
-                    if (isOfDtdlType(contentNode, "Component")) {
+                    if (isOfDtdlType(contentNode, ModelsRepositoryConstants.DTDL_COMPONENT)) {
                         dependencies.addAll(parseComponent(contentNode));
                     }
                 }
@@ -106,18 +106,18 @@ public class ModelsQuery {
         List<String> dependencies = new ArrayList<>();
 
         if (root.isObject()) {
-            JsonNode componentSchema = root.get("schema");
+            JsonNode componentSchema = root.get(ModelsRepositoryConstants.DTDL_SCHEMA);
             if (componentSchema != null) {
                 if (componentSchema.isTextual()) {
                     dependencies.add(componentSchema.textValue());
-                } else if (isOfDtdlType(componentSchema, "Interface")) {
+                } else if (isOfDtdlType(componentSchema, ModelsRepositoryConstants.DTDL_INTERFACE)) {
                     ModelMetadata metadata = parseInterface(componentSchema);
                     dependencies.addAll(metadata.getDependencies());
                 } else if (componentSchema.isArray()) {
                     for (JsonNode componentNode : componentSchema) {
                         if (componentNode.isTextual()) {
                             dependencies.add(componentNode.textValue());
-                        } else if (isOfDtdlType(componentNode, "Interface")) {
+                        } else if (isOfDtdlType(componentNode, ModelsRepositoryConstants.DTDL_INTERFACE)) {
                             ModelMetadata metadata = parseInterface(componentNode);
                             dependencies.addAll(metadata.getDependencies());
                         }
@@ -131,7 +131,7 @@ public class ModelsQuery {
 
     private static boolean isOfDtdlType(JsonNode root, String objectTypeString) {
         if (root.isObject()) {
-            JsonNode objectType = root.get("@type");
+            JsonNode objectType = root.get(ModelsRepositoryConstants.DTDL_TYPE);
             if (objectType != null) {
                 return objectType.isTextual() && objectType.textValue().equals(objectTypeString);
             }
