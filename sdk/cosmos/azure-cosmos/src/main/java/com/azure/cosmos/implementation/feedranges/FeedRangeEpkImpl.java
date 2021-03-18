@@ -39,7 +39,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
 
     public FeedRangeEpkImpl(final Range<String> range) {
         checkNotNull(range, "Argument 'range' must not be null");
-        if (range.getMin().compareTo(range.getMax()) > 1) {
+        if (range.getMin().compareTo(range.getMax()) > 0) {
             throw new IllegalArgumentException("The provided range is incorrect min is larger than max");
         }
         this.range = range;
