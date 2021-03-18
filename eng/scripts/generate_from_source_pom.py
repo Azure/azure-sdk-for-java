@@ -178,13 +178,23 @@ def add_modules_to_pom(pom_path: str, modules: list, project_dependencies_mappin
     if pom_identifier in dependency_to_project_mapping:
         for dependency in dependency_to_project_mapping[pom_identifier]:
             if not project_to_pom_path_mapping[dependency] in modules:
-                modules = add_modules_to_pom(os.path.normpath(root_path + project_to_pom_path_mapping[dependency] + '/pom.xml'), modules, project_dependencies_mapping, dependency_to_project_mapping, project_to_pom_path_mapping)
+                modules = add_project_dependencies(dependency, modules, project_dependencies_mapping, project_to_pom_path_mapping)
                 modules.append(project_to_pom_path_mapping[dependency])
 
     # Add all dependencies of this library.
     if pom_identifier in project_dependencies_mapping: # This should be guaranteed based on earlier code but check anyway
         for dependency in project_dependencies_mapping[pom_identifier]:
             if not project_to_pom_path_mapping[dependency] in modules:
+                modules = add_project_dependencies(dependency, modules, project_dependencies_mapping, project_to_pom_path_mapping)
+                modules.append(project_to_pom_path_mapping[dependency])
+
+    return modules
+
+def add_project_dependencies(pom_identifier:str, modules: list, project_dependencies_mapping: dict, project_to_pom_path_mapping: dict):
+    if pom_identifier in project_dependencies_mapping:
+        for dependency in project_dependencies_mapping[pom_identifier]:
+            if not project_to_pom_path_mapping[dependency] in modules:
+                modules = add_project_dependencies(dependency, modules, project_dependencies_mapping, project_to_pom_path_mapping)
                 modules.append(project_to_pom_path_mapping[dependency])
 
     return modules
