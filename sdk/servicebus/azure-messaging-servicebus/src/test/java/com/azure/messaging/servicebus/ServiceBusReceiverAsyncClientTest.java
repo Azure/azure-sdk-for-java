@@ -305,8 +305,9 @@ class ServiceBusReceiverAsyncClientTest {
         final int numberOfEvents = 1;
         final List<Message> messages = getMessages();
         final String lockToken = UUID.randomUUID().toString();
+        final Duration maxLockRenewDuration = Duration.ofMinutes(1);
         ServiceBusReceiverAsyncClient mySessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, Duration.ofMinutes(1),
+            new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, maxLockRenewDuration,
                 false, "Some-Session", null), connectionProcessor,
             CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
 
@@ -327,11 +328,7 @@ class ServiceBusReceiverAsyncClientTest {
             .expectNextCount(numberOfEvents)
             .verifyComplete();
 
-        // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
-        verify(amqpReceiveLink, atMost(numberOfEvents + 1)).addCredits(PREFETCH);
-        verify(amqpReceiveLink, never()).updateDisposition(eq(lockToken), any());
-
-        // message onNext should not trigger `FluxAutoLockRenew`.
+        // Message onNext should not trigger `FluxAutoLockRenew` for each message because this is session entity.
         Assertions.assertEquals(0, mockedAutoLockRenew.constructed().size());
     }
 
