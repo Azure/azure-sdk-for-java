@@ -8,7 +8,6 @@ import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.List;
 
 /**
  * Content of a chat message.
@@ -23,7 +22,7 @@ public final class ChatMessageContent {
     private String topic;
 
     @JsonProperty(value = "participants")
-    private List<ChatParticipant> participants;
+    private Iterable<ChatParticipant> participants;
 
     @JsonProperty(value = "initiatorCommunicationIdentifier")
     private CommunicationIdentifier initiator;
@@ -73,7 +72,7 @@ public final class ChatMessageContent {
      *
      * @return the participants value.
      */
-    public List<ChatParticipant> getParticipants() {
+    public Iterable<ChatParticipant> getParticipants() {
         return this.participants;
     }
 
@@ -83,7 +82,7 @@ public final class ChatMessageContent {
      * @param participants the participants value to set.
      * @return the ChatMessageContent object itself.
      */
-    public ChatMessageContent setParticipants(List<ChatParticipant> participants) {
+    public ChatMessageContent setParticipants(Iterable<ChatParticipant> participants) {
         this.participants = participants;
         return this;
     }
