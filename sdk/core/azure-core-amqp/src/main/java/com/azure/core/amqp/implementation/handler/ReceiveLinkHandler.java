@@ -42,7 +42,7 @@ public class ReceiveLinkHandler extends LinkHandler {
     @Override
     public void close() {
         deliveries.emitComplete((signalType, emitResult) -> {
-            logger.info("connectionId[{}], entityPath[{}], linkName[{}] Could not emit complete.",
+            logger.verbose("connectionId[{}], entityPath[{}], linkName[{}] Could not emit complete.",
                 getConnectionId(), entityPath, linkName);
             return false;
         });
@@ -61,7 +61,7 @@ public class ReceiveLinkHandler extends LinkHandler {
     public void onLinkLocalOpen(Event event) {
         final Link link = event.getLink();
         if (link instanceof Receiver) {
-            logger.info("onLinkLocalOpen connectionId[{}], entityPath[{}], linkName[{}], localSource[{}]",
+            logger.verbose("onLinkLocalOpen connectionId[{}], entityPath[{}], linkName[{}], localSource[{}]",
                 getConnectionId(), entityPath, link.getName(), link.getSource());
         }
     }
@@ -143,8 +143,8 @@ public class ReceiveLinkHandler extends LinkHandler {
     @Override
     public void onLinkRemoteClose(Event event) {
         deliveries.emitComplete((signalType, emitResult) -> {
-            logger.warning("connectionId[{}], entityPath[{}], linkName[{}] Could not emit complete.",
-                getConnectionId(), entityPath, linkName);
+            logger.info("connectionId[{}] linkName[{}] signalType[{}] emitResult[{}] Could not complete 'deliveries'.",
+                getConnectionId(), linkName, signalType, emitResult);
             return false;
         });
 
