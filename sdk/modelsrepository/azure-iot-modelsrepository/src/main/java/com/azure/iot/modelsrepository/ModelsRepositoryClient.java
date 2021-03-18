@@ -48,14 +48,14 @@ public final class ModelsRepositoryClient {
     /**
      * Gets a collection of model definitions.
      *
-     * @param dtmi                       A well-formed DTDL model Id. See <a href="https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md">DTDL specs</a>. For example 'dtmi:com:example:Thermostat;1'.
-     * @param dependencyResolutionOption A ModelDependencyResolution value to force model resolution behavior.
+     * @param dtmi                 A well-formed DTDL model Id. See <a href="https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md">DTDL specs</a>. For example 'dtmi:com:example:Thermostat;1'.
+     * @param dependencyResolution A ModelDependencyResolution value to force model resolution behavior.
      * @return A Map containing the model definition(s) where the key is the dtmi
      * and the value is the raw model definition string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, String> getModels(String dtmi, ModelsDependencyResolution dependencyResolutionOption, Context context) {
-        return modelsRepositoryAsyncClient.getModels(dtmi, dependencyResolutionOption, context).block();
+    public Map<String, String> getModels(String dtmi, ModelsDependencyResolution dependencyResolution, Context context) {
+        return modelsRepositoryAsyncClient.getModels(dtmi, dependencyResolution, context).block();
     }
 
     /**
@@ -73,13 +73,13 @@ public final class ModelsRepositoryClient {
     /**
      * Gets a collection of model definitions.
      *
-     * @param dtmis                      An Iterable of well-formed DTDL model Ids. See <a href="https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md">DTDL specs</a>. For example 'dtmi:com:example:Thermostat;1'.
-     * @param dependencyResolutionOption A DependencyResolutionOption value to force model resolution behavior.
+     * @param dtmis                An Iterable of well-formed DTDL model Ids. See <a href="https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md">DTDL specs</a>. For example 'dtmi:com:example:Thermostat;1'.
+     * @param dependencyResolution A DependencyResolutionOption value to force model resolution behavior.
      * @return A Map containing the model definition(s) where the key is the dtmi
      * and the value is the raw model definition string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, String> getModels(Iterable<String> dtmis, ModelsDependencyResolution dependencyResolutionOption, Context context) {
-        return modelsRepositoryAsyncClient.getModels(dtmis, dependencyResolutionOption, context).block();
+    public Map<String, String> getModels(Iterable<String> dtmis, ModelsDependencyResolution dependencyResolution, Context context) {
+        return modelsRepositoryAsyncClient.getModels(dtmis, dependencyResolution, context).block();
     }
 }
