@@ -153,10 +153,6 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
         this.partitionIdExpression = partitionIdExpression;
     }
 
-    public void setPartitionIdExpressionString(String partitionIdExpressionString) {
-        setPartitionIdExpression(EXPRESSION_PARSER.parseExpression(partitionIdExpressionString));
-    }
-
     private String toDestination(Message<?> message) {
         if (message.getHeaders().containsKey(AzureHeaders.NAME)) {
             return message.getHeaders().get(AzureHeaders.NAME, String.class);
@@ -170,7 +166,7 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
         MessageHeaders headers = message.getHeaders();
         // Priority setting partitionId
         String partitionId = this.partitionIdExpression != null
-            ? String.valueOf(this.partitionIdExpression.getValue(this.evaluationContext, message, Integer.class))
+            ? this.partitionIdExpression.getValue(this.evaluationContext, message, String.class)
             : headers.get(AzureHeaders.PARTITION_ID, String.class);
         if (StringUtils.hasText(partitionId)) {
             partitionSupplier.setPartitionId(partitionId);
