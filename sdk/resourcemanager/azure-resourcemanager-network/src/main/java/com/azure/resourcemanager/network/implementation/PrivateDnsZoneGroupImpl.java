@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PrivateDnsZoneGroupImpl extends IndependentChildImpl<
+class PrivateDnsZoneGroupImpl extends IndependentChildImpl<
     PrivateDnsZoneGroup, PrivateEndpoint, PrivateDnsZoneGroupInner, PrivateDnsZoneGroupImpl, NetworkManager>
     implements PrivateDnsZoneGroup, PrivateDnsZoneGroup.Definition, PrivateDnsZoneGroup.Update {
 
@@ -37,6 +37,12 @@ public class PrivateDnsZoneGroupImpl extends IndependentChildImpl<
             new PrivateDnsZoneConfig()
                 .withName(name)
                 .withPrivateDnsZoneId(privateDnsZoneId));
+        return this;
+    }
+
+    @Override
+    public Update withoutPrivateDnsZoneConfigure(String name) {
+        innerModel().privateDnsZoneConfigs().removeIf(config -> config.name().equals(name));
         return this;
     }
 

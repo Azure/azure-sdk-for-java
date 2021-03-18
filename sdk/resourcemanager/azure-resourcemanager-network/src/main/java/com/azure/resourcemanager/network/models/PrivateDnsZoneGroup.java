@@ -76,14 +76,34 @@ public interface PrivateDnsZoneGroup extends
 
     /** The template for update operation, containing all the settings that can be modified. */
     interface Update extends
+        UpdateStages.WithZoneConfigure,
         Appliable<PrivateDnsZoneGroup> {
-
     }
 
     /**
      * Grouping of all the update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of a update allowing to specify the private DNS zone configure.
+         */
+        interface WithZoneConfigure {
+            /**
+             * Specifies the private DNS zone configure.
+             *
+             * @param name the name of the configure
+             * @param privateDnsZoneId the ID of the private DNS zone
+             * @return the next stage of the update
+             */
+            Update withPrivateDnsZoneConfigure(String name, String privateDnsZoneId);
 
+            /**
+             * Removes the private DNS zone configure.
+             *
+             * @param name the name of the configure
+             * @return the next stage of the update
+             */
+            Update withoutPrivateDnsZoneConfigure(String name);
+        }
     }
 }

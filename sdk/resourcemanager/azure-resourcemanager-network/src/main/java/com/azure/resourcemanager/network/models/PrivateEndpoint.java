@@ -14,6 +14,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
+import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public interface PrivateEndpoint extends
     Refreshable<PrivateEndpoint>,
     Updatable<PrivateEndpoint.Update> {
 
-    /** A client-side representation of a private endpoint connection. */
+    /** A client-side representation of a private link service connection. */
     interface PrivateLinkServiceConnection extends
         HasInnerModel<com.azure.resourcemanager.network.models.PrivateLinkServiceConnection>,
         ChildResource<PrivateEndpoint> {
@@ -60,7 +61,7 @@ public interface PrivateEndpoint extends
          */
         boolean isManualApproval();
 
-        /** Grouping of private endpoint connection definition stages. */
+        /** Grouping of private link service connection definition stages. */
         interface DefinitionStages {
             /**
              * The first stage of the definition.
@@ -162,6 +163,28 @@ public interface PrivateEndpoint extends
             PrivateLinkServiceConnection.DefinitionStages.WithApprovalMethod<ParentT>,
             PrivateLinkServiceConnection.DefinitionStages.WithAttach<ParentT> {
         }
+
+        /** Grouping of private link service connection update stages. */
+        interface UpdateStages {
+            /**
+             * The stage of the definition allowing to specify the approval method.
+             */
+            interface WithApprovalMethod {
+                /**
+                 * Specifies the request message.
+                 *
+                 * @param requestMessage the request message
+                 * @return the next stage of the update
+                 */
+                PrivateLinkServiceConnection.Update withRequestMessage(String requestMessage);
+            }
+        }
+
+        /** The entirety of a private link service update. */
+        interface Update extends
+            PrivateLinkServiceConnection.UpdateStages.WithApprovalMethod,
+            Settable<PrivateEndpoint.Update> {
+        }
     }
 
     /**
@@ -250,10 +273,10 @@ public interface PrivateEndpoint extends
              * Specifies the connection to remote resource.
              *
              * @param name the name of the connection
-             * @return the next stage of private endpoint definition
+             * @return the first stage of private link service connection definition
              */
-            PrivateLinkServiceConnection.DefinitionStages.Blank<WithCreate> definePrivateLinkServiceConnection(
-                String name);
+            PrivateLinkServiceConnection.DefinitionStages.Blank<? extends WithCreate>
+                definePrivateLinkServiceConnection(String name);
         }
 
         /**
@@ -267,14 +290,42 @@ public interface PrivateEndpoint extends
     /** The template for a private endpoint update operation, containing all the settings that can be modified. */
     interface Update extends
         Appliable<PrivateEndpoint>,
+        UpdateStages.WithPrivateLinkServiceConnection,
         Resource.UpdateWithTags<Update> {
-
     }
 
     /**
      * Grouping of all the private endpoint update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of a private endpoint update allowing to specify the private endpoint connection.
+         */
+        interface WithPrivateLinkServiceConnection {
+            /**
+             * Removes the connection to remote resource.
+             *
+             * @param name the name of the connection
+             * @return the next stage of update
+             */
+            Update withoutPrivateLinkServiceConnection(String name);
 
+            /**
+             * Specifies the connection to remote resource.
+             *
+             * @param name the name of the connection
+             * @return the first stage of private link service connection definition
+             */
+            PrivateLinkServiceConnection.DefinitionStages.Blank<? extends Update>
+                definePrivateLinkServiceConnection(String name);
+
+            /**
+             * Updates the connection to remote resource.
+             *
+             * @param name the name of the connection
+             * @return the first stage of private link service connection update
+             */
+            PrivateLinkServiceConnection.Update updatePrivateLinkServiceConnection(String name);
+        }
     }
 }
