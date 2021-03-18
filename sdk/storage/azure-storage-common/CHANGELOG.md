@@ -1,6 +1,6 @@
 # Release History
 
-## 12.11.0-beta.1 (Unreleased)
+## 12.10.1 (2021-03-19)
 - Removed a deep copy in PayloadSizeGate
 
 ## 12.10.0 (2021-01-14)
