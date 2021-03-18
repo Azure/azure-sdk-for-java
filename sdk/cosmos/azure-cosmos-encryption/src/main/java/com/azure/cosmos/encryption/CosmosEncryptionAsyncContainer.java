@@ -10,6 +10,8 @@ import com.azure.cosmos.encryption.implementation.CosmosResponseFactory;
 import com.azure.cosmos.encryption.implementation.EncryptionProcessor;
 import com.azure.cosmos.encryption.implementation.EncryptionUtils;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosItemResponseHelper;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor;
 import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
@@ -47,6 +49,7 @@ public class CosmosEncryptionAsyncContainer {
     private EncryptionProcessor encryptionProcessor;
 
     private CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
+    CosmosItemResponseBuilderAccessor cosmosItemResponseBuilderAccessor;
 
     CosmosEncryptionAsyncContainer(CosmosAsyncContainer container,
                                    CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient) {
@@ -54,6 +57,7 @@ public class CosmosEncryptionAsyncContainer {
         this.cosmosEncryptionAsyncClient = cosmosEncryptionAsyncClient;
         this.encryptionProcessor = new EncryptionProcessor(this.container, cosmosEncryptionAsyncClient);
         this.encryptionScheduler = Schedulers.parallel();
+        this.cosmosItemResponseBuilderAccessor = CosmosItemResponseHelper.getCosmosItemResponseBuilderAccessor();
     }
 
     EncryptionProcessor getEncryptionProcessor() {
@@ -90,7 +94,7 @@ public class CosmosEncryptionAsyncContainer {
                 finalRequestOptions)
                 .publishOn(encryptionScheduler)
                 .flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
-                    this.encryptionProcessor.decrypt(ModelBridgeInternal.getByteArrayContent(cosmosItemResponse)))
+                    this.encryptionProcessor.decrypt(this.cosmosItemResponseBuilderAccessor.getByteArrayContent(cosmosItemResponse)))
                     .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse,
                         (Class<T>) item.getClass()))));
     }
@@ -142,7 +146,7 @@ public class CosmosEncryptionAsyncContainer {
             partitionKey,
             finalRequestOptions)
             .publishOn(encryptionScheduler).flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
-                this.encryptionProcessor.decrypt(ModelBridgeInternal.getByteArrayContent(cosmosItemResponse)))
+                this.encryptionProcessor.decrypt(this.cosmosItemResponseBuilderAccessor.getByteArrayContent(cosmosItemResponse)))
                 .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse, (Class<T>) item.getClass()))));
     }
 
@@ -178,7 +182,7 @@ public class CosmosEncryptionAsyncContainer {
             partitionKey,
             finalRequestOptions)
             .publishOn(encryptionScheduler).flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
-                this.encryptionProcessor.decrypt(ModelBridgeInternal.getByteArrayContent(cosmosItemResponse)))
+                this.encryptionProcessor.decrypt(this.cosmosItemResponseBuilderAccessor.getByteArrayContent(cosmosItemResponse)))
                 .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse, (Class<T>) item.getClass()))));
     }
 
@@ -202,7 +206,7 @@ public class CosmosEncryptionAsyncContainer {
             requestOptions, byte[].class);
 
         return responseMessageMono.publishOn(encryptionScheduler).flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
-            this.encryptionProcessor.decrypt(ModelBridgeInternal.getByteArrayContent(cosmosItemResponse)))
+            this.encryptionProcessor.decrypt(this.cosmosItemResponseBuilderAccessor.getByteArrayContent(cosmosItemResponse)))
             .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse, classType)));
     }
 
@@ -343,7 +347,7 @@ public class CosmosEncryptionAsyncContainer {
                                                                  Mono<byte[]> bytesMono) {
         return bytesMono.flatMap(
             bytes -> {
-                ModelBridgeInternal.setByteArrayContent(rsp, bytes);
+                this.cosmosItemResponseBuilderAccessor.setByteArrayContent(rsp, bytes);
                 return Mono.just(rsp);
             }
         );

@@ -859,24 +859,4 @@ public final class ModelBridgeInternal {
         checkNotNull(options, "Argument 'options' must not be null.");
         options.setRequestContinuation(eTag);
     }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> CosmosItemResponse<T> createCosmosItemResponse(ResourceResponse<Document> response, byte[] contentAsByteArray, Class<T> classType, ItemDeserializer itemDeserializer) {
-        return new CosmosItemResponse<>(response, contentAsByteArray, classType, itemDeserializer);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static byte[] getByteArrayContent(CosmosItemResponse<byte[]> response) {
-        return response.responseBodyAsByteArray;
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setByteArrayContent(CosmosItemResponse<byte[]> response, byte[] content) {
-        response.responseBodyAsByteArray = content;
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static ResourceResponse<Document> getResourceResponse(CosmosItemResponse<byte[]> response) {
-        return response.resourceResponse;
-    }
 }

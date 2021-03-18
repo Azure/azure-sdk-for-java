@@ -3,16 +3,24 @@
 
 package com.azure.cosmos.encryption.implementation;
 
-import com.azure.cosmos.encryption.models.EncryptionModelBridgeInternal;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor;
 import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
 
 public class CosmosResponseFactory {
-    public <T> CosmosItemResponse<T> createItemResponse(CosmosItemResponse<byte[]> responseMessage, Class<T> classType) {
-        return ModelBridgeInternal.createCosmosItemResponse(
-            ModelBridgeInternal.getResourceResponse(responseMessage),
-            ModelBridgeInternal.getByteArrayContent(responseMessage),
+    CosmosItemResponseBuilderAccessor cosmosItemResponseBuilderAccessor;
+
+    public CosmosResponseFactory() {
+        cosmosItemResponseBuilderAccessor =
+            ImplementationBridgeHelpers.CosmosItemResponseHelper.getCosmosItemResponseBuilderAccessor();
+    }
+
+    public <T> CosmosItemResponse<T> createItemResponse(CosmosItemResponse<byte[]> responseMessage,
+                                                        Class<T> classType) {
+        return cosmosItemResponseBuilderAccessor.createCosmosItemResponse(
+            cosmosItemResponseBuilderAccessor.getResourceResponse(responseMessage),
+            cosmosItemResponseBuilderAccessor.getByteArrayContent(responseMessage),
             classType,
             new ItemDeserializer.JsonDeserializer());
     }
