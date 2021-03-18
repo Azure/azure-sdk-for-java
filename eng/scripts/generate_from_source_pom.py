@@ -165,10 +165,6 @@ def add_modules_to_pom(pom_path: str, project_list_identifiers: list, modules: l
     if not pom_identifier in project_list_identifiers and not is_track_two_pom(tree_root):
         return
 
-    # If the project has already been included skip it.
-    if project_to_pom_path_mapping[pom_identifier] in modules:
-        return modules
-
     modules.append(project_to_pom_path_mapping[pom_identifier])
     
     # Add all project relative paths that require this library as a dependency.
