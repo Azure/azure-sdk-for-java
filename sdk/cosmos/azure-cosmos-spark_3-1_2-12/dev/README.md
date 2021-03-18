@@ -34,9 +34,9 @@ mvn -e -Dgpg.skip -DskipTests -Dmaven.javadoc.skip=true -Dspotbugs.skip=false -D
 ```
 
 
-### How to do a Rlease
+### How to do a Release
 
-First make sure all the newly third party libraries are tracked see [OSS compliance for each Spark Release].
+First make sure all the newly added third party libraries are tracked see OSS compliance section.
 
 The release process is currently manual.
 
@@ -58,7 +58,7 @@ cp azure-sdk-for-java/sdk/cosmos/azure-cosmos-spark_3-1_2-12/dependency-reduced-
 NOTE: to make sure the maven dependency resolver works correctly you need to take the `dependency-reduced-pom.xml` as the pom file instead of the original pom file.
 Use the partner release pipeline to release.
 
-### OSS compliance for each Spark Release
+### OSS compliance
 
 For each release we need to go over the OSS compliance steps:
 
