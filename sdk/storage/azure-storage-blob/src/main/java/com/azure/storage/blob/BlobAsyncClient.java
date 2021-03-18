@@ -417,6 +417,29 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response containing the information of the uploaded block blob.
      */
     public Mono<Response<BlockBlobItem>> uploadWithResponse(BlobParallelUploadOptions options) {
+        /*
+        The following is catalogue of all the places we allocate memory/copy in any upload method a justifaction for
+        that case current as of 1/13/21.
+        - Async buffered upload chunked upload: We used an UploadBufferPool. This will allocate memory as needed up to
+        the configured maximum. This is necessary to support replayability on retires. Each flux to come out of the pool
+        is a Flux.just() of up to two deep copied buffers, so it is replayable. It also allows us to optimize the upload
+        by uploading the maximum amount per block. Finally, in the case of chunked uploading, it allows the customer to
+        pass data without knowing the size. Note that full upload does not need a deep copy because the Flux emitted by
+        the PayloadSizeGate in the full upload case is already replayable and the length is maintained by the gate.
+        - Sync buffered upload: converting the input stream to a flux involves creating a buffer for each stream read.
+        Using a new buffer per read ensures that the reads are safe and not overwriting data in buffers that were passed
+        to the async upload but have not yet been sent. This covers both full and chunked uploads in the sync case.
+        - BlobOutputStream: A deep copy is made of any buffer passed to write. While async copy does streamline our code
+        and allow for some potential parallelization, this extra copy is necessary to ensure that customers writing to
+        the stream in a tight loop are not overwriting data previously given to the stream before it has been sent.
+
+        Taken together, these should support retries and protect against data being overwritten in all upload scenarios.
+
+        One note is that there is no deep copy in the uploadFull method. This is unnecessary as explained in
+        uploadFullOrChunked because the Flux coming out of the size gate in that case is already replayable and reusing
+        buffers is not a common scenario for async like it is in sync (and we already buffer in sync to convert from a
+        stream).
+         */
         try {
             StorageImplUtils.assertNotNull("options", options);
 
@@ -456,6 +479,12 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         Flux<ByteBuffer> data, long length, ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers,
         Map<String, String> metadata, Map<String, String> tags, AccessTier tier,
         BlobRequestConditions requestConditions, boolean computeMd5) {
+
+        /*
+        Note that there is no need to buffer here as the flux returned by the size gate in this case is created
+        from an iterable and is therefore replayable.
+         */
+
         // Report progress as necessary.
         Flux<ByteBuffer> progressData = ProgressReporter.addProgressReporting(data,
             parallelTransferOptions.getProgressReceiver());
