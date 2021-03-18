@@ -55,7 +55,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     private final Scheduler scheduler;
     private final String fullyQualifiedNamespace;
     private final CbsAuthorizationType authorizationType;
-    private final boolean crossEntityTransaction;
+    private final boolean distributedTransactionsSupport;
 
     /**
      * Creates a new AMQP connection that uses proton-j.
@@ -83,7 +83,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
         this.messageSerializer = messageSerializer;
         this.scheduler = connectionOptions.getScheduler();
         this.fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();
-        this.crossEntityTransaction = crossEntityTransaction;
+        this.distributedTransactionsSupport = crossEntityTransaction;
     }
 
     @Override
@@ -182,15 +182,16 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
 
     @Override
     public Mono<AmqpSession> createSession(String sessionName) {
-        return super.createSession(crossEntityTransaction ? CROSS_ENTITY_TRANSACTIONS_LINK_NAME : sessionName,
-            crossEntityTransaction);
+        return super.createSession(distributedTransactionsSupport ? CROSS_ENTITY_TRANSACTIONS_LINK_NAME : sessionName,
+            distributedTransactionsSupport);
     }
 
     @Override
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler,
-        boolean coordinatorRequired) {
+        boolean distributedTransactionsSupport) {
         return new ServiceBusReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
-            getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer, retryOptions, coordinatorRequired);
+            getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer, retryOptions,
+            distributedTransactionsSupport);
     }
 
     /**
