@@ -31,7 +31,7 @@ parameters:
 stages:
   - stage: Build
     jobs:
-    - template: ../jobs/archetype-sdk-client.yml
+    - template: /eng/pipelines/templates/jobs/tests.yml
       parameters:
         ServiceDirectory: ${{ parameters.ServiceDirectory }}
         ${{ if eq(parameters.ServiceDirectory, 'template') }}:
@@ -52,5 +52,5 @@ stages:
           TestPipeline: true
         ArtifactName: packages
         TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
-        TargetDocRepoName: ${{ parameters.TargetDocRepoName }} 
+        TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
 
