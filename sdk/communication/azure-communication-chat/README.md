@@ -174,7 +174,7 @@ chatThreadClient.updateTopic("New Topic");
 
 #### Send a chat message
 
-Use the `sendMessage` method to sends a chat message to the chat thread that the `chatThreadClient` was created with.
+Use the `sendMessage` method to send a chat message to the chat thread that the `chatThreadClient` was created with.
 `sendChatMessageOptions` is used to describe the chat message request, an example is shown in the code snippet below.
 
 - Use `content` to provide the chat message content;
