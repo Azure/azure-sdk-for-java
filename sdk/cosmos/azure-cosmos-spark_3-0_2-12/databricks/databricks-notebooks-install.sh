@@ -43,7 +43,7 @@ do
 		exit 1
 	fi
 	
-	while [ "$JOB_STATE" != "INTERNAL_ERROR"] && ["$JOB_STATE" != "TERMINATED" ]
+	while [[ "$JOB_STATE" != "INTERNAL_ERROR"] && ["$JOB_STATE" != "TERMINATED" ]]
 	do
 		echo "Run $RUN_ID is on state $JOB_STATE"
 		JOB_STATE=$(databricks runs get --run-id $RUN_ID | jq '.state.life_cycle_state')
@@ -52,7 +52,7 @@ do
 	
 	JOB_MESSAGE=$(databricks runs get --run-id $RUN_ID | jq '.state.state_message')
   
-	if [ "$JOB_STATE" == "INTERNAL_ERROR"]
+	if [[ "$JOB_STATE" == "INTERNAL_ERROR"]]
 	then
 		echo "Notebook execution for $f failed with $JOB_MESSAGE"
 		databricks jobs delete --job-id $JOB_ID
@@ -61,5 +61,5 @@ do
 	
 	JOB_RESULT=$(databricks runs get --run-id $RUN_ID | jq '.state.result_state')
 	databricks jobs delete --job-id $JOB_ID
-	echo "Notebook execution had result $JOB_RESULT with message $JOB_MESSAGE"
+	echo "Notebook execution for run $RUN_ID with state $JOB_STATE had result $JOB_RESULT with message $JOB_MESSAGE"
 done
