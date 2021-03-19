@@ -3,14 +3,15 @@
 package com.azure.communication.chat;
 
 import com.azure.communication.chat.models.AddChatParticipantsResult;
-import com.azure.communication.chat.models.AddChatParticipantsOptions;
 import com.azure.communication.chat.models.ChatMessage;
 import com.azure.communication.chat.models.ChatParticipant;
 import com.azure.communication.chat.models.ChatMessageReadReceipt;
+import com.azure.communication.chat.models.ChatThreadProperties;
 import com.azure.communication.chat.models.ListChatMessagesOptions;
 import com.azure.communication.chat.models.ListParticipantsOptions;
 import com.azure.communication.chat.models.ListReadReceiptOptions;
 import com.azure.communication.chat.models.SendChatMessageOptions;
+import com.azure.communication.chat.models.SendChatMessageResult;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
@@ -21,12 +22,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.util.Collections;
-
 /**
  * Sync Client that supports chat thread operations.
  */
-@ServiceClient(builder = ChatClientBuilder.class, isAsync = false)
+@ServiceClient(builder = ChatThreadClientBuilder.class, isAsync = false)
 public final class ChatThreadClient {
     private final ClientLogger logger = new ClientLogger(ChatThreadClient.class);
 
@@ -81,25 +80,25 @@ public final class ChatThreadClient {
     /**
      * Adds participants to a thread. If participants already exist, no change occurs.
      *
-     * @param options Options for adding participants.
+     * @param participants Collection of participants to add.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addParticipants(AddChatParticipantsOptions options) {
+    public void addParticipants(Iterable<ChatParticipant> participants) {
 
-        this.client.addParticipants(options).block();
+        this.client.addParticipants(participants).block();
     }
 
     /**
      * Adds participants to a thread. If participants already exist, no change occurs.
      *
-     * @param options Options for adding participants.
+     * @param participants Collection of participants to add.
      * @param context The context to associate with this operation.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AddChatParticipantsResult> addParticipantsWithResponse(
-        AddChatParticipantsOptions options, Context context) {
-        return this.client.addParticipants(options, context).block();
+        Iterable<ChatParticipant> participants, Context context) {
+        return this.client.addParticipants(participants, context).block();
     }
 
     /**
@@ -109,9 +108,7 @@ public final class ChatThreadClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void addParticipant(ChatParticipant participant) {
-
-        this.client.addParticipants(new AddChatParticipantsOptions()
-            .setParticipants(Collections.singletonList(participant))).block();
+        this.client.addParticipant(participant).block();
     }
 
     /**
@@ -119,14 +116,11 @@ public final class ChatThreadClient {
      *
      * @param participant The new participant.
      * @param context The context to associate with this operation.
-     * @return the completion.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AddChatParticipantsResult> addParticipantWithResponse(ChatParticipant participant,
-                                                                          Context context) {
-
-        return this.client.addParticipants(new AddChatParticipantsOptions()
-            .setParticipants(Collections.singletonList(participant)), context).block();
+    public Response<Void> addParticipantWithResponse(ChatParticipant participant, Context context) {
+        return this.client.addParticipantWithResponse(participant, context).block();
     }
 
     /**
@@ -168,29 +162,6 @@ public final class ChatThreadClient {
      * Gets the participants of a thread.
      *
      * @param listParticipantsOptions The request options.
-     * @return the participants of a thread.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ChatParticipant> listParticipants(ListParticipantsOptions listParticipantsOptions) {
-        return new PagedIterable<>(this.client.listParticipants(listParticipantsOptions));
-    }
-
-    /**
-     * Gets the participants of a thread.
-     *
-     * @param context The context to associate with this operation.
-     * @return the participants of a thread.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ChatParticipant> listParticipants(Context context) {
-
-        return new PagedIterable<>(this.client.listParticipants(context));
-    }
-
-    /**
-     * Gets the participants of a thread.
-     *
-     * @param listParticipantsOptions The request options.
      * @param context The context to associate with this operation.
      * @return the participants of a thread.
      */
@@ -205,10 +176,10 @@ public final class ChatThreadClient {
      *
      * @param options Options for sending the message.
      * @param context The context to associate with this operation.
-     * @return the MessageId.
+     * @return the SendChatMessageResult.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<String> sendMessageWithResponse(SendChatMessageOptions options, Context context) {
+    public Response<SendChatMessageResult> sendMessageWithResponse(SendChatMessageOptions options, Context context) {
 
         return this.client.sendMessage(options, context).block();
     }
@@ -217,10 +188,10 @@ public final class ChatThreadClient {
      * Sends a message to a thread.
      *
      * @param options Options for sending the message.
-     * @return the MessageId.
+     * @return the SendChatMessageResult.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public String sendMessage(SendChatMessageOptions options) {
+    public SendChatMessageResult sendMessage(SendChatMessageOptions options) {
 
         return this.client.sendMessage(options).block();
     }
@@ -385,29 +356,6 @@ public final class ChatThreadClient {
      * Gets read receipts for a thread.
      *
      * @param listReadReceiptOptions The additional options for this operation.
-     * @return read receipts for a thread.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ChatMessageReadReceipt> listReadReceipts(ListReadReceiptOptions listReadReceiptOptions) {
-        return new PagedIterable<>(this.client.listReadReceipts(listReadReceiptOptions));
-    }
-
-    /**
-     * Gets read receipts for a thread.
-     *
-     * @param context The context to associate with this operation.
-     * @return read receipts for a thread.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ChatMessageReadReceipt> listReadReceipts(Context context) {
-
-        return new PagedIterable<>(this.client.listReadReceipts(context));
-    }
-
-    /**
-     * Gets read receipts for a thread.
-     *
-     * @param listReadReceiptOptions The additional options for this operation.
      * @param context The context to associate with this operation.
      * @return read receipts for a thread.
      */
@@ -416,4 +364,26 @@ public final class ChatThreadClient {
                                                                   Context context) {
         return new PagedIterable<>(this.client.listReadReceipts(listReadReceiptOptions, context));
     }
+
+    /**
+     * Gets chat thread properties.
+     *
+     * @return chat thread properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ChatThreadProperties getProperties() {
+        return this.client.getProperties().block();
+    }
+
+    /**
+     * Gets chat thread properties.
+     *
+     * @param context The context to associate with this operation.
+     * @return chat thread properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ChatThreadProperties> getPropertiesWithResponse(Context context) {
+        return this.client.getProperties(context).block();
+    }
+
 }

@@ -2,8 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.communication.chat;
 
-import com.azure.communication.chat.models.ChatThread;
-import com.azure.communication.chat.models.ChatThreadInfo;
+import com.azure.communication.chat.models.ChatThreadItem;
 import com.azure.communication.chat.models.CreateChatThreadOptions;
 import com.azure.communication.chat.models.CreateChatThreadResult;
 import com.azure.communication.chat.models.ListChatThreadsOptions;
@@ -76,31 +75,6 @@ public final class ChatClient {
     }
 
     /**
-     * Gets a chat thread.
-     *
-     * @param chatThreadId Chat thread id to get.
-     * @return a chat thread.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ChatThread getChatThread(String chatThreadId) {
-
-        return this.client.getChatThread(chatThreadId).block();
-    }
-
-    /**
-     * Gets a chat thread.
-     *
-     * @param chatThreadId Chat thread id to get.
-     * @param context The context to associate with this operation.
-     * @return a chat thread.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ChatThread> getChatThreadWithResponse(String chatThreadId, Context context) {
-
-        return this.client.getChatThread(chatThreadId, context).block();
-    }
-
-    /**
      * Deletes a chat thread.
      *
      * @param chatThreadId Chat thread id to delete.
@@ -129,7 +103,7 @@ public final class ChatClient {
      * @return the paged list of chat threads of a user.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ChatThreadInfo> listChatThreads() {
+    public PagedIterable<ChatThreadItem> listChatThreads() {
 
         return new PagedIterable<>(this.client.listChatThreads());
     }
@@ -142,7 +116,7 @@ public final class ChatClient {
      * @return the paged list of chat threads of a user.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ChatThreadInfo> listChatThreads(ListChatThreadsOptions listThreadsOptions, Context context) {
+    public PagedIterable<ChatThreadItem> listChatThreads(ListChatThreadsOptions listThreadsOptions, Context context) {
 
         return new PagedIterable<>(this.client.listChatThreads(listThreadsOptions, context));
     }
