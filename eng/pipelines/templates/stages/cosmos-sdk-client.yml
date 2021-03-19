@@ -50,7 +50,7 @@ stages:
 
     - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
       parameters:
-        JobTemplatePath: /eng/pipelines/templates/jobs/live-tests.yml
+        JobTemplatePath: /eng/pipelines/templates/jobs/live.tests.yml
         MatrixConfigs:
           - Name: Cosmos_emulator_integration
             Path: eng/pipelines/templates/stages/cosmos-emulator-matrix.json
