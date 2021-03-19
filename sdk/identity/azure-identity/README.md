@@ -132,7 +132,7 @@ public void createDefaultAzureCredentialForIntelliJ() {
 
 ## Managed Identity Support
 The [Managed identity authentication](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview) is supported via `ManagedIdentityCredential` for following Azure Services:
-* [Azure Virtual Machines](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/how-to-use-vm-token)
+* [Azure Virtual Machines](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/how-to-use-vm-token)
 * [Azure App Service](https://docs.microsoft.com/azure/app-service/overview-managed-identity?tabs=dotnet)
 * [Azure Kubernetes Service](https://docs.microsoft.com/azure/aks/use-managed-identity)
 * [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/msi-authorization)
