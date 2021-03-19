@@ -133,11 +133,11 @@ public void createDefaultAzureCredentialForIntelliJ() {
 ## Managed Identity Support
 The [Managed identity authentication](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview) is supported via `ManagedIdentityCredential` for following Azure Services:
 * [Azure Virtual Machines](https://azure.microsoft.com/en-ca/services/virtual-machines/#documentation)
-* [Azure App Service](https://docs.microsoft.com/en-us/azure/app-service/)
-* [Azure Kubernetes Service](https://docs.microsoft.com/en-us/azure/aks/use-managed-identity)
-* [Azure Cloud Shell](https://docs.microsoft.com/en-us/azure/cloud-shell/msi-authorization)
-* [Azure Arc](https://docs.microsoft.com/en-us/azure/azure-arc/servers/managed-identity-authentication)
-* [Azure Service Fabric](https://docs.microsoft.com/en-us/azure/service-fabric/concepts-managed-identity)
+* [Azure App Service](https://docs.microsoft.com/azure/app-service/)
+* [Azure Kubernetes Service](https://docs.microsoft.com/azure/aks/use-managed-identity)
+* [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/msi-authorization)
+* [Azure Arc](https://docs.microsoft.com/azure/azure-arc/servers/managed-identity-authentication)
+* [Azure Service Fabric](https://docs.microsoft.com/azure/service-fabric/concepts-managed-identity)
 
 
 ## Credential classes
@@ -236,7 +236,7 @@ The [Managed identity authentication](https://docs.microsoft.com/azure/active-di
       <td>interactively authenticates a user with the default system browser</td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#enable-applications-for-interactive-browser-oauth-2-flow">configuration</a></td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-interactively-in-the-browser">example</a></td>
-      <td><a href="https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow">OAuth2 authentication code</a></td>
+      <td><a href="https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow">OAuth2 authentication code</a></td>
     </tr>
     <tr>
       <td><code>UsernamePasswordCredential</code></td>
@@ -250,7 +250,7 @@ The [Managed identity authentication](https://docs.microsoft.com/azure/active-di
       <td>authenticate a user with a previously obtained authorization code as part of an Oauth 2 flow</td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#enable-applications-for-oauth-2-auth-code-flow">configuration</a></td>
       <td></td>
-      <td><a href="https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow">OAuth2 authentication code</a></td>
+      <td><a href="https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow">OAuth2 authentication code</a></td>
     </tr>
   </tbody>
 </table>
@@ -273,14 +273,14 @@ The [Managed identity authentication](https://docs.microsoft.com/azure/active-di
       <td>authenticate in a development environment with the enabled user or service principal in Azure CLI</td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#sign-in-azure-cli-for-azureclicredential">configuration</a></td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-azure-cli">example</a></td>
-      <td><a href="https://docs.microsoft.com/en-us/cli/azure/authenticate-azure-cli">Azure CLI authentication</a></td>
+      <td><a href="https://docs.microsoft.com/cli/azure/authenticate-azure-cli">Azure CLI authentication</a></td>
     </tr>
     <tr>
       <td><code>IntelliJCredential</code></td>
       <td>authenticate in a development environment with the account in Azure Toolkit for IntelliJ</td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#sign-in-azure-toolkit-for-intellij-for-intellijcredential">configuration</a></td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-intellij-idea">example</a></td>
-      <td><a href="https://docs.microsoft.com/en-us/azure/developer/java/toolkit-for-intellij/sign-in-instructions">IntelliJ authentication</a></td>
+      <td><a href="https://docs.microsoft.com/azure/developer/java/toolkit-for-intellij/sign-in-instructions">IntelliJ authentication</a></td>
     </tr>
     <tr>
       <td><code>VisualStudioCodeCredential</code></td>
