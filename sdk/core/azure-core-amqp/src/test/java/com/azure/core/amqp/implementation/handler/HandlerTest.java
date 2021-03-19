@@ -36,6 +36,7 @@ public class HandlerTest {
             .then(() -> handler.onNext(EndpointState.ACTIVE))
             .expectNext(EndpointState.ACTIVE)
             .then(() -> handler.onNext(EndpointState.ACTIVE))
+            .expectNext(EndpointState.ACTIVE)
             .then(handler::close)
             .verifyComplete();
     }
