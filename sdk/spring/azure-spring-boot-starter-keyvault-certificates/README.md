@@ -206,23 +206,23 @@ point:
 
 <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L23-L39 -->
 ```java
-    @Bean
-    public RestTemplate restTemplate() throws Exception {
-        KeyStore trustStore = KeyStore.getInstance("AzureKeyVault");
-        SSLContext sslContext = SSLContexts.custom()
-                                           .loadTrustMaterial(trustStore, new TrustSelfSignedStrategy())
-                                           .build();
+@Bean
+public RestTemplate restTemplate() throws Exception {
+    KeyStore trustStore = KeyStore.getInstance("AzureKeyVault");
+    SSLContext sslContext = SSLContexts.custom()
+                                       .loadTrustMaterial(trustStore, new TrustSelfSignedStrategy())
+                                       .build();
 
-        HostnameVerifier allowAll = (String hostName, SSLSession session) -> true;
-        SSLConnectionSocketFactory factory = new SSLConnectionSocketFactory(sslContext, allowAll);
+    HostnameVerifier allowAll = (String hostName, SSLSession session) -> true;
+    SSLConnectionSocketFactory factory = new SSLConnectionSocketFactory(sslContext, allowAll);
 
-        CloseableHttpClient httpClient = HttpClients.custom()
-                                                    .setSSLSocketFactory(factory)
-                                                    .build();
-        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
+    CloseableHttpClient httpClient = HttpClients.custom()
+                                                .setSSLSocketFactory(factory)
+                                                .build();
+    HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
 
-        return new RestTemplate(requestFactory);
-    }
+    return new RestTemplate(requestFactory);
+}
 ```
 
 #### Using a managed identity
