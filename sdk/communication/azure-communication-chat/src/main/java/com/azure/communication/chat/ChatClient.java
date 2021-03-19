@@ -10,6 +10,7 @@ import com.azure.communication.chat.models.ListChatThreadsOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -52,6 +53,8 @@ public final class ChatClient {
      * Creates a chat thread.
      *
      * @param options Options for creating a chat thread.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -64,6 +67,8 @@ public final class ChatClient {
      *
      * @param options Options for creating a chat thread.
      * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -78,6 +83,8 @@ public final class ChatClient {
      * Deletes a chat thread.
      *
      * @param chatThreadId Chat thread id to delete.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteChatThread(String chatThreadId) {
@@ -89,6 +96,8 @@ public final class ChatClient {
      *
      * @param chatThreadId Chat thread id to delete.
      * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -100,6 +109,8 @@ public final class ChatClient {
     /**
      * Gets the list of chat threads of a user.
      *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paged list of chat threads of a user.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -113,6 +124,8 @@ public final class ChatClient {
      *
      * @param listThreadsOptions The request options.
      * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paged list of chat threads of a user.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
