@@ -296,7 +296,7 @@ class ReactorConnectionTest {
             .expectNext(AmqpEndpointState.UNINITIALIZED)
             .then(() -> connectionHandler.onConnectionRemoteOpen(event))
             .expectNext(AmqpEndpointState.ACTIVE)
-            // getConnectionStates is distinct. We don't expect to see another event with the same status.
+            .expectNext(AmqpEndpointState.ACTIVE)
             .then(() -> {
                 connectionHandler.onConnectionRemoteOpen(event);
                 connection.dispose();
