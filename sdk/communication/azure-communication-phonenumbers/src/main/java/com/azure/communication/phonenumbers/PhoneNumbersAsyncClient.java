@@ -180,7 +180,7 @@ public final class PhoneNumbersAsyncClient {
                 .flatMap((PhoneNumbersSearchAvailablePhoneNumbersResponse response) -> {
                     pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
                     pollingContext.setData("searchId", response.getDeserializedHeaders().getSearchId());
-                    Mono<PhoneNumberOperation> operation = getOperationAsync(pollingContext.getData("operationId"));
+                    Mono<PhoneNumberOperation> operation = getOperation(pollingContext.getData("operationId"));
                     return operation;
                 });
             });
@@ -190,7 +190,7 @@ public final class PhoneNumbersAsyncClient {
     private Function<PollingContext<PhoneNumberOperation>, Mono<PollResponse<PhoneNumberOperation>>>
         pollOperation() {
         return (pollingContext) -> {
-            return getOperationAsync(pollingContext.getData("operationId"))
+            return getOperation(pollingContext.getData("operationId"))
             .flatMap(operation -> {
                 if (operation.getStatus().toString().equalsIgnoreCase(PhoneNumberOperationStatus.SUCCEEDED.toString())) {
                     return Mono.just(new PollResponse<>(
@@ -266,7 +266,7 @@ public final class PhoneNumbersAsyncClient {
                 return client.purchasePhoneNumbersWithResponseAsync(new PhoneNumberPurchaseRequest().setSearchId(searchId), contextValue)
                 .flatMap((PhoneNumbersPurchasePhoneNumbersResponse response) -> {
                     pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
-                    return getOperationAsync(pollingContext.getData("operationId"));
+                    return getOperation(pollingContext.getData("operationId"));
                 });
             });
         };
@@ -310,7 +310,7 @@ public final class PhoneNumbersAsyncClient {
                 return client.releasePhoneNumberWithResponseAsync(phoneNumber, contextValue)
                 .flatMap((PhoneNumbersReleasePhoneNumberResponse response) -> {
                     pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
-                    return getOperationAsync(pollingContext.getData("operationId"));
+                    return getOperation(pollingContext.getData("operationId"));
                 });
             });
         };
@@ -358,7 +358,7 @@ public final class PhoneNumbersAsyncClient {
                 return client.updateCapabilitiesWithResponseAsync(phoneNumber, capabilitiesUpdateRequest, contextValue)
                 .flatMap((PhoneNumbersUpdateCapabilitiesResponse response) -> {
                     pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
-                    return getOperationAsync(pollingContext.getData("operationId"));
+                    return getOperation(pollingContext.getData("operationId"));
                 });
             });
         };
@@ -371,7 +371,7 @@ public final class PhoneNumbersAsyncClient {
         };
     }
 
-    private Mono<PhoneNumberOperation> getOperationAsync(String operationId) {
+    private Mono<PhoneNumberOperation> getOperation(String operationId) {
         return client.getOperationAsync(operationId)
             .flatMap((PhoneNumberRawOperation rawOperation) -> {
                 PhoneNumberOperation operation = new PhoneNumberOperation()
