@@ -11,6 +11,7 @@ import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersSe
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReleasePhoneNumberResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUpdateCapabilitiesResponse;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
+import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
@@ -19,6 +20,7 @@ import com.azure.communication.phonenumbers.models.PhoneNumberOperationStatus;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
+import com.azure.communication.phonenumbers.models.PurchasePhoneNumbersResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -235,18 +237,18 @@ public final class PhoneNumbersAsyncClient {
      * @throws NullPointerException if {@code searchId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PhoneNumberOperation, Void> beginPurchasePhoneNumbers(String searchId) {
+    public PollerFlux<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId) {
         return beginPurchasePhoneNumbers(searchId, null);
     }
 
-    PollerFlux<PhoneNumberOperation, Void> beginPurchasePhoneNumbers(String searchId, Context context) {
+    PollerFlux<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId, Context context) {
         try {
             Objects.requireNonNull(searchId, "'searchId' cannot be null.");
             return new PollerFlux<>(defaultPollInterval,
                 purchaseNumbersInitOperation(searchId, context),
                 pollOperation(),
                 (pollingContext, firstResponse) -> Mono.error(logger.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
-                (pollingContext) -> Mono.empty());
+                (pollingContext) -> Mono.just(new PurchasePhoneNumbersResult()));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -279,18 +281,18 @@ public final class PhoneNumbersAsyncClient {
      * @throws NullPointerException if {@code phoneNumber} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PhoneNumberOperation, Void> beginReleasePhoneNumber(String phoneNumber) {
+    public PollerFlux<PhoneNumberOperation, ReleasePhoneNumberResult> beginReleasePhoneNumber(String phoneNumber) {
         return beginReleasePhoneNumber(phoneNumber, null);
     }
 
-    PollerFlux<PhoneNumberOperation, Void> beginReleasePhoneNumber(String phoneNumber, Context context) {
+    PollerFlux<PhoneNumberOperation, ReleasePhoneNumberResult> beginReleasePhoneNumber(String phoneNumber, Context context) {
         try {
             Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
             return new PollerFlux<>(defaultPollInterval,
                 releaseNumberInitOperation(phoneNumber, context),
                 pollOperation(),
                 (pollingContext, firstResponse) -> Mono.error(logger.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
-                (pollingContext) -> Mono.empty());
+                (pollingContext) -> Mono.just(new ReleasePhoneNumberResult()));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }

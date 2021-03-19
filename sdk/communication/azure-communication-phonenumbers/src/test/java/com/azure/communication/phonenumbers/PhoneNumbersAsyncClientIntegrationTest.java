@@ -10,7 +10,9 @@ import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
+import com.azure.communication.phonenumbers.models.PurchasePhoneNumbersResult;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
+import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
@@ -128,13 +130,13 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                 .flatMap((PhoneNumberSearchResult searchResult) -> {
                     String phoneNumber = getTestPhoneNumber(searchResult.getPhoneNumbers().get(0));
                     return beginPurchasePhoneNumbersHelper(httpClient, searchResult.getSearchId(), "beginPurchasePhoneNumbers").last()
-                    .flatMap((AsyncPollResponse<PhoneNumberOperation, Void> purchaseResult)  -> {
+                    .flatMap((AsyncPollResponse<PhoneNumberOperation, PurchasePhoneNumbersResult> purchaseResult)  -> {
                         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, purchaseResult.getStatus());
                         return beginReleasePhoneNumberHelper(httpClient, phoneNumber, "beginReleasePhoneNumber").last();
                     });
                 });
             })
-        ).assertNext((AsyncPollResponse<PhoneNumberOperation, Void> releaseResult)  -> {
+        ).assertNext((AsyncPollResponse<PhoneNumberOperation, ReleasePhoneNumberResult> releaseResult)  -> {
             assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, releaseResult.getStatus());
 
         })
@@ -221,12 +223,12 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                 ));
     }
 
-    private PollerFlux<PhoneNumberOperation, Void> beginPurchasePhoneNumbersHelper(HttpClient httpClient, String searchId, String testName) {
+    private PollerFlux<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbersHelper(HttpClient httpClient, String searchId, String testName) {
         return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
             .beginPurchasePhoneNumbers(searchId));
     }
 
-    private PollerFlux<PhoneNumberOperation, Void> beginReleasePhoneNumberHelper(HttpClient httpClient, String phoneNumber, String testName) {
+    private PollerFlux<PhoneNumberOperation, ReleasePhoneNumberResult> beginReleasePhoneNumberHelper(HttpClient httpClient, String phoneNumber, String testName) {
         if (getTestMode() == TestMode.PLAYBACK) {
             phoneNumber = "+REDACTED";
         }
