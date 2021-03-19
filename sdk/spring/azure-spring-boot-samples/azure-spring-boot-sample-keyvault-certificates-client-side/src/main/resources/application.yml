@@ -5,10 +5,10 @@ azure:
     tenant-id:           # The Tenant ID for your Azure Key Vault (needed if you are not using managed identity).
     client-id:           # The Client ID that has been setup with access to your Azure Key Vault (needed if you are not using managed identity).
     client-secret:       # The Client Secret that will be used for accessing your Azure Key Vault (needed if you are not using managed identity).
-    # managed-identity: # The user-assigned managed identity object-id to use.
+    # managed-identity:  # The user-assigned managed identity object-id to use.
 
 server:
   port: 8080
   ssl:
-    enabled: false
+    enabled: false       # Set to "true" if you need to enable https in client side.
     trust-store-type: AzureKeyVault  # The truststore type that enables the use of Azure Key Vault for trusted certificates, a.k.a the ones you trust when making an outbound SSL connection
