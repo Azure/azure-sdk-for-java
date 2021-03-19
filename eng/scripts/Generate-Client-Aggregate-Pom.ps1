@@ -8,13 +8,13 @@
 
 # Use case: For the From Source runs we want to build and install only the client libraries but because we're
 # a mono-repo the root aggregate pom has multiple tracks worth of libraries. This script is used to generate
-# a file called ClientAggregatePom.xml in the root of the repostory to be used by the From Source builds.
+# a file called ClientAggregatePom.xml in the root of the repository to be used by the From Source builds.
 
 # This script can be run locally from the root of the repo. .\eng\scripts\Generate-Client-Aggregate-Pom.ps1
 
-# azure-client-sdk-parent is the client track 2 parent, spring-boot-starter-parent is necessary because the
-# samples use it and they're part of the spring/ci.yml
-$ValidTrack2Parents = ("azure-client-sdk-parent", "spring-boot-starter-parent")
+# azure-client-sdk-parent is the client track 2 parent, spring-boot-starter-parent and azure-spring-boot-test-parent
+# is necessary because the samples use it and they're part of the spring/ci.yml
+$ValidTrack2Parents = ("azure-client-sdk-parent", "spring-boot-starter-parent", "azure-spring-boot-test-parent")
 
 $RootPath = Resolve-Path ($PSScriptRoot + "/../../")
 $ClientAggregatePom = Join-Path $RootPath "ClientAggregatePom.xml"
