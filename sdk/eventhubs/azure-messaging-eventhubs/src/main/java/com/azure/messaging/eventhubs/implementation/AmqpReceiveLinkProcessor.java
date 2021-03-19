@@ -144,7 +144,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         final String linkName = next.getLinkName();
         final String entityPath = next.getEntityPath();
 
-        logger.info("linkName[{}] entityPath[{}]. Setting next AMQP receive link.", linkName, entityPath);
+        logger.verbose("linkName[{}] entityPath[{}] Setting next AMQP receive link.", linkName, entityPath);
 
         final AmqpReceiveLink oldChannel;
         final Disposable oldSubscription;
@@ -156,15 +156,16 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
             // For a new link, add the prefetch as credits.
             linkCreditsAdded.set(true);
-            next.addCredits(prefetch);
             next.setEmptyCreditListener(this::getCreditsToAdd);
 
             currentLinkSubscriptions = Disposables.composite(
                 next.getEndpointStates().subscribe(
                     state -> {
-                        // Connection was successfully opened, we can reset the retry interval.
                         if (state == AmqpEndpointState.ACTIVE) {
-                            logger.info("Link {} is now active with {} credits.", linkName, next.getCredits());
+                            // Connection was successfully opened, we can reset the retry interval.
+                            logger.info("linkName[{}] entityPath[{}] credits[{}] Is active.", linkName, entityPath,
+                                next.getCredits());
+
                             retryAttempts.set(0);
                         }
                     },
@@ -305,10 +306,13 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
     @Override
     public void dispose() {
-        logger.info("Disposing receive link {}", currentLink);
         if (isTerminated.getAndSet(true)) {
             return;
         }
+
+        final String name = currentLink != null ? currentLink.getLinkName() : "N/A";
+        final String entityPath = currentLink != null ? currentLink.getEntityPath() : "N/A";
+        logger.info("linkName[{}] entityPath[{}] Disposing receive link {}", name, entityPath);
 
         drain();
         onDispose();
@@ -329,8 +333,8 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         final AmqpReceiveLink link = currentLink;
         if (link != null && !linkCreditsAdded.getAndSet(true)) {
             int credits = getCreditsToAdd();
-            logger.verbose("Link credits not yet added. Adding: {}", credits);
-            link.addCredits(credits);
+            logger.verbose("linkName[{}] credits[{}] Credits not yet added. Adding.", link.getLinkName(), credits);
+            link.addCredits(credits).subscribe();
         }
 
         drain();
