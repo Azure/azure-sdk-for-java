@@ -164,16 +164,8 @@ public class BlobStorageCustomization extends Customization {
             .removeAnnotation("@JacksonXmlRootElement(localName = \"CpkInfo\")")
             .addAnnotation("@JacksonXmlRootElement(localName = \"cpk-info\")");
 
-        String fileName = "src/main/java/com/azure/storage/blob/models/BlobContainerEncryptionScope.java";
+        String fileName = "src/main/java/com/azure/storage/blob/models/BlobContainerItemProperties.java";
         String updatedCode = customization.getRawEditor()
-            .getFileContent(fileName)
-            .replace("setEncryptionScopeOverridePrevented(Boolean encryptionScopeOverridePrevented)", "setEncryptionScopeOverridePrevented(boolean encryptionScopeOverridePrevented)");
-
-        customization.getRawEditor().removeFile(fileName);
-        customization.getRawEditor().addFile(fileName, updatedCode);
-
-        fileName = "src/main/java/com/azure/storage/blob/models/BlobContainerItemProperties.java";
-        updatedCode = customization.getRawEditor()
             .getFileContent(fileName)
             .replace("setEncryptionScopeOverridePrevented(Boolean encryptionScopeOverridePrevented)", "setEncryptionScopeOverridePrevented(boolean encryptionScopeOverridePrevented)");
 
