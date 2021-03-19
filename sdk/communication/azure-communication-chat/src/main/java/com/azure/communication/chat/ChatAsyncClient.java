@@ -3,6 +3,8 @@
 package com.azure.communication.chat;
 
 import com.azure.communication.chat.implementation.converters.CreateChatThreadResultConverter;
+import com.azure.communication.chat.implementation.models.CommunicationErrorResponseException;
+import com.azure.core.exception.HttpResponseException;
 import reactor.core.publisher.Mono;
 
 import com.azure.communication.chat.models.ChatThreadItem;
@@ -104,8 +106,9 @@ public final class ChatAsyncClient {
         context = context == null ? Context.NONE : context;
         try {
             return this.chatClient.createChatThreadWithResponseAsync(
-                CreateChatThreadOptionsConverter.convert(options), options.getIdempotencyToken(), context).map(
-                    result -> new SimpleResponse<CreateChatThreadResult>(
+                CreateChatThreadOptionsConverter.convert(options), options.getIdempotencyToken(), context)
+                .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
+                .map(result -> new SimpleResponse<CreateChatThreadResult>(
                         result, CreateChatThreadResultConverter.convert(result.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -123,9 +126,11 @@ public final class ChatAsyncClient {
         try {
             return new PagedFlux<>(
                 () -> withContext(context ->  this.chatClient.listChatThreadsSinglePageAsync(
-                    listThreadsOptions.getMaxPageSize(), listThreadsOptions.getStartTime(), context)),
+                    listThreadsOptions.getMaxPageSize(), listThreadsOptions.getStartTime(), context)
+                    .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))),
                 nextLink -> withContext(context -> this.chatClient.listChatThreadsNextSinglePageAsync(
-                    nextLink, context)));
+                    nextLink, context)
+                    .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
@@ -144,9 +149,11 @@ public final class ChatAsyncClient {
         try {
             return new PagedFlux<>(
                 () -> withContext(context ->  this.chatClient.listChatThreadsSinglePageAsync(
-                    serviceListThreadsOptions.getMaxPageSize(), serviceListThreadsOptions.getStartTime(), context)),
+                    serviceListThreadsOptions.getMaxPageSize(), serviceListThreadsOptions.getStartTime(), context)
+                    .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))),
                 nextLink -> withContext(context -> this.chatClient.listChatThreadsNextSinglePageAsync(
-                    nextLink, context)));
+                    nextLink, context)
+                    .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
@@ -215,10 +222,15 @@ public final class ChatAsyncClient {
     Mono<Response<Void>> deleteChatThread(String chatThreadId, Context context) {
         context = context == null ? Context.NONE : context;
         try {
-            return this.chatClient.deleteChatThreadWithResponseAsync(chatThreadId, context);
+            return this.chatClient.deleteChatThreadWithResponseAsync(chatThreadId, context)
+                .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    private RuntimeException translateException(CommunicationErrorResponseException exception) {
+        return new HttpResponseException(exception.getMessage(), exception.getResponse(), exception.getValue());
     }
 
 }
