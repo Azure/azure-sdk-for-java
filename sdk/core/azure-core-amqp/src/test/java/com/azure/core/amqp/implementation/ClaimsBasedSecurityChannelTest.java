@@ -67,6 +67,7 @@ class ClaimsBasedSecurityChannelTest {
     private TokenCredential tokenCredential;
     private Message acceptedResponse;
     private Message unauthorizedResponse;
+    private AutoCloseable mocksCloseable;
 
     @BeforeAll
     static void beforeAll() {
@@ -80,7 +81,7 @@ class ClaimsBasedSecurityChannelTest {
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
 
         acceptedResponse = Proton.message();
         final Map<String, Object> responseProperties = new HashMap<>();
@@ -95,10 +96,14 @@ class ClaimsBasedSecurityChannelTest {
     }
 
     @AfterEach
-    public void teardown() {
+    public void teardown() throws Exception {
         Mockito.framework().clearInlineMocks();
         requestResponseChannel = null;
         tokenCredential = null;
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     /**
