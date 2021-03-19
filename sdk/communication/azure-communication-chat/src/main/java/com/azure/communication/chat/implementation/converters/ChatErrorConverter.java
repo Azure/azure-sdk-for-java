@@ -5,6 +5,8 @@ package com.azure.communication.chat.implementation.converters;
 
 import com.azure.communication.chat.models.ChatError;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -20,18 +22,22 @@ public final class ChatErrorConverter {
             return null;
         }
 
-        ChatError chatError = new ChatError()
-            .setInnerError(convert(obj.getInnerError()))
-            .setCode(obj.getCode())
-            .setMessage(obj.getMessage())
-            .setTarget(obj.getTarget());
+        List<ChatError> details = new ArrayList<ChatError>();
 
         if (obj.getDetails() != null) {
-            chatError.setDetails(obj.getDetails()
+            details = obj.getDetails()
                 .stream()
                 .map(detail -> convert(detail))
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
         }
+
+        ChatError chatError = new ChatError(
+            obj.getMessage(),
+            obj.getCode(),
+            obj.getTarget(),
+            details,
+            convert(obj.getInnerError())
+        );
 
         return chatError;
     }
