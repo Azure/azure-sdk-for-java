@@ -101,7 +101,7 @@
 # PRLabel: %azure-spring
 /sdk/spring/azure-spring-boot-starter-keyvault-certificates    @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @stliu
 # PRLabel: %azure-spring
-/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates          @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @stliu
+/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-server-side          @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @stliu
 
 # end to end tests
 # PRLabel: %Azure.Identity

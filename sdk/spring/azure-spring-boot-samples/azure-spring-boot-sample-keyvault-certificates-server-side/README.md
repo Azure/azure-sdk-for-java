@@ -18,7 +18,7 @@ We need to store certificate `self-signed` into Azure Key Vault with the followi
 ## Next steps
 ## Run with Maven
 ```
-cd azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates
+cd azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-server-side
 mvn spring-boot:run
 ```
 ## Contributing
