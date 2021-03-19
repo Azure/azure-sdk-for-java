@@ -23,46 +23,6 @@ parameters:
   - name: TestGoals
     type: string
     default: verify
-  - name: TestMatrix
-    type: object
-    default:
-      Linux - Java 8:
-        Pool: azsdk-pool-mms-ubuntu-1804-general
-        OSVmImage: MMSUbuntu18.04
-        JavaTestVersion: '1.8'
-        RunTitle: 'Linux on Java 1.8'
-      macOS - Java 8:
-        Pool: Azure Pipelines
-        OSVmImage: 'macOS-10.15'
-        JavaTestVersion: '1.8'
-        RunTitle: 'macOS on Java 1.8'
-      Windows - Java 8:
-        Pool: azsdk-pool-mms-win-2019-general
-        OSVmImage: MMS2019
-        JavaTestVersion: '1.8'
-        RunTitle: 'Windows on Java 1.8'
-      Linux - Java 11:
-        Pool: azsdk-pool-mms-ubuntu-1804-general
-        OSVmImage: MMSUbuntu18.04
-        JavaTestVersion: '1.11'
-        RunTitle: 'Linux on Java 1.11'
-      macOS - Java 11:
-        Pool: Azure Pipelines
-        OSVmImage: 'macOS-10.15'
-        JavaTestVersion: '1.11'
-        RunTitle: 'macOS on Java 1.11'
-      Windows - Java 11:
-        Pool: azsdk-pool-mms-win-2019-general
-        OSVmImage: MMS2019
-        JavaTestVersion: '1.11'
-        RunTitle: 'Windows on Java 1.11'
-      Linux From Source - Java 11:
-        Pool: azsdk-pool-mms-ubuntu-1804-general
-        OSVmImage: MMSUbuntu18.04
-        JavaTestVersion: '1.11'
-        RunTitle: 'From Source: Linux on Java 1.11'
-        AdditionalOptions: '-amd'
-        TestFromSource: true
 
 
 jobs:
