@@ -163,7 +163,7 @@ public class CosmosEncryptionAsyncDatabase {
      * Gets the CosmosEncryptionAsyncClient.
      * @return cosmosEncryptionAsyncClient
      */
-    public CosmosEncryptionAsyncClient getCosmosEncryptionAsyncClient() {
+    CosmosEncryptionAsyncClient getCosmosEncryptionAsyncClient() {
         return cosmosEncryptionAsyncClient;
     }
 

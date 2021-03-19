@@ -6,11 +6,8 @@ package com.azure.cosmos.encryption;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
-import com.azure.cosmos.encryption.CosmosEncryptionAsyncContainer;
-import com.azure.cosmos.encryption.CosmosEncryptionAsyncDatabase;
-import com.azure.cosmos.encryption.implementation.CosmosEncryptionAlgorithm;
-import com.azure.cosmos.encryption.implementation.CosmosEncryptionType;
+import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
+import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -66,7 +63,7 @@ public class EncryptionCrudTest extends TestSuiteBase {
         cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.createEncryptionCosmosAsyncClient(this.client,
             new TestEncryptionKeyStoreProvider());
         cosmosEncryptionAsyncDatabase =
-            cosmosEncryptionAsyncClient.getEncryptedCosmosAsyncDatabase(cosmosAsyncDatabase);
+            cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(cosmosAsyncDatabase);
 
         ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(getPaths());
         String containerId = UUID.randomUUID().toString();

@@ -139,6 +139,17 @@ public final class CosmosBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <T> CosmosPagedFlux<T> queryItemsInternal(CosmosAsyncContainer container,
+                                                            Mono<SqlQuerySpec> sqlQuerySpecMono,
+                                                            CosmosQueryRequestOptions cosmosQueryRequestOptions,
+                                                            Transformer<T> transformer) {
+        return UtilBridgeInternal.createCosmosPagedFlux(transformer.transform(container.queryItemsInternalFunc(
+            sqlQuerySpecMono,
+            cosmosQueryRequestOptions,
+            JsonNode.class)));
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> CosmosPagedFlux<T> queryChangeFeedInternal(
         CosmosAsyncContainer container,
         CosmosChangeFeedRequestOptions changeFeedRequestOptions,

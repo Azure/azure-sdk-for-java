@@ -13,6 +13,7 @@ import reactor.core.publisher.Mono;
 
 import static com.azure.core.util.FluxUtil.withContext;
 
+@Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public class CosmosAsyncClientEncryptionKey {
     private final CosmosAsyncDatabase database;
     private String id;
@@ -27,6 +28,7 @@ public class CosmosAsyncClientEncryptionKey {
      *
      * @return the id of the {@link CosmosAsyncUser}
      */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getId() {
         return id;
     }
@@ -47,6 +49,7 @@ public class CosmosAsyncClientEncryptionKey {
      *
      * @return a {@link Mono} containing the single resource response with the read client encryption key or an error.
      */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<CosmosClientEncryptionKeyResponse> read() {
         return withContext(context -> readInternal(context));
     }

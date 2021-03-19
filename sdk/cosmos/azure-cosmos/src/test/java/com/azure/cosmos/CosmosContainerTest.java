@@ -101,13 +101,13 @@ public class CosmosContainerTest extends TestSuiteBase {
         ClientEncryptionIncludedPath path1 = new ClientEncryptionIncludedPath();
         path1.setPath("/path1");
         path1.setEncryptionAlgorithm("AEAD_AES_256_CBC_HMAC_SHA256");
-        path1.setEncryptionType(Constants.Properties.RANDOMIZED);
+        path1.setEncryptionType("Randomized");
         path1.setClientEncryptionKeyId("key1");
 
         ClientEncryptionIncludedPath path2 = new ClientEncryptionIncludedPath();
         path2.setPath("/path2");
         path2.setEncryptionAlgorithm("AEAD_AES_256_CBC_HMAC_SHA256");
-        path2.setEncryptionType(Constants.Properties.DETERMINISTIC);
+        path2.setEncryptionType("Deterministic");
         path2.setClientEncryptionKeyId("key2");
 
         List<ClientEncryptionIncludedPath> paths = new ArrayList<>();

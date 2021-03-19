@@ -8,7 +8,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.EncryptionCodeSnippet;
-import com.azure.cosmos.encryption.implementation.CosmosEncryptionAlgorithm;
+import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.implementation.ReflectionUtils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
@@ -36,8 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
     private CosmosAsyncClient client;
-    private CosmosAsyncDatabase cosmosAsyncDatabase;
-    private static final int TIMEOUT = 600000_000;
+    private static final int TIMEOUT = 6000_000;
     private CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
     private CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase;
     private CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer;
@@ -60,7 +59,7 @@ public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
         cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.createEncryptionCosmosAsyncClient(this.client,
             new EncryptionCrudTest.TestEncryptionKeyStoreProvider());
         cosmosEncryptionAsyncDatabase =
-            cosmosEncryptionAsyncClient.getEncryptedCosmosAsyncDatabase(cosmosDatabaseProperties.getId());
+            cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(cosmosDatabaseProperties.getId());
 
         //Create collection with clientEncryptionPolicy
         ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(EncryptionCrudTest.getPaths());

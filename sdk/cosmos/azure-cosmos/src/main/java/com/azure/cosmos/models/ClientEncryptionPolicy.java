@@ -16,6 +16,7 @@ import java.util.List;
 /**
  * Client encryption policy.
  */
+@Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class ClientEncryptionPolicy {
 
     private JsonSerializable jsonSerializable;
@@ -29,6 +30,7 @@ public final class ClientEncryptionPolicy {
     @JsonProperty("policyFormatVersion")
     private int policyFormatVersion;
 
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ClientEncryptionPolicy(List<ClientEncryptionIncludedPath> paths) {
         this.validateIncludedPaths(paths);
         this.includedPaths = paths;

@@ -7,8 +7,8 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncContainer;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncDatabase;
-import com.azure.cosmos.encryption.implementation.CosmosEncryptionAlgorithm;
-import com.azure.cosmos.encryption.implementation.CosmosEncryptionType;
+import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
+import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
@@ -112,7 +112,7 @@ public class Program {
      */
     private static void initialize(CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient, Properties properties) throws Exception {
         cosmosEncryptionAsyncClient.getCosmosAsyncClient().createDatabaseIfNotExists(Program.databaseId).block();
-        cosmosEncryptionAsyncDatabase = cosmosEncryptionAsyncClient.getEncryptedCosmosAsyncDatabase(Program.databaseId);
+        cosmosEncryptionAsyncDatabase = cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(Program.databaseId);
 
         // Delete the existing container to prevent create item conflicts.
         try {

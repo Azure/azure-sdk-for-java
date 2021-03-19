@@ -128,7 +128,7 @@ public class CosmosEncryptionAsyncClient {
      * @param cosmosAsyncDatabase original database
      * @return database with encryption capabilities
      */
-    public CosmosEncryptionAsyncDatabase getEncryptedCosmosAsyncDatabase(CosmosAsyncDatabase cosmosAsyncDatabase) {
+    public CosmosEncryptionAsyncDatabase getCosmosEncryptionAsyncDatabase(CosmosAsyncDatabase cosmosAsyncDatabase) {
         return new CosmosEncryptionAsyncDatabase(cosmosAsyncDatabase, this);
     }
 
@@ -138,7 +138,7 @@ public class CosmosEncryptionAsyncClient {
      * @param databaseId original database id
      * @return database with encryption capabilities
      */
-    public CosmosEncryptionAsyncDatabase getEncryptedCosmosAsyncDatabase(String databaseId) {
+    public CosmosEncryptionAsyncDatabase getCosmosEncryptionAsyncDatabase(String databaseId) {
         CosmosAsyncDatabase database = this.cosmosAsyncClient.getDatabase(databaseId);
         return new CosmosEncryptionAsyncDatabase(database, this);
     }

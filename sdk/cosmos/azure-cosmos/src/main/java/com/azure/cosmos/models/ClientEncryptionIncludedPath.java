@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Path that needs encryption and the associated settings within {@link ClientEncryptionPolicy}.
  */
+@Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class ClientEncryptionIncludedPath {
 
     @JsonProperty("path")

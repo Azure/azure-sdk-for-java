@@ -9,6 +9,8 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.encryption.implementation.CosmosResponseFactory;
 import com.azure.cosmos.encryption.implementation.EncryptionProcessor;
 import com.azure.cosmos.encryption.implementation.EncryptionUtils;
+import com.azure.cosmos.encryption.models.EncryptionModelBridgeInternal;
+import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosItemResponseHelper;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor;
@@ -19,13 +21,11 @@ import com.azure.cosmos.implementation.query.Transformer;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.encryption.models.EncryptionModelBridgeInternal;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Flux;
@@ -141,11 +141,13 @@ public class CosmosEncryptionAsyncContainer {
 
         byte[] streamPayload = cosmosSerializerToStream(item);
         CosmosItemRequestOptions finalRequestOptions = requestOptions;
-        return this.encryptionProcessor.encrypt(streamPayload).flatMap(encryptedPayload -> this.container.upsertItem(
+        return this.encryptionProcessor.encrypt(streamPayload)
+            .flatMap(encryptedPayload -> this.container.upsertItem(
             encryptedPayload,
             partitionKey,
             finalRequestOptions)
-            .publishOn(encryptionScheduler).flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
+            .publishOn(encryptionScheduler)
+            .flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
                 this.encryptionProcessor.decrypt(this.cosmosItemResponseBuilderAccessor.getByteArrayContent(cosmosItemResponse)))
                 .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse, (Class<T>) item.getClass()))));
     }
@@ -176,12 +178,14 @@ public class CosmosEncryptionAsyncContainer {
 
         byte[] streamPayload = cosmosSerializerToStream(item);
         CosmosItemRequestOptions finalRequestOptions = requestOptions;
-        return this.encryptionProcessor.encrypt(streamPayload).flatMap(encryptedPayload -> this.container.replaceItem(
+        return this.encryptionProcessor.encrypt(streamPayload)
+            .flatMap(encryptedPayload -> this.container.replaceItem(
             encryptedPayload,
             itemId,
             partitionKey,
             finalRequestOptions)
-            .publishOn(encryptionScheduler).flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
+            .publishOn(encryptionScheduler)
+            .flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
                 this.encryptionProcessor.decrypt(this.cosmosItemResponseBuilderAccessor.getByteArrayContent(cosmosItemResponse)))
                 .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse, (Class<T>) item.getClass()))));
     }
@@ -310,7 +314,7 @@ public class CosmosEncryptionAsyncContainer {
      *
      * @return encrypted cosmosAsyncClient
      */
-    public CosmosEncryptionAsyncClient getCosmosEncryptionAsyncClient() {
+    CosmosEncryptionAsyncClient getCosmosEncryptionAsyncClient() {
         return cosmosEncryptionAsyncClient;
     }
 

@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 /**
  * Details of an encryption key for use with the Azure Cosmos DB service.
  */
+@Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class CosmosClientEncryptionKeyProperties {
     private ClientEncryptionKey clientEncryptionKey;
 
@@ -30,6 +31,7 @@ public final class CosmosClientEncryptionKeyProperties {
         this.clientEncryptionKey = clientEncryptionKey;
     }
 
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosClientEncryptionKeyProperties(String id,
                                         String encryptionAlgorithm,
                                         byte[] wrappedDataEncryptionKey,

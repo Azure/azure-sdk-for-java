@@ -8,6 +8,8 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
 import com.azure.cosmos.encryption.EncryptionBridgeInternal;
 import com.azure.cosmos.encryption.EncryptionCrudTest;
+import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
+import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
@@ -36,7 +38,7 @@ public class EncryptionProcessorAndSettingsTest {
     private static final int TIMEOUT = 600000_000;
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
-    public void initializeEncryptionSettingsAsync() throws Exception {
+    public void initializeEncryptionSettingsAsync() {
         CosmosAsyncContainer cosmosAsyncContainer = Mockito.mock(CosmosAsyncContainer.class);
         CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = Mockito.mock(CosmosEncryptionAsyncClient.class);
         EncryptionCrudTest.TestEncryptionKeyStoreProvider keyStoreProvider =

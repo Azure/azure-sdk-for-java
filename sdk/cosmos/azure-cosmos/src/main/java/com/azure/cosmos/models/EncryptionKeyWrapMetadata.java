@@ -13,6 +13,7 @@ import java.util.Objects;
 /**
  * Metadata that a key wrapping provider can use to wrap/unwrap data encryption keys.
  */
+@Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class EncryptionKeyWrapMetadata {
 
     /**
@@ -26,21 +27,23 @@ public final class EncryptionKeyWrapMetadata {
      *
      * @param source Existing instance from which to initialize.
      */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public EncryptionKeyWrapMetadata(EncryptionKeyWrapMetadata source) {
         this.type = source.type;
         this.algorithm = source.algorithm;
         this.value = source.value;
     }
 
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public EncryptionKeyWrapMetadata(String name, String value) {
         this("custom", name, value, null);
     }
 
-    public EncryptionKeyWrapMetadata(String type, String name, String value) {
+    EncryptionKeyWrapMetadata(String type, String name, String value) {
         this(type, name, value, null);
     }
 
-    public EncryptionKeyWrapMetadata(String type, String name, String value, String algorithm) {
+    EncryptionKeyWrapMetadata(String type, String name, String value, String algorithm) {
         Preconditions.checkNotNull(type, "type is null");
         Preconditions.checkNotNull(value, "value is null");
         this.type = type;
