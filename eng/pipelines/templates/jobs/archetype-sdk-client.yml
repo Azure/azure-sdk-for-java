@@ -380,7 +380,7 @@ jobs:
       - task: Maven@3
         displayName: 'Run tests for From Source run'
         inputs:
-          mavenPomFile: pom.xml
+          mavenPomFile: ClientFromSourcePom.xml
           # For the From Source runs we don't want the -am switch as we don't care about running tests for our dependencies
           # but we do want the -amd switch because we want to run tests on things that depend on us.
           options: ${{ parameters.TestOptions }} -pl $(PLSkipOptions)$(ProjectList) -amd -T 1C
