@@ -61,12 +61,32 @@ def create_from_source_pom(project_list: str):
 
     project_dependencies_mapping, dependency_to_project_mapping, project_to_pom_path_mapping = create_dependency_and_path_mappings(project_list_identifiers, artifact_identifier_to_source_version)
 
-    modules = []
+    dependent_modules = []
+
+    # Resolve all projects, including transitively, that are dependent on the projects in the project list.
     for project_identifier in project_list_identifiers:
         if not project_identifier in project_to_pom_path_mapping:
             continue
+        
+        dependent_modules = resolve_dependent_project(project_identifier, dependent_modules, dependency_to_project_mapping, project_to_pom_path_mapping)
 
-        modules = add_modules_to_pom(project_identifier, modules, project_dependencies_mapping, dependency_to_project_mapping, project_to_pom_path_mapping)
+    # Distinct the dependent modules, even though this should be guarded, to reduce downstream processing requirements.
+    dependent_modules = list(set(dependent_modules))
+
+    dependency_modules = []
+
+    # Resolve all dependencies of the projects in the project list and of the dependent modules.
+    for project_identifier in project_list_identifiers:
+        depencency_modules = resolve_project_dependencies(project_identifier, dependency_modules, project_dependencies_mapping, project_to_pom_path_mapping)
+
+    for project_identifier in dependent_modules:
+        depencency_modules = resolve_project_dependencies(project_identifier, dependency_modules, project_dependencies_mapping, project_to_pom_path_mapping)
+
+    modules = dependent_modules + depencency_modules
+
+    # Finally add the project in the project list themselves.
+    for project_identifier in project_list_identifiers:
+        modules.append(project_to_pom_path_mapping[project_identifier])
 
     # Distinct the modules list.
     modules = list(set(modules))
@@ -153,25 +173,27 @@ def add_project_to_dependency_and_module_mappings(file_path: str, project_depend
         project_dependencies_mapping[project_identifier].append(dependency_identifier)
         dependency_mapping[dependency_identifier].append(project_identifier)
 
-# Function which finds and adds all dependencies required for a project in the service directory.
-def add_modules_to_pom(pom_identifier: str, modules: list, project_dependencies_mapping: dict, dependency_to_project_mapping: dict, project_to_pom_path_mapping: dict):
-    modules.append(project_to_pom_path_mapping[pom_identifier])
-    
-    # Add all project relative paths that require this library as a dependency.
+# Function which resolves the dependent projects of the project.
+def resolve_dependent_project(pom_identifier: str, dependent_modules: list, dependency_to_project_mapping: dict, project_to_pom_path_mapping: dict):
     if pom_identifier in dependency_to_project_mapping:
         for dependency in dependency_to_project_mapping[pom_identifier]:
-            if not project_to_pom_path_mapping[dependency] in modules:
-                modules = add_modules_to_pom(dependency, modules, project_dependencies_mapping, dependency_to_project_mapping, project_to_pom_path_mapping)
-                modules.append(project_to_pom_path_mapping[dependency])
+            # Only continue if the project's dependents haven't already been resolved.
+            if not project_to_pom_path_mapping[dependency] in dependent_modules:
+                dependent_modules = resolve_dependent_project(dependency, dependent_modules, dependency_to_project_mapping, project_to_pom_path_mapping)
+                dependent_modules.append(project_to_pom_path_mapping[dependency])
+    
+    return dependent_modules
 
-    # Add all dependencies of this library.
+# Function which resolves the dependencies of the project.
+def resolve_project_dependencies(pom_identifier: str, dependency_modules: list, project_dependencies_mapping: dict, project_to_pom_path_mapping: dict):
     if pom_identifier in project_dependencies_mapping:
         for dependency in project_dependencies_mapping[pom_identifier]:
-            if not project_to_pom_path_mapping[dependency] in modules:
-                modules = add_modules_to_pom(dependency, modules, project_dependencies_mapping, dependency_to_project_mapping, project_to_pom_path_mapping)
-                modules.append(project_to_pom_path_mapping[dependency])
+            # Only continue if the project's dependencies haven't already been resolved.
+            if not project_to_pom_path_mapping[dependency] in dependency_modules:
+                dependency_modules = resolve_project_dependencies(dependency, dependency_modules, project_dependencies_mapping, project_to_pom_path_mapping)
+                dependency_modules.append(project_to_pom_path_mapping[dependency])
 
-    return modules
+    return dependency_modules
 
 # Determines if the passed POM XML is a track 2 library.
 def is_track_two_pom(tree_root: ET.Element):
