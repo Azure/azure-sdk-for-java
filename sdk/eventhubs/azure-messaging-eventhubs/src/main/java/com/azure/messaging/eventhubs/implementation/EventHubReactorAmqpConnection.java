@@ -96,7 +96,6 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
     @Override
     public Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions) {
         return createSession(entityPath).flatMap(session -> {
-            logger.verbose("Get or create producer for path: '{}'", entityPath);
             final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
             return session.createProducer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy)

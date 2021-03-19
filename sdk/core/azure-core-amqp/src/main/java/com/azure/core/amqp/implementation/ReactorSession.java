@@ -280,7 +280,7 @@ public class ReactorSession implements AmqpSession {
 
         final LinkSubscription<AmqpReceiveLink> existingLink = openReceiveLinks.get(linkName);
         if (existingLink != null) {
-            logger.info("connectionId[{}] linkName[{}] entityPath[{}] Returning existing receive link.",
+            logger.verbose("connectionId[{}] linkName[{}] entityPath[{}] Returning existing receive link.",
                 sessionHandler.getConnectionId(), linkName, entityPath);
             return Mono.just(existingLink.getLink());
         }
@@ -365,7 +365,8 @@ public class ReactorSession implements AmqpSession {
 
         final LinkSubscription<AmqpSendLink> existing = openSendLinks.get(linkName);
         if (existing != null) {
-            logger.verbose("connectionId[{}] linkName[{}] Returning existing send link.", linkName);
+            logger.verbose("connectionId[{}] linkName[{}] Returning existing send link.",
+                sessionHandler.getConnectionId(), linkName);
             return Mono.just(existing.getLink());
         }
 

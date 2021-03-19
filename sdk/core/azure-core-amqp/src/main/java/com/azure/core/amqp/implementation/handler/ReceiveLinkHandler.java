@@ -25,7 +25,6 @@ public class ReceiveLinkHandler extends LinkHandler {
     private final Sinks.Many<Delivery> deliveries = Sinks.many().multicast().directBestEffort();
     private final Sinks.Many<Integer> linkCredits = Sinks.many().multicast().onBackpressureBuffer();
     private final Set<Delivery> queuedDeliveries = Collections.newSetFromMap(new ConcurrentHashMap<>());
-    private final AtomicInteger lastCreditState = new AtomicInteger(-1);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final String entityPath;
 
@@ -83,8 +82,8 @@ public class ReceiveLinkHandler extends LinkHandler {
 
     @Override
     public void onLinkRemoteOpen(Event event) {
-        final Receiver link = event.getReceiver();
-        if (link == null) {
+        final Link link = event.getLink();
+        if (!(link instanceof Receiver)) {
             return;
         }
 
@@ -109,8 +108,8 @@ public class ReceiveLinkHandler extends LinkHandler {
      */
     @Override
     public void onLinkFlow(Event event) {
-        final Receiver receiver = event.getReceiver();
-        if (receiver == null) {
+        final Link receiver = event.getLink();
+        if (!(receiver instanceof Receiver)) {
             return;
         }
 
@@ -184,15 +183,8 @@ public class ReceiveLinkHandler extends LinkHandler {
         super.onLinkRemoteClose(event);
     }
 
-    private void emitCredits(Receiver receiver) {
-        final int remoteCredit = receiver.getRemoteCredit();
-        final int lastCredit = lastCreditState.getAndSet(remoteCredit);
-
-        if (lastCredit != remoteCredit) {
-            logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] lastCredit[{}] newCredit[{}] "
-                + "Emit credit change.", getConnectionId(), entityPath, linkName, remoteCredit, lastCredit);
-
-            linkCredits.emitNext(remoteCredit, Sinks.EmitFailureHandler.FAIL_FAST);
-        }
+    private void emitCredits(Link link) {
+        final int remoteCredit = link.getRemoteCredit();
+        linkCredits.emitNext(remoteCredit, Sinks.EmitFailureHandler.FAIL_FAST);
     }
 }

@@ -57,6 +57,10 @@ public class ReactorReceiver implements AmqpReceiveLink {
         this.dispatcher = dispatcher;
         this.messagesProcessor = this.handler.getDeliveredMessages()
             .map(this::decodeDelivery)
+            .flatMap(delivery -> {
+                final int credit = receiver.getCredit();
+                return checkLinkCredits(credit).thenReturn(delivery);
+            })
             .publish()
             .autoConnect();
         this.endpointStates = this.handler.getEndpointStates()
@@ -67,36 +71,12 @@ public class ReactorReceiver implements AmqpReceiveLink {
             })
             .cache(1);
 
-        final Disposable creditSubscription = this.handler.getLinkCredits().flatMap(credits -> {
-            this.currentCredits.set(credits);
-
-            if (credits > 0) {
-                return Mono.empty();
-            } else if (credits < 0) {
-                logger.info("connectionId[{}] path[{}] linkName[{}] credits[{}] Negative credits.",
-                    handler.getConnectionId(), this.entityPath, getLinkName(), credits);
-            }
-
-            final Supplier<Integer> supplier = creditSupplier.get();
-            if (supplier == null) {
-                logger.warning("connectionId[{}] path[{}] linkName[{}] credits[{}] There is no credit supplier.",
-                    handler.getConnectionId(), this.entityPath, getLinkName(), credits);
-                return Mono.empty();
-            }
-
-            final Integer additionalCredits = supplier.get();
-            if (additionalCredits != null && additionalCredits > 0) {
-                logger.verbose("connectionId[{}] path[{}] linkName[{}] credits[{}] Adding {} credits.",
-                    handler.getConnectionId(), this.entityPath, getLinkName(), credits);
-
-                return addCredits(additionalCredits);
-            } else {
-                logger.warning("connectionId[{}] path[{}] linkName[{}] credits[{}] There are no credits to add.",
-                    handler.getConnectionId(), this.entityPath, getLinkName(), credits);
-
-                return Mono.empty();
-            }
-        }).subscribe();
+        final Disposable creditSubscription = this.handler.getLinkCredits()
+            .flatMap(credits -> {
+                this.currentCredits.set(credits);
+                return checkLinkCredits(credits);
+            })
+            .subscribe();
 
         this.subscriptions = Disposables.composite(
             creditSubscription,
@@ -238,6 +218,35 @@ public class ReactorReceiver implements AmqpReceiveLink {
 
         delivery.settle();
         return message;
+    }
+
+    private Mono<Void> checkLinkCredits(int credits) {
+        if (credits > 0) {
+            return Mono.empty();
+        } else if (credits < 0) {
+            logger.info("connectionId[{}] path[{}] linkName[{}] credits[{}] Negative credits.",
+                handler.getConnectionId(), this.entityPath, getLinkName(), credits);
+        }
+
+        final Supplier<Integer> supplier = creditSupplier.get();
+        if (supplier == null) {
+            logger.warning("connectionId[{}] path[{}] linkName[{}] credits[{}] There is no credit supplier.",
+                handler.getConnectionId(), this.entityPath, getLinkName(), credits);
+            return Mono.empty();
+        }
+
+        final Integer additionalCredits = supplier.get();
+        if (additionalCredits != null && additionalCredits > 0) {
+            logger.verbose("connectionId[{}] path[{}] linkName[{}] credits[{}] Adding {} credits.",
+                handler.getConnectionId(), this.entityPath, getLinkName(), credits);
+
+            return addCredits(additionalCredits);
+        } else {
+            logger.warning("connectionId[{}] path[{}] linkName[{}] credits[{}] There are no credits to add.",
+                handler.getConnectionId(), this.entityPath, getLinkName(), credits);
+
+            return Mono.empty();
+        }
     }
 
     @Override
