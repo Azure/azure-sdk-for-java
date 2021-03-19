@@ -59,9 +59,9 @@ public final class CommunicationTokenRefreshOptions {
     }
 
     /**
-     * @return the serialized JWT token
+     * @return the initial serialized JWT token
      */
-    public String getToken() {
+    public String getInitialToken() {
         return initialToken;
     }
 }

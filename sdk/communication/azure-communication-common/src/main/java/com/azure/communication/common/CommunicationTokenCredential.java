@@ -56,8 +56,8 @@ public final class CommunicationTokenCredential implements AutoCloseable {
         Supplier<Mono<String>> tokenRefresher = tokenRefreshOptions.getTokenRefresher();
         Objects.requireNonNull(tokenRefresher, "'tokenRefresher' cannot be null.");
         refresher = tokenRefresher;
-        if (tokenRefreshOptions.getToken() != null) {
-            setToken(tokenRefreshOptions.getToken());
+        if (tokenRefreshOptions.getInitialToken() != null) {
+            setToken(tokenRefreshOptions.getInitialToken());
             if (tokenRefreshOptions.isRefreshProactively()) {
                 OffsetDateTime nextFetchTime = accessToken.getExpiresAt().minusMinutes(DEFAULT_EXPIRING_OFFSET_MINUTES);
                 fetchingTask = new FetchingTask(this, nextFetchTime);
