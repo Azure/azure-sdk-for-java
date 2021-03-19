@@ -130,6 +130,16 @@ public void createDefaultAzureCredentialForIntelliJ() {
 }
 ```
 
+## Managed Identity Support
+The [Managed identity authentication](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview) is supported via `ManagedIdentityCredential` for following Azure Services:
+* [Azure Virtual Machines](https://azure.microsoft.com/en-ca/services/virtual-machines/#documentation)
+* [Azure App Service](https://docs.microsoft.com/en-us/azure/app-service/)
+* [Azure Kubernetes Service](https://docs.microsoft.com/en-us/azure/aks/use-managed-identity)
+* [Azure Cloud Shell](https://docs.microsoft.com/en-us/azure/cloud-shell/msi-authorization)
+* [Azure Arc](https://docs.microsoft.com/en-us/azure/azure-arc/servers/managed-identity-authentication)
+* [Azure Service Fabric](https://docs.microsoft.com/en-us/azure/service-fabric/concepts-managed-identity)
+
+
 ## Credential classes
 
 ### Authenticating Azure Hosted Applications
@@ -170,16 +180,6 @@ public void createDefaultAzureCredentialForIntelliJ() {
     </tr>
   </tbody>
 </table>
-
-#### Managed Identity Support
-The [Managed identity authentication](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview) is supported via `ManagedIdentityCredential` for following Azure Services:
-* [Azure Virtual Machines](https://azure.microsoft.com/en-ca/services/virtual-machines/#documentation)
-* [Azure App Service](https://docs.microsoft.com/en-us/azure/app-service/)
-* [Azure Kubernetes Service](https://docs.microsoft.com/en-us/azure/aks/use-managed-identity)
-* [Azure Cloud Shell](https://docs.microsoft.com/en-us/azure/cloud-shell/msi-authorization)
-* [Azure Arc](https://docs.microsoft.com/en-us/azure/azure-arc/servers/managed-identity-authentication)
-* [Azure Service Fabric](https://docs.microsoft.com/en-us/azure/service-fabric/concepts-managed-identity)
-
     
 ### Authenticating Service Principals
 
