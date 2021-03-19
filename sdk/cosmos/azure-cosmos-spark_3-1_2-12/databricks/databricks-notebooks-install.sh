@@ -66,10 +66,13 @@ do
 	fi
 	
 	JOB_RESULT=$(databricks runs get --run-id $RUN_ID | jq -r '.state.result_state')
-	databricks jobs delete --job-id $JOB_ID
+	
 	echo "Run $RUN_ID finished with state $JOB_STATE and result $JOB_RESULT with message $JOB_MESSAGE"
 	if [[ "$JOB_RESULT" != "SUCCESS" ]]
 	then
+		echo "Run $RUN_ID in job $JOB_ID failed, leaving the job available for log troubleshooting in databricks"
 		exit 1
 	fi
+	
+	databricks jobs delete --job-id $JOB_ID
 done
