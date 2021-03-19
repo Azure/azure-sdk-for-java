@@ -4,6 +4,7 @@
 
 package com.azure.communication.chat.implementation.models;
 
+import com.azure.communication.chat.models.ChatError;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,14 +16,14 @@ public final class AddChatParticipantsResult {
      * The participants that failed to be added to the chat thread.
      */
     @JsonProperty(value = "invalidParticipants", access = JsonProperty.Access.WRITE_ONLY)
-    private List<CommunicationError> invalidParticipants;
+    private List<ChatError> invalidParticipants;
 
     /**
      * Get the invalidParticipants property: The participants that failed to be added to the chat thread.
      *
      * @return the invalidParticipants value.
      */
-    public List<CommunicationError> getInvalidParticipants() {
+    public List<ChatError> getInvalidParticipants() {
         return this.invalidParticipants;
     }
 }
