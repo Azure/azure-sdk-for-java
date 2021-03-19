@@ -5,6 +5,8 @@ This sample illustrates how to use [Azure Spring Boot Starter Key Vault Certific
 
 In this sample, a certificate named `self-signed` is stored into an Azure Key Vault, and a sample Spring application will use its value as a configuration property value.
 
+This sample can work together with [azure-spring-boot-sample-keyvault-certificates-client-side].
+
 ## Getting started
 
 ### Prerequisites
@@ -27,3 +29,4 @@ mvn spring-boot:run
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [azure_spring_boot_starter_key_vault_certificates]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/README.md
 [steps_to_store_certificate]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/README.md#creating-an-azure-key-vault
+[azure-spring-boot-sample-keyvault-certificates-client-side]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side
