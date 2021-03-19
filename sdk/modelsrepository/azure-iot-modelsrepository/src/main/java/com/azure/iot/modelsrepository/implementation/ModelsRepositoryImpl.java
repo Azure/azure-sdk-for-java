@@ -3,7 +3,14 @@
 
 package com.azure.iot.modelsrepository.implementation;
 
-import com.azure.core.annotation.*;
+import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.exception.ServiceResponseException;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
@@ -58,7 +65,7 @@ public final class ModelsRepositoryImpl {
             this.client.getHost(), path, context)
             .onErrorMap(error ->
                 new ServiceResponseException(
-                    String.format(StandardStrings.ErrorFetchingModelContent, path),
+                    String.format(StandardStrings.ERROR_FETCHING_MODEL_CONTENT, path),
                     error));
     }
 

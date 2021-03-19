@@ -25,7 +25,7 @@ class HttpModelFetcher implements ModelFetcher {
     private final ModelsRepositoryAPIImpl protocolLayer;
     private final ClientLogger logger;
 
-    public HttpModelFetcher(ModelsRepositoryAPIImpl protocolLayer, ClientLogger logger) {
+    HttpModelFetcher(ModelsRepositoryAPIImpl protocolLayer, ClientLogger logger) {
         this.logger = logger;
         this.protocolLayer = protocolLayer;
     }
@@ -44,7 +44,7 @@ class HttpModelFetcher implements ModelFetcher {
 
         String tryContentPath = work.poll();
 
-        logger.info(String.format(StandardStrings.FetchingModelContent, tryContentPath));
+        logger.info(String.format(StandardStrings.FETCHING_MODEL_CONTENT, tryContentPath));
 
         return evaluatePath(tryContentPath, context)
             .onErrorResume(error -> {

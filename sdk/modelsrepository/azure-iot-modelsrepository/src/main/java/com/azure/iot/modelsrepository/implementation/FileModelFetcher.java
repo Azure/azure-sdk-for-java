@@ -17,8 +17,10 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -33,7 +35,7 @@ class FileModelFetcher implements ModelFetcher {
     /**
      * Creates an instance of {@link FileModelFetcher}
      */
-    public FileModelFetcher(ClientLogger logger) {
+    FileModelFetcher(ClientLogger logger) {
         this.logger = logger;
     }
 
@@ -45,9 +47,8 @@ class FileModelFetcher implements ModelFetcher {
             if (resolutionOption == ModelsDependencyResolution.TRY_FROM_EXPANDED) {
                 work.add(getPath(dtmi, repositoryUri, true));
             }
-
             work.add(getPath(dtmi, repositoryUri, false));
-        } catch (Exception e) {
+        } catch (MalformedURLException | URISyntaxException e) {
             return Mono.error(new AzureException(e));
         }
 
@@ -55,24 +56,24 @@ class FileModelFetcher implements ModelFetcher {
         while (work.size() != 0) {
             String tryContentPath = work.poll();
 
-            Path path = Path.of(new File(tryContentPath).getPath());
+            Path path = Paths.get(new File(tryContentPath).getPath());
 
-            logger.info(String.format(StandardStrings.FetchingModelContent, path.toString()));
+            logger.info(String.format(StandardStrings.FETCHING_MODEL_CONTENT, path.toString()));
 
             if (Files.exists(path)) {
                 try {
                     return Mono.just(
                         new FetchResult()
-                            .setDefinition(new String(Files.readAllBytes(path)))
+                            .setDefinition(new String(Files.readAllBytes(path), StandardCharsets.UTF_8))
                             .setPath(tryContentPath));
                 } catch (IOException e) {
                     return Mono.error(new AzureException(e));
                 }
             }
 
-            logger.error(String.format(StandardStrings.ErrorFetchingModelContent, path.toString()));
+            logger.error(String.format(StandardStrings.ERROR_FETCHING_MODEL_CONTENT, path.toString()));
 
-            fnfError = String.format(StandardStrings.ErrorFetchingModelContent, tryContentPath);
+            fnfError = String.format(StandardStrings.ERROR_FETCHING_MODEL_CONTENT, tryContentPath);
         }
 
         return Mono.error(new ServiceResponseException(fnfError));

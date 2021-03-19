@@ -6,6 +6,8 @@ package com.azure.iot.modelsrepository.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.iot.modelsrepository.implementation.ModelsRepositoryConstants;
 
+import java.util.Locale;
+
 /**
  * The FetchResult class has the purpose of containing key elements of
  * an IModelFetcher Fetch() operation including model definition, path and whether
@@ -68,6 +70,6 @@ public class FetchResult {
             return false;
         }
 
-        return this.path.toLowerCase().endsWith(ModelsRepositoryConstants.JSON_EXPANDED_EXTENSION);
+        return this.path.toLowerCase(Locale.getDefault()).endsWith(ModelsRepositoryConstants.JSON_EXPANDED_EXTENSION);
     }
 }

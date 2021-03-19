@@ -11,20 +11,26 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
+/**
+ * DtmiConventions implements the core aspects of the IoT model repo conventions
+ * which includes DTMI validation and calculating a URI path from a DTMI.
+ */
 public class DtmiConventions {
 
     /**
      * A DTMI has three components: scheme, path, and version.
-     * Scheme and path are separated by a colon. Path and version are separated by a semicolon i.e. <scheme> : <path> ; <version>.
+     * Scheme and path are separated by a colon. Path and version are separated by a semicolon i.e. scheme : path ; version.
      * The scheme is the string literal "dtmi" in lowercase. The path is a sequence of one or more segments, separated by colons.
      * The version is a sequence of one or more digits. Each path segment is a non-empty string containing only letters, digits, and undersc
      * The first character may not be a digit, and the last character may not be an underscore.
      * The version length is limited to nine digits, because the number 999,999,999 fits in a 32-bit signed integer value.
      * The first digit may not be zero, so there is no ambiguity regarding whether version 1 matches version 01 since the latter is invalid.
      */
-    private static final Pattern validDtmiPattern = Pattern.compile("^dtmi:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?(?::[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)*;[1-9][0-9]{0,8}$");
+    private static final Pattern VALID_DTMI_PATTERN = Pattern.compile("^dtmi:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?(?::[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)*;[1-9][0-9]{0,8}$");
 
     /**
      * Indicates whether a given string DTMI value is well-formed.
@@ -37,10 +43,18 @@ public class DtmiConventions {
             return false;
         }
 
-        return validDtmiPattern.matcher(dtmi).find();
+        return VALID_DTMI_PATTERN.matcher(dtmi).find();
     }
 
-    public static URI getModelUri(String dtmi, URI repositoryUri, boolean fromExpanded) throws URISyntaxException {
+    /**
+     * Generates the model URI.
+     *
+     * @param dtmi DigitalTwin Model Id.
+     * @param repositoryUri The repository uri
+     * @param fromExpanded Is model from precomputed values
+     * @return The model uri
+     */
+    public static URI getModelUri(String dtmi, URI repositoryUri, boolean fromExpanded) {
         String dtmiPath = dtmiToPath(dtmi);
 
         if (fromExpanded) {
@@ -69,25 +83,36 @@ public class DtmiConventions {
             urlBuilder.setPath(urlBuilder.getPath() + dtmiPath);
         }
 
-        return new URI(urlBuilder.toString());
+        try {
+            return new URI(urlBuilder.toString());
+        } catch (Exception e) {
+            // No exceptions will be thrown as the input is a valid URI format.
+            return null;
+        }
     }
 
+    /**
+     * Converts a string to {@link URI}
+     *
+     * @param uri String format of the path
+     * @return {@link URI} representation of the path/uri   .
+     */
     public static URI convertToUri(String uri) {
         try {
             return new URI(uri);
         } catch (URISyntaxException ex) {
-            Path path = Path.of(uri).normalize();
+            Path path = Paths.get(uri).normalize();
             return new File(path.toAbsolutePath().toString()).toURI();
         }
     }
 
     static String dtmiToPath(String dtmi) {
         if (!isValidDtmi(dtmi)) {
-            throw new IllegalArgumentException(String.format(StandardStrings.InvalidDtmiFormat, dtmi));
+            throw new IllegalArgumentException(String.format(StandardStrings.INVALID_DTMI_FORMAT_S, dtmi));
         }
 
         return dtmi
-            .toLowerCase()
+            .toLowerCase(Locale.getDefault())
             .replaceAll(":", "/")
             .replaceAll(";", "-")
             + ModelsRepositoryConstants.JSON_EXTENSION;

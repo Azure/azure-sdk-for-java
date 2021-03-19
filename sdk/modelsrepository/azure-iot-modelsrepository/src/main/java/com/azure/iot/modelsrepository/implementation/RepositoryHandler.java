@@ -14,7 +14,14 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Queue;
+import java.util.List;
+import java.util.LinkedList;
+import java.util.Locale;
+
 
 public final class RepositoryHandler {
 
@@ -26,7 +33,7 @@ public final class RepositoryHandler {
         this.repositoryUri = repositoryUri;
         this.logger = logger;
 
-        if (this.repositoryUri.getScheme().toLowerCase().startsWith(ModelsRepositoryConstants.FILE)) {
+        if (this.repositoryUri.getScheme().toLowerCase(Locale.getDefault()).startsWith(ModelsRepositoryConstants.FILE)) {
             this.modelFetcher = new FileModelFetcher(this.logger);
         } else {
             this.modelFetcher = new HttpModelFetcher(protocolLayer, this.logger);
@@ -60,7 +67,7 @@ public final class RepositoryHandler {
 
         String targetDtmi = remainingWork.poll();
 
-        logger.info(String.format(StandardStrings.ProcessingDtmi, targetDtmi));
+        logger.info(String.format(StandardStrings.PROCESSING_DTMIS, targetDtmi));
 
         return modelFetcher.fetchAsync(targetDtmi, repositoryUri, resolutionOption, context)
             .map(result -> new TempCustomType(result, currentResults))
@@ -90,7 +97,7 @@ public final class RepositoryHandler {
                         List<String> dependencies = metadata.getDependencies();
 
                         if (dependencies.size() > 0) {
-                            logger.info(StandardStrings.DiscoveredDependencies, String.join("\", \"", dependencies));
+                            logger.info(StandardStrings.DISCOVERED_DEPENDENCIES, String.join("\", \"", dependencies));
                         }
 
                         remainingWork.addAll(dependencies);
@@ -98,8 +105,8 @@ public final class RepositoryHandler {
 
                     String parsedDtmi = metadata.getId();
                     if (!parsedDtmi.equals(targetDtmi)) {
-                        logger.error(String.format(StandardStrings.IncorrectDtmiCasing, targetDtmi, parsedDtmi));
-                        String errorMessage = String.format(StandardStrings.GenericGetModelsError, targetDtmi) + String.format(StandardStrings.IncorrectDtmiCasing, targetDtmi, parsedDtmi);
+                        logger.error(String.format(StandardStrings.INCORRECT_DTMI_CASING, targetDtmi, parsedDtmi));
+                        String errorMessage = String.format(StandardStrings.GENERIC_GET_MODELS_ERROR, targetDtmi) + String.format(StandardStrings.INCORRECT_DTMI_CASING, targetDtmi, parsedDtmi);
 
                         return Mono.error(new AzureException(errorMessage));
                     }
@@ -117,7 +124,7 @@ public final class RepositoryHandler {
         Queue<String> modelsToProcess = new LinkedList<>();
         for (String dtmi : dtmis) {
             if (!DtmiConventions.isValidDtmi(dtmi)) {
-                throw new IllegalArgumentException(String.format(StandardStrings.InvalidDtmiFormat, dtmi));
+                logger.logExceptionAsError(new IllegalArgumentException(String.format(StandardStrings.INVALID_DTMI_FORMAT_S, dtmi)));
             }
 
             modelsToProcess.add(dtmi);

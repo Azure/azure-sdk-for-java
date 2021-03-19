@@ -4,8 +4,20 @@
 package com.azure.iot.modelsrepository;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.http.*;
-import com.azure.core.http.policy.*;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -13,7 +25,6 @@ import com.azure.iot.modelsrepository.implementation.ModelsRepositoryConstants;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -53,9 +64,7 @@ public final class ModelsRepositoryClientBuilder {
     // of the header's value. These null values are equivalent to just constructing "new RetryPolicy()". It is safe
     // to use a null retryAfterHeader and a null retryAfterTimeUnit when constructing this retry policy as this
     // constructor interprets that as saying "this service does not support retry after headers"
-    private static final String retryAfterHeader = null;
-    private static final ChronoUnit retryAfterTimeUnit = null;
-    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy(retryAfterHeader, retryAfterTimeUnit);
+    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy(null, null);
 
     private final Map<String, String> properties;
 
@@ -75,7 +84,7 @@ public final class ModelsRepositoryClientBuilder {
         }
     }
 
-    private static HttpPipeline buildPipeline(
+    private static HttpPipeline constructPipeline(
         HttpLogOptions httpLogOptions,
         ClientOptions clientOptions,
         HttpClient httpClient,
@@ -168,7 +177,7 @@ public final class ModelsRepositoryClientBuilder {
         }
 
         if (this.httpPipeline == null) {
-            this.httpPipeline = buildPipeline(
+            this.httpPipeline = constructPipeline(
                 this.httpLogOptions,
                 this.clientOptions,
                 this.httpClient,

@@ -5,12 +5,12 @@ package com.azure.iot.modelsrepository;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.Paths;
 
 class TestsAssetsHelpers {
     public static String readResourceFile(String filePathFromResources) throws IOException {
         String pathToResources = System.getProperty("user.dir") + "/src/test/resources/" + filePathFromResources;
 
-        return Files.readString(Path.of(pathToResources));
+        return new String(Files.readAllBytes(Paths.get(pathToResources)));
     }
 }
