@@ -176,10 +176,15 @@ public class ReactorConnection implements AmqpConnection {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates a new session with the given session name and set it up for distributed transaction if required.
+     *
+     * @param sessionName Name of the session to be created.
+     * @param distributedTransactionsSupport If this session should support distributed transactions across entities.
+     * @return The AMQP session that was created.
+     *
+     * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transactions-v1.0-os.html#section-coordination">Distributed Transactions</a>
      */
-    @Override
-    public Mono<AmqpSession> createSession(String sessionName, boolean distributedTransactionsSupport) {
+    protected Mono<AmqpSession> createSession(String sessionName, boolean distributedTransactionsSupport) {
         if (isDisposed()) {
             return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
                 "connectionId[%s]: Connection is disposed. Cannot create session '%s'.", connectionId, sessionName))));

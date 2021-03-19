@@ -66,7 +66,7 @@ public interface AmqpConnection extends Disposable {
      *
      * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transactions-v1.0-os.html#section-coordination">Distributed Transactions</a>
      */
-    Mono<AmqpSession> createSession(String sessionName, boolean distributedTransactionsSupport);
+    //Mono<AmqpSession> createSession(String sessionName, boolean distributedTransactionsSupport);
 
     /**
      * Removes a session with the {@code sessionName} from the AMQP connection.
