@@ -27,8 +27,10 @@ done
 
 bash sdk/cosmos/azure-cosmos-spark_3-1_2-12/databricks/databricks-cluster-restart.sh $CLUSTER_ID
 
-echo "Copying files to DBFS $JARPATH/$JARFILE"
+echo "Deleting files in dbfs:/tmp/libraries"
 dbfs rm --recursive dbfs:/tmp/libraries
+
+echo "Copying files to DBFS $JARPATH/$JARFILE"
 dbfs cp $JARPATH/$JARFILE dbfs:/tmp/libraries/$JARFILE --overwrite
 dbfs ls dbfs:/tmp/libraries/
 
