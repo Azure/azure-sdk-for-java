@@ -630,6 +630,7 @@
         <module>sdk/redisenterprise</module>
         <module>sdk/relay</module>
         <module>sdk/remoterendering</module>
+        <module>sdk/resourcegraph</module>
         <module>sdk/resourcemanager</module>
         <module>sdk/schemaregistry</module>
         <module>sdk/search</module>
