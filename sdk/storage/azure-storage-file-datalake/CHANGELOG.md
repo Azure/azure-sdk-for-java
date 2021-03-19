@@ -1,5 +1,8 @@
 # Release History
 
+## 12.5.0-beta.1 (Unreleased)
+
+
 ## 12.4.1 (2021-03-19)
 - Updated `azure-storage-blob` version to `12.10.1` to pickup fixes for blob output stream.
 
