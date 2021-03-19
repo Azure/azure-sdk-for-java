@@ -1,5 +1,8 @@
 # Release History
 
+## 12.11.0-beta.1 (Unreleased)
+
+
 ## 12.10.1 (2021-03-19)
 - Removed a deep copy in the general upload path to reduce memory consumption and increase perf
 - Added a deep copy immediately after calling BlobOutputStream.write to prevent overwriting data in the case of reusing a single buffer to write to an output stream
