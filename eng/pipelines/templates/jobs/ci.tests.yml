@@ -30,12 +30,7 @@ jobs:
     condition: and(succeeded(), ne(variables['Skip.Test'], 'true'))
 
     strategy:
-      matrix:
-        ${{ each matrixEntry in parameters.TestMatrix }}:
-          # Skip TestFromSource jobs for SDKType data
-          ${{ if not(and(eq(matrixEntry.value.TestFromSource, 'true'), eq(parameters.SDKType, 'data'))) }}:
-            ${{ matrixEntry.key }}:
-              ${{ insert }}: ${{ matrixEntry.value }}
+      matrix: $[ ${{ parameters.Matrix }} ]
 
     pool:
       name: $(Pool)

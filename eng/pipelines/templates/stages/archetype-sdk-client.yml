@@ -61,11 +61,17 @@ stages:
             -  ${{ config }}
           - ${{ each config in parameters.AdditionalMatrixConfigs }}:
             -  ${{ config }}
-        MatrixFilters: ${{ parameters.MatrixFilters }}
+        MatrixFilters:
+          - ${{ each filter in parameters.MatrixFilters }}:
+            - ${{ filter }}
+          # Skip TestFromSource jobs for SDKType data
+          - ${{ if eq(parameters.SDKType, 'data') }}:
+            - TestFromSource=^(?!true).*
         MatrixReplace:
           - ${{ each replacement in parameters.MatrixReplace }}:
             - ${{ replacement }}
           - AZURE_TEST.*=.*/
+
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
