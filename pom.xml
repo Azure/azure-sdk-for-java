@@ -606,6 +606,7 @@
         <module>sdk/datadog</module>
         <module>sdk/deviceupdate</module>
         <module>sdk/digitaltwins</module>
+        <module>sdk/elastic</module>
         <module>sdk/eventgrid</module>
         <module>sdk/eventhubs</module>
         <module>sdk/formrecognizer</module>
