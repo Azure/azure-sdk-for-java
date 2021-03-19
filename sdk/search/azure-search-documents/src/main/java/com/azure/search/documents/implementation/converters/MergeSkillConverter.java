@@ -3,11 +3,7 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.MergeSkill;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.MergeSkill} and {@link MergeSkill}.
@@ -21,9 +17,7 @@ public final class MergeSkillConverter {
             return null;
         }
 
-        List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null
-            : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-        MergeSkill mergeSkill = new MergeSkill(inputs, obj.getOutputs());
+        MergeSkill mergeSkill = new MergeSkill(obj.getInputs(), obj.getOutputs());
 
         String name = obj.getName();
         mergeSkill.setName(name);
@@ -49,12 +43,8 @@ public final class MergeSkillConverter {
         if (obj == null) {
             return null;
         }
-
-        List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
-            obj.getInputs() == null ? null
-                : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
         com.azure.search.documents.indexes.implementation.models.MergeSkill mergeSkill =
-            new com.azure.search.documents.indexes.implementation.models.MergeSkill(inputs, obj.getOutputs());
+            new com.azure.search.documents.indexes.implementation.models.MergeSkill(obj.getInputs(), obj.getOutputs());
 
         String name = obj.getName();
         mergeSkill.setName(name);
