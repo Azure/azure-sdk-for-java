@@ -17,12 +17,16 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ReceiveLinkHandler extends LinkHandler {
     private final String linkName;
     private final AtomicBoolean isFirstResponse = new AtomicBoolean(true);
     private final Sinks.Many<Delivery> deliveries = Sinks.many().multicast().directBestEffort();
+    private final Sinks.Many<Integer> linkCredits = Sinks.many().multicast().onBackpressureBuffer();
     private final Set<Delivery> queuedDeliveries = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    private final AtomicInteger lastCreditState = new AtomicInteger();
+    private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final String entityPath;
 
     public ReceiveLinkHandler(String connectionId, String hostname, String linkName, String entityPath) {
@@ -39,13 +43,24 @@ public class ReceiveLinkHandler extends LinkHandler {
         return deliveries.asFlux().doOnNext(delivery -> queuedDeliveries.remove(delivery));
     }
 
+    public Flux<Integer> getLinkCredits() {
+        return linkCredits.asFlux();
+    }
+
     @Override
     public void close() {
+        if (isDisposed.getAndSet(true)) {
+            logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Already disposed.",
+                getConnectionId(), entityPath, linkName);
+            return;
+        }
+
         deliveries.emitComplete((signalType, emitResult) -> {
-            logger.verbose("connectionId[{}], entityPath[{}], linkName[{}] Could not emit complete.",
+            logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Could not emit complete.",
                 getConnectionId(), entityPath, linkName);
             return false;
         });
+        linkCredits.emitComplete(Sinks.EmitFailureHandler.FAIL_FAST);
 
         super.close();
 
@@ -83,6 +98,29 @@ public class ReceiveLinkHandler extends LinkHandler {
         } else {
             logger.info("onLinkRemoteOpen connectionId[{}], entityPath[{}], linkName[{}], action[waitingForError]",
                 getConnectionId(), entityPath, link.getName());
+        }
+    }
+
+    /**
+     * Updates the link state.
+     *
+     * @param event Corresponding event.
+     */
+    @Override
+    public void onLinkFlow(Event event) {
+        final Receiver receiver = event.getReceiver();
+        if (receiver == null) {
+            return;
+        }
+
+        final int remoteCredit = receiver.getRemoteCredit();
+        final int lastCredit = lastCreditState.getAndSet(remoteCredit);
+
+        if (lastCredit != remoteCredit) {
+            logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] lastCredit[{}] newCredit[{}] "
+                + "Emit credit change.", getConnectionId(), entityPath, linkName, remoteCredit, lastCredit);
+
+            linkCredits.emitNext(remoteCredit, Sinks.EmitFailureHandler.FAIL_FAST);
         }
     }
 
@@ -147,6 +185,8 @@ public class ReceiveLinkHandler extends LinkHandler {
                 getConnectionId(), linkName, signalType, emitResult);
             return false;
         });
+
+        linkCredits.emitComplete(Sinks.EmitFailureHandler.FAIL_FAST);
 
         super.onLinkRemoteClose(event);
     }
