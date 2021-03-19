@@ -33,6 +33,29 @@ public class ModelsQuery {
         }
     }
 
+    public ModelMetadata parseModel() throws JsonProcessingException {
+        JsonNode rootElement = mapper.readValue(this.content, JsonNode.class);
+        return parseInterface(rootElement);
+    }
+
+    public Map<String, String> listToMap() throws JsonProcessingException {
+        Map<String, String> result = new HashMap<>();
+
+        JsonNode root = mapper.readValue(this.content, JsonNode.class);
+
+        if (root.isArray()) {
+            for (JsonNode node : root) {
+                if (node.isObject()) {
+                    String nodeString = node.toString();
+                    String id = new ModelsQuery(nodeString).parseModel().getId();
+                    result.put(id, nodeString);
+                }
+            }
+        }
+
+        return result;
+    }
+
     private static ModelMetadata parseInterface(JsonNode root) {
         String rootDtmi = parseRootDtmi(root);
         List<String> extend = parseExtends(root);
@@ -138,28 +161,5 @@ public class ModelsQuery {
         }
 
         return false;
-    }
-
-    public ModelMetadata parseModel() throws JsonProcessingException {
-        JsonNode rootElement = mapper.readValue(this.content, JsonNode.class);
-        return parseInterface(rootElement);
-    }
-
-    public Map<String, String> listToMap() throws JsonProcessingException {
-        Map<String, String> result = new HashMap<>();
-
-        JsonNode root = mapper.readValue(this.content, JsonNode.class);
-
-        if (root.isArray()) {
-            for (JsonNode node : root) {
-                if (node.isObject()) {
-                    String nodeString = node.toString();
-                    String id = new ModelsQuery(nodeString).parseModel().getId();
-                    result.put(id, nodeString);
-                }
-            }
-        }
-
-        return result;
     }
 }

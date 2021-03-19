@@ -35,8 +35,8 @@ class FileModelFetcher implements ModelFetcher {
     /**
      * Creates an instance of {@link FileModelFetcher}
      */
-    FileModelFetcher(ClientLogger logger) {
-        this.logger = logger;
+    FileModelFetcher() {
+        this.logger = new ClientLogger(FileModelFetcher.class);
     }
 
     @Override

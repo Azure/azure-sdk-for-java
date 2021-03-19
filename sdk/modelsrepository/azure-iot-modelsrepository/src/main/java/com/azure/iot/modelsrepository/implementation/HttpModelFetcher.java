@@ -25,8 +25,8 @@ class HttpModelFetcher implements ModelFetcher {
     private final ModelsRepositoryAPIImpl protocolLayer;
     private final ClientLogger logger;
 
-    HttpModelFetcher(ModelsRepositoryAPIImpl protocolLayer, ClientLogger logger) {
-        this.logger = logger;
+    HttpModelFetcher(ModelsRepositoryAPIImpl protocolLayer) {
+        this.logger = new ClientLogger(HttpModelFetcher.class);
         this.protocolLayer = protocolLayer;
     }
 

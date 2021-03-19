@@ -29,14 +29,14 @@ public final class RepositoryHandler {
     private final ModelFetcher modelFetcher;
     private final ClientLogger logger;
 
-    public RepositoryHandler(URI repositoryUri, ModelsRepositoryAPIImpl protocolLayer, ClientLogger logger) {
+    public RepositoryHandler(URI repositoryUri, ModelsRepositoryAPIImpl protocolLayer) {
         this.repositoryUri = repositoryUri;
-        this.logger = logger;
+        this.logger = new ClientLogger(RepositoryHandler.class);
 
         if (this.repositoryUri.getScheme().toLowerCase(Locale.getDefault()).startsWith(ModelsRepositoryConstants.FILE)) {
-            this.modelFetcher = new FileModelFetcher(this.logger);
+            this.modelFetcher = new FileModelFetcher();
         } else {
-            this.modelFetcher = new HttpModelFetcher(protocolLayer, this.logger);
+            this.modelFetcher = new HttpModelFetcher(protocolLayer);
         }
     }
 
@@ -52,10 +52,10 @@ public final class RepositoryHandler {
 
         return processAsync(modelsToProcess, resolutionOptions, context, processedModels)
             .last()
-            .map(TempCustomType::getMap);
+            .map(IntermediateFetchResult::getMap);
     }
 
-    private Flux<TempCustomType> processAsync(
+    private Flux<IntermediateFetchResult> processAsync(
         Queue<String> remainingWork,
         ModelsDependencyResolution resolutionOption,
         Context context,
@@ -70,7 +70,7 @@ public final class RepositoryHandler {
         logger.info(String.format(StandardStrings.PROCESSING_DTMIS, targetDtmi));
 
         return modelFetcher.fetchAsync(targetDtmi, repositoryUri, resolutionOption, context)
-            .map(result -> new TempCustomType(result, currentResults))
+            .map(result -> new IntermediateFetchResult(result, currentResults))
             .expand(customType -> {
                 Map<String, String> results = customType.getMap();
                 FetchResult response = customType.getFetchResult();

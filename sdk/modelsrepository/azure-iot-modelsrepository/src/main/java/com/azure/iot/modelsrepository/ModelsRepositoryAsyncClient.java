@@ -50,7 +50,7 @@ public final class ModelsRepositoryAsyncClient {
             .serializerAdapter(jacksonAdapter)
             .buildClient();
 
-        this.repositoryHandler = new RepositoryHandler(repositoryUri, protocolLayer, LOGGER);
+        this.repositoryHandler = new RepositoryHandler(repositoryUri, protocolLayer);
     }
 
     /**
@@ -97,7 +97,7 @@ public final class ModelsRepositoryAsyncClient {
     /**
      * Gets a collection of model definitions.
      *
-     * @param dtmis Collection of well-formed DTDL model Ids
+     * @param dtmis Collection of well-formed DTDL model Ids.
      * @return A Map containing the model definition(s) and dependencies (if applicable) where the key is the dtmi
      * and the value is the raw model definition string.
      */
