@@ -2,7 +2,7 @@
 // val cosmosMasterKey = "<inserted by environment>"
 
 val cosmosEndpoint = dbutils.widgets.get("cosmosEndpoint")
-val cosmosMasterKey = dbutils.widgets.get("cosmosMasterKey")
+val cosmosMasterKey = "notworking"
 
 val cosmosDatabaseName = "sampleDB"
 val cosmosContainerName = "sampleContainer"
