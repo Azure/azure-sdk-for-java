@@ -48,6 +48,15 @@ public final class PhoneNumberOperation {
     private OffsetDateTime lastActionDateTime;
 
     /**
+     * Get the lastActionDateTime property: The most recent date that the operation was changed.
+     *
+     * @return the lastActionDateTime value.
+     */
+    public OffsetDateTime getLastActionDateTime() {
+        return this.lastActionDateTime;
+    }
+
+    /**
      * Get the status property: Status of operation.
      *
      * @return the status value.
@@ -145,15 +154,6 @@ public final class PhoneNumberOperation {
     public PhoneNumberOperation setOperationType(PhoneNumberOperationType operationType) {
         this.operationType = operationType;
         return this;
-    }
-
-    /**
-     * Get the lastActionDateTime property: The most recent date that the operation was changed.
-     *
-     * @return the lastActionDateTime value.
-     */
-    public OffsetDateTime getLastActionDateTime() {
-        return this.lastActionDateTime;
     }
 
     /**
