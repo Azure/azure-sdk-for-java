@@ -1,10 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.experimental.geojson;
+package com.azure.core.experimental.geojson.implementation;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.experimental.geojson.implementation.GeoArrayIterator;
+import com.azure.core.experimental.geojson.GeoLineStringCollection;
+import com.azure.core.experimental.geojson.GeoPointCollection;
+import com.azure.core.experimental.geojson.GeoPolygon;
+import com.azure.core.experimental.geojson.GeoPolygonCollection;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.AbstractList;
@@ -28,7 +31,7 @@ public final class GeoArray<T> extends AbstractList<T> {
 
     private final Object container;
 
-    GeoArray(Object container) {
+    public GeoArray(Object container) {
         this.container = container;
     }
 

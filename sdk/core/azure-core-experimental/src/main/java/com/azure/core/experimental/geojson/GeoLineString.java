@@ -4,6 +4,7 @@
 package com.azure.core.experimental.geojson;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.experimental.geojson.implementation.GeoArray;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,7 @@ public final class GeoLineString extends GeoObject {
      *
      * @return An unmodifiable representation of the {@link GeoPosition geometric positions} representing this line.
      */
-    public GeoArray<GeoPosition> getCoordinates() {
+    GeoArray<GeoPosition> getCoordinates() {
         return coordinates;
     }
 

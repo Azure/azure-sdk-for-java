@@ -3,6 +3,7 @@
 
 package com.azure.core.experimental.geojson;
 
+import com.azure.core.experimental.geojson.implementation.GeoArray;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

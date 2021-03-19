@@ -3,7 +3,6 @@
 
 package com.azure.core.experimental.geojson.implementation;
 
-import com.azure.core.experimental.geojson.GeoArray;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Iterator;
