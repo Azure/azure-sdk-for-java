@@ -3,6 +3,9 @@
 
 package com.azure.core.amqp.implementation.handler;
 
+import com.azure.core.amqp.exception.AmqpException;
+import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.amqp.transport.Source;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -20,10 +23,16 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 
+import static com.azure.core.amqp.exception.AmqpErrorCondition.LINK_STOLEN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Tests for {@link ReceiveLinkHandler}.
+ */
 public class ReceiveLinkHandlerTest {
     private static final String CONNECTION_ID = "connection-id";
     private static final String HOSTNAME = "test-hostname";
@@ -114,6 +123,7 @@ public class ReceiveLinkHandlerTest {
         when(receiver.getRemoteSource()).thenReturn(source);
 
         StepVerifier.create(linkHandler.getEndpointStates())
+            .expectNext(EndpointState.UNINITIALIZED)
             .then(() -> {
                 linkHandler.onLinkRemoteOpen(event);
                 linkHandler.close();
@@ -148,6 +158,41 @@ public class ReceiveLinkHandlerTest {
                 linkHandler.close();
             })
             .verifyComplete();
+    }
+
+    /**
+     * On remote close, completes the fluxes and sets the appropriate error conditions.
+     */
+    @Test
+    public void onRemoteCloseDisposes() {
+        when(event.getDelivery()).thenReturn(delivery);
+        when(receiver.getLocalState()).thenReturn(EndpointState.ACTIVE);
+
+        final Symbol symbol = Symbol.getSymbol(LINK_STOLEN.getErrorCondition());
+        final ErrorCondition errorCondition = new ErrorCondition(symbol, "foo-bar");
+
+        when(receiver.getRemoteCondition()).thenReturn(errorCondition);
+        when(receiver.getLocalState()).thenReturn(EndpointState.ACTIVE);
+
+        StepVerifier.create(linkHandler.getDeliveredMessages())
+            .then(() -> linkHandler.onLinkRemoteClose(event))
+            .verifyComplete();
+
+        StepVerifier.create(linkHandler.getLinkCredits())
+            .verifyComplete();
+
+        StepVerifier.create(linkHandler.getEndpointStates())
+            .expectNext(EndpointState.UNINITIALIZED)
+            .expectErrorSatisfies(error -> {
+                assertTrue(error instanceof AmqpException);
+
+                final AmqpException exception = (AmqpException) error;
+                assertEquals(LINK_STOLEN, exception.getErrorCondition());
+            })
+            .verify();
+
+        verify(receiver).setCondition(errorCondition);
+        verify(receiver).close();
     }
 }
 
