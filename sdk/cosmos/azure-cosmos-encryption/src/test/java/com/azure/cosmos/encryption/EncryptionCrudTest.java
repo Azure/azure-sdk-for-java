@@ -60,7 +60,7 @@ public class EncryptionCrudTest extends TestSuiteBase {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildAsyncClient();
         cosmosAsyncDatabase = getSharedCosmosDatabase(this.client);
-        cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.createEncryptionCosmosAsyncClient(this.client,
+        cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(this.client,
             new TestEncryptionKeyStoreProvider());
         cosmosEncryptionAsyncDatabase =
             cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(cosmosAsyncDatabase);

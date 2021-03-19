@@ -117,7 +117,7 @@ public class CosmosEncryptionAsyncClient {
      *                                   keys.
      * @return encryptionAsyncCosmosClient to perform operations supporting client-side encryption / decryption.
      */
-    public static CosmosEncryptionAsyncClient createEncryptionCosmosAsyncClient(CosmosAsyncClient cosmosAsyncClient,
+    public static CosmosEncryptionAsyncClient createCosmosEncryptionAsyncClient(CosmosAsyncClient cosmosAsyncClient,
                                                                                 EncryptionKeyStoreProvider encryptionKeyStoreProvider) {
         return new CosmosEncryptionAsyncClient(cosmosAsyncClient, encryptionKeyStoreProvider);
     }

@@ -100,7 +100,7 @@ public class Program {
         TokenCredential tokenCredentials = Program.getTokenCredential(configuration);
         AzureKeyVaultKeyStoreProvider encryptionKeyStoreProvider = new AzureKeyVaultKeyStoreProvider(tokenCredentials);
 
-        return CosmosEncryptionAsyncClient.createEncryptionCosmosAsyncClient(asyncClient, encryptionKeyStoreProvider);
+        return CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(asyncClient, encryptionKeyStoreProvider);
     }
 
     /**

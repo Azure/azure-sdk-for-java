@@ -5,7 +5,6 @@ package com.azure.cosmos.encryption;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.EncryptionCodeSnippet;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
@@ -56,7 +55,7 @@ public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
         //Creating DB
         CosmosDatabaseProperties cosmosDatabaseProperties = this.client.createDatabase("TestDBForEncryptionCacheTest"
             , ThroughputProperties.createManualThroughput(1000)).block().getProperties();
-        cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.createEncryptionCosmosAsyncClient(this.client,
+        cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(this.client,
             new EncryptionCrudTest.TestEncryptionKeyStoreProvider());
         cosmosEncryptionAsyncDatabase =
             cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(cosmosDatabaseProperties.getId());
