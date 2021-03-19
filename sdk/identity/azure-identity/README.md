@@ -141,7 +141,6 @@ public void createDefaultAzureCredentialForIntelliJ() {
       <th>usage</th>
       <th>configuration</th>
       <th>example</th>
-      <th>reference</th>
     </tr>
   </thead>
   <tbody>
@@ -237,7 +236,6 @@ The [Managed identity authentication](https://docs.microsoft.com/azure/active-di
       <td>interactively authenticates a user with the default system browser</td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#enable-applications-for-interactive-browser-oauth-2-flow">configuration</a></td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-interactively-in-the-browser">example</a></td>
-      <td></td>
       <td><a href="https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow">OAuth2 authentication code</a></td>
     </tr>
     <tr>
@@ -258,16 +256,6 @@ The [Managed identity authentication](https://docs.microsoft.com/azure/active-di
 </table>
 
 ### Authenticating via Development Tools
-
-  - [Service principal authentication](https://docs.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals)
-  - [Managed identity authentication](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview)
-  - [Device code authentication](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-device-code)
-  - Interactive browser authentication, based on [OAuth2 authentication code](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow)
-  - [Username + password authentication](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth-ropc)
-  - [IntelliJ authentication](https://docs.microsoft.com/en-us/azure/developer/java/toolkit-for-intellij/sign-in-instructions), with the login information saved in [Azure Toolkit for IntelliJ](https://docs.microsoft.com/en-us/azure/developer/java/toolkit-for-intellij/)
-  - Visual Studio Code authentication, with the login information saved in [Azure extensions](https://code.visualstudio.com/docs/azure/extensions) for [Visual Studio Code](https://code.visualstudio.com/docs)
-  - [Azure CLI authentication](https://docs.microsoft.com/en-us/cli/azure/authenticate-azure-cli), with the login information saved in [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/)
-
 
 <table border="1" width="100%">
   <thead>
