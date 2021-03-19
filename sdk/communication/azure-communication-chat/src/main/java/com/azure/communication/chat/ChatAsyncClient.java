@@ -59,6 +59,8 @@ public final class ChatAsyncClient {
      * Creates a chat thread.
      *
      * @param options Options for creating a chat thread.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -83,6 +85,8 @@ public final class ChatAsyncClient {
      * Creates a chat thread.
      *
      * @param options Options for creating a chat thread.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -100,6 +104,8 @@ public final class ChatAsyncClient {
      *
      * @param options Options for creating a chat thread.
      * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     Mono<Response<CreateChatThreadResult>> createChatThread(CreateChatThreadOptions options, Context context) {
@@ -118,6 +124,8 @@ public final class ChatAsyncClient {
     /**
      * Gets the list of chat threads of a user.
      *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paged list of chat threads of a user.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -140,6 +148,8 @@ public final class ChatAsyncClient {
      * Gets the list of chat threads of a user.
      *
      * @param listThreadsOptions The request options.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paged list of chat threads of a user.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -181,6 +191,8 @@ public final class ChatAsyncClient {
      * Deletes a chat thread.
      *
      * @param chatThreadId Chat thread id to delete.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -200,6 +212,8 @@ public final class ChatAsyncClient {
      * Deletes a chat thread.
      *
      * @param chatThreadId Chat thread id to delete.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -217,6 +231,8 @@ public final class ChatAsyncClient {
      *
      * @param chatThreadId Chat thread id to delete.
      * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     Mono<Response<Void>> deleteChatThread(String chatThreadId, Context context) {
