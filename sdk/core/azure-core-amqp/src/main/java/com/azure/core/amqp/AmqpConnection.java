@@ -58,17 +58,6 @@ public interface AmqpConnection extends Disposable {
     Mono<AmqpSession> createSession(String sessionName);
 
     /**
-     * Creates a new session with the given session name and set it up for distributed transaction if required.
-     *
-     * @param sessionName Name of the session to be created.
-     * @param distributedTransactionsSupport If this session should support distributed transactions across entities.
-     * @return The AMQP session that was created.
-     *
-     * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transactions-v1.0-os.html#section-coordination">Distributed Transactions</a>
-     */
-    //Mono<AmqpSession> createSession(String sessionName, boolean distributedTransactionsSupport);
-
-    /**
      * Removes a session with the {@code sessionName} from the AMQP connection.
      *
      * @param sessionName Name of the session to remove.

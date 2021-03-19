@@ -190,8 +190,11 @@ public final class ServiceBusClientBuilder {
 
     /**
      * Enable cross entity transaction on the connection to Service bus. Use this feature when your transaction is
-     * involved in different Service Bus entities. You should avoid using non transaction activities on the clients
-     * which have this feature enabled.
+     * involved in different Service Bus entities.
+     * <p><strong>Avoid using non-transaction API on this client</strong></p>
+     * Since this feature will set up connection to Service Bus in a
+     * specific way, You should avoid using non transaction activities on the clients
+     * which have this feature enabled. Once all the clients have been setup, the first receiver or sender used will initialise 'send-via'
      * <p><strong>When not to enable this feature</strong></p>
      * If your transaction involved in one Service bus entity only. For example you are receiving from a
      * queue/subscription and you want to settle your own messages which are part of one transaction.
@@ -409,8 +412,7 @@ public final class ServiceBusClientBuilder {
                     final String connectionId = StringUtil.getRandomString("MF");
 
                     return (ServiceBusAmqpConnection) new ServiceBusReactorAmqpConnection(connectionId,
-                        connectionOptions, provider, handlerProvider, tokenManagerProvider, serializer,
-                        crossEntityTransactions);
+                        connectionOptions, provider, handlerProvider, tokenManagerProvider, serializer);
                 }).repeat();
 
                 sharedConnection = connectionFlux.subscribeWith(new ServiceBusConnectionProcessor(
@@ -459,7 +461,7 @@ public final class ServiceBusClientBuilder {
         final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
 
         return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport, retryOptions,
-            proxyOptions, scheduler, options, verificationMode, product, clientVersion);
+            proxyOptions, scheduler, options, verificationMode, product, clientVersion, crossEntityTransactions);
     }
 
     private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {

@@ -69,8 +69,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      */
     public ServiceBusReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions,
         ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
-        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
-        boolean crossEntityTransaction) {
+        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer) {
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
             messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
 
@@ -83,7 +82,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
         this.messageSerializer = messageSerializer;
         this.scheduler = connectionOptions.getScheduler();
         this.fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();
-        this.distributedTransactionsSupport = crossEntityTransaction;
+        this.distributedTransactionsSupport = connectionOptions.isDistributedTransactionsSupported();
     }
 
     @Override
@@ -182,16 +181,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
 
     @Override
     public Mono<AmqpSession> createSession(String sessionName) {
-        return super.createSession(distributedTransactionsSupport ? CROSS_ENTITY_TRANSACTIONS_LINK_NAME : sessionName,
-            distributedTransactionsSupport);
-    }
-
-    @Override
-    protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler,
-        boolean distributedTransactionsSupport) {
-        return new ServiceBusReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
-            getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer, retryOptions,
-            distributedTransactionsSupport);
+        return super.createSession(distributedTransactionsSupport ? CROSS_ENTITY_TRANSACTIONS_LINK_NAME : sessionName);
     }
 
     /**
@@ -233,6 +223,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     @Override
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
         return new ServiceBusReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
-            getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer, retryOptions, false);
+            getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer, retryOptions,
+            distributedTransactionsSupport);
     }
 }

@@ -170,21 +170,11 @@ public class ReactorConnection implements AmqpConnection {
         return handler.getConnectionProperties();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Mono<AmqpSession> createSession(String sessionName) {
-        return createSession(sessionName, false);
-    }
-
-    /**
-     * Creates a new session with the given session name and set it up for distributed transaction if required.
-     *
-     * @param sessionName Name of the session to be created.
-     * @param distributedTransactionsSupport If this session should support distributed transactions across entities.
-     * @return The AMQP session that was created.
-     *
-     * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transactions-v1.0-os.html#section-coordination">Distributed Transactions</a>
-     */
-    protected Mono<AmqpSession> createSession(String sessionName, boolean distributedTransactionsSupport) {
         if (isDisposed()) {
             return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
                 "connectionId[%s]: Connection is disposed. Cannot create session '%s'.", connectionId, sessionName))));
@@ -202,7 +192,7 @@ public class ReactorConnection implements AmqpConnection {
                 final Session session = connection.session();
 
                 BaseHandler.setHandler(session, handler);
-                final AmqpSession amqpSession = createSession(key, session, handler, distributedTransactionsSupport);
+                final AmqpSession amqpSession = createSession(key, session, handler);
                 final Disposable subscription = amqpSession.getEndpointStates()
                     .subscribe(state -> {
                     }, error -> {
@@ -232,24 +222,9 @@ public class ReactorConnection implements AmqpConnection {
      * @return A new instance of AMQP session.
      */
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
-        return createSession(sessionName, session, handler, false);
-    }
-
-    /**
-     * Creates a new AMQP session with the given parameters.
-     *
-     * @param sessionName Name of the AMQP session.
-     * @param session The reactor session associated with this session.
-     * @param handler Session handler for the reactor session.
-     * @param distributedTransactionsSupport If distributed transaction across entities is required for this session.
-     *
-     * @return A new instance of AMQP session.
-     */
-    protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler,
-        boolean distributedTransactionsSupport) {
         return new ReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
             getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer, connectionOptions.getRetry(),
-            new CreateSessionOptions(distributedTransactionsSupport));
+            new CreateSessionOptions(connectionOptions.isDistributedTransactionsSupported()));
     }
 
     /**

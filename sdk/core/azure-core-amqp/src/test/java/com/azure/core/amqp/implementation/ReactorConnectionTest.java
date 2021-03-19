@@ -249,8 +249,19 @@ class ReactorConnectionTest {
         when(reactorHandlerProvider.createSendLinkHandler(CONNECTION_ID, FULLY_QUALIFIED_NAMESPACE, TRANSACTION_LINK_NAME, entityPath))
             .thenReturn(sendLinkHandler);
 
+        final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setMaxRetries(0).setTryTimeout(TEST_DURATION);
+
+        final ConnectionOptions connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
+            tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, retryOptions,
+            ProxyOptions.SYSTEM_DEFAULTS, SCHEDULER, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION, coordinatorRequired);
+
+        when(reactorHandlerProvider.createConnectionHandler(CONNECTION_ID, connectionOptions))
+            .thenReturn(connectionHandler);
+        connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider,
+            tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
+
         // Act & Assert
-        StepVerifier.create(connection.createSession(SESSION_NAME, coordinatorRequired))
+        StepVerifier.create(connection.createSession(SESSION_NAME))
             .assertNext(s -> {
                 Assertions.assertNotNull(s);
                 Assertions.assertEquals(SESSION_NAME, s.getSessionName());
@@ -259,7 +270,7 @@ class ReactorConnectionTest {
             }).verifyComplete();
 
         // Assert that the same instance is obtained and we don't get a new session with the same name.
-        StepVerifier.create(connection.createSession(SESSION_NAME, coordinatorRequired))
+        StepVerifier.create(connection.createSession(SESSION_NAME))
             .assertNext(s -> {
                 Assertions.assertNotNull(s);
                 Assertions.assertEquals(SESSION_NAME, s.getSessionName());
