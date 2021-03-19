@@ -52,6 +52,8 @@ pom_file_end = '''  </modules>
 </project>
 '''
 
+maven_xml_namespace = '{http://maven.apache.org/POM/4.0.0}'
+
 # Function that creates the aggregate POM.
 def create_from_source_pom(project_list: str):
     project_list_identifiers = project_list.split(',')
@@ -153,7 +155,7 @@ def add_project_to_dependency_and_module_mappings(file_path: str, project_depend
     
     module_path_mapping[project_identifier] = os.path.dirname(file_path).replace(root_path, '').replace('\\', '/')
 
-    dependencies = element_find(tree_root, 'dependencies')
+    dependencies = tree_root.iter(maven_xml_namespace + 'dependency')
 
     # If the project doesn't have a dependencies XML element skip it.
     if dependencies is None:
@@ -214,7 +216,7 @@ def create_artifact_identifier(element: ET.Element):
 
 # Helper function for finding an XML element which handles adding the namespace.
 def element_find(element: ET.Element, path: str):
-    return element.find('{http://maven.apache.org/POM/4.0.0}' + path)
+    return element.find(maven_xml_namespace + path)
 
 def main():
     parser = argparse.ArgumentParser(description='Generated an aggregate POM for a From Source run.')
