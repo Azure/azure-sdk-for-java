@@ -32,7 +32,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core</artifactId>
-          <version>1.14.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+          <version>1.14.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -82,7 +82,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-serializer-json-jackson</artifactId>
-          <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;current} -->
+          <version>1.2.1</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
