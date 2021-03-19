@@ -203,7 +203,52 @@ class ReactorReceiverTest {
     }
 
     @Test
-    void addsMoreCreditsWhenPrefetchIsDone() throws IOException {
+    void receivesMessage() {
+        // Arrange
+        // This message was copied from one that was received.
+        final byte[] messageBytes = new byte[] { 0, 83, 114, -63, 73, 6, -93, 21, 120, 45, 111, 112, 116, 45, 115, 101,
+            113, 117, 101, 110, 99, 101, 45, 110, 117, 109, 98, 101, 114, 85, 0, -93, 12, 120, 45, 111, 112, 116, 45,
+            111, 102, 102, 115, 101, 116, -95, 1, 48, -93, 19, 120, 45, 111, 112, 116, 45, 101, 110, 113, 117, 101, 117,
+            101, 100, 45, 116, 105, 109, 101, -125, 0, 0, 1, 112, -54, 124, -41, 90, 0, 83, 117, -96, 12, 80, 111, 115,
+            105, 116, 105, 111, 110, 53, 58, 32, 48};
+        final Link link = mock(Link.class);
+        final Delivery delivery = mock(Delivery.class);
+
+        when(event.getLink()).thenReturn(link);
+        when(event.getDelivery()).thenReturn(delivery);
+
+        when(delivery.getLink()).thenReturn(receiver);
+        when(delivery.isPartial()).thenReturn(false);
+        when(delivery.isSettled()).thenReturn(false);
+        when(delivery.pending()).thenReturn(messageBytes.length);
+
+        when(receiver.getRemoteCredit()).thenReturn(7);
+        when(receiver.recv(any(), eq(0), eq(messageBytes.length))).thenAnswer(invocation -> {
+            final byte[] buffer = invocation.getArgument(0);
+            System.arraycopy(messageBytes, 0, buffer, 0, messageBytes.length);
+            return messageBytes.length;
+        });
+
+        when(creditSupplier.get()).thenReturn(10);
+        reactorReceiver.setEmptyCreditListener(creditSupplier);
+
+        // Act & Assert
+        StepVerifier.create(reactorReceiver.receive())
+            .then(() -> receiverHandler.onDelivery(event))
+            .assertNext(message -> {
+                Assertions.assertNotNull(message.getMessageAnnotations());
+
+                final Map<Symbol, Object> values = message.getMessageAnnotations().getValue();
+                Assertions.assertTrue(values.containsKey(Symbol.getSymbol(AmqpMessageConstant.OFFSET_ANNOTATION_NAME.getValue())));
+                Assertions.assertTrue(values.containsKey(Symbol.getSymbol(AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME.getValue())));
+                Assertions.assertTrue(values.containsKey(Symbol.getSymbol(AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue())));
+            })
+            .thenCancel()
+            .verify();
+    }
+
+    @Test
+    void addsCreditsOnFlow() throws IOException {
         // Arrange
         // This message was copied from one that was received.
         final byte[] messageBytes = new byte[] { 0, 83, 114, -63, 73, 6, -93, 21, 120, 45, 111, 112, 116, 45, 115, 101,

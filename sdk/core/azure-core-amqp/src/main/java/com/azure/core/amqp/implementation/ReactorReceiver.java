@@ -13,13 +13,18 @@ import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
+import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * Handles receiving events from Event Hubs service and translating them to proton-j messages.
@@ -35,6 +40,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
     private final TokenManager tokenManager;
     private final ReactorDispatcher dispatcher;
     private final Disposable subscriptions;
+    private final AtomicInteger currentCredits = new AtomicInteger();
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final Flux<Message> messagesProcessor;
     private final ClientLogger logger = new ClientLogger(ReactorReceiver.class);
@@ -51,19 +57,6 @@ public class ReactorReceiver implements AmqpReceiveLink {
         this.dispatcher = dispatcher;
         this.messagesProcessor = this.handler.getDeliveredMessages()
             .map(this::decodeDelivery)
-            .doOnNext(next -> {
-                if (receiver.getRemoteCredit() == 0 && !isDisposed.get()) {
-                    final Supplier<Integer> supplier = creditSupplier.get();
-                    if (supplier == null) {
-                        return;
-                    }
-
-                    final Integer credits = supplier.get();
-                    if (credits != null && credits > 0) {
-                        addCredits(credits);
-                    }
-                }
-            })
             .publish()
             .autoConnect();
         this.endpointStates = this.handler.getEndpointStates()
@@ -74,20 +67,50 @@ public class ReactorReceiver implements AmqpReceiveLink {
             })
             .cache(1);
 
-        this.subscriptions = this.tokenManager.getAuthorizationResults().subscribe(
-            response -> {
-                logger.verbose("Token refreshed: {}", response);
-                hasAuthorized.set(true);
-            }, error -> {
-                logger.info("connectionId[{}], path[{}], linkName[{}] - tokenRenewalFailure[{}]",
-                    handler.getConnectionId(), this.entityPath, getLinkName(), error.getMessage());
-                hasAuthorized.set(false);
-            }, () -> hasAuthorized.set(false));
+        final Disposable creditSubscription = this.handler.getLinkCredits().flatMap(credits -> {
+            this.currentCredits.set(credits);
+
+            if (credits > 1) {
+                return Mono.empty();
+            }
+
+            final Supplier<Integer> supplier = creditSupplier.get();
+            if (supplier == null) {
+                logger.warning("connectionId[{}] path[{}] linkName[{}] credits[{}] There is no credit supplier.",
+                    handler.getConnectionId(), this.entityPath, getLinkName(), credits);
+                return Mono.empty();
+            }
+
+            final Integer additionalCredits = supplier.get();
+            if (additionalCredits != null && additionalCredits > 0) {
+                logger.verbose("connectionId[{}] path[{}] linkName[{}] credits[{}] Adding {} credits.",
+                    handler.getConnectionId(), this.entityPath, getLinkName(), credits);
+
+                return addCredits(additionalCredits);
+            } else {
+                logger.warning("connectionId[{}] path[{}] linkName[{}] credits[{}] There are no credits to add.",
+                    handler.getConnectionId(), this.entityPath, getLinkName(), credits);
+
+                return Mono.empty();
+            }
+        }).subscribe();
+
+        this.subscriptions = Disposables.composite(
+            creditSubscription,
+            tokenManager.getAuthorizationResults().subscribe(
+                response -> {
+                    logger.verbose("Token refreshed: {}", response);
+                    hasAuthorized.set(true);
+                }, error -> {
+                    logger.warning("connectionId[{}] path[{}] linkName[{}] tokenRenewalFailure[{}]",
+                        handler.getConnectionId(), this.entityPath, getLinkName(), error.getMessage());
+                    hasAuthorized.set(false);
+                }, () -> hasAuthorized.set(false)));
     }
 
     @Override
     public Flux<AmqpEndpointState> getEndpointStates() {
-        return endpointStates.distinct();
+        return endpointStates;
     }
 
     @Override
@@ -96,24 +119,28 @@ public class ReactorReceiver implements AmqpReceiveLink {
     }
 
     @Override
-    public void addCredits(int credits) {
-        if (!isDisposed.get()) {
-            try {
-                dispatcher.invoke(() -> receiver.flow(credits));
-            } catch (IOException e) {
-                logger.warning("Unable to schedule work to add more credits.", e);
-            }
+    public Mono<Void> addCredits(int credits) {
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException("connectionId[{}] path[{}], linkName[{}] Is closed. Cannot add credits."));
         }
-    }
 
-    @Override
-    public void addCreditsInstantly(int credits) {
-        receiver.flow(credits);
+        return Mono.create(sink -> {
+            try {
+                dispatcher.invoke(() -> {
+                    receiver.flow(credits);
+                    sink.success();
+                });
+            } catch (IOException e) {
+                logger.warning("Unable to schedule work to add more credits. Manually invoking.", e);
+                receiver.flow(credits);
+                sink.success();
+            }
+        });
     }
 
     @Override
     public int getCredits() {
-        return receiver.getRemoteCredit();
+        return currentCredits.get();
     }
 
     @Override
