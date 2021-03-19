@@ -1,13 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.experimental.geojson.implementation;
+package com.azure.core.experimental.geojson;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.experimental.geojson.GeoLineStringCollection;
-import com.azure.core.experimental.geojson.GeoPointCollection;
-import com.azure.core.experimental.geojson.GeoPolygon;
-import com.azure.core.experimental.geojson.GeoPolygonCollection;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.AbstractList;
@@ -25,13 +21,13 @@ import java.util.function.UnaryOperator;
  * @param <T> The type of geometry coordinates.
  */
 @Immutable
-public final class GeoArray<T> extends AbstractList<T> {
+final class GeoArray<T> extends AbstractList<T> {
     private static final String NO_MUTATION_MESSAGE = "GeoArray cannot be mutated.";
     private final ClientLogger logger = new ClientLogger(GeoArray.class);
 
     private final Object container;
 
-    public GeoArray(Object container) {
+    GeoArray(Object container) {
         this.container = container;
     }
 

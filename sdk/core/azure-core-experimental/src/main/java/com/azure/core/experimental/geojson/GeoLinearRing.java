@@ -4,7 +4,6 @@
 package com.azure.core.experimental.geojson;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.experimental.geojson.implementation.GeoArray;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
