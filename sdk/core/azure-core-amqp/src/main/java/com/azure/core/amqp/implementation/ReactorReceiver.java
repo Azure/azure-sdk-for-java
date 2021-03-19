@@ -70,8 +70,11 @@ public class ReactorReceiver implements AmqpReceiveLink {
         final Disposable creditSubscription = this.handler.getLinkCredits().flatMap(credits -> {
             this.currentCredits.set(credits);
 
-            if (credits > 1) {
+            if (credits > 0) {
                 return Mono.empty();
+            } else if (credits < 0) {
+                logger.info("connectionId[{}] path[{}] linkName[{}] credits[{}] Negative credits.",
+                    handler.getConnectionId(), this.entityPath, getLinkName(), credits);
             }
 
             final Supplier<Integer> supplier = creditSupplier.get();
