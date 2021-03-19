@@ -7,7 +7,7 @@
 - Added `SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType, PhoneNumberCapabilities capabilities)` in PhoneNumbersClient.
 - Added `SyncPoller<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId)` in PhoneNumbersClient.
 - Added `SyncPoller<PhoneNumberOperation, ReleasePhoneNumberResult> beginReleasePhoneNumber(String phoneNumber)` in PhoneNumbersClient.
-- Added `SyncPoller<PhoneNumberOperation, PurchasedPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest)` in PhoneNumbersClient.
+- Added `SyncPoller<PhoneNumberOperation, PurchasedPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilities capabilities)` in PhoneNumbersClient.
 - Added `PurchasePhoneNumbersResult`.
 - Added `ReleasePhoneNumbersResult`.
 
@@ -21,6 +21,11 @@ PhoneNumbersAsyncClient.getPurchasedPhoneNumberWithResponse and PhoneNumbersClie
 - Updated `PollerFlux<PhoneNumberOperation, Void> beginReleasePhoneNumber` to `public PollerFlux<PhoneNumberOperation, ReleasePhoneNumberResult> beginReleasePhoneNumber` in PhoneNumbersAsyncClient.
 - Updated `SyncPoller<PhoneNumberOperation, Void> beginPurchasePhoneNumbers` to ` SyncPoller<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers` in PhoneNumbersClient.
 - Updated `SyncPoller<PhoneNumberOperation, Void> beginReleasePhoneNumber` to `SyncPoller<PhoneNumberOperation, ReleasePhoneNumberResult> beginReleasePhoneNumber` in PhoneNumbersClient.
+- Updated `PollerFlux<PhoneNumberOperation, PurchasedPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest)` to `PollerFlux<PhoneNumberOperation, PurchasedPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilities capabilities)`.
+- Updated `SyncPoller<PhoneNumberOperation, PurchasedPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest)` to `SyncPoller<PhoneNumberOperation, PurchasedPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilities capabilities)`.
+- Removed `CommunicationError`.
+- Removed `PhoneNumberCapabilitiesRequest`.
+- Moved `ReservationStatus` to the `models` folder.
 
 ## 1.0.0-beta.6 (2021-03-09)
 ### Added
