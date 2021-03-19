@@ -86,7 +86,8 @@ def create_from_source_pom(project_list: str):
 
     # Finally add the project in the project list themselves.
     for project_identifier in project_list_identifiers:
-        modules.append(project_to_pom_path_mapping[project_identifier])
+        if project_identifier in project_to_pom_path_mapping:
+            modules.append(project_to_pom_path_mapping[project_identifier])
 
     # Distinct the modules list.
     modules = list(set(modules))
