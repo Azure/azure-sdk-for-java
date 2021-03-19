@@ -180,8 +180,7 @@ public final class PhoneNumbersAsyncClient {
                 .flatMap((PhoneNumbersSearchAvailablePhoneNumbersResponse response) -> {
                     pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
                     pollingContext.setData("searchId", response.getDeserializedHeaders().getSearchId());
-                    Mono<PhoneNumberOperation> operation = getOperation(pollingContext.getData("operationId"));
-                    return operation;
+                    return getOperation(pollingContext.getData("operationId"));
                 });
             });
         };
