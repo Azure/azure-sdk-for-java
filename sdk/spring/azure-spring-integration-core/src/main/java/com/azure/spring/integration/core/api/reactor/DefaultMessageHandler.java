@@ -167,7 +167,11 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
         // Priority setting partitionId
         String partitionId = this.partitionIdExpression != null
             ? this.partitionIdExpression.getValue(this.evaluationContext, message, String.class)
-            : headers.get(AzureHeaders.PARTITION_ID, String.class);
+            : headers.keySet().stream()
+                     .filter(header -> AzureHeaders.PARTITION_ID.equals(header))
+                     .map(key -> String.valueOf(headers.get(key)))
+                     .findAny()
+                     .orElse(null);
         if (StringUtils.hasText(partitionId)) {
             partitionSupplier.setPartitionId(partitionId);
         } else {
