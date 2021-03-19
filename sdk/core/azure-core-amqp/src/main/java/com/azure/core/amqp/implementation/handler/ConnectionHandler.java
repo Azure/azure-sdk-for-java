@@ -157,7 +157,7 @@ public class ConnectionHandler extends Handler {
     @Override
     public void onConnectionInit(Event event) {
         logger.info("onConnectionInit connectionId[{}] hostname[{}] amqpHostname[{}]",
-            getHostname(), getConnectionId(), connectionOptions.getFullyQualifiedNamespace());
+            getConnectionId(), getHostname(), connectionOptions.getFullyQualifiedNamespace());
 
         final Connection connection = event.getConnection();
 
