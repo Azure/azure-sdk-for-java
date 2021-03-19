@@ -53,8 +53,7 @@ class DtmiConventionTests {
         URI modelUri = DtmiConventions.getModelUri(dtmi, repositoryUri, false);
         Assertions.assertEquals(expectedUri, modelUri.toString());
     }
-
-
+    
     @ParameterizedTest
     @CsvSource({
         "dtmi:com:example:Thermostat;1, true",

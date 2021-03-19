@@ -19,7 +19,9 @@ import java.util.regex.Pattern;
  * DtmiConventions implements the core aspects of the IoT model repo conventions
  * which includes DTMI validation and calculating a URI path from a DTMI.
  */
-public class DtmiConventions {
+public final class DtmiConventions {
+
+    private DtmiConventions() { }
 
     /**
      * A DTMI has three components: scheme, path, and version.
@@ -51,13 +53,13 @@ public class DtmiConventions {
      *
      * @param dtmi DigitalTwin Model Id.
      * @param repositoryUri The repository uri
-     * @param fromExpanded Is model from precomputed values
+     * @param expanded Is model from precomputed values
      * @return The model uri
      */
-    public static URI getModelUri(String dtmi, URI repositoryUri, boolean fromExpanded) {
+    public static URI getModelUri(String dtmi, URI repositoryUri, boolean expanded) {
         String dtmiPath = dtmiToPath(dtmi);
 
-        if (fromExpanded) {
+        if (expanded) {
             dtmiPath = dtmiPath.replace(ModelsRepositoryConstants.JSON_EXTENSION, ModelsRepositoryConstants.JSON_EXPANDED_EXTENSION);
         }
 
