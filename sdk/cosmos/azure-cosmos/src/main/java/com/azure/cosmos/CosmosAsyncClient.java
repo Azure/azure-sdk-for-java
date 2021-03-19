@@ -22,14 +22,18 @@ import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
@@ -37,6 +41,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -557,5 +563,32 @@ public final class CosmosAsyncClient implements Closeable {
             spanName,
             database.getId(),
             this.serviceEndpoint);
+    }
+
+    Mono<Void> initializeContainersAsync(List<String[]> databaseContainerList) {
+
+        List<Mono<Void>> monoList = new ArrayList<>();
+        for (String[] databaseContainerId : databaseContainerList) {
+            monoList.add(initializeContainerAsync(this.getDatabase(databaseContainerId[0]).getContainer(databaseContainerId[1])));
+        }
+        return Flux.merge(monoList).collectList().flatMap(objects -> Mono.empty());
+    }
+
+    private Mono<Void> initializeContainerAsync(CosmosAsyncContainer cosmosAsyncContainer) {
+        Mono<List<FeedRange>> feedRangesMono = this.getDocClientWrapper().getFeedRanges(cosmosAsyncContainer.getLink());
+        AtomicReference<Mono<List<FeedResponse<ObjectNode>>>> sequentialList = new AtomicReference<>();
+        List<Flux<FeedResponse<ObjectNode>>> fluxList = new ArrayList<>();
+        return feedRangesMono.flatMap(feedRanges -> {
+            for (FeedRange feedRange : feedRanges) {
+                String dummyQuery = String.format("SELECT * from c where c.id = '%s'", UUID.randomUUID().toString());
+                CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+                options.setFeedRange(feedRange);
+                CosmosPagedFlux<ObjectNode> cosmosPagedFlux = cosmosAsyncContainer.queryItems(dummyQuery, options,
+                    ObjectNode.class);
+                fluxList.add(cosmosPagedFlux.byPage());
+            }
+            sequentialList.set(Flux.merge(fluxList).collectList());
+            return sequentialList.get().flatMap(objects -> Mono.empty());
+        });
     }
 }

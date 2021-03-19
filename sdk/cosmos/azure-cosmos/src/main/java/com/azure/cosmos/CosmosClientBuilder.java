@@ -5,6 +5,7 @@ package com.azure.cosmos;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
+import com.azure.cosmos.implementation.ClientRetryPolicy;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
@@ -12,6 +13,9 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.models.CosmosPermissionProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -84,6 +88,7 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {CosmosClient.class, CosmosAsyncClient.class})
 public class CosmosClientBuilder {
+    private final static Logger logger = LoggerFactory.getLogger(CosmosClientBuilder.class);
     private Configs configs = new Configs();
     private String serviceEndpoint;
     private String keyOrResourceToken;
@@ -727,6 +732,21 @@ public class CosmosClientBuilder {
         validateConfig();
         buildConnectionPolicy();
         return new CosmosAsyncClient(this);
+    }
+
+    /**
+     * Builds a cosmos async client with the provided properties
+     * and initializes the containers provided by warming up the caches and connections.
+     * @param databaseContainerList list of databaseContainers
+     * @return Mono of CosmosAsyncClient
+     */
+    public Mono<CosmosAsyncClient> buildAsyncClientAndInitializeContainers(List<String[]> databaseContainerList) {
+        CosmosAsyncClient asyncClient = buildAsyncClient();
+//        if(connectionPolicy.getConnectionMode().equals(ConnectionMode.DIRECT)) {
+//            logger.warn("Client is created with gateway mode, initialization of containers not needed, could have used regular buildAsyncClient method");
+//            return Mono.just(asyncClient);
+//        }
+        return asyncClient.initializeContainersAsync(databaseContainerList).map(aVoid -> asyncClient);
     }
 
     /**
