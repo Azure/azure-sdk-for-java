@@ -5,7 +5,6 @@ package com.azure.communication.phonenumbers;
 
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
-import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
@@ -131,11 +130,11 @@ public class ReadmeSamples {
      */
     public PurchasedPhoneNumber updatePhoneNumberCapabilities() {
         PhoneNumbersClient phoneNumberClient = createPhoneNumberClient();
-        PhoneNumberCapabilitiesRequest capabilitiesRequest = new PhoneNumberCapabilitiesRequest();
-        capabilitiesRequest
+        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
+        capabilities
             .setCalling(PhoneNumberCapabilityType.INBOUND)
             .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
-        PurchasedPhoneNumber phoneNumber = phoneNumberClient.beginUpdatePhoneNumberCapabilities("+18001234567", capabilitiesRequest, Context.NONE).getFinalResult();
+        PurchasedPhoneNumber phoneNumber = phoneNumberClient.beginUpdatePhoneNumberCapabilities("+18001234567", capabilities, Context.NONE).getFinalResult();
 
         System.out.println("Phone Number Calling capabilities: " + phoneNumber.getCapabilities().getCalling()); //Phone Number Calling capabilities: inbound
         System.out.println("Phone Number SMS capabilities: " + phoneNumber.getCapabilities().getSms()); //Phone Number SMS capabilities: inbound+outbound

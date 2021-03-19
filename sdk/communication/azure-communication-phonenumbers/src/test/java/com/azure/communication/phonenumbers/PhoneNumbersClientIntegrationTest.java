@@ -4,7 +4,6 @@ package com.azure.communication.phonenumbers;
 
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
-import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
@@ -179,15 +178,15 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
     private SyncPoller<PhoneNumberOperation, PurchasedPhoneNumber>
         beginUpdatePhoneNumberCapabilitiesHelper(HttpClient httpClient, String phoneNumber, String testName, boolean withContext) {
-        PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest = new PhoneNumberCapabilitiesRequest();
-        capabilitiesUpdateRequest.setCalling(PhoneNumberCapabilityType.INBOUND);
-        capabilitiesUpdateRequest.setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
+        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
+        capabilities.setCalling(PhoneNumberCapabilityType.INBOUND);
+        capabilities.setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
         if (withContext) {
             return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
-            .beginUpdatePhoneNumberCapabilities(phoneNumber, capabilitiesUpdateRequest, Context.NONE));
+            .beginUpdatePhoneNumberCapabilities(phoneNumber, capabilities, Context.NONE));
         }
         return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
-            .beginUpdatePhoneNumberCapabilities(phoneNumber, capabilitiesUpdateRequest));
+            .beginUpdatePhoneNumberCapabilities(phoneNumber, capabilities));
     }
 
     private <T, U> SyncPoller<T, U> setPollInterval(SyncPoller<T, U> syncPoller) {

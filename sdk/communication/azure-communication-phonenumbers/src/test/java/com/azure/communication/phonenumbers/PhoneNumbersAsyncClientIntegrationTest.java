@@ -4,7 +4,6 @@ package com.azure.communication.phonenumbers;
 
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
-import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
@@ -193,7 +192,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     public void beginUpdatePhoneNumberCapabilitiesNullPhoneNumber(HttpClient httpClient) {
         StepVerifier.create(
             this.getClientWithConnectionString(httpClient, "beginUpdatePhoneNumberCapabilitiesNullPhoneNumber")
-                .beginUpdatePhoneNumberCapabilities(null, new PhoneNumberCapabilitiesRequest())
+                .beginUpdatePhoneNumberCapabilities(null, new PhoneNumberCapabilities())
             )
             .verifyError();
     }
@@ -237,12 +236,12 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     }
 
     private PollerFlux<PhoneNumberOperation, PurchasedPhoneNumber> beginUpdatePhoneNumberCapabilitiesHelper(HttpClient httpClient, String phoneNumber, String testName) {
-        PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest = new PhoneNumberCapabilitiesRequest();
-        capabilitiesUpdateRequest.setCalling(PhoneNumberCapabilityType.INBOUND);
-        capabilitiesUpdateRequest.setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
+        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
+        capabilities.setCalling(PhoneNumberCapabilityType.INBOUND);
+        capabilities.setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
 
         return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
-            .beginUpdatePhoneNumberCapabilities(phoneNumber, capabilitiesUpdateRequest));
+            .beginUpdatePhoneNumberCapabilities(phoneNumber, capabilities));
     }
 
     private <T, U> PollerFlux<T, U> setPollInterval(PollerFlux<T, U> pollerFlux) {
