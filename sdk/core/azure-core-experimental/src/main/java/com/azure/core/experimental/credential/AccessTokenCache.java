@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.experimental.implementation;
+package com.azure.core.experimental.credential;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
@@ -23,28 +23,27 @@ import java.util.function.Supplier;
 /**
  * A token cache that supports caching a token and refreshing it.
  */
-public class AccessTokenCacheImpl {
+public class AccessTokenCache<T extends TokenCredential, R extends TokenRequestContext> {
     // The delay after a refresh to attempt another token refresh
     private static final Duration REFRESH_DELAY = Duration.ofSeconds(30);
     // the offset before token expiry to attempt proactive token refresh
     private static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
+    private final TokenSupplier<T, R> tokenSupplier;
     private volatile AccessToken cache;
     private volatile OffsetDateTime nextTokenRefresh = OffsetDateTime.now();
     private final AtomicReference<Sinks.One<AccessToken>> wip;
-    private final TokenCredential tokenCredential;
-    private TokenRequestContext tokenRequestContext;
     private final Predicate<AccessToken> shouldRefresh;
-    private final ClientLogger logger = new ClientLogger(AccessTokenCacheImpl.class);
+    private final ClientLogger logger = new ClientLogger(AccessTokenCache.class);
+    protected R tokenRequestContext;
 
     /**
      * Creates an instance of AccessTokenCacheImpl with default scheme "Bearer".
      *
-     * @param tokenCredential the credential to be used to acquire token from.
+     * @param tokenSupplier the supplier of the credentials to be used to acquire token from.
      */
-    public AccessTokenCacheImpl(TokenCredential tokenCredential) {
-        Objects.requireNonNull(tokenCredential, "The token credential cannot be null");
+    public AccessTokenCache(TokenSupplier<T, R> tokenSupplier) {
         this.wip = new AtomicReference<>();
-        this.tokenCredential = tokenCredential;
+        this.tokenSupplier = tokenSupplier;
         this.shouldRefresh = accessToken -> OffsetDateTime.now()
             .isAfter(accessToken.getExpiresAt().minus(REFRESH_OFFSET));
     }
@@ -55,13 +54,13 @@ public class AccessTokenCacheImpl {
      * @param tokenRequestContext The request context for token acquisition.
      * @return The Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
+    public Mono<AccessToken> getToken(R tokenRequestContext) {
         return Mono.defer(retrieveToken(tokenRequestContext))
             // Keep resubscribing as long as Mono.defer [token acquisition] emits empty().
             .repeatWhenEmpty((Flux<Long> longFlux) -> longFlux.concatMap(ignored -> Flux.just(true)));
     }
 
-    private Supplier<Mono<? extends AccessToken>> retrieveToken(TokenRequestContext tokenRequestContext) {
+    private Supplier<Mono<? extends AccessToken>> retrieveToken(R tokenRequestContext) {
         return () -> {
             try {
                 if (wip.compareAndSet(null, Sinks.one())) {
@@ -70,14 +69,10 @@ public class AccessTokenCacheImpl {
                     Mono<AccessToken> tokenRefresh;
                     Mono<AccessToken> fallback;
 
-                    Supplier<Mono<AccessToken>> tokenSupplier = () ->
-                        tokenCredential.getToken(this.tokenRequestContext);
-
                     boolean forceRefresh = checkIfWeShouldForceRefresh(tokenRequestContext);
 
                     if (forceRefresh) {
-                        this.tokenRequestContext = tokenRequestContext;
-                        tokenRefresh = Mono.defer(() -> tokenCredential.getToken(this.tokenRequestContext));
+                        tokenRefresh = Mono.defer(() -> tokenSupplier.getToken(tokenRequestContext));
                         fallback = Mono.empty();
                     } else if (cache != null && !shouldRefresh.test(cache)) {
                         // fresh cache & no need to refresh
@@ -87,10 +82,10 @@ public class AccessTokenCacheImpl {
                         // no token to use
                         if (now.isAfter(nextTokenRefresh)) {
                             // refresh immediately
-                            tokenRefresh = Mono.defer(tokenSupplier);
+                            tokenRefresh = Mono.defer(() -> tokenSupplier.getToken(tokenRequestContext));
                         } else {
                             // wait for timeout, then refresh
-                            tokenRefresh = Mono.defer(tokenSupplier)
+                            tokenRefresh = Mono.defer(() -> tokenSupplier.getToken(tokenRequestContext))
                                                .delaySubscription(Duration.between(now, nextTokenRefresh));
                         }
                         // cache doesn't exist or expired, no fallback
@@ -99,7 +94,7 @@ public class AccessTokenCacheImpl {
                         // token available, but close to expiry
                         if (now.isAfter(nextTokenRefresh)) {
                             // refresh immediately
-                            tokenRefresh = Mono.defer(tokenSupplier);
+                            tokenRefresh = Mono.defer(() -> tokenSupplier.getToken(tokenRequestContext));
                         } else {
                             // still in timeout, do not refresh
                             tokenRefresh = Mono.empty();
@@ -121,12 +116,9 @@ public class AccessTokenCacheImpl {
         };
     }
 
-    private boolean checkIfWeShouldForceRefresh(TokenRequestContext tokenRequestContext) {
-        return !(this.tokenRequestContext != null
-            && (this.tokenRequestContext.getClaims() == null ? tokenRequestContext.getClaims() == null
-                : (tokenRequestContext.getClaims() == null ? false
-                        : tokenRequestContext.getClaims().equals(this.tokenRequestContext.getClaims())))
-            && this.tokenRequestContext.getScopes().equals(tokenRequestContext.getScopes()));
+    public boolean checkIfWeShouldForceRefresh(R tokenRequestContext)
+    {
+        return false;
     }
 
     private Function<Signal<AccessToken>, Mono<? extends AccessToken>> processTokenRefreshResult(

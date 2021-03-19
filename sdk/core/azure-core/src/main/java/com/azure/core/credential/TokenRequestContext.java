@@ -15,7 +15,7 @@ public class TokenRequestContext {
     private final List<String> scopes;
     private String claims;
 
-    /**
+    /**Be
      * Creates a token request instance.
      */
     public TokenRequestContext() {

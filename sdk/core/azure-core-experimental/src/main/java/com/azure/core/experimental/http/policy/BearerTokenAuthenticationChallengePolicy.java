@@ -5,7 +5,8 @@ package com.azure.core.experimental.http.policy;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.experimental.implementation.AccessTokenCacheImpl;
+import com.azure.core.experimental.credential.AccessTokenCache;
+import com.azure.core.experimental.credential.TokenSupplier;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
@@ -23,7 +24,7 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
     private static final String BEARER = "Bearer";
     public static final String WWW_AUTHENTICATE = "WWW-Authenticate";
 
-    private final AccessTokenCacheImpl cache;
+    private final AccessTokenCache<TokenCredential, TokenRequestContext> cache;
 
     /**
      * Creates BearerTokenAuthenticationChallengePolicy.
@@ -32,7 +33,8 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
      */
     public BearerTokenAuthenticationChallengePolicy(TokenCredential credential) {
         Objects.requireNonNull(credential);
-        this.cache = new AccessTokenCacheImpl(credential);
+        this.cache = new AccessTokenCache<TokenCredential, TokenRequestContext>(
+            new TokenSupplier<TokenCredential, TokenRequestContext>(credential));
     }
 
     /**
