@@ -83,8 +83,8 @@ public class ReceiveLinkHandler extends LinkHandler {
 
     @Override
     public void onLinkRemoteOpen(Event event) {
-        final Link link = event.getLink();
-        if (!(link instanceof Receiver)) {
+        final Receiver link = event.getReceiver();
+        if (link == null) {
             return;
         }
 
@@ -94,6 +94,7 @@ public class ReceiveLinkHandler extends LinkHandler {
 
             if (isFirstResponse.getAndSet(false)) {
                 onNext(EndpointState.ACTIVE);
+                emitCredits(link);
             }
         } else {
             logger.info("onLinkRemoteOpen connectionId[{}], entityPath[{}], linkName[{}], action[waitingForError]",
@@ -113,15 +114,7 @@ public class ReceiveLinkHandler extends LinkHandler {
             return;
         }
 
-        final int remoteCredit = receiver.getRemoteCredit();
-        final int lastCredit = lastCreditState.getAndSet(remoteCredit);
-
-        if (lastCredit != remoteCredit) {
-            logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] lastCredit[{}] newCredit[{}] "
-                + "Emit credit change.", getConnectionId(), entityPath, linkName, remoteCredit, lastCredit);
-
-            linkCredits.emitNext(remoteCredit, Sinks.EmitFailureHandler.FAIL_FAST);
-        }
+        emitCredits(receiver);
     }
 
     @Override
@@ -189,5 +182,17 @@ public class ReceiveLinkHandler extends LinkHandler {
         linkCredits.emitComplete(Sinks.EmitFailureHandler.FAIL_FAST);
 
         super.onLinkRemoteClose(event);
+    }
+
+    private void emitCredits(Receiver receiver) {
+        final int remoteCredit = receiver.getRemoteCredit();
+        final int lastCredit = lastCreditState.getAndSet(remoteCredit);
+
+        if (lastCredit != remoteCredit) {
+            logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] lastCredit[{}] newCredit[{}] "
+                + "Emit credit change.", getConnectionId(), entityPath, linkName, remoteCredit, lastCredit);
+
+            linkCredits.emitNext(remoteCredit, Sinks.EmitFailureHandler.FAIL_FAST);
+        }
     }
 }

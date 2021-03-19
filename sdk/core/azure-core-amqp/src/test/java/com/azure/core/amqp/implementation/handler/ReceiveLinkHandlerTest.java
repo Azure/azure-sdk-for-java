@@ -134,6 +134,25 @@ public class ReceiveLinkHandlerTest {
     }
 
     /**
+     * When link is active, we output the current state of link credits.
+     */
+    @Test
+    public void linkRemoteOpenActiveGetsCredits() {
+        final int credits = 15;
+        final Source source = mock(Source.class);
+        when(receiver.getRemoteSource()).thenReturn(source);
+        when(receiver.getRemoteCredit()).thenReturn(credits);
+
+        StepVerifier.create(linkHandler.getLinkCredits())
+            .then(() -> {
+                linkHandler.onLinkRemoteOpen(event);
+                linkHandler.close();
+            })
+            .expectNext(credits)
+            .verifyComplete();
+    }
+
+    /**
      * First delivery, we will receive an on active in addition to a delivery.
      */
     @Test
