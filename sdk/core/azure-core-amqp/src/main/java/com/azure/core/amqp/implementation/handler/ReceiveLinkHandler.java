@@ -25,7 +25,7 @@ public class ReceiveLinkHandler extends LinkHandler {
     private final Sinks.Many<Delivery> deliveries = Sinks.many().multicast().directBestEffort();
     private final Sinks.Many<Integer> linkCredits = Sinks.many().multicast().onBackpressureBuffer();
     private final Set<Delivery> queuedDeliveries = Collections.newSetFromMap(new ConcurrentHashMap<>());
-    private final AtomicInteger lastCreditState = new AtomicInteger();
+    private final AtomicInteger lastCreditState = new AtomicInteger(-1);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final String entityPath;
 
