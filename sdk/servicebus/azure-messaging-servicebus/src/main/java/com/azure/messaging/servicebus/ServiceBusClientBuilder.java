@@ -192,6 +192,9 @@ public final class ServiceBusClientBuilder {
      * Enable cross entity transaction on the connection to Service bus. Use this feature when your transaction is
      * involved in different Service Bus entities. You should avoid using non transaction activities on the clients
      * which have this feature enabled.
+     * <p><strong>When not to enable this feature</strong></p>
+     * If your transaction involved in one Service bus entity only. For example you are receiving from a
+     * queue/subscription and you want to settle your own messages which are part of one transaction.
      *
      * @return The updated {@link ServiceBusSenderClientBuilder} object.
      *

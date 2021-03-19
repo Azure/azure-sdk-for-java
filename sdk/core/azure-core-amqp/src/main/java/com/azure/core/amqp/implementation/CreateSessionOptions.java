@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
  * An option bag to provide configuration required to create an AMQP session.
  */
 @Immutable
-public class CreateSessionOptions {
+final public class CreateSessionOptions {
     private final boolean distributedTransactionsSupport;
 
     /**

@@ -108,9 +108,9 @@ final class TransactionCoordinator implements Disposable {
 
     @Override
     public void dispose() {
-        if (isDisposed.get()) return;
-
-        isDisposed.set(true);
+        if (isDisposed.getAndSet(true)) {
+            return;
+        }
 
         if (this.sendLink != null) {
             this.sendLink.dispose();
