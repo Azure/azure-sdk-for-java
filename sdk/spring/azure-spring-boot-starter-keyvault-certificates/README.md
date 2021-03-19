@@ -104,17 +104,20 @@ To use the starter for server side SSL, you will need to add the following to
 your `application.yml` (if the application is using Spring Cloud Config 
 Server for its configuration add it to the `bootstrap.yml` of the application)
 
+<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-server-side/src/main/resources/application.yml#L1-L12 -->
 ```yaml
 azure:
   keyvault:
-    uri: <the URI of the Azure Key Vault to use>
-    tenant-id: <the ID of your Azure tenant>
-    client-id: <the client ID with access to Azure Key Vault>
-    client-secret: <the client secret associated wit the client ID>
+    uri:                 # The URI to the Azure Key Vault used
+    tenant-id:           # The Tenant ID for your Azure Key Vault (needed if you are not using managed identity).
+    client-id:           # The Client ID that has been setup with access to your Azure Key Vault (needed if you are not using managed identity).
+    client-secret:       # The Client Secret that will be used for accessing your Azure Key Vault (needed if you are not using managed identity).
+    # managed-identity:  # The user-assigned managed identity object-id to use.
 server:
+  port: 8443
   ssl:
-    key-alias: <the name of the certificate in Azure Key Vault to use>
-    key-store-type: AzureKeyVault
+    key-alias:           # The alias corresponding to the certificate in Azure Key Vault.
+    key-store-type: AzureKeyVault  # The keystore type that enables the use of Azure Key Vault for your server-side SSL certificate.
 ```
 
 Note: make sure the client ID has access to the Azure Key Vault to access
@@ -184,13 +187,15 @@ To use the starter for client side SSL, you will need to add the following to
 your `application.yml` (if the application is using Spring Cloud Config 
 Server for its configuration add it to the `bootstrap.yml` of the application)
 
+<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/resources/application.yml#L1-L7 -->
 ```yaml
 azure:
   keyvault:
-    uri: <the URI of the Azure Key Vault to use>
-    tenant-id: <the ID of your Azure tenant>
-    client-id: <the client ID with access to Azure Key Vault>
-    client-secret: <the client secret associated wit the client ID>
+    uri:                 # The URI to the Azure Key Vault used
+    tenant-id:           # The Tenant ID for your Azure Key Vault (needed if you are not using managed identity).
+    client-id:           # The Client ID that has been setup with access to your Azure Key Vault (needed if you are not using managed identity).
+    client-secret:       # The Client Secret that will be used for accessing your Azure Key Vault (needed if you are not using managed identity).
+    # managed-identity:  # The user-assigned managed identity object-id to use.
 ```
 
 Note: make sure the client ID has access to the Azure Key Vault to access
@@ -199,29 +204,25 @@ keys, secrets and certificates.
 Then if you are using `RestTemplate` use the code below as a starting
 point:
 
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/keyvault/KeyVaultJcaClientSample.java#L21-L41 -->
+<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L23-L39 -->
 ```java
-@Bean
-public RestTemplate restTemplate() throws Exception {
-    KeyStore ks = KeyStore.getInstance("AzureKeyVault");
-    SSLContext sslContext = SSLContexts.custom()
-        .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
-        .build();
+    @Bean
+    public RestTemplate restTemplate() throws Exception {
+        KeyStore trustStore = KeyStore.getInstance("AzureKeyVault");
+        SSLContext sslContext = SSLContexts.custom()
+                                           .loadTrustMaterial(trustStore, new TrustSelfSignedStrategy())
+                                           .build();
 
-    HostnameVerifier allowAll = (String hostName, SSLSession session) -> true;
-    SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext, allowAll);
+        HostnameVerifier allowAll = (String hostName, SSLSession session) -> true;
+        SSLConnectionSocketFactory factory = new SSLConnectionSocketFactory(sslContext, allowAll);
 
-    CloseableHttpClient httpClient = HttpClients.custom()
-        .setSSLSocketFactory(csf)
-        .build();
+        CloseableHttpClient httpClient = HttpClients.custom()
+                                                    .setSSLSocketFactory(factory)
+                                                    .build();
+        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
 
-    HttpComponentsClientHttpRequestFactory requestFactory =
-                new HttpComponentsClientHttpRequestFactory();
-
-    requestFactory.setHttpClient(httpClient);
-    RestTemplate restTemplate = new RestTemplate(requestFactory);
-    return restTemplate;
-}
+        return new RestTemplate(requestFactory);
+    }
 ```
 
 #### Using a managed identity
