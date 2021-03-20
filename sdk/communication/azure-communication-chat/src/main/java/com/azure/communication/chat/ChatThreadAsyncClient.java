@@ -5,12 +5,13 @@ package com.azure.communication.chat;
 import com.azure.communication.chat.implementation.ChatThreadsImpl;
 
 import com.azure.communication.chat.implementation.converters.AddChatParticipantsResultConverter;
+import com.azure.communication.chat.implementation.converters.ChatErrorConverter;
 import com.azure.communication.chat.implementation.converters.ChatThreadPropertiesConverter;
 import com.azure.communication.chat.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.chat.models.ChatError;
+import com.azure.communication.chat.models.ChatErrorResponseException;
 import com.azure.communication.chat.models.ChatThreadProperties;
 import com.azure.communication.chat.models.InvalidParticipantException;
-import com.azure.core.exception.HttpResponseException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -85,7 +86,7 @@ public final class ChatThreadAsyncClient {
      * Updates a thread's topic.
      *
      * @param topic The new topic.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -106,7 +107,7 @@ public final class ChatThreadAsyncClient {
      * Updates a thread's properties.
      *
      * @param topic The new topic.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -125,7 +126,7 @@ public final class ChatThreadAsyncClient {
      *
      * @param topic The new topic.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -147,7 +148,7 @@ public final class ChatThreadAsyncClient {
      * Adds participants to a thread. If participants already exist, no change occurs.
      *
      * @param participants Collection of participants to add.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result.
      */
@@ -168,7 +169,7 @@ public final class ChatThreadAsyncClient {
      * Adds participants to a thread. If participants already exist, no change occurs.
      *
      * @param participants Collection of participants to add.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result.
      */
@@ -186,7 +187,7 @@ public final class ChatThreadAsyncClient {
      * Adds a participant to a thread. If the participant already exists, no change occurs.
      *
      * @param participant The new participant.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws InvalidParticipantException thrown if the participant is rejected by the server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nothing.
@@ -203,7 +204,7 @@ public final class ChatThreadAsyncClient {
      * Adds a participant to a thread. If the participant already exists, no change occurs.
      *
      * @param participant The new participant.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws InvalidParticipantException thrown if the participant is rejected by the server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
@@ -222,7 +223,7 @@ public final class ChatThreadAsyncClient {
      *
      * @param participant The new participant.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws InvalidParticipantException thrown if the participant is rejected by the server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
@@ -274,7 +275,7 @@ public final class ChatThreadAsyncClient {
      * Remove a participant from a thread.
      *
      * @param identifier Identity of the participant to remove from the thread.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -297,7 +298,7 @@ public final class ChatThreadAsyncClient {
      * Remove a participant from a thread.
      *
      * @param identifier Identity of the participant to remove from the thread.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -333,7 +334,7 @@ public final class ChatThreadAsyncClient {
     /**
      * Gets the participants of a thread.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the participants of a thread.
      */
@@ -377,7 +378,7 @@ public final class ChatThreadAsyncClient {
      * Sends a message to a thread.
      *
      * @param options Options for sending the message.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SendChatMessageResult.
      */
@@ -396,7 +397,7 @@ public final class ChatThreadAsyncClient {
      * Sends a message to a thread.
      *
      * @param options Options for sending the message.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SendChatMessageResult.
      */
@@ -433,7 +434,7 @@ public final class ChatThreadAsyncClient {
      * Gets a message by id.
      *
      * @param chatMessageId The message id.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a message by id.
      */
@@ -459,7 +460,7 @@ public final class ChatThreadAsyncClient {
      * Gets a message by id.
      *
      * @param chatMessageId The message id.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a message by id.
      */
@@ -496,7 +497,7 @@ public final class ChatThreadAsyncClient {
     /**
      * Gets a list of messages from a thread.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged list of messages from a thread.
      */
@@ -521,7 +522,7 @@ public final class ChatThreadAsyncClient {
      * Gets a list of messages from a thread.
      *
      * @param listMessagesOptions The request options.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged list of messages from a thread.
      */
@@ -581,7 +582,7 @@ public final class ChatThreadAsyncClient {
      *
      * @param chatMessageId The message id.
      * @param options Options for updating the message.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -604,7 +605,7 @@ public final class ChatThreadAsyncClient {
      *
      * @param chatMessageId The message id.
      * @param options Options for updating the message.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -641,7 +642,7 @@ public final class ChatThreadAsyncClient {
      * Deletes a message.
      *
      * @param chatMessageId The message id.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -662,7 +663,7 @@ public final class ChatThreadAsyncClient {
      * Deletes a message.
      *
      * @param chatMessageId The message id.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -696,7 +697,7 @@ public final class ChatThreadAsyncClient {
     /**
      * Posts a typing event to a thread, on behalf of a user.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -715,7 +716,7 @@ public final class ChatThreadAsyncClient {
     /**
      * Posts a typing event to a thread, on behalf of a user.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -748,7 +749,7 @@ public final class ChatThreadAsyncClient {
      * Posts a read receipt event to a thread, on behalf of a user.
      *
      * @param chatMessageId The id of the chat message that was read.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -769,7 +770,7 @@ public final class ChatThreadAsyncClient {
      * Posts a read receipt event to a thread, on behalf of a user.
      *
      * @param chatMessageId The id of the chat message that was read.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -805,7 +806,7 @@ public final class ChatThreadAsyncClient {
     /**
      * Gets read receipts for a thread.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return read receipts for a thread.
      */
@@ -851,7 +852,7 @@ public final class ChatThreadAsyncClient {
     /**
      * Gets chat thread properties.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return chat thread properties.
      */
@@ -876,7 +877,7 @@ public final class ChatThreadAsyncClient {
     /**
      * Gets chat thread properties.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return chat thread properties.
      */
@@ -936,7 +937,11 @@ public final class ChatThreadAsyncClient {
         return PagedFlux.create(provider);
     }
 
-    private RuntimeException translateException(CommunicationErrorResponseException exception) {
-        return new HttpResponseException(exception.getMessage(), exception.getResponse(), exception.getValue());
+    private ChatErrorResponseException translateException(CommunicationErrorResponseException exception) {
+        ChatError error = null;
+        if (exception.getValue() != null) {
+            error = ChatErrorConverter.convert(exception.getValue().getError());
+        }
+        return new ChatErrorResponseException(exception.getMessage(), exception.getResponse(), error);
     }
 }
