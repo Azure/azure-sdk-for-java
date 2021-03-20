@@ -78,7 +78,7 @@ class ReactorReceiverTest {
 
     @BeforeAll
     static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(10));
     }
 
     @AfterAll
@@ -127,20 +127,7 @@ class ReactorReceiverTest {
 
         // Act & Assert
         StepVerifier.create(reactorReceiver.addCredits(credits))
-            .then(() -> {
-
-                try {
-                    verify(dispatcher).invoke(dispatcherCaptor.capture());
-                } catch (IOException e) {
-                    fail("Should not have thrown an IO exception. " + e);
-                }
-
-                final List<Runnable> invocations = dispatcherCaptor.getAllValues();
-                assertEquals(1, invocations.size());
-
-                // Apply the invocation.
-                invocations.get(0).run();
-            })
+            .then(() -> invokeDispatcher(1))
             .verifyComplete();
 
         verify(receiver).flow(credits);
@@ -260,7 +247,10 @@ class ReactorReceiverTest {
 
         // Act & Assert
         StepVerifier.create(reactorReceiver.receive())
-            .then(() -> receiverHandler.onDelivery(event))
+            .then(() -> {
+                receiverHandler.onDelivery(event);
+                invokeDispatcher(1);
+            })
             .assertNext(message -> {
                 Assertions.assertNotNull(message.getMessageAnnotations());
 
@@ -312,12 +302,20 @@ class ReactorReceiverTest {
         // Assert
         verify(creditSupplier, numberOfTimes).get();
 
-        verify(dispatcher, numberOfTimes).invoke(dispatcherCaptor.capture());
-
-        final List<Runnable> invocations = dispatcherCaptor.getAllValues();
-        assertEquals(expectedTimes, invocations.size());
-        invocations.forEach(invocation -> invocation.run());
+        invokeDispatcher(expectedTimes);
 
         verify(receiver, numberOfTimes).flow(expectedCreditFlow);
+    }
+
+    private void invokeDispatcher(int expectedInvocations) {
+        try {
+            verify(dispatcher, times(expectedInvocations)).invoke(dispatcherCaptor.capture());
+        } catch (IOException e) {
+            fail("Should be able to schedule invocation.", e);
+        }
+
+        final List<Runnable> invocations = dispatcherCaptor.getAllValues();
+        assertEquals(expectedInvocations, invocations.size());
+        invocations.forEach(invocation -> invocation.run());
     }
 }

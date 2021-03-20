@@ -110,7 +110,7 @@ public class ReceiveLinkHandlerTest {
                 linkHandler.onLinkFlow(event);
                 linkHandler.close();
             })
-            .expectNext(credit4)
+            .expectNext(credit3, credit4)
             .verifyComplete();
     }
 
