@@ -274,8 +274,8 @@ public class InterceptorManager implements AutoCloseable {
     @Override
     public void close() {
         if (allowedToRecordValues) {
-            try (OutputStream gzipStream = createRecordStream(playbackRecordName)) {
-                RECORD_MAPPER.writeValue(gzipStream, recordedData);
+            try (OutputStream inputStream = createRecordStream(playbackRecordName)) {
+                RECORD_MAPPER.writeValue(inputStream, recordedData);
             } catch (IOException ex) {
                 throw logger.logExceptionAsError(
                     new UncheckedIOException("Unable to write data to playback file.", ex));
