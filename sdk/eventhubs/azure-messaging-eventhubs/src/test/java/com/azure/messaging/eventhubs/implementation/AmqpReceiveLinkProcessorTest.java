@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
@@ -26,6 +27,7 @@ import reactor.core.Disposable;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -78,6 +80,8 @@ class AmqpReceiveLinkProcessorTest {
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
+
+        when(retryPolicy.getRetryOptions()).thenReturn(new AmqpRetryOptions());
 
         linkProcessor = new AmqpReceiveLinkProcessor(PREFETCH, retryPolicy, parentConnection);
 
@@ -277,14 +281,17 @@ class AmqpReceiveLinkProcessorTest {
     @Test
     void nonRetryableError() {
         // Arrange
+        when(link1.addCredits(PREFETCH)).thenReturn(Mono.empty());
+        when(link2.addCredits(PREFETCH)).thenReturn(Mono.empty());
+
+        final Message message3 = mock(Message.class);
+        when(link2.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
+        when(link2.receive()).thenReturn(Flux.just(message2, message3));
+
         final AmqpReceiveLink[] connections = new AmqpReceiveLink[]{link1, link2};
 
         final AmqpReceiveLinkProcessor processor = createSink(connections).subscribeWith(linkProcessor);
         final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink();
-        final Message message3 = mock(Message.class);
-
-        when(link2.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
-        when(link2.receive()).thenReturn(Flux.just(message2, message3));
 
         final AmqpException amqpException = new AmqpException(false, AmqpErrorCondition.ARGUMENT_ERROR, "Non"
             + "-retryable-error",
@@ -356,17 +363,20 @@ class AmqpReceiveLinkProcessorTest {
     @Test
     void doNotRetryWhenParentConnectionIsClosed() {
         // Arrange
+        when(link1.addCredits(PREFETCH)).thenReturn(Mono.empty());
+
+        when(link2.addCredits(PREFETCH)).thenReturn(Mono.empty());
+        when(link2.receive()).thenReturn(Flux.never());
+
         final AmqpReceiveLink[] connections = new AmqpReceiveLink[]{link1, link2};
 
         final AmqpReceiveLinkProcessor processor = createSink(connections).subscribeWith(linkProcessor);
         final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink();
 
         final DirectProcessor<AmqpEndpointState> link2StateProcessor = DirectProcessor.create();
+        when(link2.getEndpointStates()).thenReturn(link2StateProcessor);
 
         when(parentConnection.isDisposed()).thenReturn(true);
-
-        when(link2.getEndpointStates()).thenReturn(link2StateProcessor);
-        when(link2.receive()).thenReturn(Flux.never());
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -397,11 +407,12 @@ class AmqpReceiveLinkProcessorTest {
     @Test
     void stopsEmittingAfterBackPressure() {
         // Arrange
+        when(link1.addCredits(PREFETCH)).thenReturn(Mono.empty());
+        when(link1.getCredits()).thenReturn(0, 5, 4, 3, 2, 1);
+
         final int backpressure = 5;
         AmqpReceiveLinkProcessor processor = Flux.<AmqpReceiveLink>create(sink -> sink.next(link1))
             .subscribeWith(linkProcessor);
-
-        when(link1.getCredits()).thenReturn(0, 5, 4, 3, 2, 1);
 
         // Act & Assert
         StepVerifier.create(processor, backpressure)
@@ -419,10 +430,11 @@ class AmqpReceiveLinkProcessorTest {
     @Test
     void receivesUntilFirstLinkClosed() {
         // Arrange
+        when(link1.addCredits(PREFETCH)).thenReturn(Mono.empty());
+        when(link1.getCredits()).thenReturn(1);
+
         AmqpReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
         FluxSink<AmqpEndpointState> sink = endpointProcessor.sink();
-
-        when(link1.getCredits()).thenReturn(1);
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -455,10 +467,11 @@ class AmqpReceiveLinkProcessorTest {
     @Test
     void receivesFromFirstLink() {
         // Arrange
+        when(link1.addCredits(PREFETCH)).thenReturn(Mono.empty());
+        when(link1.getCredits()).thenReturn(1);
+
         AmqpReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
         FluxSink<AmqpEndpointState> sink = endpointProcessor.sink();
-
-        when(link1.getCredits()).thenReturn(1);
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -486,6 +499,7 @@ class AmqpReceiveLinkProcessorTest {
         // Expecting 1 because it is Long.MAX_VALUE.
         Assertions.assertEquals(1, creditValue);
     }
+
     /**
      * Verifies that when we request back pressure amounts, if it only requests a certain number of events, only
      * that number is consumed.
