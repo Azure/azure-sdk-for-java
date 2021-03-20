@@ -39,6 +39,7 @@ public final class ClientEncryptionIncludedPath {
      * Sets the path to be encrypted. Must be a top level path, eg. /salary.
      *
      * @param path path to be encrypted
+     * @return ClientEncryptionIncludedPath.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ClientEncryptionIncludedPath setPath(String path) {
@@ -60,6 +61,7 @@ public final class ClientEncryptionIncludedPath {
      * Sets the identifier of the Data Encryption Key to be used to encrypt the path.
      *
      * @param clientEncryptionKeyId identifier of the Data Encryption Key
+     * @return ClientEncryptionIncludedPath.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ClientEncryptionIncludedPath setClientEncryptionKeyId(String clientEncryptionKeyId) {
@@ -81,6 +83,7 @@ public final class ClientEncryptionIncludedPath {
      * Sets the type of encryption to be performed. Egs.: Deterministic Randomized.
      *
      * @param encryptionType type of encryption
+     * @return ClientEncryptionIncludedPath.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ClientEncryptionIncludedPath setEncryptionType(String encryptionType) {
@@ -102,6 +105,7 @@ public final class ClientEncryptionIncludedPath {
      * Sets the type of encryption algorithm to be performed. Eg - AEAD_AES_256_CBC_HMAC_SHA256.
      *
      * @param encryptionAlgorithm type of encryption algorithm
+     * @return ClientEncryptionIncludedPath.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ClientEncryptionIncludedPath setEncryptionAlgorithm(String encryptionAlgorithm) {

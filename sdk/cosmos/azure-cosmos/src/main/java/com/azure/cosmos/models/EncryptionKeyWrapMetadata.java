@@ -73,6 +73,7 @@ public final class EncryptionKeyWrapMetadata {
      * Note: This value is saved in the Cosmos DB service.
      * implementors of derived implementations should ensure that this does not have (private) key material or
      * credential information.
+     * @return value of metadata
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getValue() {
@@ -84,6 +85,7 @@ public final class EncryptionKeyWrapMetadata {
      * Note: This value is saved in the Cosmos DB service.
      * implementors of derived implementations should ensure that this does not have (private) key material or
      * credential information.
+     * @return name of metadata.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getName() {
