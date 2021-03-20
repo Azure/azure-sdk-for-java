@@ -17,7 +17,6 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class ReceiveLinkHandler extends LinkHandler {
     private final String linkName;
@@ -54,6 +53,9 @@ public class ReceiveLinkHandler extends LinkHandler {
             return;
         }
 
+        logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Disposing handler.",
+            getConnectionId(), entityPath, linkName);
+
         deliveries.emitComplete((signalType, emitResult) -> {
             logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Could not emit complete.",
                 getConnectionId(), entityPath, linkName);
@@ -88,7 +90,7 @@ public class ReceiveLinkHandler extends LinkHandler {
         }
 
         if (link.getRemoteSource() != null) {
-            logger.info("onLinkRemoteOpen connectionId[{}], entityPath[{}], linkName[{}], remoteSource[{}]",
+            logger.info("onLinkRemoteOpen connectionId[{}] entityPath[{}], linkName[{}], remoteSource[{}]",
                 getConnectionId(), entityPath, link.getName(), link.getRemoteSource());
 
             if (isFirstResponse.getAndSet(false)) {
@@ -96,7 +98,7 @@ public class ReceiveLinkHandler extends LinkHandler {
                 emitCredits(link);
             }
         } else {
-            logger.info("onLinkRemoteOpen connectionId[{}], entityPath[{}], linkName[{}], action[waitingForError]",
+            logger.info("onLinkRemoteOpen connectionId[{}] entityPath[{}], linkName[{}], action[waitingForError]",
                 getConnectionId(), entityPath, link.getName());
         }
     }
@@ -173,7 +175,7 @@ public class ReceiveLinkHandler extends LinkHandler {
     @Override
     public void onLinkRemoteClose(Event event) {
         deliveries.emitComplete((signalType, emitResult) -> {
-            logger.info("connectionId[{}] linkName[{}] signalType[{}] emitResult[{}] Could not complete 'deliveries'.",
+            logger.verbose("connectionId[{}] linkName[{}] emitResult[{}] Could not complete deliveries.",
                 getConnectionId(), linkName, signalType, emitResult);
             return false;
         });
