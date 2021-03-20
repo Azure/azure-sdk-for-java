@@ -37,7 +37,8 @@ import java.util.zip.GZIPOutputStream;
  * A class that keeps track of network calls by either reading the data from an existing test session record or
  * recording the network calls in memory. Test session records are saved or read from compressed gzip files:
  * "<i>session-records/{@code testName}.json.gz</i>" by default. Optionally, tests can be recorded as uncompressed json
- * files by setting "AZURE_TEST_RECORD_UNCOMPRESSED" environment variable to {@code true}.
+ * files by setting "AZURE_TEST_RECORD_UNCOMPRESSED" environment variable to {@code true}. Both compressed and
+ * uncompressed recording formats are supported when running the tests in playback mode.
  *
  * <ul>
  *     <li>If the {@code testMode} is {@link TestMode#PLAYBACK}, the manager tries to find an existing test session
@@ -49,7 +50,8 @@ import java.util.zip.GZIPOutputStream;
  * </ul>
  *
  * When the {@link InterceptorManager} is disposed, if the {@code testMode} is {@link TestMode#RECORD}, the network
- * calls that were recorded are persisted to: "<i>session-records/{@code testName}.json</i>"
+ * calls that were recorded are persisted to "<i>session-records/{@code testName}.json.gz</i>" or
+ * "<i>session-records/{@code testName}.json</i>" if "AZURE_TEST_RECORD_UNCOMPRESSED" is set to {@code true}.
  */
 public class InterceptorManager implements AutoCloseable {
     private static final String RECORD_FOLDER = "session-records/";
