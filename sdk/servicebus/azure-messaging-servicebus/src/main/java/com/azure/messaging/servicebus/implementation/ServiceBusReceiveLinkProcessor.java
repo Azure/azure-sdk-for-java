@@ -539,7 +539,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             logger.info("Link credits='{}', Link credits to add: '{}'", linkCredits, credits);
 
             if (credits > 0) {
-                link.addCredits(credits);
+                link.addCredits(credits).block(retryPolicy.getRetryOptions().getTryTimeout());
             }
         }
     }
@@ -572,10 +572,9 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         } else {
             expectedTotalCredit = prefetch;
         }
-        logger.info("linkCredits: '{}', expectedTotalCredit: '{}'", linkCredits, expectedTotalCredit);
-
+        final int queuedMessages;
         synchronized (queueLock) {
-            final int queuedMessages = pendingMessages.get();
+            queuedMessages = pendingMessages.get();
             final int pending = queuedMessages + linkCredits;
 
             if (hasBackpressure) {
@@ -586,10 +585,11 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                     ? Math.max(expectedTotalCredit - pending, 0)
                     : 0;
             }
-            logger.info("prefetch: '{}', requested: '{}', linkCredits: '{}', expectedTotalCredit: '{}', queuedMessages:"
-                    + "'{}', creditsToAdd: '{}', messageQueue.size(): '{}'", getPrefetch(), r, linkCredits,
-                expectedTotalCredit, queuedMessages, creditsToAdd, messageQueue.size());
         }
+
+        logger.verbose("prefetch: '{}', requested: '{}', linkCredits: '{}', expectedTotalCredit: '{}', queuedMessages:"
+                + "'{}', creditsToAdd: '{}', messageQueue.size(): '{}'", getPrefetch(), r, linkCredits,
+            expectedTotalCredit, queuedMessages, creditsToAdd, messageQueue.size());
 
         return creditsToAdd;
     }

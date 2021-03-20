@@ -3,6 +3,7 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
@@ -96,8 +97,15 @@ class ServiceBusReceiveLinkProcessorTest {
         linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy, ServiceBusReceiveMode.PEEK_LOCK);
         linkProcessorNoPrefetch = new ServiceBusReceiveLinkProcessor(0, retryPolicy, ServiceBusReceiveMode.PEEK_LOCK);
 
+        when(retryPolicy.getRetryOptions()).thenReturn(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(1)));
+
+        when(link1.addCredits(anyInt())).thenReturn(Mono.empty());
         when(link1.getEndpointStates()).thenReturn(endpointProcessor.flux());
         when(link1.receive()).thenReturn(messagePublisher.flux());
+
+        when(link2.addCredits(anyInt())).thenReturn(Mono.empty());
+
+        when(link3.addCredits(anyInt())).thenReturn(Mono.empty());
     }
 
     @AfterEach
@@ -133,7 +141,8 @@ class ServiceBusReceiveLinkProcessorTest {
             })
             .expectNext(message1)
             .expectNext(message2)
-            .thenCancel()
+            .then(() -> processor.dispose())
+            .expectComplete()
             .verify();
 
         assertTrue(processor.isTerminated());
@@ -564,7 +573,8 @@ class ServiceBusReceiveLinkProcessorTest {
             })
             .expectNext(message1)
             .expectNext(message2)
-            .thenCancel()
+            .then(() -> processor.dispose())
+            .expectComplete()
             .verify();
 
         assertTrue(processor.isTerminated());
