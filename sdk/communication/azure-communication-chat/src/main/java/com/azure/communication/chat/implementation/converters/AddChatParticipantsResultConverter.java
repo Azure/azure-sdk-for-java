@@ -33,7 +33,6 @@ public final class AddChatParticipantsResultConverter {
         if (obj.getInvalidParticipants() != null) {
             invalidParticipants = obj.getInvalidParticipants()
                 .stream()
-                .map((error) -> ChatErrorConverter.convert(error))
                 .collect(Collectors.toList());
         }
 
