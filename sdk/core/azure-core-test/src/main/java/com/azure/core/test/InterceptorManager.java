@@ -9,26 +9,35 @@ import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.models.RecordingRedactor;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * A class that keeps track of network calls by either reading the data from an existing test session record or
- * recording the network calls in memory. Test session records are saved or read from: "<i>session-records/{@code
- * testName}.json</i>"
+ * recording the network calls in memory. Test session records are saved or read from compressed gzip files:
+ * "<i>session-records/{@code testName}.json.gz</i>" by default. Optionally, tests can be recorded as uncompressed json
+ * files by setting "AZURE_TEST_RECORD_UNCOMPRESSED" environment variable to {@code true}.
  *
  * <ul>
  *     <li>If the {@code testMode} is {@link TestMode#PLAYBACK}, the manager tries to find an existing test session
@@ -45,6 +54,9 @@ import java.util.function.Function;
 public class InterceptorManager implements AutoCloseable {
     private static final String RECORD_FOLDER = "session-records/";
     private static final ObjectMapper RECORD_MAPPER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+    private static final String JSON_GZIP_EXTENSION = ".json.gz";
+    private static final String JSON_EXTENSION = ".json";
+    private static final String AZURE_TEST_RECORD_UNCOMPRESSED = "AZURE_TEST_RECORD_UNCOMPRESSED";
 
     private final ClientLogger logger = new ClientLogger(InterceptorManager.class);
     private final Map<String, String> textReplacementRules;
@@ -79,7 +91,7 @@ public class InterceptorManager implements AutoCloseable {
      */
     @Deprecated
     public InterceptorManager(String testName, TestMode testMode) {
-        this(testName, testName, testMode, false);
+        this(testName, testName, testMode, false, Collections.emptyMap());
     }
 
     /**
@@ -104,16 +116,18 @@ public class InterceptorManager implements AutoCloseable {
      */
     public InterceptorManager(TestContextManager testContextManager) {
         this(testContextManager.getTestName(), testContextManager.getTestPlaybackRecordingName(),
-            testContextManager.getTestMode(), testContextManager.doNotRecordTest());
+            testContextManager.getTestMode(), testContextManager.doNotRecordTest(), Collections.emptyMap());
     }
 
-    private InterceptorManager(String testName, String playbackRecordName, TestMode testMode, boolean doNotRecord) {
+    private InterceptorManager(String testName, String playbackRecordName, TestMode testMode, boolean doNotRecord,
+                               Map<String, String> textReplacementRules) {
+
         Objects.requireNonNull(testName, "'testName' cannot be null.");
+        Objects.requireNonNull(textReplacementRules, "'textReplacementRules' cannot be null.");
 
         this.testName = testName;
         this.playbackRecordName = CoreUtils.isNullOrEmpty(playbackRecordName) ? testName : playbackRecordName;
         this.testMode = testMode;
-        this.textReplacementRules = new HashMap<>();
 
         this.allowedToReadRecordedValues = (testMode == TestMode.PLAYBACK && !doNotRecord);
         this.allowedToRecordValues = (testMode == TestMode.RECORD && !doNotRecord);
@@ -125,6 +139,7 @@ public class InterceptorManager implements AutoCloseable {
         } else {
             this.recordedData = null;
         }
+        this.textReplacementRules = textReplacementRules;
     }
 
     /**
@@ -186,17 +201,7 @@ public class InterceptorManager implements AutoCloseable {
      */
     public InterceptorManager(String testName, Map<String, String> textReplacementRules, boolean doNotRecord,
         String playbackRecordName) {
-        Objects.requireNonNull(testName, "'testName' cannot be null.");
-        Objects.requireNonNull(textReplacementRules, "'textReplacementRules' cannot be null.");
-
-        this.testName = testName;
-        this.playbackRecordName = CoreUtils.isNullOrEmpty(playbackRecordName) ? testName : playbackRecordName;
-        this.testMode = TestMode.PLAYBACK;
-        this.allowedToReadRecordedValues = !doNotRecord;
-        this.allowedToRecordValues = false;
-
-        this.recordedData = allowedToReadRecordedValues ? readDataFromFile() : null;
-        this.textReplacementRules = textReplacementRules;
+        this(testName, playbackRecordName, TestMode.PLAYBACK, doNotRecord, textReplacementRules);
     }
 
     /**
@@ -267,8 +272,8 @@ public class InterceptorManager implements AutoCloseable {
     @Override
     public void close() {
         if (allowedToRecordValues) {
-            try {
-                RECORD_MAPPER.writeValue(createRecordFile(playbackRecordName), recordedData);
+            try (OutputStream gzipStream = createRecordStream(playbackRecordName)) {
+                RECORD_MAPPER.writeValue(gzipStream, recordedData);
             } catch (IOException ex) {
                 throw logger.logExceptionAsError(
                     new UncheckedIOException("Unable to write data to playback file.", ex));
@@ -276,10 +281,41 @@ public class InterceptorManager implements AutoCloseable {
         }
     }
 
-    private RecordedData readDataFromFile() {
-        File recordFile = getRecordFile();
+    /**
+     * Creates a file that will be used to store the recorded test values and returns an
+     * outputstream to write the record data.
+     */
+    private OutputStream createRecordStream(String playbackRecordName) throws IOException {
+        File recordFolder = getRecordFolder();
+        if (!recordFolder.exists()) {
+            if (recordFolder.mkdir()) {
+                logger.verbose("Created directory: {}", recordFolder.getPath());
+            }
+        }
 
-        try {
+        // Make gzip file recording default
+        // if AZURE_TEST_RECORD_UNCOMPRESSED is set to true, record as plaintext json file instead.
+        boolean recordUncompressed = Boolean.parseBoolean(
+            Configuration.getGlobalConfiguration().get(AZURE_TEST_RECORD_UNCOMPRESSED, "false"));
+
+        File recordFile = new File(recordFolder, playbackRecordName + JSON_GZIP_EXTENSION);
+        if (recordUncompressed) {
+            recordFile = new File(recordFolder, playbackRecordName + JSON_EXTENSION);
+        }
+
+        if (recordFile.createNewFile()) {
+            logger.verbose("Created record file: {}", recordFile.getPath());
+        }
+        logger.info("==> Playback file path: " + recordFile);
+        BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(recordFile));
+        if (recordUncompressed) {
+            return outputStream;
+        }
+        return new GZIPOutputStream(outputStream);
+    }
+
+    private RecordedData readDataFromFile() {
+        try (InputStream recordFile = getRecordStream()) {
             return RECORD_MAPPER.readValue(recordFile, RecordedData.class);
         } catch (IOException ex) {
             throw logger.logExceptionAsWarning(new UncheckedIOException(ex));
@@ -297,44 +333,29 @@ public class InterceptorManager implements AutoCloseable {
     /*
      * Attempts to retrieve the playback file, if it is not found an exception is thrown as playback can't continue.
      */
-    private File getRecordFile() {
+    private InputStream getRecordStream() throws IOException {
         File recordFolder = getRecordFolder();
-        File playbackFile = new File(recordFolder, playbackRecordName + ".json");
-        File oldPlaybackFile = new File(recordFolder, testName + ".json");
+        File gzipPlaybackFile = new File(recordFolder, playbackRecordName + JSON_GZIP_EXTENSION);
+        File playbackFile = new File(recordFolder, playbackRecordName + JSON_EXTENSION);
+        File oldPlaybackFile = new File(recordFolder, testName + JSON_EXTENSION);
 
-        if (!playbackFile.exists() && !oldPlaybackFile.exists()) {
+        if (!gzipPlaybackFile.exists() && !playbackFile.exists() && !oldPlaybackFile.exists()) {
             throw logger.logExceptionAsError(new RuntimeException(String.format(
-                "Missing both new and old playback files. Files are %s and %s.", playbackFile.getPath(),
-                oldPlaybackFile.getPath())));
+                "Missing gzip, new and old json playback files. Files are %s, %s and %s.", gzipPlaybackFile,
+                playbackFile.getPath(), oldPlaybackFile.getPath())));
         }
 
-        if (playbackFile.exists()) {
+        if (gzipPlaybackFile.exists()) {
+            logger.info("==> Playback file path: {}", gzipPlaybackFile.getPath());
+            InputStream fileInputStream = new BufferedInputStream(new FileInputStream(gzipPlaybackFile));
+            return new GZIPInputStream(fileInputStream);
+        } else if (playbackFile.exists()) {
             logger.info("==> Playback file path: {}", playbackFile.getPath());
-            return playbackFile;
+            return new BufferedInputStream(new FileInputStream(playbackFile));
         } else {
             logger.info("==> Playback file path: {}", oldPlaybackFile.getPath());
-            return oldPlaybackFile;
+            return new BufferedInputStream(new FileInputStream(oldPlaybackFile));
         }
-    }
-
-    /*
-     * Retrieves or creates the file that will be used to store the recorded test values.
-     */
-    private File createRecordFile(String testName) throws IOException {
-        File recordFolder = getRecordFolder();
-        if (!recordFolder.exists()) {
-            if (recordFolder.mkdir()) {
-                logger.verbose("Created directory: {}", recordFolder.getPath());
-            }
-        }
-
-        File recordFile = new File(recordFolder, testName + ".json");
-        if (recordFile.createNewFile()) {
-            logger.verbose("Created record file: {}", recordFile.getPath());
-        }
-
-        logger.info("==> Playback file path: " + recordFile);
-        return recordFile;
     }
 
     /**
