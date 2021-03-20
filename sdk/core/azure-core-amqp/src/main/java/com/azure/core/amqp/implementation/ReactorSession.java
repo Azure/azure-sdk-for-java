@@ -508,7 +508,7 @@ public class ReactorSession implements AmqpSession {
                 logger.verbose("connectionId[{}] linkName[{}] entityPath[{}] Complete. Removing receive link.",
                     sessionHandler.getConnectionId(), linkName, entityPath);
 
-                    removeLink(openReceiveLinks, linkName);
+                removeLink(openReceiveLinks, linkName);
             });
 
         return new LinkSubscription<>(reactorReceiver, subscription);
