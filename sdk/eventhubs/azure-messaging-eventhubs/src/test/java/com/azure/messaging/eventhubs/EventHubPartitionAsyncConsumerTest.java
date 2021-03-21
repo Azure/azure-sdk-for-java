@@ -32,6 +32,7 @@ import reactor.core.Disposables;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
@@ -46,6 +47,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.mock;
@@ -100,8 +102,11 @@ class EventHubPartitionAsyncConsumerTest {
     void setup() {
         MockitoAnnotations.initMocks(this);
 
+        when(link1.addCredits(anyInt())).thenReturn(Mono.empty());
         when(link1.getEndpointStates()).thenReturn(endpointProcessor);
         when(link1.receive()).thenReturn(messageProcessor);
+
+        when(link2.addCredits(anyInt())).thenReturn(Mono.empty());
     }
 
     @AfterEach
