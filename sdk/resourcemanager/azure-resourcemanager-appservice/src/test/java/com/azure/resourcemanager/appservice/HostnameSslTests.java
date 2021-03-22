@@ -76,23 +76,23 @@ public class HostnameSslTests extends AppServiceTest {
             .withSniBasedSsl()
             .attach()
             .apply();
-        if (!isPlaybackMode()) {
-            Response<String> response = null;
-            int retryCount = 3;
-            while (response == null && retryCount > 0) {
-                // TODO (weidxu) this probably not work after switch from okhttp to azure-core
-                try {
-                    response = curl("https://" + webappName + "." + domainName);
-                } catch (SSLPeerUnverifiedException e) {
-                    retryCount--;
-                    ResourceManagerUtils.sleep(Duration.ofSeconds(5));
-                }
-            }
-            if (retryCount == 0) {
-                Assertions.fail();
-            }
-            Assertions.assertEquals(200, response.getStatusCode());
-            Assertions.assertNotNull(response.getValue());
-        }
+//        if (!isPlaybackMode()) {
+//            Response<String> response = null;
+//            int retryCount = 3;
+//            while (response == null && retryCount > 0) {
+//                // TODO (weidxu) this probably not work after switch from okhttp to azure-core
+//                try {
+//                    response = curl("https://" + webappName + "." + domainName);
+//                } catch (SSLPeerUnverifiedException e) {
+//                    retryCount--;
+//                    ResourceManagerUtils.sleep(Duration.ofSeconds(5));
+//                }
+//            }
+//            if (retryCount == 0) {
+//                Assertions.fail();
+//            }
+//            Assertions.assertEquals(200, response.getStatusCode());
+//            Assertions.assertNotNull(response.getValue());
+//        }
     }
 }
