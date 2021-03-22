@@ -12,18 +12,22 @@ import com.azure.cosmos.benchmark.linkedin.data.CollectionAttributes;
 import com.azure.cosmos.benchmark.linkedin.data.EntityConfiguration;
 import com.azure.cosmos.benchmark.linkedin.impl.Constants;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import com.google.common.base.Preconditions;
 import java.time.Duration;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 /**
- * Implementation for managing only the Collections for this test. This class facilitates
+ * Implementation for managing the Collection for this test. This class facilitates
  * container creation after the CTL environment has provisioned the database with the
- * required throughput
+ * required throughput.
+ *
+ * Since we need to operate in the daily and staging environment, it does NOT delete the
+ * created container. In the daily environment, the database hosting the container is deleted,
+ * while in the staging environment, the container is not deleted (it's long-lived).
  */
 public class CollectionResourceManager implements ResourceManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(CollectionResourceManager.class);
@@ -53,45 +57,52 @@ public class CollectionResourceManager implements ResourceManager {
         final CosmosAsyncDatabase database = _client.getDatabase(_configuration.getDatabaseId());
         final CollectionAttributes collectionAttributes = _entityConfiguration.collectionAttributes();
         try {
-            LOGGER.info("Creating container {} in the database {}", containerName, database.getId());
-            final CosmosContainerProperties containerProperties =
-                new CosmosContainerProperties(containerName, Constants.PARTITION_KEY_PATH)
-                    .setIndexingPolicy(collectionAttributes.indexingPolicy());
-            database.createContainerIfNotExists(containerProperties)
-                .block(RESOURCE_CRUD_WAIT_TIME);
+            LOGGER.info("Checking for container {} in the database {}", containerName, database.getId());
+            final CosmosAsyncContainer container = database.getContainer(containerName);
+            final Optional<CosmosContainerResponse> response = getContainerProperties(container);
+            if (response.isPresent()) {
+                LOGGER.info("Container {} already exists in the database {}", containerName, database.getId());
+                applyDesiredContainerPolicies(container, response.get().getProperties());
+                return;
+            }
+
+            createContainer(database, containerName, collectionAttributes);
         } catch (CosmosException e) {
-            LOGGER.error("Exception while creating collection {}", containerName, e);
+            LOGGER.error("Exception while configuring collection {}", containerName, e);
             throw e;
         }
     }
 
     @Override
     public void deleteResources() {
-        deleteExistingCollections();
-
-        LOGGER.info("Collection resource cleanup completed");
+        LOGGER.info("The Collection {} will not be deleted.", _configuration.getCollectionId());
     }
 
-    private void deleteExistingCollections() {
-        final CosmosAsyncDatabase database = _client.getDatabase(_configuration.getDatabaseId());
-        final List<CosmosAsyncContainer> cosmosAsyncContainers = database.readAllContainers()
-            .byPage()
-            .toStream()
-            .flatMap(cosmosContainerPropertiesFeedResponse ->
-                cosmosContainerPropertiesFeedResponse.getResults().stream())
-            .map(cosmosContainerProperties -> database.getContainer(cosmosContainerProperties.getId()))
-            .collect(Collectors.toList());
-
-        // Run a best effort attempt to delete all existing containers and data there-in
-        for (CosmosAsyncContainer cosmosAsyncContainer : cosmosAsyncContainers) {
-            LOGGER.info("Deleting collection {} in the Database {}", cosmosAsyncContainer.getId(), _configuration.getDatabaseId());
-            try {
-                cosmosAsyncContainer.delete()
-                    .block(RESOURCE_CRUD_WAIT_TIME);
-            } catch (CosmosException e) {
-                LOGGER.error("Error deleting collection {} in the Database {}",
-                    cosmosAsyncContainer.getId(), _configuration.getDatabaseId(), e);
-            }
+    private Optional<CosmosContainerResponse> getContainerProperties(CosmosAsyncContainer container) {
+        try {
+            return Optional.ofNullable(container.read().
+                block(RESOURCE_CRUD_WAIT_TIME));
+        } catch (CosmosException e) {
+            return Optional.empty();
         }
+    }
+
+    private void applyDesiredContainerPolicies(final CosmosAsyncContainer container,
+        final CosmosContainerProperties properties) {
+        LOGGER.info("Updating container {} properties to desired", container.getId());
+        properties.setIndexingPolicy(_entityConfiguration.collectionAttributes().indexingPolicy());
+        container.replace(properties)
+            .block(RESOURCE_CRUD_WAIT_TIME);
+    }
+
+    private void createContainer(final CosmosAsyncDatabase database,
+        final String containerName,
+        final CollectionAttributes collectionAttributes) {
+        LOGGER.info("Creating container {} in the database {}", containerName, database.getId());
+        final CosmosContainerProperties containerProperties =
+            new CosmosContainerProperties(containerName, Constants.PARTITION_KEY_PATH)
+                .setIndexingPolicy(collectionAttributes.indexingPolicy());
+        database.createContainerIfNotExists(containerProperties)
+            .block(RESOURCE_CRUD_WAIT_TIME);
     }
 }

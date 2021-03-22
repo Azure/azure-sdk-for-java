@@ -4,10 +4,6 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.ConditionalSkill;
-import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.ConditionalSkill} and
@@ -22,11 +18,7 @@ public final class ConditionalSkillConverter {
             return null;
         }
 
-        List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null
-            : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-
-        ConditionalSkill conditionalSkill = new ConditionalSkill(inputs, obj.getOutputs());
-
+        ConditionalSkill conditionalSkill = new ConditionalSkill(obj.getInputs(), obj.getOutputs());
 
         String name = obj.getName();
         conditionalSkill.setName(name);
@@ -46,12 +38,10 @@ public final class ConditionalSkillConverter {
         if (obj == null) {
             return null;
         }
-        List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
-            obj.getInputs() == null ? null
-                : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
 
         com.azure.search.documents.indexes.implementation.models.ConditionalSkill conditionalSkill =
-            new com.azure.search.documents.indexes.implementation.models.ConditionalSkill(inputs, obj.getOutputs());
+            new com.azure.search.documents.indexes.implementation.models.ConditionalSkill(obj.getInputs(),
+                obj.getOutputs());
 
         String name = obj.getName();
         conditionalSkill.setName(name);

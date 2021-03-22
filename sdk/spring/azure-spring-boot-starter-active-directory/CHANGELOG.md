@@ -4,6 +4,7 @@
 ### New Features
 - Upgrade to `Spring Boot` [2.4.3](https://github.com/spring-projects/spring-boot/releases/tag/v2.4.3).
 - Upgrade to `Spring Security` [5.4.5](https://github.com/spring-projects/spring-security/releases/tag/5.4.5).
+- Support creating `GrantedAuthority` by "roles" claim from id-token for web application.
 
 ## 3.2.0 (2021-03-03)
 

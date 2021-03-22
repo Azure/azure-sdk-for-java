@@ -4,13 +4,14 @@ package com.azure.communication.phonenumbers;
 
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
-import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
+import com.azure.communication.phonenumbers.models.PurchasePhoneNumbersResult;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
+import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -154,7 +155,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
             capabilities));
     }
 
-    private SyncPoller<PhoneNumberOperation, Void> beginPurchasePhoneNumbersHelper(HttpClient httpClient, String searchId, String testName, boolean withContext) {
+    private SyncPoller<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbersHelper(HttpClient httpClient, String searchId, String testName, boolean withContext) {
         if (withContext) {
             return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
             .beginPurchasePhoneNumbers(searchId, Context.NONE));
@@ -163,7 +164,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         .beginPurchasePhoneNumbers(searchId));
     }
 
-    private SyncPoller<PhoneNumberOperation, Void> beginReleasePhoneNumberHelper(HttpClient httpClient, String phoneNumber, String testName, boolean withContext) {
+    private SyncPoller<PhoneNumberOperation, ReleasePhoneNumberResult> beginReleasePhoneNumberHelper(HttpClient httpClient, String phoneNumber, String testName, boolean withContext) {
         if (getTestMode() == TestMode.PLAYBACK) {
             phoneNumber = "+REDACTED";
         }
@@ -177,15 +178,15 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
     private SyncPoller<PhoneNumberOperation, PurchasedPhoneNumber>
         beginUpdatePhoneNumberCapabilitiesHelper(HttpClient httpClient, String phoneNumber, String testName, boolean withContext) {
-        PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest = new PhoneNumberCapabilitiesRequest();
-        capabilitiesUpdateRequest.setCalling(PhoneNumberCapabilityType.INBOUND);
-        capabilitiesUpdateRequest.setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
+        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
+        capabilities.setCalling(PhoneNumberCapabilityType.INBOUND);
+        capabilities.setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
         if (withContext) {
             return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
-            .beginUpdatePhoneNumberCapabilities(phoneNumber, capabilitiesUpdateRequest, Context.NONE));
+            .beginUpdatePhoneNumberCapabilities(phoneNumber, capabilities, Context.NONE));
         }
         return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
-            .beginUpdatePhoneNumberCapabilities(phoneNumber, capabilitiesUpdateRequest));
+            .beginUpdatePhoneNumberCapabilities(phoneNumber, capabilities));
     }
 
     private <T, U> SyncPoller<T, U> setPollInterval(SyncPoller<T, U> syncPoller) {

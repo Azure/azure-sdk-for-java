@@ -7,6 +7,9 @@ Updated to `Spring Boot` [2.4.3](https://github.com/spring-projects/spring-boot/
 ### Key Bug Fixes
 - Fix bug of using closed `MessageProducer` and `MessageConsumer` when a link is force detached in azure-spring-boot-starter-servicebus-jms.
 
+### New Features
+- Support creating `GrantedAuthority` by "roles" claim of id-token for web application in azure-spring-boot-starter-active-directory. 
+
 ## 3.2.0 (2021-03-03)
 ### Breaking Changes
 - Remove `azure.activedirectory.b2c.oidc-enabled` property.

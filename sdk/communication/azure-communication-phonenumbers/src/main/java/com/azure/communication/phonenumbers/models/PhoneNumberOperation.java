@@ -30,12 +30,6 @@ public final class PhoneNumberOperation {
     private OffsetDateTime createdDateTime;
 
     /*
-     * The Communication Services error.
-     */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
-    private CommunicationError error;
-
-    /*
      * Id of operation.
      */
     @JsonProperty(value = "id", required = true, access = JsonProperty.Access.WRITE_ONLY)
@@ -63,12 +57,34 @@ public final class PhoneNumberOperation {
     }
 
     /**
+     * Set the status property: Status of operation.
+     *
+     * @param status the status value to set.
+     * @return the PhoneNumberOperation object itself.
+     */
+    public PhoneNumberOperation setStatus(PhoneNumberOperationStatus status) {
+        this.status = status;
+        return this;
+    }
+
+    /**
      * Get the resourceLocation property: URL for retrieving the result of the operation, if any.
      *
      * @return the resourceLocation value.
      */
     public String getResourceLocation() {
         return this.resourceLocation;
+    }
+
+    /**
+     * Set the resourceLocation property: URL for retrieving the result of the operation, if any.
+     *
+     * @param resourceLocation the resourceLocation value to set.
+     * @return the PhoneNumberOperation object itself.
+     */
+    public PhoneNumberOperation setResourceLocation(String resourceLocation) {
+        this.resourceLocation = resourceLocation;
+        return this;
     }
 
     /**
@@ -81,12 +97,14 @@ public final class PhoneNumberOperation {
     }
 
     /**
-     * Get the error property: The Communication Services error.
+     * Set the createdDateTime property: The date that the operation was created.
      *
-     * @return the error value.
+     * @param createdDateTime the createdDateTime value to set.
+     * @return the PhoneNumberOperation object itself.
      */
-    public CommunicationError getError() {
-        return this.error;
+    public PhoneNumberOperation setCreatedDateTime(OffsetDateTime createdDateTime) {
+        this.createdDateTime = createdDateTime;
+        return this;
     }
 
     /**
@@ -99,6 +117,17 @@ public final class PhoneNumberOperation {
     }
 
     /**
+     * Set the id property: Id of operation.
+     *
+     * @param id the id value to set.
+     * @return the PhoneNumberOperation object itself.
+     */
+    public PhoneNumberOperation setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
      * Get the operationType property: The type of operation, e.g. Search.
      *
      * @return the operationType value.
@@ -108,11 +137,33 @@ public final class PhoneNumberOperation {
     }
 
     /**
+     * Set the operationType property: The type of operation, e.g. Search.
+     *
+     * @param operationType the operationType value to set.
+     * @return the PhoneNumberOperation object itself.
+     */
+    public PhoneNumberOperation setOperationType(PhoneNumberOperationType operationType) {
+        this.operationType = operationType;
+        return this;
+    }
+
+    /**
      * Get the lastActionDateTime property: The most recent date that the operation was changed.
      *
      * @return the lastActionDateTime value.
      */
     public OffsetDateTime getLastActionDateTime() {
         return this.lastActionDateTime;
+    }
+
+    /**
+     * Set the lastActionDateTime property: The most recent date that the operation was changed.
+     *
+     * @param lastActionDateTime the status value to set.
+     * @return the PhoneNumberOperation object itself.
+     */
+    public PhoneNumberOperation setLastActionDateTime(OffsetDateTime lastActionDateTime) {
+        this.lastActionDateTime = lastActionDateTime;
+        return this;
     }
 }

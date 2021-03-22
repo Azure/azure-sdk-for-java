@@ -1,27 +1,25 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net?prefix=jtccreatefailia&comp=list",
+    "Uri" : "https://REDACTED.blob.core.windows.net?comp=list&prefix=jtccreatefailia",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "44164217-e122-419f-83d0-b5df3ce6a027"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "fe95db82-187c-478f-8c51-6c572e985c8a"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "Access-Control-Expose-Headers" : "x-ms-client-request-id",
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "Access-Control-Allow-Origin" : "*",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "1a0157a2-301e-00b6-4db8-6a3e8e000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtccreatefailia</Prefix><Containers /><NextMarker /></EnumerationResults>",
-      "Date" : "Tue, 04 Aug 2020 23:40:16 GMT",
-      "x-ms-client-request-id" : "44164217-e122-419f-83d0-b5df3ce6a027",
+      "x-ms-request-id" : "75fcc8b4-301e-009b-80e3-fb3724000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://seancanary.blob.core.windows.net/\"><Prefix>jtccreatefailia</Prefix><Containers /><NextMarker /></EnumerationResults>",
+      "Date" : "Fri, 05 Feb 2021 17:20:11 GMT",
+      "x-ms-client-request-id" : "fe95db82-187c-478f-8c51-6c572e985c8a",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtccreatefailia0azurefilesystemtestcreatefailia7452818782d1" ]
+  "variables" : [ "jtccreatefailia0azurefilesystemtestcreatefailia088085614551" ]
 }

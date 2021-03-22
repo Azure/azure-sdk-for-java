@@ -1,0 +1,10 @@
+trigger: none
+
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: containerregistry
+      Artifacts:
+        - name: azure-containers-containerregistry
+          groupId: com.azure
+          safeName: azurecontainerscontainerregistry
