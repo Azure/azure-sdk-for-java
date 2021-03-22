@@ -5,7 +5,9 @@
 package com.azure.communication.phonenumbers.implementation;
 
 import com.azure.communication.phonenumbers.implementation.models.CommunicationErrorResponseException;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberPurchaseRequest;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumberRawOperation;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberSearchRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersGetOperationResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersPurchasePhoneNumbersResponse;
@@ -13,8 +15,6 @@ import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersRe
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersSearchAvailablePhoneNumbersResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUpdateCapabilitiesResponse;
 import com.azure.communication.phonenumbers.implementation.models.PurchasedPhoneNumbers;
-import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
-import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.core.annotation.BodyParam;
@@ -522,7 +522,7 @@ public final class PhoneNumbersImpl {
      * @return an operation by its id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumberOperation> getOperationAsync(String operationId) {
+    public Mono<PhoneNumberRawOperation> getOperationAsync(String operationId) {
         return getOperationWithResponseAsync(operationId)
                 .flatMap(
                         (PhoneNumbersGetOperationResponse res) -> {
@@ -545,7 +545,7 @@ public final class PhoneNumbersImpl {
      * @return an operation by its id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumberOperation> getOperationAsync(String operationId, Context context) {
+    public Mono<PhoneNumberRawOperation> getOperationAsync(String operationId, Context context) {
         return getOperationWithResponseAsync(operationId, context)
                 .flatMap(
                         (PhoneNumbersGetOperationResponse res) -> {
@@ -567,7 +567,7 @@ public final class PhoneNumbersImpl {
      * @return an operation by its id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumberOperation getOperation(String operationId) {
+    public PhoneNumberRawOperation getOperation(String operationId) {
         return getOperationAsync(operationId).block();
     }
 
@@ -582,7 +582,7 @@ public final class PhoneNumbersImpl {
      * @return an operation by its id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumberOperation getOperation(String operationId, Context context) {
+    public PhoneNumberRawOperation getOperation(String operationId, Context context) {
         return getOperationAsync(operationId, context).block();
     }
 
