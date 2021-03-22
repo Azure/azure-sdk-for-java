@@ -104,19 +104,20 @@ public class ReactorReceiver implements AmqpReceiveLink {
             })
             .cache(1);
 
+        //@formatter:off
         this.subscriptions = Disposables.composite(
             this.endpointStates.subscribe(),
 
             this.tokenManager.getAuthorizationResults().subscribe(
                 response -> {
-                logger.verbose("Token refreshed: {}", response);
-                hasAuthorized.set(true);
-            }, error -> {
-                //TODO (conniey): Close reactor receiver because we are no longer authorized.
-                logger.info("connectionId[{}], path[{}], linkName[{}] - tokenRenewalFailure[{}]",
-                    handler.getConnectionId(), this.entityPath, getLinkName(), error.getMessage());
-                hasAuthorized.set(false);
-            }, () -> hasAuthorized.set(false)),
+                    logger.verbose("Token refreshed: {}", response);
+                    hasAuthorized.set(true);
+                }, error -> {
+                    //TODO (conniey): Close reactor receiver because we are no longer authorized.
+                    logger.info("connectionId[{}], path[{}], linkName[{}] - tokenRenewalFailure[{}]",
+                        handler.getConnectionId(), this.entityPath, getLinkName(), error.getMessage());
+                    hasAuthorized.set(false);
+                }, () -> hasAuthorized.set(false)),
 
             amqpConnection.getShutdownSignals().subscribe(signal -> {
                 logger.verbose("connectionId[{}] linkName[{}]: Shutdown signal received.", handler.getConnectionId(),
@@ -124,6 +125,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
 
                 dispose("Connection shutdown.", null).subscribe();
             }));
+        //@formatter:on
     }
 
     @Override

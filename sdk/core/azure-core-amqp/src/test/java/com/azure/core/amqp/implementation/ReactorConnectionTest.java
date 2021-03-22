@@ -607,7 +607,7 @@ class ReactorConnectionTest {
 
         StepVerifier.create(connection.createRequestResponseChannel(SESSION_NAME, "test-link-name",
             "test-entity-path"))
-            .expectErrorSatisfies(assertException)
+            .expectError(IllegalStateException.class)
             .verify();
 
         StepVerifier.create(connection.createSession(SESSION_NAME))

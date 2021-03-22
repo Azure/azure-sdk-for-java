@@ -49,7 +49,6 @@ public class ReactorConnection implements AmqpConnection {
     private static final Duration MAX_BUSY_SERVER_TIME = Duration.ofSeconds(3);
 
     private final ClientLogger logger = new ClientLogger(ReactorConnection.class);
-    private final Object closeLock = new Object();
     private final ConcurrentMap<String, SessionSubscription> sessionMap = new ConcurrentHashMap<>();
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();
@@ -219,30 +218,27 @@ public class ReactorConnection implements AmqpConnection {
     @Override
     public Mono<AmqpSession> createSession(String sessionName) {
         return connectionMono.map(connection -> {
-            final SessionSubscription sessionSubscription;
-            synchronized (closeLock) {
-                sessionSubscription = sessionMap.computeIfAbsent(sessionName, key -> {
-                    final SessionHandler sessionHandler = handlerProvider.createSessionHandler(connectionId,
-                        getFullyQualifiedNamespace(), key, connectionOptions.getRetry().getTryTimeout());
-                    final Session session = connection.session();
+            final SessionSubscription sessionSubscription = sessionMap.computeIfAbsent(sessionName, key -> {
+                final SessionHandler sessionHandler = handlerProvider.createSessionHandler(connectionId,
+                    getFullyQualifiedNamespace(), key, connectionOptions.getRetry().getTryTimeout());
+                final Session session = connection.session();
 
-                    BaseHandler.setHandler(session, sessionHandler);
-                    final AmqpSession amqpSession = createSession(key, session, sessionHandler);
-                    final Disposable subscription = amqpSession.getEndpointStates()
-                        .subscribe(state -> {
-                        }, error -> {
-                            logger.info("connectionId[{}] sessionName[{}]: Error occurred. Removing and disposing"
-                                + " session.", connectionId, sessionName, error);
-                            removeSession(key);
-                        }, () -> {
-                            logger.info("connectionId[{}] sessionName[{}]: Complete. Removing and disposing session.",
-                                connectionId, sessionName);
-                            removeSession(key);
-                        });
+                BaseHandler.setHandler(session, sessionHandler);
+                final AmqpSession amqpSession = createSession(key, session, sessionHandler);
+                final Disposable subscription = amqpSession.getEndpointStates()
+                    .subscribe(state -> {
+                    }, error -> {
+                        logger.info("connectionId[{}] sessionName[{}]: Error occurred. Removing and disposing"
+                            + " session.", connectionId, sessionName, error);
+                        removeSession(key);
+                    }, () -> {
+                        logger.info("connectionId[{}] sessionName[{}]: Complete. Removing and disposing session.",
+                            connectionId, sessionName);
+                        removeSession(key);
+                    });
 
-                    return new SessionSubscription(amqpSession, subscription);
-                });
-            }
+                return new SessionSubscription(amqpSession, subscription);
+            });
 
             return sessionSubscription;
         }).flatMap(sessionSubscription -> {
@@ -281,14 +277,12 @@ public class ReactorConnection implements AmqpConnection {
             return false;
         }
 
-        synchronized (closeLock) {
-            final SessionSubscription removed = sessionMap.remove(sessionName);
-            if (removed != null) {
-                removed.dispose();
-            }
-
-            return removed != null;
+        final SessionSubscription removed = sessionMap.remove(sessionName);
+        if (removed != null) {
+            removed.dispose();
         }
+
+        return removed != null;
     }
 
     @Override
@@ -401,7 +395,7 @@ public class ReactorConnection implements AmqpConnection {
         }).then(isClosedMono.asMono());
     }
 
-    private void closeConnectionWork() {
+    private synchronized void closeConnectionWork() {
         if (connection == null) {
             isClosedMono.emitEmpty((signalType, emitResult) -> onEmitSinkFailure(signalType, emitResult,
                 "Unable to complete closeMono when there is no connection."));
@@ -411,9 +405,7 @@ public class ReactorConnection implements AmqpConnection {
         connection.close();
 
         final ArrayList<Mono<Void>> closingSessions = new ArrayList<>();
-        synchronized (closeLock) {
-            sessionMap.forEach((key, link) -> closingSessions.add(link.isClosed()));
-        }
+        sessionMap.forEach((key, link) -> closingSessions.add(link.isClosed()));
 
         executor.close();
 

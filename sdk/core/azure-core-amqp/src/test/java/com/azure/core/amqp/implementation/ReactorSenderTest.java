@@ -449,9 +449,10 @@ public class ReactorSenderTest {
             .expectComplete()
             .verify();
 
+        invokeDispatcher();
+
         assertTrue(reactorSender.isDisposed());
 
-        verify(sender).close();
         verify(tokenManager).close();
 
         endpointStatePublisher.assertNoSubscribers();

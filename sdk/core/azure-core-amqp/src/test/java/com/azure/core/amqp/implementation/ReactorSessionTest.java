@@ -9,6 +9,7 @@ import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
@@ -34,6 +35,7 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import reactor.test.publisher.TestPublisher;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -89,6 +91,8 @@ public class ReactorSessionTest {
     private Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
     private AutoCloseable mocksCloseable;
 
+    private final TestPublisher<AmqpShutdownSignal> connectionShutdown = TestPublisher.createCold();
+
     @BeforeEach
     public void setup() throws IOException {
         mocksCloseable = MockitoAnnotations.openMocks(this);
@@ -100,6 +104,7 @@ public class ReactorSessionTest {
         when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
 
         when(event.getSession()).thenReturn(session);
+
         when(sender.attachments()).thenReturn(record);
         when(receiver.attachments()).thenReturn(record);
 
@@ -108,6 +113,8 @@ public class ReactorSessionTest {
             runnable.run();
             return null;
         }).when(reactorDispatcher).invoke(any());
+
+        when(amqpConnection.getShutdownSignals()).thenReturn(connectionShutdown.flux());
 
         final AmqpRetryOptions options = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
         this.reactorSession = new ReactorSession(amqpConnection, session, handler, NAME, reactorProvider,
@@ -135,7 +142,7 @@ public class ReactorSessionTest {
 
     @Test
     public void verifyEndpointStates() {
-        when(session.getLocalState()).thenReturn(EndpointState.ACTIVE);
+        when(session.getRemoteState()).thenReturn(EndpointState.ACTIVE);
 
         StepVerifier.create(reactorSession.getEndpointStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
@@ -172,6 +179,8 @@ public class ReactorSessionTest {
         final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath);
 
         when(session.sender(linkName)).thenReturn(sender);
+        when(session.getRemoteState()).thenReturn(EndpointState.ACTIVE);
+
         when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath)).thenReturn(tokenManager);
         when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
         when(tokenManager.getAuthorizationResults())
@@ -220,6 +229,7 @@ public class ReactorSessionTest {
         when(sender.getRemoteCondition()).thenReturn(errorCondition);
 
         when(session.sender(linkName)).thenReturn(sender);
+        when(session.getRemoteState()).thenReturn(EndpointState.ACTIVE);
         when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath)).thenReturn(tokenManager);
         when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
         when(tokenManager.getAuthorizationResults())
