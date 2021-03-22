@@ -32,6 +32,7 @@ public final class ModelsRepositoryAsyncClient {
     private final ModelsRepositoryServiceVersion serviceVersion;
     private final RepositoryHandler repositoryHandler;
     private final ModelsDependencyResolution defaultDependencyResolutionOption;
+    private final URI repositoryUri;
 
     ModelsRepositoryAsyncClient(
         URI repositoryUri,
@@ -43,6 +44,7 @@ public final class ModelsRepositoryAsyncClient {
         this.serviceVersion = serviceVersion;
 
         this.defaultDependencyResolutionOption = dependencyResolutionOption;
+        this.repositoryUri = repositoryUri;
 
         ModelsRepositoryAPIImpl protocolLayer = new ModelsRepositoryAPIImplBuilder()
             .host(repositoryUri.toString())
@@ -51,6 +53,14 @@ public final class ModelsRepositoryAsyncClient {
             .buildClient();
 
         this.repositoryHandler = new RepositoryHandler(repositoryUri, protocolLayer);
+    }
+
+    /**
+     * Gets the repository uri that the client has been initialized with.
+     * @return The target repository uri.
+     */
+    public URI getRepositoryUri() {
+        return this.repositoryUri;
     }
 
     /**

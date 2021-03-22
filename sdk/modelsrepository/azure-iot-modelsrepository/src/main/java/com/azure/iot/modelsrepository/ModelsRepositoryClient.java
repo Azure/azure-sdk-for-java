@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.Context;
 
+import java.net.URI;
 import java.util.Map;
 
 /**
@@ -20,6 +21,14 @@ public final class ModelsRepositoryClient {
 
     ModelsRepositoryClient(ModelsRepositoryAsyncClient modelsRepositoryAsyncClient) {
         this.modelsRepositoryAsyncClient = modelsRepositoryAsyncClient;
+    }
+
+    /**
+     * Gets the repository uri that the client has been initialized with.
+     * @return The target repository uri.
+     */
+    public URI getRepositoryUri() {
+        return this.modelsRepositoryAsyncClient.getRepositoryUri();
     }
 
     /**
