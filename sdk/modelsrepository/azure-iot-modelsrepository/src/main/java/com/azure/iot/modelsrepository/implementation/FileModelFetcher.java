@@ -4,7 +4,6 @@
 package com.azure.iot.modelsrepository.implementation;
 
 import com.azure.core.exception.AzureException;
-import com.azure.core.exception.ServiceResponseException;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.iot.modelsrepository.DtmiConventions;
@@ -77,7 +76,7 @@ class FileModelFetcher implements ModelFetcher {
                 fnfError = String.format(StandardStrings.ERROR_FETCHING_MODEL_CONTENT, tryContentPath);
             }
 
-            return Mono.error(new ServiceResponseException(fnfError));
+            return Mono.error(new AzureException(fnfError));
         });
     }
 
