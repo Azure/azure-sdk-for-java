@@ -50,7 +50,7 @@ public class AADB2CJwtBearerTokenAuthenticationConverter implements Converter<Jw
         OAuth2AccessToken accessToken = new OAuth2AccessToken(
             OAuth2AccessToken.TokenType.BEARER, jwt.getTokenValue(), jwt.getIssuedAt(), jwt.getExpiresAt());
         Collection<GrantedAuthority> authorities = extractAuthorities(jwt);
-        AADOAuth2AuthenticatedPrincipal principal = new AADOAuth2AuthenticatedPrincipal(
+        AADB2COAuth2AuthenticatedPrincipal principal = new AADB2COAuth2AuthenticatedPrincipal(
             jwt.getHeaders(), jwt.getClaims(), authorities, jwt.getTokenValue());
         return new BearerTokenAuthentication(principal, accessToken, authorities);
     }
