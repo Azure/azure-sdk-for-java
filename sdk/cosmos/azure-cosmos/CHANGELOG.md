@@ -1,7 +1,9 @@
 ## Release History
 
-## 4.14.0-beta.1 (Unreleased)
-
+### 4.13.1 (2021-03-22)
+#### Key Bug Fixes
+* Fixed issue preventing recovery from 410 status code and 0 sub status code due to stale Gateway caches when threads in parallel scheduler are starved.
+* Fixed warning caused because of afterburner module usage in `CosmosDiagnostics`.
 
 ### 4.13.0 (2021-03-11) 
 #### NOTE: THIS RELEASE UPDATES `reactor-core` and `reactor-netty` MAJOR VERSIONS TO `2020.0.4 (Europium)` RELEASE TRAIN
