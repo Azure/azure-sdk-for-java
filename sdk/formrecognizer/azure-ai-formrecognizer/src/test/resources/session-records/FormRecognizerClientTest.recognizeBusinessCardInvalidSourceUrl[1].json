@@ -4,19 +4,19 @@
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//prebuilt/businessCard/analyze?includeTextDetails=false",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "2cefb7a1-ec84-45fe-bd55-a108d9399733",
+      "x-ms-client-request-id" : "bda08cdd-1828-425b-aa0d-fe6bbb812890",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "923",
+      "x-envoy-upstream-service-time" : "860",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "09f73386-53da-487c-a6c9-fa47d710f9e8",
+      "apim-request-id" : "883429da-7d0e-47e3-80a6-33805c662e7d",
       "retry-after" : "0",
       "Content-Length" : "144",
       "StatusCode" : "400",
-      "Body" : "{\"error\":{\"code\":\"InvalidImageURL\",\"innerError\":{\"requestId\":\"09f73386-53da-487c-a6c9-fa47d710f9e8\"},\"message\":\"Image URL is badly formatted.\"}}",
-      "Date" : "Tue, 16 Mar 2021 17:14:55 GMT",
+      "Body" : "{\"error\":{\"code\":\"InvalidImageURL\",\"innerError\":{\"requestId\":\"883429da-7d0e-47e3-80a6-33805c662e7d\"},\"message\":\"Image URL is badly formatted.\"}}",
+      "Date" : "Mon, 22 Mar 2021 11:39:23 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

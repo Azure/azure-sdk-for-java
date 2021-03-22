@@ -4,19 +4,19 @@
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//prebuilt/businessCard/analyze?includeTextDetails=false",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c9a3ae9f-274a-4506-8d74-f9e6da0b1470",
+      "x-ms-client-request-id" : "c08aac25-e148-402c-903a-4dcfbe563768",
       "Content-Type" : "application/pdf"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "3",
+      "x-envoy-upstream-service-time" : "4",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "af79ee8c-8b48-4f34-9a06-e9e40bbd91bf",
+      "apim-request-id" : "cab641ad-3c17-44e8-b108-83b164d415ae",
       "retry-after" : "0",
       "Content-Length" : "161",
       "StatusCode" : "400",
-      "Body" : "{\"error\":{\"code\":\"BadArgument\",\"innerError\":{\"requestId\":\"af79ee8c-8b48-4f34-9a06-e9e40bbd91bf\"},\"message\":\"Bad or unrecognizable request JSON or binary file.\"}}",
-      "Date" : "Tue, 16 Mar 2021 17:11:33 GMT",
+      "Body" : "{\"error\":{\"code\":\"BadArgument\",\"innerError\":{\"requestId\":\"cab641ad-3c17-44e8-b108-83b164d415ae\"},\"message\":\"Bad or unrecognizable request JSON or binary file.\"}}",
+      "Date" : "Mon, 22 Mar 2021 11:39:52 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

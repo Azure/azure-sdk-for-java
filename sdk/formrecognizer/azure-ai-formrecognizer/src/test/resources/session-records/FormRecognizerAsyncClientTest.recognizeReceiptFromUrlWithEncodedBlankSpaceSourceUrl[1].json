@@ -4,19 +4,19 @@
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//prebuilt/receipt/analyze?includeTextDetails=false",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "3eeef20b-c0a6-4f92-be5a-2b743fb6f979",
+      "x-ms-client-request-id" : "76dc3322-dece-4ac4-bfc1-9f1336789b61",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "4149",
+      "x-envoy-upstream-service-time" : "4738",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "5e9ef9cc-6327-4a4a-a408-5828bb2d11e0",
+      "apim-request-id" : "f0ec7ab2-848e-4461-a2c9-5456708b288f",
       "retry-after" : "0",
       "Content-Length" : "161",
       "StatusCode" : "400",
-      "Body" : "{\"error\":{\"code\":\"FailedToDownloadImage\",\"innerError\":{\"requestId\":\"5e9ef9cc-6327-4a4a-a408-5828bb2d11e0\"},\"message\":\"Failed to download image from input URL.\"}}",
-      "Date" : "Tue, 16 Mar 2021 17:13:24 GMT",
+      "Body" : "{\"error\":{\"code\":\"FailedToDownloadImage\",\"innerError\":{\"requestId\":\"f0ec7ab2-848e-4461-a2c9-5456708b288f\"},\"message\":\"Failed to download image from input URL.\"}}",
+      "Date" : "Mon, 22 Mar 2021 11:41:11 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

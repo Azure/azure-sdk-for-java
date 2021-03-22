@@ -39,6 +39,7 @@ import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -394,7 +395,9 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
+    @Disabled
     abstract void recognizeReceiptFromDataMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+    // TODO: (https://github.com/Azure/azure-sdk-for-java/issues/20012)
 
     // Receipt - URL
 

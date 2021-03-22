@@ -4,21 +4,20 @@
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/00000000-0000-0000-0000-000000000000/analyze?includeTextDetails=false",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e7d99905-6848-453a-9c9c-0dd83a671627",
+      "x-ms-client-request-id" : "a75902c0-d173-4cf5-a3fa-8f73d4d51687",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "3234",
+      "x-envoy-upstream-service-time" : "17",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "032d2d62-1d16-4453-b599-aae72c309b1f",
+      "apim-request-id" : "ba6939b1-15ea-47ba-bb6b-7904ac48b528",
       "retry-after" : "0",
-      "Content-Length" : "80",
+      "Content-Length" : "124",
       "StatusCode" : "400",
-      "Body" : "{\"error\":{\"code\":\"1001\",\"message\":\"Could not retrieve user-provided resource.\"}}",
-      "Date" : "Tue, 16 Mar 2021 17:10:52 GMT",
-      "Content-Type" : "application/json; charset=utf-8",
-      "ms-azure-ai-errorcode" : "UserResourceNotAvailable"
+      "Body" : "{\"error\":{\"code\":\"1001\",\"message\":\"Specified model not found or not ready, Model Id: 00000000-0000-0000-0000-000000000000\"}}",
+      "Date" : "Mon, 22 Mar 2021 11:36:23 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],

@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//layout/analyze",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "1cc16e8e-596e-4c7a-a9e9-f5cd958f7efa",
+      "x-ms-client-request-id" : "3311aad8-cf46-4f18-be4f-a0a9ff6eca6a",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -12,7 +12,7 @@
       "Content-Length" : "224",
       "StatusCode" : "401",
       "Body" : "{\"error\":{\"code\":\"401\",\"message\":\"Access denied due to invalid subscription key or wrong API endpoint. Make sure to provide a valid key for an active subscription and use a correct regional API endpoint for your resource.\"}}",
-      "Date" : "Tue, 16 Mar 2021 17:08:34 GMT"
+      "Date" : "Mon, 22 Mar 2021 11:34:50 GMT"
     },
     "Exception" : null
   } ],

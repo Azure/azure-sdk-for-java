@@ -170,8 +170,10 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled
     public void recognizeReceiptFromDataMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
+        // TODO: (https://github.com/Azure/azure-sdk-for-java/issues/20012)
         dataRunner((data, dataLength) -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeReceipts(
                 data, dataLength, new RecognizeReceiptsOptions().setContentType(APPLICATION_PDF)
@@ -284,8 +286,10 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled
     public void recognizeReceiptFromUrlMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
+        // TODO: (https://github.com/Azure/azure-sdk-for-java/issues/20012)
         urlRunner(receiptUrl -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeReceiptsFromUrl(
                 receiptUrl, new RecognizeReceiptsOptions().setPollInterval(durationTestMode), Context.NONE);
@@ -606,7 +610,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                         .setPollInterval(durationTestMode), Context.NONE);
                 syncPoller.waitForCompletion();
                 validateRecognizedResult(syncPoller.getFinalResult(), true, true);
-            }), INVOICE_6_PDF);
+            }), FORM_JPG);
     }
 
     /**
@@ -637,8 +641,10 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled
     public void recognizeCustomFormLabeledDataWithBlankPdfContentType(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
+        // TODO: (https://github.com/Azure/azure-sdk-for-java/issues/20012)
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
@@ -660,8 +666,10 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled
     public void recognizeCustomFormLabeledDataExcludeFieldElements(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
+        // TODO: (https://github.com/Azure/azure-sdk-for-java/issues/20012)
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
@@ -674,7 +682,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                     .setContentType(APPLICATION_PDF).setPollInterval(durationTestMode), Context.NONE);
             syncPoller.waitForCompletion();
             validateRecognizedResult(syncPoller.getFinalResult(), false, true);
-        }), INVOICE_6_PDF);
+        }), FORM_JPG);
     }
 
     /**
@@ -779,7 +787,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                         Context.NONE);
                 syncPoller.waitForCompletion();
                 validateRecognizedResult(syncPoller.getFinalResult(), true, true);
-            }), INVOICE_6_PDF);
+            }), FORM_JPG);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -920,8 +928,10 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled
     public void recognizeCustomFormUnlabeledDataWithBlankPdfContentType(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
+        // TODO: (https://github.com/Azure/azure-sdk-for-java/issues/20012)
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
@@ -1175,13 +1185,15 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                         useTrainingLabels, new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
                 trainingPoller.waitForCompletion();
 
-                FormRecognizerException errorResponseException = assertThrows(FormRecognizerException.class,
+                HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                     () -> client.beginRecognizeCustomForms(trainingPoller.getFinalResult().getModelId(), data,
                         dataLength, new RecognizeCustomFormsOptions()
                             .setContentType(APPLICATION_PDF).setPollInterval(durationTestMode),
                         Context.NONE).getFinalResult());
-                assertEquals(UNABLE_TO_READ_FILE_ERROR_CODE,
-                    errorResponseException.getErrorInformation().get(0).getErrorCode());
+
+                FormRecognizerErrorInformation errorInformation =
+                    (FormRecognizerErrorInformation) httpResponseException.getValue();
+                assertEquals("Invalid input file.", errorInformation.getMessage());
             }));
     }
 

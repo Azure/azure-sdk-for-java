@@ -4,257 +4,237 @@
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "86050b68-3a21-415d-930a-6de573a1fe6f",
+      "x-ms-client-request-id" : "00bcf326-b02a-401e-971f-d69b9992cc15",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "442",
+      "x-envoy-upstream-service-time" : "290",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "116e3227-04ac-46a4-b5a0-c76d5b864e40",
+      "apim-request-id" : "612315ab-ea77-4ef8-ba3e-2e196e7e098f",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "Date" : "Tue, 16 Mar 2021 17:13:41 GMT",
-      "Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3/custom/models/4fb6fb92-7fa1-4b4f-85ea-f33ca2511c1d"
+      "Date" : "Mon, 22 Mar 2021 11:37:13 GMT",
+      "Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3/custom/models/94973e6b-8883-4595-82db-15bfb4faf5a6"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/4fb6fb92-7fa1-4b4f-85ea-f33ca2511c1d?includeKeys=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/94973e6b-8883-4595-82db-15bfb4faf5a6?includeKeys=true",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "89a6020b-c1d8-44aa-a91d-b29766c7e1dc"
+      "x-ms-client-request-id" : "9fa6ab5b-15a0-4a5b-9399-b6e345c31d25"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "41",
+      "x-envoy-upstream-service-time" : "19",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "9b8d3d82-8820-47b4-bcb2-3dcdb56fd1e4",
+      "apim-request-id" : "58636d02-3702-4b03-9587-c3abf959eb0f",
       "retry-after" : "0",
       "Content-Length" : "191",
       "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"4fb6fb92-7fa1-4b4f-85ea-f33ca2511c1d\",\"modelName\":\"model1\",\"status\":\"creating\",\"createdDateTime\":\"2021-03-16T17:13:42Z\",\"lastUpdatedDateTime\":\"2021-03-16T17:13:42Z\"}}",
-      "Date" : "Tue, 16 Mar 2021 17:13:47 GMT",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"94973e6b-8883-4595-82db-15bfb4faf5a6\",\"modelName\":\"model1\",\"status\":\"creating\",\"createdDateTime\":\"2021-03-22T11:37:13Z\",\"lastUpdatedDateTime\":\"2021-03-22T11:37:13Z\"}}",
+      "Date" : "Mon, 22 Mar 2021 11:37:18 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/4fb6fb92-7fa1-4b4f-85ea-f33ca2511c1d?includeKeys=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/94973e6b-8883-4595-82db-15bfb4faf5a6?includeKeys=true",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "eefaf5d0-961c-4cbd-800c-bc87c8ceb439"
+      "x-ms-client-request-id" : "028bd032-26ed-4d3f-a214-55a1537a6c78"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "26",
+      "x-envoy-upstream-service-time" : "16",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "01fc333b-2f7b-4d51-86df-be04d545e9a2",
+      "apim-request-id" : "61c4feaf-9141-4626-9041-195926ec2b16",
       "retry-after" : "0",
       "Content-Length" : "191",
       "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"4fb6fb92-7fa1-4b4f-85ea-f33ca2511c1d\",\"modelName\":\"model1\",\"status\":\"creating\",\"createdDateTime\":\"2021-03-16T17:13:42Z\",\"lastUpdatedDateTime\":\"2021-03-16T17:13:42Z\"}}",
-      "Date" : "Tue, 16 Mar 2021 17:13:53 GMT",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"94973e6b-8883-4595-82db-15bfb4faf5a6\",\"modelName\":\"model1\",\"status\":\"creating\",\"createdDateTime\":\"2021-03-22T11:37:13Z\",\"lastUpdatedDateTime\":\"2021-03-22T11:37:13Z\"}}",
+      "Date" : "Mon, 22 Mar 2021 11:37:24 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/4fb6fb92-7fa1-4b4f-85ea-f33ca2511c1d?includeKeys=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/94973e6b-8883-4595-82db-15bfb4faf5a6?includeKeys=true",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e6b5cbad-86ec-4b1c-a585-9adb690acb1b"
+      "x-ms-client-request-id" : "f76ef1fe-a045-4178-a249-acc59a1e4f6a"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "81",
+      "x-envoy-upstream-service-time" : "57",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "01095c46-9418-47e7-ade5-24b1e0fa6c4d",
+      "apim-request-id" : "48fc8037-34ba-41d1-bd5b-8aed20b889ac",
       "retry-after" : "0",
       "Content-Length" : "191",
       "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"4fb6fb92-7fa1-4b4f-85ea-f33ca2511c1d\",\"modelName\":\"model1\",\"status\":\"creating\",\"createdDateTime\":\"2021-03-16T17:13:42Z\",\"lastUpdatedDateTime\":\"2021-03-16T17:13:42Z\"}}",
-      "Date" : "Tue, 16 Mar 2021 17:13:58 GMT",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"94973e6b-8883-4595-82db-15bfb4faf5a6\",\"modelName\":\"model1\",\"status\":\"creating\",\"createdDateTime\":\"2021-03-22T11:37:13Z\",\"lastUpdatedDateTime\":\"2021-03-22T11:37:13Z\"}}",
+      "Date" : "Mon, 22 Mar 2021 11:37:29 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/4fb6fb92-7fa1-4b4f-85ea-f33ca2511c1d?includeKeys=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/94973e6b-8883-4595-82db-15bfb4faf5a6?includeKeys=true",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a6be897f-0a44-4b59-b9d8-131bdb57816e"
+      "x-ms-client-request-id" : "8deb7ed1-4d96-4ccd-8168-5868b4ae6e2a"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "25",
+      "x-envoy-upstream-service-time" : "28",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "0785218e-93b6-4ad4-aa44-5403b965feaa",
-      "retry-after" : "0",
-      "Content-Length" : "191",
-      "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"4fb6fb92-7fa1-4b4f-85ea-f33ca2511c1d\",\"modelName\":\"model1\",\"status\":\"creating\",\"createdDateTime\":\"2021-03-16T17:13:42Z\",\"lastUpdatedDateTime\":\"2021-03-16T17:13:42Z\"}}",
-      "Date" : "Tue, 16 Mar 2021 17:14:03 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/4fb6fb92-7fa1-4b4f-85ea-f33ca2511c1d?includeKeys=true",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "2f9e0480-23dd-4785-a730-95a01be7da86"
-    },
-    "Response" : {
-      "x-envoy-upstream-service-time" : "20",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "34f7b8c7-2a1f-4a3c-88c3-ca5692b0b2b6",
+      "apim-request-id" : "e71e16b0-6c3a-417f-a67f-34d973d53ba4",
       "retry-after" : "0",
       "Content-Length" : "933",
       "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"4fb6fb92-7fa1-4b4f-85ea-f33ca2511c1d\",\"modelName\":\"model1\",\"status\":\"ready\",\"createdDateTime\":\"2021-03-16T17:13:42Z\",\"lastUpdatedDateTime\":\"2021-03-16T17:14:04Z\"},\"keys\":{\"clusters\":{\"0\":[\"Additional Notes:\",\"Address:\",\"Company Name:\",\"Company Phone:\",\"Dated As:\",\"Details\",\"Email:\",\"Hero Limited\",\"Name:\",\"Phone:\",\"Purchase Order\",\"Purchase Order #:\",\"Quantity\",\"SUBTOTAL\",\"Seattle, WA 93849 Phone:\",\"Shipped From\",\"Shipped To\",\"TAX\",\"TOTAL\",\"Total\",\"Unit Price\",\"Vendor Name:\",\"Website:\"]}},\"trainResult\":{\"trainingDocuments\":[{\"documentName\":\"Form_1.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_2.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_3.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_4.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_5.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"}],\"errors\":[]}}",
-      "Date" : "Tue, 16 Mar 2021 17:14:09 GMT",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"94973e6b-8883-4595-82db-15bfb4faf5a6\",\"modelName\":\"model1\",\"status\":\"ready\",\"createdDateTime\":\"2021-03-22T11:37:13Z\",\"lastUpdatedDateTime\":\"2021-03-22T11:37:34Z\"},\"keys\":{\"clusters\":{\"0\":[\"Additional Notes:\",\"Address:\",\"Company Name:\",\"Company Phone:\",\"Dated As:\",\"Details\",\"Email:\",\"Hero Limited\",\"Name:\",\"Phone:\",\"Purchase Order\",\"Purchase Order #:\",\"Quantity\",\"SUBTOTAL\",\"Seattle, WA 93849 Phone:\",\"Shipped From\",\"Shipped To\",\"TAX\",\"TOTAL\",\"Total\",\"Unit Price\",\"Vendor Name:\",\"Website:\"]}},\"trainResult\":{\"trainingDocuments\":[{\"documentName\":\"Form_1.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_2.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_3.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_4.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_5.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"}],\"errors\":[]}}",
+      "Date" : "Mon, 22 Mar 2021 11:37:34 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/4fb6fb92-7fa1-4b4f-85ea-f33ca2511c1d?includeKeys=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/94973e6b-8883-4595-82db-15bfb4faf5a6?includeKeys=true",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "4808e076-cef7-4a96-90f1-0af03e7d2e65"
+      "x-ms-client-request-id" : "fa1538e9-5f65-49a4-b41b-5fde8e330a3d"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "20",
+      "x-envoy-upstream-service-time" : "18",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "50114cde-5d47-49f8-adee-3818d738f291",
+      "apim-request-id" : "6c78b67f-776b-48bc-80f4-282bebfdf79f",
       "retry-after" : "0",
       "Content-Length" : "933",
       "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"4fb6fb92-7fa1-4b4f-85ea-f33ca2511c1d\",\"modelName\":\"model1\",\"status\":\"ready\",\"createdDateTime\":\"2021-03-16T17:13:42Z\",\"lastUpdatedDateTime\":\"2021-03-16T17:14:04Z\"},\"keys\":{\"clusters\":{\"0\":[\"Additional Notes:\",\"Address:\",\"Company Name:\",\"Company Phone:\",\"Dated As:\",\"Details\",\"Email:\",\"Hero Limited\",\"Name:\",\"Phone:\",\"Purchase Order\",\"Purchase Order #:\",\"Quantity\",\"SUBTOTAL\",\"Seattle, WA 93849 Phone:\",\"Shipped From\",\"Shipped To\",\"TAX\",\"TOTAL\",\"Total\",\"Unit Price\",\"Vendor Name:\",\"Website:\"]}},\"trainResult\":{\"trainingDocuments\":[{\"documentName\":\"Form_1.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_2.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_3.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_4.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_5.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"}],\"errors\":[]}}",
-      "Date" : "Tue, 16 Mar 2021 17:14:09 GMT",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"94973e6b-8883-4595-82db-15bfb4faf5a6\",\"modelName\":\"model1\",\"status\":\"ready\",\"createdDateTime\":\"2021-03-22T11:37:13Z\",\"lastUpdatedDateTime\":\"2021-03-22T11:37:34Z\"},\"keys\":{\"clusters\":{\"0\":[\"Additional Notes:\",\"Address:\",\"Company Name:\",\"Company Phone:\",\"Dated As:\",\"Details\",\"Email:\",\"Hero Limited\",\"Name:\",\"Phone:\",\"Purchase Order\",\"Purchase Order #:\",\"Quantity\",\"SUBTOTAL\",\"Seattle, WA 93849 Phone:\",\"Shipped From\",\"Shipped To\",\"TAX\",\"TOTAL\",\"Total\",\"Unit Price\",\"Vendor Name:\",\"Website:\"]}},\"trainResult\":{\"trainingDocuments\":[{\"documentName\":\"Form_1.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_2.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_3.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_4.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_5.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"}],\"errors\":[]}}",
+      "Date" : "Mon, 22 Mar 2021 11:37:35 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/4fb6fb92-7fa1-4b4f-85ea-f33ca2511c1d/analyze?includeTextDetails=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/94973e6b-8883-4595-82db-15bfb4faf5a6/analyze?includeTextDetails=false",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "47ab42eb-697a-4459-afc1-8e5d31128bdc",
+      "x-ms-client-request-id" : "6715a990-5aa4-423a-a867-9435c8c81b62",
       "Content-Type" : "image/jpeg"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "116",
+      "x-envoy-upstream-service-time" : "88",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "c4389a4b-a83f-4361-8800-691774ebe584",
+      "apim-request-id" : "c4e93d39-c5b7-468e-b77a-74cbf2e9ae6a",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "Operation-Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3/custom/models/4fb6fb92-7fa1-4b4f-85ea-f33ca2511c1d/analyzeresults/de422f79-20be-4b2f-b38d-619be087f9f9",
-      "Date" : "Tue, 16 Mar 2021 17:14:12 GMT"
+      "Operation-Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3/custom/models/94973e6b-8883-4595-82db-15bfb4faf5a6/analyzeresults/0512c295-7a2c-4a01-ad64-c0323a12341a",
+      "Date" : "Mon, 22 Mar 2021 11:37:37 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/4fb6fb92-7fa1-4b4f-85ea-f33ca2511c1d/analyzeResults/de422f79-20be-4b2f-b38d-619be087f9f9",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/94973e6b-8883-4595-82db-15bfb4faf5a6/analyzeResults/0512c295-7a2c-4a01-ad64-c0323a12341a",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "41ef69ef-2ca9-44b1-82ce-7534e110fba2"
+      "x-ms-client-request-id" : "4b2f96da-9280-46bd-b4ae-8c880269356f"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "66",
+      "x-envoy-upstream-service-time" : "46",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "54420c56-2ef9-4cff-87c0-0033ad3a4a15",
+      "apim-request-id" : "b27eb17e-d63c-4982-8747-57105c5985b2",
       "retry-after" : "0",
       "Content-Length" : "134",
       "StatusCode" : "200",
-      "Body" : "{\"status\": \"running\", \"createdDateTime\": \"2021-03-16T17:14:12Z\", \"lastUpdatedDateTime\": \"2021-03-16T17:14:14Z\", \"analyzeResult\": null}",
-      "Date" : "Tue, 16 Mar 2021 17:14:17 GMT",
+      "Body" : "{\"status\": \"running\", \"createdDateTime\": \"2021-03-22T11:37:37Z\", \"lastUpdatedDateTime\": \"2021-03-22T11:37:38Z\", \"analyzeResult\": null}",
+      "Date" : "Mon, 22 Mar 2021 11:37:42 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/4fb6fb92-7fa1-4b4f-85ea-f33ca2511c1d/analyzeResults/de422f79-20be-4b2f-b38d-619be087f9f9",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/94973e6b-8883-4595-82db-15bfb4faf5a6/analyzeResults/0512c295-7a2c-4a01-ad64-c0323a12341a",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "359ee452-664b-4019-8663-07a9cfc45aaf"
+      "x-ms-client-request-id" : "2baf96c6-6da1-4139-909d-f732cc854fa4"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "27",
+      "x-envoy-upstream-service-time" : "25",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "dce6ca24-03e9-45dd-a149-65ce4505fdcf",
+      "apim-request-id" : "d68bdd41-1acf-4345-921f-f4546d5ddb93",
       "retry-after" : "0",
       "Content-Length" : "134",
       "StatusCode" : "200",
-      "Body" : "{\"status\": \"running\", \"createdDateTime\": \"2021-03-16T17:14:12Z\", \"lastUpdatedDateTime\": \"2021-03-16T17:14:14Z\", \"analyzeResult\": null}",
-      "Date" : "Tue, 16 Mar 2021 17:14:23 GMT",
+      "Body" : "{\"status\": \"running\", \"createdDateTime\": \"2021-03-22T11:37:37Z\", \"lastUpdatedDateTime\": \"2021-03-22T11:37:38Z\", \"analyzeResult\": null}",
+      "Date" : "Mon, 22 Mar 2021 11:37:48 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/4fb6fb92-7fa1-4b4f-85ea-f33ca2511c1d/analyzeResults/de422f79-20be-4b2f-b38d-619be087f9f9",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/94973e6b-8883-4595-82db-15bfb4faf5a6/analyzeResults/0512c295-7a2c-4a01-ad64-c0323a12341a",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "72400744-5c0b-448b-9538-b38fd31aac6d"
+      "x-ms-client-request-id" : "0f5fa823-f347-424c-92b9-c61c42da3a62"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "53",
+      "x-envoy-upstream-service-time" : "22",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "ad2bc328-c610-4752-8c7c-b16593c131c8",
+      "apim-request-id" : "db9c2b8b-0c72-445c-a274-ca092f208b7a",
       "retry-after" : "0",
       "Content-Length" : "9268",
       "StatusCode" : "200",
-      "Body" : "{\"status\": \"succeeded\", \"createdDateTime\": \"2021-03-16T17:14:12Z\", \"lastUpdatedDateTime\": \"2021-03-16T17:14:24Z\", \"analyzeResult\": {\"version\": \"2.1.0\", \"readResults\": [{\"page\": 1, \"angle\": 0, \"width\": 1700, \"height\": 2200, \"unit\": \"pixel\", \"lines\": [], \"selectionMarks\": null}], \"pageResults\": [{\"page\": 1, \"keyValuePairs\": [{\"key\": {\"text\": \"Company Phone:\", \"boundingBox\": [163, 352, 361, 352, 361, 378, 163, 378], \"elements\": null}, \"value\": {\"text\": \"555-348-6512\", \"boundingBox\": [365, 351, 525, 351, 525, 378, 365, 378], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Website:\", \"boundingBox\": [167, 394, 268, 394, 268, 417, 167, 417], \"elements\": null}, \"value\": {\"text\": \"www.herolimited.com\", \"boundingBox\": [273, 393, 524, 393, 524, 418, 273, 418], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Email:\", \"boundingBox\": [165, 435, 237, 435, 237, 460, 165, 460], \"elements\": null}, \"value\": {\"text\": \"accounts@herolimited.com\", \"boundingBox\": [164, 481, 471, 481, 471, 503, 164, 503], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Dated As:\", \"boundingBox\": [1025, 421, 1158, 421, 1158, 448, 1025, 448], \"elements\": null}, \"value\": {\"text\": \"12/20/2020\", \"boundingBox\": [1163, 420, 1310, 420, 1310, 448, 1163, 448], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Purchase Order #:\", \"boundingBox\": [1023, 461, 1273, 461, 1273, 488, 1023, 488], \"elements\": null}, \"value\": {\"text\": \"948284\", \"boundingBox\": [1278, 461, 1371, 461, 1371, 489, 1278, 489], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Vendor Name:\", \"boundingBox\": [160, 611, 344, 611, 344, 637, 160, 637], \"elements\": null}, \"value\": {\"text\": \"Hillary Swank\", \"boundingBox\": [349, 609, 520, 609, 520, 639, 349, 639], \"elements\": null}, \"confidence\": 0.7}, {\"key\": {\"text\": \"Company Name:\", \"boundingBox\": [160, 648, 371, 648, 371, 677, 160, 677], \"elements\": null}, \"value\": {\"text\": \"Higgly Wiggly Books\", \"boundingBox\": [376, 646, 629, 646, 629, 679, 376, 679], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Address:\", \"boundingBox\": [161, 685, 268, 685, 268, 711, 161, 711], \"elements\": null}, \"value\": {\"text\": \"938 NE Burner Road Boulder City, CO 92848\", \"boundingBox\": [274, 685, 561, 685, 561, 751, 274, 751], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Phone:\", \"boundingBox\": [613, 722, 704, 722, 704, 749, 613, 749], \"elements\": null}, \"value\": {\"text\": \"938-294-2949\", \"boundingBox\": [709, 722, 882, 722, 882, 749, 709, 749], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Name:\", \"boundingBox\": [166, 853, 248, 853, 248, 879, 166, 879], \"elements\": null}, \"value\": {\"text\": \"Bernie Sanders\", \"boundingBox\": [253, 852, 445, 852, 445, 880, 253, 880], \"elements\": null}, \"confidence\": 0.53}, {\"key\": {\"text\": \"Company Name:\", \"boundingBox\": [164, 890, 373, 890, 373, 919, 164, 919], \"elements\": null}, \"value\": {\"text\": \"Jupiter Book Supply\", \"boundingBox\": [379, 889, 629, 889, 629, 919, 379, 919], \"elements\": null}, \"confidence\": 0.53}, {\"key\": {\"text\": \"Address:\", \"boundingBox\": [166, 926, 275, 926, 275, 953, 166, 953], \"elements\": null}, \"value\": {\"text\": \"383 N Kinnick Road Seattle, WA 38383\", \"boundingBox\": [280, 926, 516, 926, 516, 991, 280, 991], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Phone:\", \"boundingBox\": [760, 964, 849, 964, 849, 990, 760, 990], \"elements\": null}, \"value\": {\"text\": \"932-299-0292\", \"boundingBox\": [854, 964, 1028, 964, 1028, 990, 854, 990], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"SUBTOTAL\", \"boundingBox\": [1148, 1575, 1294, 1575, 1294, 1600, 1148, 1600], \"elements\": null}, \"value\": {\"text\": \"$140.00\", \"boundingBox\": [1426, 1571, 1526, 1571, 1526, 1599, 1426, 1599], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"TAX\", \"boundingBox\": [1237, 1618, 1290, 1618, 1290, 1643, 1237, 1643], \"elements\": null}, \"value\": {\"text\": \"$4.00\", \"boundingBox\": [1458, 1615, 1529, 1615, 1529, 1643, 1458, 1643], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"TOTAL\", \"boundingBox\": [1204, 1674, 1293, 1674, 1293, 1699, 1204, 1699], \"elements\": null}, \"value\": {\"text\": \"$144.00\", \"boundingBox\": [1427, 1671, 1526, 1671, 1526, 1698, 1427, 1698], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Additional Notes:\", \"boundingBox\": [173, 1796, 479, 1796, 479, 1831, 173, 1831], \"elements\": null}, \"value\": {\"text\": \"Do not Jostle Box. Unpack carefully. Enjoy. Jupiter Book Supply will refund you 50% per book if returned within 60 days of reading and offer you 25% off you next total purchase.\", \"boundingBox\": [169, 1880, 1509, 1880, 1509, 1992, 169, 1992], \"elements\": null}, \"confidence\": 0.53}], \"tables\": [{\"rows\": 5, \"columns\": 4, \"boundingBox\": [170, 1047, 1527, 1047, 1527, 1252, 170, 1252], \"cells\": [{\"text\": \"Details\", \"rowIndex\": 0, \"columnIndex\": 0, \"boundingBox\": [447, 1048, 557, 1048, 557, 1078, 447, 1078], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Quantity\", \"rowIndex\": 0, \"columnIndex\": 1, \"boundingBox\": [886, 1048, 1033, 1048, 1033, 1084, 886, 1084], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Unit Price\", \"rowIndex\": 0, \"columnIndex\": 2, \"boundingBox\": [1111, 1047, 1266, 1047, 1266, 1078, 1111, 1078], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Total\", \"rowIndex\": 0, \"columnIndex\": 3, \"boundingBox\": [1382, 1047, 1467, 1047, 1467, 1076, 1382, 1076], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Bindings\", \"rowIndex\": 1, \"columnIndex\": 0, \"boundingBox\": [172, 1094, 280, 1094, 280, 1122, 172, 1122], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"20\", \"rowIndex\": 1, \"columnIndex\": 1, \"boundingBox\": [860, 1094, 888, 1094, 888, 1119, 860, 1119], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"1.00\", \"rowIndex\": 1, \"columnIndex\": 2, \"boundingBox\": [1240, 1095, 1291, 1095, 1291, 1118, 1240, 1118], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"20.00\", \"rowIndex\": 1, \"columnIndex\": 3, \"boundingBox\": [1459, 1096, 1527, 1096, 1527, 1119, 1459, 1119], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"Covers Small\", \"rowIndex\": 2, \"columnIndex\": 0, \"boundingBox\": [170, 1136, 333, 1136, 333, 1161, 170, 1161], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"20\", \"rowIndex\": 2, \"columnIndex\": 1, \"boundingBox\": [860, 1135, 888, 1135, 888, 1160, 860, 1160], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"1.00\", \"rowIndex\": 2, \"columnIndex\": 2, \"boundingBox\": [1240, 1135, 1291, 1135, 1291, 1160, 1240, 1160], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"20.00\", \"rowIndex\": 2, \"columnIndex\": 3, \"boundingBox\": [1459, 1135, 1527, 1135, 1527, 1160, 1459, 1160], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"Feather Bookmark\", \"rowIndex\": 3, \"columnIndex\": 0, \"boundingBox\": [173, 1179, 399, 1179, 399, 1206, 173, 1206], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"20\", \"rowIndex\": 3, \"columnIndex\": 1, \"boundingBox\": [861, 1179, 889, 1179, 889, 1203, 861, 1203], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"5.00\", \"rowIndex\": 3, \"columnIndex\": 2, \"boundingBox\": [1240, 1179, 1291, 1179, 1291, 1204, 1240, 1204], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"100.00\", \"rowIndex\": 3, \"columnIndex\": 3, \"boundingBox\": [1443, 1181, 1525, 1181, 1525, 1205, 1443, 1205], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"Copper Swirl Marker\", \"rowIndex\": 4, \"columnIndex\": 0, \"boundingBox\": [170, 1222, 429, 1222, 429, 1252, 170, 1252], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"20\", \"rowIndex\": 4, \"columnIndex\": 1, \"boundingBox\": [861, 1223, 888, 1223, 888, 1247, 861, 1247], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"5.00\", \"rowIndex\": 4, \"columnIndex\": 2, \"boundingBox\": [1240, 1221, 1292, 1221, 1292, 1247, 1240, 1247], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"100.00\", \"rowIndex\": 4, \"columnIndex\": 3, \"boundingBox\": [1444, 1224, 1526, 1224, 1526, 1248, 1444, 1248], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}]}], \"clusterId\": 0}], \"documentResults\": [], \"errors\": []}}",
-      "Date" : "Tue, 16 Mar 2021 17:14:29 GMT",
+      "Body" : "{\"status\": \"succeeded\", \"createdDateTime\": \"2021-03-22T11:37:37Z\", \"lastUpdatedDateTime\": \"2021-03-22T11:37:48Z\", \"analyzeResult\": {\"version\": \"2.1.0\", \"readResults\": [{\"page\": 1, \"angle\": 0, \"width\": 1700, \"height\": 2200, \"unit\": \"pixel\", \"lines\": [], \"selectionMarks\": null}], \"pageResults\": [{\"page\": 1, \"keyValuePairs\": [{\"key\": {\"text\": \"Company Phone:\", \"boundingBox\": [163, 352, 361, 352, 361, 378, 163, 378], \"elements\": null}, \"value\": {\"text\": \"555-348-6512\", \"boundingBox\": [365, 351, 525, 351, 525, 378, 365, 378], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Website:\", \"boundingBox\": [167, 394, 268, 394, 268, 417, 167, 417], \"elements\": null}, \"value\": {\"text\": \"www.herolimited.com\", \"boundingBox\": [273, 393, 524, 393, 524, 418, 273, 418], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Email:\", \"boundingBox\": [165, 435, 237, 435, 237, 460, 165, 460], \"elements\": null}, \"value\": {\"text\": \"accounts@herolimited.com\", \"boundingBox\": [164, 481, 471, 481, 471, 503, 164, 503], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Dated As:\", \"boundingBox\": [1025, 421, 1158, 421, 1158, 448, 1025, 448], \"elements\": null}, \"value\": {\"text\": \"12/20/2020\", \"boundingBox\": [1163, 420, 1310, 420, 1310, 448, 1163, 448], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Purchase Order #:\", \"boundingBox\": [1023, 461, 1273, 461, 1273, 488, 1023, 488], \"elements\": null}, \"value\": {\"text\": \"948284\", \"boundingBox\": [1278, 461, 1371, 461, 1371, 489, 1278, 489], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Vendor Name:\", \"boundingBox\": [160, 611, 344, 611, 344, 637, 160, 637], \"elements\": null}, \"value\": {\"text\": \"Hillary Swank\", \"boundingBox\": [349, 609, 520, 609, 520, 639, 349, 639], \"elements\": null}, \"confidence\": 0.7}, {\"key\": {\"text\": \"Company Name:\", \"boundingBox\": [160, 648, 371, 648, 371, 677, 160, 677], \"elements\": null}, \"value\": {\"text\": \"Higgly Wiggly Books\", \"boundingBox\": [376, 646, 629, 646, 629, 679, 376, 679], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Address:\", \"boundingBox\": [161, 685, 268, 685, 268, 711, 161, 711], \"elements\": null}, \"value\": {\"text\": \"938 NE Burner Road Boulder City, CO 92848\", \"boundingBox\": [274, 685, 561, 685, 561, 751, 274, 751], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Phone:\", \"boundingBox\": [613, 722, 704, 722, 704, 749, 613, 749], \"elements\": null}, \"value\": {\"text\": \"938-294-2949\", \"boundingBox\": [709, 722, 882, 722, 882, 749, 709, 749], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Name:\", \"boundingBox\": [166, 853, 248, 853, 248, 879, 166, 879], \"elements\": null}, \"value\": {\"text\": \"Bernie Sanders\", \"boundingBox\": [253, 852, 445, 852, 445, 880, 253, 880], \"elements\": null}, \"confidence\": 0.53}, {\"key\": {\"text\": \"Company Name:\", \"boundingBox\": [164, 890, 373, 890, 373, 919, 164, 919], \"elements\": null}, \"value\": {\"text\": \"Jupiter Book Supply\", \"boundingBox\": [379, 889, 629, 889, 629, 919, 379, 919], \"elements\": null}, \"confidence\": 0.53}, {\"key\": {\"text\": \"Address:\", \"boundingBox\": [166, 926, 275, 926, 275, 953, 166, 953], \"elements\": null}, \"value\": {\"text\": \"383 N Kinnick Road Seattle, WA 38383\", \"boundingBox\": [280, 926, 516, 926, 516, 991, 280, 991], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Phone:\", \"boundingBox\": [760, 964, 849, 964, 849, 990, 760, 990], \"elements\": null}, \"value\": {\"text\": \"932-299-0292\", \"boundingBox\": [854, 964, 1028, 964, 1028, 990, 854, 990], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"SUBTOTAL\", \"boundingBox\": [1148, 1575, 1294, 1575, 1294, 1600, 1148, 1600], \"elements\": null}, \"value\": {\"text\": \"$140.00\", \"boundingBox\": [1426, 1571, 1526, 1571, 1526, 1599, 1426, 1599], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"TAX\", \"boundingBox\": [1237, 1618, 1290, 1618, 1290, 1643, 1237, 1643], \"elements\": null}, \"value\": {\"text\": \"$4.00\", \"boundingBox\": [1458, 1615, 1529, 1615, 1529, 1643, 1458, 1643], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"TOTAL\", \"boundingBox\": [1204, 1674, 1293, 1674, 1293, 1699, 1204, 1699], \"elements\": null}, \"value\": {\"text\": \"$144.00\", \"boundingBox\": [1427, 1671, 1526, 1671, 1526, 1698, 1427, 1698], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Additional Notes:\", \"boundingBox\": [173, 1796, 479, 1796, 479, 1831, 173, 1831], \"elements\": null}, \"value\": {\"text\": \"Do not Jostle Box. Unpack carefully. Enjoy. Jupiter Book Supply will refund you 50% per book if returned within 60 days of reading and offer you 25% off you next total purchase.\", \"boundingBox\": [169, 1880, 1509, 1880, 1509, 1992, 169, 1992], \"elements\": null}, \"confidence\": 0.53}], \"tables\": [{\"rows\": 5, \"columns\": 4, \"boundingBox\": [170, 1047, 1527, 1047, 1527, 1252, 170, 1252], \"cells\": [{\"text\": \"Details\", \"rowIndex\": 0, \"columnIndex\": 0, \"boundingBox\": [447, 1048, 557, 1048, 557, 1078, 447, 1078], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Quantity\", \"rowIndex\": 0, \"columnIndex\": 1, \"boundingBox\": [886, 1048, 1033, 1048, 1033, 1084, 886, 1084], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Unit Price\", \"rowIndex\": 0, \"columnIndex\": 2, \"boundingBox\": [1111, 1047, 1266, 1047, 1266, 1078, 1111, 1078], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Total\", \"rowIndex\": 0, \"columnIndex\": 3, \"boundingBox\": [1382, 1047, 1467, 1047, 1467, 1076, 1382, 1076], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Bindings\", \"rowIndex\": 1, \"columnIndex\": 0, \"boundingBox\": [172, 1094, 280, 1094, 280, 1122, 172, 1122], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"20\", \"rowIndex\": 1, \"columnIndex\": 1, \"boundingBox\": [860, 1094, 888, 1094, 888, 1119, 860, 1119], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"1.00\", \"rowIndex\": 1, \"columnIndex\": 2, \"boundingBox\": [1240, 1095, 1291, 1095, 1291, 1118, 1240, 1118], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"20.00\", \"rowIndex\": 1, \"columnIndex\": 3, \"boundingBox\": [1459, 1096, 1527, 1096, 1527, 1119, 1459, 1119], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"Covers Small\", \"rowIndex\": 2, \"columnIndex\": 0, \"boundingBox\": [170, 1136, 333, 1136, 333, 1161, 170, 1161], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"20\", \"rowIndex\": 2, \"columnIndex\": 1, \"boundingBox\": [860, 1135, 888, 1135, 888, 1160, 860, 1160], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"1.00\", \"rowIndex\": 2, \"columnIndex\": 2, \"boundingBox\": [1240, 1135, 1291, 1135, 1291, 1160, 1240, 1160], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"20.00\", \"rowIndex\": 2, \"columnIndex\": 3, \"boundingBox\": [1459, 1135, 1527, 1135, 1527, 1160, 1459, 1160], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"Feather Bookmark\", \"rowIndex\": 3, \"columnIndex\": 0, \"boundingBox\": [173, 1179, 399, 1179, 399, 1206, 173, 1206], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"20\", \"rowIndex\": 3, \"columnIndex\": 1, \"boundingBox\": [861, 1179, 889, 1179, 889, 1203, 861, 1203], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"5.00\", \"rowIndex\": 3, \"columnIndex\": 2, \"boundingBox\": [1240, 1179, 1291, 1179, 1291, 1204, 1240, 1204], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"100.00\", \"rowIndex\": 3, \"columnIndex\": 3, \"boundingBox\": [1443, 1181, 1525, 1181, 1525, 1205, 1443, 1205], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"Copper Swirl Marker\", \"rowIndex\": 4, \"columnIndex\": 0, \"boundingBox\": [170, 1222, 429, 1222, 429, 1252, 170, 1252], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"20\", \"rowIndex\": 4, \"columnIndex\": 1, \"boundingBox\": [861, 1223, 888, 1223, 888, 1247, 861, 1247], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"5.00\", \"rowIndex\": 4, \"columnIndex\": 2, \"boundingBox\": [1240, 1221, 1292, 1221, 1292, 1247, 1240, 1247], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"100.00\", \"rowIndex\": 4, \"columnIndex\": 3, \"boundingBox\": [1444, 1224, 1526, 1224, 1526, 1248, 1444, 1248], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}]}], \"clusterId\": 0}], \"documentResults\": [], \"errors\": []}}",
+      "Date" : "Mon, 22 Mar 2021 11:37:52 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/4fb6fb92-7fa1-4b4f-85ea-f33ca2511c1d/analyzeResults/de422f79-20be-4b2f-b38d-619be087f9f9",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/94973e6b-8883-4595-82db-15bfb4faf5a6/analyzeResults/0512c295-7a2c-4a01-ad64-c0323a12341a",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "999bed99-ee22-439c-90e0-2663bc5c0892"
+      "x-ms-client-request-id" : "bce9d07d-a1c4-4e20-bd1a-989a5628c283"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "39",
+      "x-envoy-upstream-service-time" : "30",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "2620ffeb-0927-4425-a8bc-5e3de49d79b4",
+      "apim-request-id" : "52cc190d-7161-44c5-887f-587911f4b564",
       "retry-after" : "0",
       "Content-Length" : "9268",
       "StatusCode" : "200",
-      "Body" : "{\"status\": \"succeeded\", \"createdDateTime\": \"2021-03-16T17:14:12Z\", \"lastUpdatedDateTime\": \"2021-03-16T17:14:24Z\", \"analyzeResult\": {\"version\": \"2.1.0\", \"readResults\": [{\"page\": 1, \"angle\": 0, \"width\": 1700, \"height\": 2200, \"unit\": \"pixel\", \"lines\": [], \"selectionMarks\": null}], \"pageResults\": [{\"page\": 1, \"keyValuePairs\": [{\"key\": {\"text\": \"Company Phone:\", \"boundingBox\": [163, 352, 361, 352, 361, 378, 163, 378], \"elements\": null}, \"value\": {\"text\": \"555-348-6512\", \"boundingBox\": [365, 351, 525, 351, 525, 378, 365, 378], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Website:\", \"boundingBox\": [167, 394, 268, 394, 268, 417, 167, 417], \"elements\": null}, \"value\": {\"text\": \"www.herolimited.com\", \"boundingBox\": [273, 393, 524, 393, 524, 418, 273, 418], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Email:\", \"boundingBox\": [165, 435, 237, 435, 237, 460, 165, 460], \"elements\": null}, \"value\": {\"text\": \"accounts@herolimited.com\", \"boundingBox\": [164, 481, 471, 481, 471, 503, 164, 503], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Dated As:\", \"boundingBox\": [1025, 421, 1158, 421, 1158, 448, 1025, 448], \"elements\": null}, \"value\": {\"text\": \"12/20/2020\", \"boundingBox\": [1163, 420, 1310, 420, 1310, 448, 1163, 448], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Purchase Order #:\", \"boundingBox\": [1023, 461, 1273, 461, 1273, 488, 1023, 488], \"elements\": null}, \"value\": {\"text\": \"948284\", \"boundingBox\": [1278, 461, 1371, 461, 1371, 489, 1278, 489], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Vendor Name:\", \"boundingBox\": [160, 611, 344, 611, 344, 637, 160, 637], \"elements\": null}, \"value\": {\"text\": \"Hillary Swank\", \"boundingBox\": [349, 609, 520, 609, 520, 639, 349, 639], \"elements\": null}, \"confidence\": 0.7}, {\"key\": {\"text\": \"Company Name:\", \"boundingBox\": [160, 648, 371, 648, 371, 677, 160, 677], \"elements\": null}, \"value\": {\"text\": \"Higgly Wiggly Books\", \"boundingBox\": [376, 646, 629, 646, 629, 679, 376, 679], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Address:\", \"boundingBox\": [161, 685, 268, 685, 268, 711, 161, 711], \"elements\": null}, \"value\": {\"text\": \"938 NE Burner Road Boulder City, CO 92848\", \"boundingBox\": [274, 685, 561, 685, 561, 751, 274, 751], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Phone:\", \"boundingBox\": [613, 722, 704, 722, 704, 749, 613, 749], \"elements\": null}, \"value\": {\"text\": \"938-294-2949\", \"boundingBox\": [709, 722, 882, 722, 882, 749, 709, 749], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Name:\", \"boundingBox\": [166, 853, 248, 853, 248, 879, 166, 879], \"elements\": null}, \"value\": {\"text\": \"Bernie Sanders\", \"boundingBox\": [253, 852, 445, 852, 445, 880, 253, 880], \"elements\": null}, \"confidence\": 0.53}, {\"key\": {\"text\": \"Company Name:\", \"boundingBox\": [164, 890, 373, 890, 373, 919, 164, 919], \"elements\": null}, \"value\": {\"text\": \"Jupiter Book Supply\", \"boundingBox\": [379, 889, 629, 889, 629, 919, 379, 919], \"elements\": null}, \"confidence\": 0.53}, {\"key\": {\"text\": \"Address:\", \"boundingBox\": [166, 926, 275, 926, 275, 953, 166, 953], \"elements\": null}, \"value\": {\"text\": \"383 N Kinnick Road Seattle, WA 38383\", \"boundingBox\": [280, 926, 516, 926, 516, 991, 280, 991], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Phone:\", \"boundingBox\": [760, 964, 849, 964, 849, 990, 760, 990], \"elements\": null}, \"value\": {\"text\": \"932-299-0292\", \"boundingBox\": [854, 964, 1028, 964, 1028, 990, 854, 990], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"SUBTOTAL\", \"boundingBox\": [1148, 1575, 1294, 1575, 1294, 1600, 1148, 1600], \"elements\": null}, \"value\": {\"text\": \"$140.00\", \"boundingBox\": [1426, 1571, 1526, 1571, 1526, 1599, 1426, 1599], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"TAX\", \"boundingBox\": [1237, 1618, 1290, 1618, 1290, 1643, 1237, 1643], \"elements\": null}, \"value\": {\"text\": \"$4.00\", \"boundingBox\": [1458, 1615, 1529, 1615, 1529, 1643, 1458, 1643], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"TOTAL\", \"boundingBox\": [1204, 1674, 1293, 1674, 1293, 1699, 1204, 1699], \"elements\": null}, \"value\": {\"text\": \"$144.00\", \"boundingBox\": [1427, 1671, 1526, 1671, 1526, 1698, 1427, 1698], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Additional Notes:\", \"boundingBox\": [173, 1796, 479, 1796, 479, 1831, 173, 1831], \"elements\": null}, \"value\": {\"text\": \"Do not Jostle Box. Unpack carefully. Enjoy. Jupiter Book Supply will refund you 50% per book if returned within 60 days of reading and offer you 25% off you next total purchase.\", \"boundingBox\": [169, 1880, 1509, 1880, 1509, 1992, 169, 1992], \"elements\": null}, \"confidence\": 0.53}], \"tables\": [{\"rows\": 5, \"columns\": 4, \"boundingBox\": [170, 1047, 1527, 1047, 1527, 1252, 170, 1252], \"cells\": [{\"text\": \"Details\", \"rowIndex\": 0, \"columnIndex\": 0, \"boundingBox\": [447, 1048, 557, 1048, 557, 1078, 447, 1078], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Quantity\", \"rowIndex\": 0, \"columnIndex\": 1, \"boundingBox\": [886, 1048, 1033, 1048, 1033, 1084, 886, 1084], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Unit Price\", \"rowIndex\": 0, \"columnIndex\": 2, \"boundingBox\": [1111, 1047, 1266, 1047, 1266, 1078, 1111, 1078], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Total\", \"rowIndex\": 0, \"columnIndex\": 3, \"boundingBox\": [1382, 1047, 1467, 1047, 1467, 1076, 1382, 1076], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Bindings\", \"rowIndex\": 1, \"columnIndex\": 0, \"boundingBox\": [172, 1094, 280, 1094, 280, 1122, 172, 1122], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"20\", \"rowIndex\": 1, \"columnIndex\": 1, \"boundingBox\": [860, 1094, 888, 1094, 888, 1119, 860, 1119], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"1.00\", \"rowIndex\": 1, \"columnIndex\": 2, \"boundingBox\": [1240, 1095, 1291, 1095, 1291, 1118, 1240, 1118], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"20.00\", \"rowIndex\": 1, \"columnIndex\": 3, \"boundingBox\": [1459, 1096, 1527, 1096, 1527, 1119, 1459, 1119], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"Covers Small\", \"rowIndex\": 2, \"columnIndex\": 0, \"boundingBox\": [170, 1136, 333, 1136, 333, 1161, 170, 1161], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"20\", \"rowIndex\": 2, \"columnIndex\": 1, \"boundingBox\": [860, 1135, 888, 1135, 888, 1160, 860, 1160], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"1.00\", \"rowIndex\": 2, \"columnIndex\": 2, \"boundingBox\": [1240, 1135, 1291, 1135, 1291, 1160, 1240, 1160], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"20.00\", \"rowIndex\": 2, \"columnIndex\": 3, \"boundingBox\": [1459, 1135, 1527, 1135, 1527, 1160, 1459, 1160], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"Feather Bookmark\", \"rowIndex\": 3, \"columnIndex\": 0, \"boundingBox\": [173, 1179, 399, 1179, 399, 1206, 173, 1206], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"20\", \"rowIndex\": 3, \"columnIndex\": 1, \"boundingBox\": [861, 1179, 889, 1179, 889, 1203, 861, 1203], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"5.00\", \"rowIndex\": 3, \"columnIndex\": 2, \"boundingBox\": [1240, 1179, 1291, 1179, 1291, 1204, 1240, 1204], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"100.00\", \"rowIndex\": 3, \"columnIndex\": 3, \"boundingBox\": [1443, 1181, 1525, 1181, 1525, 1205, 1443, 1205], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"Copper Swirl Marker\", \"rowIndex\": 4, \"columnIndex\": 0, \"boundingBox\": [170, 1222, 429, 1222, 429, 1252, 170, 1252], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"20\", \"rowIndex\": 4, \"columnIndex\": 1, \"boundingBox\": [861, 1223, 888, 1223, 888, 1247, 861, 1247], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"5.00\", \"rowIndex\": 4, \"columnIndex\": 2, \"boundingBox\": [1240, 1221, 1292, 1221, 1292, 1247, 1240, 1247], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"100.00\", \"rowIndex\": 4, \"columnIndex\": 3, \"boundingBox\": [1444, 1224, 1526, 1224, 1526, 1248, 1444, 1248], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}]}], \"clusterId\": 0}], \"documentResults\": [], \"errors\": []}}",
-      "Date" : "Tue, 16 Mar 2021 17:14:29 GMT",
+      "Body" : "{\"status\": \"succeeded\", \"createdDateTime\": \"2021-03-22T11:37:37Z\", \"lastUpdatedDateTime\": \"2021-03-22T11:37:48Z\", \"analyzeResult\": {\"version\": \"2.1.0\", \"readResults\": [{\"page\": 1, \"angle\": 0, \"width\": 1700, \"height\": 2200, \"unit\": \"pixel\", \"lines\": [], \"selectionMarks\": null}], \"pageResults\": [{\"page\": 1, \"keyValuePairs\": [{\"key\": {\"text\": \"Company Phone:\", \"boundingBox\": [163, 352, 361, 352, 361, 378, 163, 378], \"elements\": null}, \"value\": {\"text\": \"555-348-6512\", \"boundingBox\": [365, 351, 525, 351, 525, 378, 365, 378], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Website:\", \"boundingBox\": [167, 394, 268, 394, 268, 417, 167, 417], \"elements\": null}, \"value\": {\"text\": \"www.herolimited.com\", \"boundingBox\": [273, 393, 524, 393, 524, 418, 273, 418], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Email:\", \"boundingBox\": [165, 435, 237, 435, 237, 460, 165, 460], \"elements\": null}, \"value\": {\"text\": \"accounts@herolimited.com\", \"boundingBox\": [164, 481, 471, 481, 471, 503, 164, 503], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Dated As:\", \"boundingBox\": [1025, 421, 1158, 421, 1158, 448, 1025, 448], \"elements\": null}, \"value\": {\"text\": \"12/20/2020\", \"boundingBox\": [1163, 420, 1310, 420, 1310, 448, 1163, 448], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Purchase Order #:\", \"boundingBox\": [1023, 461, 1273, 461, 1273, 488, 1023, 488], \"elements\": null}, \"value\": {\"text\": \"948284\", \"boundingBox\": [1278, 461, 1371, 461, 1371, 489, 1278, 489], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Vendor Name:\", \"boundingBox\": [160, 611, 344, 611, 344, 637, 160, 637], \"elements\": null}, \"value\": {\"text\": \"Hillary Swank\", \"boundingBox\": [349, 609, 520, 609, 520, 639, 349, 639], \"elements\": null}, \"confidence\": 0.7}, {\"key\": {\"text\": \"Company Name:\", \"boundingBox\": [160, 648, 371, 648, 371, 677, 160, 677], \"elements\": null}, \"value\": {\"text\": \"Higgly Wiggly Books\", \"boundingBox\": [376, 646, 629, 646, 629, 679, 376, 679], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Address:\", \"boundingBox\": [161, 685, 268, 685, 268, 711, 161, 711], \"elements\": null}, \"value\": {\"text\": \"938 NE Burner Road Boulder City, CO 92848\", \"boundingBox\": [274, 685, 561, 685, 561, 751, 274, 751], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Phone:\", \"boundingBox\": [613, 722, 704, 722, 704, 749, 613, 749], \"elements\": null}, \"value\": {\"text\": \"938-294-2949\", \"boundingBox\": [709, 722, 882, 722, 882, 749, 709, 749], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Name:\", \"boundingBox\": [166, 853, 248, 853, 248, 879, 166, 879], \"elements\": null}, \"value\": {\"text\": \"Bernie Sanders\", \"boundingBox\": [253, 852, 445, 852, 445, 880, 253, 880], \"elements\": null}, \"confidence\": 0.53}, {\"key\": {\"text\": \"Company Name:\", \"boundingBox\": [164, 890, 373, 890, 373, 919, 164, 919], \"elements\": null}, \"value\": {\"text\": \"Jupiter Book Supply\", \"boundingBox\": [379, 889, 629, 889, 629, 919, 379, 919], \"elements\": null}, \"confidence\": 0.53}, {\"key\": {\"text\": \"Address:\", \"boundingBox\": [166, 926, 275, 926, 275, 953, 166, 953], \"elements\": null}, \"value\": {\"text\": \"383 N Kinnick Road Seattle, WA 38383\", \"boundingBox\": [280, 926, 516, 926, 516, 991, 280, 991], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Phone:\", \"boundingBox\": [760, 964, 849, 964, 849, 990, 760, 990], \"elements\": null}, \"value\": {\"text\": \"932-299-0292\", \"boundingBox\": [854, 964, 1028, 964, 1028, 990, 854, 990], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"SUBTOTAL\", \"boundingBox\": [1148, 1575, 1294, 1575, 1294, 1600, 1148, 1600], \"elements\": null}, \"value\": {\"text\": \"$140.00\", \"boundingBox\": [1426, 1571, 1526, 1571, 1526, 1599, 1426, 1599], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"TAX\", \"boundingBox\": [1237, 1618, 1290, 1618, 1290, 1643, 1237, 1643], \"elements\": null}, \"value\": {\"text\": \"$4.00\", \"boundingBox\": [1458, 1615, 1529, 1615, 1529, 1643, 1458, 1643], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"TOTAL\", \"boundingBox\": [1204, 1674, 1293, 1674, 1293, 1699, 1204, 1699], \"elements\": null}, \"value\": {\"text\": \"$144.00\", \"boundingBox\": [1427, 1671, 1526, 1671, 1526, 1698, 1427, 1698], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Additional Notes:\", \"boundingBox\": [173, 1796, 479, 1796, 479, 1831, 173, 1831], \"elements\": null}, \"value\": {\"text\": \"Do not Jostle Box. Unpack carefully. Enjoy. Jupiter Book Supply will refund you 50% per book if returned within 60 days of reading and offer you 25% off you next total purchase.\", \"boundingBox\": [169, 1880, 1509, 1880, 1509, 1992, 169, 1992], \"elements\": null}, \"confidence\": 0.53}], \"tables\": [{\"rows\": 5, \"columns\": 4, \"boundingBox\": [170, 1047, 1527, 1047, 1527, 1252, 170, 1252], \"cells\": [{\"text\": \"Details\", \"rowIndex\": 0, \"columnIndex\": 0, \"boundingBox\": [447, 1048, 557, 1048, 557, 1078, 447, 1078], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Quantity\", \"rowIndex\": 0, \"columnIndex\": 1, \"boundingBox\": [886, 1048, 1033, 1048, 1033, 1084, 886, 1084], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Unit Price\", \"rowIndex\": 0, \"columnIndex\": 2, \"boundingBox\": [1111, 1047, 1266, 1047, 1266, 1078, 1111, 1078], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Total\", \"rowIndex\": 0, \"columnIndex\": 3, \"boundingBox\": [1382, 1047, 1467, 1047, 1467, 1076, 1382, 1076], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Bindings\", \"rowIndex\": 1, \"columnIndex\": 0, \"boundingBox\": [172, 1094, 280, 1094, 280, 1122, 172, 1122], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"20\", \"rowIndex\": 1, \"columnIndex\": 1, \"boundingBox\": [860, 1094, 888, 1094, 888, 1119, 860, 1119], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"1.00\", \"rowIndex\": 1, \"columnIndex\": 2, \"boundingBox\": [1240, 1095, 1291, 1095, 1291, 1118, 1240, 1118], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"20.00\", \"rowIndex\": 1, \"columnIndex\": 3, \"boundingBox\": [1459, 1096, 1527, 1096, 1527, 1119, 1459, 1119], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"Covers Small\", \"rowIndex\": 2, \"columnIndex\": 0, \"boundingBox\": [170, 1136, 333, 1136, 333, 1161, 170, 1161], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"20\", \"rowIndex\": 2, \"columnIndex\": 1, \"boundingBox\": [860, 1135, 888, 1135, 888, 1160, 860, 1160], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"1.00\", \"rowIndex\": 2, \"columnIndex\": 2, \"boundingBox\": [1240, 1135, 1291, 1135, 1291, 1160, 1240, 1160], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"20.00\", \"rowIndex\": 2, \"columnIndex\": 3, \"boundingBox\": [1459, 1135, 1527, 1135, 1527, 1160, 1459, 1160], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"Feather Bookmark\", \"rowIndex\": 3, \"columnIndex\": 0, \"boundingBox\": [173, 1179, 399, 1179, 399, 1206, 173, 1206], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"20\", \"rowIndex\": 3, \"columnIndex\": 1, \"boundingBox\": [861, 1179, 889, 1179, 889, 1203, 861, 1203], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"5.00\", \"rowIndex\": 3, \"columnIndex\": 2, \"boundingBox\": [1240, 1179, 1291, 1179, 1291, 1204, 1240, 1204], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"100.00\", \"rowIndex\": 3, \"columnIndex\": 3, \"boundingBox\": [1443, 1181, 1525, 1181, 1525, 1205, 1443, 1205], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"Copper Swirl Marker\", \"rowIndex\": 4, \"columnIndex\": 0, \"boundingBox\": [170, 1222, 429, 1222, 429, 1252, 170, 1252], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"20\", \"rowIndex\": 4, \"columnIndex\": 1, \"boundingBox\": [861, 1223, 888, 1223, 888, 1247, 861, 1247], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"5.00\", \"rowIndex\": 4, \"columnIndex\": 2, \"boundingBox\": [1240, 1221, 1292, 1221, 1292, 1247, 1240, 1247], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"100.00\", \"rowIndex\": 4, \"columnIndex\": 3, \"boundingBox\": [1444, 1224, 1526, 1224, 1526, 1248, 1444, 1248], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}]}], \"clusterId\": 0}], \"documentResults\": [], \"errors\": []}}",
+      "Date" : "Mon, 22 Mar 2021 11:37:53 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/4fb6fb92-7fa1-4b4f-85ea-f33ca2511c1d",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/94973e6b-8883-4595-82db-15bfb4faf5a6",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "22f3fe94-b234-4c3f-afd8-b475f73de37b"
+      "x-ms-client-request-id" : "5b2318c7-9e66-4212-8420-f0813b83a669"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "38",
+      "x-envoy-upstream-service-time" : "32",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "beb1afe0-b003-4cc8-8052-a0345f4f3d99",
+      "apim-request-id" : "8320583c-74a7-4f94-b8ba-f8691706fd7e",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "Date" : "Tue, 16 Mar 2021 17:14:29 GMT"
+      "Date" : "Mon, 22 Mar 2021 11:37:53 GMT"
     },
     "Exception" : null
   } ],

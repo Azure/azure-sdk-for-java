@@ -4,138 +4,118 @@
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e6184c78-8c48-41d8-808e-1bed15ddef65",
+      "x-ms-client-request-id" : "0725c2d0-baa9-40e1-8f5d-3eeded6d79f1",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "431",
+      "x-envoy-upstream-service-time" : "289",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "85a51e81-d5c3-4f44-bedc-179436d4425e",
+      "apim-request-id" : "5687d6cc-9afa-4306-8700-180b29528da9",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "Date" : "Tue, 16 Mar 2021 17:08:48 GMT",
-      "Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3/custom/models/6179c02c-781a-497c-b2b2-3cde2279c21e"
+      "Date" : "Mon, 22 Mar 2021 11:35:03 GMT",
+      "Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3/custom/models/8cc5dee7-e080-41e0-b41c-4b9b8201ea4d"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/6179c02c-781a-497c-b2b2-3cde2279c21e?includeKeys=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/8cc5dee7-e080-41e0-b41c-4b9b8201ea4d?includeKeys=true",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f66f5f6b-4b8d-4401-8a98-57dbebb886f1"
+      "x-ms-client-request-id" : "ef500162-2dfb-4582-9450-23d9976c3ad4"
+    },
+    "Response" : {
+      "x-envoy-upstream-service-time" : "26",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "f5a5a526-1e1e-41dd-b951-717ddfb8dc6d",
+      "retry-after" : "0",
+      "Content-Length" : "170",
+      "StatusCode" : "200",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"8cc5dee7-e080-41e0-b41c-4b9b8201ea4d\",\"status\":\"creating\",\"createdDateTime\":\"2021-03-22T11:35:03Z\",\"lastUpdatedDateTime\":\"2021-03-22T11:35:03Z\"}}",
+      "Date" : "Mon, 22 Mar 2021 11:35:08 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/8cc5dee7-e080-41e0-b41c-4b9b8201ea4d?includeKeys=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7d9975f3-e2da-425f-8a06-a630466fba4d"
+    },
+    "Response" : {
+      "x-envoy-upstream-service-time" : "18",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "1ac089c3-d285-4348-8059-4d4eb5182210",
+      "retry-after" : "0",
+      "Content-Length" : "170",
+      "StatusCode" : "200",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"8cc5dee7-e080-41e0-b41c-4b9b8201ea4d\",\"status\":\"creating\",\"createdDateTime\":\"2021-03-22T11:35:03Z\",\"lastUpdatedDateTime\":\"2021-03-22T11:35:03Z\"}}",
+      "Date" : "Mon, 22 Mar 2021 11:35:13 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/8cc5dee7-e080-41e0-b41c-4b9b8201ea4d?includeKeys=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "96ed8ed9-d15b-4ea2-a7eb-4431e7764c47"
+    },
+    "Response" : {
+      "x-envoy-upstream-service-time" : "56",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "cead5d56-9569-4119-bcf1-5fe9632a402d",
+      "retry-after" : "0",
+      "Content-Length" : "170",
+      "StatusCode" : "200",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"8cc5dee7-e080-41e0-b41c-4b9b8201ea4d\",\"status\":\"creating\",\"createdDateTime\":\"2021-03-22T11:35:03Z\",\"lastUpdatedDateTime\":\"2021-03-22T11:35:03Z\"}}",
+      "Date" : "Mon, 22 Mar 2021 11:35:19 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/8cc5dee7-e080-41e0-b41c-4b9b8201ea4d?includeKeys=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "dbda400c-42b8-40ea-944f-5741f5380e1c"
     },
     "Response" : {
       "x-envoy-upstream-service-time" : "21",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "65f3e837-567d-4eee-9af3-55affad6a854",
-      "retry-after" : "0",
-      "Content-Length" : "170",
-      "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"6179c02c-781a-497c-b2b2-3cde2279c21e\",\"status\":\"creating\",\"createdDateTime\":\"2021-03-16T17:08:48Z\",\"lastUpdatedDateTime\":\"2021-03-16T17:08:48Z\"}}",
-      "Date" : "Tue, 16 Mar 2021 17:08:53 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/6179c02c-781a-497c-b2b2-3cde2279c21e?includeKeys=true",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "cd63d260-221e-466d-8b9d-58e31d843ac1"
-    },
-    "Response" : {
-      "x-envoy-upstream-service-time" : "24",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "35199f2e-5e46-468d-8f2b-5b1d0f3e9e36",
-      "retry-after" : "0",
-      "Content-Length" : "170",
-      "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"6179c02c-781a-497c-b2b2-3cde2279c21e\",\"status\":\"creating\",\"createdDateTime\":\"2021-03-16T17:08:48Z\",\"lastUpdatedDateTime\":\"2021-03-16T17:08:48Z\"}}",
-      "Date" : "Tue, 16 Mar 2021 17:08:59 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/6179c02c-781a-497c-b2b2-3cde2279c21e?includeKeys=true",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "ea4d6b85-0b9e-424f-8094-e320af4b35f5"
-    },
-    "Response" : {
-      "x-envoy-upstream-service-time" : "20",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "abece1bb-b5ef-422b-8f64-cd313790b7fd",
-      "retry-after" : "0",
-      "Content-Length" : "170",
-      "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"6179c02c-781a-497c-b2b2-3cde2279c21e\",\"status\":\"creating\",\"createdDateTime\":\"2021-03-16T17:08:48Z\",\"lastUpdatedDateTime\":\"2021-03-16T17:08:48Z\"}}",
-      "Date" : "Tue, 16 Mar 2021 17:09:04 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/6179c02c-781a-497c-b2b2-3cde2279c21e?includeKeys=true",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "3fd3ec4a-ccbf-4757-9b84-9979df451508"
-    },
-    "Response" : {
-      "x-envoy-upstream-service-time" : "21",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "e5abe9b1-9c3d-4776-855f-49861ba28191",
-      "retry-after" : "0",
-      "Content-Length" : "170",
-      "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"6179c02c-781a-497c-b2b2-3cde2279c21e\",\"status\":\"creating\",\"createdDateTime\":\"2021-03-16T17:08:48Z\",\"lastUpdatedDateTime\":\"2021-03-16T17:08:48Z\"}}",
-      "Date" : "Tue, 16 Mar 2021 17:09:09 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/6179c02c-781a-497c-b2b2-3cde2279c21e?includeKeys=true",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "72bc8a38-af53-4e0d-853a-072a4640eef4"
-    },
-    "Response" : {
-      "x-envoy-upstream-service-time" : "23",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "61787aca-24f7-43f6-9a4d-1859cae2f8c6",
+      "apim-request-id" : "25226c88-f13d-4c6c-baf0-66278eae1051",
       "retry-after" : "0",
       "Content-Length" : "912",
       "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"6179c02c-781a-497c-b2b2-3cde2279c21e\",\"status\":\"ready\",\"createdDateTime\":\"2021-03-16T17:08:48Z\",\"lastUpdatedDateTime\":\"2021-03-16T17:09:13Z\"},\"keys\":{\"clusters\":{\"0\":[\"Additional Notes:\",\"Address:\",\"Company Name:\",\"Company Phone:\",\"Dated As:\",\"Details\",\"Email:\",\"Hero Limited\",\"Name:\",\"Phone:\",\"Purchase Order\",\"Purchase Order #:\",\"Quantity\",\"SUBTOTAL\",\"Seattle, WA 93849 Phone:\",\"Shipped From\",\"Shipped To\",\"TAX\",\"TOTAL\",\"Total\",\"Unit Price\",\"Vendor Name:\",\"Website:\"]}},\"trainResult\":{\"trainingDocuments\":[{\"documentName\":\"Form_1.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_2.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_3.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_4.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_5.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"}],\"errors\":[]}}",
-      "Date" : "Tue, 16 Mar 2021 17:09:15 GMT",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"8cc5dee7-e080-41e0-b41c-4b9b8201ea4d\",\"status\":\"ready\",\"createdDateTime\":\"2021-03-22T11:35:03Z\",\"lastUpdatedDateTime\":\"2021-03-22T11:35:21Z\"},\"keys\":{\"clusters\":{\"0\":[\"Additional Notes:\",\"Address:\",\"Company Name:\",\"Company Phone:\",\"Dated As:\",\"Details\",\"Email:\",\"Hero Limited\",\"Name:\",\"Phone:\",\"Purchase Order\",\"Purchase Order #:\",\"Quantity\",\"SUBTOTAL\",\"Seattle, WA 93849 Phone:\",\"Shipped From\",\"Shipped To\",\"TAX\",\"TOTAL\",\"Total\",\"Unit Price\",\"Vendor Name:\",\"Website:\"]}},\"trainResult\":{\"trainingDocuments\":[{\"documentName\":\"Form_1.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_2.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_3.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_4.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_5.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"}],\"errors\":[]}}",
+      "Date" : "Mon, 22 Mar 2021 11:35:24 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/6179c02c-781a-497c-b2b2-3cde2279c21e?includeKeys=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/8cc5dee7-e080-41e0-b41c-4b9b8201ea4d?includeKeys=true",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "ff6473c4-f77c-451e-ac8e-d8ced2ebbd0e"
+      "x-ms-client-request-id" : "2b67ba1d-34d8-434b-83d4-317d95a95c97"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "20",
+      "x-envoy-upstream-service-time" : "125",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "14283ca8-450f-48f0-9a51-8d7282e235be",
+      "apim-request-id" : "cbfbf4a7-7ec3-4530-b618-9cab997c649b",
       "retry-after" : "0",
       "Content-Length" : "912",
       "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"6179c02c-781a-497c-b2b2-3cde2279c21e\",\"status\":\"ready\",\"createdDateTime\":\"2021-03-16T17:08:48Z\",\"lastUpdatedDateTime\":\"2021-03-16T17:09:13Z\"},\"keys\":{\"clusters\":{\"0\":[\"Additional Notes:\",\"Address:\",\"Company Name:\",\"Company Phone:\",\"Dated As:\",\"Details\",\"Email:\",\"Hero Limited\",\"Name:\",\"Phone:\",\"Purchase Order\",\"Purchase Order #:\",\"Quantity\",\"SUBTOTAL\",\"Seattle, WA 93849 Phone:\",\"Shipped From\",\"Shipped To\",\"TAX\",\"TOTAL\",\"Total\",\"Unit Price\",\"Vendor Name:\",\"Website:\"]}},\"trainResult\":{\"trainingDocuments\":[{\"documentName\":\"Form_1.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_2.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_3.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_4.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_5.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"}],\"errors\":[]}}",
-      "Date" : "Tue, 16 Mar 2021 17:09:15 GMT",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"8cc5dee7-e080-41e0-b41c-4b9b8201ea4d\",\"status\":\"ready\",\"createdDateTime\":\"2021-03-22T11:35:03Z\",\"lastUpdatedDateTime\":\"2021-03-22T11:35:21Z\"},\"keys\":{\"clusters\":{\"0\":[\"Additional Notes:\",\"Address:\",\"Company Name:\",\"Company Phone:\",\"Dated As:\",\"Details\",\"Email:\",\"Hero Limited\",\"Name:\",\"Phone:\",\"Purchase Order\",\"Purchase Order #:\",\"Quantity\",\"SUBTOTAL\",\"Seattle, WA 93849 Phone:\",\"Shipped From\",\"Shipped To\",\"TAX\",\"TOTAL\",\"Total\",\"Unit Price\",\"Vendor Name:\",\"Website:\"]}},\"trainResult\":{\"trainingDocuments\":[{\"documentName\":\"Form_1.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_2.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_3.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_4.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_5.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"}],\"errors\":[]}}",
+      "Date" : "Mon, 22 Mar 2021 11:35:25 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

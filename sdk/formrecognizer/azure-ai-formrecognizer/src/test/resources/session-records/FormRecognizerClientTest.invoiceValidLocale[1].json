@@ -4,19 +4,19 @@
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//prebuilt/invoice/analyze?includeTextDetails=false&locale=en-US",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "2e839a1c-1bc6-4df2-bf18-8d1bd1a5f5e3",
+      "x-ms-client-request-id" : "abce6d7c-50bc-4ee6-9673-1fbd33d79a54",
       "Content-Type" : "application/pdf"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "220",
+      "x-envoy-upstream-service-time" : "317",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "5a7a8de2-a0df-4fb1-a8f4-69a1008d7647",
+      "apim-request-id" : "7a9b3790-1eb8-4556-81c1-012cb6b43195",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "Operation-Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3/prebuilt/invoice/analyzeResults/5a7a8de2-a0df-4fb1-a8f4-69a1008d7647",
-      "Date" : "Tue, 16 Mar 2021 17:14:57 GMT"
+      "Operation-Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3/prebuilt/invoice/analyzeResults/7a9b3790-1eb8-4556-81c1-012cb6b43195",
+      "Date" : "Mon, 22 Mar 2021 11:39:35 GMT"
     },
     "Exception" : null
   } ],
