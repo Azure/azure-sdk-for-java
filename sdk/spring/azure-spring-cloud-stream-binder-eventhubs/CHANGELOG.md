@@ -1,6 +1,6 @@
 # Release History
 
-## 2.3.0 (2021-03-16)
+## 2.3.0 (2021-03-22)
 ### New Features
 - Upgrade to `Spring Boot` [2.4.3](https://github.com/spring-projects/spring-boot/releases/tag/v2.4.3).
 - Upgrade to `azure-messaging-eventhubs` [5.6.0](https://github.com/azure-sdk/azure-sdk-for-java/blob/master/sdk/eventhubs/azure-messaging-eventhubs/CHANGELOG.md#560-2021-03-10).
