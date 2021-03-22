@@ -91,4 +91,19 @@ public interface AmqpSession extends Disposable {
      * @return A completable mono.
      */
     Mono<Void> rollbackTransaction(AmqpTransaction transaction);
+
+    /**
+     * Creates the transaction coordinator on the {@link AmqpSession}. The {@link AmqpTransactionCoordinator} is used
+     * to create/commit and rollback the transaction. The classes implementing this interface must override and provide
+     * implementation of this API.
+     *
+     * @return newly created {@link AmqpTransactionCoordinator}.
+     * @throws RuntimeException Indicting implementation not found error. Azure SDK should provide implementation of
+     * this API but if runtime is not able to find it in its classpath or version mismatch can cause this exception.
+     *
+     * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transactions-v1.0-os.html#section-coordination">Transaction Coordination</a>
+     */
+    default Mono<AmqpTransactionCoordinator> getOrCreateTransactionCoordinator() {
+        return Mono.error(new RuntimeException("Implementation not found error."));
+    }
 }

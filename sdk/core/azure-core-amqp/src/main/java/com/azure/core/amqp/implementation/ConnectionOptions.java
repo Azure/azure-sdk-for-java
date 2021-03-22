@@ -283,8 +283,8 @@ public class ConnectionOptions {
     }
 
     /**
-     * Determine is distributed transactions are supported across different entities.
-     * @return true if distributed transactions across different entities are supported.
+     * Indicate if distributed transactions are supported across different entities.
+     * @return true if distributed transactions across different entities are supported otherwise false is returned.
      */
     public boolean isDistributedTransactionsSupported() {
         return this.distributedTransactionsSupport;

@@ -196,7 +196,6 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
 
         processorA.close();
 
-
         // Verify that message is received by queue B
         if (!isSessionEnabled) {
             setSenderAndReceiver(entityType, sendQueueBIndex, false);
@@ -296,7 +295,6 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
             logger.verbose("Transaction committed.");
             return Mono.just(receivedMessage);
         }).subscribe();
-
 
         // Act
         System.out.println("Listening for 10 seconds...");

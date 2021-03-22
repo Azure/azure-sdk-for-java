@@ -264,7 +264,7 @@ public class ServiceBusReactorSessionTest {
 
         // Act
         serviceBusReactorSession.createProducer(ENTITY_PATH, ENTITY_PATH, retryOptions.getTryTimeout(),
-            retryPolicy, null)
+            retryPolicy)
             .subscribe();
 
         // Assert
