@@ -195,7 +195,7 @@ public class ServiceBusReactorSessionTest {
 
         serviceBusReactorSession = new ServiceBusReactorSession(session, handler, SESSION_NAME, reactorProvider,
             handlerProvider, cbsNodeSupplier, tokenManagerProvider, messageSerializer, retryOptions,
-            false);
+            new ServiceBusCreateSessionOptions(false));
     }
 
     @AfterEach
