@@ -22,7 +22,7 @@ public final class CreateChatThreadOptions {
      */
     private List<ChatParticipant> participants = new ArrayList<>();
 
-    private String repeatabilityRequestId;
+    private String idempotencyToken;
 
     /**
      * Get the topic property: The chat thread topic.
@@ -65,27 +65,27 @@ public final class CreateChatThreadOptions {
     }
 
     /**
-     * Get the repeatabilityRequestId property
+     * Get the idempotencyToken property
      *
-     * @return the repeatabilityRequestId.
+     * @return the idempotencyToken.
      */
-    public String getRepeatabilityRequestId() {
-        return this.repeatabilityRequestId;
+    public String getIdempotencyToken() {
+        return this.idempotencyToken;
     }
 
     /**
-     * Set the repeatabilityRequestId property:
+     * Set the idempotencyToken property:
      * If specified, the client directs that the request is repeatable; that is, that the
-     * client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
-     * response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     * client can make the request multiple times with the same idempotencyToken and get back an appropriate
+     * response without the server executing the request multiple times. The value of the idempotencyToken
      * is an opaque string representing a client-generated, globally unique for all time, identifier for the
      * request. It is recommended to use version 4 (random) UUIDs.
      *
-     * @param repeatabilityRequestId the idempotencyToken.
+     * @param idempotencyToken the idempotencyToken.
      * @return the CreateChatThreadOptions object itself.
      */
-    public CreateChatThreadOptions setRepeatabilityRequestId(String repeatabilityRequestId) {
-        this.repeatabilityRequestId = repeatabilityRequestId;
+    public CreateChatThreadOptions setIdempotencyToken(String idempotencyToken) {
+        this.idempotencyToken = idempotencyToken;
         return this;
     }
 
@@ -95,6 +95,6 @@ public final class CreateChatThreadOptions {
      */
     public CreateChatThreadOptions(String topic) {
         this.topic = topic;
-        this.repeatabilityRequestId = UUID.randomUUID().toString();
+        this.idempotencyToken = UUID.randomUUID().toString();
     }
 }

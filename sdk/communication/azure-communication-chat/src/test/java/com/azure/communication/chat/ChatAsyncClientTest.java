@@ -118,7 +118,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
                 firstThreadMember.getId(),
                 secondThreadMember.getId()
             )
-            .setRepeatabilityRequestId(uuid.toString());
+            .setIdempotencyToken(uuid.toString());
 
         Response<CreateChatThreadResult> response1 = client.createChatThreadWithResponse(threadRequest).block();
         assertNotNull(response1.getValue());
@@ -138,7 +138,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
             })
             .verifyComplete();
 
-        threadRequest.setRepeatabilityRequestId(UUID.randomUUID().toString());
+        threadRequest.setIdempotencyToken(UUID.randomUUID().toString());
         StepVerifier.create(client.createChatThreadWithResponse(threadRequest))
             .assertNext(response3 -> {
                 CreateChatThreadResult result = response3.getValue();
