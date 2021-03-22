@@ -261,7 +261,7 @@ public class ReactorSessionTest {
             .thenReturn(sendLinkHandler);
 
         this.reactorSession = new ReactorSession(session, handler, NAME, reactorProvider, reactorHandlerProvider,
-            cbsNodeSupplier, tokenManagerProvider, serializer, options, new CreateSessionOptions(distributedTransactionsSupport));
+            cbsNodeSupplier, tokenManagerProvider, serializer, options);
 
         verify(session).sender(TRANSACTION_LINK_NAME);
         verify(sender).setTarget(any(Coordinator.class));

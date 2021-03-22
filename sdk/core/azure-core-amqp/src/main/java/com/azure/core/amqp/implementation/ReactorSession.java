@@ -35,7 +35,6 @@ import reactor.core.publisher.ReplayProcessor;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -84,31 +83,8 @@ public class ReactorSession implements AmqpSession {
      */
     public ReactorSession(Session session, SessionHandler sessionHandler, String sessionName, ReactorProvider provider,
         ReactorHandlerProvider handlerProvider, Mono<ClaimsBasedSecurityNode> cbsNodeSupplier,
-        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, AmqpRetryOptions retryOptions) {
-        this(session, sessionHandler, sessionName, provider, handlerProvider, cbsNodeSupplier, tokenManagerProvider,
-            messageSerializer, retryOptions, new CreateSessionOptions(false));
-    }
-
-    /**
-     * Creates a new AMQP session using proton-j.
-     *
-     * @param session Proton-j session for this AMQP session.
-     * @param sessionHandler Handler for events that occur in the session.
-     * @param sessionName Name of the session.
-     * @param provider Provides reactor instances for messages to sent with.
-     * @param handlerProvider Providers reactor handlers for listening to proton-j reactor events.
-     * @param cbsNodeSupplier Mono that returns a reference to the {@link ClaimsBasedSecurityNode}.
-     * @param tokenManagerProvider Provides {@link TokenManager} that authorizes the client when performing
-     *     operations on the message broker.
-     * @param createSessionOptions options required to create the session.
-     * @param retryOptions for the session operations.
-     */
-    public ReactorSession(Session session, SessionHandler sessionHandler, String sessionName, ReactorProvider provider,
-        ReactorHandlerProvider handlerProvider, Mono<ClaimsBasedSecurityNode> cbsNodeSupplier,
         TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
-        AmqpRetryOptions retryOptions, CreateSessionOptions createSessionOptions) {
-        Objects.requireNonNull(createSessionOptions, "'createSessionOptions' cannot be null.");
-
+        AmqpRetryOptions retryOptions) {
         this.session = session;
         this.sessionHandler = sessionHandler;
         this.handlerProvider = handlerProvider;

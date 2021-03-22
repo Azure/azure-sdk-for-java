@@ -224,6 +224,6 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
         return new ServiceBusReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
             getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer, retryOptions,
-            distributedTransactionsSupport);
+            new ServiceBusCreateSessionOptions(distributedTransactionsSupport));
     }
 }
