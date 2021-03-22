@@ -59,6 +59,14 @@ public class CosmosPagedFluxTest extends TestSuiteBase {
             cosmosAsyncContainer.readAllItems(cosmosQueryRequestOptions, ObjectNode.class);
 
         AtomicInteger handleCount = new AtomicInteger();
+        AtomicInteger chainedHandleCount = new AtomicInteger();
+        cosmosPagedFlux = cosmosPagedFlux.handle(feedResponse -> {
+            CosmosDiagnostics cosmosDiagnostics = feedResponse.getCosmosDiagnostics();
+            if (cosmosDiagnostics != null) {
+                chainedHandleCount.incrementAndGet();
+            }
+        });
+
         cosmosPagedFlux = cosmosPagedFlux.handle(feedResponse -> {
             CosmosDiagnostics cosmosDiagnostics = feedResponse.getCosmosDiagnostics();
             if (cosmosDiagnostics != null) {
@@ -73,6 +81,7 @@ public class CosmosPagedFluxTest extends TestSuiteBase {
 
         assertThat(handleCount.get() >= 1).isTrue();
         assertThat(handleCount.get()).isEqualTo(feedResponseCount.get());
+        assertThat(handleCount.get()).isEqualTo(chainedHandleCount.get());
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)

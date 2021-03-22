@@ -2,20 +2,30 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, TestConfigurations}
+import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, TestConfigurations, Utils}
+import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, FeedRange}
 import com.azure.cosmos.spark.CosmosPartitionPlanner.{createInputPartitions, getPartitionMetadata}
+import com.azure.cosmos.util.CosmosPagedFlux
+import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.sql.connector.read.streaming.ReadLimit
+import org.mockito.invocation.InvocationOnMock
+import org.mockito.{ArgumentMatchers, Mockito}
+import org.mockito.stubbing.Answer
 import org.scalatest.Assertion
 
 import java.time.Instant
-import java.util.concurrent.atomic.AtomicLong
+import java.util
+import java.util.UUID
+import java.util.concurrent.atomic.{AtomicInteger, AtomicLong}
 import scala.collection.mutable.ArrayBuffer
+import scala.jdk.CollectionConverters.asScalaBufferConverter
 
 class CosmosPartitionPlannerITest
   extends UnitSpec
     with CosmosClient
     with CosmosContainer
-    with Spark {
+    with Spark
+    with CosmosLoggingTrait {
 
   private[this] val rnd = scala.util.Random
   private[this] val cosmosEndpoint = TestConfigurations.HOST
@@ -185,6 +195,61 @@ class CosmosPartitionPlannerITest
       Some(90))
   }
 
+  "createInitialOffset" should "only ever retrieve one page of changes per feedRange" in {
+
+    val client = CosmosClientCache.apply(clientConfig, None)
+    val container = client
+      .getDatabase(containerConfig.database)
+      .getContainer(containerConfig.container)
+
+    for (i <- 0 until 10) {
+      val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+      objectNode.put("name", "Shrodigner's cat")
+      objectNode.put("type", "cat")
+      objectNode.put("age", 20)
+      objectNode.put("index", i.toString)
+      objectNode.put("id", UUID.randomUUID().toString)
+      container.createItem(objectNode).block()
+    }
+
+    val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(userConfigTemplate)
+    val testId = UUID.randomUUID().toString
+
+    val pagesRetrievedCounterMap = new util.HashMap[FeedRange, AtomicInteger]
+    for (feedRange <- container.getFeedRanges.block().asScala) {
+      pagesRetrievedCounterMap.put(feedRange, new AtomicInteger())
+    }
+
+    val initialFeedRangesCount = pagesRetrievedCounterMap.size()
+
+    // mocking container to count number of pages retrieved
+    val mockContainer = Mockito.spy(container)
+    Mockito.doAnswer(new Answer[CosmosPagedFlux[ObjectNode]]() {
+      override def answer(invocationOnMock: InvocationOnMock): CosmosPagedFlux[ObjectNode] = {
+        val requestOptions: CosmosChangeFeedRequestOptions =
+          invocationOnMock.getArgument(0, classOf[CosmosChangeFeedRequestOptions])
+        val pageFlux = container.queryChangeFeed(requestOptions, classOf[ObjectNode])
+        pageFlux.handle(feedResponse => {
+          pagesRetrievedCounterMap.get(requestOptions.getFeedRange).getAndIncrement()
+        })
+      }
+    }).when(mockContainer).queryChangeFeed(
+      ArgumentMatchers.any(classOf[CosmosChangeFeedRequestOptions]),
+      ArgumentMatchers.any()
+    )
+
+    val initialOffset = CosmosPartitionPlanner.createInitialOffset(mockContainer, changeFeedConfig, streamId = Some(testId))
+
+    //scalastyle:off null
+    initialOffset should not equal null
+    //scalastyle:on null
+
+    pagesRetrievedCounterMap should have size initialFeedRangesCount
+    for (feedRange <- container.getFeedRanges.block().asScala) {
+      pagesRetrievedCounterMap.get(feedRange).get() shouldEqual 1
+    }
+  }
+
   //scalastyle:on magic.number
   //scalastyle:on multiple.string.literals
   private[this] def evaluateStorageBasedStrategy
@@ -240,7 +305,7 @@ class CosmosPartitionPlannerITest
       .getContainer(containerConfig.container)
 
     createInputPartitions(
-      CosmosPartitioningConfig.parseCosmosPartitioningConfig(userConfig.toMap),
+      CosmosPartitioningConfig.parseCosmosPartitioningConfig(userConfig),
       container,
       partitionMetadata: Array[PartitionMetadata],
       defaultMinimalPartitionCount,
