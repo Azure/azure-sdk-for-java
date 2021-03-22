@@ -55,7 +55,7 @@ public class ResourceGraphTests extends TestBase {
         Assert.assertTrue(dataAsDict.containsKey("columns"));
         Assert.assertTrue(dataAsDict.containsKey("rows"));
         List<String> columns = (List<String>) dataAsDict.get("columns");
-        List<String> rows = (List<String>) dataAsDict.get("columns");
+        List<String> rows = (List<String>) dataAsDict.get("rows");
         Assert.assertEquals(2, columns.size()); // name and type
         Assert.assertTrue(rows.size() > 0);
 

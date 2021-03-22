@@ -5,7 +5,7 @@ $packagePattern = "*.pom"
 $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/java-packages.csv"
 $BlobStorageUrl = "https://azuresdkdocs.blob.core.windows.net/%24web?restype=container&comp=list&prefix=java%2F&delimiter=%2F"
 
-function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory, $pkgName)
+function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory)
 {
   $projectPath = Join-Path $pkgPath "pom.xml"
   if (Test-Path $projectPath)
@@ -15,11 +15,6 @@ function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory, $pkgName)
     $projectPkgName = $projectData.project.artifactId
     $pkgVersion = $projectData.project.version
     $pkgGroup = $projectData.project.groupId
-
-    if ($pkgName -and ($projectPkgName -ne $pkgName))
-    {
-      return $null
-    }
 
     $pkgProp = [PackageProps]::new($projectPkgName, $pkgVersion.ToString(), $pkgPath, $serviceDirectory, $pkgGroup)
     if ($projectPkgName -match "mgmt" -or $projectPkgName -match "resourcemanager")

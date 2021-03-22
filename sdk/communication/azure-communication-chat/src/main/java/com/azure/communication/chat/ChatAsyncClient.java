@@ -2,7 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.communication.chat;
 
+import com.azure.communication.chat.implementation.converters.ChatErrorConverter;
 import com.azure.communication.chat.implementation.converters.CreateChatThreadResultConverter;
+import com.azure.communication.chat.implementation.models.CommunicationErrorResponseException;
+import com.azure.communication.chat.models.ChatError;
+import com.azure.communication.chat.models.ChatErrorResponseException;
 import reactor.core.publisher.Mono;
 
 import com.azure.communication.chat.models.ChatThreadItem;
@@ -57,6 +61,8 @@ public final class ChatAsyncClient {
      * Creates a chat thread.
      *
      * @param options Options for creating a chat thread.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -81,6 +87,8 @@ public final class ChatAsyncClient {
      * Creates a chat thread.
      *
      * @param options Options for creating a chat thread.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -98,14 +106,17 @@ public final class ChatAsyncClient {
      *
      * @param options Options for creating a chat thread.
      * @param context The context to associate with this operation.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     Mono<Response<CreateChatThreadResult>> createChatThread(CreateChatThreadOptions options, Context context) {
         context = context == null ? Context.NONE : context;
         try {
             return this.chatClient.createChatThreadWithResponseAsync(
-                CreateChatThreadOptionsConverter.convert(options), options.getIdempotencyToken(), context).map(
-                    result -> new SimpleResponse<CreateChatThreadResult>(
+                CreateChatThreadOptionsConverter.convert(options), options.getIdempotencyToken(), context)
+                .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
+                .map(result -> new SimpleResponse<CreateChatThreadResult>(
                         result, CreateChatThreadResultConverter.convert(result.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -115,6 +126,8 @@ public final class ChatAsyncClient {
     /**
      * Gets the list of chat threads of a user.
      *
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paged list of chat threads of a user.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -123,9 +136,11 @@ public final class ChatAsyncClient {
         try {
             return new PagedFlux<>(
                 () -> withContext(context ->  this.chatClient.listChatThreadsSinglePageAsync(
-                    listThreadsOptions.getMaxPageSize(), listThreadsOptions.getStartTime(), context)),
+                    listThreadsOptions.getMaxPageSize(), listThreadsOptions.getStartTime(), context)
+                    .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))),
                 nextLink -> withContext(context -> this.chatClient.listChatThreadsNextSinglePageAsync(
-                    nextLink, context)));
+                    nextLink, context)
+                    .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
@@ -135,6 +150,8 @@ public final class ChatAsyncClient {
      * Gets the list of chat threads of a user.
      *
      * @param listThreadsOptions The request options.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paged list of chat threads of a user.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -144,9 +161,11 @@ public final class ChatAsyncClient {
         try {
             return new PagedFlux<>(
                 () -> withContext(context ->  this.chatClient.listChatThreadsSinglePageAsync(
-                    serviceListThreadsOptions.getMaxPageSize(), serviceListThreadsOptions.getStartTime(), context)),
+                    serviceListThreadsOptions.getMaxPageSize(), serviceListThreadsOptions.getStartTime(), context)
+                    .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))),
                 nextLink -> withContext(context -> this.chatClient.listChatThreadsNextSinglePageAsync(
-                    nextLink, context)));
+                    nextLink, context)
+                    .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
@@ -174,6 +193,8 @@ public final class ChatAsyncClient {
      * Deletes a chat thread.
      *
      * @param chatThreadId Chat thread id to delete.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -193,6 +214,8 @@ public final class ChatAsyncClient {
      * Deletes a chat thread.
      *
      * @param chatThreadId Chat thread id to delete.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -210,15 +233,26 @@ public final class ChatAsyncClient {
      *
      * @param chatThreadId Chat thread id to delete.
      * @param context The context to associate with this operation.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     Mono<Response<Void>> deleteChatThread(String chatThreadId, Context context) {
         context = context == null ? Context.NONE : context;
         try {
-            return this.chatClient.deleteChatThreadWithResponseAsync(chatThreadId, context);
+            return this.chatClient.deleteChatThreadWithResponseAsync(chatThreadId, context)
+                .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    private ChatErrorResponseException translateException(CommunicationErrorResponseException exception) {
+        ChatError error = null;
+        if (exception.getValue() != null) {
+            error = ChatErrorConverter.convert(exception.getValue().getError());
+        }
+        return new ChatErrorResponseException(exception.getMessage(), exception.getResponse(), error);
     }
 
 }
