@@ -109,11 +109,6 @@ public final class GenericResourcesImpl
     }
 
     @Override
-    public GenericResource getById(String id) {
-        return this.getByIdAsync(id).block();
-    }
-
-    @Override
     public Mono<GenericResource> getByIdAsync(String id) {
         if (CoreUtils.isNullOrEmpty(id)) {
             return Mono.error(
