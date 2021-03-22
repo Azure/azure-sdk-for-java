@@ -55,7 +55,7 @@ public final class ModelsRepositoryClientBuilder {
 
     private final List<HttpPipelinePolicy> additionalPolicies;
 
-    // TODO: azabbasi: does this have to be a string? why?
+    // TODO: azabbasi: change this back to a string
     // Fields with default values.
     private URI repositoryEndpoint;
 

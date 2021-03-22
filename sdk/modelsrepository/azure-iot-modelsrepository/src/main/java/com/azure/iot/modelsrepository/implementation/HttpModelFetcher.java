@@ -17,8 +17,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.Queue;
 
-// TODO: azabbasi : How to wrap it in a Mono.defer()
-
 /**
  * The {@link HttpModelFetcher} is an implementation of {@link ModelFetcher} interface
  * for supporting http[s] based model content fetching.
@@ -34,29 +32,31 @@ class HttpModelFetcher implements ModelFetcher {
 
     @Override
     public Mono<FetchResult> fetchAsync(String dtmi, URI repositoryUri, ModelDependencyResolution resolutionOption, Context context) {
-        Queue<String> work = new LinkedList<>();
-        try {
-            if (resolutionOption == ModelDependencyResolution.TRY_FROM_EXPANDED) {
-                work.add(getPath(dtmi, repositoryUri, true));
-            }
-            work.add(getPath(dtmi, repositoryUri, false));
-        } catch (Exception e) {
-            return Mono.error(new AzureException(e));
-        }
-
-        String tryContentPath = work.poll();
-
-        logger.info(String.format(StandardStrings.FETCHING_MODEL_CONTENT, tryContentPath));
-
-        return evaluatePath(tryContentPath, context)
-            .onErrorResume(error -> {
-                if (work.size() != 0) {
-                    return evaluatePath(work.poll(), context);
-                } else {
-                    return Mono.error(error);
+        return Mono.defer(() -> {
+            Queue<String> work = new LinkedList<>();
+            try {
+                if (resolutionOption == ModelDependencyResolution.TRY_FROM_EXPANDED) {
+                    work.add(getPath(dtmi, repositoryUri, true));
                 }
-            })
-            .map(s -> new FetchResult().setPath(tryContentPath).setDefinition(s));
+                work.add(getPath(dtmi, repositoryUri, false));
+            } catch (Exception e) {
+                return Mono.error(new AzureException(e));
+            }
+
+            String tryContentPath = work.poll();
+
+            logger.info(String.format(StandardStrings.FETCHING_MODEL_CONTENT, tryContentPath));
+
+            return evaluatePath(tryContentPath, context)
+                .onErrorResume(error -> {
+                    if (work.size() != 0) {
+                        return evaluatePath(work.poll(), context);
+                    } else {
+                        return Mono.error(error);
+                    }
+                })
+                .map(s -> new FetchResult().setPath(tryContentPath).setDefinition(s));
+        });
     }
 
     private Mono<String> evaluatePath(String tryContentPath, Context context) {

@@ -6,7 +6,7 @@ package com.azure.iot.modelsrepository.implementation;
 import com.azure.iot.modelsrepository.implementation.models.FetchResult;
 
 import java.util.Map;
-// TODO: azabbasi: is is an acceptable name?
+
 /**
  * This type is used to unify the expand operation return types in the recursive function and has no other use cases.
  * Do not take any dependencies on this type.

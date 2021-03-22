@@ -3,6 +3,7 @@
 
 package com.azure.iot.modelsrepository;
 
+import com.azure.core.exception.AzureException;
 import com.azure.core.exception.ServiceResponseException;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.Assertions;
@@ -42,7 +43,7 @@ class ModelRepositoryIntegrationTests extends ModelsRepositoryTestBase {
 
         StepVerifier
             .create(client.getModels(dtmi))
-            .verifyErrorSatisfies(error -> Assertions.assertTrue(error.getClass() == ServiceResponseException.class));
+            .verifyErrorSatisfies(error -> Assertions.assertTrue(error.getClass() == AzureException.class));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

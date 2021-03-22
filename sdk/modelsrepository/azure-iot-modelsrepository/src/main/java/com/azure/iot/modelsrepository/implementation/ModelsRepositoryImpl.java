@@ -11,6 +11,7 @@ import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.ReturnType;
+import com.azure.core.exception.AzureException;
 import com.azure.core.exception.ServiceResponseException;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
@@ -61,12 +62,10 @@ public final class ModelsRepositoryImpl {
             return Mono.error(new IllegalArgumentException("Parameter 'path' is required and cannot be null."));
         }
 
-        // TODO: azabbasi: how do we hide the original exception stack trace? it clutters the console logs
-        // TODO: What is the best exception to throw here, considering we can't parse the output.
         return service.getModelFromPath(
             this.client.getHost(), path, context)
             .onErrorMap(error ->
-                new ServiceResponseException(
+                new AzureException(
                     String.format(StandardStrings.ERROR_FETCHING_MODEL_CONTENT, path),
                     error));
     }

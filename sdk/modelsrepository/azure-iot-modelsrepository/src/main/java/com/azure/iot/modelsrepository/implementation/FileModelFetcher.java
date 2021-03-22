@@ -24,9 +24,6 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.Queue;
 
-// TODO: azabbasi: How should this be done asynchronosly
-// TODO: azabbasi: context is not used here, can it be used?
-
 /**
  * The {@link FileModelFetcher} is an implementation of {@link ModelFetcher} interface
  * for supporting local filesystem based model content fetching.
@@ -44,42 +41,44 @@ class FileModelFetcher implements ModelFetcher {
 
     @Override
     public Mono<FetchResult> fetchAsync(String dtmi, URI repositoryUri, ModelDependencyResolution resolutionOption, Context context) {
-        Queue<String> work = new LinkedList<>();
+        return Mono.defer(() -> {
+            Queue<String> work = new LinkedList<>();
 
-        try {
-            if (resolutionOption == ModelDependencyResolution.TRY_FROM_EXPANDED) {
-                work.add(getPath(dtmi, repositoryUri, true));
-            }
-            work.add(getPath(dtmi, repositoryUri, false));
-        } catch (MalformedURLException | URISyntaxException e) {
-            return Mono.error(new AzureException(e));
-        }
-
-        String fnfError = "";
-        while (work.size() != 0) {
-            String tryContentPath = work.poll();
-
-            Path path = Paths.get(new File(tryContentPath).getPath());
-
-            logger.info(String.format(StandardStrings.FETCHING_MODEL_CONTENT, path.toString()));
-
-            if (Files.exists(path)) {
-                try {
-                    return Mono.just(
-                        new FetchResult()
-                            .setDefinition(new String(Files.readAllBytes(path), StandardCharsets.UTF_8))
-                            .setPath(tryContentPath));
-                } catch (IOException e) {
-                    return Mono.error(new AzureException(e));
+            try {
+                if (resolutionOption == ModelDependencyResolution.TRY_FROM_EXPANDED) {
+                    work.add(getPath(dtmi, repositoryUri, true));
                 }
+                work.add(getPath(dtmi, repositoryUri, false));
+            } catch (MalformedURLException | URISyntaxException e) {
+                return Mono.error(new AzureException(e));
             }
 
-            logger.error(String.format(StandardStrings.ERROR_FETCHING_MODEL_CONTENT, path.toString()));
+            String fnfError = "";
+            while (work.size() != 0) {
+                String tryContentPath = work.poll();
 
-            fnfError = String.format(StandardStrings.ERROR_FETCHING_MODEL_CONTENT, tryContentPath);
-        }
+                Path path = Paths.get(new File(tryContentPath).getPath());
 
-        return Mono.error(new ServiceResponseException(fnfError));
+                logger.info(String.format(StandardStrings.FETCHING_MODEL_CONTENT, path.toString()));
+
+                if (Files.exists(path)) {
+                    try {
+                        return Mono.just(
+                            new FetchResult()
+                                .setDefinition(new String(Files.readAllBytes(path), StandardCharsets.UTF_8))
+                                .setPath(tryContentPath));
+                    } catch (IOException e) {
+                        return Mono.error(new AzureException(e));
+                    }
+                }
+
+                logger.error(String.format(StandardStrings.ERROR_FETCHING_MODEL_CONTENT, path.toString()));
+
+                fnfError = String.format(StandardStrings.ERROR_FETCHING_MODEL_CONTENT, tryContentPath);
+            }
+
+            return Mono.error(new ServiceResponseException(fnfError));
+        });
     }
 
     private String getPath(String dtmi, URI repositoryUri, boolean expanded) throws URISyntaxException, MalformedURLException {

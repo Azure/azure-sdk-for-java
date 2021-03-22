@@ -74,8 +74,6 @@ public final class ModelsRepositoryAsyncClient {
         return this.serviceVersion;
     }
 
-    // TODO: azabbasi: the name of the method. list*
-    // TODO: azabbasi: WithResponse?
     /**
      * Gets a collection of model definitions.
      *
