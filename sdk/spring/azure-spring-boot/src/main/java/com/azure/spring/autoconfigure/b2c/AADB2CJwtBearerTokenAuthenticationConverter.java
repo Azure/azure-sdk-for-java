@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
-import com.azure.spring.aad.webapi.AADJwtGrantedAuthoritiesConverter;
-import com.azure.spring.aad.webapi.AADOAuth2AuthenticatedPrincipal;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,7 +23,7 @@ public class AADB2CJwtBearerTokenAuthenticationConverter implements Converter<Jw
     private Converter<Jwt, Collection<GrantedAuthority>> converter;
 
     public AADB2CJwtBearerTokenAuthenticationConverter() {
-        this.converter = new AADJwtGrantedAuthoritiesConverter();
+        this.converter = new AADB2CJwtGrantedAuthoritiesConverter();
     }
 
     public AADB2CJwtBearerTokenAuthenticationConverter(String authoritiesClaimName) {
