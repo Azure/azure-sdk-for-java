@@ -11,7 +11,6 @@ import org.apache.spark.sql.Row
 import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.catalyst.encoders.RowEncoder
 import org.apache.spark.sql.catalyst.expressions.{GenericRowWithSchema, UnsafeMapData}
-import org.codehaus.jackson.node.NumericNode
 
 import java.time.{OffsetDateTime, ZoneOffset}
 import java.time.format.DateTimeFormatter
