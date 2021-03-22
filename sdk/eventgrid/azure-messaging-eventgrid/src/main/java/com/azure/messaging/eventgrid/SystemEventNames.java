@@ -21,6 +21,7 @@ import com.azure.messaging.eventgrid.systemevents.AcsChatThreadDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatThreadPropertiesUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatThreadPropertiesUpdatedPerUserEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatThreadWithUserDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsRecordingFileStatusUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsSmsDeliveryReportReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsSmsReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueDeletedEventData;
@@ -455,6 +456,8 @@ public final class SystemEventNames {
         "Microsoft.Communication.ChatThreadDeleted";
     public static final String COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED =
         "Microsoft.Communication.ChatThreadPropertiesUpdated";
+    public static final String COMMUNICATION_RECORDING_FILE_STATUS_UPDATED =
+        "Microsoft.Communication.RecordingFileStatusUpdated";
 
     // Web
     public static final String WEB_APP_UPDATED = "Microsoft.Web.AppUpdated";
@@ -603,6 +606,7 @@ public final class SystemEventNames {
             put(COMMUNICATION_CHAT_THREAD_CREATED, AcsChatThreadCreatedEventData.class);
             put(COMMUNICATION_CHAT_THREAD_DELETED, AcsChatThreadDeletedEventData.class);
             put(COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED, AcsChatThreadPropertiesUpdatedEventData.class);
+            put(COMMUNICATION_RECORDING_FILE_STATUS_UPDATED, AcsRecordingFileStatusUpdatedEventData.class);
 
             // Web events
             put(WEB_APP_UPDATED, WebAppUpdatedEventData.class);
