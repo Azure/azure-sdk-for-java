@@ -70,24 +70,25 @@ public final class CloudEvent {
 
     // May get SERIALIZER's object mapper in the future.
     private static final ObjectMapper BINARY_DATA_OBJECT_MAPPER = new ObjectMapper();
-    private static final Map<String, Object> EMPTY_ATTRIBUTES_MAP = Collections.unmodifiableMap(new HashMap<>());
+    private static final Map<String, Object> EMPTY_ATTRIBUTES_MAP = Collections.emptyMap();
 
     private static final TypeReference<List<CloudEvent>> DESERIALIZER_TYPE_REFERENCE =
         new TypeReference<List<CloudEvent>>() {
         };
     private static final ClientLogger LOGGER = new ClientLogger(CloudEvent.class);
-    private static final Set<String> RESERVED_ATTRIBUTE_NAMES = new HashSet<>(Arrays.asList(
-        "specversion",
-        "id",
-        "source",
-        "type",
-        "datacontenttype",
-        "dataschema",
-        "subject",
-        "time",
-        "data",
-        "data_base64"
-    ));
+    private static final Set<String> RESERVED_ATTRIBUTE_NAMES = new HashSet<>() {
+        {
+            add("specversion");
+            add("id");
+            add("source");
+            add("type");
+            add("datacontenttype");
+            add("dataschema");
+            add("subject");
+            add("time");
+            add("data");
+            add("data_base64");
+        }};
 
     /*
      * An identifier for the event. The combination of id and source must be
