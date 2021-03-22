@@ -27,6 +27,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * Handles receiving events from Event Hubs service and translating them to proton-j messages.
@@ -60,18 +61,36 @@ public class ReactorReceiver implements AmqpReceiveLink {
         this.tokenManager = tokenManager;
         this.dispatcher = dispatcher;
         this.messagesProcessor = this.handler.getDeliveredMessages()
-            .map(this::decodeDelivery)
-            .doOnNext(next -> {
-                if (receiver.getRemoteCredit() == 0 && !isDisposed.get()) {
-                    final Supplier<Integer> supplier = creditSupplier.get();
-                    if (supplier == null) {
-                        return;
-                    }
+            .flatMap(delivery -> {
+                // While the message is decoded, it is possible that the message is then settled. Consequently, the
+                // credit on the link changes. Performing the operation in the dispatcher thread because settling
+                // deliveries changes the underlying connection and link state.
+                return Mono.<MessageResult>create(sink -> {
+                    try {
+                        this.dispatcher.invoke(() -> {
+                            final Message message = decodeDelivery(delivery);
+                            final int remoteCredit = receiver.getRemoteCredit();
 
-                    final Integer credits = supplier.get();
-                    if (credits != null && credits > 0) {
-                        addCredits(credits);
+                            final Supplier<Integer> supplier = creditSupplier.get();
+
+                            if (remoteCredit < 1 && !isDisposed.get()) {
+                                final Integer credits = supplier.get();
+
+                                sink.success(new MessageResult(message, credits != null ? credits : -1));
+                            } else {
+                                sink.success(new MessageResult(message, -1));
+                            }
+                        });
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        sink.error(new RuntimeException("Unable to schedule credit work.", e));
                     }
+                });
+            }).flatMap(result -> {
+                if (result.getCredits() > 0) {
+                    return addCredits(result.getCredits()).thenReturn(result.getMessage());
+                } else {
+                    return Mono.just(result.getMessage());
                 }
             })
             .publish()
@@ -139,19 +158,22 @@ public class ReactorReceiver implements AmqpReceiveLink {
     }
 
     @Override
-    public void addCredits(int credits) {
+    public Mono<Void> addCredits(int credits) {
         if (!isDisposed.get()) {
-            try {
-                dispatcher.invoke(() -> receiver.flow(credits));
-            } catch (IOException e) {
-                logger.warning("Unable to schedule work to add more credits.", e);
-            }
+            return monoError(logger, new IllegalStateException("Cannot add credits to closed link: " + getLinkName()));
         }
-    }
 
-    @Override
-    public void addCreditsInstantly(int credits) {
-        receiver.flow(credits);
+        return Mono.create(sink -> {
+            try {
+                dispatcher.invoke(() -> {
+                    receiver.flow(credits);
+                    sink.success();
+                });
+            } catch (IOException e) {
+                sink.error(new RuntimeException("Unable to schedule work to add more credits. Link: " + getLinkName(),
+                    e));
+            }
+        });
     }
 
     @Override
@@ -271,5 +293,23 @@ public class ReactorReceiver implements AmqpReceiveLink {
     @Override
     public String toString() {
         return String.format("link name: [%s], entity path: [%s]", receiver.getName(), entityPath);
+    }
+
+    private static class MessageResult {
+        private final int credits;
+        private final Message message;
+
+        private MessageResult(Message message, int credits) {
+            this.credits = credits;
+            this.message = message;
+        }
+
+        public int getCredits() {
+            return credits;
+        }
+
+        public Message getMessage() {
+            return message;
+        }
     }
 }
