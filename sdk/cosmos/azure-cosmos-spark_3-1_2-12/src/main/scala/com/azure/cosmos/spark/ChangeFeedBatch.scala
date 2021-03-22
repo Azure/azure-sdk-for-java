@@ -9,6 +9,7 @@ import org.apache.spark.sql.connector.read.{Batch, InputPartition, PartitionRead
 import org.apache.spark.sql.types.StructType
 
 import java.time.Duration
+import java.util.UUID
 
 private class ChangeFeedBatch
 (
@@ -19,10 +20,12 @@ private class ChangeFeedBatch
 ) extends Batch
   with CosmosLoggingTrait {
 
+  val batchId = UUID.randomUUID().toString()
   logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
   override def planInputPartitions(): Array[InputPartition] = {
 
+    logInfo(s"--> planInputPartitions $batchId")
     val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
     val clientConfiguration = CosmosClientConfiguration.apply(config, readConfig.forceEventualConsistency)
     val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
@@ -53,7 +56,7 @@ private class ChangeFeedBatch
 
     // Latest offset above has the EndLsn specified based on the point-in-time latest offset
     // For batch mode instead we need to reset it so that the change feed will get fully drained
-    latestOffset
+    val inputPartitions = latestOffset
       .inputPartitions
       .get
       .map(partition => partition
@@ -61,6 +64,9 @@ private class ChangeFeedBatch
           SparkBridgeImplementationInternal
             .extractChangeFeedStateForRange(initialOffsetJson, partition.feedRange),
           clearEndLsn = true))
+
+    logInfo(s"<-- planInputPartitions $batchId (creating ${inputPartitions.length} partitions)" )
+    inputPartitions
   }
 
   override def createReaderFactory(): PartitionReaderFactory = {
