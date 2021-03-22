@@ -43,6 +43,8 @@ $XMLFile = $XMLFileStart
 $script:FoundError = $false
 $StartTime = $(get-date)
 
+$modules = New-Object System.Collections.Generic.HashSet[string]
+
 # Loop through every pom in the system and check if it is one fo the valid parents add the path
 # a module entry for it to the client aggregate pom file.
 Get-ChildItem -Path $RootPath -Filter pom*.xml -Recurse -File | ForEach-Object {
@@ -59,11 +61,15 @@ Get-ChildItem -Path $RootPath -Filter pom*.xml -Recurse -File | ForEach-Object {
         $module = $_.DirectoryName.Replace($RootPath,'')
         $module = $module.Replace('\','/')
         $module = "    <module>{0}</module>{1}" -f $module, [Environment]::NewLine
-        $XMLFile += $module
+        [void] $modules.Add($module)
 
     } else {
         return
     }
+}
+
+foreach ($module in $modules) {
+    $XMLFile += $module
 }
 
 $XMLFile += $XMLFileEnd
