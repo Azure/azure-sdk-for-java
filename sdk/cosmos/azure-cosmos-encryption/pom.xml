@@ -226,8 +226,8 @@ Licensed under the MIT License.
               <includes>
                 <include>com.azure:*</include>
                 <include>org.bouncycastle:bcprov-jdk15on:[1.68]</include> <!-- {x-include-update;org.bouncycastle:bcprov-jdk15on;external_dependency} -->
-                <include>com.microsoft.data.encryption:cryptography:[0.1.0.jre8-preview]</include> <!-- {x-include-update;com.microsoft.data.encryption:cryptography;external_dependency} -->
-                <include>com.microsoft.data.encryption:azure-key-vault-keystoreprovider:[0.1.0.jre8-preview]</include> <!-- {x-include-update;com.microsoft.data.encryption:azure-key-vault-keystoreprovider;external_dependency} -->
+                <include>com.microsoft.data.encryption:cryptography:[0.1.0.jre8-preview]</include> <!-- {x-include-update;cosmos_com.microsoft.data.encryption:cryptography;external_dependency} -->
+                <include>com.microsoft.data.encryption:azure-key-vault-keystoreprovider:[0.1.0.jre8-preview]</include> <!-- {x-include-update;cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
