@@ -38,7 +38,7 @@ stages:
           - template: ../steps/install-reporting-tools.yml
         MatrixConfigs:
           - Name: Cosmos_ci_test
-            Path: eng/pipelines/templates/stages/platform-matrix.cosmos.json
+            Path: eng/pipelines/templates/stages/platform-matrix.json
             Selection: sparse
             NonSparseParameters: Agent
             GenerateVMJobs: true
@@ -48,6 +48,10 @@ stages:
           - TestOptions=.*/-Punit
           - AZURE_TEST.*=.*/
 
+  - stage: TestEmulator
+    displayName: Test Emulator
+    dependsOn: []
+    jobs:
     - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
       parameters:
         JobTemplatePath: /eng/pipelines/templates/jobs/live.tests.yml
@@ -103,7 +107,9 @@ stages:
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
     - template: archetype-java-release.yml
       parameters:
-        DependsOn: Build
+        DependsOn:
+          - Build
+          - TestEmulator
         ServiceDirectory: ${{parameters.ServiceDirectory}}
         SDKType: ${{parameters.SDKType}}
         Artifacts: ${{parameters.Artifacts}}
