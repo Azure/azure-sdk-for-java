@@ -318,7 +318,7 @@ jobs:
 
       - task: PythonScript@0
         # The root pom.xml contains both track 1, data, and track 2, client libraries.
-        # This task calls a powershell script that will go through all of the pom files
+        # This task calls a Python script that will go through all of the pom files
         # in the repository looking, specifically, for ones whose parent is
         # azure-client-sdk-parent and create a temporary pom file with just those libraries.
         # Note: It excludes items within the /eng directory otherwise we'd be picking up

@@ -43,7 +43,7 @@ pom_file_start = '''<!-- Copyright (c) Microsoft Corporation. All rights reserve
   <groupId>com.azure</groupId>
   <artifactId>azure-sdk-from-source</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.0</version> <!-- Need not change for every release-->
+  <version>1.0.0</version>
   <modules>
 '''
 
@@ -233,7 +233,7 @@ def main():
         print(fromSourcePom.read())
 
     print('elapsed_time={}'.format(elapsed_time))
-    print('Total time for replacement: {}'.format(str(timedelta(seconds=elapsed_time))))
+    print('Total time for replacement: {} seconds'.format(str(timedelta(seconds=elapsed_time))))
 
 if __name__ == '__main__':
     main()
