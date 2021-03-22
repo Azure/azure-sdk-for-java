@@ -442,11 +442,11 @@ public final class SystemEventNames {
     public static final String COMMUNICATION_CHAT_MESSAGE_RECEIVED_IN_THREAD =
         "Microsoft.Communication.ChatMessageReceivedInThread";
     public static final String COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD =
-        "Microsoft.Communication.ChatParticipantAddedToThread";
+        "Microsoft.Communication.ChatThreadParticipantAdded";
     public static final String COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD_WITH_USER =
         "Microsoft.Communication.ChatParticipantAddedToThreadWithUser";
     public static final String COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD =
-        "Microsoft.Communication.ChatParticipantRemovedFromThread";
+        "Microsoft.Communication.ChatThreadParticipantRemoved";
     public static final String COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD_WITH_USER =
         "Microsoft.Communication.ChatParticipantRemovedFromThreadWithUser";
     public static final String COMMUNICATION_CHAT_THREAD_CREATED =
