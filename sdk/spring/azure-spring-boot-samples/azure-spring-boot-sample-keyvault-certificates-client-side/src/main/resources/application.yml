@@ -7,6 +7,3 @@ azure:
     # managed-identity:  # The user-assigned managed identity object-id to use.
 server:
   port: 8080
-  ssl:
-    enabled: false       # Set to "true" if you need to enable https in client side.
-    trust-store-type: AzureKeyVault  # The truststore type that enables the use of Azure Key Vault for trusted certificates, a.k.a the ones you trust when making an outbound SSL connection

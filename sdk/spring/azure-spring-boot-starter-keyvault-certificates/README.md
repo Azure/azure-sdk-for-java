@@ -204,20 +204,25 @@ keys, secrets and certificates.
 Then if you are using `RestTemplate` use the code below as a starting
 point:
 
-<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L23-L39 -->
+<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L21-L42 -->
 ```java
 @Bean
 public RestTemplate restTemplate() throws Exception {
     KeyStore trustStore = KeyStore.getInstance("AzureKeyVault");
+    KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+        System.getProperty("azure.keyvault.uri"),
+        System.getProperty("azure.keyvault.aad-authentication-url"),
+        System.getProperty("azure.keyvault.tenant-id"),
+        System.getProperty("azure.keyvault.client-id"),
+        System.getProperty("azure.keyvault.client-secret"));
+    trustStore.load(parameter);
     SSLContext sslContext = SSLContexts.custom()
-                                       .loadTrustMaterial(trustStore, new TrustSelfSignedStrategy())
+                                       .loadTrustMaterial(trustStore, null)
                                        .build();
-
-    HostnameVerifier allowAll = (String hostName, SSLSession session) -> true;
-    SSLConnectionSocketFactory factory = new SSLConnectionSocketFactory(sslContext, allowAll);
-
+    SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(sslContext,
+                                                                              (hostname, session) -> true);
     CloseableHttpClient httpClient = HttpClients.custom()
-                                                .setSSLSocketFactory(factory)
+                                                .setSSLSocketFactory(socketFactory)
                                                 .build();
     HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
 
@@ -241,27 +246,26 @@ keys, secrets and certificates.
 
 If you are using `RestTemplate` use code similar to the example below.
 
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/keyvault/KeyVaultJcaManagedIdentitySample.java#L19-L38 -->
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/keyvault/KeyVaultJcaManagedIdentitySample.java#L19-L36 -->
 ```java
 @Bean
-public RestTemplate restTemplate() throws Exception {
-    KeyStore ks = KeyStore.getInstance("AzureKeyVault");
+public RestTemplate restTemplateCreatedByManagedIdentity() throws Exception {
+    KeyStore trustStore = KeyStore.getInstance("AzureKeyVault");
+    KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+        System.getProperty("azure.keyvault.uri"),
+        System.getProperty("azure.keyvault.managed-identity"));
+    trustStore.load(parameter);
     SSLContext sslContext = SSLContexts.custom()
-        .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
-        .build();
-
-    SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
-
+                                       .loadTrustMaterial(trustStore, null)
+                                       .build();
+    SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(sslContext,
+        (hostname, session) -> true);
     CloseableHttpClient httpClient = HttpClients.custom()
-        .setSSLSocketFactory(csf)
-        .build();
+                                                .setSSLSocketFactory(socketFactory)
+                                                .build();
+    HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
 
-    HttpComponentsClientHttpRequestFactory requestFactory =
-                new HttpComponentsClientHttpRequestFactory();
-
-    requestFactory.setHttpClient(httpClient);
-    RestTemplate restTemplate = new RestTemplate(requestFactory);
-    return restTemplate;
+    return new RestTemplate(requestFactory);
 }
 ```
 
