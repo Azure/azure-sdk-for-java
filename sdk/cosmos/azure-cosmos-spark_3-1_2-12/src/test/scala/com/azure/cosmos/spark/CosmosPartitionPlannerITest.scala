@@ -197,8 +197,7 @@ class CosmosPartitionPlannerITest
 
   "createInitialOffset" should "only ever retrieve one page of changes per feedRange" in {
 
-    val client = CosmosClientCache.apply(clientConfig, None)
-    val container = client
+    val container = this.cosmosClient
       .getDatabase(containerConfig.database)
       .getContainer(containerConfig.container)
 
