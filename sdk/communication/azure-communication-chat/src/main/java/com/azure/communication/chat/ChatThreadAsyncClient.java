@@ -153,12 +153,12 @@ public final class ChatThreadAsyncClient {
      * @return the result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> addParticipants(Iterable<ChatParticipant> participants) {
+    public Mono<AddChatParticipantsResult> addParticipants(Iterable<ChatParticipant> participants) {
         try {
             Objects.requireNonNull(participants, "'participants' cannot be null.");
             return withContext(context -> addParticipants(participants, context)
                 .flatMap((Response<AddChatParticipantsResult> res) -> {
-                    return Mono.empty();
+                    return Mono.just(res.getValue());
                 }));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
