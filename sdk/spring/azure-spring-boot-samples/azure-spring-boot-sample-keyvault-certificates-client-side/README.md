@@ -10,9 +10,7 @@ This sample should work together with [azure-spring-boot-sample-keyvault-certifi
 ### Prerequisites
 - [Environment checklist][environment_checklist]
 
-### Run this application
-
-#### Add configurations
+### Config the sample
 Fulfill these properties in application.yml:
 ```yaml
 azure:
@@ -23,9 +21,11 @@ azure:
     client-secret:       # The Client Secret that will be used for accessing your Azure Key Vault (needed if you are not using managed identity).
 ```
 
-#### Start Server side SampleApplication
-#### Start Client side SampleApplication
-#### Access http://localhost:8080/ 
+### How to run
+1. Start azure-spring-boot-sample-keyvault-certificates-server-side's SampleApplication
+1. Start azure-spring-boot-sample-keyvault-certificates-client-side SampleApplication
+1. Access http://localhost:8080/ 
+
 Then you will get
 ```text
 Response from "https://localhost:8443/": Hello World

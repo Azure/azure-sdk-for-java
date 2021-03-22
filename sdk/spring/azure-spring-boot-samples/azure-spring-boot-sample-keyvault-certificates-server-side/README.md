@@ -15,6 +15,26 @@ This sample can work together with [azure-spring-boot-sample-keyvault-certificat
 ### Store Certificate
 We need to store certificate `self-signed` into Azure Key Vault with the following steps: [store certificate ][steps_to_store_certificate]
 
+### Config the sample
+Fulfill these properties in application.yml:
+```yaml
+azure:
+  keyvault:
+    uri:                 # The URI to the Azure Key Vault used
+    tenant-id:           # The Tenant ID for your Azure Key Vault (needed if you are not using managed identity).
+    client-id:           # The Client ID that has been setup with access to your Azure Key Vault (needed if you are not using managed identity).
+    client-secret:       # The Client Secret that will be used for accessing your Azure Key Vault (needed if you are not using managed identity).
+```
+
+### How to run
+1. SampleApplication
+1. Access https://localhost:8443/
+
+Then you will get
+```text
+Hello World
+``` 
+
 ## Examples
 ## Troubleshooting
 ## Next steps
