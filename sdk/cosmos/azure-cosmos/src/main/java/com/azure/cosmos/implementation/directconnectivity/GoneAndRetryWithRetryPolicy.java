@@ -115,8 +115,8 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics{
             String exceptionType;
             if (exception instanceof GoneException) {
                 exceptionType = "GoneException";
-            } else if (exception instanceof PartitionKeyRangeGoneException) {
-                exceptionType = "PartitionKeyRangeGoneException";
+            } else if (exception instanceof PartitionIsMigratingException) {
+                exceptionType = "PartitionIsMigratingException";
             } else if (exception instanceof  InvalidPartitionException) {
                 exceptionType = "InvalidPartitionException";
             } else if (exception instanceof  PartitionKeyRangeIsSplittingException) {
@@ -174,7 +174,9 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics{
                     this.attemptCount,
                     exception);
 
-                return Mono.just(ShouldRetryResult.noRetry(
+                exceptionToThrow = logAndWrapExceptionWithLastRetryWithException(exception);
+                return Mono.just(ShouldRetryResult.error(
+                    exceptionToThrow,
                     Quadruple.with(true, true, Duration.ofMillis(0), this.attemptCount)));
             }
 

@@ -15,8 +15,10 @@ import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.guava25.base.Supplier;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
@@ -29,6 +31,19 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class GoneAndRetryWithRetryPolicyTest {
     protected static final int TIMEOUT = 60000;
+
+    @DataProvider(name = "exceptionProvider")
+    public static Object[][] exceptionProvider() {
+        return new Object[][]{
+            // request type, exception type
+            { OperationType.Read, ServerBasedGoneException.class },
+            { OperationType.Read, ClientBasedGoneException.class },
+            { OperationType.Read, PartitionIsMigratingException.class },
+            { OperationType.Read, PartitionKeyRangeIsSplittingException.class },
+            { OperationType.Create, ServerBasedGoneException.class },
+            { OperationType.Create, ClientBasedGoneException.class }
+        };
+    }
 
     /**
      * Retry with GoneException for read, retried 4 times and verified the returned
@@ -239,6 +254,50 @@ public class GoneAndRetryWithRetryPolicyTest {
     }
 
     /**
+     * When gave up retrying, it should return service unavailable exception to up caller for the following exception:
+     * GoneException, PartitionIsMigratingException, PartitionKeyRangeIsSplittingException
+     */
+    @Test(groups = { "unit" }, dataProvider = "exceptionProvider", timeOut = TIMEOUT)
+    public void shouldReturnServiceUnavailableException(OperationType operationType, Class exceptionType) {
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            mockDiagnosticsClientContext(),
+            operationType,
+            ResourceType.Document);
+
+        CosmosException exception = null;
+        if (exceptionType == ServerBasedGoneException.class) {
+            GoneException goneException = new GoneException();
+            BridgeInternal.setSendingRequestStarted(goneException, true);
+            goneException.setIsBasedOn410ResponseFromService();
+            exception = goneException;
+        }
+        if (exceptionType == ClientBasedGoneException.class) {
+            exception = new GoneException();
+        }
+        if (exceptionType == PartitionIsMigratingException.class) {
+            exception = new PartitionIsMigratingException();
+        }
+        if (exceptionType == PartitionKeyRangeIsSplittingException.class) {
+            exception = new PartitionKeyRangeIsSplittingException();
+        }
+
+        if (exception == null) {
+            throw new IllegalArgumentException(exceptionType + " is not supported");
+        }
+
+        boolean shouldRetry = true;
+        ShouldRetryResult shouldRetryResult = null;
+
+        // at most have 1 retry
+        GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 0);
+        while (shouldRetry) {
+            shouldRetryResult = goneAndRetryWithRetryPolicy.shouldRetry(exception).block();
+            shouldRetry = shouldRetryResult.shouldRetry;
+        }
+        assertThat(shouldRetryResult.exception).isInstanceOf(ServiceUnavailableException.class);
+    }
+
+    /**
      * Retry with PartitionIsMigratingException
      */
     @Test(groups = { "unit" }, timeOut = TIMEOUT)
@@ -320,5 +379,8 @@ public class GoneAndRetryWithRetryPolicyTest {
         ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isFalse();
     }
+
+    class ServerBasedGoneException {}
+    class ClientBasedGoneException {}
 
 }

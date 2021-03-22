@@ -27,8 +27,12 @@ public class ShouldRetryResult {
     }
 
     public static ShouldRetryResult error(Exception e) {
+        return error(e, null);
+    }
+
+    public static ShouldRetryResult error(Exception e, Quadruple<Boolean, Boolean, Duration, Integer> policyArg) {
         Utils.checkNotNullOrThrow(e, "exception", "cannot be null");
-        return new ShouldRetryResult(null, e, false, null);
+        return new ShouldRetryResult(null, e, false, policyArg);
     }
 
     public static ShouldRetryResult noRetry() {
