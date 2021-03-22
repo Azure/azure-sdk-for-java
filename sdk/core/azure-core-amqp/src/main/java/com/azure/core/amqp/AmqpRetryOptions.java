@@ -21,7 +21,6 @@ public class AmqpRetryOptions {
     private Duration maxDelay;
     private Duration tryTimeout;
     private AmqpRetryMode retryMode;
-    private boolean distributedTransactionsSupport;
 
     /**
      * Creates an instance with the default retry options set.
@@ -135,16 +134,6 @@ public class AmqpRetryOptions {
     }
 
     /**
-     * Indicate if distributed transactions are supported across different entities.
-     * @param distributedTransactionsSupport if distributed transactions are supported across different entities.
-     * @return The updated {@link AmqpRetryOptions} object.
-     */
-    public AmqpRetryOptions setDistributedTransactionsSupport(boolean distributedTransactionsSupport) {
-        this.distributedTransactionsSupport = distributedTransactionsSupport;
-        return this;
-    }
-
-    /**
      * Gets the approach to use for calculating retry delays.
      *
      * @return The approach to use for calculating retry delays.
@@ -188,15 +177,6 @@ public class AmqpRetryOptions {
      */
     public Duration getTryTimeout() {
         return tryTimeout;
-    }
-
-    /**
-     * Indicate if distributed transactions are supported across different entities.
-     *
-     * @return true if distributed transactions across different entities are supported otherwise false is returned.
-     */
-    public boolean isDistributedTransactionsSupported() {
-        return this.distributedTransactionsSupport;
     }
 
     /**
