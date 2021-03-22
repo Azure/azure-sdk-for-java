@@ -31,14 +31,14 @@ public final class ModelsRepositoryAsyncClient {
     private static final String MODELS_REPOSITORY_TRACING_NAMESPACE_VALUE = "Azure.IoT.ModelsRepository";
     private final ModelsRepositoryServiceVersion serviceVersion;
     private final RepositoryHandler repositoryHandler;
-    private final ModelsDependencyResolution defaultDependencyResolutionOption;
+    private final ModelDependencyResolution defaultDependencyResolutionOption;
     private final URI repositoryUri;
 
     ModelsRepositoryAsyncClient(
         URI repositoryUri,
         HttpPipeline pipeline,
         ModelsRepositoryServiceVersion serviceVersion,
-        ModelsDependencyResolution dependencyResolutionOption) {
+        ModelDependencyResolution dependencyResolutionOption) {
 
         JacksonAdapter jacksonAdapter = new JacksonAdapter();
         this.serviceVersion = serviceVersion;
@@ -74,6 +74,8 @@ public final class ModelsRepositoryAsyncClient {
         return this.serviceVersion;
     }
 
+    // TODO: azabbasi: the name of the method. list*
+    // TODO: azabbasi: WithResponse?
     /**
      * Gets a collection of model definitions.
      *
@@ -90,16 +92,16 @@ public final class ModelsRepositoryAsyncClient {
      * Gets a collection of model definitions.
      *
      * @param dtmi A well-formed DTDL model Id. See <a href="https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md">DTDL specs</a>. For example 'dtmi:com:example:Thermostat;1'.
-     * @param dependencyResolution A {@link ModelsDependencyResolution} value to dictate model resolution behavior.
+     * @param dependencyResolution A {@link ModelDependencyResolution} value to dictate model resolution behavior.
      * @return A Map containing the model definition(s) and dependencies (if applicable) where the key is the dtmi
      * and the value is the raw model definition string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, String>> getModels(String dtmi, ModelsDependencyResolution dependencyResolution) {
+    public Mono<Map<String, String>> getModels(String dtmi, ModelDependencyResolution dependencyResolution) {
         return withContext(context -> getModels(dtmi, dependencyResolution, context));
     }
 
-    Mono<Map<String, String>> getModels(String dtmi, ModelsDependencyResolution dependencyResolution, Context context) {
+    Mono<Map<String, String>> getModels(String dtmi, ModelDependencyResolution dependencyResolution, Context context) {
         context = context.addData(AZ_TRACING_NAMESPACE_KEY, MODELS_REPOSITORY_TRACING_NAMESPACE_VALUE);
         return repositoryHandler.processAsync(dtmi, dependencyResolution, context);
     }
@@ -120,16 +122,16 @@ public final class ModelsRepositoryAsyncClient {
      * Gets a collection of model definitions.
      *
      * @param dtmis An Iterable of well-formed DTDL model Ids. See <a href="https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md">DTDL specs</a>. For example 'dtmi:com:example:Thermostat;1'.
-     * @param dependencyResolution A {@link ModelsDependencyResolution} value to dictate model resolution behavior.
+     * @param dependencyResolution A {@link ModelDependencyResolution} value to dictate model resolution behavior.
      * @return A Map containing the model definition(s) and dependencies (if applicable) where the key is the dtmi
      * and the value is the raw model definition string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, String>> getModels(Iterable<String> dtmis, ModelsDependencyResolution dependencyResolution) {
+    public Mono<Map<String, String>> getModels(Iterable<String> dtmis, ModelDependencyResolution dependencyResolution) {
         return withContext(context -> getModels(dtmis, dependencyResolution, context));
     }
 
-    Mono<Map<String, String>> getModels(Iterable<String> dtmis, ModelsDependencyResolution dependencyResolution, Context context) {
+    Mono<Map<String, String>> getModels(Iterable<String> dtmis, ModelDependencyResolution dependencyResolution, Context context) {
         context = context.addData(AZ_TRACING_NAMESPACE_KEY, MODELS_REPOSITORY_TRACING_NAMESPACE_VALUE);
         return repositoryHandler.processAsync(dtmis, dependencyResolution, context);
     }

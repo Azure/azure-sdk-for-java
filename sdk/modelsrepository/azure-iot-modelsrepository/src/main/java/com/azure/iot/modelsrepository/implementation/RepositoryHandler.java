@@ -7,7 +7,7 @@ import com.azure.core.exception.AzureException;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.iot.modelsrepository.DtmiConventions;
-import com.azure.iot.modelsrepository.ModelsDependencyResolution;
+import com.azure.iot.modelsrepository.ModelDependencyResolution;
 import com.azure.iot.modelsrepository.implementation.models.FetchResult;
 import com.azure.iot.modelsrepository.implementation.models.ModelMetadata;
 import reactor.core.publisher.Flux;
@@ -40,11 +40,11 @@ public final class RepositoryHandler {
         }
     }
 
-    public Mono<Map<String, String>> processAsync(String dtmi, ModelsDependencyResolution resolutionOptions, Context context) {
+    public Mono<Map<String, String>> processAsync(String dtmi, ModelDependencyResolution resolutionOptions, Context context) {
         return processAsync(Collections.singletonList(dtmi), resolutionOptions, context);
     }
 
-    public Mono<Map<String, String>> processAsync(Iterable<String> dtmis, ModelsDependencyResolution
+    public Mono<Map<String, String>> processAsync(Iterable<String> dtmis, ModelDependencyResolution
         resolutionOptions, Context context) {
 
         Map<String, String> processedModels = new HashMap<>();
@@ -57,7 +57,7 @@ public final class RepositoryHandler {
 
     private Flux<IntermediateFetchResult> processAsync(
         Queue<String> remainingWork,
-        ModelsDependencyResolution resolutionOption,
+        ModelDependencyResolution resolutionOption,
         Context context,
         Map<String, String> currentResults) {
 
@@ -93,7 +93,7 @@ public final class RepositoryHandler {
                 try {
                     ModelMetadata metadata = new ModelsQuery(response.getDefinition()).parseModel();
 
-                    if (resolutionOption == ModelsDependencyResolution.ENABLED || resolutionOption == ModelsDependencyResolution.TRY_FROM_EXPANDED) {
+                    if (resolutionOption == ModelDependencyResolution.ENABLED || resolutionOption == ModelDependencyResolution.TRY_FROM_EXPANDED) {
                         List<String> dependencies = metadata.getDependencies();
 
                         if (dependencies.size() > 0) {

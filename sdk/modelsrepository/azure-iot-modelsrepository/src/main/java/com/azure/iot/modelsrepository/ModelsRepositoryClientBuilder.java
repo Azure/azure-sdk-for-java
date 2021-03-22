@@ -43,13 +43,23 @@ public final class ModelsRepositoryClientBuilder {
     // These are the keys to the above properties file that define the client library's name and version for use in the user agent string
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
+    private static URI GLOBAL_REPOSITORY_URI;
+
+    static {
+        try {
+            GLOBAL_REPOSITORY_URI = new URI(ModelsRepositoryConstants.DEFAULT_MODELS_REPOSITORY_ENDPOINT);
+        } catch (URISyntaxException e) {
+            // We know it won't throw since it's a known endpoint and has been validated.
+        }
+    }
 
     private final List<HttpPipelinePolicy> additionalPolicies;
 
+    // TODO: azabbasi: does this have to be a string? why?
     // Fields with default values.
     private URI repositoryEndpoint;
 
-    private ModelsDependencyResolution modelDependencyResolution = ModelsDependencyResolution.TRY_FROM_EXPANDED;
+    private ModelDependencyResolution modelDependencyResolution = ModelDependencyResolution.TRY_FROM_EXPANDED;
 
     // optional/have default values
     private ModelsRepositoryServiceVersion serviceVersion;
@@ -77,11 +87,7 @@ public final class ModelsRepositoryClientBuilder {
         additionalPolicies = new ArrayList<>();
         properties = CoreUtils.getProperties(MODELS_REPOSITORY_PROPERTIES);
         httpLogOptions = new HttpLogOptions();
-        try {
-            this.repositoryEndpoint = new URI(ModelsRepositoryConstants.DEFAULT_MODELS_REPOSITORY_ENDPOINT);
-        } catch (URISyntaxException e) {
-            // We know it won't throw since it's a known endpoint and has been validated.
-        }
+        this.repositoryEndpoint = GLOBAL_REPOSITORY_URI;
     }
 
     private static HttpPipeline constructPipeline(
@@ -200,7 +206,7 @@ public final class ModelsRepositoryClientBuilder {
      * @param modelDependencyResolution A DependencyResolutionOption value to force model resolution behavior.
      * @return the updated ModelsRepositoryClientBuilder instance for fluent building.
      */
-    public ModelsRepositoryClientBuilder modelDependencyResolution(ModelsDependencyResolution modelDependencyResolution) {
+    public ModelsRepositoryClientBuilder modelDependencyResolution(ModelDependencyResolution modelDependencyResolution) {
         this.modelDependencyResolution = modelDependencyResolution;
         return this;
     }

@@ -7,7 +7,7 @@ import com.azure.core.exception.AzureException;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.iot.modelsrepository.DtmiConventions;
-import com.azure.iot.modelsrepository.ModelsDependencyResolution;
+import com.azure.iot.modelsrepository.ModelDependencyResolution;
 import com.azure.iot.modelsrepository.implementation.models.FetchResult;
 import reactor.core.publisher.Mono;
 
@@ -16,6 +16,8 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.Queue;
+
+// TODO: azabbasi : How to wrap it in a Mono.defer()
 
 /**
  * The {@link HttpModelFetcher} is an implementation of {@link ModelFetcher} interface
@@ -31,10 +33,10 @@ class HttpModelFetcher implements ModelFetcher {
     }
 
     @Override
-    public Mono<FetchResult> fetchAsync(String dtmi, URI repositoryUri, ModelsDependencyResolution resolutionOption, Context context) {
+    public Mono<FetchResult> fetchAsync(String dtmi, URI repositoryUri, ModelDependencyResolution resolutionOption, Context context) {
         Queue<String> work = new LinkedList<>();
         try {
-            if (resolutionOption == ModelsDependencyResolution.TRY_FROM_EXPANDED) {
+            if (resolutionOption == ModelDependencyResolution.TRY_FROM_EXPANDED) {
                 work.add(getPath(dtmi, repositoryUri, true));
             }
             work.add(getPath(dtmi, repositoryUri, false));

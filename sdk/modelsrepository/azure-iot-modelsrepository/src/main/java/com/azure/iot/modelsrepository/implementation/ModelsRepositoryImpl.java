@@ -61,6 +61,8 @@ public final class ModelsRepositoryImpl {
             return Mono.error(new IllegalArgumentException("Parameter 'path' is required and cannot be null."));
         }
 
+        // TODO: azabbasi: how do we hide the original exception stack trace? it clutters the console logs
+        // TODO: What is the best exception to throw here, considering we can't parse the output.
         return service.getModelFromPath(
             this.client.getHost(), path, context)
             .onErrorMap(error ->

@@ -45,7 +45,7 @@ public final class DtmiConventions {
             return false;
         }
 
-        return VALID_DTMI_PATTERN.matcher(dtmi).find();
+        return VALID_DTMI_PATTERN.matcher(dtmi).matches();
     }
 
     /**
@@ -55,6 +55,7 @@ public final class DtmiConventions {
      * @param repositoryUri The repository uri
      * @param expanded Is model from precomputed values
      * @return The model uri
+     * Will throw an {@link IllegalArgumentException} if the provided dtmi is not valid.
      */
     public static URI getModelUri(String dtmi, URI repositoryUri, boolean expanded) {
         String dtmiPath = dtmiToPath(dtmi);

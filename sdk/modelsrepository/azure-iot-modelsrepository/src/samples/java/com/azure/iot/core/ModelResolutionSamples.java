@@ -7,7 +7,7 @@ import com.azure.iot.modelsrepository.DtmiConventions;
 import com.azure.iot.modelsrepository.ModelsRepositoryAsyncClient;
 import com.azure.iot.modelsrepository.ModelsRepositoryClient;
 import com.azure.iot.modelsrepository.ModelsRepositoryClientBuilder;
-import com.azure.iot.modelsrepository.ModelsDependencyResolution;
+import com.azure.iot.modelsrepository.ModelDependencyResolution;
 
 import java.net.URI;
 import java.util.Arrays;
@@ -49,7 +49,7 @@ public class ModelResolutionSamples {
         // with a local URI and disabling model dependency resolution.
         clientBuilder
             .repositoryEndpoint(LOCAL_DIRECTORY_URI)
-            .modelDependencyResolution(ModelsDependencyResolution.DISABLED);
+            .modelDependencyResolution(ModelDependencyResolution.DISABLED);
         asyncClient = clientBuilder.buildAsyncClient();
         syncClient = clientBuilder.buildClient();
 

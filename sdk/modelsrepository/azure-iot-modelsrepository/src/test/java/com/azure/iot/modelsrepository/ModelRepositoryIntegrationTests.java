@@ -84,7 +84,7 @@ class ModelRepositoryIntegrationTests extends ModelsRepositoryTestBase {
         ModelsRepositoryAsyncClient client = getAsyncClient(httpClient, serviceVersion, repositoryUri);
 
         StepVerifier
-            .create(client.getModels(dtmi, ModelsDependencyResolution.DISABLED))
+            .create(client.getModels(dtmi, ModelDependencyResolution.DISABLED))
             .assertNext(model -> Assertions.assertTrue(model.keySet().size() == 1 && model.containsKey(dtmi)))
             .verifyComplete();
     }

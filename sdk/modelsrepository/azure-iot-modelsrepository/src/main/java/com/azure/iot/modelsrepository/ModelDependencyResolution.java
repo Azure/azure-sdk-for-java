@@ -6,7 +6,7 @@ package com.azure.iot.modelsrepository;
 /**
  * The model dependency resolution options.
  */
-public enum ModelsDependencyResolution {
+public enum ModelDependencyResolution {
     /**
      * Disable model dependency resolution.
      */
@@ -19,7 +19,7 @@ public enum ModelsDependencyResolution {
 
     /**
      * Try to get pre-computed model dependencies using .expanded.json.
-     * If the model expanded form does not exist, it will fall back to {@link ModelsDependencyResolution#ENABLED}.
+     * If the model expanded form does not exist, it will fall back to {@link ModelDependencyResolution#ENABLED}.
      */
     TRY_FROM_EXPANDED,
 }
