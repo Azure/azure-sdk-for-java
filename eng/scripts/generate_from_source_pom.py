@@ -233,7 +233,7 @@ def main():
         print(fromSourcePom.read())
 
     print('elapsed_time={}'.format(elapsed_time))
-    print('Total time for replacement: {}'.format(str(timedelta(seconds=elapsed_time))))
+    print('Total time for replacement: {} seconds'.format(str(timedelta(seconds=elapsed_time))))
 
 if __name__ == '__main__':
     main()
