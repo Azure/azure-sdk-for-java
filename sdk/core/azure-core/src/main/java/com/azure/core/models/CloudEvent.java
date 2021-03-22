@@ -76,8 +76,7 @@ public final class CloudEvent {
         new TypeReference<List<CloudEvent>>() {
         };
     private static final ClientLogger LOGGER = new ClientLogger(CloudEvent.class);
-    private static final Set<String> RESERVED_ATTRIBUTE_NAMES = new HashSet<>() {
-        {
+    private static final Set<String> RESERVED_ATTRIBUTE_NAMES = new HashSet<String>() {{
             add("specversion");
             add("id");
             add("source");
