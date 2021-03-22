@@ -18,7 +18,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
@@ -32,7 +31,6 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -231,8 +229,7 @@ public class AppServiceTest extends ResourceManagerTestBase {
     }
 
     private static Mono<Response<String>> stringResponse(Mono<HttpResponse> responseMono) {
-        return responseMono.flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getBody())
-            .map(bytes -> new String(bytes, StandardCharsets.UTF_8))
+        return responseMono.flatMap(response -> response.getBodyAsString()
             .map(str -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), str)));
     }
 

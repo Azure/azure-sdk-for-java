@@ -7,7 +7,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.util.FluxUtil;
+import com.azure.core.http.HttpResponse;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -114,7 +114,6 @@ class Utils {
                 } else {
                     return Mono.error(new HttpResponseException(response1));
                 }
-            })
-            .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getBody()));
+            }).flatMap(HttpResponse::getBodyAsByteArray);
     }
 }

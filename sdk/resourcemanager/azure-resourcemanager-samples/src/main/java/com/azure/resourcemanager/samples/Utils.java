@@ -17,7 +17,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -3416,8 +3415,7 @@ public final class Utils {
     }
 
     private static Mono<Response<String>> stringResponse(Mono<HttpResponse> responseMono) {
-        return responseMono.flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getBody())
-                .map(bytes -> new String(bytes, StandardCharsets.UTF_8))
+        return responseMono.flatMap(response -> response.getBodyAsString()
                 .map(str -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), str)));
     }
 
