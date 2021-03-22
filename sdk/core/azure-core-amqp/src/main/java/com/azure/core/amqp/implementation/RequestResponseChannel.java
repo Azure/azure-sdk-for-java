@@ -387,13 +387,6 @@ public class RequestResponseChannel implements Disposable {
     }
 
     private boolean onEmitSinkFailure(SignalType signalType, Sinks.EmitResult emitResult, String message) {
-        logger.warning("connectionId[{}] linkName[{}] signal[{}] result[{}] {}",
-            connectionId, linkName, signalType, emitResult, message);
-
-        return false;
-    }
-
-    private boolean onEmitSinkFailure(SignalType signalType, Sinks.EmitResult emitResult, String message) {
         logger.verbose("connectionId[{}] linkName[{}] signal[{}] result[{}] {}",
             connectionId, linkName, signalType, emitResult, message);
 
