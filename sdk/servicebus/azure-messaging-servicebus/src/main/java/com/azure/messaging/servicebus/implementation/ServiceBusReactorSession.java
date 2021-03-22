@@ -164,6 +164,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
             linkProperties.put(ENTITY_TYPE_PROPERTY, entityType.getValue());
         }
 
+
         final SenderSettleMode senderSettleMode;
         final ReceiverSettleMode receiverSettleMode;
         switch (receiveMode) {

@@ -109,10 +109,6 @@ final class TransactionCoordinator implements AmqpTransactionCoordinator, Dispos
             });
     }
 
-    AmqpSendLink getLink() {
-        return sendLink;
-    }
-
     @Override
     public void dispose() {
         if (isDisposed.getAndSet(true)) {

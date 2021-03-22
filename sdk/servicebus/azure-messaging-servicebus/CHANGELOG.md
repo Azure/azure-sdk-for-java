@@ -2,7 +2,7 @@
 
 ## 7.2.0-beta.1 (2021-03-18)
 ### New Features
-- Added support for distributed transactions across entities. Added API 'ServiceBusClientBuilder.enableCrossEntityTransactions()'.
+- Added support for distributed transactions across entities via API 'ServiceBusClientBuilder.enableCrossEntityTransactions()'.
 
 ## 7.1.0 (2021-03-10)
 ### Bug Fixes

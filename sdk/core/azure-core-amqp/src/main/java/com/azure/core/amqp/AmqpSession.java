@@ -93,9 +93,11 @@ public interface AmqpSession extends Disposable {
     Mono<Void> rollbackTransaction(AmqpTransaction transaction);
 
     /**
-     * Creates the transaction coordinator on the {@link AmqpSession}. The {@link AmqpTransactionCoordinator} is used
-     * to create/commit and rollback the transaction. The classes implementing this interface must override and provide
-     * implementation of this API.
+     * Creates the {@link AmqpTransactionCoordinator} on the {@link AmqpSession} which is used to create/commit or
+     * rollback the transaction. A transaction can span over one or more message broker entities. The interface
+     * {@link AmqpSession} provides default implementation for back-word compatibility but it throws
+     * {@link RuntimeException} to warn what that an implementing class must override and provide implementation of this
+     * API. Azure SDK already provides implementation for this API.
      *
      * @return newly created {@link AmqpTransactionCoordinator}.
      * @throws RuntimeException Indicting implementation not found error. Azure SDK should provide implementation of
