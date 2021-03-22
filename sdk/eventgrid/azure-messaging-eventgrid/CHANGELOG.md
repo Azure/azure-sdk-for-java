@@ -1,7 +1,8 @@
 # Release History
 
-## 4.1.0-beta.1 (Unreleased)
-
+## 4.0.1 (2020-03-23)
+### Bug Fixes
+- Corrected event types in `SystemEventNames` for system event data `AcsChatParticipantRemovedFromThreadEventData` and `AcsChatParticipantAddedToThreadEventData`.
 
 ## 4.0.0 (2020-03-11)
 ### New Features

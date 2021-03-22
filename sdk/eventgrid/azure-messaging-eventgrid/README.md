@@ -47,7 +47,7 @@ az eventgrid domain create --location <location> --resource-group <your-resource
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventgrid</artifactId>
-    <version>4.0.0</version>
+    <version>4.0.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
