@@ -195,8 +195,9 @@ public final class ChatThreadAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> addParticipant(ChatParticipant participant) {
         return withContext(context -> {
-            addParticipantWithResponse(participant, context);
-            return Mono.empty();
+            return addParticipantWithResponse(participant, context).flatMap(resp -> {
+                return Mono.empty();
+            });
         });
     }
 
