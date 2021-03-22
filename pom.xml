@@ -60,9 +60,7 @@
         <module>sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>
 
         <!-- Form Recognizer -->
-        <!-- Form Recognizer samples directory has some non-Java files (images, PDFs etc) that are causing
-        the codesnippet plugin to fail. Commenting FR module until it's fixed -->
-<!--        <module>sdk/formrecognizer/azure-ai-formrecognizer</module>-->
+        <module>sdk/formrecognizer/azure-ai-formrecognizer</module>
 
         <!-- Identity -->
         <module>sdk/identity/azure-identity</module>
