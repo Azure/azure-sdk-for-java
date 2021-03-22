@@ -7,8 +7,8 @@ In this sample, a secret named `spring-data-source-url` is stored into an Azure 
 
 ## Getting started
 
-### Environment checklist
-We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
+### Prerequisites
+- [Environment checklist][environment_checklist]
 
 ### Store Secret
 We need to store secret `spring-data-source-url` into Azure Key Vault.
@@ -133,6 +133,6 @@ mvn spring-boot:run
 
 <!-- links -->
 [version_link]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-secrets/src/main/java/com/azure/security/keyvault/secrets/SecretServiceVersion.java#L12
-[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [certificate-based-authentication]: https://docs.microsoft.com/cli/azure/create-an-azure-service-principal-azure-cli#certificate-based-authentication
 [assign-an-access-policy]: https://docs.microsoft.com/azure/key-vault/general/assign-access-policy-portal#assign-an-access-policy

@@ -31,15 +31,20 @@ class AzureTokenManagerProviderTest {
 
     @Mock
     private ClaimsBasedSecurityNode cbsNode;
+    private AutoCloseable mocksCloseable;
 
     @BeforeEach
     void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
     }
 
     @AfterEach
-    void teardown() {
+    void teardown() throws Exception {
         Mockito.framework().clearInlineMocks();
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     @Test

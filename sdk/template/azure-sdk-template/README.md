@@ -125,6 +125,10 @@ provides more information on configuring or changing the HTTP client.
 * If you think there's a good chance that developers might stumble across your package in error (because they're searching 
   for specific functionality and mistakenly think the package provides that functionality), point them to the packages 
   they might be looking for.
+  
+* After adding the new SDK, you need to include the package in the following locations
+1. version_client.txt - include the package with the version.
+2. parent pom - <enlistmentroot>\pom.xml - Multiple places in the file.
 
 ## Contributing
 

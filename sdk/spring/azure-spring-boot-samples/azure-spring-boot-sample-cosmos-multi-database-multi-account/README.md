@@ -3,8 +3,8 @@
 ## Key concepts
 ## Getting started
 
-### Environment checklist
-We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
+### Prerequisites
+- [Environment checklist][environment_checklist]
 
 ### Configure Cosmos Database
 1. Log into <https://portal.azure.com>.
@@ -84,4 +84,4 @@ The corresponding data is added to the mysql database and cosmos database
 ## Contributing
 
 <!-- LINKS -->
-[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist

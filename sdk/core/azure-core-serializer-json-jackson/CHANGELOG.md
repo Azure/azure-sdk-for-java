@@ -2,6 +2,12 @@
 
 ## 1.3.0-beta.1 (Unreleased)
 
+## 1.2.1 (2021-03-19)
+
+### Bug Fixes
+
+- Fix a bug where `ClassNotFoundException` or `MethodNotFoundException` was thrown when Jackson 2.11 is resolved
+  instead of Jackson 2.12. [#19897](https://github.com/Azure/azure-sdk-for-java/issues/19897)
 
 ## 1.2.0 (2021-03-08)
 

@@ -3,10 +3,10 @@
 
 package com.azure.communication.chat;
 
-import com.azure.communication.chat.models.AddChatParticipantsOptions;
-import com.azure.communication.chat.models.ChatMessage;
 
-import com.azure.communication.chat.models.ChatThread;
+import com.azure.communication.chat.models.ChatMessage;
+import com.azure.communication.chat.models.SendChatMessageResult;
+import com.azure.communication.chat.models.ChatThreadProperties;
 import com.azure.communication.chat.models.ChatParticipant;
 import com.azure.communication.chat.models.ChatMessageReadReceipt;
 import com.azure.communication.chat.models.CreateChatThreadOptions;
@@ -81,10 +81,10 @@ public class ReadmeSamples {
         participants.add(firstParticipant);
         participants.add(secondParticipant);
 
-        CreateChatThreadOptions createChatThreadOptions = new CreateChatThreadOptions()
-            .setTopic("Topic")
+        CreateChatThreadOptions createChatThreadOptions = new CreateChatThreadOptions("Topic")
             .setParticipants(participants);
         CreateChatThreadResult result = chatClient.createChatThread(createChatThreadOptions);
+
         String chatThreadId = result.getChatThread().getId();
     }
 
@@ -94,8 +94,8 @@ public class ReadmeSamples {
     public void getChatThread() {
         ChatClient chatClient = createChatClient();
 
-        String chatThreadId = "Id";
-        ChatThread chatThread = chatClient.getChatThread(chatThreadId);
+        ChatThreadClient chatThreadClient = chatClient.getChatThreadClient("Id");
+        ChatThreadProperties chatThreadProperties = chatThreadClient.getProperties();
     }
 
     /**
@@ -145,7 +145,7 @@ public class ReadmeSamples {
             .setSenderDisplayName("Sender Display Name");
 
 
-        String chatMessageId = chatThreadClient.sendMessage(sendChatMessageOptions);
+        SendChatMessageResult sendResult = chatThreadClient.sendMessage(sendChatMessageOptions);
     }
 
     /**
@@ -217,6 +217,7 @@ public class ReadmeSamples {
      * Sample code adding chat participants using the sync chat thread client.
      */
     public void addChatParticipants() {
+
         ChatThreadClient chatThreadClient = getChatThreadClient();
 
         CommunicationUserIdentifier user1 = new CommunicationUserIdentifier("Id 1");
@@ -232,12 +233,11 @@ public class ReadmeSamples {
             .setCommunicationIdentifier(user2)
             .setDisplayName("Display Name 2");
 
+
         participants.add(firstParticipant);
         participants.add(secondParticipant);
 
-        AddChatParticipantsOptions addChatParticipantsOptions = new AddChatParticipantsOptions()
-            .setParticipants(participants);
-        chatThreadClient.addParticipants(addChatParticipantsOptions);
+        chatThreadClient.addParticipants(participants);
     }
 
     /**

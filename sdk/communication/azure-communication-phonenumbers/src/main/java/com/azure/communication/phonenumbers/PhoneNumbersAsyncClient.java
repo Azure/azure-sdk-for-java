@@ -6,19 +6,22 @@ import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClien
 import com.azure.communication.phonenumbers.implementation.PhoneNumbersImpl;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersPurchasePhoneNumbersResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberPurchaseRequest;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumberRawOperation;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberSearchRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersSearchAvailablePhoneNumbersResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReleasePhoneNumberResponse;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUpdateCapabilitiesResponse;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
+import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
-import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperationStatus;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
+import com.azure.communication.phonenumbers.models.PurchasePhoneNumbersResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -124,6 +127,7 @@ public final class PhoneNumbersAsyncClient {
      * @param searchOptions The phone number search options.
      * @return A {@link PollerFlux} object with the reservation result.
      * @throws NullPointerException if {@code countryCode} or {@code searchRequest} is null.
+     * @throws RuntimeException if search operation fails.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
@@ -177,7 +181,7 @@ public final class PhoneNumbersAsyncClient {
                 .flatMap((PhoneNumbersSearchAvailablePhoneNumbersResponse response) -> {
                     pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
                     pollingContext.setData("searchId", response.getDeserializedHeaders().getSearchId());
-                    return client.getOperationAsync(pollingContext.getData("operationId"));
+                    return getOperation(pollingContext.getData("operationId"));
                 });
             });
         };
@@ -186,7 +190,7 @@ public final class PhoneNumbersAsyncClient {
     private Function<PollingContext<PhoneNumberOperation>, Mono<PollResponse<PhoneNumberOperation>>>
         pollOperation() {
         return (pollingContext) -> {
-            return client.getOperationAsync(pollingContext.getData("operationId"))
+            return getOperation(pollingContext.getData("operationId"))
             .flatMap(operation -> {
                 if (operation.getStatus().toString().equalsIgnoreCase(PhoneNumberOperationStatus.SUCCEEDED.toString())) {
                     return Mono.just(new PollResponse<>(
@@ -233,20 +237,21 @@ public final class PhoneNumbersAsyncClient {
      * @param searchId ID of the search.
      * @return A {@link PollerFlux} object.
      * @throws NullPointerException if {@code searchId} is null.
+     * @throws RuntimeException if purchase operation fails.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PhoneNumberOperation, Void> beginPurchasePhoneNumbers(String searchId) {
+    public PollerFlux<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId) {
         return beginPurchasePhoneNumbers(searchId, null);
     }
 
-    PollerFlux<PhoneNumberOperation, Void> beginPurchasePhoneNumbers(String searchId, Context context) {
+    PollerFlux<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId, Context context) {
         try {
             Objects.requireNonNull(searchId, "'searchId' cannot be null.");
             return new PollerFlux<>(defaultPollInterval,
                 purchaseNumbersInitOperation(searchId, context),
                 pollOperation(),
                 (pollingContext, firstResponse) -> Mono.error(logger.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
-                (pollingContext) -> Mono.empty());
+                (pollingContext) -> Mono.just(new PurchasePhoneNumbersResult()));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -262,7 +267,7 @@ public final class PhoneNumbersAsyncClient {
                 return client.purchasePhoneNumbersWithResponseAsync(new PhoneNumberPurchaseRequest().setSearchId(searchId), contextValue)
                 .flatMap((PhoneNumbersPurchasePhoneNumbersResponse response) -> {
                     pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
-                    return client.getOperationAsync(pollingContext.getData("operationId"));
+                    return getOperation(pollingContext.getData("operationId"));
                 });
             });
         };
@@ -277,20 +282,21 @@ public final class PhoneNumbersAsyncClient {
      *                    as %2B.
      * @return A {@link PollerFlux} object.
      * @throws NullPointerException if {@code phoneNumber} is null.
+     * @throws RuntimeException if release operation fails.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PhoneNumberOperation, Void> beginReleasePhoneNumber(String phoneNumber) {
+    public PollerFlux<PhoneNumberOperation, ReleasePhoneNumberResult> beginReleasePhoneNumber(String phoneNumber) {
         return beginReleasePhoneNumber(phoneNumber, null);
     }
 
-    PollerFlux<PhoneNumberOperation, Void> beginReleasePhoneNumber(String phoneNumber, Context context) {
+    PollerFlux<PhoneNumberOperation, ReleasePhoneNumberResult> beginReleasePhoneNumber(String phoneNumber, Context context) {
         try {
             Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
             return new PollerFlux<>(defaultPollInterval,
                 releaseNumberInitOperation(phoneNumber, context),
                 pollOperation(),
                 (pollingContext, firstResponse) -> Mono.error(logger.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
-                (pollingContext) -> Mono.empty());
+                (pollingContext) -> Mono.just(new ReleasePhoneNumberResult()));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -306,7 +312,7 @@ public final class PhoneNumbersAsyncClient {
                 return client.releasePhoneNumberWithResponseAsync(phoneNumber, contextValue)
                 .flatMap((PhoneNumbersReleasePhoneNumberResponse response) -> {
                     pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
-                    return client.getOperationAsync(pollingContext.getData("operationId"));
+                    return getOperation(pollingContext.getData("operationId"));
                 });
             });
         };
@@ -316,24 +322,27 @@ public final class PhoneNumbersAsyncClient {
      * Update capabilities of a purchased phone number.
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
      *                    as %2B.
-     * @param capabilitiesUpdateRequest Update capabilities of a purchased phone number.
+     * @param capabilities Update capabilities of a purchased phone number.
      * @return A {@link PollerFlux} object.
-     * @throws NullPointerException if {@code phoneNumber} or {@code capabilitiesUpdateRequest} is null.
+     * @throws NullPointerException if {@code phoneNumber} or {@code capabilities} is null.
+     * @throws RuntimeException if update capabilities operation fails.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PhoneNumberOperation, PurchasedPhoneNumber>
-        beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest) {
-        return beginUpdatePhoneNumberCapabilities(phoneNumber, capabilitiesUpdateRequest, null);
+        beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilities capabilities) {
+        return beginUpdatePhoneNumberCapabilities(phoneNumber, capabilities, null);
     }
 
     PollerFlux<PhoneNumberOperation, PurchasedPhoneNumber>
-        beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest, Context context) {
+        beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilities capabilities, Context context) {
         try {
             Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
-            Objects.requireNonNull(capabilitiesUpdateRequest, "'capabilitiesUpdateRequest' cannot be null.");
-
+            Objects.requireNonNull(capabilities, "'capabilities' cannot be null.");
+            PhoneNumberCapabilitiesRequest capabilitiesRequest = new PhoneNumberCapabilitiesRequest()
+                .setCalling(capabilities.getCalling())
+                .setSms(capabilities.getSms());
             return new PollerFlux<>(defaultPollInterval,
-                updateNumberCapabilitiesInitOperation(phoneNumber, capabilitiesUpdateRequest, context),
+                updateNumberCapabilitiesInitOperation(phoneNumber, capabilitiesRequest, context),
                 pollOperation(),
                 (pollingContext, firstResponse) -> Mono.error(logger.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
                 updateNumberCapabilitiesFetchFinalResultOperation(phoneNumber));
@@ -352,7 +361,7 @@ public final class PhoneNumbersAsyncClient {
                 return client.updateCapabilitiesWithResponseAsync(phoneNumber, capabilitiesUpdateRequest, contextValue)
                 .flatMap((PhoneNumbersUpdateCapabilitiesResponse response) -> {
                     pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
-                    return client.getOperationAsync(pollingContext.getData("operationId"));
+                    return getOperation(pollingContext.getData("operationId"));
                 });
             });
         };
@@ -365,4 +374,20 @@ public final class PhoneNumbersAsyncClient {
         };
     }
 
+    private Mono<PhoneNumberOperation> getOperation(String operationId) {
+        return client.getOperationAsync(operationId)
+            .flatMap((PhoneNumberRawOperation rawOperation) -> {
+                if (rawOperation.getError() != null) {
+                    return monoError(logger, new RuntimeException(rawOperation.getError().getMessage()));
+                }
+                PhoneNumberOperation operation = new PhoneNumberOperation(
+                    rawOperation.getStatus(),
+                    rawOperation.getResourceLocation(),
+                    rawOperation.getCreatedDateTime(),
+                    rawOperation.getId(),
+                    rawOperation.getOperationType(),
+                    rawOperation.getLastActionDateTime());
+                return Mono.just(operation);
+            });
+    }
 }

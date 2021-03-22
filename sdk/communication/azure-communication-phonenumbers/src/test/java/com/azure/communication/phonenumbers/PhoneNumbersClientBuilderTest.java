@@ -109,6 +109,17 @@ public class PhoneNumbersClientBuilderTest {
     }
 
     @Test()
+    public void buildClientWithServiceVersion() {
+        // Build client with required settings and mock configuration
+        PhoneNumbersClient phoneNumberClient = this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
+            .serviceVersion(PhoneNumbersServiceVersion.V2021_03_07)
+            .buildClient();
+
+        // Validate client created with expected settings
+        assertNotNull(phoneNumberClient);
+    }
+
+    @Test()
     public void buildClientWithOneAdditionalPolicy() {
         ClientBuilderSpyHelper spyHelper = new ClientBuilderSpyHelper(this.clientBuilder);
         List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
@@ -222,6 +233,19 @@ public class PhoneNumbersClientBuilderTest {
         validateConfiguration(spyHelper, configuration);
     }
 
+
+    @Test()
+    public void buildAsyncClientWithServiceVersion() {
+        // Build client with required settings and mock configuration
+        PhoneNumbersAsyncClient phoneNumberAsyncClient =
+            this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
+                .serviceVersion(PhoneNumbersServiceVersion.V2021_03_07)
+                .buildAsyncClient();
+
+        // Validate client created with expected settings
+        assertNotNull(phoneNumberAsyncClient);
+    }
+
     @Test()
     public void buildAsyncClientWithOneAdditionalPolicy() {
         ClientBuilderSpyHelper spyHelper = new ClientBuilderSpyHelper(this.clientBuilder);
@@ -257,35 +281,35 @@ public class PhoneNumbersClientBuilderTest {
     }
 
     @Test()
-    public void buildAsyncClientNoEndpoint() {
+    public void buildAsyncClientNoEndpointThrows() {
         assertThrows(NullPointerException.class, () -> {
             this.clientBuilder.buildClient();
         });
     }
 
     @Test()
-    public void buildAsyncClientNoPipelineNoHttpClient() {
+    public void buildAsyncClientNoPipelineNoHttpClientThrows() {
         assertThrows(NullPointerException.class, () -> {
             this.clientBuilder.endpoint(ENDPOINT).credential(new AzureKeyCredential(ACCESSKEY)).buildClient();
         });
     }
 
     @Test()
-    public void buildAsyncClientNoPipelineNoCredentials() {
+    public void buildAsyncClientNoPipelineNoCredentialsThrows() {
         assertThrows(NullPointerException.class, () -> {
             this.clientBuilder.endpoint(ENDPOINT).httpClient(this.httpClient).buildClient();
         });
     }
 
     @Test()
-    public void setEndpointNull() {
+    public void setEndpointNullThrows() {
         assertThrows(NullPointerException.class, () -> {
             this.clientBuilder.endpoint(null);
         });
     }
 
     @Test()
-    public void addPolicyNull() {
+    public void addPolicyNullThrows() {
         assertThrows(NullPointerException.class, () -> {
             this.clientBuilder.addPolicy(null);
         });

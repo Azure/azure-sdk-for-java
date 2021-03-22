@@ -72,6 +72,7 @@ class ReactorReceiverTest {
 
     private ReceiveLinkHandler receiverHandler;
     private ReactorReceiver reactorReceiver;
+    private AutoCloseable mocksCloseable;
 
     @BeforeAll
     static void beforeAll() {
@@ -85,7 +86,7 @@ class ReactorReceiverTest {
 
     @BeforeEach
     void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
 
         when(cbsNode.authorize(any(), any())).thenReturn(Mono.empty());
 
@@ -105,12 +106,12 @@ class ReactorReceiverTest {
     }
 
     @AfterEach
-    void teardown() {
+    void teardown() throws Exception {
         Mockito.framework().clearInlineMocks();
 
-        receiver = null;
-        cbsNode = null;
-        event = null;
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     /**
@@ -143,7 +144,6 @@ class ReactorReceiverTest {
             .then(() -> receiverHandler.onLinkRemoteOpen(event))
             .expectNext(AmqpEndpointState.ACTIVE)
             .then(() -> receiverHandler.close())
-            .expectNext(AmqpEndpointState.CLOSED)
             .verifyComplete();
     }
 
