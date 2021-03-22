@@ -137,7 +137,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
         capabilities.setCalling(PhoneNumberCapabilityType.INBOUND);
         capabilities.setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
-        PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setAreaCode(AREA_CODE).setQuantity(1);
+        PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setQuantity(1);
 
         if (withContext) {
             return setPollInterval(getClientWithConnectionString(httpClient, testName).beginSearchAvailablePhoneNumbers(
