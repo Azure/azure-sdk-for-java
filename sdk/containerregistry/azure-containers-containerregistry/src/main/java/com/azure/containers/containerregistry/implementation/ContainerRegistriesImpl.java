@@ -55,7 +55,7 @@ public final class ContainerRegistriesImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ContainerRegistryCon")
-    private interface ContainerRegistriesService {
+    public interface ContainerRegistriesService {
         @Get("/v2/")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)

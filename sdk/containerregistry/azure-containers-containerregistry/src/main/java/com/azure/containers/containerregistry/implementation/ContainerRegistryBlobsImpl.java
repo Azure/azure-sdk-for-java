@@ -65,7 +65,7 @@ public final class ContainerRegistryBlobsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ContainerRegistryCon")
-    private interface ContainerRegistryBlobsService {
+    public interface ContainerRegistryBlobsService {
         @Get("/v2/{name}/blobs/{digest}")
         @ExpectedResponses({200, 307})
         @UnexpectedResponseExceptionType(HttpResponseException.class)

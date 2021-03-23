@@ -1,4 +1,4 @@
-# Azure Containers ContainerRegistry APIs for Java
+# Azure Container Registry client library swagger file
 
 > see https://aka.ms/autorest
 
@@ -39,4 +39,5 @@ license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 context-client-method-parameter: true
 models-subpackage: implementation.models
+service-interface-as-public: true
 ```

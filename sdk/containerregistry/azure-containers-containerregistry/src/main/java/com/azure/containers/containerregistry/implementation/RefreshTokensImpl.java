@@ -48,7 +48,7 @@ public final class RefreshTokensImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ContainerRegistryRef")
-    private interface RefreshTokensService {
+    public interface RefreshTokensService {
         // @Multipart not supported by RestProxy
         @Post("/oauth2/exchange")
         @ExpectedResponses({200})

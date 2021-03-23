@@ -50,7 +50,7 @@ public final class AccessTokensImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ContainerRegistryAcc")
-    private interface AccessTokensService {
+    public interface AccessTokensService {
         // @Multipart not supported by RestProxy
         @Post("/oauth2/token")
         @ExpectedResponses({200})

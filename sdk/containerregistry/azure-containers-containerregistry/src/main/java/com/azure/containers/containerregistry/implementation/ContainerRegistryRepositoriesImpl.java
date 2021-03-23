@@ -69,7 +69,7 @@ public final class ContainerRegistryRepositoriesImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ContainerRegistryCon")
-    private interface ContainerRegistryRepositoriesService {
+    public interface ContainerRegistryRepositoriesService {
         @Get("/v2/{name}/manifests/{reference}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
