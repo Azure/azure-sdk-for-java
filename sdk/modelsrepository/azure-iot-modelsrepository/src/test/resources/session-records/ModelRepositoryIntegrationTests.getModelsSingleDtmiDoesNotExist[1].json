@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.azure.com/%2Fdtmi%2Fcom%2Fexample%2Fthermostatddd-1.expanded.json",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-iot-modelsrepository/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "8c61ce16-ba29-4396-afcb-ec7781d2dcd9"
+      "x-ms-client-request-id" : "d0349350-4250-4820-ad3d-f53eff1b4db9"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -13,12 +13,12 @@
       "retry-after" : "0",
       "StatusCode" : "404",
       "Access-Control-Allow-Headers" : "*",
-      "Date" : "Tue, 23 Mar 2021 20:01:52 GMT",
+      "Date" : "Tue, 23 Mar 2021 20:19:36 GMT",
       "Access-Control-Expose-Headers" : "*",
       "x-ms-error-code" : "WebContentNotFound",
       "Content-Length" : "321",
-      "x-ms-request-id" : "61eeaf3d-401e-0007-5a1f-20e67d000000",
-      "Body" : "<!DOCTYPE html><html><head><title>WebContentNotFound</title></head><body><h1>The requested content does not exist.</h1><p><ul><li>HttpStatusCode: 404</li><li>ErrorCode: WebContentNotFound</li><li>RequestId : 61eeaf3d-401e-0007-5a1f-20e67d000000</li><li>TimeStamp : 2021-03-23T20:01:52.3840288Z</li></ul></p></body></html>",
+      "x-ms-request-id" : "4b1b8a64-901e-0012-7721-20d155000000",
+      "Body" : "<!DOCTYPE html><html><head><title>WebContentNotFound</title></head><body><h1>The requested content does not exist.</h1><p><ul><li>HttpStatusCode: 404</li><li>ErrorCode: WebContentNotFound</li><li>RequestId : 4b1b8a64-901e-0012-7721-20d155000000</li><li>TimeStamp : 2021-03-23T20:19:36.6204686Z</li></ul></p></body></html>",
       "Content-Type" : "text/html"
     },
     "Exception" : null
@@ -27,7 +27,7 @@
     "Uri" : "https://REDACTED.azure.com/%2Fdtmi%2Fcom%2Fexample%2Fthermostatddd-1.json",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-iot-modelsrepository/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9e4a390c-25d0-437e-a249-bfcf48f7ad6a"
+      "x-ms-client-request-id" : "9ebfb174-a728-46ab-9053-3e122e0e5494"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -36,12 +36,12 @@
       "retry-after" : "0",
       "StatusCode" : "404",
       "Access-Control-Allow-Headers" : "*",
-      "Date" : "Tue, 23 Mar 2021 20:01:52 GMT",
+      "Date" : "Tue, 23 Mar 2021 20:19:36 GMT",
       "Access-Control-Expose-Headers" : "*",
       "x-ms-error-code" : "WebContentNotFound",
       "Content-Length" : "321",
-      "x-ms-request-id" : "17c2c2d3-501e-0022-541f-20f044000000",
-      "Body" : "<!DOCTYPE html><html><head><title>WebContentNotFound</title></head><body><h1>The requested content does not exist.</h1><p><ul><li>HttpStatusCode: 404</li><li>ErrorCode: WebContentNotFound</li><li>RequestId : 17c2c2d3-501e-0022-541f-20f044000000</li><li>TimeStamp : 2021-03-23T20:01:52.4983250Z</li></ul></p></body></html>",
+      "x-ms-request-id" : "8c355aa0-601e-0039-3621-206571000000",
+      "Body" : "<!DOCTYPE html><html><head><title>WebContentNotFound</title></head><body><h1>The requested content does not exist.</h1><p><ul><li>HttpStatusCode: 404</li><li>ErrorCode: WebContentNotFound</li><li>RequestId : 8c355aa0-601e-0039-3621-206571000000</li><li>TimeStamp : 2021-03-23T20:19:36.7414941Z</li></ul></p></body></html>",
       "Content-Type" : "text/html"
     },
     "Exception" : null
