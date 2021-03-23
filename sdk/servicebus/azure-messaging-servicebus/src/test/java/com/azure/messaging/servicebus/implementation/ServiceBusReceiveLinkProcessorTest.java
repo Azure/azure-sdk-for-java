@@ -139,6 +139,7 @@ class ServiceBusReceiveLinkProcessorTest {
         assertTrue(processor.isTerminated());
         assertFalse(processor.hasError());
         assertNull(processor.getError());
+        processor.dispose();
 
         // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
         verify(link1, times(3)).addCredits(eq(PREFETCH - 1));
@@ -570,6 +571,7 @@ class ServiceBusReceiveLinkProcessorTest {
         assertTrue(processor.isTerminated());
         assertFalse(processor.hasError());
         assertNull(processor.getError());
+        processor.dispose();
 
         // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
         verify(link1, times(3)).addCredits(eq(PREFETCH));
