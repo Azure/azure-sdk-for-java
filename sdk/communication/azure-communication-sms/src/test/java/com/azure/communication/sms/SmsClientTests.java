@@ -100,7 +100,7 @@ public class SmsClientTests extends SmsTestBase {
         options.setTag("New Tag");
 
         // Action & Assert
-        SmsSendResult sendResult = client.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE, options, Context.NONE);
+        SmsSendResult sendResult = client.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE, options);
         assertHappyPath(sendResult);
     }
 
