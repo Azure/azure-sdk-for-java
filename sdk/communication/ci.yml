@@ -21,6 +21,7 @@ pr:
     include:
       - sdk/communication/
 
+
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
