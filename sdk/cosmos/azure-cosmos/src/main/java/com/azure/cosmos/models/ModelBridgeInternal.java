@@ -212,12 +212,12 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static ClientEncryptionKey getClientEncryptionPolicys(CosmosClientEncryptionKeyProperties cosmosClientEncryptionKeyProperties) {
+    public static ClientEncryptionKey getClientEncryptionKey(CosmosClientEncryptionKeyProperties cosmosClientEncryptionKeyProperties) {
         return cosmosClientEncryptionKeyProperties.getClientEncryptionKey();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static List<CosmosClientEncryptionKeyProperties> getClientEncryptionPolicys(List<ClientEncryptionKey> results) {
+    public static List<CosmosClientEncryptionKeyProperties> getClientEncryptionKeyPropertiesList(List<ClientEncryptionKey> results) {
         return CosmosClientEncryptionKeyProperties.getClientEncryptionKeys(results);
     }
 

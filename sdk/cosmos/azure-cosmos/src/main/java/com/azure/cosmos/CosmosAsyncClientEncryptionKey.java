@@ -66,7 +66,8 @@ public class CosmosAsyncClientEncryptionKey {
     }
 
     /**
-     * Replace a cosmos client encryption key
+     * Replace a cosmos client encryption key.
+     * This method is not meant to be invoked directly. It is used within CosmosEncryptionAsyncDatabase.rewrapClientEncryptionKey
      * @param keyProperties the client encryption key properties to create.
      * @return a {@link Mono} containing the single resource response with the read client encryption key or an error.
      */
@@ -79,7 +80,7 @@ public class CosmosAsyncClientEncryptionKey {
         , Context context) {
         String spanName = "replaceClientEncryptionKey." + getId();
         Mono<CosmosClientEncryptionKeyResponse> responseMono = this.database.getDocClientWrapper()
-            .replaceClientEncryptionKey(ModelBridgeInternal.getClientEncryptionPolicys(keyProperties), getLink(), null)
+            .replaceClientEncryptionKey(ModelBridgeInternal.getClientEncryptionKey(keyProperties), getLink(), null)
             .map(response -> ModelBridgeInternal.createCosmosClientEncryptionKeyResponse(response)).single();
         return database.getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName,

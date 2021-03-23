@@ -649,7 +649,7 @@ public class CosmosAsyncDatabase {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readClientEncryptionKeys(getLink(), options)
                 .map(response -> BridgeInternal.createFeedResponse(
-                    ModelBridgeInternal.getClientEncryptionPolicys(response.getResults()), response
+                    ModelBridgeInternal.getClientEncryptionKeyPropertiesList(response.getResults()), response
                         .getResponseHeaders()));
         });
     }
@@ -736,7 +736,7 @@ public class CosmosAsyncDatabase {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryClientEncryptionKeys(getLink(), querySpec, options)
                 .map(response -> BridgeInternal.createFeedResponseWithQueryMetrics(
-                    ModelBridgeInternal.getClientEncryptionPolicys(response.getResults()),
+                    ModelBridgeInternal.getClientEncryptionKeyPropertiesList(response.getResults()),
                     response.getResponseHeaders(),
                     ModelBridgeInternal.queryMetrics(response),
                     ModelBridgeInternal.getQueryPlanDiagnosticsContext(response),
@@ -992,7 +992,7 @@ public class CosmosAsyncDatabase {
         String spanName = "createClientEncryptionKey." + this.getId();
         Mono<CosmosClientEncryptionKeyResponse> responseMono =
             getDocClientWrapper().createClientEncryptionKey(this.getLink(),
-                ModelBridgeInternal.getClientEncryptionPolicys(keyProperties), null)
+                ModelBridgeInternal.getClientEncryptionKey(keyProperties), null)
             .map(response -> ModelBridgeInternal.createCosmosClientEncryptionKeyResponse(response)).single();
         return this.client.getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName,

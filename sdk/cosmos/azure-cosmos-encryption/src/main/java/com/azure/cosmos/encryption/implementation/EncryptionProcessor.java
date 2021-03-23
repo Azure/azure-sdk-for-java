@@ -33,6 +33,7 @@ import reactor.core.scheduler.Schedulers;
 import reactor.util.retry.Retry;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.time.Duration;
 import java.time.Instant;
@@ -463,13 +464,7 @@ public class EncryptionProcessor {
                     }
 
                     return Pair.of(TypeMarker.STRING,
-                        SqlSerializerFactory.getOrCreate("varchar", STRING_SIZE_ENCRYPTION_LIMIT, 0, 0).serialize(jsonNode.asText()));
-                case OBJECT:
-                    return Pair.of(TypeMarker.OBJECT,
-                        SqlSerializerFactory.getOrCreate("varchar", STRING_SIZE_ENCRYPTION_LIMIT, 0, 0).serialize(jsonNode.toString()));
-                case ARRAY:
-                    return Pair.of(TypeMarker.ARRAY,
-                        SqlSerializerFactory.getOrCreate("varchar", STRING_SIZE_ENCRYPTION_LIMIT, 0, 0).serialize(jsonNode.toString()));
+                        SqlSerializerFactory.getOrCreate("varchar", STRING_SIZE_ENCRYPTION_LIMIT, 0, 0, StandardCharsets.UTF_8.toString()).serialize(jsonNode.asText()));
             }
         } catch (MicrosoftDataEncryptionException ex) {
             throw new IllegalStateException("Unable to convert JSON to byte[]", ex);
@@ -488,10 +483,8 @@ public class EncryptionProcessor {
                 case DOUBLE:
                     return DoubleNode.valueOf((double) sqlSerializerFactory.getDefaultSerializer(0d).deserialize(serializedBytes));
                 case STRING:
-                case OBJECT:
-                case ARRAY:
                     return TextNode.valueOf((String) SqlSerializerFactory.getOrCreate("varchar",
-                        STRING_SIZE_ENCRYPTION_LIMIT, 0, 0).deserialize(serializedBytes));
+                        STRING_SIZE_ENCRYPTION_LIMIT, 0, 0, StandardCharsets.UTF_8.toString()).deserialize(serializedBytes));
             }
         } catch (MicrosoftDataEncryptionException ex) {
             throw new IllegalStateException("Unable to convert byte[] to JSON", ex);
@@ -504,9 +497,7 @@ public class EncryptionProcessor {
         BOOLEAN(2),
         DOUBLE(3),
         LONG(4),
-        STRING(5),
-        ARRAY(5),
-        OBJECT(6);
+        STRING(5);
         private final int value;
 
         public static Optional<TypeMarker> valueOf(int value) {

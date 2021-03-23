@@ -18,7 +18,7 @@ public final class ClientEncryptionIncludedPath {
     @JsonProperty("clientEncryptionKeyId")
     private String clientEncryptionKeyId;
 
-    @JsonProperty("EncryptionType")
+    @JsonProperty("encryptionType")
     private String encryptionType;
 
 

@@ -276,7 +276,7 @@ public class PathsHelper {
         } else if (resourceType == ResourceType.ClientEncryptionKey) {
             ResourceId clientEncryptionKeyId = ResourceId.parse(ownerOrResourceId);
             return Paths.DATABASES_PATH_SEGMENT + "/" + clientEncryptionKeyId.getDatabaseId().toString() + "/" +
-                Paths.CLIENT_ENCRYPTION_KEY_PATH_SEGMENT + "/" + clientEncryptionKeyId.getUserId().toString();
+                Paths.CLIENT_ENCRYPTION_KEY_PATH_SEGMENT + "/" + clientEncryptionKeyId.getClientEncryptionKeyId().toString();
         }
 
         String errorMessage = "invalid resource type";

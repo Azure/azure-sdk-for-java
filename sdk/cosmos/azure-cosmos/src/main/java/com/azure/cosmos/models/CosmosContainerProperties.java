@@ -302,7 +302,7 @@ public final class CosmosContainerProperties {
     }
 
     /**
-     * Sets the conflictResolutionPolicy that is used for encrypting item field
+     * Sets the ClientEncryptionPolicy that is used for encrypting item fields
      *
      * @param value ClientEncryptionPolicy to be used.
      * @return the CosmosContainerProperties.

@@ -84,8 +84,10 @@ public final class ClientEncryptionKey extends Resource {
         }
 
         ClientEncryptionKey typedObj = (ClientEncryptionKey) obj;
-        return typedObj.getResourceId().equals(this.getResourceId());
-    }
+        return (typedObj.getResourceId().equals(this.getResourceId()) &&
+            typedObj.getWrappedDataEncryptionKey().equals(this.getWrappedDataEncryptionKey()) &&
+            typedObj.getEncryptionKeyWrapMetadata().equals(this.getEncryptionKeyWrapMetadata()));
+}
 
     @Override
     public int hashCode() {

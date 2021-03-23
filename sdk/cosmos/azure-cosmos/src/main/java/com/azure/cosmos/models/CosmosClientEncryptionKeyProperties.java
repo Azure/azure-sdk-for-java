@@ -103,8 +103,7 @@ public final class CosmosClientEncryptionKeyProperties {
      *
      * @return the ID associated with the resource.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public String getResourceId() {
+    String getResourceId() {
         return this.clientEncryptionKey.getResourceId();
     }
 
