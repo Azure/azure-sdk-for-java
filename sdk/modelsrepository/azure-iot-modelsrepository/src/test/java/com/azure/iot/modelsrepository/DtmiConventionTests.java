@@ -5,10 +5,13 @@ package com.azure.iot.modelsrepository;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.stream.Stream;
 
 class DtmiConventionTests {
 
@@ -32,14 +35,7 @@ class DtmiConventionTests {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "https://localhost/repository/, https://localhost/repository/dtmi/com/example/thermostat-1.json",
-        "https://localhost/REPOSITORY,  https://localhost/REPOSITORY/dtmi/com/example/thermostat-1.json",
-        "file:///path/to/repository/,   file:///path/to/repository/dtmi/com/example/thermostat-1.json",
-        "file://path/to/RepoSitory,     file://path/to/RepoSitory/dtmi/com/example/thermostat-1.json",
-        "C:\\path\\to\\repository\\, file:///C:/path/to/repository/dtmi/com/example/thermostat-1.json",
-        "\\\\server\\repository,    file:////server/repository/dtmi/com/example/thermostat-1.json"
-    })
+    @MethodSource("getModelUriTestsSupplier")
     public void getModelUriTests(String repository, String expectedUri) throws URISyntaxException {
         final String dtmi = "dtmi:com:example:Thermostat;1";
 
@@ -53,7 +49,22 @@ class DtmiConventionTests {
         URI modelUri = DtmiConventions.getModelUri(dtmi, repositoryUri, false);
         Assertions.assertEquals(expectedUri, modelUri.toString());
     }
-    
+
+    private static Stream<Arguments> getModelUriTestsSupplier() {
+        return Stream.of(
+            Arguments.of("https://localhost/repository/",
+                "https://localhost/repository/dtmi/com/example/thermostat-1.json"),
+            Arguments.of("https://localhost/REPOSITORY",
+                "https://localhost/REPOSITORY/dtmi/com/example/thermostat-1.json"),
+            Arguments.of("file:///path/to/repository/",
+                "file:///path/to/repository/dtmi/com/example/thermostat-1.json"),
+            Arguments.of("file://path/to/RepoSitory", "file://path/to/RepoSitory/dtmi/com/example/thermostat-1.json"),
+            Arguments.of("C:\\path\\to\\repository\\",
+                "file:///C:/path/to/repository/dtmi/com/example/thermostat-1.json"),
+            Arguments.of("\\\\server\\repository", "file:////server/repository/dtmi/com/example/thermostat-1.json")
+        );
+    }
+
     @ParameterizedTest
     @CsvSource({
         "dtmi:com:example:Thermostat;1, true",
