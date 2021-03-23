@@ -10,6 +10,7 @@
     },
     "JavaTestVersion": [ "1.8", "1.11" ],
     "AZURE_TEST_HTTP_CLIENTS": [ "okhttp", "netty" ],
+    "TestGoals": "surefire:test",
     "TestOptions": ""
   },
   "exclude": [
@@ -26,6 +27,7 @@
       "JavaTestVersion": "1.11",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
       "TestFromSource": true,
+      "TestGoals": "surefire:test",
       "TestOptions": ""
     },
     {
