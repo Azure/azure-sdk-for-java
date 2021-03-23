@@ -128,6 +128,39 @@ public class FeedRangeTest {
     }
 
     @Test(groups = "unit")
+    public void feedRange_Split_HashV1_NonPKRangeAligned_And_NotFullRange() {
+        Range<String> startRange = new Range<>("05C1B9CD673390", "05C1C9CD673390", true, false);
+
+        assertThat(FeedRangeInternal.fromHexEncodedBinaryString(startRange.getMin()))
+            .isEqualTo(429496729);
+
+        int targetSplitCount = 7;
+        List<FeedRangeEpkImpl> feedRanges = FeedRangeInternal.trySplitWithHashV1(startRange, targetSplitCount);
+
+        String[][] expectedValues = new String[7][2];
+        expectedValues[0][0] = "05C1B9CD673390";
+        expectedValues[0][1] = "05C1BDA17583C0";
+        expectedValues[1][0] = "05C1BDA17583C0";
+        expectedValues[1][1] = "05C1C13B41E9F8";
+        expectedValues[2][0] = "05C1C13B41E9F8";
+        expectedValues[2][1] = "05C1C325499310";
+        expectedValues[3][0] = "05C1C325499310";
+        expectedValues[3][1] = "05C1C50F513B28";
+        expectedValues[4][0] = "05C1C50F513B28";
+        expectedValues[4][1] = "05C1C5F957E340";
+        expectedValues[5][0] = "05C1C5F957E340";
+        expectedValues[5][1] = "05C1C7E35F8B58";
+        expectedValues[6][0] = "05C1C7E35F8B58";
+        expectedValues[6][1] = "05C1C9CD673390";
+
+        for (int i = 0; i < feedRanges.size() - 1; i++) {
+            FeedRangeEpkImpl epkFeedRange = feedRanges.get(i);
+            assertThat(epkFeedRange.getRange().getMin()).isEqualTo(expectedValues[i][0]);
+            assertThat(epkFeedRange.getRange().getMax()).isEqualTo(expectedValues[i][1]);
+        }
+    }
+
+    @Test(groups = "unit")
     public void feedRange_Split_HashV2() {
         Range<String> fullRange = new Range<>("", "FF", true, false);
 

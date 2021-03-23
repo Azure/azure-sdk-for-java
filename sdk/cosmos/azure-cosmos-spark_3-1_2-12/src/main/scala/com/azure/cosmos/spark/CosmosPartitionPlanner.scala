@@ -127,6 +127,7 @@ private object CosmosPartitionPlanner extends CosmosLoggingTrait {
               }
             }
           })
+          .take(1)
           .collectList()
           .asScala
       })

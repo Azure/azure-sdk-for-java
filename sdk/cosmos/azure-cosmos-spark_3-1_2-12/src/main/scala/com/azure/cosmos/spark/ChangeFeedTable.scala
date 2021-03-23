@@ -5,13 +5,13 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.models.PartitionKey
 import com.azure.cosmos.{CosmosAsyncClient, CosmosException}
+import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.connector.catalog.{SupportsRead, Table, TableCapability}
 import org.apache.spark.sql.connector.expressions.Transform
 import org.apache.spark.sql.connector.read.ScanBuilder
 import org.apache.spark.sql.util.CaseInsensitiveStringMap
-import org.codehaus.jackson.node.ObjectNode
 
 import java.util
 import java.util.UUID

@@ -358,7 +358,7 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         return Double.longBitsToDouble(value);
     }
 
-    private static long fromHexEncodedBinaryString(String hexBinary) {
+    static long fromHexEncodedBinaryString(String hexBinary) {
         byte[] byteString = hexBinaryToByteArray(hexBinary);
         if (byteString.length < 2 || byteString[0] != 5) {
             throw new IllegalStateException("Invalid hex-byteString");
@@ -370,7 +370,6 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         // Decode first 8-bit chunk
         offset -= 8;
         payload |= (((long)byteString[byteStringOffset++]) & 0x00FF) << offset;
-
         // Decode remaining 7-bit chunks
         while (true) {
             if (byteStringOffset >= byteString.length) {
@@ -380,7 +379,7 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
             byte currentByte = byteString[byteStringOffset++];
 
             offset -= 7;
-            payload |= (((long)(currentByte >> 1)) & 0x00FF) << offset;
+            payload |= (((((long)(currentByte)) & 0x00FF) >> 1) << offset);
 
             if ((currentByte & 0x01) == 0) {
                 break;

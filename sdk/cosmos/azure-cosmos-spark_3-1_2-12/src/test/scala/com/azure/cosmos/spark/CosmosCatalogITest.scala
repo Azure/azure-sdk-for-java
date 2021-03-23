@@ -39,7 +39,7 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient {
   "Cosmos Catalog" can "create a database with shared throughput" in {
     val databaseName = getAutoCleanableDatabaseName()
 
-    spark.sql(s"CREATE DATABASE testCatalog.${databaseName} WITH DBPROPERTIES ('manualThroughput' = '1000');")
+    spark.sql(s"CREATE DATABASE testCatalog.$databaseName WITH DBPROPERTIES ('manualThroughput' = '1000');")
 
     cosmosClient.getDatabase(databaseName).read().block()
     val throughput = cosmosClient.getDatabase(databaseName).readThroughput().block()
@@ -68,8 +68,8 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient {
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
     cleanupDatabaseLater(databaseName)
 
-    spark.sql(s"CREATE DATABASE testCatalog.${databaseName};")
-    spark.sql(s"CREATE TABLE testCatalog.${databaseName}.${containerName} (word STRING, number INT) using cosmos.items;")
+    spark.sql(s"CREATE DATABASE testCatalog.$databaseName;")
+    spark.sql(s"CREATE TABLE testCatalog.$databaseName.$containerName (word STRING, number INT) using cosmos.items;")
 
     val containerProperties = cosmosClient.getDatabase(databaseName).getContainer(containerName).read().block().getProperties
 
@@ -85,8 +85,8 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient {
     val databaseName = getAutoCleanableDatabaseName()
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
 
-    spark.sql(s"CREATE DATABASE testCatalog.${databaseName};")
-    spark.sql(s"CREATE TABLE testCatalog.${databaseName}.${containerName} (word STRING, number INT) using cosmos.items " +
+    spark.sql(s"CREATE DATABASE testCatalog.$databaseName;")
+    spark.sql(s"CREATE TABLE testCatalog.$databaseName.$containerName (word STRING, number INT) using cosmos.items " +
       s"TBLPROPERTIES(partitionKeyPath = '/mypk', manualThroughput = '1100')")
 
     val containerProperties = cosmosClient.getDatabase(databaseName).getContainer(containerName).read().block().getProperties
@@ -104,8 +104,8 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient {
     val databaseName = getAutoCleanableDatabaseName()
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
 
-    spark.sql(s"CREATE DATABASE testCatalog.${databaseName};")
-    spark.sql(s"CREATE TABLE testCatalog.${databaseName}.${containerName} (word STRING, number INT) using cosmos.items " +
+    spark.sql(s"CREATE DATABASE testCatalog.$databaseName;")
+    spark.sql(s"CREATE TABLE testCatalog.$databaseName.$containerName (word STRING, number INT) using cosmos.items " +
       s"TBLPROPERTIES(partitionKeyPath = '/mypk', manualThroughput = '1100', indexingPolicy = 'AllProperties')")
 
     val containerProperties = cosmosClient.getDatabase(databaseName).getContainer(containerName).read().block().getProperties
@@ -132,8 +132,8 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient {
     val databaseName = getAutoCleanableDatabaseName()
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
 
-    spark.sql(s"CREATE DATABASE testCatalog.${databaseName};")
-    spark.sql(s"CREATE TABLE testCatalog.${databaseName}.${containerName} (word STRING, number INT) using cosmos.items " +
+    spark.sql(s"CREATE DATABASE testCatalog.$databaseName;")
+    spark.sql(s"CREATE TABLE testCatalog.$databaseName.$containerName (word STRING, number INT) using cosmos.items " +
       s"TBLPROPERTIES(partitionKeyPath = '/mypk', manualThroughput = '1100', indexingPolicy = 'ONLYSystemproperties')")
 
     val containerProperties = cosmosClient.getDatabase(databaseName).getContainer(containerName).read().block().getProperties
@@ -142,8 +142,7 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient {
       .getIndexingPolicy
       .getIncludedPaths
       .asScala.map(p => p.getPath)
-      .toArray
-      .size shouldEqual 0
+      .toArray.length shouldEqual 0
     containerProperties
       .getIndexingPolicy
       .getExcludedPaths
@@ -163,8 +162,8 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient {
     val indexPolicyJson = raw"""{"indexingMode":"consistent","automatic":true,"includedPaths":""" +
       raw"""[{"path":"\/helloWorld\/?"},{"path":"\/mypk\/?"}],"excludedPaths":[{"path":"\/*"}]}"""
 
-    spark.sql(s"CREATE DATABASE testCatalog.${databaseName};")
-    spark.sql(s"CREATE TABLE testCatalog.${databaseName}.${containerName} (word STRING, number INT) using cosmos.items " +
+    spark.sql(s"CREATE DATABASE testCatalog.$databaseName;")
+    spark.sql(s"CREATE TABLE testCatalog.$databaseName.$containerName (word STRING, number INT) using cosmos.items " +
       s"TBLPROPERTIES(partitionKeyPath = '/mypk', manualThroughput = '1100', indexingPolicy = '$indexPolicyJson')")
 
     val containerProperties = cosmosClient.getDatabase(databaseName).getContainer(containerName).read().block().getProperties
@@ -191,8 +190,8 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient {
     val databaseName = getAutoCleanableDatabaseName()
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
 
-    spark.sql(s"CREATE DATABASE testCatalog.${databaseName};")
-    spark.sql(s"CREATE TABLE testCatalog.${databaseName}.${containerName} (word STRING, number INT) using cosmos.items " +
+    spark.sql(s"CREATE DATABASE testCatalog.$databaseName;")
+    spark.sql(s"CREATE TABLE testCatalog.$databaseName.$containerName (word STRING, number INT) using cosmos.items " +
       s"TBLPROPERTIES(partitionKeyPath = '/mypk', defaultTtlInSeconds = '-1')")
 
     val containerProperties = cosmosClient.getDatabase(databaseName).getContainer(containerName).read().block().getProperties
@@ -204,8 +203,8 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient {
     val databaseName = getAutoCleanableDatabaseName()
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
 
-    spark.sql(s"CREATE DATABASE testCatalog.${databaseName};")
-    spark.sql(s"CREATE TABLE testCatalog.${databaseName}.${containerName} (word STRING, number INT) using cosmos.items " +
+    spark.sql(s"CREATE DATABASE testCatalog.$databaseName;")
+    spark.sql(s"CREATE TABLE testCatalog.$databaseName.$containerName (word STRING, number INT) using cosmos.items " +
       s"TBLPROPERTIES(partitionKeyPath = '/mypk', defaultTtlInSeconds = '5')")
 
     val containerProperties = cosmosClient.getDatabase(databaseName).getContainer(containerName).read().block().getProperties
@@ -214,11 +213,11 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient {
   }
 
   private def createDatabase(spark: SparkSession, databaseName: String) = {
-    spark.sql(s"CREATE DATABASE testCatalog.${databaseName};")
+    spark.sql(s"CREATE DATABASE testCatalog.$databaseName;")
   }
 
   private def dropDatabase(spark: SparkSession, databaseName: String) = {
-    spark.sql(s"DROP DATABASE testCatalog.${databaseName};")
+    spark.sql(s"DROP DATABASE testCatalog.$databaseName;")
   }
 
   //scalastyle:on magic.number
