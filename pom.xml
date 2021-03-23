@@ -78,6 +78,9 @@
         <!-- Mixed Reality -->
         <module>sdk/mixedreality/azure-mixedreality-authentication</module>
 
+        <!-- Models Repository -->
+        <module>sdk/modelsrepository/azure-iot-modelsrepository</module>
+
         <!-- Quantum Jobs -->
         <module>sdk/quantum/azure-quantum-jobs</module>
 
@@ -240,6 +243,10 @@
                   <group>
                     <title>Azure Digital Twins</title>
                     <packages>com.azure.digitaltwins.core*</packages>
+                  </group>
+                  <group>
+                    <title>Azure IoT Models Repository</title>
+                    <packages>com.azure.iot.modelsrepository*</packages>
                   </group>
                   <group>
                     <title>Azure Form Recognizer</title>
@@ -619,6 +626,7 @@
         <module>sdk/mediaservices</module>
         <module>sdk/metricsadvisor</module>
         <module>sdk/mixedreality</module>
+        <module>sdk/modelsrepository</module>
         <module>sdk/monitor</module>
         <module>sdk/mysql</module>
         <module>sdk/netapp</module>
