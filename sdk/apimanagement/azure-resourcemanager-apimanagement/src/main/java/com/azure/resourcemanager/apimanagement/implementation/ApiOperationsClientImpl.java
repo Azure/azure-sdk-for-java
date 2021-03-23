@@ -270,7 +270,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -568,7 +568,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -684,7 +684,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @return the entity state (Etag) version of the API operation specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public ApiOperationsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String operationId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, apiId, operationId, context).block();
     }
@@ -746,7 +746,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -870,7 +870,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @return the details of the API Operation specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OperationContractInner> getWithResponse(
+    public ApiOperationsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String apiId, String operationId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, apiId, operationId, context).block();
     }
@@ -946,7 +946,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1135,7 +1135,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @return api Operation details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OperationContractInner> createOrUpdateWithResponse(
+    public ApiOperationsCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -1223,7 +1223,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1386,7 +1386,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @return api Operation details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OperationContractInner> updateWithResponse(
+    public ApiOperationsUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -1461,7 +1461,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1636,7 +1636,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

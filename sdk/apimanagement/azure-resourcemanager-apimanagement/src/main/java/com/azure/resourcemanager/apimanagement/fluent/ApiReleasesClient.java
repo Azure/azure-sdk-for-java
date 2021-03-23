@@ -10,6 +10,10 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.ApiReleaseContractInner;
+import com.azure.resourcemanager.apimanagement.models.ApiReleasesCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiReleasesGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiReleasesGetResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiReleasesUpdateResponse;
 
 /** An instance of this class provides access to all the operations defined in ApiReleasesClient. */
 public interface ApiReleasesClient {
@@ -86,7 +90,7 @@ public interface ApiReleasesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    ApiReleasesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String releaseId, Context context);
 
     /**
@@ -118,7 +122,7 @@ public interface ApiReleasesClient {
      * @return apiRelease details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApiReleaseContractInner> getWithResponse(
+    ApiReleasesGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String apiId, String releaseId, Context context);
 
     /**
@@ -158,7 +162,7 @@ public interface ApiReleasesClient {
      * @return apiRelease details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApiReleaseContractInner> createOrUpdateWithResponse(
+    ApiReleasesCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -208,7 +212,7 @@ public interface ApiReleasesClient {
      * @return apiRelease details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApiReleaseContractInner> updateWithResponse(
+    ApiReleasesUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,

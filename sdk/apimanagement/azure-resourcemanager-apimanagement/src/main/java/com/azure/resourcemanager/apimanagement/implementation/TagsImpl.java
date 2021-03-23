@@ -13,6 +13,15 @@ import com.azure.resourcemanager.apimanagement.fluent.TagsClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.TagContractInner;
 import com.azure.resourcemanager.apimanagement.models.TagContract;
 import com.azure.resourcemanager.apimanagement.models.Tags;
+import com.azure.resourcemanager.apimanagement.models.TagsAssignToApiResponse;
+import com.azure.resourcemanager.apimanagement.models.TagsGetByApiResponse;
+import com.azure.resourcemanager.apimanagement.models.TagsGetByOperationResponse;
+import com.azure.resourcemanager.apimanagement.models.TagsGetByProductResponse;
+import com.azure.resourcemanager.apimanagement.models.TagsGetEntityStateByApiResponse;
+import com.azure.resourcemanager.apimanagement.models.TagsGetEntityStateByOperationResponse;
+import com.azure.resourcemanager.apimanagement.models.TagsGetEntityStateByProductResponse;
+import com.azure.resourcemanager.apimanagement.models.TagsGetEntityStateResponse;
+import com.azure.resourcemanager.apimanagement.models.TagsGetResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class TagsImpl implements Tags {
@@ -56,7 +65,7 @@ public final class TagsImpl implements Tags {
         this.serviceClient().getEntityStateByOperation(resourceGroupName, serviceName, apiId, operationId, tagId);
     }
 
-    public Response<Void> getEntityStateByOperationWithResponse(
+    public TagsGetEntityStateByOperationResponse getEntityStateByOperationWithResponse(
         String resourceGroupName, String serviceName, String apiId, String operationId, String tagId, Context context) {
         return this
             .serviceClient()
@@ -76,7 +85,7 @@ public final class TagsImpl implements Tags {
 
     public Response<TagContract> getByOperationWithResponse(
         String resourceGroupName, String serviceName, String apiId, String operationId, String tagId, Context context) {
-        Response<TagContractInner> inner =
+        TagsGetByOperationResponse inner =
             this
                 .serviceClient()
                 .getByOperationWithResponse(resourceGroupName, serviceName, apiId, operationId, tagId, context);
@@ -153,7 +162,7 @@ public final class TagsImpl implements Tags {
         this.serviceClient().getEntityStateByApi(resourceGroupName, serviceName, apiId, tagId);
     }
 
-    public Response<Void> getEntityStateByApiWithResponse(
+    public TagsGetEntityStateByApiResponse getEntityStateByApiWithResponse(
         String resourceGroupName, String serviceName, String apiId, String tagId, Context context) {
         return this
             .serviceClient()
@@ -171,7 +180,7 @@ public final class TagsImpl implements Tags {
 
     public Response<TagContract> getByApiWithResponse(
         String resourceGroupName, String serviceName, String apiId, String tagId, Context context) {
-        Response<TagContractInner> inner =
+        TagsGetByApiResponse inner =
             this.serviceClient().getByApiWithResponse(resourceGroupName, serviceName, apiId, tagId, context);
         if (inner != null) {
             return new SimpleResponse<>(
@@ -195,7 +204,7 @@ public final class TagsImpl implements Tags {
 
     public Response<TagContract> assignToApiWithResponse(
         String resourceGroupName, String serviceName, String apiId, String tagId, Context context) {
-        Response<TagContractInner> inner =
+        TagsAssignToApiResponse inner =
             this.serviceClient().assignToApiWithResponse(resourceGroupName, serviceName, apiId, tagId, context);
         if (inner != null) {
             return new SimpleResponse<>(
@@ -240,7 +249,7 @@ public final class TagsImpl implements Tags {
         this.serviceClient().getEntityStateByProduct(resourceGroupName, serviceName, productId, tagId);
     }
 
-    public Response<Void> getEntityStateByProductWithResponse(
+    public TagsGetEntityStateByProductResponse getEntityStateByProductWithResponse(
         String resourceGroupName, String serviceName, String productId, String tagId, Context context) {
         return this
             .serviceClient()
@@ -258,7 +267,7 @@ public final class TagsImpl implements Tags {
 
     public Response<TagContract> getByProductWithResponse(
         String resourceGroupName, String serviceName, String productId, String tagId, Context context) {
-        Response<TagContractInner> inner =
+        TagsGetByProductResponse inner =
             this.serviceClient().getByProductWithResponse(resourceGroupName, serviceName, productId, tagId, context);
         if (inner != null) {
             return new SimpleResponse<>(
@@ -328,7 +337,7 @@ public final class TagsImpl implements Tags {
         this.serviceClient().getEntityState(resourceGroupName, serviceName, tagId);
     }
 
-    public Response<Void> getEntityStateWithResponse(
+    public TagsGetEntityStateResponse getEntityStateWithResponse(
         String resourceGroupName, String serviceName, String tagId, Context context) {
         return this.serviceClient().getEntityStateWithResponse(resourceGroupName, serviceName, tagId, context);
     }
@@ -344,8 +353,7 @@ public final class TagsImpl implements Tags {
 
     public Response<TagContract> getWithResponse(
         String resourceGroupName, String serviceName, String tagId, Context context) {
-        Response<TagContractInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serviceName, tagId, context);
+        TagsGetResponse inner = this.serviceClient().getWithResponse(resourceGroupName, serviceName, tagId, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),

@@ -251,7 +251,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -541,7 +541,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -663,7 +663,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
      * @return the entity state (Etag) version of the issue Attachment for an API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public ApiIssueAttachmentsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -734,7 +734,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -864,7 +864,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
      * @return the details of the issue Attachment for an API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IssueAttachmentContractInner> getWithResponse(
+    public ApiIssueAttachmentsGetResponse getWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -949,7 +949,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1144,7 +1144,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
      * @return issue Attachment Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IssueAttachmentContractInner> createOrUpdateWithResponse(
+    public ApiIssueAttachmentsCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -1229,7 +1229,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1418,7 +1418,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

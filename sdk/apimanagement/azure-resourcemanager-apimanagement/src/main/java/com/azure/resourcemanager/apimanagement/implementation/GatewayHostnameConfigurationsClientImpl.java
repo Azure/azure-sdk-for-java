@@ -240,7 +240,7 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -510,7 +510,7 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -621,7 +621,7 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public GatewayHostnameConfigurationsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, String hcId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, gatewayId, hcId, context).block();
     }
@@ -682,7 +682,7 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -803,7 +803,7 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
      * @return details of a hostname configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GatewayHostnameConfigurationContractInner> getWithResponse(
+    public GatewayHostnameConfigurationsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, String hcId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, gatewayId, hcId, context).block();
     }
@@ -878,7 +878,7 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1062,7 +1062,7 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
      * @return gateway hostname configuration details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GatewayHostnameConfigurationContractInner> createOrUpdateWithResponse(
+    public GatewayHostnameConfigurationsCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String gatewayId,
@@ -1137,7 +1137,7 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1299,7 +1299,7 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

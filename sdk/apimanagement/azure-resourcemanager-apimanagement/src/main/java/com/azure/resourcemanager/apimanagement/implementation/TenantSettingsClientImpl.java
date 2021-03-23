@@ -160,7 +160,7 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -361,7 +361,7 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
                             settingsType,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -470,7 +470,7 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
      * @return tenant settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TenantSettingsContractInner> getWithResponse(
+    public TenantSettingsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, SettingsTypeName settingsType, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, settingsType, context).block();
     }
@@ -507,7 +507,7 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

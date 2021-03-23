@@ -239,7 +239,7 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -506,7 +506,7 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -622,7 +622,7 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public GatewayCertificateAuthoritiesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, String certificateId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, gatewayId, certificateId, context).block();
     }
@@ -684,7 +684,7 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -809,7 +809,7 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      * @return assigned Gateway Certificate Authority details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GatewayCertificateAuthorityContractInner> getWithResponse(
+    public GatewayCertificateAuthoritiesGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, String certificateId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, gatewayId, certificateId, context).block();
     }
@@ -885,7 +885,7 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1077,7 +1077,7 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      * @return gateway certificate authority details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GatewayCertificateAuthorityContractInner> createOrUpdateWithResponse(
+    public GatewayCertificateAuthoritiesCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String gatewayId,
@@ -1153,7 +1153,7 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1331,7 +1331,7 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

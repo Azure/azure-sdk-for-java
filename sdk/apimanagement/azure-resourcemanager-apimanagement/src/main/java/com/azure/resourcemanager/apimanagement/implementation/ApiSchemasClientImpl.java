@@ -240,7 +240,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -503,7 +503,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -614,7 +614,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      * @return the entity state (Etag) version of the schema specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public ApiSchemasGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String schemaId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, apiId, schemaId, context).block();
     }
@@ -675,7 +675,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -795,7 +795,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      * @return the schema configuration at the API level.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SchemaContractInner> getWithResponse(
+    public ApiSchemasGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String apiId, String schemaId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, apiId, schemaId, context).block();
     }
@@ -870,7 +870,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1292,7 +1292,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1494,7 +1494,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

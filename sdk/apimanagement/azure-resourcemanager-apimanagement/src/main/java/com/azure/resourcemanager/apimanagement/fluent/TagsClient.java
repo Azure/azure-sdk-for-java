@@ -11,6 +11,17 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.TagContractInner;
 import com.azure.resourcemanager.apimanagement.models.TagCreateUpdateParameters;
+import com.azure.resourcemanager.apimanagement.models.TagsAssignToApiResponse;
+import com.azure.resourcemanager.apimanagement.models.TagsCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.TagsGetByApiResponse;
+import com.azure.resourcemanager.apimanagement.models.TagsGetByOperationResponse;
+import com.azure.resourcemanager.apimanagement.models.TagsGetByProductResponse;
+import com.azure.resourcemanager.apimanagement.models.TagsGetEntityStateByApiResponse;
+import com.azure.resourcemanager.apimanagement.models.TagsGetEntityStateByOperationResponse;
+import com.azure.resourcemanager.apimanagement.models.TagsGetEntityStateByProductResponse;
+import com.azure.resourcemanager.apimanagement.models.TagsGetEntityStateResponse;
+import com.azure.resourcemanager.apimanagement.models.TagsGetResponse;
+import com.azure.resourcemanager.apimanagement.models.TagsUpdateResponse;
 
 /** An instance of this class provides access to all the operations defined in TagsClient. */
 public interface TagsClient {
@@ -99,7 +110,7 @@ public interface TagsClient {
      * @return the entity state version of the tag specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityStateByOperationWithResponse(
+    TagsGetEntityStateByOperationResponse getEntityStateByOperationWithResponse(
         String resourceGroupName, String serviceName, String apiId, String operationId, String tagId, Context context);
 
     /**
@@ -138,7 +149,7 @@ public interface TagsClient {
      * @return tag associated with the Operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TagContractInner> getByOperationWithResponse(
+    TagsGetByOperationResponse getByOperationWithResponse(
         String resourceGroupName, String serviceName, String apiId, String operationId, String tagId, Context context);
 
     /**
@@ -292,7 +303,7 @@ public interface TagsClient {
      * @return the entity state version of the tag specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityStateByApiWithResponse(
+    TagsGetEntityStateByApiResponse getEntityStateByApiWithResponse(
         String resourceGroupName, String serviceName, String apiId, String tagId, Context context);
 
     /**
@@ -326,7 +337,7 @@ public interface TagsClient {
      * @return tag associated with the API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TagContractInner> getByApiWithResponse(
+    TagsGetByApiResponse getByApiWithResponse(
         String resourceGroupName, String serviceName, String apiId, String tagId, Context context);
 
     /**
@@ -360,7 +371,7 @@ public interface TagsClient {
      * @return tag Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TagContractInner> assignToApiWithResponse(
+    TagsAssignToApiResponse assignToApiWithResponse(
         String resourceGroupName, String serviceName, String apiId, String tagId, Context context);
 
     /**
@@ -466,7 +477,7 @@ public interface TagsClient {
      * @return the entity state version of the tag specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityStateByProductWithResponse(
+    TagsGetEntityStateByProductResponse getEntityStateByProductWithResponse(
         String resourceGroupName, String serviceName, String productId, String tagId, Context context);
 
     /**
@@ -498,7 +509,7 @@ public interface TagsClient {
      * @return tag associated with the Product.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TagContractInner> getByProductWithResponse(
+    TagsGetByProductResponse getByProductWithResponse(
         String resourceGroupName, String serviceName, String productId, String tagId, Context context);
 
     /**
@@ -631,7 +642,7 @@ public interface TagsClient {
      * @return the entity state version of the tag specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityStateWithResponse(
+    TagsGetEntityStateResponse getEntityStateWithResponse(
         String resourceGroupName, String serviceName, String tagId, Context context);
 
     /**
@@ -661,8 +672,7 @@ public interface TagsClient {
      * @return the details of the tag specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TagContractInner> getWithResponse(
-        String resourceGroupName, String serviceName, String tagId, Context context);
+    TagsGetResponse getWithResponse(String resourceGroupName, String serviceName, String tagId, Context context);
 
     /**
      * Creates a tag.
@@ -695,7 +705,7 @@ public interface TagsClient {
      * @return tag Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TagContractInner> createOrUpdateWithResponse(
+    TagsCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String tagId,
@@ -741,7 +751,7 @@ public interface TagsClient {
      * @return tag Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TagContractInner> updateWithResponse(
+    TagsUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String tagId,

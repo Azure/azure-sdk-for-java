@@ -66,7 +66,7 @@ public interface AuthorizationServers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the authorizationServer specified by its identifier.
      */
-    Response<Void> getEntityTagWithResponse(
+    AuthorizationServersGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String authsid, Context context);
 
     /**

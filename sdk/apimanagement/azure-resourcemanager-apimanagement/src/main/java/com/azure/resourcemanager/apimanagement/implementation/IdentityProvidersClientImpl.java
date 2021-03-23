@@ -255,7 +255,7 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -432,7 +432,7 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -533,7 +533,7 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @return the entity state (Etag) version of the identityProvider specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public IdentityProvidersGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, IdentityProviderType identityProviderName, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, identityProviderName, context).block();
     }
@@ -589,7 +589,7 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -699,7 +699,7 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @return the configuration details of the identity Provider configured in specified service instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IdentityProviderContractInner> getWithResponse(
+    public IdentityProvidersGetResponse getWithResponse(
         String resourceGroupName, String serviceName, IdentityProviderType identityProviderName, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, identityProviderName, context).block();
     }
@@ -768,7 +768,7 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -937,7 +937,7 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @return identity Provider details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IdentityProviderContractInner> createOrUpdateWithResponse(
+    public IdentityProvidersCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         IdentityProviderType identityProviderName,
@@ -1017,7 +1017,7 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1162,7 +1162,7 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @return identity Provider details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IdentityProviderContractInner> updateWithResponse(
+    public IdentityProvidersUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         IdentityProviderType identityProviderName,
@@ -1231,7 +1231,7 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1409,7 +1409,7 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1519,7 +1519,7 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @return the client secret details of the Identity Provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ClientSecretContractInner> listSecretsWithResponse(
+    public IdentityProvidersListSecretsResponse listSecretsWithResponse(
         String resourceGroupName, String serviceName, IdentityProviderType identityProviderName, Context context) {
         return listSecretsWithResponseAsync(resourceGroupName, serviceName, identityProviderName, context).block();
     }
@@ -1556,7 +1556,7 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

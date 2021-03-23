@@ -15,6 +15,9 @@ import com.azure.resourcemanager.apimanagement.fluent.models.AuthorizationServer
 import com.azure.resourcemanager.apimanagement.models.AuthorizationServerContract;
 import com.azure.resourcemanager.apimanagement.models.AuthorizationServerSecretsContract;
 import com.azure.resourcemanager.apimanagement.models.AuthorizationServers;
+import com.azure.resourcemanager.apimanagement.models.AuthorizationServersGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.AuthorizationServersGetResponse;
+import com.azure.resourcemanager.apimanagement.models.AuthorizationServersListSecretsResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AuthorizationServersImpl implements AuthorizationServers {
@@ -48,7 +51,7 @@ public final class AuthorizationServersImpl implements AuthorizationServers {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, authsid);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public AuthorizationServersGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String authsid, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, authsid, context);
     }
@@ -64,7 +67,7 @@ public final class AuthorizationServersImpl implements AuthorizationServers {
 
     public Response<AuthorizationServerContract> getWithResponse(
         String resourceGroupName, String serviceName, String authsid, Context context) {
-        Response<AuthorizationServerContractInner> inner =
+        AuthorizationServersGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, authsid, context);
         if (inner != null) {
             return new SimpleResponse<>(
@@ -99,7 +102,7 @@ public final class AuthorizationServersImpl implements AuthorizationServers {
 
     public Response<AuthorizationServerSecretsContract> listSecretsWithResponse(
         String resourceGroupName, String serviceName, String authsid, Context context) {
-        Response<AuthorizationServerSecretsContractInner> inner =
+        AuthorizationServersListSecretsResponse inner =
             this.serviceClient().listSecretsWithResponse(resourceGroupName, serviceName, authsid, context);
         if (inner != null) {
             return new SimpleResponse<>(

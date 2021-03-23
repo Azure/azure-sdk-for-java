@@ -15,6 +15,9 @@ import com.azure.resourcemanager.apimanagement.fluent.models.NamedValueContractI
 import com.azure.resourcemanager.apimanagement.fluent.models.NamedValueSecretContractInner;
 import com.azure.resourcemanager.apimanagement.models.NamedValueCreateContract;
 import com.azure.resourcemanager.apimanagement.models.NamedValueUpdateParameters;
+import com.azure.resourcemanager.apimanagement.models.NamedValuesGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.NamedValuesGetResponse;
+import com.azure.resourcemanager.apimanagement.models.NamedValuesListValueResponse;
 
 /** An instance of this class provides access to all the operations defined in NamedValuesClient. */
 public interface NamedValuesClient {
@@ -86,7 +89,7 @@ public interface NamedValuesClient {
      * @return the entity state (Etag) version of the named value specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    NamedValuesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String namedValueId, Context context);
 
     /**
@@ -116,7 +119,7 @@ public interface NamedValuesClient {
      * @return the details of the named value specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NamedValueContractInner> getWithResponse(
+    NamedValuesGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String namedValueId, Context context);
 
     /**
@@ -375,7 +378,7 @@ public interface NamedValuesClient {
      * @return the secret of the named value specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NamedValueSecretContractInner> listValueWithResponse(
+    NamedValuesListValueResponse listValueWithResponse(
         String resourceGroupName, String serviceName, String namedValueId, Context context);
 
     /**
