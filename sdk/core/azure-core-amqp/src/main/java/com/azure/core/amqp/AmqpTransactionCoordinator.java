@@ -3,6 +3,7 @@
 
 package com.azure.core.amqp;
 
+import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 
 /**
@@ -26,13 +27,13 @@ public interface AmqpTransactionCoordinator {
      *
      * @return a completable {@link Mono}.
      */
-    Mono<Void> dischargeTransaction(AmqpTransaction transaction, boolean isCommit);
+    Mono<Void> discharge(AmqpTransaction transaction, boolean isCommit);
 
     /**
      * Creates the transaction in message broker. Successfully completion of this API indicates that a transaction
      * identifier has successfully been created on the message broker. Once a transaction has been created, it must be
-     * completed by using {@link AmqpTransactionCoordinator#dischargeTransaction(AmqpTransaction, boolean)} API.
+     * completed by using {@link AmqpTransactionCoordinator#discharge(AmqpTransaction, boolean)} API.
      * @return the created transaction id represented by {@link AmqpTransaction}.
      */
-    Mono<AmqpTransaction> declareTransaction();
+    Mono<AmqpTransaction> declare();
 }

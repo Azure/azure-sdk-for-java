@@ -64,7 +64,7 @@ public class TransactionCoordinatorTest {
 
         doReturn(Mono.just(outcome)).when(sendLink).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
 
-        StepVerifier.create(transactionCoordinator.dischargeTransaction(transaction, isCommit))
+        StepVerifier.create(transactionCoordinator.discharge(transaction, isCommit))
             .verifyError(IllegalArgumentException.class);
 
         verify(sendLink, times(1)).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
@@ -81,7 +81,7 @@ public class TransactionCoordinatorTest {
 
         doReturn(Mono.just(outcome)).when(sendLink).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
 
-        StepVerifier.create(transactionCoordinator.dischargeTransaction(transaction, isCommit))
+        StepVerifier.create(transactionCoordinator.discharge(transaction, isCommit))
             .verifyComplete();
 
         verify(sendLink, times(1)).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
@@ -95,7 +95,7 @@ public class TransactionCoordinatorTest {
 
         doReturn(Mono.just(outcome)).when(sendLink).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
 
-        StepVerifier.create(transactionCoordinator.declareTransaction())
+        StepVerifier.create(transactionCoordinator.declare())
             .verifyError(IllegalArgumentException.class);
 
         verify(sendLink, times(1)).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
@@ -111,7 +111,7 @@ public class TransactionCoordinatorTest {
 
         doReturn(Mono.just(transactionState)).when(sendLink).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
 
-        StepVerifier.create(transactionCoordinator.declareTransaction())
+        StepVerifier.create(transactionCoordinator.declare())
             .assertNext(actual -> {
                 Assertions.assertNotNull(actual);
                 Assertions.assertArrayEquals(transactionId, actual.getTransactionId().array());

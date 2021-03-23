@@ -15,7 +15,6 @@ import org.apache.qpid.proton.amqp.transaction.Discharge;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.engine.impl.DeliveryImpl;
 import org.apache.qpid.proton.message.Message;
-import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -25,7 +24,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.MAX_AMQP_HEADER
 /**
  * Encapsulates transaction functions.
  */
-final class TransactionCoordinator implements AmqpTransactionCoordinator, Disposable {
+final class TransactionCoordinator implements AmqpTransactionCoordinator {
 
     private final ClientLogger logger = new ClientLogger(TransactionCoordinator.class);
 
@@ -48,7 +47,7 @@ final class TransactionCoordinator implements AmqpTransactionCoordinator, Dispos
      * @return a completable {@link Mono} which represent {@link DeliveryState}.
      */
     @Override
-    public Mono<Void> dischargeTransaction(AmqpTransaction transaction, boolean isCommit) {
+    public Mono<Void> discharge(AmqpTransaction transaction, boolean isCommit) {
         final Message message = Proton.message();
         Discharge discharge = new Discharge();
         discharge.setFail(!isCommit);
@@ -81,7 +80,7 @@ final class TransactionCoordinator implements AmqpTransactionCoordinator, Dispos
      * @return a completable {@link Mono} which represent {@link DeliveryState}.
      */
     @Override
-    public Mono<AmqpTransaction> declareTransaction() {
+    public Mono<AmqpTransaction> declare() {
         final Message message = Proton.message();
         Declare declare = new Declare();
         message.setBody(new AmqpValue(declare));
@@ -109,18 +108,18 @@ final class TransactionCoordinator implements AmqpTransactionCoordinator, Dispos
             });
     }
 
-    @Override
-    public void dispose() {
+    public Mono<Void> dispose() {
         if (isDisposed.getAndSet(true)) {
-            return;
+            return Mono.empty();
         }
 
         if (this.sendLink != null) {
             this.sendLink.dispose();
         }
+
+        return Mono.empty();
     }
 
-    @Override
     public boolean isDisposed() {
         return isDisposed.get();
     }

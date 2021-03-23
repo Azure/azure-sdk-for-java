@@ -66,10 +66,13 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @param handlerProvider Provides {@link BaseHandler} to listen to proton-j reactor events.
      * @param tokenManagerProvider Provides a token manager for authorizing with CBS node.
      * @param messageSerializer Serializes and deserializes proton-j messages.
+     * @param distributedTransactionsSupport indicate if distributed transaction across different entities is required
+     *        for this connection.
      */
     public ServiceBusReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions,
         ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
-        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer) {
+        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
+        boolean distributedTransactionsSupport) {
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
             messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
 
@@ -82,7 +85,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
         this.messageSerializer = messageSerializer;
         this.scheduler = connectionOptions.getScheduler();
         this.fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();
-        this.distributedTransactionsSupport = connectionOptions.isDistributedTransactionsSupported();
+        this.distributedTransactionsSupport = distributedTransactionsSupport;
     }
 
     @Override

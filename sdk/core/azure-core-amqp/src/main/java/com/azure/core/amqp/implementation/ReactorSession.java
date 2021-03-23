@@ -150,8 +150,9 @@ public class ReactorSession implements AmqpSession {
         openReceiveLinks.forEach((key, link) -> link.dispose(errorCondition));
         openSendLinks.forEach((key, link) -> link.dispose(errorCondition));
 
-        if (transactionCoordinator.get() != null) {
-            transactionCoordinator.get().dispose();
+        final TransactionCoordinator coordinator = transactionCoordinator.get();
+        if (coordinator != null) {
+            coordinator.dispose();
         }
     }
 
@@ -177,7 +178,7 @@ public class ReactorSession implements AmqpSession {
     @Override
     public Mono<AmqpTransaction> createTransaction() {
         return getOrCreateTransactionCoordinator()
-            .flatMap(coordinator -> coordinator.declareTransaction());
+            .flatMap(coordinator -> coordinator.declare());
     }
 
     /**
@@ -186,7 +187,7 @@ public class ReactorSession implements AmqpSession {
     @Override
     public Mono<Void> commitTransaction(AmqpTransaction transaction) {
         return getOrCreateTransactionCoordinator()
-            .flatMap(coordinator -> coordinator.dischargeTransaction(transaction, true));
+            .flatMap(coordinator -> coordinator.discharge(transaction, true));
     }
 
     /**
@@ -195,7 +196,7 @@ public class ReactorSession implements AmqpSession {
     @Override
     public Mono<Void> rollbackTransaction(AmqpTransaction transaction) {
         return getOrCreateTransactionCoordinator()
-            .flatMap(coordinator -> coordinator.dischargeTransaction(transaction, false));
+            .flatMap(coordinator -> coordinator.discharge(transaction, false));
     }
 
     /**

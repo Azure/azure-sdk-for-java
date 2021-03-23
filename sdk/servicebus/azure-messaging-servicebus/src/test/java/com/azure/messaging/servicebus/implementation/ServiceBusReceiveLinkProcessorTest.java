@@ -119,7 +119,7 @@ class ServiceBusReceiveLinkProcessorTest {
      * Verifies that we can get a new AMQP receive link and fetch a few messages.
      */
     @Test
-    void createNewLink() {
+    void createNewLink() throws InterruptedException {
         // Arrange
         ServiceBusReceiveLinkProcessor processor = Flux.<ServiceBusReceiveLink>create(sink -> sink.next(link1))
             .subscribeWith(linkProcessor);
@@ -581,6 +581,7 @@ class ServiceBusReceiveLinkProcessorTest {
         final Integer creditValue = value.get();
 
         assertEquals(0, creditValue);
+        verify(link1, times(3)).addCredits(eq(PREFETCH));
     }
 
     /**

@@ -414,7 +414,8 @@ public final class ServiceBusClientBuilder {
                     final String connectionId = StringUtil.getRandomString("MF");
 
                     return (ServiceBusAmqpConnection) new ServiceBusReactorAmqpConnection(connectionId,
-                        connectionOptions, provider, handlerProvider, tokenManagerProvider, serializer);
+                        connectionOptions, provider, handlerProvider, tokenManagerProvider, serializer,
+                        crossEntityTransactions);
                 }).repeat();
 
                 sharedConnection = connectionFlux.subscribeWith(new ServiceBusConnectionProcessor(
@@ -463,7 +464,7 @@ public final class ServiceBusClientBuilder {
         final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
 
         return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport, retryOptions,
-            proxyOptions, scheduler, options, verificationMode, product, clientVersion, crossEntityTransactions);
+            proxyOptions, scheduler, options, verificationMode, product, clientVersion);
     }
 
     private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {

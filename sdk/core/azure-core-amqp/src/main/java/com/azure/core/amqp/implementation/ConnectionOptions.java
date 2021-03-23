@@ -40,7 +40,6 @@ public class ConnectionOptions {
     private final SslDomain.VerifyMode verifyMode;
     private final String hostname;
     private final int port;
-    private final boolean distributedTransactionsSupport;
 
     /**
      * Creates an instance with the following options set. The AMQP connection is created to the
@@ -67,38 +66,8 @@ public class ConnectionOptions {
         SslDomain.VerifyMode verifyMode, String product, String clientVersion) {
         this(fullyQualifiedNamespace, tokenCredential, authorizationType, transport, retryOptions,
             proxyOptions, scheduler, clientOptions, verifyMode, product, clientVersion, fullyQualifiedNamespace,
-            getPort(transport), false);
+            getPort(transport));
     }
-
-    /**
-     * Creates an instance with the following options set. The AMQP connection is created to the
-     * {@code fullyQualifiedNamespace} using a port based on the {@code transport}.
-     *
-     * @param fullyQualifiedNamespace Fully qualified namespace for the AMQP broker. (ie.
-     *     namespace.servicebus.windows.net)
-     * @param tokenCredential The credential for connecting to the AMQP broker.
-     * @param authorizationType The authorisation type used for authorizing with the CBS node.
-     * @param transport The type connection used for the AMQP connection.
-     * @param retryOptions Retry options for the connection.
-     * @param proxyOptions Any proxy options to set.
-     * @param scheduler Scheduler for async operations.
-     * @param clientOptions Client options for the connection.
-     * @param verifyMode How to verify SSL information.
-     * @param distributedTransactionsSupport if AMQP session supports distributed transaction across different entities.
-     *
-     * @throws NullPointerException in the case that {@code fullyQualifiedNamespace}, {@code tokenCredential},
-     *     {@code authorizationType}, {@code transport}, {@code retryOptions}, {@code scheduler}, {@code clientOptions}
-     *     {@code proxyOptions} or {@code verifyMode} is null.
-     */
-    public ConnectionOptions(String fullyQualifiedNamespace, TokenCredential tokenCredential,
-        CbsAuthorizationType authorizationType, AmqpTransportType transport, AmqpRetryOptions retryOptions,
-        ProxyOptions proxyOptions, Scheduler scheduler, ClientOptions clientOptions,
-        SslDomain.VerifyMode verifyMode, String product, String clientVersion, boolean distributedTransactionsSupport) {
-        this(fullyQualifiedNamespace, tokenCredential, authorizationType, transport, retryOptions,
-            proxyOptions, scheduler, clientOptions, verifyMode, product, clientVersion, fullyQualifiedNamespace,
-            getPort(transport), distributedTransactionsSupport);
-    }
-
 
     /**
      * Creates an instance with the connection options set. Used when an alternative address should be made for the
@@ -127,16 +96,7 @@ public class ConnectionOptions {
         CbsAuthorizationType authorizationType, AmqpTransportType transport, AmqpRetryOptions retryOptions,
         ProxyOptions proxyOptions, Scheduler scheduler, ClientOptions clientOptions,
         SslDomain.VerifyMode verifyMode, String product, String clientVersion, String hostname, int port) {
-        this(fullyQualifiedNamespace, tokenCredential,
-            authorizationType, transport,retryOptions,
-            proxyOptions, scheduler, clientOptions,
-            verifyMode,  product, clientVersion, hostname, port, false);
-    }
 
-    private ConnectionOptions(String fullyQualifiedNamespace, TokenCredential tokenCredential,
-        CbsAuthorizationType authorizationType, AmqpTransportType transport, AmqpRetryOptions retryOptions,
-        ProxyOptions proxyOptions, Scheduler scheduler, ClientOptions clientOptions,
-        SslDomain.VerifyMode verifyMode, String product, String clientVersion, String hostname, int port, boolean distributedTransactionsSupport) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' is required.");
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' is required.");
@@ -152,7 +112,6 @@ public class ConnectionOptions {
 
         this.product = Objects.requireNonNull(product, "'product' cannot be null.");
         this.clientVersion = Objects.requireNonNull(clientVersion, "'clientVersion' cannot be null.");
-        this.distributedTransactionsSupport = distributedTransactionsSupport;
     }
 
     /**
@@ -280,13 +239,5 @@ public class ConnectionOptions {
                 throw new ClientLogger(ConnectionOptions.class).logThrowableAsError(
                     new IllegalArgumentException("Transport Type is not supported: " + transport));
         }
-    }
-
-    /**
-     * Indicate if distributed transactions are supported across different entities.
-     * @return true if distributed transactions across different entities are supported otherwise false is returned.
-     */
-    public boolean isDistributedTransactionsSupported() {
-        return this.distributedTransactionsSupport;
     }
 }

@@ -11,14 +11,12 @@ import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
-import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
-import org.apache.qpid.proton.amqp.transaction.Coordinator;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
@@ -27,7 +25,6 @@ import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Handler;
 import org.apache.qpid.proton.engine.Record;
-import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.engine.SslPeerDetails;
@@ -56,7 +53,6 @@ import java.util.concurrent.TimeoutException;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -104,8 +100,6 @@ class ReactorConnectionTest {
     private ReactorProvider reactorProvider;
     @Mock
     private ReactorHandlerProvider reactorHandlerProvider;
-    @Mock
-    private Sender sender;
 
     @BeforeAll
     static void beforeAll() {
@@ -222,68 +216,6 @@ class ReactorConnectionTest {
             }).verifyComplete();
 
         verify(record).set(Handler.class, Handler.class, sessionHandler);
-    }
-
-    /**
-     * Creates a session with the given name and set handler.
-     */
-    @Test
-    void createCoordinatorSession() {
-        // Arrange
-        // We want to ensure that the ReactorExecutor does not shutdown unexpectedly. There are still items to still
-        // process.
-        final boolean coordinatorRequired = true;
-        final String TRANSACTION_LINK_NAME = "coordinator";
-        final String entityPath = "coordinator";
-        final SendLinkHandler sendLinkHandler = new SendLinkHandler(CONNECTION_ID, FULLY_QUALIFIED_NAMESPACE, TRANSACTION_LINK_NAME, entityPath);
-
-        when(reactor.process()).thenReturn(true);
-        when(reactor.connectionToHost(connectionHandler.getHostname(), connectionHandler.getProtocolPort(),
-            connectionHandler)).thenReturn(connectionProtonJ);
-        when(connectionProtonJ.session()).thenReturn(session);
-        when(session.attachments()).thenReturn(record);
-        doNothing().when(sender).setTarget(any(Coordinator.class));
-
-        when(session.sender(TRANSACTION_LINK_NAME)).thenReturn(sender);
-        when(sender.attachments()).thenReturn(record);
-        when(reactorHandlerProvider.createSendLinkHandler(CONNECTION_ID, FULLY_QUALIFIED_NAMESPACE, TRANSACTION_LINK_NAME, entityPath))
-            .thenReturn(sendLinkHandler);
-
-        final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setMaxRetries(0).setTryTimeout(TEST_DURATION);
-
-        final ConnectionOptions connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
-            tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, retryOptions,
-            ProxyOptions.SYSTEM_DEFAULTS, SCHEDULER, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION, coordinatorRequired);
-
-        when(reactorHandlerProvider.createConnectionHandler(CONNECTION_ID, connectionOptions))
-            .thenReturn(connectionHandler);
-        connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider,
-            tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
-
-        // Act & Assert
-        StepVerifier.create(connection.createSession(SESSION_NAME))
-            .assertNext(s -> {
-                Assertions.assertNotNull(s);
-                Assertions.assertEquals(SESSION_NAME, s.getSessionName());
-                Assertions.assertTrue(s instanceof ReactorSession);
-                Assertions.assertSame(session, ((ReactorSession) s).session());
-            }).verifyComplete();
-
-        // Assert that the same instance is obtained and we don't get a new session with the same name.
-        StepVerifier.create(connection.createSession(SESSION_NAME))
-            .assertNext(s -> {
-                Assertions.assertNotNull(s);
-                Assertions.assertEquals(SESSION_NAME, s.getSessionName());
-                Assertions.assertTrue(s instanceof ReactorSession);
-                Assertions.assertSame(session, ((ReactorSession) s).session());
-            }).verifyComplete();
-
-
-        verify(record).set(Handler.class, Handler.class, sessionHandler);
-
-        verify(session).sender(TRANSACTION_LINK_NAME);
-        verify(sender).setTarget(any(Coordinator.class));
-        verify(session).open();
     }
 
     /**
