@@ -100,10 +100,7 @@ This starter allows you to securely manage and tightly control your certificates
 
     ![Copy secrets](resource/copy-secrets.png)
 
-To use the starter for server side SSL, you will need to add the following to
-your `application.yml` (if the application is using Spring Cloud Config 
-Server for its configuration add it to the `bootstrap.yml` of the application)
-
+Add these items in your `application.yml`:
 <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-server-side/src/main/resources/application.yml#L1-L12 -->
 ```yaml
 azure:
@@ -120,10 +117,7 @@ server:
     key-store-type: AzureKeyVault  # The keystore type that enables the use of Azure Key Vault for your server-side SSL certificate.
 ```
 
-Note: make sure the client ID has access to the Azure Key Vault to access
-keys, secrets and certificates.
-
-Follow the steps below to grant a client with access to Azure Key Vault to access keys, secrets and certificates.
+Make sure the client-id can access target Key Vault. Here are steps to configure access policy:
 
 1. Type your key vault name in **Search resources, services, and docs** and click your key vault created before.
 
@@ -147,9 +141,7 @@ Follow the steps below to grant a client with access to Azure Key Vault to acces
 
 #### Using a managed identity
 
-To use the starter for server side SSL, you will need to add the following to
-your `application.yml` (if the application is using Spring Cloud Config 
-Server for its configuration add it to the `bootstrap.yml` of the application)
+If you are using managed identity instead of client-id, add these items in your `application.yml`:
 
 ```yaml
 azure:
@@ -160,17 +152,11 @@ server:
     key-alias: <the name of the certificate in Azure Key Vault to use>
     key-store-type: AzureKeyVault
 ```
+Make sure the managed identity can access target Key Vault.
 
-Note: make sure the managed identity has access to the Azure Key Vault to access
-keys, secrets and certificates.
 
 ### Enable mutual SSL on the server side
-
-Only some minor changes need to be done to the server side SSL example 
-mentioned above.
-
-The following additional application.yml need to be added:
-
+To enable mutual SSL on the server side, add these items in your `application.yml`:
 ```yaml
 server:
   ssl:
@@ -182,11 +168,7 @@ server:
 ### Client side SSL
 
 #### Using a client ID and client secret
-
-To use the starter for client side SSL, you will need to add the following to
-your `application.yml` (if the application is using Spring Cloud Config 
-Server for its configuration add it to the `bootstrap.yml` of the application)
-
+Add these items in your `application.yml`:
 <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/resources/application.yml#L1-L7 -->
 ```yaml
 azure:
@@ -197,12 +179,9 @@ azure:
     client-secret:       # The Client Secret that will be used for accessing your Azure Key Vault (needed if you are not using managed identity).
     # managed-identity:  # The user-assigned managed identity object-id to use.
 ```
+Make sure the client-id can access target Key Vault. 
 
-Note: make sure the client ID has access to the Azure Key Vault to access
-keys, secrets and certificates.
-
-Then if you are using `RestTemplate` use the code below as a starting
-point:
+Configure a `RestTemplate` bean which set the `AzureKeyVault` as trust store:
 
 <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L21-L42 -->
 ```java
@@ -232,19 +211,15 @@ public RestTemplate restTemplate() throws Exception {
 
 #### Using a managed identity
 
-To use the starter for client side SSL, you will need to add the following to
-your `application.yml` (if the application is using Spring Cloud Config 
-Server for its configuration add it to the `bootstrap.yml` of the application)
-
+If you are using managed identity instead of client-id, add these items in your `application.yml`:
 ```yaml
 azure:
   keyvault:
     uri: <the URI of the Azure Key Vault to use>
 ```
-Note: make sure the managed identity has access to the Azure Key Vault to access
-keys, secrets and certificates.
+Make sure the managed identity can access target Key Vault.
 
-If you are using `RestTemplate` use code similar to the example below.
+Configure a `RestTemplate` bean which set the `AzureKeyVault` as trust store:
 
 <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/keyvault/KeyVaultJcaManagedIdentitySample.java#L18-L36 -->
 ```java
@@ -271,39 +246,29 @@ public RestTemplate restTemplateCreatedByManagedIdentity() throws Exception {
 
 ### Enable mutual SSL on the client side
 
-Only some minor changes need to be done to the client side SSL example 
-mentioned above.
+1. The SSL context needs to take a ClientPrivateKeyStrategy. Example:
+    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/keyvault/KeyVaultMutualTlsOnTheClientSide.java#L27-L30 -->
+    ```java
+    SSLContext sslContext = SSLContexts.custom()
+                                       .loadKeyMaterial(ks, "".toCharArray(), new ClientPrivateKeyStrategy())
+                                       .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
+                                       .build();
+    ```
 
-1. The SSL context needs to take a ClientPrivateKeyStrategy
-
-An example is show below:
-
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/keyvault/KeyVaultMutualTlsOnTheClientSide.java#L27-L30 -->
-```java
-SSLContext sslContext = SSLContexts.custom()
-                                   .loadKeyMaterial(ks, "".toCharArray(), new ClientPrivateKeyStrategy())
-                                   .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
-                                   .build();
-```
-
-2. A ClientPrivateKeyStrategy needs to be defined.
-
-An example is show below:
-
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/keyvault/KeyVaultMutualTlsOnTheClientSide.java#L32-L37 -->
-```java
-private static class ClientPrivateKeyStrategy implements PrivateKeyStrategy {
-    @Override
-    public String chooseAlias(Map<String, PrivateKeyDetails> map, Socket socket) {
-        return "self-signed";
+2. A ClientPrivateKeyStrategy needs to be defined. Example:
+    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/keyvault/KeyVaultMutualTlsOnTheClientSide.java#L32-L37 -->
+    ```java
+    private static class ClientPrivateKeyStrategy implements PrivateKeyStrategy {
+        @Override
+        public String chooseAlias(Map<String, PrivateKeyDetails> map, Socket socket) {
+            return "self-signed";
+        }
     }
-}
-```
+    ```
 
 ### Configuring Spring Cloud Gateway
 
-To configure Spring Cloud Gateway for outbound SSL you will need
-to add the following configuration:
+To configure Spring Cloud Gateway for outbound SSL, add the following configuration:
 
 ```yaml
 azure:
@@ -354,19 +319,6 @@ certificate will be added with the alias of `mycert`.
 side-loaded certificates.
 
 
-### Testing the current version under development 
-
-If you want to test the current version under development you will have to
-
-1. Build and install the [Azure Key Vault JCA client library for Java](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-jca/README.md)
-1. Build and install this starter.
-
-To build and install the starter use the following command line:
-
-```
-  mvn clean install -DskipTests=true
-```
-
 ## Troubleshooting
 ### Enable client logging
 Azure SDKs for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
@@ -375,7 +327,6 @@ Azure SDKs for Java offers a consistent logging story to help aid in troubleshoo
 Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.yml) by using `logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. The root logger can be configured by using logging.level.root.
 
 The following example shows potential logging settings in `application.yml`:
-
 ```yaml
 logging:
   level:
