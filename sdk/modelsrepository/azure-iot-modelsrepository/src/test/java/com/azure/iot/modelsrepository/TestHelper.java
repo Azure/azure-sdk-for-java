@@ -9,7 +9,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.iot.modelsrepository.implementation.ModelsRepositoryConstants;
 import org.junit.jupiter.params.provider.Arguments;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
