@@ -104,7 +104,7 @@ public final class DtmiConventions {
         try {
             return new URI(uri);
         } catch (URISyntaxException ex) {
-            try{
+            try {
                 Path path = Paths.get(uri).normalize();
                 return new File(path.toAbsolutePath().toString()).toURI();
             }
