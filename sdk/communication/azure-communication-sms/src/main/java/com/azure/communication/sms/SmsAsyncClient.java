@@ -97,7 +97,7 @@ public final class SmsAsyncClient {
      * @param message message to send to recipient.
      * @return response for a successful send Sms request.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SmsSendResult> send(String from, Iterable<String> to, String message) {
         return send(from, to, message, null, null);
     }

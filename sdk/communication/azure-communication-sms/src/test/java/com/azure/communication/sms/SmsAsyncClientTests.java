@@ -8,12 +8,10 @@ import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.rest.Response;
 
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
