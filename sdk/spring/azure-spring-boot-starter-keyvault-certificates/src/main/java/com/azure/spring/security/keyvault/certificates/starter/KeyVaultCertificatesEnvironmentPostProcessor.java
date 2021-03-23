@@ -56,11 +56,11 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
         }
 
         Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
-        if (environmentPropertyIsTrue(environment, "azure.keyvault.jca.overrideTrustManagerFactory")) {
+        if (overrideTrustManagerFactory(environment)) {
             Security.insertProviderAt(new KeyVaultTrustManagerFactoryProvider(), 1);
         }
 
-        if (environmentPropertyIsTrue(environment, "azure.keyvault.jca.disableHostnameVerification")) {
+        if (disableHostnameVerification(environment)) {
             HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
         }
     }
@@ -87,7 +87,17 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
         }
     }
 
-    private boolean environmentPropertyIsTrue(ConfigurableEnvironment environment, String key) {
+    static boolean overrideTrustManagerFactory(ConfigurableEnvironment environment) {
+        return environmentPropertyIsTrue(environment, "azure.keyvault.jca.overrideTrustManagerFactory") ||
+            environmentPropertyIsTrue(environment, "azure.keyvault.jca.override-trust-manager-factory");
+    }
+
+    private static boolean disableHostnameVerification(ConfigurableEnvironment environment) {
+        return environmentPropertyIsTrue(environment, "azure.keyvault.jca.disableHostnameVerification") ||
+            environmentPropertyIsTrue(environment, "azure.keyvault.jca.disable-hostname-verification");
+    }
+
+    private static boolean environmentPropertyIsTrue(ConfigurableEnvironment environment, String key) {
         return Optional.of(key)
                        .map(environment::getProperty)
                        .map(Boolean::parseBoolean)
