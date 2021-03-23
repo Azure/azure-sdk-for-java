@@ -4,7 +4,7 @@
 
 ### New features
 
-- N/A
+- Initial preview of Azure Models Repository SDK
 
 ### Breaking changes
 
