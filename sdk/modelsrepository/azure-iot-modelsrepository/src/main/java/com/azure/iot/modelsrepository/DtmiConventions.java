@@ -51,7 +51,8 @@ public final class DtmiConventions {
      * @param dtmi DigitalTwin Model Id.
      * @param repositoryUri The repository uri
      * @param expanded Is model from precomputed values
-     * @return The model uri Will throw an {@link IllegalArgumentException} if the provided dtmi is not valid.
+     * @return The model uri.
+     * @throws IllegalArgumentException if the provided dtmi is not valid.
      */
     public static URI getModelUri(String dtmi, URI repositoryUri, boolean expanded) {
         String dtmiPath = dtmiToPath(dtmi);
@@ -63,10 +64,9 @@ public final class DtmiConventions {
 
         String stringUri = repositoryUri.toString();
         try {
-            if (stringUri.endsWith("/")){
-                return new URI(stringUri+dtmiPath);
-            }
-            else {
+            if (stringUri.endsWith("/")) {
+                return new URI(stringUri + dtmiPath);
+            } else {
                 return new URI(stringUri + "/" + dtmiPath);
             }
         } catch (URISyntaxException e) {

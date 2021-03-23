@@ -5,7 +5,6 @@ package com.azure.iot.modelsrepository;
 
 import com.azure.core.exception.AzureException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.annotation.DoNotRecord;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
