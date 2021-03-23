@@ -41,7 +41,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import reactor.core.Disposable;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
@@ -485,6 +484,7 @@ class ReactorConnectionTest {
             .then(() -> connectionHandler.onConnectionRemoteClose(closeEvent))
             .expectNext(AmqpEndpointState.CLOSED)
             .then(() -> connectionHandler.onConnectionFinal(finalEvent))
+            .expectNext(AmqpEndpointState.CLOSED)
             .verifyComplete();
 
         StepVerifier.create(connection.getEndpointStates())
