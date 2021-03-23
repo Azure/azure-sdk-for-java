@@ -68,7 +68,7 @@ public abstract class Handler extends BaseHandler implements Closeable {
      * @return The endpoint states of the handler.
      */
     public Flux<EndpointState> getEndpointStates() {
-        return endpointStates.asFlux().distinct();
+        return endpointStates.asFlux();
     }
 
     void onNext(EndpointState state) {
