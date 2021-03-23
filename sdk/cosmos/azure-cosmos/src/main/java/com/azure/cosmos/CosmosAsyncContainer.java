@@ -45,6 +45,8 @@ import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -65,6 +67,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Provides methods for interacting with child resources (Items, Scripts, Conflicts)
  */
 public class CosmosAsyncContainer {
+
+    private final static Logger logger = LoggerFactory.getLogger(CosmosAsyncContainer.class);
 
     private final CosmosAsyncDatabase database;
     private final String id;
@@ -416,7 +420,13 @@ public class CosmosAsyncContainer {
      * Initializes the container by warming up the caches and connections.
      * @return Mono of Void
      */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<Void> initializeContainerAsync() {
+        if(this.getDatabase().getClient().getDocClientWrapper().getConnectionPolicy().getConnectionMode().equals(ConnectionMode.GATEWAY)) {
+            logger.info("Client is created with gateway mode, initialization of container is not needed, no action triggered");
+            return Mono.empty();
+        }
+
         Mono<List<FeedRange>> feedRangesMono = this.getDatabase().getClient().getDocClientWrapper().getFeedRanges(this.getLink());
         AtomicReference<Mono<List<FeedResponse<ObjectNode>>>> sequentialList = new AtomicReference<>();
         List<Flux<FeedResponse<ObjectNode>>> fluxList = new ArrayList<>();
