@@ -1,8 +1,13 @@
 # Release History
 
 ## 4.0.1 (2020-03-23)
+### New Features
+- Added new system event model class `AcsRecordingFileStatusUpdatedEventData`.
+- Added new attribute `transactionId` to `AcsChatEventInThreadBaseProperties`.
+- Added new attribute `tag` to `AcsSmsDeliveryReportReceivedEventData`.
+
 ### Bug Fixes
-- Corrected event types in `SystemEventNames` for system event data `AcsChatParticipantRemovedFromThreadEventData` and `AcsChatParticipantAddedToThreadEventData`.
+- Fixed event types in `SystemEventNames` for system event data `AcsChatParticipantRemovedFromThreadEventData` and `AcsChatParticipantAddedToThreadEventData`.
 
 ## 4.0.0 (2020-03-11)
 ### New Features
