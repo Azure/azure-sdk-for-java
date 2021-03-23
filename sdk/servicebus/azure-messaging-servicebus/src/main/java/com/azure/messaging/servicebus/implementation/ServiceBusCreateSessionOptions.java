@@ -1,9 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.annotation.Immutable;
 
 /**
- * An option bag to provide configuration required to create an {@link ServiceBusReactorSession}.
+ * An option bag to provide configuration required to create a {@link ServiceBusReactorSession}.
  */
 @Immutable
 final public class ServiceBusCreateSessionOptions {
