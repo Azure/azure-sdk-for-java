@@ -292,7 +292,7 @@ public final class ModelsRepositoryClientBuilder {
     /**
      * Sets the {@link HttpPipeline} to use for the service client.
      * <p>
-     * If {@code pipeline} is set, all other settings are ignored, aside from {@link #repositoryEndpoint(URI) endpoint}.
+     * If {@code pipeline} is set, all other settings are ignored, aside from {@link #repositoryEndpoint(String) endpoint}.
      *
      * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
      * @return the updated ModelsRepositoryClientBuilder instance for fluent building.
