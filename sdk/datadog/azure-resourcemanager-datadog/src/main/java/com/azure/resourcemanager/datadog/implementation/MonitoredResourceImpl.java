@@ -4,16 +4,16 @@
 
 package com.azure.resourcemanager.datadog.implementation;
 
-import com.azure.resourcemanager.datadog.MicrosoftDatadogManager;
 import com.azure.resourcemanager.datadog.fluent.models.MonitoredResourceInner;
 import com.azure.resourcemanager.datadog.models.MonitoredResource;
 
 public final class MonitoredResourceImpl implements MonitoredResource {
     private MonitoredResourceInner innerObject;
 
-    private final MicrosoftDatadogManager serviceManager;
+    private final com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager;
 
-    MonitoredResourceImpl(MonitoredResourceInner innerObject, MicrosoftDatadogManager serviceManager) {
+    MonitoredResourceImpl(
+        MonitoredResourceInner innerObject, com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -42,7 +42,7 @@ public final class MonitoredResourceImpl implements MonitoredResource {
         return this.innerObject;
     }
 
-    private MicrosoftDatadogManager manager() {
+    private com.azure.resourcemanager.datadog.MicrosoftDatadogManager manager() {
         return this.serviceManager;
     }
 }

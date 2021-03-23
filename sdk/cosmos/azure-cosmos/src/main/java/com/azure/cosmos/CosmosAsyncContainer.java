@@ -28,6 +28,7 @@ import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupFactory;
 import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
 import com.azure.cosmos.implementation.throughputControl.config.LocalThroughputControlGroup;
+import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupFactory;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosConflictProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -36,6 +37,7 @@ import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
@@ -276,15 +278,19 @@ public class CosmosAsyncContainer {
 
     private <T> Mono<CosmosItemResponse<T>> createItemInternal(T item, CosmosItemRequestOptions options, Context context) {
         Mono<CosmosItemResponse<T>> responseMono = createItemInternal(item, options);
-        return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
-            context,
-            this.createItemSpanName,
-            getId(),
-            database.getId(),
-            database.getClient(),
-            ModelBridgeInternal.getConsistencyLevel(options),
-            OperationType.Create,
-            ResourceType.Document);
+        return database
+            .getClient()
+            .getTracerProvider()
+            .traceEnabledCosmosItemResponsePublisher(
+                responseMono,
+                context,
+                this.createItemSpanName,
+                getId(),
+                database.getId(),
+                database.getClient(),
+                ModelBridgeInternal.getConsistencyLevel(options),
+                OperationType.Create,
+                ResourceType.Document);
     }
 
     private <T> Mono<CosmosItemResponse<T>> createItemInternal(T item, CosmosItemRequestOptions options) {
@@ -468,34 +474,15 @@ public class CosmosAsyncContainer {
         return queryItemsInternal(querySpec, options, classType);
     }
 
-    /**
-     * Query for items in the current container using a {@link SqlQuerySpec} and {@link CosmosQueryRequestOptions}.
-     * <p>
-     * After subscription the operation will be performed. The {@link Flux} will
-     * contain one or several feed response of the obtained items. In case of
-     * failure the {@link CosmosPagedFlux} will error.
-     *
-     * @param <T> the type parameter.
-     * @param querySpec the SQL query specification.
-     * @param options the query request options.
-     * @param classType the class type.
-     * @param feedRange the feedrange to query
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
-     * error.
-     */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public <T> CosmosPagedFlux<T> queryItems(SqlQuerySpec querySpec, CosmosQueryRequestOptions options,
-                                             Class<T> classType, FeedRange feedRange) {
-        if (options == null) {
-            options = new CosmosQueryRequestOptions();
-        }
-
-        ModelBridgeInternal.setFeedRange(options, feedRange);
-        return queryItemsInternal(querySpec, options, classType);
-    }
-
     <T> CosmosPagedFlux<T> queryItemsInternal(
         SqlQuerySpec sqlQuerySpec, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType) {
+        if (cosmosQueryRequestOptions != null) {
+            if (cosmosQueryRequestOptions.getPartitionKey() != null && cosmosQueryRequestOptions
+                                                                           .getFeedRange() != null) {
+                throw new IllegalArgumentException("Setting partitionKey and feedRange at the same time is not " +
+                                                       "allowed");
+            }
+        }
         return UtilBridgeInternal.createCosmosPagedFlux(queryItemsInternalFunc(sqlQuerySpec, cosmosQueryRequestOptions, classType));
     }
 
@@ -510,6 +497,23 @@ public class CosmosAsyncContainer {
                 return getDatabase().getDocClientWrapper()
                              .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, cosmosQueryRequestOptions)
                              .map(response -> prepareFeedResponse(response, false, classType));
+        });
+
+        return pagedFluxOptionsFluxFunction;
+    }
+
+    <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryItemsInternalFunc(
+        Mono<SqlQuerySpec> sqlQuerySpecMono, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType) {
+        Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction = (pagedFluxOptions -> {
+            String spanName = this.queryItemsSpanName;
+            pagedFluxOptions.setTracerAndTelemetryInformation(spanName, database.getId(),
+                this.getId(), OperationType.Query, ResourceType.Document, this.getDatabase().getClient());
+            setContinuationTokenAndMaxItemCount(pagedFluxOptions, cosmosQueryRequestOptions);
+
+            return sqlQuerySpecMono.flux()
+                .flatMap(sqlQuerySpec -> getDatabase().getDocClientWrapper()
+                    .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, cosmosQueryRequestOptions))
+                .map(response -> prepareFeedResponse(response, false, classType));
         });
 
         return pagedFluxOptionsFluxFunction;
@@ -708,13 +712,19 @@ public class CosmosAsyncContainer {
             final BatchExecutor executor = new BatchExecutor(this, transactionalBatch, transactionalBatchRequestOptions);
             final Mono<TransactionalBatchResponse> responseMono = executor.executeAsync();
 
-            return database.getClient().getTracerProvider().
-                traceEnabledBatchResponsePublisher(
+            return database
+                .getClient()
+                .getTracerProvider()
+                .traceEnabledBatchResponsePublisher(
                     responseMono,
                     context,
                     this.batchSpanName,
+                    this.getId(),
                     database.getId(),
-                    database.getClient().getServiceEndpoint());
+                    database.getClient(),
+                    transactionalBatchRequestOptions.getConsistencyLevel(),
+                    OperationType.Batch,
+                    ResourceType.Document);
             });
     }
 
@@ -779,7 +789,7 @@ public class CosmosAsyncContainer {
 
         final BulkProcessingOptions<TContext> bulkProcessingOptions = bulkOptions;
 
-        return Flux.deferWithContext(context -> {
+        return Flux.deferContextual(context -> {
             final BulkExecutor<TContext> executor = new BulkExecutor<>(this, operations, bulkProcessingOptions);
 
             return executor.execute();
@@ -886,8 +896,10 @@ public class CosmosAsyncContainer {
     public <T> CosmosPagedFlux<T> readAllItems(
         PartitionKey partitionKey,
         Class<T> classType) {
+        CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
+        queryRequestOptions.setPartitionKey(partitionKey);
 
-        return this.readAllItems(partitionKey, new CosmosQueryRequestOptions(), classType);
+        return this.readAllItems(partitionKey, queryRequestOptions, classType);
     }
 
     /**
@@ -984,7 +996,7 @@ public class CosmosAsyncContainer {
         CosmosPatchOperations cosmosPatchOperations,
         Class<T> itemType) {
 
-        return patchItem(itemId, partitionKey, cosmosPatchOperations, new CosmosItemRequestOptions(), itemType);
+        return patchItem(itemId, partitionKey, cosmosPatchOperations, new CosmosPatchItemRequestOptions(), itemType);
     }
 
     /**
@@ -1007,7 +1019,7 @@ public class CosmosAsyncContainer {
         String itemId,
         PartitionKey partitionKey,
         CosmosPatchOperations cosmosPatchOperations,
-        CosmosItemRequestOptions options,
+        CosmosPatchItemRequestOptions options,
         Class<T> itemType) {
 
         checkNotNull(itemId, "expected non-null itemId");
@@ -1015,11 +1027,11 @@ public class CosmosAsyncContainer {
         checkNotNull(cosmosPatchOperations, "expected non-null cosmosPatchOperations");
 
         if (options == null) {
-            options = new CosmosItemRequestOptions();
+            options = new CosmosPatchItemRequestOptions();
         }
         ModelBridgeInternal.setPartitionKey(options, partitionKey);
 
-        final CosmosItemRequestOptions requestOptions = options;
+        final CosmosPatchItemRequestOptions requestOptions = options;
         return withContext(context -> patchItemInternal(itemId, cosmosPatchOperations, requestOptions, context, itemType));
     }
 
@@ -1113,7 +1125,10 @@ public class CosmosAsyncContainer {
     public CosmosPagedFlux<CosmosConflictProperties> readAllConflicts(CosmosQueryRequestOptions options) {
         CosmosQueryRequestOptions requestOptions = options == null ? new CosmosQueryRequestOptions() : options;
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            pagedFluxOptions.setTracerInformation(this.getDatabase().getClient().getTracerProvider(),
+            pagedFluxOptions.setTracerInformation(this
+                    .getDatabase()
+                    .getClient()
+                    .getTracerProvider(),
                 this.readAllConflictsSpanName,
                 this.getDatabase().getClient().getServiceEndpoint(), database.getId());
 
@@ -1147,7 +1162,10 @@ public class CosmosAsyncContainer {
     public CosmosPagedFlux<CosmosConflictProperties> queryConflicts(String query, CosmosQueryRequestOptions options) {
         final CosmosQueryRequestOptions requestOptions = options == null ? new CosmosQueryRequestOptions() : options;
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            pagedFluxOptions.setTracerInformation(this.getDatabase().getClient().getTracerProvider(),
+            pagedFluxOptions.setTracerInformation(this
+                    .getDatabase()
+                    .getClient()
+                    .getTracerProvider(),
                 this.queryConflictsSpanName,
                 this.getDatabase().getClient().getServiceEndpoint(), database.getId());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, requestOptions);
@@ -1218,15 +1236,19 @@ public class CosmosAsyncContainer {
             .deleteDocument(getItemLink(itemId), internalObjectNode, requestOptions)
             .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponseWithObjectType(response))
             .single();
-        return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
-            context,
-            this.deleteItemSpanName,
-            this.getId(),
-            database.getId(),
-            database.getClient(),
-            requestOptions.getConsistencyLevel(),
-            OperationType.Delete,
-            ResourceType.Document);
+        return database
+            .getClient()
+            .getTracerProvider()
+            .traceEnabledCosmosItemResponsePublisher(
+                responseMono,
+                context,
+                this.deleteItemSpanName,
+                this.getId(),
+                database.getId(),
+                database.getClient(),
+                requestOptions.getConsistencyLevel(),
+                OperationType.Delete,
+                ResourceType.Document);
     }
 
     private <T> Mono<CosmosItemResponse<T>> replaceItemInternal(
@@ -1240,21 +1262,25 @@ public class CosmosAsyncContainer {
             .replaceDocument(getItemLink(itemId), doc, ModelBridgeInternal.toRequestOptions(options))
             .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()))
             .single();
-        return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
-            context,
-            this.replaceItemSpanName,
-            this.getId(),
-            database.getId(),
-            database.getClient(),
-            ModelBridgeInternal.getConsistencyLevel(options),
-            OperationType.Replace,
-            ResourceType.Document);
+        return database
+            .getClient()
+            .getTracerProvider()
+            .traceEnabledCosmosItemResponsePublisher(
+                responseMono,
+                context,
+                this.replaceItemSpanName,
+                this.getId(),
+                database.getId(),
+                database.getClient(),
+                ModelBridgeInternal.getConsistencyLevel(options),
+                OperationType.Replace,
+                ResourceType.Document);
     }
 
     private <T> Mono<CosmosItemResponse<T>> patchItemInternal(
         String itemId,
         CosmosPatchOperations cosmosPatchOperations,
-        CosmosItemRequestOptions options,
+        CosmosPatchItemRequestOptions options,
         Context context,
         Class<T> itemType) {
 
@@ -1263,16 +1289,19 @@ public class CosmosAsyncContainer {
             .patchDocument(getItemLink(itemId), cosmosPatchOperations, ModelBridgeInternal.toRequestOptions(options))
             .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()));
 
-        return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(
-            responseMono,
-            context,
-            this.patchItemSpanName,
-            this.getId(),
-            database.getId(),
-            database.getClient(),
-            ModelBridgeInternal.getConsistencyLevel(options),
-            OperationType.Patch,
-            ResourceType.Document);
+        return database
+            .getClient()
+            .getTracerProvider()
+            .traceEnabledCosmosItemResponsePublisher(
+                responseMono,
+                context,
+                this.patchItemSpanName,
+                this.getId(),
+                database.getId(),
+                database.getClient(),
+                ModelBridgeInternal.getConsistencyLevel(options),
+                OperationType.Patch,
+                ResourceType.Document);
     }
 
     private <T> Mono<CosmosItemResponse<T>> upsertItemInternal(T item, CosmosItemRequestOptions options, Context context) {
@@ -1284,15 +1313,19 @@ public class CosmosAsyncContainer {
                 true)
             .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()))
             .single();
-        return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
-            context,
-            this.upsertItemSpanName,
-            this.getId(),
-            database.getId(),
-            database.getClient(),
-            ModelBridgeInternal.getConsistencyLevel(options),
-            OperationType.Upsert,
-            ResourceType.Document);
+        return database
+            .getClient()
+            .getTracerProvider()
+            .traceEnabledCosmosItemResponsePublisher(
+                responseMono,
+                context,
+                this.upsertItemSpanName,
+                this.getId(),
+                database.getId(),
+                database.getClient(),
+                ModelBridgeInternal.getConsistencyLevel(options),
+                OperationType.Upsert,
+                ResourceType.Document);
     }
 
     private <T> Mono<CosmosItemResponse<T>> readItemInternal(
@@ -1303,37 +1336,49 @@ public class CosmosAsyncContainer {
             .readDocument(getItemLink(itemId), requestOptions)
             .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()))
             .single();
-        return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
-            context,
-            this.readItemSpanName,
-            this.getId(),
-            database.getId(),
-            database.getClient(),
-            requestOptions.getConsistencyLevel(),
-            OperationType.Read,
-            ResourceType.Document);
+        return database
+            .getClient()
+            .getTracerProvider()
+            .traceEnabledCosmosItemResponsePublisher(
+                responseMono,
+                context,
+                this.readItemSpanName,
+                this.getId(),
+                database.getId(),
+                database.getClient(),
+                requestOptions.getConsistencyLevel(),
+                OperationType.Read,
+                ResourceType.Document);
     }
 
     Mono<CosmosContainerResponse> read(CosmosContainerRequestOptions options, Context context) {
         Mono<CosmosContainerResponse> responseMono = database.getDocClientWrapper().readCollection(getLink(),
             ModelBridgeInternal.toRequestOptions(options))
             .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response)).single();
-        return database.getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono,
-            context,
-            this.readContainerSpanName,
-            database.getId(),
-            database.getClient().getServiceEndpoint());
+        return database
+            .getClient()
+            .getTracerProvider()
+            .traceEnabledCosmosResponsePublisher(
+                responseMono,
+                context,
+                this.readContainerSpanName,
+                database.getId(),
+                database.getClient().getServiceEndpoint());
     }
 
     private Mono<CosmosContainerResponse> deleteInternal(CosmosContainerRequestOptions options, Context context) {
         Mono<CosmosContainerResponse> responseMono = database.getDocClientWrapper().deleteCollection(getLink(),
             ModelBridgeInternal.toRequestOptions(options))
             .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response)).single();
-        return database.getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono,
-            context,
-            this.deleteContainerSpanName,
-            database.getId(),
-            database.getClient().getServiceEndpoint());
+        return database
+            .getClient()
+            .getTracerProvider()
+            .traceEnabledCosmosResponsePublisher(
+                responseMono,
+                context,
+                this.deleteContainerSpanName,
+                database.getId(),
+                database.getClient().getServiceEndpoint());
     }
 
     private Mono<CosmosContainerResponse> replaceInternal(CosmosContainerProperties containerProperties,
@@ -1343,22 +1388,31 @@ public class CosmosAsyncContainer {
             .replaceCollection(ModelBridgeInternal.getV2Collection(containerProperties),
                 ModelBridgeInternal.toRequestOptions(options))
             .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response)).single();
-        return database.getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono,
-            context,
-            this.replaceContainerSpanName,
-            database.getId(),
-            database.getClient().getServiceEndpoint());
+        return database
+            .getClient()
+            .getTracerProvider()
+            .traceEnabledCosmosResponsePublisher(
+                responseMono,
+                context,
+                this.replaceContainerSpanName,
+                database.getId(),
+                database.getClient().getServiceEndpoint());
     }
 
     private Mono<ThroughputResponse> readThroughputInternal(Context context) {
         Context nestedContext = context.addData(TracerProvider.COSMOS_CALL_DEPTH, TracerProvider.COSMOS_CALL_DEPTH_VAL);
         Mono<ThroughputResponse> responseMono = readThroughputInternal(this.read(new CosmosContainerRequestOptions(),
             nestedContext));
-        return this.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono,
-            context,
-            this.readThroughputSpanName,
-            database.getId(),
-            database.getClient().getServiceEndpoint());
+        return this
+            .getDatabase()
+            .getClient()
+            .getTracerProvider()
+            .traceEnabledCosmosResponsePublisher(
+                responseMono,
+                context,
+                this.readThroughputSpanName,
+                database.getId(),
+                database.getClient().getServiceEndpoint());
     }
 
     private Mono<ThroughputResponse> readThroughputInternal(Mono<CosmosContainerResponse> responseMono) {
@@ -1391,11 +1445,16 @@ public class CosmosAsyncContainer {
         Mono<ThroughputResponse> responseMono =
             replaceThroughputInternal(this.read(new CosmosContainerRequestOptions(), nestedContext),
                 throughputProperties);
-        return this.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono,
-            context,
-            this.replaceThroughputSpanName,
-            database.getId(),
-            database.getClient().getServiceEndpoint());
+        return this
+            .getDatabase()
+            .getClient()
+            .getTracerProvider()
+            .traceEnabledCosmosResponsePublisher(
+                responseMono,
+                context,
+                this.replaceThroughputSpanName,
+                database.getId(),
+                database.getClient().getServiceEndpoint());
     }
 
     private Mono<ThroughputResponse> replaceThroughputInternal(Mono<CosmosContainerResponse> responseMono,

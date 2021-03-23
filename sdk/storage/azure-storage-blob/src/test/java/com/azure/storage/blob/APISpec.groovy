@@ -18,6 +18,7 @@ import com.azure.core.http.rest.Response
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
+import com.azure.core.util.BinaryData
 import com.azure.core.util.Configuration
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.FluxUtil
@@ -30,7 +31,7 @@ import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.options.BlobBreakLeaseOptions
-import com.azure.storage.blob.specialized.BlobAsyncClientBase	
+import com.azure.storage.blob.specialized.BlobAsyncClientBase
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlobLeaseClient
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
@@ -85,6 +86,8 @@ class APISpec extends Specification {
             return new ByteArrayInputStream(defaultText.getBytes(StandardCharsets.UTF_8))
         }
     }
+
+    public static final BinaryData defaultBinaryData = BinaryData.fromString(defaultText)
 
     static int defaultDataSize = defaultData.remaining()
 

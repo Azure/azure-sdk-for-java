@@ -796,6 +796,11 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static int getPayloadLength(TransactionalBatchResponse transactionalBatchResponse) {
+        return transactionalBatchResponse.getResponseLength();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static SqlQuerySpec getOfferQuerySpecFromResourceId(CosmosAsyncContainer container, String resourceId) {
         return container.getDatabase().getOfferQuerySpecFromResourceId(resourceId);
     }

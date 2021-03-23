@@ -81,6 +81,7 @@ jacoco.exec
 
 # Generated client pom file
 ClientAggregatePom.xml
+ClientFromSourcePom.xml
 
 # Anaconda virtual env
 venv

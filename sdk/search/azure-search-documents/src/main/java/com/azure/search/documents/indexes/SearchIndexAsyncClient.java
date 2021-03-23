@@ -263,8 +263,7 @@ public final class SearchIndexAsyncClient {
         try {
             return restClient.getIndexes()
                 .getStatisticsWithResponseAsync(indexName, null, context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .map(MappingUtils::mappingGetIndexStatistics);
+                .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

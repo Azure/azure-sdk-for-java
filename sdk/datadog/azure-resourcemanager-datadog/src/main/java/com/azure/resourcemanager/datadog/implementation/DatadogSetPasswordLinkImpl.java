@@ -4,16 +4,17 @@
 
 package com.azure.resourcemanager.datadog.implementation;
 
-import com.azure.resourcemanager.datadog.MicrosoftDatadogManager;
 import com.azure.resourcemanager.datadog.fluent.models.DatadogSetPasswordLinkInner;
 import com.azure.resourcemanager.datadog.models.DatadogSetPasswordLink;
 
 public final class DatadogSetPasswordLinkImpl implements DatadogSetPasswordLink {
     private DatadogSetPasswordLinkInner innerObject;
 
-    private final MicrosoftDatadogManager serviceManager;
+    private final com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager;
 
-    DatadogSetPasswordLinkImpl(DatadogSetPasswordLinkInner innerObject, MicrosoftDatadogManager serviceManager) {
+    DatadogSetPasswordLinkImpl(
+        DatadogSetPasswordLinkInner innerObject,
+        com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -26,7 +27,7 @@ public final class DatadogSetPasswordLinkImpl implements DatadogSetPasswordLink 
         return this.innerObject;
     }
 
-    private MicrosoftDatadogManager manager() {
+    private com.azure.resourcemanager.datadog.MicrosoftDatadogManager manager() {
         return this.serviceManager;
     }
 }

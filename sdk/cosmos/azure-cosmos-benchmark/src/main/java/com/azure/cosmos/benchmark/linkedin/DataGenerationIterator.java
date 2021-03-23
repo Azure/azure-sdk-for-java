@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Preconditions;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 
 /**
@@ -17,21 +16,25 @@ import java.util.stream.Collectors;
  */
 public class DataGenerationIterator implements Iterator<Map<Key, ObjectNode>> {
 
-    public static final int BATCH_SIZE = 200000;
-
     private final DataGenerator _dataGenerator;
     private final int _totalRecordCount;
     private int _totalDataGenerated;
+    private final int _batchLoadBatchSize;
 
     /**
      * @param dataGenerator The underlying DataGenerator capable of generating a batch of records
      * @param recordCount Number of records we want to generate generate for this test.
-     *                    Actual data generation happens in pre-determined batch size
+     * @param batchLoadBatchSize The number of documents to generate, and load, in each BulkExecutor iteration
      */
-    public DataGenerationIterator(final DataGenerator dataGenerator, int recordCount) {
+    public DataGenerationIterator(final DataGenerator dataGenerator, int recordCount, int batchLoadBatchSize) {
+        Preconditions.checkArgument(recordCount > 0,
+            "The number of documents to generate must be greater than 0");
+        Preconditions.checkArgument(batchLoadBatchSize > 0,
+            "The  number of documents to generate and load on each BulkExecutor load iteration must be greater than 0");
         _dataGenerator = Preconditions.checkNotNull(dataGenerator,
             "The underlying DataGenerator for this iterator can not be null");
         _totalRecordCount = recordCount;
+        _batchLoadBatchSize = batchLoadBatchSize;
         _totalDataGenerated = 0;
     }
 
@@ -42,7 +45,7 @@ public class DataGenerationIterator implements Iterator<Map<Key, ObjectNode>> {
 
     @Override
     public Map<Key, ObjectNode> next() {
-        final int recordsToGenerate = Math.min(BATCH_SIZE, _totalRecordCount - _totalDataGenerated);
+        final int recordsToGenerate = Math.min(_batchLoadBatchSize, _totalRecordCount - _totalDataGenerated);
 
         // Filter Keys in case there are duplicates
         final Map<Key, ObjectNode> newDocuments = _dataGenerator.generate(recordsToGenerate);
