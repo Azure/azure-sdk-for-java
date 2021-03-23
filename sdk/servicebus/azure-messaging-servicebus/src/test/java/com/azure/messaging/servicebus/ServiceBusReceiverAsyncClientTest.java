@@ -19,6 +19,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
+import com.azure.messaging.servicebus.implementation.LockContainer;
 import com.azure.messaging.servicebus.implementation.MessageWithLockToken;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
@@ -49,6 +50,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.DirectProcessor;
@@ -291,6 +293,43 @@ class ServiceBusReceiverAsyncClientTest {
         // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
         verify(amqpReceiveLink, atMost(numberOfEvents + 1)).addCredits(PREFETCH);
         verify(amqpReceiveLink, never()).updateDisposition(eq(lockToken), any());
+    }
+
+    /**
+     * Verifies that session receiver does not start 'FluxAutoLockRenew' for each message because a session is already
+     * locked.
+     */
+    @Test
+    void receivesMessageLockRenewSessionOnly() {
+        // Arrange
+        final int numberOfEvents = 1;
+        final List<Message> messages = getMessages();
+        final String lockToken = UUID.randomUUID().toString();
+        final Duration maxLockRenewDuration = Duration.ofMinutes(1);
+        ServiceBusReceiverAsyncClient mySessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
+            new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, maxLockRenewDuration,
+                false, "Some-Session", null), connectionProcessor,
+            CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
+
+        MockedConstruction<FluxAutoLockRenew> mockedAutoLockRenew = Mockito.mockConstructionWithAnswer(FluxAutoLockRenew.class,
+            invocationOnMock -> new FluxAutoLockRenew(Flux.empty(), Duration.ofSeconds(30),
+                new LockContainer<>(Duration.ofSeconds(30)), (lock) -> Mono.empty()));
+
+        ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
+        when(receivedMessage.getLockedUntil()).thenReturn(OffsetDateTime.now());
+        when(receivedMessage.getLockToken()).thenReturn(lockToken);
+
+        when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
+            .thenReturn(receivedMessage);
+
+        // Act & Assert
+        StepVerifier.create(mySessionReceiver.receiveMessages().take(numberOfEvents))
+            .then(() -> messages.forEach(messageSink::next))
+            .expectNextCount(numberOfEvents)
+            .verifyComplete();
+
+        // Message onNext should not trigger `FluxAutoLockRenew` for each message because this is session entity.
+        Assertions.assertEquals(0, mockedAutoLockRenew.constructed().size());
     }
 
     /**

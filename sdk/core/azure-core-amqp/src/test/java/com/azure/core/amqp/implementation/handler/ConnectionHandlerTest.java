@@ -78,9 +78,11 @@ public class ConnectionHandlerTest {
 
     private ConnectionOptions connectionOptions;
     private ConnectionHandler handler;
+    private AutoCloseable mocksCloseable;
+
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
 
         this.connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(),
@@ -89,13 +91,16 @@ public class ConnectionHandlerTest {
     }
 
     @AfterEach
-    public void teardown() {
+    public void teardown() throws Exception {
         if (handler != null) {
             handler.close();
         }
 
         Mockito.framework().clearInlineMocks();
-        argumentCaptor = null;
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     @Test

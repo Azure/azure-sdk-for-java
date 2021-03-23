@@ -10,9 +10,8 @@ import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Receiver;
-import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
+import reactor.core.publisher.Sinks;
 
 import java.util.Collections;
 import java.util.Set;
@@ -22,15 +21,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class ReceiveLinkHandler extends LinkHandler {
     private final String linkName;
     private final AtomicBoolean isFirstResponse = new AtomicBoolean(true);
-    private final DirectProcessor<Delivery> deliveries;
-    private final FluxSink<Delivery> deliverySink;
+    private final Sinks.Many<Delivery> deliveries = Sinks.many().multicast().directBestEffort();
     private final Set<Delivery> queuedDeliveries = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private final String entityPath;
 
     public ReceiveLinkHandler(String connectionId, String hostname, String linkName, String entityPath) {
         super(connectionId, hostname, entityPath, new ClientLogger(ReceiveLinkHandler.class));
-        this.deliveries = DirectProcessor.create();
-        this.deliverySink = deliveries.sink(FluxSink.OverflowStrategy.BUFFER);
         this.linkName = linkName;
         this.entityPath = entityPath;
     }
@@ -40,12 +36,17 @@ public class ReceiveLinkHandler extends LinkHandler {
     }
 
     public Flux<Delivery> getDeliveredMessages() {
-        return deliveries.doOnNext(delivery -> queuedDeliveries.remove(delivery));
+        return deliveries.asFlux().doOnNext(delivery -> queuedDeliveries.remove(delivery));
     }
 
     @Override
     public void close() {
-        deliverySink.complete();
+        deliveries.emitComplete((signalType, emitResult) -> {
+            logger.verbose("connectionId[{}], entityPath[{}], linkName[{}] Could not emit complete.",
+                getConnectionId(), entityPath, linkName);
+            return false;
+        });
+
         super.close();
 
         queuedDeliveries.forEach(delivery -> {
@@ -60,7 +61,7 @@ public class ReceiveLinkHandler extends LinkHandler {
     public void onLinkLocalOpen(Event event) {
         final Link link = event.getLink();
         if (link instanceof Receiver) {
-            logger.info("onLinkLocalOpen connectionId[{}], entityPath[{}], linkName[{}], localSource[{}]",
+            logger.verbose("onLinkLocalOpen connectionId[{}], entityPath[{}], linkName[{}], localSource[{}]",
                 getConnectionId(), entityPath, link.getName(), link.getSource());
         }
     }
@@ -122,7 +123,11 @@ public class ReceiveLinkHandler extends LinkHandler {
                     delivery.settle();
                 } else {
                     queuedDeliveries.add(delivery);
-                    deliverySink.next(delivery);
+                    deliveries.emitNext(delivery, (signalType, emitResult) -> {
+                        logger.warning("connectionId[{}], entityPath[{}], linkName[{}] Could not emit delivery. {}",
+                            getConnectionId(), entityPath, linkName, delivery);
+                        return false;
+                    });
                 }
             }
         }
@@ -137,7 +142,12 @@ public class ReceiveLinkHandler extends LinkHandler {
 
     @Override
     public void onLinkRemoteClose(Event event) {
-        deliverySink.complete();
+        deliveries.emitComplete((signalType, emitResult) -> {
+            logger.info("connectionId[{}] linkName[{}] signalType[{}] emitResult[{}] Could not complete 'deliveries'.",
+                getConnectionId(), linkName, signalType, emitResult);
+            return false;
+        });
+
         super.onLinkRemoteClose(event);
     }
 }

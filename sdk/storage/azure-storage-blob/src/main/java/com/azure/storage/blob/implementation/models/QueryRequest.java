@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * the quick query body.
- */
+/** the quick query body. */
 @JacksonXmlRootElement(localName = "QueryRequest")
 @Fluent
 public final class QueryRequest {
@@ -27,20 +25,18 @@ public final class QueryRequest {
     private String expression;
 
     /*
-     * The inputSerialization property.
+     * The InputSerialization property.
      */
     @JsonProperty(value = "InputSerialization")
     private QuerySerialization inputSerialization;
 
     /*
-     * The outputSerialization property.
+     * The OutputSerialization property.
      */
     @JsonProperty(value = "OutputSerialization")
     private QuerySerialization outputSerialization;
 
-    /**
-     * Creates an instance of QueryRequest class.
-     */
+    /** Creates an instance of QueryRequest class. */
     public QueryRequest() {
         queryType = "SQL";
     }
@@ -86,7 +82,7 @@ public final class QueryRequest {
     }
 
     /**
-     * Get the inputSerialization property: The inputSerialization property.
+     * Get the inputSerialization property: The InputSerialization property.
      *
      * @return the inputSerialization value.
      */
@@ -95,7 +91,7 @@ public final class QueryRequest {
     }
 
     /**
-     * Set the inputSerialization property: The inputSerialization property.
+     * Set the inputSerialization property: The InputSerialization property.
      *
      * @param inputSerialization the inputSerialization value to set.
      * @return the QueryRequest object itself.
@@ -106,7 +102,7 @@ public final class QueryRequest {
     }
 
     /**
-     * Get the outputSerialization property: The outputSerialization property.
+     * Get the outputSerialization property: The OutputSerialization property.
      *
      * @return the outputSerialization value.
      */
@@ -115,7 +111,7 @@ public final class QueryRequest {
     }
 
     /**
-     * Set the outputSerialization property: The outputSerialization property.
+     * Set the outputSerialization property: The OutputSerialization property.
      *
      * @param outputSerialization the outputSerialization value to set.
      * @return the QueryRequest object itself.

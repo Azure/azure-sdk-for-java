@@ -670,7 +670,7 @@ public class BinaryDataJavaDocCodeSnippet {
     }
 
     public static class MyJsonSerializer implements JsonSerializer {
-        private final ClientLogger logger = new ClientLogger(BinaryDataTest.MyJsonSerializer.class);
+        private final ClientLogger logger = new ClientLogger(MyJsonSerializer.class);
         private final ObjectMapper mapper;
         private final TypeFactory typeFactory;
 
