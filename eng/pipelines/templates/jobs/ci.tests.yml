@@ -17,12 +17,15 @@ parameters:
   - name: PreTestSteps
     type: object
     default: []
+  - name: BuildOptions
+    type: string
+    default: '$(DefaultOptions) -T 1C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true'
   - name: TestOptions
     type: string
     default: '$(DefaultOptions) -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dparallel-test-playback'
   - name: TestGoals
     type: string
-    default: verify
+    default: 'surefire:test'
   - name: Matrix
     type: object
   - name: CloudConfig
@@ -107,10 +110,24 @@ jobs:
         condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
 
       - task: Maven@3
+        displayName: 'Build for non-From Source run'
+        inputs:
+          mavenPomFile: pom.xml
+          options: ${{ parameters.BuildOptions }} -pl $(PLSkipOptions)$(ProjectList) -am
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaTestVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+          goals: 'install'
+        # we want to run this when TestFromSource isn't true
+        condition: and(succeeded(), ne(variables['TestFromSource'],'true'))
+
+      - task: Maven@3
         displayName: 'Run tests'
         inputs:
           mavenPomFile: pom.xml
-          options: ${{ parameters.TestOptions }} -pl $(PLSkipOptions)$(ProjectList) -am $(AdditionalOptions)
+          options: ${{ parameters.TestOptions }} -pl $(PLSkipOptions)$(ProjectList) $(AdditionalOptions)
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)
@@ -146,7 +163,7 @@ jobs:
           # dependency. Note: The -T 1C says spin up a build thread per core. Since we're building
           # all of the track 2, client, libraries (which is now over 100) this effectively cuts the
           # the build time in half.
-          options: '$(DefaultOptions) -T 1C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true'
+          options: $${ parameters.BuildOptions }}
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)
