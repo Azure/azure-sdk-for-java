@@ -53,7 +53,7 @@
         <dependency>
           <groupId>com.azure.spring</groupId>
           <artifactId>azure-spring-cloud-storage</artifactId>
-          <version>2.3.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-storage;current} -->
+          <version>2.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-storage;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
@@ -98,12 +98,12 @@
         <dependency>
           <groupId>com.azure.spring</groupId>
           <artifactId>azure-spring-cloud-stream-binder-servicebus-queue</artifactId>
-          <version>2.3.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-queue;current} -->
+          <version>2.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-queue;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
           <artifactId>azure-spring-cloud-stream-binder-servicebus-topic</artifactId>
-          <version>2.3.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-topic;current} -->
+          <version>2.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-topic;current} -->
         </dependency>
       </dependencies>
 
