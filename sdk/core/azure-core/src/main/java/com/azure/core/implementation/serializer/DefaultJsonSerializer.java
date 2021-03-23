@@ -20,9 +20,9 @@ import java.io.UncheckedIOException;
  * Jackson based implementation of the {@link JsonSerializer}. This can be used as a default Json serializer if
  * no JsonSerializerProvider is in the class path.
  */
-public class JacksonSerializer implements JsonSerializer {
+public final class DefaultJsonSerializer implements JsonSerializer {
     private final SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-    private final ClientLogger logger = new ClientLogger(JacksonSerializer.class);
+    private final ClientLogger logger = new ClientLogger(DefaultJsonSerializer.class);
 
     @Override
     public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {

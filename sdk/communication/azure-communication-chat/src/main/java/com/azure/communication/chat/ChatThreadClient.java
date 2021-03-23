@@ -89,11 +89,11 @@ public final class ChatThreadClient {
      * @param participants Collection of participants to add.
      * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return AddChatParticipantsResult.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addParticipants(Iterable<ChatParticipant> participants) {
-
-        this.client.addParticipants(participants).block();
+    public AddChatParticipantsResult addParticipants(Iterable<ChatParticipant> participants) {
+        return this.client.addParticipants(participants).block();
     }
 
     /**
@@ -103,7 +103,7 @@ public final class ChatThreadClient {
      * @param context The context to associate with this operation.
      * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AddChatParticipantsResult> addParticipantsWithResponse(
