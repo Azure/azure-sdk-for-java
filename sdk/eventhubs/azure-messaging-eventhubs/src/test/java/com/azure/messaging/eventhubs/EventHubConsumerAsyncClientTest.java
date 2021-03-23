@@ -59,6 +59,7 @@ import static com.azure.messaging.eventhubs.TestUtils.getMessage;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.atLeastOnce;
@@ -93,6 +94,7 @@ class EventHubConsumerAsyncClientTest {
     private final DirectProcessor<Message> messageProcessor = DirectProcessor.create();
     private final Scheduler testScheduler = Schedulers.newSingle("eh-test");
     private final Scheduler parallelScheduler = Schedulers.newParallel("eh-parallel");
+    private final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
     @Mock
     private AmqpReceiveLink amqpReceiveLink;
@@ -103,7 +105,6 @@ class EventHubConsumerAsyncClientTest {
     @Mock
     private Runnable onClientClosed;
 
-    private MessageSerializer messageSerializer = new EventHubMessageSerializer();
     private EventHubConsumerAsyncClient consumer;
     private EventHubConnectionProcessor connectionProcessor;
 
@@ -125,6 +126,7 @@ class EventHubConsumerAsyncClientTest {
         // in ReactorExecutor.
         when(amqpReceiveLink.receive()).thenReturn(messageProcessor.publishOn(testScheduler));
         when(amqpReceiveLink.getEndpointStates()).thenReturn(endpointProcessor);
+        when(amqpReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
 
         final ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(),
@@ -205,7 +207,6 @@ class EventHubConsumerAsyncClientTest {
         verifyNoInteractions(onClientClosed);
     }
 
-
     /**
      * Verifies that this receives a number of events. Verifies that the initial credits we add are equal to the
      * prefetch value.
@@ -236,7 +237,8 @@ class EventHubConsumerAsyncClientTest {
 
         // Scheduling on elastic to simulate a user passed in scheduler (this is the default in EventHubClientBuilder).
         final EventHubConsumerAsyncClient myConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, messageSerializer, CONSUMER_GROUP, PREFETCH, Schedulers.elastic(), false, onClientClosed);
+            connectionProcessor, messageSerializer, CONSUMER_GROUP, PREFETCH, Schedulers.boundedElastic(),
+            false, onClientClosed);
         final Flux<PartitionEvent> eventsFlux = myConsumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest())
             .take(numberOfEvents);
 
@@ -251,7 +253,6 @@ class EventHubConsumerAsyncClientTest {
 
         // Assert
         Assertions.assertTrue(countDownLatch.await(30, TimeUnit.SECONDS));
-        verify(amqpReceiveLink, times(1)).addCredits(PREFETCH);
         verifyNoInteractions(onClientClosed);
     }
 
