@@ -12,6 +12,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.ApiIssuesClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.IssueContractInner;
 import com.azure.resourcemanager.apimanagement.models.ApiIssues;
+import com.azure.resourcemanager.apimanagement.models.ApiIssuesGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiIssuesGetResponse;
 import com.azure.resourcemanager.apimanagement.models.IssueContract;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -55,7 +57,7 @@ public final class ApiIssuesImpl implements ApiIssues {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, issueId);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public ApiIssuesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String issueId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, apiId, issueId, context);
     }
@@ -76,7 +78,7 @@ public final class ApiIssuesImpl implements ApiIssues {
         String issueId,
         Boolean expandCommentsAttachments,
         Context context) {
-        Response<IssueContractInner> inner =
+        ApiIssuesGetResponse inner =
             this
                 .serviceClient()
                 .getWithResponse(resourceGroupName, serviceName, apiId, issueId, expandCommentsAttachments, context);

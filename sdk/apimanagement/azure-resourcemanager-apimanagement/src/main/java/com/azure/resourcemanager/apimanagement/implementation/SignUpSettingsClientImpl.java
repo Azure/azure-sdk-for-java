@@ -170,7 +170,7 @@ public final class SignUpSettingsClientImpl implements SignUpSettingsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -261,7 +261,8 @@ public final class SignUpSettingsClientImpl implements SignUpSettingsClient {
      * @return the entity state (Etag) version of the SignUpSettings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(String resourceGroupName, String serviceName, Context context) {
+    public SignUpSettingsGetEntityTagResponse getEntityTagWithResponse(
+        String resourceGroupName, String serviceName, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, context).block();
     }
 
@@ -309,7 +310,7 @@ public final class SignUpSettingsClientImpl implements SignUpSettingsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -408,8 +409,7 @@ public final class SignUpSettingsClientImpl implements SignUpSettingsClient {
      * @return sign Up Settings for the Portal.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PortalSignupSettingsInner> getWithResponse(
-        String resourceGroupName, String serviceName, Context context) {
+    public SignUpSettingsGetResponse getWithResponse(String resourceGroupName, String serviceName, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, context).block();
     }
 
@@ -471,7 +471,7 @@ public final class SignUpSettingsClientImpl implements SignUpSettingsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -653,7 +653,7 @@ public final class SignUpSettingsClientImpl implements SignUpSettingsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

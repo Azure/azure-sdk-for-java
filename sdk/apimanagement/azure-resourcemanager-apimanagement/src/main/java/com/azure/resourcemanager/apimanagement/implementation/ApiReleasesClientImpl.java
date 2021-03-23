@@ -257,7 +257,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -528,7 +528,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -635,7 +635,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public ApiReleasesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String releaseId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, apiId, releaseId, context).block();
     }
@@ -695,7 +695,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -811,7 +811,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * @return apiRelease details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApiReleaseContractInner> getWithResponse(
+    public ApiReleasesGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String apiId, String releaseId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, apiId, releaseId, context).block();
     }
@@ -885,7 +885,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1064,7 +1064,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * @return apiRelease details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApiReleaseContractInner> createOrUpdateWithResponse(
+    public ApiReleasesCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -1150,7 +1150,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1305,7 +1305,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * @return apiRelease details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApiReleaseContractInner> updateWithResponse(
+    public ApiReleasesUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -1378,7 +1378,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1535,7 +1535,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

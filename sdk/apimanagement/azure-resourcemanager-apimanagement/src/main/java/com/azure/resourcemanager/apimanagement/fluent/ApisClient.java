@@ -15,6 +15,9 @@ import com.azure.resourcemanager.apimanagement.fluent.models.ApiContractInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.TagResourceContractInner;
 import com.azure.resourcemanager.apimanagement.models.ApiCreateOrUpdateParameter;
 import com.azure.resourcemanager.apimanagement.models.ApiUpdateContract;
+import com.azure.resourcemanager.apimanagement.models.ApisGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.ApisGetResponse;
+import com.azure.resourcemanager.apimanagement.models.ApisUpdateResponse;
 
 /** An instance of this class provides access to all the operations defined in ApisClient. */
 public interface ApisClient {
@@ -92,7 +95,7 @@ public interface ApisClient {
      * @return the entity state (Etag) version of the API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    ApisGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, Context context);
 
     /**
@@ -124,8 +127,7 @@ public interface ApisClient {
      * @return the details of the API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApiContractInner> getWithResponse(
-        String resourceGroupName, String serviceName, String apiId, Context context);
+    ApisGetResponse getWithResponse(String resourceGroupName, String serviceName, String apiId, Context context);
 
     /**
      * Creates new or updates existing specified API of the API Management service instance.
@@ -272,7 +274,7 @@ public interface ApisClient {
      * @return api details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApiContractInner> updateWithResponse(
+    ApisUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,

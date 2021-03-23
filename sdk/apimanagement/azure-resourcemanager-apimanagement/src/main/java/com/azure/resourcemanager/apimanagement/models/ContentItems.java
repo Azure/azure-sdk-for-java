@@ -65,7 +65,7 @@ public interface ContentItems {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    Response<Void> getEntityTagWithResponse(
+    ContentItemsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String contentTypeId, String contentItemId, Context context);
 
     /**

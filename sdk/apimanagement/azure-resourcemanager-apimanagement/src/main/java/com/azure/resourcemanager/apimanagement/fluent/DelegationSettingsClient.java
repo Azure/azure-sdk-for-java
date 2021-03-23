@@ -10,6 +10,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.PortalDelegationSettingsInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.PortalSettingValidationKeyContractInner;
+import com.azure.resourcemanager.apimanagement.models.DelegationSettingsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.DelegationSettingsGetResponse;
 
 /** An instance of this class provides access to all the operations defined in DelegationSettingsClient. */
 public interface DelegationSettingsClient {
@@ -37,7 +39,8 @@ public interface DelegationSettingsClient {
      * @return the entity state (Etag) version of the DelegationSettings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(String resourceGroupName, String serviceName, Context context);
+    DelegationSettingsGetEntityTagResponse getEntityTagWithResponse(
+        String resourceGroupName, String serviceName, Context context);
 
     /**
      * Get Delegation Settings for the Portal.
@@ -64,8 +67,7 @@ public interface DelegationSettingsClient {
      * @return delegation Settings for the Portal.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PortalDelegationSettingsInner> getWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    DelegationSettingsGetResponse getWithResponse(String resourceGroupName, String serviceName, Context context);
 
     /**
      * Update Delegation settings.

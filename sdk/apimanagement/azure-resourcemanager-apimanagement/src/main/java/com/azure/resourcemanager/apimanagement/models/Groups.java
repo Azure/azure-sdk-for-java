@@ -67,7 +67,7 @@ public interface Groups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the group specified by its identifier.
      */
-    Response<Void> getEntityTagWithResponse(
+    GroupsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String groupId, Context context);
 
     /**

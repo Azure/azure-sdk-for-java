@@ -77,7 +77,7 @@ public interface Users {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the user specified by its identifier.
      */
-    Response<Void> getEntityTagWithResponse(
+    UsersGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String userId, Context context);
 
     /**

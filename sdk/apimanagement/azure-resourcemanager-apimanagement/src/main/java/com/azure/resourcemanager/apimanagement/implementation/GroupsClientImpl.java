@@ -247,7 +247,7 @@ public final class GroupsClientImpl implements GroupsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -478,7 +478,7 @@ public final class GroupsClientImpl implements GroupsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -577,7 +577,7 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return the entity state (Etag) version of the group specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public GroupsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String groupId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, groupId, context).block();
     }
@@ -631,7 +631,7 @@ public final class GroupsClientImpl implements GroupsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -738,7 +738,7 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return the details of the group specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GroupContractInner> getWithResponse(
+    public GroupsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String groupId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, groupId, context).block();
     }
@@ -806,7 +806,7 @@ public final class GroupsClientImpl implements GroupsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -966,7 +966,7 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GroupContractInner> createOrUpdateWithResponse(
+    public GroupsCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String groupId,
@@ -1044,7 +1044,7 @@ public final class GroupsClientImpl implements GroupsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1188,7 +1188,7 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GroupContractInner> updateWithResponse(
+    public GroupsUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String groupId,
@@ -1254,7 +1254,7 @@ public final class GroupsClientImpl implements GroupsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1402,7 +1402,7 @@ public final class GroupsClientImpl implements GroupsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

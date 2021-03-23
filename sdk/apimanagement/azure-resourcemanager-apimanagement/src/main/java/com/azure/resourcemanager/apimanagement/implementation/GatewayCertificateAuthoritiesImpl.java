@@ -12,6 +12,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.GatewayCertificateAuthoritiesClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.GatewayCertificateAuthorityContractInner;
 import com.azure.resourcemanager.apimanagement.models.GatewayCertificateAuthorities;
+import com.azure.resourcemanager.apimanagement.models.GatewayCertificateAuthoritiesGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.GatewayCertificateAuthoritiesGetResponse;
 import com.azure.resourcemanager.apimanagement.models.GatewayCertificateAuthorityContract;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -53,7 +55,7 @@ public final class GatewayCertificateAuthoritiesImpl implements GatewayCertifica
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, gatewayId, certificateId);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public GatewayCertificateAuthoritiesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, String certificateId, Context context) {
         return this
             .serviceClient()
@@ -73,7 +75,7 @@ public final class GatewayCertificateAuthoritiesImpl implements GatewayCertifica
 
     public Response<GatewayCertificateAuthorityContract> getWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, String certificateId, Context context) {
-        Response<GatewayCertificateAuthorityContractInner> inner =
+        GatewayCertificateAuthoritiesGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, gatewayId, certificateId, context);
         if (inner != null) {
             return new SimpleResponse<>(

@@ -255,7 +255,7 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -514,7 +514,7 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -622,7 +622,7 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @return the entity state (Etag) version of the Diagnostic for an API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public ApiDiagnosticsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String diagnosticId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, apiId, diagnosticId, context).block();
     }
@@ -682,7 +682,7 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -799,7 +799,7 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @return the details of the Diagnostic for an API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DiagnosticContractInner> getWithResponse(
+    public ApiDiagnosticsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String apiId, String diagnosticId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, apiId, diagnosticId, context).block();
     }
@@ -873,7 +873,7 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1052,7 +1052,7 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @return diagnostic details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DiagnosticContractInner> createOrUpdateWithResponse(
+    public ApiDiagnosticsCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -1138,7 +1138,7 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1293,7 +1293,7 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @return diagnostic details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DiagnosticContractInner> updateWithResponse(
+    public ApiDiagnosticsUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -1367,7 +1367,7 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1535,7 +1535,7 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

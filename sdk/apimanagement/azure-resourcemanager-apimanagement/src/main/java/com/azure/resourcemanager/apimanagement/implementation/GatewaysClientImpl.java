@@ -301,7 +301,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -533,7 +533,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -636,7 +636,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
      * @return the entity state (Etag) version of the Gateway specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public GatewaysGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, gatewayId, context).block();
     }
@@ -692,7 +692,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -803,7 +803,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
      * @return the details of the Gateway specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GatewayContractInner> getWithResponse(
+    public GatewaysGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, gatewayId, context).block();
     }
@@ -872,7 +872,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1037,7 +1037,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
      * @return gateway details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GatewayContractInner> createOrUpdateWithResponse(
+    public GatewaysCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String gatewayId,
@@ -1116,7 +1116,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1264,7 +1264,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
      * @return gateway details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GatewayContractInner> updateWithResponse(
+    public GatewaysUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String gatewayId,
@@ -1331,7 +1331,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1502,7 +1502,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1614,7 +1614,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
      * @return gateway authentication keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GatewayKeysContractInner> listKeysWithResponse(
+    public GatewaysListKeysResponse listKeysWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, Context context) {
         return listKeysWithResponseAsync(resourceGroupName, serviceName, gatewayId, context).block();
     }
@@ -1680,7 +1680,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1872,7 +1872,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2040,7 +2040,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

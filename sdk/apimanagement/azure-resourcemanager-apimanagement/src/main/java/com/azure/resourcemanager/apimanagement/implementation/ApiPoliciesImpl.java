@@ -12,6 +12,9 @@ import com.azure.resourcemanager.apimanagement.fluent.ApiPoliciesClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.PolicyCollectionInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.PolicyContractInner;
 import com.azure.resourcemanager.apimanagement.models.ApiPolicies;
+import com.azure.resourcemanager.apimanagement.models.ApiPoliciesCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiPoliciesGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiPoliciesGetResponse;
 import com.azure.resourcemanager.apimanagement.models.PolicyCollection;
 import com.azure.resourcemanager.apimanagement.models.PolicyContract;
 import com.azure.resourcemanager.apimanagement.models.PolicyExportFormat;
@@ -59,7 +62,7 @@ public final class ApiPoliciesImpl implements ApiPolicies {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, policyId);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public ApiPoliciesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, PolicyIdName policyId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, apiId, policyId, context);
     }
@@ -80,7 +83,7 @@ public final class ApiPoliciesImpl implements ApiPolicies {
         PolicyIdName policyId,
         PolicyExportFormat format,
         Context context) {
-        Response<PolicyContractInner> inner =
+        ApiPoliciesGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, apiId, policyId, format, context);
         if (inner != null) {
             return new SimpleResponse<>(
@@ -116,7 +119,7 @@ public final class ApiPoliciesImpl implements ApiPolicies {
         PolicyContractInner parameters,
         String ifMatch,
         Context context) {
-        Response<PolicyContractInner> inner =
+        ApiPoliciesCreateOrUpdateResponse inner =
             this
                 .serviceClient()
                 .createOrUpdateWithResponse(

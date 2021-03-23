@@ -61,7 +61,7 @@ public interface TenantAccess {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    Response<Void> getEntityTagWithResponse(
+    TenantAccessGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, AccessIdName accessName, Context context);
 
     /**

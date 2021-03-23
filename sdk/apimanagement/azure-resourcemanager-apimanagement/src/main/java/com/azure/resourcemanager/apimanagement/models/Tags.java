@@ -91,7 +91,7 @@ public interface Tags {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state version of the tag specified by its identifier.
      */
-    Response<Void> getEntityStateByOperationWithResponse(
+    TagsGetEntityStateByOperationResponse getEntityStateByOperationWithResponse(
         String resourceGroupName, String serviceName, String apiId, String operationId, String tagId, Context context);
 
     /**
@@ -274,7 +274,7 @@ public interface Tags {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state version of the tag specified by its identifier.
      */
-    Response<Void> getEntityStateByApiWithResponse(
+    TagsGetEntityStateByApiResponse getEntityStateByApiWithResponse(
         String resourceGroupName, String serviceName, String apiId, String tagId, Context context);
 
     /**
@@ -438,7 +438,7 @@ public interface Tags {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state version of the tag specified by its identifier.
      */
-    Response<Void> getEntityStateByProductWithResponse(
+    TagsGetEntityStateByProductResponse getEntityStateByProductWithResponse(
         String resourceGroupName, String serviceName, String productId, String tagId, Context context);
 
     /**
@@ -593,7 +593,7 @@ public interface Tags {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state version of the tag specified by its identifier.
      */
-    Response<Void> getEntityStateWithResponse(
+    TagsGetEntityStateResponse getEntityStateWithResponse(
         String resourceGroupName, String serviceName, String tagId, Context context);
 
     /**
