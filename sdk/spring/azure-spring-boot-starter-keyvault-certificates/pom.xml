@@ -58,6 +58,7 @@
           <rules>
             <bannedDependencies>
               <includes>
+                <include>org.springframework.boot:spring-boot-configuration-processor:[2.4.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter:[2.4.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-validation:[2.4.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
               </includes>
