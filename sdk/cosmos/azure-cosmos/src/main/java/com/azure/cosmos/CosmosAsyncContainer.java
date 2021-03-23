@@ -44,10 +44,14 @@ import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -406,6 +410,28 @@ public class CosmosAsyncContainer {
      */
     public <T> CosmosPagedFlux<T> queryItems(String query, Class<T> classType) {
         return queryItemsInternal(new SqlQuerySpec(query), new CosmosQueryRequestOptions(), classType);
+    }
+
+    /**
+     * Initializes the container by warming up the caches and connections.
+     * @return Mono of Void
+     */
+    public Mono<Void> initializeContainerAsync() {
+        Mono<List<FeedRange>> feedRangesMono = this.getDatabase().getClient().getDocClientWrapper().getFeedRanges(this.getLink());
+        AtomicReference<Mono<List<FeedResponse<ObjectNode>>>> sequentialList = new AtomicReference<>();
+        List<Flux<FeedResponse<ObjectNode>>> fluxList = new ArrayList<>();
+        return feedRangesMono.flatMap(feedRanges -> {
+            for (FeedRange feedRange : feedRanges) {
+                String dummyQuery = String.format("SELECT * from c where c.id = '%s'", UUID.randomUUID().toString());
+                CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+                options.setFeedRange(feedRange);
+                CosmosPagedFlux<ObjectNode> cosmosPagedFlux = this.queryItems(dummyQuery, options,
+                    ObjectNode.class);
+                fluxList.add(cosmosPagedFlux.byPage());
+            }
+            sequentialList.set(Flux.merge(fluxList).collectList());
+            return sequentialList.get().flatMap(objects -> Mono.empty());
+        });
     }
 
     /**

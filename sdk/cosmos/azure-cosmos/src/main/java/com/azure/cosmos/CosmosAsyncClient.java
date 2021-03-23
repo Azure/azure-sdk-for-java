@@ -564,31 +564,4 @@ public final class CosmosAsyncClient implements Closeable {
             database.getId(),
             this.serviceEndpoint);
     }
-
-    Mono<Void> initializeContainersAsync(List<String[]> databaseContainerList) {
-
-        List<Mono<Void>> monoList = new ArrayList<>();
-        for (String[] databaseContainerId : databaseContainerList) {
-            monoList.add(initializeContainerAsync(this.getDatabase(databaseContainerId[0]).getContainer(databaseContainerId[1])));
-        }
-        return Flux.merge(monoList).collectList().flatMap(objects -> Mono.empty());
-    }
-
-    private Mono<Void> initializeContainerAsync(CosmosAsyncContainer cosmosAsyncContainer) {
-        Mono<List<FeedRange>> feedRangesMono = this.getDocClientWrapper().getFeedRanges(cosmosAsyncContainer.getLink());
-        AtomicReference<Mono<List<FeedResponse<ObjectNode>>>> sequentialList = new AtomicReference<>();
-        List<Flux<FeedResponse<ObjectNode>>> fluxList = new ArrayList<>();
-        return feedRangesMono.flatMap(feedRanges -> {
-            for (FeedRange feedRange : feedRanges) {
-                String dummyQuery = String.format("SELECT * from c where c.id = '%s'", UUID.randomUUID().toString());
-                CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-                options.setFeedRange(feedRange);
-                CosmosPagedFlux<ObjectNode> cosmosPagedFlux = cosmosAsyncContainer.queryItems(dummyQuery, options,
-                    ObjectNode.class);
-                fluxList.add(cosmosPagedFlux.byPage());
-            }
-            sequentialList.set(Flux.merge(fluxList).collectList());
-            return sequentialList.get().flatMap(objects -> Mono.empty());
-        });
-    }
 }

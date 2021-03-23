@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.throughputControl.ThroughputRequestThrottler;
 import com.azure.cosmos.implementation.throughputControl.controller.request.GlobalThroughputRequestController;
@@ -231,6 +232,14 @@ public class ReflectionUtils {
 
     public static void setTransportClient(ConsistencyWriter consistencyWriter, TransportClient transportClient) {
         set(consistencyWriter, transportClient, "transportClient");
+    }
+
+    public static RntbdEndpoint.Provider getRntbdEndpointProvider(RntbdTransportClient rntbdTransportClient) {
+        return get(RntbdEndpoint.Provider.class, rntbdTransportClient, "endpointProvider");
+    }
+
+    public static ConcurrentHashMap<String, RntbdEndpoint> getEndpoints(RntbdEndpoint.Provider provider) {
+        return get(ConcurrentHashMap.class, provider, "endpoints");
     }
 
     @SuppressWarnings("unchecked")

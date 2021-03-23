@@ -735,21 +735,6 @@ public class CosmosClientBuilder {
     }
 
     /**
-     * Builds a cosmos async client with the provided properties
-     * and initializes the containers provided by warming up the caches and connections.
-     * @param databaseContainerList list of databaseContainers
-     * @return Mono of CosmosAsyncClient
-     */
-    public Mono<CosmosAsyncClient> buildAsyncClientAndInitializeContainers(List<String[]> databaseContainerList) {
-        CosmosAsyncClient asyncClient = buildAsyncClient();
-//        if(connectionPolicy.getConnectionMode().equals(ConnectionMode.DIRECT)) {
-//            logger.warn("Client is created with gateway mode, initialization of containers not needed, could have used regular buildAsyncClient method");
-//            return Mono.just(asyncClient);
-//        }
-        return asyncClient.initializeContainersAsync(databaseContainerList).map(aVoid -> asyncClient);
-    }
-
-    /**
      * Builds a cosmos sync client with the provided properties
      *
      * @return CosmosClient
