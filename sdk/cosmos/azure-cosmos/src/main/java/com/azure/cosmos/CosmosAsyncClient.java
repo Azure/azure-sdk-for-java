@@ -107,19 +107,19 @@ public final class CosmosAsyncClient implements Closeable {
         }
 
         this.asyncDocumentClient = new AsyncDocumentClient.Builder()
-            .withServiceEndpoint(this.serviceEndpoint)
-            .withMasterKeyOrResourceToken(this.keyOrResourceToken)
-            .withConnectionPolicy(this.connectionPolicy)
-            .withConsistencyLevel(this.desiredConsistencyLevel)
-            .withSessionCapturingOverride(this.sessionCapturingOverride)
-            .withConfigs(this.configs)
-            .withTokenResolver(this.cosmosAuthorizationTokenResolver)
-            .withCredential(this.credential)
-            .withTransportClientSharing(this.enableTransportClientSharing)
-            .withContentResponseOnWriteEnabled(this.contentResponseOnWriteEnabled)
-            .withTokenCredential(this.tokenCredential)
-            .withPermissionFeed(permissionList)
-            .build();
+                                       .withServiceEndpoint(this.serviceEndpoint)
+                                       .withMasterKeyOrResourceToken(this.keyOrResourceToken)
+                                       .withConnectionPolicy(this.connectionPolicy)
+                                       .withConsistencyLevel(this.desiredConsistencyLevel)
+                                       .withSessionCapturingOverride(this.sessionCapturingOverride)
+                                       .withConfigs(this.configs)
+                                       .withTokenResolver(this.cosmosAuthorizationTokenResolver)
+                                       .withCredential(this.credential)
+                                       .withTransportClientSharing(this.enableTransportClientSharing)
+                                       .withContentResponseOnWriteEnabled(this.contentResponseOnWriteEnabled)
+                                       .withTokenCredential(this.tokenCredential)
+                                       .withPermissionFeed(permissionList)
+                                       .build();
     }
 
     AsyncDocumentClient getContextClient() {
@@ -547,7 +547,7 @@ public final class CosmosAsyncClient implements Closeable {
     }
 
     private Mono<CosmosDatabaseResponse> createDatabaseInternal(Database database, CosmosDatabaseRequestOptions options,
-                                                                Context context) {
+                                                             Context context) {
         String spanName = "createDatabase." + database.getId();
         Mono<CosmosDatabaseResponse> responseMono = asyncDocumentClient.createDatabase(database, ModelBridgeInternal.toRequestOptions(options))
             .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosDatabaseResponse(databaseResourceResponse))
