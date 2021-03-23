@@ -219,7 +219,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         String threadId = "19:fe0a2f65a7834185b29164a7de57699c@thread.v2";
 
         // Act
-        ChatThreadAsyncClient chatThreadClient = client.getChatThreadClient(threadId);
+        ChatThreadAsyncClient chatThreadClient = client.getChatThreadAsyncClient(threadId);
 
         // Assert
         assertNotNull(chatThreadClient);
@@ -239,7 +239,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         StepVerifier.create(
             client.createChatThread(threadRequest)
                 .flatMap(createChatThreadResult -> {
-                    ChatThreadAsyncClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getChatThread().getId());
+                    ChatThreadAsyncClient chatThreadClient = client.getChatThreadAsyncClient(createChatThreadResult.getChatThread().getId());
                     chatThreadClientRef.set(chatThreadClient);
                     return chatThreadClient.getProperties();
                 }))
@@ -262,7 +262,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         StepVerifier.create(
             client.createChatThread(threadRequest)
                 .flatMap(createChatThreadResult -> {
-                    ChatThreadAsyncClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getChatThread().getId());
+                    ChatThreadAsyncClient chatThreadClient = client.getChatThreadAsyncClient(createChatThreadResult.getChatThread().getId());
                     chatThreadClientRef.set(chatThreadClient);
                     return chatThreadClient.getPropertiesWithResponse();
                 }))
@@ -286,7 +286,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         StepVerifier.create(
             client.createChatThread(threadRequest)
                 .flatMap(createChatThreadResult -> {
-                    ChatThreadAsyncClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getChatThread().getId());
+                    ChatThreadAsyncClient chatThreadClient = client.getChatThreadAsyncClient(createChatThreadResult.getChatThread().getId());
                     chatThreadClientRef.set(chatThreadClient);
                     return client.deleteChatThread(chatThreadClient.getChatThreadId());
                 })
@@ -307,7 +307,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         StepVerifier.create(
             client.createChatThread(threadRequest)
                 .flatMap(createChatThreadResult -> {
-                    ChatThreadAsyncClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getChatThread().getId());
+                    ChatThreadAsyncClient chatThreadClient = client.getChatThreadAsyncClient(createChatThreadResult.getChatThread().getId());
                     chatThreadClientRef.set(chatThreadClient);
                     return client.deleteChatThreadWithResponse(chatThreadClient.getChatThreadId());
                 })

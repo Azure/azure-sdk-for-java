@@ -51,7 +51,7 @@ public final class ChatAsyncClient {
      * @param chatThreadId The id of the thread.
      * @return the client.
      */
-    public ChatThreadAsyncClient getChatThreadClient(String chatThreadId) {
+    public ChatThreadAsyncClient getChatThreadAsyncClient(String chatThreadId) {
         Objects.requireNonNull(chatThreadId, "'chatThreadId' cannot be null.");
 
         return new ChatThreadAsyncClient(chatServiceClient, chatThreadId);
