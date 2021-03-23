@@ -14,7 +14,12 @@ function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory)
     $projectData.load($projectPath)
     $projectPkgName = $projectData.project.artifactId
     $pkgVersion = $projectData.project.version
-    $pkgGroup = $projectData.project.groupId
+    if ($projectData.project.psobject.properties.name -contains "groupId") {
+      $pkgGroup = $projectData.project.groupId
+    }
+    else {
+      $pkgGroup = "unknown"
+    }
 
     $pkgProp = [PackageProps]::new($projectPkgName, $pkgVersion.ToString(), $pkgPath, $serviceDirectory, $pkgGroup)
     if ($projectPkgName -match "mgmt" -or $projectPkgName -match "resourcemanager")
