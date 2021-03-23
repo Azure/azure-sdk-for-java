@@ -5,9 +5,11 @@ package com.azure.communication.sms;
 
 import com.azure.communication.sms.models.SmsSendOptions;
 import com.azure.communication.sms.models.SmsSendResult;
+import com.azure.communication.sms.samples.quickstart.ReadmeSamples;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -71,8 +73,8 @@ public class SmsClientTests extends SmsTestBase {
         options.setDeliveryReportEnabled(true);
         options.setTag("New Tag");
         // Action & Assert
-        Response<Iterable<SmsSendResult>> sendResults = client.sendWithResponse(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE, options, Context.NONE);
-        for (SmsSendResult result : sendResults.getValue()) {
+        PagedIterable<SmsSendResult> sendResults = client.send(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE, options, Context.NONE);
+        for (SmsSendResult result : sendResults) {
             assertHappyPath(result);
         }
     }

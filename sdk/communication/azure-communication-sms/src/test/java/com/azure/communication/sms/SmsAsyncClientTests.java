@@ -7,6 +7,8 @@ import com.azure.communication.sms.models.SmsSendOptions;
 import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -62,10 +64,8 @@ public class SmsAsyncClientTests extends SmsTestBase {
 
         // Action & Assert
         StepVerifier.create(asyncClient.send(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE))
-            .assertNext((Iterable<SmsSendResult> sendResults) -> {
-                for (SmsSendResult result : sendResults) {
-                    assertHappyPath(result);
-                }
+            .assertNext(result -> {
+                assertHappyPath(result);
             })
             .verifyComplete();
     }
@@ -81,11 +81,9 @@ public class SmsAsyncClientTests extends SmsTestBase {
         options.setTag("New Tag");
 
         // Action & Assert
-        StepVerifier.create(asyncClient.sendWithResponse(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE, options))
-            .assertNext((Response<Iterable<SmsSendResult>> response) -> {
-                for (SmsSendResult result : response.getValue()) {
-                    assertHappyPath(result);
-                }
+        StepVerifier.create(asyncClient.send(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE, options))
+            .assertNext(result -> {
+                assertHappyPath(result);
             })
             .verifyComplete();
     }
@@ -157,17 +155,17 @@ public class SmsAsyncClientTests extends SmsTestBase {
         // Arrange
         SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
         asyncClient = setupAsyncClient(builder, "sendToFakePhoneNumber");
-        Mono<Iterable<SmsSendResult>> response = asyncClient.send(FROM_PHONE_NUMBER, Arrays.asList("+15550000000"), MESSAGE);
+        PagedFlux<SmsSendResult> smsSendResults = asyncClient.send(FROM_PHONE_NUMBER, Arrays.asList("+15550000000"), MESSAGE);
 
         // Action & Assert
-        StepVerifier.create(response)
+        StepVerifier.create(smsSendResults)
             .assertNext(item -> {
                 assertNotNull(item);
             })
             .verifyComplete();
 
-        Iterable<SmsSendResult> smsSendResults = response.block();
-        for (SmsSendResult result : smsSendResults) {
+        Iterable<SmsSendResult> smsSendResultList = smsSendResults.collectList().block();
+        for (SmsSendResult result : smsSendResultList) {
             assertFalse(result.isSuccessful());
             assertEquals(result.getHttpStatusCode(), 400);
         }
