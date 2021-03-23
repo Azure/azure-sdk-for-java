@@ -158,7 +158,7 @@ public final class HttpResponseBodyDecoder {
     private static Object deserializeBody(final byte[] value, final Type resultType, final Type wireType,
         final SerializerAdapter serializer, final SerializerEncoding encoding) throws IOException {
         InputStream inputStream = (value == null || value.length == 0)
-            ? null
+            ? new ByteArrayInputStream(new byte[0])
             : new ByteArrayInputStream(value);
 
         if (wireType == null) {
