@@ -17,12 +17,6 @@ parameters:
   - name: PreTestSteps
     type: object
     default: []
-  - name: TestOptions
-    type: string
-    default: '$(DefaultOptions) -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dparallel-test-playback'
-  - name: TestGoals
-    type: string
-    default: verify
   - name: MatrixConfigs
     type: object
   - name: AdditionalMatrixConfigs
@@ -242,5 +236,3 @@ jobs:
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
         PreTestSteps: ${{ parameters.PreTestSteps }}
-        TestOptions: ${{ parameters.TestOptions }}
-        TestGoals: ${{ parameters.TestGoals }}
