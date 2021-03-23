@@ -12,16 +12,25 @@ public class SampleController {
 
     private static final String SERVER_SIDE_ENDPOINT = "https://localhost:8443/";
 
-    final RestTemplate restTemplate;
+    final RestTemplate restTemplateWithTLS;
+    final RestTemplate restTemplateWithMTLS;
 
-    public SampleController(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public SampleController(RestTemplate restTemplateWithTLS, RestTemplate restTemplateWithMTLS) {
+        this.restTemplateWithTLS = restTemplateWithTLS;
+        this.restTemplateWithMTLS = restTemplateWithMTLS;
     }
 
-    @GetMapping("/")
-    public String helloWorld() {
+    @GetMapping("/tls")
+    public String tls() {
         return String.format("Response from \"%s\": %s",
             SERVER_SIDE_ENDPOINT,
-            restTemplate.getForObject(SERVER_SIDE_ENDPOINT, String.class));
+            restTemplateWithTLS.getForObject(SERVER_SIDE_ENDPOINT, String.class));
+    }
+
+    @GetMapping("/mtls")
+    public String mtls() {
+        return String.format("Response from \"%s\": %s",
+            SERVER_SIDE_ENDPOINT,
+            restTemplateWithMTLS.getForObject(SERVER_SIDE_ENDPOINT, String.class));
     }
 }

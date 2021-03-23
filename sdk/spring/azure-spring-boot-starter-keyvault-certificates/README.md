@@ -155,16 +155,6 @@ server:
 Make sure the managed identity can access target Key Vault.
 
 
-### Enable mutual SSL on the server side
-To enable mutual SSL on the server side, add these items in your `application.yml`:
-```yaml
-server:
-  ssl:
-    client-auth: need
-    trust-store-type: AzureKeyVault
-```
-
-
 ### Client side SSL
 
 #### Using a client ID and client secret
@@ -186,7 +176,7 @@ Configure a `RestTemplate` bean which set the `AzureKeyVault` as trust store:
 <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L21-L42 -->
 ```java
 @Bean
-public RestTemplate restTemplate() throws Exception {
+public RestTemplate restTemplateWithTLS() throws Exception {
     KeyStore trustStore = KeyStore.getInstance("AzureKeyVault");
     KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
         System.getProperty("azure.keyvault.uri"),
@@ -244,24 +234,50 @@ public RestTemplate restTemplateCreatedByManagedIdentity() throws Exception {
 }
 ```
 
-### Enable mutual SSL on the client side
 
-1. The SSL context needs to take a ClientPrivateKeyStrategy. Example:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/keyvault/KeyVaultMutualTlsOnTheClientSide.java#L27-L30 -->
-    ```java
-    SSLContext sslContext = SSLContexts.custom()
-                                       .loadKeyMaterial(ks, "".toCharArray(), new ClientPrivateKeyStrategy())
-                                       .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
-                                       .build();
+### Enable mutual SSL (MTLS).
+ 
+1. On the server side
+    Add these items in your `application.yml`:
+    ```yaml
+    server:
+      ssl:
+        client-auth: need
+        trust-store-type: AzureKeyVault
     ```
 
-2. A ClientPrivateKeyStrategy needs to be defined. Example:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/keyvault/KeyVaultMutualTlsOnTheClientSide.java#L32-L37 -->
+2. On the client side
+    The SSL context needs to take a `PrivateKeyStrategy`. Example:
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L48-L77 -->
     ```java
+    @Bean
+    public RestTemplate restTemplateWithMTLS() throws Exception {
+        KeyStore azuerKeyVaultKeyStore = KeyStore.getInstance("AzureKeyVault");
+        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+            System.getProperty("azure.keyvault.uri"),
+            System.getProperty("azure.keyvault.aad-authentication-url"),
+            System.getProperty("azure.keyvault.tenant-id"),
+            System.getProperty("azure.keyvault.client-id"),
+            System.getProperty("azure.keyvault.client-secret"));
+        azuerKeyVaultKeyStore.load(parameter);
+        SSLContext sslContext = SSLContexts.custom()
+                                           .loadTrustMaterial(azuerKeyVaultKeyStore, null)
+                                           .loadKeyMaterial(azuerKeyVaultKeyStore, "".toCharArray(), new ClientPrivateKeyStrategy())
+                                           .build();
+        SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(sslContext,
+            (hostname, session) -> true);
+        CloseableHttpClient httpClient = HttpClients.custom()
+                                                    .setSSLSocketFactory(socketFactory)
+                                                    .build();
+        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
+
+        return new RestTemplate(requestFactory);
+    }
+
     private static class ClientPrivateKeyStrategy implements PrivateKeyStrategy {
         @Override
         public String chooseAlias(Map<String, PrivateKeyDetails> map, Socket socket) {
-            return "self-signed";
+            return "self-signed"; // It should be your certificate alias used in client-side
         }
     }
     ```
