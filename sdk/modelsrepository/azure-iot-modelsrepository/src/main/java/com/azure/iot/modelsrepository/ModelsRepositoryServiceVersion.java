@@ -9,7 +9,7 @@ import com.azure.core.util.ServiceVersion;
  * The service API versions of Azure Models Repository that are supported by this client.
  */
 public enum ModelsRepositoryServiceVersion implements ServiceVersion {
-    V2021_03_18("V2021_03_18");
+    V2021_03_18("2021_03_18");
 
     private final String version;
 

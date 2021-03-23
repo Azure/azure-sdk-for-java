@@ -16,7 +16,7 @@ public class DtmiConventionsSamples {
     /**
      * Demonstrate how to use {@link DtmiConventions#isValidDtmi(String)}
      */
-    public static void IsValidDtmi() {
+    public static void isValidDtmi() {
         // This snippet shows how to validate a given DTMI string is well-formed.
 
         // Returns True

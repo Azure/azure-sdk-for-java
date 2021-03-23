@@ -298,6 +298,4 @@ class ModelQueryTests {
         Assertions.assertEquals(expectedDtmis.size(), metadata.getDependencies().size());
         Assertions.assertTrue(expectedDtmis.containsAll(metadata.getDependencies()));
     }
-
-
 }

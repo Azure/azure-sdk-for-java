@@ -9,7 +9,6 @@ param (
 
 if ($skipTests) {
     mvn install -DskipTests
-}
-else {
+} else {
     mvn install
 }

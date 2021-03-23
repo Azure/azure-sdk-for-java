@@ -58,7 +58,7 @@ class FileModelFetcher implements ModelFetcher {
 
                 Path path = Paths.get(new File(tryContentPath).getPath());
 
-                logger.info(String.format(StandardStrings.FETCHING_MODEL_CONTENT, path.toString()));
+                logger.info(String.format(StatusStrings.FETCHING_MODEL_CONTENT, path.toString()));
 
                 if (Files.exists(path)) {
                     try {
@@ -71,9 +71,9 @@ class FileModelFetcher implements ModelFetcher {
                     }
                 }
 
-                logger.error(String.format(StandardStrings.ERROR_FETCHING_MODEL_CONTENT, path.toString()));
+                logger.error(String.format(StatusStrings.ERROR_FETCHING_MODEL_CONTENT, path.toString()));
 
-                fnfError = String.format(StandardStrings.ERROR_FETCHING_MODEL_CONTENT, tryContentPath);
+                fnfError = String.format(StatusStrings.ERROR_FETCHING_MODEL_CONTENT, tryContentPath);
             }
 
             return Mono.error(new AzureException(fnfError));

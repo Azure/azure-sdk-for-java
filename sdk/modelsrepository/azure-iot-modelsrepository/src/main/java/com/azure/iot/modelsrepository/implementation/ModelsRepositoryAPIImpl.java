@@ -76,39 +76,15 @@ public final class ModelsRepositoryAPIImpl {
     /**
      * Initializes an instance of ModelsRepositoryAPI client.
      *
-     * @param host server parameter.
-     */
-    ModelsRepositoryAPIImpl(String host) {
-        this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                host);
-    }
-
-    /**
-     * Initializes an instance of ModelsRepositoryAPI client.
-     *
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param host server parameter.
-     */
-    ModelsRepositoryAPIImpl(HttpPipeline httpPipeline, String host) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), host);
-    }
-
-    /**
-     * Initializes an instance of ModelsRepositoryAPI client.
-     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param host server parameter.
      */
-    ModelsRepositoryAPIImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String host) {
+    ModelsRepositoryAPIImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String host, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.host = host;
-        this.apiVersion = "2020-10-31";
+        this.apiVersion = apiVersion;
         this.modelsRepository = new ModelsRepositoryImpl(this);
     }
 }

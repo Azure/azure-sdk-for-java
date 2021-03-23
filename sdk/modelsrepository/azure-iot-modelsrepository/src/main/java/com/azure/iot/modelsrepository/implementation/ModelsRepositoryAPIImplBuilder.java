@@ -136,6 +136,22 @@ public final class ModelsRepositoryAPIImplBuilder {
     }
 
     /*
+     * Api Version
+     */
+    private String apiVersion;
+
+    /**
+     * Sets Api Version.
+     *
+     * @param apiVersion the apiVersion value.
+     * @return the ModelsRepositoryAPIImplBuilder.
+     */
+    public ModelsRepositoryAPIImplBuilder apiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
+        return this;
+    }
+
+    /*
      * The retry policy that will attempt to retry failed requests, if
      * applicable.
      */
@@ -174,6 +190,9 @@ public final class ModelsRepositoryAPIImplBuilder {
      * @return an instance of ModelsRepositoryAPIImpl.
      */
     public ModelsRepositoryAPIImpl buildClient() {
+        if(apiVersion == null){
+            this.apiVersion = "2021-03-18";
+        }
         if (host == null) {
             this.host = ModelsRepositoryConstants.DEFAULT_MODELS_REPOSITORY_ENDPOINT;
         }
@@ -183,7 +202,8 @@ public final class ModelsRepositoryAPIImplBuilder {
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        return new ModelsRepositoryAPIImpl(pipeline, serializerAdapter, host);
+
+        return new ModelsRepositoryAPIImpl(pipeline, serializerAdapter, host, apiVersion);
     }
 
     private HttpPipeline createHttpPipeline() {

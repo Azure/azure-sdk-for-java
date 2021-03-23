@@ -40,7 +40,7 @@ System.out.println("Initialized the async client pointing to the local file-syst
 System.out.println("Initialized the sync client pointing to the local file-system: " + syncClient.getRepositoryUri().toString());
 ```
 
-## sync vs async clients
+## Sync vs Async clients
 
 Azure Models Repository SDK for java has two sets of APIs available for every operation, sync APIs and async APIs.
 
@@ -59,11 +59,11 @@ It provides an opportunity to override default behavior including:
 - Enabling [HttpLogOptions](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/HttpLogOptions.java).
 - Controlling [retry strategy](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/RetryPolicy.java).
 
-## Publish Models
+## Publish models
 
 Publishing models to the models repository requires [exercising][modelsrepository_publish_msdocs] common GitHub workflows.
 
-## Get Models
+## Get models
 
 After publishing, your model(s) will be available for consumption from the global repository endpoint. The following snippet shows how to retrieve the corresponding JSON-LD content.
 
@@ -91,7 +91,7 @@ modelsCountdownLatch.await(MAX_WAIT_TIME_ASYNC_OPERATIONS_IN_SECONDS, TimeUnit.S
 
 GitHub pull-request workflows are a core aspect of the IoT Models Repository service. To submit models, the user is expected to fork and clone the global [models repository project][modelsrepository_github_repo] then iterate against the local copy. Changes would then be pushed to the fork (ideally in a new branch) and a PR created against the global repository.
 
-To support this workflow and similar use cases, the client supports initialization with a local file-system URI. You can use this for example, to test and ensure newly added models to the locally cloned models repository are in their proper locations.
+To support testing local changes using this workflow and similar use cases, the client supports initialization with a local file-system URI. You can use this for example, to test and ensure newly added models to the locally cloned models repository are in their proper locations.
 
 ```java
 // Local sample repository client

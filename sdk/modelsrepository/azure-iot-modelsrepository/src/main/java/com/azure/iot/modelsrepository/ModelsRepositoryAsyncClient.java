@@ -47,6 +47,7 @@ public final class ModelsRepositoryAsyncClient {
         this.repositoryUri = repositoryUri;
 
         ModelsRepositoryAPIImpl protocolLayer = new ModelsRepositoryAPIImplBuilder()
+            .apiVersion(this.serviceVersion.toString())
             .host(repositoryUri.toString())
             .pipeline(pipeline)
             .serializerAdapter(jacksonAdapter)

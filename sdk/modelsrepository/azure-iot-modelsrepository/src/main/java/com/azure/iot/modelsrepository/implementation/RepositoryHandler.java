@@ -67,7 +67,7 @@ public final class RepositoryHandler {
 
         String targetDtmi = remainingWork.poll();
 
-        logger.info(String.format(StandardStrings.PROCESSING_DTMIS, targetDtmi));
+        logger.info(String.format(StatusStrings.PROCESSING_DTMIS, targetDtmi));
 
         return modelFetcher.fetchAsync(targetDtmi, repositoryUri, resolutionOption, context)
             .map(result -> new IntermediateFetchResult(result, currentResults))
@@ -97,7 +97,7 @@ public final class RepositoryHandler {
                         List<String> dependencies = metadata.getDependencies();
 
                         if (dependencies.size() > 0) {
-                            logger.info(StandardStrings.DISCOVERED_DEPENDENCIES, String.join("\", \"", dependencies));
+                            logger.info(StatusStrings.DISCOVERED_DEPENDENCIES, String.join("\", \"", dependencies));
                         }
 
                         remainingWork.addAll(dependencies);
@@ -105,8 +105,8 @@ public final class RepositoryHandler {
 
                     String parsedDtmi = metadata.getId();
                     if (!parsedDtmi.equals(targetDtmi)) {
-                        logger.error(String.format(StandardStrings.INCORRECT_DTMI_CASING, targetDtmi, parsedDtmi));
-                        String errorMessage = String.format(StandardStrings.GENERIC_GET_MODELS_ERROR, targetDtmi) + String.format(StandardStrings.INCORRECT_DTMI_CASING, targetDtmi, parsedDtmi);
+                        logger.error(String.format(StatusStrings.INCORRECT_DTMI_CASING, targetDtmi, parsedDtmi));
+                        String errorMessage = String.format(StatusStrings.GENERIC_GET_MODELS_ERROR, targetDtmi) + String.format(StatusStrings.INCORRECT_DTMI_CASING, targetDtmi, parsedDtmi);
 
                         return Mono.error(new AzureException(errorMessage));
                     }
@@ -124,7 +124,7 @@ public final class RepositoryHandler {
         Queue<String> modelsToProcess = new LinkedList<>();
         for (String dtmi : dtmis) {
             if (!DtmiConventions.isValidDtmi(dtmi)) {
-                logger.logExceptionAsError(new IllegalArgumentException(String.format(StandardStrings.INVALID_DTMI_FORMAT_S, dtmi)));
+                logger.logExceptionAsError(new IllegalArgumentException(String.format(StatusStrings.INVALID_DTMI_FORMAT_S, dtmi)));
             }
 
             modelsToProcess.add(dtmi);

@@ -3,7 +3,7 @@
 
 package com.azure.iot.modelsrepository.implementation;
 
-public class StandardStrings {
+public class StatusStrings {
     public static final String GENERIC_GET_MODELS_ERROR = "Failure handling \"%s\".";
     public static final String INVALID_DTMI_FORMAT_S = "Invalid DTMI format \"%s\".";
     public static final String PROCESSING_DTMIS = "Processing DTMI \"%s\". ";

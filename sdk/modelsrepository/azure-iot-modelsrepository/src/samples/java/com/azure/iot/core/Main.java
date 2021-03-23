@@ -10,7 +10,7 @@ public class Main {
     static void main(String[] args) throws InterruptedException {
 
         // DtmiConventions samples
-        DtmiConventionsSamples.IsValidDtmi();
+        DtmiConventionsSamples.isValidDtmi();
         DtmiConventionsSamples.getModelUri();
 
         // Client initialization samples

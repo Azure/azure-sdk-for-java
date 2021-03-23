@@ -65,7 +65,7 @@ public final class ModelsRepositoryImpl {
             this.client.getHost(), path, context)
             .onErrorMap(error ->
                 new AzureException(
-                    String.format(StandardStrings.ERROR_FETCHING_MODEL_CONTENT, path),
+                    String.format(StatusStrings.ERROR_FETCHING_MODEL_CONTENT, path),
                     error));
     }
 
