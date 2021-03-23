@@ -31,7 +31,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -41,22 +40,19 @@ import reactor.test.publisher.TestPublisher;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 class ReactorReceiverTest {
@@ -78,9 +74,6 @@ class ReactorReceiverTest {
     private Supplier<Integer> creditSupplier;
     @Mock
     private AmqpConnection amqpConnection;
-
-    @Captor
-    private ArgumentCaptor<Runnable> dispatcherCaptor;
 
     private final TestPublisher<AmqpShutdownSignal> shutdownSignals = TestPublisher.create();
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
@@ -138,18 +131,37 @@ class ReactorReceiverTest {
     @Test
     void addCredits() throws IOException {
         final int credits = 15;
-        reactorReceiver.addCredits(credits);
+
+        doAnswer(invocation -> {
+            final Runnable work = invocation.getArgument(0);
+            work.run();
+            return null;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
+        StepVerifier.create(reactorReceiver.addCredits(credits))
+            .verifyComplete();
 
         // Assert
-        verify(reactorDispatcher).invoke(dispatcherCaptor.capture());
-
-        final List<Runnable> invocations = dispatcherCaptor.getAllValues();
-        assertEquals(1, invocations.size());
-
-        // Apply the invocation.
-        invocations.get(0).run();
-
         verify(receiver).flow(credits);
+    }
+
+    /**
+     * Verify the sink errors if we cannot schedule work.
+     */
+    @Test
+    void addCreditsErrors() throws IOException {
+        final int credits = 15;
+
+        doAnswer(invocation -> {
+            throw new IOException("Fake exception");
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
+        StepVerifier.create(reactorReceiver.addCredits(credits))
+            .expectError(RuntimeException.class)
+            .verify();
+
+        // Assert
+        verifyNoInteractions(receiver);
     }
 
     /**
@@ -247,7 +259,15 @@ class ReactorReceiverTest {
             return messageBytes.length;
         });
 
-        when(creditSupplier.get()).thenReturn(10);
+        final int creditsToAdd = 10;
+
+        doAnswer(invocation -> {
+            final Runnable work = invocation.getArgument(0);
+            work.run();
+            return null;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
+        when(creditSupplier.get()).thenReturn(creditsToAdd);
         reactorReceiver.setEmptyCreditListener(creditSupplier);
 
         // Act & Assert
@@ -266,23 +286,14 @@ class ReactorReceiverTest {
 
         verify(creditSupplier).get();
 
-        // Verify that the get addCredits was called on that dispatcher.
-        verify(reactorDispatcher).invoke(dispatcherCaptor.capture());
-
-        final List<Runnable> invocations = dispatcherCaptor.getAllValues();
-        assertEquals(1, invocations.size());
-
-        // Apply the invocation.
-        invocations.get(0).run();
-
-        verify(receiver).flow(10);
+        verify(receiver).flow(creditsToAdd);
     }
 
     /**
      * Verifies that when an exception occurs in the parent, the connection is also closed.
      */
     @Test
-    void parentDisposesConnection() {
+    void parentDisposesConnection() throws IOException {
         // Arrange
         final AmqpShutdownSignal shutdownSignal = new AmqpShutdownSignal(false, false,
             "Test-shutdown-signal");
@@ -298,10 +309,14 @@ class ReactorReceiverTest {
             return null;
         }).when(receiver).close();
 
+        doAnswer(invocation -> {
+            final Runnable work = invocation.getArgument(0);
+            work.run();
+            return null;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
         // Act
         shutdownSignals.next(shutdownSignal);
-
-        invokeDispatcher();
 
         // Assert
         assertTrue(reactorReceiver.isDisposed());
@@ -313,7 +328,7 @@ class ReactorReceiverTest {
      * Verifies that when an exception occurs in the parent, the endpoints are also disposed.
      */
     @Test
-    void parentClosesEndpoint() {
+    void parentClosesEndpoint() throws IOException {
         // Arrange
         final AmqpShutdownSignal shutdownSignal = new AmqpShutdownSignal(false, false, "Test-shutdown-signal");
         final Event event = mock(Event.class);
@@ -328,12 +343,17 @@ class ReactorReceiverTest {
             return null;
         }).when(receiver).close();
 
+        doAnswer(invocation -> {
+            final Runnable work = invocation.getArgument(0);
+            work.run();
+            return null;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
         // Act
         StepVerifier.create(reactorReceiver.getEndpointStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
             .then(() -> {
                 shutdownSignals.next(shutdownSignal);
-                invokeDispatcher();
             })
             .expectComplete()
             .verify();
@@ -405,7 +425,7 @@ class ReactorReceiverTest {
      * Tests {@link ReactorReceiver#dispose(String, ErrorCondition)}.
      */
     @Test
-    void disposeCompletes() {
+    void disposeCompletes() throws IOException {
         // Arrange
         final String message = "some-message";
         final AmqpErrorCondition errorCondition = AmqpErrorCondition.UNAUTHORIZED_ACCESS;
@@ -422,9 +442,14 @@ class ReactorReceiverTest {
             return null;
         }).when(receiver).close();
 
+        doAnswer(invocation -> {
+            final Runnable work = invocation.getArgument(0);
+            work.run();
+            return null;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
         // Act
         StepVerifier.create(reactorReceiver.dispose(message, condition))
-            .then(() -> invokeDispatcher())
             .expectComplete()
             .verify();
 
@@ -483,21 +508,5 @@ class ReactorReceiverTest {
         verify(receiver).close();
 
         shutdownSignals.assertNoSubscribers();
-    }
-
-    /**
-     * Manually captures the Runnable in the dispatcher so we can invoke it to verify contents.
-     */
-    private void invokeDispatcher() {
-        try {
-            verify(reactorDispatcher, atLeastOnce()).invoke(dispatcherCaptor.capture());
-        } catch (IOException e) {
-            fail("Should not have caused an IOException. " + e);
-        }
-
-        dispatcherCaptor.getAllValues().forEach(work -> {
-            assertNotNull(work);
-            work.run();
-        });
     }
 }

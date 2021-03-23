@@ -26,7 +26,7 @@ public interface AmqpReceiveLink extends AmqpLink {
     Flux<Message> receive();
 
     /**
-     * Adds the specified number of credits to the link.
+     * Schedule to adds the specified number of credits to the link.
      *
      * The number of link credits initialises to zero. It is the application's responsibility to call this method to
      * allow the receiver to receive {@code credits} more deliveries.

@@ -75,8 +75,8 @@ public class ReactorReceiver implements AmqpReceiveLink {
 
                             final Supplier<Integer> supplier = creditSupplier.get();
                             final Integer credits = supplier.get();
-                            logger.verbose("linkName[{}] creditsLeft[{}] adding[{}]", getLinkName(), creditsLeft,
-                                credits);
+                            logger.verbose("connectionId[{}] linkName[{}] creditsLeft[{}] adding[{}]",
+                                handler.getConnectionId(), getLinkName(), creditsLeft, credits);
 
                             if (credits != null && credits > 0) {
                                 receiver.flow(credits);
@@ -95,8 +95,8 @@ public class ReactorReceiver implements AmqpReceiveLink {
         this.retryOptions = retryOptions;
         this.endpointStates = this.handler.getEndpointStates()
             .map(state -> {
-                logger.verbose("connectionId[{}], path[{}], linkName[{}]: State {}", handler.getConnectionId(),
-                    entityPath, getLinkName(), state);
+                logger.verbose("connectionId[{}], linkName[{}] State {}", handler.getConnectionId(), getLinkName(),
+                    state);
                 return AmqpEndpointStateUtil.getConnectionState(state);
             })
             .doOnError(error -> {
