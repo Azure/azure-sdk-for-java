@@ -365,8 +365,14 @@ public class ReactorConnection implements AmqpConnection {
         }
 
         return Mono.fromRunnable(() -> {
+            final ReactorDispatcher dispatcher = reactorProvider.getReactorDispatcher();
+
             try {
-                reactorProvider.getReactorDispatcher().invoke(this::closeConnectionWork);
+                if (dispatcher != null) {
+                    dispatcher.invoke(this::closeConnectionWork);
+                } else {
+                    closeConnectionWork();
+                }
             } catch (IOException e) {
                 logger.warning("connectionId[{}] Error while scheduling closeConnection work. Manually disposing.",
                     connectionId, e);
