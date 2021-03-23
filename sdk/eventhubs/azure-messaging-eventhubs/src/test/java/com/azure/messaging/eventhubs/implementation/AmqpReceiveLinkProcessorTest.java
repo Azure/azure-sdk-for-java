@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
@@ -78,6 +79,8 @@ class AmqpReceiveLinkProcessorTest {
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
+
+        when(retryPolicy.getRetryOptions()).thenReturn(new AmqpRetryOptions());
 
         linkProcessor = new AmqpReceiveLinkProcessor(PREFETCH, retryPolicy, parentConnection);
 

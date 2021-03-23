@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpMessageConstant;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -99,6 +100,8 @@ class EventHubPartitionAsyncConsumerTest {
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
+
+        when(retryPolicy.getRetryOptions()).thenReturn(new AmqpRetryOptions());
 
         when(link1.getEndpointStates()).thenReturn(endpointProcessor);
         when(link1.receive()).thenReturn(messageProcessor);
