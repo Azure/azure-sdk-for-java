@@ -62,37 +62,33 @@ public class ReactorReceiver implements AmqpReceiveLink {
         this.dispatcher = dispatcher;
         this.messagesProcessor = this.handler.getDeliveredMessages()
             .flatMap(delivery -> {
-                // While the message is decoded, it is possible that the message is then settled. Consequently, the
-                // credit on the link changes. Performing the operation in the dispatcher thread because settling
-                // deliveries changes the underlying connection and link state.
-                return Mono.<MessageResult>create(sink -> {
+                return Mono.<Message>create(sink -> {
                     try {
                         this.dispatcher.invoke(() -> {
                             final Message message = decodeDelivery(delivery);
-                            final int remoteCredit = receiver.getRemoteCredit();
+                            final int creditsLeft = receiver.getRemoteCredit();
+
+                            if (creditsLeft > 0) {
+                                sink.success(message);
+                                return;
+                            }
 
                             final Supplier<Integer> supplier = creditSupplier.get();
+                            final Integer credits = supplier.get();
+                            logger.verbose("linkName[{}] creditsLeft[{}] adding[{}]", getLinkName(), creditsLeft,
+                                credits);
 
-                            if (remoteCredit < 1 && !isDisposed.get()) {
-                                final Integer credits = supplier.get();
-
-                                sink.success(new MessageResult(message, credits != null ? credits : -1));
-                            } else {
-                                sink.success(new MessageResult(message, -1));
+                            if (credits != null && credits > 0) {
+                                receiver.flow(credits);
                             }
+
+                            sink.success(message);
                         });
                     } catch (IOException e) {
-                        e.printStackTrace();
-                        sink.error(new RuntimeException("Unable to schedule credit work.", e));
+                        sink.error(e);
                     }
                 });
-            }).flatMap(result -> {
-                if (result.getCredits() > 0) {
-                    return addCredits(result.getCredits()).thenReturn(result.getMessage());
-                } else {
-                    return Mono.just(result.getMessage());
-                }
-            })
+            }, 1)
             .publish()
             .autoConnect();
 
@@ -189,7 +185,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
 
     @Override
     public String getLinkName() {
-        return receiver.getName();
+        return handler.getLinkName();
     }
 
     @Override

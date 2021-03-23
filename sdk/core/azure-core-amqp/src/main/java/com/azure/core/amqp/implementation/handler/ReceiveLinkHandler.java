@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class ReceiveLinkHandler extends LinkHandler {
     private final String linkName;
     private final AtomicBoolean isFirstResponse = new AtomicBoolean(true);
-    private final Sinks.Many<Delivery> deliveries = Sinks.many().multicast().directBestEffort();
+    private final Sinks.Many<Delivery> deliveries = Sinks.many().unicast().onBackpressureBuffer();
     private final Set<Delivery> queuedDeliveries = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private final String entityPath;
 
