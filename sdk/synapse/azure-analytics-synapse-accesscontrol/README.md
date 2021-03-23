@@ -20,7 +20,7 @@ Maven dependency for the Azure Synapse Access Control client library. Add it to 
 [//]: # ({x-version-update-end})
 
 ### Prerequisites
-- Java Development Kit (JDK) with version 8 or above
+- [Java Development Kit (JDK)][jdk] with version 8 or above
 - An [Azure subscription][azure_sub].
 - An existing Azure Synapse workspace. If you need to create an Azure Synapse workspace, you can use the Azure Portal or [Azure CLI][azure_cli].
     ```Bash
@@ -96,6 +96,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/synapse/azure-analytics-synapse-accesscontrol/src
 [api_documentation]: https://azure.github.io/azure-sdk-for-java
 [azsynapse_docs]: https://docs.microsoft.com/azure/synapse-analytics/
+[jdk]: https://docs.microsoft.com/en-us/azure/developer/java/fundamentals/?view=azure-java-stable
+[azure_sub]: https://azure.microsoft.com/en-us/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
 [maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/

@@ -20,7 +20,7 @@ Maven dependency for the Azure Synapse Spark client library. Add it to your proj
 [//]: # ({x-version-update-end})
 
 ### Prerequisites
-- Java Development Kit (JDK) with version 8 or above
+- [Java Development Kit (JDK)][jdk] with version 8 or above
 - An [Azure subscription][azure_sub].
 - An existing Azure Synapse workspace. If you need to create an Azure Synapse workspace, you can use the Azure Portal or [Azure CLI][azure_cli].
     ```Bash
@@ -93,7 +93,7 @@ The following sections provide several code snippets covering some of the most c
 ### Spark batch job examples
 * [Create a Spark batch job](#create-a-spark-batch-job)
 * [List role Spark batch jobs](#list-spark-batch-jobs)
-* [Cancel a Spark batch job](#delete-a-spark-batch-job)
+* [Cancel a Spark batch job](#cancel-a-spark-batch-job)
 
 ### Create a Spark batch job
 
@@ -138,10 +138,9 @@ batchClient.cancelSparkBatchJob(jobId);
 ### Async API
 The following sections provide several code snippets covering some of the most common asynchronous Azure Synapse Spark service tasks, including:
 
-* [Create a Spark job asynchronously](#create-a-spark-batch-job-asynchronously)
-* [Retrieve a Spark job asynchronously](#retrieve-a-spark-batch-job-asynchronously)
+* [Create a Spark job asynchronously](#create-a-spark-job-asynchronously)
 * [List Spark jobs asynchronously](#list-spark-batch-jobs-asynchronously)
-* [Delete a Spark job asynchronously](#delete-a-spark-batch-job-asynchronously)
+* [Cancel a Spark batch job asynchronously](#cancel-a-spark-batch-job-asynchronously)
 
 > Note : You should add `System.in.read()` or `Thread.sleep()` after the function calls in the main class/thread to allow async functions/operations to execute and finish before the main application/thread exits.
 
@@ -221,6 +220,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azure_subscription]: https://azure.microsoft.com/
 [azure_synapse]: https://docs.microsoft.com/en-us/azure/synapse-analytics/quickstart-create-workspace
 [azure_cli]: https://docs.microsoft.com/cli/azure
+[jdk]: https://docs.microsoft.com/en-us/azure/developer/java/fundamentals/?view=azure-java-stable
+[azure_sub]: https://azure.microsoft.com/en-us/free/
 [rest_api]: https://docs.microsoft.com/rest/api/synapse/
 [azsynapse_rest]: https://docs.microsoft.com/rest/api/synapse/
 [azure_create_application_in_portal]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal
