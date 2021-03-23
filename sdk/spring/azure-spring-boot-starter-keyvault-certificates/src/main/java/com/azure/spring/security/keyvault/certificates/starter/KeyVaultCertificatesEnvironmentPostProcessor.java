@@ -88,13 +88,13 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
     }
 
     static boolean overrideTrustManagerFactory(ConfigurableEnvironment environment) {
-        return environmentPropertyIsTrue(environment, "azure.keyvault.jca.overrideTrustManagerFactory") ||
-            environmentPropertyIsTrue(environment, "azure.keyvault.jca.override-trust-manager-factory");
+        return environmentPropertyIsTrue(environment, "azure.keyvault.jca.overrideTrustManagerFactory")
+            || environmentPropertyIsTrue(environment, "azure.keyvault.jca.override-trust-manager-factory");
     }
 
     private static boolean disableHostnameVerification(ConfigurableEnvironment environment) {
-        return environmentPropertyIsTrue(environment, "azure.keyvault.jca.disableHostnameVerification") ||
-            environmentPropertyIsTrue(environment, "azure.keyvault.jca.disable-hostname-verification");
+        return environmentPropertyIsTrue(environment, "azure.keyvault.jca.disableHostnameVerification")
+            || environmentPropertyIsTrue(environment, "azure.keyvault.jca.disable-hostname-verification");
     }
 
     private static boolean environmentPropertyIsTrue(ConfigurableEnvironment environment, String key) {

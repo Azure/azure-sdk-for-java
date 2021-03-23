@@ -1,9 +1,15 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.security.keyvault.certificates.starter;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
-
+/**
+ * This is used to generate spring-configuration-metadata.json
+ *
+ * @see <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-configuration-metadata.html">Metadata</a>
+ */
 @EnableConfigurationProperties({ KeyVaultProperties.class })
 @ConfigurationProperties("azure.keyvault")
 public class KeyVaultProperties {
@@ -63,6 +69,9 @@ public class KeyVaultProperties {
         this.jca = jca;
     }
 
+    /**
+     * Jca properties
+     */
     public static class JcaProperties {
         private String overrideTrustManagerFactory;
         private String disableHostnameVerification;
