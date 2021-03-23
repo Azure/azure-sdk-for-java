@@ -105,11 +105,11 @@ public final class DtmiConventions {
      */
     public static URI convertToUri(String uri) throws IllegalArgumentException {
         try {
-            return new URI(uri);
-        } catch (URISyntaxException ex) {
+            Path path = Paths.get(uri).normalize();
+            return new File(path.toAbsolutePath().toString()).toURI();
+        } catch (Exception ex) {
             try {
-                Path path = Paths.get(uri).normalize();
-                return new File(path.toAbsolutePath().toString()).toURI();
+                return new URI(uri);
             } catch (Exception e) {
                 throw new IllegalArgumentException("Invalid uri format", e);
             }
