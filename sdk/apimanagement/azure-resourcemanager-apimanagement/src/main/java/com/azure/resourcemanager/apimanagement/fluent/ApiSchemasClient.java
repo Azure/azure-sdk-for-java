@@ -12,6 +12,8 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.apimanagement.fluent.models.SchemaContractInner;
+import com.azure.resourcemanager.apimanagement.models.ApiSchemasGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiSchemasGetResponse;
 
 /** An instance of this class provides access to all the operations defined in ApiSchemasClient. */
 public interface ApiSchemasClient {
@@ -88,7 +90,7 @@ public interface ApiSchemasClient {
      * @return the entity state (Etag) version of the schema specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    ApiSchemasGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String schemaId, Context context);
 
     /**
@@ -122,7 +124,7 @@ public interface ApiSchemasClient {
      * @return the schema configuration at the API level.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SchemaContractInner> getWithResponse(
+    ApiSchemasGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String apiId, String schemaId, Context context);
 
     /**

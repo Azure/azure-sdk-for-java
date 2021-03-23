@@ -74,7 +74,8 @@ public interface Subscriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the apimanagement subscription specified by its identifier.
      */
-    Response<Void> getEntityTagWithResponse(String resourceGroupName, String serviceName, String sid, Context context);
+    SubscriptionsGetEntityTagResponse getEntityTagWithResponse(
+        String resourceGroupName, String serviceName, String sid, Context context);
 
     /**
      * Gets the specified Subscription entity.

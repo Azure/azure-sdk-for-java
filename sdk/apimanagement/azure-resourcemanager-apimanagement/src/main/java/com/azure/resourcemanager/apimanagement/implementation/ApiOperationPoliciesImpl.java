@@ -12,6 +12,8 @@ import com.azure.resourcemanager.apimanagement.fluent.ApiOperationPoliciesClient
 import com.azure.resourcemanager.apimanagement.fluent.models.PolicyCollectionInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.PolicyContractInner;
 import com.azure.resourcemanager.apimanagement.models.ApiOperationPolicies;
+import com.azure.resourcemanager.apimanagement.models.ApiOperationPoliciesGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiOperationPoliciesGetResponse;
 import com.azure.resourcemanager.apimanagement.models.PolicyCollection;
 import com.azure.resourcemanager.apimanagement.models.PolicyContract;
 import com.azure.resourcemanager.apimanagement.models.PolicyExportFormat;
@@ -65,7 +67,7 @@ public final class ApiOperationPoliciesImpl implements ApiOperationPolicies {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, operationId, policyId);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public ApiOperationPoliciesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -96,7 +98,7 @@ public final class ApiOperationPoliciesImpl implements ApiOperationPolicies {
         PolicyIdName policyId,
         PolicyExportFormat format,
         Context context) {
-        Response<PolicyContractInner> inner =
+        ApiOperationPoliciesGetResponse inner =
             this
                 .serviceClient()
                 .getWithResponse(resourceGroupName, serviceName, apiId, operationId, policyId, format, context);

@@ -13,6 +13,9 @@ import com.azure.resourcemanager.apimanagement.fluent.ContentItemsClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.ContentItemContractInner;
 import com.azure.resourcemanager.apimanagement.models.ContentItemContract;
 import com.azure.resourcemanager.apimanagement.models.ContentItems;
+import com.azure.resourcemanager.apimanagement.models.ContentItemsCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.ContentItemsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.ContentItemsGetResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ContentItemsImpl implements ContentItems {
@@ -46,7 +49,7 @@ public final class ContentItemsImpl implements ContentItems {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, contentTypeId, contentItemId);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public ContentItemsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String contentTypeId, String contentItemId, Context context) {
         return this
             .serviceClient()
@@ -66,7 +69,7 @@ public final class ContentItemsImpl implements ContentItems {
 
     public Response<ContentItemContract> getWithResponse(
         String resourceGroupName, String serviceName, String contentTypeId, String contentItemId, Context context) {
-        Response<ContentItemContractInner> inner =
+        ContentItemsGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, contentTypeId, contentItemId, context);
         if (inner != null) {
             return new SimpleResponse<>(
@@ -97,7 +100,7 @@ public final class ContentItemsImpl implements ContentItems {
         String contentItemId,
         String ifMatch,
         Context context) {
-        Response<ContentItemContractInner> inner =
+        ContentItemsCreateOrUpdateResponse inner =
             this
                 .serviceClient()
                 .createOrUpdateWithResponse(

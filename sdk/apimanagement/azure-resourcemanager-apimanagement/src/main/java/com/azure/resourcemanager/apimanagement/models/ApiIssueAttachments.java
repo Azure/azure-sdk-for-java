@@ -82,7 +82,7 @@ public interface ApiIssueAttachments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the issue Attachment for an API specified by its identifier.
      */
-    Response<Void> getEntityTagWithResponse(
+    ApiIssueAttachmentsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,

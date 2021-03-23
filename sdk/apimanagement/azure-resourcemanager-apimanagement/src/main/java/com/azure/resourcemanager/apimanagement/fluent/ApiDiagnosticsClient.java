@@ -10,6 +10,10 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.DiagnosticContractInner;
+import com.azure.resourcemanager.apimanagement.models.ApiDiagnosticsCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiDiagnosticsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiDiagnosticsGetResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiDiagnosticsUpdateResponse;
 
 /** An instance of this class provides access to all the operations defined in ApiDiagnosticsClient. */
 public interface ApiDiagnosticsClient {
@@ -82,7 +86,7 @@ public interface ApiDiagnosticsClient {
      * @return the entity state (Etag) version of the Diagnostic for an API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    ApiDiagnosticsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String diagnosticId, Context context);
 
     /**
@@ -114,7 +118,7 @@ public interface ApiDiagnosticsClient {
      * @return the details of the Diagnostic for an API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DiagnosticContractInner> getWithResponse(
+    ApiDiagnosticsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String apiId, String diagnosticId, Context context);
 
     /**
@@ -154,7 +158,7 @@ public interface ApiDiagnosticsClient {
      * @return diagnostic details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DiagnosticContractInner> createOrUpdateWithResponse(
+    ApiDiagnosticsCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -204,7 +208,7 @@ public interface ApiDiagnosticsClient {
      * @return diagnostic details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DiagnosticContractInner> updateWithResponse(
+    ApiDiagnosticsUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,

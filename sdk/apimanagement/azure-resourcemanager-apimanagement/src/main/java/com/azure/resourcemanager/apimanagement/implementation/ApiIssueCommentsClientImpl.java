@@ -251,7 +251,7 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -541,7 +541,7 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -658,7 +658,7 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
      * @return the entity state (Etag) version of the issue Comment for an API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public ApiIssueCommentsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String issueId, String commentId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, apiId, issueId, commentId, context)
             .block();
@@ -724,7 +724,7 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -849,7 +849,7 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
      * @return the details of the issue Comment for an API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IssueCommentContractInner> getWithResponse(
+    public ApiIssueCommentsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String apiId, String issueId, String commentId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, apiId, issueId, commentId, context).block();
     }
@@ -929,7 +929,7 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1124,7 +1124,7 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
      * @return issue Comment Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IssueCommentContractInner> createOrUpdateWithResponse(
+    public ApiIssueCommentsCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -1204,7 +1204,7 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1383,7 +1383,7 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

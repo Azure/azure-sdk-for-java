@@ -19,6 +19,9 @@ import com.azure.resourcemanager.apimanagement.models.GatewayKeysContract;
 import com.azure.resourcemanager.apimanagement.models.GatewayTokenContract;
 import com.azure.resourcemanager.apimanagement.models.GatewayTokenRequestContract;
 import com.azure.resourcemanager.apimanagement.models.Gateways;
+import com.azure.resourcemanager.apimanagement.models.GatewaysGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.GatewaysGetResponse;
+import com.azure.resourcemanager.apimanagement.models.GatewaysListKeysResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class GatewaysImpl implements Gateways {
@@ -50,7 +53,7 @@ public final class GatewaysImpl implements Gateways {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, gatewayId);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public GatewaysGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, gatewayId, context);
     }
@@ -66,7 +69,7 @@ public final class GatewaysImpl implements Gateways {
 
     public Response<GatewayContract> getWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, Context context) {
-        Response<GatewayContractInner> inner =
+        GatewaysGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, gatewayId, context);
         if (inner != null) {
             return new SimpleResponse<>(
@@ -99,7 +102,7 @@ public final class GatewaysImpl implements Gateways {
 
     public Response<GatewayKeysContract> listKeysWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, Context context) {
-        Response<GatewayKeysContractInner> inner =
+        GatewaysListKeysResponse inner =
             this.serviceClient().listKeysWithResponse(resourceGroupName, serviceName, gatewayId, context);
         if (inner != null) {
             return new SimpleResponse<>(

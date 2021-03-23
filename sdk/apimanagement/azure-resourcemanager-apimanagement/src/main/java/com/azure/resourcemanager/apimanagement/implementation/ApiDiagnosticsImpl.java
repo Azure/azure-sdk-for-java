@@ -12,6 +12,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.ApiDiagnosticsClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.DiagnosticContractInner;
 import com.azure.resourcemanager.apimanagement.models.ApiDiagnostics;
+import com.azure.resourcemanager.apimanagement.models.ApiDiagnosticsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiDiagnosticsGetResponse;
 import com.azure.resourcemanager.apimanagement.models.DiagnosticContract;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -51,7 +53,7 @@ public final class ApiDiagnosticsImpl implements ApiDiagnostics {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, diagnosticId);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public ApiDiagnosticsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String diagnosticId, Context context) {
         return this
             .serviceClient()
@@ -69,7 +71,7 @@ public final class ApiDiagnosticsImpl implements ApiDiagnostics {
 
     public Response<DiagnosticContract> getWithResponse(
         String resourceGroupName, String serviceName, String apiId, String diagnosticId, Context context) {
-        Response<DiagnosticContractInner> inner =
+        ApiDiagnosticsGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, apiId, diagnosticId, context);
         if (inner != null) {
             return new SimpleResponse<>(

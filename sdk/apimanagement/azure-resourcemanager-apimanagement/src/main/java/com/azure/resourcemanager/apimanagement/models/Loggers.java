@@ -67,7 +67,7 @@ public interface Loggers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the logger specified by its identifier.
      */
-    Response<Void> getEntityTagWithResponse(
+    LoggersGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String loggerId, Context context);
 
     /**

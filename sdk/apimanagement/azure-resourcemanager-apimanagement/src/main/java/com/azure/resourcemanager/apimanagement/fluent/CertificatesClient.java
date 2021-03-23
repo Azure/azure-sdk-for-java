@@ -11,6 +11,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.CertificateContractInner;
 import com.azure.resourcemanager.apimanagement.models.CertificateCreateOrUpdateParameters;
+import com.azure.resourcemanager.apimanagement.models.CertificatesCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.CertificatesGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.CertificatesGetResponse;
+import com.azure.resourcemanager.apimanagement.models.CertificatesRefreshSecretResponse;
 
 /** An instance of this class provides access to all the operations defined in CertificatesClient. */
 public interface CertificatesClient {
@@ -86,7 +90,7 @@ public interface CertificatesClient {
      * @return the entity state (Etag) version of the certificate specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    CertificatesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String certificateId, Context context);
 
     /**
@@ -118,7 +122,7 @@ public interface CertificatesClient {
      * @return the details of the certificate specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CertificateContractInner> getWithResponse(
+    CertificatesGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String certificateId, Context context);
 
     /**
@@ -157,7 +161,7 @@ public interface CertificatesClient {
      * @return certificate details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CertificateContractInner> createOrUpdateWithResponse(
+    CertificatesCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String certificateId,
@@ -229,6 +233,6 @@ public interface CertificatesClient {
      * @return certificate details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CertificateContractInner> refreshSecretWithResponse(
+    CertificatesRefreshSecretResponse refreshSecretWithResponse(
         String resourceGroupName, String serviceName, String certificateId, Context context);
 }
