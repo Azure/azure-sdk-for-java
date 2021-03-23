@@ -22,18 +22,14 @@ import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedRange;
-import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
@@ -41,8 +37,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -113,19 +107,19 @@ public final class CosmosAsyncClient implements Closeable {
         }
 
         this.asyncDocumentClient = new AsyncDocumentClient.Builder()
-                                       .withServiceEndpoint(this.serviceEndpoint)
-                                       .withMasterKeyOrResourceToken(this.keyOrResourceToken)
-                                       .withConnectionPolicy(this.connectionPolicy)
-                                       .withConsistencyLevel(this.desiredConsistencyLevel)
-                                       .withSessionCapturingOverride(this.sessionCapturingOverride)
-                                       .withConfigs(this.configs)
-                                       .withTokenResolver(this.cosmosAuthorizationTokenResolver)
-                                       .withCredential(this.credential)
-                                       .withTransportClientSharing(this.enableTransportClientSharing)
-                                       .withContentResponseOnWriteEnabled(this.contentResponseOnWriteEnabled)
-                                       .withTokenCredential(this.tokenCredential)
-                                       .withPermissionFeed(permissionList)
-                                       .build();
+            .withServiceEndpoint(this.serviceEndpoint)
+            .withMasterKeyOrResourceToken(this.keyOrResourceToken)
+            .withConnectionPolicy(this.connectionPolicy)
+            .withConsistencyLevel(this.desiredConsistencyLevel)
+            .withSessionCapturingOverride(this.sessionCapturingOverride)
+            .withConfigs(this.configs)
+            .withTokenResolver(this.cosmosAuthorizationTokenResolver)
+            .withCredential(this.credential)
+            .withTransportClientSharing(this.enableTransportClientSharing)
+            .withContentResponseOnWriteEnabled(this.contentResponseOnWriteEnabled)
+            .withTokenCredential(this.tokenCredential)
+            .withPermissionFeed(permissionList)
+            .build();
     }
 
     AsyncDocumentClient getContextClient() {
@@ -553,7 +547,7 @@ public final class CosmosAsyncClient implements Closeable {
     }
 
     private Mono<CosmosDatabaseResponse> createDatabaseInternal(Database database, CosmosDatabaseRequestOptions options,
-                                                             Context context) {
+                                                                Context context) {
         String spanName = "createDatabase." + database.getId();
         Mono<CosmosDatabaseResponse> responseMono = asyncDocumentClient.createDatabase(database, ModelBridgeInternal.toRequestOptions(options))
             .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosDatabaseResponse(databaseResourceResponse))

@@ -9,7 +9,6 @@ import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.DocumentServiceRequestContext;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
@@ -30,7 +29,6 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.URI;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
@@ -236,10 +234,6 @@ public class ReflectionUtils {
 
     public static RntbdEndpoint.Provider getRntbdEndpointProvider(RntbdTransportClient rntbdTransportClient) {
         return get(RntbdEndpoint.Provider.class, rntbdTransportClient, "endpointProvider");
-    }
-
-    public static ConcurrentHashMap<String, RntbdEndpoint> getEndpoints(RntbdEndpoint.Provider provider) {
-        return get(ConcurrentHashMap.class, provider, "endpoints");
     }
 
     @SuppressWarnings("unchecked")
