@@ -37,10 +37,8 @@ class DtmiConventionTests {
         "https://localhost/REPOSITORY,  https://localhost/REPOSITORY/dtmi/com/example/thermostat-1.json",
         "file:///path/to/repository/,   file:///path/to/repository/dtmi/com/example/thermostat-1.json",
         "file://path/to/RepoSitory,     file://path/to/RepoSitory/dtmi/com/example/thermostat-1.json",
-        "C:/path/to/repository/, file:///C:/path/to/repository/dtmi/com/example/thermostat-1.json",
-        "//server//repository,    file:////server/repository/dtmi/com/example/thermostat-1.json",
-        "C:\\path\\to\\repository\\, file:///C:/path/to/repository/dtmi/com/example/thermostat-1.json",
-        "\\\\server\\repository,    file:////server/repository/dtmi/com/example/thermostat-1.json"
+        "C:/path/to/repository/,        C:/path/to/repository/dtmi/com/example/thermostat-1.json",
+        "//server//repository,          //server//repository/dtmi/com/example/thermostat-1.json"
     })
     public void getModelUriTests(String repository, String expectedUri) {
         final String dtmi = "dtmi:com:example:Thermostat;1";

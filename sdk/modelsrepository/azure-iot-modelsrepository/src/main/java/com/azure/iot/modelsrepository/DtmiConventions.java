@@ -57,7 +57,7 @@ public final class DtmiConventions {
      * @param repositoryUri The repository uri
      * @param expanded Is model from precomputed values
      * @return The model uri
-     * Will throw an {@link IllegalArgumentException} if the provided dtmi is not valid.
+     * Will throw an {@link IllegalArgumentException} if the provided dtmi or repository uri are not valid.
      */
     public static URI getModelUri(String dtmi, URI repositoryUri, boolean expanded) {
         String dtmiPath = dtmiToPath(dtmi);
@@ -66,33 +66,16 @@ public final class DtmiConventions {
             dtmiPath = dtmiPath.replace(ModelsRepositoryConstants.JSON_EXTENSION, ModelsRepositoryConstants.JSON_EXPANDED_EXTENSION);
         }
 
-        UrlBuilder urlBuilder = new UrlBuilder();
-        urlBuilder.setHost(repositoryUri.getHost());
-        urlBuilder.setScheme(repositoryUri.getScheme());
-        urlBuilder.setPath(repositoryUri.getPath());
-        urlBuilder.setQuery(repositoryUri.getQuery());
-
-        if (repositoryUri.getPort() > 0) {
-            urlBuilder.setPort(repositoryUri.getPort());
-        }
-
-        String path = urlBuilder.getPath();
-
-        if (path != null && !path.endsWith("/")) {
-            urlBuilder.setPath(path + "/");
-        }
-
-        if (urlBuilder.getPath() == null) {
-            urlBuilder.setPath(dtmiPath);
-        } else {
-            urlBuilder.setPath(urlBuilder.getPath() + dtmiPath);
-        }
-
+        String stringUri = repositoryUri.toString();
         try {
-            return new URI(urlBuilder.toString());
-        } catch (Exception e) {
-            // No exceptions will be thrown as the input is a valid URI format.
-            return null;
+            if (stringUri.endsWith("/")){
+                return new URI(stringUri+dtmiPath);
+            }
+            else {
+                return new URI(stringUri + "/" + dtmiPath);
+            }
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Invalid uri syntax");
         }
     }
 
@@ -105,14 +88,9 @@ public final class DtmiConventions {
      */
     public static URI convertToUri(String uri) throws IllegalArgumentException {
         try {
-            Path path = Paths.get(uri).normalize();
-            return new File(path.toAbsolutePath().toString()).toURI();
-        } catch (Exception ex) {
-            try {
-                return new URI(uri);
-            } catch (Exception e) {
-                throw new IllegalArgumentException("Invalid uri format", e);
-            }
+            return new URI(uri);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid uri format", e);
         }
     }
 

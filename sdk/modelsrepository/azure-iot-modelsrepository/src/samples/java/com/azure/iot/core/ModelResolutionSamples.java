@@ -13,7 +13,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 public class ModelResolutionSamples {
-    private static final String CLIENT_SAMPLES_DIRECTORY_PATH = System.getProperty("user.dir").concat("/src/samples/resources/TestModelRepo/");
+    private static final String CLIENT_SAMPLES_DIRECTORY_PATH = (System.getProperty("user.dir").concat("/src/samples/resources/TestModelRepo/")).replace("\\", "/");
 
     private static final int MAX_WAIT_TIME_ASYNC_OPERATIONS_IN_SECONDS = 10;
 
