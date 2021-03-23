@@ -9,6 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
@@ -16,6 +17,8 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.paging.ContinuablePagedFluxCore;
+import com.azure.core.util.paging.PageRetriever;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.models.ContainersGetAccountInfoHeaders;
@@ -53,7 +56,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -978,10 +983,19 @@ public final class BlobContainerAsyncClient {
      * @param timeout An optional timeout to be applied to the network asynchronous operations.
      * @return A reactive response emitting the listed blobs, flattened.
      */
-    PagedFlux<BlobItem> listBlobsHierarchyWithOptionalTimeout(String delimiter, ListBlobsOptions options,
+    StoragePagedFlux<BlobItem> listBlobsHierarchyWithOptionalTimeout(String delimiter, ListBlobsOptions options,
         Duration timeout) {
-        Function<String, Mono<PagedResponse<BlobItem>>> func =
-            marker -> listBlobsHierarchySegment(marker, delimiter, options, timeout)
+        BiFunction<String, Integer, Mono<PagedResponse<BlobItem>>> func =
+            (marker, pageSize) -> {
+                ListBlobsOptions finalOptions = null;
+                if (pageSize != null) {
+                    if (options == null) {
+                        finalOptions = new ListBlobsOptions().setMaxResultsPerPage(pageSize);
+                    } else {
+                        finalOptions = options.setMaxResultsPerPage(pageSize);
+                    }
+                }
+                return listBlobsHierarchySegment(marker, delimiter, finalOptions, timeout)
                 .map(response -> {
                     List<BlobItem> value = response.getValue().getSegment() == null
                         ? Collections.emptyList()
@@ -999,8 +1013,29 @@ public final class BlobContainerAsyncClient {
                         response.getValue().getNextMarker(),
                         response.getDeserializedHeaders());
                 });
+            };
+        //Integer pageSize = options != null ? options.getMaxResultsPerPage() : null; ??
+        return new StoragePagedFlux<BlobItem, PagedResponse<BlobItem>>(pageSize -> func.apply(null, pageSize), func);
+    }
 
-        return new PagedFlux<>(() -> func.apply(null), func);
+    // So I think StoragePagedFlux has to extend PagedFlux not to break, but it looks like some of the constructors in PagedFlux are private
+
+    private static class StoragePagedFlux<T, P extends PagedResponse<T>> extends ContinuablePagedFluxCore<String, T, P> {
+        public StoragePagedFlux(Function<Integer, Mono<P>> firstPageRetriever,
+            BiFunction<String, Integer, Mono<P>> nextPageRetriever) {
+            this(() -> (continuationToken, pageSize) -> continuationToken == null
+                ? firstPageRetriever.apply(pageSize).flux()
+                : nextPageRetriever.apply(continuationToken, pageSize).flux());
+        }
+
+        /**
+         * Create PagedFlux backed by Page Retriever Function Supplier.
+         *
+         * @param provider the Page Retrieval Provider
+         */
+        private StoragePagedFlux(Supplier<PageRetriever<String, P>> provider) {
+            super(provider);
+        }
     }
 
     private Mono<ContainersListBlobHierarchySegmentResponse> listBlobsHierarchySegment(String marker, String delimiter,

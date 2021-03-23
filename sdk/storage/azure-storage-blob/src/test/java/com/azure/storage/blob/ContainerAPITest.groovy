@@ -3,12 +3,15 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.http.rest.PagedIterable
+import com.azure.core.http.rest.PagedResponse
 import com.azure.core.http.rest.Response
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.AppendBlobItem
 import com.azure.storage.blob.models.BlobAccessPolicy
 import com.azure.storage.blob.models.BlobErrorCode
+import com.azure.storage.blob.models.BlobItem
 import com.azure.storage.blob.models.BlobListDetails
 import com.azure.storage.blob.models.BlobProperties
 import com.azure.storage.blob.models.BlobRequestConditions
@@ -1273,7 +1276,6 @@ class ContainerAPITest extends APISpec {
         !blobs.hasNext() // Normal
     }
 
-
     def "List blobs hier options maxResults"() {
         setup:
         def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveCopy(true)
@@ -1289,6 +1291,26 @@ class ContainerAPITest extends APISpec {
         StepVerifier.create(ccAsync.listBlobsByHierarchy("", options).byPage().limitRequest(1))
             .assertNext({ assert it.getValue().size() == 1 })
             .verifyComplete()
+    }
+
+    def "List blobs hier options maxResults by page"() {
+        setup:
+        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveCopy(true)
+            .setRetrieveUncommittedBlobs(true))
+        def normalName = "a" + generateBlobName()
+        def copyName = "c" + generateBlobName()
+        def metadataName = "m" + generateBlobName()
+        def tagsName = "t" + generateBlobName()
+        def uncommittedName = "u" + generateBlobName()
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
+
+        expect:
+        def pagedIterable = cc.listBlobsByHierarchy("", options, null);
+
+        def iterableByPage = pagedIterable.iterableByPage(1)
+        for (def page : iterableByPage) {
+            System.out.println(page.value.size())
+        }
     }
 
     @Unroll
