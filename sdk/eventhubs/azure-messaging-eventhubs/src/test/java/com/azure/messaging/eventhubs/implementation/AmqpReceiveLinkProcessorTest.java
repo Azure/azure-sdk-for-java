@@ -28,6 +28,7 @@ import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.test.StepVerifier;
+import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -95,8 +96,6 @@ class AmqpReceiveLinkProcessorTest {
 
     @Test
     void constructor() {
-        Assertions.assertThrows(NullPointerException.class, () -> new AmqpReceiveLinkProcessor(PREFETCH, null,
-            parentConnection));
         Assertions.assertThrows(NullPointerException.class, () -> new AmqpReceiveLinkProcessor(PREFETCH, retryPolicy,
             null));
         Assertions.assertThrows(IllegalArgumentException.class, () -> new AmqpReceiveLinkProcessor(-1, retryPolicy,
@@ -109,14 +108,17 @@ class AmqpReceiveLinkProcessorTest {
     @Test
     void createNewLink() {
         // Arrange
+        TestPublisher<AmqpEndpointState> endpoints = TestPublisher.createCold();
+        when(link1.getEndpointStates()).thenReturn(endpoints.flux());
+        when(link1.getCredits()).thenReturn(1);
+
         AmqpReceiveLinkProcessor processor = Flux.<AmqpReceiveLink>create(sink -> sink.next(link1))
             .subscribeWith(linkProcessor);
-
-        when(link1.getCredits()).thenReturn(1);
 
         // Act & Assert
         StepVerifier.create(processor)
             .then(() -> {
+                endpoints.next(AmqpEndpointState.ACTIVE);
                 messageProcessorSink.next(message1);
                 messageProcessorSink.next(message2);
             })
@@ -159,7 +161,6 @@ class AmqpReceiveLinkProcessorTest {
             .thenCancel()
             .verify();
 
-        verify(link1).addCredits(eq(PREFETCH));
         verify(link1).setEmptyCreditListener(creditSupplierCaptor.capture());
 
         Supplier<Integer> value = creditSupplierCaptor.getValue();
@@ -188,7 +189,6 @@ class AmqpReceiveLinkProcessorTest {
             s -> s.request(backpressure));
 
         // Assert
-        verify(link1).addCredits(eq(PREFETCH));
         verify(link1).setEmptyCreditListener(creditSupplierCaptor.capture());
 
         Supplier<Integer> value = creditSupplierCaptor.getValue();

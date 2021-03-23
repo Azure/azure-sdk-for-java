@@ -124,7 +124,7 @@ class EventHubPartitionAsyncConsumerTest {
         // Arrange
         linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor(PREFETCH, retryPolicy, parentConnection));
         consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
-            CONSUMER_GROUP, PARTITION_ID, currentPosition, trackLastEnqueuedProperties, Schedulers.parallel());
+            CONSUMER_GROUP, PARTITION_ID, currentPosition, trackLastEnqueuedProperties, PREFETCH, Schedulers.parallel());
 
         final EventData event1 = new EventData("Foo");
         final EventData event2 = new EventData("Bar");
@@ -172,7 +172,7 @@ class EventHubPartitionAsyncConsumerTest {
         // Arrange
         linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor(PREFETCH, retryPolicy, parentConnection));
         consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
-            CONSUMER_GROUP, PARTITION_ID, currentPosition, false, Schedulers.parallel());
+            CONSUMER_GROUP, PARTITION_ID, currentPosition, false, PREFETCH, Schedulers.parallel());
 
         final Message message3 = mock(Message.class);
         final String secondOffset = "54";
@@ -243,7 +243,7 @@ class EventHubPartitionAsyncConsumerTest {
         // Arrange
         linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor(PREFETCH, retryPolicy, parentConnection));
         consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
-            CONSUMER_GROUP, PARTITION_ID, currentPosition, false, Schedulers.parallel());
+            CONSUMER_GROUP, PARTITION_ID, currentPosition, false, PREFETCH, Schedulers.parallel());
 
         final Message message3 = mock(Message.class);
         final String secondOffset = "54";
