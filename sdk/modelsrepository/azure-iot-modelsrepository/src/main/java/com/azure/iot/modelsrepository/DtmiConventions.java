@@ -3,16 +3,11 @@
 
 package com.azure.iot.modelsrepository;
 
-import com.azure.core.util.UrlBuilder;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.iot.modelsrepository.implementation.ModelsRepositoryConstants;
 import com.azure.iot.modelsrepository.implementation.StatusStrings;
 
-import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -21,7 +16,7 @@ import java.util.regex.Pattern;
  * calculating a URI path from a DTMI.
  */
 public final class DtmiConventions {
-    
+
     private DtmiConventions() { }
 
     /**
