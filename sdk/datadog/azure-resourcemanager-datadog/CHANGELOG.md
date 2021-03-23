@@ -6,8 +6,6 @@
 
 ### New Feature
 
-* `models.ErrorAdditionalInfo` was added
-
 #### `models.DatadogMonitorResource` was modified
 
 * `systemData()` was added
