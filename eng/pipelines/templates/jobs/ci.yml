@@ -131,7 +131,7 @@ jobs:
         parameters:
           Artifacts: ${{parameters.Artifacts}}
 
-      - template: /eng/common/pipelines/templates/steps/create-apireview.yml
+      - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
         parameters:
           ArtifactPath: $(Build.ArtifactStagingDirectory)
           ArtifactName: '$(ArtifactName)'
