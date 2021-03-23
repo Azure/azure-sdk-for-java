@@ -16,16 +16,15 @@ class ModelsRepositoryTestBase extends TestBase {
     private static final String PLAYBACK_ENDPOINT = "https://playback.net/";
 
 
-    protected ModelsRepositoryClientBuilder getModelsRepositoryClientbuilder(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion, URI repositoryUri) throws URISyntaxException {
+    protected ModelsRepositoryClientBuilder getModelsRepositoryClientbuilder(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion, String repositoryEndpoint) throws URISyntaxException {
         ModelsRepositoryClientBuilder builder = new ModelsRepositoryClientBuilder();
-        URI playbackRepositoryUri = new URI(PLAYBACK_ENDPOINT);
         builder.serviceVersion(serviceVersion);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
             // Use fake credentials for playback mode.
             // Connect to a special host when running tests in playback mode.
-            builder.repositoryEndpoint(playbackRepositoryUri);
+            builder.repositoryEndpoint(PLAYBACK_ENDPOINT);
             return builder;
         }
 
@@ -35,20 +34,20 @@ class ModelsRepositoryTestBase extends TestBase {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
-        builder.repositoryEndpoint(repositoryUri);
+        builder.repositoryEndpoint(repositoryEndpoint);
         builder.httpClient(httpClient);
         builder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
         return builder;
     }
 
-    protected ModelsRepositoryClient getClient(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion, URI repositoryUri) throws URISyntaxException {
-        return getModelsRepositoryClientbuilder(httpClient, serviceVersion, repositoryUri)
+    protected ModelsRepositoryClient getClient(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion, String repositoryEndpoint) throws URISyntaxException {
+        return getModelsRepositoryClientbuilder(httpClient, serviceVersion, repositoryEndpoint)
             .buildClient();
     }
 
-    protected ModelsRepositoryAsyncClient getAsyncClient(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion, URI repositoryUri) throws URISyntaxException {
-        return getModelsRepositoryClientbuilder(httpClient, serviceVersion, repositoryUri)
+    protected ModelsRepositoryAsyncClient getAsyncClient(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion, String repositoryEndpoint) throws URISyntaxException {
+        return getModelsRepositoryClientbuilder(httpClient, serviceVersion, repositoryEndpoint)
             .buildAsyncClient();
     }
 }

@@ -104,8 +104,13 @@ public final class DtmiConventions {
         try {
             return new URI(uri);
         } catch (URISyntaxException ex) {
-            Path path = Paths.get(uri).normalize();
-            return new File(path.toAbsolutePath().toString()).toURI();
+            try{
+                Path path = Paths.get(uri).normalize();
+                return new File(path.toAbsolutePath().toString()).toURI();
+            }
+            catch (Exception e) {
+                throw new IllegalArgumentException("Invalid uri format", e);
+            }
         }
     }
 

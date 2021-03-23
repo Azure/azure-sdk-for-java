@@ -48,11 +48,11 @@ class TestHelper {
         return argumentsList.stream();
     }
 
-    static Stream<URI> getApplicableRepositoryUris() {
-        ArrayList<URI> uriList = new ArrayList<>();
-        uriList.add(DtmiConventions.convertToUri(ModelsRepositoryConstants.DEFAULT_MODELS_REPOSITORY_ENDPOINT));
-        uriList.add(DtmiConventions.convertToUri(LOCAL_TEST_REPOSITORY_PATH));
-        return StreamSupport.stream(uriList.spliterator(), false);
+    static Stream<String> getApplicableRepositoryUris() {
+        ArrayList<String> endpointList = new ArrayList<>();
+        endpointList.add(ModelsRepositoryConstants.DEFAULT_MODELS_REPOSITORY_ENDPOINT);
+        endpointList.add(LOCAL_TEST_REPOSITORY_PATH);
+        return StreamSupport.stream(endpointList.spliterator(), false);
     }
 
     /**

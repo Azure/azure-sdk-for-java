@@ -55,7 +55,6 @@ public final class ModelsRepositoryClientBuilder {
 
     private final List<HttpPipelinePolicy> additionalPolicies;
 
-    // TODO: azabbasi: change this back to a string
     // Fields with default values.
     private URI repositoryEndpoint;
 
@@ -217,8 +216,9 @@ public final class ModelsRepositoryClientBuilder {
      * @param repositoryEndpoint Uri of the service in String format.
      * @return the updated ModelsRepositoryClientBuilder instance for fluent building.
      */
-    public ModelsRepositoryClientBuilder repositoryEndpoint(URI repositoryEndpoint) {
-        this.repositoryEndpoint = repositoryEndpoint;
+    public ModelsRepositoryClientBuilder repositoryEndpoint(String repositoryEndpoint) {
+        DtmiConventions.convertToUri(repositoryEndpoint);
+        this.repositoryEndpoint = DtmiConventions.convertToUri(repositoryEndpoint);
         return this;
     }
 

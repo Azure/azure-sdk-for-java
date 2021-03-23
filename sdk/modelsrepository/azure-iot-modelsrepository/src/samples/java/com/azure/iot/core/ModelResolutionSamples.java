@@ -17,7 +17,6 @@ import java.util.concurrent.TimeUnit;
 public class ModelResolutionSamples {
     private static final String CLIENT_SAMPLES_DIRECTORY_PATH = System.getProperty("user.dir").concat("/src/samples/resources/TestModelRepo/");
 
-    private static final URI LOCAL_DIRECTORY_URI = DtmiConventions.convertToUri(CLIENT_SAMPLES_DIRECTORY_PATH);
     private static final int MAX_WAIT_TIME_ASYNC_OPERATIONS_IN_SECONDS = 10;
 
     /**
@@ -36,9 +35,8 @@ public class ModelResolutionSamples {
 
         // This form shows specifying a custom URI for the models repository with default client options.
         // The default client options will enable model dependency resolution.
-        final URI remoteCustomRepositoryEndpoint = DtmiConventions.convertToUri("https://contoso.com/models");
         clientBuilder
-            .repositoryEndpoint(remoteCustomRepositoryEndpoint);
+            .repositoryEndpoint("https://contoso.com/models");
         asyncClient = clientBuilder.buildAsyncClient();
         syncClient = clientBuilder.buildClient();
 
@@ -48,7 +46,7 @@ public class ModelResolutionSamples {
         // The client will also work with a local file-system URI. This example shows initialization
         // with a local URI and disabling model dependency resolution.
         clientBuilder
-            .repositoryEndpoint(LOCAL_DIRECTORY_URI)
+            .repositoryEndpoint(CLIENT_SAMPLES_DIRECTORY_PATH)
             .modelDependencyResolution(ModelDependencyResolution.DISABLED);
         asyncClient = clientBuilder.buildAsyncClient();
         syncClient = clientBuilder.buildClient();
@@ -118,7 +116,7 @@ public class ModelResolutionSamples {
     public static void getModelsFromLocalRepository() throws InterruptedException {
         // Local sample repository client
         ModelsRepositoryClientBuilder clientBuilder = new ModelsRepositoryClientBuilder()
-            .repositoryEndpoint(LOCAL_DIRECTORY_URI);
+            .repositoryEndpoint(CLIENT_SAMPLES_DIRECTORY_PATH);
 
         ModelsRepositoryAsyncClient asyncClient = clientBuilder.buildAsyncClient();
 
