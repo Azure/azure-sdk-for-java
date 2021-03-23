@@ -65,7 +65,7 @@ public final class GeoPoint extends GeoObject {
      *
      * @return The {@link GeoPosition geometric position} of the point.
      */
-    GeoPosition getCoordinates() {
+    public GeoPosition getCoordinates() {
         return coordinates;
     }
 

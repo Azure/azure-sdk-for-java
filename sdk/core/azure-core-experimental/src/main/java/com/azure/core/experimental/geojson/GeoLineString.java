@@ -47,9 +47,14 @@ public final class GeoLineString extends GeoObject {
      *
      * @return An unmodifiable representation of the {@link GeoPosition geometric positions} representing this line.
      */
-    GeoArray<GeoPosition> getCoordinates() {
+    public List<GeoPosition> getCoordinates() {
         return coordinates;
     }
+
+//    For now, getting coordinates will return built-in types. This is being left as it may be revived.
+//    GeoArray<GeoPosition> getCoordinates() {
+//        return coordinates;
+//    }
 
     @Override
     public GeoObjectType getType() {

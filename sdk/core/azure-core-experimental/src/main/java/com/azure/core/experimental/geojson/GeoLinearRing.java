@@ -49,9 +49,14 @@ public final class GeoLinearRing {
      * @return An unmodifiable representation of the {@link GeoPosition geometric positions} representing this linear
      * ring.
      */
-    GeoArray<GeoPosition> getCoordinates() {
+    public List<GeoPosition> getCoordinates() {
         return coordinates;
     }
+
+//    For now, getting coordinates will return built-in types. This is being left as it may be revived.
+//    GeoArray<GeoPosition> getCoordinates() {
+//        return coordinates;
+//    }
 
     @Override
     public int hashCode() {
