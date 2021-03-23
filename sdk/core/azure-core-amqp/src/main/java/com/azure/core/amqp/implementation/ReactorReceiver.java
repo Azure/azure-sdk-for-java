@@ -159,7 +159,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
 
     @Override
     public Mono<Void> addCredits(int credits) {
-        if (!isDisposed.get()) {
+        if (isDisposed()) {
             return monoError(logger, new IllegalStateException("Cannot add credits to closed link: " + getLinkName()));
         }
 
