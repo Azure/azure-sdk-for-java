@@ -1909,6 +1909,20 @@
     <Method name="setContentBytes"/>
     <Bug pattern="EI_EXPOSE_REP2"/>
   </Match>
+  
+   <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.ClientEncryptionKey"/>
+    <Method name="getWrappedDataEncryptionKey"/>
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
+  
+   <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.ClientEncryptionKey"/>
+    <Method name="setWrappedDataEncryptionKey"/>
+    <Bug pattern="EI_EXPOSE_REP2"/>
+  </Match>
 
   <!-- https://github.com/Azure/azure-sdk-for-java/issues/9102 -->
   <Match>
@@ -2107,6 +2121,17 @@
     <Bug pattern="SA_FIELD_SELF_COMPARISON"/>
   </Match>
 
+  <Match>
+    <Class name="com.azure.cosmos.encryption.implementation.EncryptionProcessor"/>
+    <Method name="decryptAndSerializeProperty"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.encryption.implementation.EncryptionProcessor"/>
+    <Method name="encryptAndSerializeProperty"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST"/>
+  </Match>
   <!-- Serializing a null value should return null to allow client to handle null cases
     consistently instead of injecting null payload behavior from the payload. -->
   <Match>
