@@ -74,7 +74,7 @@ public class AADResourceServerOAuth2AuthorizedClientRepository implements OAuth2
                                                                      HttpServletRequest request) {
         ClientRegistration clientRegistration = repository.findByRegistrationId(registrationId);
         if (clientRegistration == null) {
-            LOGGER.warn("Not found the ClientRegistration, registrationId={}", registrationId);
+            LOGGER.error("Not found the ClientRegistration, registrationId={}", registrationId);
             return null;
         }
         if (clientRegistration.getAuthorizationGrantType().getValue().equals(
