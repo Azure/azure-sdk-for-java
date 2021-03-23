@@ -246,7 +246,7 @@ keys, secrets and certificates.
 
 If you are using `RestTemplate` use code similar to the example below.
 
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/keyvault/KeyVaultJcaManagedIdentitySample.java#L19-L36 -->
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/keyvault/KeyVaultJcaManagedIdentitySample.java#L18-L36 -->
 ```java
 @Bean
 public RestTemplate restTemplateCreatedByManagedIdentity() throws Exception {
