@@ -35,11 +35,14 @@ private case class ItemsPartitionReader
 
   private val cosmosAsyncContainer = ThroughputControlHelper.getContainer(config, containerTargetConfig, client)
 
+  private val queryOptions = new CosmosQueryRequestOptions()
+  queryOptions.setFeedRange(SparkBridgeImplementationInternal.toFeedRange(feedRange))
+
   private lazy val iterator = cosmosAsyncContainer.queryItems(
     cosmosQuery.toSqlQuerySpec,
-    new CosmosQueryRequestOptions(),
-    classOf[ObjectNode],
-    SparkBridgeImplementationInternal.toFeedRange(feedRange)).toIterable.iterator()
+    queryOptions,
+    classOf[ObjectNode]
+  ).toIterable.iterator()
 
   override def next(): Boolean = iterator.hasNext
 
