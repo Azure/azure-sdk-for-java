@@ -8,7 +8,6 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestBase;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 
 class ModelsRepositoryTestBase extends TestBase {

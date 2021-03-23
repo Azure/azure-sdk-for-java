@@ -190,7 +190,7 @@ public final class ModelsRepositoryAPIImplBuilder {
      * @return an instance of ModelsRepositoryAPIImpl.
      */
     public ModelsRepositoryAPIImpl buildClient() {
-        if(apiVersion == null){
+        if (apiVersion == null) {
             this.apiVersion = "2021-03-18";
         }
         if (host == null) {

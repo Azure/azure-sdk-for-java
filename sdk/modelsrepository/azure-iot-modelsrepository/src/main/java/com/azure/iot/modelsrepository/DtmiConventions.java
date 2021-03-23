@@ -4,6 +4,7 @@
 package com.azure.iot.modelsrepository;
 
 import com.azure.core.util.UrlBuilder;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.iot.modelsrepository.implementation.ModelsRepositoryConstants;
 import com.azure.iot.modelsrepository.implementation.StatusStrings;
 
@@ -21,6 +22,7 @@ import java.util.regex.Pattern;
  */
 public final class DtmiConventions {
 
+    private static final ClientLogger LOGGER = new ClientLogger(DtmiConventions.class);
     private DtmiConventions() { }
 
     /**
@@ -98,17 +100,17 @@ public final class DtmiConventions {
      * Converts a string to {@link URI}
      *
      * @param uri String format of the path
-     * @return {@link URI} representation of the path/uri   .
+     * @return {@link URI} representation of the path/uri.
+     * @throws IllegalArgumentException if provided uri is invalid.
      */
-    public static URI convertToUri(String uri) {
+    public static URI convertToUri(String uri) throws IllegalArgumentException {
         try {
             return new URI(uri);
         } catch (URISyntaxException ex) {
             try {
                 Path path = Paths.get(uri).normalize();
                 return new File(path.toAbsolutePath().toString()).toURI();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 throw new IllegalArgumentException("Invalid uri format", e);
             }
         }
