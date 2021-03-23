@@ -6,6 +6,8 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
 
+import java.util.Arrays;
+
 /**
  * Represents a database client encryption key in the Azure Cosmos DB database service.
  */
@@ -85,9 +87,9 @@ public final class ClientEncryptionKey extends Resource {
 
         ClientEncryptionKey typedObj = (ClientEncryptionKey) obj;
         return (typedObj.getResourceId().equals(this.getResourceId()) &&
-            typedObj.getWrappedDataEncryptionKey().equals(this.getWrappedDataEncryptionKey()) &&
+            Arrays.equals(typedObj.getWrappedDataEncryptionKey(), this.getWrappedDataEncryptionKey()) &&
             typedObj.getEncryptionKeyWrapMetadata().equals(this.getEncryptionKeyWrapMetadata()));
-}
+    }
 
     @Override
     public int hashCode() {
