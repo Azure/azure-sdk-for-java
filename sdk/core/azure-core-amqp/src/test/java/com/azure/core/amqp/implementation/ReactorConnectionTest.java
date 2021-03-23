@@ -6,6 +6,7 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
@@ -40,6 +41,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import reactor.core.Disposable;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
@@ -59,6 +61,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -86,6 +89,7 @@ class ReactorConnectionTest {
     private ConnectionHandler connectionHandler;
     private SessionHandler sessionHandler;
     private AutoCloseable mocksCloseable;
+    private ConnectionOptions connectionOptions;
 
     @Mock
     private Reactor reactor;
@@ -127,7 +131,7 @@ class ReactorConnectionTest {
         mocksCloseable = MockitoAnnotations.openMocks(this);
 
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setMaxRetries(0).setTryTimeout(TEST_DURATION);
-        final ConnectionOptions connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
+        connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
             tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, retryOptions,
             ProxyOptions.SYSTEM_DEFAULTS, SCHEDULER, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION);
 
@@ -654,5 +658,63 @@ class ReactorConnectionTest {
 
         connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider,
             tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
+    }
+
+    @Test
+    void disposeAsync() throws IOException {
+        // Arrange
+        final ReactorProvider provider = mock(ReactorProvider.class);
+        final ReactorDispatcher dispatcher = mock(ReactorDispatcher.class);
+        final ReactorConnection connection2 = new ReactorConnection(CONNECTION_ID, connectionOptions, provider,
+            reactorHandlerProvider, tokenManager, messageSerializer, SenderSettleMode.SETTLED,
+            ReceiverSettleMode.FIRST);
+        final AmqpShutdownSignal signal = new AmqpShutdownSignal(false, false, "Remove");
+
+        when(provider.getReactorDispatcher()).thenReturn(dispatcher);
+
+        doAnswer(invocation -> {
+            final Runnable work = invocation.getArgument(0);
+            work.run();
+            return null;
+        }).when(dispatcher).invoke(any(Runnable.class));
+
+        connection2.getReactorConnection().subscribe();
+
+        // Act and Assert
+        StepVerifier.create(connection2.dispose(signal))
+            .verifyComplete();
+
+        assertTrue(connection2.isDisposed());
+
+        StepVerifier.create(connection2.dispose(signal))
+            .verifyComplete();
+    }
+
+    @Test
+    void dispose() throws IOException {
+        // Arrange
+        final ReactorProvider provider = mock(ReactorProvider.class);
+        final ReactorDispatcher dispatcher = mock(ReactorDispatcher.class);
+        final ReactorConnection connection2 = new ReactorConnection(CONNECTION_ID, connectionOptions, provider,
+            reactorHandlerProvider, tokenManager, messageSerializer, SenderSettleMode.SETTLED,
+            ReceiverSettleMode.FIRST);
+        final AmqpShutdownSignal signal = new AmqpShutdownSignal(false, false, "Remove");
+
+        when(provider.getReactorDispatcher()).thenReturn(dispatcher);
+
+        doAnswer(invocation -> {
+            final Runnable work = invocation.getArgument(0);
+            work.run();
+            return null;
+        }).when(dispatcher).invoke(any(Runnable.class));
+
+        connection2.getReactorConnection().subscribe();
+
+        // Act and Assert
+        connection2.dispose();
+
+        assertTrue(connection2.isDisposed());
+
+        connection2.dispose();
     }
 }

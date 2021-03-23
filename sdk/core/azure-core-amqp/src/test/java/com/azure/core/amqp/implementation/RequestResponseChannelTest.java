@@ -159,7 +159,7 @@ class RequestResponseChannelTest {
             receiverSettleMode);
         final AmqpErrorContext errorContext = channel.getErrorContext();
 
-        StepVerifier.create(channel.disposeAsync())
+        StepVerifier.create(channel.disposeAsync("Test-method"))
             .then(() -> {
                 sendEndpoints.complete();
                 receiveEndpoints.complete();
@@ -178,7 +178,7 @@ class RequestResponseChannelTest {
     }
 
     @Test
-    void disposes() {
+    void disposeAsync() {
         // Arrange
         final RequestResponseChannel channel = new RequestResponseChannel(amqpConnection, CONNECTION_ID, NAMESPACE, LINK_NAME,
             ENTITY_PATH, session, retryOptions, handlerProvider, reactorProvider, serializer, SenderSettleMode.SETTLED,
@@ -188,7 +188,7 @@ class RequestResponseChannelTest {
         sendEndpoints.next(EndpointState.ACTIVE);
 
         // Act
-        StepVerifier.create(channel.disposeAsync())
+        StepVerifier.create(channel.disposeAsync("Test"))
             .then(() -> {
                 sendEndpoints.complete();
                 receiveEndpoints.complete();
@@ -200,7 +200,46 @@ class RequestResponseChannelTest {
         // Assert
         verify(sender).close();
         verify(receiver).close();
+
+        assertTrue(channel.isDisposed());
     }
+
+    @Test
+    void dispose() throws IOException {
+        // Arrange
+        final RequestResponseChannel channel = new RequestResponseChannel(amqpConnection, CONNECTION_ID, NAMESPACE, LINK_NAME,
+            ENTITY_PATH, session, retryOptions, handlerProvider, reactorProvider, serializer, SenderSettleMode.SETTLED,
+            ReceiverSettleMode.SECOND);
+
+        receiveEndpoints.next(EndpointState.ACTIVE);
+        sendEndpoints.next(EndpointState.ACTIVE);
+
+        doAnswer(invocation -> {
+            sendEndpoints.complete();
+            return null;
+        }).when(sender).close();
+
+        doAnswer(invocation -> {
+            receiveEndpoints.complete();
+            return null;
+        }).when(receiver).close();
+
+        doAnswer(invocation -> {
+            final Runnable work = invocation.getArgument(0);
+            work.run();
+            return null;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
+        // Act
+        channel.dispose();
+
+        // Assert
+        verify(sender).close();
+        verify(receiver).close();
+
+        assertTrue(channel.isDisposed());
+    }
+
 
     /**
      * Verifies error when sending with null

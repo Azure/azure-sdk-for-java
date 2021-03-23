@@ -351,20 +351,7 @@ public class ReactorConnection implements AmqpConnection {
             new ClientLogger(RequestResponseChannel.class + ":" + entityPath)));
     }
 
-    /**
-     * Returns a Mono that completes when the connection handler is closed. If it does, an {@link AmqpException} is
-     * returned. It indicates that a shutdown was initiated and we should stop.
-     *
-     * @return A Mono that completes when the shutdown signal is emitted. If it does, returns an error.
-     */
-    private <T> Mono<T> onClosedError(String message) {
-        return Mono.firstWithSignal(isClosedMono.asMono(), shutdownSignalSink.asMono())
-            .then(Mono.error(new AmqpException(false,
-                String.format("connectionId[%s] Connection closed. %s", connectionId, message),
-                handler.getErrorContext())));
-    }
-
-    private Mono<Void> dispose(AmqpShutdownSignal shutdownSignal) {
+    Mono<Void> dispose(AmqpShutdownSignal shutdownSignal) {
         logger.info("connectionId[{}] signal[{}]: Disposing of ReactorConnection.", connectionId, shutdownSignal);
 
         if (cbsChannelProcessor != null) {
@@ -388,6 +375,19 @@ public class ReactorConnection implements AmqpConnection {
         }).then(isClosedMono.asMono());
     }
 
+    /**
+     * Returns a Mono that completes when the connection handler is closed. If it does, an {@link AmqpException} is
+     * returned. It indicates that a shutdown was initiated and we should stop.
+     *
+     * @return A Mono that completes when the shutdown signal is emitted. If it does, returns an error.
+     */
+    private <T> Mono<T> onClosedError(String message) {
+        return Mono.firstWithSignal(isClosedMono.asMono(), shutdownSignalSink.asMono())
+            .then(Mono.error(new AmqpException(false,
+                String.format("connectionId[%s] Connection closed. %s", connectionId, message),
+                handler.getErrorContext())));
+    }
+
     private synchronized void closeConnectionWork() {
         if (connection == null) {
             isClosedMono.emitEmpty((signalType, emitResult) -> {
@@ -405,16 +405,22 @@ public class ReactorConnection implements AmqpConnection {
         final ArrayList<Mono<Void>> closingSessions = new ArrayList<>();
         sessionMap.forEach((key, link) -> closingSessions.add(link.isClosed()));
 
-        executor.close();
+        final Mono<Void> closedExecutor;
+        if (executor != null) {
+            closedExecutor = executor.isClosed();
+            executor.close();
+        } else {
+            closedExecutor = Mono.empty();
+        }
 
         // Close all the children.
-        Mono<Void> closeSessionsMono = Mono.when(closingSessions)
+        final Mono<Void> closeSessionsMono = Mono.when(closingSessions)
             .timeout(operationTimeout)
             .onErrorResume(error -> {
                 logger.warning("connectionId[{}]: Timed out waiting for all sessions to close.", connectionId, error);
                 return Mono.empty();
             })
-            .then(executor.isClosed())
+            .then(closedExecutor)
             .then(Mono.fromRunnable(() -> {
                 isClosedMono.emitEmpty((signalType, result) -> {
                     logger.warning("connectionId[{}] signal[{}] result[{}]: Unable to emit connection closed signal",
