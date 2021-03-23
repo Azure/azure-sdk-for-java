@@ -22,7 +22,9 @@ public class ReceiveLinkHandler extends LinkHandler {
     private final String linkName;
     private final AtomicBoolean isFirstResponse = new AtomicBoolean(true);
     private final Sinks.Many<Delivery> deliveries = Sinks.many().multicast().directBestEffort();
+    private final Sinks.Many<Integer> linkCredits = Sinks.many().multicast().onBackpressureBuffer();
     private final Set<Delivery> queuedDeliveries = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final String entityPath;
 
     public ReceiveLinkHandler(String connectionId, String hostname, String linkName, String entityPath) {
@@ -39,13 +41,27 @@ public class ReceiveLinkHandler extends LinkHandler {
         return deliveries.asFlux().doOnNext(delivery -> queuedDeliveries.remove(delivery));
     }
 
+    public Flux<Integer> getLinkCredits() {
+        return linkCredits.asFlux();
+    }
+
     @Override
     public void close() {
+        if (isDisposed.getAndSet(true)) {
+            logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Already disposed.",
+                getConnectionId(), entityPath, linkName);
+            return;
+        }
+
+        logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Disposing handler.",
+            getConnectionId(), entityPath, linkName);
+
         deliveries.emitComplete((signalType, emitResult) -> {
-            logger.verbose("connectionId[{}], entityPath[{}], linkName[{}] Could not emit complete.",
+            logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Could not emit complete.",
                 getConnectionId(), entityPath, linkName);
             return false;
         });
+        linkCredits.emitComplete(Sinks.EmitFailureHandler.FAIL_FAST);
 
         super.close();
 
@@ -74,16 +90,32 @@ public class ReceiveLinkHandler extends LinkHandler {
         }
 
         if (link.getRemoteSource() != null) {
-            logger.info("onLinkRemoteOpen connectionId[{}], entityPath[{}], linkName[{}], remoteSource[{}]",
+            logger.info("onLinkRemoteOpen connectionId[{}] entityPath[{}], linkName[{}], remoteSource[{}]",
                 getConnectionId(), entityPath, link.getName(), link.getRemoteSource());
 
             if (isFirstResponse.getAndSet(false)) {
                 onNext(EndpointState.ACTIVE);
+                emitCredits(link);
             }
         } else {
-            logger.info("onLinkRemoteOpen connectionId[{}], entityPath[{}], linkName[{}], action[waitingForError]",
+            logger.info("onLinkRemoteOpen connectionId[{}] entityPath[{}], linkName[{}], action[waitingForError]",
                 getConnectionId(), entityPath, link.getName());
         }
+    }
+
+    /**
+     * Updates the link state.
+     *
+     * @param event Corresponding event.
+     */
+    @Override
+    public void onLinkFlow(Event event) {
+        final Link receiver = event.getLink();
+        if (!(receiver instanceof Receiver)) {
+            return;
+        }
+
+        emitCredits(receiver);
     }
 
     @Override
@@ -143,11 +175,18 @@ public class ReceiveLinkHandler extends LinkHandler {
     @Override
     public void onLinkRemoteClose(Event event) {
         deliveries.emitComplete((signalType, emitResult) -> {
-            logger.info("connectionId[{}] linkName[{}] signalType[{}] emitResult[{}] Could not complete 'deliveries'.",
+            logger.verbose("connectionId[{}] linkName[{}] emitResult[{}] Could not complete deliveries.",
                 getConnectionId(), linkName, signalType, emitResult);
             return false;
         });
 
+        linkCredits.emitComplete(Sinks.EmitFailureHandler.FAIL_FAST);
+
         super.onLinkRemoteClose(event);
+    }
+
+    private void emitCredits(Link link) {
+        final int remoteCredit = link.getRemoteCredit();
+        linkCredits.emitNext(remoteCredit, Sinks.EmitFailureHandler.FAIL_FAST);
     }
 }

@@ -4,7 +4,9 @@
 package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.exception.LinkErrorContext;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -24,8 +26,12 @@ import org.mockito.MockitoAnnotations;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.azure.core.amqp.exception.AmqpErrorCondition.LINK_STOLEN;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.mock;
@@ -74,9 +80,7 @@ class LinkHandlerTest {
     void teardown() throws Exception {
         Mockito.framework().clearInlineMocks();
 
-        if (handler != null) {
-            handler.close();
-        }
+        handler.close();
 
         if (mocksCloseable != null) {
             mocksCloseable.close();
@@ -269,6 +273,68 @@ class LinkHandlerTest {
         verify(session, never()).close();
     }
 
+    /**
+     * Tests that we get the correct context.
+     */
+    @Test
+    void linkContextTrackingId() {
+        // Arrange
+        final String trackingId = "something-tracking";
+        final Map<Symbol, Object> properties = new HashMap<>();
+        properties.put(Symbol.getSymbol(AmqpErrorCondition.TRACKING_ID_PROPERTY.getErrorCondition()), trackingId);
+        when(link.getRemoteProperties()).thenReturn(properties);
+
+        final int credits = 15;
+        when(link.getCredit()).thenReturn(credits);
+
+        // Act
+        final AmqpErrorContext context = handler.getErrorContext(link);
+
+        // Assert
+
+        assertTrue(context instanceof LinkErrorContext);
+
+        final LinkErrorContext linkContext = (LinkErrorContext) context;
+
+        assertEquals(HOSTNAME, linkContext.getNamespace());
+        assertEquals(ENTITY_PATH, linkContext.getEntityPath());
+        assertEquals(trackingId, linkContext.getTrackingId());
+        assertEquals(credits, linkContext.getLinkCredit());
+
+        assertEquals(HOSTNAME, handler.getHostname());
+    }
+
+    /**
+     * Tests that we get the correct context when there is no tracking Id.
+     */
+    @Test
+    void linkContextNoTracking() {
+        // Arrange
+        final Map<Symbol, Object> properties = new HashMap<>();
+        when(link.getRemoteProperties()).thenReturn(properties);
+
+        final String name = "my-name";
+        when(link.getName()).thenReturn(name);
+
+        final int credits = 15;
+        when(link.getCredit()).thenReturn(credits);
+
+        // Act
+        final AmqpErrorContext context = handler.getErrorContext(link);
+
+        // Assert
+
+        assertTrue(context instanceof LinkErrorContext);
+
+        final LinkErrorContext linkContext = (LinkErrorContext) context;
+
+        assertEquals(HOSTNAME, linkContext.getNamespace());
+        assertEquals(ENTITY_PATH, linkContext.getEntityPath());
+        assertEquals(name, linkContext.getTrackingId());
+        assertEquals(credits, linkContext.getLinkCredit());
+
+        assertEquals(HOSTNAME, handler.getHostname());
+    }
 
     private static final class MockLinkHandler extends LinkHandler {
         MockLinkHandler(String connectionId, String hostname, String entityPath, ClientLogger logger) {

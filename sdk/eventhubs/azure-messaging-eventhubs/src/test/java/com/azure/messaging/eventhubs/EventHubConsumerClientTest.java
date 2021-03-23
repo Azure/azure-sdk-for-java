@@ -54,6 +54,7 @@ import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_POSITION_ID;
 import static com.azure.messaging.eventhubs.TestUtils.getMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -102,6 +103,9 @@ public class EventHubConsumerClientTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
+        when(amqpReceiveLink2.addCredits(anyInt())).thenReturn(Mono.empty());
+
+        when(amqpReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
         when(amqpReceiveLink.receive()).thenReturn(messageProcessor);
         when(amqpReceiveLink.getEndpointStates()).thenReturn(Flux.never());
         when(amqpReceiveLink.getCredits()).thenReturn(10);

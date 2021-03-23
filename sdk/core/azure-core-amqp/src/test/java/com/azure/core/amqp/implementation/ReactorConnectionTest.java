@@ -294,13 +294,13 @@ class ReactorConnectionTest {
         // Act & Assert
         StepVerifier.create(connection.getEndpointStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
-            .then(() -> connectionHandler.onConnectionRemoteOpen(event))
-            .expectNext(AmqpEndpointState.ACTIVE)
-            // getConnectionStates is distinct. We don't expect to see another event with the same status.
             .then(() -> {
                 connectionHandler.onConnectionRemoteOpen(event);
-                connection.dispose();
+                connectionHandler.onConnectionRemoteOpen(event);
             })
+            .expectNext(AmqpEndpointState.ACTIVE)
+            .expectNext(AmqpEndpointState.ACTIVE)
+            .then(() -> connection.dispose())
             .verifyComplete();
     }
 

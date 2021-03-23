@@ -301,7 +301,7 @@ public class ReactorConnection implements AmqpConnection {
                 entityPath, reactorSession.session(), connectionOptions.getRetry(), handlerProvider, reactorProvider,
                 messageSerializer, senderSettleMode, receiverSettleMode))
             .doOnNext(e -> {
-                logger.info("Emitting new response channel. connectionId: {}. entityPath: {}. linkName: {}.",
+                logger.info("connectionId[{}] entityPath[{}] linkName[{}] Emitting new response channel.",
                     getId(), entityPath, linkName);
             })
             .repeat();

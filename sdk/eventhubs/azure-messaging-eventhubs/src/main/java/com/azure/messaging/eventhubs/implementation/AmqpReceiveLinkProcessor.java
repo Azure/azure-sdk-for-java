@@ -19,6 +19,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.FluxProcessor;
 import reactor.core.publisher.Operators;
 
+import java.time.Duration;
 import java.util.Deque;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -45,12 +46,12 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     private final int prefetch;
     private final AmqpRetryPolicy retryPolicy;
     private final Disposable parentConnection;
+    private final Duration timeout;
 
     private volatile Throwable lastError;
     private volatile boolean isCancelled;
     private volatile AmqpReceiveLink currentLink;
     private volatile Disposable currentLinkSubscriptions;
-    private volatile Disposable retrySubscription;
 
     // Opting to use AtomicReferenceFieldUpdater because Project Reactor provides utility methods that calculates
     // backpressure requests, sets the upstream correctly, and reports its state.
@@ -81,6 +82,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         }
 
         this.prefetch = prefetch;
+        this.timeout = retryPolicy.getRetryOptions().getTryTimeout();
     }
 
     /**
@@ -144,7 +146,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         final String linkName = next.getLinkName();
         final String entityPath = next.getEntityPath();
 
-        logger.info("linkName[{}] entityPath[{}]. Setting next AMQP receive link.", linkName, entityPath);
+        logger.verbose("linkName[{}] entityPath[{}] Setting next AMQP receive link.", linkName, entityPath);
 
         final AmqpReceiveLink oldChannel;
         final Disposable oldSubscription;
@@ -156,15 +158,21 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
             // For a new link, add the prefetch as credits.
             linkCreditsAdded.set(true);
-            next.addCredits(prefetch);
+            next.addCredits(prefetch).subscribe(v -> {
+                }, error-> {
+                    logger.warning("linkName[{}] entityPath[{}] prefetch[{}] Could not add credits.",
+                        linkName, entityPath, prefetch);
+                });
             next.setEmptyCreditListener(this::getCreditsToAdd);
 
             currentLinkSubscriptions = Disposables.composite(
                 next.getEndpointStates().subscribe(
                     state -> {
-                        // Connection was successfully opened, we can reset the retry interval.
                         if (state == AmqpEndpointState.ACTIVE) {
-                            logger.info("Link {} is now active with {} credits.", linkName, next.getCredits());
+                            // Connection was successfully opened, we can reset the retry interval.
+                            logger.info("linkName[{}] entityPath[{}] credits[{}] Is active.", linkName, entityPath,
+                                next.getCredits());
+
                             retryAttempts.set(0);
                         }
                     },
@@ -305,10 +313,13 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
     @Override
     public void dispose() {
-        logger.info("Disposing receive link {}", currentLink);
         if (isTerminated.getAndSet(true)) {
             return;
         }
+
+        final String name = currentLink != null ? currentLink.getLinkName() : "N/A";
+        final String entityPath = currentLink != null ? currentLink.getEntityPath() : "N/A";
+        logger.info("linkName[{}] entityPath[{}] Disposing receive link {}", name, entityPath);
 
         drain();
         onDispose();
@@ -329,8 +340,13 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         final AmqpReceiveLink link = currentLink;
         if (link != null && !linkCreditsAdded.getAndSet(true)) {
             int credits = getCreditsToAdd();
-            logger.verbose("Link credits not yet added. Adding: {}", credits);
-            link.addCredits(credits);
+            logger.verbose("linkName[{}] credits[{}] Credits not yet added. Adding.", link.getLinkName(), credits);
+            try {
+                link.addCredits(credits).block(timeout);
+            } catch (RuntimeException e) {
+                logger.error("linkName[{}] credits[{}] Could not add credits within timeout.",
+                    link.getLinkName(), credits, e);
+            }
         }
 
         drain();
@@ -376,10 +392,6 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     }
 
     private void onDispose() {
-        if (retrySubscription != null && !retrySubscription.isDisposed()) {
-            retrySubscription.dispose();
-        }
-
         if (currentLink != null) {
             currentLink.dispose();
         }

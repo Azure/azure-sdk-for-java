@@ -31,6 +31,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.verification.VerificationMode;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -41,6 +42,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -76,7 +78,7 @@ class ReactorReceiverTest {
 
     @BeforeAll
     static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(10));
     }
 
     @AfterAll
@@ -91,6 +93,8 @@ class ReactorReceiverTest {
         when(cbsNode.authorize(any(), any())).thenReturn(Mono.empty());
 
         when(event.getLink()).thenReturn(receiver);
+        when(event.getReceiver()).thenReturn(receiver);
+
         when(receiver.getRemoteSource()).thenReturn(new Source());
 
         when(reactor.selectable()).thenReturn(selectable);
@@ -118,20 +122,29 @@ class ReactorReceiverTest {
      * Verify we can add credits to the link.
      */
     @Test
-    void addCredits() throws IOException {
+    void addCredits() {
         final int credits = 15;
-        reactorReceiver.addCredits(credits);
 
-        // Assert
-        verify(dispatcher).invoke(dispatcherCaptor.capture());
-
-        final List<Runnable> invocations = dispatcherCaptor.getAllValues();
-        assertEquals(1, invocations.size());
-
-        // Apply the invocation.
-        invocations.get(0).run();
+        // Act & Assert
+        StepVerifier.create(reactorReceiver.addCredits(credits))
+            .then(() -> invokeDispatcher(1))
+            .verifyComplete();
 
         verify(receiver).flow(credits);
+    }
+
+    /**
+     * Cannot add credits when disposed.
+     */
+    @Test
+    void cannotAddCreditsClosed() {
+        // Act
+        reactorReceiver.dispose();
+
+        // Assert
+        StepVerifier.create(reactorReceiver.addCredits(10))
+            .expectError(IllegalStateException.class)
+            .verify();
     }
 
     /**
@@ -203,7 +216,7 @@ class ReactorReceiverTest {
     }
 
     @Test
-    void addsMoreCreditsWhenPrefetchIsDone() throws IOException {
+    void receivesMessage() {
         // Arrange
         // This message was copied from one that was received.
         final byte[] messageBytes = new byte[] { 0, 83, 114, -63, 73, 6, -93, 21, 120, 45, 111, 112, 116, 45, 115, 101,
@@ -222,7 +235,7 @@ class ReactorReceiverTest {
         when(delivery.isSettled()).thenReturn(false);
         when(delivery.pending()).thenReturn(messageBytes.length);
 
-        when(receiver.getRemoteCredit()).thenReturn(0);
+        when(receiver.getRemoteCredit()).thenReturn(7);
         when(receiver.recv(any(), eq(0), eq(messageBytes.length))).thenAnswer(invocation -> {
             final byte[] buffer = invocation.getArgument(0);
             System.arraycopy(messageBytes, 0, buffer, 0, messageBytes.length);
@@ -234,7 +247,10 @@ class ReactorReceiverTest {
 
         // Act & Assert
         StepVerifier.create(reactorReceiver.receive())
-            .then(() -> receiverHandler.onDelivery(event))
+            .then(() -> {
+                receiverHandler.onDelivery(event);
+                invokeDispatcher(1);
+            })
             .assertNext(message -> {
                 Assertions.assertNotNull(message.getMessageAnnotations());
 
@@ -245,18 +261,61 @@ class ReactorReceiverTest {
             })
             .thenCancel()
             .verify();
+    }
 
-        verify(creditSupplier).get();
+    /**
+     * Verifies that when the flow frame is used, that we update the credits and if it is less than 0, flow more.
+     *
+     * @throws IOException If cannot be scheduled on reactor.
+     */
+    @Test
+    void addsCreditsOnFlowFrame() throws IOException {
+        // Arrange
+        final int credit1 = 0;
+        final int credit2 = 1;
+        final int credit3 = -10;
+        final int credit4 = 0;
+        final int credit5 = 11;
+        final int expectedTimes = 3;
+        final VerificationMode numberOfTimes = times(expectedTimes);
 
-        // Verify that the get addCredits was called on that dispatcher.
-        verify(dispatcher).invoke(dispatcherCaptor.capture());
+        final int expectedCreditFlow = 21;
+        when(receiver.getRemoteCredit()).thenReturn(credit1, credit2, credit3, credit4, credit5);
+
+        when(creditSupplier.get()).thenReturn(expectedCreditFlow);
+
+        reactorReceiver.setEmptyCreditListener(creditSupplier);
+
+        // Act
+        StepVerifier.create(receiverHandler.getLinkCredits())
+            .then(() -> {
+                receiverHandler.onLinkFlow(event); // credit: 0
+                receiverHandler.onLinkFlow(event); // credit: 1
+                receiverHandler.onLinkFlow(event); // credit: -10
+                receiverHandler.onLinkFlow(event); // credit: 0
+                receiverHandler.onLinkFlow(event); // credit: 11
+            })
+            .expectNext(credit1, credit2, credit3, credit4, credit5)
+            .then(() -> receiverHandler.close())
+            .verifyComplete();
+
+        // Assert
+        verify(creditSupplier, numberOfTimes).get();
+
+        invokeDispatcher(expectedTimes);
+
+        verify(receiver, numberOfTimes).flow(expectedCreditFlow);
+    }
+
+    private void invokeDispatcher(int expectedInvocations) {
+        try {
+            verify(dispatcher, times(expectedInvocations)).invoke(dispatcherCaptor.capture());
+        } catch (IOException e) {
+            fail("Should be able to schedule invocation.", e);
+        }
 
         final List<Runnable> invocations = dispatcherCaptor.getAllValues();
-        assertEquals(1, invocations.size());
-
-        // Apply the invocation.
-        invocations.get(0).run();
-
-        verify(receiver).flow(10);
+        assertEquals(expectedInvocations, invocations.size());
+        invocations.forEach(invocation -> invocation.run());
     }
 }
