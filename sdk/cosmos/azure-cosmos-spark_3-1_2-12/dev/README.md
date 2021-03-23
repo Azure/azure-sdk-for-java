@@ -33,7 +33,32 @@ How to run style check:
 mvn -e -Dgpg.skip -DskipTests -Dmaven.javadoc.skip=true -Dspotbugs.skip=false -Dcheckstyle.skip=false -Drevapi.skip=true -pl ,azure-cosmos-spark_3-1_2-12 -am clean package
 ```
 
-### OSS compliance for each Spark Release
+
+### How to do a Release
+
+First make sure all the newly added third party libraries are tracked see OSS compliance section.
+
+The release process is currently manual.
+
+Download the spark artifacts or build locally:
+```bash
+mvn -e -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl ,azure-cosmos -am clean install
+mvn -e -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl ,azure-cosmos-spark_3-1_2-12 clean install
+```
+
+Take these files:
+```
+mkdir ~/Deskop/spark-release
+cp azure-sdk-for-java/sdk/cosmos/azure-cosmos-spark_3-1_2-12/target/azure-cosmos-spark_3-1_2-12-4.0.0-alpha.1-javadoc.jar ~/Deskop/spark-release/
+cp azure-sdk-for-java/sdk/cosmos/azure-cosmos-spark_3-1_2-12/target/azure-cosmos-spark_3-1_2-12-4.0.0-alpha.1-sources.jar ~/Deskop/spark-release/
+cp azure-sdk-for-java/sdk/cosmos/azure-cosmos-spark_3-1_2-12/target/azure-cosmos-spark_3-1_2-12-4.0.0-alpha.1.jar ~/Deskop/spark-release/
+cp azure-sdk-for-java/sdk/cosmos/azure-cosmos-spark_3-1_2-12/dependency-reduced-pom.xml ~/Deskop/spark-release/
+```
+
+NOTE: to make sure the maven dependency resolver works correctly you need to take the `dependency-reduced-pom.xml` as the pom file instead of the original pom file.
+Use the partner release pipeline to release.
+
+### OSS compliance
 
 For each release we need to go over the OSS compliance steps:
 
