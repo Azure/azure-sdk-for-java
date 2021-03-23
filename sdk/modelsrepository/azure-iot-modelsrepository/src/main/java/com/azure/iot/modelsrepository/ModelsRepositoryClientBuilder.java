@@ -43,11 +43,11 @@ public final class ModelsRepositoryClientBuilder {
     // These are the keys to the above properties file that define the client library's name and version for use in the user agent string
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
-    private static URI GLOBAL_REPOSITORY_URI;
+    private static URI globalRepositoryUri;
 
     static {
         try {
-            GLOBAL_REPOSITORY_URI = new URI(ModelsRepositoryConstants.DEFAULT_MODELS_REPOSITORY_ENDPOINT);
+            globalRepositoryUri = new URI(ModelsRepositoryConstants.DEFAULT_MODELS_REPOSITORY_ENDPOINT);
         } catch (URISyntaxException e) {
             // We know it won't throw since it's a known endpoint and has been validated.
         }
@@ -86,7 +86,7 @@ public final class ModelsRepositoryClientBuilder {
         additionalPolicies = new ArrayList<>();
         properties = CoreUtils.getProperties(MODELS_REPOSITORY_PROPERTIES);
         httpLogOptions = new HttpLogOptions();
-        this.repositoryEndpoint = GLOBAL_REPOSITORY_URI;
+        this.repositoryEndpoint = globalRepositoryUri;
     }
 
     private static HttpPipeline constructPipeline(

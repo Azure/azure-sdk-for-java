@@ -7,13 +7,13 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -190,7 +190,7 @@ public final class ModelsRepositoryAPIImplBuilder {
      * @return an instance of ModelsRepositoryAPIImpl.
      */
     public ModelsRepositoryAPIImpl buildClient() {
-        if(apiVersion == null){
+        if (apiVersion == null) {
             this.apiVersion = "2021-03-18";
         }
         if (host == null) {

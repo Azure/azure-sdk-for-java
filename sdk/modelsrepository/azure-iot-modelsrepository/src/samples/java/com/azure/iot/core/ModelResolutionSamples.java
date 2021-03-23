@@ -3,13 +3,11 @@
 
 package com.azure.iot.core;
 
-import com.azure.iot.modelsrepository.DtmiConventions;
+import com.azure.iot.modelsrepository.ModelDependencyResolution;
 import com.azure.iot.modelsrepository.ModelsRepositoryAsyncClient;
 import com.azure.iot.modelsrepository.ModelsRepositoryClient;
 import com.azure.iot.modelsrepository.ModelsRepositoryClientBuilder;
-import com.azure.iot.modelsrepository.ModelDependencyResolution;
 
-import java.net.URI;
 import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
