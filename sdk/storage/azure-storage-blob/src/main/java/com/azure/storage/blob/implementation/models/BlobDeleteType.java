@@ -4,47 +4,28 @@
 
 package com.azure.storage.blob.implementation.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
-/**
- * Defines values for BlobDeleteType.
- */
-public enum BlobDeleteType {
-    /**
-     * Enum value Permanent.
-     */
-    PERMANENT("Permanent");
+/** Defines values for BlobDeleteType. */
+public final class BlobDeleteType extends ExpandableStringEnum<BlobDeleteType> {
+    /** Static value Permanent for BlobDeleteType. */
+    public static final BlobDeleteType PERMANENT = fromString("Permanent");
 
     /**
-     * The actual serialized value for a BlobDeleteType instance.
-     */
-    private final String value;
-
-    BlobDeleteType(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a BlobDeleteType instance.
+     * Creates or finds a BlobDeleteType from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed BlobDeleteType object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding BlobDeleteType.
      */
     @JsonCreator
-    public static BlobDeleteType fromString(String value) {
-        BlobDeleteType[] items = BlobDeleteType.values();
-        for (BlobDeleteType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static BlobDeleteType fromString(String name) {
+        return fromString(name, BlobDeleteType.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known BlobDeleteType values. */
+    public static Collection<BlobDeleteType> values() {
+        return values(BlobDeleteType.class);
     }
 }

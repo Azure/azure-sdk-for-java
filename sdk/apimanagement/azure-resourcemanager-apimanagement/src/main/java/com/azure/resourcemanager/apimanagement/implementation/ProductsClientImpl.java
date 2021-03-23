@@ -293,7 +293,7 @@ public final class ProductsClientImpl implements ProductsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -581,7 +581,7 @@ public final class ProductsClientImpl implements ProductsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -680,7 +680,7 @@ public final class ProductsClientImpl implements ProductsClient {
      * @return the entity state (Etag) version of the product specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public ProductsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String productId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, productId, context).block();
     }
@@ -735,7 +735,7 @@ public final class ProductsClientImpl implements ProductsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -842,7 +842,7 @@ public final class ProductsClientImpl implements ProductsClient {
      * @return the details of the product specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProductContractInner> getWithResponse(
+    public ProductsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String productId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, productId, context).block();
     }
@@ -910,7 +910,7 @@ public final class ProductsClientImpl implements ProductsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1070,7 +1070,7 @@ public final class ProductsClientImpl implements ProductsClient {
      * @return product details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProductContractInner> createOrUpdateWithResponse(
+    public ProductsCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String productId,
@@ -1148,7 +1148,7 @@ public final class ProductsClientImpl implements ProductsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1292,7 +1292,7 @@ public final class ProductsClientImpl implements ProductsClient {
      * @return product details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProductContractInner> updateWithResponse(
+    public ProductsUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String productId,
@@ -1360,7 +1360,7 @@ public final class ProductsClientImpl implements ProductsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1586,7 +1586,7 @@ public final class ProductsClientImpl implements ProductsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1843,7 +1843,7 @@ public final class ProductsClientImpl implements ProductsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1915,7 +1915,7 @@ public final class ProductsClientImpl implements ProductsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

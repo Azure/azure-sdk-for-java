@@ -8,7 +8,6 @@ import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClien
 import com.azure.communication.phonenumbers.implementation.PhoneNumbersImpl;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
-import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
@@ -203,13 +202,13 @@ public final class PhoneNumbersClient {
      * operation is complete.
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
      *                    as %2B.
-     * @param capabilitiesUpdateRequest Update capabilities of a purchased phone number.
+     * @param capabilities Update capabilities of a purchased phone number.
      * @return A {@link SyncPoller} object with purchased phone number.
-     * @throws NullPointerException if {@code phoneNumber} or {@code capabilitiesUpdateRequest} is null.
+     * @throws NullPointerException if {@code phoneNumber} or {@code capabilities} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PhoneNumberOperation, PurchasedPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest) {
-        return asyncClient.beginUpdatePhoneNumberCapabilities(phoneNumber, capabilitiesUpdateRequest).getSyncPoller();
+    public SyncPoller<PhoneNumberOperation, PurchasedPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilities capabilities) {
+        return asyncClient.beginUpdatePhoneNumberCapabilities(phoneNumber, capabilities).getSyncPoller();
     }
 
     /**
@@ -219,13 +218,13 @@ public final class PhoneNumbersClient {
      * operation is complete.
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
      *                    as %2B.
-     * @param capabilitiesUpdateRequest Update capabilities of a purchased phone number.
+     * @param capabilities Update capabilities of a purchased phone number.
      * @param context A {@link Context} representing the request context.
      * @return A {@link SyncPoller} object with purchased phone number.
-     * @throws NullPointerException if {@code phoneNumber} or {@code capabilitiesUpdateRequest} is null.
+     * @throws NullPointerException if {@code phoneNumber} or {@code capabilities} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PhoneNumberOperation, PurchasedPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest, Context context) {
-        return asyncClient.beginUpdatePhoneNumberCapabilities(phoneNumber, capabilitiesUpdateRequest, context).getSyncPoller();
+    public SyncPoller<PhoneNumberOperation, PurchasedPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilities capabilities, Context context) {
+        return asyncClient.beginUpdatePhoneNumberCapabilities(phoneNumber, capabilities, context).getSyncPoller();
     }
 }

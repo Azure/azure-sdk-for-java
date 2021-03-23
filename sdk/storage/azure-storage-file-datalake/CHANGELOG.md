@@ -8,6 +8,9 @@
 - Added support for the 2020-06-12 service version. 
 - Added support to undelete a file system. 
 
+## 12.4.1 (2021-03-19)
+- Updated `azure-storage-blob` version to `12.10.1` to pickup fixes for blob output stream.
+
 ## 12.4.0 (2021-01-14)
 - GA release
 - Fixed bug where getFileClient and getSubDirectoryClient on DirectoryClient would throw IllegalArgumentException if either resource had special characters.

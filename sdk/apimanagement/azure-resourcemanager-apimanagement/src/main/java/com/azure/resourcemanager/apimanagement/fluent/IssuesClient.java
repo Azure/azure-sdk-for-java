@@ -7,9 +7,9 @@ package com.azure.resourcemanager.apimanagement.fluent;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.IssueContractInner;
+import com.azure.resourcemanager.apimanagement.models.IssuesGetResponse;
 
 /** An instance of this class provides access to all the operations defined in IssuesClient. */
 public interface IssuesClient {
@@ -77,6 +77,5 @@ public interface IssuesClient {
      * @return aPI Management issue details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IssueContractInner> getWithResponse(
-        String resourceGroupName, String serviceName, String issueId, Context context);
+    IssuesGetResponse getWithResponse(String resourceGroupName, String serviceName, String issueId, Context context);
 }

@@ -2241,6 +2241,13 @@
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 
+  <!-- This dead store is due to a deficiency in the Customization class. We need to reference the original return type but we have no use for it so we just comment it out -->
+  <Match>
+    <Class name="com.azure.storage.blob.models.Block"/>
+    <Method name="getSize"/>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+  </Match>
+
   <!-- Exclude REC_CATCH_EXCEPTION and false positive error for management samples. All samples in management catch Exception instead of throw it. -->
   <Match>
     <Package name="~com\.azure\.resourcemanager(\.[^.]+)*\.samples(\.[^.]+)*"/>

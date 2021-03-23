@@ -13,6 +13,9 @@ import com.azure.resourcemanager.apimanagement.fluent.CertificatesClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.CertificateContractInner;
 import com.azure.resourcemanager.apimanagement.models.CertificateContract;
 import com.azure.resourcemanager.apimanagement.models.Certificates;
+import com.azure.resourcemanager.apimanagement.models.CertificatesGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.CertificatesGetResponse;
+import com.azure.resourcemanager.apimanagement.models.CertificatesRefreshSecretResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class CertificatesImpl implements Certificates {
@@ -53,7 +56,7 @@ public final class CertificatesImpl implements Certificates {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, certificateId);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public CertificatesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String certificateId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, certificateId, context);
     }
@@ -69,7 +72,7 @@ public final class CertificatesImpl implements Certificates {
 
     public Response<CertificateContract> getWithResponse(
         String resourceGroupName, String serviceName, String certificateId, Context context) {
-        Response<CertificateContractInner> inner =
+        CertificatesGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, certificateId, context);
         if (inner != null) {
             return new SimpleResponse<>(
@@ -103,7 +106,7 @@ public final class CertificatesImpl implements Certificates {
 
     public Response<CertificateContract> refreshSecretWithResponse(
         String resourceGroupName, String serviceName, String certificateId, Context context) {
-        Response<CertificateContractInner> inner =
+        CertificatesRefreshSecretResponse inner =
             this.serviceClient().refreshSecretWithResponse(resourceGroupName, serviceName, certificateId, context);
         if (inner != null) {
             return new SimpleResponse<>(

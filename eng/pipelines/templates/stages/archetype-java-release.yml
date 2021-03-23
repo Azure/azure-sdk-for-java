@@ -1,6 +1,6 @@
 parameters:
   - name: DependsOn
-    type: string
+    type: object
   - name: ServiceDirectory
     type: string
   - name: SDKType

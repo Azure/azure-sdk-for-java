@@ -10,6 +10,9 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.TagDescriptionContractInner;
+import com.azure.resourcemanager.apimanagement.models.ApiTagDescriptionsCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiTagDescriptionsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiTagDescriptionsGetResponse;
 import com.azure.resourcemanager.apimanagement.models.TagDescriptionCreateParameters;
 
 /** An instance of this class provides access to all the operations defined in ApiTagDescriptionsClient. */
@@ -93,7 +96,7 @@ public interface ApiTagDescriptionsClient {
      * @return the entity state version of the tag specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    ApiTagDescriptionsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String tagDescriptionId, Context context);
 
     /**
@@ -130,7 +133,7 @@ public interface ApiTagDescriptionsClient {
      * @return tag description in scope of API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TagDescriptionContractInner> getWithResponse(
+    ApiTagDescriptionsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String apiId, String tagDescriptionId, Context context);
 
     /**
@@ -174,7 +177,7 @@ public interface ApiTagDescriptionsClient {
      * @return contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TagDescriptionContractInner> createOrUpdateWithResponse(
+    ApiTagDescriptionsCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,

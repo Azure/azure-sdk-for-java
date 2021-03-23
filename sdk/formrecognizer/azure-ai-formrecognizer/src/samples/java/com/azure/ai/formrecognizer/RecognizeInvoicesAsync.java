@@ -45,8 +45,8 @@ public class RecognizeInvoicesAsync {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        File invoice = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/"
-            + "invoices/Invoice_1.pdf");
+        File invoice = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/java/"
+            + "sample-forms/invoices/Invoice_1.pdf");
         byte[] fileContent = Files.readAllBytes(invoice.toPath());
         PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeInvoicesPoller;
         try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {

@@ -10,6 +10,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.PolicyCollectionInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.PolicyContractInner;
+import com.azure.resourcemanager.apimanagement.models.ApiOperationPoliciesCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiOperationPoliciesGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiOperationPoliciesGetResponse;
 import com.azure.resourcemanager.apimanagement.models.PolicyExportFormat;
 import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 
@@ -87,7 +90,7 @@ public interface ApiOperationPoliciesClient {
      * @return the entity state (Etag) version of the API operation policy specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    ApiOperationPoliciesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -132,7 +135,7 @@ public interface ApiOperationPoliciesClient {
      * @return the policy configuration at the API Operation level.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyContractInner> getWithResponse(
+    ApiOperationPoliciesGetResponse getWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -185,7 +188,7 @@ public interface ApiOperationPoliciesClient {
      * @return policy Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyContractInner> createOrUpdateWithResponse(
+    ApiOperationPoliciesCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,

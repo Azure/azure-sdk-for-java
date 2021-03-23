@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.azure.communication.chat.implementation.models.CommunicationErrorResponseException;
 import com.azure.core.exception.HttpResponseException;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -903,7 +904,8 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         setupUnitTest(mockHttpClient);
 
         StepVerifier.create(chatThreadClient.sendMessage(new SendChatMessageOptions()))
-            .verifyError(HttpResponseException.class);
+            .verifyErrorMatches(ex ->
+                ex instanceof HttpResponseException && !(ex instanceof CommunicationErrorResponseException));
     }
 
 

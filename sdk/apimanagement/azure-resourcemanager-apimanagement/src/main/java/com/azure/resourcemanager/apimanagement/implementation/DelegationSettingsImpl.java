@@ -12,6 +12,8 @@ import com.azure.resourcemanager.apimanagement.fluent.DelegationSettingsClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.PortalDelegationSettingsInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.PortalSettingValidationKeyContractInner;
 import com.azure.resourcemanager.apimanagement.models.DelegationSettings;
+import com.azure.resourcemanager.apimanagement.models.DelegationSettingsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.DelegationSettingsGetResponse;
 import com.azure.resourcemanager.apimanagement.models.PortalDelegationSettings;
 import com.azure.resourcemanager.apimanagement.models.PortalSettingValidationKeyContract;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -34,7 +36,8 @@ public final class DelegationSettingsImpl implements DelegationSettings {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName);
     }
 
-    public Response<Void> getEntityTagWithResponse(String resourceGroupName, String serviceName, Context context) {
+    public DelegationSettingsGetEntityTagResponse getEntityTagWithResponse(
+        String resourceGroupName, String serviceName, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, context);
     }
 
@@ -49,7 +52,7 @@ public final class DelegationSettingsImpl implements DelegationSettings {
 
     public Response<PortalDelegationSettings> getWithResponse(
         String resourceGroupName, String serviceName, Context context) {
-        Response<PortalDelegationSettingsInner> inner =
+        DelegationSettingsGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, context);
         if (inner != null) {
             return new SimpleResponse<>(

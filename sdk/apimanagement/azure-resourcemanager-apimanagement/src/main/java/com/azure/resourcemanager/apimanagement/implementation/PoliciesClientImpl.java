@@ -192,7 +192,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -346,7 +346,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -445,7 +445,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return the entity state (Etag) version of the Global policy definition in the Api Management service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public PoliciesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, PolicyIdName policyId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, policyId, context).block();
     }
@@ -502,7 +502,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -644,7 +644,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return the Global policy definition of the Api Management service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyContractInner> getWithResponse(
+    public PoliciesGetResponse getWithResponse(
         String resourceGroupName,
         String serviceName,
         PolicyIdName policyId,
@@ -716,7 +716,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -876,7 +876,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return policy Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyContractInner> createOrUpdateWithResponse(
+    public PoliciesCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         PolicyIdName policyId,
@@ -943,7 +943,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

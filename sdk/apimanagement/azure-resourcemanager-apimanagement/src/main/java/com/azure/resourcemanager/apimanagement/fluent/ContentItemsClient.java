@@ -10,6 +10,9 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.ContentItemContractInner;
+import com.azure.resourcemanager.apimanagement.models.ContentItemsCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.ContentItemsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.ContentItemsGetResponse;
 
 /** An instance of this class provides access to all the operations defined in ContentItemsClient. */
 public interface ContentItemsClient {
@@ -72,7 +75,7 @@ public interface ContentItemsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    ContentItemsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String contentTypeId, String contentItemId, Context context);
 
     /**
@@ -105,7 +108,7 @@ public interface ContentItemsClient {
      * @return content type contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ContentItemContractInner> getWithResponse(
+    ContentItemsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String contentTypeId, String contentItemId, Context context);
 
     /**
@@ -139,7 +142,7 @@ public interface ContentItemsClient {
      * @return content type contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ContentItemContractInner> createOrUpdateWithResponse(
+    ContentItemsCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String contentTypeId,

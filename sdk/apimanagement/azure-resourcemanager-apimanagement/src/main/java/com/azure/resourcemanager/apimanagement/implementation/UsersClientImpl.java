@@ -295,7 +295,7 @@ public final class UsersClientImpl implements UsersClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -565,7 +565,7 @@ public final class UsersClientImpl implements UsersClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -664,7 +664,7 @@ public final class UsersClientImpl implements UsersClient {
      * @return the entity state (Etag) version of the user specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public UsersGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String userId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, userId, context).block();
     }
@@ -718,7 +718,7 @@ public final class UsersClientImpl implements UsersClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -825,7 +825,7 @@ public final class UsersClientImpl implements UsersClient {
      * @return the details of the user specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UserContractInner> getWithResponse(
+    public UsersGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String userId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, userId, context).block();
     }
@@ -896,7 +896,7 @@ public final class UsersClientImpl implements UsersClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1064,7 +1064,7 @@ public final class UsersClientImpl implements UsersClient {
      * @return user details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UserContractInner> createOrUpdateWithResponse(
+    public UsersCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String userId,
@@ -1140,7 +1140,7 @@ public final class UsersClientImpl implements UsersClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1276,7 +1276,7 @@ public final class UsersClientImpl implements UsersClient {
      * @return user details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UserContractInner> updateWithResponse(
+    public UsersUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String userId,
@@ -1355,7 +1355,7 @@ public final class UsersClientImpl implements UsersClient {
                             appType,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1587,7 +1587,7 @@ public final class UsersClientImpl implements UsersClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1761,7 +1761,7 @@ public final class UsersClientImpl implements UsersClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1918,7 +1918,7 @@ public final class UsersClientImpl implements UsersClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
