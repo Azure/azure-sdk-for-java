@@ -62,7 +62,8 @@ public final class DtmiConventions {
         String dtmiPath = dtmiToPath(dtmi);
 
         if (expanded) {
-            dtmiPath = dtmiPath.replace(ModelsRepositoryConstants.JSON_EXTENSION, ModelsRepositoryConstants.JSON_EXPANDED_EXTENSION);
+            dtmiPath = dtmiPath.replace(ModelsRepositoryConstants.JSON_EXTENSION,
+                ModelsRepositoryConstants.JSON_EXPANDED_EXTENSION);
         }
 
         UrlBuilder urlBuilder = new UrlBuilder();
