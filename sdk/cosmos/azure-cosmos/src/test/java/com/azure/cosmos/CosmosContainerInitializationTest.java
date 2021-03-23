@@ -4,6 +4,7 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
+import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -13,12 +14,16 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CosmosClientWarmupTest {
+public class CosmosContainerInitializationTest extends TestSuiteBase {
 
-    private CosmosAsyncClient cosmosAsyncClient;
+    private CosmosAsyncClient directCosmosAsyncClient;
+    private CosmosAsyncDatabase cosmosAsyncDatabase;
+    private CosmosAsyncClient gatewayCosmosAsyncClient;
+    private CosmosAsyncContainer cosmosAsyncContainer;
 
     @BeforeClass(groups = {"simple"})
     public void beforeClass() {
+        directCosmosAsyncClient = getClientBuilder().buildAsyncClient();
 
     }
     @AfterClass(groups = {"simple"},  alwaysRun = true)
@@ -28,7 +33,7 @@ public class CosmosClientWarmupTest {
         }
     }
     @Test(groups = {"simple"})
-    public void buildAsyncClientAndInitializeContainers() {
+    public void initializeContainerAsync() {
 
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
        // gatewayConnectionConfig.setProxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("127.0.0.1", 8888)));
@@ -43,10 +48,10 @@ public class CosmosClientWarmupTest {
         RntbdEndpoint.Provider provider = ReflectionUtils.getRntbdEndpointProvider(rntbdTransportClient);
 
 
-        CosmosAsyncContainer cosmosAsyncContainer1 = asyncClient.getDatabase("TestDB").getContainer("TestCol3");
+        CosmosAsyncContainer cosmosAsyncContainer1 = asyncClient.getDatabase("TestDB").getContainer("TestCol2");
         assertThat(provider.count()).isEqualTo(0);
         cosmosAsyncContainer1.initializeContainerAsync().block();
         assertThat(provider.count()).isGreaterThan(0);
-        System.out.println("CosmosClientWarmupTest.buildAsyncClientAndInitializeContainers "+provider.count());
+        System.out.println("CosmosContainerInitializationTest.buildAsyncClientAndInitializeContainers "+provider.count());
     }
 }

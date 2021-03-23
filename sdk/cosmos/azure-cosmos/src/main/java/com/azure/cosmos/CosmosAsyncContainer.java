@@ -424,6 +424,7 @@ public class CosmosAsyncContainer {
             for (FeedRange feedRange : feedRanges) {
                 String dummyQuery = String.format("SELECT * from c where c.id = '%s'", UUID.randomUUID().toString());
                 CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+                options.setConsistencyLevel(ConsistencyLevel.STRONG);
                 options.setFeedRange(feedRange);
                 CosmosPagedFlux<ObjectNode> cosmosPagedFlux = this.queryItems(dummyQuery, options,
                     ObjectNode.class);
