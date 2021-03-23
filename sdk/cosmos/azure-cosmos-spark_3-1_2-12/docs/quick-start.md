@@ -128,8 +128,5 @@ df = spark.read.format("cosmos.items").options(**cfg)\
 df.printSchema()
 ```
 
-Note when running queries unless if are interested to get back the raw json payload
-we recommend setting `spark.cosmos.read.inferSchemaEnabled` to be `true`.
-
 see [Schema Inference Configuration](https://github.com/Azure/azure-sdk-for-java/blob/feature/cosmos/spark30/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/configuration-reference.md#schema-inference-config) for more detail.
 
