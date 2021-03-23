@@ -126,11 +126,14 @@ class ReactorReceiverTest {
     }
 
     /**
-     * Verify we can add credits to the link.
+     * Verify we can add and get credits to and from the link.
      */
     @Test
     void addCredits() throws IOException {
         final int credits = 15;
+        final int currentCredits = 13;
+
+        when(receiver.getRemoteCredit()).thenReturn(currentCredits);
 
         doAnswer(invocation -> {
             final Runnable work = invocation.getArgument(0);
@@ -143,6 +146,8 @@ class ReactorReceiverTest {
 
         // Assert
         verify(receiver).flow(credits);
+
+        assertEquals(currentCredits, reactorReceiver.getCredits());
     }
 
     /**
