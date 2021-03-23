@@ -33,6 +33,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
 import reactor.core.publisher.SignalType;
 import reactor.core.publisher.Sinks;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -202,14 +203,11 @@ public class RequestResponseChannel implements Disposable {
 
     @Override
     public void dispose() {
-        disposeAsync().block(retryOptions.getTryTimeout());
+        disposeAsync("Dispose called.").publishOn(Schedulers.boundedElastic())
+            .block(retryOptions.getTryTimeout());
     }
 
-    public Mono<Void> disposeAsync() {
-        return disposeAsync("Dispose called.");
-    }
-
-    private Mono<Void> disposeAsync(String message) {
+    Mono<Void> disposeAsync(String message) {
         if (isDisposed.getAndSet(true)) {
             return closeMono.asMono();
         }

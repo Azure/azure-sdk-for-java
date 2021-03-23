@@ -25,7 +25,6 @@ import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.SignalType;
 import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -232,7 +231,7 @@ public class ReactorConnection implements AmqpConnection {
                             + " session.", connectionId, sessionName, error);
                         removeSession(key);
                     }, () -> {
-                        logger.info("connectionId[{}] sessionName[{}]: Complete. Removing and disposing session.",
+                        logger.verbose("connectionId[{}] sessionName[{}]: Complete. Removing and disposing session.",
                             connectionId, sessionName);
                         removeSession(key);
                     });
@@ -304,6 +303,7 @@ public class ReactorConnection implements AmqpConnection {
         // for the rest of the tasks to run.
         final Duration timeout = operationTimeout.plus(operationTimeout);
         dispose(new AmqpShutdownSignal(false, true, "Disposed by client."))
+            .publishOn(Schedulers.boundedElastic())
             .block(timeout);
     }
 
@@ -364,13 +364,6 @@ public class ReactorConnection implements AmqpConnection {
                 handler.getErrorContext())));
     }
 
-    private boolean onEmitSinkFailure(SignalType signalType, Sinks.EmitResult emitResult, String message) {
-        logger.warning("connectionId[{}] signal[{}] result[{}] {}",
-            connectionId, signalType, emitResult, message);
-
-        return false;
-    }
-
     private Mono<Void> dispose(AmqpShutdownSignal shutdownSignal) {
         logger.info("connectionId[{}] signal[{}]: Disposing of ReactorConnection.", connectionId, shutdownSignal);
 
@@ -397,8 +390,13 @@ public class ReactorConnection implements AmqpConnection {
 
     private synchronized void closeConnectionWork() {
         if (connection == null) {
-            isClosedMono.emitEmpty((signalType, emitResult) -> onEmitSinkFailure(signalType, emitResult,
-                "Unable to complete closeMono when there is no connection."));
+            isClosedMono.emitEmpty((signalType, emitResult) -> {
+                logger.info("connectionId[{}] signal[{}] result[{}] Unable to complete closeMono.",
+                    connectionId, signalType, emitResult);
+
+                return false;
+            });
+
             return;
         }
 
