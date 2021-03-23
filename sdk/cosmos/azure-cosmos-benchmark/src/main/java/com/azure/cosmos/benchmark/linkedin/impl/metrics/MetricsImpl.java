@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.benchmark.linkedin.impl.metrics;
 
+import com.azure.cosmos.benchmark.Configuration;
 import com.azure.cosmos.benchmark.linkedin.impl.Metrics;
 import com.azure.cosmos.benchmark.linkedin.impl.models.CollectionKey;
 import com.codahale.metrics.Meter;
@@ -25,7 +26,8 @@ public class MetricsImpl implements Metrics {
     public MetricsImpl(final MetricRegistry metricsRegistry,
         final Clock clock,
         final CollectionKey collectionKey,
-        final String operationName) {
+        final String operationName,
+        final Configuration.Environment environment) {
         Preconditions.checkNotNull(metricsRegistry, "The MetricsRegistry can not be null");
         Preconditions.checkNotNull(clock, "Need a non-null Clock instance for latency tracking");
         Preconditions.checkNotNull(operationName, "The operation name can not be null");
@@ -34,9 +36,11 @@ public class MetricsImpl implements Metrics {
 
         _clock = clock;
 
-        // The metric prefix is comprised of the Collection name and Operation type
-        //      e.g. GET (invitations)
-        final String metricPrefix = String.format("%s %s", operationName.toUpperCase(), collectionKey.getCollectionName());
+        // The metric prefix is comprised of the environment, Operation type, and the collection type
+        //      e.g. Daily GET Invitations
+        final String metricPrefix = String.format("%s %s %s", environment.name(),
+            operationName.toUpperCase(),
+            collectionKey.getCollectionName());
         _successMeter = metricsRegistry.meter(metricPrefix + " Successful Operations");
         _failureMeter = metricsRegistry.meter(metricPrefix + " Unsuccessful Operations");
         _latencyTimer = metricsRegistry.register(metricPrefix + " Latency",
@@ -45,7 +49,7 @@ public class MetricsImpl implements Metrics {
     }
 
     @Override
-    public void logCounterMetric(final MetricType metricType) {
+    public void logCounterMetric(final Type metricType) {
         switch (metricType) {
             case NOT_FOUND:
                 _documentsNotFoundMeter.mark();

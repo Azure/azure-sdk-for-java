@@ -59,13 +59,15 @@ public final class NfsAccessRule {
     private Boolean rootSquash;
 
     /*
-     * UID value that replaces 0 when rootSquash is true.
+     * UID value that replaces 0 when rootSquash is true. 65534 will be used if
+     * not provided.
      */
     @JsonProperty(value = "anonymousUID")
     private String anonymousUid;
 
     /*
-     * GID value that replaces 0 when rootSquash is true.
+     * GID value that replaces 0 when rootSquash is true. This will use the
+     * value of anonymousUID if not provided.
      */
     @JsonProperty(value = "anonymousGID")
     private String anonymousGid;
@@ -201,7 +203,8 @@ public final class NfsAccessRule {
     }
 
     /**
-     * Get the anonymousUid property: UID value that replaces 0 when rootSquash is true.
+     * Get the anonymousUid property: UID value that replaces 0 when rootSquash is true. 65534 will be used if not
+     * provided.
      *
      * @return the anonymousUid value.
      */
@@ -210,7 +213,8 @@ public final class NfsAccessRule {
     }
 
     /**
-     * Set the anonymousUid property: UID value that replaces 0 when rootSquash is true.
+     * Set the anonymousUid property: UID value that replaces 0 when rootSquash is true. 65534 will be used if not
+     * provided.
      *
      * @param anonymousUid the anonymousUid value to set.
      * @return the NfsAccessRule object itself.
@@ -221,7 +225,8 @@ public final class NfsAccessRule {
     }
 
     /**
-     * Get the anonymousGid property: GID value that replaces 0 when rootSquash is true.
+     * Get the anonymousGid property: GID value that replaces 0 when rootSquash is true. This will use the value of
+     * anonymousUID if not provided.
      *
      * @return the anonymousGid value.
      */
@@ -230,7 +235,8 @@ public final class NfsAccessRule {
     }
 
     /**
-     * Set the anonymousGid property: GID value that replaces 0 when rootSquash is true.
+     * Set the anonymousGid property: GID value that replaces 0 when rootSquash is true. This will use the value of
+     * anonymousUID if not provided.
      *
      * @param anonymousGid the anonymousGid value to set.
      * @return the NfsAccessRule object itself.

@@ -1004,7 +1004,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     void analyzeHealthcareEntitiesForAssertionRunner(
         BiConsumer<List<String>, AnalyzeHealthcareEntitiesOptions> testRunner) {
         testRunner.accept(asList(
-            "Baby not likely to have Meningitis."),
+            "All female participants that are premenopausal will be required to have a pregnancy test; "
+                + "any participant who is pregnant or breastfeeding will not be included"),
             new AnalyzeHealthcareEntitiesOptions().setIncludeStatistics(false));
     }
 

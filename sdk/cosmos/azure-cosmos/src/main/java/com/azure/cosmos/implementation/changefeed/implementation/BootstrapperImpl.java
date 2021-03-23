@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
+import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.changefeed.Bootstrapper;
 import com.azure.cosmos.implementation.changefeed.LeaseStore;
 import com.azure.cosmos.implementation.changefeed.PartitionSynchronizer;
@@ -68,7 +69,7 @@ class BootstrapperImpl implements Bootstrapper {
 
                             if (!this.isLockAcquired) {
                                 logger.info("Another instance is initializing the store");
-                                return Mono.just(isLockAcquired).delayElement(this.sleepTime);
+                                return Mono.just(isLockAcquired).delayElement(this.sleepTime, CosmosSchedulers.COSMOS_PARALLEL);
                             } else {
                                 return this.synchronizer.createMissingLeases()
                                     .then(this.leaseStore.markInitialized());

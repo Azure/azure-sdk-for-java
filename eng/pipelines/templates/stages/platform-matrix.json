@@ -9,7 +9,8 @@
       "macOS-10.15": { "OSVmImage": "macOS-10.15", "Pool": "Azure Pipelines" }
     },
     "JavaTestVersion": [ "1.8", "1.11" ],
-    "AZURE_TEST_HTTP_CLIENTS": [ "okhttp", "netty" ]
+    "AZURE_TEST_HTTP_CLIENTS": [ "okhttp", "netty" ],
+    "TestOptions": ""
   },
   "include": [
     {
@@ -18,7 +19,8 @@
       },
       "JavaTestVersion": "1.11",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "TestFromSource": true
+      "TestFromSource": true,
+      "TestOptions": ""
     }
   ]
 }

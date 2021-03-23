@@ -11,7 +11,7 @@ public interface Metrics {
     /**
      * Metric types we are tracking
      */
-    enum MetricType {
+    enum Type {
         CALL_COUNT,
         NOT_FOUND
     }
@@ -19,7 +19,7 @@ public interface Metrics {
     /**
      * @param metricType metric for this operation e.g. CallCount, NotFound
      */
-    void logCounterMetric(final MetricType metricType);
+    void logCounterMetric(final Type metricType);
 
     /**
      * Track successful completion of the operation

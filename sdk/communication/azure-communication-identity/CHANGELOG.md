@@ -1,5 +1,8 @@
 # Release History
 
+## 1.0.0-beta.7 (Unreleased)
+
+
 ## 1.0.0-beta.6 (2021-03-09)
 ### Added
 - Added a retryPolicy() chain method to the `CommunicationIdentityClientBuilder`.
@@ -15,6 +18,7 @@
 ### Breaking
 - `CommunicationIdentityAsyncClient.issueToken` and `CommunicationIdentityClient.issueToken` is renamed to `CommunicationIdentityAsyncClient.getToken` and `CommunicationIdentityClient.getToken`.
 - `CommunicationIdentityAsyncClient.issueTokenWithResponse` and `CommunicationIdentityClient.issueTokenWithResponse` is renamed to `CommunicationIdentityAsyncClient.getTokenWithReponse` and `CommunicationIdentityClient.getTokenWithReponse`.
+
 ## 1.0.0-beta.4 (2021-02-09)
 ### Breaking
 - `pstn` token scope is removed.

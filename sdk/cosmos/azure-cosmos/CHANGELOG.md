@@ -1,7 +1,23 @@
 ## Release History
 
-## 4.13.0-beta.1 (Unreleased)
+### 4.13.1 (2021-03-22)
+#### Key Bug Fixes
+* Fixed issue preventing recovery from 410 status code and 0 sub status code due to stale Gateway caches when threads in parallel scheduler are starved.
+* Fixed warning caused because of afterburner module usage in `CosmosDiagnostics`.
+* Query performance improvements.
 
+### 4.13.0 (2021-03-11) 
+#### NOTE: THIS RELEASE UPDATES `reactor-core` and `reactor-netty` MAJOR VERSIONS TO `2020.0.4 (Europium)` RELEASE TRAIN
+#### New Features
+* Updated `reactor-core` version to 3.4.3.
+* Updated `reactor-netty` version to 1.0.4.
+* Added `Diagnostics` for queries.
+
+#### Key Bug Fixes
+* Fixed `OrderBy` for mixed and undefined types for cross partition queries.
+* Fixed `readAllItems` with resourceToken.
+* Fixed issue with `resourceToken` usage in `Gateway` connection mode.
+* Fixed issues with point operations with permissions in `Gateway` connection mode.
 
 ### 4.12.0 (2021-02-09)
 #### New Features

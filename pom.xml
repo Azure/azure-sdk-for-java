@@ -27,6 +27,9 @@
         <module>sdk/communication/azure-communication-phonenumbers</module>
         <module>sdk/communication/azure-communication-sms</module>
 
+        <!-- Azure Container Registry -->
+        <module>sdk/containerregistry/azure-containers-containerregistry</module>
+
         <!-- Azure Core -->
         <module>sdk/core/azure-core</module>
         <module>sdk/core/azure-core-amqp</module>
@@ -57,9 +60,7 @@
         <module>sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>
 
         <!-- Form Recognizer -->
-        <!-- Form Recognizer samples directory has some non-Java files (images, PDFs etc) that are causing
-        the codesnippet plugin to fail. Commenting FR module until it's fixed -->
-<!--        <module>sdk/formrecognizer/azure-ai-formrecognizer</module>-->
+        <module>sdk/formrecognizer/azure-ai-formrecognizer</module>
 
         <!-- Identity -->
         <module>sdk/identity/azure-identity</module>
@@ -255,6 +256,10 @@
                   <group>
                     <title>Azure Key Vault</title>
                     <packages>com.azure.security.keyvault*</packages>
+                  </group>
+				  <group>
+                    <title>Azure Container Registry</title>
+                    <packages>com.azure.containers.containerregistry*</packages>
                   </group>
                   <group>
                     <title>Azure Quantum Jobs</title>
@@ -483,6 +488,7 @@
                       So, path for aggregate reports have to be defined relative to parent pom -->
                   <additionalOptions>-maxLineLength 120
                     -snippetpath ${project.basedir}/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/containerregistry/azure-containers-containerregistry/src/samples/java
                     -snippetpath ${project.basedir}/sdk/core/azure-core/src/samples/java
                     -snippetpath ${project.basedir}/sdk/core/azure-core-amqp/src/samples/java
                     -snippetpath ${project.basedir}/sdk/core/azure-core-http-netty/src/samples/java
@@ -582,6 +588,7 @@
         <module>eng/code-quality-reports</module>
         <module>eng/jacoco-test-coverage</module>
         <module>sdk/anomalydetector</module>
+        <module>sdk/apimanagement</module>
         <module>sdk/appconfiguration</module>
         <module>sdk/attestation</module>
         <module>sdk/authorization</module>
@@ -590,11 +597,12 @@
         <module>sdk/cognitiveservices</module>
         <module>sdk/communication</module>
         <module>sdk/confluent</module>
+        <module>sdk/containerregistry</module>
         <module>sdk/core</module>
         <module>sdk/cosmos</module>
         <module>sdk/costmanagement</module>
-        <module>sdk/deviceupdate</module>
         <module>sdk/datadog</module>
+        <module>sdk/deviceupdate</module>
         <module>sdk/digitaltwins</module>
         <module>sdk/eventgrid</module>
         <module>sdk/eventhubs</module>
@@ -605,6 +613,7 @@
         <module>sdk/identity</module>
         <module>sdk/iothub</module>
         <module>sdk/keyvault</module>
+        <module>sdk/kubernetesconfiguration</module>
         <module>sdk/kusto</module>
         <module>sdk/loganalytics</module>
         <module>sdk/mediaservices</module>
@@ -619,6 +628,7 @@
         <module>sdk/redisenterprise</module>
         <module>sdk/relay</module>
         <module>sdk/remoterendering</module>
+        <module>sdk/resourcegraph</module>
         <module>sdk/resourcemanager</module>
         <module>sdk/schemaregistry</module>
         <module>sdk/search</module>

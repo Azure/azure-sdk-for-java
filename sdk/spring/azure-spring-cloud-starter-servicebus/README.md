@@ -7,10 +7,7 @@ The Spring Cloud Service Bus starter helps developers to finish the auto-configu
 ## Getting started
 
 ### Prerequisites
-- [Java Development Kit (JDK)][jdk_link] with version 8 or above
-- [Azure Subscription][azure_subscription]
-- [Maven][maven] 3.0 and above
-- [Build developing version artifacts if needed][build-developing-version-artifacts-if-needed]
+- [Environment checklist][environment_checklist]
 
 ### Include the package
 [//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-starter-servicebus;current})
@@ -18,7 +15,7 @@ The Spring Cloud Service Bus starter helps developers to finish the auto-configu
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-cloud-starter-servicebus</artifactId>
-    <version>2.2.0</version>
+    <version>2.3.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -63,15 +60,12 @@ This project welcomes contributions and suggestions.  Most contributions require
 Please follow [instructions here][contributing_md] to build from source or contribute.
 
 <!-- Links -->
-[azure_subscription]: https://azure.microsoft.com/free
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
-[maven]: https://maven.apache.org
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-cloud-starter-azure-servicebus
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#azure-spring-cloud-autoconfigure
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus
 [spring_boot_logging]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
 [spring_integration]: https://spring.io/projects/spring-integration
 [spring_cloud_starter_sample_with_service_bus]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[build-developing-version-artifacts-if-needed]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/build-developing-version-artifacts-if-needed.md
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 

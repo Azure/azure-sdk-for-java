@@ -7,7 +7,6 @@ package com.azure.resourcemanager.storagecache.implementation;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storagecache.StorageCacheManager;
 import com.azure.resourcemanager.storagecache.fluent.OperationsClient;
 import com.azure.resourcemanager.storagecache.fluent.models.ApiOperationInner;
 import com.azure.resourcemanager.storagecache.models.ApiOperation;
@@ -19,9 +18,10 @@ public final class OperationsImpl implements Operations {
 
     private final OperationsClient innerClient;
 
-    private final StorageCacheManager serviceManager;
+    private final com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager;
 
-    public OperationsImpl(OperationsClient innerClient, StorageCacheManager serviceManager) {
+    public OperationsImpl(
+        OperationsClient innerClient, com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -40,7 +40,7 @@ public final class OperationsImpl implements Operations {
         return this.innerClient;
     }
 
-    private StorageCacheManager manager() {
+    private com.azure.resourcemanager.storagecache.StorageCacheManager manager() {
         return this.serviceManager;
     }
 }

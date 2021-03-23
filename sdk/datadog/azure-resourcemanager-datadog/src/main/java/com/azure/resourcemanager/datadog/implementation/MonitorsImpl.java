@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.datadog.MicrosoftDatadogManager;
 import com.azure.resourcemanager.datadog.fluent.MonitorsClient;
 import com.azure.resourcemanager.datadog.fluent.models.DatadogApiKeyInner;
 import com.azure.resourcemanager.datadog.fluent.models.DatadogHostInner;
@@ -31,9 +30,10 @@ public final class MonitorsImpl implements Monitors {
 
     private final MonitorsClient innerClient;
 
-    private final MicrosoftDatadogManager serviceManager;
+    private final com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager;
 
-    public MonitorsImpl(MonitorsClient innerClient, MicrosoftDatadogManager serviceManager) {
+    public MonitorsImpl(
+        MonitorsClient innerClient, com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -275,7 +275,7 @@ public final class MonitorsImpl implements Monitors {
         return this.innerClient;
     }
 
-    private MicrosoftDatadogManager manager() {
+    private com.azure.resourcemanager.datadog.MicrosoftDatadogManager manager() {
         return this.serviceManager;
     }
 

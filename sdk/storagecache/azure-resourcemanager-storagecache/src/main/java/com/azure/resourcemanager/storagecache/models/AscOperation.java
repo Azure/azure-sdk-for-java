@@ -52,7 +52,7 @@ public interface AscOperation {
     ErrorResponse error();
 
     /**
-     * Gets the output property: Additional Operation Specific Properties.
+     * Gets the output property: Additional operation-specific output.
      *
      * @return the output value.
      */

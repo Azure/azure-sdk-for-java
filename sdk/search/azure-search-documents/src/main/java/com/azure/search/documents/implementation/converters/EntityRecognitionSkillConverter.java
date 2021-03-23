@@ -4,10 +4,6 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.EntityRecognitionSkill;
-import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkill} and
@@ -23,10 +19,7 @@ public final class EntityRecognitionSkillConverter {
             return null;
         }
 
-        List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null
-            : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-        EntityRecognitionSkill entityRecognitionSkill = new EntityRecognitionSkill(inputs, obj.getOutputs());
-
+        EntityRecognitionSkill entityRecognitionSkill = new EntityRecognitionSkill(obj.getInputs(), obj.getOutputs());
 
         String name = obj.getName();
         entityRecognitionSkill.setName(name);
@@ -62,11 +55,8 @@ public final class EntityRecognitionSkillConverter {
             return null;
         }
 
-        List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
-            obj.getInputs() == null ? null
-                : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
         com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkill entityRecognitionSkill =
-            new com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkill(inputs,
+            new com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkill(obj.getInputs(),
                 obj.getOutputs());
 
         String name = obj.getName();

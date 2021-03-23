@@ -20,15 +20,13 @@ import java.time.Duration;
 import java.util.Locale;
 
 public class SessionHandler extends Handler {
-    private final ClientLogger logger = new ClientLogger(SessionHandler.class);
-
     private final String entityName;
     private final Duration openTimeout;
     private final ReactorDispatcher reactorDispatcher;
 
     public SessionHandler(String connectionId, String hostname, String entityName, ReactorDispatcher reactorDispatcher,
                           Duration openTimeout) {
-        super(connectionId, hostname);
+        super(connectionId, hostname, new ClientLogger(SessionHandler.class));
         this.entityName = entityName;
         this.openTimeout = openTimeout;
         this.reactorDispatcher = reactorDispatcher;

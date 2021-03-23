@@ -109,6 +109,17 @@ public class PhoneNumbersClientBuilderTest {
     }
 
     @Test()
+    public void buildClientWithServiceVersion() {
+        // Build client with required settings and mock configuration
+        PhoneNumbersClient phoneNumberClient = this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
+            .serviceVersion(PhoneNumbersServiceVersion.V2021_03_07)
+            .buildClient();
+
+        // Validate client created with expected settings
+        assertNotNull(phoneNumberClient);
+    }
+
+    @Test()
     public void buildClientWithOneAdditionalPolicy() {
         ClientBuilderSpyHelper spyHelper = new ClientBuilderSpyHelper(this.clientBuilder);
         List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
@@ -222,6 +233,19 @@ public class PhoneNumbersClientBuilderTest {
         validateConfiguration(spyHelper, configuration);
     }
 
+
+    @Test()
+    public void buildAsyncClientWithServiceVersion() {
+        // Build client with required settings and mock configuration
+        PhoneNumbersAsyncClient phoneNumberAsyncClient =
+            this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
+                .serviceVersion(PhoneNumbersServiceVersion.V2021_03_07)
+                .buildAsyncClient();
+
+        // Validate client created with expected settings
+        assertNotNull(phoneNumberAsyncClient);
+    }
+
     @Test()
     public void buildAsyncClientWithOneAdditionalPolicy() {
         ClientBuilderSpyHelper spyHelper = new ClientBuilderSpyHelper(this.clientBuilder);
@@ -257,35 +281,35 @@ public class PhoneNumbersClientBuilderTest {
     }
 
     @Test()
-    public void buildAsyncClientNoEndpoint() {
+    public void buildAsyncClientNoEndpointThrows() {
         assertThrows(NullPointerException.class, () -> {
             this.clientBuilder.buildClient();
         });
     }
 
     @Test()
-    public void buildAsyncClientNoPipelineNoHttpClient() {
+    public void buildAsyncClientNoPipelineNoHttpClientThrows() {
         assertThrows(NullPointerException.class, () -> {
             this.clientBuilder.endpoint(ENDPOINT).credential(new AzureKeyCredential(ACCESSKEY)).buildClient();
         });
     }
 
     @Test()
-    public void buildAsyncClientNoPipelineNoCredentials() {
+    public void buildAsyncClientNoPipelineNoCredentialsThrows() {
         assertThrows(NullPointerException.class, () -> {
             this.clientBuilder.endpoint(ENDPOINT).httpClient(this.httpClient).buildClient();
         });
     }
 
     @Test()
-    public void setEndpointNull() {
+    public void setEndpointNullThrows() {
         assertThrows(NullPointerException.class, () -> {
             this.clientBuilder.endpoint(null);
         });
     }
 
     @Test()
-    public void addPolicyNull() {
+    public void addPolicyNullThrows() {
         assertThrows(NullPointerException.class, () -> {
             this.clientBuilder.addPolicy(null);
         });
@@ -328,7 +352,6 @@ public class PhoneNumbersClientBuilderTest {
         assertEquals(5, phoneNumberManagementClient.getHttpPipeline().getPolicyCount());
         assertEquals(spyHelper.authenticationPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(0));
         assertEquals(spyHelper.userAgentPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(1));
-        assertEquals(spyHelper.retryPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(2));
         assertEquals(spyHelper.cookiePolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(3));
         assertEquals(spyHelper.httpLoggingPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(4));
 
@@ -382,7 +405,6 @@ public class PhoneNumbersClientBuilderTest {
         assertEquals(expectedPolicyCount, phoneNumberManagementClient.getHttpPipeline().getPolicyCount());
         assertEquals(spyHelper.authenticationPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(0));
         assertEquals(spyHelper.userAgentPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(1));
-        assertEquals(spyHelper.retryPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(2));
         assertEquals(spyHelper.cookiePolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(3));
         assertEquals(spyHelper.httpLoggingPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(lastPolicyIndex));
 
@@ -426,12 +448,6 @@ public class PhoneNumbersClientBuilderTest {
                 return this.userAgentPolicyRef.get();
             };
             doAnswer(createUserAgentPolicy).when(this.clientBuilder).createUserAgentPolicy(any(), any(), any(), any());
-
-            Answer<RetryPolicy> createRetryPolicy = (invocation) -> {
-                this.retryPolicyRef.set((RetryPolicy) invocation.callRealMethod());
-                return this.retryPolicyRef.get();
-            };
-            doAnswer(createRetryPolicy).when(this.clientBuilder).createRetryPolicy();
 
             Answer<CookiePolicy> createCookiePolicy = (invocation) -> {
                 this.cookiePolicyRef.set((CookiePolicy) invocation.callRealMethod());
