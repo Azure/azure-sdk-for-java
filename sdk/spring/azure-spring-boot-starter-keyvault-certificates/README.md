@@ -173,7 +173,7 @@ Make sure the client-id can access target Key Vault.
 
 Configure a `RestTemplate` bean which set the `AzureKeyVault` as trust store:
 
-<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L21-L42 -->
+<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L25-L46 -->
 ```java
 @Bean
 public RestTemplate restTemplateWithTLS() throws Exception {
@@ -237,50 +237,50 @@ public RestTemplate restTemplateCreatedByManagedIdentity() throws Exception {
 
 ### Enable mutual SSL (MTLS).
  
-1. On the server side
-    Add these items in your `application.yml`:
-    ```yaml
-    server:
-      ssl:
-        client-auth: need
-        trust-store-type: AzureKeyVault
-    ```
+Step 1. On the server side, add these items in your `application.yml`:
 
-2. On the client side
-    The SSL context needs to take a `PrivateKeyStrategy`. Example:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L48-L77 -->
-    ```java
-    @Bean
-    public RestTemplate restTemplateWithMTLS() throws Exception {
-        KeyStore azuerKeyVaultKeyStore = KeyStore.getInstance("AzureKeyVault");
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getProperty("azure.keyvault.uri"),
-            System.getProperty("azure.keyvault.aad-authentication-url"),
-            System.getProperty("azure.keyvault.tenant-id"),
-            System.getProperty("azure.keyvault.client-id"),
-            System.getProperty("azure.keyvault.client-secret"));
-        azuerKeyVaultKeyStore.load(parameter);
-        SSLContext sslContext = SSLContexts.custom()
-                                           .loadTrustMaterial(azuerKeyVaultKeyStore, null)
-                                           .loadKeyMaterial(azuerKeyVaultKeyStore, "".toCharArray(), new ClientPrivateKeyStrategy())
-                                           .build();
-        SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(sslContext,
-            (hostname, session) -> true);
-        CloseableHttpClient httpClient = HttpClients.custom()
-                                                    .setSSLSocketFactory(socketFactory)
-                                                    .build();
-        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
+```yaml
+server:
+  ssl:
+    client-auth: need
+    trust-store-type: AzureKeyVault
+```
 
-        return new RestTemplate(requestFactory);
+Step 2. On the client side, update `RestTemplate`. Example:
+
+<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L48-L77 -->
+```java
+@Bean
+public RestTemplate restTemplateWithMTLS() throws Exception {
+    KeyStore azuerKeyVaultKeyStore = KeyStore.getInstance("AzureKeyVault");
+    KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+        System.getProperty("azure.keyvault.uri"),
+        System.getProperty("azure.keyvault.aad-authentication-url"),
+        System.getProperty("azure.keyvault.tenant-id"),
+        System.getProperty("azure.keyvault.client-id"),
+        System.getProperty("azure.keyvault.client-secret"));
+    azuerKeyVaultKeyStore.load(parameter);
+    SSLContext sslContext = SSLContexts.custom()
+                                       .loadTrustMaterial(azuerKeyVaultKeyStore, null)
+                                       .loadKeyMaterial(azuerKeyVaultKeyStore, "".toCharArray(), new ClientPrivateKeyStrategy())
+                                       .build();
+    SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(sslContext,
+        (hostname, session) -> true);
+    CloseableHttpClient httpClient = HttpClients.custom()
+                                                .setSSLSocketFactory(socketFactory)
+                                                .build();
+    HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
+
+    return new RestTemplate(requestFactory);
+}
+
+private static class ClientPrivateKeyStrategy implements PrivateKeyStrategy {
+    @Override
+    public String chooseAlias(Map<String, PrivateKeyDetails> map, Socket socket) {
+        return "self-signed"; // It should be your certificate alias used in client-side
     }
-
-    private static class ClientPrivateKeyStrategy implements PrivateKeyStrategy {
-        @Override
-        public String chooseAlias(Map<String, PrivateKeyDetails> map, Socket socket) {
-            return "self-signed"; // It should be your certificate alias used in client-side
-        }
-    }
-    ```
+}
+```
 
 ### Configuring Spring Cloud Gateway
 
