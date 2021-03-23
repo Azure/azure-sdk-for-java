@@ -57,12 +57,7 @@ Below packages are available with latest release version. **We recommend users t
 > ❗ From Azure Spring Cloud 2.0.0 onwards, we changed the groupId from `com.microsoft.azure` to `com.azure.spring`, and changed artifactIds, too.
 
 Artifact Id | Version for Spring Boot 2.3.x and 2.2.x | Version for Spring Boot 2.4.x
------- |--------- |---
-[spring-cloud-azure-appconfiguration-config-web][spring-cloud-azure-appconfiguration-config-web-readme] | N/A | N/A 
-[spring-cloud-azure-appconfiguration-config][spring-cloud-azure-appconfiguration-config-readme] | N/A | N/A
-[spring-cloud-azure-feature-management-web][spring-cloud-azure-feature-management-web-readme] | N/A | N/A 
-[spring-cloud-azure-feature-management][spring-cloud-azure-feature-management-readme] | N/A | N/A 
-[spring-cloud-starter-azure-appconfiguration-config][spring-cloud-starter-azure-appconfiguration-config-readme] | N/A | N/A 
+------ |--------- |--- 
 [azure-spring-cloud-starter-cache][azure-spring-cloud-starter-cache-readme] | [![Maven Central][azure-spring-cloud-starter-cache-mvn-2.2.x-img]][azure-spring-cloud-starter-cache-mvn-2.2.x] | [![Maven Central][azure-spring-cloud-starter-cache-mvn-2.3.x-img]][azure-spring-cloud-starter-cache-mvn-2.3.x]
 [azure-spring-cloud-stream-binder-eventhubs][azure-spring-cloud-stream-binder-eventhubs-readme] | [![Maven Central][azure-spring-cloud-stream-binder-eventhubs-mvn-2.2.x-img]][azure-spring-cloud-stream-binder-eventhubs-mvn-2.2.x] | [![Maven Central][azure-spring-cloud-stream-binder-eventhubs-mvn-2.3.x-img]][azure-spring-cloud-stream-binder-eventhubs-mvn-2.3.x]
 [azure-spring-cloud-starter-eventhubs-kafka][azure-spring-cloud-starter-eventhubs-kafka-readme] | [![Maven Central][azure-spring-cloud-starter-eventhubs-kafka-mvn-2.2.x-img]][azure-spring-cloud-starter-eventhubs-kafka-mvn-2.2.x] | [![Maven Central][azure-spring-cloud-starter-eventhubs-kafka-mvn-2.3.x-img]][azure-spring-cloud-starter-eventhubs-kafka-mvn-2.3.x]
