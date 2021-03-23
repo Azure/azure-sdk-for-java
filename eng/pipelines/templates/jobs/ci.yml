@@ -105,11 +105,11 @@ jobs:
           AdditionalModules: ${{parameters.AdditionalModules}}
 
       - task: Maven@3
-        displayName: 'Build and Package , JDK Version: $(JavaBuildVersion)'
+        displayName: 'Build and Package, JDK Version: $(JavaBuildVersion)'
         inputs:
           mavenPomFile: pom.xml
           goals: 'deploy'
-          options: '$(DefaultOptions) -DskipTests -Dinject-codesnippets -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
+          options: '$(DefaultOptions) -T 1C -DskipTests -Dinject-codesnippets -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)
