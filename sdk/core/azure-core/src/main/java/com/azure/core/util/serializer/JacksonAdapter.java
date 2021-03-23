@@ -377,6 +377,7 @@ public class JacksonAdapter implements SerializerAdapter {
             .addModule(DurationSerializer.getModule())
             .addModule(HttpHeadersSerializer.getModule())
             .addModule(UnixTimeSerializer.getModule())
+            .addModule(UnixTimeDeserializer.getModule())
             .visibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
             .visibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE)
             .visibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE)
