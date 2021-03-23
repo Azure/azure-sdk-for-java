@@ -33,7 +33,10 @@ public final class RepositoryHandler {
         this.repositoryUri = repositoryUri;
         this.logger = new ClientLogger(RepositoryHandler.class);
 
-        if (this.repositoryUri.getScheme().toLowerCase(Locale.getDefault()).startsWith(ModelsRepositoryConstants.HTTP)) {
+        if (this.repositoryUri.getScheme() != null &&
+            this.repositoryUri.getScheme()
+                .toLowerCase(Locale.getDefault())
+                .startsWith(ModelsRepositoryConstants.HTTP)) {
             this.modelFetcher = new HttpModelFetcher(protocolLayer);
         } else {
             this.modelFetcher = new FileModelFetcher();
