@@ -124,9 +124,11 @@ public class ReceiveLinkHandler extends LinkHandler {
                 } else {
                     queuedDeliveries.add(delivery);
                     deliveries.emitNext(delivery, (signalType, emitResult) -> {
-                        logger.warning("connectionId[{}], entityPath[{}], linkName[{}] Could not emit delivery. {}",
-                            getConnectionId(), entityPath, linkName, delivery);
-                        return false;
+                        logger.warning("connectionId[{}], entityPath[{}], linkName[{}], emitResult[{}] "
+                                + "Could not emit delivery. {}",
+                            getConnectionId(), entityPath, linkName, emitResult, delivery);
+
+                        return emitResult == Sinks.EmitResult.FAIL_OVERFLOW;
                     });
                 }
             }
