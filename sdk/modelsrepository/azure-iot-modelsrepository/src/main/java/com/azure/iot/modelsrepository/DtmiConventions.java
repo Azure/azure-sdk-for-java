@@ -17,24 +17,24 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 /**
- * DtmiConventions implements the core aspects of the IoT model repo conventions
- * which includes DTMI validation and calculating a URI path from a DTMI.
+ * DtmiConventions implements the core aspects of the IoT model repo conventions which includes DTMI validation and
+ * calculating a URI path from a DTMI.
  */
 public final class DtmiConventions {
-
-    private static final ClientLogger LOGGER = new ClientLogger(DtmiConventions.class);
+    
     private DtmiConventions() { }
 
     /**
-     * A DTMI has three components: scheme, path, and version.
-     * Scheme and path are separated by a colon. Path and version are separated by a semicolon i.e. scheme : path ; version.
-     * The scheme is the string literal "dtmi" in lowercase. The path is a sequence of one or more segments, separated by colons.
-     * The version is a sequence of one or more digits. Each path segment is a non-empty string containing only letters, digits, and undersc
-     * The first character may not be a digit, and the last character may not be an underscore.
-     * The version length is limited to nine digits, because the number 999,999,999 fits in a 32-bit signed integer value.
-     * The first digit may not be zero, so there is no ambiguity regarding whether version 1 matches version 01 since the latter is invalid.
+     * A DTMI has three components: scheme, path, and version. Scheme and path are separated by a colon. Path and
+     * version are separated by a semicolon i.e. scheme : path ; version. The scheme is the string literal "dtmi" in
+     * lowercase. The path is a sequence of one or more segments, separated by colons. The version is a sequence of one
+     * or more digits. Each path segment is a non-empty string containing only letters, digits, and undersc The first
+     * character may not be a digit, and the last character may not be an underscore. The version length is limited to
+     * nine digits, because the number 999,999,999 fits in a 32-bit signed integer value. The first digit may not be
+     * zero, so there is no ambiguity regarding whether version 1 matches version 01 since the latter is invalid.
      */
-    private static final Pattern VALID_DTMI_PATTERN = Pattern.compile("^dtmi:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?(?::[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)*;[1-9][0-9]{0,8}$");
+    private static final Pattern VALID_DTMI_PATTERN = Pattern.compile(
+        "^dtmi:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?(?::[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)*;[1-9][0-9]{0,8}$");
 
     /**
      * Indicates whether a given string DTMI value is well-formed.
@@ -56,14 +56,14 @@ public final class DtmiConventions {
      * @param dtmi DigitalTwin Model Id.
      * @param repositoryUri The repository uri
      * @param expanded Is model from precomputed values
-     * @return The model uri
-     * Will throw an {@link IllegalArgumentException} if the provided dtmi or repository uri are not valid.
+     * @return The model uri Will throw an {@link IllegalArgumentException} if the provided dtmi is not valid.
      */
     public static URI getModelUri(String dtmi, URI repositoryUri, boolean expanded) {
         String dtmiPath = dtmiToPath(dtmi);
 
         if (expanded) {
-            dtmiPath = dtmiPath.replace(ModelsRepositoryConstants.JSON_EXTENSION, ModelsRepositoryConstants.JSON_EXPANDED_EXTENSION);
+            dtmiPath = dtmiPath.replace(ModelsRepositoryConstants.JSON_EXTENSION,
+                ModelsRepositoryConstants.JSON_EXPANDED_EXTENSION);
         }
 
         String stringUri = repositoryUri.toString();
@@ -84,7 +84,7 @@ public final class DtmiConventions {
      *
      * @param uri String format of the path
      * @return {@link URI} representation of the path/uri.
-     * @throws IllegalArgumentException if provided uri is invalid.
+     * @throws IllegalArgumentException If the {@code uri} is invalid.
      */
     public static URI convertToUri(String uri) throws IllegalArgumentException {
         try {

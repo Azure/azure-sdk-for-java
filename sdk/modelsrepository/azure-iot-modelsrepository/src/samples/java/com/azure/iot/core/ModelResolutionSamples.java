@@ -6,7 +6,6 @@ package com.azure.iot.core;
 import com.azure.iot.modelsrepository.ModelsRepositoryAsyncClient;
 import com.azure.iot.modelsrepository.ModelsRepositoryClient;
 import com.azure.iot.modelsrepository.ModelsRepositoryClientBuilder;
-import com.azure.iot.modelsrepository.ModelDependencyResolution;
 
 import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;

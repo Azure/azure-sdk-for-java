@@ -21,6 +21,7 @@ For the best development experience, developers should use the official Microsof
   <version>1.0.0-beta.1</version>
 </dependency>
 ```
+
 [//]: # ({x-version-update-end})
 
 ### Prerequisites

@@ -3,11 +3,12 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.Address;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -72,6 +73,8 @@ public class RxDocumentServiceResponse {
             return InternalConstants.ResourceKeys.ADDRESSES;
         } else if (c.equals(PartitionKeyRange.class)) {
             return InternalConstants.ResourceKeys.PARTITION_KEY_RANGES;
+        } else if (c.equals(ClientEncryptionKey.class)) {
+            return InternalConstants.ResourceKeys.CLIENT_ENCRYPTION_KEYS;
         }
 
         throw new IllegalArgumentException("c");
