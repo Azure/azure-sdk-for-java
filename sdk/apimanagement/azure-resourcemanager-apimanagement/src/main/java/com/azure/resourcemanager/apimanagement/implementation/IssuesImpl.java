@@ -13,6 +13,7 @@ import com.azure.resourcemanager.apimanagement.fluent.IssuesClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.IssueContractInner;
 import com.azure.resourcemanager.apimanagement.models.IssueContract;
 import com.azure.resourcemanager.apimanagement.models.Issues;
+import com.azure.resourcemanager.apimanagement.models.IssuesGetResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IssuesImpl implements Issues {
@@ -51,7 +52,7 @@ public final class IssuesImpl implements Issues {
 
     public Response<IssueContract> getWithResponse(
         String resourceGroupName, String serviceName, String issueId, Context context) {
-        Response<IssueContractInner> inner =
+        IssuesGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, issueId, context);
         if (inner != null) {
             return new SimpleResponse<>(

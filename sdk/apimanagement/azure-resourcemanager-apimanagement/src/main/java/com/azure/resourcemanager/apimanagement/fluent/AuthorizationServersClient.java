@@ -12,6 +12,11 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.AuthorizationServerContractInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.AuthorizationServerSecretsContractInner;
 import com.azure.resourcemanager.apimanagement.models.AuthorizationServerUpdateContract;
+import com.azure.resourcemanager.apimanagement.models.AuthorizationServersCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.AuthorizationServersGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.AuthorizationServersGetResponse;
+import com.azure.resourcemanager.apimanagement.models.AuthorizationServersListSecretsResponse;
+import com.azure.resourcemanager.apimanagement.models.AuthorizationServersUpdateResponse;
 
 /** An instance of this class provides access to all the operations defined in AuthorizationServersClient. */
 public interface AuthorizationServersClient {
@@ -75,7 +80,7 @@ public interface AuthorizationServersClient {
      * @return the entity state (Etag) version of the authorizationServer specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    AuthorizationServersGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String authsid, Context context);
 
     /**
@@ -105,7 +110,7 @@ public interface AuthorizationServersClient {
      * @return the details of the authorization server specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AuthorizationServerContractInner> getWithResponse(
+    AuthorizationServersGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String authsid, Context context);
 
     /**
@@ -139,7 +144,7 @@ public interface AuthorizationServersClient {
      * @return external OAuth authorization server settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AuthorizationServerContractInner> createOrUpdateWithResponse(
+    AuthorizationServersCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String authsid,
@@ -185,7 +190,7 @@ public interface AuthorizationServersClient {
      * @return external OAuth authorization server settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AuthorizationServerContractInner> updateWithResponse(
+    AuthorizationServersUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String authsid,
@@ -253,6 +258,6 @@ public interface AuthorizationServersClient {
      * @return the client secret details of the authorization server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AuthorizationServerSecretsContractInner> listSecretsWithResponse(
+    AuthorizationServersListSecretsResponse listSecretsWithResponse(
         String resourceGroupName, String serviceName, String authsid, Context context);
 }

@@ -244,7 +244,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -467,7 +467,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -566,7 +566,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return the entity state (Etag) version of the Diagnostic specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public DiagnosticsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String diagnosticId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, diagnosticId, context).block();
     }
@@ -621,7 +621,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -728,7 +728,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return the details of the Diagnostic specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DiagnosticContractInner> getWithResponse(
+    public DiagnosticsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String diagnosticId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, diagnosticId, context).block();
     }
@@ -796,7 +796,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -956,7 +956,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return diagnostic details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DiagnosticContractInner> createOrUpdateWithResponse(
+    public DiagnosticsCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String diagnosticId,
@@ -1035,7 +1035,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1179,7 +1179,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return diagnostic details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DiagnosticContractInner> updateWithResponse(
+    public DiagnosticsUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String diagnosticId,
@@ -1246,7 +1246,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1394,7 +1394,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

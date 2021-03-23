@@ -12,6 +12,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.ApiIssueAttachmentsClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.IssueAttachmentContractInner;
 import com.azure.resourcemanager.apimanagement.models.ApiIssueAttachments;
+import com.azure.resourcemanager.apimanagement.models.ApiIssueAttachmentsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiIssueAttachmentsGetResponse;
 import com.azure.resourcemanager.apimanagement.models.IssueAttachmentContract;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -57,7 +59,7 @@ public final class ApiIssueAttachmentsImpl implements ApiIssueAttachments {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, issueId, attachmentId);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public ApiIssueAttachmentsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -87,7 +89,7 @@ public final class ApiIssueAttachmentsImpl implements ApiIssueAttachments {
         String issueId,
         String attachmentId,
         Context context) {
-        Response<IssueAttachmentContractInner> inner =
+        ApiIssueAttachmentsGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, apiId, issueId, attachmentId, context);
         if (inner != null) {
             return new SimpleResponse<>(

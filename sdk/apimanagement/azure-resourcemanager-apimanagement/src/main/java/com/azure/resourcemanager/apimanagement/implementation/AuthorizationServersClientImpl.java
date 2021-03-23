@@ -266,7 +266,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -494,7 +494,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -593,7 +593,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @return the entity state (Etag) version of the authorizationServer specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public AuthorizationServersGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String authsid, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, authsid, context).block();
     }
@@ -648,7 +648,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -756,7 +756,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @return the details of the authorization server specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AuthorizationServerContractInner> getWithResponse(
+    public AuthorizationServersGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String authsid, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, authsid, context).block();
     }
@@ -824,7 +824,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -984,7 +984,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @return external OAuth authorization server settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AuthorizationServerContractInner> createOrUpdateWithResponse(
+    public AuthorizationServersCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String authsid,
@@ -1062,7 +1062,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1206,7 +1206,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @return external OAuth authorization server settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AuthorizationServerContractInner> updateWithResponse(
+    public AuthorizationServersUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String authsid,
@@ -1272,7 +1272,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1438,7 +1438,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1547,7 +1547,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @return the client secret details of the authorization server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AuthorizationServerSecretsContractInner> listSecretsWithResponse(
+    public AuthorizationServersListSecretsResponse listSecretsWithResponse(
         String resourceGroupName, String serviceName, String authsid, Context context) {
         return listSecretsWithResponseAsync(resourceGroupName, serviceName, authsid, context).block();
     }
@@ -1584,7 +1584,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

@@ -265,7 +265,7 @@ public final class BackendsClientImpl implements BackendsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -496,7 +496,7 @@ public final class BackendsClientImpl implements BackendsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -595,7 +595,7 @@ public final class BackendsClientImpl implements BackendsClient {
      * @return the entity state (Etag) version of the backend specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public BackendsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String backendId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, backendId, context).block();
     }
@@ -650,7 +650,7 @@ public final class BackendsClientImpl implements BackendsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -757,7 +757,7 @@ public final class BackendsClientImpl implements BackendsClient {
      * @return the details of the backend specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BackendContractInner> getWithResponse(
+    public BackendsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String backendId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, backendId, context).block();
     }
@@ -825,7 +825,7 @@ public final class BackendsClientImpl implements BackendsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -985,7 +985,7 @@ public final class BackendsClientImpl implements BackendsClient {
      * @return backend details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BackendContractInner> createOrUpdateWithResponse(
+    public BackendsCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String backendId,
@@ -1063,7 +1063,7 @@ public final class BackendsClientImpl implements BackendsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1207,7 +1207,7 @@ public final class BackendsClientImpl implements BackendsClient {
      * @return backend details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BackendContractInner> updateWithResponse(
+    public BackendsUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String backendId,
@@ -1273,7 +1273,7 @@ public final class BackendsClientImpl implements BackendsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1445,7 +1445,7 @@ public final class BackendsClientImpl implements BackendsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1621,7 +1621,7 @@ public final class BackendsClientImpl implements BackendsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

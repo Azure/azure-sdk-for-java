@@ -11,6 +11,11 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.ClientSecretContractInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.OpenidConnectProviderContractInner;
+import com.azure.resourcemanager.apimanagement.models.OpenIdConnectProvidersCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.OpenIdConnectProvidersGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.OpenIdConnectProvidersGetResponse;
+import com.azure.resourcemanager.apimanagement.models.OpenIdConnectProvidersListSecretsResponse;
+import com.azure.resourcemanager.apimanagement.models.OpenIdConnectProvidersUpdateResponse;
 import com.azure.resourcemanager.apimanagement.models.OpenidConnectProviderUpdateContract;
 
 /** An instance of this class provides access to all the operations defined in OpenIdConnectProvidersClient. */
@@ -75,7 +80,8 @@ public interface OpenIdConnectProvidersClient {
      * @return the entity state (Etag) version of the openIdConnectProvider specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(String resourceGroupName, String serviceName, String opid, Context context);
+    OpenIdConnectProvidersGetEntityTagResponse getEntityTagWithResponse(
+        String resourceGroupName, String serviceName, String opid, Context context);
 
     /**
      * Gets specific OpenID Connect Provider without secrets.
@@ -104,7 +110,7 @@ public interface OpenIdConnectProvidersClient {
      * @return specific OpenID Connect Provider without secrets.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OpenidConnectProviderContractInner> getWithResponse(
+    OpenIdConnectProvidersGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String opid, Context context);
 
     /**
@@ -138,7 +144,7 @@ public interface OpenIdConnectProvidersClient {
      * @return openId Connect Provider details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OpenidConnectProviderContractInner> createOrUpdateWithResponse(
+    OpenIdConnectProvidersCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String opid,
@@ -184,7 +190,7 @@ public interface OpenIdConnectProvidersClient {
      * @return openId Connect Provider details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OpenidConnectProviderContractInner> updateWithResponse(
+    OpenIdConnectProvidersUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String opid,
@@ -252,6 +258,6 @@ public interface OpenIdConnectProvidersClient {
      * @return the client secret details of the OpenID Connect Provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClientSecretContractInner> listSecretsWithResponse(
+    OpenIdConnectProvidersListSecretsResponse listSecretsWithResponse(
         String resourceGroupName, String serviceName, String opid, Context context);
 }

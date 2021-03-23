@@ -13,6 +13,8 @@ import com.azure.resourcemanager.apimanagement.fluent.LoggersClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.LoggerContractInner;
 import com.azure.resourcemanager.apimanagement.models.LoggerContract;
 import com.azure.resourcemanager.apimanagement.models.Loggers;
+import com.azure.resourcemanager.apimanagement.models.LoggersGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.LoggersGetResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LoggersImpl implements Loggers {
@@ -44,7 +46,7 @@ public final class LoggersImpl implements Loggers {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, loggerId);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public LoggersGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String loggerId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, loggerId, context);
     }
@@ -60,7 +62,7 @@ public final class LoggersImpl implements Loggers {
 
     public Response<LoggerContract> getWithResponse(
         String resourceGroupName, String serviceName, String loggerId, Context context) {
-        Response<LoggerContractInner> inner =
+        LoggersGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, loggerId, context);
         if (inner != null) {
             return new SimpleResponse<>(

@@ -216,7 +216,7 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -408,7 +408,7 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -538,7 +538,7 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
      * @return the entity state (Etag) version of the API operation policy specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public ApiOperationPoliciesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -618,7 +618,7 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -797,7 +797,7 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
      * @return the policy configuration at the API Operation level.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyContractInner> getWithResponse(
+    public ApiOperationPoliciesGetResponse getWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -886,7 +886,7 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1091,7 +1091,7 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
      * @return policy Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyContractInner> createOrUpdateWithResponse(
+    public ApiOperationPoliciesCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -1178,7 +1178,7 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

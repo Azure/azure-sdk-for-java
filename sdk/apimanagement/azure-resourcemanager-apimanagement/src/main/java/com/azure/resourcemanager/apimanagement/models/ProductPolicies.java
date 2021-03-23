@@ -64,7 +64,7 @@ public interface ProductPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ETag of the policy configuration at the Product level.
      */
-    Response<Void> getEntityTagWithResponse(
+    ProductPoliciesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String productId, PolicyIdName policyId, Context context);
 
     /**

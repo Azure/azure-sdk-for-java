@@ -10,6 +10,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.ContentTypeContractInner;
+import com.azure.resourcemanager.apimanagement.models.ContentTypesCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.ContentTypesGetResponse;
 
 /** An instance of this class provides access to all the operations defined in ContentTypesClient. */
 public interface ContentTypesClient {
@@ -68,7 +70,7 @@ public interface ContentTypesClient {
      * @return aPI Management content type details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ContentTypeContractInner> getWithResponse(
+    ContentTypesGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String contentTypeId, Context context);
 
     /**
@@ -99,7 +101,7 @@ public interface ContentTypesClient {
      * @return content type contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ContentTypeContractInner> createOrUpdateWithResponse(
+    ContentTypesCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName, String serviceName, String contentTypeId, String ifMatch, Context context);
 
     /**
