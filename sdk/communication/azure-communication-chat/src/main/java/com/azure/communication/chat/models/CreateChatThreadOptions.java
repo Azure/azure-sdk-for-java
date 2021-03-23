@@ -74,11 +74,12 @@ public final class CreateChatThreadOptions {
     }
 
     /**
-     * Set the idempotencyToken property: If specified, the client directs that the request is repeatable;
-     * that is, that the client can make the request multiple times with the same Idempotency-Token and get back an
-     * appropriate response without the server executing the request multiple times.
-     * The value of the Idempotency-Token is an opaque string representing a client-generated,
-     * globally unique for all time, identifier for the request. It is recommended to use version 4 (random) UUIDs.
+     * Set the idempotencyToken property:
+     * If specified, the client directs that the request is repeatable; that is, that the
+     * client can make the request multiple times with the same idempotencyToken and get back an appropriate
+     * response without the server executing the request multiple times. The value of the idempotencyToken
+     * is an opaque string representing a client-generated, globally unique for all time, identifier for the
+     * request. It is recommended to use version 4 (random) UUIDs.
      *
      * @param idempotencyToken the idempotencyToken.
      * @return the CreateChatThreadOptions object itself.
