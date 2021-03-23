@@ -62,7 +62,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
         this.dispatcher = dispatcher;
         this.messagesProcessor = this.handler.getDeliveredMessages()
             .flatMap(delivery -> {
-                return Mono.<Message>create(sink -> {
+                return Mono.create(sink -> {
                     try {
                         this.dispatcher.invoke(() -> {
                             final Message message = decodeDelivery(delivery);
@@ -88,9 +88,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
                         sink.error(e);
                     }
                 });
-            }, 1)
-            .publish()
-            .autoConnect();
+            }, 1);
 
         this.retryOptions = retryOptions;
         this.endpointStates = this.handler.getEndpointStates()
