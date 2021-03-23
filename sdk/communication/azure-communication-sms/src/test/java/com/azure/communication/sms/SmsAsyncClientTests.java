@@ -63,7 +63,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
         asyncClient = setupAsyncClient(builder, "sendSmsToGroup");
 
         // Action & Assert
-        StepVerifier.create(asyncClient.send(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE))
+        StepVerifier.create(asyncClient.send(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE).next())
             .assertNext(result -> {
                 assertHappyPath(result);
             })
@@ -81,7 +81,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
         options.setTag("New Tag");
 
         // Action & Assert
-        StepVerifier.create(asyncClient.send(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE, options))
+        StepVerifier.create(asyncClient.send(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE, options).next())
             .assertNext(result -> {
                 assertHappyPath(result);
             })
