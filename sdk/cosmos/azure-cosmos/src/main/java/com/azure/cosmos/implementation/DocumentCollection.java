@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
 import com.azure.cosmos.models.IndexingPolicy;
@@ -26,6 +27,7 @@ public final class DocumentCollection extends Resource {
     private IndexingPolicy indexingPolicy;
     private UniqueKeyPolicy uniqueKeyPolicy;
     private PartitionKeyDefinition partitionKeyDefinition;
+    private ClientEncryptionPolicy clientEncryptionPolicyInternal;
 
     /**
      * Constructor.
@@ -331,6 +333,36 @@ public final class DocumentCollection extends Resource {
     public String getConflictsLink() {
         return StringUtils.removeEnd(this.getSelfLink(), "/") +
                 "/" + super.getString(Constants.Properties.CONFLICTS_LINK);
+    }
+
+    /**
+     * Gets the client encryption policy.
+     *
+     * @return the client encryption policy.
+     */
+    public ClientEncryptionPolicy getClientEncryptionPolicy() {
+        if (this.clientEncryptionPolicyInternal == null) {
+            if (super.has(Constants.Properties.INDEXING_POLICY)) {
+                this.clientEncryptionPolicyInternal = super.getObject(Constants.Properties.CLIENT_ENCRYPTION_POLICY,
+                    ClientEncryptionPolicy.class);
+            }
+        }
+
+        return this.clientEncryptionPolicyInternal;
+    }
+
+    /**
+     * Sets the ClientEncryptionPolicy that is used for encryption on documents,
+     * in a collection in the Azure Cosmos DB service.
+     *
+     * @param value ClientEncryptionPolicy to be used.
+     */
+    public void setClientEncryptionPolicy(ClientEncryptionPolicy value) {
+        if (value == null) {
+            throw new IllegalArgumentException("ClientEncryptionPolicy cannot be null.");
+        }
+
+        setProperty(this, Constants.Properties.CLIENT_ENCRYPTION_POLICY, value);
     }
 
     public void populatePropertyBag() {

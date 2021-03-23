@@ -6,7 +6,10 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.models.ClientEncryptionIncludedPath;
+import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -27,6 +30,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Base64;
@@ -87,6 +91,35 @@ public class CosmosContainerTest extends TestSuiteBase {
         this.createdContainer = createdDatabase.getContainer(collectionName);
         assertThat(containerResponse.getRequestCharge()).isGreaterThan(0);
         validateContainerResponse(containerProperties, containerResponse);
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void createContainer_withEncryption() {
+        String collectionName = UUID.randomUUID().toString();
+        CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
+
+        ClientEncryptionIncludedPath path1 = new ClientEncryptionIncludedPath();
+        path1.setPath("/path1");
+        path1.setEncryptionAlgorithm("AEAD_AES_256_CBC_HMAC_SHA256");
+        path1.setEncryptionType("Randomized");
+        path1.setClientEncryptionKeyId("key1");
+
+        ClientEncryptionIncludedPath path2 = new ClientEncryptionIncludedPath();
+        path2.setPath("/path2");
+        path2.setEncryptionAlgorithm("AEAD_AES_256_CBC_HMAC_SHA256");
+        path2.setEncryptionType("Deterministic");
+        path2.setClientEncryptionKeyId("key2");
+
+        List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
+        paths.add(path1);
+        paths.add(path2);
+
+        ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(paths);
+        containerProperties.setClientEncryptionPolicy(clientEncryptionPolicy);
+
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        assertThat(containerResponse.getRequestCharge()).isGreaterThan(0);
+        validateContainerResponseWithEncryption(containerProperties, containerResponse, clientEncryptionPolicy);
     }
 
     @DataProvider
@@ -449,5 +482,24 @@ public class CosmosContainerTest extends TestSuiteBase {
             .as("check Resource Id")
             .isEqualTo(containerProperties.getId());
 
+    }
+
+    private void validateContainerResponseWithEncryption(CosmosContainerProperties containerProperties,
+                                                         CosmosContainerResponse createResponse,
+                                                         ClientEncryptionPolicy clientEncryptionPolicy) {
+        validateContainerResponse(containerProperties, createResponse);
+        assertThat(createResponse.getProperties().getClientEncryptionPolicy()).isNotNull();
+        assertThat(createResponse.getProperties().getClientEncryptionPolicy().getIncludedPaths().size()).isEqualTo(clientEncryptionPolicy.getIncludedPaths().size());
+        for (ClientEncryptionIncludedPath clientEncryptionIncludedPath :
+            createResponse.getProperties().getClientEncryptionPolicy().getIncludedPaths()) {
+            for (ClientEncryptionIncludedPath includedPath : clientEncryptionPolicy.getIncludedPaths()) {
+                if (clientEncryptionIncludedPath.getPath().equals(includedPath.getPath())) {
+                    assertThat(clientEncryptionIncludedPath.getClientEncryptionKeyId()).isEqualTo(includedPath.getClientEncryptionKeyId());
+                    assertThat(clientEncryptionIncludedPath.getEncryptionAlgorithm()).isEqualTo(includedPath.getEncryptionAlgorithm());
+                    assertThat(clientEncryptionIncludedPath.getEncryptionType()).isEqualTo(includedPath.getEncryptionType());
+                    break;
+                }
+            }
+        }
     }
 }
