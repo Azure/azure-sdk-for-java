@@ -139,7 +139,7 @@ class ServiceBusReceiveLinkProcessorTest {
         assertTrue(processor.isTerminated());
         assertFalse(processor.hasError());
         assertNull(processor.getError());
-        
+
         // dispose the processor
         processor.dispose();
 
