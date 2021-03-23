@@ -22,7 +22,6 @@ class ModelRepositoryIntegrationTests extends ModelsRepositoryTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.iot.modelsrepository.TestHelper#getTestParameters")
-    @DoNotRecord(skipInPlayback = true) // TODO: Remove this once playback recordings are added.
     public void getModelsSingleDtmiNoDependencies(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion, String repositoryUri) throws URISyntaxException {
         final String dtmi = "dtmi:com:example:Thermostat;1";
 
@@ -36,7 +35,6 @@ class ModelRepositoryIntegrationTests extends ModelsRepositoryTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.iot.modelsrepository.TestHelper#getTestParameters")
-    @DoNotRecord(skipInPlayback = true) // TODO: Remove this once playback recordings are added.
     public void getModelsSingleDtmiDoesNotExist(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion, String repositoryUri) throws URISyntaxException {
         final String dtmi = "dtmi:com:example:Thermostatddd;1";
 
@@ -49,7 +47,6 @@ class ModelRepositoryIntegrationTests extends ModelsRepositoryTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.iot.modelsrepository.TestHelper#getTestParameters")
-    @DoNotRecord(skipInPlayback = true) // TODO: Remove this once playback recordings are added.
     public void getModelsSingleDtmiWithDependencies(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion, String repositoryUri) throws URISyntaxException {
         final String dtmi = "dtmi:com:example:TemperatureController;1";
         List<String> expectedDependencies = Arrays.asList("dtmi:com:example:Thermostat;1", "dtmi:azure:DeviceManagement:DeviceInformation;1");
@@ -66,7 +63,6 @@ class ModelRepositoryIntegrationTests extends ModelsRepositoryTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.iot.modelsrepository.TestHelper#getTestParameters")
-    @DoNotRecord(skipInPlayback = true) // TODO: Remove this once playback recordings are added.
     public void getModelsEnsureNoDuplicates(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion, String repositoryUri) throws URISyntaxException {
         List<String> inputDtmis = Arrays.asList(
             "dtmi:azure:DeviceManagement:DeviceInformation;1",
@@ -83,7 +79,6 @@ class ModelRepositoryIntegrationTests extends ModelsRepositoryTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.iot.modelsrepository.TestHelper#getTestParameters")
-    @DoNotRecord(skipInPlayback = true) // TODO: Remove this once playback recordings are added.
     public void getModelsSingleDtmiWithDepsDisableDependencyResolution(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion, String repositoryUri) throws URISyntaxException {
         final String dtmi = "dtmi:com:example:Thermostat;1";
         ModelsRepositoryAsyncClient client = getAsyncClient(httpClient, serviceVersion, repositoryUri);
