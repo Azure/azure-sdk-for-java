@@ -21,5 +21,10 @@
 * Automated CI testing on DataBricks and Cosmos DB live endpoint.
 * Automated CI Testing on Cosmos DB Emulator.
 
+### Known limitations
+* Spark structured streaming (micro batches) for consuming change feed has been implemented but not tested end-to-end fully so is considered experimental at this point
+* No support for continous processing (change feed) yet
+* No perf tests / optimizations have been done yet - we will iterate on perf in the next preview releases. So usage should be limited to non-production environments with this preview.
+
 ## 4.0.0-alpha.1 (2021-03-17)
 * Cosmos DB Spark 3.1.1 Connector Test Release.
