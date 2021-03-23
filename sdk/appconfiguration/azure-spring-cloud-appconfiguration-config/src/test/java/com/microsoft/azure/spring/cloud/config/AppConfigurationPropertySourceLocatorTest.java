@@ -33,6 +33,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -40,6 +41,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.core.env.CompositePropertySource;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySource;
 
 import com.azure.core.http.rest.PagedFlux;
@@ -105,6 +107,17 @@ public class AppConfigurationPropertySourceLocatorTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         when(environment.getActiveProfiles()).thenReturn(new String[]{PROFILE_NAME_1, PROFILE_NAME_2});
+        MutablePropertySources sources = new MutablePropertySources();
+        
+        sources.addFirst(new PropertySource<String>("refreshArgs") {
+
+            @Override
+            public Object getProperty(String name) {
+                return null;
+            }
+        });
+        
+        when(environment.getPropertySources()).thenReturn(sources);
 
         when(properties.getName()).thenReturn(APPLICATION_NAME);
         when(properties.getStores()).thenReturn(configStoresMock);
@@ -327,8 +340,8 @@ public class AppConfigurationPropertySourceLocatorTest {
         AppConfigurationProperties properties = new AppConfigurationProperties();
         properties.setName("TestStoreName");
         properties.setStores(configStores);
-
-        appPropertiesMock.setPrekillTime(5);
+        
+        when(appPropertiesMock.getPrekillTime()).thenReturn(5);
 
         Environment env = Mockito.mock(ConfigurableEnvironment.class);
         String[] array = {};
