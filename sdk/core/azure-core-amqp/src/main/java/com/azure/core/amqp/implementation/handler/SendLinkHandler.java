@@ -19,6 +19,7 @@ public class SendLinkHandler extends LinkHandler {
     private final String linkName;
     private final String entityPath;
     private final AtomicBoolean isFirstFlow = new AtomicBoolean(true);
+    private final AtomicBoolean isClosed = new AtomicBoolean();
     private final Sinks.Many<Integer> creditProcessor = Sinks.many().unicast().onBackpressureBuffer();
     private final Sinks.Many<Delivery> deliveryProcessor = Sinks.many().multicast().directBestEffort();
 
@@ -42,14 +43,14 @@ public class SendLinkHandler extends LinkHandler {
 
     @Override
     public void close() {
-        creditProcessor.emitComplete((signalType, emitResult) -> {
-            logger.info("connectionId[{}] linkName[{}] result[{}] Unable to emit complete on creditProcessor.",
-                getConnectionId(), linkName, emitResult);
-            return false;
-        });
+        if (isClosed.getAndSet(true)) {
+            return;
+        }
+
+        creditProcessor.emitComplete(Sinks.EmitFailureHandler.FAIL_FAST);
 
         deliveryProcessor.emitComplete((signalType, emitResult) -> {
-            logger.info("connectionId[{}]  result[{}] Unable to emit complete on deliverySink.",
+            logger.verbose("connectionId[{}] linkName[{}] result[{}] Unable to emit complete on deliverySink.",
                 getConnectionId(), linkName, emitResult);
             return false;
         });

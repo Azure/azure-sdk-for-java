@@ -21,6 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class ReceiveLinkHandler extends LinkHandler {
     private final String linkName;
     private final AtomicBoolean isFirstResponse = new AtomicBoolean(true);
+    private final AtomicBoolean isClosed = new AtomicBoolean();
     private final Sinks.Many<Delivery> deliveries = Sinks.many().unicast().onBackpressureBuffer();
     private final Set<Delivery> queuedDeliveries = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private final String entityPath;
@@ -41,6 +42,10 @@ public class ReceiveLinkHandler extends LinkHandler {
 
     @Override
     public void close() {
+        if (isClosed.getAndSet(true)) {
+            return;
+        }
+
         deliveries.emitComplete((signalType, emitResult) -> {
             logger.verbose("connectionId[{}], entityPath[{}], linkName[{}] Could not emit complete.",
                 getConnectionId(), entityPath, linkName);
