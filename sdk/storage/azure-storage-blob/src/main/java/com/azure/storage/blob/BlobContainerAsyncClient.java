@@ -9,7 +9,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
@@ -17,8 +16,6 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.paging.ContinuablePagedFluxCore;
-import com.azure.core.util.paging.PageRetriever;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.models.ContainersGetAccountInfoHeaders;
@@ -46,7 +43,7 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import reactor.core.publisher.Flux;
+import com.azure.storage.common.implementation.StoragePagedFlux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -59,7 +56,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -1017,41 +1013,6 @@ public final class BlobContainerAsyncClient {
             };
         return StoragePagedFlux.create(pageSize -> func.apply(null, pageSize), func);
     }
-
-    // So I think StoragePagedFlux has to extend PagedFlux not to break, but it looks like some of the constructors in PagedFlux are private
-
-    private static class StoragePagedFlux<T> extends PagedFlux<T> {
-
-        public StoragePagedFlux(Supplier<Mono<PagedResponse<T>>> firstPageRetriever) {
-            super(firstPageRetriever);
-        }
-
-        public static <T> PagedFlux<T> create(Function<Integer, Mono<PagedResponse<T>>> firstPageRetriever,
-            BiFunction<String, Integer, Mono<PagedResponse<T>>> nextPageRetriever) {
-            return PagedFlux.create(() -> (continuationToken, pageSize) ->
-                continuationToken == null
-                ? firstPageRetriever.apply(pageSize).flux()
-                : nextPageRetriever.apply(continuationToken, pageSize).flux());
-        }
-
-    }
-//    private static class StoragePagedFlux<T, P extends PagedResponse<T>> extends ContinuablePagedFluxCore<String, T, P> {
-//        public StoragePagedFlux(Function<Integer, Mono<P>> firstPageRetriever,
-//            BiFunction<String, Integer, Mono<P>> nextPageRetriever) {
-//            this(() -> (continuationToken, pageSize) -> continuationToken == null
-//                ? firstPageRetriever.apply(pageSize).flux()
-//                : nextPageRetriever.apply(continuationToken, pageSize).flux());
-//        }
-//
-//        /**
-//         * Create PagedFlux backed by Page Retriever Function Supplier.
-//         *
-//         * @param provider the Page Retrieval Provider
-//         */
-//        private StoragePagedFlux(Supplier<PageRetriever<String, P>> provider) {
-//            super(provider);
-//        }
-//    }
 
     private Mono<ContainersListBlobHierarchySegmentResponse> listBlobsHierarchySegment(String marker, String delimiter,
         ListBlobsOptions options, Duration timeout) {
