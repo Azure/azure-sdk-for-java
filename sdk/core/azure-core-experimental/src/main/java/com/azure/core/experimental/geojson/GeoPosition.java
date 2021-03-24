@@ -3,6 +3,7 @@
 
 package com.azure.core.experimental.geojson;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Objects;
@@ -10,6 +11,7 @@ import java.util.Objects;
 /**
  * Represents a geo position.
  */
+@Immutable
 public final class GeoPosition {
     private final ClientLogger logger = new ClientLogger(GeoPosition.class);
 
@@ -117,13 +119,13 @@ public final class GeoPosition {
                 return latitude;
             case 2:
                 if (altitude == null) {
-                    throw logger.logExceptionAsError(new IndexOutOfBoundsException());
+                    throw logger.logExceptionAsError(new IndexOutOfBoundsException("Index out of range: " + index));
                 }
 
                 return altitude;
 
             default:
-                throw logger.logExceptionAsError(new IndexOutOfBoundsException());
+                throw logger.logExceptionAsError(new IndexOutOfBoundsException("Index out of range: " + index));
         }
     }
 
@@ -146,5 +148,12 @@ public final class GeoPosition {
         return Double.compare(longitude, other.longitude) == 0
             && Double.compare(latitude, other.latitude) == 0
             && Objects.equals(altitude, other.altitude);
+    }
+
+    @Override
+    public String toString() {
+        return (altitude != null)
+            ? String.format("[%s, %s, %s]", longitude, latitude, altitude)
+            : String.format("[%s, %s]", longitude, latitude);
     }
 }

@@ -28,7 +28,7 @@ public class GeoTestHelpers {
         new GeoPosition(0, 1), new GeoPosition(0, 0)
     );
 
-    public static final Supplier<GeoLine> TRIANGLE_LINE = () -> new GeoLine(TRIANGLE_LINE_POSITIONS);
+    public static final Supplier<GeoLineString> TRIANGLE_LINE = () -> new GeoLineString(TRIANGLE_LINE_POSITIONS);
 
     public static final Supplier<GeoPolygon> TRIANGLE_POLYGON = () ->
         new GeoPolygon(new GeoLinearRing(TRIANGLE_LINE_POSITIONS));
@@ -38,7 +38,7 @@ public class GeoTestHelpers {
         new GeoPosition(1, 0), new GeoPosition(0, 0)
     );
 
-    public static final Supplier<GeoLine> SQUARE_LINE = () -> new GeoLine(SQUARE_LINE_POSITIONS);
+    public static final Supplier<GeoLineString> SQUARE_LINE = () -> new GeoLineString(SQUARE_LINE_POSITIONS);
 
     public static final Supplier<GeoPolygon> SQUARE_POLYGON = () ->
         new GeoPolygon(new GeoLinearRing(SQUARE_LINE_POSITIONS));
@@ -48,7 +48,7 @@ public class GeoTestHelpers {
         new GeoPosition(1, 0), new GeoPosition(0, 0)
     );
 
-    public static final Supplier<GeoLine> RECTANGLE_LINE = () -> new GeoLine(RECTANGLE_LINE_POSITIONS);
+    public static final Supplier<GeoLineString> RECTANGLE_LINE = () -> new GeoLineString(RECTANGLE_LINE_POSITIONS);
 
     public static final Supplier<GeoPolygon> RECTANGLE_POLYGON = () ->
         new GeoPolygon(new GeoLinearRing(RECTANGLE_LINE_POSITIONS));

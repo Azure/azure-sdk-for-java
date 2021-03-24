@@ -23,19 +23,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 /**
- * Tests {@link GeoLineCollection}.
+ * Tests {@link GeoLineStringCollection}.
  */
-public class GeoLineCollectionTests {
+public class GeoLineStringCollectionTests {
     @Test
     public void nullLinesThrows() {
-        Assertions.assertThrows(NullPointerException.class, () -> new GeoLineCollection(null));
+        Assertions.assertThrows(NullPointerException.class, () -> new GeoLineStringCollection(null));
     }
 
     @Test
     public void simpleConstructor() {
-        List<GeoLine> expectedLines = Arrays.asList(SQUARE_LINE.get(), TRIANGLE_LINE.get());
+        List<GeoLineString> expectedLines = Arrays.asList(SQUARE_LINE.get(), TRIANGLE_LINE.get());
 
-        GeoLineCollection multiLine = new GeoLineCollection(expectedLines);
+        GeoLineStringCollection multiLine = new GeoLineStringCollection(expectedLines);
 
         assertEquals(expectedLines, multiLine.getLines());
 
@@ -45,12 +45,12 @@ public class GeoLineCollectionTests {
 
     @Test
     public void complexConstructor() {
-        List<GeoLine> expectedLines = Arrays.asList(SQUARE_LINE.get(), TRIANGLE_LINE.get());
+        List<GeoLineString> expectedLines = Arrays.asList(SQUARE_LINE.get(), TRIANGLE_LINE.get());
 
         GeoBoundingBox boundingBox = new GeoBoundingBox(0, 0, 1, 1);
         Map<String, Object> properties = Collections.singletonMap("key", "value");
 
-        GeoLineCollection multiLine = new GeoLineCollection(expectedLines, boundingBox, properties);
+        GeoLineStringCollection multiLine = new GeoLineStringCollection(expectedLines, boundingBox, properties);
 
         assertEquals(expectedLines, multiLine.getLines());
         assertEquals(boundingBox, multiLine.getBoundingBox());
@@ -59,11 +59,11 @@ public class GeoLineCollectionTests {
 
     @Test
     public void constructorCopiesLines() {
-        List<GeoLine> expectedLines = new ArrayList<>();
+        List<GeoLineString> expectedLines = new ArrayList<>();
         expectedLines.add(SQUARE_LINE.get());
         expectedLines.add(TRIANGLE_LINE.get());
 
-        GeoLineCollection multiLine = new GeoLineCollection(expectedLines);
+        GeoLineStringCollection multiLine = new GeoLineStringCollection(expectedLines);
         assertEquals(expectedLines, multiLine.getLines());
 
         expectedLines.add(RECTANGLE_LINE.get());
@@ -72,19 +72,19 @@ public class GeoLineCollectionTests {
 
     @ParameterizedTest
     @MethodSource("equalsSupplier")
-    public void multiLineGeometriesEqual(GeoLineCollection multiLine, Object obj, boolean expected) {
+    public void multiLineGeometriesEqual(GeoLineStringCollection multiLine, Object obj, boolean expected) {
         assertEquals(expected, multiLine.equals(obj));
     }
 
     private static Stream<Arguments> equalsSupplier() {
-        List<GeoLine> lines = Arrays.asList(SQUARE_LINE.get(), RECTANGLE_LINE.get());
-        List<GeoLine> lines1 = Arrays.asList(SQUARE_LINE.get(), TRIANGLE_LINE.get());
+        List<GeoLineString> lines = Arrays.asList(SQUARE_LINE.get(), RECTANGLE_LINE.get());
+        List<GeoLineString> lines1 = Arrays.asList(SQUARE_LINE.get(), TRIANGLE_LINE.get());
 
         GeoBoundingBox boundingBox = new GeoBoundingBox(0, 0, 1, 1);
         Map<String, Object> properties = Collections.singletonMap("key", "value");
 
-        GeoLineCollection multiLine = new GeoLineCollection(lines);
-        GeoLineCollection multiLine1 = new GeoLineCollection(lines1, boundingBox, properties);
+        GeoLineStringCollection multiLine = new GeoLineStringCollection(lines);
+        GeoLineStringCollection multiLine1 = new GeoLineStringCollection(lines1, boundingBox, properties);
 
         return Stream.of(
             // Other is null.
@@ -102,8 +102,8 @@ public class GeoLineCollectionTests {
             Arguments.of(multiLine1, multiLine, false),
 
             // Other is the same value.
-            Arguments.of(multiLine, new GeoLineCollection(lines), true),
-            Arguments.of(multiLine1, new GeoLineCollection(lines1, boundingBox, properties), true)
+            Arguments.of(multiLine, new GeoLineStringCollection(lines), true),
+            Arguments.of(multiLine1, new GeoLineStringCollection(lines1, boundingBox, properties), true)
         );
     }
 }
