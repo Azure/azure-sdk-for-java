@@ -47,7 +47,6 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
     private static final Symbol ENTITY_TYPE_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR + ":entity-type");
     private static final Symbol LINK_TRANSFER_DESTINATION_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR
         + ":transfer-destination-address");
-    private static final String TRANSACTION_LINK_NAME = "coordinator";
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReactorSession.class);
     private final AmqpRetryPolicy retryPolicy;
@@ -131,8 +130,14 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
     }
 
     @Override
+    public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry) {
+        Map<Symbol, Object> linkProperties =  null;
+        return this.createProducer(linkName, entityPath, timeout, retry, linkProperties);
+    }
+
+    @Override
     protected Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout,
-         AmqpRetryPolicy retry, Map<Symbol, Object> linkProperties) {
+                                            AmqpRetryPolicy retry, Map<Symbol, Object> linkProperties) {
         if (distributedTransactionsSupport) {
             return getOrCreateTransactionCoordinator().flatMap(coordinator -> super.createProducer(linkName, entityPath,
                 timeout, retry, linkProperties));
