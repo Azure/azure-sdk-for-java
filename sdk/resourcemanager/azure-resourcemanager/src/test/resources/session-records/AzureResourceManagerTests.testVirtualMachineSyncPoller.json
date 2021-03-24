@@ -288,7 +288,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg62809c/providers/Microsoft.Compute/disks/disk31309?api-version=2020-09-30",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg62809c/providers/Microsoft.Compute/disks/disk31309?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "49dc5cec-df08-478b-a828-e16b512df238",
@@ -310,17 +310,17 @@
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20210129T122821Z:8b5c6f54-8257-41d7-ae86-7003a0a0a422",
       "Expires" : "-1",
       "Content-Length" : "289",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/DiskOperations/327a0a7c-ceb0-4b1f-a1e1-33e99acc0e4b?api-version=2020-09-30",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/DiskOperations/327a0a7c-ceb0-4b1f-a1e1-33e99acc0e4b?api-version=2020-12-01",
       "x-ms-request-id" : "327a0a7c-ceb0-4b1f-a1e1-33e99acc0e4b",
       "Body" : "{\r\n  \"name\": \"disk31309\",\r\n  \"location\": \"eastus\",\r\n  \"tags\": {},\r\n  \"sku\": {\r\n    \"name\": \"Standard_LRS\"\r\n  },\r\n  \"properties\": {\r\n    \"creationData\": {\r\n      \"createOption\": \"Empty\"\r\n    },\r\n    \"diskSizeGB\": 100,\r\n    \"provisioningState\": \"Updating\",\r\n    \"isArmResource\": true\r\n  }\r\n}",
       "x-ms-client-request-id" : "49dc5cec-df08-478b-a828-e16b512df238",
       "Content-Type" : "application/json; charset=utf-8",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/DiskOperations/327a0a7c-ceb0-4b1f-a1e1-33e99acc0e4b?monitor=true&api-version=2020-09-30"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/DiskOperations/327a0a7c-ceb0-4b1f-a1e1-33e99acc0e4b?monitor=true&api-version=2020-12-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/DiskOperations/327a0a7c-ceb0-4b1f-a1e1-33e99acc0e4b?api-version=2020-09-30",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/DiskOperations/327a0a7c-ceb0-4b1f-a1e1-33e99acc0e4b?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "cb111b67-b65b-429c-96ae-de5f557b1ee3"
@@ -349,7 +349,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg62809c/providers/Microsoft.Compute/disks/disk31309?api-version=2020-09-30",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg62809c/providers/Microsoft.Compute/disks/disk31309?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "75ade2d0-2132-4b6b-a356-3919a6d805ad"

@@ -84,7 +84,7 @@ public interface ApiTagDescriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state version of the tag specified by its identifier.
      */
-    Response<Void> getEntityTagWithResponse(
+    ApiTagDescriptionsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String tagDescriptionId, Context context);
 
     /**

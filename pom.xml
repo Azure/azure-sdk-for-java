@@ -60,9 +60,7 @@
         <module>sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>
 
         <!-- Form Recognizer -->
-        <!-- Form Recognizer samples directory has some non-Java files (images, PDFs etc) that are causing
-        the codesnippet plugin to fail. Commenting FR module until it's fixed -->
-<!--        <module>sdk/formrecognizer/azure-ai-formrecognizer</module>-->
+        <module>sdk/formrecognizer/azure-ai-formrecognizer</module>
 
         <!-- Identity -->
         <module>sdk/identity/azure-identity</module>
@@ -79,6 +77,9 @@
 
         <!-- Mixed Reality -->
         <module>sdk/mixedreality/azure-mixedreality-authentication</module>
+
+        <!-- Models Repository -->
+        <module>sdk/modelsrepository/azure-iot-modelsrepository</module>
 
         <!-- Quantum Jobs -->
         <module>sdk/quantum/azure-quantum-jobs</module>
@@ -242,6 +243,10 @@
                   <group>
                     <title>Azure Digital Twins</title>
                     <packages>com.azure.digitaltwins.core*</packages>
+                  </group>
+                  <group>
+                    <title>Azure IoT Models Repository</title>
+                    <packages>com.azure.iot.modelsrepository*</packages>
                   </group>
                   <group>
                     <title>Azure Form Recognizer</title>
@@ -621,6 +626,7 @@
         <module>sdk/mediaservices</module>
         <module>sdk/metricsadvisor</module>
         <module>sdk/mixedreality</module>
+        <module>sdk/modelsrepository</module>
         <module>sdk/monitor</module>
         <module>sdk/mysql</module>
         <module>sdk/netapp</module>
@@ -630,6 +636,7 @@
         <module>sdk/redisenterprise</module>
         <module>sdk/relay</module>
         <module>sdk/remoterendering</module>
+        <module>sdk/resourcegraph</module>
         <module>sdk/resourcemanager</module>
         <module>sdk/schemaregistry</module>
         <module>sdk/search</module>

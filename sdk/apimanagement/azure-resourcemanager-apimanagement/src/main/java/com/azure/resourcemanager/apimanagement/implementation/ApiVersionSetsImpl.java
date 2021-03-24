@@ -13,6 +13,8 @@ import com.azure.resourcemanager.apimanagement.fluent.ApiVersionSetsClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.ApiVersionSetContractInner;
 import com.azure.resourcemanager.apimanagement.models.ApiVersionSetContract;
 import com.azure.resourcemanager.apimanagement.models.ApiVersionSets;
+import com.azure.resourcemanager.apimanagement.models.ApiVersionSetsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiVersionSetsGetResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ApiVersionSetsImpl implements ApiVersionSets {
@@ -45,7 +47,7 @@ public final class ApiVersionSetsImpl implements ApiVersionSets {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, versionSetId);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public ApiVersionSetsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String versionSetId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, versionSetId, context);
     }
@@ -61,7 +63,7 @@ public final class ApiVersionSetsImpl implements ApiVersionSets {
 
     public Response<ApiVersionSetContract> getWithResponse(
         String resourceGroupName, String serviceName, String versionSetId, Context context) {
-        Response<ApiVersionSetContractInner> inner =
+        ApiVersionSetsGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, versionSetId, context);
         if (inner != null) {
             return new SimpleResponse<>(

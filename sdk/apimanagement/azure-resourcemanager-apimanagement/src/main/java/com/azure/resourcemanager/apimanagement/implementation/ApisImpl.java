@@ -14,6 +14,8 @@ import com.azure.resourcemanager.apimanagement.fluent.models.ApiContractInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.TagResourceContractInner;
 import com.azure.resourcemanager.apimanagement.models.ApiContract;
 import com.azure.resourcemanager.apimanagement.models.Apis;
+import com.azure.resourcemanager.apimanagement.models.ApisGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.ApisGetResponse;
 import com.azure.resourcemanager.apimanagement.models.TagResourceContract;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -55,7 +57,7 @@ public final class ApisImpl implements Apis {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public ApisGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, apiId, context);
     }
@@ -71,8 +73,7 @@ public final class ApisImpl implements Apis {
 
     public Response<ApiContract> getWithResponse(
         String resourceGroupName, String serviceName, String apiId, Context context) {
-        Response<ApiContractInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serviceName, apiId, context);
+        ApisGetResponse inner = this.serviceClient().getWithResponse(resourceGroupName, serviceName, apiId, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),

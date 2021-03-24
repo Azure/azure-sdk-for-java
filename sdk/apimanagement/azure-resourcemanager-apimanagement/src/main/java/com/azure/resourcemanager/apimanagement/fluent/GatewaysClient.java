@@ -14,6 +14,11 @@ import com.azure.resourcemanager.apimanagement.fluent.models.GatewayKeysContract
 import com.azure.resourcemanager.apimanagement.fluent.models.GatewayTokenContractInner;
 import com.azure.resourcemanager.apimanagement.models.GatewayKeyRegenerationRequestContract;
 import com.azure.resourcemanager.apimanagement.models.GatewayTokenRequestContract;
+import com.azure.resourcemanager.apimanagement.models.GatewaysCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.GatewaysGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.GatewaysGetResponse;
+import com.azure.resourcemanager.apimanagement.models.GatewaysListKeysResponse;
+import com.azure.resourcemanager.apimanagement.models.GatewaysUpdateResponse;
 
 /** An instance of this class provides access to all the operations defined in GatewaysClient. */
 public interface GatewaysClient {
@@ -80,7 +85,7 @@ public interface GatewaysClient {
      * @return the entity state (Etag) version of the Gateway specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    GatewaysGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, Context context);
 
     /**
@@ -112,7 +117,7 @@ public interface GatewaysClient {
      * @return the details of the Gateway specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GatewayContractInner> getWithResponse(
+    GatewaysGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, Context context);
 
     /**
@@ -148,7 +153,7 @@ public interface GatewaysClient {
      * @return gateway details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GatewayContractInner> createOrUpdateWithResponse(
+    GatewaysCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String gatewayId,
@@ -196,7 +201,7 @@ public interface GatewaysClient {
      * @return gateway details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GatewayContractInner> updateWithResponse(
+    GatewaysUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String gatewayId,
@@ -268,7 +273,7 @@ public interface GatewaysClient {
      * @return gateway authentication keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GatewayKeysContractInner> listKeysWithResponse(
+    GatewaysListKeysResponse listKeysWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, Context context);
 
     /**

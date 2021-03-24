@@ -32,7 +32,8 @@ public interface SignInSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the SignInSettings.
      */
-    Response<Void> getEntityTagWithResponse(String resourceGroupName, String serviceName, Context context);
+    SignInSettingsGetEntityTagResponse getEntityTagWithResponse(
+        String resourceGroupName, String serviceName, Context context);
 
     /**
      * Get Sign In Settings for the Portal.

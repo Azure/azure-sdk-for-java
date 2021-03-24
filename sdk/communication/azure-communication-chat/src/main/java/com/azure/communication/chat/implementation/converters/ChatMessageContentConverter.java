@@ -4,7 +4,10 @@
 package com.azure.communication.chat.implementation.converters;
 
 import com.azure.communication.chat.models.ChatMessageContent;
+import com.azure.communication.chat.models.ChatParticipant;
+import com.azure.communication.common.CommunicationIdentifier;
 
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 /**
@@ -21,21 +24,22 @@ public final class ChatMessageContentConverter {
             return null;
         }
 
-        ChatMessageContent chatMessageContent = new ChatMessageContent()
-            .setMessage(obj.getMessage())
-            .setTopic(obj.getTopic());
+        Iterable<ChatParticipant> participants = new ArrayList<ChatParticipant>();
+        CommunicationIdentifier initiator = null;
 
         if (obj.getInitiatorCommunicationIdentifier() != null) {
-            chatMessageContent.setInitiator(
-                CommunicationIdentifierConverter.convert(obj.getInitiatorCommunicationIdentifier()));
+            initiator = CommunicationIdentifierConverter.convert(obj.getInitiatorCommunicationIdentifier());
         }
 
         if (obj.getParticipants() != null) {
-            chatMessageContent.setParticipants(obj.getParticipants()
+            participants = obj.getParticipants()
                 .stream()
                 .map(participant -> ChatParticipantConverter.convert(participant))
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
         }
+
+        ChatMessageContent chatMessageContent = new ChatMessageContent(
+            obj.getMessage(), obj.getTopic(), participants, initiator);
 
         return chatMessageContent;
     }

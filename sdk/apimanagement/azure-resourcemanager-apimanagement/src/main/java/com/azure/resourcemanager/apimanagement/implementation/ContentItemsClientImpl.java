@@ -221,7 +221,7 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -413,7 +413,7 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -521,7 +521,7 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public ContentItemsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String contentTypeId, String contentItemId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, contentTypeId, contentItemId, context)
             .block();
@@ -582,7 +582,7 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -699,7 +699,7 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @return content type contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ContentItemContractInner> getWithResponse(
+    public ContentItemsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String contentTypeId, String contentItemId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, contentTypeId, contentItemId, context).block();
     }
@@ -761,7 +761,7 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -915,7 +915,7 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @return content type contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ContentItemContractInner> createOrUpdateWithResponse(
+    public ContentItemsCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String contentTypeId,
@@ -988,7 +988,7 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1157,7 +1157,7 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

@@ -3,26 +3,20 @@
 
 package com.azure.resourcemanager.samples;
 
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -206,7 +200,6 @@ import com.azure.resourcemanager.trafficmanager.models.TrafficManagerNestedProfi
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfile;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
 
@@ -216,9 +209,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.Duration;
@@ -240,6 +230,8 @@ import java.util.stream.Collectors;
  */
 
 public final class Utils {
+
+    private static final ClientLogger LOGGER = new ClientLogger(Utils.class);
 
     private Utils() {
     }
@@ -3348,33 +3340,35 @@ public final class Utils {
      * @return Content of the HTTP response.
      */
     public static String sendGetRequest(String urlString) {
-        ClientLogger logger = new ClientLogger(Utils.class);
+        HttpRequest request = new HttpRequest(HttpMethod.GET, urlString);
+        Mono<Response<String>> response =
+            stringResponse(HTTP_PIPELINE.send(request)
+                .flatMap(response1 -> {
+                    int code = response1.getStatusCode();
+                    if (code == 200 || code == 400 || code == 404) {
+                        return Mono.just(response1);
+                    } else {
+                        return Mono.error(new HttpResponseException(response1));
+                    }
+                })
+                .retryWhen(Retry
+                    .fixedDelay(5, Duration.ofSeconds(30))
+                    .filter(t -> {
+                        boolean retry = false;
+                        if (t instanceof TimeoutException) {
+                            retry = true;
+                        } else if (t instanceof HttpResponseException
+                            && ((HttpResponseException) t).getResponse().getStatusCode() == 503) {
+                            retry = true;
+                        }
 
-        try {
-            Mono<Response<Flux<ByteBuffer>>> response =
-                HTTP_CLIENT.getString(getHost(urlString), getPathAndQuery(urlString))
-                    .retryWhen(Retry
-                        .fixedDelay(5, Duration.ofSeconds(30))
-                        .filter(t -> {
-                            boolean retry = false;
-                            if (t instanceof TimeoutException) {
-                                retry = true;
-                            } else if (t instanceof HttpResponseException
-                                && ((HttpResponseException) t).getResponse().getStatusCode() == 503) {
-                                retry = true;
-                            }
-
-                            if (retry) {
-                                logger.info("retry GET request to {}", urlString);
-                            }
-                            return retry;
-                        }));
-            Response<String> ret = stringResponse(response).block();
-            return ret == null ? null : ret.getValue();
-        } catch (MalformedURLException e) {
-            logger.logThrowableAsError(e);
-            return null;
-        }
+                        if (retry) {
+                            LOGGER.info("retry GET request to {}", urlString);
+                        }
+                        return retry;
+                    })));
+        Response<String> ret = response.block();
+        return ret == null ? null : ret.getValue();
     }
 
     /**
@@ -3387,11 +3381,18 @@ public final class Utils {
      * @return Content of the HTTP response.
      * */
     public static String sendPostRequest(String urlString, String body) {
-        ClientLogger logger = new ClientLogger(Utils.class);
-
         try {
+            HttpRequest request = new HttpRequest(HttpMethod.POST, urlString).setBody(body);
             Mono<Response<String>> response =
-                stringResponse(HTTP_CLIENT.postString(getHost(urlString), getPathAndQuery(urlString), body))
+                stringResponse(HTTP_PIPELINE.send(request)
+                    .flatMap(response1 -> {
+                        int code = response1.getStatusCode();
+                        if (code == 200 || code == 400 || code == 404) {
+                            return Mono.just(response1);
+                        } else {
+                            return Mono.error(new HttpResponseException(response1));
+                        }
+                    })
                     .retryWhen(Retry
                         .fixedDelay(5, Duration.ofSeconds(30))
                         .filter(t -> {
@@ -3401,60 +3402,28 @@ public final class Utils {
                             }
 
                             if (retry) {
-                                logger.info("retry POST request to {}", urlString);
+                                LOGGER.info("retry POST request to {}", urlString);
                             }
                             return retry;
-                        }));
+                        })));
             Response<String> ret = response.block();
             return ret == null ? null : ret.getValue();
         } catch (Exception e) {
-            logger.logThrowableAsError(e);
+            LOGGER.logThrowableAsError(e);
             return null;
         }
     }
 
-    private static Mono<Response<String>> stringResponse(Mono<Response<Flux<ByteBuffer>>> responseMono) {
-        return responseMono.flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
-                .map(bytes -> new String(bytes, StandardCharsets.UTF_8))
+    private static Mono<Response<String>> stringResponse(Mono<HttpResponse> responseMono) {
+        return responseMono.flatMap(response -> response.getBodyAsString()
                 .map(str -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), str)));
     }
 
-    private static String getHost(String urlString) throws MalformedURLException {
-        URL url = new URL(urlString);
-        String protocol = url.getProtocol();
-        String host = url.getAuthority();
-        return protocol + "://" + host;
-    }
-
-    private static String getPathAndQuery(String urlString) throws MalformedURLException {
-        URL url = new URL(urlString);
-        String path = url.getPath();
-        String query = url.getQuery();
-        if (query != null && !query.isEmpty()) {
-            path = path + "?" + query;
-        }
-        return path;
-    }
-
-    private static final WebAppTestClient HTTP_CLIENT = RestProxy.create(
-            WebAppTestClient.class,
-            new HttpPipelineBuilder()
-                    .policies(
-                        new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC)),
-                        new RetryPolicy("Retry-After", ChronoUnit.SECONDS))
-                    .build());
-
-    @Host("{$host}")
-    @ServiceInterface(name = "WebAppTestClient")
-    private interface WebAppTestClient {
-        @Get("{path}")
-        @ExpectedResponses({200, 400, 404})
-        Mono<Response<Flux<ByteBuffer>>> getString(@HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path);
-
-        @Post("{path}")
-        @ExpectedResponses({200, 400, 404})
-        Mono<Response<Flux<ByteBuffer>>> postString(@HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path, @BodyParam("text/plain") String body);
-    }
+    private static final HttpPipeline HTTP_PIPELINE = new HttpPipelineBuilder()
+        .policies(
+            new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC)),
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS))
+        .build();
 
     public static <T> int getSize(Iterable<T> iterable) {
         int res = 0;

@@ -28,8 +28,8 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.fluent.LogAnalyticsClient;
 import com.azure.resourcemanager.compute.fluent.models.LogAnalyticsOperationResultInner;
-import com.azure.resourcemanager.compute.models.LogAnalyticsInputBase;
 import com.azure.resourcemanager.compute.models.RequestRateByIntervalInput;
+import com.azure.resourcemanager.compute.models.ThrottledRequestsInput;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -88,7 +88,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
             @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") LogAnalyticsInputBase parameters,
+            @BodyParam("application/json") ThrottledRequestsInput parameters,
             @HeaderParam("Accept") String accept,
             Context context);
     }
@@ -141,7 +141,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -367,7 +367,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> exportThrottledRequestsWithResponseAsync(
-        String location, LogAnalyticsInputBase parameters) {
+        String location, ThrottledRequestsInput parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -402,7 +402,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -418,7 +418,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> exportThrottledRequestsWithResponseAsync(
-        String location, LogAnalyticsInputBase parameters, Context context) {
+        String location, ThrottledRequestsInput parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -465,7 +465,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
-        beginExportThrottledRequestsAsync(String location, LogAnalyticsInputBase parameters) {
+        beginExportThrottledRequestsAsync(String location, ThrottledRequestsInput parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = exportThrottledRequestsWithResponseAsync(location, parameters);
         return this
             .client
@@ -490,7 +490,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
-        beginExportThrottledRequestsAsync(String location, LogAnalyticsInputBase parameters, Context context) {
+        beginExportThrottledRequestsAsync(String location, ThrottledRequestsInput parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = exportThrottledRequestsWithResponseAsync(location, parameters, context);
         return this
@@ -515,7 +515,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
-        beginExportThrottledRequests(String location, LogAnalyticsInputBase parameters) {
+        beginExportThrottledRequests(String location, ThrottledRequestsInput parameters) {
         return beginExportThrottledRequestsAsync(location, parameters).getSyncPoller();
     }
 
@@ -532,7 +532,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
-        beginExportThrottledRequests(String location, LogAnalyticsInputBase parameters, Context context) {
+        beginExportThrottledRequests(String location, ThrottledRequestsInput parameters, Context context) {
         return beginExportThrottledRequestsAsync(location, parameters, context).getSyncPoller();
     }
 
@@ -548,7 +548,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogAnalyticsOperationResultInner> exportThrottledRequestsAsync(
-        String location, LogAnalyticsInputBase parameters) {
+        String location, ThrottledRequestsInput parameters) {
         return beginExportThrottledRequestsAsync(location, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -567,7 +567,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LogAnalyticsOperationResultInner> exportThrottledRequestsAsync(
-        String location, LogAnalyticsInputBase parameters, Context context) {
+        String location, ThrottledRequestsInput parameters, Context context) {
         return beginExportThrottledRequestsAsync(location, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -584,7 +584,8 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @return logAnalytics operation status response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LogAnalyticsOperationResultInner exportThrottledRequests(String location, LogAnalyticsInputBase parameters) {
+    public LogAnalyticsOperationResultInner exportThrottledRequests(
+        String location, ThrottledRequestsInput parameters) {
         return exportThrottledRequestsAsync(location, parameters).block();
     }
 
@@ -601,7 +602,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogAnalyticsOperationResultInner exportThrottledRequests(
-        String location, LogAnalyticsInputBase parameters, Context context) {
+        String location, ThrottledRequestsInput parameters, Context context) {
         return exportThrottledRequestsAsync(location, parameters, context).block();
     }
 }

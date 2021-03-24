@@ -255,7 +255,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -533,7 +533,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -636,7 +636,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the entity state (Etag) version of the certificate specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public CertificatesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String certificateId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, certificateId, context).block();
     }
@@ -692,7 +692,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -804,7 +804,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the details of the certificate specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateContractInner> getWithResponse(
+    public CertificatesGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String certificateId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, certificateId, context).block();
     }
@@ -873,7 +873,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1044,7 +1044,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return certificate details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateContractInner> createOrUpdateWithResponse(
+    public CertificatesCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String certificateId,
@@ -1113,7 +1113,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1284,7 +1284,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1396,7 +1396,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return certificate details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateContractInner> refreshSecretWithResponse(
+    public CertificatesRefreshSecretResponse refreshSecretWithResponse(
         String resourceGroupName, String serviceName, String certificateId, Context context) {
         return refreshSecretWithResponseAsync(resourceGroupName, serviceName, certificateId, context).block();
     }
@@ -1433,7 +1433,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

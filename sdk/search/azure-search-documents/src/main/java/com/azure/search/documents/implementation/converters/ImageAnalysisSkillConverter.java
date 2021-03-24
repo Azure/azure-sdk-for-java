@@ -4,10 +4,6 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.ImageAnalysisSkill;
-import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.ImageAnalysisSkill} and
@@ -23,10 +19,7 @@ public final class ImageAnalysisSkillConverter {
             return null;
         }
 
-        List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null
-            : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-
-        ImageAnalysisSkill imageAnalysisSkill = new ImageAnalysisSkill(inputs, obj.getOutputs());
+        ImageAnalysisSkill imageAnalysisSkill = new ImageAnalysisSkill(obj.getInputs(), obj.getOutputs());
 
         String name = obj.getName();
         imageAnalysisSkill.setName(name);
@@ -60,12 +53,9 @@ public final class ImageAnalysisSkillConverter {
             return null;
         }
 
-        List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
-            obj.getInputs() == null ? null
-                : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-
         com.azure.search.documents.indexes.implementation.models.ImageAnalysisSkill imageAnalysisSkill =
-            new com.azure.search.documents.indexes.implementation.models.ImageAnalysisSkill(inputs, obj.getOutputs());
+            new com.azure.search.documents.indexes.implementation.models.ImageAnalysisSkill(obj.getInputs(),
+                obj.getOutputs());
 
         String name = obj.getName();
         imageAnalysisSkill.setName(name);

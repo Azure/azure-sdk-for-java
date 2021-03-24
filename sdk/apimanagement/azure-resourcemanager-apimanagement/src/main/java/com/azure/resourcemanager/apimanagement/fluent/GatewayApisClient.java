@@ -11,6 +11,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.ApiContractInner;
 import com.azure.resourcemanager.apimanagement.models.AssociationContract;
+import com.azure.resourcemanager.apimanagement.models.GatewayApisGetEntityTagResponse;
 
 /** An instance of this class provides access to all the operations defined in GatewayApisClient. */
 public interface GatewayApisClient {
@@ -87,7 +88,7 @@ public interface GatewayApisClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    GatewayApisGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, String apiId, Context context);
 
     /**

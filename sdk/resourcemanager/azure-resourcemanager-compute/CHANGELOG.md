@@ -2,6 +2,8 @@
 
 ## 2.3.0-beta.1 (Unreleased)
 
+- Updated `api-version` to `2021-03-01`
+- Corrected class type for `EncryptionImages`, `GalleryImageVersionStorageProfile`, `GalleryImageVersionUpdate`, `ImageDataDisk`, `ManagedDiskParameters`, `VirtualMachineScaleSetManagedDiskParameters`
 
 ## 2.2.0 (2021-02-24)
 

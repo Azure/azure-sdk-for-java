@@ -238,7 +238,7 @@ public final class ApiTagDescriptionsClientImpl implements ApiTagDescriptionsCli
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -516,7 +516,7 @@ public final class ApiTagDescriptionsClientImpl implements ApiTagDescriptionsCli
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -633,7 +633,7 @@ public final class ApiTagDescriptionsClientImpl implements ApiTagDescriptionsCli
      * @return the entity state version of the tag specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public ApiTagDescriptionsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String tagDescriptionId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, apiId, tagDescriptionId, context).block();
     }
@@ -696,7 +696,7 @@ public final class ApiTagDescriptionsClientImpl implements ApiTagDescriptionsCli
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -822,7 +822,7 @@ public final class ApiTagDescriptionsClientImpl implements ApiTagDescriptionsCli
      * @return tag description in scope of API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TagDescriptionContractInner> getWithResponse(
+    public ApiTagDescriptionsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String apiId, String tagDescriptionId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, apiId, tagDescriptionId, context).block();
     }
@@ -899,7 +899,7 @@ public final class ApiTagDescriptionsClientImpl implements ApiTagDescriptionsCli
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1092,7 +1092,7 @@ public final class ApiTagDescriptionsClientImpl implements ApiTagDescriptionsCli
      * @return contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TagDescriptionContractInner> createOrUpdateWithResponse(
+    public ApiTagDescriptionsCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -1169,7 +1169,7 @@ public final class ApiTagDescriptionsClientImpl implements ApiTagDescriptionsCli
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1347,7 +1347,7 @@ public final class ApiTagDescriptionsClientImpl implements ApiTagDescriptionsCli
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

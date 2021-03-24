@@ -41,10 +41,9 @@ import com.azure.search.documents.models.AutocompleteResult;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
-import reactor.core.publisher.Mono;
-
 import java.util.List;
 import java.util.UUID;
+import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Documents. */
 public final class DocumentsImpl {

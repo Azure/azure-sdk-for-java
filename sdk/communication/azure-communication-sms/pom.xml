@@ -41,15 +41,15 @@
   <properties>
     <src.dir>src/main</src.dir>
     <test.dir>src/test</test.dir>
-    <jacoco.min.linecoverage>0.75</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.75</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.70</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.70</jacoco.min.branchcoverage>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.14.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.14.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

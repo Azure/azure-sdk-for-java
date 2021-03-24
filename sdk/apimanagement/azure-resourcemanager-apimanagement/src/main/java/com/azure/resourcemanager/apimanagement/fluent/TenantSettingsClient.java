@@ -7,10 +7,10 @@ package com.azure.resourcemanager.apimanagement.fluent;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.TenantSettingsContractInner;
 import com.azure.resourcemanager.apimanagement.models.SettingsTypeName;
+import com.azure.resourcemanager.apimanagement.models.TenantSettingsGetResponse;
 
 /** An instance of this class provides access to all the operations defined in TenantSettingsClient. */
 public interface TenantSettingsClient {
@@ -70,6 +70,6 @@ public interface TenantSettingsClient {
      * @return tenant settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TenantSettingsContractInner> getWithResponse(
+    TenantSettingsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, SettingsTypeName settingsType, Context context);
 }

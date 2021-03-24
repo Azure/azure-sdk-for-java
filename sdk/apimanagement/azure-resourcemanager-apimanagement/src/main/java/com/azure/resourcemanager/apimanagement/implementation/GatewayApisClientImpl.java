@@ -215,7 +215,7 @@ public final class GatewayApisClientImpl implements GatewayApisClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -481,7 +481,7 @@ public final class GatewayApisClientImpl implements GatewayApisClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -592,7 +592,7 @@ public final class GatewayApisClientImpl implements GatewayApisClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public GatewayApisGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, String apiId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, gatewayId, apiId, context).block();
     }
@@ -658,7 +658,7 @@ public final class GatewayApisClientImpl implements GatewayApisClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -887,7 +887,7 @@ public final class GatewayApisClientImpl implements GatewayApisClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1035,7 +1035,7 @@ public final class GatewayApisClientImpl implements GatewayApisClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

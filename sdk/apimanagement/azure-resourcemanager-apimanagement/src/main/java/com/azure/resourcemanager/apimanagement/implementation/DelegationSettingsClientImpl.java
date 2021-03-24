@@ -187,7 +187,7 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -278,7 +278,8 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
      * @return the entity state (Etag) version of the DelegationSettings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(String resourceGroupName, String serviceName, Context context) {
+    public DelegationSettingsGetEntityTagResponse getEntityTagWithResponse(
+        String resourceGroupName, String serviceName, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, context).block();
     }
 
@@ -326,7 +327,7 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -425,7 +426,7 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
      * @return delegation Settings for the Portal.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PortalDelegationSettingsInner> getWithResponse(
+    public DelegationSettingsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, context).block();
     }
@@ -488,7 +489,7 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -670,7 +671,7 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -870,7 +871,7 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

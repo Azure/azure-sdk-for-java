@@ -1,30 +1,43 @@
-- name: Azure Spring Boot Bom
-  content:
-    - name: Azure Spring Boot Bom
-      id: spring-boot-bom
-      description: BOM for Microsoft Azure Spring Boot support.
-      artifacts:
+# This file is aimed to build package reference of Azure Spring libraries to support an Intellij plugin for Azure SDK reference.
+#
+# The yaml follows structure of Spring Initializr's library mapping schema(https://github.com/spring-io/start.spring.io/blob/master/start-site/src/main/resources/application.yml) and thus is compatible of keys under property of `dependencies` to describe a library.
+# To make things clear, we call sdk/spring/spring-reference.yml as Spring yaml, and Spring Initializr's library mapping schema as template yaml.
+# For those keys not listed in Spring yaml, we can add them in case of future usage.
+#
+# Hierarchy of Spring yaml is organized as : Service -> Feature -> Package. Taking Cosmos DB starter as example, it is described as Cosmos DB -> Spring Data Cosmos -> azure-spring-boot-starter-cosmos.
+
+- name: Azure Spring Boot Bom                                                                       # Name of Azure service which the spring library relies on.
+                                                                                                    #    - For Spring library of which the underlying package is covered by [java-packages.csv](https://github.com/Azure/azure-sdk/blob/master/_data/releases/latest/java-packages.csv), we use its underlying library's `ServiceName`as the service name.
+                                                                                                    #    - For the rest like AAD starter, we create the service name ourselves, and try to follow the specification of java-packages.csv.
+  content:                                                                                          # Features under an Azure Service.
+    - name: Azure Spring Boot Bom                                                                   # Name of a feature under the associated Azure service which the spring library relies on.
+                                                                                                    #    - For Spring library of which the underlying package is covered by [java-packages.csv](https://github.com/Azure/azure-sdk/blob/master/_data/releases/latest/java-packages.csv), we use its underlying library's `DisplayName`as the feature name.
+                                                                                                    #    - For the rest, we create the feature name ourselves, and try to follow the specification of java-packages.csv.
+      id: spring-boot-bom                                                                           # Id of feature name. It is not used now and reserved in case of future usage for reference.
+      description: BOM for Microsoft Azure Spring Boot support.                                     # Introduction of a feature.
+      artifacts:                                                                                    # Package list of a service feature.
         - artifactId: azure-spring-boot-bom
           groupId: com.azure.spring
-          versionGA: 3.2.0
-          versionPreview: 3.0.0-beta.1
-          type: spring
-          links:
-            repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-bom/3.2.0/jar/
-            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/boms/azure-spring-boot-bom
-          springProperties:
-            compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
-            mappings:
-              - compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
-                groupId: com.microsoft.azure
-                artifactId: azure-spring-boot-bom
-                version: 2.2.4
+          versionGA: 3.2.0                                                                          # The latest GA version if exists.
+          versionPreview: 3.0.0-beta.1                                                              # The latest preview version if exists.
+          type: spring                                                                              # To mark if the package is Spring library, Azure service client library or management library, supported values are `spring`, `client` and `mgmt`.
+          links:                                                                                    # Link list of each package. For below link properties, we refer values in https://azure.github.io/azure-sdk/releases/latest/all/java.html.
+            repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-bom/3.2.0/jar/               # Maven repository url.
+            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/boms/azure-spring-boot-bom              # Github repository url.
+          springProperties:                                                                         # All spring specific properties copied from the template yaml.
+            starter: false                                                                          # Boolean value to mark if the library is a starter or not.
+            compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"                                         # The compatible range for Spring Boot version.
+            mappings:                                                                               # If a library shows different compatibilities towards different Spring Boot/Cloud version, we use this property for their version mapping.
+              - compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"                                      # Spring Boot version range.
+                groupId: com.microsoft.azure                                                        # The associated group-id of the target Azure Spring library version.
+                artifactId: azure-spring-boot-bom                                                   # The associated artifact-id of the target Azure Spring library version.
+                version: 2.2.4                                                                      # The target version of Azure Spring library mapped with Spring Boot version range.
 - name: Active Directory
   content:
     - name: Active Directory
       id: active-directory
       description: Azure Active Directory (Azure AD) is Microsoft’s cloud-based identity and access management service, which helps your employees sign in and access resources.
-      msdocs: https://docs.microsoft.com/azure/active-directory/fundamentals/
+      msdocs: https://docs.microsoft.com/azure/active-directory/fundamentals/                       # Product documentation.
       artifacts:
         - artifactId: azure-spring-boot-starter-active-directory
           groupId: com.azure.spring
@@ -32,11 +45,11 @@
           type: spring
           links:
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-active-directory/3.2.0/jar
-            msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-active-directory-readme?view=azure-java-stable
+            msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-active-directory-readme?view=azure-java-stable           # Documentation url of repository azure-docs-for-java.
             github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-active-directory
           springProperties:
             starter: true
-            bom: spring-boot-bom
+            bom: spring-boot-bom                                                                    # To map the bom package of each Spring library, we use this property to index the `id` property of a library's bom.
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             mappings:
               - compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
