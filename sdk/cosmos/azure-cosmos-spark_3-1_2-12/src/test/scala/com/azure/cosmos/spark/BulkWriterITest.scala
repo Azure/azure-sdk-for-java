@@ -30,7 +30,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     val bulkWriter = new BulkWriter(container, writeConfig)
 
     val items = mutable.Map[String, ObjectNode]()
-    for(_ <- 0 until 10000) {
+    for(_ <- 0 until 500) {
       val item = getItem(UUID.randomUUID().toString)
       val id = item.get("id").textValue()
       items += (id -> item)
@@ -55,7 +55,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     val bulkWriter = new BulkWriter(container, writeConfig)
     val items = new mutable.HashMap[String, mutable.Set[ObjectNode]] with mutable.MultiMap[String, ObjectNode]
 
-    for(i <- 0 until 10000) {
+    for(i <- 0 until 1000) {
       val item = getItem((i % 100).toString)
       val id = item.get("id").textValue()
       items.addBinding(id, item)
