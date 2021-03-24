@@ -68,51 +68,52 @@ public class AnalyzeBatchActionsAsync {
                     operationDetail.getActionsInTotal());
                 return result.getFinalResult();
             })
-            .subscribe(analyzeTasksResultPagedFlux -> analyzeTasksResultPagedFlux.byPage().subscribe(perPage -> {
-                System.out.printf("Response code: %d, Continuation Token: %s.%n",
-                    perPage.getStatusCode(), perPage.getContinuationToken());
+            .subscribe(analyzeTasksResultPagedFlux -> analyzeTasksResultPagedFlux.byPage().subscribe(
+                perPage -> {
+                    System.out.printf("Response code: %d, Continuation Token: %s.%n",
+                        perPage.getStatusCode(), perPage.getContinuationToken());
 
-                for (AnalyzeBatchActionsResult actionsResult : perPage.getElements()) {
-                    System.out.println("Entities recognition action results:");
-                    for (RecognizeEntitiesActionResult actionResult : actionsResult.getRecognizeEntitiesActionResults()) {
-                        if (!actionResult.isError()) {
-                            for (RecognizeEntitiesResult documentResult : actionResult.getResult()) {
-                                if (!documentResult.isError()) {
-                                    for (CategorizedEntity entity : documentResult.getEntities()) {
-                                        System.out.printf("\tText: %s, category: %s, confidence score: %f.%n",
-                                            entity.getText(), entity.getCategory(), entity.getConfidenceScore());
+                    for (AnalyzeBatchActionsResult actionsResult : perPage.getElements()) {
+                        System.out.println("Entities recognition action results:");
+                        for (RecognizeEntitiesActionResult actionResult : actionsResult.getRecognizeEntitiesActionResults()) {
+                            if (!actionResult.isError()) {
+                                for (RecognizeEntitiesResult documentResult : actionResult.getResult()) {
+                                    if (!documentResult.isError()) {
+                                        for (CategorizedEntity entity : documentResult.getEntities()) {
+                                            System.out.printf("\tText: %s, category: %s, confidence score: %f.%n",
+                                                entity.getText(), entity.getCategory(), entity.getConfidenceScore());
+                                        }
+                                    } else {
+                                        System.out.printf("\tCannot recognize entities. Error: %s%n",
+                                            documentResult.getError().getMessage());
                                     }
-                                } else {
-                                    System.out.printf("\tCannot recognize entities. Error: %s%n",
-                                        documentResult.getError().getMessage());
                                 }
+                            } else {
+                                System.out.printf("\tCannot execute Entities Recognition action. Error: %s%n",
+                                    actionResult.getError().getMessage());
                             }
-                        } else {
-                            System.out.printf("\tCannot execute Entities Recognition action. Error: %s%n",
-                                actionResult.getError().getMessage());
                         }
-                    }
 
-                    System.out.println("Key phrases extraction action results:");
-                    for (ExtractKeyPhrasesActionResult actionResult : actionsResult.getExtractKeyPhrasesActionResults()) {
-                        if (!actionResult.isError()) {
-                            for (ExtractKeyPhraseResult documentResult : actionResult.getResult()) {
-                                if (!documentResult.isError()) {
-                                    System.out.println("\tExtracted phrases:");
-                                    for (String keyPhrases : documentResult.getKeyPhrases()) {
-                                        System.out.printf("\t\t%s.%n", keyPhrases);
+                        System.out.println("Key phrases extraction action results:");
+                        for (ExtractKeyPhrasesActionResult actionResult : actionsResult.getExtractKeyPhrasesActionResults()) {
+                            if (!actionResult.isError()) {
+                                for (ExtractKeyPhraseResult documentResult : actionResult.getResult()) {
+                                    if (!documentResult.isError()) {
+                                        System.out.println("\tExtracted phrases:");
+                                        for (String keyPhrases : documentResult.getKeyPhrases()) {
+                                            System.out.printf("\t\t%s.%n", keyPhrases);
+                                        }
+                                    } else {
+                                        System.out.printf("\tCannot extract key phrases. Error: %s%n",
+                                            documentResult.getError().getMessage());
                                     }
-                                } else {
-                                    System.out.printf("\tCannot extract key phrases. Error: %s%n",
-                                        documentResult.getError().getMessage());
                                 }
+                            } else {
+                                System.out.printf("\tCannot execute Key Phrases Extraction action. Error: %s%n",
+                                    actionResult.getError().getMessage());
                             }
-                        } else {
-                            System.out.printf("\tCannot execute Key Phrases Extraction action. Error: %s%n",
-                                actionResult.getError().getMessage());
                         }
-                    }
-                }},
+                    } },
                 ex -> System.out.println("Error listing pages: " + ex.getMessage()),
                 () -> System.out.println("Successfully listed all pages")));
 
