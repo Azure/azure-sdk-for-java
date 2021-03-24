@@ -44,16 +44,6 @@ jobs:
           ArtifactName: 'packages'
 
     steps:
-      - ${{if eq(parameters.TestPipeline, 'true')}}:
-        - task: PowerShell@2
-          displayName: Prep template pipeline for release
-          condition: succeeded()
-          inputs:
-            pwsh: true
-            workingDirectory: $(Build.SourcesDirectory)
-            filePath: eng/scripts/SetTestPipelineVersion.ps1
-            arguments: '-BuildID $(Build.BuildId)'
-
       - script: |
           echo "##vso[build.addbuildtag]Scheduled"
         displayName: 'Tag scheduled builds'
@@ -63,6 +53,12 @@ jobs:
         displayName: 'Use Python 3.6'
         inputs:
           versionSpec: '3.6'
+
+      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+        parameters:
+          PackageName: "azure-sdk-template"
+          ServiceDirectory: "template"
+          TestPipeline: ${{ parameters.TestPipeline }}
 
       - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
         parameters:
@@ -150,6 +146,12 @@ jobs:
         displayName: 'Use Python 3.6'
         inputs:
           versionSpec: '3.6'
+
+      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+        parameters:
+          PackageName: "azure-sdk-template"
+          ServiceDirectory: "template"
+          TestPipeline: ${{ parameters.TestPipeline }}
 
       - script: |
           pip install setuptools wheel
