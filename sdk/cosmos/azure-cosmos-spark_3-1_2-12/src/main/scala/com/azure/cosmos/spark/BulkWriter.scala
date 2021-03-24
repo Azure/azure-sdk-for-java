@@ -8,7 +8,7 @@ import com.azure.cosmos.spark.BulkWriter.MaxNumberOfThreadsPerCPUCore
 import com.azure.cosmos.{BulkOperations, CosmosAsyncContainer, CosmosBulkOperationResponse, CosmosException, CosmosItemOperation}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import reactor.core.Disposable
-import reactor.core.publisher.EmitterProcessor
+import reactor.core.publisher.{EmitterProcessor, Sinks}
 import reactor.core.scala.publisher.SMono.PimpJFlux
 import reactor.core.scala.publisher.{SFlux, SMono}
 import reactor.core.scheduler.Schedulers
@@ -38,8 +38,7 @@ class BulkWriter(container: CosmosAsyncContainer,
   private val pendingTasksCompleted = lock.newCondition
   private val activeTasks = new AtomicInteger(0)
   private val errorCaptureFirstException = new AtomicReference[Throwable]()
-
-  private val bulkInputEmitter: EmitterProcessor[CosmosItemOperation] = EmitterProcessor.create[CosmosItemOperation]()
+  private val bulkInputEmitter: Sinks.Many[CosmosItemOperation] = Sinks.many().unicast().onBackpressureBuffer()
   // TODO: moderakh discuss the context issue in the core SDK bulk api with the team.
   // public <TContext> Flux<CosmosBulkOperationResponse<TContext>> processBulkOperations(
   //    Flux<CosmosItemOperation> operations,
@@ -60,7 +59,7 @@ class BulkWriter(container: CosmosAsyncContainer,
 
   private val subscriptionDisposable: Disposable = {
     val bulkOperationResponseFlux: SFlux[CosmosBulkOperationResponse[Object]] =
-      container.processBulkOperations[Object](bulkInputEmitter).asScala
+      container.processBulkOperations[Object](bulkInputEmitter.asFlux()).asScala
 
     bulkOperationResponseFlux.subscribe(
       resp => {
@@ -173,7 +172,7 @@ class BulkWriter(container: CosmosAsyncContainer,
     }
 
     activeOperations.put(bulkItemOperation, operationContext)
-    bulkInputEmitter.onNext(bulkItemOperation)
+    bulkInputEmitter.tryEmitNext(bulkItemOperation)
   }
 
   // the caller has to ensure that after invoking this method scheduleWrite doesn't get invoked
@@ -204,7 +203,7 @@ class BulkWriter(container: CosmosAsyncContainer,
 
         logInfo("invoking bulkInputEmitter.onComplete()")
         semaphore.release(activeTasks.get())
-        bulkInputEmitter.onComplete()
+        bulkInputEmitter.tryEmitComplete()
 
         // which error to report?
         if (errorCaptureFirstException.get() != null) {
