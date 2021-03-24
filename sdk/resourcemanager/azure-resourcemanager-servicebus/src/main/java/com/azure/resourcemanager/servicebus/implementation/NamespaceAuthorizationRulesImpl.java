@@ -74,7 +74,6 @@ class NamespaceAuthorizationRulesImpl
         return new NamespaceAuthorizationRuleImpl(this.resourceGroupName,
                 this.namespaceName,
                 name,
-                this.region,
                 new SBAuthorizationRuleInner(),
                 this.manager());
     }
@@ -88,7 +87,6 @@ class NamespaceAuthorizationRulesImpl
         return new NamespaceAuthorizationRuleImpl(this.resourceGroupName,
                 this.namespaceName,
                 inner.name(),
-                this.region,
                 inner,
                 this.manager());
     }

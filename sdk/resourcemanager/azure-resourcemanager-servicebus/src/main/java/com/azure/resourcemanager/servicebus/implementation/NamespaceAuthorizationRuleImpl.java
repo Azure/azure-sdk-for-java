@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.servicebus.implementation;
 
-import com.azure.core.management.Region;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 import com.azure.resourcemanager.servicebus.models.AccessKeys;
 import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
@@ -23,16 +22,13 @@ class NamespaceAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<Namespace
         NamespaceAuthorizationRule,
         NamespaceAuthorizationRule.Definition,
         NamespaceAuthorizationRule.Update {
-    private final Region region;
 
     NamespaceAuthorizationRuleImpl(String resourceGroupName,
                                    String namespaceName,
                                    String name,
-                                   Region region,
                                    SBAuthorizationRuleInner inner,
                                    ServiceBusManager manager) {
         super(name, inner, manager);
-        this.region = region;
         this.withExistingParentResource(resourceGroupName, namespaceName);
     }
 

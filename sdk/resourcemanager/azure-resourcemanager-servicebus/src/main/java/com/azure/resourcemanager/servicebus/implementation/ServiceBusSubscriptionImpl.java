@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.servicebus.implementation;
 
-import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
@@ -31,18 +30,15 @@ class ServiceBusSubscriptionImpl extends
         ServiceBusSubscription.Definition,
         ServiceBusSubscription.Update {
     private final String namespaceName;
-    private final Region region;
 
     ServiceBusSubscriptionImpl(String resourceGroupName,
                                String namespaceName,
                                String topicName,
                                String name,
-                               Region region,
                                SBSubscriptionInner inner,
                                ServiceBusManager manager) {
         super(name, inner, manager);
         this.namespaceName = namespaceName;
-        this.region = region;
         this.withExistingParentResource(resourceGroupName, topicName);
     }
 

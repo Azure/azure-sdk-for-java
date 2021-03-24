@@ -86,7 +86,6 @@ class QueueAuthorizationRulesImpl
                 this.namespaceName,
                 this.queueName,
                 name,
-                this.region,
                 new SBAuthorizationRuleInner(),
                 this.manager());
     }
@@ -100,7 +99,6 @@ class QueueAuthorizationRulesImpl
                 this.namespaceName,
                 this.queueName,
                 inner.name(),
-                this.region,
                 inner,
                 this.manager());
     }

@@ -86,7 +86,6 @@ class TopicAuthorizationRulesImpl
                 this.namespaceName,
                 this.topicName,
                 name,
-                this.region,
                 new SBAuthorizationRuleInner(),
                 this.manager());
     }
@@ -100,7 +99,6 @@ class TopicAuthorizationRulesImpl
                 this.namespaceName,
                 this.topicName,
                 inner.name(),
-                this.region,
                 inner,
                 this.manager());
     }

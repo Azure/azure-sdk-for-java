@@ -80,7 +80,6 @@ class ServiceBusSubscriptionsImpl
                 this.namespaceName,
                 this.topicName,
                 name,
-                this.region,
                 new SBSubscriptionInner(),
                 this.manager());
     }
@@ -91,7 +90,6 @@ class ServiceBusSubscriptionsImpl
                 this.namespaceName,
                 this.topicName,
                 inner.name(),
-                this.region,
                 inner,
                 this.manager());
     }
