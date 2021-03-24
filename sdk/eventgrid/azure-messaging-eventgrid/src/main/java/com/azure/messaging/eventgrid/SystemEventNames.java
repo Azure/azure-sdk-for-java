@@ -447,11 +447,18 @@ public final class SystemEventNames {
     public static final String COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD_WITH_USER =
         "Microsoft.Communication.ChatParticipantAddedToThreadWithUser";
 
+    /**
+     * Please use {@link #COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD} instead.
+     */
     @Deprecated
     public static final String COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD =
         "Microsoft.Communication.ChatThreadParticipantRemoved";
     public static final String COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD =
         "Microsoft.Communication.ChatThreadParticipantRemoved";
+
+    /**
+     * Please use {@link #COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD_WITH_USER} instead.
+     */
     @Deprecated
     public static final String COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD_WITH_USER =
         "Microsoft.Communication.ChatParticipantRemovedFromThreadWithUser";
