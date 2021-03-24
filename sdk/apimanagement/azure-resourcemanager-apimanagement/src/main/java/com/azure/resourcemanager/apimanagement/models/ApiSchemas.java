@@ -79,7 +79,7 @@ public interface ApiSchemas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the schema specified by its identifier.
      */
-    Response<Void> getEntityTagWithResponse(
+    ApiSchemasGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String schemaId, Context context);
 
     /**

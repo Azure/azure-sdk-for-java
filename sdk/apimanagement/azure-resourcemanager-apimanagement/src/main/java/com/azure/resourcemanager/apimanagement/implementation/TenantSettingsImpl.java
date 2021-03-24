@@ -14,6 +14,7 @@ import com.azure.resourcemanager.apimanagement.fluent.models.TenantSettingsContr
 import com.azure.resourcemanager.apimanagement.models.SettingsTypeName;
 import com.azure.resourcemanager.apimanagement.models.TenantSettings;
 import com.azure.resourcemanager.apimanagement.models.TenantSettingsContract;
+import com.azure.resourcemanager.apimanagement.models.TenantSettingsGetResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class TenantSettingsImpl implements TenantSettings {
@@ -53,7 +54,7 @@ public final class TenantSettingsImpl implements TenantSettings {
 
     public Response<TenantSettingsContract> getWithResponse(
         String resourceGroupName, String serviceName, SettingsTypeName settingsType, Context context) {
-        Response<TenantSettingsContractInner> inner =
+        TenantSettingsGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, settingsType, context);
         if (inner != null) {
             return new SimpleResponse<>(

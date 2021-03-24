@@ -68,7 +68,7 @@ public interface PortalRevisions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return developer portal revision specified by its identifier.
      */
-    Response<Void> getEntityTagWithResponse(
+    PortalRevisionsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String portalRevisionId, Context context);
 
     /**

@@ -32,7 +32,8 @@ public interface DelegationSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the DelegationSettings.
      */
-    Response<Void> getEntityTagWithResponse(String resourceGroupName, String serviceName, Context context);
+    DelegationSettingsGetEntityTagResponse getEntityTagWithResponse(
+        String resourceGroupName, String serviceName, Context context);
 
     /**
      * Get Delegation Settings for the Portal.

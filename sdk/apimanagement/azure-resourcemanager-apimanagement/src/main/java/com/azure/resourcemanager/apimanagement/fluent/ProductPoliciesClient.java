@@ -12,6 +12,9 @@ import com.azure.resourcemanager.apimanagement.fluent.models.PolicyCollectionInn
 import com.azure.resourcemanager.apimanagement.fluent.models.PolicyContractInner;
 import com.azure.resourcemanager.apimanagement.models.PolicyExportFormat;
 import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
+import com.azure.resourcemanager.apimanagement.models.ProductPoliciesCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.ProductPoliciesGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.ProductPoliciesGetResponse;
 
 /** An instance of this class provides access to all the operations defined in ProductPoliciesClient. */
 public interface ProductPoliciesClient {
@@ -73,7 +76,7 @@ public interface ProductPoliciesClient {
      * @return the ETag of the policy configuration at the Product level.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    ProductPoliciesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String productId, PolicyIdName policyId, Context context);
 
     /**
@@ -106,7 +109,7 @@ public interface ProductPoliciesClient {
      * @return the policy configuration at the Product level.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyContractInner> getWithResponse(
+    ProductPoliciesGetResponse getWithResponse(
         String resourceGroupName,
         String serviceName,
         String productId,
@@ -151,7 +154,7 @@ public interface ProductPoliciesClient {
      * @return policy Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyContractInner> createOrUpdateWithResponse(
+    ProductPoliciesCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String productId,

@@ -12,6 +12,8 @@ import com.azure.resourcemanager.apimanagement.fluent.SignUpSettingsClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.PortalSignupSettingsInner;
 import com.azure.resourcemanager.apimanagement.models.PortalSignupSettings;
 import com.azure.resourcemanager.apimanagement.models.SignUpSettings;
+import com.azure.resourcemanager.apimanagement.models.SignUpSettingsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.SignUpSettingsGetResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SignUpSettingsImpl implements SignUpSettings {
@@ -31,7 +33,8 @@ public final class SignUpSettingsImpl implements SignUpSettings {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName);
     }
 
-    public Response<Void> getEntityTagWithResponse(String resourceGroupName, String serviceName, Context context) {
+    public SignUpSettingsGetEntityTagResponse getEntityTagWithResponse(
+        String resourceGroupName, String serviceName, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, context);
     }
 
@@ -46,8 +49,7 @@ public final class SignUpSettingsImpl implements SignUpSettings {
 
     public Response<PortalSignupSettings> getWithResponse(
         String resourceGroupName, String serviceName, Context context) {
-        Response<PortalSignupSettingsInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serviceName, context);
+        SignUpSettingsGetResponse inner = this.serviceClient().getWithResponse(resourceGroupName, serviceName, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),

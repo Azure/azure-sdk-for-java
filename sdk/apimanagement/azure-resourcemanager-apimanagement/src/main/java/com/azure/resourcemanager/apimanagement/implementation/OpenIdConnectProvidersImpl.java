@@ -14,6 +14,9 @@ import com.azure.resourcemanager.apimanagement.fluent.models.ClientSecretContrac
 import com.azure.resourcemanager.apimanagement.fluent.models.OpenidConnectProviderContractInner;
 import com.azure.resourcemanager.apimanagement.models.ClientSecretContract;
 import com.azure.resourcemanager.apimanagement.models.OpenIdConnectProviders;
+import com.azure.resourcemanager.apimanagement.models.OpenIdConnectProvidersGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.OpenIdConnectProvidersGetResponse;
+import com.azure.resourcemanager.apimanagement.models.OpenIdConnectProvidersListSecretsResponse;
 import com.azure.resourcemanager.apimanagement.models.OpenidConnectProviderContract;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -48,7 +51,7 @@ public final class OpenIdConnectProvidersImpl implements OpenIdConnectProviders 
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, opid);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public OpenIdConnectProvidersGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String opid, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, opid, context);
     }
@@ -64,7 +67,7 @@ public final class OpenIdConnectProvidersImpl implements OpenIdConnectProviders 
 
     public Response<OpenidConnectProviderContract> getWithResponse(
         String resourceGroupName, String serviceName, String opid, Context context) {
-        Response<OpenidConnectProviderContractInner> inner =
+        OpenIdConnectProvidersGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, opid, context);
         if (inner != null) {
             return new SimpleResponse<>(
@@ -97,7 +100,7 @@ public final class OpenIdConnectProvidersImpl implements OpenIdConnectProviders 
 
     public Response<ClientSecretContract> listSecretsWithResponse(
         String resourceGroupName, String serviceName, String opid, Context context) {
-        Response<ClientSecretContractInner> inner =
+        OpenIdConnectProvidersListSecretsResponse inner =
             this.serviceClient().listSecretsWithResponse(resourceGroupName, serviceName, opid, context);
         if (inner != null) {
             return new SimpleResponse<>(

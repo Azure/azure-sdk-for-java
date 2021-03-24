@@ -16,6 +16,10 @@ import com.azure.resourcemanager.apimanagement.models.AppType;
 import com.azure.resourcemanager.apimanagement.models.UserCreateParameters;
 import com.azure.resourcemanager.apimanagement.models.UserTokenParameters;
 import com.azure.resourcemanager.apimanagement.models.UserUpdateParameters;
+import com.azure.resourcemanager.apimanagement.models.UsersCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.UsersGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.UsersGetResponse;
+import com.azure.resourcemanager.apimanagement.models.UsersUpdateResponse;
 
 /** An instance of this class provides access to all the operations defined in UsersClient. */
 public interface UsersClient {
@@ -90,7 +94,7 @@ public interface UsersClient {
      * @return the entity state (Etag) version of the user specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    UsersGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String userId, Context context);
 
     /**
@@ -120,8 +124,7 @@ public interface UsersClient {
      * @return the details of the user specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<UserContractInner> getWithResponse(
-        String resourceGroupName, String serviceName, String userId, Context context);
+    UsersGetResponse getWithResponse(String resourceGroupName, String serviceName, String userId, Context context);
 
     /**
      * Creates or Updates a user.
@@ -155,7 +158,7 @@ public interface UsersClient {
      * @return user details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<UserContractInner> createOrUpdateWithResponse(
+    UsersCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String userId,
@@ -198,7 +201,7 @@ public interface UsersClient {
      * @return user details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<UserContractInner> updateWithResponse(
+    UsersUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String userId,

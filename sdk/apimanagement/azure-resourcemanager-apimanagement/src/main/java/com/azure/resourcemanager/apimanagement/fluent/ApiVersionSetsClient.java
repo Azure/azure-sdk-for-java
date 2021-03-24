@@ -11,6 +11,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.ApiVersionSetContractInner;
 import com.azure.resourcemanager.apimanagement.models.ApiVersionSetUpdateParameters;
+import com.azure.resourcemanager.apimanagement.models.ApiVersionSetsCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiVersionSetsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiVersionSetsGetResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiVersionSetsUpdateResponse;
 
 /** An instance of this class provides access to all the operations defined in ApiVersionSetsClient. */
 public interface ApiVersionSetsClient {
@@ -72,7 +76,7 @@ public interface ApiVersionSetsClient {
      * @return the entity state (Etag) version of the Api Version Set specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    ApiVersionSetsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String versionSetId, Context context);
 
     /**
@@ -102,7 +106,7 @@ public interface ApiVersionSetsClient {
      * @return the details of the Api Version Set specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApiVersionSetContractInner> getWithResponse(
+    ApiVersionSetsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String versionSetId, Context context);
 
     /**
@@ -136,7 +140,7 @@ public interface ApiVersionSetsClient {
      * @return api Version Set Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApiVersionSetContractInner> createOrUpdateWithResponse(
+    ApiVersionSetsCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String versionSetId,
@@ -182,7 +186,7 @@ public interface ApiVersionSetsClient {
      * @return api Version Set Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApiVersionSetContractInner> updateWithResponse(
+    ApiVersionSetsUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String versionSetId,

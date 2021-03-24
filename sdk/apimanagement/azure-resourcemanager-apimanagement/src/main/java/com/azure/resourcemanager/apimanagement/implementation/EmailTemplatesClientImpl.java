@@ -245,7 +245,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -468,7 +468,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -567,7 +567,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @return the entity state (Etag) version of the email template specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public EmailTemplatesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, TemplateName templateName, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, templateName, context).block();
     }
@@ -622,7 +622,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -730,7 +730,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @return the details of the email template specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EmailTemplateContractInner> getWithResponse(
+    public EmailTemplatesGetResponse getWithResponse(
         String resourceGroupName, String serviceName, TemplateName templateName, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, templateName, context).block();
     }
@@ -798,7 +798,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1043,7 +1043,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1187,7 +1187,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @return email Template details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EmailTemplateContractInner> updateWithResponse(
+    public EmailTemplatesUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         TemplateName templateName,
@@ -1254,7 +1254,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1403,7 +1403,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

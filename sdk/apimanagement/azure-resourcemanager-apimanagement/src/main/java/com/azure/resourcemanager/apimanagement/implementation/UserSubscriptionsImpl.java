@@ -13,6 +13,7 @@ import com.azure.resourcemanager.apimanagement.fluent.UserSubscriptionsClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.SubscriptionContractInner;
 import com.azure.resourcemanager.apimanagement.models.SubscriptionContract;
 import com.azure.resourcemanager.apimanagement.models.UserSubscriptions;
+import com.azure.resourcemanager.apimanagement.models.UserSubscriptionsGetResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class UserSubscriptionsImpl implements UserSubscriptions {
@@ -59,7 +60,7 @@ public final class UserSubscriptionsImpl implements UserSubscriptions {
 
     public Response<SubscriptionContract> getWithResponse(
         String resourceGroupName, String serviceName, String userId, String sid, Context context) {
-        Response<SubscriptionContractInner> inner =
+        UserSubscriptionsGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, userId, sid, context);
         if (inner != null) {
             return new SimpleResponse<>(

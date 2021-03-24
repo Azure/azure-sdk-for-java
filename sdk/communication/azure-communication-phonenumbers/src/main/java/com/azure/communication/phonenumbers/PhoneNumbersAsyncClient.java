@@ -127,6 +127,7 @@ public final class PhoneNumbersAsyncClient {
      * @param searchOptions The phone number search options.
      * @return A {@link PollerFlux} object with the reservation result.
      * @throws NullPointerException if {@code countryCode} or {@code searchRequest} is null.
+     * @throws RuntimeException if search operation fails.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
@@ -236,6 +237,7 @@ public final class PhoneNumbersAsyncClient {
      * @param searchId ID of the search.
      * @return A {@link PollerFlux} object.
      * @throws NullPointerException if {@code searchId} is null.
+     * @throws RuntimeException if purchase operation fails.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId) {
@@ -280,6 +282,7 @@ public final class PhoneNumbersAsyncClient {
      *                    as %2B.
      * @return A {@link PollerFlux} object.
      * @throws NullPointerException if {@code phoneNumber} is null.
+     * @throws RuntimeException if release operation fails.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PhoneNumberOperation, ReleasePhoneNumberResult> beginReleasePhoneNumber(String phoneNumber) {
@@ -322,6 +325,7 @@ public final class PhoneNumbersAsyncClient {
      * @param capabilities Update capabilities of a purchased phone number.
      * @return A {@link PollerFlux} object.
      * @throws NullPointerException if {@code phoneNumber} or {@code capabilities} is null.
+     * @throws RuntimeException if update capabilities operation fails.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PhoneNumberOperation, PurchasedPhoneNumber>
@@ -373,12 +377,16 @@ public final class PhoneNumbersAsyncClient {
     private Mono<PhoneNumberOperation> getOperation(String operationId) {
         return client.getOperationAsync(operationId)
             .flatMap((PhoneNumberRawOperation rawOperation) -> {
-                PhoneNumberOperation operation = new PhoneNumberOperation()
-                    .setCreatedDateTime(rawOperation.getCreatedDateTime())
-                    .setId(rawOperation.getId())
-                    .setLastActionDateTime(rawOperation.getLastActionDateTime())
-                    .setOperationType(rawOperation.getOperationType())
-                    .setStatus(rawOperation.getStatus());
+                if (rawOperation.getError() != null) {
+                    return monoError(logger, new RuntimeException(rawOperation.getError().getMessage()));
+                }
+                PhoneNumberOperation operation = new PhoneNumberOperation(
+                    rawOperation.getStatus(),
+                    rawOperation.getResourceLocation(),
+                    rawOperation.getCreatedDateTime(),
+                    rawOperation.getId(),
+                    rawOperation.getOperationType(),
+                    rawOperation.getLastActionDateTime());
                 return Mono.just(operation);
             });
     }

@@ -170,7 +170,7 @@ public final class IssuesClientImpl implements IssuesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -408,7 +408,7 @@ public final class IssuesClientImpl implements IssuesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -515,7 +515,7 @@ public final class IssuesClientImpl implements IssuesClient {
      * @return aPI Management issue details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IssueContractInner> getWithResponse(
+    public IssuesGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String issueId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, issueId, context).block();
     }
@@ -552,7 +552,7 @@ public final class IssuesClientImpl implements IssuesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

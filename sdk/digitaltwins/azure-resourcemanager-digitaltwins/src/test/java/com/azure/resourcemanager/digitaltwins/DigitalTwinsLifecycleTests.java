@@ -18,7 +18,6 @@ import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,11 +29,6 @@ public class DigitalTwinsLifecycleTests extends TestBase {
     private static final String DEFAULT_INSTANCE_NAME = "DigitalTwinsSdk";
     private static final Region DEFAULT_REGION = Region.US_WEST_CENTRAL;
     private static final String DEFAULT_RESOURCE_GROUP_NAME = "rg2b9842374ecf8";
-
-    @Override
-    public void teardownTest(TestInfo testInfo) {
-        // testContextManager is null
-    }
 
     @Test
     @DoNotRecord(skipInPlayback = true)

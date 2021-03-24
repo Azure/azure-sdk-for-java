@@ -9,6 +9,8 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.PortalSigninSettingsInner;
+import com.azure.resourcemanager.apimanagement.models.SignInSettingsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.SignInSettingsGetResponse;
 
 /** An instance of this class provides access to all the operations defined in SignInSettingsClient. */
 public interface SignInSettingsClient {
@@ -36,7 +38,8 @@ public interface SignInSettingsClient {
      * @return the entity state (Etag) version of the SignInSettings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(String resourceGroupName, String serviceName, Context context);
+    SignInSettingsGetEntityTagResponse getEntityTagWithResponse(
+        String resourceGroupName, String serviceName, Context context);
 
     /**
      * Get Sign In Settings for the Portal.
@@ -63,7 +66,7 @@ public interface SignInSettingsClient {
      * @return sign In Settings for the Portal.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PortalSigninSettingsInner> getWithResponse(String resourceGroupName, String serviceName, Context context);
+    SignInSettingsGetResponse getWithResponse(String resourceGroupName, String serviceName, Context context);
 
     /**
      * Update Sign-In settings.

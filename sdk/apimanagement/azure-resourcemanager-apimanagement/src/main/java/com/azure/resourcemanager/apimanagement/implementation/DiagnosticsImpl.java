@@ -13,6 +13,10 @@ import com.azure.resourcemanager.apimanagement.fluent.DiagnosticsClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.DiagnosticContractInner;
 import com.azure.resourcemanager.apimanagement.models.DiagnosticContract;
 import com.azure.resourcemanager.apimanagement.models.Diagnostics;
+import com.azure.resourcemanager.apimanagement.models.DiagnosticsCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.DiagnosticsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.DiagnosticsGetResponse;
+import com.azure.resourcemanager.apimanagement.models.DiagnosticsUpdateResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DiagnosticsImpl implements Diagnostics {
@@ -45,7 +49,7 @@ public final class DiagnosticsImpl implements Diagnostics {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, diagnosticId);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public DiagnosticsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String diagnosticId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, diagnosticId, context);
     }
@@ -61,7 +65,7 @@ public final class DiagnosticsImpl implements Diagnostics {
 
     public Response<DiagnosticContract> getWithResponse(
         String resourceGroupName, String serviceName, String diagnosticId, Context context) {
-        Response<DiagnosticContractInner> inner =
+        DiagnosticsGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, diagnosticId, context);
         if (inner != null) {
             return new SimpleResponse<>(
@@ -92,7 +96,7 @@ public final class DiagnosticsImpl implements Diagnostics {
         DiagnosticContractInner parameters,
         String ifMatch,
         Context context) {
-        Response<DiagnosticContractInner> inner =
+        DiagnosticsCreateOrUpdateResponse inner =
             this
                 .serviceClient()
                 .createOrUpdateWithResponse(resourceGroupName, serviceName, diagnosticId, parameters, ifMatch, context);
@@ -129,7 +133,7 @@ public final class DiagnosticsImpl implements Diagnostics {
         String ifMatch,
         DiagnosticContractInner parameters,
         Context context) {
-        Response<DiagnosticContractInner> inner =
+        DiagnosticsUpdateResponse inner =
             this
                 .serviceClient()
                 .updateWithResponse(resourceGroupName, serviceName, diagnosticId, ifMatch, parameters, context);
