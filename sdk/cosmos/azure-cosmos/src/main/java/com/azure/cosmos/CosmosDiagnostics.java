@@ -79,6 +79,7 @@ public final class CosmosDiagnostics {
      * Regions contacted for this request
      * @return set of regions contacted for this request
      */
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Set<URI> getRegionsContacted() {
         if (this.feedResponseDiagnostics != null) {
             return null;
