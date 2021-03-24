@@ -219,6 +219,7 @@ public class BlobClient extends BlobClientBase {
      * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return Information about the uploaded block blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length, ParallelTransferOptions parallelTransferOptions,
