@@ -221,10 +221,10 @@ public class BlobClient extends BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void uploadWithResponse(InputStream data, long length, ParallelTransferOptions parallelTransferOptions,
+    public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
-        this.uploadWithResponse(new BlobParallelUploadOptions(data, length)
+        return this.uploadWithResponse(new BlobParallelUploadOptions(data, length)
             .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata).setTier(tier)
             .setRequestConditions(requestConditions), timeout, context);
     }
