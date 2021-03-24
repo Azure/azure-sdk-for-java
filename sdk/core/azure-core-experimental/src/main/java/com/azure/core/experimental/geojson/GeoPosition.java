@@ -119,13 +119,13 @@ public final class GeoPosition {
                 return latitude;
             case 2:
                 if (altitude == null) {
-                    throw logger.logExceptionAsError(new IndexOutOfBoundsException());
+                    throw logger.logExceptionAsError(new IndexOutOfBoundsException(index));
                 }
 
                 return altitude;
 
             default:
-                throw logger.logExceptionAsError(new IndexOutOfBoundsException());
+                throw logger.logExceptionAsError(new IndexOutOfBoundsException(index));
         }
     }
 

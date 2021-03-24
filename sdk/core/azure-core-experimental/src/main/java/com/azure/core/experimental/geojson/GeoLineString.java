@@ -51,11 +51,6 @@ public final class GeoLineString extends GeoObject {
         return coordinates;
     }
 
-//    For now, getting coordinates will return built-in types. This is being left as it may be revived.
-//    GeoArray<GeoPosition> getCoordinates() {
-//        return coordinates;
-//    }
-
     @Override
     public GeoObjectType getType() {
         return GeoObjectType.LINE_STRING;

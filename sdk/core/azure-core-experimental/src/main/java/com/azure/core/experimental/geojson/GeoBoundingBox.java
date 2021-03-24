@@ -158,7 +158,7 @@ public final class GeoBoundingBox {
                 case 3: return east;
                 case 4: return north;
                 case 5: return maxAltitude;
-                default: throw logger.logExceptionAsWarning(new IndexOutOfBoundsException());
+                default: throw logger.logExceptionAsWarning(new IndexOutOfBoundsException(i));
             }
         } else {
             switch (i) {
@@ -166,7 +166,7 @@ public final class GeoBoundingBox {
                 case 1: return south;
                 case 2: return east;
                 case 3: return north;
-                default: throw logger.logExceptionAsWarning(new IndexOutOfBoundsException());
+                default: throw logger.logExceptionAsWarning(new IndexOutOfBoundsException(i));
             }
         }
     }

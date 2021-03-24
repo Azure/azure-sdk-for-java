@@ -53,11 +53,6 @@ public final class GeoLinearRing {
         return coordinates;
     }
 
-//    For now, getting coordinates will return built-in types. This is being left as it may be revived.
-//    GeoArray<GeoPosition> getCoordinates() {
-//        return coordinates;
-//    }
-
     @Override
     public int hashCode() {
         return coordinates.hashCode();
