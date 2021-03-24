@@ -7,15 +7,21 @@ package com.azure.cosmos.implementation.changefeed;
  */
 public class CancellationToken {
     private final CancellationTokenSource tokenSource;
+    private volatile boolean cancellationRequested;
 
     public CancellationToken(CancellationTokenSource source) {
         this.tokenSource = source;
+        cancellationRequested = false;
+    }
+
+    public synchronized void cancel() {
+        this.cancellationRequested = true;
     }
 
     /**
      * @return true if the cancellation was requested from the source.
      */
     public boolean isCancellationRequested() {
-        return tokenSource.isCancellationRequested();
+        return tokenSource.isCancellationRequested() || this.cancellationRequested;
     }
 }
