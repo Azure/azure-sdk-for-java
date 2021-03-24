@@ -8,6 +8,7 @@ import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -79,11 +80,11 @@ public class SmsAsyncClientTests extends SmsTestBase {
         options.setTag("New Tag");
 
         // Action & Assert
-        StepVerifier.create(asyncClient.send(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE, options).next())
-            .assertNext(result -> {
-                assertHappyPath(result);
-            })
-            .verifyComplete();
+        PagedFlux<SmsSendResult> response = asyncClient.send(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE);
+        PagedIterable<SmsSendResult> sendResults = new PagedIterable<>(response);
+        for (SmsSendResult result : sendResults) {
+            assertHappyPath(result);
+        }
     }
 
     @ParameterizedTest
@@ -94,12 +95,11 @@ public class SmsAsyncClientTests extends SmsTestBase {
         asyncClient = setupAsyncClient(builder, "sendSmsToSingleNumber");
 
         // Action & Assert
-        Mono<SmsSendResult> response = asyncClient.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE);
-        StepVerifier.create(response)
-            .assertNext(sendResult -> {
-                assertHappyPath(sendResult);
-            })
-            .verifyComplete();
+        PagedFlux<SmsSendResult> response = asyncClient.send(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE);
+        PagedIterable<SmsSendResult> sendResults = new PagedIterable<>(response);
+        for (SmsSendResult result : sendResults) {
+            assertHappyPath(result);
+        }
     }
 
     @ParameterizedTest
