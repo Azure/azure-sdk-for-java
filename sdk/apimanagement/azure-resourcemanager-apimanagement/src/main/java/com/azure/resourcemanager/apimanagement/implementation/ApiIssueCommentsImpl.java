@@ -12,6 +12,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.ApiIssueCommentsClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.IssueCommentContractInner;
 import com.azure.resourcemanager.apimanagement.models.ApiIssueComments;
+import com.azure.resourcemanager.apimanagement.models.ApiIssueCommentsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiIssueCommentsGetResponse;
 import com.azure.resourcemanager.apimanagement.models.IssueCommentContract;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -57,7 +59,7 @@ public final class ApiIssueCommentsImpl implements ApiIssueComments {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, issueId, commentId);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public ApiIssueCommentsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String issueId, String commentId, Context context) {
         return this
             .serviceClient()
@@ -77,7 +79,7 @@ public final class ApiIssueCommentsImpl implements ApiIssueComments {
 
     public Response<IssueCommentContract> getWithResponse(
         String resourceGroupName, String serviceName, String apiId, String issueId, String commentId, Context context) {
-        Response<IssueCommentContractInner> inner =
+        ApiIssueCommentsGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, apiId, issueId, commentId, context);
         if (inner != null) {
             return new SimpleResponse<>(

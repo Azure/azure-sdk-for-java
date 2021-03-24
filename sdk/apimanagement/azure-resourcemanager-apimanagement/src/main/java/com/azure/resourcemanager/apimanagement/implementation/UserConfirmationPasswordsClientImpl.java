@@ -127,7 +127,7 @@ public final class UserConfirmationPasswordsClientImpl implements UserConfirmati
                             appType,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

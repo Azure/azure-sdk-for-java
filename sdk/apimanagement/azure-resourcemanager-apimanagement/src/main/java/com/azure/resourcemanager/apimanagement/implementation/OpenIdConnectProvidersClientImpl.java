@@ -266,7 +266,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -495,7 +495,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -594,7 +594,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
      * @return the entity state (Etag) version of the openIdConnectProvider specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public OpenIdConnectProvidersGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String opid, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, opid, context).block();
     }
@@ -649,7 +649,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -757,7 +757,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
      * @return specific OpenID Connect Provider without secrets.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OpenidConnectProviderContractInner> getWithResponse(
+    public OpenIdConnectProvidersGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String opid, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, opid, context).block();
     }
@@ -825,7 +825,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -985,7 +985,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
      * @return openId Connect Provider details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OpenidConnectProviderContractInner> createOrUpdateWithResponse(
+    public OpenIdConnectProvidersCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String opid,
@@ -1063,7 +1063,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1207,7 +1207,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
      * @return openId Connect Provider details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OpenidConnectProviderContractInner> updateWithResponse(
+    public OpenIdConnectProvidersUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String opid,
@@ -1273,7 +1273,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1439,7 +1439,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1547,7 +1547,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
      * @return the client secret details of the OpenID Connect Provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ClientSecretContractInner> listSecretsWithResponse(
+    public OpenIdConnectProvidersListSecretsResponse listSecretsWithResponse(
         String resourceGroupName, String serviceName, String opid, Context context) {
         return listSecretsWithResponseAsync(resourceGroupName, serviceName, opid, context).block();
     }
@@ -1584,7 +1584,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

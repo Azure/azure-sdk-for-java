@@ -11,6 +11,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.LoggerContractInner;
 import com.azure.resourcemanager.apimanagement.models.LoggerUpdateContract;
+import com.azure.resourcemanager.apimanagement.models.LoggersCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.LoggersGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.LoggersGetResponse;
+import com.azure.resourcemanager.apimanagement.models.LoggersUpdateResponse;
 
 /** An instance of this class provides access to all the operations defined in LoggersClient. */
 public interface LoggersClient {
@@ -75,7 +79,7 @@ public interface LoggersClient {
      * @return the entity state (Etag) version of the logger specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    LoggersGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String loggerId, Context context);
 
     /**
@@ -105,8 +109,7 @@ public interface LoggersClient {
      * @return the details of the logger specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LoggerContractInner> getWithResponse(
-        String resourceGroupName, String serviceName, String loggerId, Context context);
+    LoggersGetResponse getWithResponse(String resourceGroupName, String serviceName, String loggerId, Context context);
 
     /**
      * Creates or Updates a logger.
@@ -139,7 +142,7 @@ public interface LoggersClient {
      * @return logger details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LoggerContractInner> createOrUpdateWithResponse(
+    LoggersCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String loggerId,
@@ -181,7 +184,7 @@ public interface LoggersClient {
      * @return logger details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LoggerContractInner> updateWithResponse(
+    LoggersUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String loggerId,

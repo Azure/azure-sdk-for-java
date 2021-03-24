@@ -12,6 +12,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.ApiTagDescriptionsClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.TagDescriptionContractInner;
 import com.azure.resourcemanager.apimanagement.models.ApiTagDescriptions;
+import com.azure.resourcemanager.apimanagement.models.ApiTagDescriptionsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiTagDescriptionsGetResponse;
 import com.azure.resourcemanager.apimanagement.models.TagDescriptionContract;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -53,7 +55,7 @@ public final class ApiTagDescriptionsImpl implements ApiTagDescriptions {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, tagDescriptionId);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public ApiTagDescriptionsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String tagDescriptionId, Context context) {
         return this
             .serviceClient()
@@ -73,7 +75,7 @@ public final class ApiTagDescriptionsImpl implements ApiTagDescriptions {
 
     public Response<TagDescriptionContract> getWithResponse(
         String resourceGroupName, String serviceName, String apiId, String tagDescriptionId, Context context) {
-        Response<TagDescriptionContractInner> inner =
+        ApiTagDescriptionsGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, apiId, tagDescriptionId, context);
         if (inner != null) {
             return new SimpleResponse<>(

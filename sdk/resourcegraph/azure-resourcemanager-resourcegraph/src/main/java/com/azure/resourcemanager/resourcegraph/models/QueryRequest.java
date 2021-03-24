@@ -18,8 +18,15 @@ public final class QueryRequest {
     /*
      * Azure subscriptions against which to execute the query.
      */
-    @JsonProperty(value = "subscriptions", required = true)
+    @JsonProperty(value = "subscriptions")
     private List<String> subscriptions;
+
+    /*
+     * Azure management groups against which to execute the query. Example: [
+     * 'mg1', 'mg2' ]
+     */
+    @JsonProperty(value = "managementGroups")
+    private List<String> managementGroups;
 
     /*
      * The resources query.
@@ -56,6 +63,28 @@ public final class QueryRequest {
      */
     public QueryRequest withSubscriptions(List<String> subscriptions) {
         this.subscriptions = subscriptions;
+        return this;
+    }
+
+    /**
+     * Get the managementGroups property: Azure management groups against which to execute the query. Example: [ 'mg1',
+     * 'mg2' ].
+     *
+     * @return the managementGroups value.
+     */
+    public List<String> managementGroups() {
+        return this.managementGroups;
+    }
+
+    /**
+     * Set the managementGroups property: Azure management groups against which to execute the query. Example: [ 'mg1',
+     * 'mg2' ].
+     *
+     * @param managementGroups the managementGroups value to set.
+     * @return the QueryRequest object itself.
+     */
+    public QueryRequest withManagementGroups(List<String> managementGroups) {
+        this.managementGroups = managementGroups;
         return this;
     }
 
@@ -125,11 +154,6 @@ public final class QueryRequest {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (subscriptions() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property subscriptions in model QueryRequest"));
-        }
         if (query() == null) {
             throw logger
                 .logExceptionAsError(

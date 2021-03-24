@@ -14,6 +14,11 @@ import com.azure.resourcemanager.apimanagement.fluent.models.SubscriptionKeysCon
 import com.azure.resourcemanager.apimanagement.models.AppType;
 import com.azure.resourcemanager.apimanagement.models.SubscriptionCreateParameters;
 import com.azure.resourcemanager.apimanagement.models.SubscriptionUpdateParameters;
+import com.azure.resourcemanager.apimanagement.models.SubscriptionsCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.SubscriptionsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.SubscriptionsGetResponse;
+import com.azure.resourcemanager.apimanagement.models.SubscriptionsListSecretsResponse;
+import com.azure.resourcemanager.apimanagement.models.SubscriptionsUpdateResponse;
 
 /** An instance of this class provides access to all the operations defined in SubscriptionsClient. */
 public interface SubscriptionsClient {
@@ -85,7 +90,8 @@ public interface SubscriptionsClient {
      * @return the entity state (Etag) version of the apimanagement subscription specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(String resourceGroupName, String serviceName, String sid, Context context);
+    SubscriptionsGetEntityTagResponse getEntityTagWithResponse(
+        String resourceGroupName, String serviceName, String sid, Context context);
 
     /**
      * Gets the specified Subscription entity.
@@ -116,8 +122,7 @@ public interface SubscriptionsClient {
      * @return the specified Subscription entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SubscriptionContractInner> getWithResponse(
-        String resourceGroupName, String serviceName, String sid, Context context);
+    SubscriptionsGetResponse getWithResponse(String resourceGroupName, String serviceName, String sid, Context context);
 
     /**
      * Creates or updates the subscription of specified user to the specified product.
@@ -156,7 +161,7 @@ public interface SubscriptionsClient {
      * @return subscription details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SubscriptionContractInner> createOrUpdateWithResponse(
+    SubscriptionsCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String sid,
@@ -210,7 +215,7 @@ public interface SubscriptionsClient {
      * @return subscription details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SubscriptionContractInner> updateWithResponse(
+    SubscriptionsUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String sid,
@@ -346,6 +351,6 @@ public interface SubscriptionsClient {
      * @return the specified Subscription keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SubscriptionKeysContractInner> listSecretsWithResponse(
+    SubscriptionsListSecretsResponse listSecretsWithResponse(
         String resourceGroupName, String serviceName, String sid, Context context);
 }

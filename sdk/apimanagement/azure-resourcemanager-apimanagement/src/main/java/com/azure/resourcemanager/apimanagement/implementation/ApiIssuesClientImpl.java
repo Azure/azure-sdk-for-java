@@ -267,7 +267,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -553,7 +553,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -660,7 +660,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
      * @return the entity state (Etag) version of the Issue for an API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public ApiIssuesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String issueId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, apiId, issueId, context).block();
     }
@@ -722,7 +722,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -875,7 +875,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
      * @return the details of the Issue for an API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IssueContractInner> getWithResponse(
+    public ApiIssuesGetResponse getWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -955,7 +955,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1126,7 +1126,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
      * @return issue Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IssueContractInner> createOrUpdateWithResponse(
+    public ApiIssuesCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -1212,7 +1212,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1367,7 +1367,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
      * @return issue Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IssueContractInner> updateWithResponse(
+    public ApiIssuesUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -1440,7 +1440,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1597,7 +1597,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

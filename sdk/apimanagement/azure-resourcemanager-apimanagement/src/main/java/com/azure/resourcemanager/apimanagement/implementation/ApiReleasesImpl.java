@@ -13,6 +13,8 @@ import com.azure.resourcemanager.apimanagement.fluent.ApiReleasesClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.ApiReleaseContractInner;
 import com.azure.resourcemanager.apimanagement.models.ApiReleaseContract;
 import com.azure.resourcemanager.apimanagement.models.ApiReleases;
+import com.azure.resourcemanager.apimanagement.models.ApiReleasesGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiReleasesGetResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ApiReleasesImpl implements ApiReleases {
@@ -51,7 +53,7 @@ public final class ApiReleasesImpl implements ApiReleases {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, releaseId);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public ApiReleasesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String releaseId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, apiId, releaseId, context);
     }
@@ -67,7 +69,7 @@ public final class ApiReleasesImpl implements ApiReleases {
 
     public Response<ApiReleaseContract> getWithResponse(
         String resourceGroupName, String serviceName, String apiId, String releaseId, Context context) {
-        Response<ApiReleaseContractInner> inner =
+        ApiReleasesGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, apiId, releaseId, context);
         if (inner != null) {
             return new SimpleResponse<>(

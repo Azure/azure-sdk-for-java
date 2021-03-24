@@ -193,7 +193,7 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -369,7 +369,7 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -477,7 +477,7 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
      * @return aPI Management content type details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ContentTypeContractInner> getWithResponse(
+    public ContentTypesGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String contentTypeId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, contentTypeId, context).block();
     }
@@ -534,7 +534,7 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -673,7 +673,7 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
      * @return content type contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ContentTypeContractInner> createOrUpdateWithResponse(
+    public ContentTypesCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName, String serviceName, String contentTypeId, String ifMatch, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, contentTypeId, ifMatch, context).block();
     }
@@ -734,7 +734,7 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -882,7 +882,7 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

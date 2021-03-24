@@ -14,6 +14,7 @@ import com.azure.resourcemanager.apimanagement.fluent.models.ApiContractInner;
 import com.azure.resourcemanager.apimanagement.models.ApiContract;
 import com.azure.resourcemanager.apimanagement.models.AssociationContract;
 import com.azure.resourcemanager.apimanagement.models.GatewayApis;
+import com.azure.resourcemanager.apimanagement.models.GatewayApisGetEntityTagResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class GatewayApisImpl implements GatewayApis {
@@ -52,7 +53,7 @@ public final class GatewayApisImpl implements GatewayApis {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, gatewayId, apiId);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public GatewayApisGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, String apiId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, gatewayId, apiId, context);
     }
