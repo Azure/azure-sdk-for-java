@@ -40,6 +40,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.core.env.CompositePropertySource;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySource;
 
 import com.azure.core.http.rest.PagedFlux;
@@ -108,6 +109,17 @@ public class AppConfigurationPropertySourceLocatorTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         when(environment.getActiveProfiles()).thenReturn(new String[]{PROFILE_NAME_1, PROFILE_NAME_2});
+        MutablePropertySources sources = new MutablePropertySources();
+
+        sources.addFirst(new PropertySource<String>("refreshArgs") {
+
+            @Override
+            public Object getProperty(String name) {
+                return null;
+            }
+        });
+
+        when(environment.getPropertySources()).thenReturn(sources);
 
         when(properties.getName()).thenReturn(APPLICATION_NAME);
         when(properties.getStores()).thenReturn(configStoresMock);
@@ -230,39 +242,6 @@ public class AppConfigurationPropertySourceLocatorTest {
         String[] expectedSourceNames = new String[]{
             "/foo/store1/\0",
             "/application/store1/\0"
-        };
-        assertThat(sources.size()).isEqualTo(2);
-        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly((Object[]) expectedSourceNames);
-    }
-
-    @Test
-    public void compositeSourceIsCreatedForPrefixedConfig() {
-        String[] labels = new String[1];
-        labels[0] = "\0";
-        when(configStoreMock.getLabels(Mockito.any())).thenReturn(labels);
-        when(configStoreMock.getPrefix()).thenReturn(PREFIX);
-        when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStoreMock);
-        when(properties.getDefaultContext()).thenReturn("application");
-        locator = new AppConfigurationPropertySourceLocator(
-            properties,
-            appProperties,
-            clientStoreMock,
-            tokenCredentialProvider,
-            null
-        );
-
-        PropertySource<?> source = locator.locate(environment);
-
-        assertThat(source).isInstanceOf(CompositePropertySource.class);
-
-        Collection<PropertySource<?>> sources = ((CompositePropertySource) source).getPropertySources();
-        // Application name: foo, active profile: dev,prod and prefix: /config,
-        // should construct below composite Property Source:
-        // [/config/foo_prod/, /config/foo_dev/, /config/foo/, /config/application_prod/,
-        // /config/application_dev/, /config/application/]
-        String[] expectedSourceNames = new String[]{
-            "/config/foo/store1/\0",
-            "/config/application/store1/\0"
         };
         assertThat(sources.size()).isEqualTo(2);
         assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly((Object[]) expectedSourceNames);
@@ -399,9 +378,21 @@ public class AppConfigurationPropertySourceLocatorTest {
         properties.setName("TestStoreName");
         properties.setStores(configStores);
 
-        appPropertiesMock.setPrekillTime(5);
+        when(appPropertiesMock.getPrekillTime()).thenReturn(5);
 
-        Environment env = Mockito.mock(ConfigurableEnvironment.class);
+        ConfigurableEnvironment env = Mockito.mock(ConfigurableEnvironment.class);
+        MutablePropertySources sources = new MutablePropertySources();
+
+        sources.addFirst(new PropertySource<String>("refreshArgs") {
+
+            @Override
+            public Object getProperty(String name) {
+                return null;
+            }
+        });
+
+        when(env.getPropertySources()).thenReturn(sources);
+        
         String[] array = {};
         when(env.getActiveProfiles()).thenReturn(array);
         String[] labels = {""};
