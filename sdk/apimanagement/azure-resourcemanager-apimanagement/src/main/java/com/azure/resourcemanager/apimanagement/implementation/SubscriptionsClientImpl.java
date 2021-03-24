@@ -309,7 +309,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -561,7 +561,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -664,7 +664,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @return the entity state (Etag) version of the apimanagement subscription specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public SubscriptionsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String sid, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, sid, context).block();
     }
@@ -720,7 +720,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -831,7 +831,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @return the specified Subscription entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SubscriptionContractInner> getWithResponse(
+    public SubscriptionsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String sid, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, sid, context).block();
     }
@@ -908,7 +908,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1097,7 +1097,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @return subscription details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SubscriptionContractInner> createOrUpdateWithResponse(
+    public SubscriptionsCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String sid,
@@ -1187,7 +1187,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1390,7 +1390,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @return subscription details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SubscriptionContractInner> updateWithResponse(
+    public SubscriptionsUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String sid,
@@ -1461,7 +1461,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1632,7 +1632,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1791,7 +1791,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1950,7 +1950,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2062,7 +2062,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @return the specified Subscription keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SubscriptionKeysContractInner> listSecretsWithResponse(
+    public SubscriptionsListSecretsResponse listSecretsWithResponse(
         String resourceGroupName, String serviceName, String sid, Context context) {
         return listSecretsWithResponseAsync(resourceGroupName, serviceName, sid, context).block();
     }
@@ -2099,7 +2099,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

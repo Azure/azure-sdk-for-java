@@ -38,14 +38,14 @@ public final class QueryResponseInner {
 
     /*
      * When present, the value can be passed to a subsequent query call
-     * (together with the same query and subscriptions used in the current
-     * request) to retrieve the next page of data.
+     * (together with the same query and scopes used in the current request) to
+     * retrieve the next page of data.
      */
     @JsonProperty(value = "$skipToken")
     private String skipToken;
 
     /*
-     * Query output in tabular format.
+     * Query output in JObject array or Table format.
      */
     @JsonProperty(value = "data", required = true)
     private Object data;
@@ -120,7 +120,7 @@ public final class QueryResponseInner {
 
     /**
      * Get the skipToken property: When present, the value can be passed to a subsequent query call (together with the
-     * same query and subscriptions used in the current request) to retrieve the next page of data.
+     * same query and scopes used in the current request) to retrieve the next page of data.
      *
      * @return the skipToken value.
      */
@@ -130,7 +130,7 @@ public final class QueryResponseInner {
 
     /**
      * Set the skipToken property: When present, the value can be passed to a subsequent query call (together with the
-     * same query and subscriptions used in the current request) to retrieve the next page of data.
+     * same query and scopes used in the current request) to retrieve the next page of data.
      *
      * @param skipToken the skipToken value to set.
      * @return the QueryResponseInner object itself.
@@ -141,7 +141,7 @@ public final class QueryResponseInner {
     }
 
     /**
-     * Get the data property: Query output in tabular format.
+     * Get the data property: Query output in JObject array or Table format.
      *
      * @return the data value.
      */
@@ -150,7 +150,7 @@ public final class QueryResponseInner {
     }
 
     /**
-     * Set the data property: Query output in tabular format.
+     * Set the data property: Query output in JObject array or Table format.
      *
      * @param data the data value to set.
      * @return the QueryResponseInner object itself.

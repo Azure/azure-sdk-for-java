@@ -67,7 +67,7 @@ public interface Backends {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the backend specified by its identifier.
      */
-    Response<Void> getEntityTagWithResponse(
+    BackendsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String backendId, Context context);
 
     /**

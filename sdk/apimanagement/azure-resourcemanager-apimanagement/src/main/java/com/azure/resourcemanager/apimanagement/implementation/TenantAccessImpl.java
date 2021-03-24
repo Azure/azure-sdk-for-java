@@ -16,6 +16,9 @@ import com.azure.resourcemanager.apimanagement.models.AccessIdName;
 import com.azure.resourcemanager.apimanagement.models.AccessInformationContract;
 import com.azure.resourcemanager.apimanagement.models.AccessInformationSecretsContract;
 import com.azure.resourcemanager.apimanagement.models.TenantAccess;
+import com.azure.resourcemanager.apimanagement.models.TenantAccessGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.TenantAccessGetResponse;
+import com.azure.resourcemanager.apimanagement.models.TenantAccessListSecretsResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class TenantAccessImpl implements TenantAccess {
@@ -48,7 +51,7 @@ public final class TenantAccessImpl implements TenantAccess {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, accessName);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public TenantAccessGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, AccessIdName accessName, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, accessName, context);
     }
@@ -64,7 +67,7 @@ public final class TenantAccessImpl implements TenantAccess {
 
     public Response<AccessInformationContract> getWithResponse(
         String resourceGroupName, String serviceName, AccessIdName accessName, Context context) {
-        Response<AccessInformationContractInner> inner =
+        TenantAccessGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, accessName, context);
         if (inner != null) {
             return new SimpleResponse<>(
@@ -112,7 +115,7 @@ public final class TenantAccessImpl implements TenantAccess {
 
     public Response<AccessInformationSecretsContract> listSecretsWithResponse(
         String resourceGroupName, String serviceName, AccessIdName accessName, Context context) {
-        Response<AccessInformationSecretsContractInner> inner =
+        TenantAccessListSecretsResponse inner =
             this.serviceClient().listSecretsWithResponse(resourceGroupName, serviceName, accessName, context);
         if (inner != null) {
             return new SimpleResponse<>(

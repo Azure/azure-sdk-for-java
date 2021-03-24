@@ -170,7 +170,7 @@ public final class SignInSettingsClientImpl implements SignInSettingsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -261,7 +261,8 @@ public final class SignInSettingsClientImpl implements SignInSettingsClient {
      * @return the entity state (Etag) version of the SignInSettings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(String resourceGroupName, String serviceName, Context context) {
+    public SignInSettingsGetEntityTagResponse getEntityTagWithResponse(
+        String resourceGroupName, String serviceName, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, context).block();
     }
 
@@ -309,7 +310,7 @@ public final class SignInSettingsClientImpl implements SignInSettingsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -408,8 +409,7 @@ public final class SignInSettingsClientImpl implements SignInSettingsClient {
      * @return sign In Settings for the Portal.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PortalSigninSettingsInner> getWithResponse(
-        String resourceGroupName, String serviceName, Context context) {
+    public SignInSettingsGetResponse getWithResponse(String resourceGroupName, String serviceName, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, context).block();
     }
 
@@ -471,7 +471,7 @@ public final class SignInSettingsClientImpl implements SignInSettingsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -653,7 +653,7 @@ public final class SignInSettingsClientImpl implements SignInSettingsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

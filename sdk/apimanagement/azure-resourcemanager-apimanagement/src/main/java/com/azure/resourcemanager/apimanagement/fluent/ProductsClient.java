@@ -12,6 +12,10 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.ProductContractInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.TagResourceContractInner;
 import com.azure.resourcemanager.apimanagement.models.ProductUpdateParameters;
+import com.azure.resourcemanager.apimanagement.models.ProductsCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.ProductsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.ProductsGetResponse;
+import com.azure.resourcemanager.apimanagement.models.ProductsUpdateResponse;
 
 /** An instance of this class provides access to all the operations defined in ProductsClient. */
 public interface ProductsClient {
@@ -88,7 +92,7 @@ public interface ProductsClient {
      * @return the entity state (Etag) version of the product specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    ProductsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String productId, Context context);
 
     /**
@@ -118,7 +122,7 @@ public interface ProductsClient {
      * @return the details of the product specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProductContractInner> getWithResponse(
+    ProductsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String productId, Context context);
 
     /**
@@ -152,7 +156,7 @@ public interface ProductsClient {
      * @return product details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProductContractInner> createOrUpdateWithResponse(
+    ProductsCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String productId,
@@ -198,7 +202,7 @@ public interface ProductsClient {
      * @return product details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProductContractInner> updateWithResponse(
+    ProductsUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String productId,

@@ -10,6 +10,9 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.IssueAttachmentContractInner;
+import com.azure.resourcemanager.apimanagement.models.ApiIssueAttachmentsCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiIssueAttachmentsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiIssueAttachmentsGetResponse;
 
 /** An instance of this class provides access to all the operations defined in ApiIssueAttachmentsClient. */
 public interface ApiIssueAttachmentsClient {
@@ -89,7 +92,7 @@ public interface ApiIssueAttachmentsClient {
      * @return the entity state (Etag) version of the issue Attachment for an API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    ApiIssueAttachmentsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -129,7 +132,7 @@ public interface ApiIssueAttachmentsClient {
      * @return the details of the issue Attachment for an API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IssueAttachmentContractInner> getWithResponse(
+    ApiIssueAttachmentsGetResponse getWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -177,7 +180,7 @@ public interface ApiIssueAttachmentsClient {
      * @return issue Attachment Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IssueAttachmentContractInner> createOrUpdateWithResponse(
+    ApiIssueAttachmentsCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,

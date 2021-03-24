@@ -80,7 +80,7 @@ public interface Apis {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the API specified by its identifier.
      */
-    Response<Void> getEntityTagWithResponse(
+    ApisGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, Context context);
 
     /**

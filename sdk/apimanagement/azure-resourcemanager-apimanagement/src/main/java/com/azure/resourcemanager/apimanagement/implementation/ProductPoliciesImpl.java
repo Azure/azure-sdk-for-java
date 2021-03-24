@@ -16,6 +16,9 @@ import com.azure.resourcemanager.apimanagement.models.PolicyContract;
 import com.azure.resourcemanager.apimanagement.models.PolicyExportFormat;
 import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 import com.azure.resourcemanager.apimanagement.models.ProductPolicies;
+import com.azure.resourcemanager.apimanagement.models.ProductPoliciesCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.ProductPoliciesGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.ProductPoliciesGetResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ProductPoliciesImpl implements ProductPolicies {
@@ -60,7 +63,7 @@ public final class ProductPoliciesImpl implements ProductPolicies {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, productId, policyId);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public ProductPoliciesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String productId, PolicyIdName policyId, Context context) {
         return this
             .serviceClient()
@@ -83,7 +86,7 @@ public final class ProductPoliciesImpl implements ProductPolicies {
         PolicyIdName policyId,
         PolicyExportFormat format,
         Context context) {
-        Response<PolicyContractInner> inner =
+        ProductPoliciesGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, productId, policyId, format, context);
         if (inner != null) {
             return new SimpleResponse<>(
@@ -119,7 +122,7 @@ public final class ProductPoliciesImpl implements ProductPolicies {
         PolicyContractInner parameters,
         String ifMatch,
         Context context) {
-        Response<PolicyContractInner> inner =
+        ProductPoliciesCreateOrUpdateResponse inner =
             this
                 .serviceClient()
                 .createOrUpdateWithResponse(

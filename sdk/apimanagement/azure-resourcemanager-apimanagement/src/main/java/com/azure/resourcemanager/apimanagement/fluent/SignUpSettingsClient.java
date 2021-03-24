@@ -9,6 +9,8 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.PortalSignupSettingsInner;
+import com.azure.resourcemanager.apimanagement.models.SignUpSettingsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.SignUpSettingsGetResponse;
 
 /** An instance of this class provides access to all the operations defined in SignUpSettingsClient. */
 public interface SignUpSettingsClient {
@@ -36,7 +38,8 @@ public interface SignUpSettingsClient {
      * @return the entity state (Etag) version of the SignUpSettings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(String resourceGroupName, String serviceName, Context context);
+    SignUpSettingsGetEntityTagResponse getEntityTagWithResponse(
+        String resourceGroupName, String serviceName, Context context);
 
     /**
      * Get Sign Up Settings for the Portal.
@@ -63,7 +66,7 @@ public interface SignUpSettingsClient {
      * @return sign Up Settings for the Portal.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PortalSignupSettingsInner> getWithResponse(String resourceGroupName, String serviceName, Context context);
+    SignUpSettingsGetResponse getWithResponse(String resourceGroupName, String serviceName, Context context);
 
     /**
      * Update Sign-Up settings.

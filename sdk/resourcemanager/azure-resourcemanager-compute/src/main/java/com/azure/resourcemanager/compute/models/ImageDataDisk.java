@@ -89,7 +89,7 @@ public final class ImageDataDisk extends ImageDisk {
 
     /** {@inheritDoc} */
     @Override
-    public ImageDataDisk withDiskEncryptionSet(SubResource diskEncryptionSet) {
+    public ImageDataDisk withDiskEncryptionSet(DiskEncryptionSetParameters diskEncryptionSet) {
         super.withDiskEncryptionSet(diskEncryptionSet);
         return this;
     }

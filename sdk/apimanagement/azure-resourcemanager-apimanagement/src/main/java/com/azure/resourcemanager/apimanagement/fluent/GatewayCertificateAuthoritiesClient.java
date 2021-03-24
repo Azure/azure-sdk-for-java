@@ -10,6 +10,9 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.GatewayCertificateAuthorityContractInner;
+import com.azure.resourcemanager.apimanagement.models.GatewayCertificateAuthoritiesCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.GatewayCertificateAuthoritiesGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.GatewayCertificateAuthoritiesGetResponse;
 
 /** An instance of this class provides access to all the operations defined in GatewayCertificateAuthoritiesClient. */
 public interface GatewayCertificateAuthoritiesClient {
@@ -89,7 +92,7 @@ public interface GatewayCertificateAuthoritiesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    GatewayCertificateAuthoritiesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, String certificateId, Context context);
 
     /**
@@ -126,7 +129,7 @@ public interface GatewayCertificateAuthoritiesClient {
      * @return assigned Gateway Certificate Authority details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GatewayCertificateAuthorityContractInner> getWithResponse(
+    GatewayCertificateAuthoritiesGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, String certificateId, Context context);
 
     /**
@@ -170,7 +173,7 @@ public interface GatewayCertificateAuthoritiesClient {
      * @return gateway certificate authority details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GatewayCertificateAuthorityContractInner> createOrUpdateWithResponse(
+    GatewayCertificateAuthoritiesCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String gatewayId,

@@ -10,6 +10,10 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.OperationContractInner;
+import com.azure.resourcemanager.apimanagement.models.ApiOperationsCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiOperationsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiOperationsGetResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiOperationsUpdateResponse;
 import com.azure.resourcemanager.apimanagement.models.OperationUpdateContract;
 
 /** An instance of this class provides access to all the operations defined in ApiOperationsClient. */
@@ -95,7 +99,7 @@ public interface ApiOperationsClient {
      * @return the entity state (Etag) version of the API operation specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    ApiOperationsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String operationId, Context context);
 
     /**
@@ -131,7 +135,7 @@ public interface ApiOperationsClient {
      * @return the details of the API Operation specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OperationContractInner> getWithResponse(
+    ApiOperationsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String apiId, String operationId, Context context);
 
     /**
@@ -175,7 +179,7 @@ public interface ApiOperationsClient {
      * @return api Operation details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OperationContractInner> createOrUpdateWithResponse(
+    ApiOperationsCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -229,7 +233,7 @@ public interface ApiOperationsClient {
      * @return api Operation details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OperationContractInner> updateWithResponse(
+    ApiOperationsUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,

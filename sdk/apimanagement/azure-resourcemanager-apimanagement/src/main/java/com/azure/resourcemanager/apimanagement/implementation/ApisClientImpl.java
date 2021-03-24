@@ -297,7 +297,7 @@ public final class ApisClientImpl implements ApisClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -586,7 +586,7 @@ public final class ApisClientImpl implements ApisClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -689,7 +689,7 @@ public final class ApisClientImpl implements ApisClient {
      * @return the entity state (Etag) version of the API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public ApisGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, apiId, context).block();
     }
@@ -746,7 +746,7 @@ public final class ApisClientImpl implements ApisClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -859,7 +859,7 @@ public final class ApisClientImpl implements ApisClient {
      * @return the details of the API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApiContractInner> getWithResponse(
+    public ApisGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String apiId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, apiId, context).block();
     }
@@ -928,7 +928,7 @@ public final class ApisClientImpl implements ApisClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1319,7 +1319,7 @@ public final class ApisClientImpl implements ApisClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1459,7 +1459,7 @@ public final class ApisClientImpl implements ApisClient {
      * @return api details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApiContractInner> updateWithResponse(
+    public ApisUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -1528,7 +1528,7 @@ public final class ApisClientImpl implements ApisClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1760,7 +1760,7 @@ public final class ApisClientImpl implements ApisClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2019,7 +2019,7 @@ public final class ApisClientImpl implements ApisClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2090,7 +2090,7 @@ public final class ApisClientImpl implements ApisClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
