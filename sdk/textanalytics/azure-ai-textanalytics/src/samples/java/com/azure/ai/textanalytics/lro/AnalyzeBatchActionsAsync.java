@@ -7,6 +7,8 @@ import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOptions;
+import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
+import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
@@ -14,15 +16,12 @@ import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
-import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.IterableStream;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Sample demonstrates how to asynchronously execute actions in a batch of documents, such as key phrases extraction,
@@ -61,76 +60,61 @@ public class AnalyzeBatchActionsAsync {
                     new ExtractKeyPhrasesOptions().setModelVersion("latest")),
             new AnalyzeBatchActionsOptions().setIncludeStatistics(false))
             .flatMap(result -> {
-                AnalyzeBatchActionsOperationDetail operationResult = result.getValue();
-                System.out.printf("Action display name: %s, Successfully completed actions: %d, in-process actions: %d, failed actions: %d, total actions: %d%n",
-                    operationResult.getDisplayName(), operationResult.getActionsSucceeded(),
-                    operationResult.getActionsInProgress(), operationResult.getActionsFailed(), operationResult.getActionsInTotal());
+                AnalyzeBatchActionsOperationDetail operationDetail = result.getValue();
+                System.out.printf("Action display name: %s, Successfully completed actions: %d, in-process actions: %d,"
+                                      + " failed actions: %d, total actions: %d%n",
+                    operationDetail.getDisplayName(), operationDetail.getActionsSucceeded(),
+                    operationDetail.getActionsInProgress(), operationDetail.getActionsFailed(),
+                    operationDetail.getActionsInTotal());
                 return result.getFinalResult();
             })
-            .subscribe(
-                analyzeTasksResultPagedFlux -> analyzeTasksResultPagedFlux.byPage().subscribe(
-                    page -> {
-                        System.out.printf("Response code: %d, Continuation Token: %s.%n", page.getStatusCode(), page.getContinuationToken());
-                        page.getElements().forEach(analyzeBatchActionsResult -> {
-                            System.out.println("Entities recognition action results:");
-                            IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesActionResults =
-                                analyzeBatchActionsResult.getRecognizeEntitiesActionResults();
-                            if (recognizeEntitiesActionResults != null) {
-                                recognizeEntitiesActionResults.forEach(actionResult -> {
-                                    if (!actionResult.isError()) {
-                                        // Recognized entities for each of documents from a batch of documents
-                                        AtomicInteger counter = new AtomicInteger();
-                                        for (RecognizeEntitiesResult documentResult : actionResult.getResult()) {
-                                            System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
-                                            if (documentResult.isError()) {
-                                                // Erroneous document
-                                                System.out.printf("Cannot recognize entities. Error: %s%n",
-                                                    documentResult.getError().getMessage());
-                                            } else {
-                                                // Valid document
-                                                documentResult.getEntities().forEach(entity -> System.out.printf(
-                                                    "Recognized entity: %s, entity category: %s, entity subcategory: %s, confidence score: %f.%n",
-                                                    entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
-                                            }
-                                        }
-                                    } else {
-                                        TextAnalyticsError actionError = actionResult.getError();
-                                        // Erroneous action
-                                        System.out.printf("Cannot execute Entities Recognition action. Error: %s%n", actionError.getMessage());
+            .subscribe(analyzeTasksResultPagedFlux -> analyzeTasksResultPagedFlux.byPage().subscribe(perPage -> {
+                System.out.printf("Response code: %d, Continuation Token: %s.%n",
+                    perPage.getStatusCode(), perPage.getContinuationToken());
+
+                for (AnalyzeBatchActionsResult actionsResult : perPage.getElements()) {
+                    System.out.println("Entities recognition action results:");
+                    for (RecognizeEntitiesActionResult actionResult : actionsResult.getRecognizeEntitiesActionResults()) {
+                        if (!actionResult.isError()) {
+                            for (RecognizeEntitiesResult documentResult : actionResult.getResult()) {
+                                if (!documentResult.isError()) {
+                                    for (CategorizedEntity entity : documentResult.getEntities()) {
+                                        System.out.printf("\tText: %s, category: %s, confidence score: %f.%n",
+                                            entity.getText(), entity.getCategory(), entity.getConfidenceScore());
                                     }
-                                });
+                                } else {
+                                    System.out.printf("\tCannot recognize entities. Error: %s%n",
+                                        documentResult.getError().getMessage());
+                                }
                             }
-                            System.out.println("Key phrases extraction action results:");
-                            IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults =
-                                analyzeBatchActionsResult.getExtractKeyPhrasesActionResults();
-                            if (extractKeyPhrasesActionResults != null) {
-                                extractKeyPhrasesActionResults.forEach(actionResult -> {
-                                    if (!actionResult.isError()) {
-                                        // Extracted key phrase for each of documents from a batch of documents
-                                        AtomicInteger counter = new AtomicInteger();
-                                        for (ExtractKeyPhraseResult documentResult : actionResult.getResult()) {
-                                            System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
-                                            if (documentResult.isError()) {
-                                                // Erroneous document
-                                                System.out.printf("Cannot extract key phrases. Error: %s%n", documentResult.getError().getMessage());
-                                            } else {
-                                                // Valid document
-                                                System.out.println("Extracted phrases:");
-                                                documentResult.getKeyPhrases().forEach(keyPhrases -> System.out.printf("\t%s.%n", keyPhrases));
-                                            }
-                                        }
-                                    } else {
-                                        TextAnalyticsError actionError = actionResult.getError();
-                                        // Erroneous action
-                                        System.out.printf("Cannot execute Key Phrases Extraction action. Error: %s%n", actionError.getMessage());
+                        } else {
+                            System.out.printf("\tCannot execute Entities Recognition action. Error: %s%n",
+                                actionResult.getError().getMessage());
+                        }
+                    }
+
+                    System.out.println("Key phrases extraction action results:");
+                    for (ExtractKeyPhrasesActionResult actionResult : actionsResult.getExtractKeyPhrasesActionResults()) {
+                        if (!actionResult.isError()) {
+                            for (ExtractKeyPhraseResult documentResult : actionResult.getResult()) {
+                                if (!documentResult.isError()) {
+                                    System.out.println("\tExtracted phrases:");
+                                    for (String keyPhrases : documentResult.getKeyPhrases()) {
+                                        System.out.printf("\t\t%s.%n", keyPhrases);
                                     }
-                                });
+                                } else {
+                                    System.out.printf("\tCannot extract key phrases. Error: %s%n",
+                                        documentResult.getError().getMessage());
+                                }
                             }
-                        });
-                    },
-                    ex -> System.out.println("Error listing pages: " + ex.getMessage()),
-                    () -> System.out.println("Successfully listed all pages"))
-            );
+                        } else {
+                            System.out.printf("\tCannot execute Key Phrases Extraction action. Error: %s%n",
+                                actionResult.getError().getMessage());
+                        }
+                    }
+                }},
+                ex -> System.out.println("Error listing pages: " + ex.getMessage()),
+                () -> System.out.println("Successfully listed all pages")));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete. Using .block() instead of
