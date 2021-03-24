@@ -66,7 +66,7 @@ class ReactorConnectionTest {
         + "://test-event-hub.servicebus.windows.net/;SharedAccessKeyName=dummySharedKeyName;"
         + "SharedAccessKey=dummySharedKeyValue;EntityPath=eventhub1;");
     private static final String FULLY_QUALIFIED_NAMESPACE = CREDENTIAL_INFO.getEndpoint().getHost();
-    private static final Scheduler SCHEDULER = Schedulers.elastic();
+    private static final Scheduler SCHEDULER = Schedulers.boundedElastic();
     private static final String PRODUCT = "test";
     private static final String CLIENT_VERSION = "1.0.0-test";
     private static final SslDomain.VerifyMode VERIFY_MODE = SslDomain.VerifyMode.VERIFY_PEER_NAME;
@@ -100,6 +100,7 @@ class ReactorConnectionTest {
     private ReactorProvider reactorProvider;
     @Mock
     private ReactorHandlerProvider reactorHandlerProvider;
+    private AutoCloseable mocksCloseable;
 
     @BeforeAll
     static void beforeAll() {
@@ -113,7 +114,7 @@ class ReactorConnectionTest {
 
     @BeforeEach
     void setup() throws IOException {
-        MockitoAnnotations.initMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
 
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setMaxRetries(0).setTryTimeout(TEST_DURATION);
         final ConnectionOptions connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
@@ -147,11 +148,15 @@ class ReactorConnectionTest {
     }
 
     @AfterEach
-    void teardown() {
+    void teardown() throws Exception {
         connection.dispose();
         // Tear down any inline mocks to avoid memory leaks.
         // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
         Mockito.framework().clearInlineMocks();
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     /**

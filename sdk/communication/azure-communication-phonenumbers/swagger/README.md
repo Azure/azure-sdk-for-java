@@ -23,9 +23,9 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.2
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a4d1e1516433894fca89f9600a6ac8a5471fc598/specification/communication/data-plane/Microsoft.CommunicationServicesPhoneNumbers/stable/2021-03-07/phonenumbers.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/1ef769ae890b5f5a952f9ba6e46e0ef6d38241da/specification/communication/data-plane/Microsoft.CommunicationServicesPhoneNumbers/stable/2021-03-07/phonenumbers.json
 override-client-name: PhoneNumberAdminClient
-custom-types: PurchasedPhoneNumber,BillingFrequency,CommunicationError,PhoneNumberOperation,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilitiesRequest,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability
+custom-types: PurchasedPhoneNumber,BillingFrequency,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability
 custom-types-subpackage: models
 models-subpackage: implementation.models
 java: true
@@ -37,11 +37,11 @@ sync-methods: all
 context-client-method-parameter: true
 ```
 
-### Add readonly attribute to AcquiredPhoneNumber properties
+### Add readonly attribute to PurchasedPhoneNumber properties
 ```yaml
 directive:
   - from: swagger-document
-    where: $.definitions.AcquiredPhoneNumber
+    where: $.definitions.PurchasedPhoneNumber
     transform: >
       $["properties"]["id"].readOnly = true;
       $["properties"]["phoneNumber"].readOnly = true;
@@ -64,20 +64,6 @@ directive:
       $["properties"]["billingFrequency"].readOnly = true;
 ```
 
-### Add readonly attribute to PhoneNumberOperation properties
-```yaml $(java)
-directive:
-  - from: swagger-document
-    where: $.definitions.PhoneNumberOperation
-    transform: >
-      $["properties"]["status"].readOnly = true;
-      $["properties"]["resourceLocation"].readOnly = true;
-      $["properties"]["createdDateTime"].readOnly = true;
-      $["properties"]["error"].readOnly = true;
-      $["properties"]["id"].readOnly = true;
-      $["properties"]["operationType"].readOnly = true;
-      $["properties"]["lastActionDateTime"].readOnly = true;
-```
 
 ### Add readonly attribute to PhoneNumberSearchResult properties
 ```yaml
@@ -94,18 +80,10 @@ directive:
       $["properties"]["capabilities"].readOnly = true;
 ```
 
-### Rename AcquiredPhoneNumber to PurchasedPhoneNumber
+### Rename PhoneNumberOperation to PhoneNumberRawOperation
 ``` yaml
 directive:
     - rename-model:
-        from: AcquiredPhoneNumber
-        to: PurchasedPhoneNumber
-```
-
-### Rename AcquiredPhoneNumbers to PurchasedPhoneNumbers
-``` yaml
-directive:
-    - rename-model:
-        from: AcquiredPhoneNumbers
-        to: PurchasedPhoneNumbers
+        from: PhoneNumberOperation
+        to: PhoneNumberRawOperation
 ```

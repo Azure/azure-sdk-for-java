@@ -115,6 +115,18 @@
         </configuration>
       </plugin>
 
+      <!-- This plugin generates Javadocs -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <configuration>
+          <links>
+            <link>https://avro.apache.org/docs/current/api/java/</link>
+          </links>
+        </configuration>
+      </plugin>
+
       <plugin>
         <groupId>org.apache.avro</groupId>
         <artifactId>avro-maven-plugin</artifactId>

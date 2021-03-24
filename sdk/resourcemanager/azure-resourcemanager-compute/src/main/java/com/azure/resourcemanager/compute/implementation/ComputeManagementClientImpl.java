@@ -10,6 +10,11 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.compute.fluent.AvailabilitySetsClient;
+import com.azure.resourcemanager.compute.fluent.CloudServiceOperatingSystemsClient;
+import com.azure.resourcemanager.compute.fluent.CloudServiceRoleInstancesClient;
+import com.azure.resourcemanager.compute.fluent.CloudServiceRolesClient;
+import com.azure.resourcemanager.compute.fluent.CloudServicesClient;
+import com.azure.resourcemanager.compute.fluent.CloudServicesUpdateDomainsClient;
 import com.azure.resourcemanager.compute.fluent.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.DedicatedHostGroupsClient;
 import com.azure.resourcemanager.compute.fluent.DedicatedHostsClient;
@@ -511,6 +516,66 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         return this.galleryApplicationVersions;
     }
 
+    /** The CloudServiceRoleInstancesClient object to access its operations. */
+    private final CloudServiceRoleInstancesClient cloudServiceRoleInstances;
+
+    /**
+     * Gets the CloudServiceRoleInstancesClient object to access its operations.
+     *
+     * @return the CloudServiceRoleInstancesClient object.
+     */
+    public CloudServiceRoleInstancesClient getCloudServiceRoleInstances() {
+        return this.cloudServiceRoleInstances;
+    }
+
+    /** The CloudServiceRolesClient object to access its operations. */
+    private final CloudServiceRolesClient cloudServiceRoles;
+
+    /**
+     * Gets the CloudServiceRolesClient object to access its operations.
+     *
+     * @return the CloudServiceRolesClient object.
+     */
+    public CloudServiceRolesClient getCloudServiceRoles() {
+        return this.cloudServiceRoles;
+    }
+
+    /** The CloudServicesClient object to access its operations. */
+    private final CloudServicesClient cloudServices;
+
+    /**
+     * Gets the CloudServicesClient object to access its operations.
+     *
+     * @return the CloudServicesClient object.
+     */
+    public CloudServicesClient getCloudServices() {
+        return this.cloudServices;
+    }
+
+    /** The CloudServicesUpdateDomainsClient object to access its operations. */
+    private final CloudServicesUpdateDomainsClient cloudServicesUpdateDomains;
+
+    /**
+     * Gets the CloudServicesUpdateDomainsClient object to access its operations.
+     *
+     * @return the CloudServicesUpdateDomainsClient object.
+     */
+    public CloudServicesUpdateDomainsClient getCloudServicesUpdateDomains() {
+        return this.cloudServicesUpdateDomains;
+    }
+
+    /** The CloudServiceOperatingSystemsClient object to access its operations. */
+    private final CloudServiceOperatingSystemsClient cloudServiceOperatingSystems;
+
+    /**
+     * Gets the CloudServiceOperatingSystemsClient object to access its operations.
+     *
+     * @return the CloudServiceOperatingSystemsClient object.
+     */
+    public CloudServiceOperatingSystemsClient getCloudServiceOperatingSystems() {
+        return this.cloudServiceOperatingSystems;
+    }
+
     /**
      * Initializes an instance of ComputeManagementClient client.
      *
@@ -568,5 +633,10 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         this.galleryImageVersions = new GalleryImageVersionsClientImpl(this);
         this.galleryApplications = new GalleryApplicationsClientImpl(this);
         this.galleryApplicationVersions = new GalleryApplicationVersionsClientImpl(this);
+        this.cloudServiceRoleInstances = new CloudServiceRoleInstancesClientImpl(this);
+        this.cloudServiceRoles = new CloudServiceRolesClientImpl(this);
+        this.cloudServices = new CloudServicesClientImpl(this);
+        this.cloudServicesUpdateDomains = new CloudServicesUpdateDomainsClientImpl(this);
+        this.cloudServiceOperatingSystems = new CloudServiceOperatingSystemsClientImpl(this);
     }
 }

@@ -22,6 +22,7 @@ import reactor.netty.Connection;
 import reactor.netty.NettyPipeline;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
+import reactor.netty.transport.AddressUtils;
 import reactor.netty.transport.ProxyProvider;
 
 import java.net.InetSocketAddress;
@@ -111,7 +112,7 @@ public class NettyAsyncHttpClientBuilder {
             : configuration;
 
         ProxyOptions buildProxyOptions = (proxyOptions == null && buildConfiguration != Configuration.NONE)
-            ? ProxyOptions.fromConfiguration(buildConfiguration)
+            ? ProxyOptions.fromConfiguration(buildConfiguration, true)
             : proxyOptions;
 
         /*
@@ -146,7 +147,8 @@ public class NettyAsyncHttpClientBuilder {
                 nettyHttpClient = nettyHttpClient.doOnChannelInit((connectionObserver, channel, socketAddress) -> {
                     if (shouldApplyProxy(socketAddress, nonProxyHostsPattern)) {
                         channel.pipeline()
-                            .addFirst(NettyPipeline.ProxyHandler, new HttpProxyHandler(buildProxyOptions.getAddress(),
+                            .addFirst(NettyPipeline.ProxyHandler, new HttpProxyHandler(
+                                AddressUtils.replaceWithResolved(buildProxyOptions.getAddress()),
                                 handler, proxyChallengeHolder))
                             .addLast("azure.proxy.exceptionHandler", new HttpProxyExceptionHandler());
                     }

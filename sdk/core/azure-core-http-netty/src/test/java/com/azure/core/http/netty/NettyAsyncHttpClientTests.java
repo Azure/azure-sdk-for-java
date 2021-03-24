@@ -7,14 +7,19 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.netty.implementation.MockProxyServer;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.http.Fault;
+import io.netty.handler.proxy.ProxyConnectException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -47,6 +52,7 @@ import java.util.stream.Stream;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -58,12 +64,14 @@ public class NettyAsyncHttpClientTests {
     private static final String LONG_BODY_PATH = "/long";
     private static final String ERROR_BODY_PATH = "/error";
     private static final String SHORT_POST_BODY_PATH = "/shortPost";
-    private static final String HTTP_HEADERS_PATH = "/httpHeaders";
+    static final String HTTP_HEADERS_PATH = "/httpHeaders";
     private static final String IO_EXCEPTION_PATH = "/ioException";
 
     static final String NO_DOUBLE_UA_PATH = "/noDoubleUA";
     static final String EXPECTED_HEADER = "userAgent";
     static final String RETURN_HEADERS_AS_IS_PATH = "/returnHeadersAsIs";
+
+    private static final String PROXY_TO_ADDRESS = "/proxyToAddress";
 
     private static final byte[] SHORT_BODY = "hi there".getBytes(StandardCharsets.UTF_8);
     private static final byte[] LONG_BODY = createLongBody();
@@ -74,7 +82,7 @@ public class NettyAsyncHttpClientTests {
 
     @BeforeAll
     public static void beforeClass() {
-        server = new WireMockServer(WireMockConfiguration.options()
+        server = new WireMockServer(wireMockConfig()
             .extensions(new NettyAsyncHttpClientResponseTransformer())
             .dynamicPort()
             .disableRequestJournal()
@@ -92,6 +100,9 @@ public class NettyAsyncHttpClientTests {
             .withFault(Fault.MALFORMED_RESPONSE_CHUNK)));
         server.stubFor(get(RETURN_HEADERS_AS_IS_PATH).willReturn(aResponse()
             .withTransformers(NettyAsyncHttpClientResponseTransformer.NAME)));
+
+        server.stubFor(get(PROXY_TO_ADDRESS).willReturn(aResponse().withStatus(418).withBody("I'm a teapot")));
+
         server.start();
         // ResourceLeakDetector.setLevel(Level.PARANOID);
     }
@@ -131,7 +142,6 @@ public class NettyAsyncHttpClientTests {
         StepVerifier.create(response.getBodyAsByteArray())
             .assertNext(bytes -> assertArrayEquals(SHORT_BODY, bytes))
             .verifyComplete();
-
         // Subscription:2
         StepVerifier.create(response.getBodyAsByteArray())
             .expectNextCount(0)
@@ -386,6 +396,51 @@ public class NettyAsyncHttpClientTests {
             .verify(Duration.ofSeconds(10));
     }
 
+    /**
+     * This test validates that the eager retrying of Proxy Authentication (407) responses doesn't return to the
+     * HttpPipeline before connecting.
+     */
+    @Test
+    public void proxyAuthenticationErrorEagerlyRetries() {
+        try (MockProxyServer mockProxyServer = new MockProxyServer("1", "1")) {
+            AtomicInteger responseHandleCount = new AtomicInteger();
+
+            HttpPipeline httpPipeline = new HttpPipelineBuilder()
+                .policies(new RetryPolicy(),
+                    (context, next) -> next.process().doOnNext(ignored -> responseHandleCount.incrementAndGet()))
+                .httpClient(new NettyAsyncHttpClientBuilder()
+                    .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress())
+                        .setCredentials("1", "1"))
+                    .build())
+                .build();
+
+            StepVerifier.create(httpPipeline.send(new HttpRequest(HttpMethod.GET, url(server, PROXY_TO_ADDRESS))))
+                .assertNext(response -> assertEquals(418, response.getStatusCode()))
+                .verifyComplete();
+
+            assertEquals(1, responseHandleCount.get());
+        }
+    }
+
+    /**
+     * This test validates that if the eager retrying of Proxy Authentication (407) responses uses all retries returns
+     * the correct error.
+     */
+    @Test
+    public void failedProxyAuthenticationReturnsCorrectError() {
+        try (MockProxyServer mockProxyServer = new MockProxyServer("1", "1")) {
+            HttpPipeline httpPipeline = new HttpPipelineBuilder()
+                .httpClient(new NettyAsyncHttpClientBuilder()
+                    .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress())
+                        .setCredentials("2", "2"))
+                    .build())
+                .build();
+
+            StepVerifier.create(httpPipeline.send(new HttpRequest(HttpMethod.GET, url(server, PROXY_TO_ADDRESS))))
+                .verifyError(ProxyConnectException.class);
+        }
+    }
+
     private static Stream<Arguments> requestHeaderSupplier() {
         return Stream.of(
             Arguments.of(null, NettyAsyncHttpClientResponseTransformer.NULL_REPLACEMENT),
@@ -436,6 +491,7 @@ public class NettyAsyncHttpClientTests {
         private final AtomicInteger totalStreamSize = new AtomicInteger();
 
         public void write(ByteBuffer buffer) {
+
             internalBuffers.add(buffer);
             totalStreamSize.getAndAdd(buffer.remaining());
         }

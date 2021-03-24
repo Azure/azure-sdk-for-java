@@ -57,7 +57,7 @@ public final class ChatMessage {
      * further property may be set.
      */
     @JsonProperty(value = "senderCommunicationIdentifier")
-    private CommunicationIdentifier senderCommunicationIdentifier;
+    private CommunicationIdentifier sender;
 
     /*
      * The timestamp when the chat message was deleted. The timestamp is in
@@ -202,26 +202,26 @@ public final class ChatMessage {
     }
 
     /**
-     * Get the senderCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
+     * Get the sender property: Identifies a participant in Azure Communication services. A
      * participant is, for example, a phone number or an Azure communication user. This model must be interpreted as a
      * union: Apart from rawId, at most one further property may be set.
      *
-     * @return the senderCommunicationIdentifier value.
+     * @return the sender value.
      */
-    public CommunicationIdentifier getSenderCommunicationIdentifier() {
-        return this.senderCommunicationIdentifier;
+    public CommunicationIdentifier getSender() {
+        return this.sender;
     }
 
     /**
-     * Set the senderCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
+     * Set the sender property: Identifies a participant in Azure Communication services. A
      * participant is, for example, a phone number or an Azure communication user. This model must be interpreted as a
      * union: Apart from rawId, at most one further property may be set.
      *
-     * @param senderCommunicationIdentifier the senderCommunicationIdentifier value to set.
+     * @param sender the sender value to set.
      * @return the ChatMessage object itself.
      */
-    public ChatMessage setSenderCommunicationIdentifier(CommunicationIdentifier senderCommunicationIdentifier) {
-        this.senderCommunicationIdentifier = senderCommunicationIdentifier;
+    public ChatMessage setSender(CommunicationIdentifier sender) {
+        this.sender = sender;
         return this;
     }
 
