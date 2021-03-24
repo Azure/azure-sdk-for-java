@@ -241,7 +241,7 @@ function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$nu
 function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName)
 {
   # Find all source jar files in given artifact directory
-  # Filter for package only in track2 data plane or management directory. Currently track1 package APIs are not reviewed/enforced by arch board"
+  # Filter for package in "com.azure*" groupid.
   $artifactPath = Join-Path $artifactDir "com.azure*" $pkgName
   Write-Host "Checking for source jar in artifact path $($artifactPath)"
   $files = Get-ChildItem -Recurse "${artifactPath}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")}
