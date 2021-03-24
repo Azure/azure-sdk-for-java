@@ -288,22 +288,4 @@ public class ReactorReceiver implements AmqpReceiveLink {
     public String toString() {
         return String.format("link name: [%s], entity path: [%s]", receiver.getName(), entityPath);
     }
-
-    private static class MessageResult {
-        private final int credits;
-        private final Message message;
-
-        private MessageResult(Message message, int credits) {
-            this.credits = credits;
-            this.message = message;
-        }
-
-        public int getCredits() {
-            return credits;
-        }
-
-        public Message getMessage() {
-            return message;
-        }
-    }
 }
