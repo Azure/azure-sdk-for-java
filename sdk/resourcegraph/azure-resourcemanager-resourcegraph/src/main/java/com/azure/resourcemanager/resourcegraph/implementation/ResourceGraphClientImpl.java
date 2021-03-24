@@ -142,7 +142,7 @@ public final class ResourceGraphClientImpl implements ResourceGraphClient {
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
-        this.apiVersion = "2019-04-01";
+        this.apiVersion = "2021-03-01";
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
     }
