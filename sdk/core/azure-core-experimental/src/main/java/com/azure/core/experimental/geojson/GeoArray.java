@@ -9,7 +9,6 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.AbstractList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -64,11 +63,6 @@ final class GeoArray<T> extends AbstractList<T> {
         } else {
             throw logger.logExceptionAsError(new IllegalStateException());
         }
-    }
-
-    @Override
-    public Iterator<T> iterator() {
-        return new GeoArrayIterator<>(this);
     }
 
     /**
