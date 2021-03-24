@@ -41,19 +41,19 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>> exten
     /**
      * Regenerates primary or secondary keys.
      *
-     * @param policykey the key to regenerate
+     * @param regenerateAccessKeyParameters the parameters for the key to regenerate
      * @return a representation of the deferred computation of this call,
      * returning the primary, secondary keys and the connection strings
      */
-    Mono<AuthorizationKeys> regenerateKeyAsync(RegenerateAccessKeyParameters policykey);
+    Mono<AuthorizationKeys> regenerateKeyAsync(RegenerateAccessKeyParameters regenerateAccessKeyParameters);
 
     /**
      * Regenerates primary or secondary keys.
      *
-     * @param policykey the key to regenerate
+     * @param regenerateAccessKeyParameters the parameters for the key to regenerate
      * @return primary, secondary keys and connection strings
      */
-    AuthorizationKeys regenerateKey(RegenerateAccessKeyParameters policykey);
+    AuthorizationKeys regenerateKey(RegenerateAccessKeyParameters regenerateAccessKeyParameters);
 
     /**
      * Grouping of commons authorization rule definition stages shared between different Service Bus

@@ -67,8 +67,8 @@ abstract class AuthorizationRuleBaseImpl<
      * @param policykey the key to regenerate
      * @return stream that emits primary, secondary keys and connection strings
      */
-    public Mono<AuthorizationKeys> regenerateKeyAsync(RegenerateAccessKeyParameters policykey) {
-        return this.regenerateKeysInnerAsync(policykey)
+    public Mono<AuthorizationKeys> regenerateKeyAsync(RegenerateAccessKeyParameters regenerateAccessKeyParameters) {
+        return this.regenerateKeysInnerAsync(regenerateAccessKeyParameters)
             .map(inner -> new AuthorizationKeysImpl(inner));
     }
 
@@ -78,8 +78,8 @@ abstract class AuthorizationRuleBaseImpl<
      * @param policykey the key to regenerate
      * @return primary, secondary keys and connection strings
      */
-    public AuthorizationKeys regenerateKey(RegenerateAccessKeyParameters policykey) {
-        return regenerateKeyAsync(policykey).block();
+    public AuthorizationKeys regenerateKey(RegenerateAccessKeyParameters regenerateAccessKeyParameters) {
+        return regenerateKeyAsync(regenerateAccessKeyParameters).block();
     }
 
     public List<AccessRights> rights() {
@@ -122,5 +122,5 @@ abstract class AuthorizationRuleBaseImpl<
     }
 
     protected abstract Mono<AccessKeys> getKeysInnerAsync();
-    protected abstract Mono<AccessKeys> regenerateKeysInnerAsync(RegenerateAccessKeyParameters policykey);
+    protected abstract Mono<AccessKeys> regenerateKeysInnerAsync(RegenerateAccessKeyParameters regenerateAccessKeyParameters);
 }

@@ -83,11 +83,11 @@ class TopicAuthorizationRuleImpl
     }
 
     @Override
-    protected Mono<AccessKeys> regenerateKeysInnerAsync(RegenerateAccessKeyParameters policykey) {
+    protected Mono<AccessKeys> regenerateKeysInnerAsync(RegenerateAccessKeyParameters regenerateAccessKeyParameters) {
         return this.manager().serviceClient().getTopics().regenerateKeysAsync(this.resourceGroupName(),
-                this.namespaceName(),
-                this.topicName(),
-                this.name(),
-                policykey);
+            this.namespaceName(),
+            this.topicName(),
+            this.name(),
+            regenerateAccessKeyParameters);
     }
 }

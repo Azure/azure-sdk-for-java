@@ -73,11 +73,11 @@ class NamespaceAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<Namespace
     }
 
     @Override
-    protected Mono<AccessKeys> regenerateKeysInnerAsync(RegenerateAccessKeyParameters policykey) {
+    protected Mono<AccessKeys> regenerateKeysInnerAsync(RegenerateAccessKeyParameters regenerateAccessKeyParameters) {
         return this.manager().serviceClient().getNamespaces()
                 .regenerateKeysAsync(this.resourceGroupName(),
-                        this.namespaceName(),
-                        this.name(),
-                        policykey);
+                    this.namespaceName(),
+                    this.name(),
+                    regenerateAccessKeyParameters);
     }
 }

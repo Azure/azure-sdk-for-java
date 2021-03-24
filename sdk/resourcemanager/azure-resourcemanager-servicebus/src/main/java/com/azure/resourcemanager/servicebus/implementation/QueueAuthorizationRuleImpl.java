@@ -82,12 +82,12 @@ class QueueAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<QueueAuthoriz
     }
 
     @Override
-    protected Mono<AccessKeys> regenerateKeysInnerAsync(RegenerateAccessKeyParameters policykey) {
+    protected Mono<AccessKeys> regenerateKeysInnerAsync(RegenerateAccessKeyParameters regenerateAccessKeyParameters) {
         return this.manager().serviceClient().getQueues()
                 .regenerateKeysAsync(this.resourceGroupName(),
-                        this.namespaceName(),
-                        this.queueName(),
-                        this.name(),
-                        policykey);
+                    this.namespaceName(),
+                    this.queueName(),
+                    this.name(),
+                    regenerateAccessKeyParameters);
     }
 }
