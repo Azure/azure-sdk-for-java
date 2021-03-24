@@ -109,15 +109,16 @@ class PartitionControllerImpl implements PartitionController {
     }
 
     private Mono<Void> removeLease(Lease lease) {
-        return Mono.justOrEmpty(this.currentlyOwnedPartitions.remove(lease.getLeaseToken()))
-            .flatMap(workerTask -> {
-                if (workerTask.isRunning()) {
-                    workerTask.interrupt();
+        return Mono.just(this)
+            .flatMap(dummy -> {
+                WorkerTask workerTask = this.currentlyOwnedPartitions.remove(lease.getLeaseToken());
+                if (workerTask != null && workerTask.isRunning()) {
+                    workerTask.cancelJob();
                 }
                 logger.info("Partition {}: released.", lease.getLeaseToken());
-                return Mono.empty();
+
+                return this.leaseManager.release(lease);
             })
-            .then(this.leaseManager.release(lease))
             .onErrorResume(e -> {
                 if (e instanceof LeaseLostException) {
                     logger.warn("Partition {}: lease already removed.", lease.getLeaseToken());
@@ -138,7 +139,7 @@ class PartitionControllerImpl implements PartitionController {
         WorkerTask partitionSupervisorTask =
             new WorkerTask(
                 lease,
-                cancellationToken,
+                shutdownCts,
                 getWorkerJob(partitionSupervisor, lease, cancellationToken));
 
         this.scheduler.schedule(partitionSupervisorTask);

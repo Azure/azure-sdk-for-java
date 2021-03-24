@@ -2,26 +2,29 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
-import com.azure.cosmos.implementation.changefeed.CancellationToken;
+import com.azure.cosmos.implementation.changefeed.CancellationTokenSource;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Worker task that executes in a separate thread.
  */
 class WorkerTask extends Thread {
     private final Logger logger = LoggerFactory.getLogger(WorkerTask.class);
-    private boolean done = false;
+    private AtomicBoolean done;
     private Mono<Void> job;
     private Lease lease;
-    private CancellationToken taskCancellationToken;
+    private CancellationTokenSource taskCancelCts;
 
-    WorkerTask(Lease lease, CancellationToken taskCancellationToken, Mono<Void> job) {
+    WorkerTask(Lease lease, CancellationTokenSource taskCancelCts, Mono<Void> job) {
         this.lease = lease;
         this.job = job;
-        this.taskCancellationToken = taskCancellationToken;
+        this.taskCancelCts = taskCancelCts;
+        done = new AtomicBoolean(false);
     }
 
     @Override
@@ -31,15 +34,14 @@ class WorkerTask extends Thread {
             .doOnTerminate(() -> {
                 logger.info("Partition controller worker task {} has exited.", lease.getLeaseToken());
                 job = null;
-                this.done = true;
+                this.done.set(true);
             })
             .subscribe();
     }
 
-    @Override
-    public void interrupt() {
-        this.taskCancellationToken.cancel();
-        super.interrupt();
+    public void cancelJob() {
+        this.taskCancelCts.cancel();
+        this.interrupt();
     }
 
     public Lease lease() {
@@ -47,6 +49,6 @@ class WorkerTask extends Thread {
     }
 
     public boolean isRunning() {
-        return !this.done;
+        return !this.done.get();
     }
 }
