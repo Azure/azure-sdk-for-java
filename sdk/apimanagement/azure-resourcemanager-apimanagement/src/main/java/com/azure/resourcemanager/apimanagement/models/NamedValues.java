@@ -74,7 +74,7 @@ public interface NamedValues {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the named value specified by its identifier.
      */
-    Response<Void> getEntityTagWithResponse(
+    NamedValuesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String namedValueId, Context context);
 
     /**

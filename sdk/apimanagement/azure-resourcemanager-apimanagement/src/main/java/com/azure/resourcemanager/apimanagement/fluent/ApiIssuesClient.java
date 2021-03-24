@@ -10,6 +10,10 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.IssueContractInner;
+import com.azure.resourcemanager.apimanagement.models.ApiIssuesCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiIssuesGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiIssuesGetResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiIssuesUpdateResponse;
 import com.azure.resourcemanager.apimanagement.models.IssueUpdateContract;
 
 /** An instance of this class provides access to all the operations defined in ApiIssuesClient. */
@@ -86,7 +90,7 @@ public interface ApiIssuesClient {
      * @return the entity state (Etag) version of the Issue for an API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    ApiIssuesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String issueId, Context context);
 
     /**
@@ -119,7 +123,7 @@ public interface ApiIssuesClient {
      * @return the details of the Issue for an API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IssueContractInner> getWithResponse(
+    ApiIssuesGetResponse getWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -160,7 +164,7 @@ public interface ApiIssuesClient {
      * @return issue Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IssueContractInner> createOrUpdateWithResponse(
+    ApiIssuesCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -210,7 +214,7 @@ public interface ApiIssuesClient {
      * @return issue Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IssueContractInner> updateWithResponse(
+    ApiIssuesUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,

@@ -156,7 +156,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter diskRestorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -172,7 +172,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
                             apiVersion,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -228,7 +228,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter diskRestorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -372,7 +372,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter vmRestorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -396,7 +396,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -442,7 +442,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter vmRestorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -585,7 +585,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

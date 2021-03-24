@@ -12,6 +12,10 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.GroupContractInner;
 import com.azure.resourcemanager.apimanagement.models.GroupCreateParameters;
 import com.azure.resourcemanager.apimanagement.models.GroupUpdateParameters;
+import com.azure.resourcemanager.apimanagement.models.GroupsCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.GroupsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.GroupsGetResponse;
+import com.azure.resourcemanager.apimanagement.models.GroupsUpdateResponse;
 
 /** An instance of this class provides access to all the operations defined in GroupsClient. */
 public interface GroupsClient {
@@ -76,7 +80,7 @@ public interface GroupsClient {
      * @return the entity state (Etag) version of the group specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    GroupsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String groupId, Context context);
 
     /**
@@ -106,8 +110,7 @@ public interface GroupsClient {
      * @return the details of the group specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GroupContractInner> getWithResponse(
-        String resourceGroupName, String serviceName, String groupId, Context context);
+    GroupsGetResponse getWithResponse(String resourceGroupName, String serviceName, String groupId, Context context);
 
     /**
      * Creates or Updates a group.
@@ -140,7 +143,7 @@ public interface GroupsClient {
      * @return contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GroupContractInner> createOrUpdateWithResponse(
+    GroupsCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String groupId,
@@ -182,7 +185,7 @@ public interface GroupsClient {
      * @return contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GroupContractInner> updateWithResponse(
+    GroupsUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String groupId,

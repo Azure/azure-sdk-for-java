@@ -11,6 +11,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.CacheContractInner;
 import com.azure.resourcemanager.apimanagement.models.CacheUpdateParameters;
+import com.azure.resourcemanager.apimanagement.models.CachesCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.CachesGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.CachesGetResponse;
+import com.azure.resourcemanager.apimanagement.models.CachesUpdateResponse;
 
 /** An instance of this class provides access to all the operations defined in CachesClient. */
 public interface CachesClient {
@@ -72,7 +76,7 @@ public interface CachesClient {
      * @return the entity state (Etag) version of the Cache specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    CachesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String cacheId, Context context);
 
     /**
@@ -104,8 +108,7 @@ public interface CachesClient {
      * @return the details of the Cache specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CacheContractInner> getWithResponse(
-        String resourceGroupName, String serviceName, String cacheId, Context context);
+    CachesGetResponse getWithResponse(String resourceGroupName, String serviceName, String cacheId, Context context);
 
     /**
      * Creates or updates an External Cache to be used in Api Management instance.
@@ -140,7 +143,7 @@ public interface CachesClient {
      * @return cache details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CacheContractInner> createOrUpdateWithResponse(
+    CachesCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String cacheId,
@@ -184,7 +187,7 @@ public interface CachesClient {
      * @return cache details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CacheContractInner> updateWithResponse(
+    CachesUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String cacheId,

@@ -32,7 +32,8 @@ public interface SignUpSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the SignUpSettings.
      */
-    Response<Void> getEntityTagWithResponse(String resourceGroupName, String serviceName, Context context);
+    SignUpSettingsGetEntityTagResponse getEntityTagWithResponse(
+        String resourceGroupName, String serviceName, Context context);
 
     /**
      * Get Sign Up Settings for the Portal.

@@ -60,7 +60,7 @@ public interface IdentityProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the identityProvider specified by its identifier.
      */
-    Response<Void> getEntityTagWithResponse(
+    IdentityProvidersGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, IdentityProviderType identityProviderName, Context context);
 
     /**

@@ -13,6 +13,8 @@ import com.azure.resourcemanager.apimanagement.fluent.CachesClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.CacheContractInner;
 import com.azure.resourcemanager.apimanagement.models.CacheContract;
 import com.azure.resourcemanager.apimanagement.models.Caches;
+import com.azure.resourcemanager.apimanagement.models.CachesGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.CachesGetResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class CachesImpl implements Caches {
@@ -44,7 +46,7 @@ public final class CachesImpl implements Caches {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, cacheId);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public CachesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String cacheId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, cacheId, context);
     }
@@ -60,7 +62,7 @@ public final class CachesImpl implements Caches {
 
     public Response<CacheContract> getWithResponse(
         String resourceGroupName, String serviceName, String cacheId, Context context) {
-        Response<CacheContractInner> inner =
+        CachesGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, cacheId, context);
         if (inner != null) {
             return new SimpleResponse<>(

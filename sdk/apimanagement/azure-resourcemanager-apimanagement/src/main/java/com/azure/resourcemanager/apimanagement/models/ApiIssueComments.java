@@ -82,7 +82,7 @@ public interface ApiIssueComments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the issue Comment for an API specified by its identifier.
      */
-    Response<Void> getEntityTagWithResponse(
+    ApiIssueCommentsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String issueId, String commentId, Context context);
 
     /**

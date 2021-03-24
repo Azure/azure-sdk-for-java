@@ -14,6 +14,8 @@ import com.azure.resourcemanager.apimanagement.fluent.models.BackendContractInne
 import com.azure.resourcemanager.apimanagement.models.BackendContract;
 import com.azure.resourcemanager.apimanagement.models.BackendReconnectContract;
 import com.azure.resourcemanager.apimanagement.models.Backends;
+import com.azure.resourcemanager.apimanagement.models.BackendsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.BackendsGetResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BackendsImpl implements Backends {
@@ -45,7 +47,7 @@ public final class BackendsImpl implements Backends {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, backendId);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public BackendsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String backendId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, backendId, context);
     }
@@ -61,7 +63,7 @@ public final class BackendsImpl implements Backends {
 
     public Response<BackendContract> getWithResponse(
         String resourceGroupName, String serviceName, String backendId, Context context) {
-        Response<BackendContractInner> inner =
+        BackendsGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, backendId, context);
         if (inner != null) {
             return new SimpleResponse<>(

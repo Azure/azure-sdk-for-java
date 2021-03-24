@@ -229,7 +229,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -458,7 +458,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -562,7 +562,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @return developer portal revision specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public PortalRevisionsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String portalRevisionId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, portalRevisionId, context).block();
     }
@@ -619,7 +619,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -732,7 +732,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @return developer portal revision specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PortalRevisionContractInner> getWithResponse(
+    public PortalRevisionsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String portalRevisionId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, portalRevisionId, context).block();
     }
@@ -796,7 +796,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1128,7 +1128,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1466,7 +1466,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

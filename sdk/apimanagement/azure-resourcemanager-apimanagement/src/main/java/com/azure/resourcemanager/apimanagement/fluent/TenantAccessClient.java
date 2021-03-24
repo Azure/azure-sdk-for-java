@@ -14,6 +14,11 @@ import com.azure.resourcemanager.apimanagement.fluent.models.AccessInformationSe
 import com.azure.resourcemanager.apimanagement.models.AccessIdName;
 import com.azure.resourcemanager.apimanagement.models.AccessInformationCreateParameters;
 import com.azure.resourcemanager.apimanagement.models.AccessInformationUpdateParameters;
+import com.azure.resourcemanager.apimanagement.models.TenantAccessCreateResponse;
+import com.azure.resourcemanager.apimanagement.models.TenantAccessGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.TenantAccessGetResponse;
+import com.azure.resourcemanager.apimanagement.models.TenantAccessListSecretsResponse;
+import com.azure.resourcemanager.apimanagement.models.TenantAccessUpdateResponse;
 
 /** An instance of this class provides access to all the operations defined in TenantAccessClient. */
 public interface TenantAccessClient {
@@ -72,7 +77,7 @@ public interface TenantAccessClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    TenantAccessGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, AccessIdName accessName, Context context);
 
     /**
@@ -102,7 +107,7 @@ public interface TenantAccessClient {
      * @return tenant access information details without secrets.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccessInformationContractInner> getWithResponse(
+    TenantAccessGetResponse getWithResponse(
         String resourceGroupName, String serviceName, AccessIdName accessName, Context context);
 
     /**
@@ -143,7 +148,7 @@ public interface TenantAccessClient {
      * @return tenant Settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccessInformationContractInner> createWithResponse(
+    TenantAccessCreateResponse createWithResponse(
         String resourceGroupName,
         String serviceName,
         AccessIdName accessName,
@@ -189,7 +194,7 @@ public interface TenantAccessClient {
      * @return tenant Settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccessInformationContractInner> updateWithResponse(
+    TenantAccessUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         AccessIdName accessName,
@@ -283,6 +288,6 @@ public interface TenantAccessClient {
      * @return tenant access information details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccessInformationSecretsContractInner> listSecretsWithResponse(
+    TenantAccessListSecretsResponse listSecretsWithResponse(
         String resourceGroupName, String serviceName, AccessIdName accessName, Context context);
 }
