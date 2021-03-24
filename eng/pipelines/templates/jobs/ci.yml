@@ -17,12 +17,6 @@ parameters:
   - name: PreTestSteps
     type: object
     default: []
-  - name: TestOptions
-    type: string
-    default: '$(DefaultOptions) -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dparallel-test-playback'
-  - name: TestGoals
-    type: string
-    default: verify
   - name: MatrixConfigs
     type: object
   - name: AdditionalMatrixConfigs
@@ -105,11 +99,11 @@ jobs:
           AdditionalModules: ${{parameters.AdditionalModules}}
 
       - task: Maven@3
-        displayName: 'Build and Package , JDK Version: $(JavaBuildVersion)'
+        displayName: 'Build and Package, JDK Version: $(JavaBuildVersion)'
         inputs:
           mavenPomFile: pom.xml
           goals: 'deploy'
-          options: '$(DefaultOptions) -DskipTests -Dinject-codesnippets -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
+          options: '$(DefaultOptions) -T 1C -DskipTests -Dinject-codesnippets -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)
@@ -242,5 +236,3 @@ jobs:
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
         PreTestSteps: ${{ parameters.PreTestSteps }}
-        TestOptions: ${{ parameters.TestOptions }}
-        TestGoals: ${{ parameters.TestGoals }}
