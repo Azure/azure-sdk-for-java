@@ -570,7 +570,5 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
         Assertions.assertEquals(queueName.replaceAll(Pattern.quote("/"), "~"), queue.name());
 
         serviceBusNamespace.queues().deleteByName(queueName);
-
-        int i = 1;
     }
 }
