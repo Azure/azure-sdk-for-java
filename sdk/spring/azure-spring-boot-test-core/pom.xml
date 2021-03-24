@@ -29,12 +29,12 @@
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-embedder</artifactId>
-      <version>3.6.2</version> <!-- {x-version-update;org.apache.maven:maven-embedder;external_dependency} -->
+      <version>3.6.3</version> <!-- {x-version-update;org.apache.maven:maven-embedder;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-compat</artifactId>
-      <version>3.6.2</version> <!-- {x-version-update;org.apache.maven:maven-compat;external_dependency} -->
+      <version>3.6.3</version> <!-- {x-version-update;org.apache.maven:maven-compat;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.eclipse.aether</groupId>
@@ -49,12 +49,12 @@
     <dependency>
       <groupId>org.apache.maven.wagon</groupId>
       <artifactId>wagon-http</artifactId>
-      <version>3.3.4</version> <!-- {x-version-update;org.apache.maven.wagon:wagon-http;external_dependency} -->
+      <version>3.4.3</version> <!-- {x-version-update;org.apache.maven.wagon:wagon-http;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.apache.maven.wagon</groupId>
       <artifactId>wagon-provider-api</artifactId>
-      <version>3.3.4</version> <!-- {x-version-update;org.apache.maven.wagon:wagon-provider-api;external_dependency} -->
+      <version>3.4.3</version> <!-- {x-version-update;org.apache.maven.wagon:wagon-provider-api;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
