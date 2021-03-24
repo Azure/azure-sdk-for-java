@@ -448,7 +448,7 @@ public final class SystemEventNames {
         "Microsoft.Communication.ChatParticipantAddedToThreadWithUser";
 
     /**
-     * Please use {@link #COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD} instead.
+     * @deprecated As of 4.1.0, replaced by {@link #COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD}.
      */
     @Deprecated
     public static final String COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD =
@@ -457,7 +457,7 @@ public final class SystemEventNames {
         "Microsoft.Communication.ChatThreadParticipantRemoved";
 
     /**
-     * Please use {@link #COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD_WITH_USER} instead.
+     * @deprecated @deprecated As of 4.1.0, replaced by {@link #COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD_WITH_USER}.
      */
     @Deprecated
     public static final String COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD_WITH_USER =
