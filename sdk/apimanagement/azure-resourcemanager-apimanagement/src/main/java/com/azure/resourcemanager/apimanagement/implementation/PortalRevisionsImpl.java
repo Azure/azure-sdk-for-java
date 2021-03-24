@@ -13,6 +13,8 @@ import com.azure.resourcemanager.apimanagement.fluent.PortalRevisionsClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.PortalRevisionContractInner;
 import com.azure.resourcemanager.apimanagement.models.PortalRevisionContract;
 import com.azure.resourcemanager.apimanagement.models.PortalRevisions;
+import com.azure.resourcemanager.apimanagement.models.PortalRevisionsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.PortalRevisionsGetResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PortalRevisionsImpl implements PortalRevisions {
@@ -46,7 +48,7 @@ public final class PortalRevisionsImpl implements PortalRevisions {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, portalRevisionId);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public PortalRevisionsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String portalRevisionId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, portalRevisionId, context);
     }
@@ -62,7 +64,7 @@ public final class PortalRevisionsImpl implements PortalRevisions {
 
     public Response<PortalRevisionContract> getWithResponse(
         String resourceGroupName, String serviceName, String portalRevisionId, Context context) {
-        Response<PortalRevisionContractInner> inner =
+        PortalRevisionsGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, portalRevisionId, context);
         if (inner != null) {
             return new SimpleResponse<>(

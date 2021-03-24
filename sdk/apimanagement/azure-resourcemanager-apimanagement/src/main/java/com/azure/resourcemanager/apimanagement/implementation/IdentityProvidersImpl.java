@@ -16,6 +16,9 @@ import com.azure.resourcemanager.apimanagement.models.ClientSecretContract;
 import com.azure.resourcemanager.apimanagement.models.IdentityProviderContract;
 import com.azure.resourcemanager.apimanagement.models.IdentityProviderType;
 import com.azure.resourcemanager.apimanagement.models.IdentityProviders;
+import com.azure.resourcemanager.apimanagement.models.IdentityProvidersGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.IdentityProvidersGetResponse;
+import com.azure.resourcemanager.apimanagement.models.IdentityProvidersListSecretsResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IdentityProvidersImpl implements IdentityProviders {
@@ -49,7 +52,7 @@ public final class IdentityProvidersImpl implements IdentityProviders {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, identityProviderName);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public IdentityProvidersGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, IdentityProviderType identityProviderName, Context context) {
         return this
             .serviceClient()
@@ -69,7 +72,7 @@ public final class IdentityProvidersImpl implements IdentityProviders {
 
     public Response<IdentityProviderContract> getWithResponse(
         String resourceGroupName, String serviceName, IdentityProviderType identityProviderName, Context context) {
-        Response<IdentityProviderContractInner> inner =
+        IdentityProvidersGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, identityProviderName, context);
         if (inner != null) {
             return new SimpleResponse<>(
@@ -111,7 +114,7 @@ public final class IdentityProvidersImpl implements IdentityProviders {
 
     public Response<ClientSecretContract> listSecretsWithResponse(
         String resourceGroupName, String serviceName, IdentityProviderType identityProviderName, Context context) {
-        Response<ClientSecretContractInner> inner =
+        IdentityProvidersListSecretsResponse inner =
             this.serviceClient().listSecretsWithResponse(resourceGroupName, serviceName, identityProviderName, context);
         if (inner != null) {
             return new SimpleResponse<>(

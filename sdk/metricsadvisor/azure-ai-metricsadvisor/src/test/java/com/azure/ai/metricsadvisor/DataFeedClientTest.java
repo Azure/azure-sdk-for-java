@@ -25,6 +25,7 @@ import com.azure.core.util.CoreUtils;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -82,6 +83,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
+    @Disabled
     void testListDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final AtomicReference<List<String>> expectedDataFeedIdList = new AtomicReference<List<String>>();
         try {

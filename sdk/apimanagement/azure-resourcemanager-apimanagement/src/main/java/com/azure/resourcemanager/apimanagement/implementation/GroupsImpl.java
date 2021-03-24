@@ -13,6 +13,8 @@ import com.azure.resourcemanager.apimanagement.fluent.GroupsClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.GroupContractInner;
 import com.azure.resourcemanager.apimanagement.models.GroupContract;
 import com.azure.resourcemanager.apimanagement.models.Groups;
+import com.azure.resourcemanager.apimanagement.models.GroupsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.GroupsGetResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class GroupsImpl implements Groups {
@@ -44,7 +46,7 @@ public final class GroupsImpl implements Groups {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, groupId);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public GroupsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String groupId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, groupId, context);
     }
@@ -60,7 +62,7 @@ public final class GroupsImpl implements Groups {
 
     public Response<GroupContract> getWithResponse(
         String resourceGroupName, String serviceName, String groupId, Context context) {
-        Response<GroupContractInner> inner =
+        GroupsGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, groupId, context);
         if (inner != null) {
             return new SimpleResponse<>(

@@ -15,6 +15,9 @@ import com.azure.resourcemanager.apimanagement.fluent.models.NamedValueSecretCon
 import com.azure.resourcemanager.apimanagement.models.NamedValueContract;
 import com.azure.resourcemanager.apimanagement.models.NamedValueSecretContract;
 import com.azure.resourcemanager.apimanagement.models.NamedValues;
+import com.azure.resourcemanager.apimanagement.models.NamedValuesGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.NamedValuesGetResponse;
+import com.azure.resourcemanager.apimanagement.models.NamedValuesListValueResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class NamedValuesImpl implements NamedValues {
@@ -55,7 +58,7 @@ public final class NamedValuesImpl implements NamedValues {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, namedValueId);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public NamedValuesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String namedValueId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, namedValueId, context);
     }
@@ -71,7 +74,7 @@ public final class NamedValuesImpl implements NamedValues {
 
     public Response<NamedValueContract> getWithResponse(
         String resourceGroupName, String serviceName, String namedValueId, Context context) {
-        Response<NamedValueContractInner> inner =
+        NamedValuesGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, namedValueId, context);
         if (inner != null) {
             return new SimpleResponse<>(
@@ -105,7 +108,7 @@ public final class NamedValuesImpl implements NamedValues {
 
     public Response<NamedValueSecretContract> listValueWithResponse(
         String resourceGroupName, String serviceName, String namedValueId, Context context) {
-        Response<NamedValueSecretContractInner> inner =
+        NamedValuesListValueResponse inner =
             this.serviceClient().listValueWithResponse(resourceGroupName, serviceName, namedValueId, context);
         if (inner != null) {
             return new SimpleResponse<>(

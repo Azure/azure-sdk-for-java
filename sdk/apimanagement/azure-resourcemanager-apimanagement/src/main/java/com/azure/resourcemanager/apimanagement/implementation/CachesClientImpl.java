@@ -239,7 +239,7 @@ public final class CachesClientImpl implements CachesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -448,7 +448,7 @@ public final class CachesClientImpl implements CachesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -551,7 +551,7 @@ public final class CachesClientImpl implements CachesClient {
      * @return the entity state (Etag) version of the Cache specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public CachesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String cacheId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, cacheId, context).block();
     }
@@ -606,7 +606,7 @@ public final class CachesClientImpl implements CachesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -717,7 +717,7 @@ public final class CachesClientImpl implements CachesClient {
      * @return the details of the Cache specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CacheContractInner> getWithResponse(
+    public CachesGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String cacheId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, cacheId, context).block();
     }
@@ -782,7 +782,7 @@ public final class CachesClientImpl implements CachesClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -943,7 +943,7 @@ public final class CachesClientImpl implements CachesClient {
      * @return cache details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CacheContractInner> createOrUpdateWithResponse(
+    public CachesCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String cacheId,
@@ -1022,7 +1022,7 @@ public final class CachesClientImpl implements CachesClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1170,7 +1170,7 @@ public final class CachesClientImpl implements CachesClient {
      * @return cache details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CacheContractInner> updateWithResponse(
+    public CachesUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String cacheId,
@@ -1237,7 +1237,7 @@ public final class CachesClientImpl implements CachesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1389,7 +1389,7 @@ public final class CachesClientImpl implements CachesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

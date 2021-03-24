@@ -76,7 +76,7 @@ public interface ApiOperationPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the API operation policy specified by its identifier.
      */
-    Response<Void> getEntityTagWithResponse(
+    ApiOperationPoliciesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,

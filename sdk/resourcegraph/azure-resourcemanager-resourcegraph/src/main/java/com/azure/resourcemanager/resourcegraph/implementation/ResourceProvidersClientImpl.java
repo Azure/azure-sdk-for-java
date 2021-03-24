@@ -68,7 +68,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Queries the resources managed by Azure Resource Manager for all subscriptions specified in the request.
+     * Queries the resources managed by Azure Resource Manager for scopes specified in the request.
      *
      * @param query Request specifying query and its options.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -94,11 +94,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             .withContext(
                 context ->
                     service.resources(this.client.getEndpoint(), this.client.getApiVersion(), query, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Queries the resources managed by Azure Resource Manager for all subscriptions specified in the request.
+     * Queries the resources managed by Azure Resource Manager for scopes specified in the request.
      *
      * @param query Request specifying query and its options.
      * @param context The context to associate with this operation.
@@ -126,7 +126,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Queries the resources managed by Azure Resource Manager for all subscriptions specified in the request.
+     * Queries the resources managed by Azure Resource Manager for scopes specified in the request.
      *
      * @param query Request specifying query and its options.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,7 +148,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Queries the resources managed by Azure Resource Manager for all subscriptions specified in the request.
+     * Queries the resources managed by Azure Resource Manager for scopes specified in the request.
      *
      * @param query Request specifying query and its options.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -162,7 +162,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Queries the resources managed by Azure Resource Manager for all subscriptions specified in the request.
+     * Queries the resources managed by Azure Resource Manager for scopes specified in the request.
      *
      * @param query Request specifying query and its options.
      * @param context The context to associate with this operation.

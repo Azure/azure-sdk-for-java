@@ -13,6 +13,8 @@ import com.azure.resourcemanager.apimanagement.fluent.ContentTypesClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.ContentTypeContractInner;
 import com.azure.resourcemanager.apimanagement.models.ContentTypeContract;
 import com.azure.resourcemanager.apimanagement.models.ContentTypes;
+import com.azure.resourcemanager.apimanagement.models.ContentTypesCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.ContentTypesGetResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ContentTypesImpl implements ContentTypes {
@@ -52,7 +54,7 @@ public final class ContentTypesImpl implements ContentTypes {
 
     public Response<ContentTypeContract> getWithResponse(
         String resourceGroupName, String serviceName, String contentTypeId, Context context) {
-        Response<ContentTypeContractInner> inner =
+        ContentTypesGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, contentTypeId, context);
         if (inner != null) {
             return new SimpleResponse<>(
@@ -77,7 +79,7 @@ public final class ContentTypesImpl implements ContentTypes {
 
     public Response<ContentTypeContract> createOrUpdateWithResponse(
         String resourceGroupName, String serviceName, String contentTypeId, String ifMatch, Context context) {
-        Response<ContentTypeContractInner> inner =
+        ContentTypesCreateOrUpdateResponse inner =
             this
                 .serviceClient()
                 .createOrUpdateWithResponse(resourceGroupName, serviceName, contentTypeId, ifMatch, context);

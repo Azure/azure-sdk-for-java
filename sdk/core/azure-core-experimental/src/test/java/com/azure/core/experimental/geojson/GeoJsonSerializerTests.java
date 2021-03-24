@@ -67,8 +67,8 @@ public class GeoJsonSerializerTests {
 
         List<GeoPosition> positions = Arrays.asList(new GeoPosition(0, 0, 1D),
             new GeoPosition(1, 1, 1D));
-        BiFunction<GeoBoundingBox, Map<String, Object>, GeoLine> lineSupplier =
-            (box, properties) -> new GeoLine(positions, box, properties);
+        BiFunction<GeoBoundingBox, Map<String, Object>, GeoLineString> lineSupplier =
+            (box, properties) -> new GeoLineString(positions, box, properties);
 
         List<GeoLinearRing> rings = Collections.singletonList(new GeoLinearRing(Arrays.asList(
             new GeoPosition(0, 0, 1D), new GeoPosition(0, 1, 1D),
@@ -81,8 +81,8 @@ public class GeoJsonSerializerTests {
             (box, properties) -> new GeoPointCollection(Arrays.asList(pointSupplier.apply(null, null),
                 pointSupplier.apply(box, properties)), box, properties);
 
-        BiFunction<GeoBoundingBox, Map<String, Object>, GeoLineCollection> multiLineSupplier =
-            (box, properties) -> new GeoLineCollection(Arrays.asList(lineSupplier.apply(null, null),
+        BiFunction<GeoBoundingBox, Map<String, Object>, GeoLineStringCollection> multiLineSupplier =
+            (box, properties) -> new GeoLineStringCollection(Arrays.asList(lineSupplier.apply(null, null),
                 lineSupplier.apply(box, properties)), box, properties);
 
         BiFunction<GeoBoundingBox, Map<String, Object>, GeoPolygonCollection> multiPolygonSuppluer =

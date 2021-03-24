@@ -65,11 +65,17 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
     /**
      * Handle for invoking "side-effects" on each FeedResponse returned by CosmosPagedFlux
      *
-     * @param feedResponseConsumer handler
+     * @param newFeedResponseConsumer handler
      * @return CosmosPagedFlux instance with attached handler
      */
-    public CosmosPagedFlux<T> handle(Consumer<FeedResponse<T>> feedResponseConsumer) {
-        return new CosmosPagedFlux<T>(this.optionsFluxFunction, feedResponseConsumer);
+    public CosmosPagedFlux<T> handle(Consumer<FeedResponse<T>> newFeedResponseConsumer) {
+        if (this.feedResponseConsumer != null) {
+            return new CosmosPagedFlux<T>(
+                this.optionsFluxFunction,
+                this.feedResponseConsumer.andThen(newFeedResponseConsumer));
+        } else {
+            return new CosmosPagedFlux<T>(this.optionsFluxFunction, newFeedResponseConsumer);
+        }
     }
 
     @Override

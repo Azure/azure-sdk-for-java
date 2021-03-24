@@ -12,8 +12,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.fluent.models.LogAnalyticsOperationResultInner;
-import com.azure.resourcemanager.compute.models.LogAnalyticsInputBase;
 import com.azure.resourcemanager.compute.models.RequestRateByIntervalInput;
+import com.azure.resourcemanager.compute.models.ThrottledRequestsInput;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -139,7 +139,7 @@ public interface LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> exportThrottledRequestsWithResponseAsync(
-        String location, LogAnalyticsInputBase parameters);
+        String location, ThrottledRequestsInput parameters);
 
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
@@ -153,7 +153,7 @@ public interface LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
-        beginExportThrottledRequestsAsync(String location, LogAnalyticsInputBase parameters);
+        beginExportThrottledRequestsAsync(String location, ThrottledRequestsInput parameters);
 
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
@@ -167,7 +167,7 @@ public interface LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
-        beginExportThrottledRequests(String location, LogAnalyticsInputBase parameters);
+        beginExportThrottledRequests(String location, ThrottledRequestsInput parameters);
 
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
@@ -182,7 +182,7 @@ public interface LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
-        beginExportThrottledRequests(String location, LogAnalyticsInputBase parameters, Context context);
+        beginExportThrottledRequests(String location, ThrottledRequestsInput parameters, Context context);
 
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
@@ -196,7 +196,7 @@ public interface LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<LogAnalyticsOperationResultInner> exportThrottledRequestsAsync(
-        String location, LogAnalyticsInputBase parameters);
+        String location, ThrottledRequestsInput parameters);
 
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
@@ -209,7 +209,7 @@ public interface LogAnalyticsClient {
      * @return logAnalytics operation status response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LogAnalyticsOperationResultInner exportThrottledRequests(String location, LogAnalyticsInputBase parameters);
+    LogAnalyticsOperationResultInner exportThrottledRequests(String location, ThrottledRequestsInput parameters);
 
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
@@ -224,5 +224,5 @@ public interface LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     LogAnalyticsOperationResultInner exportThrottledRequests(
-        String location, LogAnalyticsInputBase parameters, Context context);
+        String location, ThrottledRequestsInput parameters, Context context);
 }

@@ -10,6 +10,9 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.IssueCommentContractInner;
+import com.azure.resourcemanager.apimanagement.models.ApiIssueCommentsCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiIssueCommentsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiIssueCommentsGetResponse;
 
 /** An instance of this class provides access to all the operations defined in ApiIssueCommentsClient. */
 public interface ApiIssueCommentsClient {
@@ -89,7 +92,7 @@ public interface ApiIssueCommentsClient {
      * @return the entity state (Etag) version of the issue Comment for an API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    ApiIssueCommentsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String issueId, String commentId, Context context);
 
     /**
@@ -124,7 +127,7 @@ public interface ApiIssueCommentsClient {
      * @return the details of the issue Comment for an API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IssueCommentContractInner> getWithResponse(
+    ApiIssueCommentsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String apiId, String issueId, String commentId, Context context);
 
     /**
@@ -167,7 +170,7 @@ public interface ApiIssueCommentsClient {
      * @return issue Comment Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IssueCommentContractInner> createOrUpdateWithResponse(
+    ApiIssueCommentsCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
