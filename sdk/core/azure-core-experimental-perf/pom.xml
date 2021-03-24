@@ -11,7 +11,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>azure-core-experimental-perf</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-experimental-perf;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;:azure-core-experimental-perf;current} -->
 
 
   <dependencies>
@@ -28,7 +28,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-experimental</artifactId>
-      <version>1.0.0-beta.11</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
+      <version>1.0.0-beta.12</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
     </dependency>
   </dependencies>
 
