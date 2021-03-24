@@ -203,13 +203,12 @@ public class RequestResponseChannel implements Disposable {
 
     @Override
     public void dispose() {
-        disposeAsync("Dispose called.").publishOn(Schedulers.boundedElastic())
-            .block(retryOptions.getTryTimeout());
+        disposeAsync("Dispose called.").block(retryOptions.getTryTimeout());
     }
 
     Mono<Void> disposeAsync(String message) {
         if (isDisposed.getAndSet(true)) {
-            return closeMono.asMono();
+            return closeMono.asMono().publishOn(Schedulers.boundedElastic());
         }
 
         return Mono.fromRunnable(() -> {
@@ -226,7 +225,7 @@ public class RequestResponseChannel implements Disposable {
                 sendLink.close();
                 receiveLink.close();
             }
-        }).then(closeMono.asMono());
+        }).then(closeMono.asMono()).publishOn(Schedulers.boundedElastic());
     }
 
     @Override

@@ -19,6 +19,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.FluxProcessor;
 import reactor.core.publisher.Operators;
 
+import java.time.Duration;
 import java.util.Deque;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -43,8 +44,8 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     private final AtomicInteger wip = new AtomicInteger();
 
     private final int prefetch;
-    private final AmqpRetryPolicy retryPolicy;
     private final Disposable parentConnection;
+    private final Duration timeout;
 
     private volatile Throwable lastError;
     private volatile boolean isCancelled;
@@ -80,6 +81,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         }
 
         this.prefetch = prefetch;
+        this.timeout = retryPolicy.getRetryOptions().getTryTimeout();
     }
 
     /**
@@ -155,10 +157,12 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
             // For a new link, add the prefetch as credits.
             linkCreditsAdded.set(true);
-            next.addCredits(prefetch);
             next.setEmptyCreditListener(this::getCreditsToAdd);
 
             currentLinkSubscriptions = Disposables.composite(
+                next.getEndpointStates().filter(e -> e == AmqpEndpointState.ACTIVE).next()
+                    .flatMap(state -> next.addCredits(prefetch))
+                    .subscribe(),
                 next.getEndpointStates().subscribe(
                     state -> {
                         // Connection was successfully opened, we can reset the retry interval.
