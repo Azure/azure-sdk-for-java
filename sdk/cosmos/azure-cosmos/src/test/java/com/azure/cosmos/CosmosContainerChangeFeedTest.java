@@ -64,7 +64,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
     private final Multimap<String, ObjectNode> partitionKeyToDocuments = ArrayListMultimap.create();
     private final String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "simpleClientBuildersWithDirect")
     public CosmosContainerChangeFeedTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
@@ -273,7 +273,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                 .block();
 
             Range<String> effectiveRange = feedRangeForLogicalPartition
-                .getEffectiveRange(
+                .getNormalizedEffectiveRange(
                     client.asyncClient().getContextClient().getPartitionKeyRangeCache(),
                     null,
                     Mono.just(documentCollection))
@@ -281,7 +281,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
 
             assertThat(effectiveRange).isNotNull();
 
-            FeedRange feedRange = new FeedRangeEpkImpl(convertToMaxExclusive(effectiveRange));
+            FeedRange feedRange = new FeedRangeEpkImpl(effectiveRange);
 
             CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
                 .createForProcessingFromBeginning(feedRange);

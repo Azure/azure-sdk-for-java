@@ -34,13 +34,13 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.BlockLookupList;
 import com.azure.storage.blob.models.CpkInfo;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
+import com.azure.storage.blob.models.EncryptionAlgorithmType;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.Map;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BlockBlobs. */
 public final class BlockBlobsImpl {
@@ -89,7 +89,7 @@ public final class BlockBlobsImpl {
                 @HeaderParam("x-ms-blob-content-disposition") String contentDisposition,
                 @HeaderParam("x-ms-encryption-key") String encryptionKey,
                 @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
-                @HeaderParam("x-ms-encryption-algorithm") String encryptionAlgorithm,
+                @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
                 @HeaderParam("x-ms-encryption-scope") String encryptionScope,
                 @HeaderParam("x-ms-access-tier") AccessTier tier,
                 @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
@@ -125,7 +125,7 @@ public final class BlockBlobsImpl {
                 @HeaderParam("x-ms-blob-content-disposition") String contentDisposition,
                 @HeaderParam("x-ms-encryption-key") String encryptionKey,
                 @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
-                @HeaderParam("x-ms-encryption-algorithm") String encryptionAlgorithm,
+                @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
                 @HeaderParam("x-ms-encryption-scope") String encryptionScope,
                 @HeaderParam("x-ms-access-tier") AccessTier tier,
                 @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
@@ -163,7 +163,7 @@ public final class BlockBlobsImpl {
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-encryption-key") String encryptionKey,
                 @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
-                @HeaderParam("x-ms-encryption-algorithm") String encryptionAlgorithm,
+                @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
                 @HeaderParam("x-ms-encryption-scope") String encryptionScope,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
@@ -188,7 +188,7 @@ public final class BlockBlobsImpl {
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-encryption-key") String encryptionKey,
                 @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
-                @HeaderParam("x-ms-encryption-algorithm") String encryptionAlgorithm,
+                @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
                 @HeaderParam("x-ms-encryption-scope") String encryptionScope,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince,
@@ -221,7 +221,7 @@ public final class BlockBlobsImpl {
                 @HeaderParam("x-ms-blob-content-disposition") String contentDisposition,
                 @HeaderParam("x-ms-encryption-key") String encryptionKey,
                 @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
-                @HeaderParam("x-ms-encryption-algorithm") String encryptionAlgorithm,
+                @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
                 @HeaderParam("x-ms-encryption-scope") String encryptionScope,
                 @HeaderParam("x-ms-access-tier") AccessTier tier,
                 @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
@@ -319,7 +319,6 @@ public final class BlockBlobsImpl {
             EncryptionScope encryptionScope,
             Context context) {
         final String blobType = "BlockBlob";
-        final String encryptionAlgorithm = "AES256";
         final String accept = "application/xml";
         String contentTypeInternal = null;
         if (blobHttpHeaders != null) {
@@ -361,6 +360,11 @@ public final class BlockBlobsImpl {
             encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
         }
         String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String encryptionScopeInternal = null;
         if (encryptionScope != null) {
             encryptionScopeInternal = encryptionScope.getEncryptionScope();
@@ -490,7 +494,6 @@ public final class BlockBlobsImpl {
             EncryptionScope encryptionScope,
             Context context) {
         final String blobType = "BlockBlob";
-        final String encryptionAlgorithm = "AES256";
         final String accept = "application/xml";
         String contentTypeInternal = null;
         if (blobHttpHeaders != null) {
@@ -532,6 +535,11 @@ public final class BlockBlobsImpl {
             encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
         }
         String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String encryptionScopeInternal = null;
         if (encryptionScope != null) {
             encryptionScopeInternal = encryptionScope.getEncryptionScope();
@@ -631,7 +639,6 @@ public final class BlockBlobsImpl {
             EncryptionScope encryptionScope,
             Context context) {
         final String comp = "block";
-        final String encryptionAlgorithm = "AES256";
         final String accept = "application/xml";
         String encryptionKeyInternal = null;
         if (cpkInfo != null) {
@@ -643,6 +650,11 @@ public final class BlockBlobsImpl {
             encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
         }
         String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String encryptionScopeInternal = null;
         if (encryptionScope != null) {
             encryptionScopeInternal = encryptionScope.getEncryptionScope();
@@ -728,7 +740,6 @@ public final class BlockBlobsImpl {
             EncryptionScope encryptionScope,
             Context context) {
         final String comp = "block";
-        final String encryptionAlgorithm = "AES256";
         final String accept = "application/xml";
         String encryptionKeyInternal = null;
         if (cpkInfo != null) {
@@ -740,6 +751,11 @@ public final class BlockBlobsImpl {
             encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
         }
         String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String encryptionScopeInternal = null;
         if (encryptionScope != null) {
             encryptionScopeInternal = encryptionScope.getEncryptionScope();
@@ -844,7 +860,6 @@ public final class BlockBlobsImpl {
             EncryptionScope encryptionScope,
             Context context) {
         final String comp = "blocklist";
-        final String encryptionAlgorithm = "AES256";
         final String accept = "application/xml";
         String cacheControlInternal = null;
         if (blobHttpHeaders != null) {
@@ -886,6 +901,11 @@ public final class BlockBlobsImpl {
             encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
         }
         String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String encryptionScopeInternal = null;
         if (encryptionScope != null) {
             encryptionScopeInternal = encryptionScope.getEncryptionScope();

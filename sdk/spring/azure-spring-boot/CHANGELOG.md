@@ -1,6 +1,20 @@
 # Release History
 
-## 3.2.0-beta.1 (Unreleased)
+## 3.4.0-beta.1 (Unreleased)
+### Key Bug Fixes
+- Fix bug of Keyvault refresh Timer task blocking application termination.
+
+## 3.3.0 (2021-03-22)
+### New Features
+Updated to `Spring Boot` [2.4.3](https://github.com/spring-projects/spring-boot/releases/tag/v2.4.3).
+
+### Key Bug Fixes
+- Fix bug of using closed `MessageProducer` and `MessageConsumer` when a link is force detached in azure-spring-boot-starter-servicebus-jms.
+
+### New Features
+- Support creating `GrantedAuthority` by "roles" claim of id-token for web application in azure-spring-boot-starter-active-directory. 
+
+## 3.2.0 (2021-03-03)
 ### Breaking Changes
 - Remove `azure.activedirectory.b2c.oidc-enabled` property.
 - Add `azure.activedirectory.b2c.login-flow` property. 
@@ -13,6 +27,10 @@
           user-flows:
             ${your-user-flow-key}: ${your-user-flow-name-defined-on-azure-portal}
     ```
+- Require new property of `spring.jms.servicebus.pricing-tier` to set pricing tier of Azure Service Bus. Supported values are `premium`, `standard` and `basic`.
+### New Features
+- Enable MessageConverter bean customization.
+- Update the underpinning JMS library for the Premium pricing tier of Service Bus to JMS 2.0.
 
 ## 3.1.0 (2021-01-20)
 ### Breaking Changes

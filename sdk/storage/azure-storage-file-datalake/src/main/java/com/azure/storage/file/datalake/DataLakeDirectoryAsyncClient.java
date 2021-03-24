@@ -177,9 +177,10 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
 
         BlockBlobAsyncClient blockBlobAsyncClient = prepareBuilderAppendPath(fileName).buildBlockBlobAsyncClient();
 
-        return new DataLakeFileAsyncClient(getHttpPipeline(),
-            getAccountUrl(),
-            getServiceVersion(), getAccountName(), getFileSystemName(), Utility.urlEncode(getObjectPath() + "/"
+        String pathPrefix = getObjectPath().isEmpty() ? "" : getObjectPath() + "/";
+
+        return new DataLakeFileAsyncClient(getHttpPipeline(), getAccountUrl(),
+            getServiceVersion(), getAccountName(), getFileSystemName(), Utility.urlEncode(pathPrefix
             + Utility.urlDecode(fileName)), blockBlobAsyncClient);
     }
 
@@ -324,8 +325,11 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         BlockBlobAsyncClient blockBlobAsyncClient = prepareBuilderAppendPath(subdirectoryName)
             .buildBlockBlobAsyncClient();
 
-        return new DataLakeDirectoryAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(), getFileSystemName(),
-            Utility.urlEncode(getObjectPath() + "/" + Utility.urlDecode(subdirectoryName)), blockBlobAsyncClient);
+        String pathPrefix = getObjectPath().isEmpty() ? "" : getObjectPath() + "/";
+
+        return new DataLakeDirectoryAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
+            getAccountName(), getFileSystemName(),
+            Utility.urlEncode(pathPrefix + Utility.urlDecode(subdirectoryName)), blockBlobAsyncClient);
     }
 
     /**

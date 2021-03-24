@@ -35,6 +35,7 @@ import com.azure.storage.blob.implementation.models.PremiumPageBlobAccessTier;
 import com.azure.storage.blob.implementation.models.StorageErrorException;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.models.EncryptionAlgorithmType;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -90,7 +91,7 @@ public final class PageBlobsImpl {
                 @HeaderParam("x-ms-blob-content-disposition") String contentDisposition,
                 @HeaderParam("x-ms-encryption-key") String encryptionKey,
                 @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
-                @HeaderParam("x-ms-encryption-algorithm") String encryptionAlgorithm,
+                @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
                 @HeaderParam("x-ms-encryption-scope") String encryptionScope,
                 @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
                 @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
@@ -122,7 +123,7 @@ public final class PageBlobsImpl {
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-encryption-key") String encryptionKey,
                 @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
-                @HeaderParam("x-ms-encryption-algorithm") String encryptionAlgorithm,
+                @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
                 @HeaderParam("x-ms-encryption-scope") String encryptionScope,
                 @HeaderParam("x-ms-if-sequence-number-le") Long ifSequenceNumberLessThanOrEqualTo,
                 @HeaderParam("x-ms-if-sequence-number-lt") Long ifSequenceNumberLessThan,
@@ -153,7 +154,7 @@ public final class PageBlobsImpl {
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-encryption-key") String encryptionKey,
                 @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
-                @HeaderParam("x-ms-encryption-algorithm") String encryptionAlgorithm,
+                @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
                 @HeaderParam("x-ms-encryption-scope") String encryptionScope,
                 @HeaderParam("x-ms-if-sequence-number-le") Long ifSequenceNumberLessThanOrEqualTo,
                 @HeaderParam("x-ms-if-sequence-number-lt") Long ifSequenceNumberLessThan,
@@ -186,7 +187,7 @@ public final class PageBlobsImpl {
                 @HeaderParam("x-ms-range") String range,
                 @HeaderParam("x-ms-encryption-key") String encryptionKey,
                 @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
-                @HeaderParam("x-ms-encryption-algorithm") String encryptionAlgorithm,
+                @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
                 @HeaderParam("x-ms-encryption-scope") String encryptionScope,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-if-sequence-number-le") Long ifSequenceNumberLessThanOrEqualTo,
@@ -264,7 +265,7 @@ public final class PageBlobsImpl {
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-encryption-key") String encryptionKey,
                 @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
-                @HeaderParam("x-ms-encryption-algorithm") String encryptionAlgorithm,
+                @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
                 @HeaderParam("x-ms-encryption-scope") String encryptionScope,
                 @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
                 @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
@@ -383,7 +384,6 @@ public final class PageBlobsImpl {
             EncryptionScope encryptionScope,
             Context context) {
         final String blobType = "PageBlob";
-        final String encryptionAlgorithm = "AES256";
         final String accept = "application/xml";
         String contentTypeInternal = null;
         if (blobHttpHeaders != null) {
@@ -425,6 +425,11 @@ public final class PageBlobsImpl {
             encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
         }
         String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String encryptionScopeInternal = null;
         if (encryptionScope != null) {
             encryptionScopeInternal = encryptionScope.getEncryptionScope();
@@ -531,7 +536,6 @@ public final class PageBlobsImpl {
             Context context) {
         final String comp = "page";
         final String pageWrite = "update";
-        final String encryptionAlgorithm = "AES256";
         final String accept = "application/xml";
         String encryptionKeyInternal = null;
         if (cpkInfo != null) {
@@ -543,6 +547,11 @@ public final class PageBlobsImpl {
             encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
         }
         String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String encryptionScopeInternal = null;
         if (encryptionScope != null) {
             encryptionScopeInternal = encryptionScope.getEncryptionScope();
@@ -641,7 +650,6 @@ public final class PageBlobsImpl {
             Context context) {
         final String comp = "page";
         final String pageWrite = "clear";
-        final String encryptionAlgorithm = "AES256";
         final String accept = "application/xml";
         String encryptionKeyInternal = null;
         if (cpkInfo != null) {
@@ -653,6 +661,11 @@ public final class PageBlobsImpl {
             encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
         }
         String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String encryptionScopeInternal = null;
         if (encryptionScope != null) {
             encryptionScopeInternal = encryptionScope.getEncryptionScope();
@@ -767,7 +780,6 @@ public final class PageBlobsImpl {
             Context context) {
         final String comp = "page";
         final String pageWrite = "update";
-        final String encryptionAlgorithm = "AES256";
         final String accept = "application/xml";
         String encryptionKeyInternal = null;
         if (cpkInfo != null) {
@@ -779,6 +791,11 @@ public final class PageBlobsImpl {
             encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
         }
         String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String encryptionScopeInternal = null;
         if (encryptionScope != null) {
             encryptionScopeInternal = encryptionScope.getEncryptionScope();
@@ -1029,7 +1046,6 @@ public final class PageBlobsImpl {
             EncryptionScope encryptionScope,
             Context context) {
         final String comp = "properties";
-        final String encryptionAlgorithm = "AES256";
         final String accept = "application/xml";
         String encryptionKeyInternal = null;
         if (cpkInfo != null) {
@@ -1041,6 +1057,11 @@ public final class PageBlobsImpl {
             encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
         }
         String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String encryptionScopeInternal = null;
         if (encryptionScope != null) {
             encryptionScopeInternal = encryptionScope.getEncryptionScope();

@@ -1,6 +1,12 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
-
+#
+# How to use this script to update spring-boot's version?
+# Here are the steps:
+# 1. Update ROOT_POMS' version manually.
+# 2. Run command "python .\sdk\spring\scripts\update_spring_managed_external_dependencies.py".
+# 3. Run command "python .\eng\versioning\update_versions.py --ut external_dependency --sr".
+# 4. Verify result by command ".\eng\versioning\pom_file_version_scanner.ps1".
 
 import argparse
 import os
@@ -18,8 +24,9 @@ from pom import Pom
 
 EXTERNAL_DEPENDENCIES_FILE = 'eng/versioning/external_dependencies.txt'
 ROOT_POMS = [
-    'org.springframework.boot:spring-boot-dependencies;2.3.5.RELEASE',
-    'org.springframework.cloud:spring-cloud-dependencies;Hoxton.SR8'
+    'org.springframework.boot:spring-boot-starter-parent;2.4.3',
+    'org.springframework.boot:spring-boot-dependencies;2.4.3',
+    'org.springframework.cloud:spring-cloud-dependencies;2020.0.1'
 ]
 SKIP_IDS = [
     'org.eclipse.jgit:org.eclipse.jgit'  # Refs: https://github.com/Azure/azure-sdk-for-java/pull/13956/files#r468368271

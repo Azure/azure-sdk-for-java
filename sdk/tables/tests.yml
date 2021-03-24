@@ -19,5 +19,3 @@ stages:
       ServiceDirectory: tables
       TimeoutInMinutes: 60
       MaxParallel: 14
-      EnvVars:
-        AZURE_TEST_MODE: LIVE

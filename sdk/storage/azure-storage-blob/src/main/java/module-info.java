@@ -26,7 +26,9 @@ module com.azure.storage.blob {
         com.azure.storage.blob.cryptography,
         com.azure.storage.file.datalake,
         com.azure.storage.blob.changefeed,
-        com.fasterxml.jackson.databind;
+        com.fasterxml.jackson.databind,
+        com.azure.storage.blob.batch,
+        com.azure.storage.blob.nio;
 
     opens com.azure.storage.blob.models to
         com.fasterxml.jackson.databind,

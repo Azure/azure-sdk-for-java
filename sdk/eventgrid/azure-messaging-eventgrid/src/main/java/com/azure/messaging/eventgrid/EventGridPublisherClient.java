@@ -9,6 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.rest.Response;
+import com.azure.core.models.CloudEvent;
 import com.azure.core.util.Context;
 
 import java.time.OffsetDateTime;
@@ -17,13 +18,32 @@ import java.time.OffsetDateTime;
  * A service client that publishes events to an EventGrid topic or domain. Use {@link EventGridPublisherClientBuilder}
  * to create an instance of this client. Note that this is simply a synchronous convenience layer over the
  * {@link EventGridPublisherAsyncClient}, which has more efficient asynchronous functionality and is recommended.
+ *
+ * <p><strong>Create EventGridPublisherClient for CloudEvent Samples</strong></p>
+ * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherClient#CreateCloudEventClient}
+ *
+ * <p><strong>Send CloudEvent Samples</strong></p>
+ * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherClient#SendCloudEvent}
+ *
+ * <p><strong>Create EventGridPublisherClient for EventGridEvent Samples</strong></p>
+ * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherClient#CreateEventGridEventClient}
+ *
+ * <p><strong>Send EventGridEvent Samples</strong></p>
+ * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherClient#SendEventGridEvent}
+ *
+ * <p><strong>Create EventGridPublisherClient for Custom Event Schema Samples</strong></p>
+ * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherClient#CreateCustomEventClient}
+ *
+ * <p><strong>Send Custom Event Schema Samples</strong></p>
+ * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherClient#SendCustomEvent}
+ *
  * @see EventGridEvent
  * @see CloudEvent
  */
 @ServiceClient(builder = EventGridPublisherClientBuilder.class)
 public final class EventGridPublisherClient<T> {
 
-    EventGridPublisherAsyncClient<T> asyncClient;
+    private final EventGridPublisherAsyncClient<T> asyncClient;
     EventGridPublisherClient(EventGridPublisherAsyncClient<T> client) {
         this.asyncClient = client;
     }
@@ -33,7 +53,7 @@ public final class EventGridPublisherClient<T> {
      * service with the latest Event Grid service API defined in {@link EventGridServiceVersion#getLatest()}.
      * @param endpoint the endpoint of the Event Grid topic or domain.
      * @param expirationTime the time in which the signature should expire, no longer providing authentication.
-     * @param keyCredential  the access key obtained from the Event Grid topic or domain.
+     * @param keyCredential the access key obtained from the Event Grid topic or domain.
      *
      * @return the shared access signature string which can be used to construct an instance of
      * {@link AzureSasCredential}.
@@ -51,7 +71,7 @@ public final class EventGridPublisherClient<T> {
      * service.
      * @param endpoint the endpoint of the Event Grid topic or domain.
      * @param expirationTime the time in which the signature should expire, no longer providing authentication.
-     * @param keyCredential  the access key obtained from the Event Grid topic or domain.
+     * @param keyCredential the access key obtained from the Event Grid topic or domain.
      * @param apiVersion the EventGrid service api version defined in {@link EventGridServiceVersion}
      *
      * @return the shared access signature string which can be used to construct an instance of

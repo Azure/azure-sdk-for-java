@@ -5,6 +5,8 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Fluent;
 
+import java.util.Arrays;
+
 /**
  * The {@link RecognizePiiEntitiesOptions} model.
  */
@@ -12,6 +14,7 @@ import com.azure.core.annotation.Fluent;
 public final class RecognizePiiEntitiesOptions extends TextAnalyticsRequestOptions {
     private PiiEntityDomainType domainFilter;
     private StringIndexType stringIndexType;
+    private Iterable<PiiEntityCategory> categoriesFilter;
 
     /**
      * Set the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
@@ -65,6 +68,29 @@ public final class RecognizePiiEntitiesOptions extends TextAnalyticsRequestOptio
      */
     public RecognizePiiEntitiesOptions setDomainFilter(PiiEntityDomainType domainFilter) {
         this.domainFilter = domainFilter;
+        return this;
+    }
+
+    /**
+     * Get the value of categoriesFilter. It filters the response entities to ones only included in the specified
+     * categories.
+     *
+     * @return The value of categoriesFilter.
+     */
+    public Iterable<PiiEntityCategory> getCategoriesFilter() {
+        return categoriesFilter;
+    }
+
+    /**
+     * Set the value of categoriesFilter. It filters the response entities to ones only included in the specified
+     * categories.
+     *
+     * @param categoriesFilter It filters the response entities to ones only included in the specified categories.
+     *
+     * @return The {@link RecognizePiiEntitiesOptions} object itself.
+     */
+    public RecognizePiiEntitiesOptions setCategoriesFilter(PiiEntityCategory... categoriesFilter) {
+        this.categoriesFilter = Arrays.asList(categoriesFilter);
         return this;
     }
 

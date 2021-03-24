@@ -48,6 +48,7 @@ public final class CommunicationIdentityClientBuilder {
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions = new HttpLogOptions();
     private HttpPipeline pipeline;
+    private RetryPolicy retryPolicy;
     private Configuration configuration;
     private ClientOptions clientOptions;
     private final Map<String, String> properties = CoreUtils.getProperties(COMMUNICATION_IDENTITY_PROPERTIES);
@@ -89,18 +90,18 @@ public final class CommunicationIdentityClientBuilder {
     }
 
     /**
-     * Set credential to use
+     * Sets the {@link AzureKeyCredential} used to authenticate HTTP requests.
      *
-     * @param accessKey access key for initalizing CommunicationClientCredential
-     * @return CommunicationIdentityClientBuilder
+    * @param keyCredential The {@link AzureKeyCredential} used to authenticate HTTP requests.
+     * @return The updated {@link CommunicationIdentityClientBuilder} object.
+     * @throws NullPointerException If {@code keyCredential} is null.
      */
-    public CommunicationIdentityClientBuilder accessKey(String accessKey) {
-        Objects.requireNonNull(accessKey, "'accessKey' cannot be null.");
-        this.azureKeyCredential = new AzureKeyCredential(accessKey);
+    public CommunicationIdentityClientBuilder credential(AzureKeyCredential keyCredential)  {
+        this.azureKeyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
     }
 
-     /**
+    /**
      * Set endpoint and credential to use
      *
      * @param connectionString connection string for setting endpoint and initalizing CommunicationClientCredential
@@ -113,7 +114,7 @@ public final class CommunicationIdentityClientBuilder {
         String accessKey = connectionStringObject.getAccessKey();
         this
             .endpoint(endpoint)
-            .accessKey(accessKey);
+            .credential(new AzureKeyCredential(accessKey));
         return this;
     }
 
@@ -172,6 +173,18 @@ public final class CommunicationIdentityClientBuilder {
      */
     public CommunicationIdentityClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Sets the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * @param retryPolicy User's retry policy applied to each request.
+     * @return The updated {@link CommunicationIdentityClientBuilder} object.
+     * @throws NullPointerException If the specified {@code retryPolicy} is null.
+     */
+    public CommunicationIdentityClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        this.retryPolicy = Objects.requireNonNull(retryPolicy, "The retry policy cannot be null");
         return this;
     }
 
@@ -280,7 +293,7 @@ public final class CommunicationIdentityClientBuilder {
         }
 
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, configuration));
-        policies.add(new RetryPolicy());
+        policies.add(this.retryPolicy == null ? new RetryPolicy() : this.retryPolicy);
         policies.add(new CookiePolicy());
         policies.add(new HttpLoggingPolicy(httpLogOptions));
     }

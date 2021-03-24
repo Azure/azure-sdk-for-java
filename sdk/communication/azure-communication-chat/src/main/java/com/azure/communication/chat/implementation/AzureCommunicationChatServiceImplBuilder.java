@@ -54,6 +54,22 @@ public final class AzureCommunicationChatServiceImplBuilder {
     }
 
     /*
+     * Api Version
+     */
+    private String apiVersion;
+
+    /**
+     * Sets Api Version.
+     *
+     * @param apiVersion the apiVersion value.
+     * @return the AzureCommunicationChatServiceImplBuilder.
+     */
+    public AzureCommunicationChatServiceImplBuilder apiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
+        return this;
+    }
+
+    /*
      * The HTTP pipeline to send requests through
      */
     private HttpPipeline pipeline;
@@ -173,6 +189,9 @@ public final class AzureCommunicationChatServiceImplBuilder {
      * @return an instance of AzureCommunicationChatServiceImpl.
      */
     public AzureCommunicationChatServiceImpl buildClient() {
+        if (apiVersion == null) {
+            this.apiVersion = "2021-03-07";
+        }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
@@ -180,7 +199,7 @@ public final class AzureCommunicationChatServiceImplBuilder {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
         AzureCommunicationChatServiceImpl client =
-                new AzureCommunicationChatServiceImpl(pipeline, serializerAdapter, endpoint);
+                new AzureCommunicationChatServiceImpl(pipeline, serializerAdapter, endpoint, apiVersion);
         return client;
     }
 

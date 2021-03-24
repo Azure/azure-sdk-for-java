@@ -7,6 +7,7 @@ import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -15,6 +16,7 @@ import com.azure.core.util.Configuration;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.Duration;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -26,6 +28,7 @@ import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.URL_TEST_FILE_FORMAT;
 import static com.azure.ai.formrecognizer.TestUtils.VALID_URL;
+import static com.azure.ai.formrecognizer.TestUtils.setSyncPollerPollInterval;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -53,7 +56,8 @@ public class FormTrainingClientBuilderTest extends TestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void trainingClientBuilderRotateToValidKey(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         clientBuilderWithRotateToValidKeyRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
-            assertNotNull(clientBuilder.buildClient().getFormRecognizerClient().beginRecognizeContentFromUrl(input).getFinalResult()));
+            assertNotNull(setSyncPollerPollInterval(clientBuilder.buildClient().getFormRecognizerClient()
+                .beginRecognizeContentFromUrl(input), interceptorManager).getFinalResult()));
     }
 
     /**
@@ -73,7 +77,8 @@ public class FormTrainingClientBuilderTest extends TestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void trainingClientBuilderNullServiceVersion(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         clientBuilderWithNullServiceVersionRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
-            assertNotNull(clientBuilder.buildClient().getFormRecognizerClient().beginRecognizeContentFromUrl(input).getFinalResult()));
+            assertNotNull(setSyncPollerPollInterval(clientBuilder.buildClient().getFormRecognizerClient()
+                .beginRecognizeContentFromUrl(input), interceptorManager).getFinalResult()));
     }
 
     /**
@@ -83,7 +88,8 @@ public class FormTrainingClientBuilderTest extends TestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void trainingClientBuilderDefaultPipeline(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
-            assertNotNull(clientBuilder.buildClient().getFormRecognizerClient().beginRecognizeContentFromUrl(input).getFinalResult()));
+            assertNotNull(setSyncPollerPollInterval(clientBuilder.buildClient().getFormRecognizerClient()
+                .beginRecognizeContentFromUrl(input), interceptorManager).getFinalResult()));
     }
 
     /**
@@ -94,7 +100,10 @@ public class FormTrainingClientBuilderTest extends TestBase {
     public void trainingClientBuilderInvalidEndpoint(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, clientBuilder -> (input) -> {
             Exception exception =  assertThrows(RuntimeException.class, () ->
-                clientBuilder.endpoint(INVALID_ENDPOINT).buildClient().getFormRecognizerClient()
+                clientBuilder.endpoint(INVALID_ENDPOINT)
+                    .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
+                    .buildClient()
+                    .getFormRecognizerClient()
                     .beginRecognizeContentFromUrl(input).getFinalResult());
             // RECORD mode has "Max retries 3 times exceeded. Error Details: Connection refused: no further information:
             // notreal.azure.com/23.217.138.110:443"
