@@ -524,10 +524,69 @@
               <sourceFileExclude>module-info.java</sourceFileExclude>
             </sourceFileExcludes>
             <links combine.children="append">
+              <!-- JDK APIs -->
               <link>https://docs.oracle.com/javase/8/docs/api/</link>
+
+              <!-- Reactor APIs -->
               <link>https://projectreactor.io/docs/core/release/api/</link> <!-- TODO (alzimmer): We need to version this. Right now it is always going to point to latest which may be wrong -->
+              <link>https://projectreactor.io/docs/netty/release/api/</link>
+
+              <!-- Jackson APIs -->
+              <link>https://fasterxml.github.io/jackson-annotations/javadoc/2.12/</link>
+              <link>https://fasterxml.github.io/jackson-core/javadoc/2.12/</link>
+              <link>https://fasterxml.github.io/jackson-databind/javadoc/2.12/</link>
+
+              <!-- Netty APIs -->
+              <link>https://netty.io/4.1/api/</link>
+
+              <!-- Avro APIs -->
+              <link>https://avro.apache.org/docs/current/api/java/</link>
             </links>
-            <isOffline>false</isOffline>
+            <detectJavaApiLink>false</detectJavaApiLink>
+            <isOffline>true</isOffline>
+            <offlineLinks>
+              <!-- JDK APIs -->
+              <offlineLink>
+                <url>https://docs.oracle.com/javase/8/docs/api/</url>
+                <location>${project.basedir}/../../../eng/javadoc-package-lists/java8/</location>
+              </offlineLink>
+
+              <!-- Reactor APIs -->
+              <offlineLink>
+                <url>https://projectreactor.io/docs/core/release/api/</url>
+                <location>${project.basedir}/../../../eng/javadoc-package-lists/reactor-core/</location>
+              </offlineLink>
+              <offlineLink>
+                <url>https://projectreactor.io/docs/netty/release/api/</url>
+                <location>${project.basedir}/../../../eng/javadoc-package-lists/reactor-netty/</location>
+              </offlineLink>
+
+              <!-- Jackson APIs -->
+              <offlineLink>
+                <url>https://fasterxml.github.io/jackson-annotations/javadoc/2.12/</url>
+                <location>${project.basedir}/../../../eng/javadoc-package-lists/jackson-annotations/</location>
+              </offlineLink>
+              <offlineLink>
+                <url>https://fasterxml.github.io/jackson-core/javadoc/2.12/</url>
+                <location>${project.basedir}/../../../eng/javadoc-package-lists/jackson-core/</location>
+              </offlineLink>
+              <offlineLink>
+                <url>https://fasterxml.github.io/jackson-databind/javadoc/2.12/</url>
+                <location>${project.basedir}/../../../eng/javadoc-package-lists/jackson-databind/</location>
+              </offlineLink>
+
+              <!-- Netty APIs -->
+              <offlineLink>
+                <url>https://netty.io/4.1/api/</url>
+                <location>${project.basedir}/../../../eng/javadoc-package-lists/netty/</location>
+              </offlineLink>
+
+              <!-- Avro APIs -->
+              <offlineLink>
+                <url>https://avro.apache.org/docs/current/api/java/</url>
+                <location>${project.basedir}/../../../eng/javadoc-package-lists/apache-avro/</location>
+              </offlineLink>
+            </offlineLinks>
             <doclet>org.apidesign.javadoc.codesnippet.Doclet</doclet>
             <docletArtifact>
               <groupId>org.apidesign.javadoc</groupId>

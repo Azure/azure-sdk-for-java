@@ -202,20 +202,6 @@
         </configuration>
       </plugin>
 
-      <!-- This plugin generates Javadocs -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
-        <configuration>
-          <links>
-            <link>https://www.javadoc.io/doc/com.fasterxml.jackson.core/jackson-annotations/latest/</link>
-            <link>https://www.javadoc.io/doc/com.fasterxml.jackson.core/jackson-core/latest/</link>
-            <link>https://www.javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/latest/</link>
-          </links>
-        </configuration>
-      </plugin>
-
       <!-- This plugin scans reports spotbugs in the code -->
       <plugin>
         <groupId>com.github.spotbugs</groupId>
