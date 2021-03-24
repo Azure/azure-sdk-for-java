@@ -758,7 +758,6 @@ public class CosmosContainer {
      * The number of RU consumed by this request varies, depending on data consistency, size of the overall data in the container,
      * item indexing, number of projections. For more information regarding RU considerations please visit
      * <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/request-units#request-unit-considerations">https://docs.microsoft.com/en-us/azure/cosmos-db/request-units#request-unit-considerations</a>.
-     * @return Mono of Void
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void openConnectionsAndInitCaches() {
