@@ -38,6 +38,7 @@ import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
@@ -50,10 +51,9 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -418,31 +418,25 @@ public class CosmosAsyncContainer {
 
     /**
      * Initializes the container by warming up the caches and connections.
+     * <br>The execution of this method is expected to result in some RU charges to your account.
+     * The number of RU consumed by this request varies, depending on data consistency, size of the overall data in the container,
+     * item indexing, number of projections. For more information regarding RU considerations please visit
+     * <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/request-units#request-unit-considerations">https://docs.microsoft.com/en-us/azure/cosmos-db/request-units#request-unit-considerations</a>.
      * @return Mono of Void
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public Mono<Void> initializeContainerAsync() {
-        if(this.getDatabase().getClient().getDocClientWrapper().getConnectionPolicy().getConnectionMode().equals(ConnectionMode.GATEWAY)) {
-            logger.info("Client is created with gateway mode, initialization of container is not needed, no action triggered");
-            return Mono.empty();
+    public Mono<Void> openConnectionsAndInitCaches() {
+        SqlQuerySpec querySpec = new SqlQuerySpec();
+        querySpec.setQueryText("select * from c where c.id = @id");
+        querySpec.setParameters(Collections.singletonList(new SqlParameter("@id", UUID.randomUUID().toString())));
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        if (this.database.getClient().getConnectionPolicy().getConnectionMode().equals(ConnectionMode.DIRECT)) {
+            options.setConsistencyLevel(ConsistencyLevel.STRONG);
         }
 
-        Mono<List<FeedRange>> feedRangesMono = this.getDatabase().getClient().getDocClientWrapper().getFeedRanges(this.getLink());
-        AtomicReference<Mono<List<FeedResponse<ObjectNode>>>> sequentialList = new AtomicReference<>();
-        List<Flux<FeedResponse<ObjectNode>>> fluxList = new ArrayList<>();
-        return feedRangesMono.flatMap(feedRanges -> {
-            for (FeedRange feedRange : feedRanges) {
-                String dummyQuery = String.format("SELECT * from c where c.id = '%s'", UUID.randomUUID().toString());
-                CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-                options.setConsistencyLevel(ConsistencyLevel.STRONG);
-                options.setFeedRange(feedRange);
-                CosmosPagedFlux<ObjectNode> cosmosPagedFlux = this.queryItems(dummyQuery, options,
-                    ObjectNode.class);
-                fluxList.add(cosmosPagedFlux.byPage());
-            }
-            sequentialList.set(Flux.merge(fluxList).collectList());
-            return sequentialList.get().flatMap(objects -> Mono.empty());
-        });
+        CosmosPagedFlux<ObjectNode> cosmosPagedFlux = this.queryItems(querySpec, options,
+            ObjectNode.class);
+        return cosmosPagedFlux.byPage().collectList().flatMap(feedResponse -> Mono.empty());
     }
 
     /**

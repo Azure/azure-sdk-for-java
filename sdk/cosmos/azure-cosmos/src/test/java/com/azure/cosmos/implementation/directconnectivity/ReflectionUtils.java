@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
@@ -16,10 +17,15 @@ import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.caches.AsyncCache;
+import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
+import com.azure.cosmos.implementation.caches.RxCollectionCache;
+import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.http.HttpClient;
+import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.throughputControl.ThroughputRequestThrottler;
 import com.azure.cosmos.implementation.throughputControl.controller.request.GlobalThroughputRequestController;
 import com.azure.cosmos.implementation.throughputControl.controller.request.PkRangesThroughputRequestController;
@@ -254,5 +260,25 @@ public class ReflectionUtils {
         PkRangesThroughputRequestController requestController) {
 
         return get(ConcurrentHashMap.class, requestController, "requestThrottlerMap");
+    }
+
+    public static RxClientCollectionCache getClientCollectionCache(RxDocumentClientImpl rxDocumentClient) {
+        return get(RxClientCollectionCache.class, rxDocumentClient, "collectionCache");
+    }
+
+    public static AsyncCache<String, DocumentCollection> getCollectionInfoByNameCache(RxCollectionCache CollectionCache) {
+        return get(AsyncCache.class, CollectionCache, "collectionInfoByNameCache");
+    }
+
+    public static RxPartitionKeyRangeCache getPartitionKeyRangeCache(RxDocumentClientImpl rxDocumentClient) {
+        return get(RxPartitionKeyRangeCache.class, rxDocumentClient, "partitionKeyRangeCache");
+    }
+
+    public static AsyncCache<String, CollectionRoutingMap> getRoutingMapAsyncCache(RxPartitionKeyRangeCache partitionKeyRangeCache) {
+        return get(AsyncCache.class, partitionKeyRangeCache, "routingMapCache");
+    }
+
+    public static <T> ConcurrentHashMap<String, ?> getValueMap(AsyncCache<String, T> asyncCache) {
+        return get(ConcurrentHashMap.class, asyncCache, "values");
     }
 }
