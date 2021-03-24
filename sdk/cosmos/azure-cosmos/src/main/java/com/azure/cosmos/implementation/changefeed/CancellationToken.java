@@ -11,7 +11,7 @@ public class CancellationToken {
 
     public CancellationToken(CancellationTokenSource source) {
         this.tokenSource = source;
-        cancellationRequested = false;
+        this.cancellationRequested = false;
     }
 
     public synchronized void cancel() {
