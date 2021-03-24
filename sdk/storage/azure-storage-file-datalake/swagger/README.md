@@ -23,9 +23,11 @@ namespace: com.azure.storage.file.datalake
 enable-xml: true
 generate-client-as-impl: true
 generate-client-interfaces: false
+service-interface-as-public: true
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 context-client-method-parameter: true
+optional-constant-as-enum: true
 models-subpackage: implementation.models
 custom-types: FileSystemInfo,FileSystemItem,FileSystemProperties,PathInfo,PathItem,PathProperties,ListFileSystemsOptions,PathHttpHeaders
 custom-types-subpackage: models
@@ -178,47 +180,6 @@ directive:
   where: $
   transform: >
     return $.replace('@JsonProperty(value = "eTag")\n    private String eTag;', '@JsonProperty(value = "etag")\n    private String eTag;');
-```
-
-### Change StorageErrorException to StorageException
-``` yaml
-directive:
-- from: ServicesImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.file.datalake.implementation.models.StorageErrorException",
-        "com.azure.storage.file.datalake.models.DataLakeStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(DataLakeStorageException.class)"
-      );
-- from: FileSystemsImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.file.datalake.implementation.models.StorageErrorException",
-        "com.azure.storage.file.datalake.models.DataLakeStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(DataLakeStorageException.class)"
-      );
-- from: PathsImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.file.datalake.implementation.models.StorageErrorException",
-        "com.azure.storage.file.datalake.models.DataLakeStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(DataLakeStorageException.class)"
-      );
 ```
 
 ### Delete FileSystem_ListPaths x-ms-pageable as autorest doesnt allow you to set the nextLinkName to be a header.

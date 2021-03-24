@@ -58,7 +58,7 @@ public final class FileSystemsImpl {
      */
     @Host("{url}")
     @ServiceInterface(name = "AzureDataLakeStorage")
-    private interface FileSystemsService {
+    public interface FileSystemsService {
         @Put("/{filesystem}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)

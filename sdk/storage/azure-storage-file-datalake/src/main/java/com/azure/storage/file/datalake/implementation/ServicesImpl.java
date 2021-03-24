@@ -47,7 +47,7 @@ public final class ServicesImpl {
      */
     @Host("{url}")
     @ServiceInterface(name = "AzureDataLakeStorage")
-    private interface ServicesService {
+    public interface ServicesService {
         @Get("/")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)

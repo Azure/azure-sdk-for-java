@@ -77,7 +77,7 @@ public final class PathsImpl {
      */
     @Host("{url}")
     @ServiceInterface(name = "AzureDataLakeStorage")
-    private interface PathsService {
+    public interface PathsService {
         @Put("/{filesystem}/{path}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
