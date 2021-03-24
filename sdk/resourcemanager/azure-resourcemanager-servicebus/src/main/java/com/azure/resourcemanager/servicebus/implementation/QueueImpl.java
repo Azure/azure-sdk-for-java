@@ -108,8 +108,7 @@ class QueueImpl
         if (this.innerModel().lockDuration() == null) {
             return 0;
         }
-        TimeSpan timeSpan = TimeSpan.fromDuration(this.innerModel().lockDuration());
-        return (long) timeSpan.totalSeconds();
+        return this.innerModel().lockDuration().getSeconds();
     }
 
     @Override
@@ -117,8 +116,7 @@ class QueueImpl
         if (this.innerModel().autoDeleteOnIdle() == null) {
             return 0;
         }
-        TimeSpan timeSpan = TimeSpan.fromDuration(this.innerModel().autoDeleteOnIdle());
-        return (long) timeSpan.totalMinutes();
+        return this.innerModel().autoDeleteOnIdle().toMinutes();
     }
 
     @Override
@@ -126,7 +124,7 @@ class QueueImpl
         if (this.innerModel().defaultMessageTimeToLive() == null) {
             return null;
         }
-        return TimeSpan.fromDuration(this.innerModel().defaultMessageTimeToLive()).toDuration();
+        return this.innerModel().defaultMessageTimeToLive();
     }
 
     @Override
@@ -134,7 +132,7 @@ class QueueImpl
         if (this.innerModel().duplicateDetectionHistoryTimeWindow() == null) {
             return null;
         }
-        return TimeSpan.fromDuration(this.innerModel().duplicateDetectionHistoryTimeWindow()).toDuration();
+        return this.innerModel().duplicateDetectionHistoryTimeWindow();
     }
 
     @Override
@@ -226,21 +224,19 @@ class QueueImpl
 
     @Override
     public QueueImpl withDeleteOnIdleDurationInMinutes(int durationInMinutes) {
-        TimeSpan timeSpan = new TimeSpan().withMinutes(durationInMinutes);
-        this.innerModel().withAutoDeleteOnIdle(timeSpan.toDuration());
+        this.innerModel().withAutoDeleteOnIdle(Duration.ofMinutes(durationInMinutes));
         return this;
     }
 
     @Override
     public QueueImpl withMessageLockDurationInSeconds(int durationInSeconds) {
-        TimeSpan timeSpan = new TimeSpan().withSeconds(durationInSeconds);
-        this.innerModel().withLockDuration(timeSpan.toDuration());
+        this.innerModel().withLockDuration(Duration.ofSeconds(durationInSeconds));
         return this;
     }
 
     @Override
     public QueueImpl withDefaultMessageTTL(Duration ttl) {
-        this.innerModel().withDefaultMessageTimeToLive(TimeSpan.fromDuration(ttl).toDuration());
+        this.innerModel().withDefaultMessageTimeToLive(ttl);
         return this;
     }
 

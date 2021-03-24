@@ -81,8 +81,7 @@ class ServiceBusSubscriptionImpl extends
         if (this.innerModel().lockDuration() == null) {
             return 0;
         }
-        TimeSpan timeSpan = TimeSpan.fromDuration(this.innerModel().lockDuration());
-        return (long) timeSpan.totalSeconds();
+        return this.innerModel().lockDuration().getSeconds();
     }
 
     @Override
@@ -90,8 +89,7 @@ class ServiceBusSubscriptionImpl extends
         if (this.innerModel().autoDeleteOnIdle() == null) {
             return 0;
         }
-        TimeSpan timeSpan = TimeSpan.fromDuration(this.innerModel().autoDeleteOnIdle());
-        return (long) timeSpan.totalMinutes();
+        return this.innerModel().autoDeleteOnIdle().toMinutes();
     }
 
     @Override
@@ -169,15 +167,13 @@ class ServiceBusSubscriptionImpl extends
 
     @Override
     public ServiceBusSubscriptionImpl withDeleteOnIdleDurationInMinutes(int durationInMinutes) {
-        TimeSpan timeSpan = new TimeSpan().withMinutes(durationInMinutes);
-        this.innerModel().withAutoDeleteOnIdle(timeSpan.toDuration());
+        this.innerModel().withAutoDeleteOnIdle(Duration.ofMinutes(durationInMinutes));
         return this;
     }
 
     @Override
     public ServiceBusSubscriptionImpl withMessageLockDurationInSeconds(int durationInSeconds) {
-        TimeSpan timeSpan = new TimeSpan().withSeconds(durationInSeconds);
-        this.innerModel().withLockDuration(timeSpan.toDuration());
+        this.innerModel().withLockDuration(Duration.ofSeconds(durationInSeconds));
         return this;
     }
 

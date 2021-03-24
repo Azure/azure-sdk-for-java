@@ -101,8 +101,7 @@ class TopicImpl
         if (this.innerModel().autoDeleteOnIdle() == null) {
             return 0;
         }
-        TimeSpan timeSpan = TimeSpan.fromDuration(this.innerModel().autoDeleteOnIdle());
-        return (long) timeSpan.totalMinutes();
+        return this.innerModel().autoDeleteOnIdle().toMinutes();
     }
 
     @Override
@@ -217,8 +216,7 @@ class TopicImpl
 
     @Override
     public TopicImpl withDeleteOnIdleDurationInMinutes(int durationInMinutes) {
-        TimeSpan timeSpan = new TimeSpan().withMinutes(durationInMinutes);
-        this.innerModel().withAutoDeleteOnIdle(timeSpan.toDuration());
+        this.innerModel().withAutoDeleteOnIdle(Duration.ofMinutes(durationInMinutes));
         return this;
     }
 
