@@ -55,7 +55,7 @@ public class AADResourceServerOAuth2AuthorizedClientRepository implements OAuth2
 
     private final ClientRegistrationRepository repository;
 
-    private final OAuth2AuthorizedClientService authorizedClientService;
+    private final OAuth2AuthorizedClientService oAuth2AuthorizedClientService;
 
     public AADResourceServerOAuth2AuthorizedClientRepository(ClientRegistrationRepository repository) {
         this(null, repository);
@@ -64,7 +64,7 @@ public class AADResourceServerOAuth2AuthorizedClientRepository implements OAuth2
     public AADResourceServerOAuth2AuthorizedClientRepository(OAuth2AuthorizedClientService oAuth2AuthorizedClientService,
                                                              ClientRegistrationRepository repository) {
         this.repository = repository;
-        this.authorizedClientService = oAuth2AuthorizedClientService;
+        this.oAuth2AuthorizedClientService = oAuth2AuthorizedClientService;
     }
 
     @Override
@@ -82,7 +82,7 @@ public class AADResourceServerOAuth2AuthorizedClientRepository implements OAuth2
             return loadOboAuthorizedClient(clientRegistration, registrationId, principal, request);
         } else if (clientRegistration.getAuthorizationGrantType().getValue().equals
             (AADAuthorizationGrantType.CLIENT_CREDENTIALS.getValue())) {
-            return this.authorizedClientService.loadAuthorizedClient(registrationId, principal.getName());
+            return this.oAuth2AuthorizedClientService.loadAuthorizedClient(registrationId, principal.getName());
         }
         return null;
     }
@@ -141,13 +141,13 @@ public class AADResourceServerOAuth2AuthorizedClientRepository implements OAuth2
     @Override
     public void saveAuthorizedClient(OAuth2AuthorizedClient oAuth2AuthorizedClient, Authentication principal,
                                      HttpServletRequest request, HttpServletResponse response) {
-        this.authorizedClientService.saveAuthorizedClient(oAuth2AuthorizedClient, principal);
+        this.oAuth2AuthorizedClientService.saveAuthorizedClient(oAuth2AuthorizedClient, principal);
     }
 
     @Override
     public void removeAuthorizedClient(String clientRegistrationId, Authentication principal,
                                        HttpServletRequest request, HttpServletResponse response) {
-        this.authorizedClientService.removeAuthorizedClient(clientRegistrationId, principal.getName());
+        this.oAuth2AuthorizedClientService.removeAuthorizedClient(clientRegistrationId, principal.getName());
     }
 
     ConfidentialClientApplication createApp(ClientRegistration clientRegistration) {
