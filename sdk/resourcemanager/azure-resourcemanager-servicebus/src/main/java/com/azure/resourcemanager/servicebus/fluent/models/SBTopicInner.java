@@ -8,10 +8,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.servicebus.implementation.DurationSerializer;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
 import com.azure.resourcemanager.servicebus.models.MessageCountDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
@@ -65,6 +68,7 @@ public class SBTopicInner extends Resource {
      * set on a message itself.
      */
     @JsonProperty(value = "properties.defaultMessageTimeToLive")
+    @JsonSerialize(using = DurationSerializer.class)
     private Duration defaultMessageTimeToLive;
 
     /*
@@ -85,6 +89,7 @@ public class SBTopicInner extends Resource {
      * detection history. The default value is 10 minutes.
      */
     @JsonProperty(value = "properties.duplicateDetectionHistoryTimeWindow")
+    @JsonSerialize(using = DurationSerializer.class)
     private Duration duplicateDetectionHistoryTimeWindow;
 
     /*
@@ -110,6 +115,7 @@ public class SBTopicInner extends Resource {
      * deleted. The minimum duration is 5 minutes.
      */
     @JsonProperty(value = "properties.autoDeleteOnIdle")
+    @JsonSerialize(using = DurationSerializer.class)
     private Duration autoDeleteOnIdle;
 
     /*

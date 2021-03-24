@@ -24,5 +24,8 @@ public class TypeSerializationTests {
         Duration autoDeleteOnIdle = queue.autoDeleteOnIdle();
         Assertions.assertEquals(922337203685L, autoDeleteOnIdle.getSeconds());
         Assertions.assertEquals(477580700L, autoDeleteOnIdle.getNano());
+
+        String json = adapter.serialize(queue, SerializerEncoding.JSON);
+        Assertions.assertTrue(json.contains("P10675199DT2H48M5.4775807S"));
     }
 }
