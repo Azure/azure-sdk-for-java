@@ -1,4 +1,4 @@
-# Azure Cosmos DB OLTP Spark connector client library for Java
+# Azure Cosmos DB OLTP Spark 3 connector
 
 **Azure Cosmos DB OLTP Spark connector preview** provides Apache Spark support for Azure Cosmos DB using 
 the [SQL API][sql_api_query].
