@@ -6,7 +6,7 @@ package com.azure.resourcemanager.servicebus.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.management.ProxyResource;
+import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicebus.models.AccessRights;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,7 +16,7 @@ import java.util.List;
 /** Description of a namespace authorization rule. */
 @JsonFlatten
 @Fluent
-public class SBAuthorizationRuleInner extends ProxyResource {
+public class SBAuthorizationRuleInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SBAuthorizationRuleInner.class);
 
     /*

@@ -5,9 +5,9 @@ package com.azure.resourcemanager.servicebus.implementation;
 
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
-import com.azure.resourcemanager.servicebus.fluent.models.ResourceListKeysInner;
-import com.azure.resourcemanager.servicebus.fluent.models.SharedAccessAuthorizationRuleResourceInner;
-import com.azure.resourcemanager.servicebus.models.Policykey;
+import com.azure.resourcemanager.servicebus.fluent.models.AccessKeysInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
+import com.azure.resourcemanager.servicebus.models.RegenerateAccessKeyParameters;
 import com.azure.resourcemanager.servicebus.models.TopicAuthorizationRule;
 import reactor.core.publisher.Mono;
 
@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 class TopicAuthorizationRuleImpl
     extends AuthorizationRuleBaseImpl<TopicAuthorizationRule,
         TopicImpl,
-        SharedAccessAuthorizationRuleResourceInner,
+        SBAuthorizationRuleInner,
         TopicAuthorizationRuleImpl,
         ServiceBusManager>
     implements
@@ -32,15 +32,12 @@ class TopicAuthorizationRuleImpl
                                String topicName,
                                String name,
                                Region region,
-                               SharedAccessAuthorizationRuleResourceInner inner,
+                               SBAuthorizationRuleInner inner,
                                ServiceBusManager manager) {
         super(name, inner, manager);
         this.namespaceName = namespaceName;
         this.region = region;
         this.withExistingParentResource(resourceGroupName, topicName);
-        if (inner.location() == null) {
-            inner.withLocation(this.region.toString());
-        }
     }
 
     @Override
@@ -54,7 +51,7 @@ class TopicAuthorizationRuleImpl
     }
 
     @Override
-    protected Mono<SharedAccessAuthorizationRuleResourceInner> getInnerAsync() {
+    protected Mono<SBAuthorizationRuleInner> getInnerAsync() {
         return this.manager().serviceClient().getTopics()
                 .getAuthorizationRuleAsync(this.resourceGroupName(),
                         this.namespaceName(),
@@ -69,7 +66,7 @@ class TopicAuthorizationRuleImpl
                 this.namespaceName(),
                 this.topicName(),
                 this.name(),
-                prepareForCreate(this.innerModel()))
+                this.innerModel().rights())
             .map(inner -> {
                 setInner(inner);
                 return self;
@@ -77,7 +74,7 @@ class TopicAuthorizationRuleImpl
     }
 
     @Override
-    protected Mono<ResourceListKeysInner> getKeysInnerAsync() {
+    protected Mono<AccessKeysInner> getKeysInnerAsync() {
         return this.manager().serviceClient().getTopics()
                 .listKeysAsync(this.resourceGroupName(),
                         this.namespaceName(),
@@ -86,7 +83,7 @@ class TopicAuthorizationRuleImpl
     }
 
     @Override
-    protected Mono<ResourceListKeysInner> regenerateKeysInnerAsync(Policykey policykey) {
+    protected Mono<AccessKeysInner> regenerateKeysInnerAsync(RegenerateAccessKeyParameters policykey) {
         return this.manager().serviceClient().getTopics().regenerateKeysAsync(this.resourceGroupName(),
                 this.namespaceName(),
                 this.topicName(),

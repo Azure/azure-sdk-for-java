@@ -8,11 +8,10 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
-import com.azure.resourcemanager.servicebus.fluent.models.QueueResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SBQueueInner;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
 import com.azure.resourcemanager.servicebus.models.Queue;
 import com.azure.resourcemanager.servicebus.models.QueueAuthorizationRule;
-import com.azure.resourcemanager.servicebus.models.QueueCreateOrUpdateParameters;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -29,7 +28,7 @@ class QueueImpl
     extends IndependentChildResourceImpl<
         Queue,
         ServiceBusNamespaceImpl,
-        QueueResourceInner,
+        SBQueueInner,
         QueueImpl,
         ServiceBusManager>
     implements
@@ -43,14 +42,11 @@ class QueueImpl
               String namespaceName,
               String name,
               Region region,
-              QueueResourceInner inner,
+              SBQueueInner inner,
               ServiceBusManager manager) {
         super(name.replaceAll(Pattern.quote("/"), "~"), inner, manager);
         this.withExistingParentResource(resourceGroupName, namespaceName);
         initChildrenOperationsCache();
-        if (inner.location() == null) {
-            inner.withLocation(region.toString());
-        }
     }
 
     @Override
@@ -70,7 +66,7 @@ class QueueImpl
 
     @Override
     public long maxSizeInMB() {
-        return ResourceManagerUtils.toPrimitiveLong(this.innerModel().maxSizeInMegabytes());
+        return ResourceManagerUtils.toPrimitiveLong(this.innerModel().maxSizeInMegabytes().longValue());
     }
 
     @Override
@@ -113,7 +109,7 @@ class QueueImpl
         if (this.innerModel().lockDuration() == null) {
             return 0;
         }
-        TimeSpan timeSpan = TimeSpan.parse(this.innerModel().lockDuration());
+        TimeSpan timeSpan = TimeSpan.fromDuration(this.innerModel().lockDuration());
         return (long) timeSpan.totalSeconds();
     }
 
@@ -122,7 +118,7 @@ class QueueImpl
         if (this.innerModel().autoDeleteOnIdle() == null) {
             return 0;
         }
-        TimeSpan timeSpan = TimeSpan.parse(this.innerModel().autoDeleteOnIdle());
+        TimeSpan timeSpan = TimeSpan.fromDuration(this.innerModel().autoDeleteOnIdle());
         return (long) timeSpan.totalMinutes();
     }
 
@@ -131,7 +127,7 @@ class QueueImpl
         if (this.innerModel().defaultMessageTimeToLive() == null) {
             return null;
         }
-        return TimeSpan.parse(this.innerModel().defaultMessageTimeToLive()).toDuration();
+        return TimeSpan.fromDuration(this.innerModel().defaultMessageTimeToLive()).toDuration();
     }
 
     @Override
@@ -139,7 +135,7 @@ class QueueImpl
         if (this.innerModel().duplicateDetectionHistoryTimeWindow() == null) {
             return null;
         }
-        return TimeSpan.parse(this.innerModel().duplicateDetectionHistoryTimeWindow()).toDuration();
+        return TimeSpan.fromDuration(this.innerModel().duplicateDetectionHistoryTimeWindow()).toDuration();
     }
 
     @Override
@@ -213,7 +209,7 @@ class QueueImpl
 
     @Override
     public QueueImpl withSizeInMB(long sizeInMB) {
-        this.innerModel().withMaxSizeInMegabytes(sizeInMB);
+        this.innerModel().withMaxSizeInMegabytes((int) sizeInMB);
         return this;
     }
 
@@ -232,20 +228,20 @@ class QueueImpl
     @Override
     public QueueImpl withDeleteOnIdleDurationInMinutes(int durationInMinutes) {
         TimeSpan timeSpan = new TimeSpan().withMinutes(durationInMinutes);
-        this.innerModel().withAutoDeleteOnIdle(timeSpan.toString());
+        this.innerModel().withAutoDeleteOnIdle(timeSpan.toDuration());
         return this;
     }
 
     @Override
     public QueueImpl withMessageLockDurationInSeconds(int durationInSeconds) {
         TimeSpan timeSpan = new TimeSpan().withSeconds(durationInSeconds);
-        this.innerModel().withLockDuration(timeSpan.toString());
+        this.innerModel().withLockDuration(timeSpan.toDuration());
         return this;
     }
 
     @Override
     public QueueImpl withDefaultMessageTTL(Duration ttl) {
-        this.innerModel().withDefaultMessageTimeToLive(TimeSpan.fromDuration(ttl).toString());
+        this.innerModel().withDefaultMessageTimeToLive(TimeSpan.fromDuration(ttl).toDuration());
         return this;
     }
 
@@ -306,9 +302,7 @@ class QueueImpl
     @Override
     public QueueImpl withDuplicateMessageDetection(Duration duplicateDetectionHistoryDuration) {
         this.innerModel().withRequiresDuplicateDetection(true);
-        this.innerModel().withDuplicateDetectionHistoryTimeWindow(TimeSpan
-                .fromDuration(duplicateDetectionHistoryDuration)
-                .toString());
+        this.innerModel().withDuplicateDetectionHistoryTimeWindow(duplicateDetectionHistoryDuration);
         return this;
     }
 
@@ -348,7 +342,7 @@ class QueueImpl
     }
 
     @Override
-    protected Mono<QueueResourceInner> getInnerAsync() {
+    protected Mono<SBQueueInner> getInnerAsync() {
         return this.manager().serviceClient().getQueues()
                 .getAsync(this.resourceGroupName(),
                         this.parentName,
@@ -358,11 +352,11 @@ class QueueImpl
     @Override
     protected Mono<Queue> createChildResourceAsync() {
 
-        Mono<QueueResourceInner> createTask = this.manager().serviceClient().getQueues()
+        Mono<SBQueueInner> createTask = this.manager().serviceClient().getQueues()
             .createOrUpdateAsync(this.resourceGroupName(),
                 this.parentName,
                 this.name(),
-                prepareForCreate(this.innerModel()))
+                this.innerModel())
             .map(inner -> {
                 setInner(inner);
                 return inner;
@@ -390,26 +384,5 @@ class QueueImpl
         }
         return Flux.mergeDelayError(32, rulesCreateStream,
                 rulesDeleteStream);
-    }
-
-    private QueueCreateOrUpdateParameters prepareForCreate(QueueResourceInner inner) {
-        return new QueueCreateOrUpdateParameters()
-            .withLockDuration(inner.lockDuration())
-            .withAutoDeleteOnIdle(inner.autoDeleteOnIdle())
-            .withEntityAvailabilityStatus(inner.entityAvailabilityStatus())
-            .withDefaultMessageTimeToLive(inner.defaultMessageTimeToLive())
-            .withDuplicateDetectionHistoryTimeWindow(inner.duplicateDetectionHistoryTimeWindow())
-            .withEnableBatchedOperations(inner.enableBatchedOperations())
-            .withDeadLetteringOnMessageExpiration(inner.deadLetteringOnMessageExpiration())
-            .withEnableExpress(inner.enableExpress())
-            .withEnablePartitioning(inner.enablePartitioning())
-            .withIsAnonymousAccessible(inner.isAnonymousAccessible())
-            .withMaxDeliveryCount(inner.maxDeliveryCount())
-            .withMaxSizeInMegabytes(inner.maxSizeInMegabytes())
-            .withRequiresDuplicateDetection(inner.requiresDuplicateDetection())
-            .withRequiresSession(inner.requiresSession())
-            .withStatus(inner.status())
-            .withSupportOrdering(inner.supportOrdering())
-            .withLocation(inner.location());
     }
 }

@@ -6,7 +6,7 @@ package com.azure.resourcemanager.servicebus.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
-import com.azure.resourcemanager.servicebus.fluent.models.SharedAccessAuthorizationRuleResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 import reactor.core.publisher.Mono;
 
@@ -19,7 +19,7 @@ import java.util.List;
  */
 @Fluent
 public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>> extends
-    IndependentChildResource<ServiceBusManager, SharedAccessAuthorizationRuleResourceInner>,
+    IndependentChildResource<ServiceBusManager, SBAuthorizationRuleInner>,
     Refreshable<RuleT> {
 
     /**
@@ -45,7 +45,7 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>> exten
      * @return a representation of the deferred computation of this call,
      * returning the primary, secondary keys and the connection strings
      */
-    Mono<AuthorizationKeys> regenerateKeyAsync(Policykey policykey);
+    Mono<AuthorizationKeys> regenerateKeyAsync(RegenerateAccessKeyParameters policykey);
 
     /**
      * Regenerates primary or secondary keys.
@@ -53,7 +53,7 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>> exten
      * @param policykey the key to regenerate
      * @return primary, secondary keys and connection strings
      */
-    AuthorizationKeys regenerateKey(Policykey policykey);
+    AuthorizationKeys regenerateKey(RegenerateAccessKeyParameters policykey);
 
     /**
      * Grouping of commons authorization rule definition stages shared between different Service Bus

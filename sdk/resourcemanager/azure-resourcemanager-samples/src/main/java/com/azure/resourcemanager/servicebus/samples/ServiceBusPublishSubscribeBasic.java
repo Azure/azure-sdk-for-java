@@ -16,9 +16,10 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.servicebus.models.AuthorizationKeys;
+import com.azure.resourcemanager.servicebus.models.KeyType;
 import com.azure.resourcemanager.servicebus.models.NamespaceAuthorizationRule;
 import com.azure.resourcemanager.servicebus.models.NamespaceSku;
-import com.azure.resourcemanager.servicebus.models.Policykey;
+import com.azure.resourcemanager.servicebus.models.RegenerateAccessKeyParameters;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.resourcemanager.servicebus.models.ServiceBusSubscription;
 import com.azure.resourcemanager.servicebus.models.Topic;
@@ -142,7 +143,8 @@ public final class ServiceBusPublishSubscribeBasic {
             AuthorizationKeys keys = namespaceAuthorizationRules.iterator().next().getKeys();
             Utils.print(keys);
             System.out.println("Regenerating secondary key for authorization rule ...");
-            keys = namespaceAuthorizationRules.iterator().next().regenerateKey(Policykey.SECONDARY_KEY);
+            keys = namespaceAuthorizationRules.iterator().next()
+                .regenerateKey(new RegenerateAccessKeyParameters().withKeyType(KeyType.SECONDARY_KEY));
             Utils.print(keys);
 
             //=============================================================

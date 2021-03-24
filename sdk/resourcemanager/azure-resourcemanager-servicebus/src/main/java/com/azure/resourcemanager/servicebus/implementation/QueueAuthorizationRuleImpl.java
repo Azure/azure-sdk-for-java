@@ -5,10 +5,12 @@ package com.azure.resourcemanager.servicebus.implementation;
 
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
-import com.azure.resourcemanager.servicebus.fluent.models.ResourceListKeysInner;
-import com.azure.resourcemanager.servicebus.fluent.models.SharedAccessAuthorizationRuleResourceInner;
-import com.azure.resourcemanager.servicebus.models.Policykey;
+import com.azure.resourcemanager.servicebus.fluent.models.AccessKeysInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
+import com.azure.resourcemanager.servicebus.models.RegenerateAccessKeyParameters;
 import com.azure.resourcemanager.servicebus.models.QueueAuthorizationRule;
+import com.azure.resourcemanager.servicebus.models.RegenerateAccessKeyParameters;
 import reactor.core.publisher.Mono;
 
 /**
@@ -16,7 +18,7 @@ import reactor.core.publisher.Mono;
  */
 class QueueAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<QueueAuthorizationRule,
         QueueImpl,
-        SharedAccessAuthorizationRuleResourceInner,
+        SBAuthorizationRuleInner,
         QueueAuthorizationRuleImpl,
         ServiceBusManager>
     implements
@@ -31,15 +33,12 @@ class QueueAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<QueueAuthoriz
                                String queueName,
                                String name,
                                Region region,
-                               SharedAccessAuthorizationRuleResourceInner inner,
+                               SBAuthorizationRuleInner inner,
                                ServiceBusManager manager) {
         super(name, inner, manager);
         this.namespaceName = namespaceName;
         this.region = region;
         this.withExistingParentResource(resourceGroupName, queueName);
-        if (inner.location() == null) {
-            inner.withLocation(this.region.toString());
-        }
     }
 
     @Override
@@ -53,7 +52,7 @@ class QueueAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<QueueAuthoriz
     }
 
     @Override
-    protected Mono<SharedAccessAuthorizationRuleResourceInner> getInnerAsync() {
+    protected Mono<SBAuthorizationRuleInner> getInnerAsync() {
         return this.manager().serviceClient().getQueues()
                 .getAuthorizationRuleAsync(this.resourceGroupName(),
                         this.namespaceName(),
@@ -68,7 +67,7 @@ class QueueAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<QueueAuthoriz
                 this.namespaceName(),
                 this.queueName(),
                 this.name(),
-                prepareForCreate(this.innerModel()))
+                this.innerModel().rights())
             .map(inner -> {
                 setInner(inner);
                 return self;
@@ -76,7 +75,7 @@ class QueueAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<QueueAuthoriz
     }
 
     @Override
-    protected Mono<ResourceListKeysInner> getKeysInnerAsync() {
+    protected Mono<AccessKeysInner> getKeysInnerAsync() {
         return this.manager().serviceClient().getQueues()
                 .listKeysAsync(this.resourceGroupName(),
                         this.namespaceName(),
@@ -85,7 +84,7 @@ class QueueAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<QueueAuthoriz
     }
 
     @Override
-    protected Mono<ResourceListKeysInner> regenerateKeysInnerAsync(Policykey policykey) {
+    protected Mono<AccessKeysInner> regenerateKeysInnerAsync(RegenerateAccessKeyParameters policykey) {
         return this.manager().serviceClient().getQueues()
                 .regenerateKeysAsync(this.resourceGroupName(),
                         this.namespaceName(),

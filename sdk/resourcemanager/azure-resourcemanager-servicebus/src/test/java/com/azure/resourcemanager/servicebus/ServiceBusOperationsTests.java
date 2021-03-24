@@ -21,11 +21,12 @@ import com.azure.resourcemanager.servicebus.implementation.TimeSpan;
 import com.azure.resourcemanager.servicebus.models.AccessRights;
 import com.azure.resourcemanager.servicebus.models.AuthorizationKeys;
 import com.azure.resourcemanager.servicebus.models.CheckNameAvailabilityResult;
+import com.azure.resourcemanager.servicebus.models.KeyType;
 import com.azure.resourcemanager.servicebus.models.NamespaceAuthorizationRule;
 import com.azure.resourcemanager.servicebus.models.NamespaceSku;
-import com.azure.resourcemanager.servicebus.models.Policykey;
 import com.azure.resourcemanager.servicebus.models.Queue;
 import com.azure.resourcemanager.servicebus.models.QueueAuthorizationRule;
+import com.azure.resourcemanager.servicebus.models.RegenerateAccessKeyParameters;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.resourcemanager.servicebus.models.ServiceBusSubscription;
 import com.azure.resourcemanager.servicebus.models.Topic;
@@ -420,7 +421,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
         Assertions.assertNotNull(nsRuleKeys.secondaryKey());
         Assertions.assertNotNull(nsRuleKeys.primaryConnectionString());
         Assertions.assertNotNull(nsRuleKeys.secondaryConnectionString());
-        nsRuleKeys = foundNsRule.regenerateKey(Policykey.PRIMARY_KEY);
+        nsRuleKeys = foundNsRule.regenerateKey(new RegenerateAccessKeyParameters().withKeyType(KeyType.PRIMARY_KEY));
         if (!isPlaybackMode()) {
             Assertions.assertNotEquals(nsRuleKeys.primaryKey(), primaryKey);
         }
