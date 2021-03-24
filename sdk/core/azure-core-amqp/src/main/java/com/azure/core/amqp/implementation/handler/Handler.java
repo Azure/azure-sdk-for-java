@@ -74,7 +74,7 @@ public abstract class Handler extends BaseHandler implements Closeable {
 
     void onNext(EndpointState state) {
         endpointStates.emitNext(state, (signalType, emitResult) -> {
-            logger.warning("connectionId[{}] signal[{}] result[{}] could not emit endpoint state.", connectionId,
+            logger.verbose("connectionId[{}] signal[{}] result[{}] could not emit endpoint state.", connectionId,
                 signalType, emitResult);
 
             return false;
@@ -105,7 +105,7 @@ public abstract class Handler extends BaseHandler implements Closeable {
         }
 
         endpointStates.emitComplete((signalType, emitResult) -> {
-            logger.warning("connectionId[{}] signal[{}] result[{}] Could not emit complete.", connectionId,
+            logger.verbose("connectionId[{}] signal[{}] result[{}] Could not emit complete.", connectionId,
                 signalType, emitResult);
 
             return false;

@@ -17,6 +17,7 @@ import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.Exceptions;
 import reactor.core.publisher.FluxProcessor;
+import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
 
 import java.time.Duration;
@@ -162,12 +163,16 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             currentLinkSubscriptions = Disposables.composite(
                 next.getEndpointStates().filter(e -> e == AmqpEndpointState.ACTIVE).next()
                     .flatMap(state -> next.addCredits(prefetch))
+                    .onErrorResume(IllegalStateException.class, error -> {
+                        logger.info("linkName[{}] was already closed. Could not add credits.", linkName);
+                        return Mono.empty();
+                    })
                     .subscribe(),
                 next.getEndpointStates().subscribe(
                     state -> {
                         // Connection was successfully opened, we can reset the retry interval.
                         if (state == AmqpEndpointState.ACTIVE) {
-                            logger.info("Link {} is now active with {} credits.", linkName, next.getCredits());
+                            logger.info("linkName[{}] credits[{}] is active.", linkName, next.getCredits());
                             retryAttempts.set(0);
                         }
                     },
