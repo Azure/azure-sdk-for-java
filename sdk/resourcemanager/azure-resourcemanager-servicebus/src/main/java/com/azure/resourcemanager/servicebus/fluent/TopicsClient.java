@@ -10,9 +10,9 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.servicebus.fluent.models.AccessKeysInner;
 import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
 import com.azure.resourcemanager.servicebus.fluent.models.SBTopicInner;
+import com.azure.resourcemanager.servicebus.models.AccessKeys;
 import com.azure.resourcemanager.servicebus.models.AccessRights;
 import com.azure.resourcemanager.servicebus.models.RegenerateAccessKeyParameters;
 import java.util.List;
@@ -313,7 +313,7 @@ public interface TopicsClient {
      * @return the primary and secondary connection strings for the topic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(
+    Mono<Response<AccessKeys>> listKeysWithResponseAsync(
         String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName);
 
     /**
@@ -329,7 +329,7 @@ public interface TopicsClient {
      * @return the primary and secondary connection strings for the topic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AccessKeysInner> listKeysAsync(
+    Mono<AccessKeys> listKeysAsync(
         String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName);
 
     /**
@@ -345,8 +345,7 @@ public interface TopicsClient {
      * @return the primary and secondary connection strings for the topic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccessKeysInner listKeys(
-        String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName);
+    AccessKeys listKeys(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName);
 
     /**
      * Gets the primary and secondary connection strings for the topic.
@@ -362,7 +361,7 @@ public interface TopicsClient {
      * @return the primary and secondary connection strings for the topic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccessKeysInner> listKeysWithResponse(
+    Response<AccessKeys> listKeysWithResponse(
         String resourceGroupName,
         String namespaceName,
         String topicName,
@@ -383,7 +382,7 @@ public interface TopicsClient {
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<AccessKeysInner>> regenerateKeysWithResponseAsync(
+    Mono<Response<AccessKeys>> regenerateKeysWithResponseAsync(
         String resourceGroupName,
         String namespaceName,
         String topicName,
@@ -404,7 +403,7 @@ public interface TopicsClient {
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AccessKeysInner> regenerateKeysAsync(
+    Mono<AccessKeys> regenerateKeysAsync(
         String resourceGroupName,
         String namespaceName,
         String topicName,
@@ -425,7 +424,7 @@ public interface TopicsClient {
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccessKeysInner regenerateKeys(
+    AccessKeys regenerateKeys(
         String resourceGroupName,
         String namespaceName,
         String topicName,
@@ -447,7 +446,7 @@ public interface TopicsClient {
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccessKeysInner> regenerateKeysWithResponse(
+    Response<AccessKeys> regenerateKeysWithResponse(
         String resourceGroupName,
         String namespaceName,
         String topicName,

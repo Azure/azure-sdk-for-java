@@ -16,11 +16,11 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import com.azure.resourcemanager.servicebus.fluent.models.AccessKeysInner;
 import com.azure.resourcemanager.servicebus.fluent.models.CheckNameAvailabilityResultInner;
 import com.azure.resourcemanager.servicebus.fluent.models.NetworkRuleSetInner;
 import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
 import com.azure.resourcemanager.servicebus.fluent.models.SBNamespaceInner;
+import com.azure.resourcemanager.servicebus.models.AccessKeys;
 import com.azure.resourcemanager.servicebus.models.AccessRights;
 import com.azure.resourcemanager.servicebus.models.NameSpaceType;
 import com.azure.resourcemanager.servicebus.models.RegenerateAccessKeyParameters;
@@ -289,7 +289,7 @@ public interface NamespacesClient
      * @return the primary and secondary connection strings for the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(
+    Mono<Response<AccessKeys>> listKeysWithResponseAsync(
         String resourceGroupName, String namespaceName, String authorizationRuleName);
 
     /**
@@ -304,7 +304,7 @@ public interface NamespacesClient
      * @return the primary and secondary connection strings for the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AccessKeysInner> listKeysAsync(String resourceGroupName, String namespaceName, String authorizationRuleName);
+    Mono<AccessKeys> listKeysAsync(String resourceGroupName, String namespaceName, String authorizationRuleName);
 
     /**
      * Gets the primary and secondary connection strings for the namespace.
@@ -318,7 +318,7 @@ public interface NamespacesClient
      * @return the primary and secondary connection strings for the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccessKeysInner listKeys(String resourceGroupName, String namespaceName, String authorizationRuleName);
+    AccessKeys listKeys(String resourceGroupName, String namespaceName, String authorizationRuleName);
 
     /**
      * Gets the primary and secondary connection strings for the namespace.
@@ -333,7 +333,7 @@ public interface NamespacesClient
      * @return the primary and secondary connection strings for the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccessKeysInner> listKeysWithResponse(
+    Response<AccessKeys> listKeysWithResponse(
         String resourceGroupName, String namespaceName, String authorizationRuleName, Context context);
 
     /**
@@ -349,7 +349,7 @@ public interface NamespacesClient
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<AccessKeysInner>> regenerateKeysWithResponseAsync(
+    Mono<Response<AccessKeys>> regenerateKeysWithResponseAsync(
         String resourceGroupName,
         String namespaceName,
         String authorizationRuleName,
@@ -368,7 +368,7 @@ public interface NamespacesClient
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AccessKeysInner> regenerateKeysAsync(
+    Mono<AccessKeys> regenerateKeysAsync(
         String resourceGroupName,
         String namespaceName,
         String authorizationRuleName,
@@ -387,7 +387,7 @@ public interface NamespacesClient
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccessKeysInner regenerateKeys(
+    AccessKeys regenerateKeys(
         String resourceGroupName,
         String namespaceName,
         String authorizationRuleName,
@@ -407,7 +407,7 @@ public interface NamespacesClient
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccessKeysInner> regenerateKeysWithResponse(
+    Response<AccessKeys> regenerateKeysWithResponse(
         String resourceGroupName,
         String namespaceName,
         String authorizationRuleName,

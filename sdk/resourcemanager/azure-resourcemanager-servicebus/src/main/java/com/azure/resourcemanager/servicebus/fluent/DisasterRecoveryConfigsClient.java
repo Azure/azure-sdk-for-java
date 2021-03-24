@@ -10,10 +10,10 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.servicebus.fluent.models.AccessKeysInner;
 import com.azure.resourcemanager.servicebus.fluent.models.ArmDisasterRecoveryInner;
 import com.azure.resourcemanager.servicebus.fluent.models.CheckNameAvailabilityResultInner;
 import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
+import com.azure.resourcemanager.servicebus.models.AccessKeys;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DisasterRecoveryConfigsClient. */
@@ -543,7 +543,7 @@ public interface DisasterRecoveryConfigsClient {
      * @return the primary and secondary connection strings for the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(
+    Mono<Response<AccessKeys>> listKeysWithResponseAsync(
         String resourceGroupName, String namespaceName, String alias, String authorizationRuleName);
 
     /**
@@ -559,7 +559,7 @@ public interface DisasterRecoveryConfigsClient {
      * @return the primary and secondary connection strings for the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AccessKeysInner> listKeysAsync(
+    Mono<AccessKeys> listKeysAsync(
         String resourceGroupName, String namespaceName, String alias, String authorizationRuleName);
 
     /**
@@ -575,8 +575,7 @@ public interface DisasterRecoveryConfigsClient {
      * @return the primary and secondary connection strings for the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccessKeysInner listKeys(
-        String resourceGroupName, String namespaceName, String alias, String authorizationRuleName);
+    AccessKeys listKeys(String resourceGroupName, String namespaceName, String alias, String authorizationRuleName);
 
     /**
      * Gets the primary and secondary connection strings for the namespace.
@@ -592,6 +591,6 @@ public interface DisasterRecoveryConfigsClient {
      * @return the primary and secondary connection strings for the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccessKeysInner> listKeysWithResponse(
+    Response<AccessKeys> listKeysWithResponse(
         String resourceGroupName, String namespaceName, String alias, String authorizationRuleName, Context context);
 }
