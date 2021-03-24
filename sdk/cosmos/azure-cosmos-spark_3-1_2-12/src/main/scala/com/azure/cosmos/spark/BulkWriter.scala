@@ -8,7 +8,7 @@ import com.azure.cosmos.spark.BulkWriter.MaxNumberOfThreadsPerCPUCore
 import com.azure.cosmos.{BulkOperations, CosmosAsyncContainer, CosmosBulkOperationResponse, CosmosException, CosmosItemOperation}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import reactor.core.Disposable
-import reactor.core.publisher.{EmitterProcessor, Sinks}
+import reactor.core.publisher.Sinks
 import reactor.core.scala.publisher.SMono.PimpJFlux
 import reactor.core.scala.publisher.{SFlux, SMono}
 import reactor.core.scheduler.Schedulers
