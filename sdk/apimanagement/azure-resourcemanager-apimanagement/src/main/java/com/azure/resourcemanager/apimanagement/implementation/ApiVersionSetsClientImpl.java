@@ -244,7 +244,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -463,7 +463,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -562,7 +562,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
      * @return the entity state (Etag) version of the Api Version Set specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public ApiVersionSetsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String versionSetId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, versionSetId, context).block();
     }
@@ -617,7 +617,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -725,7 +725,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
      * @return the details of the Api Version Set specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApiVersionSetContractInner> getWithResponse(
+    public ApiVersionSetsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String versionSetId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, versionSetId, context).block();
     }
@@ -793,7 +793,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -953,7 +953,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
      * @return api Version Set Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApiVersionSetContractInner> createOrUpdateWithResponse(
+    public ApiVersionSetsCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String versionSetId,
@@ -1032,7 +1032,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1176,7 +1176,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
      * @return api Version Set Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApiVersionSetContractInner> updateWithResponse(
+    public ApiVersionSetsUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String versionSetId,
@@ -1243,7 +1243,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1391,7 +1391,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

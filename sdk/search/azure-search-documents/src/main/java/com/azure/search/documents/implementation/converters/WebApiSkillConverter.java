@@ -3,12 +3,9 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
-import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.WebApiSkill;
 
 import java.time.Duration;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -24,12 +21,7 @@ public final class WebApiSkillConverter {
             return null;
         }
 
-        List<OutputFieldMappingEntry> outputs = obj.getOutputs() == null ? null : obj.getOutputs();
-
-        List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null
-            : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-
-        WebApiSkill webApiSkill = new WebApiSkill(inputs, outputs, obj.getUri());
+        WebApiSkill webApiSkill = new WebApiSkill(obj.getInputs(), obj.getOutputs(), obj.getUri());
 
         String name = obj.getName();
         webApiSkill.setName(name);
@@ -68,13 +60,10 @@ public final class WebApiSkillConverter {
         if (obj == null) {
             return null;
         }
-        List<OutputFieldMappingEntry> outputs = obj.getOutputs() == null ? null : obj.getOutputs();
 
-        List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
-            obj.getOutputs() == null ? null
-                : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
         com.azure.search.documents.indexes.implementation.models.WebApiSkill webApiSkill =
-            new com.azure.search.documents.indexes.implementation.models.WebApiSkill(inputs, outputs, obj.getUri());
+            new com.azure.search.documents.indexes.implementation.models.WebApiSkill(obj.getInputs(), obj.getOutputs(),
+                obj.getUri());
 
         String name = obj.getName();
         webApiSkill.setName(name);

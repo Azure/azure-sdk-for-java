@@ -12,6 +12,9 @@ import com.azure.resourcemanager.apimanagement.fluent.PoliciesClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.PolicyCollectionInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.PolicyContractInner;
 import com.azure.resourcemanager.apimanagement.models.Policies;
+import com.azure.resourcemanager.apimanagement.models.PoliciesCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.PoliciesGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.PoliciesGetResponse;
 import com.azure.resourcemanager.apimanagement.models.PolicyCollection;
 import com.azure.resourcemanager.apimanagement.models.PolicyContract;
 import com.azure.resourcemanager.apimanagement.models.PolicyExportFormat;
@@ -59,7 +62,7 @@ public final class PoliciesImpl implements Policies {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, policyId);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public PoliciesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, PolicyIdName policyId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, policyId, context);
     }
@@ -79,7 +82,7 @@ public final class PoliciesImpl implements Policies {
         PolicyIdName policyId,
         PolicyExportFormat format,
         Context context) {
-        Response<PolicyContractInner> inner =
+        PoliciesGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, policyId, format, context);
         if (inner != null) {
             return new SimpleResponse<>(
@@ -110,7 +113,7 @@ public final class PoliciesImpl implements Policies {
         PolicyContractInner parameters,
         String ifMatch,
         Context context) {
-        Response<PolicyContractInner> inner =
+        PoliciesCreateOrUpdateResponse inner =
             this
                 .serviceClient()
                 .createOrUpdateWithResponse(resourceGroupName, serviceName, policyId, parameters, ifMatch, context);

@@ -18,10 +18,10 @@ public final class EncryptionImages {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionImages.class);
 
     /*
-     * This is the disk image encryption base class.
+     * Contains encryption settings for an OS disk image.
      */
     @JsonProperty(value = "osDiskImage")
-    private DiskImageEncryption osDiskImage;
+    private OSDiskImageEncryption osDiskImage;
 
     /*
      * A list of encryption specifications for data disk images.
@@ -30,21 +30,21 @@ public final class EncryptionImages {
     private List<DataDiskImageEncryption> dataDiskImages;
 
     /**
-     * Get the osDiskImage property: This is the disk image encryption base class.
+     * Get the osDiskImage property: Contains encryption settings for an OS disk image.
      *
      * @return the osDiskImage value.
      */
-    public DiskImageEncryption osDiskImage() {
+    public OSDiskImageEncryption osDiskImage() {
         return this.osDiskImage;
     }
 
     /**
-     * Set the osDiskImage property: This is the disk image encryption base class.
+     * Set the osDiskImage property: Contains encryption settings for an OS disk image.
      *
      * @param osDiskImage the osDiskImage value to set.
      * @return the EncryptionImages object itself.
      */
-    public EncryptionImages withOsDiskImage(DiskImageEncryption osDiskImage) {
+    public EncryptionImages withOsDiskImage(OSDiskImageEncryption osDiskImage) {
         this.osDiskImage = osDiskImage;
         return this;
     }

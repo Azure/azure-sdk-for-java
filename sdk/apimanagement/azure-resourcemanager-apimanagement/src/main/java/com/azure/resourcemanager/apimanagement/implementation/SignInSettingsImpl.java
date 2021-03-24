@@ -12,6 +12,8 @@ import com.azure.resourcemanager.apimanagement.fluent.SignInSettingsClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.PortalSigninSettingsInner;
 import com.azure.resourcemanager.apimanagement.models.PortalSigninSettings;
 import com.azure.resourcemanager.apimanagement.models.SignInSettings;
+import com.azure.resourcemanager.apimanagement.models.SignInSettingsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.SignInSettingsGetResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SignInSettingsImpl implements SignInSettings {
@@ -31,7 +33,8 @@ public final class SignInSettingsImpl implements SignInSettings {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName);
     }
 
-    public Response<Void> getEntityTagWithResponse(String resourceGroupName, String serviceName, Context context) {
+    public SignInSettingsGetEntityTagResponse getEntityTagWithResponse(
+        String resourceGroupName, String serviceName, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, context);
     }
 
@@ -46,8 +49,7 @@ public final class SignInSettingsImpl implements SignInSettings {
 
     public Response<PortalSigninSettings> getWithResponse(
         String resourceGroupName, String serviceName, Context context) {
-        Response<PortalSigninSettingsInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serviceName, context);
+        SignInSettingsGetResponse inner = this.serviceClient().getWithResponse(resourceGroupName, serviceName, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),

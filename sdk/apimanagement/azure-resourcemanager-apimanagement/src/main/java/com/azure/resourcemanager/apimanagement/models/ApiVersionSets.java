@@ -64,7 +64,7 @@ public interface ApiVersionSets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Api Version Set specified by its identifier.
      */
-    Response<Void> getEntityTagWithResponse(
+    ApiVersionSetsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String versionSetId, Context context);
 
     /**

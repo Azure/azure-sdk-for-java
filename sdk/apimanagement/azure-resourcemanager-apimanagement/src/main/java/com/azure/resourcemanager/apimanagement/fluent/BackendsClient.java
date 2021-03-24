@@ -12,6 +12,10 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.BackendContractInner;
 import com.azure.resourcemanager.apimanagement.models.BackendReconnectContract;
 import com.azure.resourcemanager.apimanagement.models.BackendUpdateParameters;
+import com.azure.resourcemanager.apimanagement.models.BackendsCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.BackendsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.BackendsGetResponse;
+import com.azure.resourcemanager.apimanagement.models.BackendsUpdateResponse;
 
 /** An instance of this class provides access to all the operations defined in BackendsClient. */
 public interface BackendsClient {
@@ -76,7 +80,7 @@ public interface BackendsClient {
      * @return the entity state (Etag) version of the backend specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    BackendsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String backendId, Context context);
 
     /**
@@ -106,7 +110,7 @@ public interface BackendsClient {
      * @return the details of the backend specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BackendContractInner> getWithResponse(
+    BackendsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String backendId, Context context);
 
     /**
@@ -140,7 +144,7 @@ public interface BackendsClient {
      * @return backend details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BackendContractInner> createOrUpdateWithResponse(
+    BackendsCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String backendId,
@@ -186,7 +190,7 @@ public interface BackendsClient {
      * @return backend details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BackendContractInner> updateWithResponse(
+    BackendsUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String backendId,

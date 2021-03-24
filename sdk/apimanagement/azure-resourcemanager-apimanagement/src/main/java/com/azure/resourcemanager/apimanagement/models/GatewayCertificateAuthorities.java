@@ -82,7 +82,7 @@ public interface GatewayCertificateAuthorities {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    Response<Void> getEntityTagWithResponse(
+    GatewayCertificateAuthoritiesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, String certificateId, Context context);
 
     /**

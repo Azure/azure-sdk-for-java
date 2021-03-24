@@ -7,9 +7,9 @@ package com.azure.resourcemanager.apimanagement.fluent;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.SubscriptionContractInner;
+import com.azure.resourcemanager.apimanagement.models.UserSubscriptionsGetResponse;
 
 /** An instance of this class provides access to all the operations defined in UserSubscriptionsClient. */
 public interface UserSubscriptionsClient {
@@ -91,6 +91,6 @@ public interface UserSubscriptionsClient {
      * @return the specified Subscription entity associated with a particular user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SubscriptionContractInner> getWithResponse(
+    UserSubscriptionsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String userId, String sid, Context context);
 }

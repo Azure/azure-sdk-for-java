@@ -59,7 +59,7 @@ public interface Policies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Global policy definition in the Api Management service.
      */
-    Response<Void> getEntityTagWithResponse(
+    PoliciesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, PolicyIdName policyId, Context context);
 
     /**
