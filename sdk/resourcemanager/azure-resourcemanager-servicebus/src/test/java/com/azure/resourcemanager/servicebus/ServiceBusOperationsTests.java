@@ -541,14 +541,11 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
 
     private static final int HOURS_PER_DAY = 24;
     private static final int MINUTES_PER_HOUR = 60;
-    private static final int SECONDS_PER_MINUTE = 60;
-    private static final int SECONDS_PER_HOUR = SECONDS_PER_MINUTE * MINUTES_PER_HOUR;
-    private static final int SECONDS_PER_DAY = SECONDS_PER_HOUR * HOURS_PER_DAY;
 
     private static void verifyDefaultDuration(Duration duration) {
-        Assertions.assertEquals(10675199, duration.getSeconds() / SECONDS_PER_DAY);
-        Assertions.assertEquals(2, duration.getSeconds() / SECONDS_PER_HOUR);
-        Assertions.assertEquals(48, duration.getSeconds() / SECONDS_PER_MINUTE);
+        Assertions.assertEquals(10675199, duration.toDays());
+        Assertions.assertEquals(2, duration.toHours() % HOURS_PER_DAY);
+        Assertions.assertEquals(48, duration.toMinutes() % MINUTES_PER_HOUR);
     }
 
 //    @Test
