@@ -303,7 +303,7 @@ final class Transforms {
         // add receipt fields
         if (!CoreUtils.isNullOrEmpty(documentResultItem.getFields())) {
             documentResultItem.getFields().forEach((key, fieldValue) -> {
-                if (fieldValue != null) {
+                if (fieldValue != null && fieldValue.getText() != null && fieldValue.getBoundingBox() != null) {
                     List<FormElement> formElementList = setReferenceElements(fieldValue.getElements(), readResults);
                     FieldData valueData;
                     if ("ReceiptType".equals(key) || ARRAY == fieldValue.getType()) {
@@ -315,7 +315,7 @@ final class Transforms {
                     recognizedFieldMap.put(key, setFormField(key, valueData, fieldValue, readResults));
                 } else {
                     recognizedFieldMap.put(key, new FormField(key, null, null, null,
-                        DEFAULT_CONFIDENCE_VALUE));
+                        setDefaultConfidenceValue(fieldValue.getConfidence())));
                 }
             });
         }

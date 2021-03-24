@@ -325,37 +325,53 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                     }
                     break;
                 case DATE:
-                    assertEquals(expectedFieldValue.getValueDate(), actualFormField.getValue().asDate());
+                    if (expectedFieldValue.getValueDate() != null) {
+                        assertEquals(expectedFieldValue.getValueDate(), actualFormField.getValue().asDate());
+                    }
                     break;
                 case TIME:
-                    assertEquals(LocalTime.parse(expectedFieldValue.getValueTime(),
-                        DateTimeFormatter.ofPattern("HH:mm:ss")), actualFormField.getValue().asTime());
+                    if (expectedFieldValue.getValueTime() != null) {
+                        assertEquals(LocalTime.parse(expectedFieldValue.getValueTime(),
+                            DateTimeFormatter.ofPattern("HH:mm:ss")), actualFormField.getValue().asTime());
+                    }
                     break;
                 case STRING:
-                    if (!"ReceiptType".equals(actualFormField.getName())) {
-                        assertEquals(expectedFieldValue.getValueString(), actualFormField.getValue().asString());
+                    if (expectedFieldValue.getValueString() != null) {
+                        if (!"ReceiptType".equals(actualFormField.getName())) {
+                            assertEquals(expectedFieldValue.getValueString(), actualFormField.getValue().asString());
+                        }
                     }
                     break;
                 case INTEGER:
-                    assertEquals(expectedFieldValue.getValueInteger(), actualFormField.getValue().asLong());
+                    if (expectedFieldValue.getValueInteger() != null) {
+                        assertEquals(expectedFieldValue.getValueInteger(), actualFormField.getValue().asLong());
+                    }
                     break;
                 case PHONE_NUMBER:
-                    assertEquals(expectedFieldValue.getValuePhoneNumber(), actualFormField.getValue().asPhoneNumber());
+                    if (expectedFieldValue.getValuePhoneNumber() != null) {
+                        assertEquals(expectedFieldValue.getValuePhoneNumber(),
+                            actualFormField.getValue().asPhoneNumber());
+                    }
                     break;
                 case OBJECT:
-                    expectedFieldValue.getValueObject().forEach((key, formField) -> {
-                        FormField actualFormFieldValue = actualFormField.getValue().asMap().get(key);
-                        validateFieldValueTransforms(formField, actualFormFieldValue, readResults,
-                            includeFieldElements);
-                    });
+                    if (expectedFieldValue.getValueObject() != null) {
+                        expectedFieldValue.getValueObject().forEach((key, formField) -> {
+                            FormField actualFormFieldValue = actualFormField.getValue().asMap().get(key);
+                            validateFieldValueTransforms(formField, actualFormFieldValue, readResults,
+                                includeFieldElements);
+                        });
+                    }
                     break;
                 case ARRAY:
-                    assertEquals(expectedFieldValue.getValueArray().size(), actualFormField.getValue().asList().size());
-                    for (int i = 0; i < expectedFieldValue.getValueArray().size(); i++) {
-                        FieldValue expectedReceiptItem = expectedFieldValue.getValueArray().get(i);
-                        FormField actualReceiptItem = actualFormField.getValue().asList().get(i);
-                        validateFieldValueTransforms(expectedReceiptItem, actualReceiptItem, readResults,
-                            includeFieldElements);
+                    if (expectedFieldValue.getValueArray() != null) {
+                        assertEquals(expectedFieldValue.getValueArray().size(),
+                            actualFormField.getValue().asList().size());
+                        for (int i = 0; i < expectedFieldValue.getValueArray().size(); i++) {
+                            FieldValue expectedReceiptItem = expectedFieldValue.getValueArray().get(i);
+                            FormField actualReceiptItem = actualFormField.getValue().asList().get(i);
+                            validateFieldValueTransforms(expectedReceiptItem, actualReceiptItem, readResults,
+                                includeFieldElements);
+                        }
                     }
                     break;
                 default:
