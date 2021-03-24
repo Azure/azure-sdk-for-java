@@ -40,6 +40,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class ServiceBusOperationsTests extends ResourceManagerTestBase {
     private ResourceManager resourceManager;
@@ -565,6 +566,8 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
         Assertions.assertEquals(1, serviceBusNamespace.queues().list().stream().count());
 
         queue.refresh();
+
+        Assertions.assertEquals(queueName.replaceAll(Pattern.quote("/"), "~"), queue.name());
 
         serviceBusNamespace.queues().deleteByName(queueName);
 

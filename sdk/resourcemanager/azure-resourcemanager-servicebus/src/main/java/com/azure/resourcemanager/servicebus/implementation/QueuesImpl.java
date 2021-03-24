@@ -15,6 +15,8 @@ import com.azure.resourcemanager.servicebus.models.Queues;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import reactor.core.publisher.Mono;
 
+import java.util.regex.Pattern;
+
 /**
  * Implementation for Queues.
  */
@@ -49,7 +51,7 @@ class QueuesImpl
     public Mono<Void> deleteByNameAsync(String name) {
         return this.innerModel().deleteAsync(this.resourceGroupName,
                 this.namespaceName,
-                name);
+                name.replaceAll(Pattern.quote("/"), "~"));
     }
 
     @Override
@@ -71,7 +73,7 @@ class QueuesImpl
     protected QueueImpl wrapModel(String name) {
         return new QueueImpl(this.resourceGroupName,
                 this.namespaceName,
-                name,
+                name.replaceAll(Pattern.quote("/"), "~"),
                 this.region,
                 new SBQueueInner(),
                 this.manager());
@@ -84,7 +86,7 @@ class QueuesImpl
         }
         return new QueueImpl(this.resourceGroupName,
                 this.namespaceName,
-                inner.name(),
+                inner.name().replaceAll(Pattern.quote("/"), "~"),
                 this.region,
                 inner,
                 this.manager());
