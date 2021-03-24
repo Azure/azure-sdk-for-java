@@ -23,6 +23,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Header;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.engine.Connection;
+import org.apache.qpid.proton.engine.EndpointState;
+import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Record;
 import org.apache.qpid.proton.engine.Sender;
@@ -31,6 +33,7 @@ import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.engine.SslPeerDetails;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -86,12 +89,20 @@ public class EventHubReactorConnectionTest {
     private Record record;
 
     private ConnectionOptions connectionOptions;
+    private ConnectionHandler connectionHandler;
 
     @BeforeAll
     public static void init() {
         Map<String, String> properties = CoreUtils.getProperties("azure-messaging-eventhubs.properties");
         product = properties.get(NAME_KEY);
         clientVersion = properties.get(VERSION_KEY);
+
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(10));
+    }
+
+    @AfterAll
+    public static void afterAll() {
+        StepVerifier.resetDefaultTimeout();
     }
 
     @BeforeEach
@@ -108,7 +119,7 @@ public class EventHubReactorConnectionTest {
             "client-test-version");
         final SslPeerDetails peerDetails = Proton.sslPeerDetails(HOSTNAME, ConnectionHandler.AMQPS_PORT);
 
-        final ConnectionHandler connectionHandler = new ConnectionHandler(CONNECTION_ID, connectionOptions,
+        connectionHandler = new ConnectionHandler(CONNECTION_ID, connectionOptions,
             peerDetails);
 
         when(reactor.selectable()).thenReturn(selectable);
@@ -151,6 +162,11 @@ public class EventHubReactorConnectionTest {
         final Sender sender = mock(Sender.class);
         final Receiver receiver = mock(Receiver.class);
         final Record linkRecord = mock(Record.class);
+        final Event event = mock(Event.class);
+        final Connection connectionProtonJ = mock(Connection.class);
+        when(event.getConnection()).thenReturn(connectionProtonJ);
+        when(connectionProtonJ.getRemoteState()).thenReturn(EndpointState.ACTIVE);
+
         when(session.sender(any())).thenReturn(sender);
         when(session.receiver(any())).thenReturn(receiver);
 
@@ -169,6 +185,7 @@ public class EventHubReactorConnectionTest {
 
         // Act & Assert
         StepVerifier.create(connection.getManagementNode())
+            .then(() -> connectionHandler.onConnectionRemoteOpen(event))
             .assertNext(node -> Assertions.assertTrue(node instanceof ManagementChannel))
             .verifyComplete();
     }

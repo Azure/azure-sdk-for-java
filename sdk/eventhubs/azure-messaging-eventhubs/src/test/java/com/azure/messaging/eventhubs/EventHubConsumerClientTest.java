@@ -318,13 +318,9 @@ public class EventHubConsumerClientTest {
             .prefetchCount(100)
             .buildConsumerClient();
 
-        try {
-            Assertions.assertEquals("dummy-event-hub", consumer.getEventHubName());
-            Assertions.assertEquals("doesnotexist.servicebus.windows.net", consumer.getFullyQualifiedNamespace());
-            Assertions.assertEquals(CONSUMER_GROUP, consumer.getConsumerGroup());
-        } finally {
-            consumer.close();
-        }
+        Assertions.assertEquals("dummy-event-hub", consumer.getEventHubName());
+        Assertions.assertEquals("doesnotexist.servicebus.windows.net", consumer.getFullyQualifiedNamespace());
+        Assertions.assertEquals(CONSUMER_GROUP, consumer.getConsumerGroup());
     }
 
     private static Integer getPositionId(PartitionEvent partitionEvent) {
