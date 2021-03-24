@@ -184,9 +184,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
         Assertions.assertNotNull(msgTtlDuration);
         // Assertions the default ttl TimeSpan("10675199.02:48:05.4775807") parsing
         //
-        Assertions.assertEquals(10675199, msgTtlDuration.toDaysPart());
-        Assertions.assertEquals(2, msgTtlDuration.toHoursPart());
-        Assertions.assertEquals(48, msgTtlDuration.toMinutesPart());
+        verifyMaxDuration(msgTtlDuration);
         // Assertions the default max size In MB
         //
         Assertions.assertEquals(1024, queue.maxSizeInMB());
@@ -297,9 +295,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
         Assertions.assertNotNull(msgTtlDuration);
         // Assertions the default ttl TimeSpan("10675199.02:48:05.4775807") parsing
         //
-        Assertions.assertEquals(10675199, msgTtlDuration.toDaysPart());
-        Assertions.assertEquals(2, msgTtlDuration.toHoursPart());
-        Assertions.assertEquals(48, msgTtlDuration.toMinutesPart());
+        verifyMaxDuration(msgTtlDuration);
         // Assertions the default max size In MB
         //
         Assertions.assertEquals(1024, topic.maxSizeInMB());
@@ -541,6 +537,18 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
         topic.subscriptions().deleteByName(subscriptionName);
         subscriptionsInTopic = topic.subscriptions().list();
         Assertions.assertTrue(TestUtilities.getSize(subscriptionsInTopic) == 0);
+    }
+
+    private static final int HOURS_PER_DAY = 24;
+    private static final int MINUTES_PER_HOUR = 60;
+    private static final int SECONDS_PER_MINUTE = 60;
+    private static final int SECONDS_PER_HOUR = SECONDS_PER_MINUTE * MINUTES_PER_HOUR;
+    private static final int SECONDS_PER_DAY = SECONDS_PER_HOUR * HOURS_PER_DAY;
+
+    private static void verifyMaxDuration(Duration duration) {
+        Assertions.assertEquals(10675199, duration.getSeconds() / SECONDS_PER_DAY);
+        Assertions.assertEquals(2, duration.getSeconds() / SECONDS_PER_HOUR);
+        Assertions.assertEquals(48, duration.getSeconds() / SECONDS_PER_MINUTE);
     }
 
 //    @Test
