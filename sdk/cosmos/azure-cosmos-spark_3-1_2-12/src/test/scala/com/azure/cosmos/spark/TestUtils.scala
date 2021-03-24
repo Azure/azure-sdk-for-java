@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.commons.lang3.RandomStringUtils
 import org.apache.spark.sql.SparkSession
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, Suite}
-import reactor.core.publisher.EmitterProcessor
+import reactor.core.publisher.{EmitterProcessor, Sinks}
 import reactor.core.scala.publisher.SMono.PimpJFlux
 
 import java.time.Duration
@@ -226,8 +226,9 @@ trait AutoCleanableCosmosContainer extends CosmosContainer with BeforeAndAfterEa
       val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
 
       try {
-        val emitter = EmitterProcessor.create[CosmosItemOperation]()
-        val bulkDeleteFlux = container.processBulkOperations(emitter)
+        val emitter: Sinks.Many[CosmosItemOperation] = Sinks.many().unicast().onBackpressureBuffer()
+
+        val bulkDeleteFlux = container.processBulkOperations(emitter.asFlux())
 
         val cnt = new AtomicInteger(0)
         container.queryItems("SELECT * FROM r", classOf[ObjectNode])
@@ -235,11 +236,11 @@ trait AutoCleanableCosmosContainer extends CosmosContainer with BeforeAndAfterEa
           .doOnNext(item => {
             val operation = BulkOperations.getDeleteItemOperation(getId(item), new PartitionKey(getPartitionKeyValue(item)))
             cnt.incrementAndGet()
-            emitter.onNext(operation)
+            emitter.tryEmitNext(operation)
 
           }).doOnComplete(
           () => {
-            emitter.onComplete()
+            emitter.tryEmitComplete()
           }).subscribe()
 
         bulkDeleteFlux.blockLast()
