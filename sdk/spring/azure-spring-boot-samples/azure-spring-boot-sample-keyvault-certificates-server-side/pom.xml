@@ -16,7 +16,7 @@
   <version>1.0.0</version>
   <packaging>jar</packaging>
 
-  <name>Azure Spring Boot Starter Sample - Key Vault Certificates</name>
+  <name>Azure Spring Boot Starter Sample - Key Vault Certificates - Server Side</name>
   <description>Sample project for Azure Key Vault Certificates Starter</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
