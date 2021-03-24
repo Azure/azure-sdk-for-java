@@ -209,9 +209,9 @@
         <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <configuration>
           <links>
-            <link>https://www.javadoc.io/doc/com.fasterxml.jackson.core/jackson-annotations/latest/</link>
-            <link>https://www.javadoc.io/doc/com.fasterxml.jackson.core/jackson-core/latest/</link>
-            <link>https://www.javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/latest/</link>
+            <link>https://fasterxml.github.io/jackson-annotations/javadoc/2.12/</link>
+            <link>https://fasterxml.github.io/jackson-core/javadoc/2.12/</link>
+            <link>https://fasterxml.github.io/jackson-databind/javadoc/2.12/</link>
           </links>
         </configuration>
       </plugin>
