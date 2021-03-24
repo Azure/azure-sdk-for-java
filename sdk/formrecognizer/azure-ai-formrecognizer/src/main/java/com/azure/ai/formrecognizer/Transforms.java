@@ -321,7 +321,7 @@ final class Transforms {
                     recognizedFieldMap.put(key, setFormField(key, valueData, fieldValue, readResults));
                 } else {
                     recognizedFieldMap.put(key, new FormField(key, null, null, null,
-                        setDefaultConfidenceValue(fieldValue.getConfidence())));
+                        DEFAULT_CONFIDENCE_VALUE));
                 }
             });
         }
