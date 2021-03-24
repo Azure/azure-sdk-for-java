@@ -555,7 +555,7 @@
       <id>transform-spotbugs</id>
       <activation>
         <file>
-          <exists>${project.build.directory}/spotbugs/spotbugsXml.xml</exists>
+          <exists>${packageOutputDirectory}/spotbugs/spotbugsXml.xml</exists>
         </file>
       </activation>
       <build>
