@@ -221,6 +221,7 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         return ReflectionUtils.getValueMap(routingMapAsyncCache);
     }
 
+    @SuppressWarnings("unchecked")
     private CollectionRoutingMap getCollectionRoutingMap(ConcurrentHashMap<String, ?> routingMap) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
         Class<?> AsynLazyClass = Class.forName("com.azure.cosmos.implementation.caches.AsyncLazy");
         Field collectionRoutingMapField = AsynLazyClass.getDeclaredField("single");

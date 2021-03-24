@@ -266,6 +266,7 @@ public class ReflectionUtils {
         return get(RxClientCollectionCache.class, rxDocumentClient, "collectionCache");
     }
 
+    @SuppressWarnings("unchecked")
     public static AsyncCache<String, DocumentCollection> getCollectionInfoByNameCache(RxCollectionCache CollectionCache) {
         return get(AsyncCache.class, CollectionCache, "collectionInfoByNameCache");
     }
@@ -274,10 +275,12 @@ public class ReflectionUtils {
         return get(RxPartitionKeyRangeCache.class, rxDocumentClient, "partitionKeyRangeCache");
     }
 
+    @SuppressWarnings("unchecked")
     public static AsyncCache<String, CollectionRoutingMap> getRoutingMapAsyncCache(RxPartitionKeyRangeCache partitionKeyRangeCache) {
         return get(AsyncCache.class, partitionKeyRangeCache, "routingMapCache");
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> ConcurrentHashMap<String, ?> getValueMap(AsyncCache<String, T> asyncCache) {
         return get(ConcurrentHashMap.class, asyncCache, "values");
     }

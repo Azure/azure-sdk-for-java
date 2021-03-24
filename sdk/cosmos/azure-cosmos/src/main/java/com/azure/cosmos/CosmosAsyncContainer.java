@@ -51,9 +51,11 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -426,17 +428,28 @@ public class CosmosAsyncContainer {
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<Void> openConnectionsAndInitCaches() {
-        SqlQuerySpec querySpec = new SqlQuerySpec();
-        querySpec.setQueryText("select * from c where c.id = @id");
-        querySpec.setParameters(Collections.singletonList(new SqlParameter("@id", UUID.randomUUID().toString())));
-        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        if (this.database.getClient().getConnectionPolicy().getConnectionMode().equals(ConnectionMode.DIRECT)) {
-            options.setConsistencyLevel(ConsistencyLevel.STRONG);
-        }
+        Mono<List<FeedRange>> feedRangesMono = this.getFeedRanges();
+        AtomicReference<Mono<List<FeedResponse<ObjectNode>>>> sequentialList = new AtomicReference<>();
+        List<Flux<FeedResponse<ObjectNode>>> fluxList = new ArrayList<>();
+        return feedRangesMono.flatMap(feedRanges -> {
+            for (FeedRange feedRange : feedRanges) {
+                SqlQuerySpec querySpec = new SqlQuerySpec();
+                querySpec.setQueryText("select * from c where c.id = @id");
+                querySpec.setParameters(Collections.singletonList(new SqlParameter("@id",
+                    UUID.randomUUID().toString())));
+                CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+                options.setFeedRange(feedRange);
+                if (this.database.getClient().getConnectionPolicy().getConnectionMode().equals(ConnectionMode.DIRECT)) {
+                    options.setConsistencyLevel(ConsistencyLevel.STRONG);
+                }
 
-        CosmosPagedFlux<ObjectNode> cosmosPagedFlux = this.queryItems(querySpec, options,
-            ObjectNode.class);
-        return cosmosPagedFlux.byPage().collectList().flatMap(feedResponse -> Mono.empty());
+                CosmosPagedFlux<ObjectNode> cosmosPagedFlux = this.queryItems(querySpec, options,
+                    ObjectNode.class);
+                fluxList.add(cosmosPagedFlux.byPage());
+            }
+            sequentialList.set(Flux.merge(fluxList).collectList());
+            return sequentialList.get().flatMap(objects -> Mono.empty());
+        });
     }
 
     /**
