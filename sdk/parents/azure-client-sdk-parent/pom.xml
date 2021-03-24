@@ -542,6 +542,7 @@
               <!-- Avro APIs -->
               <link>https://avro.apache.org/docs/current/api/java/</link>
             </links>
+            <detectJavaApiLink>false</detectJavaApiLink>
             <isOffline>true</isOffline>
             <offlineLinks>
               <!-- JDK APIs -->
