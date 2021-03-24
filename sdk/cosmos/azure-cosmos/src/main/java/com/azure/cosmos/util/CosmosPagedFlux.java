@@ -68,7 +68,6 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
      * @param newFeedResponseConsumer handler
      * @return CosmosPagedFlux instance with attached handler
      */
-    @Beta(value = Beta.SinceVersion.V4_6_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosPagedFlux<T> handle(Consumer<FeedResponse<T>> newFeedResponseConsumer) {
         if (this.feedResponseConsumer != null) {
             return new CosmosPagedFlux<T>(
