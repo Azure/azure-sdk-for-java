@@ -20,6 +20,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Implementation for Queue.
@@ -44,7 +45,7 @@ class QueueImpl
               Region region,
               QueueResourceInner inner,
               ServiceBusManager manager) {
-        super(name, inner, manager);
+        super(name.replaceAll(Pattern.quote("/"), "~"), inner, manager);
         this.withExistingParentResource(resourceGroupName, namespaceName);
         initChildrenOperationsCache();
         if (inner.location() == null) {

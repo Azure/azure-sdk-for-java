@@ -75,7 +75,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
     @Override
     protected void cleanUpResources() {
         if (rgName != null && resourceManager != null) {
-            resourceManager.resourceGroups().deleteByName(rgName);
+            resourceManager.resourceGroups().beginDeleteByName(rgName);
         }
     }
 
@@ -543,5 +543,30 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
         topic.subscriptions().deleteByName(subscriptionName);
         subscriptionsInTopic = topic.subscriptions().list();
         Assertions.assertTrue(TestUtilities.getSize(subscriptionsInTopic) == 0);
+    }
+
+    @Test
+    public void canCRUDQueryWithSlashInName() {
+        Region region = Region.US_EAST;
+        String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
+        String queueName = "order/created";
+
+        ServiceBusNamespace serviceBusNamespace = serviceBusManager.namespaces()
+            .define(namespaceDNSLabel)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withSku(NamespaceSku.BASIC)
+            .create();
+
+        Queue queue = serviceBusNamespace.queues().define(queueName)
+            .create();
+
+        Assertions.assertEquals(1, serviceBusNamespace.queues().list().stream().count());
+
+        queue.refresh();
+
+        serviceBusNamespace.queues().deleteByName(queueName);
+
+        int i = 1;
     }
 }
