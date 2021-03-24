@@ -27,7 +27,7 @@ class WorkerTask extends Thread {
     @Override
     public void run() {
         job
-            .doOnSuccess(avoid-> logger.info("Partition controller worker task {} has finished running.", lease.getLeaseToken()))
+            .doOnSuccess(avoid -> logger.info("Partition controller worker task {} has finished running.", lease.getLeaseToken()))
             .doOnTerminate(() -> {
                 logger.info("Partition controller worker task {} has exited.", lease.getLeaseToken());
                 job = null;
