@@ -8,6 +8,7 @@ import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.EndpointState;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.Closeable;
 import java.util.Objects;
@@ -68,7 +69,7 @@ public abstract class Handler extends BaseHandler implements Closeable {
      * @return The endpoint states of the handler.
      */
     public Flux<EndpointState> getEndpointStates() {
-        return endpointStates.asFlux();
+        return endpointStates.asFlux().publishOn(Schedulers.boundedElastic());
     }
 
     void onNext(EndpointState state) {

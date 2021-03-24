@@ -12,6 +12,7 @@ import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Receiver;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.Collections;
 import java.util.Set;
@@ -37,7 +38,9 @@ public class ReceiveLinkHandler extends LinkHandler {
     }
 
     public Flux<Delivery> getDeliveredMessages() {
-        return deliveries.asFlux().doOnNext(delivery -> queuedDeliveries.remove(delivery));
+        return deliveries.asFlux()
+            .publishOn(Schedulers.boundedElastic())
+            .doOnNext(delivery -> queuedDeliveries.remove(delivery));
     }
 
     @Override

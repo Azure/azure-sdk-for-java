@@ -19,6 +19,7 @@ import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -203,7 +204,8 @@ public class ReactorReceiver implements AmqpReceiveLink {
 
     @Override
     public void dispose() {
-        dispose("Dispose invoked", null).block(retryOptions.getTryTimeout());
+        dispose("Dispose invoked", null)
+            .block(retryOptions.getTryTimeout());
     }
 
     protected Message decodeDelivery(Delivery delivery) {
@@ -227,7 +229,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
      */
     Mono<Void> dispose(String message, ErrorCondition errorCondition) {
         if (isDisposed.getAndSet(true)) {
-            return isClosedMono.asMono();
+            return isClosedMono.asMono().publishOn(Schedulers.boundedElastic());
         }
 
         final String condition = errorCondition != null ? errorCondition.toString() : NOT_APPLICABLE;
@@ -252,7 +254,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
                 logger.warning("Could not schedule disposing of receiver on ReactorDispatcher.", e);
                 closeReceiver.run();
             }
-        }).then(isClosedMono.asMono());
+        }).publishOn(Schedulers.boundedElastic()).then(isClosedMono.asMono());
     }
 
     /**

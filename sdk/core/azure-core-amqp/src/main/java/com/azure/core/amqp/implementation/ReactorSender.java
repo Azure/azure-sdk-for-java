@@ -34,6 +34,7 @@ import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -315,6 +316,7 @@ class ReactorSender implements AmqpSendLink {
     @Override
     public void dispose() {
         dispose("Dispose called", null)
+            .publishOn(Schedulers.boundedElastic())
             .block(retryOptions.getTryTimeout());
     }
 
