@@ -31,8 +31,8 @@ public final class FacetResult extends Facet {
     private int count;
 
     /*
-     * A table containing the desired facets. Only present if the facet is
-     * valid.
+     * A JObject array or Table containing the desired facets. Only present if
+     * the facet is valid.
      */
     @JsonProperty(value = "data", required = true)
     private Object data;
@@ -78,7 +78,8 @@ public final class FacetResult extends Facet {
     }
 
     /**
-     * Get the data property: A table containing the desired facets. Only present if the facet is valid.
+     * Get the data property: A JObject array or Table containing the desired facets. Only present if the facet is
+     * valid.
      *
      * @return the data value.
      */
@@ -87,7 +88,8 @@ public final class FacetResult extends Facet {
     }
 
     /**
-     * Set the data property: A table containing the desired facets. Only present if the facet is valid.
+     * Set the data property: A JObject array or Table containing the desired facets. Only present if the facet is
+     * valid.
      *
      * @param data the data value to set.
      * @return the FacetResult object itself.

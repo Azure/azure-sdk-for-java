@@ -10,7 +10,7 @@ import com.azure.core.util.Context;
 /** Resource collection API of ResourceProviders. */
 public interface ResourceProviders {
     /**
-     * Queries the resources managed by Azure Resource Manager for all subscriptions specified in the request.
+     * Queries the resources managed by Azure Resource Manager for scopes specified in the request.
      *
      * @param query Request specifying query and its options.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -21,7 +21,7 @@ public interface ResourceProviders {
     QueryResponse resources(QueryRequest query);
 
     /**
-     * Queries the resources managed by Azure Resource Manager for all subscriptions specified in the request.
+     * Queries the resources managed by Azure Resource Manager for scopes specified in the request.
      *
      * @param query Request specifying query and its options.
      * @param context The context to associate with this operation.
