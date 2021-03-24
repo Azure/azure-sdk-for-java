@@ -20,12 +20,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 /**
- * Tests {@link GeoLine}.
+ * Tests {@link GeoLineString}.
  */
-public class GeoLineTests {
+public class GeoLineStringTests {
     @Test
     public void nullPositionsThrows() {
-        Assertions.assertThrows(NullPointerException.class, () -> new GeoLine(null));
+        Assertions.assertThrows(NullPointerException.class, () -> new GeoLineString(null));
     }
 
     @Test
@@ -33,7 +33,7 @@ public class GeoLineTests {
         GeoArray<GeoPosition> expectedPositions = new GeoArray<>(Arrays.asList(new GeoPosition(0, 0),
             new GeoPosition(0, 1)));
 
-        GeoLine line = new GeoLine(expectedPositions);
+        GeoLineString line = new GeoLineString(expectedPositions);
 
         assertEquals(expectedPositions, line.getCoordinates());
 
@@ -48,7 +48,7 @@ public class GeoLineTests {
         GeoBoundingBox expectedBoundingBox = new GeoBoundingBox(0, 0, 1, 1);
         Map<String, Object> expectedProperties = Collections.singletonMap("key", "value");
 
-        GeoLine line = new GeoLine(expectedPositions, expectedBoundingBox, expectedProperties);
+        GeoLineString line = new GeoLineString(expectedPositions, expectedBoundingBox, expectedProperties);
 
         assertEquals(expectedPositions, line.getCoordinates());
         assertEquals(expectedBoundingBox, line.getBoundingBox());
@@ -61,7 +61,7 @@ public class GeoLineTests {
         expectedPositions.add(new GeoPosition(0, 0));
         expectedPositions.add(new GeoPosition(0, 1));
 
-        GeoLine line = new GeoLine(expectedPositions);
+        GeoLineString line = new GeoLineString(expectedPositions);
         assertEquals(new GeoArray<>(expectedPositions), line.getCoordinates());
 
         expectedPositions.add(new GeoPosition(1, 1));
@@ -70,7 +70,7 @@ public class GeoLineTests {
 
     @ParameterizedTest
     @MethodSource("equalsSupplier")
-    public void lineGeometriesEqual(GeoLine line, Object obj, boolean expected) {
+    public void lineGeometriesEqual(GeoLineString line, Object obj, boolean expected) {
         assertEquals(expected, line.equals(obj));
     }
 
@@ -81,8 +81,8 @@ public class GeoLineTests {
         GeoBoundingBox boundingBox = new GeoBoundingBox(0, 0, 1, 1);
         Map<String, Object> properties = Collections.singletonMap("key", "value");
 
-        GeoLine line = new GeoLine(positions);
-        GeoLine line1 = new GeoLine(positions1, boundingBox, properties);
+        GeoLineString line = new GeoLineString(positions);
+        GeoLineString line1 = new GeoLineString(positions1, boundingBox, properties);
 
         return Stream.of(
             // Other is null.
@@ -100,8 +100,8 @@ public class GeoLineTests {
             Arguments.of(line1, line, false),
 
             // Other is the same value.
-            Arguments.of(line, new GeoLine(positions), true),
-            Arguments.of(line1, new GeoLine(positions1, boundingBox, properties), true)
+            Arguments.of(line, new GeoLineString(positions), true),
+            Arguments.of(line1, new GeoLineString(positions1, boundingBox, properties), true)
         );
     }
 }

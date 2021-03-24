@@ -41,6 +41,14 @@ public final class QueryRequestOptions {
     @JsonProperty(value = "resultFormat")
     private ResultFormat resultFormat;
 
+    /*
+     * Only applicable for tenant and management group level queries to decide
+     * whether to allow partial scopes for result in case the number of
+     * subscriptions exceed allowed limits.
+     */
+    @JsonProperty(value = "allowPartialScopes")
+    private Boolean allowPartialScopes;
+
     /**
      * Get the skipToken property: Continuation token for pagination, capturing the next page size and offset, as well
      * as the context of the query.
@@ -124,6 +132,28 @@ public final class QueryRequestOptions {
      */
     public QueryRequestOptions withResultFormat(ResultFormat resultFormat) {
         this.resultFormat = resultFormat;
+        return this;
+    }
+
+    /**
+     * Get the allowPartialScopes property: Only applicable for tenant and management group level queries to decide
+     * whether to allow partial scopes for result in case the number of subscriptions exceed allowed limits.
+     *
+     * @return the allowPartialScopes value.
+     */
+    public Boolean allowPartialScopes() {
+        return this.allowPartialScopes;
+    }
+
+    /**
+     * Set the allowPartialScopes property: Only applicable for tenant and management group level queries to decide
+     * whether to allow partial scopes for result in case the number of subscriptions exceed allowed limits.
+     *
+     * @param allowPartialScopes the allowPartialScopes value to set.
+     * @return the QueryRequestOptions object itself.
+     */
+    public QueryRequestOptions withAllowPartialScopes(Boolean allowPartialScopes) {
+        this.allowPartialScopes = allowPartialScopes;
         return this;
     }
 

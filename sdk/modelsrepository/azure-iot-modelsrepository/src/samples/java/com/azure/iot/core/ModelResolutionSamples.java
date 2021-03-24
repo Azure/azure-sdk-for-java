@@ -3,19 +3,17 @@
 
 package com.azure.iot.core;
 
-import com.azure.iot.modelsrepository.DtmiConventions;
+import com.azure.iot.modelsrepository.ModelDependencyResolution;
 import com.azure.iot.modelsrepository.ModelsRepositoryAsyncClient;
 import com.azure.iot.modelsrepository.ModelsRepositoryClient;
 import com.azure.iot.modelsrepository.ModelsRepositoryClientBuilder;
-import com.azure.iot.modelsrepository.ModelDependencyResolution;
 
-import java.net.URI;
 import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 public class ModelResolutionSamples {
-    private static final String CLIENT_SAMPLES_DIRECTORY_PATH = System.getProperty("user.dir").concat("/src/samples/resources/TestModelRepo/");
+    private static final String CLIENT_SAMPLES_DIRECTORY_PATH = (System.getProperty("user.dir").concat("/src/samples/resources/TestModelRepo/")).replace("\\", "/");
 
     private static final int MAX_WAIT_TIME_ASYNC_OPERATIONS_IN_SECONDS = 10;
 

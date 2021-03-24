@@ -840,7 +840,6 @@ public class CosmosAsyncContainer {
      * @param classType   class type
      * @return a Mono with feed response of cosmos items
      */
-    @Beta(value = Beta.SinceVersion.V4_4_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> Mono<FeedResponse<T>> readMany(
         List<CosmosItemIdentity> itemIdentityList,
         Class<T> classType) {
@@ -857,7 +856,6 @@ public class CosmosAsyncContainer {
      * @param classType   class type
      * @return a Mono with feed response of cosmos items
      */
-    @Beta(value = Beta.SinceVersion.V4_4_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> Mono<FeedResponse<T>> readMany(
         List<CosmosItemIdentity> itemIdentityList,
         String sessionToken,

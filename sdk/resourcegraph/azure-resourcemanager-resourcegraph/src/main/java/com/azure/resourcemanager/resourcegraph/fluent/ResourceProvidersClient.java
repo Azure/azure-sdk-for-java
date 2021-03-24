@@ -14,7 +14,7 @@ import com.azure.resourcemanager.resourcegraph.models.QueryRequest;
 /** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
 public interface ResourceProvidersClient {
     /**
-     * Queries the resources managed by Azure Resource Manager for all subscriptions specified in the request.
+     * Queries the resources managed by Azure Resource Manager for scopes specified in the request.
      *
      * @param query Request specifying query and its options.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -26,7 +26,7 @@ public interface ResourceProvidersClient {
     QueryResponseInner resources(QueryRequest query);
 
     /**
-     * Queries the resources managed by Azure Resource Manager for all subscriptions specified in the request.
+     * Queries the resources managed by Azure Resource Manager for scopes specified in the request.
      *
      * @param query Request specifying query and its options.
      * @param context The context to associate with this operation.

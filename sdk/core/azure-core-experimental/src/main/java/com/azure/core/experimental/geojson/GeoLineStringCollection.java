@@ -3,6 +3,8 @@
 
 package com.azure.core.experimental.geojson;
 
+import com.azure.core.annotation.Immutable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,30 +12,32 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Represents a collection of {@link GeoLine GeoLines}.
+ * Represents a collection of {@link GeoLineString GeoLines}.
  */
-public final class GeoLineCollection extends GeoObject {
-    private final List<GeoLine> lines;
+@Immutable
+public final class GeoLineStringCollection extends GeoObject {
+    private final List<GeoLineString> lines;
 
     /**
-     * Constructs a {@link GeoLineCollection}.
+     * Constructs a {@link GeoLineStringCollection}.
      *
      * @param lines The geometric lines that define the multi-line.
      * @throws NullPointerException If {@code lines} is {@code null}.
      */
-    public GeoLineCollection(List<GeoLine> lines) {
+    public GeoLineStringCollection(List<GeoLineString> lines) {
         this(lines, null, null);
     }
 
     /**
-     * Constructs a {@link GeoLineCollection}.
+     * Constructs a {@link GeoLineStringCollection}.
      *
      * @param lines The geometric lines that define the multi-line.
      * @param boundingBox Bounding box for the multi-line.
      * @param customProperties Additional properties of the multi-line.
      * @throws NullPointerException If {@code lines} is {@code null}.
      */
-    public GeoLineCollection(List<GeoLine> lines, GeoBoundingBox boundingBox, Map<String, Object> customProperties) {
+    public GeoLineStringCollection(List<GeoLineString> lines, GeoBoundingBox boundingBox,
+        Map<String, Object> customProperties) {
         super(boundingBox, customProperties);
 
         Objects.requireNonNull(lines, "'lines' cannot be null.");
@@ -42,11 +46,11 @@ public final class GeoLineCollection extends GeoObject {
     }
 
     /**
-     * Unmodifiable representation of the {@link GeoLine geometric lines} representing this multi-line.
+     * Unmodifiable representation of the {@link GeoLineString geometric lines} representing this multi-line.
      *
-     * @return An unmodifiable representation of the {@link GeoLine geometric lines} representing this multi-line.
+     * @return An unmodifiable representation of the {@link GeoLineString geometric lines} representing this multi-line.
      */
-    public List<GeoLine> getLines() {
+    public List<GeoLineString> getLines() {
         return lines;
     }
 
@@ -56,7 +60,7 @@ public final class GeoLineCollection extends GeoObject {
      * @return An unmodifiable representation of the {@link GeoPosition geometric positions} representing this
      * multi-line.
      */
-    public GeoArray<GeoArray<GeoPosition>> getCoordinates() {
+    GeoArray<GeoArray<GeoPosition>> getCoordinates() {
         return new GeoArray<>(this);
     }
 
@@ -72,7 +76,7 @@ public final class GeoLineCollection extends GeoObject {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof GeoLineCollection)) {
+        if (!(obj instanceof GeoLineStringCollection)) {
             return false;
         }
 
@@ -80,7 +84,7 @@ public final class GeoLineCollection extends GeoObject {
             return true;
         }
 
-        GeoLineCollection other = (GeoLineCollection) obj;
+        GeoLineStringCollection other = (GeoLineStringCollection) obj;
 
         return super.equals(obj) && Objects.equals(lines, other.lines);
     }
