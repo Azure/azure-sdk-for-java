@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.1-preview.3//layout/analyze",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9cdb584b-fb75-4627-960d-6b9674f08562",
+      "x-ms-client-request-id" : "65102a0d-d74b-4dbf-a542-e656c003e43b",
       "Content-Type" : "application/json"
     },
     "Response" : null,
@@ -17,7 +17,7 @@
     "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.1-preview.3//layout/analyze",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9cdb584b-fb75-4627-960d-6b9674f08562",
+      "x-ms-client-request-id" : "65102a0d-d74b-4dbf-a542-e656c003e43b",
       "Content-Type" : "application/json"
     },
     "Response" : null,
@@ -30,20 +30,20 @@
     "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.1-preview.3//layout/analyze",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9cdb584b-fb75-4627-960d-6b9674f08562",
+      "x-ms-client-request-id" : "65102a0d-d74b-4dbf-a542-e656c003e43b",
       "Content-Type" : "application/json"
     },
     "Response" : null,
     "Exception" : {
       "ClassName" : "java.net.UnknownHostException",
-      "ErrorMessage" : "failed to resolve 'notreal.azure.com' after 2 queries "
+      "ErrorMessage" : "failed to resolve 'notreal.azure.com' after 3 queries "
     }
   }, {
     "Method" : "POST",
     "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.1-preview.3//layout/analyze",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9cdb584b-fb75-4627-960d-6b9674f08562",
+      "x-ms-client-request-id" : "65102a0d-d74b-4dbf-a542-e656c003e43b",
       "Content-Type" : "application/json"
     },
     "Response" : null,

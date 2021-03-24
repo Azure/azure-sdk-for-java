@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.1-preview.3//layout/analyze",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "aac97b62-1460-4393-a678-72e95c844bdf",
+      "x-ms-client-request-id" : "fad07a88-153b-458a-860b-0d3ad0713ef1",
       "Content-Type" : "application/json"
     },
     "Response" : null,
@@ -17,7 +17,7 @@
     "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.1-preview.3//layout/analyze",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "aac97b62-1460-4393-a678-72e95c844bdf",
+      "x-ms-client-request-id" : "fad07a88-153b-458a-860b-0d3ad0713ef1",
       "Content-Type" : "application/json"
     },
     "Response" : null,
@@ -30,7 +30,7 @@
     "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.1-preview.3//layout/analyze",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "aac97b62-1460-4393-a678-72e95c844bdf",
+      "x-ms-client-request-id" : "fad07a88-153b-458a-860b-0d3ad0713ef1",
       "Content-Type" : "application/json"
     },
     "Response" : null,
@@ -43,7 +43,7 @@
     "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.1-preview.3//layout/analyze",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "aac97b62-1460-4393-a678-72e95c844bdf",
+      "x-ms-client-request-id" : "fad07a88-153b-458a-860b-0d3ad0713ef1",
       "Content-Type" : "application/json"
     },
     "Response" : null,
