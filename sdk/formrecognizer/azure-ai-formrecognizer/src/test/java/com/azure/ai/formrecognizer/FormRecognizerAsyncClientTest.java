@@ -637,10 +637,10 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         testingContainerUrlRunner(sourceUrl -> {
             HttpResponseException exception
                 = assertThrows(HttpResponseException.class,
-                () -> client.beginRecognizeContentFromUrl(sourceUrl,
-                    new RecognizeContentOptions().setPollInterval(durationTestMode)
-                        .setLanguage(FormRecognizerLanguage.fromString("language")))
-                    .getSyncPoller());
+                    () -> client.beginRecognizeContentFromUrl(sourceUrl,
+                        new RecognizeContentOptions().setPollInterval(durationTestMode)
+                            .setLanguage(FormRecognizerLanguage.fromString("language")))
+                        .getSyncPoller());
             assertEquals(((FormRecognizerErrorInformation) exception.getValue()).getErrorCode(),
                 "NotSupportedLanguage");
         }, CONTENT_GERMAN_PDF);
@@ -1822,9 +1822,9 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         invalidSourceUrlRunner((sourceUrl)
             -> assertThrows(HttpResponseException.class,
-            () -> client.beginRecognizeInvoicesFromUrl(sourceUrl,
-                new RecognizeInvoicesOptions()
-                    .setPollInterval(durationTestMode)).getSyncPoller()));
+                () -> client.beginRecognizeInvoicesFromUrl(sourceUrl,
+                    new RecognizeInvoicesOptions()
+                        .setPollInterval(durationTestMode)).getSyncPoller()));
     }
 
     /**

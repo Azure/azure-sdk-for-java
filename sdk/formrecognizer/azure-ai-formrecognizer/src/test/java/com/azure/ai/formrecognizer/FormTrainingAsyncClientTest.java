@@ -273,8 +273,8 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
         // TODO (service bug): APIM error
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.listCustomModels())
-            .thenConsumeWhile(customFormModelInfo -> customFormModelInfo.getModelId() != null &&
-                customFormModelInfo.getTrainingStartedOn() != null
+            .thenConsumeWhile(customFormModelInfo -> customFormModelInfo.getModelId() != null
+                && customFormModelInfo.getTrainingStartedOn() != null
                 && customFormModelInfo.getTrainingCompletedOn() != null && customFormModelInfo.getStatus() != null)
             .verifyComplete();
     }
@@ -586,7 +586,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
         beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller1
                 = client.beginTraining(trainingFilesUrl, useTrainingLabels,
-                new TrainingOptions().setPollInterval(durationTestMode)).getSyncPoller();
+                    new TrainingOptions().setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller1.waitForCompletion();
             CustomFormModel model1 = syncPoller1.getFinalResult();
 
@@ -604,7 +604,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             CustomFormModel composedModel
                 = client.beginCreateComposedModel(
                 modelIdList,
-                new CreateComposedModelOptions().setPollInterval(durationTestMode))
+                    new CreateComposedModelOptions().setPollInterval(durationTestMode))
                 .getSyncPoller().getFinalResult();
 
             assertNotNull(composedModel.getModelId());
@@ -632,13 +632,13 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
         beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller1
                 = client.beginTraining(trainingFilesUrl, useTrainingLabels,
-                new TrainingOptions().setPollInterval(durationTestMode)).getSyncPoller();
+                    new TrainingOptions().setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller1.waitForCompletion();
             CustomFormModel model1 = syncPoller1.getFinalResult();
 
             SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller2
                 = client.beginTraining(trainingFilesUrl, useTrainingLabels,
-                new TrainingOptions().setPollInterval(durationTestMode)).getSyncPoller();
+                    new TrainingOptions().setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller2.waitForCompletion();
             CustomFormModel model2 = syncPoller2.getFinalResult();
 
@@ -647,7 +647,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             CustomFormModel composedModel
                 = client.beginCreateComposedModel(
                 modelIdList,
-                new CreateComposedModelOptions()
+                    new CreateComposedModelOptions()
                     .setModelName("composedModelDisplayName")
                     .setPollInterval(durationTestMode))
                 .getSyncPoller().getFinalResult();
@@ -677,13 +677,13 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
         beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller1
                 = client.beginTraining(trainingFilesUrl, useTrainingLabels,
-                new TrainingOptions().setPollInterval(durationTestMode)).getSyncPoller();
+                    new TrainingOptions().setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller1.waitForCompletion();
             CustomFormModel model1 = syncPoller1.getFinalResult();
 
             SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller2
                 = client.beginTraining(trainingFilesUrl, useTrainingLabels,
-                new TrainingOptions().setPollInterval(durationTestMode)).getSyncPoller();
+                    new TrainingOptions().setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller2.waitForCompletion();
             CustomFormModel model2 = syncPoller2.getFinalResult();
 
@@ -714,17 +714,17 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
         beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller1
                 = client.beginTraining(trainingFilesUrl, useTrainingLabels,
-                new TrainingOptions().setPollInterval(durationTestMode)).getSyncPoller();
+                    new TrainingOptions().setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller1.waitForCompletion();
             CustomFormModel model1 = syncPoller1.getFinalResult();
 
             final List<String> modelIdList = Arrays.asList(model1.getModelId(), model1.getModelId());
             HttpResponseException httpResponseException
                 = assertThrows(HttpResponseException.class,
-                () -> client.beginCreateComposedModel(
-                    modelIdList,
-                    new CreateComposedModelOptions()
-                        .setPollInterval(durationTestMode)).getSyncPoller().waitForCompletion());
+                    () -> client.beginCreateComposedModel(
+                        modelIdList,
+                        new CreateComposedModelOptions()
+                            .setPollInterval(durationTestMode)).getSyncPoller().waitForCompletion());
             assertEquals(BAD_REQUEST.code(), httpResponseException.getResponse().getStatusCode());
 
             client.deleteModel(model1.getModelId()).block();
@@ -792,7 +792,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
                 = client.beginTraining(trainingFilesUrl,
                 notUseTrainingLabels,
-                new TrainingOptions().setPollInterval(durationTestMode).setModelName("modelDisplayName"))
+                    new TrainingOptions().setPollInterval(durationTestMode).setModelName("modelDisplayName"))
                 .getSyncPoller();
             syncPoller.waitForCompletion();
             CustomFormModel createdModel = syncPoller.getFinalResult();
@@ -815,7 +815,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
         beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
                 = client.beginTraining(trainingFilesUrl, useTrainingLabels,
-                new TrainingOptions().setPollInterval(durationTestMode).setModelName("model trained with labels"))
+                    new TrainingOptions().setPollInterval(durationTestMode).setModelName("model trained with labels"))
                 .getSyncPoller();
             syncPoller.waitForCompletion();
             CustomFormModel createdModel = syncPoller.getFinalResult();
