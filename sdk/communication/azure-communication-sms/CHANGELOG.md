@@ -1,8 +1,6 @@
 # Release History
 ## 1.0.0 (2021-03-29)
 
-### Breaking Change
-- Changed the return type of the batch `Send` in `SmsClient` and `SmsAsyncClient` to `PagedIterable<SmsSendResult>` and `PagedFlux<SmsSendResult>`, respectively.
 
 ## 1.0.0-beta.4 (2021-03-09)
 ### Added
