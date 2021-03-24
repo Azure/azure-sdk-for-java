@@ -76,18 +76,17 @@ azure:
 
  (B). You can provide one by extending `AADWebSecurityConfigurerAdapter` and call `super.configure(http)` explicitly 
 in the `configure(HttpSecurity http)` function. Here is an example:
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/AADOAuth2LoginConfigSample.java#L18-L29 -->
+<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/security/AADOAuth2LoginSecurityConfig.java#L11-L22 -->
 ```java
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class AADOAuth2LoginConfigSample extends AADWebSecurityConfigurerAdapter {
-
+public class AADOAuth2LoginSecurityConfig extends AADWebSecurityConfigurerAdapter {
+    /**
+     * Add configuration logic as needed.
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
-        http.authorizeRequests()
-            .antMatchers("/login").permitAll()
-            .anyRequest().authenticated();
     }
 }
 ```
@@ -130,6 +129,7 @@ azure:
 Here, `graph` is the name of `OAuth2AuthorizedClient`, `scopes` means the scopes need to consent when login.
 
 * Step 4: Write your Java code:
+<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/ClientController.java#L30-L38 -->
 ```java
 @GetMapping("/graph")
 @ResponseBody
@@ -186,14 +186,17 @@ Both `client-id` and `app-id-uri` can be used to verify access token. `app-id-ur
 
 (B). You can provide one by extending `AADResourceServerWebSecurityConfigurerAdapter` and call `super.configure(http)` explicitly
 in the `configure(HttpSecurity http)` function. Here is an example:
+<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/src/main/java/com/azure/spring/sample/aad/security/AADOAuth2ResourceServerSecurityConfig.java#L12-L23 -->
 ```java
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class CustomWebServerSecurityConfig extends AADResourceServerWebSecurityConfigurerAdapter {
+public class AADOAuth2ResourceServerSecurityConfig extends AADResourceServerWebSecurityConfigurerAdapter {
+    /**
+     * Add configuration logic as needed.
+     */
     @Override
-    protected void configure(HttpSecurity http) {
-       super.configure(http);
-       // Do some custom configuration
+    protected void configure(HttpSecurity http) throws Exception {
+        super.configure(http);
     }
 }
 ```
@@ -244,6 +247,7 @@ azure:
 
 * Step 3: Write Java code:
 Using `@RegisteredOAuth2AuthorizedClient` to access related resource server:
+<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L59-L63 --> 
 ```java
 @GetMapping("call-graph")
 public String callGraph(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph) {
@@ -293,23 +297,23 @@ azure:
 
 * Step 2: Add `@EnableGlobalMethodSecurity(prePostEnabled = true)` in web application:
 
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/AADOAuth2LoginConfigSample.java#L18-L29 -->
+<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/security/AADOAuth2LoginSecurityConfig.java#L11-L22 -->
 ```java
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class AADOAuth2LoginConfigSample extends AADWebSecurityConfigurerAdapter {
-
+public class AADOAuth2LoginSecurityConfig extends AADWebSecurityConfigurerAdapter {
+    /**
+     * Add configuration logic as needed.
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
-        http.authorizeRequests()
-            .antMatchers("/login").permitAll()
-            .anyRequest().authenticated();
     }
 }
 ```
 
 Then we can protect the method by `@PreAuthorize` annotation:
+<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/RoleController.java#L11-L26 -->
 ```java
 @Controller
 public class RoleController {
@@ -344,19 +348,15 @@ azure:
 ```
 
 * Step 2: Write Java code:
+<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/OnDemandClientController.java#L17-L25 -->
 ```java
-@Controller
-public class OnDemandClientController {
-
-    @GetMapping("/arm")
-    @ResponseBody
-    public String arm(
-        @RegisteredOAuth2AuthorizedClient("arm") OAuth2AuthorizedClient oAuth2AuthorizedClient
-    ) {
-        // toJsonString() is just a demo.
-        // oAuth2AuthorizedClient contains access_token. We can use this access_token to access resource server.
-        return toJsonString(oAuth2AuthorizedClient);
-    }
+@GetMapping("/arm")
+@ResponseBody
+public String arm(
+@RegisteredOAuth2AuthorizedClient("arm") OAuth2AuthorizedClient armClient) {
+    // toJsonString() is just a demo.
+    // oAuth2AuthorizedClient contains access_token. We can use this access_token to access resource server.
+    return toJsonString(armClient);
 }
 ```
 
