@@ -16,6 +16,7 @@ import static com.microsoft.azure.spring.cloud.config.TestConstants.TEST_STORE_N
 import static com.microsoft.azure.spring.cloud.config.TestConstants.TEST_VALUE_1;
 import static com.microsoft.azure.spring.cloud.config.TestUtils.createItem;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -32,9 +33,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -65,15 +64,12 @@ public class AppConfigurationPropertySourceLocatorTest {
 
     private static final String PROFILE_NAME_2 = "prod";
 
-    private static final String PREFIX = "/config";
-
     private static final ConfigurationSetting featureItem = createItem(".appconfig.featureflag/", "Alpha",
         FEATURE_VALUE, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
     private static final String EMPTY_CONTENT_TYPE = "";
     private static final ConfigurationSetting item1 = createItem(TEST_CONTEXT, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1,
         EMPTY_CONTENT_TYPE);
-    @Rule
-    public ExpectedException expected = ExpectedException.none();
+    
     @Mock
     private ConfigurableEnvironment environment;
     @Mock
@@ -107,7 +103,6 @@ public class AppConfigurationPropertySourceLocatorTest {
     private AppConfigurationPropertySourceLocator locator;
     private AppConfigurationProviderProperties appProperties;
     private KeyVaultCredentialProvider tokenCredentialProvider = null;
-    private String[] profiles = new String[]{PROFILE_NAME_1, PROFILE_NAME_2};
 
     @Before
     public void setup() {
@@ -123,7 +118,6 @@ public class AppConfigurationPropertySourceLocatorTest {
 
         when(configStoreMock.getConnectionString()).thenReturn(TEST_CONN_STRING);
         when(configStoreMock.getEndpoint()).thenReturn(TEST_STORE_NAME);
-        when(configStoreMock.getPrefix()).thenReturn(null);
         when(configStoreMock.isEnabled()).thenReturn(true);
 
         AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
@@ -172,10 +166,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         assertThat(source).isInstanceOf(CompositePropertySource.class);
 
         Collection<PropertySource<?>> sources = ((CompositePropertySource) source).getPropertySources();
-        // Application name: foo and active profile: dev,prod, should construct below
-        // composite Property Source:
-        // [/foo_prod/, /foo_dev/, /foo/, /application_prod/, /application_dev/,
-        // /application/]
+        
         String[] expectedSourceNames = new String[]{
             "/foo/store1/\0",
             "/application/store1/\0"
@@ -328,8 +319,6 @@ public class AppConfigurationPropertySourceLocatorTest {
 
     @Test
     public void defaultFailFastThrowException() throws IOException {
-        expected.expect(NullPointerException.class);
-
         when(configStoreMock.isFailFast()).thenReturn(true);
         when(properties.getDefaultContext()).thenReturn("application");
 
@@ -337,7 +326,8 @@ public class AppConfigurationPropertySourceLocatorTest {
             clientStoreMock, tokenCredentialProvider, null);
 
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenThrow(new RuntimeException());
-        locator.locate(environment);
+        NullPointerException e = assertThrows(NullPointerException.class, () -> locator.locate(environment));
+        assertThat(e).hasMessage(null);
         verify(configStoreMock, times(1)).isFailFast();
     }
 
@@ -349,15 +339,14 @@ public class AppConfigurationPropertySourceLocatorTest {
         field.set(null, new AtomicBoolean(false));
         StateHolder.setLoadState(TEST_STORE_NAME, true);
 
-        expected.expect(NullPointerException.class);
-
         when(environment.getActiveProfiles()).thenReturn(new String[]{});
         when(environment.getProperty("spring.application.name")).thenReturn(null);
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties,
             clientStoreMock, tokenCredentialProvider, null);
-
-        locator.locate(environment);
+        
+        NullPointerException e = assertThrows(NullPointerException.class, () -> locator.locate(environment));
+        assertThat(e).hasMessage(null);
     }
 
     @Test

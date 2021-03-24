@@ -108,7 +108,7 @@ com.azure:azure-storage-queue;12.8.0;12.9.0-beta.1
 com.azure:azure-template-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:perf-test-core;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:azure-spring-cloud-appconfiguration-config-web;1.2.8-beta.1;1.2.8-beta.1
-com.azure.spring:azure-spring-cloud-appconfiguration-config;1.2.8-beta.1;1.2.8-beta.1
+com.azure.spring:azure-spring-cloud-appconfiguration-config;1.2.8-beta.1;2.0.0-beta.1
 com.azure.spring:azure-spring-cloud-feature-management-web;1.2.8-beta.1;1.2.8-beta.1
 com.azure.spring:azure-spring-cloud-feature-management;1.2.8-beta.1;1.2.8-beta.1
 com.azure.spring:azure-spring-cloud-starter-appconfiguration-config;1.2.8-beta.1;1.2.8-beta.1
