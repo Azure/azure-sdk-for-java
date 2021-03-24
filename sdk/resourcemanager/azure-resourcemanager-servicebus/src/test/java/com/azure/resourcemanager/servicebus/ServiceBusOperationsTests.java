@@ -548,28 +548,28 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
         Assertions.assertEquals(48, duration.toMinutes() % MINUTES_PER_HOUR);
     }
 
-//    @Test
-//    public void canCRUDQueryWithSlashInName() {
-//        Region region = Region.US_EAST;
-//        String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
-//        String queueName = "order/created";
-//
-//        ServiceBusNamespace serviceBusNamespace = serviceBusManager.namespaces()
-//            .define(namespaceDNSLabel)
-//            .withRegion(region)
-//            .withNewResourceGroup(rgName)
-//            .withSku(NamespaceSku.BASIC)
-//            .create();
-//
-//        Queue queue = serviceBusNamespace.queues().define(queueName)
-//            .create();
-//
-//        Assertions.assertEquals(1, serviceBusNamespace.queues().list().stream().count());
-//
-//        queue.refresh();
-//
-//        Assertions.assertEquals(queueName.replaceAll(Pattern.quote("/"), "~"), queue.name());
-//
-//        serviceBusNamespace.queues().deleteByName(queueName);
-//    }
+    @Test
+    public void canCRUDQueryWithSlashInName() {
+        Region region = Region.US_EAST;
+        String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
+        String queueName = "order~created";
+
+        ServiceBusNamespace serviceBusNamespace = serviceBusManager.namespaces()
+            .define(namespaceDNSLabel)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withSku(NamespaceSku.BASIC)
+            .create();
+
+        Queue queue = serviceBusNamespace.queues().define(queueName)
+            .create();
+
+        Assertions.assertEquals(1, serviceBusNamespace.queues().list().stream().count());
+
+        queue.refresh();
+
+        Assertions.assertEquals(queueName, queue.name());
+
+        serviceBusNamespace.queues().deleteByName(queueName);
+    }
 }
