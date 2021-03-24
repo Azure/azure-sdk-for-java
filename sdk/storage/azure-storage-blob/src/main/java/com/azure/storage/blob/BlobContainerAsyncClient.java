@@ -46,6 +46,7 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -983,7 +984,7 @@ public final class BlobContainerAsyncClient {
      * @param timeout An optional timeout to be applied to the network asynchronous operations.
      * @return A reactive response emitting the listed blobs, flattened.
      */
-    StoragePagedFlux<BlobItem> listBlobsHierarchyWithOptionalTimeout(String delimiter, ListBlobsOptions options,
+    PagedFlux<BlobItem> listBlobsHierarchyWithOptionalTimeout(String delimiter, ListBlobsOptions options,
         Duration timeout) {
         BiFunction<String, Integer, Mono<PagedResponse<BlobItem>>> func =
             (marker, pageSize) -> {
@@ -1014,29 +1015,43 @@ public final class BlobContainerAsyncClient {
                         response.getDeserializedHeaders());
                 });
             };
-        //Integer pageSize = options != null ? options.getMaxResultsPerPage() : null; ??
-        return new StoragePagedFlux<BlobItem, PagedResponse<BlobItem>>(pageSize -> func.apply(null, pageSize), func);
+        return StoragePagedFlux.create(pageSize -> func.apply(null, pageSize), func);
     }
 
     // So I think StoragePagedFlux has to extend PagedFlux not to break, but it looks like some of the constructors in PagedFlux are private
 
-    private static class StoragePagedFlux<T, P extends PagedResponse<T>> extends ContinuablePagedFluxCore<String, T, P> {
-        public StoragePagedFlux(Function<Integer, Mono<P>> firstPageRetriever,
-            BiFunction<String, Integer, Mono<P>> nextPageRetriever) {
-            this(() -> (continuationToken, pageSize) -> continuationToken == null
+    private static class StoragePagedFlux<T> extends PagedFlux<T> {
+
+        public StoragePagedFlux(Supplier<Mono<PagedResponse<T>>> firstPageRetriever) {
+            super(firstPageRetriever);
+        }
+
+        public static <T> PagedFlux<T> create(Function<Integer, Mono<PagedResponse<T>>> firstPageRetriever,
+            BiFunction<String, Integer, Mono<PagedResponse<T>>> nextPageRetriever) {
+            return PagedFlux.create(() -> (continuationToken, pageSize) ->
+                continuationToken == null
                 ? firstPageRetriever.apply(pageSize).flux()
                 : nextPageRetriever.apply(continuationToken, pageSize).flux());
         }
 
-        /**
-         * Create PagedFlux backed by Page Retriever Function Supplier.
-         *
-         * @param provider the Page Retrieval Provider
-         */
-        private StoragePagedFlux(Supplier<PageRetriever<String, P>> provider) {
-            super(provider);
-        }
     }
+//    private static class StoragePagedFlux<T, P extends PagedResponse<T>> extends ContinuablePagedFluxCore<String, T, P> {
+//        public StoragePagedFlux(Function<Integer, Mono<P>> firstPageRetriever,
+//            BiFunction<String, Integer, Mono<P>> nextPageRetriever) {
+//            this(() -> (continuationToken, pageSize) -> continuationToken == null
+//                ? firstPageRetriever.apply(pageSize).flux()
+//                : nextPageRetriever.apply(continuationToken, pageSize).flux());
+//        }
+//
+//        /**
+//         * Create PagedFlux backed by Page Retriever Function Supplier.
+//         *
+//         * @param provider the Page Retrieval Provider
+//         */
+//        private StoragePagedFlux(Supplier<PageRetriever<String, P>> provider) {
+//            super(provider);
+//        }
+//    }
 
     private Mono<ContainersListBlobHierarchySegmentResponse> listBlobsHierarchySegment(String marker, String delimiter,
         ListBlobsOptions options, Duration timeout) {
