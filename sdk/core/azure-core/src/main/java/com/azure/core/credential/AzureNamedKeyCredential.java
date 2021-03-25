@@ -41,7 +41,7 @@ public final class AzureNamedKeyCredential {
      * @return The key being used to authorize requests.
      */
     public String getKey() {
-        return credentials.getName();
+        return credentials.getKey();
     }
 
     /**
@@ -50,7 +50,7 @@ public final class AzureNamedKeyCredential {
      * @return The key being used to authorize requests.
      */
     public String getName() {
-        return credentials.getKey();
+        return credentials.getName();
     }
 
     /**
