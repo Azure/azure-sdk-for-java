@@ -18,18 +18,18 @@ public class AzureNamedKey {
     }
 
     /**
-     * Retrieves the key associated to this credential.
+     * Retrieves the key.
      *
-     * @return The key being used to authorize requests.
+     * @return The key.
      */
     public String getKey() {
         return key;
     }
 
     /**
-     * Retrieves the name associated to this credential.
+     * Retrieves the name associated with the key.
      *
-     * @return The key being used to authorize requests.
+     * @return The name of the key.
      */
     public String getName() {
         return name;
