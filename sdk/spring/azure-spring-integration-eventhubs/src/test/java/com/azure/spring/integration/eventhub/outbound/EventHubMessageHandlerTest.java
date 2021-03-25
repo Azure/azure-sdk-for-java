@@ -57,7 +57,10 @@ public class EventHubMessageHandlerTest extends MessageHandlerTest<EventHubOpera
         this.handler = new DefaultMessageHandler(this.destination, this.sendOperation);
     }
 
-    private void initProperties() {
+    /**
+     * This is only for creating PartitionSupply setting
+     */
+    private void setPropertiesForPartitionSupplier() {
         partitionIdExpression = EXPRESSION_PARSER.parseExpression("headers['scst_partition']");
         partitionKeyExpression = new FunctionExpression<Message<?>>(m -> m.getPayload().hashCode());
         payloadBytes = payload.getBytes(StandardCharsets.UTF_8);
@@ -68,14 +71,16 @@ public class EventHubMessageHandlerTest extends MessageHandlerTest<EventHubOpera
 
     @Test
     public void testToPartitionSupplierReturnPartitionIdFromHeader() {
-        initProperties();
+        setPropertiesForPartitionSupplier();
 
+        // set partition id with integer type
         Message<?> message = new GenericMessage<>(payloadBytes, ImmutableMap.of(AzureHeaders.PARTITION_ID, 1));
         PartitionSupplier partitionSupplier = ReflectionTestUtils.invokeMethod(this.handler,
             DefaultMessageHandler.class, TO_PARTITION_SUPPLIER_METHOD_NAME, message);
         assertThat(partitionSupplier.getPartitionId()).isEqualTo("1");
         assertThat(partitionSupplier.getPartitionKey()).isNull();
 
+        // set partition id with string type
         message = new GenericMessage<>(payloadBytes, ImmutableMap.of(AzureHeaders.PARTITION_ID, "2"));
         this.handler.setPartitionIdExpression(partitionIdExpression);
         partitionSupplier = ReflectionTestUtils.invokeMethod(this.handler,
@@ -86,7 +91,7 @@ public class EventHubMessageHandlerTest extends MessageHandlerTest<EventHubOpera
 
     @Test
     public void testToPartitionSupplierReturnPartitionIdFromPartitionIdExpression() {
-        initProperties();
+        setPropertiesForPartitionSupplier();
 
         this.handler.setPartitionIdExpression(partitionIdExpression);
         Message<?> message = new GenericMessage<>(payloadBytes, ImmutableMap.of("scst_partition", 3));
@@ -95,28 +100,35 @@ public class EventHubMessageHandlerTest extends MessageHandlerTest<EventHubOpera
         assertThat(partitionSupplier.getPartitionId()).isEqualTo("3");
         assertThat(partitionSupplier.getPartitionKey()).isNull();
     }
-    
+
+    @Test
+    public void testToPartitionSupplierReturnPartitionIdFromHeaderPriority() {
+        setPropertiesForPartitionSupplier();
+
+        // set header azure_partition_id and expression partitionIdExpression
+        Message<?> message = new GenericMessage<>(payloadBytes,
+            ImmutableMap.of(AzureHeaders.PARTITION_ID, 2, "scst_partition", 3));
+        this.handler.setPartitionIdExpression(partitionIdExpression);
+        PartitionSupplier partitionSupplier = ReflectionTestUtils.invokeMethod(this.handler,
+            DefaultMessageHandler.class, TO_PARTITION_SUPPLIER_METHOD_NAME, message);
+        assertThat(partitionSupplier.getPartitionId()).isEqualTo("2");
+        assertThat(partitionSupplier.getPartitionKey()).isNull();
+    }
     @Test
     public void testToPartitionSupplierReturnPartitionKeyFromHeader() {
-        initProperties();
+        setPropertiesForPartitionSupplier();
 
+        // set header azure_partition_key
         Message<?> message = new GenericMessage<>(payloadBytes, ImmutableMap.of(AzureHeaders.PARTITION_KEY, "key1"));
         PartitionSupplier partitionSupplier = ReflectionTestUtils.invokeMethod(this.handler,
             DefaultMessageHandler.class, TO_PARTITION_SUPPLIER_METHOD_NAME, message);
         assertThat(partitionSupplier.getPartitionId()).isNull();
         assertThat(partitionSupplier.getPartitionKey()).isEqualTo("key1");
-
-        message = new GenericMessage<>(payloadBytes, ImmutableMap.of(AzureHeaders.PARTITION_KEY, "key2"));
-        this.handler.setPartitionKeyExpression(partitionKeyExpression);
-        partitionSupplier = ReflectionTestUtils.invokeMethod(this.handler,
-            DefaultMessageHandler.class, TO_PARTITION_SUPPLIER_METHOD_NAME, message);
-        assertThat(partitionSupplier.getPartitionId()).isNull();
-        assertThat(partitionSupplier.getPartitionKey()).isEqualTo("key2");
     }
 
     @Test
     public void testToPartitionSupplierReturnPartitionKeyFromPartitionKeyExpression() {
-        initProperties();
+        setPropertiesForPartitionSupplier();
 
         this.handler.setPartitionKeyExpression(partitionKeyExpression);
         Message<?> message = new GenericMessage<>(payloadBytes);
@@ -124,5 +136,18 @@ public class EventHubMessageHandlerTest extends MessageHandlerTest<EventHubOpera
             DefaultMessageHandler.class, TO_PARTITION_SUPPLIER_METHOD_NAME, message);
         assertThat(partitionSupplier.getPartitionId()).isNull();
         assertThat(partitionSupplier.getPartitionKey()).isEqualTo(String.valueOf(payloadBytes.hashCode()));
+    }
+
+    @Test
+    public void testToPartitionSupplierReturnPartitionKeyFromHeaderPriority() {
+        setPropertiesForPartitionSupplier();
+
+        // set header azure_partition_key and key expression
+        Message<?> message = new GenericMessage<>(payloadBytes, ImmutableMap.of(AzureHeaders.PARTITION_KEY, "key2"));
+        this.handler.setPartitionKeyExpression(partitionKeyExpression);
+        PartitionSupplier partitionSupplier = ReflectionTestUtils.invokeMethod(this.handler,
+            DefaultMessageHandler.class, TO_PARTITION_SUPPLIER_METHOD_NAME, message);
+        assertThat(partitionSupplier.getPartitionId()).isNull();
+        assertThat(partitionSupplier.getPartitionKey()).isEqualTo("key2");
     }
 }
