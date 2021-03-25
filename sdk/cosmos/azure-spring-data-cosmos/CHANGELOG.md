@@ -1,5 +1,8 @@
 ## Release History
 
+## 3.6.0-beta.1 (Unreleased)
+
+
 ### 3.5.1 (2021-03-24)
 #### Key Bug Fixes
 * Updated `azure-cosmos` to hotfix version 4.13.1.
