@@ -33,6 +33,7 @@ public class AADConditionalAccessIT {
     private static final String WEB_API_A_ENDPOINT = "http://localhost:8882/webapiA";
     private static final Logger LOGGER = LoggerFactory.getLogger(AADConditionalAccessIT.class);
 
+    @Ignore
     @Test
     public void conditionalAccessTest() {
         Map<String, String> properties = createDefaultProperties();
