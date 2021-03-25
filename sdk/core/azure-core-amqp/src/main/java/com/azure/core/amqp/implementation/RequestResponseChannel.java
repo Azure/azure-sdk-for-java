@@ -136,6 +136,15 @@ public class RequestResponseChannel implements Disposable {
 
         //@formatter:off
         this.subscriptions = Disposables.composite(
+            Flux.merge(receiveLinkHandler.getEndpointStates(), sendLinkHandler.getEndpointStates())
+                .map(e -> {
+                    final AmqpEndpointState endpointState = AmqpEndpointStateUtil.getConnectionState(e);
+                    endpointStates.emitNext(endpointState,
+                        (signalType, emitResult) -> onEmitSinkFailure(signalType, emitResult,
+                            "ReceiveLinkHandler. Error emitting endpoint state."));
+                    return endpointState;
+                })
+                .subscribe(),
             receiveLinkHandler.getDeliveredMessages()
                 .map(this::decodeDelivery)
                 .subscribe(message -> {
@@ -145,10 +154,8 @@ public class RequestResponseChannel implements Disposable {
                     settleMessage(message);
                 }),
 
-            receiveLinkHandler.getEndpointStates().subscribe(
-                state -> endpointStates.emitNext(AmqpEndpointStateUtil.getConnectionState(state),
-                    (signalType, emitResult) -> onEmitSinkFailure(signalType, emitResult,
-                        "ReceiveLinkHandler. Error emitting endpoint state.")),
+            receiveLinkHandler.getEndpointStates().subscribe(state -> {
+                },
                 error -> {
                     handleError(error, "Error in ReceiveLinkHandler.");
                     onTerminalState("ReceiveLinkHandler");
@@ -158,10 +165,8 @@ public class RequestResponseChannel implements Disposable {
                     onTerminalState("ReceiveLinkHandler");
                 }),
 
-            sendLinkHandler.getEndpointStates().subscribe(
-                state -> endpointStates.emitNext(AmqpEndpointStateUtil.getConnectionState(state),
-                    (signalType, emitResult) -> onEmitSinkFailure(signalType, emitResult,
-                        "SendLinkHandler. Error emitting endpoint state.")),
+            sendLinkHandler.getEndpointStates()
+                .subscribe(state -> {},
                 error -> {
                     handleError(error, "Error in SendLinkHandler.");
                     onTerminalState("SendLinkHandler");
