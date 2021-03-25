@@ -84,7 +84,10 @@ public final class AcsRecordingFileStatusUpdatedEventData {
      * @return the recordingDuration value.
      */
     public Duration getRecordingDuration() {
-        return Duration.ofMillis(this.recordingDurationMs);
+        if (this.recordingDurationMs != null) {
+            return Duration.ofMillis(this.recordingDurationMs);
+        }
+        return null;
     }
 
     /**
@@ -94,7 +97,11 @@ public final class AcsRecordingFileStatusUpdatedEventData {
      * @return the AcsRecordingFileStatusUpdatedEventData object itself.
      */
     public AcsRecordingFileStatusUpdatedEventData setRecordingDuration(Duration recordingDuration) {
-        this.recordingDurationMs = recordingDuration.toMillis();
+        if (recordingDuration != null) {
+            this.recordingDurationMs = recordingDuration.toMillis();
+        } else {
+            this.recordingDurationMs = null;
+        }
         return this;
     }
 
