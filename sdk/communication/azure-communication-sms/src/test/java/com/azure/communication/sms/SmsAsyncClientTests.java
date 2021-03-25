@@ -43,7 +43,13 @@ public class SmsAsyncClientTests extends SmsTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendSmsUsingTokenCredential(HttpClient httpClient) {
-        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+        //TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+        String clientId = configuration.get("COMMUNICATION_CLIENT_ID"); //Configuration.PROPERTY_AZURE_CLIENT_ID);
+        String tenantId = configuration.get("COMMUNICATION_TENANT_ID");//"COMMUNICATION_TENANT_ID");// Configuration.PROPERTY_AZURE_TENANT_ID);
+        String clientSecret = configuration.get("COMMUNICATION_CLIENT_SECRET"); //Configuration.PROPERTY_AZURE_CLIENT_SECRET);
+
+        TokenCredential tokenCredential = new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId).clientSecret(clientSecret).build();
         SmsClientBuilder  builder = getSmsClientWithToken(httpClient, tokenCredential);
         asyncClient = setupAsyncClient(builder, "sendSmsUsingTokenCredential");
         assertNotNull(asyncClient);
