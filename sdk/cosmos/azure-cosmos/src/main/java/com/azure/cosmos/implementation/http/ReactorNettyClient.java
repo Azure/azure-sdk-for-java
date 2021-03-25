@@ -54,7 +54,7 @@ class ReactorNettyClient implements HttpClient {
         try {
             httpClientWarmup = MethodHandles.publicLookup()
                 .findVirtual(reactor.netty.http.client.HttpClient.class, "warmup", MethodType.methodType(Mono.class));
-        } catch (Throwable throwable) {
+        } catch (IllegalAccessException | NoSuchMethodException ex) {
             // Version of Reactor Netty doesn't have the warmup API on HttpClient.
             // So warmup won't be performed and this error is ignored.
         }
@@ -112,6 +112,7 @@ class ReactorNettyClient implements HttpClient {
             ((Mono<?>) HTTP_CLIENT_WARMUP.invoke(reactorNettyClient.httpClient)).block();
         } catch (ClassCastException | WrongMethodTypeException throwable) {
             // Invocation failed.
+            logger.debug("Invoking HttpClient.warmup failed.", throwable);
         } catch (Throwable throwable) {
             // Warmup failed.
             throw new RuntimeException(throwable);
