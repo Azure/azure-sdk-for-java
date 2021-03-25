@@ -25,13 +25,9 @@ public class ReadmeSamples {
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
         AzureKeyCredential keyCredential = new AzureKeyCredential("<access-key>");
 
-        // Create an HttpClient builder of your choice and customize it
-        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
-
         CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
             .endpoint(endpoint)
             .credential(keyCredential)
-            .httpClient(httpClient)
             .buildClient();
 
         return communicationIdentityClient;
@@ -43,15 +39,11 @@ public class ReadmeSamples {
      * @return the Communication Identity Client.
      */
     public CommunicationIdentityClient createCommunicationIdentityClientWithConnectionString() {
-        // Create an HttpClient builder of your choice and customize it
-        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
-
         // Your can find your connection string from your resource in the Azure Portal
         String connectionString = "<connection_string>";
 
         CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
             .connectionString(connectionString)
-            .httpClient(httpClient)
             .buildClient();
 
         return communicationIdentityClient;
@@ -66,13 +58,9 @@ public class ReadmeSamples {
         // You can find your endpoint and access key from your resource in the Azure Portal
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
 
-        // Create an HttpClient builder of your choice and customize it
-        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
-
         CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
             .endpoint(endpoint)
             .credential(new DefaultAzureCredentialBuilder().build())
-            .httpClient(httpClient)
             .buildClient();
 
         return communicationIdentityClient;
