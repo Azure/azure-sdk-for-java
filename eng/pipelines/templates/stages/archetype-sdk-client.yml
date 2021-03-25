@@ -31,7 +31,15 @@ parameters:
   type: object
   default:
     - Name: Java_ci_test_base
-      Path: eng/pipelines/templates/stages/platform-matrix.json
+      Path: eng/pipelines/templates/stages/client-matrix.json
+      Selection: sparse
+      NonSparseParameters: Agent
+      GenerateVMJobs: true
+- name: DataMatrixConfigs
+  type: object
+  default:
+    - Name: Java_data_test_base
+      Path: eng/pipelines/templates/stages/data-matrix.json
       Selection: sparse
       NonSparseParameters: Agent
       GenerateVMJobs: true
@@ -57,16 +65,17 @@ stages:
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
         MatrixConfigs:
-          - ${{ each config in parameters.MatrixConfigs }}:
-            -  ${{ config }}
+          - ${{ if eq(parameters.SDKType, 'data') }}:
+            - ${{ each config in parameters.DataMatrixConfigs }}:
+              - ${{ config }}
+          - ${{ else }}:
+            - ${{ each config in parameters.MatrixConfigs }}:
+              -  ${{ config }}
           - ${{ each config in parameters.AdditionalMatrixConfigs }}:
             -  ${{ config }}
         MatrixFilters:
           - ${{ each filter in parameters.MatrixFilters }}:
             - ${{ filter }}
-          # Skip TestFromSource jobs for SDKType data
-          - ${{ if eq(parameters.SDKType, 'data') }}:
-            - TestFromSource=^(?!true).*
         MatrixReplace:
           - ${{ each replacement in parameters.MatrixReplace }}:
             - ${{ replacement }}
