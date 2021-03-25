@@ -98,9 +98,7 @@ public final class SmsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Iterable<SmsSendResult>> send(String from, Iterable<String> to, String message) {
         return sendWithResponse(from, to, message, null)
-            .flatMap((Response<Iterable<SmsSendResult>> response) -> {
-                return Mono.just(response.getValue());
-            });
+            .map(response -> response.getValue());
     }
 
     /**
