@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datadog.implementation;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.datadog.fluent.models.DatadogApiKeyInner;
 import com.azure.resourcemanager.datadog.fluent.models.DatadogMonitorResourceInner;
@@ -65,6 +66,10 @@ public final class DatadogMonitorResourceImpl
 
     public IdentityProperties identity() {
         return this.innerModel().identity();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public Region region() {

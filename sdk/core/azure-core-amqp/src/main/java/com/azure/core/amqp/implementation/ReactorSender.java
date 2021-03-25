@@ -32,7 +32,6 @@ import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.ReplayProcessor;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -76,7 +75,7 @@ class ReactorSender implements AmqpSendLink {
     private final PriorityQueue<WeightedDeliveryTag> pendingSendsQueue =
         new PriorityQueue<>(1000, new DeliveryTagComparator());
     private final ClientLogger logger = new ClientLogger(ReactorSender.class);
-    private final ReplayProcessor<AmqpEndpointState> endpointStates;
+    private final Flux<AmqpEndpointState> endpointStates;
 
     private final TokenManager tokenManager;
     private final MessageSerializer messageSerializer;
@@ -112,7 +111,8 @@ class ReactorSender implements AmqpSendLink {
                     entityPath, getLinkName(), state);
                 this.hasConnected.set(state == EndpointState.ACTIVE);
                 return AmqpEndpointStateUtil.getConnectionState(state);
-            }).subscribeWith(ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED));
+            })
+            .cache(1);
 
         this.subscriptions = Disposables.composite(
             this.handler.getDeliveredMessages().subscribe(this::processDeliveredMessage),

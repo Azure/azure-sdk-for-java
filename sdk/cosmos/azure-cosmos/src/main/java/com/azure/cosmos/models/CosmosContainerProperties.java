@@ -291,6 +291,28 @@ public final class CosmosContainerProperties {
         return this.documentCollection.getETag();
     }
 
+    /**
+     * Gets the ClientEncryptionPolicy that is used for encrypting item fields
+     *
+     * @return ClientEncryptionPolicy
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ClientEncryptionPolicy getClientEncryptionPolicy() {
+        return this.documentCollection.getClientEncryptionPolicy();
+    }
+
+    /**
+     * Sets the ClientEncryptionPolicy that is used for encrypting item fields
+     *
+     * @param value ClientEncryptionPolicy to be used.
+     * @return the CosmosContainerProperties.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosContainerProperties setClientEncryptionPolicy(ClientEncryptionPolicy value) {
+        this.documentCollection.setClientEncryptionPolicy(value);
+        return this;
+    }
+
     Resource getResource() {
         return this.documentCollection;
     }

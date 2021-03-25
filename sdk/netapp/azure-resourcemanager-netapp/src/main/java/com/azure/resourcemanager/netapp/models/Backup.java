@@ -90,6 +90,13 @@ public interface Backup {
     String failureReason();
 
     /**
+     * Gets the volumeName property: Volume name.
+     *
+     * @return the volumeName value.
+     */
+    String volumeName();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.

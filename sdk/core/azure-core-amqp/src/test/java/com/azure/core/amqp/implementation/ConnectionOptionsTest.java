@@ -10,6 +10,7 @@ import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import org.apache.qpid.proton.engine.SslDomain;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -27,10 +28,18 @@ public class ConnectionOptionsTest {
     private TokenCredential tokenCredential;
     @Mock
     private Scheduler scheduler;
+    private AutoCloseable mocksCloseable;
 
     @BeforeEach
     public void beforeEach() {
-        MockitoAnnotations.initMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    public void afterEach() throws Exception {
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     @Test

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.netapp.implementation;
 
-import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.fluent.models.BackupInner;
 import com.azure.resourcemanager.netapp.fluent.models.BackupsListInner;
 import com.azure.resourcemanager.netapp.models.Backup;
@@ -16,9 +15,9 @@ import java.util.stream.Collectors;
 public final class BackupsListImpl implements BackupsList {
     private BackupsListInner innerObject;
 
-    private final NetAppFilesManager serviceManager;
+    private final com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager;
 
-    BackupsListImpl(BackupsListInner innerObject, NetAppFilesManager serviceManager) {
+    BackupsListImpl(BackupsListInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -38,7 +37,7 @@ public final class BackupsListImpl implements BackupsList {
         return this.innerObject;
     }
 
-    private NetAppFilesManager manager() {
+    private com.azure.resourcemanager.netapp.NetAppFilesManager manager() {
         return this.serviceManager;
     }
 }

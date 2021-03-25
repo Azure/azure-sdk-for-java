@@ -2,6 +2,11 @@
 
 ## 1.10.0-beta.1 (Unreleased)
 
+### Bug Fixes
+
+- Fixed a bug where a proxy's address is only resolved during construction of the client, now it is resolved per connection. [#19497](https://github.com/Azure/azure-sdk-for-java/issues/19497)
+- Fixed a bug where `Proxy Authentication Required` bubbled back up to a `RetryPolicy` leading to more time taken to
+  connect to a proxy when authentication information was supplied. [#19415](https://github.com/Azure/azure-sdk-for-java/issues/19415)
 
 ## 1.9.0 (2021-03-08)
 

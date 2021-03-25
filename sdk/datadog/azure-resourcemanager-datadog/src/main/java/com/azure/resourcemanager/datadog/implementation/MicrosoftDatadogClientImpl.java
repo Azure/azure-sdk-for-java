@@ -42,11 +42,11 @@ import reactor.core.publisher.Mono;
 public final class MicrosoftDatadogClientImpl implements MicrosoftDatadogClient {
     private final ClientLogger logger = new ClientLogger(MicrosoftDatadogClientImpl.class);
 
-    /** The Microsoft Azure subscription ID. */
+    /** The ID of the target subscription. */
     private final String subscriptionId;
 
     /**
-     * Gets The Microsoft Azure subscription ID.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -181,7 +181,7 @@ public final class MicrosoftDatadogClientImpl implements MicrosoftDatadogClient 
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The Microsoft Azure subscription ID.
+     * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
     MicrosoftDatadogClientImpl(
@@ -196,7 +196,7 @@ public final class MicrosoftDatadogClientImpl implements MicrosoftDatadogClient 
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-02-01-preview";
+        this.apiVersion = "2021-03-01";
         this.marketplaceAgreements = new MarketplaceAgreementsClientImpl(this);
         this.monitors = new MonitorsClientImpl(this);
         this.operations = new OperationsClientImpl(this);

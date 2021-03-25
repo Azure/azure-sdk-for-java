@@ -82,6 +82,13 @@ public final class AcsChatMessageDeletedInThreadEventData extends AcsChatMessage
 
     /** {@inheritDoc} */
     @Override
+    public AcsChatMessageDeletedInThreadEventData setTransactionId(String transactionId) {
+        super.setTransactionId(transactionId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public AcsChatMessageDeletedInThreadEventData setThreadId(String threadId) {
         super.setThreadId(threadId);
         return this;

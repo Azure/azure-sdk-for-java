@@ -13,6 +13,7 @@ import com.azure.resourcemanager.compute.models.EncryptionSetIdentity;
 import com.azure.resourcemanager.compute.models.KeyForDiskEncryptionSet;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -54,6 +55,19 @@ public class DiskEncryptionSetInner extends Resource {
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
+
+    /*
+     * Set this flag to true to enable auto-updating of this disk encryption
+     * set to the latest key version.
+     */
+    @JsonProperty(value = "properties.rotationToLatestKeyVersionEnabled")
+    private Boolean rotationToLatestKeyVersionEnabled;
+
+    /*
+     * The time when the active key of this disk encryption set was updated.
+     */
+    @JsonProperty(value = "properties.lastKeyRotationTimestamp", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime lastKeyRotationTimestamp;
 
     /**
      * Get the identity property: The managed identity for the disk encryption set. It should be given permission on the
@@ -134,6 +148,37 @@ public class DiskEncryptionSetInner extends Resource {
      */
     public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the rotationToLatestKeyVersionEnabled property: Set this flag to true to enable auto-updating of this disk
+     * encryption set to the latest key version.
+     *
+     * @return the rotationToLatestKeyVersionEnabled value.
+     */
+    public Boolean rotationToLatestKeyVersionEnabled() {
+        return this.rotationToLatestKeyVersionEnabled;
+    }
+
+    /**
+     * Set the rotationToLatestKeyVersionEnabled property: Set this flag to true to enable auto-updating of this disk
+     * encryption set to the latest key version.
+     *
+     * @param rotationToLatestKeyVersionEnabled the rotationToLatestKeyVersionEnabled value to set.
+     * @return the DiskEncryptionSetInner object itself.
+     */
+    public DiskEncryptionSetInner withRotationToLatestKeyVersionEnabled(Boolean rotationToLatestKeyVersionEnabled) {
+        this.rotationToLatestKeyVersionEnabled = rotationToLatestKeyVersionEnabled;
+        return this;
+    }
+
+    /**
+     * Get the lastKeyRotationTimestamp property: The time when the active key of this disk encryption set was updated.
+     *
+     * @return the lastKeyRotationTimestamp value.
+     */
+    public OffsetDateTime lastKeyRotationTimestamp() {
+        return this.lastKeyRotationTimestamp;
     }
 
     /** {@inheritDoc} */

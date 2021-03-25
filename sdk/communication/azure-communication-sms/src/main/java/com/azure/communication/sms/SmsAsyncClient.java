@@ -14,6 +14,8 @@ import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -95,12 +97,9 @@ public final class SmsAsyncClient {
      * @param message message to send to recipient.
      * @return response for a successful send Sms request.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Iterable<SmsSendResult>> send(String from, Iterable<String> to, String message) {
-        return sendWithResponse(from, to, message, null)
-            .flatMap((Response<Iterable<SmsSendResult>> response) -> {
-                return Mono.just(response.getValue());
-            });
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SmsSendResult> send(String from, Iterable<String> to, String message) {
+        return send(from, to, message, null, null);
     }
 
     /**
@@ -113,28 +112,39 @@ public final class SmsAsyncClient {
      * for this message to the Azure Resource Event Grid.
      * @return response for a successful send Sms request.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Iterable<SmsSendResult>>> sendWithResponse(String from, Iterable<String> to, String message, SmsSendOptions options) {
-        return sendWithResponse(from, to, message, options, null);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SmsSendResult> send(String from, Iterable<String> to, String message, SmsSendOptions options) {
+        return send(from, to, message, options, null);
     }
 
-    Mono<Response<Iterable<SmsSendResult>>> sendWithResponse(String from, Iterable<String> to, String message, SmsSendOptions options, Context context) {
+    PagedFlux<SmsSendResult> send(String from, Iterable<String> to, String message, SmsSendOptions options, Context context) {
         try {
             Objects.requireNonNull(from, "'from' cannot be null.");
             Objects.requireNonNull(to, "'to' cannot be null.");
             SendMessageRequest request = createSendMessageRequest(from, to, message, options);
-            return withContext(contextValue -> {
+
+            Mono<Response<List<SmsSendResult>>> responseMono = withContext(contextValue -> {
                 if (context != null) {
                     contextValue = context;
                 }
                 return this.smsClient.sendWithResponseAsync(request, contextValue)
                     .flatMap((Response<SmsSendResponse> response) -> {
-                        Iterable<SmsSendResult> smsSendResults = convertSmsSendResults(response.getValue().getValue());
-                        return Mono.just(new SimpleResponse<Iterable<SmsSendResult>>(response, smsSendResults));
+                        List<SmsSendResult> smsSendResults = convertSmsSendResults(response.getValue().getValue());
+                        return Mono.just(new SimpleResponse<List<SmsSendResult>>(response, smsSendResults));
                     });
             });
+
+            return new PagedFlux<>(() -> responseMono.map(response -> new PagedResponseBase<Void, SmsSendResult>(
+                response.getRequest(),
+                response.getStatusCode(),
+                response.getHeaders(),
+                response.getValue(),
+                null,
+                null
+            )));
+
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return new PagedFlux<>(() -> monoError(logger, ex));
         }
     }
 

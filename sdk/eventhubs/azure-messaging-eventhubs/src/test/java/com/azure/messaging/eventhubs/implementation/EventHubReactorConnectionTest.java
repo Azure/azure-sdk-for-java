@@ -141,6 +141,8 @@ public class EventHubReactorConnectionTest {
     public void reset() {
         Mockito.reset(reactor, selectable, tokenManagerProvider, reactorConnection, messageSerializer, reactorProvider,
             handlerProvider, tokenCredential, scheduler);
+
+        Mockito.framework().clearInlineMocks();
     }
 
     @Test
