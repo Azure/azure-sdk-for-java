@@ -1,6 +1,6 @@
 # Release History
 
-## 4.1.0 (2020-03-24)
+## 4.1.0 (2020-03-25)
 ### New Features
 - Added new system event model class `AcsRecordingFileStatusUpdatedEventData`.
 - Added new attribute `transactionId` to `AcsChatEventInThreadBaseProperties`.
