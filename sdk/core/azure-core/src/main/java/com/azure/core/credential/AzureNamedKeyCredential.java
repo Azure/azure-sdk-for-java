@@ -13,7 +13,7 @@ import java.util.Objects;
 public final class AzureNamedKeyCredential {
     private final ClientLogger logger = new ClientLogger(AzureNamedKeyCredential.class);
 
-    private volatile CredentialTuple credentials;
+    private volatile AzureNamedKey credentials;
 
     /**
      * Creates a credential with specified {@code name} that authorizes request with the given {@code key}.
@@ -32,25 +32,16 @@ public final class AzureNamedKeyCredential {
         if (key.isEmpty()) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'key' cannot be empty."));
         }
-        this.credentials = new CredentialTuple(name, key);
+        this.credentials = new AzureNamedKey(name, key);
     }
 
     /**
-     * Retrieves the key associated to this credential.
+     * Retrieves the {@link AzureNamedKey} containing the name and key associated with this credential.
      *
-     * @return The key being used to authorize requests.
+     * @return The {@link AzureNamedKey} containing the name and key .
      */
-    public String getKey() {
-        return credentials.getKey();
-    }
-
-    /**
-     * Retrieves the name associated to this credential.
-     *
-     * @return The key being used to authorize requests.
-     */
-    public String getName() {
-        return credentials.getName();
+    public AzureNamedKey getAzureNamedKey() {
+        return this.credentials;
     }
 
     /**
@@ -71,24 +62,7 @@ public final class AzureNamedKeyCredential {
         if (key.isEmpty()) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'key' cannot be empty."));
         }
-        this.credentials = new CredentialTuple(name, key);
+        this.credentials = new AzureNamedKey(name, key);
         return this;
-    }
-
-    private static class CredentialTuple {
-        private final String name;
-        private final String key;
-        CredentialTuple(String name, String key) {
-            this.name = name;
-            this.key = key;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getKey() {
-            return key;
-        }
     }
 }

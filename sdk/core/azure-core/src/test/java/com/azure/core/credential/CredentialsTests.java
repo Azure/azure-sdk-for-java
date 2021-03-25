@@ -197,8 +197,8 @@ public class CredentialsTests {
         AzureNamedKeyCredential azureNamedKeyCredential =
             new AzureNamedKeyCredential(DUMMY_NAME, DUMMY_VALUE);
 
-        Assertions.assertEquals(DUMMY_NAME, azureNamedKeyCredential.getName());
-        Assertions.assertEquals(DUMMY_VALUE, azureNamedKeyCredential.getKey());
+        Assertions.assertEquals(DUMMY_NAME, azureNamedKeyCredential.getAzureNamedKey().getName());
+        Assertions.assertEquals(DUMMY_VALUE, azureNamedKeyCredential.getAzureNamedKey().getKey());
     }
 
     @Test
@@ -211,7 +211,7 @@ public class CredentialsTests {
 
         azureNamedKeyCredential.update(expectedName, expectedValue);
 
-        Assertions.assertEquals(expectedName, azureNamedKeyCredential.getName());
-        Assertions.assertEquals(expectedValue, azureNamedKeyCredential.getKey());
+        Assertions.assertEquals(expectedName, azureNamedKeyCredential.getAzureNamedKey().getName());
+        Assertions.assertEquals(expectedValue, azureNamedKeyCredential.getAzureNamedKey().getKey());
     }
 }
