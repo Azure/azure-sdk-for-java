@@ -131,8 +131,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
 
     @Override
     public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry) {
-        Map<Symbol, Object> linkProperties =  null;
-        return this.createProducer(linkName, entityPath, timeout, retry, linkProperties);
+        return this.createProducer(linkName, entityPath, timeout, retry, (Map<Symbol, Object>) null);
     }
 
     @Override
