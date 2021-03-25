@@ -67,7 +67,7 @@ CommunicationIdentityClient communicationIdentityClient = new CommunicationIdent
 Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key.
 <!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L39-L44 -->
 ```java
-// Your can find your connection string from your resource in the Azure Portal
+// You can find your connection string from your resource in the Azure Portal
 String connectionString = "<connection_string>";
 
 CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
