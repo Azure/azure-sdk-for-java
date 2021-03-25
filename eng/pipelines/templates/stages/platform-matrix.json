@@ -36,6 +36,7 @@
       },
       "JavaTestVersion": "1.11",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
+      "AdditionalOptions": "-am",
       "TestGoals": "verify",
       "TestOptions": ""
     }

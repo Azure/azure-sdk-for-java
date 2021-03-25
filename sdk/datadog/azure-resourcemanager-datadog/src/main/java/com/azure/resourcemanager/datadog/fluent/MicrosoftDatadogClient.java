@@ -10,7 +10,7 @@ import java.time.Duration;
 /** The interface for MicrosoftDatadogClient class. */
 public interface MicrosoftDatadogClient {
     /**
-     * Gets The Microsoft Azure subscription ID.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */

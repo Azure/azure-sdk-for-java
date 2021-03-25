@@ -19,12 +19,12 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = {MicrosoftDatadogClientImpl.class})
 public final class MicrosoftDatadogClientBuilder {
     /*
-     * The Microsoft Azure subscription ID.
+     * The ID of the target subscription.
      */
     private String subscriptionId;
 
     /**
-     * Sets The Microsoft Azure subscription ID.
+     * Sets The ID of the target subscription.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the MicrosoftDatadogClientBuilder.

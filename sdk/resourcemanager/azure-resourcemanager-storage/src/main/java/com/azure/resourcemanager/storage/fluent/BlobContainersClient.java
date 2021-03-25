@@ -735,7 +735,7 @@ public interface BlobContainersClient {
      * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ImmutabilityPolicyInner> createOrUpdateImmutabilityPolicyWithResponse(
+    BlobContainersCreateOrUpdateImmutabilityPolicyResponse createOrUpdateImmutabilityPolicyWithResponse(
         String resourceGroupName,
         String accountName,
         String containerName,
@@ -845,7 +845,7 @@ public interface BlobContainersClient {
      * @return the existing immutability policy along with the corresponding ETag in response headers and body.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ImmutabilityPolicyInner> getImmutabilityPolicyWithResponse(
+    BlobContainersGetImmutabilityPolicyResponse getImmutabilityPolicyWithResponse(
         String resourceGroupName, String accountName, String containerName, String ifMatch, Context context);
 
     /**
@@ -942,7 +942,7 @@ public interface BlobContainersClient {
      * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ImmutabilityPolicyInner> deleteImmutabilityPolicyWithResponse(
+    BlobContainersDeleteImmutabilityPolicyResponse deleteImmutabilityPolicyWithResponse(
         String resourceGroupName, String accountName, String containerName, String ifMatch, Context context);
 
     /**
@@ -1035,7 +1035,7 @@ public interface BlobContainersClient {
      * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ImmutabilityPolicyInner> lockImmutabilityPolicyWithResponse(
+    BlobContainersLockImmutabilityPolicyResponse lockImmutabilityPolicyWithResponse(
         String resourceGroupName, String accountName, String containerName, String ifMatch, Context context);
 
     /**
@@ -1179,7 +1179,7 @@ public interface BlobContainersClient {
      * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ImmutabilityPolicyInner> extendImmutabilityPolicyWithResponse(
+    BlobContainersExtendImmutabilityPolicyResponse extendImmutabilityPolicyWithResponse(
         String resourceGroupName,
         String accountName,
         String containerName,

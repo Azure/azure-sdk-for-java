@@ -1,94 +1,93 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsdeletefilefiledoesnotexistanymore08287012ef5d56c4?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsdeletefilefiledoesnotexistanymore069757db0e286991?restype=container",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "7880af1b-a204-473f-9b84-ea096eb75d0c"
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1dc3dc22-9ecf-4e02-a114-c35593b5f109"
     },
     "Response" : {
       "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D8C96501578F96",
-      "Last-Modified" : "Thu, 04 Feb 2021 23:31:32 GMT",
+      "eTag" : "0x8D8D9E37B0DC567",
+      "Last-Modified" : "Thu, 25 Feb 2021 23:17:11 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "a6a8a4e2-201e-005c-774d-fb18f8000000",
-      "Date" : "Thu, 04 Feb 2021 23:31:31 GMT",
-      "x-ms-client-request-id" : "7880af1b-a204-473f-9b84-ea096eb75d0c"
+      "x-ms-request-id" : "37319386-601e-0075-54cc-0bb638000000",
+      "x-ms-client-request-id" : "1dc3dc22-9ecf-4e02-a114-c35593b5f109",
+      "Date" : "Thu, 25 Feb 2021 23:17:10 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsdeletefilefiledoesnotexistanymore08287012ef5d56c4/javapathdeletefilefiledoesnotexistanymore15004674630368?resource=directory",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsdeletefilefiledoesnotexistanymore069757db0e286991/javapathdeletefilefiledoesnotexistanymore1212928d22476a?resource=directory",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9fec1705-a174-4b3a-8d01-0169707974de"
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.2 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c03252e3-3b48-4dfd-958b-24d0eba94438"
     },
     "Response" : {
       "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D8C96501692933",
-      "Last-Modified" : "Thu, 04 Feb 2021 23:31:32 GMT",
+      "eTag" : "0x8D8D9E37B186999",
+      "Last-Modified" : "Thu, 25 Feb 2021 23:17:11 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "1dd31ebb-501f-0079-384d-fbb184000000",
-      "Date" : "Thu, 04 Feb 2021 23:31:31 GMT",
-      "x-ms-client-request-id" : "9fec1705-a174-4b3a-8d01-0169707974de"
+      "x-ms-request-id" : "786dad05-601f-0075-2dcc-0bb638000000",
+      "x-ms-client-request-id" : "c03252e3-3b48-4dfd-958b-24d0eba94438",
+      "Date" : "Thu, 25 Feb 2021 23:17:10 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsdeletefilefiledoesnotexistanymore08287012ef5d56c4/javapathdeletefilefiledoesnotexistanymore15004674630368/javapathdeletefilefiledoesnotexistanymore22308480ad08e7?resource=file",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsdeletefilefiledoesnotexistanymore069757db0e286991/javapathdeletefilefiledoesnotexistanymore1212928d22476a%2Fjavapathdeletefilefiledoesnotexistanymore2843005dd5d061?resource=file",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "2dea586d-ebcb-433b-a300-692718b0a6a1"
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.2 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "746dd1e0-6eae-4bbe-bc06-7a49e3b1210f"
     },
     "Response" : {
       "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D8C965017B914B",
-      "Last-Modified" : "Thu, 04 Feb 2021 23:31:32 GMT",
+      "eTag" : "0x8D8D9E37B22DE31",
+      "Last-Modified" : "Thu, 25 Feb 2021 23:17:11 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "1dd31ebc-501f-0079-394d-fbb184000000",
-      "Date" : "Thu, 04 Feb 2021 23:31:32 GMT",
-      "x-ms-client-request-id" : "2dea586d-ebcb-433b-a300-692718b0a6a1"
+      "x-ms-request-id" : "786dad08-601f-0075-30cc-0bb638000000",
+      "x-ms-client-request-id" : "746dd1e0-6eae-4bbe-bc06-7a49e3b1210f",
+      "Date" : "Thu, 25 Feb 2021 23:17:11 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsdeletefilefiledoesnotexistanymore08287012ef5d56c4/javapathdeletefilefiledoesnotexistanymore15004674630368/javapathdeletefilefiledoesnotexistanymore22308480ad08e7",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsdeletefilefiledoesnotexistanymore069757db0e286991/javapathdeletefilefiledoesnotexistanymore1212928d22476a%2Fjavapathdeletefilefiledoesnotexistanymore2843005dd5d061",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "144dc6fb-ac12-4f5c-95cf-7e1414c4ae46"
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.2 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d07de0c4-e129-494a-98c0-6e5a894e59c2"
     },
     "Response" : {
       "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-delete-type-permanent" : "true",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "1dd31ebd-501f-0079-3a4d-fbb184000000",
-      "Date" : "Thu, 04 Feb 2021 23:31:32 GMT",
-      "x-ms-client-request-id" : "144dc6fb-ac12-4f5c-95cf-7e1414c4ae46"
+      "x-ms-request-id" : "786dad0b-601f-0075-33cc-0bb638000000",
+      "x-ms-client-request-id" : "d07de0c4-e129-494a-98c0-6e5a894e59c2",
+      "Date" : "Thu, 25 Feb 2021 23:17:11 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsdeletefilefiledoesnotexistanymore08287012ef5d56c4/javapathdeletefilefiledoesnotexistanymore15004674630368%2Fjavapathdeletefilefiledoesnotexistanymore22308480ad08e7",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsdeletefilefiledoesnotexistanymore069757db0e286991/javapathdeletefilefiledoesnotexistanymore1212928d22476a%2Fjavapathdeletefilefiledoesnotexistanymore2843005dd5d061",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f72fc108-a9d0-44bd-861a-528a287c31da"
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.2 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9b0bc1bb-fb88-417c-8cbd-dd58b58cc727"
     },
     "Response" : {
       "x-ms-version" : "2020-06-12",
@@ -96,9 +95,9 @@
       "x-ms-error-code" : "BlobNotFound",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "x-ms-request-id" : "a6a8a50f-201e-005c-164d-fb18f8000000",
-      "Date" : "Thu, 04 Feb 2021 23:31:32 GMT",
-      "x-ms-client-request-id" : "f72fc108-a9d0-44bd-861a-528a287c31da"
+      "x-ms-request-id" : "373193c8-601e-0075-0dcc-0bb638000000",
+      "x-ms-client-request-id" : "9b0bc1bb-fb88-417c-8cbd-dd58b58cc727",
+      "Date" : "Thu, 25 Feb 2021 23:17:11 GMT"
     },
     "Exception" : null
   }, {
@@ -106,8 +105,8 @@
     "Uri" : "https://REDACTED.blob.core.windows.net?comp=list&prefix=jtfsdeletefilefiledoesnotexistanymore",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a55ea451-175f-4036-8ffc-8166dde86b31"
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "34d99059-2a98-4c27-929e-1bde1b378b02"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -115,20 +114,20 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "a6a8a51a-201e-005c-204d-fb18f8000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gaprahnscanary.blob.core.windows.net/\"><Prefix>jtfsdeletefilefiledoesnotexistanymore</Prefix><Containers><Container><Name>jtfsdeletefilefiledoesnotexistanymore08287012ef5d56c4</Name><Properties><Last-Modified>Thu, 04 Feb 2021 23:31:32 GMT</Last-Modified><Etag>\"0x8D8C96501578F96\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Thu, 04 Feb 2021 23:31:32 GMT",
-      "x-ms-client-request-id" : "a55ea451-175f-4036-8ffc-8166dde86b31",
+      "x-ms-request-id" : "373193cf-601e-0075-14cc-0bb638000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gapracontainerrestorehns.blob.core.windows.net/\"><Prefix>jtfsdeletefilefiledoesnotexistanymore</Prefix><Containers><Container><Name>jtfsdeletefilefiledoesnotexistanymore069757db0e286991</Name><Properties><Last-Modified>Thu, 25 Feb 2021 23:17:11 GMT</Last-Modified><Etag>\"0x8D8D9E37B0DC567\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "34d99059-2a98-4c27-929e-1bde1b378b02",
+      "Date" : "Thu, 25 Feb 2021 23:17:11 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsdeletefilefiledoesnotexistanymore08287012ef5d56c4?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsdeletefilefiledoesnotexistanymore069757db0e286991?restype=container",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "1bfc5580-79c6-4abf-aa8d-2a4124555b69"
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8487add5-1539-4cb2-bc17-1d3055ad7815"
     },
     "Response" : {
       "x-ms-version" : "2020-06-12",
@@ -136,11 +135,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "a6a8a529-201e-005c-2c4d-fb18f8000000",
-      "Date" : "Thu, 04 Feb 2021 23:31:32 GMT",
-      "x-ms-client-request-id" : "1bfc5580-79c6-4abf-aa8d-2a4124555b69"
+      "x-ms-request-id" : "373193d6-601e-0075-1acc-0bb638000000",
+      "x-ms-client-request-id" : "8487add5-1539-4cb2-bc17-1d3055ad7815",
+      "Date" : "Thu, 25 Feb 2021 23:17:11 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtfsdeletefilefiledoesnotexistanymore08287012ef5d56c4", "javapathdeletefilefiledoesnotexistanymore15004674630368", "javapathdeletefilefiledoesnotexistanymore22308480ad08e7" ]
+  "variables" : [ "jtfsdeletefilefiledoesnotexistanymore069757db0e286991", "javapathdeletefilefiledoesnotexistanymore1212928d22476a", "javapathdeletefilefiledoesnotexistanymore2843005dd5d061" ]
 }

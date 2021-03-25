@@ -230,6 +230,11 @@
         "justification": "Annotation required to resolve deserialization bug."
       },
       {
+        "code": "java.annotation.added",
+        "new": "class com.azure.storage.file.datalake.models.PathHttpHeaders",
+        "justification": "Annotation added when migrating to new generator, it should not break anything."
+      },
+      {
         "code": "java.annotation.attributeValueChanged",
         "old": "class com.azure.storage.file.share.models.ShareProtocolSettings",
         "new": "class com.azure.storage.file.share.models.ShareProtocolSettings",
@@ -398,6 +403,18 @@
         "code": "java\\.annotation\\.(added|attributeValueChanged|attributeAdded)",
         "new": "(class|method void|parameter void) com\\.azure\\.search\\.documents\\.indexes\\.models\\..*",
         "justification": "Generated classes were moved into public API, these annotations were already being used in implementation used during serialization and deserialization."
+      },
+      {
+        "code": "java.field.constantValueChanged",
+        "old": "field com.azure.messaging.eventgrid.SystemEventNames.COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD",
+        "new": "field com.azure.messaging.eventgrid.SystemEventNames.COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD",
+        "justification": "Correct the event type defined in swagger file"
+      },
+      {
+        "code": "java.field.constantValueChanged",
+        "old": "field com.azure.messaging.eventgrid.SystemEventNames.COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD",
+        "new": "field com.azure.messaging.eventgrid.SystemEventNames.COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD",
+        "justification": "Correct the event type defined in swagger file"
       }
     ]
   }
