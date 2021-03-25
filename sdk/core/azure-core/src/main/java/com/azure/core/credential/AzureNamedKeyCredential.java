@@ -8,7 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.Objects;
 
 /**
- * Represents a credential with a name and key and uses the key to authenticate to an Azure Service.
+ * Represents a credential with a key name and the key and uses the key to authenticate to an Azure Service.
  */
 public final class AzureNamedKeyCredential {
     private final ClientLogger logger = new ClientLogger(AzureNamedKeyCredential.class);
@@ -16,7 +16,7 @@ public final class AzureNamedKeyCredential {
     private volatile Tuple<String, String> credentials;
 
     /**
-     * Creates a credential that authorizes request with the given key.
+     * Creates a credential with specified {@code name} that authorizes request with the given {@code key}.
      *
      * @param name The name of the key credential.
      * @param key The key used to authorize requests.
