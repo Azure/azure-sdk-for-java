@@ -163,28 +163,38 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
 
     private PartitionSupplier toPartitionSupplier(Message<?> message) {
         PartitionSupplier partitionSupplier = new PartitionSupplier();
-        MessageHeaders headers = message.getHeaders();
         // Priority setting partitionId
-        String partitionId = this.partitionIdExpression != null
-            ? this.partitionIdExpression.getValue(this.evaluationContext, message, String.class)
-            : headers.keySet().stream()
-                     .filter(header -> AzureHeaders.PARTITION_ID.equals(header))
-                     .map(key -> String.valueOf(headers.get(key)))
-                     .findAny()
-                     .orElse(null);
+        String partitionId = getHeaderValue(message.getHeaders(), AzureHeaders.PARTITION_ID);
+        if (!StringUtils.hasText(partitionId) && this.partitionIdExpression != null) {
+            partitionId = this.partitionIdExpression.getValue(this.evaluationContext, message, String.class);
+        }
         if (StringUtils.hasText(partitionId)) {
             partitionSupplier.setPartitionId(partitionId);
         } else {
+            String partitionKey = getHeaderValue(message.getHeaders(), AzureHeaders.PARTITION_KEY);
             // The default key expression is the hash code of the payload.
-            if (this.partitionKeyExpression != null) {
-                String partitionKey = this.partitionKeyExpression.getValue(this.evaluationContext,
-                    message, String.class);
-                if (StringUtils.hasText(partitionKey)) {
-                    partitionSupplier.setPartitionKey(partitionKey);
-                }
+            if (!StringUtils.hasText(partitionKey) && this.partitionKeyExpression != null) {
+                partitionKey = this.partitionKeyExpression.getValue(this.evaluationContext, message, String.class);
+            }
+            if (StringUtils.hasText(partitionKey)) {
+                partitionSupplier.setPartitionKey(partitionKey);
             }
         }
         return partitionSupplier;
+    }
+
+    /**
+     * Get header value from MessageHeaders
+     * @param headers MessageHeaders
+     * @param keyName Key name
+     * @return String header value
+     */
+    private String getHeaderValue(MessageHeaders headers, String keyName) {
+        return headers.keySet().stream()
+                                    .filter(header -> keyName.equals(header))
+                                    .map(key -> String.valueOf(headers.get(key)))
+                                    .findAny()
+                                    .orElse(null);
     }
 
     private Map<String, Object> buildPropertiesMap() {
