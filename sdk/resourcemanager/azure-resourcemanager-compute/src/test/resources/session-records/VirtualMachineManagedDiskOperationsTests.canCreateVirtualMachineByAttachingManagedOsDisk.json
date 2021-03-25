@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg40409/providers/Microsoft.Storage/storageAccounts/stg8369525c7?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg40409/providers/Microsoft.Storage/storageAccounts/stg8369525c7?api-version=2021-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c612f394-85fa-441a-abb5-ffd2d67063f3",
@@ -51,7 +51,7 @@
       "Body" : "",
       "x-ms-client-request-id" : "c612f394-85fa-441a-abb5-ffd2d67063f3",
       "Content-Type" : "text/plain; charset=utf-8",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/643cc32d-a491-4795-a1cd-00309ef8a8f2?monitor=true&api-version=2021-01-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/643cc32d-a491-4795-a1cd-00309ef8a8f2?monitor=true&api-version=2021-02-01"
     },
     "Exception" : null
   }, {
@@ -172,7 +172,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/643cc32d-a491-4795-a1cd-00309ef8a8f2?monitor=true&api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/643cc32d-a491-4795-a1cd-00309ef8a8f2?monitor=true&api-version=2021-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "39f5176f-7108-46bf-ae26-98d67d10c4bc"
@@ -195,7 +195,7 @@
       "Body" : "",
       "x-ms-client-request-id" : "39f5176f-7108-46bf-ae26-98d67d10c4bc",
       "Content-Type" : "text/plain; charset=utf-8",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/643cc32d-a491-4795-a1cd-00309ef8a8f2?monitor=true&api-version=2021-01-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/643cc32d-a491-4795-a1cd-00309ef8a8f2?monitor=true&api-version=2021-02-01"
     },
     "Exception" : null
   }, {
@@ -231,7 +231,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/643cc32d-a491-4795-a1cd-00309ef8a8f2?monitor=true&api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/643cc32d-a491-4795-a1cd-00309ef8a8f2?monitor=true&api-version=2021-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "171b25e2-d38a-4006-bd35-a67488277f7d"
@@ -258,7 +258,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg40409/providers/Microsoft.Storage/storageAccounts/stg8369525c7?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg40409/providers/Microsoft.Storage/storageAccounts/stg8369525c7?api-version=2021-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ef59d610-2ce1-4596-92da-9fc84075d03a",
