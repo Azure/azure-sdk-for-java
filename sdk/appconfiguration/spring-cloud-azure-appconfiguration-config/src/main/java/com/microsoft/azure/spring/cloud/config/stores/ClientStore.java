@@ -8,6 +8,7 @@ package com.microsoft.azure.spring.cloud.config.stores;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -15,6 +16,7 @@ import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
@@ -46,6 +48,8 @@ public class ClientStore {
 
     private ConfigurationClientBuilderSetup clientProvider;
 
+    private HashMap<String, ConfigurationAsyncClient> clients;
+
     public ClientStore(AppConfigurationProviderProperties appProperties, ConnectionPool pool,
         AppConfigurationCredentialProvider tokenCredentialProvider,
         ConfigurationClientBuilderSetup clientProvider) {
@@ -53,9 +57,13 @@ public class ClientStore {
         this.pool = pool;
         this.tokenCredentialProvider = tokenCredentialProvider;
         this.clientProvider = clientProvider;
+        this.clients = new HashMap<String, ConfigurationAsyncClient>();
     }
 
     private ConfigurationAsyncClient buildClient(String store) throws IllegalArgumentException {
+        if (clients.containsKey(store)) {
+            return clients.get(store);
+        }
         ConfigurationClientBuilder builder = getBuilder();
         ExponentialBackoff retryPolicy = new ExponentialBackoff(appProperties.getMaxRetries(),
             Duration.ofMillis(800), Duration.ofSeconds(8));
@@ -115,7 +123,8 @@ public class ClientStore {
             clientProvider.setup(builder, endpoint);
         }
 
-        return builder.buildAsyncClient();
+        clients.put(store, builder.buildAsyncClient());
+        return clients.get(store);
     }
 
     /**
@@ -129,12 +138,13 @@ public class ClientStore {
     public final ConfigurationSetting getRevison(SettingSelector settingSelector, String storeName) {
         PagedResponse<ConfigurationSetting> configurationRevision = null;
         int retryCount = 0;
-        
+
         ConfigurationAsyncClient client = buildClient(storeName);
         while (retryCount <= appProperties.getMaxRetries()) {
             configurationRevision = client.listRevisions(settingSelector).byPage().blockFirst();
 
-            if (configurationRevision != null && configurationRevision.getStatusCode() == 429) {
+            if (configurationRevision != null
+                && configurationRevision.getStatusCode() == HttpStatus.TOO_MANY_REQUESTS.value()) {
                 HttpHeader retryAfterHeader = configurationRevision.getHeaders().get("retry-after-ms");
 
                 if (retryAfterHeader != null) {
