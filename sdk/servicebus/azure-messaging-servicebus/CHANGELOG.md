@@ -1,5 +1,9 @@
 # Release History
 
+## 7.2.0-beta.1 (2021-03-18)
+### New Features
+- Added support for distributed transactions across entities via API 'ServiceBusClientBuilder.enableCrossEntityTransactions()'.
+
 ## 7.1.0 (2021-03-10)
 ### Bug Fixes
 - Continue to receive messages regardless of user not settling the received message in PEEK_LOCK mode [#19247](https://github.com/Azure/azure-sdk-for-java/issues/19247).

@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-messaging-servicebus</artifactId>
-  <version>7.1.0</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
+  <version>7.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
 
   <name>Microsoft Azure client library for Service Bus</name>
   <description>Libraries built on Microsoft Azure Service Bus</description>
@@ -34,7 +34,7 @@
   </scm>
 
   <properties>
-    <jacoco.min.linecoverage>0.18</jacoco.min.linecoverage>
+    <jacoco.min.linecoverage>0.20</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.09</jacoco.min.branchcoverage>
   </properties>
 
@@ -47,7 +47,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
-      <version>2.0.3</version> <!-- {x-version-update;com.azure:azure-core-amqp;dependency} -->
+      <version>2.1.0-beta.1</version> <!-- {x-version-update;beta_com.azure:azure-core-amqp;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

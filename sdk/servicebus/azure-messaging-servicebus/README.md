@@ -32,12 +32,12 @@ To quickly create the needed Service Bus resources in Azure and to receive a con
 
 ### Include the package
 
-[//]: # ({x-version-update-start;com.azure:azure-messaging-servicebus;current})
+[//]: # ({x-version-update-start;beta_com.azure:azure-messaging-servicebus;dependency})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-servicebus</artifactId>
-    <version>7.1.0</version>
+    <version>7.2.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -86,7 +86,7 @@ platform. First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.2.3</version>
+    <version>1.2.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
