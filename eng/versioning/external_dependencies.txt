@@ -139,6 +139,7 @@ org.springframework.boot:spring-boot-starter-parent;2.4.3
 
 ## Spring cloud dependency versions
 org.springframework.cloud:spring-cloud-dependencies;2020.0.1
+org.springframework.cloud:spring-cloud-starter-bootstrap;3.0.1
 org.springframework.cloud:spring-cloud-bus;3.0.1
 org.springframework.cloud:spring-cloud-context;3.0.1
 org.springframework.cloud:spring-cloud-starter-stream-kafka;3.1.1
