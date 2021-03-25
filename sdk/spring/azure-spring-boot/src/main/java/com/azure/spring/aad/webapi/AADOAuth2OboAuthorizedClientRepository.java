@@ -26,6 +26,7 @@ import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.server.resource.authentication.AbstractOAuth2TokenAuthenticationToken;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -108,6 +109,8 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
                     .map(Throwable::getCause)
                     .filter(e -> e instanceof MsalInteractionRequiredException)
                     .map(e -> (MsalInteractionRequiredException) e)
+                    .filter(msalInteractionRequiredException ->
+                        StringUtils.hasText(msalInteractionRequiredException.claims()))
                     .ifPresent(this::replyForbiddenWithWwwAuthenticateHeader);
             LOGGER.error("Failed to load authorized client.", exception);
         } catch (InterruptedException | ParseException exception) {

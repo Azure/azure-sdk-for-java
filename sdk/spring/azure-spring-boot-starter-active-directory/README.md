@@ -406,6 +406,91 @@ Follow the guide to [add app roles in your application and assign to users or gr
         return "Admin message";
     }
     ```
+#### Support Conditional Access in web application.
+  
+This starter supports [Conditional Access] policy. By using [Conditional Access] policies, you can apply the right **access controls** when needed to keep your organization secure. **Access controls** has many concepts, [Block Access] and [Grant Access] are important. In some scenarios, this stater will help you complete [Grant Access] controls. 
+ 
+In [Resource server visiting other resource server] scenario(For better description, we think that resource server as **webapiA** and the other resource servers as **webapiB**), When we configure the webapiB application with Conditional Access(such as [multi-factor authentication]), this stater will help us send the Conditional Access information of the webapiA to the web application and the web application will help us complete the Conditional Access Policy. As shown below:
+
+  ![aad-conditional-access-flow.png](resource/aad-conditional-access-flow.png)
+  
+  
+  
+  We can use our sample to create a Conditional Access scenario.(we think that [azure-spring-boot-sample-active-directory-webapp] as **webapp** and [azure-spring-boot-sample-active-directory-resource-server-obo] as **webapiA** and [azure-spring-boot-sample-active-directory-resource-server] as **webapiB**). 
+  
+  
+* Step 1: Follow the guide to create conditional access policy for webapiB.
+  
+    ![aad-create-conditional-access](resource/aad-create-conditional-access.png)
+  
+    ![aad-conditional-access-add-application](resource/aad-conditional-access-add-application.png) 
+  
+* Step 2: [Require MFA for all users] or specify the user account in your policy.
+  
+* Step 3: [Expose api] for interlinking three applications, add properties in application.yml.  
+  	
+    - webapp:
+     ```yaml
+     azure:
+       activedirectory:
+         client-id: <Web-API-A-client-id>
+         client-secret: <Web-API-A-client-secret>
+         tenant-id: <tenant-id-registered-by-application>
+         app-id-uri: <Web-API-A-app-id-url>
+         authorization-clients:
+           webapiA:
+             scopes:
+               - <Web-API-A-app-id-url>/File.Read
+     ```   
+    - webapiA:
+     ```yaml
+     azure:
+       activedirectory:
+         client-id: <Web-API-A-client-id>
+         client-secret: <Web-API-A-client-secret>
+         tenant-id: <tenant-id-registered-by-application>
+         app-id-uri: <Web-API-A-app-id-url>
+         authorization-clients:
+           webapiB:
+             scopes:
+               - <Web-API-B-app-id-url>/File.Read
+     ```
+    - webapiB:
+     ```yaml
+     azure:
+       activedirectory:
+         client-id: <Web-API-B-client-id>
+      	 app-id-uri: <Web-API-B-app-id-url>
+     ```
+      
+* Step 4: Write your Java code:  	
+    - webapp :
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/CallOboServerController.java#L34-L38 -->    
+    ```java
+    @GetMapping("/webapiA")
+    @ResponseBody
+    public String callWebapiAServer(@RegisteredOAuth2AuthorizedClient("webapiA") OAuth2AuthorizedClient webapiA) {
+        return callWebapiAEndpoint(webapiA);
+    }
+    ```
+    - webapiA:
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L70-L75 -->    
+    ```java
+    @GetMapping("webapiA")
+    @PreAuthorize("hasAuthority('SCOPE_File.Read')")
+    public String callWebapiBServer(@RegisteredOAuth2AuthorizedClient("webapiB") OAuth2AuthorizedClient webapiB) {
+        return callWebapiBEndpoint(webapiB);
+    }
+    ```
+    - webapiB:
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/HomeController.java#L16-L21 -->      
+    ```java
+    @GetMapping("/webapiB")
+    @PreAuthorize("hasAuthority('SCOPE_File.Read')")
+    public String file() {
+        return "Response from webapiB.";
+    }
+    ```  
 ## Examples
 
 ### Web application visiting resource servers
@@ -468,3 +553,10 @@ Please follow [instructions here] to build from source or contribute.
 [prerequisite]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-active-directory#prerequisites
 [Accessing a web application]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-active-directory#accessing-a-web-application
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[Conditional Access]: https://docs.microsoft.com/azure/active-directory/conditional-access
+[Grant Access]: https://docs.microsoft.com/azure/active-directory/conditional-access/concept-conditional-access-grant
+[Block Access]: https://docs.microsoft.com/azure/active-directory/conditional-access/howto-conditional-access-policy-block-access
+[Resource server visiting other resource server]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-active-directory#resource-server-visiting-other-resource-servers
+[multi-factor authentication]: https://docs.microsoft.com/azure/active-directory/authentication/concept-mfa-howitworks
+[Require MFA for all users]: https://docs.microsoft.com/azure/active-directory/conditional-access/howto-conditional-access-policy-all-users-mfa
+[Expose api]: https://docs.microsoft.com/azure/active-directory/develop/quickstart-configure-app-expose-web-apis
