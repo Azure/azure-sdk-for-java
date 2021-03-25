@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.10.2 (Unreleased)
-- Fixed bug where BlobInputStream would not use request conditions when doing the initial getProperties call.
+- Fixed a bug where BlobInputStream would not use request conditions when doing the initial getProperties call in openInputStream.
 
 ## 12.10.1 (2021-03-19)
 - Removed a deep copy in the general upload path to reduce memory consumption and increase perf
