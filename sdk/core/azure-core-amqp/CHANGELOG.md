@@ -2,7 +2,7 @@
 
 ## 2.1.0-beta.1 (Unreleased)
 ### New Features
-- Added support for distributed transactions across entities via 'AmqpSession.getOrCreateTransactionCoordinator()'. 
+- Exposes 'AmqpTransactionCoordinator' via AmqpSession. 
 
 ## 2.0.3 (2021-03-09)
 

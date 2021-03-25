@@ -113,14 +113,10 @@ final class TransactionCoordinator implements AmqpTransactionCoordinator {
             return Mono.empty();
         }
 
-        if (this.sendLink != null) {
-            this.sendLink.dispose();
-        }
-
-        return Mono.empty();
-    }
-
-    public boolean isDisposed() {
-        return isDisposed.get();
+        return Mono.fromRunnable(() -> {
+            if (sendLink != null) {
+                sendLink.dispose();
+            }
+        });
     }
 }
