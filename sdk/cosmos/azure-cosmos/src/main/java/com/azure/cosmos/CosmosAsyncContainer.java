@@ -55,7 +55,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -429,7 +428,6 @@ public class CosmosAsyncContainer {
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<Void> openConnectionsAndInitCaches() {
         Mono<List<FeedRange>> feedRangesMono = this.getFeedRanges();
-        AtomicReference<Mono<List<FeedResponse<ObjectNode>>>> sequentialList = new AtomicReference<>();
         List<Flux<FeedResponse<ObjectNode>>> fluxList = new ArrayList<>();
         return feedRangesMono.flatMap(feedRanges -> {
             for (FeedRange feedRange : feedRanges) {
@@ -447,8 +445,8 @@ public class CosmosAsyncContainer {
                     ObjectNode.class);
                 fluxList.add(cosmosPagedFlux.byPage());
             }
-            sequentialList.set(Flux.merge(fluxList).collectList());
-            return sequentialList.get().flatMap(objects -> Mono.empty());
+            Mono<List<FeedResponse<ObjectNode>>> listMono = Flux.merge(fluxList).collectList();
+            return listMono.flatMap(objects -> Mono.empty());
         });
     }
 
