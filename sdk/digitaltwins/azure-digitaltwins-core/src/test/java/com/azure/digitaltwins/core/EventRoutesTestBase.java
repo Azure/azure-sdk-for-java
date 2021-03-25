@@ -2,6 +2,7 @@ package com.azure.digitaltwins.core;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.models.DigitalTwinsEventRoute;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +25,7 @@ public abstract class EventRoutesTestBase extends DigitalTwinsTestBase {
     static final String FILTER = "$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'";
 
     @Test
-    public abstract void eventRouteLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
+    public abstract void eventRouteLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws InterruptedException;
 
     @Test
     public abstract void getEventRouteThrowsIfEventRouteDoesNotExist(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
@@ -59,5 +60,11 @@ public abstract class EventRoutesTestBase extends DigitalTwinsTestBase {
         assertEquals(expectedId, actual.getEventRouteId());
         assertEquals(expected.getEndpointName(), actual.getEndpointName());
         assertEquals(expected.getFilter(), actual.getFilter());
+    }
+
+    protected void waitIfLive(int waitTimeInSeconds) throws InterruptedException {
+        if (this.getTestMode() == TestMode.LIVE) {
+            Thread.sleep(waitTimeInSeconds * 1000);
+        }
     }
 }

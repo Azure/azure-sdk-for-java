@@ -4,6 +4,7 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.TestMode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 
@@ -38,7 +39,7 @@ public abstract class DigitalTwinsRelationshipTestBase extends DigitalTwinsTestB
     public abstract void relationshipLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
 
     @Test
-    public abstract void relationshipListOperationWithMultiplePages(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
+    public abstract void relationshipListOperationWithMultiplePages(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException, InterruptedException;
 
     @Test
     public abstract void createOrReplaceRelationshipFailsWhenIfNoneMatchStar(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
@@ -85,4 +86,9 @@ public abstract class DigitalTwinsRelationshipTestBase extends DigitalTwinsTestB
         createTwinTestRunner.accept(twinId, twin);
     }
 
+    void waitIfLive(int waitTimeInSeconds) throws InterruptedException {
+        if (this.getTestMode() == TestMode.LIVE) {
+            Thread.sleep(waitTimeInSeconds * 1000);
+        }
+    }
 }

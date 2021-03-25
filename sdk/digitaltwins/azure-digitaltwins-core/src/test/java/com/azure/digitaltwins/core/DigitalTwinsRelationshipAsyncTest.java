@@ -5,6 +5,7 @@ package com.azure.digitaltwins.core;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.JsonPatchDocument;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.models.CreateOrReplaceRelationshipOptions;
 import com.azure.digitaltwins.core.models.DeleteRelationshipOptions;
@@ -293,6 +294,8 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 createdOutgoingRelationshipIds.add(relationshipId);
             }
 
+            waitIfLive(10);
+
             // Create multiple incoming relationships to the floor. Typically a room would have relationships to multiple
             // different floors, but for the sake of test simplicity, we'll just add multiple relationships from the same room
             // to the same floor.
@@ -309,6 +312,8 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                     .verifyComplete();
                 createdIncomingRelationshipIds.add(relationshipId);
             }
+
+            waitIfLive(10);
 
             AtomicInteger outgoingRelationshipsPageCount = new AtomicInteger();
             // List relationships in multiple pages and verify more than one page was retrieved.
