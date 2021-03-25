@@ -188,18 +188,17 @@ To use **aad-starter** in this scenario, we need these steps:
     
     (B). You can provide one by extending `AADResourceServerWebSecurityConfigurerAdapter` and call `super.configure(http)` explicitly
     in the `configure(HttpSecurity http)` function. Here is an example:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/src/main/java/com/azure/spring/sample/aad/security/AADOAuth2ResourceServerSecurityConfig.java#L13-L24 -->
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/src/main/java/com/azure/spring/sample/aad/security/AADOAuth2ResourceServerSecurityConfig.java#L12-L22 -->
     ```java
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
-    public class AADOAuth2ResourceServerSecurityConfig extends WebSecurityConfigurerAdapter {
-
+    public class AADOAuth2ResourceServerSecurityConfig extends AADResourceServerWebSecurityConfigurerAdapter {
+        /**
+        * Add configuration logic as needed.
+        */
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests((requests) -> requests.anyRequest().authenticated())
-                .oauth2ResourceServer()
-                .jwt()
-                .jwtAuthenticationConverter(new AADJwtBearerTokenAuthenticationConverter());
+            super.configure(http);
         }
     }
     ```
@@ -321,20 +320,23 @@ Here are some examples about how to use these properties:
     ```
 
     Then we can protect the method by `@PreAuthorize` annotation:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/RoleController.java#L13-L25 -->
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/RoleController.java#L11-L26 -->
     ```java
-    @GetMapping("group1")
-    @ResponseBody
-    @PreAuthorize("hasRole('ROLE_group1')")
-    public String group1() {
-        return "group1 message";
-    }
-
-    @GetMapping("group2")
-    @ResponseBody
-    @PreAuthorize("hasRole('ROLE_group2')")
-    public String group2() {
-        return "group2 message";
+    @Controller
+    public class RoleController {
+        @GetMapping("group1")
+        @ResponseBody
+        @PreAuthorize("hasRole('ROLE_group1')")
+        public String group1() {
+            return "group1 message";
+        }
+    
+        @GetMapping("group2")
+        @ResponseBody
+        @PreAuthorize("hasRole('ROLE_group2')")
+        public String group2() {
+            return "group2 message";
+        }
     }
     ```
 
