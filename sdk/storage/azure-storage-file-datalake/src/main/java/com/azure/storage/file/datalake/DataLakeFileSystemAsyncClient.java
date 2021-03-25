@@ -460,7 +460,11 @@ public class DataLakeFileSystemAsyncClient {
                     if (options == null) {
                         finalOptions = new ListPathsOptions().setMaxResults(pageSize);
                     } else {
-                        finalOptions = options.setMaxResults(pageSize);
+                        finalOptions = new ListPathsOptions()
+                            .setMaxResults(pageSize)
+                            .setPath(options.getPath())
+                            .setRecursive(options.isRecursive())
+                            .setUserPrincipalNameReturned(options.isUserPrincipalNameReturned());
                     }
                 }
                 return listPathsSegment(marker, finalOptions, timeout)

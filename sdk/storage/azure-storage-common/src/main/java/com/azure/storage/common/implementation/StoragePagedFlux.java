@@ -31,8 +31,13 @@ public class StoragePagedFlux<T> extends PagedFlux<T> {
     public static <T> PagedFlux<T> create(Function<Integer, Mono<PagedResponse<T>>> firstPageRetriever,
         BiFunction<String, Integer, Mono<PagedResponse<T>>> nextPageRetriever) {
         return PagedFlux.create(() -> (continuationToken, pageSize) ->
-            continuationToken == null
+            {
+                if (pageSize != null) {
+                    StorageImplUtils.assertInBounds("pageSize", pageSize, 0, Long.MAX_VALUE);
+                }
+                return continuationToken == null
                 ? firstPageRetriever.apply(pageSize).flux()
-                : nextPageRetriever.apply(continuationToken, pageSize).flux());
+                : nextPageRetriever.apply(continuationToken, pageSize).flux();
+            });
     }
 }

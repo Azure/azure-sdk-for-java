@@ -846,7 +846,10 @@ public final class BlobContainerAsyncClient {
                     if (options == null) {
                         finalOptions = new ListBlobsOptions().setMaxResultsPerPage(pageSize);
                     } else {
-                        finalOptions = options.setMaxResultsPerPage(pageSize);
+                        finalOptions = new ListBlobsOptions()
+                            .setMaxResultsPerPage(pageSize)
+                            .setPrefix(options.getPrefix())
+                            .setDetails(options.getDetails());
                     }
                 }
 
@@ -1004,7 +1007,10 @@ public final class BlobContainerAsyncClient {
                         finalOptions = new ListBlobsOptions().setMaxResultsPerPage(pageSize);
                     } else {
                         // Note that this prefers the value passed to .byPage(int) over the value on the options
-                        finalOptions = options.setMaxResultsPerPage(pageSize);
+                        finalOptions = new ListBlobsOptions()
+                            .setMaxResultsPerPage(pageSize)
+                            .setPrefix(options.getPrefix())
+                            .setDetails(options.getDetails());
                     }
                 }
                 return listBlobsHierarchySegment(marker, delimiter, finalOptions, timeout)
