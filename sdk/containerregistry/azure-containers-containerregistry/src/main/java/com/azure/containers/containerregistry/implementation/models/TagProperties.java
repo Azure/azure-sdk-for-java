@@ -16,7 +16,7 @@ public class TagProperties {
     /*
      * Image name
      */
-    @JsonProperty(value = "imageName")
+    @JsonProperty(value = "imageName", required = true)
     private String repository;
 
     /*
@@ -34,13 +34,13 @@ public class TagProperties {
     /*
      * Tag created time
      */
-    @JsonProperty(value = "tag.createdTime")
+    @JsonProperty(value = "tag.createdTime", required = true)
     private OffsetDateTime createdOn;
 
     /*
      * Tag last update time
      */
-    @JsonProperty(value = "tag.lastUpdateTime")
+    @JsonProperty(value = "tag.lastUpdateTime", required = true)
     private OffsetDateTime lastUpdatedOn;
 
     /*

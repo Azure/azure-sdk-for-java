@@ -25,26 +25,14 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.azure.containers.containerregistry.TestUtils.DEFAULT_POLL_INTERVAL;
-import static com.azure.containers.containerregistry.TestUtils.ONE_NANO_DURATION;
+import static com.azure.containers.containerregistry.TestUtils.SLEEP_TIME_IN_MILLISECONDS;
 
-public class ContainerRegistryClientTestBase extends TestBase {
+public class ContainerRegistryClientsTestBase extends TestBase {
 
-    private static final String AZURE_FORM_RECOGNIZER_ENDPOINT = "CONTAINERREGISTRY_ENDPOINT";
-    private static final String INVALID_KEY = "invalid key";
+    private static final String AZURE_CONTAINERREGISTRY_ENDPOINT = "CONTAINERREGISTRY_ENDPOINT";
 
     private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
         = Pattern.compile("(\".*_token\":\"(.*)\".*)");
-
-    private Duration durationTestMode;
-    @Override
-    protected void beforeTest() {
-        if (interceptorManager.isPlaybackMode()) {
-            durationTestMode = ONE_NANO_DURATION;
-        } else {
-            durationTestMode = DEFAULT_POLL_INTERVAL;
-        }
-    }
 
     ContainerRegistryClientBuilder getContainerRegistryBuilder(HttpClient httpClient) {
         List<Function<String, String>> redactors = new ArrayList<>();
@@ -53,8 +41,28 @@ public class ContainerRegistryClientTestBase extends TestBase {
         ContainerRegistryClientBuilder builder = new ContainerRegistryClientBuilder()
             .endpoint(getEndpoint())
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .addPolicy(interceptorManager.getRecordPolicy(redactors));
+
+        if (getTestMode() == TestMode.PLAYBACK) {
+            builder.credential(new FakeCredentials());
+        } else {
+            builder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+
+        return builder;
+    }
+
+    ContainerRepositoryClientBuilder getContainerRepositoryBuilder(String repositoryName, HttpClient httpClient) {
+        List<Function<String, String>> redactors = new ArrayList<>();
+        redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+
+        ContainerRepositoryClientBuilder builder = new ContainerRepositoryClientBuilder()
+            .endpoint(getEndpoint())
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY))
+            .addPolicy(interceptorManager.getRecordPolicy(redactors))
+            .repository(repositoryName);
 
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new FakeCredentials());
@@ -75,7 +83,7 @@ public class ContainerRegistryClientTestBase extends TestBase {
 
     protected String getEndpoint() {
         return interceptorManager.isPlaybackMode() ? "https://localhost:8080"
-            : Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_ENDPOINT);
+            : Configuration.getGlobalConfiguration().get(AZURE_CONTAINERREGISTRY_ENDPOINT);
     }
 
     private String redact(String content, Matcher matcher, String replacement) {
@@ -89,5 +97,20 @@ public class ContainerRegistryClientTestBase extends TestBase {
         }
 
         return content;
+    }
+
+    void testDelay() {
+        if (getTestMode() != TestMode.PLAYBACK) {
+            // The service has a cache of 6 seconds, so we need to wait until we run this.
+            try {
+                Thread.sleep(SLEEP_TIME_IN_MILLISECONDS);
+            } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
+
+    Mono<Long> monoDelay() {
+        return Mono.defer(() -> getTestMode() == TestMode.PLAYBACK ? Mono.delay(Duration.ZERO) : Mono.delay(Duration.ofMillis(SLEEP_TIME_IN_MILLISECONDS)));
     }
 }

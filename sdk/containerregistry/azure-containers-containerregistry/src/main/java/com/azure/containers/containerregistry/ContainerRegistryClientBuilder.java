@@ -4,7 +4,6 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.implementation.ContainerRegistryImpl;
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryCredentialsPolicy;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
@@ -42,7 +41,9 @@ import java.util.Objects;
 @ServiceClientBuilder(
         serviceClients = {
             ContainerRegistryClient.class,
-            ContainerRegistryAsyncClient.class
+            ContainerRegistryAsyncClient.class,
+            ContainerRepositoryClient.class,
+            ContainerRepositoryAsyncClient.class
         })
 public final class ContainerRegistryClientBuilder {
     private static final Map<String, String> PROPERTIES =
@@ -99,27 +100,12 @@ public final class ContainerRegistryClientBuilder {
      * @param httpPipeline the httpPipeline value.
      * @return the ContainerRegistryBuilder.
      */
-    public ContainerRegistryClientBuilder httpPipeline(HttpPipeline httpPipeline) {
+    public ContainerRegistryClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.verbose("HttpPipeline is being set to 'null' when it was previously configured.");
         }
 
         this.httpPipeline = httpPipeline;
-        return this;
-    }
-
-    /**
-     * Sets The serializer to serialize an object into a string.
-     *
-     * @param serializerAdapter the serializerAdapter value.
-     * @return the ContainerRegistryBuilder.
-     */
-    public ContainerRegistryClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
-        if (this.serializerAdapter != null && serializerAdapter == null) {
-            logger.verbose("SerializerAdapter is being set to 'null' when it was previously configured.");
-        }
-
-        this.serializerAdapter = serializerAdapter;
         return this;
     }
 
@@ -199,24 +185,6 @@ public final class ContainerRegistryClientBuilder {
         return this;
     }
 
-    /**
-     * Builds an instance of ContainerRegistryImpl with the provided parameters.
-     *
-     * @return an instance of ContainerRegistryImpl.
-     */
-    private ContainerRegistryImpl buildInnerClient() {
-        if (serializerAdapter == null) {
-            this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        }
-
-        if (httpPipeline == null) {
-            this.httpPipeline = createHttpPipeline();
-        }
-
-        ContainerRegistryImpl client = new ContainerRegistryImpl(httpPipeline, serializerAdapter, endpoint);
-        return client;
-    }
-
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration =
                 (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -271,20 +239,29 @@ public final class ContainerRegistryClientBuilder {
     }
 
     /**
-     * Builds an instance of ContainerRegistryAsyncClient async client.
+     * Builds an instance of ContainerRegistryAsyncClient.
      *
      * @return an instance of ContainerRegistryAsyncClient.
      */
-    public ContainerRegistryAsyncClient buildContainerRegistryAsyncClient() {
-        return new ContainerRegistryAsyncClient(buildInnerClient().getContainerRegistries());
+    public ContainerRegistryAsyncClient buildAsyncClient() {
+        if (serializerAdapter == null) {
+            this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
+        }
+
+        if (httpPipeline == null) {
+            this.httpPipeline = createHttpPipeline();
+        }
+
+        ContainerRegistryAsyncClient client = new ContainerRegistryAsyncClient(httpPipeline, serializerAdapter, endpoint);
+        return client;
     }
 
     /**
-     * Builds an instance of ContainerRegistryClient sync client.
+     * Builds an instance of ContainerRegistryClient.
      *
      * @return an instance of ContainerRegistryClient.
      */
-    public ContainerRegistryClient buildContainerRegistryClient() {
-        return new ContainerRegistryClient(buildContainerRegistryAsyncClient());
+    public ContainerRegistryClient buildClient() {
+        return new ContainerRegistryClient(buildAsyncClient());
     }
 }

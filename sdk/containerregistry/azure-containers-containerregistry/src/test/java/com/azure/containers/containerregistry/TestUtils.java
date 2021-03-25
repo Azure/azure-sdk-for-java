@@ -9,6 +9,7 @@ import org.junit.jupiter.params.provider.Arguments;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -17,7 +18,28 @@ import static com.azure.core.test.TestBase.getHttpClients;
 public class TestUtils {
     public static final Duration ONE_NANO_DURATION = Duration.ofMillis(1);
     public static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
-    public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
+    public static final Duration DEFAULT_MONO_DELAY = Duration.ofSeconds(5);
+
+
+
+    public static final String ALPINE_REPOSITORY_NAME = "library/alpine";
+    public static final String BUSYBOX_REPOSITORY_NAME = "library/busybox";
+    public static final String HELLO_WORLD_REPOSITORY_NAME = "library/hello-world";
+    public static final String HELLO_SEATTLE_REPOSITORY_NAME = "library/hello-seattle";
+    public static final String LATEST_TAG_NAME = "latest";
+    public static final String V1_TAG_NAME = "v1";
+    public static final String TAG_TO_DELETE = "test-delete-image";
+
+    public static final int  PAGESIZE_2 = 2;
+    public static final int PAGESIZE_4 = 4;
+    public static final int HELLOWORLD_REPOSITORY_MANIFEST_REFERENCES_COUNT = 9;
+
+    public static final String ARM64_ARCHITECTURE = "arm64";
+    public static final String LINUX_OPERATING_SYSTEM = "linux";
+    public static final String AMD64_ARCHITECTURE = "amd64";
+    public static final String WINDOWS_OPERATING_SYSTEM = "windows";
+
+    public static final long SLEEP_TIME_IN_MILLISECONDS = 7000;
 
     /**
      * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients} and
@@ -29,5 +51,21 @@ public class TestUtils {
         List<Arguments> argumentsList = new ArrayList<>();
         getHttpClients();
         return argumentsList.stream();
+    }
+
+    static <T extends Comparable<? super T>> boolean isSorted(Iterable<T> iterable) {
+        Iterator<T> iter = iterable.iterator();
+        if (!iter.hasNext()) {
+            return true;
+        }
+        T t = iter.next();
+        while (iter.hasNext()) {
+            T t2 = iter.next();
+            if (t.compareTo(t2) > 0) {
+                return false;
+            }
+            t = t2;
+        }
+        return true;
     }
 }
