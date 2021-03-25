@@ -25,6 +25,9 @@ import java.util.stream.Stream;
 
 public class CredentialsTests {
 
+    private static final String DUMMY_NAME = "Dummy-Name";
+    private static final String DUMMY_VALUE = "DummyValue";
+
     @Test
     public void basicCredentialsTest() throws Exception {
         BasicAuthenticationCredential credentials = new BasicAuthenticationCredential("user", "pass");
@@ -151,7 +154,7 @@ public class CredentialsTests {
 
     static class InvalidInputsArgumentProvider implements ArgumentsProvider {
 
-        public InvalidInputsArgumentProvider() { }
+        InvalidInputsArgumentProvider() { }
 
         @Override
         public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
@@ -179,7 +182,7 @@ public class CredentialsTests {
     @ArgumentsSource(InvalidInputsArgumentProvider.class)
     public void namedKeyCredentialsInvalidArgumentUpdateTest(String name, String key, Class<Exception> excepionType) {
         AzureNamedKeyCredential azureNamedKeyCredential =
-            new AzureNamedKeyCredential("Dummy-Name", "DummyValue");
+            new AzureNamedKeyCredential(DUMMY_NAME, DUMMY_VALUE);
 
         Assertions.assertThrows(excepionType, () -> {
             azureNamedKeyCredential.update(name, key);
@@ -189,20 +192,23 @@ public class CredentialsTests {
     @Test
     public void namedKeyCredentialValueTest() {
         AzureNamedKeyCredential azureNamedKeyCredential =
-            new AzureNamedKeyCredential("Dummy-Name", "DummyValue");
+            new AzureNamedKeyCredential(DUMMY_NAME, DUMMY_VALUE);
 
-        Assertions.assertEquals("Dummy-Name", azureNamedKeyCredential.getName());
-        Assertions.assertEquals("DummyValue", azureNamedKeyCredential.getKey());
+        Assertions.assertEquals(DUMMY_NAME, azureNamedKeyCredential.getName());
+        Assertions.assertEquals(DUMMY_VALUE, azureNamedKeyCredential.getKey());
     }
 
     @Test
     public void namedKeyCredentialUpdateTest() {
         AzureNamedKeyCredential azureNamedKeyCredential =
-            new AzureNamedKeyCredential("Dummy-Name", "DummyValue");
+            new AzureNamedKeyCredential(DUMMY_NAME, DUMMY_NAME);
 
-        azureNamedKeyCredential.update("New-Name", "NewValue");
+        String expectedName = "New-Name";
+        String expectedValue = "NewValue";
 
-        Assertions.assertEquals("New-Name", azureNamedKeyCredential.getName());
-        Assertions.assertEquals("NewValue", azureNamedKeyCredential.getKey());
+        azureNamedKeyCredential.update(expectedName, expectedValue);
+
+        Assertions.assertEquals(expectedName, azureNamedKeyCredential.getName());
+        Assertions.assertEquals(expectedValue, azureNamedKeyCredential.getKey());
     }
 }

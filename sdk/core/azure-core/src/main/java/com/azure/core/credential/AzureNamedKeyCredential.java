@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.core.credential;
 
 import com.azure.core.util.logging.ClientLogger;
@@ -5,7 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.Objects;
 
 /**
- * Represents a credential that uses a key to authenticate to an Azure Service.
+ * Represents a credential with a name and key and uses the key to authenticate to an Azure Service.
  */
 public final class AzureNamedKeyCredential {
     private final ClientLogger logger = new ClientLogger(AzureNamedKeyCredential.class);
@@ -75,12 +78,12 @@ public final class AzureNamedKeyCredential {
     private static class Tuple<X, Y> {
         private final X left;
         private final Y right;
-        public Tuple(X left, Y right) {
+        Tuple(X left, Y right) {
             this.left = left;
             this.right = right;
         }
 
-        public X getLeft(){
+        public X getLeft() {
             return left;
         }
 
