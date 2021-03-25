@@ -3,6 +3,7 @@
 ## 2.1.0-beta.1 (Unreleased)
 ### New Features
 - Exposes 'AmqpTransactionCoordinator' via AmqpSession. 
+- Added API in interface 'AmqpSession.getOrCreateTransactionCoordinator()'.
 
 ## 2.0.3 (2021-03-09)
 
