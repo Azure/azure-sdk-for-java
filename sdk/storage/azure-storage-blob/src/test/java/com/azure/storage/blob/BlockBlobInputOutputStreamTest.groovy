@@ -173,4 +173,6 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         then:
         thrown(IOException)
     }
+
+    def "Input Stream "
 }
