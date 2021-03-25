@@ -117,15 +117,16 @@ jobs:
             -TargetDirectory $(Build.ArtifactStagingDirectory)
             -InformationAction Continue
 
-      - publish: $(Build.ArtifactStagingDirectory)
-        displayName: 'Publish Artifacts $(ArtifactName)'
-        artifact: '$(ArtifactName)'
-
-      - template: ../steps/upload-repository-on-failure.yml
-
-      - template: /eng/pipelines/templates/steps/create-apireview.yml
+      - template: /eng/common/pipelines/templates/steps/create-apireview.yml
         parameters:
           Artifacts: ${{parameters.Artifacts}}
+
+      - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+        parameters:
+          ArtifactPath: $(Build.ArtifactStagingDirectory)
+          ArtifactName: '$(ArtifactName)'
+
+      - template: ../steps/upload-repository-on-failure.yml
 
   - job: 'Analyze'
     condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))

@@ -65,6 +65,13 @@ public class AcsChatThreadEventInThreadBaseProperties extends AcsChatEventInThre
 
     /** {@inheritDoc} */
     @Override
+    public AcsChatThreadEventInThreadBaseProperties setTransactionId(String transactionId) {
+        super.setTransactionId(transactionId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public AcsChatThreadEventInThreadBaseProperties setThreadId(String threadId) {
         super.setThreadId(threadId);
         return this;

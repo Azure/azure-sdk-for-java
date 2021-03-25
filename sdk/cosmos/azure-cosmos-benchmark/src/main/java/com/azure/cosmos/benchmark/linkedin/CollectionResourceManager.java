@@ -13,6 +13,7 @@ import com.azure.cosmos.benchmark.linkedin.data.EntityConfiguration;
 import com.azure.cosmos.benchmark.linkedin.impl.Constants;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.google.common.base.Preconditions;
 import java.time.Duration;
 import java.util.Optional;
@@ -98,11 +99,15 @@ public class CollectionResourceManager implements ResourceManager {
     private void createContainer(final CosmosAsyncDatabase database,
         final String containerName,
         final CollectionAttributes collectionAttributes) {
-        LOGGER.info("Creating container {} in the database {}", containerName, database.getId());
+        LOGGER.info("Creating container {} in the database {} [throughput = {}]", containerName,
+            database.getId(),
+            _configuration.getThroughput());
+        final ThroughputProperties throughputProperties =
+            ThroughputProperties.createManualThroughput(_configuration.getThroughput());
         final CosmosContainerProperties containerProperties =
             new CosmosContainerProperties(containerName, Constants.PARTITION_KEY_PATH)
                 .setIndexingPolicy(collectionAttributes.indexingPolicy());
-        database.createContainerIfNotExists(containerProperties)
+        database.createContainerIfNotExists(containerProperties, throughputProperties)
             .block(RESOURCE_CRUD_WAIT_TIME);
     }
 }
