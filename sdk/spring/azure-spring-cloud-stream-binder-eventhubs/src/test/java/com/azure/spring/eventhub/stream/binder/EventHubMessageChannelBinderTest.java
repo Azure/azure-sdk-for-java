@@ -60,7 +60,7 @@ public class EventHubMessageChannelBinderTest {
         Assertions.assertThat(messageHandler)
                   .extracting("partitionIdExpression")
                   .returns(PARTITION_HEADER,
-                      exp -> ((SpelExpression)exp).getExpressionString());
+                      exp -> ((SpelExpression) exp).getExpressionString());
         Assertions.assertThat(messageHandler).hasFieldOrPropertyWithValue("partitionKeyExpression", null);
     }
 
