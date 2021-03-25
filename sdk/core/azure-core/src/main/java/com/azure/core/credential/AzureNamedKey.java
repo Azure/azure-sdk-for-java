@@ -3,12 +3,15 @@
 
 package com.azure.core.credential;
 
+import com.azure.core.annotation.Immutable;
+
 /**
  * Represents a credential bag containing the key and the name of the key.
  *
  * @see AzureNamedKeyCredential
  */
-public class AzureNamedKey {
+@Immutable
+public final class AzureNamedKey {
     private final String name;
     private final String key;
 
