@@ -47,9 +47,7 @@ public class DatabaseResourceManager implements ResourceManager {
     public void createResources() throws CosmosException {
         try {
             LOGGER.info("Creating database {} for the ctl workload if one doesn't exist", _configuration.getDatabaseId());
-            final ThroughputProperties throughputProperties =
-                ThroughputProperties.createManualThroughput(_configuration.getThroughput());
-            _client.createDatabaseIfNotExists(_configuration.getDatabaseId(), throughputProperties)
+            _client.createDatabaseIfNotExists(_configuration.getDatabaseId())
                 .block(RESOURCE_CRUD_WAIT_TIME);
         } catch (CosmosException e) {
             LOGGER.error("Exception while creating database {}", _configuration.getDatabaseId(), e);
