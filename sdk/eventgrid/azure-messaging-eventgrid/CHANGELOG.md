@@ -5,6 +5,8 @@
 - Added new system event model class `AcsRecordingFileStatusUpdatedEventData`.
 - Added new attribute `transactionId` to `AcsChatEventInThreadBaseProperties`.
 - Added new attribute `tag` to `AcsSmsDeliveryReportReceivedEventData`.
+- Added `COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD` to `SystemEventNames` and deprecated `COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD`.
+- Added `COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD_WITH_USER` to `SystemEventNames` and deprecated `COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD_WITH_USER`.
 
 ### Bug Fixes
 - Fixed event types in `SystemEventNames` for system event data `AcsChatParticipantRemovedFromThreadEventData` and `AcsChatParticipantAddedToThreadEventData`.
