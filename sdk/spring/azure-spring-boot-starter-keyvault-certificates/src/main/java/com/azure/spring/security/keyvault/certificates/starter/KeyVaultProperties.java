@@ -13,13 +13,27 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 @EnableConfigurationProperties({ KeyVaultProperties.class })
 @ConfigurationProperties("azure.keyvault")
 public class KeyVaultProperties {
+    /**
+     * The URI to the Azure Key Vault used
+     */
+    private String uri;
+    /**
+     * The The Tenant ID for your Azure Key Vault (needed if you are not using managed identity).
+     */
     private String tenantId;
+    /**
+     * The Client ID that has been setup with access to your Azure Key Vault (needed if you are not using managed identity).
+     */
     private String clientId;
+    /**
+     * TThe Client Secret that will be used for accessing your Azure Key Vault (needed if you are not using managed identity).
+     */
     private String clientSecret;
+    /**
+     * The user-assigned managed identity object-id to use.
+     */
     private String managedIdentity;
     private JcaProperties jca;
-
-    private String uri;
 
     public String getUri() {
         return uri;
@@ -73,7 +87,14 @@ public class KeyVaultProperties {
      * Jca properties
      */
     public static class JcaProperties {
+        /**
+         * To configure Spring Cloud Gateway for outbound SSL, set overrideTrustManagerFactory = true.
+         */
         private String overrideTrustManagerFactory;
+        /**
+         * If you are developing you can completely disable the certificate and hostname validation altogether by
+         * setting disableHostnameVerification = true. Note: this is NOT recommended for production!
+         */
         private String disableHostnameVerification;
 
         public String getOverrideTrustManagerFactory() {
