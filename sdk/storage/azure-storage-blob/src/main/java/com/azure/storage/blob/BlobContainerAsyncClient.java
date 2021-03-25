@@ -839,25 +839,35 @@ public final class BlobContainerAsyncClient {
      */
     PagedFlux<BlobItem> listBlobsFlatWithOptionalTimeout(ListBlobsOptions options, String continuationToken,
         Duration timeout) {
-        Function<String, Mono<PagedResponse<BlobItem>>> func =
-            marker -> listBlobsFlatSegment(marker, options, timeout)
-                .map(response -> {
-                    List<BlobItem> value = response.getValue().getSegment() == null
-                        ? Collections.emptyList()
-                        : response.getValue().getSegment().getBlobItems().stream()
-                        .map(ModelHelper::populateBlobItem)
-                        .collect(Collectors.toList());
+        BiFunction<String, Integer, Mono<PagedResponse<BlobItem>>> func =
+            (marker, pageSize) -> {
+                ListBlobsOptions finalOptions = null;
+                if (pageSize != null) {
+                    if (options == null) {
+                        finalOptions = new ListBlobsOptions().setMaxResultsPerPage(pageSize);
+                    } else {
+                        finalOptions = options.setMaxResultsPerPage(pageSize);
+                    }
+                }
 
-                    return new PagedResponseBase<>(
-                        response.getRequest(),
-                        response.getStatusCode(),
-                        response.getHeaders(),
-                        value,
-                        response.getValue().getNextMarker(),
-                        response.getDeserializedHeaders());
-                });
+                return listBlobsFlatSegment(marker, finalOptions, timeout)
+                    .map(response -> {
+                        List<BlobItem> value = response.getValue().getSegment() == null
+                            ? Collections.emptyList()
+                            : response.getValue().getSegment().getBlobItems().stream()
+                            .map(ModelHelper::populateBlobItem)
+                            .collect(Collectors.toList());
 
-        return new PagedFlux<>(() -> func.apply(continuationToken), func);
+                        return new PagedResponseBase<>(
+                            response.getRequest(),
+                            response.getStatusCode(),
+                            response.getHeaders(),
+                            value,
+                            response.getValue().getNextMarker(),
+                            response.getDeserializedHeaders());
+                    });
+            };
+        return StoragePagedFlux.create(pageSize -> func.apply(continuationToken, pageSize), func);
     }
 
     /*
@@ -985,10 +995,15 @@ public final class BlobContainerAsyncClient {
         BiFunction<String, Integer, Mono<PagedResponse<BlobItem>>> func =
             (marker, pageSize) -> {
                 ListBlobsOptions finalOptions = null;
+                /*
+                 If pageSize was not set in a .byPage(int) method, the page size from options will be preserved.
+                 Otherwise, prefer the new value.
+                 */
                 if (pageSize != null) {
                     if (options == null) {
                         finalOptions = new ListBlobsOptions().setMaxResultsPerPage(pageSize);
                     } else {
+                        // Note that this prefers the value passed to .byPage(int) over the value on the options
                         finalOptions = options.setMaxResultsPerPage(pageSize);
                     }
                 }

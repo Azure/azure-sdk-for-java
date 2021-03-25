@@ -17,6 +17,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.AccountSasImplUtil;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.StoragePagedFlux;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.models.QueueCorsRule;
@@ -33,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -306,12 +308,13 @@ public final class QueueServiceAsyncClient {
             }
         }
 
-        Function<String, Mono<PagedResponse<QueueItem>>> retriever =
-            nextMarker -> StorageImplUtils.applyOptionalTimeout(this.client.getServices()
-                .listQueuesSegmentSinglePageAsync(prefix, nextMarker, maxResultsPerPage, include,
+        BiFunction<String, Integer, Mono<PagedResponse<QueueItem>>> retriever =
+            (nextMarker, pageSize) -> StorageImplUtils.applyOptionalTimeout(this.client.getServices()
+                .listQueuesSegmentSinglePageAsync(prefix, nextMarker,
+                    pageSize == null ? maxResultsPerPage : pageSize, include,
                     null, null, context), timeout);
 
-        return new PagedFlux<>(() -> retriever.apply(marker), retriever);
+        return StoragePagedFlux.create(pageSize -> retriever.apply(marker, pageSize), retriever);
     }
 
     /**

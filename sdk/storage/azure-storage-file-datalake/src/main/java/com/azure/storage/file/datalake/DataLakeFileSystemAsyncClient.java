@@ -22,6 +22,7 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.StoragePagedFlux;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
@@ -42,10 +43,12 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
@@ -449,17 +452,35 @@ public class DataLakeFileSystemAsyncClient {
 
     PagedFlux<PathItem> listPathsWithOptionalTimeout(ListPathsOptions options,
         Duration timeout) {
-        Function<String, Mono<PagedResponse<Path>>> func =
-            marker -> listPathsSegment(marker, options, timeout)
-                .map(response -> new PagedResponseBase<>(
-                    response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    response.getValue().getPaths(),
-                    response.getDeserializedHeaders().getContinuation(),
-                    response.getDeserializedHeaders()));
+        BiFunction<String, Integer, Mono<PagedResponse<PathItem>>> func =
+            (marker, pageSize) ->
+            {
+                ListPathsOptions finalOptions = null;
+                if (pageSize != null) {
+                    if (options == null) {
+                        finalOptions = new ListPathsOptions().setMaxResults(pageSize);
+                    } else {
+                        finalOptions = options.setMaxResults(pageSize);
+                    }
+                }
+                return listPathsSegment(marker, finalOptions, timeout)
+                    .map(response -> {
+                        List<PathItem> value = response.getValue() == null
+                            ? Collections.emptyList()
+                            : response.getValue().getPaths().stream()
+                            .map(Transforms::toPathItem)
+                            .collect(Collectors.toList());
 
-        return new PagedFlux<>(() -> func.apply(null), func).mapPage(Transforms::toPathItem);
+                        return new PagedResponseBase<>(
+                            response.getRequest(),
+                            response.getStatusCode(),
+                            response.getHeaders(),
+                            value,
+                            response.getDeserializedHeaders().getContinuation(),
+                            response.getDeserializedHeaders());
+                    });
+            };
+        return StoragePagedFlux.create(pageSize -> func.apply(null, pageSize), func);
     }
 
     private Mono<FileSystemsListPathsResponse> listPathsSegment(String marker,

@@ -22,6 +22,7 @@ import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.StoragePagedFlux;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
@@ -284,12 +285,18 @@ public class DataLakeServiceAsyncClient {
             .listBlobContainers(Transforms.toListBlobContainersOptions(options));
         /* We need to create a new PagedFlux here because PagedFlux extends Flux, but not all operations were
             overriden to return PagedFlux - so we need to do the transformations and recreate a PagedFlux. */
-        /* Note: pageSize is not passed in as a parameter since the underlying implementation of listBlobContainers
-           does not use the pageSize parameter. Passing it in will have no effect. */
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BlobContainerItem>> flux = (continuationToken == null)
-                ? inputPagedFlux.byPage()
-                : inputPagedFlux.byPage(continuationToken);
+        return StoragePagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BlobContainerItem>> flux;
+            if (continuationToken != null && pageSize != null) {
+                flux = inputPagedFlux.byPage(continuationToken, pageSize);
+            } else if (continuationToken != null) {
+                flux = inputPagedFlux.byPage(continuationToken);
+            } else if (pageSize != null) {
+                flux = inputPagedFlux.byPage(pageSize);
+            } else {
+                flux = inputPagedFlux.byPage();
+            }
+
             flux = flux.onErrorMap(DataLakeImplUtils::transformBlobStorageException);
             if (timeout != null) {
                 flux = flux.timeout(timeout);

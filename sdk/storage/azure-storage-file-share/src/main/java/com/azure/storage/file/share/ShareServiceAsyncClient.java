@@ -20,6 +20,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.AccountSasImplUtil;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.StoragePagedFlux;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
@@ -38,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -220,10 +222,10 @@ public final class ShareServiceAsyncClient {
             }
         }
 
-        Function<String, Mono<PagedResponse<ShareItem>>> retriever =
-            nextMarker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.getServices()
+        BiFunction<String, Integer, Mono<PagedResponse<ShareItem>>> retriever =
+            (nextMarker, pageSize) -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.getServices()
                     .listSharesSegmentSinglePageAsync(
-                        prefix, nextMarker, maxResultsPerPage, include, null, context)
+                        prefix, nextMarker, pageSize == null ? maxResultsPerPage : pageSize, include, null, context)
                     .map(response -> {
                         List<ShareItem> value = response.getValue() == null
                             ? Collections.emptyList()
@@ -238,7 +240,7 @@ public final class ShareServiceAsyncClient {
                             response.getContinuationToken(),
                             ModelHelper.transformListSharesHeaders(response.getHeaders()));
                     }), timeout);
-        return new PagedFlux<>(() -> retriever.apply(marker), retriever);
+        return StoragePagedFlux.create(pageSize -> retriever.apply(marker, pageSize), retriever);
     }
 
     /**

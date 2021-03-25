@@ -44,6 +44,7 @@ import com.azure.storage.common.implementation.AccountSasImplUtil;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.StoragePagedFlux;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import reactor.core.publisher.Mono;
 
@@ -54,6 +55,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -329,10 +331,20 @@ public final class BlobServiceAsyncClient {
     PagedFlux<BlobContainerItem> listBlobContainersWithOptionalTimeout(ListBlobContainersOptions options,
         Duration timeout) {
         throwOnAnonymousAccess();
-        Function<String, Mono<PagedResponse<BlobContainerItem>>> func =
-            marker -> listBlobContainersSegment(marker, options, timeout);
+        BiFunction<String, Integer, Mono<PagedResponse<BlobContainerItem>>> func =
+            (marker, pageSize) -> {
+                ListBlobContainersOptions finalOptions = null;
+                if (pageSize != null) {
+                    if (options == null) {
+                        finalOptions = new ListBlobContainersOptions().setMaxResultsPerPage(pageSize);
+                    } else {
+                        finalOptions = options.setMaxResultsPerPage(pageSize);
+                    }
+                }
+                return listBlobContainersSegment(marker, finalOptions, timeout);
+            };
 
-        return new PagedFlux<>(() -> func.apply(null), func);
+        return StoragePagedFlux.create(pageSize -> func.apply(null, pageSize), func);
     }
 
     private Mono<PagedResponse<BlobContainerItem>> listBlobContainersSegment(String marker,
@@ -384,16 +396,24 @@ public final class BlobServiceAsyncClient {
 
     PagedFlux<TaggedBlobItem> findBlobsByTags(FindBlobsOptions options, Duration timeout) {
         throwOnAnonymousAccess();
-        return new PagedFlux<>(
-            () -> withContext(context -> this.findBlobsByTags(options, null, timeout, context)),
-            marker -> withContext(context -> this.findBlobsByTags(options, marker, timeout, context)));
+        StorageImplUtils.assertNotNull("options", options);
+        BiFunction<String, Integer, Mono<PagedResponse<TaggedBlobItem>>> func =
+            (marker, pageSize) -> {
+                options.setMaxResultsPerPage(pageSize);
+                return withContext(context -> this.findBlobsByTags(options, marker, timeout, context));
+            };
+        return StoragePagedFlux.create(pageSize -> func.apply(null, pageSize), func);
     }
 
     PagedFlux<TaggedBlobItem> findBlobsByTags(FindBlobsOptions options, Duration timeout, Context context) {
         throwOnAnonymousAccess();
-        return new PagedFlux<>(
-            () -> this.findBlobsByTags(options, null, timeout, context),
-            marker -> this.findBlobsByTags(options, marker, timeout, context));
+        StorageImplUtils.assertNotNull("options", options);
+        BiFunction<String, Integer, Mono<PagedResponse<TaggedBlobItem>>> func =
+            (marker, pageSize) -> {
+                options.setMaxResultsPerPage(pageSize);
+                return this.findBlobsByTags(options, marker, timeout, context);
+            };
+        return StoragePagedFlux.create(pageSize -> func.apply(null, pageSize), func);
     }
 
     private Mono<PagedResponse<TaggedBlobItem>> findBlobsByTags(

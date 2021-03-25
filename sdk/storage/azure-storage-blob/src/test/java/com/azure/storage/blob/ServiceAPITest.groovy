@@ -161,6 +161,27 @@ class ServiceAPITest extends APISpec {
         containers.each { container -> container.delete() }
     }
 
+    def "List containers maxResults by page"() {
+        setup:
+        def NUM_CONTAINERS = 5
+        def PAGE_RESULTS = 3
+        def containerName = generateContainerName()
+        def containerPrefix = containerName.substring(0, Math.min(60, containerName.length()))
+
+        def containers = [] as Collection<BlobContainerClient>
+        for (i in (1..NUM_CONTAINERS)) {
+            containers << primaryBlobServiceClient.createBlobContainer(containerPrefix + i)
+        }
+
+        expect:
+        primaryBlobServiceClient.listBlobContainers(new ListBlobContainersOptions()
+            .setPrefix(containerPrefix), null)
+            .iterableByPage(PAGE_RESULTS).iterator().next().getValue().size() == PAGE_RESULTS
+
+        cleanup:
+        containers.each { container -> container.delete() }
+    }
+
     def "List deleted"() {
         given:
         def NUM_CONTAINERS = 5
@@ -333,6 +354,30 @@ class ServiceAPITest extends APISpec {
             primaryBlobServiceClient.findBlobsByTags(
                 new FindBlobsOptions("\"tag\"='value'").setMaxResultsPerPage(PAGE_RESULTS), null, Context.NONE)
                 .iterableByPage()) {
+            assert page.iterator().size() <= PAGE_RESULTS
+        }
+
+        cleanup:
+        cc.delete()
+    }
+
+    def "Find blobs maxResults by page"() {
+        setup:
+        def NUM_BLOBS = 7
+        def PAGE_RESULTS = 3
+        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
+        def tags = Collections.singletonMap("tag", "value")
+
+        for (i in (1..NUM_BLOBS)) {
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null, null)
+        }
+
+        expect:
+        for (ContinuablePage page :
+            primaryBlobServiceClient.findBlobsByTags(
+                new FindBlobsOptions("\"tag\"='value'"), null, Context.NONE)
+                .iterableByPage(PAGE_RESULTS)) {
             assert page.iterator().size() <= PAGE_RESULTS
         }
 

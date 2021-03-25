@@ -914,6 +914,25 @@ class ContainerAPITest extends APISpec {
             .verifyComplete()
     }
 
+    def "List blobs flat options maxResults by page"() {
+        setup:
+        def PAGE_SIZE = 2
+        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveCopy(true)
+            .setRetrieveSnapshots(true).setRetrieveUncommittedBlobs(true))
+        def normalName = "a" + generateBlobName()
+        def copyName = "c" + generateBlobName()
+        def metadataName = "m" + generateBlobName()
+        def tagsName = "t" + generateBlobName()
+        def uncommittedName = "u" + generateBlobName()
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
+
+        expect: "Get first page of blob listings (sync and async)"
+        cc.listBlobs(options, null).iterableByPage(PAGE_SIZE).iterator().next().getValue().size() == PAGE_SIZE
+        StepVerifier.create(ccAsync.listBlobs(options).byPage(PAGE_SIZE).limitRequest(1))
+            .assertNext({ assert it.getValue().size() == PAGE_SIZE })
+            .verifyComplete()
+    }
+
     def "List blobs prefix with comma"() {
         setup:
         def prefix = generateBlobName() + ", " + generateBlobName()
@@ -1309,7 +1328,7 @@ class ContainerAPITest extends APISpec {
 
         def iterableByPage = pagedIterable.iterableByPage(1)
         for (def page : iterableByPage) {
-            System.out.println(page.value.size())
+            assert page.value.size() == 1
         }
     }
 

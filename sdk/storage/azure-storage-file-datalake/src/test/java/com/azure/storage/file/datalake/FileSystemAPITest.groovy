@@ -944,6 +944,21 @@ class FileSystemAPITest extends APISpec {
         def filePath = response.next()
         !response.hasNext()
     }
+
+    def "List paths max results by page"() {
+        setup:
+        def dirName = generatePathName()
+        fsc.getDirectoryClient(dirName).create()
+
+        def fileName = generatePathName()
+        fsc.getFileClient(fileName).create()
+
+        when:
+        def response = fsc.listPaths(new ListPathsOptions(), null).iterableByPage(1)
+
+        then:
+        response.first().value.size() == 1
+    }
     // TODO (gapra): Add more get paths tests (Github issue created)
 
     @Unroll

@@ -20,6 +20,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.StoragePagedFlux;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.DirectoriesCreateResponse;
 import com.azure.storage.file.share.implementation.models.DirectoriesGetPropertiesResponse;
@@ -51,6 +52,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -607,10 +609,10 @@ public class ShareDirectoryAsyncClient {
 
     PagedFlux<ShareFileItem> listFilesAndDirectoriesWithOptionalTimeout(String prefix, Integer maxResultsPerPage,
                                                                         Duration timeout, Context context) {
-        Function<String, Mono<PagedResponse<ShareFileItem>>> retriever =
-            marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.getDirectories()
+        BiFunction<String, Integer, Mono<PagedResponse<ShareFileItem>>> retriever =
+            (marker, pageSize) -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.getDirectories()
                 .listFilesAndDirectoriesSegmentWithResponseAsync(shareName, directoryPath, prefix, snapshot,
-                    marker, maxResultsPerPage, null, context), timeout)
+                    marker, pageSize == null ? maxResultsPerPage : pageSize, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
@@ -618,7 +620,7 @@ public class ShareDirectoryAsyncClient {
                     response.getValue().getNextMarker(),
                     response.getDeserializedHeaders()));
 
-        return new PagedFlux<>(() -> retriever.apply(null), retriever);
+        return StoragePagedFlux.create(pageSize -> retriever.apply(null, pageSize), retriever);
     }
 
     /**
