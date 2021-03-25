@@ -36,7 +36,7 @@ public class ReadmeSamples {
      * @return the Communication Identity Client.
      */
     public CommunicationIdentityClient createCommunicationIdentityClientWithConnectionString() {
-        // Your can find your connection string from your resource in the Azure Portal
+        // You can find your connection string from your resource in the Azure Portal
         String connectionString = "<connection_string>";
 
         CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
