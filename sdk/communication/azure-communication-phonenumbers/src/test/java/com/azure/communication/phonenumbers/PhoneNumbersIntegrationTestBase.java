@@ -23,6 +23,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.ClientSecretCredentialBuilder;
 
 import reactor.core.publisher.Mono;
 
@@ -97,7 +98,13 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new FakeCredentials());
         } else {
-            builder.credential(new DefaultAzureCredentialBuilder().build());
+            Configuration configuration = Configuration.getGlobalConfiguration().clone();
+            String clientId = configuration.get("COMMUNICATION_CLIENT_ID"); //Configuration.PROPERTY_AZURE_CLIENT_ID);
+            String tenantId = configuration.get("COMMUNICATION_TENANT_ID");//"COMMUNICATION_TENANT_ID");// Configuration.PROPERTY_AZURE_TENANT_ID);
+            String clientSecret = configuration.get("COMMUNICATION_CLIENT_SECRET"); //Configuration.PROPERTY_AZURE_CLIENT_SECRET);
+
+            //builder.credential(new DefaultAzureCredentialBuilder().build());
+            builder.credential(new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId).clientSecret(clientSecret).build());
         }
 
         if (getTestMode() == TestMode.RECORD) {
