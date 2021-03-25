@@ -1,6 +1,7 @@
 package com.azure.storage.blob
 
 import com.azure.storage.blob.models.BlobRequestConditions
+import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlobType
 import com.azure.storage.blob.options.BlobInputStreamOptions
 import com.azure.storage.blob.specialized.BlobOutputStream
@@ -172,5 +173,62 @@ class BlockBlobInputOutputStreamTest extends APISpec {
 
         then:
         thrown(IOException)
+    }
+
+    @Unroll
+    def "InputStream AC"() {
+        setup:
+        bc.upload(new ByteArrayInputStream(new byte[0]), 0)
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
+        def bac = new BlobRequestConditions()
+            .setLeaseId(setupBlobLeaseCondition(bc, leaseID))
+            .setIfMatch(setupBlobMatchCondition(bc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
+
+        expect:
+        bc.openInputStream(new BlobInputStreamOptions().setRequestConditions(bac))
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID         | tags
+        null     | null       | null         | null        | null            | null
+        oldDate  | null       | null         | null        | null            | null
+        null     | newDate    | null         | null        | null            | null
+        null     | null       | receivedEtag | null        | null            | null
+        null     | null       | null         | garbageEtag | null            | null
+        null     | null       | null         | null        | receivedLeaseID | null
+        null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
+    }
+
+    @Unroll
+    def "InputStream AC fail"() {
+        setup:
+        bc.upload(new ByteArrayInputStream(new byte[0]), 0)
+        def bac = new BlobRequestConditions()
+            .setLeaseId(setupBlobLeaseCondition(bc, leaseID))
+            .setIfMatch(match)
+            .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
+
+        when:
+        bc.openInputStream(new BlobInputStreamOptions().setRequestConditions(bac))
+
+        then:
+        thrown(BlobStorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID        | tags
+        newDate  | null       | null        | null         | null           | null
+        null     | oldDate    | null        | null         | null           | null
+        null     | null       | garbageEtag | null         | null           | null
+        null     | null       | null        | receivedEtag | null           | null
+        null     | null       | null        | null         | garbageLeaseID | null
+        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
     }
 }

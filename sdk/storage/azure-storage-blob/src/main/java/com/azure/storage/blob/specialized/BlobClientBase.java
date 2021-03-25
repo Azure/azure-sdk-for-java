@@ -262,7 +262,7 @@ public class BlobClientBase {
     public BlobInputStream openInputStream(BlobInputStreamOptions options) {
         options = options == null ? new BlobInputStreamOptions() : options;
 
-        BlobProperties properties = getProperties();
+        BlobProperties properties = getPropertiesWithResponse(options.getRequestConditions(), null, null).getValue();
 
         BlobRange range = options.getRange() == null ? new BlobRange(0) : options.getRange();
         int chunkSize = options.getBlockSize() == null ? 4 * Constants.MB : options.getBlockSize();
