@@ -14,7 +14,6 @@ import com.azure.spring.cloud.context.core.impl.EventHubConsumerGroupManager;
 import com.azure.spring.cloud.context.core.impl.EventHubManager;
 import com.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
 import com.azure.spring.cloud.telemetry.TelemetryCollector;
-import com.azure.spring.eventhub.stream.binder.EventHubHealthIndicator;
 import com.azure.spring.eventhub.stream.binder.EventHubMessageChannelBinder;
 import com.azure.spring.eventhub.stream.binder.properties.EventHubExtendedBindingProperties;
 import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelProvisioner;
