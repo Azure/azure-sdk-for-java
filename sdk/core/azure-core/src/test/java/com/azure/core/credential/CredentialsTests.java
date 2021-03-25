@@ -13,13 +13,15 @@ import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.*;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.net.URL;
 import java.time.OffsetDateTime;
+import java.util.stream.Stream;
 
 public class CredentialsTests {
 
@@ -144,5 +146,63 @@ public class CredentialsTests {
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
         pipeline.send(request).block();
+    }
+
+
+    static class InvalidInputsArgumentProvider implements ArgumentsProvider {
+
+        public InvalidInputsArgumentProvider() { }
+
+        @Override
+        public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
+            return Stream.of(
+                Arguments.of(null, null, NullPointerException.class),
+                Arguments.of("", null, NullPointerException.class),
+                Arguments.of(null, "", NullPointerException.class),
+                Arguments.of("", "", IllegalArgumentException.class),
+                Arguments.of("DummyName", "", IllegalArgumentException.class),
+                Arguments.of("", "DummyValue", IllegalArgumentException.class)
+            );
+        }
+    }
+
+
+    @ParameterizedTest
+    @ArgumentsSource(InvalidInputsArgumentProvider.class)
+    public void namedKeyCredentialsInvalidArgumentTest(String name, String key, Class<Exception> excepionType) {
+        Assertions.assertThrows(excepionType, () -> {
+            new AzureNamedKeyCredential(name, key);
+        });
+    }
+
+    @ParameterizedTest
+    @ArgumentsSource(InvalidInputsArgumentProvider.class)
+    public void namedKeyCredentialsInvalidArgumentUpdateTest(String name, String key, Class<Exception> excepionType) {
+        AzureNamedKeyCredential azureNamedKeyCredential =
+            new AzureNamedKeyCredential("Dummy-Name", "DummyValue");
+
+        Assertions.assertThrows(excepionType, () -> {
+            azureNamedKeyCredential.update(name, key);
+        });
+    }
+
+    @Test
+    public void namedKeyCredentialValueTest() {
+        AzureNamedKeyCredential azureNamedKeyCredential =
+            new AzureNamedKeyCredential("Dummy-Name", "DummyValue");
+
+        Assertions.assertEquals("Dummy-Name", azureNamedKeyCredential.getName());
+        Assertions.assertEquals("DummyValue", azureNamedKeyCredential.getKey());
+    }
+
+    @Test
+    public void namedKeyCredentialUpdateTest() {
+        AzureNamedKeyCredential azureNamedKeyCredential =
+            new AzureNamedKeyCredential("Dummy-Name", "DummyValue");
+
+        azureNamedKeyCredential.update("New-Name", "NewValue");
+
+        Assertions.assertEquals("New-Name", azureNamedKeyCredential.getName());
+        Assertions.assertEquals("NewValue", azureNamedKeyCredential.getKey());
     }
 }
