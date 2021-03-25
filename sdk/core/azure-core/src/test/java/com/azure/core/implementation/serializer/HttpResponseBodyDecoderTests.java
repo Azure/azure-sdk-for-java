@@ -371,7 +371,7 @@ public class HttpResponseBodyDecoderTests {
         when(decodeData.isExpectedResponseStatusCode(200)).thenReturn(true);
 
         SerializerAdapter serializer = mock(SerializerAdapter.class);
-        when(serializer.deserialize((InputStream) any(), any(), any())).thenThrow(IOException.class);
+        when(serializer.deserialize(any(byte[].class), any(), any())).thenThrow(IOException.class);
 
         StepVerifier.create(HttpResponseBodyDecoder.decode(null, response, serializer, decodeData))
             .verifyError(HttpResponseException.class);

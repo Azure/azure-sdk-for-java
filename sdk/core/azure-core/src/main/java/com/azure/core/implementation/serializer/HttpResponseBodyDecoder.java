@@ -20,9 +20,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
@@ -157,17 +155,13 @@ public final class HttpResponseBodyDecoder {
      */
     private static Object deserializeBody(final byte[] value, final Type resultType, final Type wireType,
         final SerializerAdapter serializer, final SerializerEncoding encoding) throws IOException {
-        InputStream inputStream = (value == null || value.length == 0)
-            ? new ByteArrayInputStream(new byte[0])
-            : new ByteArrayInputStream(value);
-
         if (wireType == null) {
-            return serializer.deserialize(inputStream, resultType, encoding);
+            return serializer.deserialize(value, resultType, encoding);
         } else if (TypeUtil.isTypeOrSubTypeOf(wireType, Page.class)) {
-            return deserializePage(inputStream, resultType, wireType, serializer, encoding);
+            return deserializePage(value, resultType, wireType, serializer, encoding);
         } else {
             final Type wireResponseType = constructWireResponseType(resultType, wireType);
-            final Object wireResponse = serializer.deserialize(inputStream, wireResponseType, encoding);
+            final Object wireResponse = serializer.deserialize(value, wireResponseType, encoding);
 
             return convertToResultType(wireResponse, resultType, wireType);
         }
@@ -220,7 +214,7 @@ public final class HttpResponseBodyDecoder {
      * Deserializes a response body as a Page&lt;T&gt; given that {@param wireType} is either: 1. A type that implements
      * the interface 2. Is of {@link Page}
      *
-     * @param inputStream The data to deserialize
+     * @param value The data to deserialize
      * @param resultType The type T, of the page contents.
      * @param wireType The {@link Type} that either is, or implements {@link Page}
      * @param serializer The serializer used to deserialize the value.
@@ -228,7 +222,7 @@ public final class HttpResponseBodyDecoder {
      * @return An object representing an instance of {@param wireType}
      * @throws IOException if the serializer is unable to deserialize the value.
      */
-    private static Object deserializePage(final InputStream inputStream,
+    private static Object deserializePage(final byte[] value,
         final Type resultType,
         final Type wireType,
         final SerializerAdapter serializer,
@@ -238,7 +232,7 @@ public final class HttpResponseBodyDecoder {
             ? TypeUtil.createParameterizedType(ItemPage.class, resultType)
             : wireType;
 
-        return serializer.deserialize(inputStream, wireResponseType, encoding);
+        return serializer.deserialize(value, wireResponseType, encoding);
     }
 
     /**
