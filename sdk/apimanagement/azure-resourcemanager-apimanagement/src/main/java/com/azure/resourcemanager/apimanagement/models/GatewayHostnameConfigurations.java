@@ -81,7 +81,7 @@ public interface GatewayHostnameConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    Response<Void> getEntityTagWithResponse(
+    GatewayHostnameConfigurationsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, String hcId, Context context);
 
     /**

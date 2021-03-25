@@ -2,6 +2,9 @@
 
 ## 1.7.0-beta.1 (Unreleased)
 
+### Bug Fixes
+
+- Fixed a bug where a proxy's address is only resolved during construction of the client, now it is resolved per connection. [#19497](https://github.com/Azure/azure-sdk-for-java/issues/19497)
 
 ## 1.6.0 (2021-03-08)
 

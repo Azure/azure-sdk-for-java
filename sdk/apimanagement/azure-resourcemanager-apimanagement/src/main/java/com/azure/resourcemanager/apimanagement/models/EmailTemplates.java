@@ -65,7 +65,7 @@ public interface EmailTemplates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the email template specified by its identifier.
      */
-    Response<Void> getEntityTagWithResponse(
+    EmailTemplatesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, TemplateName templateName, Context context);
 
     /**

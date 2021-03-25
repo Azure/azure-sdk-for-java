@@ -19,6 +19,8 @@ import com.azure.resourcemanager.apimanagement.models.UserContract;
 import com.azure.resourcemanager.apimanagement.models.UserTokenParameters;
 import com.azure.resourcemanager.apimanagement.models.UserTokenResult;
 import com.azure.resourcemanager.apimanagement.models.Users;
+import com.azure.resourcemanager.apimanagement.models.UsersGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.UsersGetResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class UsersImpl implements Users {
@@ -58,7 +60,7 @@ public final class UsersImpl implements Users {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, userId);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public UsersGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String userId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, userId, context);
     }
@@ -74,8 +76,7 @@ public final class UsersImpl implements Users {
 
     public Response<UserContract> getWithResponse(
         String resourceGroupName, String serviceName, String userId, Context context) {
-        Response<UserContractInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serviceName, userId, context);
+        UsersGetResponse inner = this.serviceClient().getWithResponse(resourceGroupName, serviceName, userId, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),

@@ -79,7 +79,7 @@ public interface Products {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the product specified by its identifier.
      */
-    Response<Void> getEntityTagWithResponse(
+    ProductsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String productId, Context context);
 
     /**

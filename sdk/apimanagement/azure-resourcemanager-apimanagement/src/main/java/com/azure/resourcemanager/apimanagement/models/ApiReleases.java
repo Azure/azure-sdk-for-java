@@ -79,7 +79,7 @@ public interface ApiReleases {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    Response<Void> getEntityTagWithResponse(
+    ApiReleasesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String releaseId, Context context);
 
     /**

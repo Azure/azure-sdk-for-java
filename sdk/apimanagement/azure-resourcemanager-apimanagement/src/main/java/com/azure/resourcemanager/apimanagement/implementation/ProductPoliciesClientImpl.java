@@ -203,7 +203,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -371,7 +371,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -479,7 +479,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
      * @return the ETag of the policy configuration at the Product level.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public ProductPoliciesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String productId, PolicyIdName policyId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, productId, policyId, context).block();
     }
@@ -545,7 +545,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -703,7 +703,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
      * @return the policy configuration at the Product level.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyContractInner> getWithResponse(
+    public ProductPoliciesGetResponse getWithResponse(
         String resourceGroupName,
         String serviceName,
         String productId,
@@ -782,7 +782,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -961,7 +961,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
      * @return policy Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyContractInner> createOrUpdateWithResponse(
+    public ProductPoliciesCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String productId,
@@ -1035,7 +1035,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

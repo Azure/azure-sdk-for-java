@@ -18,6 +18,11 @@ import com.azure.resourcemanager.apimanagement.models.SubscriptionCreateParamete
 import com.azure.resourcemanager.apimanagement.models.SubscriptionKeysContract;
 import com.azure.resourcemanager.apimanagement.models.SubscriptionUpdateParameters;
 import com.azure.resourcemanager.apimanagement.models.Subscriptions;
+import com.azure.resourcemanager.apimanagement.models.SubscriptionsCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.SubscriptionsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.SubscriptionsGetResponse;
+import com.azure.resourcemanager.apimanagement.models.SubscriptionsListSecretsResponse;
+import com.azure.resourcemanager.apimanagement.models.SubscriptionsUpdateResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SubscriptionsImpl implements Subscriptions {
@@ -49,7 +54,7 @@ public final class SubscriptionsImpl implements Subscriptions {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, sid);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public SubscriptionsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String sid, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, sid, context);
     }
@@ -65,7 +70,7 @@ public final class SubscriptionsImpl implements Subscriptions {
 
     public Response<SubscriptionContract> getWithResponse(
         String resourceGroupName, String serviceName, String sid, Context context) {
-        Response<SubscriptionContractInner> inner =
+        SubscriptionsGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, sid, context);
         if (inner != null) {
             return new SimpleResponse<>(
@@ -98,7 +103,7 @@ public final class SubscriptionsImpl implements Subscriptions {
         String ifMatch,
         AppType appType,
         Context context) {
-        Response<SubscriptionContractInner> inner =
+        SubscriptionsCreateOrUpdateResponse inner =
             this
                 .serviceClient()
                 .createOrUpdateWithResponse(
@@ -138,7 +143,7 @@ public final class SubscriptionsImpl implements Subscriptions {
         Boolean notify,
         AppType appType,
         Context context) {
-        Response<SubscriptionContractInner> inner =
+        SubscriptionsUpdateResponse inner =
             this
                 .serviceClient()
                 .updateWithResponse(resourceGroupName, serviceName, sid, ifMatch, parameters, notify, appType, context);
@@ -191,7 +196,7 @@ public final class SubscriptionsImpl implements Subscriptions {
 
     public Response<SubscriptionKeysContract> listSecretsWithResponse(
         String resourceGroupName, String serviceName, String sid, Context context) {
-        Response<SubscriptionKeysContractInner> inner =
+        SubscriptionsListSecretsResponse inner =
             this.serviceClient().listSecretsWithResponse(resourceGroupName, serviceName, sid, context);
         if (inner != null) {
             return new SimpleResponse<>(

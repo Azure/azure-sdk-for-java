@@ -13,6 +13,8 @@ import com.azure.resourcemanager.apimanagement.fluent.GatewayHostnameConfigurati
 import com.azure.resourcemanager.apimanagement.fluent.models.GatewayHostnameConfigurationContractInner;
 import com.azure.resourcemanager.apimanagement.models.GatewayHostnameConfigurationContract;
 import com.azure.resourcemanager.apimanagement.models.GatewayHostnameConfigurations;
+import com.azure.resourcemanager.apimanagement.models.GatewayHostnameConfigurationsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.GatewayHostnameConfigurationsGetResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class GatewayHostnameConfigurationsImpl implements GatewayHostnameConfigurations {
@@ -53,7 +55,7 @@ public final class GatewayHostnameConfigurationsImpl implements GatewayHostnameC
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, gatewayId, hcId);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public GatewayHostnameConfigurationsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, String hcId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, gatewayId, hcId, context);
     }
@@ -71,7 +73,7 @@ public final class GatewayHostnameConfigurationsImpl implements GatewayHostnameC
 
     public Response<GatewayHostnameConfigurationContract> getWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, String hcId, Context context) {
-        Response<GatewayHostnameConfigurationContractInner> inner =
+        GatewayHostnameConfigurationsGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, gatewayId, hcId, context);
         if (inner != null) {
             return new SimpleResponse<>(

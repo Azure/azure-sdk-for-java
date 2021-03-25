@@ -272,7 +272,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -473,7 +473,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
                             accessName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -572,7 +572,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public TenantAccessGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, AccessIdName accessName, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, accessName, context).block();
     }
@@ -627,7 +627,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
                             accessName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -735,7 +735,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @return tenant access information details without secrets.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessInformationContractInner> getWithResponse(
+    public TenantAccessGetResponse getWithResponse(
         String resourceGroupName, String serviceName, AccessIdName accessName, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, accessName, context).block();
     }
@@ -807,7 +807,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -951,7 +951,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @return tenant Settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessInformationContractInner> createWithResponse(
+    public TenantAccessCreateResponse createWithResponse(
         String resourceGroupName,
         String serviceName,
         AccessIdName accessName,
@@ -1029,7 +1029,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1173,7 +1173,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @return tenant Settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessInformationContractInner> updateWithResponse(
+    public TenantAccessUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         AccessIdName accessName,
@@ -1234,7 +1234,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
                             accessName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1389,7 +1389,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
                             accessName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1544,7 +1544,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
                             accessName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1653,7 +1653,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @return tenant access information details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessInformationSecretsContractInner> listSecretsWithResponse(
+    public TenantAccessListSecretsResponse listSecretsWithResponse(
         String resourceGroupName, String serviceName, AccessIdName accessName, Context context) {
         return listSecretsWithResponseAsync(resourceGroupName, serviceName, accessName, context).block();
     }
@@ -1690,7 +1690,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

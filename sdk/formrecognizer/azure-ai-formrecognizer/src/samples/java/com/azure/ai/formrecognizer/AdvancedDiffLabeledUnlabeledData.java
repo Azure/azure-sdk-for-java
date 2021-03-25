@@ -44,8 +44,8 @@ public class AdvancedDiffLabeledUnlabeledData {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        File analyzeFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/"
-            + "forms/Form_1.jpg");
+        File analyzeFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/"
+            + "java/sample-forms/forms/Form_1.jpg");
 
         List<RecognizedForm> formsWithLabeledModel =
             client.beginRecognizeCustomForms(

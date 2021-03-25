@@ -10,6 +10,9 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.GatewayHostnameConfigurationContractInner;
+import com.azure.resourcemanager.apimanagement.models.GatewayHostnameConfigurationsCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.GatewayHostnameConfigurationsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.GatewayHostnameConfigurationsGetResponse;
 
 /** An instance of this class provides access to all the operations defined in GatewayHostnameConfigurationsClient. */
 public interface GatewayHostnameConfigurationsClient {
@@ -88,7 +91,7 @@ public interface GatewayHostnameConfigurationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    GatewayHostnameConfigurationsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, String hcId, Context context);
 
     /**
@@ -123,7 +126,7 @@ public interface GatewayHostnameConfigurationsClient {
      * @return details of a hostname configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GatewayHostnameConfigurationContractInner> getWithResponse(
+    GatewayHostnameConfigurationsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, String hcId, Context context);
 
     /**
@@ -165,7 +168,7 @@ public interface GatewayHostnameConfigurationsClient {
      * @return gateway hostname configuration details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GatewayHostnameConfigurationContractInner> createOrUpdateWithResponse(
+    GatewayHostnameConfigurationsCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String gatewayId,

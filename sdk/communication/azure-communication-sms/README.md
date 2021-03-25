@@ -21,7 +21,7 @@ Azure Communication SMS is used to send simple text messages.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-sms</artifactId>
-  <version>1.0.0-beta.4</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 
@@ -112,12 +112,12 @@ SmsSendOptions options = new SmsSendOptions();
 options.setDeliveryReportEnabled(true);
 options.setTag("Marketing");
 
-Iterable<SmsSendResult> sendResults = smsClient.sendWithResponse(
+Iterable<SmsSendResult> sendResults = smsClient.send(
     "<from-phone-number>",
     Arrays.asList("<to-phone-number1>", "<to-phone-number2>"),
     "Weekly Promotion",
     options /* Optional */,
-    Context.NONE).getValue();
+    Context.NONE);
 
 for (SmsSendResult result : sendResults) {
     System.out.println("Message Id: " + result.getMessageId());
@@ -131,21 +131,20 @@ for (SmsSendResult result : sendResults) {
 SMS operations will throw an exception if the request to the server fails.
 Exceptions will not be thrown if the error is caused by an individual message, only if something fails with the overall request.
 Please use the `isSuccessful()` flag to validate each individual result to verify if the message was sent.
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L153-L176 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L153-L175 -->
 ```java
 try {
     SmsSendOptions options = new SmsSendOptions();
     options.setDeliveryReportEnabled(true);
     options.setTag("Marketing");
 
-    Response<Iterable<SmsSendResult>> sendResults = smsClient.sendWithResponse(
+    PagedIterable<SmsSendResult> smsSendResults = smsClient.send(
         "<from-phone-number>",
         Arrays.asList("<to-phone-number1>", "<to-phone-number2>"),
         "Weekly Promotion",
         options /* Optional */,
         Context.NONE);
 
-    Iterable<SmsSendResult> smsSendResults = sendResults.getValue();
     for (SmsSendResult result : smsSendResults) {
         if (result.isSuccessful()) {
             System.out.println("Successfully sent this message: " + result.getMessageId() + " to " + result.getTo());
@@ -161,7 +160,8 @@ try {
 
 ## Next steps
 
-Check out other client libraries for Azure Communication Services
+- [Read more about SMS in Azure Communication Services][next_steps]
+- For a basic guide on how to configure Delivery Reporting for your SMS messages please refer to the [Handle SMS Events quickstart][handle_sms_events].
 
 <!-- LINKS -->
 [cla]: https://cla.microsoft.com
@@ -172,6 +172,8 @@ Check out other client libraries for Azure Communication Services
 [package]: https://search.maven.org/artifact/com.azure/azure-communication-sms
 [api_documentation]: https://aka.ms/java-docs
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/communication/azure-communication-sms/src
+[handle_sms_events]: https://docs.microsoft.com/azure/communication-services/quickstarts/telephony-sms/handle-sms-events
+[next_steps]:https://docs.microsoft.com/azure/communication-services/quickstarts/telephony-sms/send?pivots=programming-language-java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Feng%2Fazure-communications-sms%2FREADME.png)
 

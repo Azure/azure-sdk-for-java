@@ -7,11 +7,12 @@ package com.azure.resourcemanager.apimanagement.fluent;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.apimanagement.fluent.models.PortalRevisionContractInner;
+import com.azure.resourcemanager.apimanagement.models.PortalRevisionsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.PortalRevisionsGetResponse;
 
 /** An instance of this class provides access to all the operations defined in PortalRevisionsClient. */
 public interface PortalRevisionsClient {
@@ -77,7 +78,7 @@ public interface PortalRevisionsClient {
      * @return developer portal revision specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    PortalRevisionsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String portalRevisionId, Context context);
 
     /**
@@ -109,7 +110,7 @@ public interface PortalRevisionsClient {
      * @return developer portal revision specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PortalRevisionContractInner> getWithResponse(
+    PortalRevisionsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String portalRevisionId, Context context);
 
     /**

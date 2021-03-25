@@ -12,6 +12,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.ApiOperationsClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.OperationContractInner;
 import com.azure.resourcemanager.apimanagement.models.ApiOperations;
+import com.azure.resourcemanager.apimanagement.models.ApiOperationsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiOperationsGetResponse;
 import com.azure.resourcemanager.apimanagement.models.OperationContract;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -52,7 +54,7 @@ public final class ApiOperationsImpl implements ApiOperations {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, operationId);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public ApiOperationsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String operationId, Context context) {
         return this
             .serviceClient()
@@ -70,7 +72,7 @@ public final class ApiOperationsImpl implements ApiOperations {
 
     public Response<OperationContract> getWithResponse(
         String resourceGroupName, String serviceName, String apiId, String operationId, Context context) {
-        Response<OperationContractInner> inner =
+        ApiOperationsGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, apiId, operationId, context);
         if (inner != null) {
             return new SimpleResponse<>(

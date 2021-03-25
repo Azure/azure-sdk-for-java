@@ -13,6 +13,8 @@ import com.azure.resourcemanager.apimanagement.fluent.EmailTemplatesClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.EmailTemplateContractInner;
 import com.azure.resourcemanager.apimanagement.models.EmailTemplateContract;
 import com.azure.resourcemanager.apimanagement.models.EmailTemplates;
+import com.azure.resourcemanager.apimanagement.models.EmailTemplatesGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.EmailTemplatesGetResponse;
 import com.azure.resourcemanager.apimanagement.models.TemplateName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -46,7 +48,7 @@ public final class EmailTemplatesImpl implements EmailTemplates {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, templateName);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public EmailTemplatesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, TemplateName templateName, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, templateName, context);
     }
@@ -62,7 +64,7 @@ public final class EmailTemplatesImpl implements EmailTemplates {
 
     public Response<EmailTemplateContract> getWithResponse(
         String resourceGroupName, String serviceName, TemplateName templateName, Context context) {
-        Response<EmailTemplateContractInner> inner =
+        EmailTemplatesGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, templateName, context);
         if (inner != null) {
             return new SimpleResponse<>(

@@ -14,6 +14,8 @@ import com.azure.resourcemanager.apimanagement.fluent.models.ProductContractInne
 import com.azure.resourcemanager.apimanagement.fluent.models.TagResourceContractInner;
 import com.azure.resourcemanager.apimanagement.models.ProductContract;
 import com.azure.resourcemanager.apimanagement.models.Products;
+import com.azure.resourcemanager.apimanagement.models.ProductsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.ProductsGetResponse;
 import com.azure.resourcemanager.apimanagement.models.TagResourceContract;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -55,7 +57,7 @@ public final class ProductsImpl implements Products {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, productId);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public ProductsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String productId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, productId, context);
     }
@@ -71,7 +73,7 @@ public final class ProductsImpl implements Products {
 
     public Response<ProductContract> getWithResponse(
         String resourceGroupName, String serviceName, String productId, Context context) {
-        Response<ProductContractInner> inner =
+        ProductsGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, productId, context);
         if (inner != null) {
             return new SimpleResponse<>(

@@ -14,6 +14,11 @@ import com.azure.resourcemanager.apimanagement.fluent.models.IdentityProviderCon
 import com.azure.resourcemanager.apimanagement.models.IdentityProviderCreateContract;
 import com.azure.resourcemanager.apimanagement.models.IdentityProviderType;
 import com.azure.resourcemanager.apimanagement.models.IdentityProviderUpdateParameters;
+import com.azure.resourcemanager.apimanagement.models.IdentityProvidersCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.IdentityProvidersGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.IdentityProvidersGetResponse;
+import com.azure.resourcemanager.apimanagement.models.IdentityProvidersListSecretsResponse;
+import com.azure.resourcemanager.apimanagement.models.IdentityProvidersUpdateResponse;
 
 /** An instance of this class provides access to all the operations defined in IdentityProvidersClient. */
 public interface IdentityProvidersClient {
@@ -71,7 +76,7 @@ public interface IdentityProvidersClient {
      * @return the entity state (Etag) version of the identityProvider specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    IdentityProvidersGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, IdentityProviderType identityProviderName, Context context);
 
     /**
@@ -102,7 +107,7 @@ public interface IdentityProvidersClient {
      * @return the configuration details of the identity Provider configured in specified service instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IdentityProviderContractInner> getWithResponse(
+    IdentityProvidersGetResponse getWithResponse(
         String resourceGroupName, String serviceName, IdentityProviderType identityProviderName, Context context);
 
     /**
@@ -139,7 +144,7 @@ public interface IdentityProvidersClient {
      * @return identity Provider details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IdentityProviderContractInner> createOrUpdateWithResponse(
+    IdentityProvidersCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         IdentityProviderType identityProviderName,
@@ -185,7 +190,7 @@ public interface IdentityProvidersClient {
      * @return identity Provider details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IdentityProviderContractInner> updateWithResponse(
+    IdentityProvidersUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         IdentityProviderType identityProviderName,
@@ -259,6 +264,6 @@ public interface IdentityProvidersClient {
      * @return the client secret details of the Identity Provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClientSecretContractInner> listSecretsWithResponse(
+    IdentityProvidersListSecretsResponse listSecretsWithResponse(
         String resourceGroupName, String serviceName, IdentityProviderType identityProviderName, Context context);
 }

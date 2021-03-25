@@ -246,7 +246,7 @@ public final class LoggersClientImpl implements LoggersClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -477,7 +477,7 @@ public final class LoggersClientImpl implements LoggersClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -576,7 +576,7 @@ public final class LoggersClientImpl implements LoggersClient {
      * @return the entity state (Etag) version of the logger specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public LoggersGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String loggerId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, loggerId, context).block();
     }
@@ -631,7 +631,7 @@ public final class LoggersClientImpl implements LoggersClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -738,7 +738,7 @@ public final class LoggersClientImpl implements LoggersClient {
      * @return the details of the logger specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LoggerContractInner> getWithResponse(
+    public LoggersGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String loggerId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, loggerId, context).block();
     }
@@ -802,7 +802,7 @@ public final class LoggersClientImpl implements LoggersClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -958,7 +958,7 @@ public final class LoggersClientImpl implements LoggersClient {
      * @return logger details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LoggerContractInner> createOrUpdateWithResponse(
+    public LoggersCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String loggerId,
@@ -1036,7 +1036,7 @@ public final class LoggersClientImpl implements LoggersClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1180,7 +1180,7 @@ public final class LoggersClientImpl implements LoggersClient {
      * @return logger details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LoggerContractInner> updateWithResponse(
+    public LoggersUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String loggerId,
@@ -1246,7 +1246,7 @@ public final class LoggersClientImpl implements LoggersClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1394,7 +1394,7 @@ public final class LoggersClientImpl implements LoggersClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
