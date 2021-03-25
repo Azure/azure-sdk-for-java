@@ -35,7 +35,6 @@ import static javax.net.ssl.HttpsURLConnection.HTTP_NO_CONTENT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipTestBase {
     private final ClientLogger logger = new ClientLogger(DigitalTwinsRelationshipAsyncTest.class);
@@ -294,7 +293,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 createdOutgoingRelationshipIds.add(relationshipId);
             }
 
-            waitIfLive(10);
+            waitIfLive();
 
             // Create multiple incoming relationships to the floor. Typically a room would have relationships to multiple
             // different floors, but for the sake of test simplicity, we'll just add multiple relationships from the same room
@@ -313,7 +312,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 createdIncomingRelationshipIds.add(relationshipId);
             }
 
-            waitIfLive(10);
+            waitIfLive();
 
             AtomicInteger outgoingRelationshipsPageCount = new AtomicInteger();
             // List relationships in multiple pages and verify more than one page was retrieved.

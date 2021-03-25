@@ -4,7 +4,6 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.TestMode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 
@@ -32,7 +31,7 @@ public abstract class DigitalTwinsRelationshipTestBase extends DigitalTwinsTestB
 
     // Relationships list operation default max item count is 10. We create 31 to make sure we will get over 3 pages of response.
     // Ideally, service team would let us set max items per page when listing, but that isn't a feature yet
-    static final int BULK_RELATIONSHIP_COUNT = 31;
+    static final int BULK_RELATIONSHIP_COUNT = 21;
     static final int RELATIONSHIP_PAGE_SIZE_DEFAULT = 10;
 
     @Test
@@ -84,11 +83,5 @@ public abstract class DigitalTwinsRelationshipTestBase extends DigitalTwinsTestB
 
     void createTwinRunner(String twinId, BasicDigitalTwin twin, BiConsumer<String, BasicDigitalTwin> createTwinTestRunner) {
         createTwinTestRunner.accept(twinId, twin);
-    }
-
-    void waitIfLive(int waitTimeInSeconds) throws InterruptedException {
-        if (this.getTestMode() == TestMode.LIVE) {
-            Thread.sleep(waitTimeInSeconds * 1000);
-        }
     }
 }

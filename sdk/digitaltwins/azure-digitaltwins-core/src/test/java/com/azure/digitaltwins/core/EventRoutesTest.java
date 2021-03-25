@@ -37,7 +37,7 @@ public class EventRoutesTest extends EventRoutesTestBase {
         eventRouteToCreate.setFilter(FILTER);
         client.createOrReplaceEventRoute(eventRouteId, eventRouteToCreate);
 
-        waitIfLive(10);
+        waitIfLive();
 
         try {
             // GET

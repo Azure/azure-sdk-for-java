@@ -36,7 +36,7 @@ public class EventRoutesAsyncTest extends EventRoutesTestBase {
         StepVerifier.create(asyncClient.createOrReplaceEventRoute(eventRouteId, eventRouteToCreate))
             .verifyComplete();
 
-        waitIfLive(10);
+        waitIfLive();
 
         try {
             // GET

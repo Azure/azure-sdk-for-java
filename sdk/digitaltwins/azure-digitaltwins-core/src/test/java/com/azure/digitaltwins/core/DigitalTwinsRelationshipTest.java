@@ -29,7 +29,6 @@ import static java.net.HttpURLConnection.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBase {
     private final ClientLogger logger = new ClientLogger(DigitalTwinsRelationshipTest.class);
@@ -231,7 +230,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
                 createdOutgoingRelationshipIds.add(relationshipId);
             }
 
-            waitIfLive(10);
+            waitIfLive();
 
             // Create multiple incoming relationships to the floor. Typically a room would have relationships to multiple
             // different floors, but for the sake of test simplicity, we'll just add multiple relationships from the same room
@@ -242,7 +241,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
                 createdIncomingRelationshipIds.add(relationshipId);
             }
 
-            waitIfLive(10);
+            waitIfLive();
 
             // LIST relationships
             PagedIterable<BasicRelationship> listOutgoingRelationships = client.listRelationships(floorTwinId, BasicRelationship.class);

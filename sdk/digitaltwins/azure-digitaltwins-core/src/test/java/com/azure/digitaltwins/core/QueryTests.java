@@ -46,7 +46,7 @@ public class QueryTests extends QueryTestBase {
                 client.createOrReplaceDigitalTwinWithResponse(roomTwinId, roomTwin, String.class, null, Context.NONE);
             }
 
-            Thread.sleep(10 * 1000);
+            waitIfLive();
 
             String queryString = "SELECT * FROM digitaltwins where IsOccupied = true";
 
