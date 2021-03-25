@@ -430,11 +430,11 @@ public class CosmosAsyncContainer {
         Mono<List<FeedRange>> feedRangesMono = this.getFeedRanges();
         List<Flux<FeedResponse<ObjectNode>>> fluxList = new ArrayList<>();
         return feedRangesMono.flatMap(feedRanges -> {
+            SqlQuerySpec querySpec = new SqlQuerySpec();
+            querySpec.setQueryText("select * from c where c.id = @id");
+            querySpec.setParameters(Collections.singletonList(new SqlParameter("@id",
+                UUID.randomUUID().toString())));
             for (FeedRange feedRange : feedRanges) {
-                SqlQuerySpec querySpec = new SqlQuerySpec();
-                querySpec.setQueryText("select * from c where c.id = @id");
-                querySpec.setParameters(Collections.singletonList(new SqlParameter("@id",
-                    UUID.randomUUID().toString())));
                 CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
                 options.setFeedRange(feedRange);
                 if (this.database.getClient().getConnectionPolicy().getConnectionMode().equals(ConnectionMode.DIRECT)) {

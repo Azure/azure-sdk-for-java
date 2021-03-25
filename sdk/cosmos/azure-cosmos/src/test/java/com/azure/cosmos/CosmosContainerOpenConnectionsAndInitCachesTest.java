@@ -43,20 +43,17 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
 
     @BeforeClass(groups = {"simple"})
     public void beforeClass() {
-        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
-        //  gatewayConnectionConfig.setProxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("127.0.0.1",
-        //          8888)));
         directCosmosAsyncClient = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
             .contentResponseOnWriteEnabled(true)
-            .directMode(DirectConnectionConfig.getDefaultConfig(), gatewayConnectionConfig)
+            .directMode()
             .buildAsyncClient();
         gatewayCosmosAsyncClient = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
             .contentResponseOnWriteEnabled(true)
-            .gatewayMode(gatewayConnectionConfig)
+            .gatewayMode()
             .buildAsyncClient();
         cosmosAsyncDatabase = getSharedCosmosDatabase(directCosmosAsyncClient);
         cosmosAsyncDatabase.createContainerIfNotExists(CONTAINER_ID, "/mypk",
@@ -67,13 +64,13 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
             .contentResponseOnWriteEnabled(true)
-            .directMode(DirectConnectionConfig.getDefaultConfig(), gatewayConnectionConfig)
+            .directMode()
             .buildClient();
         gatewayCosmosClient = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
             .contentResponseOnWriteEnabled(true)
-            .gatewayMode(gatewayConnectionConfig)
+            .gatewayMode()
             .buildClient();
         cosmosDatabase = directCosmosClient.getDatabase(cosmosAsyncDatabase.getId());
         cosmosContainer = cosmosDatabase.getContainer(CONTAINER_ID);
