@@ -17,8 +17,6 @@ import org.apache.qpid.proton.engine.impl.DeliveryImpl;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Mono;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import static com.azure.core.amqp.implementation.ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES;
 
 /**
@@ -30,7 +28,6 @@ final class TransactionCoordinator implements AmqpTransactionCoordinator {
 
     private final AmqpSendLink sendLink;
     private final MessageSerializer messageSerializer;
-    private final AtomicBoolean isDisposed = new AtomicBoolean();
 
     TransactionCoordinator(AmqpSendLink sendLink, MessageSerializer messageSerializer) {
         this.sendLink = sendLink;
@@ -106,17 +103,5 @@ final class TransactionCoordinator implements AmqpTransactionCoordinator {
                         logger.warning("Unknown DeliveryState type: {}", stateType);
                 }
             });
-    }
-
-    public Mono<Void> dispose() {
-        if (isDisposed.getAndSet(true)) {
-            return Mono.empty();
-        }
-
-        return Mono.fromRunnable(() -> {
-            if (sendLink != null) {
-                sendLink.dispose();
-            }
-        });
     }
 }

@@ -100,12 +100,13 @@ public interface AmqpSession extends Disposable {
      * API. Azure SDK already provides implementation for this API.
      *
      * @return newly created {@link AmqpTransactionCoordinator}.
-     * @throws RuntimeException Indicting implementation not found error. Azure SDK should provide implementation of
-     * this API but if runtime is not able to find it in its classpath or version mismatch can cause this exception.
+     * @throws UnsupportedOperationException Indicting implementation not found error. Azure SDK should provide
+     * implementation of this API but if runtime is not able to find it in its classpath or version mismatch can cause
+     * this exception.
      *
      * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transactions-v1.0-os.html#section-coordination">Transaction Coordination</a>
      */
     default Mono<AmqpTransactionCoordinator> getOrCreateTransactionCoordinator() {
-        return Mono.error(new RuntimeException("Implementation not found error."));
+        return Mono.error(new UnsupportedOperationException("Implementation not found error."));
     }
 }

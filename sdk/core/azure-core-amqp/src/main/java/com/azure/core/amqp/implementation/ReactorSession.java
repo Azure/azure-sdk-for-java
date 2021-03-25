@@ -149,6 +149,11 @@ public class ReactorSession implements AmqpSession {
 
         openReceiveLinks.forEach((key, link) -> link.dispose(errorCondition));
         openSendLinks.forEach((key, link) -> link.dispose(errorCondition));
+
+        if (transactionCoordinator.get() != null) {
+            transactionCoordinator.get();
+        }
+
     }
 
     /**

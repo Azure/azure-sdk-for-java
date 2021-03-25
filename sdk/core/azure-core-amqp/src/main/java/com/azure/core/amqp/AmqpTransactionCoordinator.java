@@ -27,7 +27,7 @@ public interface AmqpTransactionCoordinator {
     Mono<Void> discharge(AmqpTransaction transaction, boolean isCommit);
 
     /**
-     * Creates the transaction in message broker. Successfully completion of this API indicates that a transaction
+     * Creates the transaction in message broker. Successful completion of this API indicates that a transaction
      * identifier has successfully been created on the message broker. Once a transaction has been created, it must be
      * completed by using {@link AmqpTransactionCoordinator#discharge(AmqpTransaction, boolean)} API.
      * @return the created transaction id represented by {@link AmqpTransaction}.

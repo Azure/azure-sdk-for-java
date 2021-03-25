@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
  * An option bag to provide configuration required to create a {@link ServiceBusReactorSession}.
  */
 @Immutable
-final public class ServiceBusCreateSessionOptions {
+public final class ServiceBusCreateSessionOptions {
     private final boolean distributedTransactionsSupport;
 
     /**
