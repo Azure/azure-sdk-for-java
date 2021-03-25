@@ -75,7 +75,7 @@ public interface ApiDiagnostics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Diagnostic for an API specified by its identifier.
      */
-    Response<Void> getEntityTagWithResponse(
+    ApiDiagnosticsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String diagnosticId, Context context);
 
     /**

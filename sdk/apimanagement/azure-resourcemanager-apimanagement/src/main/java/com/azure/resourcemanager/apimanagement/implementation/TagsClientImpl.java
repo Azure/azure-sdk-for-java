@@ -567,7 +567,7 @@ public final class TagsClientImpl implements TagsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -871,7 +871,7 @@ public final class TagsClientImpl implements TagsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -996,7 +996,7 @@ public final class TagsClientImpl implements TagsClient {
      * @return the entity state version of the tag specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityStateByOperationWithResponse(
+    public TagsGetEntityStateByOperationResponse getEntityStateByOperationWithResponse(
         String resourceGroupName, String serviceName, String apiId, String operationId, String tagId, Context context) {
         return getEntityStateByOperationWithResponseAsync(
                 resourceGroupName, serviceName, apiId, operationId, tagId, context)
@@ -1065,7 +1065,7 @@ public final class TagsClientImpl implements TagsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1198,7 +1198,7 @@ public final class TagsClientImpl implements TagsClient {
      * @return tag associated with the Operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TagContractInner> getByOperationWithResponse(
+    public TagsGetByOperationResponse getByOperationWithResponse(
         String resourceGroupName, String serviceName, String apiId, String operationId, String tagId, Context context) {
         return getByOperationWithResponseAsync(resourceGroupName, serviceName, apiId, operationId, tagId, context)
             .block();
@@ -1266,7 +1266,7 @@ public final class TagsClientImpl implements TagsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1467,7 +1467,7 @@ public final class TagsClientImpl implements TagsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1667,7 +1667,7 @@ public final class TagsClientImpl implements TagsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1934,7 +1934,7 @@ public final class TagsClientImpl implements TagsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2046,7 +2046,7 @@ public final class TagsClientImpl implements TagsClient {
      * @return the entity state version of the tag specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityStateByApiWithResponse(
+    public TagsGetEntityStateByApiResponse getEntityStateByApiWithResponse(
         String resourceGroupName, String serviceName, String apiId, String tagId, Context context) {
         return getEntityStateByApiWithResponseAsync(resourceGroupName, serviceName, apiId, tagId, context).block();
     }
@@ -2107,7 +2107,7 @@ public final class TagsClientImpl implements TagsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2227,7 +2227,7 @@ public final class TagsClientImpl implements TagsClient {
      * @return tag associated with the API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TagContractInner> getByApiWithResponse(
+    public TagsGetByApiResponse getByApiWithResponse(
         String resourceGroupName, String serviceName, String apiId, String tagId, Context context) {
         return getByApiWithResponseAsync(resourceGroupName, serviceName, apiId, tagId, context).block();
     }
@@ -2288,7 +2288,7 @@ public final class TagsClientImpl implements TagsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2408,7 +2408,7 @@ public final class TagsClientImpl implements TagsClient {
      * @return tag Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TagContractInner> assignToApiWithResponse(
+    public TagsAssignToApiResponse assignToApiWithResponse(
         String resourceGroupName, String serviceName, String apiId, String tagId, Context context) {
         return assignToApiWithResponseAsync(resourceGroupName, serviceName, apiId, tagId, context).block();
     }
@@ -2469,7 +2469,7 @@ public final class TagsClientImpl implements TagsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2653,7 +2653,7 @@ public final class TagsClientImpl implements TagsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2916,7 +2916,7 @@ public final class TagsClientImpl implements TagsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3024,7 +3024,7 @@ public final class TagsClientImpl implements TagsClient {
      * @return the entity state version of the tag specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityStateByProductWithResponse(
+    public TagsGetEntityStateByProductResponse getEntityStateByProductWithResponse(
         String resourceGroupName, String serviceName, String productId, String tagId, Context context) {
         return getEntityStateByProductWithResponseAsync(resourceGroupName, serviceName, productId, tagId, context)
             .block();
@@ -3085,7 +3085,7 @@ public final class TagsClientImpl implements TagsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3201,7 +3201,7 @@ public final class TagsClientImpl implements TagsClient {
      * @return tag associated with the Product.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TagContractInner> getByProductWithResponse(
+    public TagsGetByProductResponse getByProductWithResponse(
         String resourceGroupName, String serviceName, String productId, String tagId, Context context) {
         return getByProductWithResponseAsync(resourceGroupName, serviceName, productId, tagId, context).block();
     }
@@ -3261,7 +3261,7 @@ public final class TagsClientImpl implements TagsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3438,7 +3438,7 @@ public final class TagsClientImpl implements TagsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3616,7 +3616,7 @@ public final class TagsClientImpl implements TagsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3869,7 +3869,7 @@ public final class TagsClientImpl implements TagsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3968,7 +3968,7 @@ public final class TagsClientImpl implements TagsClient {
      * @return the entity state version of the tag specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityStateWithResponse(
+    public TagsGetEntityStateResponse getEntityStateWithResponse(
         String resourceGroupName, String serviceName, String tagId, Context context) {
         return getEntityStateWithResponseAsync(resourceGroupName, serviceName, tagId, context).block();
     }
@@ -4022,7 +4022,7 @@ public final class TagsClientImpl implements TagsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4129,7 +4129,7 @@ public final class TagsClientImpl implements TagsClient {
      * @return the details of the tag specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TagContractInner> getWithResponse(
+    public TagsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String tagId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, tagId, context).block();
     }
@@ -4197,7 +4197,7 @@ public final class TagsClientImpl implements TagsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4357,7 +4357,7 @@ public final class TagsClientImpl implements TagsClient {
      * @return tag Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TagContractInner> createOrUpdateWithResponse(
+    public TagsCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String tagId,
@@ -4435,7 +4435,7 @@ public final class TagsClientImpl implements TagsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4579,7 +4579,7 @@ public final class TagsClientImpl implements TagsClient {
      * @return tag Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TagContractInner> updateWithResponse(
+    public TagsUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String tagId,
@@ -4645,7 +4645,7 @@ public final class TagsClientImpl implements TagsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4793,7 +4793,7 @@ public final class TagsClientImpl implements TagsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4864,7 +4864,7 @@ public final class TagsClientImpl implements TagsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4935,7 +4935,7 @@ public final class TagsClientImpl implements TagsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -5006,7 +5006,7 @@ public final class TagsClientImpl implements TagsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

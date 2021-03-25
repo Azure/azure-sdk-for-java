@@ -32,10 +32,18 @@ Licensed under the MIT License.
     <tag>HEAD</tag>
   </scm>
 
+  <repositories>
+    <repository>
+      <id>azuresdkmaven</id>
+      <url>https://azsdkartifacts.blob.core.windows.net/maven</url>
+    </repository>
+  </repositories>
+
   <!-- CosmosSkip - Needed temporary values to 10% not fail. -->
   <properties>
-    <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jacoco.min.linecoverage>0.01</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.01</jacoco.min.branchcoverage>
   </properties>
 
   <dependencies>
@@ -43,7 +51,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.13.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.14.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
 
     <dependency>
@@ -153,8 +161,16 @@ Licensed under the MIT License.
       <artifactId>bcprov-jdk15on</artifactId>
       <version>1.68</version>  <!-- {x-version-update;org.bouncycastle:bcprov-jdk15on;external_dependency} -->
     </dependency>
-
-
+    <dependency>
+      <groupId>com.microsoft.data.encryption</groupId>
+      <artifactId>cryptography</artifactId>
+      <version>0.1.0.jre8-preview</version> <!-- {x-version-update;cosmos_com.microsoft.data.encryption:cryptography;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.data.encryption</groupId>
+      <artifactId>azure-key-vault-keystoreprovider</artifactId>
+      <version>0.1.0.jre8-preview</version> <!-- {x-version-update;cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;external_dependency} -->
+    </dependency>
   </dependencies>
 
   <build>
@@ -210,6 +226,8 @@ Licensed under the MIT License.
               <includes>
                 <include>com.azure:*</include>
                 <include>org.bouncycastle:bcprov-jdk15on:[1.68]</include> <!-- {x-include-update;org.bouncycastle:bcprov-jdk15on;external_dependency} -->
+                <include>com.microsoft.data.encryption:cryptography:[0.1.0.jre8-preview]</include> <!-- {x-include-update;cosmos_com.microsoft.data.encryption:cryptography;external_dependency} -->
+                <include>com.microsoft.data.encryption:azure-key-vault-keystoreprovider:[0.1.0.jre8-preview]</include> <!-- {x-include-update;cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

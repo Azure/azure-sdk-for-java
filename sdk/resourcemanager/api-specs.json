@@ -76,7 +76,7 @@
     "dir": "azure-resourcemanager-compute",
     "source": "specification/compute/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.compute",
-    "args": "--payload-flattening-threshold=1 --tag=package-2020-12-01 --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities"
+    "args": "--payload-flattening-threshold=1 --tag=package-2021-03-01 --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities"
   },
   "consumption": {
     "dir": "azure-resourcemanager-consumption",
@@ -315,7 +315,7 @@
     "dir": "azure-resourcemanager-storage",
     "source": "specification/storage/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.storage",
-    "args": "--payload-flattening-threshold=2 --tag=package-2021-01"
+    "args": "--payload-flattening-threshold=2 --tag=package-2021-02"
   },
   "storsimple8000series": {
     "dir": "azure-resourcemanager-storsimple8000series",

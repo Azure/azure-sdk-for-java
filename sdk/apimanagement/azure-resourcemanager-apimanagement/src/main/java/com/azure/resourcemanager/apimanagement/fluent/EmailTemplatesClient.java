@@ -11,6 +11,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.EmailTemplateContractInner;
 import com.azure.resourcemanager.apimanagement.models.EmailTemplateUpdateParameters;
+import com.azure.resourcemanager.apimanagement.models.EmailTemplatesGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.EmailTemplatesGetResponse;
+import com.azure.resourcemanager.apimanagement.models.EmailTemplatesUpdateResponse;
 import com.azure.resourcemanager.apimanagement.models.TemplateName;
 
 /** An instance of this class provides access to all the operations defined in EmailTemplatesClient. */
@@ -74,7 +77,7 @@ public interface EmailTemplatesClient {
      * @return the entity state (Etag) version of the email template specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    EmailTemplatesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, TemplateName templateName, Context context);
 
     /**
@@ -104,7 +107,7 @@ public interface EmailTemplatesClient {
      * @return the details of the email template specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EmailTemplateContractInner> getWithResponse(
+    EmailTemplatesGetResponse getWithResponse(
         String resourceGroupName, String serviceName, TemplateName templateName, Context context);
 
     /**
@@ -187,7 +190,7 @@ public interface EmailTemplatesClient {
      * @return email Template details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EmailTemplateContractInner> updateWithResponse(
+    EmailTemplatesUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         TemplateName templateName,

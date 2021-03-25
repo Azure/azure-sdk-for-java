@@ -78,7 +78,7 @@ public interface Certificates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the certificate specified by its identifier.
      */
-    Response<Void> getEntityTagWithResponse(
+    CertificatesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String certificateId, Context context);
 
     /**

@@ -294,7 +294,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -563,7 +563,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -662,7 +662,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
      * @return the entity state (Etag) version of the named value specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public NamedValuesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String namedValueId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, namedValueId, context).block();
     }
@@ -717,7 +717,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -824,7 +824,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
      * @return the details of the named value specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NamedValueContractInner> getWithResponse(
+    public NamedValuesGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String namedValueId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, namedValueId, context).block();
     }
@@ -892,7 +892,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1284,7 +1284,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1636,7 +1636,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1802,7 +1802,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1910,7 +1910,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
      * @return the secret of the named value specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NamedValueSecretContractInner> listValueWithResponse(
+    public NamedValuesListValueResponse listValueWithResponse(
         String resourceGroupName, String serviceName, String namedValueId, Context context) {
         return listValueWithResponseAsync(resourceGroupName, serviceName, namedValueId, context).block();
     }
@@ -1965,7 +1965,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2213,7 +2213,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

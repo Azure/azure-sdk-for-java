@@ -12,6 +12,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.ApiSchemasClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.SchemaContractInner;
 import com.azure.resourcemanager.apimanagement.models.ApiSchemas;
+import com.azure.resourcemanager.apimanagement.models.ApiSchemasGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.ApiSchemasGetResponse;
 import com.azure.resourcemanager.apimanagement.models.SchemaContract;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -51,7 +53,7 @@ public final class ApiSchemasImpl implements ApiSchemas {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, schemaId);
     }
 
-    public Response<Void> getEntityTagWithResponse(
+    public ApiSchemasGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String schemaId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, apiId, schemaId, context);
     }
@@ -67,7 +69,7 @@ public final class ApiSchemasImpl implements ApiSchemas {
 
     public Response<SchemaContract> getWithResponse(
         String resourceGroupName, String serviceName, String apiId, String schemaId, Context context) {
-        Response<SchemaContractInner> inner =
+        ApiSchemasGetResponse inner =
             this.serviceClient().getWithResponse(resourceGroupName, serviceName, apiId, schemaId, context);
         if (inner != null) {
             return new SimpleResponse<>(

@@ -10,6 +10,10 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.DiagnosticContractInner;
+import com.azure.resourcemanager.apimanagement.models.DiagnosticsCreateOrUpdateResponse;
+import com.azure.resourcemanager.apimanagement.models.DiagnosticsGetEntityTagResponse;
+import com.azure.resourcemanager.apimanagement.models.DiagnosticsGetResponse;
+import com.azure.resourcemanager.apimanagement.models.DiagnosticsUpdateResponse;
 
 /** An instance of this class provides access to all the operations defined in DiagnosticsClient. */
 public interface DiagnosticsClient {
@@ -72,7 +76,7 @@ public interface DiagnosticsClient {
      * @return the entity state (Etag) version of the Diagnostic specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getEntityTagWithResponse(
+    DiagnosticsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String diagnosticId, Context context);
 
     /**
@@ -102,7 +106,7 @@ public interface DiagnosticsClient {
      * @return the details of the Diagnostic specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DiagnosticContractInner> getWithResponse(
+    DiagnosticsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String diagnosticId, Context context);
 
     /**
@@ -136,7 +140,7 @@ public interface DiagnosticsClient {
      * @return diagnostic details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DiagnosticContractInner> createOrUpdateWithResponse(
+    DiagnosticsCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String diagnosticId,
@@ -182,7 +186,7 @@ public interface DiagnosticsClient {
      * @return diagnostic details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DiagnosticContractInner> updateWithResponse(
+    DiagnosticsUpdateResponse updateWithResponse(
         String resourceGroupName,
         String serviceName,
         String diagnosticId,

@@ -33,14 +33,14 @@ public interface QueryResponse {
 
     /**
      * Gets the skipToken property: When present, the value can be passed to a subsequent query call (together with the
-     * same query and subscriptions used in the current request) to retrieve the next page of data.
+     * same query and scopes used in the current request) to retrieve the next page of data.
      *
      * @return the skipToken value.
      */
     String skipToken();
 
     /**
-     * Gets the data property: Query output in tabular format.
+     * Gets the data property: Query output in JObject array or Table format.
      *
      * @return the data value.
      */

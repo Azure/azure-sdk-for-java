@@ -66,7 +66,8 @@ public interface OpenIdConnectProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the openIdConnectProvider specified by its identifier.
      */
-    Response<Void> getEntityTagWithResponse(String resourceGroupName, String serviceName, String opid, Context context);
+    OpenIdConnectProvidersGetEntityTagResponse getEntityTagWithResponse(
+        String resourceGroupName, String serviceName, String opid, Context context);
 
     /**
      * Gets specific OpenID Connect Provider without secrets.

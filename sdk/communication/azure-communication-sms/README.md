@@ -21,7 +21,7 @@ Azure Communication SMS is used to send simple text messages.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-sms</artifactId>
-  <version>1.0.0-beta.4</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 
@@ -112,12 +112,12 @@ SmsSendOptions options = new SmsSendOptions();
 options.setDeliveryReportEnabled(true);
 options.setTag("Marketing");
 
-Iterable<SmsSendResult> sendResults = smsClient.sendWithResponse(
+Iterable<SmsSendResult> sendResults = smsClient.send(
     "<from-phone-number>",
     Arrays.asList("<to-phone-number1>", "<to-phone-number2>"),
     "Weekly Promotion",
     options /* Optional */,
-    Context.NONE).getValue();
+    Context.NONE);
 
 for (SmsSendResult result : sendResults) {
     System.out.println("Message Id: " + result.getMessageId());
@@ -131,21 +131,20 @@ for (SmsSendResult result : sendResults) {
 SMS operations will throw an exception if the request to the server fails.
 Exceptions will not be thrown if the error is caused by an individual message, only if something fails with the overall request.
 Please use the `isSuccessful()` flag to validate each individual result to verify if the message was sent.
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L153-L176 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L153-L175 -->
 ```java
 try {
     SmsSendOptions options = new SmsSendOptions();
     options.setDeliveryReportEnabled(true);
     options.setTag("Marketing");
 
-    Response<Iterable<SmsSendResult>> sendResults = smsClient.sendWithResponse(
+    PagedIterable<SmsSendResult> smsSendResults = smsClient.send(
         "<from-phone-number>",
         Arrays.asList("<to-phone-number1>", "<to-phone-number2>"),
         "Weekly Promotion",
         options /* Optional */,
         Context.NONE);
 
-    Iterable<SmsSendResult> smsSendResults = sendResults.getValue();
     for (SmsSendResult result : smsSendResults) {
         if (result.isSuccessful()) {
             System.out.println("Successfully sent this message: " + result.getMessageId() + " to " + result.getTo());

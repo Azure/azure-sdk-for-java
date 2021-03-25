@@ -204,7 +204,7 @@ public final class ApiPoliciesClientImpl implements ApiPoliciesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -376,7 +376,7 @@ public final class ApiPoliciesClientImpl implements ApiPoliciesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -488,7 +488,7 @@ public final class ApiPoliciesClientImpl implements ApiPoliciesClient {
      * @return the entity state (Etag) version of the API policy specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getEntityTagWithResponse(
+    public ApiPoliciesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, PolicyIdName policyId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, apiId, policyId, context).block();
     }
@@ -552,7 +552,7 @@ public final class ApiPoliciesClientImpl implements ApiPoliciesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -711,7 +711,7 @@ public final class ApiPoliciesClientImpl implements ApiPoliciesClient {
      * @return the policy configuration at the API level.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyContractInner> getWithResponse(
+    public ApiPoliciesGetResponse getWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -791,7 +791,7 @@ public final class ApiPoliciesClientImpl implements ApiPoliciesClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -975,7 +975,7 @@ public final class ApiPoliciesClientImpl implements ApiPoliciesClient {
      * @return policy Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyContractInner> createOrUpdateWithResponse(
+    public ApiPoliciesCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String serviceName,
         String apiId,
@@ -1050,7 +1050,7 @@ public final class ApiPoliciesClientImpl implements ApiPoliciesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
