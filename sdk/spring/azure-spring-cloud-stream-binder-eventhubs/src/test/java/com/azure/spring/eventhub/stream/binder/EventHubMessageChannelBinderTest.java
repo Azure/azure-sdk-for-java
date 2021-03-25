@@ -17,6 +17,7 @@ import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
 import org.springframework.cloud.stream.provisioning.ProducerDestination;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.messaging.MessageChannel;
 
@@ -39,6 +40,8 @@ public class EventHubMessageChannelBinderTest {
 
     private static final ExpressionParser EXPRESSION_PARSER = new SpelExpressionParser();
 
+    private static final String PARTITION_HEADER = "headers['scst_partition']";
+
     @Before
     public void setUp() {
         this.binder = new EventHubTestBinder(new EventHubTestOperation(clientFactory, () -> eventContext));
@@ -54,7 +57,10 @@ public class EventHubMessageChannelBinderTest {
             (DefaultMessageHandler) this.binder.getBinder()
                                                .createProducerMessageHandler(producerDestination,
                                                    producerProperties, messageChannel);
-        Assertions.assertThat(messageHandler).hasFieldOrProperty("partitionIdExpression");
+        Assertions.assertThat(messageHandler)
+                  .extracting("partitionIdExpression")
+                  .returns(PARTITION_HEADER,
+                      exp -> ((SpelExpression)exp).getExpressionString());
         Assertions.assertThat(messageHandler).hasFieldOrPropertyWithValue("partitionKeyExpression", null);
     }
 
@@ -65,7 +71,9 @@ public class EventHubMessageChannelBinderTest {
             (DefaultMessageHandler) this.binder.getBinder()
                                                .createProducerMessageHandler(producerDestination,
                                                    producerProperties, messageChannel);
-        Assertions.assertThat(messageHandler).hasFieldOrProperty("partitionKeyExpression");
+        Assertions.assertThat(messageHandler)
+                  .extracting("partitionKeyExpression")
+                  .returns(true, exp -> exp != null);
         Assertions.assertThat(messageHandler).hasFieldOrPropertyWithValue("partitionIdExpression", null);
     }
 }
