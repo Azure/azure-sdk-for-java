@@ -3,6 +3,7 @@
 package com.azure.spring.security.keyvault.certificates.starter;
 
 import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
+import com.azure.security.keyvault.jca.KeyVaultKeyStore;
 import com.azure.security.keyvault.jca.KeyVaultTrustManagerFactoryProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
@@ -38,7 +39,7 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
         putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.managed-identity");
 
         MutablePropertySources propertySources = environment.getPropertySources();
-        if ("AzureKeyVault".equals(environment.getProperty("server.ssl.key-store-type"))) {
+        if (KeyVaultKeyStore.KEY_STORE_TYPE.equals(environment.getProperty("server.ssl.key-store-type"))) {
             Properties properties = new Properties();
             properties.put("server.ssl.key-store", "classpath:keyvault.dummy");
             if (hasEmbedTomcat()) {
@@ -46,7 +47,7 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
             }
             propertySources.addFirst(new PropertiesPropertySource("KeyStorePropertySource", properties));
         }
-        if ("AzureKeyVault".equals(environment.getProperty("server.ssl.trust-store-type"))) {
+        if (KeyVaultKeyStore.KEY_STORE_TYPE.equals(environment.getProperty("server.ssl.trust-store-type"))) {
             Properties properties = new Properties();
             properties.put("server.ssl.trust-store", "classpath:keyvault.dummy");
             if (hasEmbedTomcat()) {
