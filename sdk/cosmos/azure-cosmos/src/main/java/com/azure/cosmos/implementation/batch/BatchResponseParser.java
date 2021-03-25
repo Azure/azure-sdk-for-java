@@ -109,7 +109,7 @@ public final class BatchResponseParser {
 
         if (responseContent[0] != (byte)HYBRID_V1) {
             // Read from a json response body. To enable hybrid row just complete the else part
-            final ObjectMapper mapper = Utils.getSimpleObjectMapper();
+            final ObjectMapper mapper = Utils.getObjectMapperForPayLoadData();
 
             try {
                 final List<CosmosItemOperation> cosmosItemOperations = request.getOperations();

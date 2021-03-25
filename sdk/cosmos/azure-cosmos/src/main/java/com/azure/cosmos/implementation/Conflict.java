@@ -15,7 +15,7 @@ import java.lang.reflect.InvocationTargetException;
  * respective conflict instances  for resources and operations in conflict.
  */
 public final class Conflict extends Resource {
-    private final static ObjectMapper mapper = Utils.getSimpleObjectMapper();
+    private final static ObjectMapper mapper = Utils.getObjectMapperForPayLoadData();
     /**
      * Initialize a conflict object.
      */

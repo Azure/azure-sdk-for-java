@@ -49,7 +49,7 @@ import java.util.Objects;
  * Represents a base resource that can be serialized to JSON in the Azure Cosmos DB database service.
  */
 public class JsonSerializable {
-    private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = Utils.getObjectMapperForPayLoadData();
     private static final Logger LOGGER = LoggerFactory.getLogger(JsonSerializable.class);
     transient ObjectNode propertyBag = null;
     private ObjectMapper om;
@@ -142,7 +142,7 @@ public class JsonSerializable {
             // This should rarely execute. Keeping this for sanity sake
             try {
                 return (JsonSerializable) klassType.getDeclaredConstructor(String.class)
-                                              .newInstance(Utils.toJson(Utils.getSimpleObjectMapper(), objectNode));
+                                              .newInstance(Utils.toJson(Utils.getObjectMapperForPayLoadData(), objectNode));
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 throw new IllegalArgumentException(e);
             }

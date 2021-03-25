@@ -329,7 +329,7 @@ public class CosmosEncryptionAsyncContainer {
 
     private <T> byte[] cosmosSerializerToStream(T item) {
         // TODO:
-        return EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), item);
+        return EncryptionUtils.serializeJsonToByteArray(Utils.getObjectMapperForPayLoadData(), item);
     }
 
     ItemDeserializer getItemDeserializer() {

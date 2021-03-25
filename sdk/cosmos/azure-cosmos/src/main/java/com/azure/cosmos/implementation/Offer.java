@@ -21,7 +21,7 @@ public class Offer extends Resource {
         super();
         this.setOfferVersion(Constants.Properties.OFFER_VERSION_V2);
         this.setOfferType("");
-        ObjectNode content = Utils.getSimpleObjectMapper().createObjectNode();
+        ObjectNode content = Utils.getObjectMapperForPayLoadData().createObjectNode();
         content.put(Constants.Properties.OFFER_THROUGHPUT, offerThroughput);
         this.setContent(content);
     }
@@ -30,7 +30,7 @@ public class Offer extends Resource {
         super();
         this.setOfferVersion(Constants.Properties.OFFER_VERSION_V2);
         this.setOfferType("");
-        ObjectNode content = Utils.getSimpleObjectMapper().createObjectNode();
+        ObjectNode content = Utils.getObjectMapperForPayLoadData().createObjectNode();
 //        content.put(Constants.Properties.OFFER_THROUGHPUT, null);
         content.replace(Constants.Properties.AUTOPILOT_SETTINGS, ModelBridgeInternal
                                                                      .getPropertyBagFromJsonSerializable(offerAutoscaleSettings));

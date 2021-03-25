@@ -24,7 +24,7 @@ public final class PatchUtil {
         byte[] serializedBody;
         try {
             // Object mapper also writes with utf-8. Need to change when object mapper change it's behaviour
-            serializedBody = Utils.getSimpleObjectMapper().writeValueAsBytes(jsonSerializable.getPropertyBag());
+            serializedBody = Utils.getObjectMapperForPayLoadData().writeValueAsBytes(jsonSerializable.getPropertyBag());
         } catch (Exception e) {
             throw new IllegalArgumentException("Can't serialize the object into the byte array", e);
         }
@@ -34,7 +34,7 @@ public final class PatchUtil {
 
     private static JsonSerializable cosmosPatchToJsonSerializable(CosmosPatchOperations patchOperations, RequestOptions requestOptions) {
         JsonSerializable jsonSerializable = new JsonSerializable();
-        ArrayNode operations = Utils.getSimpleObjectMapper().createArrayNode();
+        ArrayNode operations = Utils.getObjectMapperForPayLoadData().createArrayNode();
         List<PatchOperation> patchOperationList = BridgeInternal.getPatchOperationsFromCosmosPatch(patchOperations);
 
         for (PatchOperation patchOperation : patchOperationList) {

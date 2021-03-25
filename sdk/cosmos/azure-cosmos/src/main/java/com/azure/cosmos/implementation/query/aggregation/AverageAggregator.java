@@ -19,7 +19,7 @@ public class AverageAggregator implements Aggregator {
     public void aggregate(Object item) {
         AverageInfo averageInfo;
         try {
-            averageInfo = Utils.getSimpleObjectMapper().readValue(item.toString(), AverageInfo.class);
+            averageInfo = Utils.getObjectMapperForPayLoadData().readValue(item.toString(), AverageInfo.class);
         } catch (IOException e) {
             throw new IllegalStateException("Failed to deserialize aggregate result");
         }

@@ -777,7 +777,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
     private static String toJson(Object object){
         try {
-            return Utils.getSimpleObjectMapper().writeValueAsString(object);
+            return Utils.getObjectMapperForPayLoadData().writeValueAsString(object);
         } catch (JsonProcessingException e) {
             throw new IllegalStateException(e);
 		}

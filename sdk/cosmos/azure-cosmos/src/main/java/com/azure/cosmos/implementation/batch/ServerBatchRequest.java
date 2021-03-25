@@ -56,7 +56,7 @@ public abstract class ServerBatchRequest {
         int totalSerializedLength = 0;
         int totalOperationCount = 0;
 
-        final ArrayNode arrayNode =  Utils.getSimpleObjectMapper().createArrayNode();
+        final ArrayNode arrayNode =  Utils.getObjectMapperForPayLoadData().createArrayNode();
 
         for(CosmosItemOperation operation : operations) {
             JsonSerializable operationJsonSerializable;

@@ -625,7 +625,7 @@ public class CosmosAsyncContainer {
     }
 
     private <T> T transform(Object object, Class<T> classType) {
-        return Utils.getSimpleObjectMapper().convertValue(object, classType);
+        return Utils.getObjectMapperForPayLoadData().convertValue(object, classType);
     }
 
     /**

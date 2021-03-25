@@ -264,14 +264,14 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
 
     public static FeedRangeContinuation parse(final String jsonString) throws IOException {
         checkNotNull(jsonString, "Argument 'jsonString' must not be null");
-        final ObjectMapper mapper = Utils.getSimpleObjectMapper();
+        final ObjectMapper mapper = Utils.getObjectMapperForPayLoadData();
         return mapper.readValue(jsonString, FeedRangeContinuation.class);
     }
 
     @Override
     public String toString() {
         try {
-            return Utils.getSimpleObjectMapper().writeValueAsString(this);
+            return Utils.getObjectMapperForPayLoadData().writeValueAsString(this);
         } catch (final IOException e) {
             throw new IllegalArgumentException(
                 "Unable serialize the composite FeedRange continuation token into a JSON string",
@@ -346,7 +346,7 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         final String providedContinuation) {
 
         try {
-            final ObjectMapper mapper = Utils.getSimpleObjectMapper();
+            final ObjectMapper mapper = Utils.getObjectMapperForPayLoadData();
 
             if (providedContinuation == null) {
                 return null;

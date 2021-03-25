@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class InternalObjectNode extends Resource {
 
-    private static final ObjectMapper MAPPER = Utils.getSimpleObjectMapper();
+    private static final ObjectMapper MAPPER = Utils.getObjectMapperForPayLoadData();
 
     /**
      * Initialize an empty InternalObjectNode object.
