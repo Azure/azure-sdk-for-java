@@ -61,6 +61,10 @@ public class ReactorReceiver implements AmqpReceiveLink {
         this.handler = handler;
         this.tokenManager = tokenManager;
         this.dispatcher = dispatcher;
+        // Delivered messages are not published on another scheduler because we want the settlement method that happens
+        // in decodeDelivery to take place and since proton-j is not thread safe, it could end up with hundreds of
+        // backed up deliveries waiting to be settled. (Which, consequently, ends up in a FAIL_OVERFLOW error from
+        // the handler.
         this.messagesProcessor = this.handler.getDeliveredMessages()
             .flatMap(delivery -> {
                 return Mono.create(sink -> {
@@ -149,7 +153,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
 
     @Override
     public Flux<Message> receive() {
-        return messagesProcessor;
+        return messagesProcessor.publishOn(Schedulers.boundedElastic());
     }
 
     @Override
