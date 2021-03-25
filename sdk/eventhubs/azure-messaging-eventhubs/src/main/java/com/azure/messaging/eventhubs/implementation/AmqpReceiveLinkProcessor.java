@@ -337,8 +337,9 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         final AmqpReceiveLink link = currentLink;
         if (link != null && !linkCreditsAdded.getAndSet(true)) {
             int credits = getCreditsToAdd();
-            logger.verbose("Link credits not yet added. Adding: {}", credits);
-            link.addCredits(credits);
+            logger.verbose("linkName[{}] credits[{}] Link credits not yet added.", link.getLinkName(),
+                credits);
+            link.addCredits(credits).doFinally(signal -> linkCreditsAdded.set(false)).subscribe();
         }
 
         drain();
@@ -460,6 +461,20 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
             if (requested != Long.MAX_VALUE) {
                 numberRequested = REQUESTED.addAndGet(this, -numberEmitted);
+            }
+
+            if (numberEmitted > 0 && numberRequested != 0L) {
+                final int credits = Long.valueOf(numberEmitted).intValue();
+                final AmqpReceiveLink link = currentLink;
+                if (link != null && !linkCreditsAdded.getAndSet(true)) {
+                    link.addCredits(Long.valueOf(numberEmitted).intValue())
+                        .doFinally(signal -> {
+                            logger.verbose("linkName[{}] creditsAdded[{}] signal[{}] Added from emitted credits.",
+                                credits, link.getLinkName(), credits, signal);
+                            linkCreditsAdded.set(false);
+                        })
+                        .subscribe();
+                }
             }
         }
     }

@@ -153,7 +153,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
 
     @Override
     public Flux<Message> receive() {
-        return messagesProcessor.publishOn(Schedulers.boundedElastic());
+        return messagesProcessor;
     }
 
     @Override
