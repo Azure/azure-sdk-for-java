@@ -68,7 +68,7 @@ stages:
           - ${{ if eq(parameters.SDKType, 'data') }}:
             - ${{ each config in parameters.DataMatrixConfigs }}:
               - ${{ config }}
-          - ${{ else }}:
+          - ${{ if eq(parameters.SDKType, 'client') }}:
             - ${{ each config in parameters.MatrixConfigs }}:
               -  ${{ config }}
           - ${{ each config in parameters.AdditionalMatrixConfigs }}:
