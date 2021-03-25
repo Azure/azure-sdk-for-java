@@ -13,7 +13,7 @@ import java.util.Objects;
 public final class AzureNamedKeyCredential {
     private final ClientLogger logger = new ClientLogger(AzureNamedKeyCredential.class);
 
-    private volatile Tuple<String, String> credentials;
+    private volatile CredentialTuple credentials;
 
     /**
      * Creates a credential with specified {@code name} that authorizes request with the given {@code key}.
@@ -32,7 +32,7 @@ public final class AzureNamedKeyCredential {
         if (key.isEmpty()) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'key' cannot be empty."));
         }
-        this.credentials = new Tuple<>(name, key);
+        this.credentials = new CredentialTuple(name, key);
     }
 
     /**
@@ -41,7 +41,7 @@ public final class AzureNamedKeyCredential {
      * @return The key being used to authorize requests.
      */
     public String getKey() {
-        return credentials.getRight();
+        return credentials.getName();
     }
 
     /**
@@ -50,7 +50,7 @@ public final class AzureNamedKeyCredential {
      * @return The key being used to authorize requests.
      */
     public String getName() {
-        return credentials.getLeft();
+        return credentials.getKey();
     }
 
     /**
@@ -58,7 +58,7 @@ public final class AzureNamedKeyCredential {
      *
      * @param name The name of the key credential.
      * @param key The new key to associated with this credential.
-     * @return The updated {@code ApiKeyCredential} object.
+     * @return The updated {@code AzureNamedKeyCredential} object.
      * @throws NullPointerException If {@code key} or {@code name} is {@code null}.
      * @throws IllegalArgumentException If {@code key} or {@code name} is an empty string.
      */
@@ -71,24 +71,24 @@ public final class AzureNamedKeyCredential {
         if (key.isEmpty()) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'key' cannot be empty."));
         }
-        this.credentials = new Tuple<>(name, key);
+        this.credentials = new CredentialTuple(name, key);
         return this;
     }
 
-    private static class Tuple<X, Y> {
-        private final X left;
-        private final Y right;
-        Tuple(X left, Y right) {
-            this.left = left;
-            this.right = right;
+    private static class CredentialTuple {
+        private final String name;
+        private final String key;
+        CredentialTuple(String name, String key) {
+            this.name = name;
+            this.key = key;
         }
 
-        public X getLeft() {
-            return left;
+        public String getName() {
+            return name;
         }
 
-        public Y getRight() {
-            return right;
+        public String getKey() {
+            return key;
         }
     }
 }
