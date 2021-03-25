@@ -11,6 +11,7 @@ import com.azure.resourcemanager.servicebus.models.AccessKeys;
 import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
 import com.azure.resourcemanager.servicebus.models.AccessRights;
 import com.azure.resourcemanager.servicebus.models.AuthorizationKeys;
+import com.azure.resourcemanager.servicebus.models.KeyType;
 import com.azure.resourcemanager.servicebus.models.RegenerateAccessKeyParameters;
 import reactor.core.publisher.Mono;
 
@@ -61,25 +62,22 @@ abstract class AuthorizationRuleBaseImpl<
         return getKeysAsync().block();
     }
 
-    /**
-     * Regenerates primary or secondary keys.
-     *
-     * @param policykey the key to regenerate
-     * @return stream that emits primary, secondary keys and connection strings
-     */
     public Mono<AuthorizationKeys> regenerateKeyAsync(RegenerateAccessKeyParameters regenerateAccessKeyParameters) {
         return this.regenerateKeysInnerAsync(regenerateAccessKeyParameters)
-            .map(inner -> new AuthorizationKeysImpl(inner));
+            .map(AuthorizationKeysImpl::new);
     }
 
-    /**
-     * Regenerates primary or secondary keys.
-     *
-     * @param policykey the key to regenerate
-     * @return primary, secondary keys and connection strings
-     */
     public AuthorizationKeys regenerateKey(RegenerateAccessKeyParameters regenerateAccessKeyParameters) {
         return regenerateKeyAsync(regenerateAccessKeyParameters).block();
+    }
+
+    public Mono<AuthorizationKeys> regenerateKeyAsync(KeyType keyType) {
+        return this.regenerateKeysInnerAsync(new RegenerateAccessKeyParameters().withKeyType(keyType))
+            .map(AuthorizationKeysImpl::new);
+    }
+
+    public AuthorizationKeys regenerateKey(KeyType keyType) {
+        return regenerateKeyAsync(keyType).block();
     }
 
     public List<AccessRights> rights() {

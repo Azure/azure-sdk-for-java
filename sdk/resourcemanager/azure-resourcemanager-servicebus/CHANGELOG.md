@@ -3,8 +3,7 @@
 ## 2.3.0-beta.1 (Unreleased)
 
 - Updated `api-version` to `2017-04-01`
-- Replaced class `ResourceListKeysInner` by `AccessKeys`
-- Parameter of `regenerateKey` method changed from `Policykey` to `RegenerateAccessKeyParameters`
+- Parameter of `regenerateKey` method changed from `Policykey` to `KeyType`
 - Removed class `Policykey`, use `RegenerateKeysParameters` class instead
 - Class `SkuName`, `SkuTier`, `UnavailableReason` changed to enum
 

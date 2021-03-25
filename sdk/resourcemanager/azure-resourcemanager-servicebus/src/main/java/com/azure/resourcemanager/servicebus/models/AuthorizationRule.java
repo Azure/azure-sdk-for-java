@@ -56,6 +56,23 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>> exten
     AuthorizationKeys regenerateKey(RegenerateAccessKeyParameters regenerateAccessKeyParameters);
 
     /**
+     * Regenerates primary or secondary keys.
+     *
+     * @param keyType the type for the key to regenerate
+     * @return primary, secondary keys and connection strings
+     */
+    AuthorizationKeys regenerateKey(KeyType keyType);
+
+    /**
+     * Regenerates primary or secondary keys.
+     *
+     * @param keyType the type for the key to regenerate
+     * @return a representation of the deferred computation of this call,
+     * returning the primary, secondary keys and the connection strings
+     */
+    Mono<AuthorizationKeys> regenerateKeyAsync(KeyType keyType);
+
+    /**
      * Grouping of commons authorization rule definition stages shared between different Service Bus
      * entities (namespace, queue, topic, subscription) access rules.
      */
