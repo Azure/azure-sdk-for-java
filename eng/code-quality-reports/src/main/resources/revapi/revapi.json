@@ -230,6 +230,11 @@
         "justification": "Annotation required to resolve deserialization bug."
       },
       {
+        "code": "java.annotation.added",
+        "new": "class com.azure.storage.file.datalake.models.PathHttpHeaders",
+        "justification": "Annotation added when migrating to new generator, it should not break anything."
+      },
+      {
         "code": "java.annotation.attributeValueChanged",
         "old": "class com.azure.storage.file.share.models.ShareProtocolSettings",
         "new": "class com.azure.storage.file.share.models.ShareProtocolSettings",
