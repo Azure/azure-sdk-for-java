@@ -117,8 +117,11 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'install'
-        # we want to run this when we aren't running from source and aren't generating Jacoco test coverage
-        condition: and(succeeded(), ne(variables['TestFromSource'], 'true'), not(and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'))))
+        # Only pre-install in parallel when not running From Source, not collecting Jacoco test coverage, and not running data plane.
+        # From Source uses a different install step as it needs to determine all libraries to be built.
+        # Jacoco test coverage and data plane uses verify as a test goal which will perform compilation which this is handling.
+        # This step allows for parallel compilation with test skipping.
+        condition: and(succeeded(), eq('${{ parameters.SDKType }}', 'client'), ne(variables['TestFromSource'], 'true'), not(and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'))))
 
       - task: Maven@3
         displayName: 'Run tests'
@@ -132,11 +135,26 @@ jobs:
           publishJUnitResults: false
           goals: $(TestGoals)
         # we want to run this when TestFromSource isn't true
-        condition: and(succeeded(), ne(variables['TestFromSource'],'true'))
+        condition: and(succeeded(), eq('${{ parameters.SDKType }}', 'client'), ne(variables['TestFromSource'],'true'))
+
+      - task: Maven@3
+        displayName: 'Run tests'
+        inputs:
+          mavenPomFile: pom.xml
+          options: ${{ parameters.TestOptions }} $(TestOptions) -pl $(PLSkipOptions)$(ProjectList) -am $(AdditionalOptions)
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaTestVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+          goals: 'verify'
+        # Data plane SDKs should always run tests with verify and also-make.
+        # Data plane uses an out of process Jetty server to run playback tests in some cases.
+        # This is started and shutdown using Maven plugins that run in steps other than surefire:test.
+        condition: and(succeeded(), eq('${{ parameters.SDKType }}', 'data'), ne(variables['TestFromSource'],'true'))
 
       - task: Maven@3
         displayName: 'Generate aggregate code coverage report'
-        condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'))
         inputs:
           mavenPomFile: sdk/${{ parameters.ServiceDirectory }}/pom.xml
           options: -Pcoverage
@@ -145,8 +163,8 @@ jobs:
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
           goals: jacoco:report-aggregate
-          # we want to run this when TestFromSource isn't true
-          condition: and(succeeded(), ne(variables['TestFromSource'],'true'))
+        # Only Windows Java 11 performs Jacoco test coverage.
+        condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'), ne(variables['TestFromSource'],'true'))
 
       - task: Maven@3
         displayName: 'Build for From Source run'
