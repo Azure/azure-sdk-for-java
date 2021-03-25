@@ -2560,7 +2560,7 @@
       "x-ms-parameter-location": "method"
     },
     "QueryNum": {
-      "name": "pageSize",
+      "name": "n",
       "in": "query",
       "description": "query parameter for max number of items",
       "required": false,

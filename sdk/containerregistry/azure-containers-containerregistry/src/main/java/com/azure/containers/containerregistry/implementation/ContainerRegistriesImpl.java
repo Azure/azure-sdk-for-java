@@ -4,10 +4,10 @@
 
 package com.azure.containers.containerregistry.implementation;
 
-import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesListRepositoriesNextResponse;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesListRepositoriesResponse;
-import com.azure.containers.containerregistry.implementation.models.DeleteRepositoryResult;
+import com.azure.containers.containerregistry.models.AcrErrorsException;
+import com.azure.containers.containerregistry.models.DeleteRepositoryResult;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -68,7 +68,7 @@ public final class ContainerRegistriesImpl {
         Mono<ContainerRegistriesListRepositoriesResponse> listRepositories(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("last") String last,
-                @QueryParam("pageSize") Integer pageSize,
+                @QueryParam("n") Integer n,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -151,17 +151,17 @@ public final class ContainerRegistriesImpl {
      *
      * @param last Query parameter for the last item in previous query. Result set will include values lexically after
      *     last.
-     * @param pageSize query parameter for max number of items.
+     * @param n query parameter for max number of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of repositories.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<String>> listRepositoriesSinglePageAsync(String last, Integer pageSize) {
+    public Mono<PagedResponse<String>> listRepositoriesSinglePageAsync(String last, Integer n) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.listRepositories(this.client.getEndpoint(), last, pageSize, accept, context))
+                        context -> service.listRepositories(this.client.getEndpoint(), last, n, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -178,7 +178,7 @@ public final class ContainerRegistriesImpl {
      *
      * @param last Query parameter for the last item in previous query. Result set will include values lexically after
      *     last.
-     * @param pageSize query parameter for max number of items.
+     * @param n query parameter for max number of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -186,18 +186,18 @@ public final class ContainerRegistriesImpl {
      * @return list of repositories.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<String>> listRepositoriesSinglePageAsync(String last, Integer pageSize, Context context) {
+    public Mono<PagedResponse<String>> listRepositoriesSinglePageAsync(String last, Integer n, Context context) {
         final String accept = "application/json";
-        return service.listRepositories(this.client.getEndpoint(), last, pageSize, accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getRepositories(),
-                                        res.getValue().getLink(),
-                                        res.getDeserializedHeaders()));
+        return service.listRepositories(this.client.getEndpoint(), last, n, accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().getRepositories(),
+                        res.getValue().getLink(),
+                        res.getDeserializedHeaders()));
     }
 
     /**
@@ -205,16 +205,16 @@ public final class ContainerRegistriesImpl {
      *
      * @param last Query parameter for the last item in previous query. Result set will include values lexically after
      *     last.
-     * @param pageSize query parameter for max number of items.
+     * @param n query parameter for max number of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of repositories.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> listRepositoriesAsync(String last, Integer pageSize) {
+    public PagedFlux<String> listRepositoriesAsync(String last, Integer n) {
         return new PagedFlux<>(
-                () -> listRepositoriesSinglePageAsync(last, pageSize),
+                () -> listRepositoriesSinglePageAsync(last, n),
                 nextLink -> listRepositoriesNextSinglePageAsync(nextLink));
     }
 
@@ -223,7 +223,7 @@ public final class ContainerRegistriesImpl {
      *
      * @param last Query parameter for the last item in previous query. Result set will include values lexically after
      *     last.
-     * @param pageSize query parameter for max number of items.
+     * @param n query parameter for max number of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -231,9 +231,9 @@ public final class ContainerRegistriesImpl {
      * @return list of repositories.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> listRepositoriesAsync(String last, Integer pageSize, Context context) {
+    public PagedFlux<String> listRepositoriesAsync(String last, Integer n, Context context) {
         return new PagedFlux<>(
-                () -> listRepositoriesSinglePageAsync(last, pageSize, context),
+                () -> listRepositoriesSinglePageAsync(last, n, context),
                 nextLink -> listRepositoriesNextSinglePageAsync(nextLink, context));
     }
 
