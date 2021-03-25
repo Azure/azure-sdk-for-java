@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.Address;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -162,7 +163,7 @@ public class RxDocumentServiceResponse {
 
     private static JsonNode fromJson(String json){
         try {
-            return Utils.getObjectMapperForPayLoadData().readTree(json);
+            return Utils.getSimpleObjectMapper().readTree(json);
         } catch (IOException e) {
             throw new IllegalStateException(String.format("Unable to parse JSON %s", json), e);
         }
@@ -170,7 +171,7 @@ public class RxDocumentServiceResponse {
 
     private static JsonNode fromJson(byte[] json){
         try {
-            return Utils.getObjectMapperForPayLoadData().readTree(json);
+            return Utils.getSimpleObjectMapper().readTree(json);
         } catch (IOException e) {
             throw new IllegalStateException(String.format("Unable to parse JSON %s", Arrays.toString(json)), e);
         }

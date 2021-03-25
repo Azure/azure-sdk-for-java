@@ -76,7 +76,7 @@ public class FeedResponseDiagnostics {
         }
         try {
             stringBuilder
-                .append(Utils.getObjectMapperForPayLoadData().writeValueAsString(clientSideRequestStatisticsList));
+                .append(Utils.getSimpleObjectMapper().writeValueAsString(clientSideRequestStatisticsList));
         } catch (JsonProcessingException e) {
             LOGGER.error("Error while parsing diagnostics ", e);
         }

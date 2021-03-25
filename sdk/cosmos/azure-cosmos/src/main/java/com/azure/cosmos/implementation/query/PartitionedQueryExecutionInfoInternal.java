@@ -62,7 +62,7 @@ public final class PartitionedQueryExecutionInfoInternal extends JsonSerializabl
 
     public String toJson() {
         try {
-            return Utils.getObjectMapperForPayLoadData().writeValueAsString(this);
+            return Utils.getSimpleObjectMapper().writeValueAsString(this);
         } catch (JsonProcessingException e) {
             throw new IllegalStateException("Unable to serialize partition query execution info internal.");
         }

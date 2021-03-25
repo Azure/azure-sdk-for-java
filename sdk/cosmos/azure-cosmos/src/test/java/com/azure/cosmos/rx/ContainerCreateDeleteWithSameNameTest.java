@@ -34,6 +34,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
@@ -145,7 +146,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public <T> void changeFeed() throws Exception {
-        ObjectMapper objectMapper = Utils.getObjectMapperForPayLoadData();
+        ObjectMapper objectMapper = Utils.getSimpleObjectMapper();
         BiConsumer<CosmosAsyncContainer, CosmosAsyncContainer> func = (feedContainer, leaseContainer) -> {
             String hostName = RandomStringUtils.randomAlphabetic(6);
             int CHANGE_FEED_PROCESSOR_TIMEOUT = 5000;

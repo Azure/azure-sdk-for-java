@@ -44,7 +44,7 @@ public abstract class ChangeFeedState extends JsonSerializable {
             Base64.getUrlDecoder().decode(base64EncodedJson),
             StandardCharsets.UTF_8);
 
-        final ObjectMapper mapper = Utils.getObjectMapperForPayLoadData();
+        final ObjectMapper mapper = Utils.getSimpleObjectMapper();
 
         try {
             return mapper.readValue(json, ChangeFeedState.class);

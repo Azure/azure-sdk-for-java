@@ -28,7 +28,7 @@ public interface ItemDeserializer {
                 return (T) objectNode;
             }
 
-            return Utils.getObjectMapperForPayLoadData().convertValue(objectNode, classType);
+            return Utils.getSimpleObjectMapper().convertValue(objectNode, classType);
         }
     }
 }

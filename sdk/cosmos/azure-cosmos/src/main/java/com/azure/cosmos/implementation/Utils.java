@@ -4,6 +4,14 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStartFromInternal;
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStartFromInternalDeserializer;
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStateDeserializer;
+import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
+import com.azure.cosmos.implementation.feedranges.FeedRangeContinuationDeserializer;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternalDeserializer;
 import com.azure.cosmos.implementation.uuid.EthernetAddress;
 import com.azure.cosmos.implementation.uuid.Generators;
 import com.azure.cosmos.implementation.uuid.impl.TimeBasedGenerator;
@@ -14,6 +22,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import io.netty.buffer.ByteBuf;
@@ -63,7 +72,7 @@ public class Utils {
     public static final Base64.Encoder Base64UrlEncoder = Base64.getUrlEncoder();
     public static final Base64.Decoder Base64UrlDecoder = Base64.getUrlDecoder();
 
-    private static final ObjectMapper objectMapperForPayLoadData = new ObjectMapper();
+    private static final ObjectMapper simpleObjectMapper = new ObjectMapper();
     private static final TimeBasedGenerator TIME_BASED_GENERATOR =
             Generators.timeBasedGenerator(EthernetAddress.constructMulticastAddress());
 
@@ -75,13 +84,13 @@ public class Utils {
     private static final DateTimeFormatter RFC_1123_DATE_TIME = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
 
     static {
-        Utils.objectMapperForPayLoadData.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        Utils.objectMapperForPayLoadData.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
-        Utils.objectMapperForPayLoadData.configure(JsonParser.Feature.ALLOW_TRAILING_COMMA, true);
-        Utils.objectMapperForPayLoadData.configure(JsonParser.Feature.STRICT_DUPLICATE_DETECTION, true);
-        Utils.objectMapperForPayLoadData.configure(DeserializationFeature.ACCEPT_FLOAT_AS_INT, false);
+        Utils.simpleObjectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        Utils.simpleObjectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+        Utils.simpleObjectMapper.configure(JsonParser.Feature.ALLOW_TRAILING_COMMA, true);
+        Utils.simpleObjectMapper.configure(JsonParser.Feature.STRICT_DUPLICATE_DETECTION, true);
+        Utils.simpleObjectMapper.configure(DeserializationFeature.ACCEPT_FLOAT_AS_INT, false);
 
-        Utils.objectMapperForPayLoadData.registerModule(new AfterburnerModule());
+        Utils.simpleObjectMapper.registerModule(new AfterburnerModule());
     }
 
     public static byte[] getUTF8BytesOrNull(String str) {
@@ -435,8 +444,8 @@ public class Utils {
         return userAgent;
     }
 
-    public static ObjectMapper getObjectMapperForPayLoadData() {
-        return Utils.objectMapperForPayLoadData;
+    public static ObjectMapper getSimpleObjectMapper() {
+        return Utils.simpleObjectMapper;
     }
 
     /**
@@ -602,7 +611,7 @@ public class Utils {
             return null;
         }
         try {
-            return getObjectMapperForPayLoadData().readValue(itemResponseBodyAsString, itemClassType);
+            return getSimpleObjectMapper().readValue(itemResponseBodyAsString, itemClassType);
         } catch (IOException e) {
             throw new IllegalStateException(
                 String.format("Failed to parse string [%s] to POJO.", itemResponseBodyAsString, e));
@@ -615,7 +624,7 @@ public class Utils {
         }
 
         try {
-            return getObjectMapperForPayLoadData().readValue(item, itemClassType);
+            return getSimpleObjectMapper().readValue(item, itemClassType);
         } catch (IOException e) {
             throw new IllegalStateException(
                 String.format("Failed to parse byte-array %s to POJO.", Arrays.toString(item)), e);

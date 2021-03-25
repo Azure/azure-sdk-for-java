@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 
 public final class JsonHelper {
-    private static final ObjectMapper OBJECT_MAPPER = Utils.getObjectMapperForPayLoadData();
+    private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
 
     public static JsonNode fromJsonString(String json) {
         try {

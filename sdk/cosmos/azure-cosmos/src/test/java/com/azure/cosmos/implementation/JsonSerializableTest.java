@@ -26,7 +26,7 @@ public class JsonSerializableTest {
                                                  Address.class, DatabaseAccount.class, DatabaseAccountLocation.class,
                                                  ReplicationPolicy.class, ConsistencyPolicy.class,
                                                  DocumentCollection.class, Database.class);
-        ObjectNode objectNode = (ObjectNode) Utils.getObjectMapperForPayLoadData().readTree(json);
+        ObjectNode objectNode = (ObjectNode) Utils.getSimpleObjectMapper().readTree(json);
 
         for (Class<?> klass: klassList) {
             JsonSerializable jsonSerializable = JsonSerializable.instantiateFromObjectNodeAndType(objectNode, klass);

@@ -200,7 +200,7 @@ public final class DatabaseAccount extends Resource {
                 TypeReference<HashMap<String, Object>> typeRef = new TypeReference<HashMap<String, Object>>() {
                 };
                 try {
-                    this.queryEngineConfiguration = Utils.getObjectMapperForPayLoadData()
+                    this.queryEngineConfiguration = Utils.getSimpleObjectMapper()
                                                         .readValue(queryEngineConfigurationJsonString, typeRef);
                 } catch (IOException e) {
                     throw new IllegalArgumentException(e);

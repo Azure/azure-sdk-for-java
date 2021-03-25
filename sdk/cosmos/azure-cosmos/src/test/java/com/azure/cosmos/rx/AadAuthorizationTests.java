@@ -29,17 +29,20 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Properties;
 import java.util.UUID;
 
 public class AadAuthorizationTests extends TestSuiteBase {
     private final static Logger log = LoggerFactory.getLogger(AadAuthorizationTests.class);
-    private static final ObjectMapper OBJECT_MAPPER = Utils.getObjectMapperForPayLoadData();
+    private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
 
     private final static String PARTITION_KEY_PATH = "/mypk";
     private final String databaseId = CosmosDatabaseForTest.generateId();

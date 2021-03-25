@@ -86,7 +86,7 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
         }
 
         try {
-            return Utils.getObjectMapperForPayLoadData().readValue(partitionKey, PartitionKeyInternal.class);
+            return Utils.getSimpleObjectMapper().readValue(partitionKey, PartitionKeyInternal.class);
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
         }
@@ -212,7 +212,7 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
 
     public String toJson() {
         try {
-            return Utils.getObjectMapperForPayLoadData().writeValueAsString(this);
+            return Utils.getSimpleObjectMapper().writeValueAsString(this);
         } catch (IOException e) {
             throw new IllegalArgumentException("Unable serialize the partition key internal into the JSON string", e);
         }

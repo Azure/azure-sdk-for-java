@@ -23,7 +23,7 @@ class BatchResponsePayloadWriter {
     }
 
     private ArrayNode writeOperationResult() {
-        ArrayNode arrayNode =  Utils.getObjectMapperForPayLoadData().createArrayNode();
+        ArrayNode arrayNode =  Utils.getSimpleObjectMapper().createArrayNode();
 
         for(TransactionalBatchOperationResult result : results) {
             JsonSerializable operationJsonSerializable = writeResult(result);

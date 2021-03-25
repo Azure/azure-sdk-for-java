@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BatchOperationResultTests {
 
     private static final int TIMEOUT = 40000;
-    private ObjectNode objectNode = Utils.getObjectMapperForPayLoadData().createObjectNode();
+    private ObjectNode objectNode = Utils.getSimpleObjectMapper().createObjectNode();
     private ItemBatchOperation<?> operation = new ItemBatchOperation<>(
         CosmosItemOperationType.READ,
         null,

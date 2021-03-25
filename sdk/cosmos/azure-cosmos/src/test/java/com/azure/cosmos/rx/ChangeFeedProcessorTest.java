@@ -57,7 +57,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ChangeFeedProcessorTest extends TestSuiteBase {
     private final static Logger log = LoggerFactory.getLogger(ChangeFeedProcessorTest.class);
-    private static final ObjectMapper OBJECT_MAPPER = Utils.getObjectMapperForPayLoadData();
+    private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
 
     private CosmosAsyncDatabase createdDatabase;
 //    private final String databaseId = "testdb1";

@@ -112,7 +112,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private static final String DUMMY_SQL_QUERY = "this is dummy and only used in creating " +
         "ParallelDocumentQueryExecutioncontext, but not used";
-    private final static ObjectMapper mapper = Utils.getObjectMapperForPayLoadData();
+    private final static ObjectMapper mapper = Utils.getSimpleObjectMapper();
     private final ItemDeserializer itemDeserializer = new ItemDeserializer.JsonDeserializer();
     private final Logger logger = LoggerFactory.getLogger(RxDocumentClientImpl.class);
     private final String masterKeyOrResourceToken;

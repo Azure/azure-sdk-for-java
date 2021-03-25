@@ -197,7 +197,7 @@ public class FeedRangeQueryTests extends TestSuiteBase {
         int randInt = random.nextInt(DEFAULT_NUM_DOCUMENTS_PER_PKEY / 2);
         JsonNode jsonNode = null;
         try {
-            jsonNode = Utils.getObjectMapperForPayLoadData().readTree(String.format(Locale.ROOT, "{ "
+            jsonNode = Utils.getSimpleObjectMapper().readTree(String.format(Locale.ROOT, "{ "
                                                                                              + "\"id\": \"%s\", "
                                                                                              + "\"name\" : \"%s\", "
                                                                                              + "\"prop\" : %d, "
