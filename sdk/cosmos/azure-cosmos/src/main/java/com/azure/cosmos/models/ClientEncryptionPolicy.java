@@ -69,6 +69,7 @@ public final class ClientEncryptionPolicy {
 
     /**
      * Gets the list of path of the item that need encryption along with path-specific settings.
+     * @return includedPaths
      */
     @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public List<ClientEncryptionIncludedPath> getIncludedPaths() {

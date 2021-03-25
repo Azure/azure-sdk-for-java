@@ -62,7 +62,7 @@ public final class CosmosClientEncryptionKeyProperties {
 
     /**
      * Sets the  encryption algorithm that will be used along with this client encryption key to encrypt/decrypt data.
-     * @param encryptionAlgorithm
+     * @param encryptionAlgorithm the  encryption algorithm that will be used along with this client encryption key to encrypt/decrypt data.
      * @return CosmosClientEncryptionKeyProperties
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
@@ -82,7 +82,7 @@ public final class CosmosClientEncryptionKeyProperties {
 
     /**
      * Sets the wrapped form of the client encryption key.
-     * @param wrappedDataEncryptionKey
+     * @param wrappedDataEncryptionKey the wrapped form of the client encryption key.
      * @return CosmosClientEncryptionKeyProperties
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
@@ -102,7 +102,7 @@ public final class CosmosClientEncryptionKeyProperties {
 
     /**
      * Sets the  metadata for the wrapping provider that can be used to unwrap the wrapped client encryption key.
-     * @param encryptionKeyWrapMetadata
+     * @param encryptionKeyWrapMetadata the  metadata for the wrapping provider that can be used to unwrap the wrapped client encryption key.
      * @return CosmosClientEncryptionKeyProperties
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)

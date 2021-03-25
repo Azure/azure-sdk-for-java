@@ -17,7 +17,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * The type Cosmos async clientEncryptionKey. This contains methods to operate on a cosmos clientEncryptionKey asynchronously
  */
 @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public class CosmosAsyncClientEncryptionKey {
+public final class CosmosAsyncClientEncryptionKey {
     private final CosmosAsyncDatabase database;
     private String id;
 
