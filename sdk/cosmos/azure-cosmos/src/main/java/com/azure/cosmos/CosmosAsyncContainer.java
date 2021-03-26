@@ -436,10 +436,6 @@ public class CosmosAsyncContainer {
             for (FeedRange feedRange : feedRanges) {
                 CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
                 options.setFeedRange(feedRange);
-                if (this.database.getClient().getConnectionPolicy().getConnectionMode().equals(ConnectionMode.DIRECT)) {
-                    options.setConsistencyLevel(ConsistencyLevel.STRONG);
-                }
-
                 CosmosPagedFlux<ObjectNode> cosmosPagedFlux = this.queryItems(querySpec, options,
                     ObjectNode.class);
                 fluxList.add(cosmosPagedFlux.byPage());
