@@ -48,12 +48,10 @@ public enum HttpLogDetailLevel {
     static final HttpLogDetailLevel ENVIRONMENT_HTTP_LOG_DETAIL_LEVEL = fromConfiguration(getGlobalConfiguration());
 
     static HttpLogDetailLevel fromConfiguration(Configuration configuration) {
-        String detailLevel = configuration.get(Configuration.PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL);
+        String detailLevel = configuration.get(Configuration.PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL, "none");
 
         HttpLogDetailLevel logDetailLevel;
-        if (CoreUtils.isNullOrEmpty(detailLevel)) {
-            logDetailLevel = NONE;
-        } else if (BASIC_VALUE.equalsIgnoreCase(detailLevel)) {
+        if (BASIC_VALUE.equalsIgnoreCase(detailLevel)) {
             logDetailLevel = BASIC;
         } else if (HEADERS_VALUE.equalsIgnoreCase(detailLevel)) {
             logDetailLevel = HEADERS;
