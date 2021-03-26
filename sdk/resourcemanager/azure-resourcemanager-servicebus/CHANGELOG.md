@@ -2,6 +2,10 @@
 
 ## 2.3.0-beta.1 (Unreleased)
 
+- Updated `api-version` to `2017-04-01`
+- Parameter of `regenerateKey` method changed from `Policykey` to `KeyType`
+- Removed class `Policykey`, use `RegenerateKeysParameters` class instead
+- Class `SkuName`, `SkuTier`, `UnavailableReason` changed to enum
 
 ## 2.2.0 (2021-02-24)
 
