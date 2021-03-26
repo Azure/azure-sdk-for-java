@@ -7,7 +7,6 @@ import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
-import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.OperationCancelledException;
@@ -53,6 +52,9 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.azure.core.amqp.exception.AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED;
+import static com.azure.core.amqp.exception.AmqpErrorCondition.NOT_ALLOWED;
+import static com.azure.core.amqp.exception.AmqpErrorCondition.TIMEOUT_ERROR;
 import static com.azure.core.amqp.implementation.ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES;
 import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
 import static com.azure.core.amqp.implementation.ClientConstants.SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS;
@@ -137,32 +139,32 @@ class ReactorSender implements AmqpSendLink {
                 this.scheduleWorkOnDispatcher();
             }),
 
-            amqpConnection.getShutdownSignals().subscribe(signal -> {
+            amqpConnection.getShutdownSignals().flatMap(signal -> {
                 logger.verbose("connectionId[{}] linkName[{}]: Shutdown signal received.", handler.getConnectionId(),
                     getLinkName());
 
                 hasConnected.set(false);
-                dispose("Connection shutdown.", null).subscribe();
-            })
+                return dispose("Connection shutdown.", null);
+            }).subscribe()
         );
 
         if (tokenManager != null) {
-            this.subscriptions.add(this.tokenManager.getAuthorizationResults().subscribe(
-                response -> {
-                    logger.verbose("connectionId[{}], entityPath[{}], linkName[{}]: Token refreshed: {}",
-                        handler.getConnectionId(), entityPath, getLinkName(), response);
-                    hasAuthorized.set(true);
-                },
-                error -> {
-                    logger.info("connectionId[{}], entityPath[{}], linkName[{}] tokenRenewalFailure[{}]",
-                        handler.getConnectionId(), entityPath, getLinkName(), error.getMessage());
+            this.subscriptions.add(
+                tokenManager.getAuthorizationResults()
+                    .onErrorResume(error -> {
+                        // When we encounter an error refreshing authorization results, close the send link.
+                        final Mono<Void> operation =
+                            dispose("connectionId[%s] linkName[%s] Token renewal failure. Disposing send "
+                                    + " link.",
+                                new ErrorCondition(Symbol.getSymbol(NOT_ALLOWED.getErrorCondition()),
+                                    error.getMessage()));
 
-                    hasAuthorized.set(false);
-
-                    dispose("connectionId[%s] linkName[%s] Token renewal failure. Disposing send link.",
-                        new ErrorCondition(Symbol.getSymbol(AmqpErrorCondition.NOT_ALLOWED.getErrorCondition()),
-                            error.getMessage())).subscribe();
-                }, () -> hasAuthorized.set(false)));
+                        return operation.then(Mono.empty());
+                    }).subscribe(response -> {
+                        logger.verbose("connectionId[{}] linkName[{}] response[{}] Token refreshed.",
+                            handler.getConnectionId(), getLinkName(), response);
+                        hasAuthorized.set(true);
+                }, error -> hasAuthorized.set(false), () -> hasAuthorized.set(false)));
         }
     }
 
@@ -193,7 +195,7 @@ class ReactorSender implements AmqpSendLink {
                         String.format(Locale.US,
                             "Error sending. Size of the payload exceeded maximum message size: %s kb",
                             maxMessageSize / 1024);
-                    final Throwable error = new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
+                    final Throwable error = new AmqpException(false, LINK_PAYLOAD_SIZE_EXCEEDED,
                         errorMessage, exception, handler.getErrorContext(sender));
                     return Mono.error(error);
                 }
@@ -248,7 +250,7 @@ class ReactorSender implements AmqpSendLink {
                                 "Size of the payload exceeded maximum message size: %s kb",
                                 maxMessageSizeTemp / 1024);
                         final AmqpException error = new AmqpException(false,
-                            AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message, exception,
+                            LINK_PAYLOAD_SIZE_EXCEEDED, message, exception,
                             handler.getErrorContext(sender));
 
                         return Mono.error(error);
@@ -713,7 +715,7 @@ class ReactorSender implements AmqpSendLink {
             if (cause instanceof AmqpException) {
                 exception = (AmqpException) cause;
             } else {
-                exception = new AmqpException(true, AmqpErrorCondition.TIMEOUT_ERROR,
+                exception = new AmqpException(true, TIMEOUT_ERROR,
                     String.format(Locale.US, "Entity(%s): Send operation timed out", entityPath),
                     handler.getErrorContext(sender));
             }

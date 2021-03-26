@@ -127,29 +127,28 @@ public class ReactorReceiver implements AmqpReceiveLink {
         //@formatter:off
         this.subscriptions = Disposables.composite(
             this.endpointStates.subscribe(),
+            this.tokenManager.getAuthorizationResults()
+                .onErrorResume(error -> {
+                    // When we encounter an error refreshing authorization results, close the receive link.
+                    final Mono<Void> operation =
+                        dispose("connectionId[%s] linkName[%s] Token renewal failure. Disposing receive "
+                                + " link.",
+                            new ErrorCondition(Symbol.getSymbol(AmqpErrorCondition.NOT_ALLOWED.getErrorCondition()),
+                                error.getMessage()));
 
-            this.tokenManager.getAuthorizationResults().subscribe(
-                response -> {
-                    logger.verbose("Token refreshed: {}", response);
+                    return operation.then(Mono.empty());
+                }).subscribe(response -> {
+                    logger.verbose("connectionId[{}] linkName[{}] response[{}] Token refreshed.",
+                        handler.getConnectionId(), getLinkName(), response);
                     hasAuthorized.set(true);
-                }, error -> {
-                    logger.info("connectionId[{}] path[{}] linkName[{}] tokenRenewalFailure[{}]",
-                        handler.getConnectionId(), this.entityPath, getLinkName(), error.getMessage(), error);
-                    hasAuthorized.set(false);
+            }, error -> hasAuthorized.set(false), () -> hasAuthorized.set(false)),
 
-                    dispose("connectionId[%s] linkName[%s] Token renewal failure. Disposing receive link.",
-                        new ErrorCondition(Symbol.getSymbol(AmqpErrorCondition.NOT_ALLOWED.getErrorCondition()),
-                            error.getMessage())).subscribe();
-                }, () -> {
-                    hasAuthorized.set(false);
-                }),
-
-            amqpConnection.getShutdownSignals().subscribe(signal -> {
-                logger.verbose("connectionId[{}] linkName[{}]: Shutdown signal received.", handler.getConnectionId(),
+            amqpConnection.getShutdownSignals().flatMap(signal -> {
+                logger.verbose("connectionId[{}] linkName[{}] Shutdown signal received.", handler.getConnectionId(),
                     getLinkName());
 
-                dispose("Connection shutdown.", null).subscribe();
-            }));
+                return dispose("Connection shutdown.", null);
+            }).subscribe());
         //@formatter:on
     }
 

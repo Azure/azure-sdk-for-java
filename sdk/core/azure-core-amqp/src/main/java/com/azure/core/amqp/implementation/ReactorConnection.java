@@ -134,11 +134,13 @@ public class ReactorConnection implements AmqpConnection {
                 logger.verbose("connectionId[{}]: State {}", connectionId, state);
                 return AmqpEndpointStateUtil.getConnectionState(state);
             })
-            .doOnError(error -> {
+            .onErrorResume(error -> {
                 if (!isDisposed.getAndSet(true)) {
                     logger.verbose("connectionId[{}]: Disposing of active sessions due to error.", connectionId);
-                    dispose(new AmqpShutdownSignal(false, false,
-                        error.getMessage())).subscribe();
+                    return dispose(new AmqpShutdownSignal(false, false,
+                        error.getMessage())).then(Mono.empty());
+                } else {
+                    return Mono.empty();
                 }
             })
             .doOnComplete(() -> {
