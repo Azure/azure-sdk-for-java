@@ -91,7 +91,7 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      * {@codesnippet com.azure.core.http.rest.PagedFlux.instantiationWithPageSize}
      *
      * @param firstPageRetriever Function that retrieves the first page.
-     * @param nextPageRetriever BiFunction that retrieves the next page given a continuation token.
+     * @param nextPageRetriever BiFunction that retrieves the next page given a continuation token and page size.
      */
     public PagedFlux(Function<Integer, Mono<PagedResponse<T>>> firstPageRetriever,
         BiFunction<String, Integer, Mono<PagedResponse<T>>> nextPageRetriever) {
