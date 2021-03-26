@@ -108,6 +108,25 @@ public final class ConfigurationAsyncClient {
      * Adds a configuration value in the service if that key and label does not exist. The label value of the
      * ConfigurationSetting is optional.
      *
+     * @param setting The setting to add based on its key and optional label combination.
+     *
+     * @return The {@link ConfigurationSetting} that was created, or {@code null} if a key collision occurs or the key
+     * is an invalid value (which will also throw HttpResponseException described below).
+     *
+     * @throws NullPointerException If {@code setting} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
+     * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label exists.
+     * @throws HttpResponseException If {@link ConfigurationSetting#getKey() key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConfigurationSetting> addConfigurationSetting(ConfigurationSetting setting) {
+        return addConfigurationSettingWithResponse(setting).map(response -> response.getValue());
+    }
+
+    /**
+     * Adds a configuration value in the service if that key and label does not exist. The label value of the
+     * ConfigurationSetting is optional.
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
@@ -186,6 +205,25 @@ public final class ConfigurationAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    /**
+     * Creates or updates a configuration value in the service. Partial updates are not supported and the entire
+     * configuration setting is updated.
+     *
+     * @param setting The setting to add based on its key and optional label combination.
+     *
+     * @return The {@link ConfigurationSetting} that was created or updated, or an empty Mono if the key is an invalid
+     * value (which will also throw HttpResponseException described below).
+     *
+     * @throws NullPointerException If {@code setting} is {@code null}.
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
+     * @throws ResourceModifiedException If the setting exists and is read-only.
+     * @throws HttpResponseException If {@code key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConfigurationSetting> setConfigurationSetting(ConfigurationSetting setting) {
+        return setConfigurationSettingWithResponse(setting, false).map(response -> response.getValue());
     }
 
     /**
@@ -308,6 +346,25 @@ public final class ConfigurationAsyncClient {
      * Attempts to get the ConfigurationSetting with a matching {@link ConfigurationSetting#getKey() key}, and optional
      * {@link ConfigurationSetting#getLabel() label}, optional {@code acceptDateTime} and optional ETag combination.
      *
+     * @param setting The setting to retrieve.
+     *
+     * @return The {@link ConfigurationSetting} stored in the service, or an empty Mono if the configuration value does
+     * not exist or the key is an invalid value (which will also throw HttpResponseException described below).
+     *
+     * @throws NullPointerException If {@code setting} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
+     * @throws ResourceNotFoundException If a ConfigurationSetting with the same key and label does not exist.
+     * @throws HttpResponseException If the {@link ConfigurationSetting#getKey() key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConfigurationSetting> getConfigurationSetting(ConfigurationSetting setting) {
+        return getConfigurationSettingWithResponse(setting, null, false).map(response -> response.getValue());
+    }
+
+    /**
+     * Attempts to get the ConfigurationSetting with a matching {@link ConfigurationSetting#getKey() key}, and optional
+     * {@link ConfigurationSetting#getLabel() label}, optional {@code acceptDateTime} and optional ETag combination.
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Retrieve the setting with the key-label "prodDBConnection"-"westUS".</p>
@@ -401,6 +458,31 @@ public final class ConfigurationAsyncClient {
      * the setting is <b>only</b> deleted if the ETag matches the current ETag; this means that no one has updated the
      * ConfigurationSetting yet.
      *
+     * @param setting The setting to delete based on its key, optional label and optional ETag combination.
+     *
+     * @return The deleted ConfigurationSetting or an empty Mono is also returned if the {@code key} is an invalid value
+     * (which will also throw HttpResponseException described below).
+     *
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
+     * @throws NullPointerException When {@code setting} is {@code null}.
+     * @throws ResourceModifiedException If {@code setting} is read-only.
+     * @throws ResourceNotFoundException If {@link ConfigurationSetting#getETag() ETag} is specified, not the wildcard
+     * character, and does not match the current ETag value.
+     * @throws HttpResponseException If {@link ConfigurationSetting#getKey() key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConfigurationSetting> deleteConfigurationSetting(ConfigurationSetting setting) {
+        return deleteConfigurationSettingWithResponse(setting, false).map(response -> response.getValue());
+    }
+
+    /**
+     * Deletes the {@link ConfigurationSetting} with a matching {@link ConfigurationSetting#getKey() key}, and optional
+     * {@link ConfigurationSetting#getLabel() label} and optional ETag combination from the service.
+     *
+     * If {@link ConfigurationSetting#getETag() ETag} is specified and is not the wildcard character ({@code "*"}), then
+     * the setting is <b>only</b> deleted if the ETag matches the current ETag; this means that no one has updated the
+     * ConfigurationSetting yet.
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Delete the setting with the key-label "prodDBConnection"-"westUS"</p>
@@ -477,6 +559,24 @@ public final class ConfigurationAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    /**
+     * Sets the read-only status for the {@link ConfigurationSetting}.
+     *
+     * @param setting The configuration setting to set to read-only or not read-only based on the {@code isReadOnly}.
+     * @param isReadOnly Flag used to set the read-only status of the configuration. {@code true} will put the
+     * configuration into a read-only state, {@code false} will clear the state.
+     *
+     * @return The {@link ConfigurationSetting} that is read-only, or an empty Mono if a key collision occurs or the
+     * key is an invalid value (which will also throw HttpResponseException described below).
+     *
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
+     * @throws HttpResponseException If {@link ConfigurationSetting#getKey() key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConfigurationSetting> setReadOnly(ConfigurationSetting setting, boolean isReadOnly) {
+        return setReadOnlyWithResponse(setting, isReadOnly).map(response -> response.getValue());
     }
 
     /**
@@ -613,7 +713,7 @@ public final class ConfigurationAsyncClient {
     /**
      * Lists chronological/historical representation of {@link ConfigurationSetting} resource(s). Revisions are provided
      * in descending order from their {@link ConfigurationSetting#getLastModified() lastModified} date.
-     * Revisions expire after a period of time, see <a href="https://azure.microsoft.com/en-us/pricing/details/app-configuration/">Pricing</a>
+     * Revisions expire after a period of time, see <a href="https://azure.microsoft.com/pricing/details/app-configuration/">Pricing</a>
      * for more information.
      *
      * If {@code selector} is {@code null}, then all the {@link ConfigurationSetting ConfigurationSettings} are fetched
