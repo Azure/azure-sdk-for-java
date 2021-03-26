@@ -74,9 +74,6 @@
       "apiVersion": "2020-02-02-preview",
       "properties": {
         "ApplicationId": "testappinsights",
-        "Application_Type": "web",
-        "Flow_Type": "Redfield",
-        "Request_Source": "CustomDeployment"
       }
     }
   ],
