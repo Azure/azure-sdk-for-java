@@ -25,11 +25,11 @@ import java.util.Set;
 
 public class TypeSerializationTests {
 
-    private static final class Map1<K, V> extends AbstractMap<K, V> {
+    public static final class Map1<K, V> extends AbstractMap<K, V> {
         private final K k0;
         private final V v0;
 
-        Map1(K k0, V v0) {
+        public Map1(K k0, V v0) {
             this.k0 = Objects.requireNonNull(k0);
             this.v0 = Objects.requireNonNull(v0);
         }
