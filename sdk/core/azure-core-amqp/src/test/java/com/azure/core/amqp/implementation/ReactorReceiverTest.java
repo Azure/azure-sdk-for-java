@@ -323,9 +323,13 @@ class ReactorReceiverTest {
         // Act
         shutdownSignals.next(shutdownSignal);
 
-        // Assert
+        // We are in the process of disposing.
         assertTrue(reactorReceiver.isDisposed());
 
+        // This turns it into a synchronous operation so we know that it is disposed completely.
+        reactorReceiver.dispose();
+
+        // Assert
         verify(receiver).close();
     }
 

@@ -27,8 +27,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -39,15 +37,12 @@ import java.io.IOException;
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.same;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
@@ -91,8 +86,9 @@ class RequestResponseChannelTest {
     private Receiver receiver;
     @Mock
     private MessageSerializer serializer;
-    @Captor
-    private ArgumentCaptor<Runnable> dispatcherCaptor;
+    @Mock
+    private Delivery delivery;
+
     private AutoCloseable mocksCloseable;
 
     @BeforeAll
@@ -106,7 +102,7 @@ class RequestResponseChannelTest {
     }
 
     @BeforeEach
-    void beforeEach() {
+    void beforeEach() throws IOException {
         mocksCloseable = MockitoAnnotations.openMocks(this);
 
         when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
@@ -128,6 +124,14 @@ class RequestResponseChannelTest {
         when(sendLinkHandler.getEndpointStates()).thenReturn(sendEndpoints.flux());
 
         when(amqpConnection.getShutdownSignals()).thenReturn(shutdownSignals.flux());
+
+        when(sender.delivery(any())).thenReturn(delivery);
+
+        doAnswer(invocation -> {
+            final Runnable runnable = invocation.getArgument(0);
+            runnable.run();
+            return null;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
     }
 
     @AfterEach
@@ -194,8 +198,6 @@ class RequestResponseChannelTest {
                 receiveEndpoints.complete();
             })
             .verifyComplete();
-
-        invokeDispatcher();
 
         // Assert
         verify(sender).close();
@@ -303,7 +305,7 @@ class RequestResponseChannelTest {
      * Verifies a message is received.
      */
     @Test
-    void sendMessageWithTransaction() throws IOException {
+    void sendMessageWithTransaction() {
         // Arrange
         // This message was copied from one that was received.
         TransactionalState transactionalState = new TransactionalState();
@@ -345,8 +347,6 @@ class RequestResponseChannelTest {
             .then(() -> deliveryProcessor.next(delivery))
             .assertNext(received -> assertEquals(messageId, received.getCorrelationId()))
             .verifyComplete();
-
-        invokeDispatcher();
 
         // Assert
         verify(message).setMessageId(argThat(e -> e instanceof UnsignedLong && messageId.equals(e)));
@@ -403,8 +403,6 @@ class RequestResponseChannelTest {
             .then(() -> deliveryProcessor.next(delivery))
             .assertNext(received -> assertEquals(messageId, received.getCorrelationId()))
             .verifyComplete();
-
-        invokeDispatcher();
 
         // Assert
         verify(message).setMessageId(argThat(e -> e instanceof UnsignedLong && messageId.equals(e)));
@@ -463,32 +461,18 @@ class RequestResponseChannelTest {
         // Act
         shutdownSignals.next(shutdownSignal);
 
-        invokeDispatcher();
-
-        // Assert
+        // We are in the process of disposing.
         assertTrue(channel.isDisposed());
 
+        // This turns it into a synchronous operation so we know that it is disposed completely.
+        channel.dispose();
+
+        // Assert
         verify(receiver).close();
         verify(sender).close();
 
         receiveEndpoints.assertNoSubscribers();
         sendEndpoints.assertNoSubscribers();
         shutdownSignals.assertNoSubscribers();
-    }
-
-    /**
-     * Manually captures the Runnable in the dispatcher so we can invoke it to verify contents.
-     */
-    private void invokeDispatcher() {
-        try {
-            verify(reactorDispatcher, atLeastOnce()).invoke(dispatcherCaptor.capture());
-        } catch (IOException e) {
-            fail("Should not have caused an IOException. " + e);
-        }
-
-        dispatcherCaptor.getAllValues().forEach(work -> {
-            assertNotNull(work);
-            work.run();
-        });
     }
 }

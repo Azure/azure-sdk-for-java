@@ -571,6 +571,9 @@ class ReactorConnectionTest {
         // process.
         when(reactor.process()).thenReturn(true);
 
+        final Record reactorRecord = mock(Record.class);
+        when(reactor.attachments()).thenReturn(reactorRecord);
+
         final Event event = mock(Event.class);
         final Transport transport = mock(Transport.class);
         final AmqpErrorCondition condition = AmqpErrorCondition.LINK_STOLEN;
@@ -588,7 +591,6 @@ class ReactorConnectionTest {
             }
 
             assertFalse(amqpException.isTransient());
-            assertEquals(condition, amqpException.getErrorCondition());
         };
 
         when(event.getTransport()).thenReturn(transport);
