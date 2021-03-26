@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.ClientEncryptionKey;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.CosmosResourceType;
@@ -131,6 +132,11 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosClientEncryptionKeyResponse createCosmosClientEncryptionKeyResponse(ResourceResponse<ClientEncryptionKey> response) {
+        return new CosmosClientEncryptionKeyResponse(response);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static List<CosmosConflictProperties> getCosmosConflictPropertiesFromV2Results(List<Conflict> results) {
         return CosmosConflictProperties.getFromV2Results(results);
     }
@@ -193,6 +199,16 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static List<CosmosUserProperties> getCosmosUserPropertiesFromV2Results(List<User> results) {
         return CosmosUserProperties.getFromV2Results(results);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static ClientEncryptionKey getClientEncryptionKey(CosmosClientEncryptionKeyProperties cosmosClientEncryptionKeyProperties) {
+        return cosmosClientEncryptionKeyProperties.getClientEncryptionKey();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static List<CosmosClientEncryptionKeyProperties> getClientEncryptionKeyPropertiesList(List<ClientEncryptionKey> results) {
+        return CosmosClientEncryptionKeyProperties.getClientEncryptionKeys(results);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -654,6 +670,8 @@ public final class ModelBridgeInternal {
             return ((CosmosUserDefinedFunctionProperties) t).getResource();
         } else if (t instanceof CosmosUserProperties) {
             return ((CosmosUserProperties) t).getResource();
+        } else if (t instanceof CosmosClientEncryptionKeyProperties) {
+            return ((CosmosClientEncryptionKeyProperties) t).getResource();
         } else {
             throw new IllegalArgumentException("getResource method does not exists in class " + t.getClass());
         }
@@ -810,5 +828,4 @@ public final class ModelBridgeInternal {
         checkNotNull(options, "Argument 'options' must not be null.");
         options.setRequestContinuation(eTag);
     }
-
 }

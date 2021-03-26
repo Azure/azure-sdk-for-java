@@ -64,6 +64,18 @@ public class StorageAccountCreateParameters {
     private Identity identity;
 
     /*
+     * SasPolicy assigned to the storage account.
+     */
+    @JsonProperty(value = "properties.sasPolicy")
+    private SasPolicy sasPolicy;
+
+    /*
+     * KeyPolicy assigned to the storage account.
+     */
+    @JsonProperty(value = "properties.keyPolicy")
+    private KeyPolicy keyPolicy;
+
+    /*
      * User domain assigned to the storage account. Name is the CNAME source.
      * Only one custom domain is supported per storage account at this time. To
      * clear the existing custom domain, use an empty string for the custom
@@ -286,6 +298,46 @@ public class StorageAccountCreateParameters {
      */
     public StorageAccountCreateParameters withIdentity(Identity identity) {
         this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the sasPolicy property: SasPolicy assigned to the storage account.
+     *
+     * @return the sasPolicy value.
+     */
+    public SasPolicy sasPolicy() {
+        return this.sasPolicy;
+    }
+
+    /**
+     * Set the sasPolicy property: SasPolicy assigned to the storage account.
+     *
+     * @param sasPolicy the sasPolicy value to set.
+     * @return the StorageAccountCreateParameters object itself.
+     */
+    public StorageAccountCreateParameters withSasPolicy(SasPolicy sasPolicy) {
+        this.sasPolicy = sasPolicy;
+        return this;
+    }
+
+    /**
+     * Get the keyPolicy property: KeyPolicy assigned to the storage account.
+     *
+     * @return the keyPolicy value.
+     */
+    public KeyPolicy keyPolicy() {
+        return this.keyPolicy;
+    }
+
+    /**
+     * Set the keyPolicy property: KeyPolicy assigned to the storage account.
+     *
+     * @param keyPolicy the keyPolicy value to set.
+     * @return the StorageAccountCreateParameters object itself.
+     */
+    public StorageAccountCreateParameters withKeyPolicy(KeyPolicy keyPolicy) {
+        this.keyPolicy = keyPolicy;
         return this;
     }
 
@@ -605,6 +657,12 @@ public class StorageAccountCreateParameters {
         }
         if (identity() != null) {
             identity().validate();
+        }
+        if (sasPolicy() != null) {
+            sasPolicy().validate();
+        }
+        if (keyPolicy() != null) {
+            keyPolicy().validate();
         }
         if (customDomain() != null) {
             customDomain().validate();

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import com.azure.resourcemanager.servicebus.fluent.models.TopicResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SBTopicInner;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 
 import java.time.Duration;
@@ -21,10 +21,10 @@ import java.time.OffsetDateTime;
  */
 @Fluent
 public interface Topic extends
-    IndependentChildResource<ServiceBusManager, TopicResourceInner>,
+    IndependentChildResource<ServiceBusManager, SBTopicInner>,
     Refreshable<Topic>,
     Updatable<Topic.Update>,
-        HasInnerModel<TopicResourceInner> {
+        HasInnerModel<SBTopicInner> {
 
     /**
      * @return the exact time the topic was created

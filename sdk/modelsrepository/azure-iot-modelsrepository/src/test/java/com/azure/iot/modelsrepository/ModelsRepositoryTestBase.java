@@ -8,13 +8,9 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestBase;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 
 class ModelsRepositoryTestBase extends TestBase {
-
-    private static final String PLAYBACK_ENDPOINT = "https://playback.net/";
-
 
     protected ModelsRepositoryClientBuilder getModelsRepositoryClientbuilder(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion, String repositoryEndpoint) throws URISyntaxException {
         ModelsRepositoryClientBuilder builder = new ModelsRepositoryClientBuilder();
@@ -24,7 +20,7 @@ class ModelsRepositoryTestBase extends TestBase {
             builder.httpClient(interceptorManager.getPlaybackClient());
             // Use fake credentials for playback mode.
             // Connect to a special host when running tests in playback mode.
-            builder.repositoryEndpoint(PLAYBACK_ENDPOINT);
+            builder.repositoryEndpoint(repositoryEndpoint);
             return builder;
         }
 

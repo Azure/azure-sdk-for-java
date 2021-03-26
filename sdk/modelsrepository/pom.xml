@@ -5,7 +5,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
-  <artifactId>azure-iot-modelsrepository</artifactId>
+  <artifactId>azure-iot-modelsrepository-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
@@ -23,7 +23,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-iot-modelsrepository</artifactId>
-          <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-iot-modelsrepository;current} -->
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-iot-modelsrepository;current} -->
         </dependency>
       </dependencies>
 
