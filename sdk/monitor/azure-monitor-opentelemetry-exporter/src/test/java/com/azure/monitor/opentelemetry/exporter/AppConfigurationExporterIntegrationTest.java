@@ -11,7 +11,6 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -25,7 +24,6 @@ import static com.azure.core.util.tracing.Tracer.DISABLE_TRACING_KEY;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Tag("integration")
 public class AppConfigurationExporterIntegrationTest extends AzureMonitorTraceExporterTestBase {
 
     @Test

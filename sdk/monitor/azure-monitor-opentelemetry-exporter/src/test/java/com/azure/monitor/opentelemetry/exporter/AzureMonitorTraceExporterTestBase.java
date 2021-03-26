@@ -29,7 +29,7 @@ public class AzureMonitorTraceExporterTestBase extends TestBase {
 
     Tracer configureAzureMonitorExporter(HttpPipelinePolicy validator) {
         AzureMonitorTraceExporter exporter = new AzureMonitorExporterBuilder()
-            .connectionString(System.getenv("AZURE_MONITOR_CONNECTION_STRING"))
+            .connectionString(System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING"))
             .addPolicy(validator)
             .buildTraceExporter();
 

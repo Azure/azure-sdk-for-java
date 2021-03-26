@@ -25,11 +25,23 @@
       "metadata": {
         "description": "sku type defined here."
       }
+    },
+    "appinsights_java_name": {
+      "defaultValue": "appinsights-java",
+      "type": "String"
+    },
+    "regionId": {
+      "defaultValue": "westus2",
+      "type": "string",
+      "metadata": {
+        "description": "Which Azure Region to deploy the resource to. This must be a valid Azure regionId."
+      }
     }
   },
   "variables": {
     "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/5ae67dd6-50cb-40e7-96ff-dc2bfa4b606b')]",
     "uniqueAzConfigName": "[concat(parameters('baseName'),'-' , parameters('configurationStores_azconfig_java_name'))]",
+    "uniqueAppInsightsName": "[concat(parameters('baseName'),'-' , parameters('appinsights_java_name'))]",
     "endpointValue": "[concat('https://', parameters('baseName'), '-', parameters('configurationStores_azconfig_java_name'), parameters('endpointSuffix'))]",
     "location": "[resourceGroup().location]"
   },
@@ -54,6 +66,18 @@
         "roleDefinitionId": "[variables('roleDefinitionId')]",
         "principalId": "[parameters('testApplicationOid')]"
       }
+    },
+    {
+      "name": "[variables('uniqueAppInsightsName')]",
+      "type": "microsoft.insights/components",
+      "location": "[parameters('regionId')]",
+      "apiVersion": "2015-05-01",
+      "properties": {
+        "ApplicationId": "testappinsights",
+        "Application_Type": "web",
+        "Flow_Type": "Redfield",
+        "Request_Source": "CustomDeployment"
+      }
     }
   ],
   "outputs": {
@@ -64,6 +88,10 @@
     "roleDefinitionId": {
       "type": "string",
       "value": "[ variables('roleDefinitionId')]"
+    },
+    "APPLICATIONINSIGHTS_CONNECTION_STRING": {
+      "value": "[concat('InstrumentationKey=', reference(resourceId('Microsoft.Insights/components', variables('uniqueAppInsightsName')), '2015-05-01').ConnectionString)]",
+      "type": "string"
     }
   }
 }

@@ -17,7 +17,7 @@ import com.azure.storage.blob.BlobContainerClientBuilder;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
-import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Tag("integration")
+@Disabled
 public class EventHubsExporterIntegrationTest extends AzureMonitorTraceExporterTestBase {
 
     private static final String CONNECTION_STRING = System.getenv("EVENT_HUB_CONNECTION_STRING");
