@@ -10,8 +10,6 @@ import com.azure.communication.sms.models.SmsSendOptions;
 import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -22,13 +20,9 @@ public class ReadmeSamples {
         String endpoint = "https://<resource-name>.communication.azure.com";
         AzureKeyCredential azureKeyCredential = new AzureKeyCredential("<access-key>");
 
-        // Create an HttpClient builder of your choice and customize it
-        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
-
         SmsClient smsClient = new SmsClientBuilder()
             .endpoint(endpoint)
             .credential(azureKeyCredential)
-            .httpClient(httpClient)
             .buildClient();
 
         return smsClient;
@@ -39,13 +33,9 @@ public class ReadmeSamples {
         String endpoint = "https://<resource-name>.communication.azure.com";
         AzureKeyCredential azureKeyCredential = new AzureKeyCredential("<access-key>");
 
-        // Create an HttpClient builder of your choice and customize it
-        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
-
         SmsAsyncClient smsClient = new SmsClientBuilder()
             .endpoint(endpoint)
             .credential(azureKeyCredential)
-            .httpClient(httpClient)
             .buildAsyncClient();
 
         return smsClient;
@@ -55,12 +45,8 @@ public class ReadmeSamples {
         // You can find your connection string from your resource in the Azure Portal
         String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
 
-        // Create an HttpClient builder of your choice and customize it
-        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
-
         SmsClient smsClient = new SmsClientBuilder()
             .connectionString(connectionString)
-            .httpClient(httpClient)
             .buildClient();
 
         return smsClient;
@@ -70,13 +56,9 @@ public class ReadmeSamples {
         // You can find your endpoint and access key from your resource in the Azure Portal
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
 
-        // Create an HttpClient builder of your choice and customize it
-        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
-
         SmsClient smsClient = new SmsClientBuilder()
             .endpoint(endpoint)
             .credential(new DefaultAzureCredentialBuilder().build())
-            .httpClient(httpClient)
             .buildClient();
 
         return smsClient;
@@ -87,12 +69,9 @@ public class ReadmeSamples {
         // You can find your endpoint and access key from your resource in the Azure Portal
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
 
-        // Create an HttpClient builder of your choice and customize it
-        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
         SmsClient smsClient = new SmsClientBuilder()
             .endpoint(endpoint)
             .credential(tokenCredential)
-            .httpClient(httpClient)
             .buildClient();
         return smsClient;
     }
