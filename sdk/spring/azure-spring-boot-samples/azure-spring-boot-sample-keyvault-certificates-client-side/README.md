@@ -23,7 +23,7 @@ azure:
 
 ### How to run
 1. Start azure-spring-boot-sample-keyvault-certificates-server-side's SampleApplication
-1. Start azure-spring-boot-sample-keyvault-certificates-client-side SampleApplication
+1. Start azure-spring-boot-sample-keyvault-certificates-client-side's SampleApplication
 1. Access http://localhost:8080/ 
 
 Then you will get

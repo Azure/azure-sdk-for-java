@@ -27,7 +27,7 @@ azure:
 ```
 
 ### How to run
-1. SampleApplication
+1. Start SampleApplication
 1. Access https://localhost:8443/
 
 Then you will get

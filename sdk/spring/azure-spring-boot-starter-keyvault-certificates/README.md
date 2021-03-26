@@ -235,7 +235,7 @@ public RestTemplate restTemplateCreatedByManagedIdentity() throws Exception {
 ```
 
 
-### Enable mutual SSL (MTLS).
+### Enable mutual SSL (mTLS).
  
 Step 1. On the server side, add these items in your `application.yml`:
 
