@@ -76,7 +76,8 @@
     "dir": "azure-resourcemanager-compute",
     "source": "specification/compute/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.compute",
-    "args": "--payload-flattening-threshold=1 --tag=package-2021-03-01 --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities"
+    "args": "--payload-flattening-threshold=1 --tag=package-2021-03-01 --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities",
+    "note": "Add '@JsonInclude(content = JsonInclude.Include.ALWAYS)' to 'userAssignedIdentities' property of class 'VirtualMachineIdentity', 'VirtualMachineScaleSetIdentity'"
   },
   "consumption": {
     "dir": "azure-resourcemanager-consumption",
@@ -297,7 +298,8 @@
     "dir": "azure-resourcemanager-servicebus",
     "source": "specification/servicebus/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.servicebus",
-    "args": "--payload-flattening-threshold=1 --tag=package-2015-08"
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-04",
+    "note": "Add '@JsonSerialize(using = DurationSerializer.class)' to properties of 'Duration' type of class 'SBTopicInner', 'SBQueueInner', 'SBSubscriptionInner'"
   },
   "servicefabric": {
     "dir": "azure-resourcemanager-servicefabric",
