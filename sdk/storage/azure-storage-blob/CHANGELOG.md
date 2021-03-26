@@ -11,6 +11,9 @@
 - Removed a deep copy in the general upload path to reduce memory consumption and increase perf
 - Added a deep copy immediately after calling BlobOutputStream.write to prevent overwriting data in the case of reusing a single buffer to write to an output stream
 
+## 12.10.2 (2021-03-26)
+- Fixed a bug where BlobInputStream would not use request conditions when doing the initial getProperties call in openInputStream.
+
 ## 12.10.1 (2021-03-19)
 - Removed a deep copy in the general upload path to reduce memory consumption and increase perf
 - Added a deep copy immediately after calling BlobOutputStream.write to prevent overwriting data in the case of reusing a single buffer to write to an output stream
