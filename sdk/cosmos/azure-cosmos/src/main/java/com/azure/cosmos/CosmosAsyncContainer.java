@@ -427,9 +427,8 @@ public class CosmosAsyncContainer {
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<Void> openConnectionsAndInitCaches() {
-        Mono<List<FeedRange>> feedRangesMono = this.getFeedRanges();
-        List<Flux<FeedResponse<ObjectNode>>> fluxList = new ArrayList<>();
-        return feedRangesMono.flatMap(feedRanges -> {
+        return this.getFeedRanges().flatMap(feedRanges -> {
+            List<Flux<FeedResponse<ObjectNode>>> fluxList = new ArrayList<>();
             SqlQuerySpec querySpec = new SqlQuerySpec();
             querySpec.setQueryText("select * from c where c.id = @id");
             querySpec.setParameters(Collections.singletonList(new SqlParameter("@id",
