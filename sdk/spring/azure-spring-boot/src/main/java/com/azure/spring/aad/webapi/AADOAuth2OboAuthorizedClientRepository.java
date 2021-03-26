@@ -8,6 +8,7 @@ import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.IClientSecret;
 import com.microsoft.aad.msal4j.MsalInteractionRequiredException;
+import com.microsoft.aad.msal4j.MsalServiceException;
 import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import com.microsoft.aad.msal4j.UserAssertion;
 import com.nimbusds.jwt.JWT;
@@ -109,8 +110,8 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
                     .map(Throwable::getCause)
                     .filter(e -> e instanceof MsalInteractionRequiredException)
                     .map(e -> (MsalInteractionRequiredException) e)
-                    .filter(msalInteractionRequiredException ->
-                        StringUtils.hasText(msalInteractionRequiredException.claims()))
+                    .map(MsalServiceException::claims)
+                    .filter(StringUtils::hasText)
                     .ifPresent(this::replyForbiddenWithWwwAuthenticateHeader);
             LOGGER.error("Failed to load authorized client.", exception);
         } catch (InterruptedException | ParseException exception) {
@@ -158,14 +159,14 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
         return null;
     }
 
-    void replyForbiddenWithWwwAuthenticateHeader(MsalInteractionRequiredException exception) {
+    void replyForbiddenWithWwwAuthenticateHeader(String claims) {
         ServletRequestAttributes attr =
             (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpServletResponse response = attr.getResponse();
         Assert.notNull(response, "HttpServletResponse should not be null.");
         response.setStatus(HttpStatus.FORBIDDEN.value());
         Map<String, Object> parameters = new LinkedHashMap<>();
-        parameters.put(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS, exception.claims());
+        parameters.put(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS, claims);
         parameters.put(OAuth2ParameterNames.ERROR, OAuth2ErrorCodes.INVALID_TOKEN);
         parameters.put(OAuth2ParameterNames.ERROR_DESCRIPTION, "The resource server requires higher privileges than "
             + "provided by the access token");

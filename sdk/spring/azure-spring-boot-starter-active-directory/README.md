@@ -416,8 +416,10 @@ In [Resource server visiting other resource server] scenario(For better descript
   
   
   
-  We can use our sample to create a Conditional Access scenario.(we think that [azure-spring-boot-sample-active-directory-webapp] as **webapp** and [azure-spring-boot-sample-active-directory-resource-server-obo] as **webapiA** and [azure-spring-boot-sample-active-directory-resource-server] as **webapiB**). 
-  
+  We can use our sample to create a Conditional Access scenario.
+  1. **webapp**: [azure-spring-boot-sample-active-directory-webapp].
+  1. **webapiA**:  [azure-spring-boot-sample-active-directory-resource-server-obo].
+  1. **webapiB**: [azure-spring-boot-sample-active-directory-resource-server]. 
   
 * Step 1: Follow the guide to create conditional access policy for webapiB.
   
@@ -426,8 +428,15 @@ In [Resource server visiting other resource server] scenario(For better descript
     ![aad-conditional-access-add-application](resource/aad-conditional-access-add-application.png) 
   
 * Step 2: [Require MFA for all users] or specify the user account in your policy.
-  
-* Step 3: [Expose api] for interlinking three applications, add properties in application.yml.  
+
+    ![aad-create-conditional-access](resource/aad-conditional-access-add-user.png)
+    
+* Step 3: Follow the guide, configure our samples.
+   1. **webapiB**: [configure webapiB]
+   1. **webapiA**: [configure webapiA]
+   1. **webapp**: [configure webapp]
+    
+* Step 4: Add properties in application.yml.  
   	
     - webapp:
      ```yaml
@@ -440,7 +449,7 @@ In [Resource server visiting other resource server] scenario(For better descript
          authorization-clients:
            webapiA:
              scopes:
-               - <Web-API-A-app-id-url>/File.Read
+               - <Web-API-A-app-id-url>/Obo.WebApiA.ExampleScope
      ```   
     - webapiA:
      ```yaml
@@ -453,17 +462,17 @@ In [Resource server visiting other resource server] scenario(For better descript
          authorization-clients:
            webapiB:
              scopes:
-               - <Web-API-B-app-id-url>/File.Read
+               - <Web-API-B-app-id-url>/WebApiB.ExampleScope
      ```
     - webapiB:
      ```yaml
      azure:
        activedirectory:
-         client-id: <Web-API-B-client-id>
-      	 app-id-uri: <Web-API-B-app-id-url>
+          client-id: <Web-API-B-client-id>
+          app-id-uri: <Web-API-B-app-id-url>
      ```
       
-* Step 4: Write your Java code:  	
+* Step 5: Write your Java code:  	
     - webapp :
     <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/CallOboServerController.java#L34-L38 -->    
     ```java
@@ -560,3 +569,6 @@ Please follow [instructions here] to build from source or contribute.
 [multi-factor authentication]: https://docs.microsoft.com/azure/active-directory/authentication/concept-mfa-howitworks
 [Require MFA for all users]: https://docs.microsoft.com/azure/active-directory/conditional-access/howto-conditional-access-policy-all-users-mfa
 [Expose api]: https://docs.microsoft.com/azure/active-directory/develop/quickstart-configure-app-expose-web-apis
+[configure webapiA]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo#configure-your-middle-tier-web-api-a
+[configure webapiB]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/README.md#configure-web-api
+[configure webapp]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/README.md#configure-access-other-resources-server

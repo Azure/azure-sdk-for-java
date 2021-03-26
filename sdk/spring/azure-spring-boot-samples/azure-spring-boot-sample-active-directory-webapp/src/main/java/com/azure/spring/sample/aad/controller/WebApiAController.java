@@ -17,44 +17,44 @@ import org.springframework.web.reactive.function.client.WebClient;
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
 
 @Controller
-public class CallOboServerController {
+public class WebApiAController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CallOboServerController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(WebApiAController.class);
 
-    private static final String CUSTOM_LOCAL_FILE_ENDPOINT = "http://localhost:8081/call-custom";
+    private static final String CUSTOM_LOCAL_FILE_ENDPOINT = "http://localhost:8081/webapiA";
 
     @Autowired
     private WebClient webClient;
 
     /**
-     * Call obo server, combine all the response and return.
-     * @param obo authorized client for Custom
-     * @return Response Graph and Custom data.
+     * Call webapiA endpoint, combine all the response and return.
+     * @param webapiA authorized client for Custom
+     * @return Response webapiA data.
      */
-    @GetMapping("/obo")
+    @GetMapping("/webapiA/webApiB")
     @ResponseBody
-    public String callOboServer(@RegisteredOAuth2AuthorizedClient("obo") OAuth2AuthorizedClient obo) {
-        return callOboEndpoint(obo);
+    public String callWebApi(@RegisteredOAuth2AuthorizedClient("webapiA") OAuth2AuthorizedClient webapiA) {
+        return callWebApiEndpoint(webapiA);
     }
 
     /**
-     * Call obo local file endpoint
-     * @param obo Authorized Client
+     * Call webapiA endpoint
+     * @param webapiA Authorized Client
      * @return Response string data.
      */
-    private String callOboEndpoint(OAuth2AuthorizedClient obo) {
-        if (null != obo) {
+    private String callWebApiEndpoint(OAuth2AuthorizedClient webapiA) {
+        if (null != webapiA) {
             String body = webClient
                 .get()
                 .uri(CUSTOM_LOCAL_FILE_ENDPOINT)
-                .attributes(oauth2AuthorizedClient(obo))
+                .attributes(oauth2AuthorizedClient(webapiA))
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
-            LOGGER.info("Response from obo server: {}", body);
-            return "Obo server response " + (null != body ? "success." : "failed.");
+            LOGGER.info("Response from webapi : {}", body);
+            return "webapi response " + (null != body ? "success." : "failed.");
         } else {
-            return "Obo server response failed.";
+            return "webapi response failed.";
         }
     }
 }
