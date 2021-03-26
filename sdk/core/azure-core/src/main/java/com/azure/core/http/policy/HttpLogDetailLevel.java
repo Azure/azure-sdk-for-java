@@ -4,7 +4,6 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 
 import static com.azure.core.util.Configuration.getGlobalConfiguration;
 
