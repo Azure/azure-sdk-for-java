@@ -6,7 +6,8 @@ package com.azure.spring.sample.aad.controller;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
+import org.springframework.security.oauth2.core.oidc.StandardClaimAccessor;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,8 +29,8 @@ public class ClientController {
         model.addAttribute("userName", authentication.getName());
         String preferredUsername = Optional.of(authentication)
                                            .map(OAuth2AuthenticationToken::getPrincipal)
-                                           .map(OAuth2AuthenticatedPrincipal::getAttributes)
-                                           .map(attributes -> (String) attributes.get("preferred_username"))
+                                           .map(user -> (OidcUser) user)
+                                           .map(StandardClaimAccessor::getPreferredUsername)
                                            .orElse("UNKNOWN");
         model.addAttribute("preferredUsername", preferredUsername);
         model.addAttribute("clientName", azureClient.getClientRegistration().getClientName());
