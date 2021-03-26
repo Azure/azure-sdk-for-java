@@ -84,10 +84,10 @@
     },
     "roleDefinitionId": {
       "type": "string",
-      "value": "[ variables('roleDefinitionId')]"
+      "value": "[variables('roleDefinitionId')]"
     },
     "APPLICATIONINSIGHTS_CONNECTION_STRING": {
-      "value": "[concat('InstrumentationKey=', reference(resourceId('Microsoft.Insights/components', variables('uniqueAppInsightsName')), '2020-02-02-preview').ConnectionString)]",
+      "value": "[reference(resourceId('Microsoft.Insights/components', variables('uniqueAppInsightsName')), '2020-02-02-preview').ConnectionString]",
       "type": "string"
     }
   }
