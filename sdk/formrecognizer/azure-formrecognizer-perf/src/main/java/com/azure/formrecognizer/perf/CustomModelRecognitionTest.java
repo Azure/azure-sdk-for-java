@@ -29,16 +29,6 @@ public class CustomModelRecognitionTest extends ServiceTest<PerfStressOptions> {
     }
 
     @Override
-    public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync();
-    }
-
-    @Override
-    public Mono<Void> globalCleanupAsync() {
-        return super.globalCleanupAsync();
-    }
-
-    @Override
     public void run() {
         List<RecognizedForm> recognizedForms =
             formrecognizerClient.beginRecognizeCustomFormsFromUrl(modelId, URL_TEST_FILE_FORMAT + FORM_JPG)
@@ -50,9 +40,15 @@ public class CustomModelRecognitionTest extends ServiceTest<PerfStressOptions> {
     public Mono<Void> runAsync() {
         return formrecognizerAsyncClient
             .beginRecognizeCustomFormsFromUrl(modelId, URL_TEST_FILE_FORMAT + FORM_JPG)
-            .count()
-            .flatMap(count -> count > 0
-                ? Mono.empty()
-                : Mono.error(new RuntimeException("Expected recognition results to be not empty.")));
+            .last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    // training completed successfully, retrieving final result.
+                    return Mono.empty();
+                } else {
+                    return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
+                        + pollResponse.getStatus()));
+                }
+            });
     }
 }

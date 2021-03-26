@@ -6,7 +6,7 @@ Represents Performance tests for Azure Formrecognizer SDK for Java.
 
 ### Prerequisites
 
-- Java Development Kit (JDK) with version 8 or above
+- A [Java Development Kit (JDK)][jdk_link], version 8 or later.
 - [Azure Subscription][azure_subscription]
 - [Cognitive Services or Form Recognizer account][form_recognizer_account] to use this package.
 
@@ -65,3 +65,8 @@ For details on contributing to this repository, see the [contributing guide](htt
 1. Commit your changes (`git commit -am 'Add some feature'`)
 1. Push to the branch (`git push origin my-new-feature`)
 1. Create new Pull Request
+
+<!-- LINKS -->
+[azure_subscription]: https://azure.microsoft.com/free
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[form_recognizer_account]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows

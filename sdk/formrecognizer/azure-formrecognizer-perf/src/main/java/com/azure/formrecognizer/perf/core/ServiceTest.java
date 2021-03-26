@@ -12,17 +12,12 @@ import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
 import reactor.core.publisher.Mono;
-
-import java.net.InetSocketAddress;
 
 /**
  * Base class for Azure Formrecognizer performance tests.
@@ -48,22 +43,17 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
 
         String formrecognizerEndpoint = Configuration.getGlobalConfiguration().get("AZURE_FORMRECOGNIZER_ENDPOINT");
         if (CoreUtils.isNullOrEmpty(formrecognizerEndpoint)) {
-            System.out.printf(CONFIGURATION_ERROR, "AZURE_FORMRECOGNIZER_ENDPOINT");
-            System.exit(1);
+            throw new RuntimeException(String.format(CONFIGURATION_ERROR, "AZURE_FORMRECOGNIZER_ENDPOINT"));
         }
 
         String formrecognizerApiKey = Configuration.getGlobalConfiguration().get("AZURE_FORMRECOGNIZER_API_KEY");
         if (CoreUtils.isNullOrEmpty(formrecognizerApiKey)) {
-            System.out.printf(CONFIGURATION_ERROR, "AZURE_FORMRECOGNIZER_API_KEY");
-            System.exit(1);
+            throw new RuntimeException(String.format(CONFIGURATION_ERROR, "AZURE_FORMRECOGNIZER_API_KEY"));
         }
 
         FormTrainingClientBuilder builder = new FormTrainingClientBuilder()
             .endpoint(formrecognizerEndpoint)
-            .credential(new AzureKeyCredential(formrecognizerApiKey))
-            .httpClient(new NettyAsyncHttpClientBuilder()
-                .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
-                .build());
+            .credential(new AzureKeyCredential(formrecognizerApiKey));
 
         this.formTrainingClient = builder.buildClient();
         this.formrecognizerAsyncClient = builder.buildAsyncClient().getFormRecognizerAsyncClient();
@@ -76,19 +66,20 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
      */
     @Override
     public Mono<Void> globalSetupAsync() {
-        String trainingDocumentsUrl = Configuration.getGlobalConfiguration()
-            .get("FORMRECOGNIZER_TRAINING_CONTAINER_SAS_URL");
-
-        if (CoreUtils.isNullOrEmpty(trainingDocumentsUrl)) {
-            throw new RuntimeException("'FORMRECOGNIZER_TRAINING_CONTAINER_SAS_URL' is required.");
-        }
-
-        SyncPoller<FormRecognizerOperationResult, CustomFormModel>
-            syncPoller = formTrainingClient
-            .beginTraining(trainingDocumentsUrl, true, new TrainingOptions().setModelName("labeled-perf-model"),
-                Context.NONE);
-        modelId = syncPoller.getFinalResult().getModelId();
-        return Mono.just(modelId).then();
+        return Mono.defer(() -> {
+            String trainingDocumentsUrl = Configuration.getGlobalConfiguration()
+                .get("FORMRECOGNIZER_TRAINING_CONTAINER_SAS_URL");
+            if (CoreUtils.isNullOrEmpty(trainingDocumentsUrl)) {
+                return Mono.error(new RuntimeException("'FORMRECOGNIZER_TRAINING_CONTAINER_SAS_URL' is required."));
+            }
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel>
+                syncPoller = formTrainingAsyncClient
+                .beginTraining(trainingDocumentsUrl,
+                    true,
+                    new TrainingOptions().setModelName("labeled-perf-model")).getSyncPoller();
+            modelId = syncPoller.getFinalResult().getModelId();
+            return Mono.empty();
+        }).then();
     }
 
     /**
@@ -96,6 +87,6 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
      */
     @Override
     public Mono<Void> globalCleanupAsync() {
-        return formTrainingAsyncClient.deleteModel(modelId);
+        return Mono.defer(() -> formTrainingAsyncClient.deleteModel(modelId));
     }
 }
