@@ -180,6 +180,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -190,12 +191,12 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                             resourceGroupName,
                             workspaceName,
                             storageInsightName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -246,6 +247,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -254,7 +256,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                 resourceGroupName,
                 workspaceName,
                 storageInsightName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 parameters,
                 accept,
@@ -367,6 +369,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -377,11 +380,11 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                             resourceGroupName,
                             workspaceName,
                             storageInsightName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -422,6 +425,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -430,7 +434,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                 resourceGroupName,
                 workspaceName,
                 storageInsightName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 accept,
                 context);
@@ -532,6 +536,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -541,10 +546,10 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                             resourceGroupName,
                             workspaceName,
                             storageInsightName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -585,6 +590,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -592,7 +598,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                 resourceGroupName,
                 workspaceName,
                 storageInsightName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 context);
     }
@@ -679,6 +685,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -688,7 +695,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                             this.client.getEndpoint(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             accept,
                             context))
@@ -701,7 +708,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                         res.getValue().value(),
                         res.getValue().odataNextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -737,6 +744,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -744,7 +752,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                 this.client.getEndpoint(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 accept,
                 context)
@@ -859,7 +867,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                         res.getValue().value(),
                         res.getValue().odataNextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

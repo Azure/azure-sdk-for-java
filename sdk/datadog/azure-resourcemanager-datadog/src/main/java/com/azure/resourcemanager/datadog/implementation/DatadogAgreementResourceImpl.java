@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.datadog.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.datadog.fluent.models.DatadogAgreementResourceInner;
 import com.azure.resourcemanager.datadog.models.DatadogAgreementProperties;
 import com.azure.resourcemanager.datadog.models.DatadogAgreementResource;
@@ -34,6 +35,10 @@ public final class DatadogAgreementResourceImpl implements DatadogAgreementResou
 
     public DatadogAgreementProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public DatadogAgreementResourceInner innerModel() {

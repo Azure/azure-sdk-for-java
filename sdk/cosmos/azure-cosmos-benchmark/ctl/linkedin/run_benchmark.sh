@@ -39,13 +39,6 @@ else
 collection_name=$ctl_collection
 fi
 
-if [ -z "$ctl_collection" ]
-then
-collection_name="linkedInTestCollection"
-else
-collection_name=$ctl_collection
-fi
-
 if [ -z "$ctl_throughput" ]
 then
 throughput=100000

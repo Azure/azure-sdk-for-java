@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.fluent.DataExportsClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.DataExportInner;
 import com.azure.resourcemanager.loganalytics.models.DataExport;
@@ -21,22 +20,23 @@ public final class DataExportsImpl implements DataExports {
 
     private final DataExportsClient innerClient;
 
-    private final LogAnalyticsManager serviceManager;
+    private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    public DataExportsImpl(DataExportsClient innerClient, LogAnalyticsManager serviceManager) {
+    public DataExportsImpl(
+        DataExportsClient innerClient, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<DataExport> listByWorkspace(String resourceGroupName, String workspaceName) {
         PagedIterable<DataExportInner> inner = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
-        return inner.mapPage(inner1 -> new DataExportImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new DataExportImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DataExport> listByWorkspace(String resourceGroupName, String workspaceName, Context context) {
         PagedIterable<DataExportInner> inner =
             this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
-        return inner.mapPage(inner1 -> new DataExportImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new DataExportImpl(inner1, this.manager()));
     }
 
     public DataExport get(String resourceGroupName, String workspaceName, String dataExportName) {
@@ -180,7 +180,7 @@ public final class DataExportsImpl implements DataExports {
         return this.innerClient;
     }
 
-    private LogAnalyticsManager manager() {
+    private com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager() {
         return this.serviceManager;
     }
 

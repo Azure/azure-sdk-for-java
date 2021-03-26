@@ -84,6 +84,13 @@ public final class AcsChatMessageReceivedInThreadEventData extends AcsChatMessag
 
     /** {@inheritDoc} */
     @Override
+    public AcsChatMessageReceivedInThreadEventData setTransactionId(String transactionId) {
+        super.setTransactionId(transactionId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public AcsChatMessageReceivedInThreadEventData setThreadId(String threadId) {
         super.setThreadId(threadId);
         return this;
