@@ -3,6 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
+import com.azure.core.util.Configuration;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.SpanId;
@@ -38,8 +39,11 @@ public class AzureMonitorTraceExporterTest extends MonitorExporterClientTestBase
 
     @Test
     public void testExportRequestData() {
+        String connectionStringTemplate = "InstrumentationKey=ikey;IngestionEndpoint=https://testendpoint.com";
+        String connectionString = Configuration.getGlobalConfiguration()
+            .get("APPLICATIONINSIGHTS_CONNECTION_STRING", connectionStringTemplate);
         AzureMonitorTraceExporter azureMonitorTraceExporter = getClientBuilder()
-            .connectionString("InstrumentationKey=ikey;IngestionEndpoint=https://testendpoint.com")
+            .connectionString(connectionString)
             .buildTraceExporter();
         CompletableResultCode export = azureMonitorTraceExporter.export(Collections.singleton(new RequestSpanData()));
         Assertions.assertTrue(export.isDone());
