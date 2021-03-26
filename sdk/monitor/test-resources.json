@@ -66,18 +66,6 @@
         "roleDefinitionId": "[variables('roleDefinitionId')]",
         "principalId": "[parameters('testApplicationOid')]"
       }
-    },
-    {
-      "name": "[variables('uniqueAppInsightsName')]",
-      "type": "microsoft.insights/components",
-      "location": "[parameters('regionId')]",
-      "apiVersion": "2015-05-01",
-      "properties": {
-        "ApplicationId": "testappinsights",
-        "Application_Type": "web",
-        "Flow_Type": "Redfield",
-        "Request_Source": "CustomDeployment"
-      }
     }
   ],
   "outputs": {
@@ -88,10 +76,6 @@
     "roleDefinitionId": {
       "type": "string",
       "value": "[ variables('roleDefinitionId')]"
-    },
-    "APPLICATIONINSIGHTS_CONNECTION_STRING": {
-      "value": "[concat('InstrumentationKey=', reference(resourceId('Microsoft.Insights/components', variables('uniqueAppInsightsName')), '2015-05-01').ConnectionString)]",
-      "type": "string"
     }
   }
 }

@@ -8,6 +8,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.Configuration;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorBase;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorDomain;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.RequestData;
@@ -17,7 +18,10 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -66,14 +70,33 @@ public class MonitorExporterClientTestBase extends TestBase {
             .setBaseType("RequestData")
             .setBaseData(requestData);
 
+        String connectionString = Configuration.getGlobalConfiguration().get(
+            "APPLICATIONINSIGHTS_CONNECTION_STRING", "");
+
+        Map<String, String> keyValues = parseConnectionString(connectionString);
+        String instrumentationKey = keyValues.getOrDefault("InstrumentationKey", "{instrumentation-key}");
+
         TelemetryItem telemetryItem = new TelemetryItem()
             .setVersion(1)
-            .setInstrumentationKey("{instrumentation-key}")
+            .setInstrumentationKey(instrumentationKey)
             .setName("test-event-name")
             .setSampleRate(100.0f)
             .setTime(time.format(DateTimeFormatter.ISO_DATE_TIME))
             .setData(monitorBase);
         return telemetryItem;
+    }
+
+    private Map<String, String> parseConnectionString(String connectionString) {
+        Objects.requireNonNull(connectionString);
+        Map<String, String> keyValues = new HashMap<>();
+        String[] splits = connectionString.split(";");
+        for (String split : splits) {
+            String[] keyValPair = split.split("=");
+            if (keyValPair.length == 2) {
+                keyValues.put(keyValPair[0], keyValPair[1]);
+            }
+        }
+        return keyValues;
     }
 
     String getFormattedDuration(Duration duration) {
