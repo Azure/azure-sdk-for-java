@@ -10,10 +10,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -630,6 +635,16 @@ public class FlatteningSerializerTests {
         Assertions.assertEquals(productDeserialized.productType, "chai");
     }
 
+    @Test
+    public void canHandleTagsOfFinalMap() throws IOException {
+        School school = new School().withTags(new Map1<>("tag.1", "value.1"));
+
+        JacksonAdapter adapter = new JacksonAdapter();
+
+        String resourceJson = adapter.serialize(school, SerializerEncoding.JSON);
+        Assertions.assertTrue(resourceJson.contains("tag.1"));
+    }
+
     @JsonFlatten
     private class School {
         @JsonProperty(value = "teacher")
@@ -716,6 +731,52 @@ public class FlatteningSerializerTests {
         public FlattenedProduct withPType(String productType) {
             this.productType = productType;
             return this;
+        }
+    }
+
+    private static final class Map1<K,V> extends AbstractMap<K,V> {
+        private final K k0;
+        private final V v0;
+
+        Map1(K k0, V v0) {
+            this.k0 = Objects.requireNonNull(k0);
+            this.v0 = Objects.requireNonNull(v0);
+        }
+
+        @Override
+        public Set<Entry<K,V>> entrySet() {
+            Entry<K,V> entry = new AbstractMap.SimpleEntry<>(k0, v0);
+            return new HashSet<>(Collections.singletonList(entry));
+        }
+
+        @Override
+        public V get(Object o) {
+            return o.equals(k0) ? v0 : null;
+        }
+
+        @Override
+        public boolean containsKey(Object o) {
+            return o.equals(k0);
+        }
+
+        @Override
+        public boolean containsValue(Object o) {
+            return o.equals(v0); // implicit nullcheck of o
+        }
+
+        @Override
+        public int size() {
+            return 1;
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            return k0.hashCode() ^ v0.hashCode();
         }
     }
 }
