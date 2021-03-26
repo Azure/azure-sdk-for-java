@@ -107,12 +107,6 @@ public class PublicIpPrefixInner extends Resource {
     private ProvisioningState provisioningState;
 
     /*
-     * NatGateway of Public IP Prefix.
-     */
-    @JsonProperty(value = "properties.natGateway")
-    private NatGatewayInner natGateway;
-
-    /*
      * Resource ID.
      */
     @JsonProperty(value = "id")
@@ -316,26 +310,6 @@ public class PublicIpPrefixInner extends Resource {
     }
 
     /**
-     * Get the natGateway property: NatGateway of Public IP Prefix.
-     *
-     * @return the natGateway value.
-     */
-    public NatGatewayInner natGateway() {
-        return this.natGateway;
-    }
-
-    /**
-     * Set the natGateway property: NatGateway of Public IP Prefix.
-     *
-     * @param natGateway the natGateway value to set.
-     * @return the PublicIpPrefixInner object itself.
-     */
-    public PublicIpPrefixInner withNatGateway(NatGatewayInner natGateway) {
-        this.natGateway = natGateway;
-        return this;
-    }
-
-    /**
      * Get the id property: Resource ID.
      *
      * @return the id value.
@@ -386,9 +360,6 @@ public class PublicIpPrefixInner extends Resource {
         }
         if (publicIpAddresses() != null) {
             publicIpAddresses().forEach(e -> e.validate());
-        }
-        if (natGateway() != null) {
-            natGateway().validate();
         }
     }
 }
