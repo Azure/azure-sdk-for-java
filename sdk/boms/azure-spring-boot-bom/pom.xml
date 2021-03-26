@@ -43,7 +43,7 @@
     <azure.keyvault.secret.version>4.2.6</azure.keyvault.secret.version>
     <azure.msal.version>1.9.1</azure.msal.version>
     <azure.servicebus.jms.version>0.0.7</azure.servicebus.jms.version>
-    <azure.spring.data.cosmos.version>3.5.1</azure.spring.data.cosmos.version>
+    <azure.spring.data.cosmos.version>3.5.0</azure.spring.data.cosmos.version>
     <azure.storage.blob.version>12.10.1</azure.storage.blob.version>
     <azure.storage.fileshare.version>12.8.0</azure.storage.fileshare.version>
   </properties>
