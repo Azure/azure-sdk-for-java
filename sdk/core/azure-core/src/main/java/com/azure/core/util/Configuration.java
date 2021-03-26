@@ -109,6 +109,11 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_AZURE_LOG_LEVEL = "AZURE_LOG_LEVEL";
 
     /**
+     * Enables HTTP request/response logging by setting an HTTP log detail level.
+     */
+    public static final String PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL = "AZURE_HTTP_LOG_DETAIL_LEVEL";
+
+    /**
      * Disables tracing.
      */
     public static final String PROPERTY_AZURE_TRACING_DISABLED = "AZURE_TRACING_DISABLED";
@@ -136,6 +141,7 @@ public class Configuration implements Cloneable {
         PROPERTY_AZURE_AUTHORITY_HOST,
         PROPERTY_AZURE_TELEMETRY_DISABLED,
         PROPERTY_AZURE_LOG_LEVEL,
+        PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL,
         PROPERTY_AZURE_TRACING_DISABLED,
     };
 

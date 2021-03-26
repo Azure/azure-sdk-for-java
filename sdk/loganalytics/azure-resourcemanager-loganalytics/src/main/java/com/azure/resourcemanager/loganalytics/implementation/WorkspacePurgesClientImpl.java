@@ -135,6 +135,7 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
         } else {
             body.validate();
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -143,13 +144,13 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
                         .purge(
                             this.client.getEndpoint(),
                             resourceGroupName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             workspaceName,
                             body,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -196,13 +197,14 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
         } else {
             body.validate();
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .purge(
                 this.client.getEndpoint(),
                 resourceGroupName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 workspaceName,
                 body,
@@ -279,7 +281,7 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
      * @return response containing operationId for a specific purge action.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkspacePurgeResponseInner> purgeWithResponse(
+    public WorkspacePurgesPurgeResponse purgeWithResponse(
         String resourceGroupName, String workspaceName, WorkspacePurgeBody body, Context context) {
         return purgeWithResponseAsync(resourceGroupName, workspaceName, body, context).block();
     }
@@ -320,6 +322,7 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
         if (purgeId == null) {
             return Mono.error(new IllegalArgumentException("Parameter purgeId is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -328,13 +331,13 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
                         .getPurgeStatus(
                             this.client.getEndpoint(),
                             resourceGroupName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             workspaceName,
                             purgeId,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -374,13 +377,14 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
         if (purgeId == null) {
             return Mono.error(new IllegalArgumentException("Parameter purgeId is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getPurgeStatus(
                 this.client.getEndpoint(),
                 resourceGroupName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 workspaceName,
                 purgeId,
