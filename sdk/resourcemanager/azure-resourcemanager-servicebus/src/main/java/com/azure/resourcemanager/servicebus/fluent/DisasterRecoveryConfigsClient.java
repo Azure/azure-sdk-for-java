@@ -13,7 +13,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicebus.fluent.models.ArmDisasterRecoveryInner;
 import com.azure.resourcemanager.servicebus.fluent.models.CheckNameAvailabilityResultInner;
 import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
-import com.azure.resourcemanager.servicebus.models.AccessKeysInner;
+import com.azure.resourcemanager.servicebus.fluent.models.AccessKeysInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DisasterRecoveryConfigsClient. */

@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.servicebus.implementation;
 
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
-import com.azure.resourcemanager.servicebus.models.AccessKeysInner;
+import com.azure.resourcemanager.servicebus.fluent.models.AccessKeysInner;
 import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
 import com.azure.resourcemanager.servicebus.models.RegenerateAccessKeyParameters;
 import com.azure.resourcemanager.servicebus.models.TopicAuthorizationRule;

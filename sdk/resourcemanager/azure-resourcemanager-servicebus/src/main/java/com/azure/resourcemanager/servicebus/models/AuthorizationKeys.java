@@ -5,6 +5,7 @@ package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
+import com.azure.resourcemanager.servicebus.fluent.models.AccessKeysInner;
 
 /**
  * Authorization key and connection string of authorization rule associated with Service Bus entities.

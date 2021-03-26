@@ -34,7 +34,7 @@ import com.azure.resourcemanager.servicebus.fluent.DisasterRecoveryConfigsClient
 import com.azure.resourcemanager.servicebus.fluent.models.ArmDisasterRecoveryInner;
 import com.azure.resourcemanager.servicebus.fluent.models.CheckNameAvailabilityResultInner;
 import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
-import com.azure.resourcemanager.servicebus.models.AccessKeysInner;
+import com.azure.resourcemanager.servicebus.fluent.models.AccessKeysInner;
 import com.azure.resourcemanager.servicebus.models.ArmDisasterRecoveryListResult;
 import com.azure.resourcemanager.servicebus.models.CheckNameAvailability;
 import com.azure.resourcemanager.servicebus.models.SBAuthorizationRuleListResult;

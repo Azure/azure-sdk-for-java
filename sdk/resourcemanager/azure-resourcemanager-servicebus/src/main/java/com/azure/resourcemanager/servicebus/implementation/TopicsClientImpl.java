@@ -33,7 +33,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicebus.fluent.TopicsClient;
 import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
 import com.azure.resourcemanager.servicebus.fluent.models.SBTopicInner;
-import com.azure.resourcemanager.servicebus.models.AccessKeysInner;
+import com.azure.resourcemanager.servicebus.fluent.models.AccessKeysInner;
 import com.azure.resourcemanager.servicebus.models.AccessRights;
 import com.azure.resourcemanager.servicebus.models.RegenerateAccessKeyParameters;
 import com.azure.resourcemanager.servicebus.models.SBAuthorizationRuleListResult;
