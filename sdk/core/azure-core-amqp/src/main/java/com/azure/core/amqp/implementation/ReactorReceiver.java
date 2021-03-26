@@ -6,9 +6,11 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -131,11 +133,16 @@ public class ReactorReceiver implements AmqpReceiveLink {
                     logger.verbose("Token refreshed: {}", response);
                     hasAuthorized.set(true);
                 }, error -> {
-                    //TODO (conniey): Close reactor receiver because we are no longer authorized.
-                    logger.info("connectionId[{}], path[{}], linkName[{}] - tokenRenewalFailure[{}]",
-                        handler.getConnectionId(), this.entityPath, getLinkName(), error.getMessage());
+                    logger.info("connectionId[{}] path[{}] linkName[{}] tokenRenewalFailure[{}]",
+                        handler.getConnectionId(), this.entityPath, getLinkName(), error.getMessage(), error);
                     hasAuthorized.set(false);
-                }, () -> hasAuthorized.set(false)),
+
+                    dispose("connectionId[%s] linkName[%s] Token renewal failure. Disposing receive link.",
+                        new ErrorCondition(Symbol.getSymbol(AmqpErrorCondition.NOT_ALLOWED.getErrorCondition()),
+                            error.getMessage())).subscribe();
+                }, () -> {
+                    hasAuthorized.set(false);
+                }),
 
             amqpConnection.getShutdownSignals().subscribe(signal -> {
                 logger.verbose("connectionId[{}] linkName[{}]: Shutdown signal received.", handler.getConnectionId(),

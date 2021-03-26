@@ -154,10 +154,14 @@ class ReactorSender implements AmqpSendLink {
                     hasAuthorized.set(true);
                 },
                 error -> {
-                    //TODO (conniey): Close link or sender when it is no longer authorized.
-                    logger.info("connectionId[{}], entityPath[{}], linkName[{}]: tokenRenewalFailure[{}]",
+                    logger.info("connectionId[{}], entityPath[{}], linkName[{}] tokenRenewalFailure[{}]",
                         handler.getConnectionId(), entityPath, getLinkName(), error.getMessage());
+
                     hasAuthorized.set(false);
+
+                    dispose("connectionId[%s] linkName[%s] Token renewal failure. Disposing send link.",
+                        new ErrorCondition(Symbol.getSymbol(AmqpErrorCondition.NOT_ALLOWED.getErrorCondition()),
+                            error.getMessage())).subscribe();
                 }, () -> hasAuthorized.set(false)));
         }
     }
