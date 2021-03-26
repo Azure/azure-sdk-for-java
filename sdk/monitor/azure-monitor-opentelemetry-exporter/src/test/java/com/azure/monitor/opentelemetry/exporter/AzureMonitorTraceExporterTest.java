@@ -25,6 +25,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
@@ -46,6 +47,7 @@ public class AzureMonitorTraceExporterTest extends MonitorExporterClientTestBase
             .connectionString(connectionString)
             .buildTraceExporter();
         CompletableResultCode export = azureMonitorTraceExporter.export(Collections.singleton(new RequestSpanData()));
+        export.join(30, TimeUnit.SECONDS);
         Assertions.assertTrue(export.isDone());
         Assertions.assertTrue(export.isSuccess());
     }

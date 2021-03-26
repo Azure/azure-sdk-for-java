@@ -109,7 +109,7 @@ public class MonitorExporterClientTestBase extends TestBase {
         telemetryItems.add(createRequestData("200", "GET /service/resource-name", true, Duration.ofMillis(100),
             OffsetDateTime.now()));
         telemetryItems.add(createRequestData("400", "GET /service/resource-name", false, Duration.ofMillis(50),
-            OffsetDateTime.now().minusDays(2)));
+            OffsetDateTime.now().minusDays(20)));
         telemetryItems.add(createRequestData("202", "GET /service/resource-name", true, Duration.ofMillis(125),
             OffsetDateTime.now()));
         return telemetryItems;
