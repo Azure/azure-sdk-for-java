@@ -242,9 +242,9 @@ public class ReactorSessionTest {
     @Test
     void getOrCreateTransactionCoordinator() {
         // Arrange
-        final String TRANSACTION_LINK_NAME = "coordinator";
-        final String linkName = TRANSACTION_LINK_NAME;
-        final String entityPath = TRANSACTION_LINK_NAME;
+        final String transactionLinkName = "coordinator";
+        final String linkName = transactionLinkName;
+        final String entityPath = transactionLinkName;
 
         final TokenManager tokenManager = mock(TokenManager.class);
         final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath);
@@ -264,7 +264,7 @@ public class ReactorSessionTest {
             .assertNext(Assertions::assertNotNull)
             .verifyComplete();
 
-        verify(session).sender(TRANSACTION_LINK_NAME);
+        verify(session).sender(transactionLinkName);
         verify(sender).setTarget(any(Coordinator.class));
         verify(session).open();
 
