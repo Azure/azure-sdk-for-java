@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.implementation;
 
-import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.fluent.models.ManagementGroupInner;
 import com.azure.resourcemanager.loganalytics.models.ManagementGroup;
 import java.time.OffsetDateTime;
@@ -12,9 +11,10 @@ import java.time.OffsetDateTime;
 public final class ManagementGroupImpl implements ManagementGroup {
     private ManagementGroupInner innerObject;
 
-    private final LogAnalyticsManager serviceManager;
+    private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    ManagementGroupImpl(ManagementGroupInner innerObject, LogAnalyticsManager serviceManager) {
+    ManagementGroupImpl(
+        ManagementGroupInner innerObject, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -55,7 +55,7 @@ public final class ManagementGroupImpl implements ManagementGroup {
         return this.innerObject;
     }
 
-    private LogAnalyticsManager manager() {
+    private com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager() {
         return this.serviceManager;
     }
 }

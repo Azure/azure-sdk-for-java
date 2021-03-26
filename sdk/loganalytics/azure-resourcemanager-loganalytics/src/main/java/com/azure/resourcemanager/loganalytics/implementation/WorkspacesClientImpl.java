@@ -110,7 +110,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
                 + "/workspaces/{workspaceName}")
@@ -123,6 +123,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("force") Boolean force,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -178,22 +179,18 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+                        .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context))
             .<PagedResponse<WorkspaceInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -219,15 +216,11 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -313,6 +306,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -321,7 +315,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
                         .listByResourceGroup(
                             this.client.getEndpoint(),
                             resourceGroupName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             accept,
                             context))
@@ -329,7 +323,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -361,13 +355,14 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(),
                 resourceGroupName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 accept,
                 context)
@@ -473,6 +468,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -482,12 +478,12 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
                             this.client.getEndpoint(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -529,6 +525,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -536,7 +533,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
                 this.client.getEndpoint(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 parameters,
                 accept,
@@ -733,6 +730,8 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-10-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -741,11 +740,12 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
                             this.client.getEndpoint(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             force,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -785,15 +785,18 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-10-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 force,
+                accept,
                 context);
     }
 
@@ -1036,6 +1039,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1045,11 +1049,11 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
                             this.client.getEndpoint(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1085,6 +1089,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1092,7 +1097,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
                 this.client.getEndpoint(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 accept,
                 context);
@@ -1191,6 +1196,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1200,12 +1206,12 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
                             this.client.getEndpoint(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1247,6 +1253,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1254,7 +1261,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
                 this.client.getEndpoint(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 parameters,
                 accept,

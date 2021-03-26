@@ -119,8 +119,8 @@ public class DataLakeFileSystemClientBuilder {
             endpoint, retryOptions, logOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
-        return new DataLakeFileSystemAsyncClient(pipeline, String.format("%s/%s", endpoint, dataLakeFileSystemName),
-            serviceVersion, accountName, dataLakeFileSystemName, blobContainerClientBuilder.buildAsyncClient());
+        return new DataLakeFileSystemAsyncClient(pipeline, endpoint, serviceVersion, accountName,
+            dataLakeFileSystemName, blobContainerClientBuilder.buildAsyncClient());
     }
 
     /**

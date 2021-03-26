@@ -1,75 +1,75 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsupdateaclrecursiveerror08656538fa07913eb7424?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsupdateaclrecursiveerror0268292e6d8e792f674d9?restype=container",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "3483c722-f398-46ae-a8cd-0bb0fc436441"
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9ca98ba2-fe37-44dc-9979-8d0feb50de93"
     },
     "Response" : {
       "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D8C964A9E25061",
-      "Last-Modified" : "Thu, 04 Feb 2021 23:29:05 GMT",
+      "eTag" : "0x8D8D9E357404628",
+      "Last-Modified" : "Thu, 25 Feb 2021 23:16:11 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "a6a85604-201e-005c-164d-fb18f8000000",
-      "Date" : "Thu, 04 Feb 2021 23:29:05 GMT",
-      "x-ms-client-request-id" : "3483c722-f398-46ae-a8cd-0bb0fc436441"
+      "x-ms-request-id" : "37315405-601e-0075-61cc-0bb638000000",
+      "x-ms-client-request-id" : "9ca98ba2-fe37-44dc-9979-8d0feb50de93",
+      "Date" : "Thu, 25 Feb 2021 23:16:10 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsupdateaclrecursiveerror08656538fa07913eb7424/javapathupdateaclrecursiveerror1425726e68f5e39c9e4?resource=directory",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsupdateaclrecursiveerror0268292e6d8e792f674d9/javapathupdateaclrecursiveerror15473927821204a7514?resource=directory",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "741fa9fc-dd49-44ef-b048-8822875b8890"
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.2 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9e509ca4-2d6f-4f3f-814c-97c612d423dd"
     },
     "Response" : {
       "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D8C964AA1BEE2C",
-      "Last-Modified" : "Thu, 04 Feb 2021 23:29:06 GMT",
+      "eTag" : "0x8D8D9E3574D423A",
+      "Last-Modified" : "Thu, 25 Feb 2021 23:16:11 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "1d153ce1-901f-0004-514d-fbc0a7000000",
-      "Date" : "Thu, 04 Feb 2021 23:29:05 GMT",
-      "x-ms-client-request-id" : "741fa9fc-dd49-44ef-b048-8822875b8890"
+      "x-ms-request-id" : "786daa42-601f-0075-1ecc-0bb638000000",
+      "x-ms-client-request-id" : "9e509ca4-2d6f-4f3f-814c-97c612d423dd",
+      "Date" : "Thu, 25 Feb 2021 23:16:11 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsupdateaclrecursiveerror08656538fa07913eb7424/?action=setAccessControl",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsupdateaclrecursiveerror0268292e6d8e792f674d9/?action=setAccessControl",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "ea87738d-ed92-4480-86e2-40674b390d95"
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.2 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a062915a-2114-4fe1-a637-c641124f5db8"
     },
     "Response" : {
       "x-ms-namespace-enabled" : "true",
       "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D8C964A9E44042",
-      "Last-Modified" : "Thu, 04 Feb 2021 23:29:05 GMT",
+      "eTag" : "0x8D8D9E35741C559",
+      "Last-Modified" : "Thu, 25 Feb 2021 23:16:11 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "1d153ce2-901f-0004-524d-fbc0a7000000",
-      "Date" : "Thu, 04 Feb 2021 23:29:06 GMT",
-      "x-ms-client-request-id" : "ea87738d-ed92-4480-86e2-40674b390d95"
+      "x-ms-request-id" : "786daa43-601f-0075-1fcc-0bb638000000",
+      "x-ms-client-request-id" : "a062915a-2114-4fe1-a637-c641124f5db8",
+      "Date" : "Thu, 25 Feb 2021 23:16:11 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsupdateaclrecursiveerror08656538fa07913eb7424/javapathupdateaclrecursiveerror224203f7ad2ffca5cf4?mode=modify&forceFlag=false&action=setAccessControlRecursive",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsupdateaclrecursiveerror0268292e6d8e792f674d9/javapathupdateaclrecursiveerror262030021444f17dcd4?action=setAccessControlRecursive&mode=modify&forceFlag=false",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c4c65be1-d269-44aa-af56-336ab87caa8c"
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.2 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "976ffb9d-4f7d-482c-b316-6969faa7cbf8"
     },
     "Response" : {
       "x-ms-version" : "2020-06-12",
@@ -78,10 +78,10 @@
       "retry-after" : "0",
       "Content-Length" : "163",
       "StatusCode" : "404",
-      "x-ms-request-id" : "1dd31c52-501f-0079-214d-fbb184000000",
-      "Body" : "{\"error\":{\"code\":\"PathNotFound\",\"message\":\"The specified path does not exist.\\nRequestId:1dd31c52-501f-0079-214d-fbb184000000\\nTime:2021-02-04T23:29:06.8686692Z\"}}",
-      "Date" : "Thu, 04 Feb 2021 23:29:06 GMT",
-      "x-ms-client-request-id" : "c4c65be1-d269-44aa-af56-336ab87caa8c",
+      "x-ms-request-id" : "786daa44-601f-0075-20cc-0bb638000000",
+      "Body" : "{\"error\":{\"code\":\"PathNotFound\",\"message\":\"The specified path does not exist.\\nRequestId:786daa44-601f-0075-20cc-0bb638000000\\nTime:2021-02-25T23:16:12.0781072Z\"}}",
+      "x-ms-client-request-id" : "976ffb9d-4f7d-482c-b316-6969faa7cbf8",
+      "Date" : "Thu, 25 Feb 2021 23:16:11 GMT",
       "Content-Type" : "application/json;charset=utf-8"
     },
     "Exception" : null
@@ -90,8 +90,8 @@
     "Uri" : "https://REDACTED.blob.core.windows.net?comp=list&prefix=jtfsupdateaclrecursiveerror",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e2ccdd5a-44ae-4f38-83f7-75a83ce1afcf"
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "30d0feec-3bef-45ab-856f-aeafc222ecdb"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -99,20 +99,20 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "a6a856b1-201e-005c-1d4d-fb18f8000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gaprahnscanary.blob.core.windows.net/\"><Prefix>jtfsupdateaclrecursiveerror</Prefix><Containers><Container><Name>jtfsupdateaclrecursiveerror08656538fa07913eb7424</Name><Properties><Last-Modified>Thu, 04 Feb 2021 23:29:05 GMT</Last-Modified><Etag>\"0x8D8C964A9E25061\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Thu, 04 Feb 2021 23:29:06 GMT",
-      "x-ms-client-request-id" : "e2ccdd5a-44ae-4f38-83f7-75a83ce1afcf",
+      "x-ms-request-id" : "3731547c-601e-0075-4acc-0bb638000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gapracontainerrestorehns.blob.core.windows.net/\"><Prefix>jtfsupdateaclrecursiveerror</Prefix><Containers><Container><Name>jtfsupdateaclrecursiveerror0268292e6d8e792f674d9</Name><Properties><Last-Modified>Thu, 25 Feb 2021 23:16:11 GMT</Last-Modified><Etag>\"0x8D8D9E357404628\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "30d0feec-3bef-45ab-856f-aeafc222ecdb",
+      "Date" : "Thu, 25 Feb 2021 23:16:11 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsupdateaclrecursiveerror08656538fa07913eb7424?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsupdateaclrecursiveerror0268292e6d8e792f674d9?restype=container",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c648522a-78c0-45ce-b0c2-99d2618ad836"
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5dd78c5d-d883-4314-9bf3-90b29b131b05"
     },
     "Response" : {
       "x-ms-version" : "2020-06-12",
@@ -120,11 +120,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "a6a856c6-201e-005c-2d4d-fb18f8000000",
-      "Date" : "Thu, 04 Feb 2021 23:29:06 GMT",
-      "x-ms-client-request-id" : "c648522a-78c0-45ce-b0c2-99d2618ad836"
+      "x-ms-request-id" : "3731548b-601e-0075-59cc-0bb638000000",
+      "x-ms-client-request-id" : "5dd78c5d-d883-4314-9bf3-90b29b131b05",
+      "Date" : "Thu, 25 Feb 2021 23:16:11 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtfsupdateaclrecursiveerror08656538fa07913eb7424", "javapathupdateaclrecursiveerror1425726e68f5e39c9e4", "javapathupdateaclrecursiveerror224203f7ad2ffca5cf4" ]
+  "variables" : [ "jtfsupdateaclrecursiveerror0268292e6d8e792f674d9", "javapathupdateaclrecursiveerror15473927821204a7514", "javapathupdateaclrecursiveerror262030021444f17dcd4" ]
 }
