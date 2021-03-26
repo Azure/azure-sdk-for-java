@@ -12,15 +12,15 @@ import java.net.HttpURLConnection;
 
 public class AzureMonitorRedirectCustomPolicy implements HttpPipelinePolicy {
     private final ClientLogger logger = new ClientLogger(AzureMonitorRedirectCustomPolicy.class);
-    private final int MAX_REDIRECT_RETRIES;
+    private final int max_redirect_retries;
     private String redirectedEndpointUrl;
 
     public AzureMonitorRedirectCustomPolicy() {
-        this.MAX_REDIRECT_RETRIES = 10;
+        max_redirect_retries = 10;
     }
 
     public AzureMonitorRedirectCustomPolicy(int max_retries) {
-        this.MAX_REDIRECT_RETRIES = max_retries;
+        max_redirect_retries = max_retries;
     }
 
     @Override
@@ -53,8 +53,8 @@ public class AzureMonitorRedirectCustomPolicy implements HttpPipelinePolicy {
     }
 
     private boolean shouldRetryWithRedirect(int statusCode, int tryCount) {
-        if( tryCount >= MAX_REDIRECT_RETRIES) {
-            logger.verbose("Max redirect retries limit reached:%d.",MAX_REDIRECT_RETRIES);
+        if( tryCount >= max_redirect_retries) {
+            logger.verbose("Max redirect retries limit reached:%d.", max_redirect_retries);
             return false;
         }
 
