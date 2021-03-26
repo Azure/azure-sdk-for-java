@@ -138,7 +138,7 @@ public class ReactorConnection implements AmqpConnection {
                 if (!isDisposed.getAndSet(true)) {
                     logger.verbose("connectionId[{}]: Disposing of active sessions due to error.", connectionId);
                     dispose(new AmqpShutdownSignal(false, false,
-                        error.getMessage()));
+                        error.getMessage())).subscribe();
                 }
             })
             .doOnComplete(() -> {
@@ -147,7 +147,7 @@ public class ReactorConnection implements AmqpConnection {
                         connectionId);
 
                     dispose(new AmqpShutdownSignal(false, false,
-                        "Connection handler closed."));
+                        "Connection handler closed.")).subscribe();
                 }
             })
             .cache(1);
@@ -496,7 +496,8 @@ public class ReactorConnection implements AmqpConnection {
                 getId(), getFullyQualifiedNamespace(), exception.getMessage(), exception);
 
             if (!isDisposed.getAndSet(true)) {
-                logger.verbose("onReactorError connectionId[{}], hostName[{}]: disposing.");
+                logger.verbose("onReactorError connectionId[{}], hostName[{}]: Disposing.", connectionId,
+                    getFullyQualifiedNamespace());
                 dispose(new AmqpShutdownSignal(false, false,
                     "onReactorError: " + exception.toString()))
                     .subscribe();
