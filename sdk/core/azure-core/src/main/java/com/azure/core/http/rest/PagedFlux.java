@@ -52,6 +52,19 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
     }
 
     /**
+     * Creates an instance of {@link PagedFlux} that consists of only a single page with a given element count.
+     *
+     * <p><strong>Code sample</strong></p>
+     *
+     * {@codesnippet com.azure.core.http.rest.PagedFlux.singlepage.instantiationWithPageSize}
+     *
+     * @param firstPageRetriever Function that retrieves the first page.
+     */
+    public PagedFlux(Function<Integer, Mono<PagedResponse<T>>> firstPageRetriever) {
+        this(firstPageRetriever, (token, pageSize) -> Mono.empty());
+    }
+
+    /**
      * Creates an instance of {@link PagedFlux}. The constructor takes a {@code Supplier} and {@code Function}. The
      * {@code Supplier} returns the first page of {@code T}, the {@code Function} retrieves subsequent pages of {@code
      * T}.

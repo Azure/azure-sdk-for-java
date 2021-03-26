@@ -96,6 +96,16 @@ public final class PagedFluxJavaDocCodeSnippets {
         return pagedFlux;
     }
 
+    public void createASinglePageInstanceWithPageSizeSupport() {
+        // BEGIN: com.azure.core.http.rest.PagedFlux.singlepage.instantiationWithPageSize
+        // A function that fetches the single page of data from a source/service.
+        Function<Integer, Mono<PagedResponse<Integer>>> singlePageRetriever = pageSize ->
+            getFirstPageWithSize(pageSize);
+
+        PagedFlux<Integer> singlePageFluxWithPageSize = new PagedFlux<Integer>(singlePageRetriever);
+        // END: com.azure.core.http.rest.PagedFlux.singlepage.instantiationWithPageSize
+    }
+
     public void createAnInstanceWithPageSizeSupport() {
         // BEGIN: com.azure.core.http.rest.PagedFlux.instantiationWithPageSize
         // A function that fetches the first page of data from a source/service.
