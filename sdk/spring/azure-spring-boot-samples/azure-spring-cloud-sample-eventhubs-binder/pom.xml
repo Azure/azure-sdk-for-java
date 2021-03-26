@@ -21,7 +21,12 @@
         <version>2020.0.1</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-dependencies;external_dependency} -->
         <type>pom</type>  
         <scope>import</scope> 
-      </dependency> 
+      </dependency>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core</artifactId>
+        <version>1.14.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      </dependency>
     </dependencies> 
   </dependencyManagement>  
   <dependencies> 
