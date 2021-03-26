@@ -333,7 +333,7 @@ public final class BlobServiceAsyncClient {
         throwOnAnonymousAccess();
         BiFunction<String, Integer, Mono<PagedResponse<BlobContainerItem>>> func =
             (marker, pageSize) -> {
-                ListBlobContainersOptions finalOptions = null;
+                ListBlobContainersOptions finalOptions;
                 if (pageSize != null) {
                     if (options == null) {
                         finalOptions = new ListBlobContainersOptions().setMaxResultsPerPage(pageSize);
@@ -343,6 +343,8 @@ public final class BlobServiceAsyncClient {
                             .setDetails(options.getDetails())
                             .setPrefix(options.getPrefix());
                     }
+                } else {
+                    finalOptions = options;
                 }
                 return listBlobContainersSegment(marker, finalOptions, timeout);
             };
@@ -401,10 +403,8 @@ public final class BlobServiceAsyncClient {
         throwOnAnonymousAccess();
         StorageImplUtils.assertNotNull("options", options);
         BiFunction<String, Integer, Mono<PagedResponse<TaggedBlobItem>>> func =
-            (marker, pageSize) -> {
-                options.setMaxResultsPerPage(pageSize);
-                return withContext(context -> this.findBlobsByTags(options, marker, timeout, context));
-            };
+            (marker, pageSize) -> withContext(context -> this.findBlobsByTags(
+                new FindBlobsOptions(options.getQuery()).setMaxResultsPerPage(pageSize), marker, timeout, context));
         return StoragePagedFlux.create(pageSize -> func.apply(null, pageSize), func);
     }
 

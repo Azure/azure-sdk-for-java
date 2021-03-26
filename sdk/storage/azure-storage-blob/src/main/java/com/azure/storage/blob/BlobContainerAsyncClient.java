@@ -841,7 +841,7 @@ public final class BlobContainerAsyncClient {
         Duration timeout) {
         BiFunction<String, Integer, Mono<PagedResponse<BlobItem>>> func =
             (marker, pageSize) -> {
-                ListBlobsOptions finalOptions = null;
+                ListBlobsOptions finalOptions;
                 if (pageSize != null) {
                     if (options == null) {
                         finalOptions = new ListBlobsOptions().setMaxResultsPerPage(pageSize);
@@ -851,6 +851,8 @@ public final class BlobContainerAsyncClient {
                             .setPrefix(options.getPrefix())
                             .setDetails(options.getDetails());
                     }
+                } else {
+                    finalOptions = options;
                 }
 
                 return listBlobsFlatSegment(marker, finalOptions, timeout)
@@ -997,7 +999,7 @@ public final class BlobContainerAsyncClient {
         Duration timeout) {
         BiFunction<String, Integer, Mono<PagedResponse<BlobItem>>> func =
             (marker, pageSize) -> {
-                ListBlobsOptions finalOptions = null;
+                ListBlobsOptions finalOptions;
                 /*
                  If pageSize was not set in a .byPage(int) method, the page size from options will be preserved.
                  Otherwise, prefer the new value.
@@ -1012,6 +1014,8 @@ public final class BlobContainerAsyncClient {
                             .setPrefix(options.getPrefix())
                             .setDetails(options.getDetails());
                     }
+                } else {
+                    finalOptions = options;
                 }
                 return listBlobsHierarchySegment(marker, delimiter, finalOptions, timeout)
                 .map(response -> {

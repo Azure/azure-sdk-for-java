@@ -5,16 +5,11 @@ package com.azure.storage.common.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.util.paging.PageRetriever;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 /**
  * This type is a thin wrapper around a PagedFlux that ensures the page size will be requested when they customer passes
@@ -30,14 +25,13 @@ public class StoragePagedFlux<T> extends PagedFlux<T> {
 
     public static <T> PagedFlux<T> create(Function<Integer, Mono<PagedResponse<T>>> firstPageRetriever,
         BiFunction<String, Integer, Mono<PagedResponse<T>>> nextPageRetriever) {
-        return PagedFlux.create(() -> (continuationToken, pageSize) ->
-            {
-                if (pageSize != null) {
-                    StorageImplUtils.assertInBounds("pageSize", pageSize, 0, Long.MAX_VALUE);
-                }
-                return continuationToken == null
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            if (pageSize != null) {
+                StorageImplUtils.assertInBounds("pageSize", pageSize, 0, Long.MAX_VALUE);
+            }
+            return continuationToken == null
                 ? firstPageRetriever.apply(pageSize).flux()
                 : nextPageRetriever.apply(continuationToken, pageSize).flux();
-            });
+        });
     }
 }

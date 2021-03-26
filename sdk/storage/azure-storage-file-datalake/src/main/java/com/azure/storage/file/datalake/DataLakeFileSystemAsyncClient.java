@@ -460,7 +460,7 @@ public class DataLakeFileSystemAsyncClient {
         BiFunction<String, Integer, Mono<PagedResponse<PathItem>>> func =
             (marker, pageSize) ->
             {
-                ListPathsOptions finalOptions = null;
+                ListPathsOptions finalOptions;
                 if (pageSize != null) {
                     if (options == null) {
                         finalOptions = new ListPathsOptions().setMaxResults(pageSize);
@@ -471,6 +471,8 @@ public class DataLakeFileSystemAsyncClient {
                             .setRecursive(options.isRecursive())
                             .setUserPrincipalNameReturned(options.isUserPrincipalNameReturned());
                     }
+                } else {
+                    finalOptions = options;
                 }
                 return listPathsSegment(marker, finalOptions, timeout)
                     .map(response -> {
