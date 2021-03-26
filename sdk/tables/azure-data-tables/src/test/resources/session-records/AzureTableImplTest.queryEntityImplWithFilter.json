@@ -4,8 +4,8 @@
     "Uri" : "https://REDACTED.table.core.windows.net/Tables",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "x-ms-client-request-id" : "70643767-c64a-4e95-a2eb-259833735b4b",
-      "Content-Type" : "application/json"
+      "x-ms-client-request-id" : "cc25adc8-baf4-49a4-82e3-27c91fa7ee60",
+      "Content-Type" : "application/json;odata=nometadata"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -13,23 +13,23 @@
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "Date" : "Wed, 04 Nov 2020 23:43:40 GMT",
+      "Date" : "Tue, 09 Feb 2021 06:53:24 GMT",
       "Cache-Control" : "no-cache",
-      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('test1664484a99')",
+      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('test3351292744')",
       "Content-Length" : "0",
-      "x-ms-request-id" : "00217b41-a002-0069-7804-b3f310000000",
+      "x-ms-request-id" : "c30faf0f-6002-00cf-25b0-fe440e000000",
       "Preference-Applied" : "return-no-content",
-      "x-ms-client-request-id" : "70643767-c64a-4e95-a2eb-259833735b4b",
-      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('test1664484a99')"
+      "x-ms-client-request-id" : "cc25adc8-baf4-49a4-82e3-27c91fa7ee60",
+      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('test3351292744')"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.table.core.windows.net/test1664484a99?timeout=100000",
+    "Uri" : "https://REDACTED.table.core.windows.net/test3351292744?timeout=100000",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "x-ms-client-request-id" : "7d16704f-f232-4683-9a71-fc1bc210c00a",
-      "Content-Type" : "application/json"
+      "x-ms-client-request-id" : "0bea430d-6b6a-4162-b7a3-9fc33eb03df2",
+      "Content-Type" : "application/json;odata=nometadata"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -37,24 +37,24 @@
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "Date" : "Wed, 04 Nov 2020 23:43:40 GMT",
+      "Date" : "Tue, 09 Feb 2021 06:53:24 GMT",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"datetime'2020-11-04T23%3A43%3A40.7221362Z'\"",
-      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/test1664484a99(PartitionKey='partitionkeya78338f',RowKey='rowkeya21651a0b4')",
+      "ETag" : "W/\"datetime'2021-02-09T06%3A53%3A24.8142356Z'\"",
+      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/test3351292744(PartitionKey='partitionkeya884459',RowKey='rowkeya96884f7c6')",
       "Content-Length" : "0",
-      "x-ms-request-id" : "00217b48-a002-0069-7d04-b3f310000000",
+      "x-ms-request-id" : "c30faf1c-6002-00cf-2bb0-fe440e000000",
       "Preference-Applied" : "return-no-content",
-      "x-ms-client-request-id" : "7d16704f-f232-4683-9a71-fc1bc210c00a",
-      "Location" : "https://brsiegelsample.table.core.windows.net/test1664484a99(PartitionKey='partitionkeya78338f',RowKey='rowkeya21651a0b4')"
+      "x-ms-client-request-id" : "0bea430d-6b6a-4162-b7a3-9fc33eb03df2",
+      "Location" : "https://brsiegelsample.table.core.windows.net/test3351292744(PartitionKey='partitionkeya884459',RowKey='rowkeya96884f7c6')"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.table.core.windows.net/test1664484a99?timeout=100000",
+    "Uri" : "https://REDACTED.table.core.windows.net/test3351292744?timeout=100000",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "x-ms-client-request-id" : "6c4bd53c-ddec-4b59-9dff-cc402b7ec7ca",
-      "Content-Type" : "application/json"
+      "x-ms-client-request-id" : "ea343a02-6c37-4045-a835-d1fd59a26bfd",
+      "Content-Type" : "application/json;odata=nometadata"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -62,23 +62,23 @@
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "Date" : "Wed, 04 Nov 2020 23:43:40 GMT",
+      "Date" : "Tue, 09 Feb 2021 06:53:25 GMT",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"datetime'2020-11-04T23%3A43%3A40.7451533Z'\"",
-      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/test1664484a99(PartitionKey='partitionkeyb133570',RowKey='rowkeyb7693370b1')",
+      "ETag" : "W/\"datetime'2021-02-09T06%3A53%3A25.0023683Z'\"",
+      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/test3351292744(PartitionKey='partitionkeyb24071c',RowKey='rowkeyb662672771')",
       "Content-Length" : "0",
-      "x-ms-request-id" : "00217b4a-a002-0069-7f04-b3f310000000",
+      "x-ms-request-id" : "c30faf27-6002-00cf-35b0-fe440e000000",
       "Preference-Applied" : "return-no-content",
-      "x-ms-client-request-id" : "6c4bd53c-ddec-4b59-9dff-cc402b7ec7ca",
-      "Location" : "https://brsiegelsample.table.core.windows.net/test1664484a99(PartitionKey='partitionkeyb133570',RowKey='rowkeyb7693370b1')"
+      "x-ms-client-request-id" : "ea343a02-6c37-4045-a835-d1fd59a26bfd",
+      "Location" : "https://brsiegelsample.table.core.windows.net/test3351292744(PartitionKey='partitionkeyb24071c',RowKey='rowkeyb662672771')"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.table.core.windows.net/test1664484a99()?timeout=100000&$format=application/json%3Bodata%3Dfullmetadata&$filter=PartitionKey%20eq%20%27partitionkeya78338f%27",
+    "Uri" : "https://REDACTED.table.core.windows.net/test3351292744()?timeout=100000&$format=application/json%3Bodata%3Dfullmetadata&$filter=PartitionKey%20eq%20%27partitionkeya884459%27",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "x-ms-client-request-id" : "32021a51-96e5-46a2-83b6-e243ae3bb8ea"
+      "x-ms-client-request-id" : "dd37b96b-b8cf-4189-a36e-d8378f3b33db"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -88,10 +88,10 @@
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "00217b4d-a002-0069-0204-b3f310000000",
-      "Body" : "{\"odata.metadata\":\"https://brsiegelsample.table.core.windows.net/$metadata#test1664484a99\",\"value\":[{\"odata.type\":\"brsiegelsample.test1664484a99\",\"odata.id\":\"https://brsiegelsample.table.core.windows.net/test1664484a99(PartitionKey='partitionkeya78338f',RowKey='rowkeya21651a0b4')\",\"odata.etag\":\"W/\\\"datetime'2020-11-04T23%3A43%3A40.7221362Z'\\\"\",\"odata.editLink\":\"test1664484a99(PartitionKey='partitionkeya78338f',RowKey='rowkeya21651a0b4')\",\"PartitionKey\":\"partitionkeya78338f\",\"RowKey\":\"rowkeya21651a0b4\",\"Timestamp@odata.type\":\"Edm.DateTime\",\"Timestamp\":\"2020-11-04T23:43:40.7221362Z\"}]}",
-      "Date" : "Wed, 04 Nov 2020 23:43:40 GMT",
-      "x-ms-client-request-id" : "32021a51-96e5-46a2-83b6-e243ae3bb8ea",
+      "x-ms-request-id" : "c30faf33-6002-00cf-40b0-fe440e000000",
+      "Body" : "{\"odata.metadata\":\"https://brsiegelsample.table.core.windows.net/$metadata#test3351292744\",\"value\":[{\"odata.type\":\"brsiegelsample.test3351292744\",\"odata.id\":\"https://brsiegelsample.table.core.windows.net/test3351292744(PartitionKey='partitionkeya884459',RowKey='rowkeya96884f7c6')\",\"odata.etag\":\"W/\\\"datetime'2021-02-09T06%3A53%3A24.8142356Z'\\\"\",\"odata.editLink\":\"test3351292744(PartitionKey='partitionkeya884459',RowKey='rowkeya96884f7c6')\",\"PartitionKey\":\"partitionkeya884459\",\"RowKey\":\"rowkeya96884f7c6\",\"Timestamp@odata.type\":\"Edm.DateTime\",\"Timestamp\":\"2021-02-09T06:53:24.8142356Z\"}]}",
+      "Date" : "Tue, 09 Feb 2021 06:53:25 GMT",
+      "x-ms-client-request-id" : "dd37b96b-b8cf-4189-a36e-d8378f3b33db",
       "Content-Type" : "application/json;odata=fullmetadata;streaming=true;charset=utf-8"
     },
     "Exception" : null
@@ -100,7 +100,7 @@
     "Uri" : "https://REDACTED.table.core.windows.net/Tables?$format=application/json%3Bodata%3Dminimalmetadata",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "x-ms-client-request-id" : "eaeffbfa-7444-4dce-b1ed-0544c3f1da3c"
+      "x-ms-client-request-id" : "bbc241d4-6238-46f7-8ac8-93ef37c7f5c6"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -110,19 +110,19 @@
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "00217b54-a002-0069-0804-b3f310000000",
-      "Body" : "{\"odata.metadata\":\"https://brsiegelsample.table.core.windows.net/$metadata#Tables\",\"value\":[{\"TableName\":\"test1664484a99\"}]}",
-      "Date" : "Wed, 04 Nov 2020 23:43:40 GMT",
-      "x-ms-client-request-id" : "eaeffbfa-7444-4dce-b1ed-0544c3f1da3c",
+      "x-ms-request-id" : "c30faf37-6002-00cf-44b0-fe440e000000",
+      "Body" : "{\"odata.metadata\":\"https://brsiegelsample.table.core.windows.net/$metadata#Tables\",\"value\":[{\"TableName\":\"test3351292744\"}]}",
+      "Date" : "Tue, 09 Feb 2021 06:53:25 GMT",
+      "x-ms-client-request-id" : "bbc241d4-6238-46f7-8ac8-93ef37c7f5c6",
       "Content-Type" : "application/json;odata=minimalmetadata;streaming=true;charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.table.core.windows.net/Tables('test1664484a99')",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables('test3351292744')",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "x-ms-client-request-id" : "44403544-3de7-4eb8-958d-9d43e7909c6e"
+      "x-ms-client-request-id" : "3bf73ac9-46b4-4385-8fa0-5ca6d7ee12a0"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -132,11 +132,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "00217b55-a002-0069-0904-b3f310000000",
-      "Date" : "Wed, 04 Nov 2020 23:43:40 GMT",
-      "x-ms-client-request-id" : "44403544-3de7-4eb8-958d-9d43e7909c6e"
+      "x-ms-request-id" : "c30faf38-6002-00cf-45b0-fe440e000000",
+      "Date" : "Tue, 09 Feb 2021 06:53:25 GMT",
+      "x-ms-client-request-id" : "3bf73ac9-46b4-4385-8fa0-5ca6d7ee12a0"
     },
     "Exception" : null
   } ],
-  "variables" : [ "32021a51-96e5-46a2-83b6-e243ae3bb8ea", "test1664484a99", "70643767-c64a-4e95-a2eb-259833735b4b", "partitionkeya78338f", "rowkeya21651a0b4", "7d16704f-f232-4683-9a71-fc1bc210c00a", "partitionkeyb133570", "rowkeyb7693370b1", "6c4bd53c-ddec-4b59-9dff-cc402b7ec7ca", "eaeffbfa-7444-4dce-b1ed-0544c3f1da3c", "44403544-3de7-4eb8-958d-9d43e7909c6e" ]
+  "variables" : [ "dd37b96b-b8cf-4189-a36e-d8378f3b33db", "test3351292744", "cc25adc8-baf4-49a4-82e3-27c91fa7ee60", "partitionkeya884459", "rowkeya96884f7c6", "0bea430d-6b6a-4162-b7a3-9fc33eb03df2", "partitionkeyb24071c", "rowkeyb662672771", "ea343a02-6c37-4045-a835-d1fd59a26bfd", "bbc241d4-6238-46f7-8ac8-93ef37c7f5c6", "3bf73ac9-46b4-4385-8fa0-5ca6d7ee12a0" ]
 }

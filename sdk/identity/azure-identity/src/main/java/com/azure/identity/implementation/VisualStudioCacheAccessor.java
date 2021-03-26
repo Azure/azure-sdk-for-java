@@ -104,7 +104,7 @@ public class VisualStudioCacheAccessor {
                 WindowsCredentialAccessor winCredAccessor =
                         new WindowsCredentialAccessor(serviceName, accountName);
                 credential = winCredAccessor.read();
-            } catch (Exception e) {
+            } catch (Exception | Error e) {
                 throw logger.logExceptionAsError(new CredentialUnavailableException(
                         "Failed to read Vs Code credentials from Windows Credential API.", e));
             }
@@ -117,7 +117,7 @@ public class VisualStudioCacheAccessor {
 
                 byte[] readCreds = keyChainAccessor.read();
                 credential = new String(readCreds, StandardCharsets.UTF_8);
-            } catch (Exception e) {
+            } catch (Exception | Error e) {
                 throw logger.logExceptionAsError(new CredentialUnavailableException(
                         "Failed to read Vs Code credentials from Mac Native Key Chain.", e));
             }
@@ -131,7 +131,7 @@ public class VisualStudioCacheAccessor {
 
                 byte[] readCreds = keyRingAccessor.read();
                 credential = new String(readCreds, StandardCharsets.UTF_8);
-            } catch (Exception | UnsatisfiedLinkError e) {
+            } catch (Exception | Error e) {
                 throw logger.logExceptionAsError(new CredentialUnavailableException(
                         "Failed to read Vs Code credentials from Linux Key Ring.", e));
             }

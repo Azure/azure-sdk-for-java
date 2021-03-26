@@ -3,6 +3,21 @@
 ## 1.1.0-beta.1 (Unreleased)
 
 
+## 1.0.3 (2021-02-24)
+
+### Dependency Updates
+
+- Upgraded `jackson-annotations` dependency from `2.11.3` to `2.12.1` 
+- Upgraded `azure-identity` dependency from `1.2.2` to `1.2.3` 
+  - [azure-identity changelog](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/CHANGELOG.md#123-2021-02-09)
+- Upgraded `azure-core` dependency from `1.12.0` to `1.13.0` 
+  - [azure-core changelog](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/CHANGELOG.md#1130-2021-02-05)
+- Upgraded `azure-core-http-netty` dependency from `1.7.1` to `1.8.0` 
+  - [azure-core-http-netty changelog](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-http-netty/CHANGELOG.md#180-2021-02-05)
+- Upgraded `azure-core-serializer-json-jackson` dependency from `1.1.1` to `1.1.2` 
+  - [azure-core-serializer-json-jackson changelog](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-serializer-json-jackson/CHANGELOG.md#112-2021-02-05)
+
+
 ## 1.0.2 (2021-01-21)
 
 ### Dependency Updates

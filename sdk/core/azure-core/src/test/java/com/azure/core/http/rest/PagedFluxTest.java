@@ -57,6 +57,7 @@ public class PagedFluxTest {
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void testPagedFluxConverter() throws MalformedURLException {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(5);
@@ -75,6 +76,7 @@ public class PagedFluxTest {
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void testPagedFluxSubscribeToPagesFromStartWithConvertedType() throws MalformedURLException {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(5);
@@ -92,6 +94,7 @@ public class PagedFluxTest {
 
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void testPagedFluxSinglePageConvertedType() throws MalformedURLException {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(1);
@@ -188,7 +191,7 @@ public class PagedFluxTest {
         CountDownLatch multiPageLatch = new CountDownLatch(2);
         pagedFlux
             .byPage()
-            .subscriberContext(Context.of("hello", "context"))
+            .contextWrite(Context.of("hello", "context"))
             .subscribe(pagedResponse -> assertTrue(pagedResponse instanceof PagedResponse));
 
         boolean completed = singlePageLatch.await(1, TimeUnit.SECONDS);
@@ -216,7 +219,7 @@ public class PagedFluxTest {
 
         pagedFlux
             .byPage()
-            .subscriberContext(Context.of("hello", "context"))
+            .contextWrite(Context.of("hello", "context"))
             .subscribe(pagedResponse -> assertTrue(pagedResponse instanceof PagedResponse));
         completed = multiPageLatch.await(1, TimeUnit.SECONDS);
         assertTrue(completed);

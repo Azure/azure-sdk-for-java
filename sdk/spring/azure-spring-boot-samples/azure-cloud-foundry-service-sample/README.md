@@ -6,8 +6,8 @@ applications running in Cloud Foundry or by consuming the service configuration 
 
 ## Getting started
 
-### Environment checklist
-We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
+### Prerequisites
+- [Environment checklist][environment_checklist]
 
 ### Pre-reqs:  Create required service instances in Cloud Foundry
 Before you can create any service instances, you'll need to create a resource group on Azure. Then you'll reference that
@@ -209,4 +209,4 @@ the following endpoints:
 ## Next steps
 ## Contributing
 
-[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist

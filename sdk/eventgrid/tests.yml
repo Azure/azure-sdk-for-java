@@ -1,13 +1,11 @@
 trigger: none
 
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: eventgrid
-      Timeout: 60
+      TimeoutInMinutes: 60
       MaxParallel: 7
-      EnvVars:
-        AZURE_TEST_MODE: RECORD
       Artifacts:
         - name: azure-messaging-eventgrid
           groupId: com.azure

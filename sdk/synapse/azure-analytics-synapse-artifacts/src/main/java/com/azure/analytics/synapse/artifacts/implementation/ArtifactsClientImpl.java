@@ -242,6 +242,18 @@ public final class ArtifactsClientImpl {
         return this.integrationRuntimes;
     }
 
+    /** The LibrariesImpl object to access its operations. */
+    private final LibrariesImpl libraries;
+
+    /**
+     * Gets the LibrariesImpl object to access its operations.
+     *
+     * @return the LibrariesImpl object.
+     */
+    public LibrariesImpl getLibraries() {
+        return this.libraries;
+    }
+
     /** The WorkspaceGitRepoManagementsImpl object to access its operations. */
     private final WorkspaceGitRepoManagementsImpl workspaceGitRepoManagements;
 
@@ -258,14 +270,16 @@ public final class ArtifactsClientImpl {
      * Initializes an instance of ArtifactsClient client.
      *
      * @param endpoint The workspace development endpoint, for example https://myworkspace.dev.azuresynapse.net.
+     * @param apiVersion Api Version.
      */
-    public ArtifactsClientImpl(String endpoint) {
+    public ArtifactsClientImpl(String endpoint, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint);
+                endpoint,
+                apiVersion);
     }
 
     /**
@@ -273,9 +287,10 @@ public final class ArtifactsClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The workspace development endpoint, for example https://myworkspace.dev.azuresynapse.net.
+     * @param apiVersion Api Version.
      */
-    public ArtifactsClientImpl(HttpPipeline httpPipeline, String endpoint) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
+    public ArtifactsClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
     /**
@@ -284,12 +299,14 @@ public final class ArtifactsClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint The workspace development endpoint, for example https://myworkspace.dev.azuresynapse.net.
+     * @param apiVersion Api Version.
      */
-    public ArtifactsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
+    public ArtifactsClientImpl(
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
-        this.apiVersion = "2019-06-01-preview";
+        this.apiVersion = apiVersion;
         this.linkedServices = new LinkedServicesImpl(this);
         this.datasets = new DatasetsImpl(this);
         this.pipelines = new PipelinesImpl(this);
@@ -305,6 +322,7 @@ public final class ArtifactsClientImpl {
         this.sqlPools = new SqlPoolsImpl(this);
         this.bigDataPools = new BigDataPoolsImpl(this);
         this.integrationRuntimes = new IntegrationRuntimesImpl(this);
+        this.libraries = new LibrariesImpl(this);
         this.workspaceGitRepoManagements = new WorkspaceGitRepoManagementsImpl(this);
     }
 }

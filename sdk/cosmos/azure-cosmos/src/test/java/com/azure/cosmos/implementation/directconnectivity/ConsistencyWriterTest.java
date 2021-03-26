@@ -13,10 +13,12 @@ import com.azure.cosmos.implementation.PartitionIsMigratingException;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.RequestTimeoutException;
+import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import io.netty.util.internal.ReflectionUtil;
 import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
@@ -180,8 +182,10 @@ public class ConsistencyWriterTest {
         Mockito.doReturn(true).when(timeoutHelper).isElapsed();
         ConsistencyWriter spyConsistencyWriter = Mockito.spy(this.consistencyWriter);
         TestSubscriber<StoreResponse> subscriber = new TestSubscriber<>();
+        RxDocumentServiceRequest request = mockDocumentServiceRequest(clientContext);
+        ReflectionUtils.setRetryCount(request.requestContext.retryContext, 2);
 
-        spyConsistencyWriter.writeAsync(mockDocumentServiceRequest(clientContext), timeoutHelper, false)
+        spyConsistencyWriter.writeAsync(request, timeoutHelper, false)
                 .subscribe(subscriber);
 
         subscriber.awaitTerminalEvent(10, TimeUnit.MILLISECONDS);
@@ -197,8 +201,10 @@ public class ConsistencyWriterTest {
         Mockito.doReturn(false).doReturn(true).when(timeoutHelper).isElapsed();
         ConsistencyWriter spyConsistencyWriter = Mockito.spy(this.consistencyWriter);
         TestSubscriber<StoreResponse> subscriber = new TestSubscriber<>();
+        RxDocumentServiceRequest request = mockDocumentServiceRequest(clientContext);
+        ReflectionUtils.setRetryCount(request.requestContext.retryContext, 2);
 
-        spyConsistencyWriter.writeAsync(mockDocumentServiceRequest(clientContext), timeoutHelper, false)
+        spyConsistencyWriter.writeAsync(request, timeoutHelper, false)
                 .subscribe(subscriber);
 
         subscriber.awaitTerminalEvent(10, TimeUnit.MILLISECONDS);

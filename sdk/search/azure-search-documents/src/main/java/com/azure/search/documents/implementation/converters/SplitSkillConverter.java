@@ -3,11 +3,7 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.SplitSkill;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.SplitSkill} and {@link SplitSkill}.
@@ -20,10 +16,7 @@ public final class SplitSkillConverter {
         if (obj == null) {
             return null;
         }
-
-        List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null
-            : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-        SplitSkill splitSkill = new SplitSkill(inputs, obj.getOutputs());
+        SplitSkill splitSkill = new SplitSkill(obj.getInputs(), obj.getOutputs());
 
         String name = obj.getName();
         splitSkill.setName(name);
@@ -55,12 +48,8 @@ public final class SplitSkillConverter {
             return null;
         }
 
-        List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
-            obj.getOutputs() == null ? null
-                : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-
         com.azure.search.documents.indexes.implementation.models.SplitSkill splitSkill =
-            new com.azure.search.documents.indexes.implementation.models.SplitSkill(inputs, obj.getOutputs());
+            new com.azure.search.documents.indexes.implementation.models.SplitSkill(obj.getInputs(), obj.getOutputs());
 
         String name = obj.getName();
         splitSkill.setName(name);

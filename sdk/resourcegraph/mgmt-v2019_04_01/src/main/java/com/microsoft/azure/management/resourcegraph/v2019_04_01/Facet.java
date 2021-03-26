@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * A facet containing additional statistics on the response of a query. Can be
  * either FacetResult or FacetError.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType", defaultImpl = Facet.class)
 @JsonTypeName("Facet")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "FacetResult", value = FacetResult.class),

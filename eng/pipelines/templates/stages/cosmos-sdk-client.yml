@@ -28,55 +28,33 @@ parameters:
 stages:
   - stage: Build
     jobs:
-    - template: ../jobs/archetype-sdk-client.yml
+    - template: /eng/pipelines/templates/jobs/ci.yml
       parameters:
         ServiceDirectory: ${{parameters.ServiceDirectory}}
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
         SDKType: ${{parameters.SDKType}}
-        TestMatrix:
-          Linux - Java 8:
-            OSVmImage: 'ubuntu-18.04'
-            JavaTestVersion: '1.8'
-            RunTitle: 'Linux on Java 1.8'
-            ProfileFlag: '-Punit'
-          macOS - Java 8:
-            OSVmImage: 'macOS-10.15'
-            JavaTestVersion: '1.8'
-            RunTitle: 'macOS on Java 1.8'
-            ProfileFlag: '-Punit'
-          Windows - Java 8:
-            OSVmImage: 'windows-2019'
-            JavaTestVersion: '1.8'
-            RunTitle: 'Windows on Java 1.8'
-            ProfileFlag: '-Punit'
-          Linux - Java 11:
-            OSVmImage: 'ubuntu-18.04'
-            JavaTestVersion: '1.11'
-            RunTitle: 'Linux on Java 1.11'
-            ProfileFlag: '-Punit'
-          macOS - Java 11:
-            OSVmImage: 'macOS-10.15'
-            JavaTestVersion: '1.11'
-            RunTitle: 'macOS on Java 1.11'
-            ProfileFlag: '-Punit'
-          Windows - Java 11:
-            OSVmImage: 'windows-2019'
-            JavaTestVersion: '1.11'
-            RunTitle: 'Windows on Java 1.11'
-            ProfileFlag: '-Punit'
-          Linux From Source - Java 11:
-            OSVmImage: 'ubuntu-18.04'
-            JavaTestVersion: '1.11'
-            RunTitle: 'From Source: Linux on Java 1.11'
-            AdditionalOptions: '-amd'
-            TestFromSource: true
-            ProfileFlag: '-Punit'
         PreTestSteps:
           - template: ../steps/install-reporting-tools.yml
+        MatrixConfigs:
+          - Name: Cosmos_ci_test
+            Path: eng/pipelines/templates/stages/platform-matrix.json
+            Selection: sparse
+            NonSparseParameters: Agent
+            GenerateVMJobs: true
+        MatrixFilters:
+          - TestFromSource=^$
+        MatrixReplace:
+          - TestOptions=.*/-Punit
+          - AZURE_TEST.*=.*/
 
-    - template: ../jobs/archetype-sdk-tests-generate.yml
+  - stage: TestEmulator
+    displayName: Test Emulator
+    dependsOn: []
+    jobs:
+    - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
       parameters:
+        JobTemplatePath: /eng/pipelines/templates/jobs/live.tests.yml
         MatrixConfigs:
           - Name: Cosmos_emulator_integration
             Path: eng/pipelines/templates/stages/cosmos-emulator-matrix.json
@@ -98,7 +76,7 @@ stages:
           TimeoutInMinutes: 90
           TestStepMavenInputs:
             goals: clean verify
-            options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
+            options: '$(ProfileFlag) -Dgpg.skip -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false $(AdditionalArgs) -pl $(ProjectList)'
             mavenAuthenticateFeed: true
             jdkVersionOption: $(JavaTestVersion)
 
@@ -125,28 +103,13 @@ stages:
           # but we don't include them in the Maven site commands (so that we don't generate reports for the non-shipping modules).
           - template: ../steps/install-reporting-tools.yml
 
-          PostSteps:
-            - script: |
-                python --version
-                python -m pip install setuptools termcolor in_place
-                python sdk/spring/scripts/replace_util.py --module cosmos --log debug --color false
-              condition: and(succeededOrFailed(), eq(variables['DisplayName'], 'Spring Emulator only Integration Tests'))
-              displayName: 'Run replace_util.py'
-            - task: Maven@3
-              condition: and(succeededOrFailed(), eq(variables['DisplayName'], 'Spring Emulator only Integration Tests'))
-              displayName: 'Run tests again: $(DisplayName)'
-              inputs:
-                mavenPomFile: pom.xml
-                goals: clean verify
-                options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl com.azure:azure-spring-data-cosmos-test'
-                mavenAuthenticateFeed: true
-                jdkVersionOption: $(JavaTestVersion)
-
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
     - template: archetype-java-release.yml
       parameters:
-        DependsOn: Build
+        DependsOn:
+          - Build
+          - TestEmulator
         ServiceDirectory: ${{parameters.ServiceDirectory}}
         SDKType: ${{parameters.SDKType}}
         Artifacts: ${{parameters.Artifacts}}

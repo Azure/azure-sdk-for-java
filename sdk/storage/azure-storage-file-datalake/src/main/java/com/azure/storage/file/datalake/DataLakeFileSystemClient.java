@@ -146,6 +146,16 @@ public class DataLakeFileSystemClient {
         return dataLakeFileSystemAsyncClient.getFileSystemName();
     }
 
+
+    /**
+     * Get the url of the storage account.
+     *
+     * @return the URL of the storage account
+     */
+    public String getAccountUrl() {
+        return dataLakeFileSystemAsyncClient.getAccountUrl();
+    }
+
     /**
      * Gets the URL of the file system represented by this client.
      *

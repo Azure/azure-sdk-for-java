@@ -9,7 +9,9 @@ import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.DocumentServiceRequestContext;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.TracerProvider;
@@ -18,13 +20,18 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.http.HttpClient;
+import com.azure.cosmos.implementation.throughputControl.ThroughputRequestThrottler;
+import com.azure.cosmos.implementation.throughputControl.controller.request.GlobalThroughputRequestController;
+import com.azure.cosmos.implementation.throughputControl.controller.request.PkRangesThroughputRequestController;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URI;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 
 /**
@@ -202,6 +209,10 @@ public class ReflectionUtils {
         return get(ConsistencyWriter.class, replicatedResourceClient, "consistencyWriter");
     }
 
+    public static void setRetryCount(RetryContext retryContext, int retryCount) {
+        set(retryContext, retryCount, "retryCount");
+    }
+
     public static StoreReader getStoreReader(ConsistencyReader consistencyReader) {
         return get(StoreReader.class, consistencyReader, "storeReader");
     }
@@ -210,7 +221,35 @@ public class ReflectionUtils {
         set(storeReader, transportClient, "transportClient");
     }
 
+    public static TransportClient getTransportClient(ReplicatedResourceClient replicatedResourceClient) {
+        return get(TransportClient.class, replicatedResourceClient, "transportClient");
+    }
+
+    public static TransportClient getTransportClient(ConsistencyWriter consistencyWriter) {
+        return get(TransportClient.class, consistencyWriter, "transportClient");
+    }
+
     public static void setTransportClient(ConsistencyWriter consistencyWriter, TransportClient transportClient) {
         set(consistencyWriter, transportClient, "transportClient");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static ThroughputRequestThrottler getRequestThrottler(GlobalThroughputRequestController requestController) {
+        return get(ThroughputRequestThrottler.class, requestController, "requestThrottler");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static void setRequestThrottler(
+        GlobalThroughputRequestController requestController,
+        ThroughputRequestThrottler throughputRequestThrottler) {
+
+        set(requestController, throughputRequestThrottler, "requestThrottler");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static ConcurrentHashMap<String, ThroughputRequestThrottler> getRequestThrottler(
+        PkRangesThroughputRequestController requestController) {
+
+        return get(ConcurrentHashMap.class, requestController, "requestThrottlerMap");
     }
 }

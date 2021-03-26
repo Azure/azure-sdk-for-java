@@ -7,8 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
-/** The MediaJobFinishedEventData model. */
+/** Job finished event data. */
 @Fluent
 public final class MediaJobFinishedEventData extends MediaJobStateChangeEventData {
     /*
@@ -34,6 +35,13 @@ public final class MediaJobFinishedEventData extends MediaJobStateChangeEventDat
      */
     public MediaJobFinishedEventData setOutputs(List<MediaJobOutput> outputs) {
         this.outputs = outputs;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MediaJobFinishedEventData setCorrelationData(Map<String, String> correlationData) {
+        super.setCorrelationData(correlationData);
         return this;
     }
 }

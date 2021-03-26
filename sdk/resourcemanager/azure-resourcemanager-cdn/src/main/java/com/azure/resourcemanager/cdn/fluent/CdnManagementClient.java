@@ -108,6 +108,90 @@ public interface CdnManagementClient {
     EdgeNodesClient getEdgeNodes();
 
     /**
+     * Gets the AfdProfilesClient object to access its operations.
+     *
+     * @return the AfdProfilesClient object.
+     */
+    AfdProfilesClient getAfdProfiles();
+
+    /**
+     * Gets the AfdCustomDomainsClient object to access its operations.
+     *
+     * @return the AfdCustomDomainsClient object.
+     */
+    AfdCustomDomainsClient getAfdCustomDomains();
+
+    /**
+     * Gets the AfdEndpointsClient object to access its operations.
+     *
+     * @return the AfdEndpointsClient object.
+     */
+    AfdEndpointsClient getAfdEndpoints();
+
+    /**
+     * Gets the AfdOriginGroupsClient object to access its operations.
+     *
+     * @return the AfdOriginGroupsClient object.
+     */
+    AfdOriginGroupsClient getAfdOriginGroups();
+
+    /**
+     * Gets the AfdOriginsClient object to access its operations.
+     *
+     * @return the AfdOriginsClient object.
+     */
+    AfdOriginsClient getAfdOrigins();
+
+    /**
+     * Gets the RoutesClient object to access its operations.
+     *
+     * @return the RoutesClient object.
+     */
+    RoutesClient getRoutes();
+
+    /**
+     * Gets the RuleSetsClient object to access its operations.
+     *
+     * @return the RuleSetsClient object.
+     */
+    RuleSetsClient getRuleSets();
+
+    /**
+     * Gets the RulesClient object to access its operations.
+     *
+     * @return the RulesClient object.
+     */
+    RulesClient getRules();
+
+    /**
+     * Gets the SecurityPoliciesClient object to access its operations.
+     *
+     * @return the SecurityPoliciesClient object.
+     */
+    SecurityPoliciesClient getSecurityPolicies();
+
+    /**
+     * Gets the SecretsClient object to access its operations.
+     *
+     * @return the SecretsClient object.
+     */
+    SecretsClient getSecrets();
+
+    /**
+     * Gets the ValidatesClient object to access its operations.
+     *
+     * @return the ValidatesClient object.
+     */
+    ValidatesClient getValidates();
+
+    /**
+     * Gets the LogAnalyticsClient object to access its operations.
+     *
+     * @return the LogAnalyticsClient object.
+     */
+    LogAnalyticsClient getLogAnalytics();
+
+    /**
      * Gets the PoliciesClient object to access its operations.
      *
      * @return the PoliciesClient object.

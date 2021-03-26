@@ -1,6 +1,11 @@
 # Release History
 
-## 2.2.0-beta.1 (Unreleased)
+## 2.3.0-beta.1 (Unreleased)
+
+- Added client-side validation for `getByResourceGroup`, `listByResourceGroup`, `deleteByResourceGroup` methods.
+- Added method overload of `getById` and `deleteById` in `GenericResources` to take `apiVersion` parameters. It is always recommended for user to provide the `apiVersion` parameter for consistency across service versions.
+
+## 2.2.0 (2021-02-24)
 
 - Supported locks with API version `2016-09-01`. Added `ManagementLock` and related classes.
 

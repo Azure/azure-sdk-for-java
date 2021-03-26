@@ -29,7 +29,6 @@ import org.apache.qpid.proton.engine.Session;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.ReplayProcessor;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -51,7 +50,7 @@ public class ReactorSession implements AmqpSession {
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final ClientLogger logger = new ClientLogger(ReactorSession.class);
-    private final ReplayProcessor<AmqpEndpointState> endpointStates;
+    private final Flux<AmqpEndpointState> endpointStates;
 
     private final Session session;
     private final SessionHandler sessionHandler;
@@ -99,11 +98,11 @@ public class ReactorSession implements AmqpSession {
 
         this.endpointStates = sessionHandler.getEndpointStates()
             .map(state -> {
-                logger.verbose("connectionId[{}], sessionName[{}]: State ", sessionHandler.getConnectionId(),
+                logger.verbose("connectionId[{}], sessionName[{}], state[{}]", sessionHandler.getConnectionId(),
                     sessionName, state);
                 return AmqpEndpointStateUtil.getConnectionState(state);
             })
-            .subscribeWith(ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED));
+            .cache(1);
 
         session.open();
     }

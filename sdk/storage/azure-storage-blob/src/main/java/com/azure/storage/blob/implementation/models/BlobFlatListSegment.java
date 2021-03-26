@@ -10,20 +10,18 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The BlobFlatListSegment model.
- */
+/** The BlobFlatListSegment model. */
 @JacksonXmlRootElement(localName = "Blobs")
 @Fluent
 public final class BlobFlatListSegment {
     /*
-     * The blobItems property.
+     * The BlobItems property.
      */
     @JsonProperty("Blob")
     private List<BlobItemInternal> blobItems = new ArrayList<>();
 
     /**
-     * Get the blobItems property: The blobItems property.
+     * Get the blobItems property: The BlobItems property.
      *
      * @return the blobItems value.
      */
@@ -32,7 +30,7 @@ public final class BlobFlatListSegment {
     }
 
     /**
-     * Set the blobItems property: The blobItems property.
+     * Set the blobItems property: The BlobItems property.
      *
      * @param blobItems the blobItems value to set.
      * @return the BlobFlatListSegment object itself.

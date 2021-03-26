@@ -259,7 +259,7 @@ public final class BulkOperations {
 
         checkNotNull(item, "expected non-null item");
         checkNotNull(partitionKey, "expected non-null partitionKey");
-        
+
         if (requestOptions == null) {
             requestOptions = new BulkItemRequestOptions();
         }
@@ -292,7 +292,7 @@ public final class BulkOperations {
         checkNotNull(partitionKey, "expected non-null partitionKey");
         checkNotNull(cosmosPatchOperations, "expected non-null cosmosPatchOperations");
 
-        return getPatchItemOperation(id, partitionKey, cosmosPatchOperations, new BulkItemRequestOptions());
+        return getPatchItemOperation(id, partitionKey, cosmosPatchOperations, new BulkPatchItemRequestOptions());
     }
 
     /**
@@ -310,14 +310,14 @@ public final class BulkOperations {
         String id,
         PartitionKey partitionKey,
         CosmosPatchOperations cosmosPatchOperations,
-        BulkItemRequestOptions requestOptions) {
+        BulkPatchItemRequestOptions requestOptions) {
 
         checkNotNull(id, "expected non-null id");
         checkNotNull(partitionKey, "expected non-null partitionKey");
         checkNotNull(cosmosPatchOperations, "expected non-null cosmosPatchOperations");
 
         if (requestOptions == null) {
-            requestOptions = new BulkItemRequestOptions();
+            requestOptions = new BulkPatchItemRequestOptions();
         }
 
         return new ItemBulkOperation<>(

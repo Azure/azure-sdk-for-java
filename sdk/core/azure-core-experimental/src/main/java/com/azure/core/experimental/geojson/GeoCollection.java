@@ -3,6 +3,8 @@
 
 package com.azure.core.experimental.geojson;
 
+import com.azure.core.annotation.Immutable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.Objects;
 /**
  * Represents a heterogeneous collection of {@link GeoObject GeoObjects}.
  */
+@Immutable
 public final class GeoCollection extends GeoObject {
     private final List<GeoObject> geometries;
 
@@ -71,7 +74,6 @@ public final class GeoCollection extends GeoObject {
         }
 
         GeoCollection other = (GeoCollection) obj;
-
         return super.equals(other) && Objects.equals(geometries, other.geometries);
     }
 }

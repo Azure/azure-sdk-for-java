@@ -15,8 +15,6 @@ import org.reactivestreams.Subscription;
 import reactor.core.publisher.Signal;
 import reactor.core.scheduler.Schedulers;
 
-import java.io.Closeable;
-import java.io.IOException;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
@@ -264,20 +262,20 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         if (!spanScope.isPresent() || !tracerProvider.isEnabled()) {
             return;
         }
-        if (spanScope.get() instanceof Closeable) {
-            Closeable close = (Closeable) processSpanContext.getData(SCOPE_KEY).get();
+        if (spanScope.get() instanceof AutoCloseable) {
+            AutoCloseable close = (AutoCloseable) processSpanContext.getData(SCOPE_KEY).get();
             try {
                 close.close();
-                tracerProvider.endSpan(processSpanContext, signal);
-            } catch (IOException ioException) {
-                logger.error("endTracingSpan().close() failed with an error %s", ioException);
+            } catch (Exception exception) {
+                logger.error("endTracingSpan().close() failed with an error %s", exception);
             }
 
         } else {
             logger.warning(String.format(Locale.US,
-                "Process span scope type is not of type Closeable, but type: %s. Not closing the scope and span",
-                spanScope.get() != null ? spanScope.getClass() : "null"));
+                "Process span scope type is not of type AutoCloseable, but type: %s. Not closing the scope"
+                    + " and span", spanScope.get() != null ? spanScope.getClass() : "null"));
         }
+        tracerProvider.endSpan(processSpanContext, signal);
     }
 
     private Context startProcessTracingSpan(ServiceBusReceivedMessage receivedMessage, String entityPath,

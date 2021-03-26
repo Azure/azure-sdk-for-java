@@ -10,10 +10,8 @@ This code sample demonstrates how to use Spring Integration for Azure Service Bu
 Running this sample will be charged by Azure. You can check the usage and bill at
 [this link][azure-account].
 
-### Environment checklist
-
-We need to ensure that this [environment checklist][ready-to-run-checklist] is
-completed before the run.
+### Prerequisites
+- [Environment checklist][environment_checklist]
 
 ### Create Azure resources
 
@@ -82,7 +80,7 @@ completed before the run.
 [create-service-bus]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal
 [create-managed-identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-managed-identity.md
 [create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-sp-using-azure-cli.md
-[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [queue-receive-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus/src/main/java/com/azure/spring/sample/servicebus/QueueReceiveController.java
 [queue-send-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus/src/main/java/com/azure/spring/sample/servicebus/QueueSendController.java
 [topic-receive-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus/src/main/java/com/azure/spring/sample/servicebus/TopicReceiveController.java

@@ -3,16 +3,13 @@
 
 package com.azure.spring.integration.servicebus.converter;
 
+import com.azure.spring.integration.core.AzureHeaders;
+import com.azure.spring.integration.core.converter.AbstractAzureMessageConverter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.servicebus.IMessage;
 import com.microsoft.azure.servicebus.Message;
 import com.microsoft.azure.servicebus.MessageBody;
-import com.azure.spring.integration.core.AzureHeaders;
-import com.azure.spring.integration.core.converter.AbstractAzureMessageConverter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.messaging.MessageHeaders;
-import org.springframework.util.InvalidMimeTypeException;
-import org.springframework.util.MimeType;
 import org.springframework.util.StringUtils;
 
 import java.nio.charset.StandardCharsets;
@@ -21,16 +18,38 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
+import java.util.Optional;
+
+import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.CORRELATION_ID;
+import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.MESSAGE_ID;
+import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.PARTITION_KEY;
+import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.REPLY_TO_SESSION_ID;
+import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.SCHEDULED_ENQUEUE_TIME;
+import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.SESSION_ID;
+import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.TIME_TO_LIVE;
+import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.TO;
 
 /**
- * A converter to turn a {@link org.springframework.messaging.Message} to {@link IMessage}
- * and vice versa.
+ * A converter to turn a {@link org.springframework.messaging.Message} to {@link IMessage} and vice versa.
  *
  * @author Warren Zhu
  */
 public class ServiceBusMessageConverter extends AbstractAzureMessageConverter<IMessage> {
-    private static final Logger LOG = LoggerFactory.getLogger(ServiceBusMessageConverter.class);
+
+    private final ObjectMapper objectMapper;
+
+    public ServiceBusMessageConverter() {
+        objectMapper = OBJECT_MAPPER;
+    }
+
+    public ServiceBusMessageConverter(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
+
+    @Override
+    protected ObjectMapper getObjectMapper() {
+        return objectMapper;
+    }
 
     @Override
     protected byte[] getPayload(IMessage azureMessage) {
@@ -62,60 +81,77 @@ public class ServiceBusMessageConverter extends AbstractAzureMessageConverter<IM
     }
 
     @Override
-    protected void setCustomHeaders(MessageHeaders headers, IMessage serviceBusMessage) {
+    protected void setCustomHeaders(MessageHeaders headers, IMessage message) {
 
-        if (headers.containsKey(MessageHeaders.CONTENT_TYPE)) {
-            Object contentType = headers.get(MessageHeaders.CONTENT_TYPE);
+        // Spring MessageHeaders
+        getStringHeader(headers, MessageHeaders.ID).ifPresent(message::setMessageId);
+        getStringHeader(headers, MessageHeaders.CONTENT_TYPE).ifPresent(message::setContentType);
+        getStringHeader(headers, MessageHeaders.REPLY_CHANNEL).ifPresent(message::setReplyTo);
 
-            if (contentType instanceof MimeType) {
-                serviceBusMessage.setContentType(((MimeType) contentType).toString());
-            } else {
-                serviceBusMessage.setContentType((String) contentType);
-            }
-        }
+        // AzureHeaders.
+        getStringHeader(headers, AzureHeaders.RAW_ID).ifPresent(message::setMessageId);
+        Optional.ofNullable(headers.get(AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE, Integer.class))
+                .map(Duration::ofMillis)
+                .map(Instant.now()::plus)
+                .ifPresent(message::setScheduledEnqueueTimeUtc);
 
-        if (headers.containsKey(MessageHeaders.ID)) {
-            serviceBusMessage.setMessageId(String.valueOf(headers.get(MessageHeaders.ID, UUID.class)));
-        }
+        // ServiceBusMessageHeaders, service bus headers have highest priority.
+        getStringHeader(headers, MESSAGE_ID).ifPresent(message::setMessageId);
+        Optional.ofNullable((Duration) headers.get(TIME_TO_LIVE))
+                .ifPresent(message::setTimeToLive);
+        Optional.ofNullable((Instant) headers.get(SCHEDULED_ENQUEUE_TIME))
+                .ifPresent(message::setScheduledEnqueueTimeUtc);
+        getStringHeader(headers, SESSION_ID).ifPresent(message::setSessionId);
+        getStringHeader(headers, CORRELATION_ID).ifPresent(message::setCorrelationId);
+        getStringHeader(headers, TO).ifPresent(message::setTo);
+        getStringHeader(headers, REPLY_TO_SESSION_ID).ifPresent(message::setReplyToSessionId);
+        getStringHeader(headers, PARTITION_KEY).ifPresent(message::setPartitionKey);
 
-        if (headers.containsKey(MessageHeaders.REPLY_CHANNEL)) {
-            serviceBusMessage.setReplyTo(headers.get(MessageHeaders.REPLY_CHANNEL, String.class));
-        }
+        headers.forEach((key, value) -> message.getProperties().put(key, value.toString()));
+    }
 
-        if (headers.containsKey(AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE)) {
-            Integer integerValue = headers.get(AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE, Integer.class);
-            if (null != integerValue) {
-                serviceBusMessage.setScheduledEnqueueTimeUtc(Instant.now().plus(Duration.ofMillis(integerValue)));
-            }
-        }
-
-        headers.forEach((key, value) -> serviceBusMessage.getProperties().put(key, value.toString()));
+    private Optional<String> getStringHeader(MessageHeaders springMessageHeaders, String key) {
+        return Optional.ofNullable(springMessageHeaders.get(key))
+                       .map(Object::toString)
+                       .filter(StringUtils::hasText);
     }
 
     @Override
-    protected Map<String, Object> buildCustomHeaders(IMessage serviceBusMessage) {
+    protected Map<String, Object> buildCustomHeaders(IMessage message) {
         Map<String, Object> headers = new HashMap<>();
 
-        if (StringUtils.hasText(serviceBusMessage.getMessageId())) {
-            headers.put(AzureHeaders.RAW_ID, serviceBusMessage.getMessageId());
-        }
+        // Spring MessageHeaders
+        setValueIfHasText(headers, MessageHeaders.ID, message.getMessageId());
+        setValueIfHasText(headers, MessageHeaders.CONTENT_TYPE, message.getContentType());
+        setValueIfHasText(headers, MessageHeaders.REPLY_CHANNEL, message.getReplyTo());
 
-        if (StringUtils.hasText(serviceBusMessage.getContentType())) {
-            String contentType = serviceBusMessage.getContentType();
-            try {
-                MimeType mimeType = MimeType.valueOf(contentType);
-                headers.put(MessageHeaders.CONTENT_TYPE, mimeType.toString());
-            } catch (InvalidMimeTypeException e) {
-                LOG.warn("Invalid mimeType '{}' from service bus message.", contentType);
-            }
-        }
+        // AzureHeaders.
+        // Does not have SCHEDULED_ENQUEUE_MESSAGE, because it's meaningless in receiver side.
+        setValueIfHasText(headers, AzureHeaders.RAW_ID, message.getMessageId());
 
-        if (StringUtils.hasText(serviceBusMessage.getReplyTo())) {
-            headers.put(MessageHeaders.REPLY_CHANNEL, serviceBusMessage.getReplyTo());
-        }
+        // ServiceBusMessageHeaders.
+        setValueIfHasText(headers, CORRELATION_ID, message.getCorrelationId());
+        setValueIfHasText(headers, MESSAGE_ID, message.getMessageId());
+        setValueIfHasText(headers, PARTITION_KEY, message.getPartitionKey());
+        setValueIfHasText(headers, TO, message.getTo());
+        setValueIfPresent(headers, TIME_TO_LIVE, message.getTimeToLive());
+        setValueIfPresent(headers, SCHEDULED_ENQUEUE_TIME, message.getScheduledEnqueueTimeUtc());
+        setValueIfHasText(headers, REPLY_TO_SESSION_ID, message.getReplyToSessionId());
+        setValueIfHasText(headers, SESSION_ID, message.getSessionId());
 
-        headers.putAll(serviceBusMessage.getProperties());
+        headers.putAll(message.getProperties());
 
         return Collections.unmodifiableMap(headers);
+    }
+
+    private void setValueIfHasText(Map<String, Object> map, String key, String value) {
+        Optional.ofNullable(value)
+                .filter(StringUtils::hasText)
+                .ifPresent(s -> map.put(key, s));
+    }
+
+    private void setValueIfPresent(Map<String, Object> map, String key, Object value) {
+        Optional.ofNullable(value)
+                .ifPresent(s -> map.put(key, s));
     }
 }

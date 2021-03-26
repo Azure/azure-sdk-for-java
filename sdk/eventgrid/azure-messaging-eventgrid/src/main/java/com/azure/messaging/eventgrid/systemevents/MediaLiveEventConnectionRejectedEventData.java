@@ -7,7 +7,7 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The MediaLiveEventConnectionRejectedEventData model. */
+/** Encoder connection rejected event data. */
 @Immutable
 public final class MediaLiveEventConnectionRejectedEventData {
     /*

@@ -1,237 +1,242 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsquerycsvserializationseparator0701666e3c447261a?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsquerycsvserializationseparator088257f79b7972ae3?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
-      "x-ms-client-request-id" : "5308fab1-5b0c-4a4d-87c1-7a23d8b47224"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2f41dccd-db16-4a49-b56c-7fece6fd1c3a"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D801A3E954A387",
-      "Last-Modified" : "Tue, 26 May 2020 18:37:57 GMT",
+      "eTag" : "0x8D8D9E3CE3D2DCC",
+      "Last-Modified" : "Thu, 25 Feb 2021 23:19:31 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "aca43152-f01e-0012-5f8c-333670000000",
-      "Date" : "Tue, 26 May 2020 18:37:57 GMT",
-      "x-ms-client-request-id" : "5308fab1-5b0c-4a4d-87c1-7a23d8b47224"
+      "x-ms-request-id" : "3732479e-601e-0075-61cc-0bb638000000",
+      "x-ms-client-request-id" : "2f41dccd-db16-4a49-b56c-7fece6fd1c3a",
+      "Date" : "Thu, 25 Feb 2021 23:19:31 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsquerycsvserializationseparator0701666e3c447261a/javapathquerycsvserializationseparator18248304ec966c3?resource=file",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsquerycsvserializationseparator088257f79b7972ae3/javapathquerycsvserializationseparator1801268e2725483?resource=file",
     "Headers" : {
-      "x-ms-version" : "2019-10-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.2.0-beta.1 (11.0.7; Windows 10 10.0)",
-      "x-ms-client-request-id" : "bf06d707-bb62-4229-bb22-a94fa9f7fa73"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.2 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f91f805c-2aef-4a13-9a88-afbacb6a8bd3"
     },
     "Response" : {
-      "x-ms-version" : "2019-10-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D801A3E96774CA",
-      "Last-Modified" : "Tue, 26 May 2020 18:37:58 GMT",
+      "eTag" : "0x8D8D9E3CE48C577",
+      "Last-Modified" : "Thu, 25 Feb 2021 23:19:31 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "28a87796-301f-009b-1a8c-338ca5000000",
-      "Date" : "Tue, 26 May 2020 18:37:57 GMT",
-      "x-ms-client-request-id" : "bf06d707-bb62-4229-bb22-a94fa9f7fa73"
+      "x-ms-request-id" : "3361b061-a01f-0037-70cc-0b0fb8000000",
+      "x-ms-client-request-id" : "f91f805c-2aef-4a13-9a88-afbacb6a8bd3",
+      "Date" : "Thu, 25 Feb 2021 23:19:30 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsquerycsvserializationseparator0701666e3c447261a/javapathquerycsvserializationseparator18248304ec966c3?resource=file",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsquerycsvserializationseparator088257f79b7972ae3/javapathquerycsvserializationseparator1801268e2725483?resource=file",
     "Headers" : {
-      "x-ms-version" : "2019-10-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.2.0-beta.1 (11.0.7; Windows 10 10.0)",
-      "x-ms-client-request-id" : "77a75fcb-c34f-4d99-ba4a-4a24c7f51b98"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.2 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "69f19b8a-3b9c-4d44-a078-bec98550b280"
     },
     "Response" : {
-      "x-ms-version" : "2019-10-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D801A3E9787FB5",
-      "Last-Modified" : "Tue, 26 May 2020 18:37:58 GMT",
+      "eTag" : "0x8D8D9E3CE52CECB",
+      "Last-Modified" : "Thu, 25 Feb 2021 23:19:31 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "28a87797-301f-009b-1b8c-338ca5000000",
-      "Date" : "Tue, 26 May 2020 18:37:57 GMT",
-      "x-ms-client-request-id" : "77a75fcb-c34f-4d99-ba4a-4a24c7f51b98"
+      "x-ms-request-id" : "be650fc5-f01f-0058-1ecc-0b054b000000",
+      "x-ms-client-request-id" : "69f19b8a-3b9c-4d44-a078-bec98550b280",
+      "Date" : "Thu, 25 Feb 2021 23:19:30 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsquerycsvserializationseparator0701666e3c447261a/javapathquerycsvserializationseparator18248304ec966c3?position=0&action=append",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsquerycsvserializationseparator088257f79b7972ae3/javapathquerycsvserializationseparator1801268e2725483?action=append&position=0",
     "Headers" : {
-      "x-ms-version" : "2019-10-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.2.0-beta.1 (11.0.7; Windows 10 10.0)",
-      "x-ms-client-request-id" : "1b45578a-0c26-4824-82f7-f11a0d654a40",
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.2 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2cb3c05d-1eb1-47e1-ace9-23c6db47ad2c",
       "Content-Type" : "application/octet-stream"
     },
     "Response" : {
-      "x-ms-version" : "2019-10-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
       "x-ms-request-server-encrypted" : "true",
-      "x-ms-request-id" : "28a87798-301f-009b-1c8c-338ca5000000",
-      "Date" : "Tue, 26 May 2020 18:37:58 GMT",
-      "x-ms-client-request-id" : "1b45578a-0c26-4824-82f7-f11a0d654a40"
+      "x-ms-request-id" : "cb421bb1-001f-0063-09cc-0b40ef000000",
+      "x-ms-client-request-id" : "2cb3c05d-1eb1-47e1-ace9-23c6db47ad2c",
+      "Date" : "Thu, 25 Feb 2021 23:19:31 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsquerycsvserializationseparator0701666e3c447261a/javapathquerycsvserializationseparator18248304ec966c3?position=1024&retainUncommittedData=false&close=false&action=flush",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsquerycsvserializationseparator088257f79b7972ae3/javapathquerycsvserializationseparator1801268e2725483?action=flush&position=1024&retainUncommittedData=false&close=false",
     "Headers" : {
-      "x-ms-version" : "2019-10-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.2.0-beta.1 (11.0.7; Windows 10 10.0)",
-      "x-ms-client-request-id" : "c796ea57-bf82-4676-8dea-ec59b5d7ecd1"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.2 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4720ac4f-1faa-4bb3-afc8-22b3b9570877"
     },
     "Response" : {
-      "x-ms-version" : "2019-10-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D801A3E9A04FA8",
-      "Last-Modified" : "Tue, 26 May 2020 18:37:58 GMT",
+      "eTag" : "0x8D8D9E3CE66B933",
+      "Last-Modified" : "Thu, 25 Feb 2021 23:19:31 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "200",
       "x-ms-request-server-encrypted" : "false",
-      "x-ms-request-id" : "28a87799-301f-009b-1d8c-338ca5000000",
-      "Date" : "Tue, 26 May 2020 18:37:58 GMT",
-      "x-ms-client-request-id" : "c796ea57-bf82-4676-8dea-ec59b5d7ecd1"
+      "x-ms-request-id" : "f63a3033-101f-000d-32cc-0b15c0000000",
+      "x-ms-client-request-id" : "4720ac4f-1faa-4bb3-afc8-22b3b9570877",
+      "Date" : "Thu, 25 Feb 2021 23:19:30 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsquerycsvserializationseparator0701666e3c447261a/javapathquerycsvserializationseparator18248304ec966c3",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsquerycsvserializationseparator088257f79b7972ae3/javapathquerycsvserializationseparator1801268e2725483",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
-      "x-ms-client-request-id" : "b720a44b-f505-48e0-a655-3b9a1afa26b9"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b46224e3-4bf3-4876-a44b-320b89356ef6"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "x-ms-group" : "$superuser",
+      "x-ms-version" : "2020-06-12",
       "x-ms-lease-status" : "unlocked",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-lease-state" : "available",
-      "Last-Modified" : "Tue, 26 May 2020 18:37:58 GMT",
+      "Last-Modified" : "Thu, 25 Feb 2021 23:19:31 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Tue, 26 May 2020 18:37:58 GMT",
+      "Date" : "Thu, 25 Feb 2021 23:19:31 GMT",
       "x-ms-blob-type" : "BlockBlob",
       "Accept-Ranges" : "bytes",
       "x-ms-server-encrypted" : "true",
-      "ETag" : "0x8D801A3E9A04FA8",
-      "x-ms-creation-time" : "Tue, 26 May 2020 18:37:58 GMT",
+      "x-ms-creation-time" : "Thu, 25 Feb 2021 23:19:31 GMT",
+      "eTag" : "0x8D8D9E3CE66B933",
+      "x-ms-permissions" : "rw-r-----",
       "Content-Length" : "1024",
-      "x-ms-request-id" : "aca431c4-f01e-0012-3f8c-333670000000",
-      "Body" : "[49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60]",
-      "x-ms-client-request-id" : "b720a44b-f505-48e0-a655-3b9a1afa26b9",
+      "x-ms-request-id" : "37324827-601e-0075-64cc-0bb638000000",
+      "Body" : "MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPA==",
+      "x-ms-client-request-id" : "b46224e3-4bf3-4876-a44b-320b89356ef6",
+      "x-ms-owner" : "$superuser",
       "Content-Type" : "application/octet-stream"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsquerycsvserializationseparator0701666e3c447261a/javapathquerycsvserializationseparator18248304ec966c3?comp=query",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsquerycsvserializationseparator088257f79b7972ae3/javapathquerycsvserializationseparator1801268e2725483?comp=query",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
-      "x-ms-client-request-id" : "babf28b3-f4e2-4c84-bdc2-6985ec1f69e7",
-      "Content-Type" : "application/xml; charset=utf-8"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d637337f-e715-443a-b5f1-884fcf283844",
+      "Content-Type" : "application/xml"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "x-ms-lease-status" : "unlocked",
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-lease-state" : "available",
-      "Last-Modified" : "Tue, 26 May 2020 18:37:58 GMT",
+      "Last-Modified" : "Thu, 25 Feb 2021 23:19:31 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Tue, 26 May 2020 18:37:58 GMT",
+      "Date" : "Thu, 25 Feb 2021 23:19:31 GMT",
       "x-ms-blob-type" : "BlockBlob",
       "Accept-Ranges" : "bytes",
-      "ETag" : "0x8D801A3E9A04FA8",
-      "x-ms-creation-time" : "Tue, 26 May 2020 18:37:58 GMT",
-      "x-ms-request-id" : "aca431d7-f01e-0012-4f8c-333670000000",
-      "Body" : "[79, 98, 106, 1, 2, 22, 97, 118, 114, 111, 46, 115, 99, 104, 101, 109, 97, -66, 30, 91, 10, 32, 32, 123, 10, 32, 32, 32, 32, 34, 116, 121, 112, 101, 34, 58, 32, 34, 114, 101, 99, 111, 114, 100, 34, 44, 10, 32, 32, 32, 32, 34, 110, 97, 109, 101, 34, 58, 32, 34, 99, 111, 109, 46, 109, 105, 99, 114, 111, 115, 111, 102, 116, 46, 97, 122, 117, 114, 101, 46, 115, 116, 111, 114, 97, 103, 101, 46, 113, 117, 101, 114, 121, 66, 108, 111, 98, 67, 111, 110, 116, 101, 110, 116, 115, 46, 114, 101, 115, 117, 108, 116, 68, 97, 116, 97, 34, 44, 10, 32, 32, 32, 32, 34, 100, 111, 99, 34, 58, 32, 34, 72, 111, 108, 100, 115, 32, 114, 101, 115, 117, 108, 116, 32, 100, 97, 116, 97, 32, 105, 110, 32, 116, 104, 101, 32, 102, 111, 114, 109, 97, 116, 32, 115, 112, 101, 99, 105, 102, 105, 101, 100, 32, 102, 111, 114, 32, 116, 104, 105, 115, 32, 113, 117, 101, 114, 121, 32, 40, 67, 83, 86, 44, 32, 74, 83, 79, 78, 44, 32, 101, 116, 99, 46, 41, 46, 34, 44, 10, 32, 32, 32, 32, 34, 102, 105, 101, 108, 100, 115, 34, 58, 32, 91, 10, 32, 32, 32, 32, 32, 32, 123, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 110, 97, 109, 101, 34, 58, 32, 34, 100, 97, 116, 97, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 116, 121, 112, 101, 34, 58, 32, 34, 98, 121, 116, 101, 115, 34, 10, 32, 32, 32, 32, 32, 32, 125, 10, 32, 32, 32, 32, 93, 10, 32, 32, 125, 44, 10, 32, 32, 123, 10, 32, 32, 32, 32, 34, 116, 121, 112, 101, 34, 58, 32, 34, 114, 101, 99, 111, 114, 100, 34, 44, 10, 32, 32, 32, 32, 34, 110, 97, 109, 101, 34, 58, 32, 34, 99, 111, 109, 46, 109, 105, 99, 114, 111, 115, 111, 102, 116, 46, 97, 122, 117, 114, 101, 46, 115, 116, 111, 114, 97, 103, 101, 46, 113, 117, 101, 114, 121, 66, 108, 111, 98, 67, 111, 110, 116, 101, 110, 116, 115, 46, 101, 114, 114, 111, 114, 34, 44, 10, 32, 32, 32, 32, 34, 100, 111, 99, 34, 58, 32, 34, 65, 110, 32, 101, 114, 114, 111, 114, 32, 116, 104, 97, 116, 32, 111, 99, 99, 117, 114, 114, 101, 100, 32, 119, 104, 105, 108, 101, 32, 112, 114, 111, 99, 101, 115, 115, 105, 110, 103, 32, 116, 104, 101, 32, 113, 117, 101, 114, 121, 46, 34, 44, 10, 32, 32, 32, 32, 34, 102, 105, 101, 108, 100, 115, 34, 58, 32, 91, 10, 32, 32, 32, 32, 32, 32, 123, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 110, 97, 109, 101, 34, 58, 32, 34, 102, 97, 116, 97, 108, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 116, 121, 112, 101, 34, 58, 32, 34, 98, 111, 111, 108, 101, 97, 110, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 100, 111, 99, 34, 58, 32, 34, 73, 102, 32, 116, 114, 117, 101, 44, 32, 116, 104, 105, 115, 32, 101, 114, 114, 111, 114, 32, 112, 114, 101, 118, 101, 110, 116, 115, 32, 102, 117, 114, 116, 104, 101, 114, 32, 113, 117, 101, 114, 121, 32, 112, 114, 111, 99, 101, 115, 115, 105, 110, 103, 46, 32, 32, 77, 111, 114, 101, 32, 114, 101, 115, 117, 108, 116, 32, 100, 97, 116, 97, 32, 109, 97, 121, 32, 98, 101, 32, 114, 101, 116, 117, 114, 110, 101, 100, 44, 32, 98, 117, 116, 32, 116, 104, 101, 114, 101, 32, 105, 115, 32, 110, 111, 32, 103, 117, 97, 114, 97, 110, 116, 101, 101, 32, 116, 104, 97, 116, 32, 97, 108, 108, 32, 111, 102, 32, 116, 104, 101, 32, 111, 114, 105, 103, 105, 110, 97, 108, 32, 100, 97, 116, 97, 32, 119, 105, 108, 108, 32, 98, 101, 32, 112, 114, 111, 99, 101, 115, 115, 101, 100, 46, 32, 32, 73, 102, 32, 102, 97, 108, 115, 101, 44, 32, 116, 104, 105, 115, 32, 101, 114, 114, 111, 114, 32, 100, 111, 101, 115, 32, 110, 111, 116, 32, 112, 114, 101, 118, 101, 110, 116, 32, 102, 117, 114, 116, 104, 101, 114, 32, 113, 117, 101, 114, 121, 32, 112, 114, 111, 99, 101, 115, 115, 105, 110, 103, 46, 34, 10, 32, 32, 32, 32, 32, 32, 125, 44, 10, 32, 32, 32, 32, 32, 32, 123, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 110, 97, 109, 101, 34, 58, 32, 34, 110, 97, 109, 101, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 116, 121, 112, 101, 34, 58, 32, 34, 115, 116, 114, 105, 110, 103, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 100, 111, 99, 34, 58, 32, 34, 84, 104, 101, 32, 110, 97, 109, 101, 32, 111, 102, 32, 116, 104, 101, 32, 101, 114, 114, 111, 114, 34, 10, 32, 32, 32, 32, 32, 32, 125, 44, 10, 32, 32, 32, 32, 32, 32, 123, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 110, 97, 109, 101, 34, 58, 32, 34, 100, 101, 115, 99, 114, 105, 112, 116, 105, 111, 110, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 116, 121, 112, 101, 34, 58, 32, 34, 115, 116, 114, 105, 110, 103, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 100, 111, 99, 34, 58, 32, 34, 65, 32, 100, 101, 115, 99, 114, 105, 112, 116, 105, 111, 110, 32, 111, 102, 32, 116, 104, 101, 32, 101, 114, 114, 111, 114, 34, 10, 32, 32, 32, 32, 32, 32, 125, 44, 10, 32, 32, 32, 32, 32, 32, 123, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 110, 97, 109, 101, 34, 58, 32, 34, 112, 111, 115, 105, 116, 105, 111, 110, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 116, 121, 112, 101, 34, 58, 32, 34, 108, 111, 110, 103, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 100, 111, 99, 34, 58, 32, 34, 84, 104, 101, 32, 98, 108, 111, 98, 32, 111, 102, 102, 115, 101, 116, 32, 97, 116, 32, 119, 104, 105, 99, 104, 32, 116, 104, 101, 32, 101, 114, 114, 111, 114, 32, 111, 99, 99, 117, 114, 114, 101, 100, 34, 10, 32, 32, 32, 32, 32, 32, 125, 10, 32, 32, 32, 32, 93, 10, 32, 32, 125, 44, 10, 32, 32, 123, 10, 32, 32, 32, 32, 34, 116, 121, 112, 101, 34, 58, 32, 34, 114, 101, 99, 111, 114, 100, 34, 44, 10, 32, 32, 32, 32, 34, 110, 97, 109, 101, 34, 58, 32, 34, 99, 111, 109, 46, 109, 105, 99, 114, 111, 115, 111, 102, 116, 46, 97, 122, 117, 114, 101, 46, 115, 116, 111, 114, 97, 103, 101, 46, 113, 117, 101, 114, 121, 66, 108, 111, 98, 67, 111, 110, 116, 101, 110, 116, 115, 46, 112, 114, 111, 103, 114, 101, 115, 115, 34, 44, 10, 32, 32, 32, 32, 34, 100, 111, 99, 34, 58, 32, 34, 73, 110, 102, 111, 114, 109, 97, 116, 105, 111, 110, 32, 97, 98, 111, 117, 116, 32, 116, 104, 101, 32, 112, 114, 111, 103, 114, 101, 115, 115, 32, 111, 102, 32, 116, 104, 101, 32, 113, 117, 101, 114, 121, 34, 44, 10, 32, 32, 32, 32, 34, 102, 105, 101, 108, 100, 115, 34, 58, 32, 91, 10, 32, 32, 32, 32, 32, 32, 123, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 110, 97, 109, 101, 34, 58, 32, 34, 98, 121, 116, 101, 115, 83, 99, 97, 110, 110, 101, 100, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 116, 121, 112, 101, 34, 58, 32, 34, 108, 111, 110, 103, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 100, 111, 99, 34, 58, 32, 34, 84, 104, 101, 32, 110, 117, 109, 98, 101, 114, 32, 111, 102, 32, 98, 121, 116, 101, 115, 32, 116, 104, 97, 116, 32, 104, 97, 118, 101, 32, 98, 101, 101, 110, 32, 115, 99, 97, 110, 110, 101, 100, 34, 10, 32, 32, 32, 32, 32, 32, 125, 44, 10, 32, 32, 32, 32, 32, 32, 123, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 110, 97, 109, 101, 34, 58, 32, 34, 116, 111, 116, 97, 108, 66, 121, 116, 101, 115, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 116, 121, 112, 101, 34, 58, 32, 34, 108, 111, 110, 103, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 100, 111, 99, 34, 58, 32, 34, 84, 104, 101, 32, 116, 111, 116, 97, 108, 32, 110, 117, 109, 98, 101, 114, 32, 111, 102, 32, 98, 121, 116, 101, 115, 32, 116, 111, 32, 98, 101, 32, 115, 99, 97, 110, 110, 101, 100, 32, 105, 110, 32, 116, 104, 105, 115, 32, 113, 117, 101, 114, 121, 34, 10, 32, 32, 32, 32, 32, 32, 125, 10, 32, 32, 32, 32, 93, 10, 32, 32, 125, 44, 10, 32, 32, 123, 10, 32, 32, 32, 32, 34, 116, 121, 112, 101, 34, 58, 32, 34, 114, 101, 99, 111, 114, 100, 34, 44, 10, 32, 32, 32, 32, 34, 110, 97, 109, 101, 34, 58, 32, 34, 99, 111, 109, 46, 109, 105, 99, 114, 111, 115, 111, 102, 116, 46, 97, 122, 117, 114, 101, 46, 115, 116, 111, 114, 97, 103, 101, 46, 113, 117, 101, 114, 121, 66, 108, 111, 98, 67, 111, 110, 116, 101, 110, 116, 115, 46, 101, 110, 100, 34, 44, 10, 32, 32, 32, 32, 34, 100, 111, 99, 34, 58, 32, 34, 83, 101, 110, 116, 32, 97, 115, 32, 116, 104, 101, 32, 102, 105, 110, 97, 108, 32, 109, 101, 115, 115, 97, 103, 101, 32, 111, 102, 32, 116, 104, 101, 32, 114, 101, 115, 112, 111, 110, 115, 101, 44, 32, 105, 110, 100, 105, 99, 97, 116, 105, 110, 103, 32, 116, 104, 97, 116, 32, 97, 108, 108, 32, 114, 101, 115, 117, 108, 116, 115, 32, 104, 97, 118, 101, 32, 98, 101, 101, 110, 32, 115, 101, 110, 116, 46, 34, 44, 10, 32, 32, 32, 32, 34, 102, 105, 101, 108, 100, 115, 34, 58, 32, 91, 10, 32, 32, 32, 32, 32, 32, 123, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 110, 97, 109, 101, 34, 58, 32, 34, 116, 111, 116, 97, 108, 66, 121, 116, 101, 115, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 116, 121, 112, 101, 34, 58, 32, 34, 108, 111, 110, 103, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 100, 111, 99, 34, 58, 32, 34, 84, 104, 101, 32, 116, 111, 116, 97, 108, 32, 110, 117, 109, 98, 101, 114, 32, 111, 102, 32, 98, 121, 116, 101, 115, 32, 116, 111, 32, 98, 101, 32, 115, 99, 97, 110, 110, 101, 100, 32, 105, 110, 32, 116, 104, 105, 115, 32, 113, 117, 101, 114, 121, 34, 10, 32, 32, 32, 32, 32, 32, 125, 10, 32, 32, 32, 32, 93, 10, 32, 32, 125, 10, 93, 10, 0, 94, -65, 54, -117, -29, 95, -92, 71, -114, 127, -1, 73, -82, -114, 93, 38, 2, -122, 16, 0, -128, 16, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 94, -65, 54, -117, -29, 95, -92, 71, -114, 127, -1, 73, -82, -114, 93, 38, 2, 10, 4, -128, 16, -128, 16, 94, -65, 54, -117, -29, 95, -92, 71, -114, 127, -1, 73, -82, -114, 93, 38, 2, 6, 6, -128, 16, 94, -65, 54, -117, -29, 95, -92, 71, -114, 127, -1, 73, -82, -114, 93, 38]",
-      "x-ms-client-request-id" : "babf28b3-f4e2-4c84-bdc2-6985ec1f69e7",
+      "x-ms-server-encrypted" : "false",
+      "x-ms-creation-time" : "Thu, 25 Feb 2021 23:19:31 GMT",
+      "eTag" : "0x8D8D9E3CE66B933",
+      "x-ms-request-id" : "37324841-601e-0075-7ccc-0bb638000000",
+      "Body" : "T2JqAQIWYXZyby5zY2hlbWG+HlsKICB7CiAgICAidHlwZSI6ICJyZWNvcmQiLAogICAgIm5hbWUiOiAiY29tLm1pY3Jvc29mdC5henVyZS5zdG9yYWdlLnF1ZXJ5QmxvYkNvbnRlbnRzLnJlc3VsdERhdGEiLAogICAgImRvYyI6ICJIb2xkcyByZXN1bHQgZGF0YSBpbiB0aGUgZm9ybWF0IHNwZWNpZmllZCBmb3IgdGhpcyBxdWVyeSAoQ1NWLCBKU09OLCBldGMuKS4iLAogICAgImZpZWxkcyI6IFsKICAgICAgewogICAgICAgICJuYW1lIjogImRhdGEiLAogICAgICAgICJ0eXBlIjogImJ5dGVzIgogICAgICB9CiAgICBdCiAgfSwKICB7CiAgICAidHlwZSI6ICJyZWNvcmQiLAogICAgIm5hbWUiOiAiY29tLm1pY3Jvc29mdC5henVyZS5zdG9yYWdlLnF1ZXJ5QmxvYkNvbnRlbnRzLmVycm9yIiwKICAgICJkb2MiOiAiQW4gZXJyb3IgdGhhdCBvY2N1cnJlZCB3aGlsZSBwcm9jZXNzaW5nIHRoZSBxdWVyeS4iLAogICAgImZpZWxkcyI6IFsKICAgICAgewogICAgICAgICJuYW1lIjogImZhdGFsIiwKICAgICAgICAidHlwZSI6ICJib29sZWFuIiwKICAgICAgICAiZG9jIjogIklmIHRydWUsIHRoaXMgZXJyb3IgcHJldmVudHMgZnVydGhlciBxdWVyeSBwcm9jZXNzaW5nLiAgTW9yZSByZXN1bHQgZGF0YSBtYXkgYmUgcmV0dXJuZWQsIGJ1dCB0aGVyZSBpcyBubyBndWFyYW50ZWUgdGhhdCBhbGwgb2YgdGhlIG9yaWdpbmFsIGRhdGEgd2lsbCBiZSBwcm9jZXNzZWQuICBJZiBmYWxzZSwgdGhpcyBlcnJvciBkb2VzIG5vdCBwcmV2ZW50IGZ1cnRoZXIgcXVlcnkgcHJvY2Vzc2luZy4iCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAibmFtZSI6ICJuYW1lIiwKICAgICAgICAidHlwZSI6ICJzdHJpbmciLAogICAgICAgICJkb2MiOiAiVGhlIG5hbWUgb2YgdGhlIGVycm9yIgogICAgICB9LAogICAgICB7CiAgICAgICAgIm5hbWUiOiAiZGVzY3JpcHRpb24iLAogICAgICAgICJ0eXBlIjogInN0cmluZyIsCiAgICAgICAgImRvYyI6ICJBIGRlc2NyaXB0aW9uIG9mIHRoZSBlcnJvciIKICAgICAgfSwKICAgICAgewogICAgICAgICJuYW1lIjogInBvc2l0aW9uIiwKICAgICAgICAidHlwZSI6ICJsb25nIiwKICAgICAgICAiZG9jIjogIlRoZSBibG9iIG9mZnNldCBhdCB3aGljaCB0aGUgZXJyb3Igb2NjdXJyZWQiCiAgICAgIH0KICAgIF0KICB9LAogIHsKICAgICJ0eXBlIjogInJlY29yZCIsCiAgICAibmFtZSI6ICJjb20ubWljcm9zb2Z0LmF6dXJlLnN0b3JhZ2UucXVlcnlCbG9iQ29udGVudHMucHJvZ3Jlc3MiLAogICAgImRvYyI6ICJJbmZvcm1hdGlvbiBhYm91dCB0aGUgcHJvZ3Jlc3Mgb2YgdGhlIHF1ZXJ5IiwKICAgICJmaWVsZHMiOiBbCiAgICAgIHsKICAgICAgICAibmFtZSI6ICJieXRlc1NjYW5uZWQiLAogICAgICAgICJ0eXBlIjogImxvbmciLAogICAgICAgICJkb2MiOiAiVGhlIG51bWJlciBvZiBieXRlcyB0aGF0IGhhdmUgYmVlbiBzY2FubmVkIgogICAgICB9LAogICAgICB7CiAgICAgICAgIm5hbWUiOiAidG90YWxCeXRlcyIsCiAgICAgICAgInR5cGUiOiAibG9uZyIsCiAgICAgICAgImRvYyI6ICJUaGUgdG90YWwgbnVtYmVyIG9mIGJ5dGVzIHRvIGJlIHNjYW5uZWQgaW4gdGhpcyBxdWVyeSIKICAgICAgfQogICAgXQogIH0sCiAgewogICAgInR5cGUiOiAicmVjb3JkIiwKICAgICJuYW1lIjogImNvbS5taWNyb3NvZnQuYXp1cmUuc3RvcmFnZS5xdWVyeUJsb2JDb250ZW50cy5lbmQiLAogICAgImRvYyI6ICJTZW50IGFzIHRoZSBmaW5hbCBtZXNzYWdlIG9mIHRoZSByZXNwb25zZSwgaW5kaWNhdGluZyB0aGF0IGFsbCByZXN1bHRzIGhhdmUgYmVlbiBzZW50LiIsCiAgICAiZmllbGRzIjogWwogICAgICB7CiAgICAgICAgIm5hbWUiOiAidG90YWxCeXRlcyIsCiAgICAgICAgInR5cGUiOiAibG9uZyIsCiAgICAgICAgImRvYyI6ICJUaGUgdG90YWwgbnVtYmVyIG9mIGJ5dGVzIHRvIGJlIHNjYW5uZWQgaW4gdGhpcyBxdWVyeSIKICAgICAgfQogICAgXQogIH0KXQoAQpO/P4EwTU+P4D01ygm0ygKGEACAEDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDxCk78/gTBNT4/gPTXKCbTKAgoEgBCAEEKTvz+BME1Pj+A9NcoJtMoCBgaAEEKTvz+BME1Pj+A9NcoJtMo=",
+      "x-ms-client-request-id" : "d637337f-e715-443a-b5f1-884fcf283844",
       "Content-Type" : "avro/binary"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsquerycsvserializationseparator0701666e3c447261a/javapathquerycsvserializationseparator18248304ec966c3?comp=query",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsquerycsvserializationseparator088257f79b7972ae3/javapathquerycsvserializationseparator1801268e2725483?comp=query",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
-      "x-ms-client-request-id" : "a3097797-5b81-4181-afab-45bc2bc9b472",
-      "Content-Type" : "application/xml; charset=utf-8"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cad60fbf-5f0c-464f-9dcf-3732125c71a2",
+      "Content-Type" : "application/xml"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "x-ms-lease-status" : "unlocked",
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-lease-state" : "available",
-      "Last-Modified" : "Tue, 26 May 2020 18:37:58 GMT",
+      "Last-Modified" : "Thu, 25 Feb 2021 23:19:31 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Tue, 26 May 2020 18:37:58 GMT",
+      "Date" : "Thu, 25 Feb 2021 23:19:31 GMT",
       "x-ms-blob-type" : "BlockBlob",
       "Accept-Ranges" : "bytes",
-      "ETag" : "0x8D801A3E9A04FA8",
-      "x-ms-creation-time" : "Tue, 26 May 2020 18:37:58 GMT",
-      "x-ms-request-id" : "aca431e3-f01e-0012-5b8c-333670000000",
-      "Body" : "[79, 98, 106, 1, 2, 22, 97, 118, 114, 111, 46, 115, 99, 104, 101, 109, 97, -66, 30, 91, 10, 32, 32, 123, 10, 32, 32, 32, 32, 34, 116, 121, 112, 101, 34, 58, 32, 34, 114, 101, 99, 111, 114, 100, 34, 44, 10, 32, 32, 32, 32, 34, 110, 97, 109, 101, 34, 58, 32, 34, 99, 111, 109, 46, 109, 105, 99, 114, 111, 115, 111, 102, 116, 46, 97, 122, 117, 114, 101, 46, 115, 116, 111, 114, 97, 103, 101, 46, 113, 117, 101, 114, 121, 66, 108, 111, 98, 67, 111, 110, 116, 101, 110, 116, 115, 46, 114, 101, 115, 117, 108, 116, 68, 97, 116, 97, 34, 44, 10, 32, 32, 32, 32, 34, 100, 111, 99, 34, 58, 32, 34, 72, 111, 108, 100, 115, 32, 114, 101, 115, 117, 108, 116, 32, 100, 97, 116, 97, 32, 105, 110, 32, 116, 104, 101, 32, 102, 111, 114, 109, 97, 116, 32, 115, 112, 101, 99, 105, 102, 105, 101, 100, 32, 102, 111, 114, 32, 116, 104, 105, 115, 32, 113, 117, 101, 114, 121, 32, 40, 67, 83, 86, 44, 32, 74, 83, 79, 78, 44, 32, 101, 116, 99, 46, 41, 46, 34, 44, 10, 32, 32, 32, 32, 34, 102, 105, 101, 108, 100, 115, 34, 58, 32, 91, 10, 32, 32, 32, 32, 32, 32, 123, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 110, 97, 109, 101, 34, 58, 32, 34, 100, 97, 116, 97, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 116, 121, 112, 101, 34, 58, 32, 34, 98, 121, 116, 101, 115, 34, 10, 32, 32, 32, 32, 32, 32, 125, 10, 32, 32, 32, 32, 93, 10, 32, 32, 125, 44, 10, 32, 32, 123, 10, 32, 32, 32, 32, 34, 116, 121, 112, 101, 34, 58, 32, 34, 114, 101, 99, 111, 114, 100, 34, 44, 10, 32, 32, 32, 32, 34, 110, 97, 109, 101, 34, 58, 32, 34, 99, 111, 109, 46, 109, 105, 99, 114, 111, 115, 111, 102, 116, 46, 97, 122, 117, 114, 101, 46, 115, 116, 111, 114, 97, 103, 101, 46, 113, 117, 101, 114, 121, 66, 108, 111, 98, 67, 111, 110, 116, 101, 110, 116, 115, 46, 101, 114, 114, 111, 114, 34, 44, 10, 32, 32, 32, 32, 34, 100, 111, 99, 34, 58, 32, 34, 65, 110, 32, 101, 114, 114, 111, 114, 32, 116, 104, 97, 116, 32, 111, 99, 99, 117, 114, 114, 101, 100, 32, 119, 104, 105, 108, 101, 32, 112, 114, 111, 99, 101, 115, 115, 105, 110, 103, 32, 116, 104, 101, 32, 113, 117, 101, 114, 121, 46, 34, 44, 10, 32, 32, 32, 32, 34, 102, 105, 101, 108, 100, 115, 34, 58, 32, 91, 10, 32, 32, 32, 32, 32, 32, 123, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 110, 97, 109, 101, 34, 58, 32, 34, 102, 97, 116, 97, 108, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 116, 121, 112, 101, 34, 58, 32, 34, 98, 111, 111, 108, 101, 97, 110, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 100, 111, 99, 34, 58, 32, 34, 73, 102, 32, 116, 114, 117, 101, 44, 32, 116, 104, 105, 115, 32, 101, 114, 114, 111, 114, 32, 112, 114, 101, 118, 101, 110, 116, 115, 32, 102, 117, 114, 116, 104, 101, 114, 32, 113, 117, 101, 114, 121, 32, 112, 114, 111, 99, 101, 115, 115, 105, 110, 103, 46, 32, 32, 77, 111, 114, 101, 32, 114, 101, 115, 117, 108, 116, 32, 100, 97, 116, 97, 32, 109, 97, 121, 32, 98, 101, 32, 114, 101, 116, 117, 114, 110, 101, 100, 44, 32, 98, 117, 116, 32, 116, 104, 101, 114, 101, 32, 105, 115, 32, 110, 111, 32, 103, 117, 97, 114, 97, 110, 116, 101, 101, 32, 116, 104, 97, 116, 32, 97, 108, 108, 32, 111, 102, 32, 116, 104, 101, 32, 111, 114, 105, 103, 105, 110, 97, 108, 32, 100, 97, 116, 97, 32, 119, 105, 108, 108, 32, 98, 101, 32, 112, 114, 111, 99, 101, 115, 115, 101, 100, 46, 32, 32, 73, 102, 32, 102, 97, 108, 115, 101, 44, 32, 116, 104, 105, 115, 32, 101, 114, 114, 111, 114, 32, 100, 111, 101, 115, 32, 110, 111, 116, 32, 112, 114, 101, 118, 101, 110, 116, 32, 102, 117, 114, 116, 104, 101, 114, 32, 113, 117, 101, 114, 121, 32, 112, 114, 111, 99, 101, 115, 115, 105, 110, 103, 46, 34, 10, 32, 32, 32, 32, 32, 32, 125, 44, 10, 32, 32, 32, 32, 32, 32, 123, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 110, 97, 109, 101, 34, 58, 32, 34, 110, 97, 109, 101, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 116, 121, 112, 101, 34, 58, 32, 34, 115, 116, 114, 105, 110, 103, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 100, 111, 99, 34, 58, 32, 34, 84, 104, 101, 32, 110, 97, 109, 101, 32, 111, 102, 32, 116, 104, 101, 32, 101, 114, 114, 111, 114, 34, 10, 32, 32, 32, 32, 32, 32, 125, 44, 10, 32, 32, 32, 32, 32, 32, 123, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 110, 97, 109, 101, 34, 58, 32, 34, 100, 101, 115, 99, 114, 105, 112, 116, 105, 111, 110, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 116, 121, 112, 101, 34, 58, 32, 34, 115, 116, 114, 105, 110, 103, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 100, 111, 99, 34, 58, 32, 34, 65, 32, 100, 101, 115, 99, 114, 105, 112, 116, 105, 111, 110, 32, 111, 102, 32, 116, 104, 101, 32, 101, 114, 114, 111, 114, 34, 10, 32, 32, 32, 32, 32, 32, 125, 44, 10, 32, 32, 32, 32, 32, 32, 123, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 110, 97, 109, 101, 34, 58, 32, 34, 112, 111, 115, 105, 116, 105, 111, 110, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 116, 121, 112, 101, 34, 58, 32, 34, 108, 111, 110, 103, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 100, 111, 99, 34, 58, 32, 34, 84, 104, 101, 32, 98, 108, 111, 98, 32, 111, 102, 102, 115, 101, 116, 32, 97, 116, 32, 119, 104, 105, 99, 104, 32, 116, 104, 101, 32, 101, 114, 114, 111, 114, 32, 111, 99, 99, 117, 114, 114, 101, 100, 34, 10, 32, 32, 32, 32, 32, 32, 125, 10, 32, 32, 32, 32, 93, 10, 32, 32, 125, 44, 10, 32, 32, 123, 10, 32, 32, 32, 32, 34, 116, 121, 112, 101, 34, 58, 32, 34, 114, 101, 99, 111, 114, 100, 34, 44, 10, 32, 32, 32, 32, 34, 110, 97, 109, 101, 34, 58, 32, 34, 99, 111, 109, 46, 109, 105, 99, 114, 111, 115, 111, 102, 116, 46, 97, 122, 117, 114, 101, 46, 115, 116, 111, 114, 97, 103, 101, 46, 113, 117, 101, 114, 121, 66, 108, 111, 98, 67, 111, 110, 116, 101, 110, 116, 115, 46, 112, 114, 111, 103, 114, 101, 115, 115, 34, 44, 10, 32, 32, 32, 32, 34, 100, 111, 99, 34, 58, 32, 34, 73, 110, 102, 111, 114, 109, 97, 116, 105, 111, 110, 32, 97, 98, 111, 117, 116, 32, 116, 104, 101, 32, 112, 114, 111, 103, 114, 101, 115, 115, 32, 111, 102, 32, 116, 104, 101, 32, 113, 117, 101, 114, 121, 34, 44, 10, 32, 32, 32, 32, 34, 102, 105, 101, 108, 100, 115, 34, 58, 32, 91, 10, 32, 32, 32, 32, 32, 32, 123, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 110, 97, 109, 101, 34, 58, 32, 34, 98, 121, 116, 101, 115, 83, 99, 97, 110, 110, 101, 100, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 116, 121, 112, 101, 34, 58, 32, 34, 108, 111, 110, 103, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 100, 111, 99, 34, 58, 32, 34, 84, 104, 101, 32, 110, 117, 109, 98, 101, 114, 32, 111, 102, 32, 98, 121, 116, 101, 115, 32, 116, 104, 97, 116, 32, 104, 97, 118, 101, 32, 98, 101, 101, 110, 32, 115, 99, 97, 110, 110, 101, 100, 34, 10, 32, 32, 32, 32, 32, 32, 125, 44, 10, 32, 32, 32, 32, 32, 32, 123, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 110, 97, 109, 101, 34, 58, 32, 34, 116, 111, 116, 97, 108, 66, 121, 116, 101, 115, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 116, 121, 112, 101, 34, 58, 32, 34, 108, 111, 110, 103, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 100, 111, 99, 34, 58, 32, 34, 84, 104, 101, 32, 116, 111, 116, 97, 108, 32, 110, 117, 109, 98, 101, 114, 32, 111, 102, 32, 98, 121, 116, 101, 115, 32, 116, 111, 32, 98, 101, 32, 115, 99, 97, 110, 110, 101, 100, 32, 105, 110, 32, 116, 104, 105, 115, 32, 113, 117, 101, 114, 121, 34, 10, 32, 32, 32, 32, 32, 32, 125, 10, 32, 32, 32, 32, 93, 10, 32, 32, 125, 44, 10, 32, 32, 123, 10, 32, 32, 32, 32, 34, 116, 121, 112, 101, 34, 58, 32, 34, 114, 101, 99, 111, 114, 100, 34, 44, 10, 32, 32, 32, 32, 34, 110, 97, 109, 101, 34, 58, 32, 34, 99, 111, 109, 46, 109, 105, 99, 114, 111, 115, 111, 102, 116, 46, 97, 122, 117, 114, 101, 46, 115, 116, 111, 114, 97, 103, 101, 46, 113, 117, 101, 114, 121, 66, 108, 111, 98, 67, 111, 110, 116, 101, 110, 116, 115, 46, 101, 110, 100, 34, 44, 10, 32, 32, 32, 32, 34, 100, 111, 99, 34, 58, 32, 34, 83, 101, 110, 116, 32, 97, 115, 32, 116, 104, 101, 32, 102, 105, 110, 97, 108, 32, 109, 101, 115, 115, 97, 103, 101, 32, 111, 102, 32, 116, 104, 101, 32, 114, 101, 115, 112, 111, 110, 115, 101, 44, 32, 105, 110, 100, 105, 99, 97, 116, 105, 110, 103, 32, 116, 104, 97, 116, 32, 97, 108, 108, 32, 114, 101, 115, 117, 108, 116, 115, 32, 104, 97, 118, 101, 32, 98, 101, 101, 110, 32, 115, 101, 110, 116, 46, 34, 44, 10, 32, 32, 32, 32, 34, 102, 105, 101, 108, 100, 115, 34, 58, 32, 91, 10, 32, 32, 32, 32, 32, 32, 123, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 110, 97, 109, 101, 34, 58, 32, 34, 116, 111, 116, 97, 108, 66, 121, 116, 101, 115, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 116, 121, 112, 101, 34, 58, 32, 34, 108, 111, 110, 103, 34, 44, 10, 32, 32, 32, 32, 32, 32, 32, 32, 34, 100, 111, 99, 34, 58, 32, 34, 84, 104, 101, 32, 116, 111, 116, 97, 108, 32, 110, 117, 109, 98, 101, 114, 32, 111, 102, 32, 98, 121, 116, 101, 115, 32, 116, 111, 32, 98, 101, 32, 115, 99, 97, 110, 110, 101, 100, 32, 105, 110, 32, 116, 104, 105, 115, 32, 113, 117, 101, 114, 121, 34, 10, 32, 32, 32, 32, 32, 32, 125, 10, 32, 32, 32, 32, 93, 10, 32, 32, 125, 10, 93, 10, 0, 5, -18, 44, 47, 119, 82, 3, 72, -118, 62, -82, -72, 120, -114, -17, 124, 2, -122, 16, 0, -128, 16, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 49, 48, 48, 44, 50, 48, 48, 44, 51, 48, 48, 44, 52, 48, 48, 60, 51, 48, 48, 44, 52, 48, 48, 44, 53, 48, 48, 44, 54, 48, 48, 60, 5, -18, 44, 47, 119, 82, 3, 72, -118, 62, -82, -72, 120, -114, -17, 124, 2, 10, 4, -128, 16, -128, 16, 5, -18, 44, 47, 119, 82, 3, 72, -118, 62, -82, -72, 120, -114, -17, 124, 2, 6, 6, -128, 16, 5, -18, 44, 47, 119, 82, 3, 72, -118, 62, -82, -72, 120, -114, -17, 124]",
-      "x-ms-client-request-id" : "a3097797-5b81-4181-afab-45bc2bc9b472",
+      "x-ms-server-encrypted" : "false",
+      "x-ms-creation-time" : "Thu, 25 Feb 2021 23:19:31 GMT",
+      "eTag" : "0x8D8D9E3CE66B933",
+      "x-ms-request-id" : "37324874-601e-0075-28cc-0bb638000000",
+      "Body" : "T2JqAQIWYXZyby5zY2hlbWG+HlsKICB7CiAgICAidHlwZSI6ICJyZWNvcmQiLAogICAgIm5hbWUiOiAiY29tLm1pY3Jvc29mdC5henVyZS5zdG9yYWdlLnF1ZXJ5QmxvYkNvbnRlbnRzLnJlc3VsdERhdGEiLAogICAgImRvYyI6ICJIb2xkcyByZXN1bHQgZGF0YSBpbiB0aGUgZm9ybWF0IHNwZWNpZmllZCBmb3IgdGhpcyBxdWVyeSAoQ1NWLCBKU09OLCBldGMuKS4iLAogICAgImZpZWxkcyI6IFsKICAgICAgewogICAgICAgICJuYW1lIjogImRhdGEiLAogICAgICAgICJ0eXBlIjogImJ5dGVzIgogICAgICB9CiAgICBdCiAgfSwKICB7CiAgICAidHlwZSI6ICJyZWNvcmQiLAogICAgIm5hbWUiOiAiY29tLm1pY3Jvc29mdC5henVyZS5zdG9yYWdlLnF1ZXJ5QmxvYkNvbnRlbnRzLmVycm9yIiwKICAgICJkb2MiOiAiQW4gZXJyb3IgdGhhdCBvY2N1cnJlZCB3aGlsZSBwcm9jZXNzaW5nIHRoZSBxdWVyeS4iLAogICAgImZpZWxkcyI6IFsKICAgICAgewogICAgICAgICJuYW1lIjogImZhdGFsIiwKICAgICAgICAidHlwZSI6ICJib29sZWFuIiwKICAgICAgICAiZG9jIjogIklmIHRydWUsIHRoaXMgZXJyb3IgcHJldmVudHMgZnVydGhlciBxdWVyeSBwcm9jZXNzaW5nLiAgTW9yZSByZXN1bHQgZGF0YSBtYXkgYmUgcmV0dXJuZWQsIGJ1dCB0aGVyZSBpcyBubyBndWFyYW50ZWUgdGhhdCBhbGwgb2YgdGhlIG9yaWdpbmFsIGRhdGEgd2lsbCBiZSBwcm9jZXNzZWQuICBJZiBmYWxzZSwgdGhpcyBlcnJvciBkb2VzIG5vdCBwcmV2ZW50IGZ1cnRoZXIgcXVlcnkgcHJvY2Vzc2luZy4iCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAibmFtZSI6ICJuYW1lIiwKICAgICAgICAidHlwZSI6ICJzdHJpbmciLAogICAgICAgICJkb2MiOiAiVGhlIG5hbWUgb2YgdGhlIGVycm9yIgogICAgICB9LAogICAgICB7CiAgICAgICAgIm5hbWUiOiAiZGVzY3JpcHRpb24iLAogICAgICAgICJ0eXBlIjogInN0cmluZyIsCiAgICAgICAgImRvYyI6ICJBIGRlc2NyaXB0aW9uIG9mIHRoZSBlcnJvciIKICAgICAgfSwKICAgICAgewogICAgICAgICJuYW1lIjogInBvc2l0aW9uIiwKICAgICAgICAidHlwZSI6ICJsb25nIiwKICAgICAgICAiZG9jIjogIlRoZSBibG9iIG9mZnNldCBhdCB3aGljaCB0aGUgZXJyb3Igb2NjdXJyZWQiCiAgICAgIH0KICAgIF0KICB9LAogIHsKICAgICJ0eXBlIjogInJlY29yZCIsCiAgICAibmFtZSI6ICJjb20ubWljcm9zb2Z0LmF6dXJlLnN0b3JhZ2UucXVlcnlCbG9iQ29udGVudHMucHJvZ3Jlc3MiLAogICAgImRvYyI6ICJJbmZvcm1hdGlvbiBhYm91dCB0aGUgcHJvZ3Jlc3Mgb2YgdGhlIHF1ZXJ5IiwKICAgICJmaWVsZHMiOiBbCiAgICAgIHsKICAgICAgICAibmFtZSI6ICJieXRlc1NjYW5uZWQiLAogICAgICAgICJ0eXBlIjogImxvbmciLAogICAgICAgICJkb2MiOiAiVGhlIG51bWJlciBvZiBieXRlcyB0aGF0IGhhdmUgYmVlbiBzY2FubmVkIgogICAgICB9LAogICAgICB7CiAgICAgICAgIm5hbWUiOiAidG90YWxCeXRlcyIsCiAgICAgICAgInR5cGUiOiAibG9uZyIsCiAgICAgICAgImRvYyI6ICJUaGUgdG90YWwgbnVtYmVyIG9mIGJ5dGVzIHRvIGJlIHNjYW5uZWQgaW4gdGhpcyBxdWVyeSIKICAgICAgfQogICAgXQogIH0sCiAgewogICAgInR5cGUiOiAicmVjb3JkIiwKICAgICJuYW1lIjogImNvbS5taWNyb3NvZnQuYXp1cmUuc3RvcmFnZS5xdWVyeUJsb2JDb250ZW50cy5lbmQiLAogICAgImRvYyI6ICJTZW50IGFzIHRoZSBmaW5hbCBtZXNzYWdlIG9mIHRoZSByZXNwb25zZSwgaW5kaWNhdGluZyB0aGF0IGFsbCByZXN1bHRzIGhhdmUgYmVlbiBzZW50LiIsCiAgICAiZmllbGRzIjogWwogICAgICB7CiAgICAgICAgIm5hbWUiOiAidG90YWxCeXRlcyIsCiAgICAgICAgInR5cGUiOiAibG9uZyIsCiAgICAgICAgImRvYyI6ICJUaGUgdG90YWwgbnVtYmVyIG9mIGJ5dGVzIHRvIGJlIHNjYW5uZWQgaW4gdGhpcyBxdWVyeSIKICAgICAgfQogICAgXQogIH0KXQoAnsNatzepE0CjbdsFss1vBgKGEACAEDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDwxMDAsMjAwLDMwMCw0MDA8MzAwLDQwMCw1MDAsNjAwPDEwMCwyMDAsMzAwLDQwMDwzMDAsNDAwLDUwMCw2MDA8MTAwLDIwMCwzMDAsNDAwPDMwMCw0MDAsNTAwLDYwMDyew1q3N6kTQKNt2wWyzW8GAgoEgBCAEJ7DWrc3qRNAo23bBbLNbwYCBgaAEJ7DWrc3qRNAo23bBbLNbwY=",
+      "x-ms-client-request-id" : "cad60fbf-5f0c-464f-9dcf-3732125c71a2",
       "Content-Type" : "avro/binary"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net?prefix=jtfsquerycsvserializationseparator&comp=list",
+    "Uri" : "https://REDACTED.blob.core.windows.net?comp=list&prefix=jtfsquerycsvserializationseparator",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
-      "x-ms-client-request-id" : "9cff7185-3bf6-4f72-bccb-ccbc726356ef"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "15987d0b-7330-4031-b2ed-33607e365b1a"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "aca431f9-f01e-0012-718c-333670000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gaprahnscanary.blob.core.windows.net/\"><Prefix>jtfsquerycsvserializationseparator</Prefix><Containers><Container><Name>jtfsquerycsvserializationseparator0701666e3c447261a</Name><Properties><Last-Modified>Tue, 26 May 2020 18:37:57 GMT</Last-Modified><Etag>\"0x8D801A3E954A387\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Tue, 26 May 2020 18:37:58 GMT",
-      "x-ms-client-request-id" : "9cff7185-3bf6-4f72-bccb-ccbc726356ef",
+      "x-ms-request-id" : "3732488f-601e-0075-41cc-0bb638000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gapracontainerrestorehns.blob.core.windows.net/\"><Prefix>jtfsquerycsvserializationseparator</Prefix><Containers><Container><Name>jtfsquerycsvserializationseparator088257f79b7972ae3</Name><Properties><Last-Modified>Thu, 25 Feb 2021 23:19:31 GMT</Last-Modified><Etag>\"0x8D8D9E3CE3D2DCC\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "15987d0b-7330-4031-b2ed-33607e365b1a",
+      "Date" : "Thu, 25 Feb 2021 23:19:31 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsquerycsvserializationseparator0701666e3c447261a?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsquerycsvserializationseparator088257f79b7972ae3?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
-      "x-ms-client-request-id" : "5af4e490-6d9a-4cdf-ab97-7f4dac88b5f6"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "fdad4895-a191-4cb2-9f3d-a5eb51a73396"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "aca4320a-f01e-0012-028c-333670000000",
-      "Date" : "Tue, 26 May 2020 18:37:58 GMT",
-      "x-ms-client-request-id" : "5af4e490-6d9a-4cdf-ab97-7f4dac88b5f6"
+      "x-ms-request-id" : "373248ad-601e-0075-5ccc-0bb638000000",
+      "x-ms-client-request-id" : "fdad4895-a191-4cb2-9f3d-a5eb51a73396",
+      "Date" : "Thu, 25 Feb 2021 23:19:31 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtfsquerycsvserializationseparator0701666e3c447261a", "javapathquerycsvserializationseparator18248304ec966c3" ]
+  "variables" : [ "jtfsquerycsvserializationseparator088257f79b7972ae3", "javapathquerycsvserializationseparator1801268e2725483" ]
 }
