@@ -10,7 +10,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
  * Authorization key and connection string of authorization rule associated with Service Bus entities.
  */
 @Fluent
-public interface AuthorizationKeys extends HasInnerModel<AccessKeys> {
+public interface AuthorizationKeys extends HasInnerModel<AccessKeysInner> {
     /**
      * @return primary key associated with the rule
      */

@@ -4,17 +4,17 @@
 package com.azure.resourcemanager.servicebus.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
-import com.azure.resourcemanager.servicebus.models.AccessKeys;
+import com.azure.resourcemanager.servicebus.models.AccessKeysInner;
 import com.azure.resourcemanager.servicebus.models.AuthorizationKeys;
 
 /**
  * Implementation for AuthorizationKeys.
  */
 class AuthorizationKeysImpl
-        extends WrapperImpl<AccessKeys>
+        extends WrapperImpl<AccessKeysInner>
         implements AuthorizationKeys {
 
-    AuthorizationKeysImpl(AccessKeys inner) {
+    AuthorizationKeysImpl(AccessKeysInner inner) {
         super(inner);
     }
 

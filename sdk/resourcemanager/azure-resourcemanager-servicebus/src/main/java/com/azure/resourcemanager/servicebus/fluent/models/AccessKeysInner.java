@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Namespace/ServiceBus Connection String. */
 @Immutable
-public final class AccessKeys {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccessKeys.class);
+public final class AccessKeysInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccessKeysInner.class);
 
     /*
      * Primary connection string of the created namespace authorization rule.

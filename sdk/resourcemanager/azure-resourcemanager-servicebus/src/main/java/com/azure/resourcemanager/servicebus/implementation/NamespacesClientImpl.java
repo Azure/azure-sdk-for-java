@@ -42,7 +42,7 @@ import com.azure.resourcemanager.servicebus.fluent.models.CheckNameAvailabilityR
 import com.azure.resourcemanager.servicebus.fluent.models.NetworkRuleSetInner;
 import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
 import com.azure.resourcemanager.servicebus.fluent.models.SBNamespaceInner;
-import com.azure.resourcemanager.servicebus.models.AccessKeys;
+import com.azure.resourcemanager.servicebus.models.AccessKeysInner;
 import com.azure.resourcemanager.servicebus.models.AccessRights;
 import com.azure.resourcemanager.servicebus.models.CheckNameAvailability;
 import com.azure.resourcemanager.servicebus.models.NameSpaceType;
@@ -159,7 +159,7 @@ public final class NamespacesClientImpl
                 + "/namespaces/{namespaceName}/AuthorizationRules/{authorizationRuleName}/listKeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AccessKeys>> listKeys(
+        Mono<Response<AccessKeysInner>> listKeys(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("namespaceName") String namespaceName,
@@ -175,7 +175,7 @@ public final class NamespacesClientImpl
                 + "/namespaces/{namespaceName}/AuthorizationRules/{authorizationRuleName}/regenerateKeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AccessKeys>> regenerateKeys(
+        Mono<Response<AccessKeysInner>> regenerateKeys(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("namespaceName") String namespaceName,
@@ -1124,7 +1124,7 @@ public final class NamespacesClientImpl
      * @return the primary and secondary connection strings for the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AccessKeys>> listKeysWithResponseAsync(
+    public Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(
         String resourceGroupName, String namespaceName, String authorizationRuleName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1179,7 +1179,7 @@ public final class NamespacesClientImpl
      * @return the primary and secondary connection strings for the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AccessKeys>> listKeysWithResponseAsync(
+    private Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(
         String resourceGroupName, String namespaceName, String authorizationRuleName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1230,11 +1230,11 @@ public final class NamespacesClientImpl
      * @return the primary and secondary connection strings for the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AccessKeys> listKeysAsync(
+    public Mono<AccessKeysInner> listKeysAsync(
         String resourceGroupName, String namespaceName, String authorizationRuleName) {
         return listKeysWithResponseAsync(resourceGroupName, namespaceName, authorizationRuleName)
             .flatMap(
-                (Response<AccessKeys> res) -> {
+                (Response<AccessKeysInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1255,7 +1255,7 @@ public final class NamespacesClientImpl
      * @return the primary and secondary connection strings for the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessKeys listKeys(String resourceGroupName, String namespaceName, String authorizationRuleName) {
+    public AccessKeysInner listKeys(String resourceGroupName, String namespaceName, String authorizationRuleName) {
         return listKeysAsync(resourceGroupName, namespaceName, authorizationRuleName).block();
     }
 
@@ -1272,7 +1272,7 @@ public final class NamespacesClientImpl
      * @return the primary and secondary connection strings for the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessKeys> listKeysWithResponse(
+    public Response<AccessKeysInner> listKeysWithResponse(
         String resourceGroupName, String namespaceName, String authorizationRuleName, Context context) {
         return listKeysWithResponseAsync(resourceGroupName, namespaceName, authorizationRuleName, context).block();
     }
@@ -1290,7 +1290,7 @@ public final class NamespacesClientImpl
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AccessKeys>> regenerateKeysWithResponseAsync(
+    public Mono<Response<AccessKeysInner>> regenerateKeysWithResponseAsync(
         String resourceGroupName,
         String namespaceName,
         String authorizationRuleName,
@@ -1355,7 +1355,7 @@ public final class NamespacesClientImpl
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AccessKeys>> regenerateKeysWithResponseAsync(
+    private Mono<Response<AccessKeysInner>> regenerateKeysWithResponseAsync(
         String resourceGroupName,
         String namespaceName,
         String authorizationRuleName,
@@ -1417,14 +1417,14 @@ public final class NamespacesClientImpl
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AccessKeys> regenerateKeysAsync(
+    public Mono<AccessKeysInner> regenerateKeysAsync(
         String resourceGroupName,
         String namespaceName,
         String authorizationRuleName,
         RegenerateAccessKeyParameters parameters) {
         return regenerateKeysWithResponseAsync(resourceGroupName, namespaceName, authorizationRuleName, parameters)
             .flatMap(
-                (Response<AccessKeys> res) -> {
+                (Response<AccessKeysInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1446,7 +1446,7 @@ public final class NamespacesClientImpl
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessKeys regenerateKeys(
+    public AccessKeysInner regenerateKeys(
         String resourceGroupName,
         String namespaceName,
         String authorizationRuleName,
@@ -1468,7 +1468,7 @@ public final class NamespacesClientImpl
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessKeys> regenerateKeysWithResponse(
+    public Response<AccessKeysInner> regenerateKeysWithResponse(
         String resourceGroupName,
         String namespaceName,
         String authorizationRuleName,

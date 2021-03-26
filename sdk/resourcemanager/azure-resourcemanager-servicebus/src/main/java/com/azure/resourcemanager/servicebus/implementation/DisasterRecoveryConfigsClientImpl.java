@@ -34,7 +34,7 @@ import com.azure.resourcemanager.servicebus.fluent.DisasterRecoveryConfigsClient
 import com.azure.resourcemanager.servicebus.fluent.models.ArmDisasterRecoveryInner;
 import com.azure.resourcemanager.servicebus.fluent.models.CheckNameAvailabilityResultInner;
 import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
-import com.azure.resourcemanager.servicebus.models.AccessKeys;
+import com.azure.resourcemanager.servicebus.models.AccessKeysInner;
 import com.azure.resourcemanager.servicebus.models.ArmDisasterRecoveryListResult;
 import com.azure.resourcemanager.servicebus.models.CheckNameAvailability;
 import com.azure.resourcemanager.servicebus.models.SBAuthorizationRuleListResult;
@@ -222,7 +222,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
                 + "/{authorizationRuleName}/listKeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AccessKeys>> listKeys(
+        Mono<Response<AccessKeysInner>> listKeys(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("namespaceName") String namespaceName,
@@ -1808,7 +1808,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @return the primary and secondary connection strings for the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AccessKeys>> listKeysWithResponseAsync(
+    public Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(
         String resourceGroupName, String namespaceName, String alias, String authorizationRuleName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1868,7 +1868,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @return the primary and secondary connection strings for the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AccessKeys>> listKeysWithResponseAsync(
+    private Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(
         String resourceGroupName, String namespaceName, String alias, String authorizationRuleName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1924,11 +1924,11 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @return the primary and secondary connection strings for the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AccessKeys> listKeysAsync(
+    public Mono<AccessKeysInner> listKeysAsync(
         String resourceGroupName, String namespaceName, String alias, String authorizationRuleName) {
         return listKeysWithResponseAsync(resourceGroupName, namespaceName, alias, authorizationRuleName)
             .flatMap(
-                (Response<AccessKeys> res) -> {
+                (Response<AccessKeysInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1950,7 +1950,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @return the primary and secondary connection strings for the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessKeys listKeys(
+    public AccessKeysInner listKeys(
         String resourceGroupName, String namespaceName, String alias, String authorizationRuleName) {
         return listKeysAsync(resourceGroupName, namespaceName, alias, authorizationRuleName).block();
     }
@@ -1969,7 +1969,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @return the primary and secondary connection strings for the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessKeys> listKeysWithResponse(
+    public Response<AccessKeysInner> listKeysWithResponse(
         String resourceGroupName, String namespaceName, String alias, String authorizationRuleName, Context context) {
         return listKeysWithResponseAsync(resourceGroupName, namespaceName, alias, authorizationRuleName, context)
             .block();

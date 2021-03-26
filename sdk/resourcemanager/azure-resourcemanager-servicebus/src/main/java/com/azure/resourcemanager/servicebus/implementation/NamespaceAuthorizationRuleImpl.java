@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.servicebus.implementation;
 
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
-import com.azure.resourcemanager.servicebus.models.AccessKeys;
+import com.azure.resourcemanager.servicebus.models.AccessKeysInner;
 import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
 import com.azure.resourcemanager.servicebus.models.NamespaceAuthorizationRule;
 import com.azure.resourcemanager.servicebus.models.RegenerateAccessKeyParameters;
@@ -61,7 +61,7 @@ class NamespaceAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<Namespace
     }
 
     @Override
-    protected Mono<AccessKeys> getKeysInnerAsync() {
+    protected Mono<AccessKeysInner> getKeysInnerAsync() {
         return this.manager().serviceClient().getNamespaces()
                 .listKeysAsync(this.resourceGroupName(),
                         this.namespaceName(),
@@ -69,7 +69,7 @@ class NamespaceAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<Namespace
     }
 
     @Override
-    protected Mono<AccessKeys> regenerateKeysInnerAsync(RegenerateAccessKeyParameters regenerateAccessKeyParameters) {
+    protected Mono<AccessKeysInner> regenerateKeysInnerAsync(RegenerateAccessKeyParameters regenerateAccessKeyParameters) {
         return this.manager().serviceClient().getNamespaces()
                 .regenerateKeysAsync(this.resourceGroupName(),
                     this.namespaceName(),

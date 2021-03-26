@@ -13,7 +13,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicebus.fluent.models.ArmDisasterRecoveryInner;
 import com.azure.resourcemanager.servicebus.fluent.models.CheckNameAvailabilityResultInner;
 import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
-import com.azure.resourcemanager.servicebus.models.AccessKeys;
+import com.azure.resourcemanager.servicebus.models.AccessKeysInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DisasterRecoveryConfigsClient. */
@@ -543,7 +543,7 @@ public interface DisasterRecoveryConfigsClient {
      * @return the primary and secondary connection strings for the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<AccessKeys>> listKeysWithResponseAsync(
+    Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(
         String resourceGroupName, String namespaceName, String alias, String authorizationRuleName);
 
     /**
@@ -559,7 +559,7 @@ public interface DisasterRecoveryConfigsClient {
      * @return the primary and secondary connection strings for the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AccessKeys> listKeysAsync(
+    Mono<AccessKeysInner> listKeysAsync(
         String resourceGroupName, String namespaceName, String alias, String authorizationRuleName);
 
     /**
@@ -575,7 +575,7 @@ public interface DisasterRecoveryConfigsClient {
      * @return the primary and secondary connection strings for the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccessKeys listKeys(String resourceGroupName, String namespaceName, String alias, String authorizationRuleName);
+    AccessKeysInner listKeys(String resourceGroupName, String namespaceName, String alias, String authorizationRuleName);
 
     /**
      * Gets the primary and secondary connection strings for the namespace.
@@ -591,6 +591,6 @@ public interface DisasterRecoveryConfigsClient {
      * @return the primary and secondary connection strings for the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccessKeys> listKeysWithResponse(
+    Response<AccessKeysInner> listKeysWithResponse(
         String resourceGroupName, String namespaceName, String alias, String authorizationRuleName, Context context);
 }

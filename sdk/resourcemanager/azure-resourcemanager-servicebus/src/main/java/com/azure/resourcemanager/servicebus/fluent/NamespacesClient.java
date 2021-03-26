@@ -20,7 +20,7 @@ import com.azure.resourcemanager.servicebus.fluent.models.CheckNameAvailabilityR
 import com.azure.resourcemanager.servicebus.fluent.models.NetworkRuleSetInner;
 import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
 import com.azure.resourcemanager.servicebus.fluent.models.SBNamespaceInner;
-import com.azure.resourcemanager.servicebus.models.AccessKeys;
+import com.azure.resourcemanager.servicebus.models.AccessKeysInner;
 import com.azure.resourcemanager.servicebus.models.AccessRights;
 import com.azure.resourcemanager.servicebus.models.NameSpaceType;
 import com.azure.resourcemanager.servicebus.models.RegenerateAccessKeyParameters;
@@ -289,7 +289,7 @@ public interface NamespacesClient
      * @return the primary and secondary connection strings for the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<AccessKeys>> listKeysWithResponseAsync(
+    Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(
         String resourceGroupName, String namespaceName, String authorizationRuleName);
 
     /**
@@ -304,7 +304,7 @@ public interface NamespacesClient
      * @return the primary and secondary connection strings for the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AccessKeys> listKeysAsync(String resourceGroupName, String namespaceName, String authorizationRuleName);
+    Mono<AccessKeysInner> listKeysAsync(String resourceGroupName, String namespaceName, String authorizationRuleName);
 
     /**
      * Gets the primary and secondary connection strings for the namespace.
@@ -318,7 +318,7 @@ public interface NamespacesClient
      * @return the primary and secondary connection strings for the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccessKeys listKeys(String resourceGroupName, String namespaceName, String authorizationRuleName);
+    AccessKeysInner listKeys(String resourceGroupName, String namespaceName, String authorizationRuleName);
 
     /**
      * Gets the primary and secondary connection strings for the namespace.
@@ -333,7 +333,7 @@ public interface NamespacesClient
      * @return the primary and secondary connection strings for the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccessKeys> listKeysWithResponse(
+    Response<AccessKeysInner> listKeysWithResponse(
         String resourceGroupName, String namespaceName, String authorizationRuleName, Context context);
 
     /**
@@ -349,7 +349,7 @@ public interface NamespacesClient
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<AccessKeys>> regenerateKeysWithResponseAsync(
+    Mono<Response<AccessKeysInner>> regenerateKeysWithResponseAsync(
         String resourceGroupName,
         String namespaceName,
         String authorizationRuleName,
@@ -368,7 +368,7 @@ public interface NamespacesClient
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AccessKeys> regenerateKeysAsync(
+    Mono<AccessKeysInner> regenerateKeysAsync(
         String resourceGroupName,
         String namespaceName,
         String authorizationRuleName,
@@ -387,7 +387,7 @@ public interface NamespacesClient
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccessKeys regenerateKeys(
+    AccessKeysInner regenerateKeys(
         String resourceGroupName,
         String namespaceName,
         String authorizationRuleName,
@@ -407,7 +407,7 @@ public interface NamespacesClient
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccessKeys> regenerateKeysWithResponse(
+    Response<AccessKeysInner> regenerateKeysWithResponse(
         String resourceGroupName,
         String namespaceName,
         String authorizationRuleName,
