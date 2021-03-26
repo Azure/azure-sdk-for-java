@@ -1,5 +1,8 @@
 # Release History
 
+## 12.11.0-beta.1 (Unreleased)
+
+
 ## 12.10.2 (2021-03-26)
 - Fixed a bug where BlobInputStream would not use request conditions when doing the initial getProperties call in openInputStream.
 
