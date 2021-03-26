@@ -212,7 +212,7 @@ uk.org.lidalia:slf4j-test;1.2.0
 com.azure:sdk-build-tools;1.0.0
 com.beust:jcommander;1.78
 com.google.code.findbugs:jsr305;3.0.2
-com.nimbusds:nimbus-jose-jwt;9.1.2
+com.nimbusds:nimbus-jose-jwt;8.20.2
 com.nimbusds:oauth2-oidc-sdk;8.36
 com.puppycrawl.tools:checkstyle;8.40
 commons-io:commons-io;2.5
