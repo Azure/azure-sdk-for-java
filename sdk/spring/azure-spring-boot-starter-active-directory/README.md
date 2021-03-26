@@ -188,17 +188,18 @@ To use **aad-starter** in this scenario, we need these steps:
     
     (B). You can provide one by extending `AADResourceServerWebSecurityConfigurerAdapter` and call `super.configure(http)` explicitly
     in the `configure(HttpSecurity http)` function. Here is an example:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/src/main/java/com/azure/spring/sample/aad/security/AADOAuth2ResourceServerSecurityConfig.java#L12-L22 -->
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/src/main/java/com/azure/spring/sample/aad/security/AADOAuth2ResourceServerSecurityConfig.java#L12-L23 -->
     ```java
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
     public class AADOAuth2ResourceServerSecurityConfig extends AADResourceServerWebSecurityConfigurerAdapter {
         /**
-        * Add configuration logic as needed.
-        */
+         * Add configuration logic as needed.
+         */
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             super.configure(http);
+            http.authorizeRequests((requests) -> requests.anyRequest().authenticated());
         }
     }
     ```
