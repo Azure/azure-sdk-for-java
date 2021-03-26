@@ -108,6 +108,12 @@ public final class ConfigurationAsyncClient {
      * Adds a configuration value in the service if that key and label does not exist. The label value of the
      * ConfigurationSetting is optional.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
+     *
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.addConfigurationSetting#ConfigurationSetting}
+     *
      * @param setting The setting to add based on its key and optional label combination.
      *
      * @return The {@link ConfigurationSetting} that was created, or {@code null} if a key collision occurs or the key
@@ -210,6 +216,13 @@ public final class ConfigurationAsyncClient {
     /**
      * Creates or updates a configuration value in the service. Partial updates are not supported and the entire
      * configuration setting is updated.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Add a setting with the key "prodDBConnection", "westUS" and value "db_connection"</p>
+     * <p>Update setting's value "db_connection" to "updated_db_connection"</p>
+     *
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setConfigurationSetting#ConfigurationSetting}
      *
      * @param setting The setting to add based on its key and optional label combination.
      *
@@ -346,6 +359,12 @@ public final class ConfigurationAsyncClient {
      * Attempts to get the ConfigurationSetting with a matching {@link ConfigurationSetting#getKey() key}, and optional
      * {@link ConfigurationSetting#getLabel() label}, optional {@code acceptDateTime} and optional ETag combination.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Retrieve the setting with the key "prodDBConnection" and a time that one minute before now at UTC-Zone</p>
+     *
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getConfigurationSetting#ConfigurationSetting}
+     *
      * @param setting The setting to retrieve.
      *
      * @return The {@link ConfigurationSetting} stored in the service, or an empty Mono if the configuration value does
@@ -458,6 +477,12 @@ public final class ConfigurationAsyncClient {
      * the setting is <b>only</b> deleted if the ETag matches the current ETag; this means that no one has updated the
      * ConfigurationSetting yet.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the setting with the key "prodDBConnection".</p>
+     *
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.deleteConfigurationSetting#ConfigurationSetting}
+     *
      * @param setting The setting to delete based on its key, optional label and optional ETag combination.
      *
      * @return The deleted ConfigurationSetting or an empty Mono is also returned if the {@code key} is an invalid value
@@ -563,6 +588,16 @@ public final class ConfigurationAsyncClient {
 
     /**
      * Sets the read-only status for the {@link ConfigurationSetting}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Set the setting to read-only with the key-label "prodDBConnection"-"westUS".</p>
+     *
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#ConfigurationSetting-boolean}
+     *
+     * <p>Clear read-only of the setting with the key-label "prodDBConnection"-"westUS".</p>
+     *
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly}
      *
      * @param setting The configuration setting to set to read-only or not read-only based on the {@code isReadOnly}.
      * @param isReadOnly Flag used to set the read-only status of the configuration. {@code true} will put the

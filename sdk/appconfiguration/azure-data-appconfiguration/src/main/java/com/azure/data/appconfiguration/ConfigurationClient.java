@@ -74,6 +74,12 @@ public final class ConfigurationClient {
      * Adds a configuration value in the service if that key and label does not exist. The label value of the
      * ConfigurationSetting is optional.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Add a setting with the key "prodDBConnection", label "westUS" and value "db_connection".</p>
+     *
+     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#ConfigurationSetting}
+     *
      * @param setting The setting to add based on its key and optional label combination.
      *
      * @return The {@link ConfigurationSetting} that was created, or {@code null} if a key collision occurs or the key
@@ -143,6 +149,13 @@ public final class ConfigurationClient {
     /**
      * Creates or updates a configuration value in the service. Partial updates are not supported and the entire
      * configuration setting is updated.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Add a setting with the key "prodDBConnection" and value "db_connection".</p>
+     * <p>Update setting's value "db_connection" to "updated_db_connection"</p>
+     *
+     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#ConfigurationSetting}
      *
      * @param setting The setting to create or update based on its key, optional label and optional ETag combination.
      *
@@ -250,6 +263,12 @@ public final class ConfigurationClient {
      * Attempts to get the ConfigurationSetting with a matching {@link ConfigurationSetting#getKey() key}, and optional
      * {@link ConfigurationSetting#getLabel() label}, optional {@code acceptDateTime} and optional ETag combination.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Retrieve the setting with the key "prodDBConnection".</p>
+     *
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting}
+     *
      * @param setting The setting to retrieve.
      *
      * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
@@ -321,6 +340,12 @@ public final class ConfigurationClient {
     /**
      * Deletes the {@link ConfigurationSetting} with a matching {@link ConfigurationSetting#getKey() key}, and optional
      * {@link ConfigurationSetting#getLabel() label} and optional ETag combination.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the setting with the key "prodDBConnection".</p>
+     *
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting}
      *
      * @param setting The setting to delete based on its key, optional label and optional ETag combination.
      *
@@ -406,6 +431,16 @@ public final class ConfigurationClient {
 
     /**
      * Sets the read-only status for the {@link ConfigurationSetting}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Set the setting to read-only with the key-label "prodDBConnection"-"westUS".</p>
+     *
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean}
+     *
+     * <p>Clear read-only of the setting with the key-label "prodDBConnection"-"westUS".</p>
+     *
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly}
      *
      * @param setting The configuration setting to set to read-only or not read-only based on the {@code isReadOnly}.
      * @param isReadOnly Flag used to set the read-only status of the configuration. {@code true} will put the
