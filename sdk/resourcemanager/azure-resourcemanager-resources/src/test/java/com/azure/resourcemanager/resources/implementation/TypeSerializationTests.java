@@ -25,7 +25,7 @@ import java.util.Set;
 
 public class TypeSerializationTests {
 
-    private static final class Map1<K,V> extends AbstractMap<K,V> {
+    private static final class Map1<K, V> extends AbstractMap<K, V> {
         private final K k0;
         private final V v0;
 
@@ -35,8 +35,8 @@ public class TypeSerializationTests {
         }
 
         @Override
-        public Set<Entry<K,V>> entrySet() {
-            Entry<K,V> entry = new AbstractMap.SimpleEntry<>(k0, v0);
+        public Set<Entry<K, V>> entrySet() {
+            Entry<K, V> entry = new AbstractMap.SimpleEntry<>(k0, v0);
             return new HashSet<>(Collections.singletonList(entry));
         }
 
@@ -68,6 +68,21 @@ public class TypeSerializationTests {
         @Override
         public int hashCode() {
             return k0.hashCode() ^ v0.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            if (!super.equals(o)) {
+                return false;
+            }
+            Map1<?, ?> map1 = (Map1<?, ?>) o;
+            return k0.equals(map1.k0) && v0.equals(map1.v0);
         }
     }
 
