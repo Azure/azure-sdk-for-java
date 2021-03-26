@@ -54,7 +54,7 @@ public class ServiceBusMessageChannelBinderTest {
         MessageHandler messageHandler = serviceBusMessageChannelBinder.
             createProducerMessageHandler(producerDestination, producerProperties, messageChannel);
         Assertions.assertThat(messageHandler)
-            .extracting("partitionIdExpression1")
+            .extracting("partitionIdExpression")
             .returns(PARTITION_HEADER,
                 exp -> ((SpelExpression) exp).getExpressionString());
     }
