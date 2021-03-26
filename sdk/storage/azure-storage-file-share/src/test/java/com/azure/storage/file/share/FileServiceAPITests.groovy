@@ -207,7 +207,9 @@ class FileServiceAPITests extends APISpec {
         def shares = primaryFileServiceClient.listShares(options, null, null).iterableByPage(2).iterator()
 
         then:
-        shares.next().value.size() == 2
+        for (def page : shares) {
+            assert page.value.size() <= 2
+        }
     }
 
     def "List shares get access tier"() {

@@ -174,9 +174,12 @@ class ServiceAPITest extends APISpec {
         }
 
         expect:
-        primaryBlobServiceClient.listBlobContainers(new ListBlobContainersOptions()
+        for (def page : primaryBlobServiceClient.listBlobContainers(new ListBlobContainersOptions()
             .setPrefix(containerPrefix), null)
-            .iterableByPage(PAGE_RESULTS).iterator().next().getValue().size() == PAGE_RESULTS
+            .iterableByPage(PAGE_RESULTS)) {
+            assert page.getValue().size() <= PAGE_RESULTS
+        }
+
 
         cleanup:
         containers.each { container -> container.delete() }

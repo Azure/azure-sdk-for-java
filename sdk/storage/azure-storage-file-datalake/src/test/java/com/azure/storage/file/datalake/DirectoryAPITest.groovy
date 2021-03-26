@@ -2997,13 +2997,10 @@ class DirectoryAPITest extends APISpec {
         dir.create()
         setupDirectoryForListing(dir)
 
-        when:
-        def response = dir.listPaths(false, false, null, null).iterableByPage(2).iterator().next()
-
-        then:
-        response.getValue().get(0).getName() == dirName + "/bar"
-        response.getValue().get(1).getName() == dirName + "/baz"
-        response.getValue().size() == 2
+        expect:
+        for (def page : dir.listPaths(false, false, null, null).iterableByPage(2)) {
+            assert page.getValue().size() <= 2
+        }
     }
 
     def "List paths error"() {

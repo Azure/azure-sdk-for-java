@@ -123,10 +123,12 @@ class ServiceAPITest extends APISpec {
         }
 
         expect:
-        primaryDataLakeServiceClient.listFileSystems(new ListFileSystemsOptions()
+        for (def page : primaryDataLakeServiceClient.listFileSystems(new ListFileSystemsOptions()
             .setPrefix(fileSystemPrefix)
             .setMaxResultsPerPage(), null)
-            .iterableByPage(PAGE_RESULTS).iterator().next().getValue().size() == PAGE_RESULTS
+            .iterableByPage(PAGE_RESULTS)) {
+            assert page.getValue().size() <= PAGE_RESULTS
+        }
 
         cleanup:
         fileSystems.each { fileSystem -> fileSystem.delete() }

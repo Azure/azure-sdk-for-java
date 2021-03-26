@@ -163,7 +163,9 @@ class QueueServiceAPITests extends APISpec {
         def queueListIter = primaryQueueServiceClient.listQueues(options, null, null).iterableByPage(2).iterator()
 
         then:
-        queueListIter.next().value.size() == 2
+        for (def page : queueListIter) {
+            page.value.size() <= 2
+        }
     }
 
     def "List empty queues"() {

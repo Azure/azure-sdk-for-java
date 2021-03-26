@@ -927,7 +927,9 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
 
         expect: "Get first page of blob listings (sync and async)"
-        cc.listBlobs(options, null).iterableByPage(PAGE_SIZE).iterator().next().getValue().size() == PAGE_SIZE
+        for (def page : cc.listBlobs(options, null).iterableByPage(PAGE_SIZE)) {
+            assert page.value.size() <= PAGE_SIZE
+        }
         StepVerifier.create(ccAsync.listBlobs(options).byPage(PAGE_SIZE).limitRequest(1))
             .assertNext({ assert it.getValue().size() == PAGE_SIZE })
             .verifyComplete()

@@ -953,11 +953,10 @@ class FileSystemAPITest extends APISpec {
         def fileName = generatePathName()
         fsc.getFileClient(fileName).create()
 
-        when:
-        def response = fsc.listPaths(new ListPathsOptions(), null).iterableByPage(1)
-
-        then:
-        response.first().value.size() == 1
+        expect:
+        for (def page : fsc.listPaths(new ListPathsOptions(), null).iterableByPage(1)) {
+            assert page.value.size() == 1
+        }
     }
     // TODO (gapra): Add more get paths tests (Github issue created)
 

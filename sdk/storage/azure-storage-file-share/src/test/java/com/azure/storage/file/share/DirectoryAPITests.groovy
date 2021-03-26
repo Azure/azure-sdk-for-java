@@ -434,7 +434,9 @@ class DirectoryAPITests extends APISpec {
             .iterableByPage(1).iterator()
 
         then:
-        fileRefIter.next().value.size() == 1
+        for (def page : fileRefIter) {
+            assert page.value.size() == 1
+        }
     }
 
     @Unroll
