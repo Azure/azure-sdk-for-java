@@ -375,6 +375,7 @@ public final class ConfigurationClientBuilder {
      *
      * @param retryPolicy The {@link HttpPipelinePolicy} that will be used to retry requests.
      * @return The updated ConfigurationClientBuilder object.
+     * @deprecated Use {@link #retryPolicy(RetryPolicy)} instead.
      */
     @Deprecated
     public ConfigurationClientBuilder retryPolicy(HttpPipelinePolicy retryPolicy) {
