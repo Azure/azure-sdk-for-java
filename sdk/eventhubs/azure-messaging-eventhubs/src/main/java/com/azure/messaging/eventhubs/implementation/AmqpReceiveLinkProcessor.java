@@ -466,14 +466,11 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             if (numberEmitted > 0 && numberRequested != 0L) {
                 final int credits = Long.valueOf(numberEmitted).intValue();
                 final AmqpReceiveLink link = currentLink;
-                if (link != null && !linkCreditsAdded.getAndSet(true)) {
-                    link.addCredits(Long.valueOf(numberEmitted).intValue())
-                        .doFinally(signal -> {
-                            logger.verbose("linkName[{}] creditsAdded[{}] signal[{}] Added from emitted credits.",
-                                credits, link.getLinkName(), credits, signal);
-                            linkCreditsAdded.set(false);
-                        })
-                        .subscribe();
+
+                if (link != null) {
+                    logger.verbose("linkName[{}] creditsAdded[{}] signal[{}] Added from emitted credits.",
+                        credits, link.getLinkName());
+                    link.addCredits(Long.valueOf(numberEmitted).intValue()).subscribe();
                 }
             }
         }
