@@ -27,6 +27,7 @@ import reactor.core.Disposable;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
@@ -35,6 +36,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -87,6 +89,7 @@ class AmqpReceiveLinkProcessorTest {
 
         when(link1.getEndpointStates()).thenReturn(endpointProcessor);
         when(link1.receive()).thenReturn(messageProcessor);
+        when(link1.addCredits(anyInt())).thenReturn(Mono.empty());
     }
 
     @AfterEach
@@ -231,19 +234,18 @@ class AmqpReceiveLinkProcessorTest {
 
         final AmqpReceiveLinkProcessor processor = createSink(connections).subscribeWith(linkProcessor);
         final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink();
-        final DirectProcessor<AmqpEndpointState> connection2EndpointProcessor = DirectProcessor.create();
-        final FluxSink<AmqpEndpointState> connection2Endpoint =
-            connection2EndpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
-        final DirectProcessor<Message> link2Receive = DirectProcessor.create();
+        final TestPublisher<AmqpEndpointState> connection2Endpoints = TestPublisher.createCold();
 
-        when(link2.getEndpointStates()).thenReturn(connection2EndpointProcessor);
+        when(link2.getEndpointStates()).thenReturn(connection2Endpoints.flux());
         when(link2.receive()).thenReturn(Flux.create(sink -> sink.next(message2)));
+        when(link2.addCredits(anyInt())).thenReturn(Mono.empty());
 
         when(link3.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link3.receive()).thenReturn(Flux.create(sink -> {
             sink.next(message3);
             sink.next(message4);
         }));
+        when(link3.addCredits(anyInt())).thenReturn(Mono.empty());
 
         when(link1.getCredits()).thenReturn(1);
         when(link2.getCredits()).thenReturn(1);
@@ -260,7 +262,7 @@ class AmqpReceiveLinkProcessorTest {
             .expectNext(message2)
             .then(() -> {
                 // Close connection 2
-                connection2Endpoint.complete();
+                connection2Endpoints.complete();
             })
             .expectNext(message3)
             .expectNext(message4)
@@ -288,6 +290,7 @@ class AmqpReceiveLinkProcessorTest {
 
         when(link2.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link2.receive()).thenReturn(Flux.just(message2, message3));
+        when(link2.addCredits(anyInt())).thenReturn(Mono.empty());
 
         final AmqpException amqpException = new AmqpException(false, AmqpErrorCondition.ARGUMENT_ERROR, "Non"
             + "-retryable-error",
@@ -370,6 +373,7 @@ class AmqpReceiveLinkProcessorTest {
 
         when(link2.getEndpointStates()).thenReturn(link2StateProcessor);
         when(link2.receive()).thenReturn(Flux.never());
+        when(link2.addCredits(anyInt())).thenReturn(Mono.empty());
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -489,6 +493,7 @@ class AmqpReceiveLinkProcessorTest {
         // Expecting 1 because it is Long.MAX_VALUE.
         Assertions.assertEquals(1, creditValue);
     }
+
     /**
      * Verifies that when we request back pressure amounts, if it only requests a certain number of events, only
      * that number is consumed.
