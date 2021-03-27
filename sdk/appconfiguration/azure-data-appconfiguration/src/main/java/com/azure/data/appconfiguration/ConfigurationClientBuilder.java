@@ -22,6 +22,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -89,6 +90,7 @@ public final class ConfigurationClientBuilder {
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
 
+    private ClientOptions clientOptions = new ClientOptions();
     private ConfigurationClientCredentials credential;
     private TokenCredential tokenCredential;
 
@@ -198,9 +200,10 @@ public final class ConfigurationClientBuilder {
 
         // customized pipeline
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .build();
+                                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                                    .httpClient(httpClient)
+                                    .clientOptions(clientOptions)
+                                    .build();
 
         return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion);
     }
@@ -219,6 +222,20 @@ public final class ConfigurationClientBuilder {
             throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
         }
         this.endpoint = endpoint;
+        return this;
+    }
+
+    /**
+     * Sets the client options for all the requests made through the client.
+     *
+     * @param clientOptions {@link ClientOptions}.
+     *
+     * @return the updated ConfigurationClientBuilder object
+     *
+     * @throws NullPointerException If {@code clientOptions} is {@code null}.
+     */
+    public ConfigurationClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;
     }
 
@@ -359,7 +376,23 @@ public final class ConfigurationClientBuilder {
      * @param retryPolicy The {@link HttpPipelinePolicy} that will be used to retry requests.
      * @return The updated ConfigurationClientBuilder object.
      */
+    @Deprecated
     public ConfigurationClientBuilder retryPolicy(HttpPipelinePolicy retryPolicy) {
+        this.retryPolicy = retryPolicy;
+        return this;
+    }
+
+    /**
+     * Sets the {@link RetryPolicy#RetryPolicy()} that is used when each request is sent.
+     * <p>
+     * The default retry policy will be used if not provided {@link ConfigurationClientBuilder#buildAsyncClient()}
+     * to build {@link ConfigurationAsyncClient} or {@link ConfigurationClient}.
+     *
+     * @param retryPolicy user's retry policy applied to each request.
+     *
+     * @return The updated ConfigurationClientBuilder object.
+     */
+    public ConfigurationClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
