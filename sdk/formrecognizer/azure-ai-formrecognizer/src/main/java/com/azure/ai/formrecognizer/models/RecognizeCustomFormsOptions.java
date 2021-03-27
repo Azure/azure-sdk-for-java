@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.annotation.Fluent;
 
 import java.time.Duration;
+import java.util.List;
 
 import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
 
@@ -16,6 +17,7 @@ import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_IN
 public final class RecognizeCustomFormsOptions {
     private FormContentType contentType;
     private boolean includeFieldElements;
+    private List<String> pages;
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;
 
     /**
@@ -80,6 +82,32 @@ public final class RecognizeCustomFormsOptions {
      */
     public RecognizeCustomFormsOptions setPollInterval(final Duration pollInterval) {
         this.pollInterval = pollInterval == null ? DEFAULT_POLL_INTERVAL : pollInterval;
+        return this;
+    }
+
+    /**
+     * Get the custom page numbers for multi-page documents(PDF/TIFF). Input the number of the
+     * pages you want to get the recognized result for.
+     * <p>For a range of pages, use a hyphen, ex - ["1-3"]. Separate each page or a page
+     * range with a comma, ex - ["1-3", 4].</p>
+     *
+     * @return the list of custom page numbers for a multi page document.
+     */
+    public List<String> getPages() {
+        return pages;
+    }
+
+    /**
+     * Set the custom page numbers for multi-page documents(PDF/TIFF). Input the number of the
+     * pages you want to get the recognized result for.
+     * <p>For a range of pages, use a hyphen, ex - ["1-3"]. Separate each page or a page
+     * range with a comma, ex - ["1-3", 4].</p>
+     *
+     * @param pages the custom page numbers value to set.
+     * @return the updated {@code RecognizeCustomFormsOptions} value.
+     */
+    public RecognizeCustomFormsOptions setPages(List<String> pages) {
+        this.pages = pages;
         return this;
     }
 }
