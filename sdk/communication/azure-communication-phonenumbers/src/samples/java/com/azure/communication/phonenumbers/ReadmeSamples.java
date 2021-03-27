@@ -12,6 +12,8 @@ import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollResponse;
@@ -29,9 +31,13 @@ public class ReadmeSamples {
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
         AzureKeyCredential keyCredential = new AzureKeyCredential("SECRET");
 
+        // Create an HttpClient builder of your choice and customize it
+        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
+
         PhoneNumbersClient phoneNumberClient = new PhoneNumbersClientBuilder()
             .endpoint(endpoint)
             .credential(keyCredential)
+            .httpClient(httpClient)
             .buildClient();
 
         return phoneNumberClient;
@@ -46,9 +52,13 @@ public class ReadmeSamples {
         // You can find your endpoint and access key from your resource in the Azure Portal
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
 
+        // Create an HttpClient builder of your choice and customize it
+        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
+
         PhoneNumbersClient phoneNumberClient = new PhoneNumbersClientBuilder()
             .endpoint(endpoint)
             .credential(new DefaultAzureCredentialBuilder().build())
+            .httpClient(httpClient)
             .buildClient();
 
         return phoneNumberClient;
