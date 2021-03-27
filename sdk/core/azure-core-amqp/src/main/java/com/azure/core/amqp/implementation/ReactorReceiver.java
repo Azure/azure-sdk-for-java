@@ -141,7 +141,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
                     logger.verbose("connectionId[{}] linkName[{}] response[{}] Token refreshed.",
                         handler.getConnectionId(), getLinkName(), response);
                     hasAuthorized.set(true);
-            }, error -> hasAuthorized.set(false), () -> hasAuthorized.set(false)),
+                }, error -> hasAuthorized.set(false), () -> hasAuthorized.set(false)),
 
             amqpConnection.getShutdownSignals().flatMap(signal -> {
                 logger.verbose("connectionId[{}] linkName[{}] Shutdown signal received.", handler.getConnectionId(),

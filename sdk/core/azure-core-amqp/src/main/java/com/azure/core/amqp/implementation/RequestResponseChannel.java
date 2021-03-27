@@ -155,33 +155,28 @@ public class RequestResponseChannel implements Disposable {
                 }),
 
             receiveLinkHandler.getEndpointStates().subscribe(state -> {
-                },
-                error -> {
-                    handleError(error, "Error in ReceiveLinkHandler.");
-                    onTerminalState("ReceiveLinkHandler");
-                },
-                () -> {
-                    disposeAsync("ReceiveLinkHandler. Endpoint states complete.").subscribe();
-                    onTerminalState("ReceiveLinkHandler");
-                }),
+            }, error -> {
+                handleError(error, "Error in ReceiveLinkHandler.");
+                onTerminalState("ReceiveLinkHandler");
+            }, () -> {
+                disposeAsync("ReceiveLinkHandler. Endpoint states complete.").subscribe();
+                onTerminalState("ReceiveLinkHandler");
+            }),
 
-            sendLinkHandler.getEndpointStates()
-                .subscribe(state -> {},
-                error -> {
-                    handleError(error, "Error in SendLinkHandler.");
-                    onTerminalState("SendLinkHandler");
-                },
-                () -> {
-                    disposeAsync("SendLinkHandler. Endpoint states complete.").subscribe();
-                    onTerminalState("SendLinkHandler");
-                }),
+            sendLinkHandler.getEndpointStates().subscribe(state -> {
+            }, error -> {
+                handleError(error, "Error in SendLinkHandler.");
+                onTerminalState("SendLinkHandler");
+            }, () -> {
+                disposeAsync("SendLinkHandler. Endpoint states complete.").subscribe();
+                onTerminalState("SendLinkHandler");
+            }),
 
             amqpConnection.getShutdownSignals().subscribe(signal -> {
                 logger.verbose("connectionId[{}] linkName[{}]: Shutdown signal received.", connectionId, linkName);
                 disposeAsync("Connection shutdown.").subscribe();
             })
         );
-
         //@formatter:on
 
         // If we try to do proton-j API calls such as opening/closing/sending on AMQP links, it may
