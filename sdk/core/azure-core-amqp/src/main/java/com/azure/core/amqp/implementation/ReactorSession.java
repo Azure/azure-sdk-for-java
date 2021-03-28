@@ -9,6 +9,7 @@ import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpSession;
+import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.exception.AmqpException;
@@ -60,7 +61,6 @@ public class ReactorSession implements AmqpSession {
      * Mono that completes when the session is completely closed, that is that the session remote
      */
     private final Sinks.Empty<Void> isClosedMono = Sinks.empty();
-    private Mono<Void> closeLinksMono = null;
 
     private final ClientLogger logger = new ClientLogger(ReactorSession.class);
     private final Flux<AmqpEndpointState> endpointStates;
@@ -80,6 +80,7 @@ public class ReactorSession implements AmqpSession {
     private final Disposable.Composite connectionSubscriptions;
 
     private final AtomicReference<TransactionCoordinator> transactionCoordinator = new AtomicReference<>();
+    private final Flux<AmqpShutdownSignal> shutdownSignals;
 
     /**
      * Creates a new AMQP session using proton-j.
@@ -122,12 +123,11 @@ public class ReactorSession implements AmqpSession {
             .doOnComplete(() -> handleClose())
             .cache(1);
 
-        this.connectionSubscriptions = Disposables.composite(
+        shutdownSignals = amqpConnection.getShutdownSignals();
+        connectionSubscriptions = Disposables.composite(
             this.endpointStates.subscribe(),
 
-            amqpConnection.getShutdownSignals().subscribe(signal -> {
-                dispose("Shutdown signal received", null, false).subscribe();
-            }));
+            shutdownSignals.flatMap(signal ->  dispose("Shutdown signal received", null, false)).subscribe());
 
         session.open();
     }
@@ -203,7 +203,10 @@ public class ReactorSession implements AmqpSession {
      */
     @Override
     public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry) {
-        return createProducer(linkName, entityPath, timeout, retry, null);
+        return createProducer(linkName, entityPath, timeout, retry, null)
+            .or(onClosedError(String.format(
+                "connectionId[%s] entityPath[%s] linkName[%s] Connection closed while waiting for new producer link.",
+                sessionHandler.getConnectionId(), entityPath, linkName)));
     }
 
     /**
@@ -213,6 +216,9 @@ public class ReactorSession implements AmqpSession {
     public Mono<AmqpLink> createConsumer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry) {
         return createConsumer(linkName, entityPath, timeout, retry, null, null, null,
             SenderSettleMode.UNSETTLED, ReceiverSettleMode.SECOND)
+            .or(onClosedError(String.format(
+                "connectionId[%s] entityPath[%s] linkName[%s] Connection closed while waiting for new receive link.",
+                sessionHandler.getConnectionId(), entityPath, linkName)))
             .cast(AmqpLink.class);
     }
 
@@ -278,7 +284,10 @@ public class ReactorSession implements AmqpSession {
                 } else {
                     return transactionCoordinator.get();
                 }
-            });
+            })
+            .or(onClosedError(String.format(
+                "connectionId[%s] Connection closed while waiting for transaction coordinator creation.",
+                sessionHandler.getConnectionId())));
     }
 
     /**
@@ -546,6 +555,19 @@ public class ReactorSession implements AmqpSession {
     }
 
     /**
+     * Returns a Mono that completes when the connection handler is closed. If it does, an {@link AmqpException} is
+     * returned. It indicates that a shutdown was initiated and we should stop.
+     *
+     * @return A Mono that completes when the shutdown signal is emitted. If it does, returns an error.
+     */
+    private <T> Mono<T> onClosedError(String message) {
+        return Mono.firstWithSignal(isClosedMono.asMono(), shutdownSignals.next())
+            .then(Mono.error(new AmqpException(false,
+                String.format("connectionId[%s] Connection closed. %s", sessionHandler.getConnectionId(), message),
+                sessionHandler.getErrorContext())));
+    }
+
+    /**
      * Asynchronously waits for the session's active endpoint state.
      *
      * @return A mono that completes when the session is active.
@@ -613,7 +635,7 @@ public class ReactorSession implements AmqpSession {
         }
 
         // We want to complete the session so that the parent connection isn't waiting.
-        closeLinksMono = Mono.when(closingLinks).timeout(retryOptions.getTryTimeout())
+        Mono<Void> closeLinksMono = Mono.when(closingLinks).timeout(retryOptions.getTryTimeout())
             .onErrorResume(error -> {
                 logger.warning("connectionId[{}], sessionName[{}]: Timed out waiting for all links to close.",
                     sessionHandler.getConnectionId(), sessionName, error);
