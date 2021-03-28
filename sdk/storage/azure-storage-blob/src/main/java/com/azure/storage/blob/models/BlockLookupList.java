@@ -10,32 +10,30 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The BlockLookupList model.
- */
+/** The BlockLookupList model. */
 @JacksonXmlRootElement(localName = "BlockList")
 @Fluent
 public final class BlockLookupList {
     /*
-     * The committed property.
+     * The Committed property.
      */
     @JsonProperty("Committed")
     private List<String> committed = new ArrayList<>();
 
     /*
-     * The uncommitted property.
+     * The Uncommitted property.
      */
     @JsonProperty("Uncommitted")
     private List<String> uncommitted = new ArrayList<>();
 
     /*
-     * The latest property.
+     * The Latest property.
      */
     @JsonProperty("Latest")
     private List<String> latest = new ArrayList<>();
 
     /**
-     * Get the committed property: The committed property.
+     * Get the committed property: The Committed property.
      *
      * @return the committed value.
      */
@@ -44,7 +42,7 @@ public final class BlockLookupList {
     }
 
     /**
-     * Set the committed property: The committed property.
+     * Set the committed property: The Committed property.
      *
      * @param committed the committed value to set.
      * @return the BlockLookupList object itself.
@@ -55,7 +53,7 @@ public final class BlockLookupList {
     }
 
     /**
-     * Get the uncommitted property: The uncommitted property.
+     * Get the uncommitted property: The Uncommitted property.
      *
      * @return the uncommitted value.
      */
@@ -64,7 +62,7 @@ public final class BlockLookupList {
     }
 
     /**
-     * Set the uncommitted property: The uncommitted property.
+     * Set the uncommitted property: The Uncommitted property.
      *
      * @param uncommitted the uncommitted value to set.
      * @return the BlockLookupList object itself.
@@ -75,7 +73,7 @@ public final class BlockLookupList {
     }
 
     /**
-     * Get the latest property: The latest property.
+     * Get the latest property: The Latest property.
      *
      * @return the latest value.
      */
@@ -84,7 +82,7 @@ public final class BlockLookupList {
     }
 
     /**
-     * Set the latest property: The latest property.
+     * Set the latest property: The Latest property.
      *
      * @param latest the latest value to set.
      * @return the BlockLookupList object itself.

@@ -36,6 +36,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
+import reactor.util.context.ContextView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -508,7 +509,7 @@ public final class RestProxy implements InvocationHandler {
         final Mono<HttpDecodedResponse> asyncExpectedResponse =
             ensureExpectedStatus(asyncHttpDecodedResponse, methodParser)
                 .doOnEach(RestProxy::endTracingSpan)
-                .subscriberContext(reactor.util.context.Context.of("TRACING_CONTEXT", context));
+                .contextWrite(reactor.util.context.Context.of("TRACING_CONTEXT", context));
 
         final Object result;
         if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class)) {
@@ -552,7 +553,7 @@ public final class RestProxy implements InvocationHandler {
         }
 
         // Get the context that was added to the mono, this will contain the information needed to end the span.
-        reactor.util.context.Context context = signal.getContext();
+        ContextView context = signal.getContextView();
         Optional<Context> tracingContext = context.getOrEmpty("TRACING_CONTEXT");
         boolean disableTracing = context.getOrDefault(Tracer.DISABLE_TRACING_KEY, false);
 

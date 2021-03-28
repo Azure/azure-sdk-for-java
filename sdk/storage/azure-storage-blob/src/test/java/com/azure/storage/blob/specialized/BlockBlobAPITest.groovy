@@ -8,7 +8,6 @@ import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
-import com.azure.core.http.RequestConditions
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
 import com.azure.identity.DefaultAzureCredentialBuilder
@@ -1268,6 +1267,16 @@ class BlockBlobAPITest extends APISpec {
         10 * Constants.MB  | 3 * Constants.MB  | 3        || 4 // Data does not squarely fit in buffers.
     }
 
+    def "Async upload binary data"() {
+        when:
+        blobAsyncClient.upload(defaultBinaryData, true).block()
+
+        then:
+        StepVerifier.create(blockBlobAsyncClient.downloadContent())
+                .assertNext({ assert it.toBytes() == defaultBinaryData.toBytes() })
+                .verifyComplete()
+    }
+
     @Unroll
     @Requires({ liveMode() })
     def "Async buffered upload computeMd5"() {
@@ -1289,6 +1298,11 @@ class BlockBlobAPITest extends APISpec {
         Constants.KB | null                | null               | 1                  // Simple case where uploadFull is called.
         Constants.KB | Constants.KB        | 500 * Constants.KB | 1000               // uploadChunked 2 blocks staged
         Constants.KB | Constants.KB        | 5 * Constants.KB   | 1000               // uploadChunked 100 blocks staged
+    }
+
+    def "Async upload binary data with response"() {
+        expect:
+        blobAsyncClient.uploadWithResponse(new BlobParallelUploadOptions(defaultBinaryData)).block().getStatusCode() == 201
     }
 
     def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
@@ -1833,6 +1847,12 @@ class BlockBlobAPITest extends APISpec {
             .verifyError(IllegalArgumentException)
     }
 
+    def "Upload binary data no overwrite"() {
+        expect:
+        StepVerifier.create(blobAsyncClient.upload(defaultBinaryData))
+            .verifyError(IllegalArgumentException)
+    }
+
     @Requires({ liveMode() })
     def "Buffered upload no overwrite interrupted"() {
         setup:
@@ -1912,7 +1932,7 @@ class BlockBlobAPITest extends APISpec {
         "blob"                 | "blob"
         "path/to]a blob"       | "path/to]a blob"
         "path%2Fto%5Da%20blob" | "path/to]a blob"
-        "斑點"                   | "斑點"
+        "斑點"                 | "斑點"
         "%E6%96%91%E9%BB%9E"   | "斑點"
     }
 

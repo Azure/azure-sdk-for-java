@@ -18,6 +18,7 @@ import com.azure.ai.textanalytics.implementation.models.LanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.LanguageInput;
 import com.azure.ai.textanalytics.implementation.models.LanguageResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.PiiCategory;
 import com.azure.ai.textanalytics.implementation.models.PiiResult;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
 import com.azure.ai.textanalytics.implementation.models.StringIndexType;
@@ -25,6 +26,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -42,11 +44,16 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+<<<<<<< HEAD
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+=======
+import java.util.List;
+>>>>>>> upstream/master
 import java.util.UUID;
 
 import com.fasterxml.jackson.core.JsonFactory;
@@ -144,7 +151,7 @@ public final class TextAnalyticsClientImpl {
      * The interface defining all the services for TextAnalyticsClient to be used by the proxy service to perform REST
      * calls.
      */
-    @Host("{Endpoint}/text/analytics/v3.1-preview.3")
+    @Host("{Endpoint}/text/analytics/v3.1-preview.4")
     @ServiceInterface(name = "TextAnalyticsClient")
     private interface TextAnalyticsClientService {
         @Post("/analyze")
@@ -153,6 +160,7 @@ public final class TextAnalyticsClientImpl {
         Mono<AnalyzeResponse> analyze(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") AnalyzeBatchInput body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/analyze/jobs/{jobId}")
@@ -164,6 +172,7 @@ public final class TextAnalyticsClientImpl {
                 @QueryParam("showStats") Boolean showStats,
                 @QueryParam("$top") Integer top,
                 @QueryParam("$skip") Integer skip,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/entities/health/jobs/{jobId}")
@@ -175,13 +184,17 @@ public final class TextAnalyticsClientImpl {
                 @QueryParam("$top") Integer top,
                 @QueryParam("$skip") Integer skip,
                 @QueryParam("showStats") Boolean showStats,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Delete("/entities/health/jobs/{jobId}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<CancelHealthJobResponse> cancelHealthJob(
-                @HostParam("Endpoint") String endpoint, @PathParam("jobId") UUID jobId, Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("jobId") UUID jobId,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/entities/health/jobs")
         @ExpectedResponses({202})
@@ -191,6 +204,7 @@ public final class TextAnalyticsClientImpl {
                 @QueryParam("model-version") String modelVersion,
                 @QueryParam("stringIndexType") StringIndexType stringIndexType,
                 @BodyParam("application/json") MultiLanguageBatchInput input,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/entities/recognition/general")
@@ -202,6 +216,7 @@ public final class TextAnalyticsClientImpl {
                 @QueryParam("showStats") Boolean showStats,
                 @QueryParam("stringIndexType") StringIndexType stringIndexType,
                 @BodyParam("application/json") MultiLanguageBatchInput input,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/entities/recognition/pii")
@@ -213,7 +228,9 @@ public final class TextAnalyticsClientImpl {
                 @QueryParam("showStats") Boolean showStats,
                 @QueryParam("domain") String domain,
                 @QueryParam("stringIndexType") StringIndexType stringIndexType,
+                @QueryParam("piiCategories") String piiCategories,
                 @BodyParam("application/json") MultiLanguageBatchInput input,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/entities/linking")
@@ -225,6 +242,7 @@ public final class TextAnalyticsClientImpl {
                 @QueryParam("showStats") Boolean showStats,
                 @QueryParam("stringIndexType") StringIndexType stringIndexType,
                 @BodyParam("application/json") MultiLanguageBatchInput input,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/keyPhrases")
@@ -235,6 +253,7 @@ public final class TextAnalyticsClientImpl {
                 @QueryParam("model-version") String modelVersion,
                 @QueryParam("showStats") Boolean showStats,
                 @BodyParam("application/json") MultiLanguageBatchInput input,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/languages")
@@ -245,6 +264,7 @@ public final class TextAnalyticsClientImpl {
                 @QueryParam("model-version") String modelVersion,
                 @QueryParam("showStats") Boolean showStats,
                 @BodyParam("application/json") LanguageBatchInput input,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/languages")
@@ -267,6 +287,7 @@ public final class TextAnalyticsClientImpl {
                 @QueryParam("opinionMining") Boolean opinionMining,
                 @QueryParam("stringIndexType") StringIndexType stringIndexType,
                 @BodyParam("application/json") MultiLanguageBatchInput input,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
@@ -282,7 +303,8 @@ public final class TextAnalyticsClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeResponse> analyzeWithResponseAsync(AnalyzeBatchInput body, Context context) {
-        return service.analyze(this.getEndpoint(), body, context);
+        final String accept = "application/json, text/json";
+        return service.analyze(this.getEndpoint(), body, accept, context);
     }
 
     /**
@@ -304,7 +326,8 @@ public final class TextAnalyticsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeJobState>> analyzeStatusWithResponseAsync(
             String jobId, Boolean showStats, Integer top, Integer skip, Context context) {
-        return service.analyzeStatus(this.getEndpoint(), jobId, showStats, top, skip, context);
+        final String accept = "application/json, text/json";
+        return service.analyzeStatus(this.getEndpoint(), jobId, showStats, top, skip, accept, context);
     }
 
     /**
@@ -325,7 +348,8 @@ public final class TextAnalyticsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<HealthcareJobState>> healthStatusWithResponseAsync(
             UUID jobId, Integer top, Integer skip, Boolean showStats, Context context) {
-        return service.healthStatus(this.getEndpoint(), jobId, top, skip, showStats, context);
+        final String accept = "application/json, text/json";
+        return service.healthStatus(this.getEndpoint(), jobId, top, skip, showStats, accept, context);
     }
 
     /**
@@ -340,14 +364,15 @@ public final class TextAnalyticsClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CancelHealthJobResponse> cancelHealthJobWithResponseAsync(UUID jobId, Context context) {
-        return service.cancelHealthJob(this.getEndpoint(), jobId, context);
+        final String accept = "application/json, text/json";
+        return service.cancelHealthJob(this.getEndpoint(), jobId, accept, context);
     }
 
     /**
      * Start a healthcare analysis job to recognize healthcare related entities (drugs, conditions, symptoms, etc) and
      * their relations.
      *
-     * @param input Contains a set of input documents to be analyzed by the service.
+     * @param input Collection of documents to analyze.
      * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is
      *     not specified, the API should default to the latest, non-preview version.
      * @param stringIndexType (Optional) Specifies the method used to interpret string offsets. Defaults to Text
@@ -362,7 +387,8 @@ public final class TextAnalyticsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<HealthResponse> healthWithResponseAsync(
             MultiLanguageBatchInput input, String modelVersion, StringIndexType stringIndexType, Context context) {
-        return service.health(this.getEndpoint(), modelVersion, stringIndexType, input, context);
+        final String accept = "application/json, text/json";
+        return service.health(this.getEndpoint(), modelVersion, stringIndexType, input, accept, context);
     }
 
     /**
@@ -371,7 +397,7 @@ public final class TextAnalyticsClientImpl {
      * href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled
      * languages.
      *
-     * @param input Contains a set of input documents to be analyzed by the service.
+     * @param input Collection of documents to analyze.
      * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is
      *     not specified, the API should default to the latest, non-preview version.
      * @param showStats (Optional) if set to true, response will contain request and document level statistics.
@@ -391,8 +417,9 @@ public final class TextAnalyticsClientImpl {
             Boolean showStats,
             StringIndexType stringIndexType,
             Context context) {
+        final String accept = "application/json, text/json";
         return service.entitiesRecognitionGeneral(
-                this.getEndpoint(), modelVersion, showStats, stringIndexType, input, context);
+                this.getEndpoint(), modelVersion, showStats, stringIndexType, input, accept, context);
     }
 
     /**
@@ -401,7 +428,7 @@ public final class TextAnalyticsClientImpl {
      * Analytics API&lt;/a&gt;. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics
      * API&lt;/a&gt; for the list of enabled languages.
      *
-     * @param input Contains a set of input documents to be analyzed by the service.
+     * @param input Collection of documents to analyze.
      * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is
      *     not specified, the API should default to the latest, non-preview version.
      * @param showStats (Optional) if set to true, response will contain request and document level statistics.
@@ -410,6 +437,7 @@ public final class TextAnalyticsClientImpl {
      * @param stringIndexType (Optional) Specifies the method used to interpret string offsets. Defaults to Text
      *     Elements (Graphemes) according to Unicode v8.0.0. For additional information see
      *     https://aka.ms/text-analytics-offsets.
+     * @param piiCategories (Optional) describes the PII categories to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -423,17 +451,29 @@ public final class TextAnalyticsClientImpl {
             Boolean showStats,
             String domain,
             StringIndexType stringIndexType,
+            List<PiiCategory> piiCategories,
             Context context) {
+        final String accept = "application/json, text/json";
+        String piiCategoriesConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(piiCategories, CollectionFormat.CSV);
         return service.entitiesRecognitionPii(
-                this.getEndpoint(), modelVersion, showStats, domain, stringIndexType, input, context);
+                this.getEndpoint(),
+                modelVersion,
+                showStats,
+                domain,
+                stringIndexType,
+                piiCategoriesConverted,
+                input,
+                accept,
+                context);
     }
 
     /**
-     * The API returns a list of recognized entities with links to a well-known knowledge base. See the &lt;a
+     * The API returns a list of recognized entities with links to a well known knowledge base. See the &lt;a
      * href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled
      * languages.
      *
-     * @param input Contains a set of input documents to be analyzed by the service.
+     * @param input Collection of documents to analyze.
      * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is
      *     not specified, the API should default to the latest, non-preview version.
      * @param showStats (Optional) if set to true, response will contain request and document level statistics.
@@ -453,7 +493,9 @@ public final class TextAnalyticsClientImpl {
             Boolean showStats,
             StringIndexType stringIndexType,
             Context context) {
-        return service.entitiesLinking(this.getEndpoint(), modelVersion, showStats, stringIndexType, input, context);
+        final String accept = "application/json, text/json";
+        return service.entitiesLinking(
+                this.getEndpoint(), modelVersion, showStats, stringIndexType, input, accept, context);
     }
 
     /**
@@ -461,7 +503,7 @@ public final class TextAnalyticsClientImpl {
      * href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled
      * languages.
      *
-     * @param input Contains a set of input documents to be analyzed by the service.
+     * @param input Collection of documents to analyze.
      * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is
      *     not specified, the API should default to the latest, non-preview version.
      * @param showStats (Optional) if set to true, response will contain request and document level statistics.
@@ -474,7 +516,8 @@ public final class TextAnalyticsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyPhraseResult>> keyPhrasesWithResponseAsync(
             MultiLanguageBatchInput input, String modelVersion, Boolean showStats, Context context) {
-        return service.keyPhrases(this.getEndpoint(), modelVersion, showStats, input, context);
+        final String accept = "application/json, text/json";
+        return service.keyPhrases(this.getEndpoint(), modelVersion, showStats, input, accept, context);
     }
 
     /**
@@ -495,48 +538,20 @@ public final class TextAnalyticsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LanguageResult>> languagesWithResponseAsync(
             LanguageBatchInput input, String modelVersion, Boolean showStats, Context context) {
-
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        try {
-            JsonGenerator generator = new JsonFactory().createGenerator(outputStream);
-
-            generator.writeStartObject();
-            generator.writeArrayFieldStart("documents");
-
-            for (LanguageInput languageInput : input.getDocuments()) {
-                generator.writeStartObject();
-                generator.writeFieldName("id");
-                generator.writeString(languageInput.getId());
-                generator.writeFieldName("text");
-                generator.writeString(languageInput.getText());
-                if (languageInput.getCountryHint() != null) {
-                    generator.writeFieldName("countryHint");
-                    generator.writeString(languageInput.getCountryHint());
-                }
-                generator.writeEndObject();
-            }
-            generator.writeEndArray();
-            generator.writeEndObject();
-            generator.close();
-
-            return service.languages(this.getEndpoint(), modelVersion, showStats, outputStream.toByteArray(),
-                context.addData("json-payload", true));
-        } catch (IOException e) {
-            return Mono.error(e);
-        }
-        // return service.languages(this.getEndpoint(), modelVersion, showStats, input, context);
+        final String accept = "application/json, text/json";
+        return service.languages(this.getEndpoint(), modelVersion, showStats, input, accept, context);
     }
 
     /**
      * The API returns a detailed sentiment analysis for the input text. The analysis is done in multiple levels of
-     * granularity, start from the a document level, down to sentence and key terms (aspects) and opinions.
+     * granularity, start from the a document level, down to sentence and key terms (targets and assessments).
      *
-     * @param input Contains a set of input documents to be analyzed by the service.
+     * @param input Collection of documents to analyze.
      * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is
      *     not specified, the API should default to the latest, non-preview version.
      * @param showStats (Optional) if set to true, response will contain request and document level statistics.
-     * @param opinionMining (Optional) if set to true, response will contain input and document level statistics
-     *     including aspect-based sentiment analysis results.
+     * @param opinionMining (Optional) if set to true, response will contain not only sentiment prediction but also
+     *     opinion mining (aspect-based sentiment analysis) results.
      * @param stringIndexType (Optional) Specifies the method used to interpret string offsets. Defaults to Text
      *     Elements (Graphemes) according to Unicode v8.0.0. For additional information see
      *     https://aka.ms/text-analytics-offsets.
@@ -554,7 +569,8 @@ public final class TextAnalyticsClientImpl {
             Boolean opinionMining,
             StringIndexType stringIndexType,
             Context context) {
+        final String accept = "application/json, text/json";
         return service.sentiment(
-                this.getEndpoint(), modelVersion, showStats, opinionMining, stringIndexType, input, context);
+                this.getEndpoint(), modelVersion, showStats, opinionMining, stringIndexType, input, accept, context);
     }
 }

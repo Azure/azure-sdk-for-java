@@ -11,9 +11,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.List;
 
-/**
- * A wrapper around List&lt;BlobSignedIdentifier&gt; which provides top-level metadata for serialization.
- */
+/** A wrapper around List&lt;BlobSignedIdentifier&gt; which provides top-level metadata for serialization. */
 @JacksonXmlRootElement(localName = "SignedIdentifiers")
 public final class SignedIdentifiersWrapper {
     @JacksonXmlProperty(localName = "SignedIdentifier")

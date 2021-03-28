@@ -6,7 +6,6 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosPatchOperations;
-import com.azure.cosmos.ThroughputControlGroup;
 import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
@@ -14,6 +13,7 @@ import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
+import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -228,7 +228,7 @@ public interface AsyncDocumentClient {
                 transportClientSharing,
                 contentResponseOnWriteEnabled);
 
-            client.init();
+            client.init(null);
             return client;
         }
 
@@ -1263,6 +1263,87 @@ public interface AsyncDocumentClient {
     Flux<FeedResponse<User>> queryUsers(String databaseLink, SqlQuerySpec querySpec, CosmosQueryRequestOptions options);
 
     /**
+     * Reads a client encryption key.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single resource response with the read client encryption key.
+     * In case of failure the {@link Mono} will error.
+     *
+     * @param clientEncryptionKeyLink the client encryption key link.
+     * @param options  the request options.
+     * @return a {@link Mono} containing the single resource response with the read user or an error.
+     */
+    Mono<ResourceResponse<ClientEncryptionKey>> readClientEncryptionKey(String clientEncryptionKeyLink, RequestOptions options);
+
+    /**
+     * Creates a client encryption key.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single resource response with the created client encryption key.
+     * In case of failure the {@link Mono} will error.
+     *
+     * @param databaseLink the database link.
+     * @param clientEncryptionKey the client encryption key to create.
+     * @param options      the request options.
+     * @return a {@link Mono} containing the single resource response with the created client encryption key or an error.
+     */
+    Mono<ResourceResponse<ClientEncryptionKey>> createClientEncryptionKey(String databaseLink, ClientEncryptionKey clientEncryptionKey, RequestOptions options);
+
+    /**
+     * Replaces a client encryption key.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single resource response with the replaced client encryption key.
+     * In case of failure the {@link Mono} will error.
+     *
+     * @param clientEncryptionKey    the client encryption key to use.
+     * @param options the request options.
+     * @return a {@link Mono} containing the single resource response with the replaced client encryption keyer or an error.
+     */
+    Mono<ResourceResponse<ClientEncryptionKey>> replaceClientEncryptionKey(ClientEncryptionKey clientEncryptionKey, String nameBasedLink, RequestOptions options);
+
+    /**
+     * Reads all client encryption keys in a database.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Flux} will contain one or several feed response pages of the read client encryption keys.
+     * In case of failure the {@link Flux} will error.
+     *
+     * @param databaseLink the database link.
+     * @param options      the query request options.
+     * @return a {@link Flux} containing one or several feed response pages of the read client encryption keys or an error.
+     */
+    Flux<FeedResponse<ClientEncryptionKey>> readClientEncryptionKeys(String databaseLink, CosmosQueryRequestOptions options);
+
+    /**
+     * Query for client encryption keys.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Flux} will contain one or several feed response pages of the obtained client encryption keys.
+     * In case of failure the {@link Flux} will error.
+     *
+     * @param databaseLink the database link.
+     * @param query        the query.
+     * @param options      the query request options.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained client encryption keys or an error.
+     */
+    Flux<FeedResponse<ClientEncryptionKey>> queryClientEncryptionKeys(String databaseLink, String query, CosmosQueryRequestOptions options);
+
+    /**
+     * Query for client encryption keys.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Flux} will contain one or several feed response pages of the obtained client encryption keys.
+     * In case of failure the {@link Flux} will error.
+     *
+     * @param databaseLink the database link.
+     * @param querySpec    the SQL query specification.
+     * @param options      the query request options.
+     * @return a {@link Flux} containing one or several feed response pages of the obtained client encryption keys or an error.
+     */
+    Flux<FeedResponse<ClientEncryptionKey>> queryClientEncryptionKeys(String databaseLink, SqlQuerySpec querySpec, CosmosQueryRequestOptions options);
+
+    /**
      * Creates a permission.
      * <p>
      * After subscription the operation will be performed.
@@ -1510,5 +1591,5 @@ public interface AsyncDocumentClient {
      *
      * @param group the throughput control group.
      */
-    void enableThroughputControlGroup(ThroughputControlGroup group);
+    void enableThroughputControlGroup(ThroughputControlGroupInternal group);
 }

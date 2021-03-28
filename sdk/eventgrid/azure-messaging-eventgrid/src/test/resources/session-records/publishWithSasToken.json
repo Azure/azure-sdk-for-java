@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.eastus-1.eventgrid.azure.net/api/events?api-version=2018-01-01",
+    "Uri" : "https://REDACTED.westus2-1.eventgrid.azure.net/api/events?api-version=2018-01-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (1.8.0_252; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "fbd37dc2-3fcf-4db1-a73d-13ee2b2bcd33",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4bfcef57-2a14-4e59-b55f-b7742459d419",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -14,8 +14,8 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "62862a5c-ad95-45ed-b0b2-ee9cae2625ad",
-      "Date" : "Tue, 11 Aug 2020 17:41:21 GMT"
+      "x-ms-request-id" : "14bac486-ca11-48cb-8294-b979f490b1a3",
+      "Date" : "Thu, 04 Mar 2021 00:41:03 GMT"
     },
     "Exception" : null
   } ],

@@ -2,6 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.spring.aad.webapi;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+
+import java.util.List;
+
+import com.azure.spring.aad.AADTrustedIssuerRepository;
 import org.junit.Test;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
@@ -11,19 +17,22 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
-import java.util.List;
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class AADResourceServerConfigurationTest {
 
-    private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner();
+    private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
+        .withPropertyValues("azure.activedirectory.tenant-id=fake-tenant-id");
+
+    private AADTrustedIssuerRepository aadTrustedIssuerRepository = mock(AADTrustedIssuerRepository.class);
 
     @Test
     public void testNotExistBearerTokenAuthenticationToken() {
         this.contextRunner
             .withUserConfiguration(AADResourceServerConfiguration.class)
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .run(context -> assertThat(context).doesNotHaveBean("jwtDecoderByJwkKeySetUri"));
+            .run(context -> {
+                assertThat(context).doesNotHaveBean("jwtDecoderByJwkKeySetUri");
+            });
     }
 
     @Test

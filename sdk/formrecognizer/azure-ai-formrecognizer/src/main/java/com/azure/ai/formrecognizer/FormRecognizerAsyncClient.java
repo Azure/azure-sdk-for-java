@@ -7,7 +7,6 @@ import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
-import com.azure.ai.formrecognizer.implementation.models.ContentType1;
 import com.azure.ai.formrecognizer.implementation.models.Language;
 import com.azure.ai.formrecognizer.implementation.models.Locale;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
@@ -145,7 +144,7 @@ public final class FormRecognizerAsyncClient {
                 recognizeCustomFormsOptions.getPollInterval(),
                 urlActivationOperation(() ->
                     service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
-                        isFieldElementsIncluded, new SourcePath().setSource(formUrl), context)
+                        isFieldElementsIncluded, null, new SourcePath().setSource(formUrl), context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
                     logger),
@@ -159,7 +158,7 @@ public final class FormRecognizerAsyncClient {
                         toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
                             isFieldElementsIncluded,
                             modelId))
-                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -237,7 +236,8 @@ public final class FormRecognizerAsyncClient {
                 recognizeCustomFormsOptions.getPollInterval(),
                 streamActivationOperation(
                     contentType -> service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
-                        ContentType.fromString(contentType.toString()), form, length, isFieldElementsIncluded, context)
+                        ContentType.fromString(contentType.toString()), form, length, isFieldElementsIncluded,
+                        null, context)
                         .map(response ->
                             new FormRecognizerOperationResult(
                                 parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
@@ -253,7 +253,7 @@ public final class FormRecognizerAsyncClient {
                         toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
                             isFieldElementsIncluded,
                             modelId))
-                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -319,9 +319,10 @@ public final class FormRecognizerAsyncClient {
                 finalRecognizeContentOptions.getPollInterval(),
                 urlActivationOperation(
                     () -> service.analyzeLayoutAsyncWithResponseAsync(
+                        finalRecognizeContentOptions.getPages(),
                         finalRecognizeContentOptions.getLanguage() == null
                             ? null : Language.fromString(finalRecognizeContentOptions.getLanguage().toString()),
-                        finalRecognizeContentOptions.getPages(),
+                        null,
                         new SourcePath().setSource(formUrl),
                         context)
                         .map(response -> new FormRecognizerOperationResult(
@@ -333,7 +334,7 @@ public final class FormRecognizerAsyncClient {
                 fetchingOperation(resultId -> service.getAnalyzeLayoutResultWithResponseAsync(resultId, context))
                     .andThen(after -> after.map(modelSimpleResponse ->
                         toRecognizedLayout(modelSimpleResponse.getValue().getAnalyzeResult(), true))
-                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -408,9 +409,10 @@ public final class FormRecognizerAsyncClient {
                     contentType -> service.analyzeLayoutAsyncWithResponseAsync(contentType,
                         form,
                         length,
+                        finalRecognizeContentOptions.getPages(),
                         finalRecognizeContentOptions.getLanguage() == null
                             ? null : Language.fromString(finalRecognizeContentOptions.getLanguage().toString()),
-                        finalRecognizeContentOptions.getPages(),
+                        null,
                         context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
@@ -421,7 +423,7 @@ public final class FormRecognizerAsyncClient {
                 fetchingOperation(resultId -> service.getAnalyzeLayoutResultWithResponseAsync(resultId, context))
                     .andThen(after -> after.map(modelSimpleResponse ->
                         toRecognizedLayout(modelSimpleResponse.getValue().getAnalyzeResult(), true))
-                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -490,6 +492,7 @@ public final class FormRecognizerAsyncClient {
                 urlActivationOperation(
                     () -> service.analyzeReceiptAsyncWithResponseAsync(isFieldElementsIncluded,
                         localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
+                        null,
                         new SourcePath().setSource(receiptUrl),
                         context)
                         .map(response -> new FormRecognizerOperationResult(
@@ -503,7 +506,7 @@ public final class FormRecognizerAsyncClient {
                         toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
                             isFieldElementsIncluded,
                             null))
-                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -586,6 +589,7 @@ public final class FormRecognizerAsyncClient {
                         length,
                         isFieldElementsIncluded,
                         localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
+                        null,
                         context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
@@ -598,7 +602,7 @@ public final class FormRecognizerAsyncClient {
                         toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
                             isFieldElementsIncluded,
                             null))
-                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -667,6 +671,7 @@ public final class FormRecognizerAsyncClient {
                 urlActivationOperation(
                     () -> service.analyzeBusinessCardAsyncWithResponseAsync(isFieldElementsIncluded,
                         localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
+                        null,
                         new SourcePath().setSource(businessCardUrl),
                         context)
                         .map(response -> new FormRecognizerOperationResult(
@@ -680,7 +685,7 @@ public final class FormRecognizerAsyncClient {
                         modelSimpleResponse.getValue().getAnalyzeResult(),
                         isFieldElementsIncluded,
                         null))
-                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -761,6 +766,7 @@ public final class FormRecognizerAsyncClient {
                         length,
                         isFieldElementsIncluded,
                         localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
+                        null,
                         context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
@@ -773,7 +779,7 @@ public final class FormRecognizerAsyncClient {
                         modelSimpleResponse.getValue().getAnalyzeResult(),
                         isFieldElementsIncluded,
                         null))
-                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -784,18 +790,18 @@ public final class FormRecognizerAsyncClient {
      */
     private Function<PollingContext<FormRecognizerOperationResult>, Mono<FormRecognizerOperationResult>>
         streamActivationOperation(
-        Function<ContentType1, Mono<FormRecognizerOperationResult>> activationOperation, Flux<ByteBuffer> form,
+        Function<ContentType, Mono<FormRecognizerOperationResult>> activationOperation, Flux<ByteBuffer> form,
         FormContentType contentType) {
         return pollingContext -> {
             try {
                 Objects.requireNonNull(form, "'form' is required and cannot be null.");
                 if (contentType != null) {
-                    return activationOperation.apply(ContentType1.fromString(contentType.toString()))
-                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                    return activationOperation.apply(ContentType.fromString(contentType.toString()))
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
                 } else {
                     return detectContentType(form)
                         .flatMap(activationOperation::apply)
-                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
                 }
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
@@ -817,7 +823,7 @@ public final class FormRecognizerAsyncClient {
                 return pollingFunction.apply(resultUuid)
                     .flatMap(modelResponse -> processAnalyzeModelResponse(modelResponse,
                         operationResultPollResponse))
-                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
@@ -930,6 +936,7 @@ public final class FormRecognizerAsyncClient {
                 urlActivationOperation(
                     () -> service.analyzeInvoiceAsyncWithResponseAsync(isFieldElementsIncluded,
                         localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
+                        null,
                         new SourcePath().setSource(invoiceUrl),
                         context)
                         .map(response -> new FormRecognizerOperationResult(
@@ -943,7 +950,7 @@ public final class FormRecognizerAsyncClient {
                         toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
                             isFieldElementsIncluded,
                             null))
-                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -1026,6 +1033,7 @@ public final class FormRecognizerAsyncClient {
                         length,
                         isFieldElementsIncluded,
                         localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
+                        null,
                         context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
@@ -1038,7 +1046,7 @@ public final class FormRecognizerAsyncClient {
                         toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
                             isFieldElementsIncluded,
                             null))
-                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }

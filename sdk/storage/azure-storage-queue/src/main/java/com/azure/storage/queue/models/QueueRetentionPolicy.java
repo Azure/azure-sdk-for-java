@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * the retention policy.
- */
+/** the retention policy. */
 @JacksonXmlRootElement(localName = "RetentionPolicy")
 @Fluent
 public final class QueueRetentionPolicy {
@@ -28,8 +26,7 @@ public final class QueueRetentionPolicy {
     private Integer days;
 
     /**
-     * Get the enabled property: Indicates whether a retention policy is
-     * enabled for the storage service.
+     * Get the enabled property: Indicates whether a retention policy is enabled for the storage service.
      *
      * @return the enabled value.
      */
@@ -38,8 +35,7 @@ public final class QueueRetentionPolicy {
     }
 
     /**
-     * Set the enabled property: Indicates whether a retention policy is
-     * enabled for the storage service.
+     * Set the enabled property: Indicates whether a retention policy is enabled for the storage service.
      *
      * @param enabled the enabled value to set.
      * @return the QueueRetentionPolicy object itself.
@@ -50,9 +46,8 @@ public final class QueueRetentionPolicy {
     }
 
     /**
-     * Get the days property: Indicates the number of days that metrics or
-     * logging or soft-deleted data should be retained. All data older than
-     * this value will be deleted.
+     * Get the days property: Indicates the number of days that metrics or logging or soft-deleted data should be
+     * retained. All data older than this value will be deleted.
      *
      * @return the days value.
      */
@@ -61,9 +56,8 @@ public final class QueueRetentionPolicy {
     }
 
     /**
-     * Set the days property: Indicates the number of days that metrics or
-     * logging or soft-deleted data should be retained. All data older than
-     * this value will be deleted.
+     * Set the days property: Indicates the number of days that metrics or logging or soft-deleted data should be
+     * retained. All data older than this value will be deleted.
      *
      * @param days the days value to set.
      * @return the QueueRetentionPolicy object itself.

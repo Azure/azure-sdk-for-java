@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Supplier;
 
 public class CommunicationTokenCredentialTests {
     private final JwtTokenMocker tokenMocker = new JwtTokenMocker();
@@ -55,7 +56,7 @@ public class CommunicationTokenCredentialTests {
         tokenCredential.close();
     }
 
-    class MockImmediateRefresher implements TokenRefresher {
+    class MockImmediateRefresher implements Supplier<Mono<String>> {
         private int numCalls = 0;
         private Runnable onCallReturn;
 
@@ -72,7 +73,7 @@ public class CommunicationTokenCredentialTests {
         }
 
         @Override
-        public Mono<String> getTokenAsync() {
+        public Mono<String> get() {
             numCalls++;
             if (this.onCallReturn != null) {
                 this.onCallReturn.run();
@@ -237,7 +238,7 @@ public class CommunicationTokenCredentialTests {
         assertFalse(tokenCredential.hasProactiveFetcher());
     }
 
-    class ExceptionRefresher implements TokenRefresher {
+    class ExceptionRefresher implements Supplier<Mono<String>> {
         private int numCalls;
         private Runnable onCallReturn;
 
@@ -254,7 +255,7 @@ public class CommunicationTokenCredentialTests {
         }
 
         @Override
-        public Mono<String> getTokenAsync() {
+        public Mono<String> get() {
             numCalls++;
             if (this.onCallReturn != null) {
                 this.onCallReturn.run();
@@ -296,7 +297,7 @@ public class CommunicationTokenCredentialTests {
         assertEquals(1, exceptionRefresher.numCalls());
         tokenCredential.close();
     }
-   
+
     @Test
     public void shouldThrowWhenGetTokenCalledOnClosedObject() throws IOException, InterruptedException,
             ExecutionException {
@@ -306,6 +307,6 @@ public class CommunicationTokenCredentialTests {
 
         StepVerifier.create(tokenCredential.getToken())
             .verifyError(RuntimeException.class);
-        
+
     }
 }

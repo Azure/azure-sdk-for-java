@@ -21,18 +21,20 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.ReadOnlyBufferException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Test class for {@link BinaryData}.
  */
 public class BinaryDataTest {
-    private static final ObjectSerializer DEFAULT_SERIALIZER = new MyJsonSerializer();
+    private static final ObjectSerializer CUSTOM_SERIALIZER = new MyJsonSerializer();
 
     @Test
     public void fromCustomObject() {
@@ -41,11 +43,11 @@ public class BinaryDataTest {
         final Person expectedValue = new Person().setName("John Doe").setAge(50);
 
         // Act
-        final BinaryData data = BinaryData.fromObject(actualValue, DEFAULT_SERIALIZER);
+        final BinaryData data = BinaryData.fromObject(actualValue, CUSTOM_SERIALIZER);
 
         // Assert
         assertEquals(expectedValue, data.toObject(TypeReference.createInstance(expectedValue.getClass()),
-            DEFAULT_SERIALIZER));
+            CUSTOM_SERIALIZER));
     }
 
     @Test
@@ -55,11 +57,11 @@ public class BinaryDataTest {
         final Double expectedValue = Double.valueOf("10.1");
 
         // Act
-        final BinaryData data = BinaryData.fromObject(actualValue, DEFAULT_SERIALIZER);
+        final BinaryData data = BinaryData.fromObject(actualValue, CUSTOM_SERIALIZER);
 
         // Assert
         assertEquals(expectedValue, data.toObject(TypeReference.createInstance(expectedValue.getClass()),
-            DEFAULT_SERIALIZER));
+            CUSTOM_SERIALIZER));
     }
 
     @Test
@@ -69,7 +71,7 @@ public class BinaryDataTest {
         final byte[] expectedValue = "{\"name\":\"John Doe\",\"age\":50}".getBytes(StandardCharsets.UTF_8);
 
         // Act
-        final BinaryData data = BinaryData.fromObject(actualValue, DEFAULT_SERIALIZER);
+        final BinaryData data = BinaryData.fromObject(actualValue, CUSTOM_SERIALIZER);
 
         // Assert
         assertArrayEquals(expectedValue, data.toBytes());
@@ -133,7 +135,7 @@ public class BinaryDataTest {
         final byte[] expected = new byte[0];
 
         // Act
-        BinaryData actual = BinaryData.fromObject(null);
+        BinaryData actual = BinaryData.fromObject(null, null);
 
         // Assert
         assertArrayEquals(expected, actual.toBytes());
@@ -201,11 +203,11 @@ public class BinaryDataTest {
     public void createFromObjectAsync() {
         // Arrange
         final Person expected = new Person().setName("Jon").setAge(50);
-        final BinaryData expectedBinaryData = BinaryData.fromObjectAsync(expected, DEFAULT_SERIALIZER).block();
+        final BinaryData expectedBinaryData = BinaryData.fromObjectAsync(expected, CUSTOM_SERIALIZER).block();
 
         // Act & Assert
         StepVerifier.create(expectedBinaryData
-            .toObjectAsync(TypeReference.createInstance(Person.class), DEFAULT_SERIALIZER))
+            .toObjectAsync(TypeReference.createInstance(Person.class), CUSTOM_SERIALIZER))
             .assertNext(actual -> {
                 System.out.println(actual.getName());
                 System.out.println(actual.getAge());
@@ -223,11 +225,11 @@ public class BinaryDataTest {
         personList.add(person1);
         personList.add(person2);
 
-        final BinaryData expectedBinaryData = BinaryData.fromObjectAsync(personList, DEFAULT_SERIALIZER).block();
+        final BinaryData expectedBinaryData = BinaryData.fromObjectAsync(personList, CUSTOM_SERIALIZER).block();
 
         // Act & Assert
         StepVerifier.create(expectedBinaryData
-            .toObjectAsync(new TypeReference<List<Person>>() { }, DEFAULT_SERIALIZER))
+            .toObjectAsync(new TypeReference<List<Person>>() { }, CUSTOM_SERIALIZER))
             .assertNext(persons -> {
                 assertEquals(2, persons.size());
                 assertEquals("Jon", persons.get(0).getName());
@@ -287,6 +289,93 @@ public class BinaryDataTest {
         // Assert
         assertArrayEquals(new byte[0], data.toBytes());
         assertEquals("", data.toString());
+    }
+
+    @Test
+    public void toReadOnlyByteBufferThrowsOnMutation() {
+        BinaryData binaryData = BinaryData.fromString("Hello");
+
+        assertThrows(ReadOnlyBufferException.class, () -> binaryData.toByteBuffer().put((byte) 0));
+    }
+
+    @Test
+    public void fromCustomObjectWithDefaultSerializer() {
+        // Arrange
+        final Person actualValue = new Person().setName("John Doe").setAge(50);
+        final Person expectedValue = new Person().setName("John Doe").setAge(50);
+
+        // Act
+        final BinaryData data = BinaryData.fromObject(actualValue);
+
+        // Assert
+        assertEquals(expectedValue, data.toObject(TypeReference.createInstance(expectedValue.getClass())));
+    }
+
+    @Test
+    public void fromDoubleWithDefaultSerializer() {
+        // Arrange
+        final Double actualValue = Double.valueOf("10.1");
+        final Double expectedValue = Double.valueOf("10.1");
+
+        // Act
+        final BinaryData data = BinaryData.fromObject(actualValue);
+
+        // Assert
+        assertEquals(expectedValue, data.toObject(TypeReference.createInstance(expectedValue.getClass())));
+    }
+
+    @Test
+    public void anyTypeToByteArrayWithDefaultSerializer() {
+        // Assert
+        final Person actualValue = new Person().setName("John Doe").setAge(50);
+        final byte[] expectedValue = "{\"name\":\"John Doe\",\"age\":50}".getBytes(StandardCharsets.UTF_8);
+
+        // Act
+        final BinaryData data = BinaryData.fromObject(actualValue);
+
+        // Assert
+        assertArrayEquals(expectedValue, data.toBytes());
+    }
+
+    @Test
+    public void createFromObjectAsyncWithDefaultSerializer() {
+        // Arrange
+        final Person expected = new Person().setName("Jon").setAge(50);
+        final BinaryData expectedBinaryData = BinaryData.fromObjectAsync(expected).block();
+
+        // Act & Assert
+        StepVerifier.create(expectedBinaryData
+            .toObjectAsync(TypeReference.createInstance(Person.class)))
+            .assertNext(actual -> {
+                System.out.println(actual.getName());
+                System.out.println(actual.getAge());
+                Assertions.assertEquals(expected, actual);
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void createFromObjectAsyncWithGenericsWithDefaultSerializer() {
+        // Arrange
+        final Person person1 = new Person().setName("Jon").setAge(50);
+        final Person person2 = new Person().setName("Jack").setAge(25);
+        List<Person> personList = new ArrayList<>();
+        personList.add(person1);
+        personList.add(person2);
+
+        final BinaryData expectedBinaryData = BinaryData.fromObjectAsync(personList).block();
+
+        // Act & Assert
+        StepVerifier.create(expectedBinaryData
+            .toObjectAsync(new TypeReference<List<Person>>() { }))
+            .assertNext(persons -> {
+                assertEquals(2, persons.size());
+                assertEquals("Jon", persons.get(0).getName());
+                assertEquals("Jack", persons.get(1).getName());
+                assertEquals(50, persons.get(0).getAge());
+                assertEquals(25, persons.get(1).getAge());
+            })
+            .verifyComplete();
     }
 
     public static class MyJsonSerializer implements JsonSerializer {
