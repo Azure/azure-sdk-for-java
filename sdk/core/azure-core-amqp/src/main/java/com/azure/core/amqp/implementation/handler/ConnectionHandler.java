@@ -199,7 +199,7 @@ public class ConnectionHandler extends Handler {
             connection.free();
         }
 
-        onNext(connection.getRemoteState());
+        close();
     }
 
     @Override
@@ -290,7 +290,7 @@ public class ConnectionHandler extends Handler {
         final ErrorCondition error = connection.getCondition();
 
         logErrorCondition("onConnectionFinal", connection, error);
-        onNext(connection.getRemoteState());
+        onNext(EndpointState.CLOSED);
 
         // Complete the processors because they no longer have any work to do.
         close();

@@ -34,7 +34,7 @@ public abstract class Handler extends BaseHandler implements Closeable {
      *     connection. Usually of the form {@literal "<your-namespace>.service.windows.net"} but can change if the
      *     messages are brokered through an intermediary.
      *
-     * @param logger
+     * @param logger Logger to use for messages.
      * @throws NullPointerException if {@code connectionId} or {@code hostname} is null.
      */
     Handler(final String connectionId, final String hostname, ClientLogger logger) {
@@ -73,6 +73,10 @@ public abstract class Handler extends BaseHandler implements Closeable {
     }
 
     void onNext(EndpointState state) {
+        if (isTerminal.get()) {
+            return;
+        }
+
         endpointStates.emitNext(state, (signalType, emitResult) -> {
             logger.verbose("connectionId[{}] signal[{}] result[{}] could not emit endpoint state.", connectionId,
                 signalType, emitResult);
