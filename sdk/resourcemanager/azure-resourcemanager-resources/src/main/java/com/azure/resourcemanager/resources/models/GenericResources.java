@@ -30,6 +30,80 @@ public interface GenericResources extends
         SupportsDeletingById,
         HasManager<ResourceManager> {
     /**
+     * Deletes a resource from Azure, identifying it by its resource ID.
+     *
+     * For consistency across service versions, please use {@link #deleteById(String, String)} instead.
+     *
+     * @param id the resource ID of the resource to delete
+     */
+    void deleteById(String id);
+
+    /**
+     * Asynchronously delete a resource from Azure, identifying it by its resource ID.
+     *
+     * For consistency across service versions, please use {@link #deleteByIdAsync(String, String)} instead.
+     *
+     * @param id the resource ID of the resource to delete
+     * @return a representation of the deferred computation of this call
+     */
+    Mono<Void> deleteByIdAsync(String id);
+
+    /**
+     * Gets the information about a resource from Azure based on the resource id.
+     *
+     * For consistency across service versions, please use {@link #getById(String, String)} instead.
+     *
+     * @param id the id of the resource.
+     * @return an immutable representation of the resource
+     */
+    GenericResource getById(String id);
+
+    /**
+     * Gets the information about a resource from Azure based on the resource id.
+     *
+     * For consistency across service versions, please use {@link #getByIdAsync(String, String)} instead.
+     *
+     * @param id the id of the resource.
+     * @return a {@link Mono} that emits the found resource asynchronously
+     */
+    Mono<GenericResource> getByIdAsync(String id);
+
+    /**
+     * Deletes a resource from Azure, identifying it by its resource ID.
+     *
+     * @param id the resource ID of the resource to delete
+     * @param apiVersion the API version
+     */
+    void deleteById(String id, String apiVersion);
+
+    /**
+     * Asynchronously delete a resource from Azure, identifying it by its resource ID.
+     *
+     * @param id the resource ID of the resource to delete
+     * @param apiVersion the API version
+     * @return a representation of the deferred computation of this call
+     */
+    Mono<Void> deleteByIdAsync(String id, String apiVersion);
+
+    /**
+     * Gets the information about a resource from Azure based on the resource id.
+     *
+     * @param id the id of the resource.
+     * @param apiVersion the API version
+     * @return an immutable representation of the resource
+     */
+    GenericResource getById(String id, String apiVersion);
+
+    /**
+     * Gets the information about a resource from Azure based on the resource id.
+     *
+     * @param id the id of the resource.
+     * @param apiVersion the API version
+     * @return a {@link Mono} that emits the found resource asynchronously
+     */
+    Mono<GenericResource> getByIdAsync(String id, String apiVersion);
+
+    /**
      * Checks if a resource exists in a resource group.
      *
      * @param resourceGroupName the resource group's name
@@ -51,10 +125,21 @@ public interface GenericResources extends
     /**
      * Checks if a resource exists.
      *
+     * For consistency across service versions, please use {@link #checkExistenceById(String, String)} instead.
+     *
      * @param id the ID of the resource.
      * @return true if the resource exists; false otherwise
      */
     boolean checkExistenceById(String id);
+
+    /**
+     * Checks if a resource exists.
+     *
+     * @param id the ID of the resource.
+     * @param apiVersion the API version
+     * @return true if the resource exists; false otherwise
+     */
+    boolean checkExistenceById(String id, String apiVersion);
 
     /**
      * Returns a resource belonging to a resource group.
@@ -64,7 +149,7 @@ public interface GenericResources extends
      * @param parentResourcePath Resource identity.
      * @param resourceType Resource identity.
      * @param resourceName Resource identity.
-     * @param apiVersion the String value
+     * @param apiVersion the API version
      * @return the generic resource
      */
     GenericResource get(
@@ -118,7 +203,7 @@ public interface GenericResources extends
      * @param parentResourcePath Resource identity.
      * @param resourceType Resource identity.
      * @param resourceName Resource identity.
-     * @param apiVersion the String value
+     * @param apiVersion the API version
      */
     void delete(String resourceGroupName, String resourceProviderNamespace,
                 String parentResourcePath, String resourceType, String resourceName, String apiVersion);
@@ -132,7 +217,7 @@ public interface GenericResources extends
      * @param parentResourcePath Resource identity.
      * @param resourceType Resource identity.
      * @param resourceName Resource identity.
-     * @param apiVersion the String value
+     * @param apiVersion the API version
      * @return a representation of the deferred computation of this call
      */
     Mono<Void> deleteAsync(String resourceGroupName, String resourceProviderNamespace,
@@ -141,8 +226,19 @@ public interface GenericResources extends
     /**
      * Begins deleting a resource from Azure, identifying it by its resource ID.
      *
+     * For consistency across service versions, please use {@link #beginDeleteById(String, String)} instead.
+     *
      * @param id the resource ID of the resource to delete
      * @return the accepted deleting operation
      */
     Accepted<Void> beginDeleteById(String id);
+
+    /**
+     * Begins deleting a resource from Azure, identifying it by its resource ID.
+     *
+     * @param id the resource ID of the resource to delete
+     * @param apiVersion the API version
+     * @return the accepted deleting operation
+     */
+    Accepted<Void> beginDeleteById(String id, String apiVersion);
 }

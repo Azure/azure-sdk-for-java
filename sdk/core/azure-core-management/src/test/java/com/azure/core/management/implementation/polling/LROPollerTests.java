@@ -67,13 +67,16 @@ public class LROPollerTests {
 
     private static final Duration POLLING_DURATION = Duration.ofMillis(100);
 
+    private AutoCloseable openMocks;
+
     @BeforeEach
     public void beforeTest() {
-        MockitoAnnotations.initMocks(this);
+        this.openMocks = MockitoAnnotations.openMocks(this);
     }
 
     @AfterEach
-    public void afterTest() {
+    public void afterTest() throws Exception {
+        this.openMocks.close();
         Mockito.framework().clearInlineMocks();
     }
 
@@ -815,7 +818,7 @@ public class LROPollerTests {
                     FooWithProvisioningState.class,
                     POLLING_DURATION,
                     newLroInitFunction(client));
-            lroFlux = lroFlux.subscriberContext(context -> context.put("key1", "value1"));
+            lroFlux = lroFlux.contextWrite(context -> context.put("key1", "value1"));
 
             FooWithProvisioningState result = lroFlux
                 .blockLast()
@@ -854,7 +857,7 @@ public class LROPollerTests {
                     FooWithProvisioningState.class,
                     FooWithProvisioningState.class,
                     POLLING_DURATION,
-                    newLroInitFunction(client).subscriberContext(context -> context.put("key1", "value1")),
+                    newLroInitFunction(client).contextWrite(context -> context.put("key1", "value1")),
                     new Context("key1", "value1"));
 
             FooWithProvisioningState result = lroFlux

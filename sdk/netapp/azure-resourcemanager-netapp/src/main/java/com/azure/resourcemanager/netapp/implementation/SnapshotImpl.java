@@ -6,7 +6,6 @@ package com.azure.resourcemanager.netapp.implementation;
 
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.fluent.models.SnapshotInner;
 import com.azure.resourcemanager.netapp.models.Snapshot;
 import java.time.OffsetDateTime;
@@ -14,9 +13,9 @@ import java.time.OffsetDateTime;
 public final class SnapshotImpl implements Snapshot, Snapshot.Definition {
     private SnapshotInner innerObject;
 
-    private final NetAppFilesManager serviceManager;
+    private final com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager;
 
-    SnapshotImpl(SnapshotInner innerObject, NetAppFilesManager serviceManager) {
+    SnapshotImpl(SnapshotInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -61,7 +60,7 @@ public final class SnapshotImpl implements Snapshot, Snapshot.Definition {
         return this.innerObject;
     }
 
-    private NetAppFilesManager manager() {
+    private com.azure.resourcemanager.netapp.NetAppFilesManager manager() {
         return this.serviceManager;
     }
 
@@ -109,7 +108,7 @@ public final class SnapshotImpl implements Snapshot, Snapshot.Definition {
         return this;
     }
 
-    SnapshotImpl(String name, NetAppFilesManager serviceManager) {
+    SnapshotImpl(String name, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = new SnapshotInner();
         this.serviceManager = serviceManager;
         this.snapshotName = name;

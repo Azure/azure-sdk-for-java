@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storagecache.StorageCacheManager;
 import com.azure.resourcemanager.storagecache.fluent.StorageTargetsClient;
 import com.azure.resourcemanager.storagecache.fluent.models.StorageTargetInner;
 import com.azure.resourcemanager.storagecache.models.StorageTarget;
@@ -21,11 +20,20 @@ public final class StorageTargetsImpl implements StorageTargets {
 
     private final StorageTargetsClient innerClient;
 
-    private final StorageCacheManager serviceManager;
+    private final com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager;
 
-    public StorageTargetsImpl(StorageTargetsClient innerClient, StorageCacheManager serviceManager) {
+    public StorageTargetsImpl(
+        StorageTargetsClient innerClient, com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public void dnsRefresh(String resourceGroupName, String cacheName, String storageTargetName) {
+        this.serviceClient().dnsRefresh(resourceGroupName, cacheName, storageTargetName);
+    }
+
+    public void dnsRefresh(String resourceGroupName, String cacheName, String storageTargetName, Context context) {
+        this.serviceClient().dnsRefresh(resourceGroupName, cacheName, storageTargetName, context);
     }
 
     public PagedIterable<StorageTarget> listByCache(String resourceGroupName, String cacheName) {
@@ -183,7 +191,7 @@ public final class StorageTargetsImpl implements StorageTargets {
         return this.innerClient;
     }
 
-    private StorageCacheManager manager() {
+    private com.azure.resourcemanager.storagecache.StorageCacheManager manager() {
         return this.serviceManager;
     }
 

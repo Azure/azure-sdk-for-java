@@ -11,10 +11,8 @@ This code sample demonstrates how to use
 Running this sample will be charged by Azure. You can check the usage and bill at 
 [this link][azure-account].
 
-### Environment checklist
-
-We need to ensure that this [environment checklist][ready-to-run-checklist] is 
-completed before the run.
+### Prerequisites
+- [Environment checklist][environment_checklist]
 
 ### Create Azure resources
 
@@ -71,7 +69,7 @@ completed before the run.
 [create-service-bus]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal
 [queue-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-operation/src/main/java/com/azure/spring/sample/servicebus/operation/QueueController.java 
 [topic-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-operation/src/main/java/com/azure/spring/sample/servicebus/operation/TopicController.java 
-[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [servicebus-queue-operation]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-integration-servicebus/src/main/java/com/azure/spring/integration/servicebus/queue/ServiceBusQueueOperation.java
 [servicebus-topic-operation]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-integration-servicebus/src/main/java/com/azure/spring/integration/servicebus/topic/ServiceBusTopicOperation.java
 [application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-operation/src/main/resources/application.yaml

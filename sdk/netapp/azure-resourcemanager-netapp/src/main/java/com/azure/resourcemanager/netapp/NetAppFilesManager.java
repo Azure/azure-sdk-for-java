@@ -32,6 +32,7 @@ import com.azure.resourcemanager.netapp.implementation.PoolsImpl;
 import com.azure.resourcemanager.netapp.implementation.SnapshotPoliciesImpl;
 import com.azure.resourcemanager.netapp.implementation.SnapshotsImpl;
 import com.azure.resourcemanager.netapp.implementation.VaultsImpl;
+import com.azure.resourcemanager.netapp.implementation.VolumeBackupStatusImpl;
 import com.azure.resourcemanager.netapp.implementation.VolumesImpl;
 import com.azure.resourcemanager.netapp.models.AccountBackups;
 import com.azure.resourcemanager.netapp.models.Accounts;
@@ -43,6 +44,7 @@ import com.azure.resourcemanager.netapp.models.Pools;
 import com.azure.resourcemanager.netapp.models.SnapshotPolicies;
 import com.azure.resourcemanager.netapp.models.Snapshots;
 import com.azure.resourcemanager.netapp.models.Vaults;
+import com.azure.resourcemanager.netapp.models.VolumeBackupStatus;
 import com.azure.resourcemanager.netapp.models.Volumes;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -65,6 +67,8 @@ public final class NetAppFilesManager {
     private Snapshots snapshots;
 
     private SnapshotPolicies snapshotPolicies;
+
+    private VolumeBackupStatus volumeBackupStatus;
 
     private AccountBackups accountBackups;
 
@@ -198,7 +202,7 @@ public final class NetAppFilesManager {
                 .append("-")
                 .append("com.azure.resourcemanager.netapp")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -290,6 +294,14 @@ public final class NetAppFilesManager {
             this.snapshotPolicies = new SnapshotPoliciesImpl(clientObject.getSnapshotPolicies(), this);
         }
         return snapshotPolicies;
+    }
+
+    /** @return Resource collection API of VolumeBackupStatus. */
+    public VolumeBackupStatus volumeBackupStatus() {
+        if (this.volumeBackupStatus == null) {
+            this.volumeBackupStatus = new VolumeBackupStatusImpl(clientObject.getVolumeBackupStatus(), this);
+        }
+        return volumeBackupStatus;
     }
 
     /** @return Resource collection API of AccountBackups. */

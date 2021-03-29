@@ -63,7 +63,7 @@ public abstract class GroupableResourcesImpl<
     }
 
     @Override
-    public final Mono<T> getByIdAsync(String id) {
+    public Mono<T> getByIdAsync(String id) {
         if (CoreUtils.isNullOrEmpty(id)) {
             return Mono.error(
                 new IllegalArgumentException("Parameter 'id' is required and cannot be null."));

@@ -25,6 +25,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
@@ -105,6 +106,8 @@ class EventHubPartitionAsyncConsumerTest {
 
     @AfterEach
     void teardown() {
+        Mockito.framework().clearInlineMocks();
+
         if (consumer != null) {
             consumer.close();
         }

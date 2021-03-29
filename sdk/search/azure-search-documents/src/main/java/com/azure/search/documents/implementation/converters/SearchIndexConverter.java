@@ -3,15 +3,12 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.indexes.models.CharFilter;
 import com.azure.search.documents.indexes.models.LexicalAnalyzer;
 import com.azure.search.documents.indexes.models.LexicalTokenizer;
-import com.azure.search.documents.indexes.models.ScoringProfile;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchResourceEncryptionKey;
 import com.azure.search.documents.indexes.models.SearchSuggester;
-import com.azure.search.documents.indexes.models.SimilarityAlgorithm;
 import com.azure.search.documents.indexes.models.TokenFilter;
 
 import java.util.List;
@@ -47,9 +44,7 @@ public final class SearchIndexConverter {
         }
 
         if (obj.getCharFilters() != null) {
-            List<CharFilter> charFilters =
-                obj.getCharFilters().stream().map(CharFilterConverter::map).collect(Collectors.toList());
-            searchIndex.setCharFilters(charFilters);
+            searchIndex.setCharFilters(obj.getCharFilters());
         }
 
         if (obj.getTokenFilters() != null) {
@@ -74,8 +69,7 @@ public final class SearchIndexConverter {
         }
 
         if (obj.getSimilarity() != null) {
-            SimilarityAlgorithm similarityAlgorithm = SimilarityConverter.map(obj.getSimilarity());
-            searchIndex.setSimilarity(similarityAlgorithm);
+            searchIndex.setSimilarity(obj.getSimilarity());
         }
 
         if (obj.getCorsOptions() != null) {
@@ -86,9 +80,7 @@ public final class SearchIndexConverter {
         searchIndex.setETag(eTag);
 
         if (obj.getScoringProfiles() != null) {
-            List<ScoringProfile> scoringProfiles =
-                obj.getScoringProfiles().stream().map(ScoringProfileConverter::map).collect(Collectors.toList());
-            searchIndex.setScoringProfiles(scoringProfiles);
+            searchIndex.setScoringProfiles(obj.getScoringProfiles());
         }
 
         return searchIndex;
@@ -122,9 +114,7 @@ public final class SearchIndexConverter {
         }
 
         if (obj.getCharFilters() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.CharFilter> charFilters =
-                obj.getCharFilters().stream().map(CharFilterConverter::map).collect(Collectors.toList());
-            searchIndex.setCharFilters(charFilters);
+            searchIndex.setCharFilters(obj.getCharFilters());
         }
 
         if (obj.getTokenFilters() != null) {
@@ -149,9 +139,7 @@ public final class SearchIndexConverter {
         }
 
         if (obj.getSimilarity() != null) {
-            com.azure.search.documents.indexes.implementation.models.Similarity similarity =
-                SimilarityConverter.map(obj.getSimilarity());
-            searchIndex.setSimilarity(similarity);
+            searchIndex.setSimilarity(obj.getSimilarity());
         }
 
         if (obj.getCorsOptions() != null) {
@@ -162,9 +150,7 @@ public final class SearchIndexConverter {
         searchIndex.setETag(eTag);
 
         if (obj.getScoringProfiles() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.ScoringProfile> scoringProfiles =
-                obj.getScoringProfiles().stream().map(ScoringProfileConverter::map).collect(Collectors.toList());
-            searchIndex.setScoringProfiles(scoringProfiles);
+            searchIndex.setScoringProfiles(obj.getScoringProfiles());
         }
 
         return searchIndex;

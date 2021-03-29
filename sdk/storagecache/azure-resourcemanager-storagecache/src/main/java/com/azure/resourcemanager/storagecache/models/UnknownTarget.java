@@ -19,28 +19,28 @@ public final class UnknownTarget {
      * Dictionary of string->string pairs containing information about the
      * Storage Target.
      */
-    @JsonProperty(value = "unknownMap")
-    private Map<String, String> unknownMap;
+    @JsonProperty(value = "attributes")
+    private Map<String, String> attributes;
 
     /**
-     * Get the unknownMap property: Dictionary of string-&gt;string pairs containing information about the Storage
+     * Get the attributes property: Dictionary of string-&gt;string pairs containing information about the Storage
      * Target.
      *
-     * @return the unknownMap value.
+     * @return the attributes value.
      */
-    public Map<String, String> unknownMap() {
-        return this.unknownMap;
+    public Map<String, String> attributes() {
+        return this.attributes;
     }
 
     /**
-     * Set the unknownMap property: Dictionary of string-&gt;string pairs containing information about the Storage
+     * Set the attributes property: Dictionary of string-&gt;string pairs containing information about the Storage
      * Target.
      *
-     * @param unknownMap the unknownMap value to set.
+     * @param attributes the attributes value to set.
      * @return the UnknownTarget object itself.
      */
-    public UnknownTarget withUnknownMap(Map<String, String> unknownMap) {
-        this.unknownMap = unknownMap;
+    public UnknownTarget withAttributes(Map<String, String> attributes) {
+        this.attributes = attributes;
         return this;
     }
 

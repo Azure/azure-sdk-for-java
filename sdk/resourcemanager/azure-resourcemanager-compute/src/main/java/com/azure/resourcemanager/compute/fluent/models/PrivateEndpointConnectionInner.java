@@ -23,7 +23,7 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
     /*
      * The resource of private end point.
      */
-    @JsonProperty(value = "properties.privateEndpoint")
+    @JsonProperty(value = "properties.privateEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateEndpoint privateEndpoint;
 
     /*
@@ -46,17 +46,6 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
      */
     public PrivateEndpoint privateEndpoint() {
         return this.privateEndpoint;
-    }
-
-    /**
-     * Set the privateEndpoint property: The resource of private end point.
-     *
-     * @param privateEndpoint the privateEndpoint value to set.
-     * @return the PrivateEndpointConnectionInner object itself.
-     */
-    public PrivateEndpointConnectionInner withPrivateEndpoint(PrivateEndpoint privateEndpoint) {
-        this.privateEndpoint = privateEndpoint;
-        return this;
     }
 
     /**

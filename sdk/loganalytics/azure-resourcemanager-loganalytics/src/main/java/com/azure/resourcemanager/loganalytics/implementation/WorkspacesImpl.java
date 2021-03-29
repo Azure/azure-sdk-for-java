@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.fluent.WorkspacesClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.WorkspaceInner;
 import com.azure.resourcemanager.loganalytics.models.Workspace;
@@ -21,31 +20,32 @@ public final class WorkspacesImpl implements Workspaces {
 
     private final WorkspacesClient innerClient;
 
-    private final LogAnalyticsManager serviceManager;
+    private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    public WorkspacesImpl(WorkspacesClient innerClient, LogAnalyticsManager serviceManager) {
+    public WorkspacesImpl(
+        WorkspacesClient innerClient, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Workspace> list() {
         PagedIterable<WorkspaceInner> inner = this.serviceClient().list();
-        return inner.mapPage(inner1 -> new WorkspaceImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new WorkspaceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Workspace> list(Context context) {
         PagedIterable<WorkspaceInner> inner = this.serviceClient().list(context);
-        return inner.mapPage(inner1 -> new WorkspaceImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new WorkspaceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Workspace> listByResourceGroup(String resourceGroupName) {
         PagedIterable<WorkspaceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return inner.mapPage(inner1 -> new WorkspaceImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new WorkspaceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Workspace> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<WorkspaceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return inner.mapPage(inner1 -> new WorkspaceImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new WorkspaceImpl(inner1, this.manager()));
     }
 
     public void delete(String resourceGroupName, String workspaceName, Boolean force) {
@@ -165,7 +165,7 @@ public final class WorkspacesImpl implements Workspaces {
         return this.innerClient;
     }
 
-    private LogAnalyticsManager manager() {
+    private com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager() {
         return this.serviceManager;
     }
 

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.netapp.implementation;
 
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.fluent.models.VolumeInner;
 import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
 import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
@@ -28,7 +27,7 @@ import java.util.Map;
 public final class VolumeImpl implements Volume, Volume.Definition, Volume.Update {
     private VolumeInner innerObject;
 
-    private final NetAppFilesManager serviceManager;
+    private final com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -153,6 +152,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().encryptionKeySource();
     }
 
+    public Boolean ldapEnabled() {
+        return this.innerModel().ldapEnabled();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -165,7 +168,7 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerObject;
     }
 
-    private NetAppFilesManager manager() {
+    private com.azure.resourcemanager.netapp.NetAppFilesManager manager() {
         return this.serviceManager;
     }
 
@@ -204,7 +207,7 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this;
     }
 
-    VolumeImpl(String name, NetAppFilesManager serviceManager) {
+    VolumeImpl(String name, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = new VolumeInner();
         this.serviceManager = serviceManager;
         this.volumeName = name;
@@ -233,7 +236,7 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this;
     }
 
-    VolumeImpl(VolumeInner innerObject, NetAppFilesManager serviceManager) {
+    VolumeImpl(VolumeInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -441,6 +444,11 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public VolumeImpl withEncryptionKeySource(String encryptionKeySource) {
         this.innerModel().withEncryptionKeySource(encryptionKeySource);
+        return this;
+    }
+
+    public VolumeImpl withLdapEnabled(Boolean ldapEnabled) {
+        this.innerModel().withLdapEnabled(ldapEnabled);
         return this;
     }
 

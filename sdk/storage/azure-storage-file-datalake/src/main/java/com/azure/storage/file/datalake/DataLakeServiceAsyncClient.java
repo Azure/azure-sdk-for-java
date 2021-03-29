@@ -20,11 +20,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
-import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
-import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
+import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImpl;
+import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImplBuilder;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.FileSystemItem;
@@ -64,7 +62,7 @@ import static com.azure.core.util.FluxUtil.pagedFluxError;
 public class DataLakeServiceAsyncClient {
     private final ClientLogger logger = new ClientLogger(DataLakeServiceAsyncClient.class);
 
-    private final DataLakeStorageClientImpl azureDataLakeStorage;
+    private final AzureDataLakeStorageRestAPIImpl azureDataLakeStorage;
 
     private final String accountName;
     private final DataLakeServiceVersion serviceVersion;
@@ -82,11 +80,11 @@ public class DataLakeServiceAsyncClient {
      */
     DataLakeServiceAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
         String accountName, BlobServiceAsyncClient blobServiceAsyncClient) {
-        this.azureDataLakeStorage = new DataLakeStorageClientBuilder()
+        this.azureDataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder()
             .pipeline(pipeline)
             .url(url)
             .version(serviceVersion.getVersion())
-            .build();
+            .buildClient();
         this.serviceVersion = serviceVersion;
 
         this.accountName = accountName;
@@ -111,11 +109,8 @@ public class DataLakeServiceAsyncClient {
         if (CoreUtils.isNullOrEmpty(fileSystemName)) {
             fileSystemName = DataLakeFileSystemAsyncClient.ROOT_FILESYSTEM_NAME;
         }
-        return new DataLakeFileSystemAsyncClient(getHttpPipeline(),
-            StorageImplUtils.appendToUrlPath(getAccountUrl(), Utility.urlEncode(Utility.urlDecode(fileSystemName)))
-                .toString(), getServiceVersion(), getAccountName(), fileSystemName,
-            blobServiceAsyncClient.getBlobContainerAsyncClient(fileSystemName)
-        );
+        return new DataLakeFileSystemAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
+            getAccountName(), fileSystemName, blobServiceAsyncClient.getBlobContainerAsyncClient(fileSystemName));
     }
 
     /**
