@@ -3,6 +3,8 @@
 
 package com.azure.iot.core;
 
+import java.util.Scanner;
+
 /**
  * Entry point for running samples.
  */
@@ -21,7 +23,11 @@ public class Main {
         ModelResolutionSamples.getModelsFromLocalRepository();
         ModelResolutionSamples.getMultipleModelsFromGlobalRepository();
 
-        // Allow enough time for async APIs to get notified and execute the subscribe supplier.
-        Thread.sleep(2 * 1000);
+        Scanner userInput = new Scanner(System.in);
+        while(true) {
+            System.out.println("Press any key to exit.");
+            userInput.nextLine();
+            System.exit(1);
+        }
     }
 }
