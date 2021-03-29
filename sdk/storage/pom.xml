@@ -24,5 +24,6 @@
     <module>azure-storage-queue</module>
     <module>azure-storage-perf</module>
     <module>microsoft-azure-storage-blob</module>
+    <module>microsoft-azure-storage-perf</module>
   </modules>
 </project>
