@@ -13,6 +13,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.TimeoutPolicy;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
@@ -46,6 +47,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
     static String connectionString = "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw";
 
     @Test
+    @DoNotRecord
     public void missingEndpoint() {
         assertThrows(NullPointerException.class, () -> {
             final ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
@@ -54,6 +56,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
     }
 
     @Test
+    @DoNotRecord
     public void malformedURLExceptionForEndpoint() {
         assertThrows(IllegalArgumentException.class, () -> {
             final ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
@@ -62,6 +65,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
     }
 
     @Test
+    @DoNotRecord
     public void nullConnectionString() {
         assertThrows(NullPointerException.class, () -> {
             final ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
@@ -70,6 +74,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
     }
 
     @Test
+    @DoNotRecord
     public void emptyConnectionString() {
         assertThrows(IllegalArgumentException.class, () -> {
             final ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
@@ -78,6 +83,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
     }
 
     @Test
+    @DoNotRecord
     public void missingSecretKey() {
         assertThrows(IllegalArgumentException.class, () -> {
             final ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
@@ -86,6 +92,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
     }
 
     @Test
+    @DoNotRecord
     public void missingId() {
         assertThrows(IllegalArgumentException.class, () -> {
             final ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
@@ -94,6 +101,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
     }
 
     @Test
+    @DoNotRecord
     public void invalidConnectionStringSegmentCount() {
         assertThrows(IllegalArgumentException.class, () -> {
             final ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
@@ -102,6 +110,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
     }
 
     @Test
+    @DoNotRecord
     public void nullAADCredential() {
         assertThrows(NullPointerException.class, () -> {
             final ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
@@ -110,12 +119,8 @@ public class ConfigurationClientBuilderTest extends TestBase {
     }
 
     @Test
+    @DoNotRecord
     public void timeoutPolicy() {
-        connectionString = interceptorManager.isPlaybackMode()
-            ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
-            : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
-
-        // What exactly is this testing?
         final ConfigurationClient client = new ConfigurationClientBuilder()
             .connectionString(connectionString)
             .addPolicy(new TimeoutPolicy(Duration.ofMillis(1))).buildClient();
@@ -180,23 +185,23 @@ public class ConfigurationClientBuilderTest extends TestBase {
     }
 
     @Test
+    @DoNotRecord
     public void clientOptionsIsPreferredOverLogOptions() {
         ConfigurationClient configurationClient =
             new ConfigurationClientBuilder()
                 .connectionString(connectionString)
                 .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
                 .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
-                .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
                 .httpClient(httpRequest -> {
                     assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("aNewApplication"));
-                    return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
+                    return Mono.just(new MockHttpResponse(httpRequest, 400));
                 })
                 .buildClient();
-
-        assertThrows(RuntimeException.class, () -> configurationClient.setConfigurationSetting(key, null, value));
+        assertThrows(HttpResponseException.class, () -> configurationClient.setConfigurationSetting(key, null, value));
     }
 
     @Test
+    @DoNotRecord
     public void clientOptionHeadersAreAddedLast() {
         ConfigurationClient configurationClient =
             new ConfigurationClientBuilder()
@@ -205,10 +210,10 @@ public class ConfigurationClientBuilderTest extends TestBase {
                                    .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))                                                       .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
                 .httpClient(httpRequest -> {
                     assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
-                    return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
+                    return Mono.just(new MockHttpResponse(httpRequest, 400));
                 })
                 .buildClient();
-        assertThrows(RuntimeException.class, () -> configurationClient.setConfigurationSetting(key, null, value));
+        assertThrows(HttpResponseException.class, () -> configurationClient.setConfigurationSetting(key, null, value));
     }
 
     private static URI getURI(String endpointFormat, String namespace, String domainName) {

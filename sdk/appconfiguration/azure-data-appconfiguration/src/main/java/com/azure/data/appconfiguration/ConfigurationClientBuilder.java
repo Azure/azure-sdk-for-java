@@ -6,6 +6,7 @@ package com.azure.data.appconfiguration;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -90,7 +91,7 @@ public final class ConfigurationClientBuilder {
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
 
-    private ClientOptions clientOptions = new ClientOptions();
+    private ClientOptions clientOptions;
     private ConfigurationClientCredentials credential;
     private TokenCredential tokenCredential;
 
@@ -166,10 +167,10 @@ public final class ConfigurationClientBuilder {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-
+        String applicationId =
+            clientOptions == null ? httpLogOptions.getApplicationId() : clientOptions.getApplicationId();
         HttpLogOptions buildLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
-        policies.add(new UserAgentPolicy(buildLogOptions.getApplicationId(), CLIENT_NAME, CLIENT_VERSION,
-            buildConfiguration));
+        policies.add(new UserAgentPolicy(applicationId, CLIENT_NAME, CLIENT_VERSION, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
         policies.add(ADD_HEADERS_POLICY);
@@ -195,6 +196,14 @@ public final class ConfigurationClientBuilder {
         }
 
         policies.addAll(perRetryPolicies);
+
+        if (clientOptions != null) {
+            List<HttpHeader> httpHeaderList = new ArrayList<>();
+            clientOptions.getHeaders().forEach(
+                header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+        }
+
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(buildLogOptions));
 
@@ -202,7 +211,6 @@ public final class ConfigurationClientBuilder {
         HttpPipeline pipeline = new HttpPipelineBuilder()
                                     .policies(policies.toArray(new HttpPipelinePolicy[0]))
                                     .httpClient(httpClient)
-                                    .clientOptions(clientOptions)
                                     .build();
 
         return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion);
@@ -226,16 +234,18 @@ public final class ConfigurationClientBuilder {
     }
 
     /**
-     * Sets the client options for all the requests made through the client.
+     * Sets the {@link ClientOptions} which enables various options to be set on the client. For example setting an
+     * {@code applicationId} using {@link ClientOptions#setApplicationId(String)} to configure
+     * the {@link UserAgentPolicy} for telemetry/monitoring purposes.
+     *
+     * <p>More About <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>
      *
      * @param clientOptions {@link ClientOptions}.
      *
      * @return the updated ConfigurationClientBuilder object
-     *
-     * @throws NullPointerException If {@code clientOptions} is {@code null}.
      */
     public ConfigurationClientBuilder clientOptions(ClientOptions clientOptions) {
-        this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
+        this.clientOptions = clientOptions;
         return this;
     }
 
@@ -375,7 +385,7 @@ public final class ConfigurationClientBuilder {
      *
      * @param retryPolicy The {@link HttpPipelinePolicy} that will be used to retry requests.
      * @return The updated ConfigurationClientBuilder object.
-     * @deprecated Use {@link #retryPolicy(RetryPolicy)} instead.
+     * @deprecated Use {@link #retryPolicy(RetryPolicy)} instead. This method is deprecated since version 1.2.0-beta.1.
      */
     @Deprecated
     public ConfigurationClientBuilder retryPolicy(HttpPipelinePolicy retryPolicy) {
@@ -384,10 +394,10 @@ public final class ConfigurationClientBuilder {
     }
 
     /**
-     * Sets the {@link RetryPolicy#RetryPolicy()} that is used when each request is sent.
+     * Sets the {@link RetryPolicy} that is used when each request is sent.
      * <p>
-     * The default retry policy will be used if not provided {@link ConfigurationClientBuilder#buildAsyncClient()}
-     * to build {@link ConfigurationAsyncClient} or {@link ConfigurationClient}.
+     * A default retry policy will be used to build {@link ConfigurationAsyncClient} or
+     * {@link ConfigurationClient} if this is not set.
      *
      * @param retryPolicy user's retry policy applied to each request.
      *
