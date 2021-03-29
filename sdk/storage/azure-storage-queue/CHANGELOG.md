@@ -1,10 +1,11 @@
 # Release History
 
-## 12.9.0-beta.2 (Unreleased)
+## 12.9.0-beta.2 (2021-03-29)
+- Updated azure-storage-common and azure-core dependencies.
 
 ### Support for binary data, custom shapes and Base64 encoding
-This release adds a convinient way to send and receive binary data and custom shapes as a payload.
-Additionally, support for Base64 encoding in HTTP requests and reponses has been added that makes interoperability with V11 and prior Storage SDK easier to implement.
+This release adds a convenient way to send and receive binary data and custom shapes as a payload.
+Additionally, support for Base64 encoding in HTTP requests and responses has been added that makes interoperability with V11 and prior Storage SDK easier to implement.
 
 The `QueueClient.sendMessage` and `QueueAsyncClient.sendMessage` consume `com.azure.core.util.BinaryData` in addition to `String`.
 `QueueMessageItem` and `PeekedMessageItem` expose new property `getBody()` of `com.azure.core.util.BinaryData` type to access message payload and should be used instead of `getMessageText()`.
