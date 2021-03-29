@@ -36,7 +36,8 @@ import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffe
  * Code snippet for {@link FormRecognizerAsyncClient}
  */
 public class FormRecognizerAsyncClientJavaDocCodeSnippets {
-    private final FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder().buildAsyncClient();
+    private final FormRecognizerAsyncClient formRecognizerAsyncClient
+        = new FormRecognizerClientBuilder().buildAsyncClient();
 
     /**
      * Code snippet for creating a {@link FormRecognizerAsyncClient}
@@ -976,9 +977,9 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
      */
     public void beginRecognizeIDDocumentFromUrl() {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdDocumentsFromUrl#string
-        String invoiceUrl = "invoice_url";
+        String idDocumentUrl = "idDocumentUrl";
         // if training polling operation completed, retrieve the final result.
-        formRecognizerAsyncClient.beginRecognizeIdDocumentsFromUrl(invoiceUrl)
+        formRecognizerAsyncClient.beginRecognizeIdDocumentsFromUrl(idDocumentUrl)
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedIDDocumentResult -> {
                 for (int i = 0; i < recognizedIDDocumentResult.size(); i++) {
@@ -1041,7 +1042,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
      */
     public void beginRecognizeIdDocumentsFromUrlWithOptions() {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdDocumentsFromUrl#string-RecognizeIDDocumentOptions
-        String licenseDocumentUrl = "invoice_url";
+        String licenseDocumentUrl = "licenseDocumentUrl";
         boolean includeFieldElements = true;
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeIdDocumentsFromUrl(licenseDocumentUrl,

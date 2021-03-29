@@ -915,13 +915,13 @@ public class FormRecognizerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormRecognizerClient#beginRecognizeIDDocumentsFromUrl(String)}
+     * Code snippet for {@link FormRecognizerClient#beginRecognizeIdDocumentsFromUrl(String)}
      */
     public void beginRecognizeIDDocumentsFromUrl() {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIDDocumentsFromUrl#string
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdDocumentsFromUrl#string
         String licenseDocumentUrl = "licenseDocumentUrl";
         // if training polling operation completed, retrieve the final result.
-        formRecognizerClient.beginRecognizeIDDocumentsFromUrl(licenseDocumentUrl)
+        formRecognizerClient.beginRecognizeIdDocumentsFromUrl(licenseDocumentUrl)
             .getFinalResult()
             .stream()
             .map(RecognizedForm::getFields)
@@ -989,10 +989,10 @@ public class FormRecognizerClientJavaDocCodeSnippets {
      */
     public void beginRecognizeIDDocumentsFromUrlWithOptions() {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIDDocumentsFromUrl#string-RecognizeIDDocumentOptions-Context
-        String invoiceUrl = "invoice_url";
+        String licenseDocumentUrl = "licenseDocumentUrl";
         boolean includeFieldElements = true;
         // if training polling operation completed, retrieve the final result.
-        formRecognizerClient.beginRecognizeIDDocumentsFromUrl(invoiceUrl,
+        formRecognizerClient.beginRecognizeIdDocumentsFromUrl(licenseDocumentUrl,
             new RecognizeIDDocumentOptions()
                 .setFieldElementsIncluded(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
@@ -1049,7 +1049,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormRecognizerClient#beginRecognizeIDDocuments(InputStream, long)}
+     * Code snippet for {@link FormRecognizerClient#beginRecognizeIdDocuments(InputStream, long)}
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
@@ -1058,7 +1058,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         File license = new File("local/file_path/license.jpg");
         ByteArrayInputStream inputStream = new ByteArrayInputStream(Files.readAllBytes(license.toPath()));
         // if training polling operation completed, retrieve the final result.
-        formRecognizerClient.beginRecognizeIDDocuments(inputStream, license.length())
+        formRecognizerClient.beginRecognizeIdDocuments(inputStream, license.length())
             .getFinalResult()
             .stream()
             .map(RecognizedForm::getFields)
@@ -1113,7 +1113,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for
-     * {@link FormRecognizerClient#beginRecognizeIDDocuments(InputStream, long, RecognizeIDDocumentOptions, Context)} with
+     * {@link FormRecognizerClient#beginRecognizeIdDocuments(InputStream, long, RecognizeIDDocumentOptions, Context)} with
      * options
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
@@ -1125,7 +1125,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         // Utility method to convert input stream to Byte buffer
         ByteArrayInputStream inputStream = new ByteArrayInputStream(Files.readAllBytes(licenseDocument.toPath()));
         // if training polling operation completed, retrieve the final result.
-        formRecognizerClient.beginRecognizeIDDocuments(inputStream,
+        formRecognizerClient.beginRecognizeIdDocuments(inputStream,
             licenseDocument.length(),
             new RecognizeIDDocumentOptions()
                 .setContentType(FormContentType.IMAGE_JPEG)

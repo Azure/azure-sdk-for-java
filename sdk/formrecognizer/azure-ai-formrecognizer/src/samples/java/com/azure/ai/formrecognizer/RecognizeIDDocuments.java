@@ -36,7 +36,7 @@ public class RecognizeIDDocuments {
     public static void main(final String[] args) throws IOException {
         // Instantiate a client that will be used to call the service.
         FormRecognizerClient client = new FormRecognizerClientBuilder()
-            .credential(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
@@ -46,7 +46,7 @@ public class RecognizeIDDocuments {
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
         SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> analyzeIDDocumentPoller =
-            client.beginRecognizeIDDocuments(targetStream, sourceFile.length());
+            client.beginRecognizeIdDocuments(targetStream, sourceFile.length());
 
         List<RecognizedForm> idDocumentResults = analyzeIDDocumentPoller.getFinalResult();
 

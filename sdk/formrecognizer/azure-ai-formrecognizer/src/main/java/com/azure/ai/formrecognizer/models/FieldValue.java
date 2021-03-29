@@ -37,6 +37,8 @@ public final class FieldValue {
     private SelectionMarkState selectionMarkState;
     private String formFieldString;
     private String formFieldPhoneNumber;
+    private String formFieldCountry;
+    private FieldValueGender formFieldGender;
 
     /**
      * Constructs a FieldValue object
@@ -74,6 +76,12 @@ public final class FieldValue {
                 break;
             case SELECTION_MARK_STATE:
                 selectionMarkState = (SelectionMarkState) value;
+                break;
+            case COUNTRY:
+                formFieldCountry = (String) value;
+                break;
+            case GENDER:
+                formFieldGender =  FieldValueGender.fromString(value.toString());
                 break;
             default:
                 throw logger.logExceptionAsError(new IllegalStateException("Unexpected type value: " + valueType));

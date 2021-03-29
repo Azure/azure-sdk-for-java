@@ -594,7 +594,7 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeBusinessCardsFromUrl#string}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdDocumentsFromUrl#string}
      *
      * @param iDDocumentUrl The source URL to the input ID Document.
      *
@@ -605,9 +605,9 @@ public final class FormRecognizerClient {
      * @throws NullPointerException If {@code iDDocumentUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIDDocumentsFromUrl(
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdDocumentsFromUrl(
         String iDDocumentUrl) {
-        return beginRecognizeIDDocumentsFromUrl(iDDocumentUrl, null, Context.NONE);
+        return beginRecognizeIdDocumentsFromUrl(iDDocumentUrl, null, Context.NONE);
     }
 
     /**
@@ -632,7 +632,7 @@ public final class FormRecognizerClient {
      * @throws NullPointerException If {@code iDDocumentUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIDDocumentsFromUrl(
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdDocumentsFromUrl(
         String iDDocumentUrl, RecognizeIDDocumentOptions recognizeIDDocumentOptions, Context context) {
         return client.beginRecognizeIdDocumentsFromUrl(iDDocumentUrl, recognizeIDDocumentOptions, context)
             .getSyncPoller();
@@ -658,9 +658,9 @@ public final class FormRecognizerClient {
      * @throws NullPointerException If {@code iDDocument} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIDDocuments(
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdDocuments(
         InputStream iDDocument, long length) {
-        return beginRecognizeIDDocuments(iDDocument, length, null, Context.NONE);
+        return beginRecognizeIdDocuments(iDDocument, length, null, Context.NONE);
     }
 
     /**
@@ -686,7 +686,7 @@ public final class FormRecognizerClient {
      * @throws NullPointerException If {@code iDDocument} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIDDocuments(
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdDocuments(
         InputStream iDDocument, long length, RecognizeIDDocumentOptions recognizeIDDocumentOptions,
         Context context) {
         return client.beginRecognizeIdDocuments(toFluxByteBuffer(iDDocument), length,

@@ -313,8 +313,7 @@ final class Transforms {
                     //
                     // In these scenarios we do not set a ValueData.
                     if (fieldValue.getText() == null && fieldValue.getPage() == null
-                        && CoreUtils.isNullOrEmpty(fieldValue.getBoundingBox())
-                        && ARRAY == fieldValue.getType() && OBJECT == fieldValue.getType()) {
+                        && CoreUtils.isNullOrEmpty(fieldValue.getBoundingBox())) {
                         valueData = null;
                     } else {
                         valueData = new FieldData(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
@@ -404,6 +403,14 @@ final class Transforms {
                 }
                 value = new com.azure.ai.formrecognizer.models.FieldValue(selectionMarkState,
                     FieldValueType.SELECTION_MARK_STATE);
+                break;
+            case GENDER:
+                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueGender(),
+                    FieldValueType.GENDER);
+                break;
+            case COUNTRY:
+                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueCountry(),
+                    FieldValueType.COUNTRY);
                 break;
             default:
                 throw LOGGER.logExceptionAsError(new RuntimeException("FieldValue Type not supported"));
