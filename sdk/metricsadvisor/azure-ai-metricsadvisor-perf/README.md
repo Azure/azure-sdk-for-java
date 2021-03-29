@@ -6,7 +6,6 @@ Represents Performance tests for Azure MetricAdvisor SDK for Java.
 
 ### Prerequisites
 
-- Java Development Kit (JDK) with version 8 or above
 - Java Development Kit [JDK][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Cognitive Services or Metrics Advisor account][metrics_advisor_account] to use this package.
@@ -70,3 +69,8 @@ For details on contributing to this repository, see the [contributing guide](htt
 1. Commit your changes (`git commit -am 'Add some feature'`)
 1. Push to the branch (`git push origin my-new-feature`)
 1. Create new Pull Request
+
+<!-- LINKS -->
+[azure_subscription]: https://azure.microsoft.com/free
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[metrics_advisor_account]: https://ms.portal.azure.com/#create/Microsoft.CognitiveServicesMetricsAdvisor
