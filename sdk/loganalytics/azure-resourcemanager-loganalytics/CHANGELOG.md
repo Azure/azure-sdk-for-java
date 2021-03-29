@@ -1,7 +1,8 @@
 # Release History
 
-## 1.0.0-beta.2 (2021-03-25)
+## 1.0.0-beta.2 (2021-03-29)
 
+- Azure Resource Manager LogAnalytics client library for Java. This package contains Microsoft Azure SDK for LogAnalytics Management SDK. Operational Insights Client. Package tag package-2020-08. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 - Azure Resource Manager LogAnalytics client library for Java. This package contains Microsoft Azure SDK for LogAnalytics Management SDK. Operational Insights Client. Package tag package-2020-10. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Change
@@ -92,6 +93,34 @@
 * `capacityReservationProperties()` was added
 * `lastModifiedDate()` was added
 * `associatedWorkspaces()` was added
+
+### New Feature
+
+#### `models.Workspace$Update` was modified
+
+* `withForceCmkForQuery(java.lang.Boolean)` was added
+* `withFeatures(java.util.Map)` was added
+
+#### `models.Workspace$Definition` was modified
+
+* `withFeatures(java.util.Map)` was added
+* `withForceCmkForQuery(java.lang.Boolean)` was added
+
+#### `models.WorkspacePatch` was modified
+
+* `withFeatures(java.util.Map)` was added
+* `createdDate()` was added
+* `withForceCmkForQuery(java.lang.Boolean)` was added
+* `features()` was added
+* `modifiedDate()` was added
+* `forceCmkForQuery()` was added
+
+#### `models.Workspace` was modified
+
+* `createdDate()` was added
+* `features()` was added
+* `modifiedDate()` was added
+* `forceCmkForQuery()` was added
 
 ## 1.0.0-beta.1 (2020-12-18)
 

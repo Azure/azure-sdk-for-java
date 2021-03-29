@@ -18,12 +18,6 @@ public class ClusterPatch {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterPatch.class);
 
     /*
-     * The identity of the resource.
-     */
-    @JsonProperty(value = "identity")
-    private Identity identity;
-
-    /*
      * The sku properties.
      */
     @JsonProperty(value = "sku")
@@ -40,26 +34,6 @@ public class ClusterPatch {
      */
     @JsonProperty(value = "properties.keyVaultProperties")
     private KeyVaultProperties keyVaultProperties;
-
-    /**
-     * Get the identity property: The identity of the resource.
-     *
-     * @return the identity value.
-     */
-    public Identity identity() {
-        return this.identity;
-    }
-
-    /**
-     * Set the identity property: The identity of the resource.
-     *
-     * @param identity the identity value to set.
-     * @return the ClusterPatch object itself.
-     */
-    public ClusterPatch withIdentity(Identity identity) {
-        this.identity = identity;
-        return this;
-    }
 
     /**
      * Get the sku property: The sku properties.
@@ -127,9 +101,6 @@ public class ClusterPatch {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (identity() != null) {
-            identity().validate();
-        }
         if (sku() != null) {
             sku().validate();
         }
