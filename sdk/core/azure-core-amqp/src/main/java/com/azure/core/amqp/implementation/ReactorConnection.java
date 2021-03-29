@@ -347,7 +347,7 @@ public class ReactorConnection implements AmqpConnection {
         return createChannel.takeUntilOther(Mono.firstWithSignal(isClosedMono.asMono(), shutdownSignalSink.asMono()))
             .subscribeWith(new AmqpChannelProcessor<>(connectionId, entityPath,
                 channel -> channel.getEndpointStates(), retryPolicy,
-            new ClientLogger(RequestResponseChannel.class + ":" + entityPath)));
+                new ClientLogger(RequestResponseChannel.class + ":" + entityPath)));
     }
 
     Mono<Void> dispose(AmqpShutdownSignal shutdownSignal) {
