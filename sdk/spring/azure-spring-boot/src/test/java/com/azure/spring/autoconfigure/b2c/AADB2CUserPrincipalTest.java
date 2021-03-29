@@ -3,8 +3,8 @@
 package com.azure.spring.autoconfigure.b2c;
 
 import net.minidev.json.JSONArray;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.oauth2.jwt.Jwt;
 
@@ -23,7 +23,7 @@ public class AADB2CUserPrincipalTest {
     private Map<String, Object> headers = new HashMap<>();
     private JSONArray jsonArray = new JSONArray().appendElement("User.read").appendElement("User.write");
 
-    @Before
+    @BeforeEach
     public void init() {
         claims.put("iss", "fake-issuer");
         claims.put("tid", "fake-tid");
