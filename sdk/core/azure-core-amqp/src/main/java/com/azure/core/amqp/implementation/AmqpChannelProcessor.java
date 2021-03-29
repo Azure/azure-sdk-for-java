@@ -302,10 +302,14 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             try {
                 ((AutoCloseable) channel).close();
             } catch (Exception error) {
-                logger.warning("Error occurred closing item.", channel);
+                logger.warning("Error occurred closing AutoCloseable channel.", error);
             }
         } else if (channel instanceof Disposable) {
-            ((Disposable) channel).dispose();
+            try {
+                ((Disposable) channel).dispose();
+            } catch (Exception error) {
+                logger.warning("Error occurred closing Disposable channel.", error);
+            }
         }
     }
 
