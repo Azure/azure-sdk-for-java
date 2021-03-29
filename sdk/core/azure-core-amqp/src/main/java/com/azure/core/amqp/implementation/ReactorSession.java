@@ -266,12 +266,14 @@ public class ReactorSession implements AmqpSession {
     private Mono<TransactionCoordinator> createTransactionCoordinator() {
         if (isDisposed()) {
             return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
-                "Cannot create coordinator send link '%s' from a closed session.", TRANSACTION_LINK_NAME))));
+                "connectionId[%s] sessionName[%s] Cannot create coordinator send link '%s' from a closed session.",
+                sessionHandler.getConnectionId(), sessionName, TRANSACTION_LINK_NAME))));
         }
 
         final TransactionCoordinator existing = transactionCoordinator.get();
         if (existing != null) {
-            logger.verbose("Coordinator[{}]: Returning existing transaction coordinator.", TRANSACTION_LINK_NAME);
+            logger.verbose("connectionId[{}] coordinator[{}]: Returning existing transaction coordinator.",
+                sessionHandler.getConnectionId(), TRANSACTION_LINK_NAME);
             return Mono.just(existing);
         }
 
@@ -318,12 +320,13 @@ public class ReactorSession implements AmqpSession {
 
         if (isDisposed()) {
             return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
-                "Cannot create receive link '%s' from a closed session. entityPath[%s]", linkName, entityPath))));
+                "connectionId[%s] sessionName[%s] entityPath[%s] linkName[%s] Cannot create receive link from a closed"
+                + " session.", sessionHandler.getConnectionId(), sessionName, entityPath, linkName))));
         }
 
         final LinkSubscription<AmqpReceiveLink> existingLink = openReceiveLinks.get(linkName);
         if (existingLink != null) {
-            logger.info("linkName[{}] entityPath[{}]: Returning existing receive link.", linkName, entityPath);
+            logger.info("linkName[{}] entityPath[{}] Returning existing receive link.", linkName, entityPath);
             return Mono.just(existingLink.getLink());
         }
 
@@ -343,7 +346,8 @@ public class ReactorSession implements AmqpSession {
                                 return existing;
                             }
 
-                            logger.info("Creating a new receiver link with linkName {}", linkName);
+                            logger.info("connectionId[{}] sessionId[{}] linkName[{}] Creating a new receiver link.",
+                                sessionHandler.getConnectionId(), sessionName, linkName);
                             return getSubscription(linkNameKey, entityPath, sourceFilters, receiverProperties,
                                 receiverDesiredCapabilities, senderSettleMode, receiverSettleMode, tokenManager);
                         });
@@ -400,7 +404,8 @@ public class ReactorSession implements AmqpSession {
 
         if (isDisposed()) {
             return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
-                "Cannot create send link '%s' from a closed session. entityPath[%s]", linkName, entityPath))));
+                "connectionId[%s] sessionName[%s] entityPath[%s] linkName[%s] Cannot create send link from a closed"
+                    + " session.", sessionHandler.getConnectionId(), sessionName, entityPath, linkName))));
         }
 
         final LinkSubscription<AmqpSendLink> existing = openSendLinks.get(linkName);
@@ -436,7 +441,8 @@ public class ReactorSession implements AmqpSession {
                                 return existingLink;
                             }
 
-                            logger.info("Creating a new sender link with linkName {}", linkName);
+                            logger.info("connectionId[{}] sessionId[{}] linkName[{}] Creating a new send link.",
+                                sessionHandler.getConnectionId(), sessionName, linkName);
                             return getSubscription(linkName, entityPath, target, linkProperties, options,
                                 tokenManager);
                         });
@@ -550,7 +556,7 @@ public class ReactorSession implements AmqpSession {
         });
 
         return new LinkSubscription<>(reactorReceiver, subscription,
-            String.format("connectionId[%s] session[%s]: Setting error on receive link.", amqpConnection.getId(),
+            String.format("connectionId[%s] sessionName[%s]: Setting error on receive link.", amqpConnection.getId(),
                 sessionName));
     }
 
@@ -579,10 +585,11 @@ public class ReactorSession implements AmqpSession {
     }
 
     private void handleClose() {
-        logger.verbose("connectionId[{}] sessionName[{}]  Disposing of active links due to session close.",
+        logger.verbose(
+            "connectionId[{}] sessionName[{}] Disposing of active send and receive links due to session close.",
             sessionHandler.getConnectionId(), sessionName);
 
-        dispose("Session closed.", null, true);
+        dispose("", null, true);
     }
 
     private void handleError(Throwable error) {
@@ -637,13 +644,13 @@ public class ReactorSession implements AmqpSession {
         // We want to complete the session so that the parent connection isn't waiting.
         Mono<Void> closeLinksMono = Mono.when(closingLinks).timeout(retryOptions.getTryTimeout())
             .onErrorResume(error -> {
-                logger.warning("connectionId[{}], sessionName[{}]: Timed out waiting for all links to close.",
+                logger.warning("connectionId[{}] sessionName[{}] Timed out waiting for all links to close.",
                     sessionHandler.getConnectionId(), sessionName, error);
                 return Mono.empty();
             })
             .then(Mono.fromRunnable(() -> {
                 isClosedMono.emitEmpty((signalType, result) -> {
-                    logger.warning("connectionId[{}], signal[{}], result[{}]. Unable to emit shutdown signal.",
+                    logger.warning("connectionId[{}] signal[{}] result[{}] Unable to emit shutdown signal.",
                         sessionHandler.getConnectionId(), signalType, result);
                     return false;
                 });
