@@ -55,8 +55,8 @@ public class AppConfigurationExporterIntegrationTest extends AzureMonitorTraceEx
             span.end();
             scope.close();
         }
-        assertTrue(appConfigCountDown.await(1, TimeUnit.SECONDS));
-        assertTrue(exporterCountDown.await(1, TimeUnit.SECONDS));
+        assertTrue(appConfigCountDown.await(10, TimeUnit.SECONDS));
+        assertTrue(exporterCountDown.await(10, TimeUnit.SECONDS));
     }
 
     @Test
@@ -93,8 +93,8 @@ public class AppConfigurationExporterIntegrationTest extends AzureMonitorTraceEx
             span.end();
             scope.close();
         }
-        assertTrue(appConfigCountDown.await(1, TimeUnit.SECONDS));
-        assertTrue(exporterCountDown.await(1, TimeUnit.SECONDS));
+        assertTrue(appConfigCountDown.await(10, TimeUnit.SECONDS));
+        assertTrue(exporterCountDown.await(10, TimeUnit.SECONDS));
         assertFalse(configSpanExists.get());
     }
 
