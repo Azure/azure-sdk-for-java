@@ -163,10 +163,8 @@ public class ServiceBusMessageConverterTest extends AzureMessageConverterTest<IM
     String serviceBusSessionId = UUID.randomUUID().toString();
     String serviceBusCorrelationId = UUID.randomUUID().toString();
     String serviceBusTo = UUID.randomUUID().toString();
-    String serviceBusLabel = UUID.randomUUID().toString();
     String serviceBusReplyToSessionId = UUID.randomUUID().toString();
     String serviceBusPartitionKey = serviceBusSessionId; // partitionKey should same to sessionId
-    String serviceBusViaPartitionKey = UUID.randomUUID().toString();
     @Test
     public void serviceBusMessageHeaderTest() {
         org.springframework.messaging.Message<String> springMessage;
@@ -196,10 +194,8 @@ public class ServiceBusMessageConverterTest extends AzureMessageConverterTest<IM
         assertEquals(serviceBusSessionId, serviceBusMessage.getSessionId());
         assertEquals(serviceBusCorrelationId, serviceBusMessage.getCorrelationId());
         assertEquals(serviceBusTo, serviceBusMessage.getTo());
-        assertEquals(serviceBusLabel, serviceBusMessage.getLabel());
         assertEquals(serviceBusReplyToSessionId, serviceBusMessage.getReplyToSessionId());
         assertEquals(serviceBusPartitionKey, serviceBusMessage.getPartitionKey());
-        assertEquals(serviceBusViaPartitionKey, serviceBusMessage.getViaPartitionKey());
 
         convertedSpringMessage = getConverter().toMessage(serviceBusMessage, String.class);
         assertEquals(springMessageContent, convertedSpringMessage.getHeaders().get(MessageHeaders.CONTENT_TYPE));
