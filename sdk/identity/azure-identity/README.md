@@ -176,6 +176,7 @@ public void createManagedIdentityCredential() {
         .credential(managedIdentityCredential)
         .buildClient();
 }
+```
 
 ## Credential classes
 
