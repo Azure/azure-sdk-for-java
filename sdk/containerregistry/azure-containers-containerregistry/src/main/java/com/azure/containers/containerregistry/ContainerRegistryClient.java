@@ -47,20 +47,6 @@ public final class ContainerRegistryClient {
     /**
      * List repositories.
      *
-     * @param options for the list repositories call.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.containers.containerregistry.models.AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of repositories.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> listRepositories(ListRepositoriesOptions options) {
-        return new PagedIterable<>(this.asyncClient.listRepositories(options));
-    }
-
-    /**
-     * List repositories.
-     *
      * @param options The options to use while getting the list of repositories.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

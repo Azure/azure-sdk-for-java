@@ -45,11 +45,11 @@ import java.util.Objects;
             ContainerRegistryAsyncClient.class
         })
 public final class ContainerRegistryClientBuilder {
-    private static final String SDK_NAME = "name";
-    private static final String SDK_VERSION = "version";
-
     private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure-containers-containerregistry.properties");
+
+    private static final String CLIENT_NAME = PROPERTIES.getOrDefault("name", "UnknownName");
+    private static final String CLIENT_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
 
     private final ClientLogger logger = new ClientLogger(ContainerRegistryClientBuilder.class);
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -101,7 +101,7 @@ public final class ContainerRegistryClientBuilder {
      */
     public ContainerRegistryClientBuilder httpPipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
-            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            logger.verbose("HttpPipeline is being set to 'null' when it was previously configured.");
         }
 
         this.httpPipeline = httpPipeline;
@@ -116,7 +116,7 @@ public final class ContainerRegistryClientBuilder {
      */
     public ContainerRegistryClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         if (this.serializerAdapter != null && serializerAdapter == null) {
-            logger.info("SerializerAdapter is being set to 'null' when it was previously configured.");
+            logger.verbose("SerializerAdapter is being set to 'null' when it was previously configured.");
         }
 
         this.serializerAdapter = serializerAdapter;
@@ -226,7 +226,7 @@ public final class ContainerRegistryClientBuilder {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
         policies.add(
-                new UserAgentPolicy(CoreUtils.getApplicationId(clientOptions, httpLogOptions), SDK_NAME, SDK_VERSION, buildConfiguration));
+                new UserAgentPolicy(CoreUtils.getApplicationId(clientOptions, httpLogOptions), CLIENT_NAME, CLIENT_VERSION, buildConfiguration));
         policies.add(new RequestIdPolicy());
 
         List<HttpHeader> httpHeaderList = new ArrayList<>();

@@ -47,19 +47,11 @@ public class ContainerRegistryClientTestBase extends TestBase {
     }
 
     ContainerRegistryClientBuilder getContainerRegistryBuilder(HttpClient httpClient) {
-        Configuration configuration = new Configuration()
-            .put("java.net.useSystemProxies", "true")
-            .put("http.proxyHost", "localhost")
-            .put("http.proxyPort", "8888")
-            .put("http.proxyUser", "1")
-            .put("http.proxyPassword", "1");
-
         List<Function<String, String>> redactors = new ArrayList<>();
         redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
 
         ContainerRegistryClientBuilder builder = new ContainerRegistryClientBuilder()
             .endpoint(getEndpoint())
-            .configuration(configuration)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY))
             .addPolicy(interceptorManager.getRecordPolicy(redactors));

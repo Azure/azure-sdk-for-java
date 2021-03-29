@@ -34,9 +34,9 @@ import static com.azure.core.util.FluxUtil.withContext;
 public final class ContainerRegistryAsyncClient {
     private final ContainerRegistriesImpl serviceClient;
     private final ClientLogger logger = new ClientLogger(ContainerRegistryAsyncClient.class);
-    private static final String CONTINUATIONLINKHEADERNAME = "Link";
-    private static final String LINKMATCHER = "(<(.+)>;.*)";
-    private static final String ORDERBYQUERYPARAM = "&orderby=";
+    private static final String CONTINUATIONLINK_HEADER_NAME = "Link";
+    private static final String LINK_MATCHER = "(<(.+)>;.*)";
+    private static final Pattern CONTINUATIONLINK_PATTERN = Pattern.compile(LINK_MATCHER);
 
     /**
      * Initializes an instance of ContainerRegistries client.
@@ -88,13 +88,13 @@ public final class ContainerRegistryAsyncClient {
         HttpHeaders headers = listRepositoriesResponse.getHeaders();
 
         if (headers != null) {
-            String continuationLinkHeader = headers.getValue(CONTINUATIONLINKHEADERNAME);
+            String continuationLinkHeader = headers.getValue(CONTINUATIONLINK_HEADER_NAME);
             if (!CoreUtils.isNullOrEmpty(continuationLinkHeader)) {
-                // TODO: ACR follows docker API spec which has continuation token in header.
+                // TODO (<pallaviT>): ACR follows docker API spec which has continuation token in header.
                 // It currently returns it in the header without the url which they intend to fix
                 // in the upcoming releases.
-                Pattern linkPattern = Pattern.compile(LINKMATCHER);
-                Matcher matcher = linkPattern.matcher(continuationLinkHeader);
+
+                Matcher matcher = CONTINUATIONLINK_PATTERN.matcher(continuationLinkHeader);
                 if (matcher.matches()) {
                     if (matcher.groupCount() == 2) {
                         String apiPath = matcher.group(2);
@@ -127,10 +127,6 @@ public final class ContainerRegistryAsyncClient {
     }
 
     Mono<PagedResponse<String>> listRepositoriesNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(logger.logExceptionAsWarning(new IllegalArgumentException("nextLink parameter cannot be null.")));
-        }
-
         try {
             Mono<PagedResponse<String>> pagedResponseMono = this.serviceClient.listRepositoriesNextSinglePageAsync(nextLink, context);
             return pagedResponseMono.map(res -> getPagedResponseWithContinuationToken(res));
@@ -156,7 +152,7 @@ public final class ContainerRegistryAsyncClient {
 
     Mono<Response<DeleteRepositoryResult>> deleteRepositoryWithResponse(String name, Context context) {
         if (CoreUtils.isNullOrEmpty(name)) {
-            throw logger.logExceptionAsError(new NullPointerException("repository name can't be null or empty."));
+            return Mono.error(logger.logExceptionAsError(new NullPointerException("repository name can't be null or empty.")));
         }
 
         return this.serviceClient.deleteRepositoryWithResponseAsync(name, context);
@@ -178,7 +174,7 @@ public final class ContainerRegistryAsyncClient {
 
     Mono<DeleteRepositoryResult> deleteRepository(String name, Context context) {
         if (CoreUtils.isNullOrEmpty(name)) {
-            throw logger.logExceptionAsError(new NullPointerException("repository name can't be null or empty."));
+            return Mono.error(logger.logExceptionAsError(new NullPointerException("repository name can't be null or empty.")));
         }
 
         return this.serviceClient.deleteRepositoryAsync(name, context);
