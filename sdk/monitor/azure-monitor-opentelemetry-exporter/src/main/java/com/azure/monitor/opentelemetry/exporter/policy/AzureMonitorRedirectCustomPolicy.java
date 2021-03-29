@@ -29,7 +29,7 @@ public class AzureMonitorRedirectCustomPolicy implements HttpPipelinePolicy {
     }
 
     /**
-     * Creates {@link AzureMonitorRedirectCustomPolicy} with provided {@param maxRedirectRetries}.
+     * Creates {@link AzureMonitorRedirectCustomPolicy} with provided maxRedirectRetries.
      */
     public AzureMonitorRedirectCustomPolicy(int maxRedirectRetries) {
         this.maxRedirectRetries = maxRedirectRetries;
@@ -40,6 +40,10 @@ public class AzureMonitorRedirectCustomPolicy implements HttpPipelinePolicy {
         return attemptRetry(context, next, context.getHttpRequest(), 0);
     }
 
+    /**
+     *  Function to process through the HTTP Response received in the pipeline
+     *  and retry sending the request with new redirect url.
+     */
     private Mono<HttpResponse> attemptRetry(final HttpPipelineCallContext context,
                                             final HttpPipelineNextPolicy next,
                                             final HttpRequest originalHttpRequest,
