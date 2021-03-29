@@ -160,6 +160,11 @@ public class ConnectionHandler extends Handler {
             getConnectionId(), getHostname(), connectionOptions.getFullyQualifiedNamespace());
 
         final Connection connection = event.getConnection();
+        if (connection == null) {
+            logger.warning("connectionId[{}] Underlying connection is null. Should not be possible.");
+            close();
+            return;
+        }
 
         // Set the hostname of the AMQP message broker. This may be different from the actual underlying transport
         // in the case we are using an intermediary to connect to Event Hubs.

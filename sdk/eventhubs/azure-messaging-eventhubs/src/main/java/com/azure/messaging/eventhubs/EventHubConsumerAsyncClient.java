@@ -359,7 +359,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
         final AtomicReference<Supplier<EventPosition>> initialPosition = new AtomicReference<>(() -> startingPosition);
         final Flux<AmqpReceiveLink> receiveLinkMono = connectionProcessor
             .flatMap(connection -> {
-                logger.info("connectionId[{}] linkName[{}]: Creating receive consumer for partition '{}'",
+                logger.info("connectionId[{}] linkName[{}] Creating receive consumer for partition '{}'",
                     connection.getId(), linkName, partitionId);
                 return connection.createReceiveLink(linkName, entityPath, initialPosition.get().get(), receiveOptions);
             })
