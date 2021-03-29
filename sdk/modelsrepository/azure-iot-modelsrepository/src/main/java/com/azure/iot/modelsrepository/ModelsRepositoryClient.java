@@ -27,7 +27,7 @@ public final class ModelsRepositoryClient {
      * Gets the repository uri that the client has been initialized with.
      * @return The target repository uri.
      */
-    public URI getRepositoryUri() {
+    public String getRepositoryUri() {
         return this.modelsRepositoryAsyncClient.getRepositoryUri();
     }
 

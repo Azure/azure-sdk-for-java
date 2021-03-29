@@ -7,7 +7,7 @@ package com.azure.iot.core;
  * Entry point for running samples.
  */
 public class Main {
-    static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException {
 
         // DtmiConventions samples
         DtmiConventionsSamples.isValidDtmi();
@@ -20,5 +20,8 @@ public class Main {
         ModelResolutionSamples.getModelsFromGlobalRepository();
         ModelResolutionSamples.getModelsFromLocalRepository();
         ModelResolutionSamples.getMultipleModelsFromGlobalRepository();
+
+        // Allow enough time for async APIs to get notified and execute the subscribe supplier.
+        Thread.sleep(2 * 1000);
     }
 }
