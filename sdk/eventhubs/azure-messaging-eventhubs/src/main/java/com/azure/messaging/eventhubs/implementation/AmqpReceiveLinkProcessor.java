@@ -4,7 +4,6 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
-import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
@@ -477,7 +476,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
                 if (link != null) {
                     logger.verbose("linkName[{}] creditsAdded[{}] Added from emitted credits.",
-                        credits, link.getLinkName());
+                        link.getLinkName(), credits);
                     link.addCredits(Long.valueOf(numberEmitted).intValue()).subscribe();
                 }
             }
