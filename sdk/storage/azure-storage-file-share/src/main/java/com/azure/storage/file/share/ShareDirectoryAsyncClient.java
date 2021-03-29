@@ -20,7 +20,6 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.common.implementation.StoragePagedFlux;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.DirectoriesCreateResponse;
 import com.azure.storage.file.share.implementation.models.DirectoriesGetPropertiesResponse;
@@ -620,7 +619,7 @@ public class ShareDirectoryAsyncClient {
                     response.getValue().getNextMarker(),
                     response.getDeserializedHeaders()));
 
-        return StoragePagedFlux.create(pageSize -> retriever.apply(null, pageSize), retriever);
+        return new PagedFlux<>(pageSize -> retriever.apply(null, pageSize), retriever);
     }
 
     /**

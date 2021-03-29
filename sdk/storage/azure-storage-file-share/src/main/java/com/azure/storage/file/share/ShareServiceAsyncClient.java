@@ -20,7 +20,6 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.AccountSasImplUtil;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.common.implementation.StoragePagedFlux;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
@@ -239,7 +238,7 @@ public final class ShareServiceAsyncClient {
                             response.getContinuationToken(),
                             ModelHelper.transformListSharesHeaders(response.getHeaders()));
                     }), timeout);
-        return StoragePagedFlux.create(pageSize -> retriever.apply(marker, pageSize), retriever);
+        return new PagedFlux<>(pageSize -> retriever.apply(marker, pageSize), retriever);
     }
 
     /**

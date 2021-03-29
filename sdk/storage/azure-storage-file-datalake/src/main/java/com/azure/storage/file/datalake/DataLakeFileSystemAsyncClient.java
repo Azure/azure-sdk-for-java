@@ -21,11 +21,9 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.common.implementation.StoragePagedFlux;
 import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImpl;
 import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImplBuilder;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
-import com.azure.storage.file.datalake.implementation.models.Path;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
@@ -491,7 +489,7 @@ public class DataLakeFileSystemAsyncClient {
                             response.getDeserializedHeaders());
                     });
             };
-        return StoragePagedFlux.create(pageSize -> func.apply(null, pageSize), func);
+        return new PagedFlux<>(pageSize -> func.apply(null, pageSize), func);
     }
 
     private Mono<FileSystemsListPathsResponse> listPathsSegment(String marker,

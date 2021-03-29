@@ -43,7 +43,6 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.common.implementation.StoragePagedFlux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -871,7 +870,7 @@ public final class BlobContainerAsyncClient {
                             response.getDeserializedHeaders());
                     });
             };
-        return StoragePagedFlux.create(pageSize -> func.apply(continuationToken, pageSize), func);
+        return new PagedFlux<>(pageSize -> func.apply(continuationToken, pageSize), func);
     }
 
     /*
@@ -1035,7 +1034,7 @@ public final class BlobContainerAsyncClient {
                         response.getDeserializedHeaders());
                 });
             };
-        return StoragePagedFlux.create(pageSize -> func.apply(null, pageSize), func);
+        return new PagedFlux<>(pageSize -> func.apply(null, pageSize), func);
     }
 
     private Mono<ContainersListBlobHierarchySegmentResponse> listBlobsHierarchySegment(String marker, String delimiter,

@@ -17,7 +17,6 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.AccountSasImplUtil;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.common.implementation.StoragePagedFlux;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.models.QueueCorsRule;
@@ -314,7 +313,7 @@ public final class QueueServiceAsyncClient {
                     pageSize == null ? maxResultsPerPage : pageSize, include,
                     null, null, context), timeout);
 
-        return StoragePagedFlux.create(pageSize -> retriever.apply(marker, pageSize), retriever);
+        return new PagedFlux<>(pageSize -> retriever.apply(marker, pageSize), retriever);
     }
 
     /**

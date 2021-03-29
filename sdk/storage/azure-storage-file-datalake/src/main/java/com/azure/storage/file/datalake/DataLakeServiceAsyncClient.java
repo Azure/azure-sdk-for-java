@@ -20,7 +20,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.implementation.StoragePagedFlux;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImpl;
 import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImplBuilder;
@@ -280,7 +279,7 @@ public class DataLakeServiceAsyncClient {
             .listBlobContainers(Transforms.toListBlobContainersOptions(options));
         /* We need to create a new PagedFlux here because PagedFlux extends Flux, but not all operations were
             overriden to return PagedFlux - so we need to do the transformations and recreate a PagedFlux. */
-        return StoragePagedFlux.create(() -> (continuationToken, pageSize) -> {
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
             Flux<PagedResponse<BlobContainerItem>> flux;
             if (continuationToken != null && pageSize != null) {
                 flux = inputPagedFlux.byPage(continuationToken, pageSize);

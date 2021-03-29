@@ -16,16 +16,12 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.implementation.util.ModelHelper;
-import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.common.implementation.StoragePagedFlux;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
-import com.azure.storage.file.datalake.implementation.models.Path;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
@@ -587,7 +583,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
                         response.getDeserializedHeaders());
                 });
 
-        return StoragePagedFlux.create(pageSize -> func.apply(null, pageSize), func);
+        return new PagedFlux<>(pageSize -> func.apply(null, pageSize), func);
     }
 
     private Mono<FileSystemsListPathsResponse> listPathsSegment(String marker, boolean recursive,
