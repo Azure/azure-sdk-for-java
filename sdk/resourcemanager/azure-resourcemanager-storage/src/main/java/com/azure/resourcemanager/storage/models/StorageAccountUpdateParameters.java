@@ -65,6 +65,18 @@ public class StorageAccountUpdateParameters {
     private Encryption encryption;
 
     /*
+     * SasPolicy assigned to the storage account.
+     */
+    @JsonProperty(value = "properties.sasPolicy")
+    private SasPolicy sasPolicy;
+
+    /*
+     * KeyPolicy assigned to the storage account.
+     */
+    @JsonProperty(value = "properties.keyPolicy")
+    private KeyPolicy keyPolicy;
+
+    /*
      * Required for storage accounts where kind = BlobStorage. The access tier
      * used for billing.
      */
@@ -116,6 +128,16 @@ public class StorageAccountUpdateParameters {
      */
     @JsonProperty(value = "properties.minimumTlsVersion")
     private MinimumTlsVersion minimumTlsVersion;
+
+    /*
+     * Indicates whether the storage account permits requests to be authorized
+     * with the account access key via Shared Key. If false, then all requests,
+     * including shared access signatures, must be authorized with Azure Active
+     * Directory (Azure AD). The default value is null, which is equivalent to
+     * true.
+     */
+    @JsonProperty(value = "properties.allowSharedKeyAccess")
+    private Boolean allowSharedKeyAccess;
 
     /**
      * Get the sku property: Gets or sets the SKU name. Note that the SKU name cannot be updated to Standard_ZRS,
@@ -248,6 +270,46 @@ public class StorageAccountUpdateParameters {
      */
     public StorageAccountUpdateParameters withEncryption(Encryption encryption) {
         this.encryption = encryption;
+        return this;
+    }
+
+    /**
+     * Get the sasPolicy property: SasPolicy assigned to the storage account.
+     *
+     * @return the sasPolicy value.
+     */
+    public SasPolicy sasPolicy() {
+        return this.sasPolicy;
+    }
+
+    /**
+     * Set the sasPolicy property: SasPolicy assigned to the storage account.
+     *
+     * @param sasPolicy the sasPolicy value to set.
+     * @return the StorageAccountUpdateParameters object itself.
+     */
+    public StorageAccountUpdateParameters withSasPolicy(SasPolicy sasPolicy) {
+        this.sasPolicy = sasPolicy;
+        return this;
+    }
+
+    /**
+     * Get the keyPolicy property: KeyPolicy assigned to the storage account.
+     *
+     * @return the keyPolicy value.
+     */
+    public KeyPolicy keyPolicy() {
+        return this.keyPolicy;
+    }
+
+    /**
+     * Set the keyPolicy property: KeyPolicy assigned to the storage account.
+     *
+     * @param keyPolicy the keyPolicy value to set.
+     * @return the StorageAccountUpdateParameters object itself.
+     */
+    public StorageAccountUpdateParameters withKeyPolicy(KeyPolicy keyPolicy) {
+        this.keyPolicy = keyPolicy;
         return this;
     }
 
@@ -425,6 +487,30 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
+     * Get the allowSharedKeyAccess property: Indicates whether the storage account permits requests to be authorized
+     * with the account access key via Shared Key. If false, then all requests, including shared access signatures, must
+     * be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
+     *
+     * @return the allowSharedKeyAccess value.
+     */
+    public Boolean allowSharedKeyAccess() {
+        return this.allowSharedKeyAccess;
+    }
+
+    /**
+     * Set the allowSharedKeyAccess property: Indicates whether the storage account permits requests to be authorized
+     * with the account access key via Shared Key. If false, then all requests, including shared access signatures, must
+     * be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
+     *
+     * @param allowSharedKeyAccess the allowSharedKeyAccess value to set.
+     * @return the StorageAccountUpdateParameters object itself.
+     */
+    public StorageAccountUpdateParameters withAllowSharedKeyAccess(Boolean allowSharedKeyAccess) {
+        this.allowSharedKeyAccess = allowSharedKeyAccess;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -441,6 +527,12 @@ public class StorageAccountUpdateParameters {
         }
         if (encryption() != null) {
             encryption().validate();
+        }
+        if (sasPolicy() != null) {
+            sasPolicy().validate();
+        }
+        if (keyPolicy() != null) {
+            keyPolicy().validate();
         }
         if (azureFilesIdentityBasedAuthentication() != null) {
             azureFilesIdentityBasedAuthentication().validate();

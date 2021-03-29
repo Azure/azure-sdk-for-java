@@ -713,19 +713,31 @@ public class CryptographyAsyncClient {
     }
 
     private Mono<Boolean> ensureValidKeyAvailable() {
-        boolean keyNotAvailable = (this.key == null && keyCollection != null);
-        if (keyNotAvailable) {
+        boolean keyNotAvailable = (key == null && keyCollection != null);
+        boolean keyNotValid = (key != null && !key.isValid());
+
+        if (keyNotAvailable || keyNotValid) {
             if (keyCollection.equals(SECRETS_COLLECTION)) {
-                return getSecretKey().map(jwk -> {
-                    this.key = (jwk);
-                    initializeCryptoClients();
-                    return this.key.isValid();
+                return getSecretKey().map(jsonWebKey -> {
+                    key = (jsonWebKey);
+
+                    if (key.isValid()) {
+                        initializeCryptoClients();
+                        return true;
+                    } else {
+                        return false;
+                    }
                 });
             } else {
-                return getKey().map(kvKey -> {
-                    this.key = (kvKey.getKey());
-                    initializeCryptoClients();
-                    return key.isValid();
+                return getKey().map(keyVaultKey -> {
+                    key = (keyVaultKey.getKey());
+
+                    if (key.isValid()) {
+                        initializeCryptoClients();
+                        return true;
+                    } else {
+                        return false;
+                    }
                 });
             }
         } else {

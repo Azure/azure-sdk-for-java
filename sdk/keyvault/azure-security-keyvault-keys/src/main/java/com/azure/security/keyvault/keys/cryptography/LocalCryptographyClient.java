@@ -50,11 +50,9 @@ public class LocalCryptographyClient {
      *
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
      * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
-     * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
-     * {@link EncryptionAlgorithm#A192CBCPAD A192CBCPAD}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384},
-     * {@link EncryptionAlgorithm#A192GCM A192GCM}, {@link EncryptionAlgorithm#A256CBC A256CBC},
-     * {@link EncryptionAlgorithm#A256CBCPAD A256CBPAD}, {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} and
-     * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
+     * {@link EncryptionAlgorithm#A192CBC A192CBC}, {@link EncryptionAlgorithm#A192CBCPAD A192CBCPAD},
+     * {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384}, {@link EncryptionAlgorithm#A256CBC A256CBC},
+     * {@link EncryptionAlgorithm#A256CBCPAD A256CBPAD} and {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
@@ -85,11 +83,9 @@ public class LocalCryptographyClient {
      *
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
      * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
-     * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
-     * {@link EncryptionAlgorithm#A192CBCPAD A192CBCPAD}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384},
-     * {@link EncryptionAlgorithm#A192GCM A192GCM}, {@link EncryptionAlgorithm#A256CBC A256CBC},
-     * {@link EncryptionAlgorithm#A256CBCPAD A256CBPAD}, {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} and
-     * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
+     * {@link EncryptionAlgorithm#A192CBC A192CBC}, {@link EncryptionAlgorithm#A192CBCPAD A192CBCPAD},
+     * {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384}, {@link EncryptionAlgorithm#A256CBC A256CBC},
+     * {@link EncryptionAlgorithm#A256CBCPAD A256CBPAD} and {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
@@ -119,11 +115,9 @@ public class LocalCryptographyClient {
      *
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
      * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
-     * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
-     * {@link EncryptionAlgorithm#A192CBCPAD A192CBCPAD}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384},
-     * {@link EncryptionAlgorithm#A192GCM A192GCM}, {@link EncryptionAlgorithm#A256CBC A256CBC},
-     * {@link EncryptionAlgorithm#A256CBCPAD A256CBPAD}, {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} and
-     * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
+     * {@link EncryptionAlgorithm#A192CBC A192CBC}, {@link EncryptionAlgorithm#A192CBCPAD A192CBCPAD},
+     * {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384}, {@link EncryptionAlgorithm#A256CBC A256CBC},
+     * {@link EncryptionAlgorithm#A256CBCPAD A256CBPAD} and {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content
@@ -153,11 +147,9 @@ public class LocalCryptographyClient {
      *
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
      * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
-     * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
-     * {@link EncryptionAlgorithm#A192CBCPAD A192CBCPAD}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384},
-     * {@link EncryptionAlgorithm#A192GCM A192GCM}, {@link EncryptionAlgorithm#A256CBC A256CBC},
-     * {@link EncryptionAlgorithm#A256CBCPAD A256CBPAD}, {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} and
-     * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
+     * {@link EncryptionAlgorithm#A192CBC A192CBC}, {@link EncryptionAlgorithm#A192CBCPAD A192CBCPAD},
+     * {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384}, {@link EncryptionAlgorithm#A256CBC A256CBC},
+     * {@link EncryptionAlgorithm#A256CBCPAD A256CBPAD} and {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content

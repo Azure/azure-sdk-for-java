@@ -36,6 +36,12 @@ import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.CassandraReso
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.GremlinResources;
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.RestorableDatabaseAccounts;
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.NotebookWorkspaces;
+import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.RestorableSqlDatabases;
+import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.RestorableSqlContainers;
+import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.RestorableSqlResources;
+import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.RestorableMongodbDatabases;
+import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.RestorableMongodbCollections;
+import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.RestorableMongodbResources;
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.PrivateLinkResources;
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.PrivateEndpointConnections;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
@@ -65,6 +71,12 @@ public final class CosmosDBManager extends ManagerCore<CosmosDBManager, CosmosDB
     private GremlinResources gremlinResources;
     private RestorableDatabaseAccounts restorableDatabaseAccounts;
     private NotebookWorkspaces notebookWorkspaces;
+    private RestorableSqlDatabases restorableSqlDatabases;
+    private RestorableSqlContainers restorableSqlContainers;
+    private RestorableSqlResources restorableSqlResources;
+    private RestorableMongodbDatabases restorableMongodbDatabases;
+    private RestorableMongodbCollections restorableMongodbCollections;
+    private RestorableMongodbResources restorableMongodbResources;
     private PrivateLinkResources privateLinkResources;
     private PrivateEndpointConnections privateEndpointConnections;
     /**
@@ -312,6 +324,66 @@ public final class CosmosDBManager extends ManagerCore<CosmosDBManager, CosmosDB
             this.notebookWorkspaces = new NotebookWorkspacesImpl(this);
         }
         return this.notebookWorkspaces;
+    }
+
+    /**
+     * @return Entry point to manage RestorableSqlDatabases.
+     */
+    public RestorableSqlDatabases restorableSqlDatabases() {
+        if (this.restorableSqlDatabases == null) {
+            this.restorableSqlDatabases = new RestorableSqlDatabasesImpl(this);
+        }
+        return this.restorableSqlDatabases;
+    }
+
+    /**
+     * @return Entry point to manage RestorableSqlContainers.
+     */
+    public RestorableSqlContainers restorableSqlContainers() {
+        if (this.restorableSqlContainers == null) {
+            this.restorableSqlContainers = new RestorableSqlContainersImpl(this);
+        }
+        return this.restorableSqlContainers;
+    }
+
+    /**
+     * @return Entry point to manage RestorableSqlResources.
+     */
+    public RestorableSqlResources restorableSqlResources() {
+        if (this.restorableSqlResources == null) {
+            this.restorableSqlResources = new RestorableSqlResourcesImpl(this);
+        }
+        return this.restorableSqlResources;
+    }
+
+    /**
+     * @return Entry point to manage RestorableMongodbDatabases.
+     */
+    public RestorableMongodbDatabases restorableMongodbDatabases() {
+        if (this.restorableMongodbDatabases == null) {
+            this.restorableMongodbDatabases = new RestorableMongodbDatabasesImpl(this);
+        }
+        return this.restorableMongodbDatabases;
+    }
+
+    /**
+     * @return Entry point to manage RestorableMongodbCollections.
+     */
+    public RestorableMongodbCollections restorableMongodbCollections() {
+        if (this.restorableMongodbCollections == null) {
+            this.restorableMongodbCollections = new RestorableMongodbCollectionsImpl(this);
+        }
+        return this.restorableMongodbCollections;
+    }
+
+    /**
+     * @return Entry point to manage RestorableMongodbResources.
+     */
+    public RestorableMongodbResources restorableMongodbResources() {
+        if (this.restorableMongodbResources == null) {
+            this.restorableMongodbResources = new RestorableMongodbResourcesImpl(this);
+        }
+        return this.restorableMongodbResources;
     }
 
     /**

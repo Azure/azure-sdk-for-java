@@ -40,7 +40,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(rgName);
+        resourceManager.resourceGroups().beginDeleteByName(rgName);
     }
 
     @Test

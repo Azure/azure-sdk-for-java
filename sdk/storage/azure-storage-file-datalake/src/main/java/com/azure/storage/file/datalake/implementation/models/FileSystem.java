@@ -6,10 +6,10 @@ package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * The FileSystem model.
- */
+/** The FileSystem model. */
+@JacksonXmlRootElement(localName = "FileSystem")
 @Fluent
 public final class FileSystem {
     /*

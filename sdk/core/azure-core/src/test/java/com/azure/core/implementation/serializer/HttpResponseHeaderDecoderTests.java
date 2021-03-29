@@ -62,7 +62,7 @@ public class HttpResponseHeaderDecoderTests {
         HttpResponseDecodeData decodeData = mock(HttpResponseDecodeData.class);
         when(decodeData.getHeadersType()).thenReturn(MockHeaders.class);
 
-        HttpResponse response = new MockHttpResponse(null, 200, new HttpHeaders().put("mock-a", "a"));
+        HttpResponse response = new MockHttpResponse(null, 200, new HttpHeaders().set("mock-a", "a"));
 
         StepVerifier.create(HttpResponseHeaderDecoder.decode(response, new JacksonAdapter(), decodeData))
             .assertNext(actual -> {

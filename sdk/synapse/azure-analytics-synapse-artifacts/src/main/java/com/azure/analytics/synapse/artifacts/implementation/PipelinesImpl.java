@@ -65,7 +65,10 @@ public final class PipelinesImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<PipelineListResponse>> getPipelinesByWorkspace(
-                @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Put("/pipelines/{pipelineName}")
         @ExpectedResponses({200, 202})
@@ -76,6 +79,7 @@ public final class PipelinesImpl {
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("If-Match") String ifMatch,
                 @BodyParam("application/json") PipelineResource pipeline,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/pipelines/{pipelineName}")
@@ -86,6 +90,7 @@ public final class PipelinesImpl {
                 @PathParam("pipelineName") String pipelineName,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("If-None-Match") String ifNoneMatch,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Delete("/pipelines/{pipelineName}")
@@ -95,6 +100,7 @@ public final class PipelinesImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("pipelineName") String pipelineName,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/pipelines/{pipelineName}/rename")
@@ -105,6 +111,7 @@ public final class PipelinesImpl {
                 @PathParam("pipelineName") String pipelineName,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") ArtifactRenameRequest request,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/pipelines/{pipelineName}/createRun")
@@ -118,6 +125,7 @@ public final class PipelinesImpl {
                 @QueryParam("isRecovery") Boolean isRecovery,
                 @QueryParam("startActivityName") String startActivityName,
                 @BodyParam("application/json") Map<String, Object> parameters,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("{nextLink}")
@@ -126,6 +134,7 @@ public final class PipelinesImpl {
         Mono<Response<PipelineListResponse>> getPipelinesByWorkspaceNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
@@ -138,10 +147,11 @@ public final class PipelinesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PipelineResource>> getPipelinesByWorkspaceSinglePageAsync() {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.getPipelinesByWorkspace(
-                                        this.client.getEndpoint(), this.client.getApiVersion(), context))
+                                        this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -164,7 +174,8 @@ public final class PipelinesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PipelineResource>> getPipelinesByWorkspaceSinglePageAsync(Context context) {
-        return service.getPipelinesByWorkspace(this.client.getEndpoint(), this.client.getApiVersion(), context)
+        final String accept = "application/json";
+        return service.getPipelinesByWorkspace(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -247,6 +258,7 @@ public final class PipelinesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PipelineResource>> createOrUpdatePipelineWithResponseAsync(
             String pipelineName, PipelineResource pipeline, String ifMatch) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdatePipeline(
@@ -255,6 +267,7 @@ public final class PipelinesImpl {
                                 this.client.getApiVersion(),
                                 ifMatch,
                                 pipeline,
+                                accept,
                                 context));
     }
 
@@ -274,8 +287,15 @@ public final class PipelinesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PipelineResource>> createOrUpdatePipelineWithResponseAsync(
             String pipelineName, PipelineResource pipeline, String ifMatch, Context context) {
+        final String accept = "application/json";
         return service.createOrUpdatePipeline(
-                this.client.getEndpoint(), pipelineName, this.client.getApiVersion(), ifMatch, pipeline, context);
+                this.client.getEndpoint(),
+                pipelineName,
+                this.client.getApiVersion(),
+                ifMatch,
+                pipeline,
+                accept,
+                context);
     }
 
     /**
@@ -420,6 +440,7 @@ public final class PipelinesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PipelineResource>> getPipelineWithResponseAsync(String pipelineName, String ifNoneMatch) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getPipeline(
@@ -427,6 +448,7 @@ public final class PipelinesImpl {
                                 pipelineName,
                                 this.client.getApiVersion(),
                                 ifNoneMatch,
+                                accept,
                                 context));
     }
 
@@ -445,8 +467,9 @@ public final class PipelinesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PipelineResource>> getPipelineWithResponseAsync(
             String pipelineName, String ifNoneMatch, Context context) {
+        final String accept = "application/json";
         return service.getPipeline(
-                this.client.getEndpoint(), pipelineName, this.client.getApiVersion(), ifNoneMatch, context);
+                this.client.getEndpoint(), pipelineName, this.client.getApiVersion(), ifNoneMatch, accept, context);
     }
 
     /**
@@ -581,10 +604,11 @@ public final class PipelinesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deletePipelineWithResponseAsync(String pipelineName) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deletePipeline(
-                                this.client.getEndpoint(), pipelineName, this.client.getApiVersion(), context));
+                                this.client.getEndpoint(), pipelineName, this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -599,7 +623,9 @@ public final class PipelinesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deletePipelineWithResponseAsync(String pipelineName, Context context) {
-        return service.deletePipeline(this.client.getEndpoint(), pipelineName, this.client.getApiVersion(), context);
+        final String accept = "application/json";
+        return service.deletePipeline(
+                this.client.getEndpoint(), pipelineName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -671,6 +697,7 @@ public final class PipelinesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renamePipelineWithResponseAsync(String pipelineName, ArtifactRenameRequest request) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.renamePipeline(
@@ -678,6 +705,7 @@ public final class PipelinesImpl {
                                 pipelineName,
                                 this.client.getApiVersion(),
                                 request,
+                                accept,
                                 context));
     }
 
@@ -695,8 +723,9 @@ public final class PipelinesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renamePipelineWithResponseAsync(
             String pipelineName, ArtifactRenameRequest request, Context context) {
+        final String accept = "application/json";
         return service.renamePipeline(
-                this.client.getEndpoint(), pipelineName, this.client.getApiVersion(), request, context);
+                this.client.getEndpoint(), pipelineName, this.client.getApiVersion(), request, accept, context);
     }
 
     /**
@@ -786,6 +815,7 @@ public final class PipelinesImpl {
             Boolean isRecovery,
             String startActivityName,
             Map<String, Object> parameters) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createPipelineRun(
@@ -796,6 +826,7 @@ public final class PipelinesImpl {
                                 isRecovery,
                                 startActivityName,
                                 parameters,
+                                accept,
                                 context));
     }
 
@@ -825,6 +856,7 @@ public final class PipelinesImpl {
             String startActivityName,
             Map<String, Object> parameters,
             Context context) {
+        final String accept = "application/json";
         return service.createPipelineRun(
                 this.client.getEndpoint(),
                 pipelineName,
@@ -833,6 +865,7 @@ public final class PipelinesImpl {
                 isRecovery,
                 startActivityName,
                 parameters,
+                accept,
                 context);
     }
 
@@ -1026,8 +1059,11 @@ public final class PipelinesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PipelineResource>> getPipelinesByWorkspaceNextSinglePageAsync(String nextLink) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.getPipelinesByWorkspaceNext(nextLink, this.client.getEndpoint(), context))
+                        context ->
+                                service.getPipelinesByWorkspaceNext(
+                                        nextLink, this.client.getEndpoint(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1052,7 +1088,8 @@ public final class PipelinesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PipelineResource>> getPipelinesByWorkspaceNextSinglePageAsync(
             String nextLink, Context context) {
-        return service.getPipelinesByWorkspaceNext(nextLink, this.client.getEndpoint(), context)
+        final String accept = "application/json";
+        return service.getPipelinesByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

@@ -8,12 +8,16 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.netty.implementation.NettyAsyncHttpBufferedResponse;
+import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
+import com.azure.core.http.netty.implementation.NettyToAzureCoreHttpHeadersWrapper;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.EventLoopGroup;
 import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.proxy.ProxyConnectException;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -21,10 +25,14 @@ import reactor.netty.Connection;
 import reactor.netty.NettyOutbound;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
+import reactor.util.retry.Retry;
 
 import java.nio.ByteBuffer;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiFunction;
+
+import static com.azure.core.http.netty.implementation.Utility.closeConnection;
 
 /**
  * This class provides a Netty-based implementation for the {@link HttpClient} interface. Creating an instance of this
@@ -40,13 +48,6 @@ class NettyAsyncHttpClient implements HttpClient {
     private final boolean disableBufferCopy;
 
     final reactor.netty.http.client.HttpClient nettyClient;
-
-    /**
-     * Creates default NettyAsyncHttpClient.
-     */
-    NettyAsyncHttpClient() {
-        this(reactor.netty.http.client.HttpClient.create(), false);
-    }
 
     /**
      * Creates NettyAsyncHttpClient with provided http client.
@@ -80,7 +81,9 @@ class NettyAsyncHttpClient implements HttpClient {
             .uri(request.getUrl().toString())
             .send(bodySendDelegate(request))
             .responseConnection(responseDelegate(request, disableBufferCopy, eagerlyReadResponse))
-            .single();
+            .single()
+            .retryWhen(Retry.max(1).filter(throwable -> throwable instanceof ProxyConnectException)
+                .onRetryExhaustedThrow((ignoredSpec, signal) -> signal.failure()));
     }
 
     /**
@@ -92,9 +95,29 @@ class NettyAsyncHttpClient implements HttpClient {
     private static BiFunction<HttpClientRequest, NettyOutbound, Publisher<Void>> bodySendDelegate(
         final HttpRequest restRequest) {
         return (reactorNettyRequest, reactorNettyOutbound) -> {
-            for (HttpHeader header : restRequest.getHeaders()) {
-                if (header.getValue() != null) {
-                    reactorNettyRequest.header(header.getName(), header.getValue());
+            for (HttpHeader hdr : restRequest.getHeaders()) {
+                // Reactor-Netty allows for headers with multiple values, but it treats them as separate headers,
+                // therefore, we must call rb.addHeader for each value, using the same key for all of them.
+                // We would ideally replace this for-loop with code akin to the code in ReactorNettyHttpResponseBase,
+                // whereby we would wrap the azure-core HttpHeaders in a Netty HttpHeaders wrapper, but as of today it
+                // is not possible in reactor-netty to do this without copying occurring within that library. This
+                // issue has been reported to the reactor-netty team at
+                // https://github.com/reactor/reactor-netty/issues/1479
+                if (reactorNettyRequest.requestHeaders().contains(hdr.getName())) {
+                    // The Reactor-Netty request headers include headers by default, to prevent a scenario where we end
+                    // adding a header twice that isn't allowed, such as User-Agent, check against the initial request
+                    // header names. If our request header already exists in the Netty request we overwrite it initially
+                    // then append our additional values if it is a multi-value header.
+                    final AtomicBoolean first = new AtomicBoolean(true);
+                    hdr.getValuesList().forEach(value -> {
+                        if (first.compareAndSet(true, false)) {
+                            reactorNettyRequest.header(hdr.getName(), value);
+                        } else {
+                            reactorNettyRequest.addHeader(hdr.getName(), value);
+                        }
+                    });
+                } else {
+                    hdr.getValuesList().forEach(value -> reactorNettyRequest.addHeader(hdr.getName(), value));
                 }
             }
             if (restRequest.getBody() != null) {
@@ -126,26 +149,14 @@ class NettyAsyncHttpClient implements HttpClient {
                 Flux<ByteBuffer> body = reactorNettyConnection.inbound().receive().asByteBuffer()
                     .doFinally(ignored -> closeConnection(reactorNettyConnection));
 
-                return FluxUtil.collectBytesInByteBufferStream(body)
-                    .map(bytes -> new BufferedReactorNettyHttpResponse(reactorNettyResponse, restRequest, bytes));
+                return FluxUtil.collectBytesFromNetworkResponse(body,
+                    new NettyToAzureCoreHttpHeadersWrapper(reactorNettyResponse.responseHeaders()))
+                    .map(bytes -> new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest, bytes));
 
             } else {
-                return Mono.just(new ReactorNettyHttpResponse(reactorNettyResponse, reactorNettyConnection, restRequest,
+                return Mono.just(new NettyAsyncHttpResponse(reactorNettyResponse, reactorNettyConnection, restRequest,
                     disableBufferCopy));
             }
         };
-    }
-
-    static ByteBuffer deepCopyBuffer(ByteBuf byteBuf) {
-        ByteBuffer buffer = ByteBuffer.allocate(byteBuf.readableBytes());
-        byteBuf.readBytes(buffer);
-        buffer.rewind();
-        return buffer;
-    }
-
-    static void closeConnection(Connection reactorNettyConnection) {
-        if (!reactorNettyConnection.isDisposed()) {
-            reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
-        }
     }
 }

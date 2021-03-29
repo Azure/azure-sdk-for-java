@@ -100,11 +100,8 @@ public final class AzureDirectoryStream implements DirectoryStream<Path> {
 
         @Override
         public boolean hasNext() {
-            try {
-                AzurePath.ensureFileSystemOpen(path);
-            } catch (IOException e) {
-                throw LoggingUtility.logError(logger, new DirectoryIteratorException(e));
-            }
+            AzurePath.ensureFileSystemOpen(path);
+
             // Closing the parent stream halts iteration.
             if (parentStream.closed) {
                 return false;

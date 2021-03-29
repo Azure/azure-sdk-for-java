@@ -3,8 +3,8 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.ChangeFeedOptions;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
@@ -23,8 +23,6 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.fasterxml.jackson.databind.JsonNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -40,11 +38,9 @@ import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
  * Implementation for ChangeFeedDocumentClient.
  */
 public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
-    private final Logger logger = LoggerFactory.getLogger(ChangeFeedContextClientImpl.class);
-
     private final AsyncDocumentClient documentClient;
     private final CosmosAsyncContainer cosmosContainer;
-    private Scheduler rxScheduler;
+    private final Scheduler rxScheduler;
 
     /**
      * Initializes a new instance of the {@link ChangeFeedContextClient} interface.
@@ -57,7 +53,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
 
         this.cosmosContainer = cosmosContainer;
         this.documentClient = getContextClient(cosmosContainer);
-        this.rxScheduler = Schedulers.elastic();
+        this.rxScheduler = Schedulers.boundedElastic();
     }
 
     /**
@@ -83,20 +79,46 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     }
 
     @Override
-    public Flux<FeedResponse<JsonNode>> createDocumentChangeFeedQuery(CosmosAsyncContainer collectionLink,
-                                                                      ChangeFeedOptions feedOptions) {
+    public Flux<FeedResponse<JsonNode>> createDocumentChangeFeedQuery(
+        CosmosAsyncContainer collectionLink,
+        CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
+
+        // ChangeFeed processor relies on getting GoneException signals
+        // to handle split of leases - so we need to suppress the split-proofing
+        // in the underlying fetcher/pipeline for the change feed processor.
+        CosmosChangeFeedRequestOptions effectiveRequestOptions =
+            ModelBridgeInternal.disableSplitHandling(changeFeedRequestOptions);
+
         AsyncDocumentClient clientWrapper =
             CosmosBridgeInternal.getAsyncDocumentClient(collectionLink.getDatabase());
         Flux<FeedResponse<JsonNode>> feedResponseFlux =
-            clientWrapper.queryDocumentChangeFeed(BridgeInternal.extractContainerSelfLink(collectionLink), feedOptions)
-                                                                    .map(response -> {
-                                                                        List<JsonNode> results = response.getResults()
-                                                                                                                     .stream()
-                                                                                                                     .map(document ->
-                                                                                                                         ModelBridgeInternal.toObjectFromJsonSerializable(document, JsonNode.class))
-                                                                                                                     .collect(Collectors.toList());
-                                                                        return BridgeInternal.toFeedResponsePage(results, response.getResponseHeaders(), false);
-                                                                    });
+            clientWrapper
+                .getCollectionCache()
+                .resolveByNameAsync(
+                    null,
+                    BridgeInternal.extractContainerSelfLink(collectionLink),
+                    null)
+                .flatMapMany((collection) -> {
+                    if (collection == null) {
+                        throw new IllegalStateException("Collection cannot be null");
+                    }
+
+                    return clientWrapper
+                        .queryDocumentChangeFeed(collection, effectiveRequestOptions)
+                        .map(response -> {
+                            List<JsonNode> results = response.getResults()
+                                                             .stream()
+                                                             .map(document ->
+                                                                 ModelBridgeInternal.toObjectFromJsonSerializable(
+                                                                     document,
+                                                                     JsonNode.class))
+                                                             .collect(Collectors.toList());
+                            return BridgeInternal.toFeedResponsePage(
+                                results,
+                                response.getResponseHeaders(),
+                                false);
+                        });
+                });
         return feedResponseFlux.publishOn(this.rxScheduler);
     }
 
@@ -161,7 +183,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     @Override
     public Mono<CosmosContainerProperties> readContainerSettings(CosmosAsyncContainer containerLink, CosmosContainerRequestOptions options) {
         return containerLink.read(options)
-            .map(cosmosContainerResponse -> cosmosContainerResponse.getProperties());
+            .map(CosmosContainerResponse::getProperties);
     }
 
     @Override

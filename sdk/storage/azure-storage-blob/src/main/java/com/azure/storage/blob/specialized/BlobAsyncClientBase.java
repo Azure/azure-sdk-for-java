@@ -3,11 +3,14 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
@@ -21,13 +24,13 @@ import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.HttpGetterInfo;
 import com.azure.storage.blob.ProgressReporter;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.implementation.models.BlobGetAccountInfoHeaders;
-import com.azure.storage.blob.implementation.models.BlobGetPropertiesHeaders;
-import com.azure.storage.blob.implementation.models.BlobStartCopyFromURLHeaders;
+import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.models.BlobTag;
 import com.azure.storage.blob.implementation.models.BlobTags;
+import com.azure.storage.blob.implementation.models.BlobsGetAccountInfoHeaders;
+import com.azure.storage.blob.implementation.models.BlobsGetPropertiesHeaders;
+import com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.QueryRequest;
 import com.azure.storage.blob.implementation.models.QuerySerialization;
@@ -37,30 +40,31 @@ import com.azure.storage.blob.implementation.util.ChunkedDownloadUtils;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.ArchiveStatus;
+import com.azure.storage.blob.models.BlobDownloadContentAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
-import com.azure.storage.blob.models.CustomerProvidedKey;
-import com.azure.storage.blob.options.BlobBeginCopyOptions;
-import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
-import com.azure.storage.blob.options.BlobDownloadToFileOptions;
-import com.azure.storage.blob.options.BlobGetTagsOptions;
-import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.BlobBeginCopyOptions;
+import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
+import com.azure.storage.blob.options.BlobDownloadToFileOptions;
+import com.azure.storage.blob.options.BlobGetTagsOptions;
+import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
@@ -190,27 +194,27 @@ public class BlobAsyncClientBase {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("'snapshot' and 'versionId' cannot be used at the same time."));
         }
-        /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
-           when the sas token has already been applied. */
-        try {
-            URI.create(url);
-        } catch (IllegalArgumentException ex) {
-            throw logger.logExceptionAsError(ex);
-        }
-        this.azureBlobStorage = new AzureBlobStorageBuilder()
+        this.azureBlobStorage = new AzureBlobStorageImplBuilder()
             .pipeline(pipeline)
             .url(url)
             .version(serviceVersion.getVersion())
-            .build();
+            .buildClient();
         this.serviceVersion = serviceVersion;
 
         this.accountName = accountName;
         this.containerName = containerName;
-        this.blobName = Utility.urlEncode(Utility.urlDecode(blobName));
+        this.blobName = Utility.urlDecode(blobName);
         this.snapshot = snapshot;
         this.customerProvidedKey = customerProvidedKey;
         this.encryptionScope = encryptionScope;
         this.versionId = versionId;
+        /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
+           when the sas token has already been applied. */
+        try {
+            URI.create(getBlobUrl());
+        } catch (IllegalArgumentException ex) {
+            throw logger.logExceptionAsError(ex);
+        }
     }
 
     /**
@@ -232,7 +236,7 @@ public class BlobAsyncClientBase {
      * @return a {@link BlobAsyncClientBase} used to interact with the specific snapshot.
      */
     public BlobAsyncClientBase getSnapshotClient(String snapshot) {
-        return new BlobAsyncClientBase(getHttpPipeline(), getBlobUrl(), getServiceVersion(), getAccountName(),
+        return new BlobAsyncClientBase(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), snapshot, getCustomerProvidedKey(), encryptionScope, getVersionId());
     }
 
@@ -244,8 +248,18 @@ public class BlobAsyncClientBase {
      * @return a {@link BlobAsyncClientBase} used to interact with the specific version.
      */
     public BlobAsyncClientBase getVersionClient(String versionId) {
-        return new BlobAsyncClientBase(getHttpPipeline(), getBlobUrl(), getServiceVersion(), getAccountName(),
+        return new BlobAsyncClientBase(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(), encryptionScope, versionId);
+    }
+
+
+    /**
+     * Get the url of the storage account.
+     *
+     * @return the URL of the storage account
+     */
+    public String getAccountUrl() {
+        return azureBlobStorage.getUrl();
     }
 
     /**
@@ -254,7 +268,7 @@ public class BlobAsyncClientBase {
      * @return the URL.
      */
     public String getBlobUrl() {
-        String blobUrl = azureBlobStorage.getUrl();
+        String blobUrl = azureBlobStorage.getUrl() + "/" + containerName + "/" + Utility.urlEncode(blobName);
         if (this.isSnapshot()) {
             blobUrl = Utility.appendQueryParameter(blobUrl, "snapshot", getSnapshotId());
         }
@@ -386,6 +400,7 @@ public class BlobAsyncClientBase {
      *
      * @return true if the blob exists, false if it doesn't
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> exists() {
         try {
             return existsWithResponse().flatMap(FluxUtil::toMono);
@@ -403,6 +418,7 @@ public class BlobAsyncClientBase {
      *
      * @return true if the blob exists, false if it doesn't
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> existsWithResponse() {
         try {
             return withContext(this::existsWithResponse);
@@ -443,6 +459,7 @@ public class BlobAsyncClientBase {
      * @return A {@link PollerFlux} that polls the blob copy operation until it has completed, has failed, or has been
      * cancelled.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<BlobCopyInfo, Void> beginCopy(String sourceUrl, Duration pollInterval) {
         return beginCopy(sourceUrl, null, null, null, null, null, pollInterval);
     }
@@ -478,6 +495,7 @@ public class BlobAsyncClientBase {
      * @return A {@link PollerFlux} that polls the blob copy operation until it has completed, has failed, or has been
      * cancelled.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<BlobCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata, AccessTier tier,
         RehydratePriority priority, RequestConditions sourceModifiedRequestConditions,
         BlobRequestConditions destRequestConditions, Duration pollInterval) {
@@ -511,6 +529,7 @@ public class BlobAsyncClientBase {
      * @return A {@link PollerFlux} that polls the blob copy operation until it has completed, has failed, or has been
      * cancelled.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<BlobCopyInfo, Void> beginCopy(BlobBeginCopyOptions options) {
         StorageImplUtils.assertNotNull("options", options);
         final Duration interval = options.getPollInterval() != null
@@ -571,7 +590,7 @@ public class BlobAsyncClientBase {
         }
 
         return withContext(
-            context -> azureBlobStorage.blobs().startCopyFromURLWithRestResponseAsync(null, null, url, null, metadata,
+            context -> azureBlobStorage.getBlobs().startCopyFromURLWithResponseAsync(containerName, blobName, url, null, metadata,
                 tier, priority, sourceModifiedRequestConditions.getIfModifiedSince(),
                 sourceModifiedRequestConditions.getIfUnmodifiedSince(), sourceModifiedRequestConditions.getIfMatch(),
                 sourceModifiedRequestConditions.getIfNoneMatch(), sourceModifiedRequestConditions.getTagsConditions(),
@@ -580,10 +599,11 @@ public class BlobAsyncClientBase {
                 destinationRequestConditions.getTagsConditions(), destinationRequestConditions.getLeaseId(), null,
                 tagsToString(tags), sealBlob, context))
             .map(response -> {
-                final BlobStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
+                final BlobsStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
 
-                return new BlobCopyInfo(sourceUrl, headers.getCopyId(), headers.getCopyStatus(),
-                    headers.getETag(), headers.getLastModified(), headers.getErrorCode(), headers.getVersionId());
+                return new BlobCopyInfo(sourceUrl, headers.getXMsCopyId(), headers.getXMsCopyStatus(),
+                    headers.getETag(), headers.getLastModified(), ModelHelper.getErrorCode(response.getHeaders()),
+                    headers.getXMsVersionId());
             });
     }
 
@@ -658,7 +678,7 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromUrl#String}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
      *
      * @param copyId The id of the copy operation to abort.
      * @return A reactive response signalling completion.
@@ -666,6 +686,7 @@ public class BlobAsyncClientBase {
      * @see #beginCopy(String, Duration)
      * @see #beginCopy(String, Map, AccessTier, RehydratePriority, RequestConditions, BlobRequestConditions, Duration)
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> abortCopyFromUrl(String copyId) {
         try {
             return abortCopyFromUrlWithResponse(copyId, null).flatMap(FluxUtil::toMono);
@@ -682,7 +703,7 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromUrlWithResponse#String-String}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
      *
      * @param copyId The id of the copy operation to abort.
      * @param leaseId The lease ID the active lease on the blob must match.
@@ -691,6 +712,7 @@ public class BlobAsyncClientBase {
      * @see #beginCopy(String, Duration)
      * @see #beginCopy(String, Map, AccessTier, RehydratePriority, RequestConditions, BlobRequestConditions, Duration)
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> abortCopyFromUrlWithResponse(String copyId, String leaseId) {
         try {
             return withContext(context -> abortCopyFromUrlWithResponse(copyId, leaseId, context));
@@ -700,8 +722,8 @@ public class BlobAsyncClientBase {
     }
 
     Mono<Response<Void>> abortCopyFromUrlWithResponse(String copyId, String leaseId, Context context) {
-        return this.azureBlobStorage.blobs().abortCopyFromURLWithRestResponseAsync(
-            null, null, copyId, null, leaseId, null, context)
+        return this.azureBlobStorage.getBlobs().abortCopyFromURLWithResponseAsync(
+            containerName, blobName, copyId, null, leaseId, null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -716,11 +738,12 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrl#String}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob-from-url">Azure Docs</a></p>
      *
      * @param copySource The source URL to copy from.
      * @return A reactive response containing the copy ID for the long running operation.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> copyFromUrl(String copySource) {
         try {
             return copyFromUrlWithResponse(copySource, null, null, null, null).flatMap(FluxUtil::toMono);
@@ -740,7 +763,7 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrlWithResponse#String-Map-AccessTier-RequestConditions-BlobRequestConditions}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob-from-url">Azure Docs</a></p>
      *
      * @param copySource The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param metadata Metadata to associate with the destination blob. If there is leading or trailing whitespace in
@@ -753,6 +776,7 @@ public class BlobAsyncClientBase {
      * @param destRequestConditions {@link BlobRequestConditions} against the destination.
      * @return A reactive response containing the copy ID for the long running operation.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> copyFromUrlWithResponse(String copySource, Map<String, String> metadata,
         AccessTier tier, RequestConditions sourceModifiedRequestConditions,
         BlobRequestConditions destRequestConditions) {
@@ -772,11 +796,12 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrlWithResponse#BlobCopyFromUrlOptions}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob-from-url">Azure Docs</a></p>
      *
      * @param options {@link BlobCopyFromUrlOptions}
      * @return A reactive response containing the copy ID for the long running operation.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> copyFromUrlWithResponse(BlobCopyFromUrlOptions options) {
         try {
             return withContext(context -> copyFromUrlWithResponse(options, context));
@@ -799,8 +824,8 @@ public class BlobAsyncClientBase {
             throw logger.logExceptionAsError(new IllegalArgumentException("'copySource' is not a valid url."));
         }
 
-        return this.azureBlobStorage.blobs().copyFromURLWithRestResponseAsync(
-            null, null, url, null, options.getMetadata(), options.getTier(),
+        return this.azureBlobStorage.getBlobs().copyFromURLWithResponseAsync(
+            containerName, blobName, url, null, options.getMetadata(), options.getTier(),
             sourceModifiedRequestConditions.getIfModifiedSince(),
             sourceModifiedRequestConditions.getIfUnmodifiedSince(), sourceModifiedRequestConditions.getIfMatch(),
             sourceModifiedRequestConditions.getIfNoneMatch(), destRequestConditions.getIfModifiedSince(),
@@ -808,7 +833,7 @@ public class BlobAsyncClientBase {
             destRequestConditions.getIfNoneMatch(), destRequestConditions.getTagsConditions(),
             destRequestConditions.getLeaseId(), null, null,
             tagsToString(options.getTags()), context)
-            .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getCopyId()));
+            .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsCopyId()));
     }
 
     /**
@@ -820,16 +845,63 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.download}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * <p>This method will be deprecated in the future. Use {@link #downloadStream()} instead.
      *
      * @return A reactive response containing the blob data.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<ByteBuffer> download() {
+        return downloadStream();
+    }
+
+    /**
+     * Reads the entire blob. Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or
+     * {@link AppendBlobClient}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadStream}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @return A reactive response containing the blob data.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<ByteBuffer> downloadStream() {
         try {
             return downloadWithResponse(null, null, null, false)
                 .flatMapMany(BlobDownloadAsyncResponse::getValue);
         } catch (RuntimeException ex) {
             return fluxError(logger, ex);
+        }
+    }
+
+    /**
+     * Reads the entire blob. Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or
+     * {@link AppendBlobClient}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.downloadContent}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * <p>This method supports downloads up to 2GB of data.
+     * Use {@link #downloadStream()} to download larger blobs.</p>
+     *
+     * @return A reactive response containing the blob data.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> downloadContent() {
+        try {
+            return downloadWithResponse(null, null, null, false)
+                .flatMap(response -> BinaryData.fromFlux(response.getValue()));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
         }
     }
 
@@ -842,7 +914,10 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadWithResponse#BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * <p>This method will be deprecated in the future.
+     * Use {@link #downloadStreamWithResponse(BlobRange, DownloadRetryOptions, BlobRequestConditions, boolean)}  instead.
      *
      * @param range {@link BlobRange}
      * @param options {@link DownloadRetryOptions}
@@ -850,18 +925,82 @@ public class BlobAsyncClientBase {
      * @param getRangeContentMd5 Whether the contentMD5 for the specified blob range should be returned.
      * @return A reactive response containing the blob data.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobDownloadAsyncResponse> downloadWithResponse(BlobRange range, DownloadRetryOptions options,
+        BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
+        return downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5);
+    }
+
+    /**
+     * Reads a range of bytes from a blob. Uploading data must be done from the {@link BlockBlobClient}, {@link
+     * PageBlobClient}, or {@link AppendBlobClient}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadStreamWithResponse#BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param range {@link BlobRange}
+     * @param options {@link DownloadRetryOptions}
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param getRangeContentMd5 Whether the contentMD5 for the specified blob range should be returned.
+     * @return A reactive response containing the blob data.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
         try {
             return withContext(context ->
-                downloadWithResponse(range, options, requestConditions, getRangeContentMd5,
+                downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5,
                     context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<BlobDownloadAsyncResponse> downloadWithResponse(BlobRange range, DownloadRetryOptions options,
+    /**
+     * Reads a range of bytes from a blob. Uploading data must be done from the {@link BlockBlobClient}, {@link
+     * PageBlobClient}, or {@link AppendBlobClient}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadContentWithResponse#DownloadRetryOptions-BlobRequestConditions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * <p>This method supports downloads up to 2GB of data.
+     * Use {@link #downloadStreamWithResponse(BlobRange, DownloadRetryOptions, BlobRequestConditions, boolean)}
+     * to download larger blobs.</p>
+     *
+     * @param options {@link DownloadRetryOptions}
+     * @param requestConditions {@link BlobRequestConditions}
+     * @return A reactive response containing the blob data.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobDownloadContentAsyncResponse> downloadContentWithResponse(
+        DownloadRetryOptions options,
+        BlobRequestConditions requestConditions) {
+        try {
+            return withContext(context ->
+                downloadStreamWithResponse(null, options, requestConditions, false,
+                    context)
+                    .flatMap(r ->
+                        BinaryData.fromFlux(r.getValue())
+                        .map(data ->
+                            new BlobDownloadContentAsyncResponse(
+                                r.getRequest(), r.getStatusCode(),
+                                r.getHeaders(), data,
+                                r.getDeserializedHeaders())
+                        )));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5, Context context) {
         return downloadHelper(range, options, requestConditions, getRangeContentMd5, context)
             .map(response -> new BlobDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
@@ -878,13 +1017,13 @@ public class BlobAsyncClientBase {
             .setCount(range.getCount())
             .setETag(requestConditions.getIfMatch());
 
-        return azureBlobStorage.blobs().downloadWithRestResponseAsync(null, null, snapshot, versionId, null,
+        return azureBlobStorage.getBlobs().downloadWithResponseAsync(containerName, blobName, snapshot, versionId, null,
             range.toHeaderValue(), requestConditions.getLeaseId(), getMD5, null, requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
             customerProvidedKey, context)
             .map(response -> {
-                info.setETag(response.getDeserializedHeaders().getETag());
+                info.setETag(ModelHelper.getETag(response.getHeaders()));
                 return new ReliableDownload(response, options, info, updatedInfo ->
                     downloadHelper(new BlobRange(updatedInfo.getOffset(), updatedInfo.getCount()), options,
                         new BlobRequestConditions().setIfMatch(info.getETag()), false, context));
@@ -902,11 +1041,12 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
      * @return A reactive response containing the blob properties and metadata.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobProperties> downloadToFile(String filePath) {
         return downloadToFile(filePath, false);
     }
@@ -922,12 +1062,13 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String-boolean}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
      * @param overwrite Whether or not to overwrite the file, should the file exist.
      * @return A reactive response containing the blob properties and metadata.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobProperties> downloadToFile(String filePath, boolean overwrite) {
         try {
             Set<OpenOption> openOptions = null;
@@ -957,7 +1098,7 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
      * @param range {@link BlobRange}
@@ -970,6 +1111,7 @@ public class BlobAsyncClientBase {
      * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 4000MB.
      * @throws UncheckedIOException If an I/O error occurs.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
         ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean rangeGetContentMd5) {
@@ -989,7 +1131,7 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean-Set}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
      * @param range {@link BlobRange}
@@ -1003,6 +1145,7 @@ public class BlobAsyncClientBase {
      * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 4000MB.
      * @throws UncheckedIOException If an I/O error occurs.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
         ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions) {
@@ -1031,13 +1174,14 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#BlobDownloadToFileOptions}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param options {@link BlobDownloadToFileOptions}
      * @return A reactive response containing the blob properties and metadata.
      * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 4000MB.
      * @throws UncheckedIOException If an I/O error occurs.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlobProperties>> downloadToFileWithResponse(BlobDownloadToFileOptions options) {
         try {
             return withContext(context -> downloadToFileWithResponse(options, context));
@@ -1091,7 +1235,7 @@ public class BlobAsyncClientBase {
          * Downloads the first chunk and gets the size of the data and etag if not specified by the user.
          */
         BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc =
-            (range, conditions) -> this.downloadWithResponse(range, downloadRetryOptions, conditions,
+            (range, conditions) -> this.downloadStreamWithResponse(range, downloadRetryOptions, conditions,
                 rangeGetContentMd5, context);
 
         return ChunkedDownloadUtils.downloadFirstChunk(finalRange, finalParallelTransferOptions, requestConditions,
@@ -1169,17 +1313,20 @@ public class BlobAsyncClientBase {
     }
 
     /**
-     * Deletes the specified blob or snapshot. Note that deleting a blob also deletes all its snapshots.
+     * Deletes the specified blob or snapshot. To delete a blob with its snapshots use
+     * {@link #deleteWithResponse(DeleteSnapshotsOptionType, BlobRequestConditions)} and set
+     * {@code DeleteSnapshotsOptionType} to INCLUDE.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.delete}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-blob">Azure Docs</a></p>
      *
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> delete() {
         try {
             return deleteWithResponse(null, null).flatMap(FluxUtil::toMono);
@@ -1189,14 +1336,16 @@ public class BlobAsyncClientBase {
     }
 
     /**
-     * Deletes the specified blob or snapshot. Note that deleting a blob also deletes all its snapshots.
+     * Deletes the specified blob or snapshot. To delete a blob with its snapshots use
+     * {@link #deleteWithResponse(DeleteSnapshotsOptionType, BlobRequestConditions)} and set
+     * {@code DeleteSnapshotsOptionType} to INCLUDE.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-blob">Azure Docs</a></p>
      *
      * @param deleteBlobSnapshotOptions Specifies the behavior for deleting the snapshots on this blob. {@code Include}
      * will delete the base blob and all snapshots. {@code Only} will delete only the snapshots. If a snapshot is being
@@ -1204,6 +1353,7 @@ public class BlobAsyncClientBase {
      * @param requestConditions {@link BlobRequestConditions}
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
         BlobRequestConditions requestConditions) {
         try {
@@ -1218,7 +1368,7 @@ public class BlobAsyncClientBase {
         BlobRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
-        return this.azureBlobStorage.blobs().deleteWithRestResponseAsync(null, null, snapshot, versionId,
+        return this.azureBlobStorage.getBlobs().deleteWithResponseAsync(containerName, blobName, snapshot, versionId,
             null, requestConditions.getLeaseId(), deleteBlobSnapshotOptions, requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, null, context)
@@ -1233,10 +1383,11 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getProperties}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
      *
      * @return A reactive response containing the blob properties and metadata.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobProperties> getProperties() {
         try {
             return getPropertiesWithResponse(null).flatMap(FluxUtil::toMono);
@@ -1253,11 +1404,12 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getPropertiesWithResponse#BlobRequestConditions}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
      *
      * @param requestConditions {@link BlobRequestConditions}
      * @return A reactive response containing the blob properties and metadata.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlobProperties>> getPropertiesWithResponse(BlobRequestConditions requestConditions) {
         try {
             return withContext(context -> getPropertiesWithResponse(requestConditions, context));
@@ -1270,29 +1422,30 @@ public class BlobAsyncClientBase {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.blobs().getPropertiesWithRestResponseAsync(
-            null, null, snapshot, versionId, null, requestConditions.getLeaseId(),
+        return this.azureBlobStorage.getBlobs().getPropertiesWithResponseAsync(
+            containerName, blobName, snapshot, versionId, null, requestConditions.getLeaseId(),
             requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, customerProvidedKey,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
-                BlobGetPropertiesHeaders hd = rb.getDeserializedHeaders();
-                BlobProperties properties = new BlobProperties(hd.getCreationTime(), hd.getLastModified(), hd.getETag(),
-                    hd.getContentLength() == null ? 0 : hd.getContentLength(), hd.getContentType(), hd.getContentMD5(),
-                    hd.getContentEncoding(), hd.getContentDisposition(), hd.getContentLanguage(), hd.getCacheControl(),
-                    hd.getBlobSequenceNumber(), hd.getBlobType(), hd.getLeaseStatus(), hd.getLeaseState(),
-                    hd.getLeaseDuration(), hd.getCopyId(), hd.getCopyStatus(), hd.getCopySource(), hd.getCopyProgress(),
-                    hd.getCopyCompletionTime(), hd.getCopyStatusDescription(), hd.isServerEncrypted(),
-                    hd.isIncrementalCopy(), hd.getDestinationSnapshot(), AccessTier.fromString(hd.getAccessTier()),
-                    hd.isAccessTierInferred(), ArchiveStatus.fromString(hd.getArchiveStatus()),
-                    hd.getEncryptionKeySha256(), hd.getEncryptionScope(), hd.getAccessTierChangeTime(),
-                    hd.getMetadata(), hd.getBlobCommittedBlockCount(), hd.getTagCount(), hd.getVersionId(),
-                    hd.isCurrentVersion(),
-                    ModelHelper.getObjectReplicationSourcePolicies(hd.getObjectReplicationRules()),
-                    ModelHelper.getObjectReplicationDestinationPolicyId(hd.getObjectReplicationRules()),
-                    RehydratePriority.fromString(hd.getRehydratePriority()), hd.isSealed(), hd.getLastAccessed(),
-                    hd.getExpiresOn());
+                BlobsGetPropertiesHeaders hd = rb.getDeserializedHeaders();
+                BlobProperties properties = new BlobProperties(hd.getXMsCreationTime(), hd.getLastModified(),
+                    hd.getETag(), hd.getContentLength() == null ? 0 : hd.getContentLength(), hd.getContentType(),
+                    hd.getContentMD5(), hd.getContentEncoding(), hd.getContentDisposition(), hd.getContentLanguage(),
+                    hd.getCacheControl(), hd.getXMsBlobSequenceNumber(), hd.getXMsBlobType(), hd.getXMsLeaseStatus(),
+                    hd.getXMsLeaseState(), hd.getXMsLeaseDuration(), hd.getXMsCopyId(), hd.getXMsCopyStatus(),
+                    hd.getXMsCopySource(), hd.getXMsCopyProgress(), hd.getXMsCopyCompletionTime(),
+                    hd.getXMsCopyStatusDescription(), hd.isXMsServerEncrypted(), hd.isXMsIncrementalCopy(),
+                    hd.getXMsCopyDestinationSnapshot(), AccessTier.fromString(hd.getXMsAccessTier()),
+                    hd.isXMsAccessTierInferred(), ArchiveStatus.fromString(hd.getXMsArchiveStatus()),
+                    hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(), hd.getXMsAccessTierChangeTime(),
+                    hd.getXMsMeta(), hd.getXMsBlobCommittedBlockCount(), hd.getXMsTagCount(), hd.getXMsVersionId(),
+                    hd.isXMsIsCurrentVersion(),
+                    ModelHelper.getObjectReplicationSourcePolicies(hd.getXMsOr()),
+                    ModelHelper.getObjectReplicationDestinationPolicyId(hd.getXMsOr()),
+                    RehydratePriority.fromString(hd.getXMsRehydratePriority()), hd.isXMsBlobSealed(),
+                    hd.getXMsLastAccessTime(), hd.getXMsExpiryTime());
                 return new SimpleResponse<>(rb, properties);
             });
     }
@@ -1306,11 +1459,12 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setHttpHeaders#BlobHttpHeaders}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
      *
      * @param headers {@link BlobHttpHeaders}
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setHttpHeaders(BlobHttpHeaders headers) {
         try {
             return setHttpHeadersWithResponse(headers, null).flatMap(FluxUtil::toMono);
@@ -1328,12 +1482,13 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setHttpHeadersWithResponse#BlobHttpHeaders-BlobRequestConditions}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
      *
      * @param headers {@link BlobHttpHeaders}
      * @param requestConditions {@link BlobRequestConditions}
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setHttpHeadersWithResponse(BlobHttpHeaders headers,
         BlobRequestConditions requestConditions) {
         try {
@@ -1347,8 +1502,8 @@ public class BlobAsyncClientBase {
         Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
-        return this.azureBlobStorage.blobs().setHTTPHeadersWithRestResponseAsync(
-            null, null, null, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
+        return this.azureBlobStorage.getBlobs().setHttpHeadersWithResponseAsync(
+            containerName, blobName, null, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, headers, context)
             .map(response -> new SimpleResponse<>(response, null));
@@ -1363,12 +1518,13 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setMetadata#Map}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
      *
      * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
      * metadata key or value, it must be removed or encoded.
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setMetadata(Map<String, String> metadata) {
         try {
             return setMetadataWithResponse(metadata, null).flatMap(FluxUtil::toMono);
@@ -1386,13 +1542,14 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setMetadataWithResponse#Map-BlobRequestConditions}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
      *
      * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
      * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link BlobRequestConditions}
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata,
         BlobRequestConditions requestConditions) {
         try {
@@ -1407,8 +1564,8 @@ public class BlobAsyncClientBase {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.blobs().setMetadataWithRestResponseAsync(
-            null, null, null, metadata, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
+        return this.azureBlobStorage.getBlobs().setMetadataWithResponseAsync(
+            containerName, blobName, null, metadata, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, customerProvidedKey,
             encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
@@ -1423,10 +1580,11 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getTags}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-tags">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-tags">Azure Docs</a></p>
      *
      * @return A reactive response containing the blob's tags.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Map<String, String>> getTags() {
         return this.getTagsWithResponse(new BlobGetTagsOptions()).map(Response::getValue);
     }
@@ -1439,11 +1597,12 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getTagsWithResponse#BlobGetTagsOptions}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-tags">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-tags">Azure Docs</a></p>
      *
      * @param options {@link BlobGetTagsOptions}
      * @return A reactive response containing the blob's tags.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Map<String, String>>> getTagsWithResponse(BlobGetTagsOptions options) {
         try {
             return withContext(context -> getTagsWithResponse(options, context));
@@ -1456,7 +1615,7 @@ public class BlobAsyncClientBase {
         options = (options == null) ? new BlobGetTagsOptions() : options;
         BlobRequestConditions requestConditions = (options.getRequestConditions() == null)
             ? new BlobRequestConditions() : options.getRequestConditions();
-        return this.azureBlobStorage.blobs().getTagsWithRestResponseAsync(null, null, null, null, snapshot,
+        return this.azureBlobStorage.getBlobs().getTagsWithResponseAsync(containerName, blobName, null, null, snapshot,
             versionId, requestConditions.getTagsConditions(), requestConditions.getLeaseId(), context)
             .map(response -> {
                 Map<String, String> tags = new HashMap<>();
@@ -1476,11 +1635,12 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setTags#Map}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tags">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-tags">Azure Docs</a></p>
      *
      * @param tags Tags to associate with the blob.
      * @return A reactive response signaling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setTags(Map<String, String> tags) {
         return this.setTagsWithResponse(new BlobSetTagsOptions(tags)).flatMap(FluxUtil::toMono);
     }
@@ -1494,11 +1654,12 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setTagsWithResponse#BlobSetTagsOptions}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tags">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-tags">Azure Docs</a></p>
      *
      * @param options {@link BlobSetTagsOptions}
      * @return A reactive response signaling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setTagsWithResponse(BlobSetTagsOptions options) {
         try {
             return withContext(context -> setTagsWithResponse(options, context));
@@ -1519,7 +1680,7 @@ public class BlobAsyncClientBase {
             }
         }
         BlobTags t = new BlobTags().setBlobTagSet(tagList);
-        return this.azureBlobStorage.blobs().setTagsWithRestResponseAsync(null, null, null, versionId, null, null, null,
+        return this.azureBlobStorage.getBlobs().setTagsWithResponseAsync(containerName, blobName, null, versionId, null, null, null,
             requestConditions.getTagsConditions(), requestConditions.getLeaseId(), t, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -1532,11 +1693,12 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.createSnapshot}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/snapshot-blob">Azure Docs</a></p>
      *
      * @return A response containing a {@link BlobAsyncClientBase} which is used to interact with the created snapshot,
      * use {@link #getSnapshotId()} to get the identifier for the snapshot.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobAsyncClientBase> createSnapshot() {
         try {
             return createSnapshotWithResponse(null, null).flatMap(FluxUtil::toMono);
@@ -1553,7 +1715,7 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.createSnapshotWithResponse#Map-BlobRequestConditions}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/snapshot-blob">Azure Docs</a></p>
      *
      * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
      * metadata key or value, it must be removed or encoded.
@@ -1561,6 +1723,7 @@ public class BlobAsyncClientBase {
      * @return A response containing a {@link BlobAsyncClientBase} which is used to interact with the created snapshot,
      * use {@link #getSnapshotId()} to get the identifier for the snapshot.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlobAsyncClientBase>> createSnapshotWithResponse(Map<String, String> metadata,
         BlobRequestConditions requestConditions) {
         try {
@@ -1574,12 +1737,12 @@ public class BlobAsyncClientBase {
         BlobRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
-        return this.azureBlobStorage.blobs().createSnapshotWithRestResponseAsync(
-            null, null, null, metadata, requestConditions.getIfModifiedSince(),
+        return this.azureBlobStorage.getBlobs().createSnapshotWithResponseAsync(
+            containerName, blobName, null, metadata, requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), requestConditions.getLeaseId(),
             null, customerProvidedKey, encryptionScope, context)
-            .map(rb -> new SimpleResponse<>(rb, this.getSnapshotClient(rb.getDeserializedHeaders().getSnapshot())));
+            .map(rb -> new SimpleResponse<>(rb, this.getSnapshotClient(rb.getDeserializedHeaders().getXMsSnapshot())));
     }
 
     /**
@@ -1593,12 +1756,13 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setAccessTier#AccessTier}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
      *
      * @param tier The new tier for the blob.
      * @return A reactive response signalling completion.
      * @throws NullPointerException if {@code tier} is null.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setAccessTier(AccessTier tier) {
         try {
             return setAccessTierWithResponse(tier, null, null).flatMap(FluxUtil::toMono);
@@ -1618,7 +1782,7 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setAccessTierWithResponse#AccessTier-RehydratePriority-String}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
      *
      * @param tier The new tier for the blob.
      * @param priority Optional priority to set for re-hydrating blobs.
@@ -1626,6 +1790,7 @@ public class BlobAsyncClientBase {
      * @return A reactive response signalling completion.
      * @throws NullPointerException if {@code tier} is null.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setAccessTierWithResponse(AccessTier tier, RehydratePriority priority, String leaseId) {
         try {
             return withContext(context -> setTierWithResponse(new BlobSetAccessTierOptions(tier).setPriority(priority)
@@ -1646,12 +1811,13 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setAccessTierWithResponse#BlobSetAccessTierOptions}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
      *
      * @param options {@link BlobSetAccessTierOptions}
      * @return A reactive response signalling completion.
      * @throws NullPointerException if {@code tier} is null.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setAccessTierWithResponse(BlobSetAccessTierOptions options) {
         try {
             return withContext(context -> setTierWithResponse(options, context));
@@ -1663,8 +1829,8 @@ public class BlobAsyncClientBase {
     Mono<Response<Void>> setTierWithResponse(BlobSetAccessTierOptions options, Context context) {
         StorageImplUtils.assertNotNull("options", options);
 
-        return this.azureBlobStorage.blobs().setTierWithRestResponseAsync(
-            null, null, options.getTier(), snapshot, versionId, null,
+        return this.azureBlobStorage.getBlobs().setTierWithResponseAsync(
+            containerName, blobName, options.getTier(), snapshot, versionId, null,
             options.getPriority(), null, options.getLeaseId(), options.getTagsConditions(), context)
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -1677,10 +1843,11 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.undelete}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/undelete-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/undelete-blob">Azure Docs</a></p>
      *
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> undelete() {
         try {
             return undeleteWithResponse().flatMap(FluxUtil::toMono);
@@ -1697,10 +1864,11 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.undeleteWithResponse}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/undelete-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/undelete-blob">Azure Docs</a></p>
      *
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> undeleteWithResponse() {
         try {
             return withContext(this::undeleteWithResponse);
@@ -1710,7 +1878,7 @@ public class BlobAsyncClientBase {
     }
 
     Mono<Response<Void>> undeleteWithResponse(Context context) {
-        return this.azureBlobStorage.blobs().undeleteWithRestResponseAsync(null,
+        return this.azureBlobStorage.getBlobs().undeleteWithResponseAsync(containerName, blobName, null,
             null, context).map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -1722,10 +1890,11 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getAccountInfo}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-account-information">Azure Docs</a></p>
      *
      * @return a reactor response containing the sku name and account kind.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StorageAccountInfo> getAccountInfo() {
         try {
             return getAccountInfoWithResponse().flatMap(FluxUtil::toMono);
@@ -1742,10 +1911,11 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getAccountInfoWithResponse}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-account-information">Azure Docs</a></p>
      *
      * @return a reactor response containing the sku name and account kind.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse() {
         try {
             return withContext(this::getAccountInfoWithResponse);
@@ -1755,10 +1925,10 @@ public class BlobAsyncClientBase {
     }
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
-        return this.azureBlobStorage.blobs().getAccountInfoWithRestResponseAsync(null, null, context)
+        return this.azureBlobStorage.getBlobs().getAccountInfoWithResponseAsync(containerName, blobName, context)
             .map(rb -> {
-                BlobGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
-                return new SimpleResponse<>(rb, new StorageAccountInfo(hd.getSkuName(), hd.getAccountKind()));
+                BlobsGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
+                return new SimpleResponse<>(rb, new StorageAccountInfo(hd.getXMsSkuName(), hd.getXMsAccountKind()));
             });
     }
 
@@ -1848,7 +2018,7 @@ public class BlobAsyncClientBase {
      * Queries the entire blob.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1857,6 +2027,7 @@ public class BlobAsyncClientBase {
      * @param expression The query expression.
      * @return A reactive response containing the queried data.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<ByteBuffer> query(String expression) {
         return queryWithResponse(new BlobQueryOptions(expression))
             .flatMapMany(BlobQueryAsyncResponse::getValue);
@@ -1866,7 +2037,7 @@ public class BlobAsyncClientBase {
      * Queries the entire blob.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1875,6 +2046,7 @@ public class BlobAsyncClientBase {
      * @param queryOptions {@link BlobQueryOptions The query options}.
      * @return A reactive response containing the queried data.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobQueryAsyncResponse> queryWithResponse(BlobQueryOptions queryOptions) {
         try {
             return withContext(context -> queryWithResponse(queryOptions, context));
@@ -1898,17 +2070,17 @@ public class BlobAsyncClientBase {
             .setInputSerialization(in)
             .setOutputSerialization(out);
 
-        return this.azureBlobStorage.blobs().queryWithRestResponseAsync(null, null, qr,
+        return this.azureBlobStorage.getBlobs().queryWithResponseAsync(containerName, blobName,
             getSnapshotId(), null, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
-            getCustomerProvidedKey(), context)
+            qr, getCustomerProvidedKey(), context)
             .map(response -> new BlobQueryAsyncResponse(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(),
                 /* Parse the avro reactive stream. */
                 new BlobQueryReader(response.getValue(), queryOptions.getProgressConsumer(),
                     queryOptions.getErrorConsumer())
                     .read(),
-                response.getDeserializedHeaders()));
+                ModelHelper.transformQueryHeaders(response.getHeaders())));
     }
 }

@@ -45,7 +45,7 @@ public class ModelsAsyncTest extends ModelsTestBase {
         for (final DigitalTwinsModelData expected : createdModels) {
             // Get the model
             getModelRunner(expected.getModelId(), (modelId) -> {
-                StepVerifier.create(asyncClient.getModelWithResponse(modelId, null))
+                StepVerifier.create(asyncClient.getModelWithResponse(modelId))
                     .assertNext(retrievedModel -> assertModelDataAreEqual(expected, retrievedModel.getValue(), false))
                     .verifyComplete();
                 logger.info("Model {} matched expectations", modelId);

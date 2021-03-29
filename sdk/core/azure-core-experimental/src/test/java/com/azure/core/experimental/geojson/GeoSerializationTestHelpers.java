@@ -20,14 +20,14 @@ public class GeoSerializationTestHelpers {
     static String geoToJson(GeoObject geoObject) {
         if (geoObject instanceof GeoPoint) {
             return pointToJson((GeoPoint) geoObject);
-        } else if (geoObject instanceof GeoLine) {
-            return lineToJson((GeoLine) geoObject);
+        } else if (geoObject instanceof GeoLineString) {
+            return lineToJson((GeoLineString) geoObject);
         } else if (geoObject instanceof GeoPolygon) {
             return polygonToJson((GeoPolygon) geoObject);
         } else if (geoObject instanceof GeoPointCollection) {
             return multiPointToJson((GeoPointCollection) geoObject);
-        } else if (geoObject instanceof GeoLineCollection) {
-            return multiLineToJson((GeoLineCollection) geoObject);
+        } else if (geoObject instanceof GeoLineStringCollection) {
+            return multiLineToJson((GeoLineStringCollection) geoObject);
         } else if (geoObject instanceof GeoPolygonCollection) {
             return multiPolygonToJson((GeoPolygonCollection) geoObject);
         } else if (geoObject instanceof GeoCollection) {
@@ -51,7 +51,7 @@ public class GeoSerializationTestHelpers {
         return builder.toString();
     }
 
-    private static String lineToJson(GeoLine line) {
+    private static String lineToJson(GeoLineString line) {
         StringBuilder builder = new StringBuilder("{");
         addType(GeoJsonDeserializer.LINE_STRING_TYPE, builder);
 
@@ -94,7 +94,7 @@ public class GeoSerializationTestHelpers {
 
     }
 
-    private static String multiLineToJson(GeoLineCollection multiLine) {
+    private static String multiLineToJson(GeoLineStringCollection multiLine) {
         StringBuilder builder = new StringBuilder("{");
         addType(GeoJsonDeserializer.MULTI_LINE_STRING_TYPE, builder);
 

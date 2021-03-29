@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.UrlBuilder;
 import reactor.core.publisher.Flux;
@@ -105,6 +106,10 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                 return Mono.error(e);
             }
         }
+        /*
+        Update the RETRY_COUNT_CONTEXT to log retries.
+         */
+        context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, attempt + 1);
 
         /*
          We want to send the request with a given timeout, but we don't want to kickoff that timeout-bound operation

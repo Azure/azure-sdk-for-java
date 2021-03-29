@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver;
@@ -14,6 +15,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.AzureSasCredentialPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -30,6 +32,7 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
@@ -39,8 +42,7 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
-import com.azure.storage.common.implementation.credentials.SasTokenCredential;
-import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
+import com.azure.storage.common.implementation.credentials.CredentialValidator;
 import com.azure.storage.common.policy.MetadataValidationPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
@@ -52,6 +54,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.USER_AGENT_PROPERTIES;
@@ -84,8 +87,14 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 @ServiceClientBuilder(serviceClients = {EncryptedBlobAsyncClient.class, EncryptedBlobClient.class})
 public final class EncryptedBlobClientBuilder {
     private final ClientLogger logger = new ClientLogger(EncryptedBlobClientBuilder.class);
+    private static final Map<String, String> PROPERTIES =
+        CoreUtils.getProperties("azure-storage-blob-cryptography.properties");
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
+    private static final String CLIENT_NAME = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+    private static final String CLIENT_VERSION = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+    private static final String BLOB_CLIENT_NAME = USER_AGENT_PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+    private static final String BLOB_CLIENT_VERSION = USER_AGENT_PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
 
     private String endpoint;
     private String accountName;
@@ -97,7 +106,8 @@ public final class EncryptedBlobClientBuilder {
 
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
-    private SasTokenCredential sasTokenCredential;
+    private AzureSasCredential azureSasCredential;
+    private String sasToken;
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -131,6 +141,7 @@ public final class EncryptedBlobClientBuilder {
      *
      * @return a {@link EncryptedBlobClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public EncryptedBlobClient buildEncryptedBlobClient() {
         return new EncryptedBlobClient(buildEncryptedBlobAsyncClient());
@@ -145,6 +156,7 @@ public final class EncryptedBlobClientBuilder {
      *
      * @return a {@link EncryptedBlobAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public EncryptedBlobAsyncClient buildEncryptedBlobAsyncClient() {
         Objects.requireNonNull(blobName, "'blobName' cannot be null.");
@@ -159,12 +171,33 @@ public final class EncryptedBlobClientBuilder {
         }
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
-        return new EncryptedBlobAsyncClient(getHttpPipeline(),
-            String.format("%s/%s/%s", endpoint, containerName, blobName), serviceVersion, accountName, containerName,
-            blobName, snapshot, customerProvidedKey, keyWrapper, keyWrapAlgorithm, versionId);
+        return new EncryptedBlobAsyncClient(addBlobUserAgentModificationPolicy(getHttpPipeline()), endpoint,
+            serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey, keyWrapper,
+            keyWrapAlgorithm, versionId);
+    }
+
+
+    private HttpPipeline addBlobUserAgentModificationPolicy(HttpPipeline pipeline) {
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+
+        for (int i = 0; i < pipeline.getPolicyCount(); i++) {
+            HttpPipelinePolicy currPolicy = pipeline.getPolicy(i);
+            policies.add(currPolicy);
+            if (currPolicy instanceof UserAgentPolicy) {
+                policies.add(new BlobUserAgentModificationPolicy(CLIENT_NAME, CLIENT_VERSION));
+            }
+        }
+
+        return new HttpPipelineBuilder()
+            .httpClient(pipeline.getHttpClient())
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .build();
     }
 
     private HttpPipeline getHttpPipeline() {
+        CredentialValidator.validateSingleCredentialIsPresent(
+            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken, logger);
+
         // Prefer the pipeline set by the customer.
         if (httpPipeline != null) {
             List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -195,11 +228,9 @@ public final class EncryptedBlobClientBuilder {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
         policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption));
-        String clientName = USER_AGENT_PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = USER_AGENT_PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
         String applicationId = clientOptions.getApplicationId() != null ? clientOptions.getApplicationId()
             : logOptions.getApplicationId();
-        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, userAgentConfiguration));
+        policies.add(new UserAgentPolicy(applicationId, BLOB_CLIENT_NAME, BLOB_CLIENT_VERSION, userAgentConfiguration));
         policies.add(new RequestIdPolicy());
 
         policies.addAll(perCallPolicies);
@@ -222,8 +253,10 @@ public final class EncryptedBlobClientBuilder {
         } else if (tokenCredential != null) {
             BuilderHelper.httpsValidation(tokenCredential, "bearer token", endpoint, logger);
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, Constants.STORAGE_SCOPE));
-        } else if (sasTokenCredential != null) {
-            policies.add(new SasTokenCredentialPolicy(sasTokenCredential));
+        } else if (azureSasCredential != null) {
+            policies.add(new AzureSasCredentialPolicy(azureSasCredential, false));
+        } else if (sasToken != null) {
+            policies.add(new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false));
         }
 
         policies.addAll(perRetryPolicies);
@@ -292,7 +325,7 @@ public final class EncryptedBlobClientBuilder {
     public EncryptedBlobClientBuilder credential(StorageSharedKeyCredential credential) {
         this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.tokenCredential = null;
-        this.sasTokenCredential = null;
+        this.sasToken = null;
         return this;
     }
 
@@ -306,7 +339,7 @@ public final class EncryptedBlobClientBuilder {
     public EncryptedBlobClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.storageSharedKeyCredential = null;
-        this.sasTokenCredential = null;
+        this.sasToken = null;
         return this;
     }
 
@@ -318,10 +351,23 @@ public final class EncryptedBlobClientBuilder {
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
     public EncryptedBlobClientBuilder sasToken(String sasToken) {
-        this.sasTokenCredential = new SasTokenCredential(Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null."));
+        this.sasToken = Objects.requireNonNull(sasToken,
+            "'sasToken' cannot be null.");
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
+        return this;
+    }
+
+    /**
+     * Sets the {@link AzureSasCredential} used to authorize requests sent to the service.
+     *
+     * @param credential {@link AzureSasCredential} used to authorize requests sent to the service.
+     * @return the updated EncryptedBlobClientBuilder
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    public EncryptedBlobClientBuilder credential(AzureSasCredential credential) {
+        this.azureSasCredential = Objects.requireNonNull(credential,
+            "'credential' cannot be null.");
         return this;
     }
 
@@ -335,7 +381,8 @@ public final class EncryptedBlobClientBuilder {
     public EncryptedBlobClientBuilder setAnonymousAccess() {
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
-        this.sasTokenCredential = null;
+        this.azureSasCredential = null;
+        this.sasToken = null;
         return this;
     }
 

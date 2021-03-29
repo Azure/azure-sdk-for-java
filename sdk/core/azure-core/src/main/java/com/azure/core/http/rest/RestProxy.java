@@ -30,11 +30,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProxy;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
+import reactor.util.context.ContextView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -180,13 +182,14 @@ public final class RestProxy implements InvocationHandler {
     /**
      * Starts the tracing span for the current service call, additionally set metadata attributes on the span by passing
      * additional context information.
-     *
      * @param method Service method being called.
      * @param context Context information about the current service call.
+     *
      * @return The updated context containing the span context.
      */
     private Context startTracingSpan(Method method, Context context) {
-        if (!TracerProxy.isTracingEnabled()) {
+        boolean disableTracing =  (boolean) context.getData(Tracer.DISABLE_TRACING_KEY).orElse(false);
+        if (!TracerProxy.isTracingEnabled() || disableTracing) {
             return context;
         }
         String spanName = String.format("%s.%s", interfaceParser.getServiceName(), method.getName());
@@ -247,7 +250,7 @@ public final class RestProxy implements InvocationHandler {
         final Object[] args) throws IOException {
         final Object bodyContentObject = methodParser.setBody(args);
         if (bodyContentObject == null) {
-            request.getHeaders().put("Content-Length", "0");
+            request.getHeaders().set("Content-Length", "0");
         } else {
             // We read the content type from the @BodyParam annotation
             String contentType = methodParser.getBodyContentType();
@@ -265,7 +268,7 @@ public final class RestProxy implements InvocationHandler {
 //                        + "type correctly specified in its service interface"));
             }
 
-            request.getHeaders().put("Content-Type", contentType);
+            request.getHeaders().set("Content-Type", contentType);
 
             // TODO(jogiles) this feels hacky
             boolean isJson = false;
@@ -499,7 +502,7 @@ public final class RestProxy implements InvocationHandler {
         final Mono<HttpDecodedResponse> asyncExpectedResponse =
             ensureExpectedStatus(asyncHttpDecodedResponse, methodParser)
                 .doOnEach(RestProxy::endTracingSpan)
-                .subscriberContext(reactor.util.context.Context.of("TRACING_CONTEXT", context));
+                .contextWrite(reactor.util.context.Context.of("TRACING_CONTEXT", context));
 
         final Object result;
         if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class)) {
@@ -543,10 +546,11 @@ public final class RestProxy implements InvocationHandler {
         }
 
         // Get the context that was added to the mono, this will contain the information needed to end the span.
-        reactor.util.context.Context context = signal.getContext();
+        ContextView context = signal.getContextView();
         Optional<Context> tracingContext = context.getOrEmpty("TRACING_CONTEXT");
+        boolean disableTracing = context.getOrDefault(Tracer.DISABLE_TRACING_KEY, false);
 
-        if (!tracingContext.isPresent()) {
+        if (!tracingContext.isPresent() || disableTracing) {
             return;
         }
 

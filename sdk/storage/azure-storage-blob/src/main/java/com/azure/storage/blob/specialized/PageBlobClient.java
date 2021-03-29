@@ -3,7 +3,9 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
@@ -42,7 +44,7 @@ import java.util.Objects;
  * convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>
- * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
+ * Please refer to the <a href=https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
  * Docs</a> for more information.
  */
 @ServiceClient(builder = SpecializedBlobClientBuilder.class)
@@ -112,6 +114,7 @@ public final class PageBlobClient extends BlobClientBase {
      * 512-byte boundary.
      * @return The information of the created page blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PageBlobItem create(long size) {
         return create(size, false);
     }
@@ -130,6 +133,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @param overwrite Whether or not to overwrite, should data exist on the blob.
      * @return The information of the created page blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PageBlobItem create(long size, boolean overwrite) {
         BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
         if (!overwrite) {
@@ -162,6 +166,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The information of the created page blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PageBlobItem> createWithResponse(long size, Long sequenceNumber, BlobHttpHeaders headers,
         Map<String, String> metadata, BlobRequestConditions requestConditions, Duration timeout, Context context) {
         return this.createWithResponse(new PageBlobCreateOptions(size).setSequenceNumber(sequenceNumber)
@@ -185,6 +190,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The information of the created page blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PageBlobItem> createWithResponse(PageBlobCreateOptions options, Duration timeout, Context context) {
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.createWithResponse(options, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -210,6 +216,7 @@ public final class PageBlobClient extends BlobClientBase {
      * mark support.
      * @return The information of the uploaded pages.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PageBlobItem uploadPages(PageRange pageRange, InputStream body) {
         return uploadPagesWithResponse(pageRange, body, null, null, null, Context.NONE).getValue();
     }
@@ -243,6 +250,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
      * @throws NullPointerException if the input data is null.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PageBlobItem> uploadPagesWithResponse(PageRange pageRange, InputStream body, byte[] contentMd5,
         PageBlobRequestConditions pageBlobRequestConditions, Duration timeout, Context context) {
         Objects.requireNonNull(body, "'body' cannot be null.");
@@ -275,6 +283,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @return The information of the uploaded pages.
      * @throws IllegalArgumentException If {@code sourceUrl} is a malformed {@link URL}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PageBlobItem uploadPagesFromUrl(PageRange range, String sourceUrl, Long sourceOffset) {
         return uploadPagesFromUrlWithResponse(range, sourceUrl, sourceOffset, null, null, null, null, Context.NONE)
             .getValue();
@@ -306,6 +315,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @return The information of the uploaded pages.
      * @throws IllegalArgumentException If {@code sourceUrl} is a malformed {@link URL}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PageBlobItem> uploadPagesFromUrlWithResponse(PageRange range, String sourceUrl, Long sourceOffset,
         byte[] sourceContentMd5, PageBlobRequestConditions destRequestConditions,
         BlobRequestConditions sourceRequestConditions, Duration timeout, Context context) {
@@ -328,6 +338,7 @@ public final class PageBlobClient extends BlobClientBase {
      * are 0-511, 512-1023, etc.
      * @return The information of the cleared pages.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PageBlobItem clearPages(PageRange pageRange) {
         return clearPagesWithResponse(pageRange, null, null, Context.NONE).getValue();
     }
@@ -348,6 +359,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The information of the cleared pages.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PageBlobItem> clearPagesWithResponse(PageRange pageRange,
         PageBlobRequestConditions pageBlobRequestConditions, Duration timeout, Context context) {
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.clearPagesWithResponse(pageRange,
@@ -367,6 +379,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @param blobRange {@link BlobRange}
      * @return The information of the cleared pages.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PageList getPageRanges(BlobRange blobRange) {
         return getPageRangesWithResponse(blobRange, null, null, Context.NONE).getValue();
     }
@@ -385,6 +398,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return All the page ranges.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PageList> getPageRangesWithResponse(BlobRange blobRange, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(pageBlobAsyncClient
@@ -406,6 +420,7 @@ public final class PageBlobClient extends BlobClientBase {
      * long as the snapshot specified by prevsnapshot is the older of the two.
      * @return All the different page ranges.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PageList getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
         return getPageRangesDiffWithResponse(blobRange, prevSnapshot, null, null, Context.NONE).getValue();
     }
@@ -429,6 +444,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return All the different page ranges.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PageList> getPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshot,
         BlobRequestConditions requestConditions, Duration timeout, Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(pageBlobAsyncClient
@@ -453,6 +469,7 @@ public final class PageBlobClient extends BlobClientBase {
      * prevsnapshot is the older of the two.
      * @return All the different page ranges.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PageList getManagedDiskPageRangesDiff(BlobRange blobRange, String prevSnapshotUrl) {
         return getManagedDiskPageRangesDiffWithResponse(blobRange, prevSnapshotUrl, null, null, Context.NONE)
             .getValue();
@@ -478,6 +495,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return All the different page ranges.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PageList> getManagedDiskPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshotUrl,
         BlobRequestConditions requestConditions, Duration timeout, Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(pageBlobAsyncClient
@@ -497,6 +515,7 @@ public final class PageBlobClient extends BlobClientBase {
      * the blob, then all pages above the specified value are cleared.
      * @return The resized page blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PageBlobItem resize(long size) {
         return resizeWithResponse(size, null, null, Context.NONE).getValue();
     }
@@ -516,6 +535,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The resized page blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PageBlobItem> resizeWithResponse(long size, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.resizeWithResponse(size, requestConditions,
@@ -536,6 +556,7 @@ public final class PageBlobClient extends BlobClientBase {
      * use to track requests and manage concurrency issues.
      * @return The updated page blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PageBlobItem updateSequenceNumber(SequenceNumberActionType action,
         Long sequenceNumber) {
         return updateSequenceNumberWithResponse(action, sequenceNumber, null, null, Context.NONE).getValue();
@@ -557,6 +578,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The updated page blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PageBlobItem> updateSequenceNumberWithResponse(SequenceNumberActionType action,
         Long sequenceNumber, BlobRequestConditions requestConditions, Duration timeout, Context context) {
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient
@@ -570,7 +592,7 @@ public final class PageBlobClient extends BlobClientBase {
      * destination. The copied snapshots are complete copies of the original snapshot and can be read or copied from as
      * usual. For more information, see the Azure Docs <a href="https://docs.microsoft.com/rest/api/storageservices/incremental-copy-blob">here</a>
      * and
-     * <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/incremental-snapshots">here</a>.
+     * <a href="https://docs.microsoft.com/azure/virtual-machines/windows/incremental-snapshots">here</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -581,6 +603,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @return The copy status.
      * @throws IllegalArgumentException If {@code source} is a malformed {@link URL}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public CopyStatusType copyIncremental(String source, String snapshot) {
         return copyIncrementalWithResponse(source, snapshot, null, null, Context.NONE).getValue();
     }
@@ -591,7 +614,7 @@ public final class PageBlobClient extends BlobClientBase {
      * destination. The copied snapshots are complete copies of the original snapshot and can be read or copied from as
      * usual. For more information, see the Azure Docs <a href="https://docs.microsoft.com/rest/api/storageservices/incremental-copy-blob">here</a>
      * and
-     * <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/incremental-snapshots">here</a>.
+     * <a href="https://docs.microsoft.com/azure/virtual-machines/windows/incremental-snapshots">here</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -607,6 +630,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @return The copy status.
      * @throws IllegalArgumentException If {@code source} is a malformed {@link URL}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CopyStatusType> copyIncrementalWithResponse(String source, String snapshot,
         RequestConditions modifiedRequestConditions, Duration timeout, Context context) {
         return copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(source, snapshot)
@@ -621,7 +645,7 @@ public final class PageBlobClient extends BlobClientBase {
      * destination. The copied snapshots are complete copies of the original snapshot and can be read or copied from as
      * usual. For more information, see the Azure Docs <a href="https://docs.microsoft.com/rest/api/storageservices/incremental-copy-blob">here</a>
      * and
-     * <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/incremental-snapshots">here</a>.
+     * <a href="https://docs.microsoft.com/azure/virtual-machines/windows/incremental-snapshots">here</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -633,6 +657,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @return The copy status.
      * @throws IllegalArgumentException If {@code source} is a malformed {@link URL}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CopyStatusType> copyIncrementalWithResponse(PageBlobCopyIncrementalOptions options,
         Duration timeout, Context context) {
         Mono<Response<CopyStatusType>> response = pageBlobAsyncClient.copyIncrementalWithResponse(options, context);

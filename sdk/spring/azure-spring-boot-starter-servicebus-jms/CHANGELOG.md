@@ -1,6 +1,23 @@
 # Release History
 
-## 3.2.0-beta.1 (Unreleased)
+## 3.4.0-beta.1 (Unreleased)
+
+
+## 3.3.0 (2021-03-22)
+### New Features
+- Upgrade to `Spring Boot` [2.4.3](https://github.com/spring-projects/spring-boot/releases/tag/v2.4.3).
+### Key Bug Fixes
+- Fix bug of using closed `MessageProducer` and `MessageConsumer` when a link is force detached.
+
+## 3.2.0 (2021-03-03)
+### Breaking Changes
+- Require new property of `spring.jms.servicebus.pricing-tier` to set pricing tier of Azure Service Bus. Supported values are `premium`, `standard` and `basic`.
+
+### New Features
+- Enable MessageConverter bean customization.
+- Update the underpinning JMS library for the Premium pricing tier of Service Bus to JMS 2.0.
+
+## 3.1.0 (2021-01-20)
 
 
 ## 3.0.0 (2020-12-30)

@@ -81,7 +81,7 @@ public interface DataExport extends HasInner<DataExportInner>, Indexable, Refres
     /**
      * The entirety of the DataExport definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithWorkspace, DefinitionStages.WithResourceId, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithWorkspace, DefinitionStages.WithResourceId, DefinitionStages.WithTableNames, DefinitionStages.WithCreate {
     }
 
     /**
@@ -116,7 +116,19 @@ public interface DataExport extends HasInner<DataExportInner>, Indexable, Refres
             * @param resourceId The destination resource ID. This can be copied from the Properties entry of the destination resource in Azure
             * @return the next definition stage
             */
-            WithCreate withResourceId(String resourceId);
+            WithTableNames withResourceId(String resourceId);
+        }
+
+        /**
+         * The stage of the dataexport definition allowing to specify TableNames.
+         */
+        interface WithTableNames {
+           /**
+            * Specifies tableNames.
+            * @param tableNames An array of tables to export, for example: [“Heartbeat, SecurityEvent”]
+            * @return the next definition stage
+            */
+            WithCreate withTableNames(List<String> tableNames);
         }
 
         /**
@@ -180,29 +192,17 @@ public interface DataExport extends HasInner<DataExportInner>, Indexable, Refres
         }
 
         /**
-         * The stage of the dataexport definition allowing to specify TableNames.
-         */
-        interface WithTableNames {
-            /**
-             * Specifies tableNames.
-             * @param tableNames An array of tables to export, for example: [“Heartbeat, SecurityEvent”]
-             * @return the next definition stage
-             */
-            WithCreate withTableNames(List<String> tableNames);
-        }
-
-        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<DataExport>, DefinitionStages.WithCreatedDate, DefinitionStages.WithDataExportId, DefinitionStages.WithEnable, DefinitionStages.WithEventHubName, DefinitionStages.WithLastModifiedDate, DefinitionStages.WithTableNames {
+        interface WithCreate extends Creatable<DataExport>, DefinitionStages.WithCreatedDate, DefinitionStages.WithDataExportId, DefinitionStages.WithEnable, DefinitionStages.WithEventHubName, DefinitionStages.WithLastModifiedDate {
         }
     }
     /**
      * The template for a DataExport update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<DataExport>, UpdateStages.WithCreatedDate, UpdateStages.WithDataExportId, UpdateStages.WithEnable, UpdateStages.WithEventHubName, UpdateStages.WithLastModifiedDate, UpdateStages.WithTableNames {
+    interface Update extends Appliable<DataExport>, UpdateStages.WithCreatedDate, UpdateStages.WithDataExportId, UpdateStages.WithEnable, UpdateStages.WithEventHubName, UpdateStages.WithLastModifiedDate {
     }
 
     /**
@@ -267,18 +267,6 @@ public interface DataExport extends HasInner<DataExportInner>, Indexable, Refres
              * @return the next update stage
              */
             Update withLastModifiedDate(String lastModifiedDate);
-        }
-
-        /**
-         * The stage of the dataexport update allowing to specify TableNames.
-         */
-        interface WithTableNames {
-            /**
-             * Specifies tableNames.
-             * @param tableNames An array of tables to export, for example: [“Heartbeat, SecurityEvent”]
-             * @return the next update stage
-             */
-            Update withTableNames(List<String> tableNames);
         }
 
     }

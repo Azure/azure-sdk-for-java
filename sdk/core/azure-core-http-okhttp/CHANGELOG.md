@@ -1,7 +1,22 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.7.0-beta.1 (Unreleased)
 
+### Bug Fixes
+
+- Fixed a bug where a proxy's address is only resolved during construction of the client, now it is resolved per connection. [#19497](https://github.com/Azure/azure-sdk-for-java/issues/19497)
+
+## 1.6.0 (2021-03-08)
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.13.0` to `1.14.0`.
+
+## 1.5.0 (2021-02-05)
+
+### New Features
+
+- Exposed service provider interfaces used to create `HttpClient` instances.
 
 ## 1.4.1 (2021-01-11)
 

@@ -10,7 +10,7 @@ package com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.implementati
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.ErrorResponseUpdatedFormatException;
+import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.DefaultErrorResponseException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
@@ -73,7 +73,7 @@ public class RestorableDatabaseAccountsInner {
      *
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseUpdatedFormatException thrown if the request is rejected by server
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;RestorableDatabaseAccountGetResultInner&gt; object if successful.
      */
@@ -143,10 +143,10 @@ public class RestorableDatabaseAccountsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<RestorableDatabaseAccountGetResultInner>> listByLocationDelegate(Response<ResponseBody> response) throws ErrorResponseUpdatedFormatException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<RestorableDatabaseAccountGetResultInner>, ErrorResponseUpdatedFormatException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<RestorableDatabaseAccountGetResultInner>> listByLocationDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<RestorableDatabaseAccountGetResultInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<RestorableDatabaseAccountGetResultInner>>() { }.getType())
-                .registerError(ErrorResponseUpdatedFormatException.class)
+                .registerError(DefaultErrorResponseException.class)
                 .build(response);
     }
 
@@ -222,10 +222,10 @@ public class RestorableDatabaseAccountsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<RestorableDatabaseAccountGetResultInner>> listDelegate(Response<ResponseBody> response) throws ErrorResponseUpdatedFormatException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<RestorableDatabaseAccountGetResultInner>, ErrorResponseUpdatedFormatException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<RestorableDatabaseAccountGetResultInner>> listDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<RestorableDatabaseAccountGetResultInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<RestorableDatabaseAccountGetResultInner>>() { }.getType())
-                .registerError(ErrorResponseUpdatedFormatException.class)
+                .registerError(DefaultErrorResponseException.class)
                 .build(response);
     }
 
@@ -235,7 +235,7 @@ public class RestorableDatabaseAccountsInner {
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseUpdatedFormatException thrown if the request is rejected by server
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RestorableDatabaseAccountGetResultInner object if successful.
      */
@@ -306,10 +306,10 @@ public class RestorableDatabaseAccountsInner {
             });
     }
 
-    private ServiceResponse<RestorableDatabaseAccountGetResultInner> getByLocationDelegate(Response<ResponseBody> response) throws ErrorResponseUpdatedFormatException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<RestorableDatabaseAccountGetResultInner, ErrorResponseUpdatedFormatException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<RestorableDatabaseAccountGetResultInner> getByLocationDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<RestorableDatabaseAccountGetResultInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RestorableDatabaseAccountGetResultInner>() { }.getType())
-                .registerError(ErrorResponseUpdatedFormatException.class)
+                .registerError(DefaultErrorResponseException.class)
                 .build(response);
     }
 

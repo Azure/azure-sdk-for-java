@@ -64,9 +64,9 @@ public class AddHeadersFromContextPolicyTest {
         // Create custom Headers
         String customRequestId = "request-id-value";
         final HttpHeaders headers = new HttpHeaders();
-        headers.put("x-ms-client-request-id", customRequestId);
-        headers.put("my-header1", "my-header1-value");
-        headers.put("my-header2", "my-header2-value");
+        headers.set("x-ms-client-request-id", customRequestId);
+        headers.set("my-header1", "my-header1-value");
+        headers.set("my-header2", "my-header2-value");
 
         final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient() {

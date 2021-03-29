@@ -2,23 +2,46 @@
 
 ## 2.1.0-beta.1 (Unreleased)
 
+## 2.0.3 (2021-03-09)
+
+### Bug Fixes
+
+- Fixed a bug where using a proxy the SSL peer hostname was set incorrect.
+- Removed logs that leaked secrets. [#19249](https://github.com/Azure/azure-sdk-for-java/issues/19249)
+
+### Version Updates
+
+- Upgraded Reactor from `3.3.12.RELEASE` to `3.4.3`.
+
+## 2.0.2 (2021-02-05)
+
+### New Features
+
+- Updates RetryUtil to use RetrySpec.
+- Adds the ability to configure the `hostname` and `port` that will be used when connecting to a service via
+  `ConnectionOptions`. The `hostname` field refers to the DNS host or IP address of the service, whereas the
+  `fullyQualifiedNamespace` is the fully qualified host name of the service.
+  Normally `hostname` and `fullyQualifiedNamespace` will be the same. However, if your network does not allow
+  connecting to the service via the public host, you can specify a custom host (e.g. an application gateway) via the
+  `hostname` field and continue using the public host as the `fullyQualifiedNamespace`.
 
 ## 2.0.1 (2021-01-11)
 
 ### New Features
 
-- Changed connections from sharing the global `Schedulers.single()` to having a `Scheduler.newSingle()` per connection to improve performance.
+- Changed connections from sharing the global `Schedulers.single()` to having a `Scheduler.newSingle()` per connection
+  to improve performance.
 
 ## 2.0.0 (2020-11-30)
 ### New Features
 - Added 'AmqpAddress' as a type to support 'AmqpMessageProperties#replyTo' and 'AmqpMessageProperties#to' properties.
-- Added 'AmqpMessageId' as a type to support 'AmqpMessageProperties#correlationId' and 'AmqpMessageProperties#messageId' 
+- Added 'AmqpMessageId' as a type to support 'AmqpMessageProperties#correlationId' and 'AmqpMessageProperties#messageId'
   properties.
 - Added static methods to instantiate 'AmqpMessageBody' for example 'AmqpMessageBody#fromData(byte[])'.
 
 ### Breaking Changes
-- Changed  'AmqpMessageBody' from interface to a class. User can use 'getBodyType()' to know what is the 'AmqpBodyType' 
-  of the message.
+- Changed  'AmqpMessageBody' from an interface to a class. User can use 'getBodyType()' to know what is the
+  'AmqpBodyType' of the message.
 - Changed type of 'correlationId' and 'messageId' in type 'AmqpMessageProperties' from 'String' to 'AmqpMessageId'.
 - Changed type of 'replyTo' and 'to' in type 'AmqpMessageProperties' from 'String' to 'AmqpAddress'.
 - Removed copy constructor for 'AmqpAnnotatedMessage'.
@@ -29,8 +52,8 @@
 
 ## 1.7.0-beta.2 (2020-11-10)
 ### New Features
-- Optionally enable idempotency of a send link to send AMQP messages with producer group id, producer owner level and 
-producer sequence number in the message annotations.
+- Optionally enable idempotency of a send link to send AMQP messages with producer group id, producer owner level and
+  producer sequence number in the message annotations.
 
 ## 1.7.0-beta.1 (2020-11-03)
 ### Dependency Updates
@@ -40,7 +63,7 @@ producer sequence number in the message annotations.
 ### New Features
 - Added peer certificate verification options when connecting to an AMQP endpoint.
 ### Breaking Changes
-- Removed `BinaryData` type which was used for `AmqpAnnotatedMessage`. 
+- Removed `BinaryData` type which was used for `AmqpAnnotatedMessage`.
 ### Dependency Updates
 - Upgraded `azure-core` dependency to `1.9.0`.
 
@@ -154,4 +177,3 @@ producer sequence number in the message annotations.
 
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-core-amqp_1.0.0-preview.1/core/azure-core-amqp/README.md)
-

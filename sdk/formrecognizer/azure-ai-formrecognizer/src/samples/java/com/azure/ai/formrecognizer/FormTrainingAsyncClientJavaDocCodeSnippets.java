@@ -24,7 +24,7 @@ import java.util.List;
  * Code snippet for {@link FormTrainingAsyncClient}
  */
 public class FormTrainingAsyncClientJavaDocCodeSnippets {
-    private FormTrainingAsyncClient formTrainingAsyncClient = new FormTrainingClientBuilder().buildAsyncClient();
+    private final FormTrainingAsyncClient formTrainingAsyncClient = new FormTrainingClientBuilder().buildAsyncClient();
 
     /**
      * Code snippet for {@link FormTrainingAsyncClient} initialization

@@ -30,14 +30,14 @@ public final class StreamingPoliciesImpl implements StreamingPolicies {
 
     public PagedIterable<StreamingPolicy> list(String resourceGroupName, String accountName) {
         PagedIterable<StreamingPolicyInner> inner = this.serviceClient().list(resourceGroupName, accountName);
-        return inner.mapPage(inner1 -> new StreamingPolicyImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new StreamingPolicyImpl(inner1, this.manager()));
     }
 
     public PagedIterable<StreamingPolicy> list(
         String resourceGroupName, String accountName, String filter, Integer top, String orderby, Context context) {
         PagedIterable<StreamingPolicyInner> inner =
             this.serviceClient().list(resourceGroupName, accountName, filter, top, orderby, context);
-        return inner.mapPage(inner1 -> new StreamingPolicyImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new StreamingPolicyImpl(inner1, this.manager()));
     }
 
     public StreamingPolicy get(String resourceGroupName, String accountName, String streamingPolicyName) {

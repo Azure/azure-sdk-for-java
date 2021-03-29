@@ -1,6 +1,6 @@
 parameters:
   - name: DependsOn
-    type: string
+    type: object
   - name: ServiceDirectory
     type: string
   - name: SDKType
@@ -23,12 +23,6 @@ parameters:
   - name: EnableIntegrationStage
     type: boolean
     default: true
-  - name: WindowsPool
-    type: string
-    default: azsdk-pool-mms-win-2019-general
-  - name: LinuxPool
-    type: string
-    default: azsdk-pool-mms-ubuntu-1804-general  
 
 stages:
   # The signing stage is responsible for submitting binaries to ESRP for our official signing
@@ -44,7 +38,8 @@ stages:
         variables:
           - template: ../variables/globals.yml
         pool:
-          vmImage: ubuntu-18.04
+          name: azsdk-pool-mms-ubuntu-1804-general
+          vmImage: MMSUbuntu18.04
         strategy:
           runOnce:
             deploy:
@@ -83,23 +78,20 @@ stages:
             variables:
               - template: ../variables/globals.yml
             pool:
-              vmImage: ubuntu-18.04
+              name: azsdk-pool-mms-ubuntu-1804-general
+              vmImage: MMSUbuntu18.04
 
             steps:
-              - ${{if eq(parameters.TestPipeline, 'true')}}:
-                - task: PowerShell@2
-                  displayName: Prep template pipeline for release
-                  condition: succeeded()
-                  inputs:
-                    pwsh: true
-                    workingDirectory: $(Build.SourcesDirectory)
-                    filePath: eng/scripts/SetTestPipelineVersion.ps1
-                    arguments: '-BuildID $(Build.BuildId)'
-
               - task: UsePythonVersion@0
                 displayName: 'Use Python 3.6'
                 inputs:
                   versionSpec: '3.6'
+
+              - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+                parameters:
+                  PackageName: "azure-sdk-template"
+                  ServiceDirectory: "template"
+                  TestPipeline: ${{ parameters.TestPipeline }}
 
               - script: |
                   python --version
@@ -126,6 +118,7 @@ stages:
             variables:
               - template: ../variables/globals.yml
             pool:
+              name: Azure Pipelines
               vmImage: vs2017-win2016
             strategy:
               runOnce:
@@ -147,6 +140,7 @@ stages:
               variables:
                 - template: ../variables/globals.yml
               pool:
+                name: Azure Pipelines
                 vmImage: vs2017-win2016
               strategy:
                 runOnce:
@@ -188,6 +182,7 @@ stages:
                 CIConfigs: "{'targets':[{'path_to_config':'package.json','mode':'Preview','monikerid':'1','content_folder':'docs-ref-services/preview'},{'path_to_config':'package.json','mode':'Latest','monikerid':'0','content_folder':'docs-ref-services/latest'}]}"
                 skipComponentGovernanceDetection: true
               pool:
+                name: Azure Pipelines
                 vmImage: vs2017-win2016
               strategy:
                 runOnce:
@@ -224,7 +219,8 @@ stages:
               variables:
                 - template: ../variables/globals.yml
               pool:
-                vmImage: windows-2019
+                name: azsdk-pool-mms-win-2019-general
+                vmImage: MMS2019
               strategy:
                 runOnce:
                   deploy:
@@ -253,7 +249,8 @@ stages:
               variables:
                 - template: ../variables/globals.yml
               pool:
-                vmImage: windows-2019
+                name: azsdk-pool-mms-win-2019-general
+                vmImage: MMS2019
               strategy:
                 runOnce:
                   deploy:
@@ -295,6 +292,7 @@ stages:
             value: https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-pr/maven/v1
 
         pool:
+          name: Azure Pipelines
           vmImage: vs2017-win2016
         steps:
         - checkout: self

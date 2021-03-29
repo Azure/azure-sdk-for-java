@@ -8,10 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the setAccessPolicy operation.
- */
-public final class QueuesSetAccessPolicyResponse extends ResponseBase<QueueSetAccessPolicyHeaders, Void> {
+/** Contains all response data for the setAccessPolicy operation. */
+public final class QueuesSetAccessPolicyResponse extends ResponseBase<QueuesSetAccessPolicyHeaders, Void> {
     /**
      * Creates an instance of QueuesSetAccessPolicyResponse.
      *
@@ -21,7 +19,12 @@ public final class QueuesSetAccessPolicyResponse extends ResponseBase<QueueSetAc
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public QueuesSetAccessPolicyResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, QueueSetAccessPolicyHeaders headers) {
+    public QueuesSetAccessPolicyResponse(
+            HttpRequest request,
+            int statusCode,
+            HttpHeaders rawHeaders,
+            Void value,
+            QueuesSetAccessPolicyHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

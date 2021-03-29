@@ -4,8 +4,7 @@ package com.azure.cosmos.implementation.clientTelemetry;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -22,6 +21,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
@@ -122,27 +122,27 @@ public class ClientTelemetry {
     }
 
     private Mono<Void> sendClientTelemetry() {
-        return Mono.delay(Duration.ofSeconds(clientTelemetrySchedulingSec))
-            .flatMap(t -> {
-                if (this.isClosed) {
-                    logger.warn("client already closed");
-                    return Mono.empty();
-                }
+        return Mono.delay(Duration.ofSeconds(clientTelemetrySchedulingSec), CosmosSchedulers.COSMOS_PARALLEL)
+                   .flatMap(t -> {
+                       if (this.isClosed) {
+                           logger.warn("client already closed");
+                           return Mono.empty();
+                       }
 
-                if(!Configs.isClientTelemetryEnabled(this.isClientTelemetryEnabled)) {
-                    logger.trace("client telemetry not enabled");
-                    return Mono.empty();
-                }
+                       if(!Configs.isClientTelemetryEnabled(this.isClientTelemetryEnabled)) {
+                           logger.trace("client telemetry not enabled");
+                           return Mono.empty();
+                       }
 
-                readHistogram();
-                try {
-                    logger.info("ClientTelemetry {}", OBJECT_MAPPER.writeValueAsString(this.clientTelemetryInfo));
-                } catch (JsonProcessingException e) {
-                    logger.error("Error which parsing client telemetry into json. ", e);
-                }
-                clearDataForNextRun();
-                return this.sendClientTelemetry();
-            }).onErrorResume(ex -> {
+                       readHistogram();
+                       try {
+                           logger.info("ClientTelemetry {}", OBJECT_MAPPER.writeValueAsString(this.clientTelemetryInfo));
+                       } catch (JsonProcessingException e) {
+                           logger.error("Error which parsing client telemetry into json. ", e);
+                       }
+                       clearDataForNextRun();
+                       return this.sendClientTelemetry();
+                   }).onErrorResume(ex -> {
                 logger.error("sendClientTelemetry() - Unable to send client telemetry" +
                     ". Exception: ", ex);
                 clearDataForNextRun();
@@ -164,15 +164,25 @@ public class ClientTelemetry {
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(),
             httpHeaders);
         Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
-        httpResponseMono.flatMap(response -> response.bodyAsString()).map(metadataJson -> Utils.parse(metadataJson,
+        httpResponseMono.flatMap(response -> response.bodyAsString()).map(metadataJson -> parse(metadataJson,
             AzureVMMetadata.class)).doOnSuccess(azureVMMetadata -> {
             this.clientTelemetryInfo.setApplicationRegion(azureVMMetadata.getLocation());
             this.clientTelemetryInfo.setHostEnvInfo(azureVMMetadata.getOsType() + "|" + azureVMMetadata.getSku() +
                 "|" + azureVMMetadata.getVmSize() + "|" + azureVMMetadata.getAzEnvironment());
         }).onErrorResume(throwable -> {
             logger.info("Unable to get azure vm metadata");
+            logger.debug("Unable to get azure vm metadata", throwable);
             return Mono.empty();
         }).subscribe();
+    }
+
+    private static <T> T parse(String itemResponseBodyAsString, Class<T> itemClassType) {
+        try {
+            return OBJECT_MAPPER.readValue(itemResponseBodyAsString, itemClassType);
+        } catch (IOException e) {
+            throw new IllegalStateException(
+                "Failed to parse string [" + itemResponseBodyAsString + "] to POJO.", e);
+        }
     }
 
     private void clearDataForNextRun() {

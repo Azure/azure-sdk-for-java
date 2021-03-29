@@ -80,7 +80,7 @@ public class AADOAuth2OboAuthorizedClientRepositoryTest {
         when(clientRegistrationsRepo.findByRegistrationId(any())).thenReturn(ClientRegistration
             .withRegistrationId("fake-graph")
             .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-            .redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}")
+            .redirectUriTemplate("{baseUrl}/login/oauth2/code/")
             .tokenUri("https://login.microsoftonline.com/308df08a-1332-4a15-bb06-2ad7e8b71bcf/oauth2/v2.0/token")
             .jwkSetUri("https://login.microsoftonline.com/308df08a-1332-4a15-bb06-2ad7e8b71bcf/discovery/v2.0/keys")
             .authorizationUri("https://login.microsoftonline.com/308df08a-1332-4a15-bb06-2ad7e8b71bcf/oauth2/v2"

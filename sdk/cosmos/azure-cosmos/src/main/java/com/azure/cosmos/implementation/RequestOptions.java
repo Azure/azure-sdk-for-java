@@ -34,6 +34,8 @@ public class RequestOptions {
     private Map<String, Object> properties;
     private ThroughputProperties throughputProperties;
     private Boolean contentResponseOnWriteEnabled;
+    private String filterPredicate;
+    private String throughputControlGroupName;
 
     /**
      * Gets the triggers to be invoked before the operation.
@@ -105,6 +107,25 @@ public class RequestOptions {
      */
     public void setIfNoneMatchETag(String ifNoneMatchETag) {
         this.ifNoneMatchETag = ifNoneMatchETag;
+    }
+
+    /**
+     * Gets the FilterPredicate associated with the request in the Azure Cosmos DB service.
+     *
+     * @return the FilterPredicate associated with the request.
+     */
+    public String getFilterPredicate() {
+        return this.filterPredicate;
+    }
+
+    /**
+     * Sets the FilterPredicate associated with the request in the Azure Cosmos DB service.
+     *
+     * @param filterPredicate the filterPredicate associated with the request.
+     * @return the current request options
+     */
+    public void setFilterPredicate(String filterPredicate) {
+        this.filterPredicate = filterPredicate;
     }
 
     /**
@@ -377,5 +398,13 @@ public class RequestOptions {
      */
     public void setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
         this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
+    }
+
+    public String getThroughputControlGroupName() {
+        return this.throughputControlGroupName;
+    }
+
+    public void setThroughputControlGroupName(String throughputControlGroupName) {
+        this.throughputControlGroupName = throughputControlGroupName;
     }
 }

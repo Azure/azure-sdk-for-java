@@ -22,16 +22,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.authorizeRequests().antMatchers("/home").permitAll();
-        http.authorizeRequests().antMatchers("/api/**").authenticated();
-
-        http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-            .logoutSuccessUrl("/").deleteCookies("JSESSIONID").invalidateHttpSession(true);
-
-        http.authorizeRequests().anyRequest().permitAll();
-
-        http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-
-        http.addFilterBefore(aadAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        http.authorizeRequests()
+                .antMatchers("/home").permitAll()
+                .antMatchers("/api/**").authenticated()
+                .anyRequest().permitAll()
+                .and()
+            .csrf()
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .and()
+            .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .deleteCookies("JSESSIONID")
+                .logoutSuccessUrl("/")
+                .invalidateHttpSession(true)
+                .and()
+            .addFilterBefore(aadAuthFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

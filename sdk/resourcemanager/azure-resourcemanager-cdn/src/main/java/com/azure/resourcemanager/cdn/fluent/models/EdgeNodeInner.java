@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.IpAddressGroup;
+import com.azure.resourcemanager.cdn.models.SystemData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -24,6 +25,12 @@ public class EdgeNodeInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.ipAddressGroups")
     private List<IpAddressGroup> ipAddressGroups;
+
+    /*
+     * Read only system data
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
      * Get the ipAddressGroups property: List of ip address groups.
@@ -46,6 +53,15 @@ public class EdgeNodeInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Read only system data.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -53,6 +69,9 @@ public class EdgeNodeInner extends ProxyResource {
     public void validate() {
         if (ipAddressGroups() != null) {
             ipAddressGroups().forEach(e -> e.validate());
+        }
+        if (systemData() != null) {
+            systemData().validate();
         }
     }
 }

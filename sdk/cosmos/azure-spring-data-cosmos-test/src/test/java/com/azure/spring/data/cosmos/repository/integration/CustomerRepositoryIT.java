@@ -2,15 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
+import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Customer;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.CustomerRepository;
-import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,11 +48,8 @@ public class CustomerRepositoryIT {
     private static final Customer CUSTOMER_1 = new Customer(CUSTOMER_ID_1, CUSTOMER_LEVEL_1, USER_1);
     private static final Customer CUSTOMER_2 = new Customer(CUSTOMER_ID_2, CUSTOMER_LEVEL_1, USER_2);
 
-    private static final CosmosEntityInformation<Customer, String> entityInformation =
-        new CosmosEntityInformation<>(Customer.class);
-
-    private static CosmosTemplate staticTemplate;
-    private static boolean isSetupDone;
+    @ClassRule
+    public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
     private CustomerRepository repository;
@@ -63,22 +59,8 @@ public class CustomerRepositoryIT {
 
     @Before
     public void setUp() {
-        if (!isSetupDone) {
-            staticTemplate = template;
-            template.createContainerIfNotExists(entityInformation);
-        }
+        collectionManager.ensureContainersCreatedAndEmpty(template, Customer.class);
         this.repository.saveAll(Arrays.asList(CUSTOMER_0, CUSTOMER_1, CUSTOMER_2));
-        isSetupDone = true;
-    }
-
-    @After
-    public void cleanup() {
-        this.repository.deleteAll();
-    }
-
-    @AfterClass
-    public static void afterClassCleanup() {
-        staticTemplate.deleteContainer(entityInformation.getContainerName());
     }
 
     private void assertCustomerListEquals(@NonNull List<Customer> customers, @NonNull List<Customer> reference) {

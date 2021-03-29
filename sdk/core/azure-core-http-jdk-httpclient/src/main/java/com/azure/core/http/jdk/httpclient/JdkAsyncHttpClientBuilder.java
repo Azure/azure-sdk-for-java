@@ -7,8 +7,8 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.jdk.httpclient.implementation.JdkHttpClientProxySelector;
 import com.azure.core.util.Configuration;
-
 import com.azure.core.util.logging.ClientLogger;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.net.Authenticator;
@@ -17,14 +17,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.Executor;
-import java.util.stream.Collectors;
 
 /**
  * Builder to configure and build an instance of the azure-core {@link HttpClient} type using the JDK HttpClient APIs,
@@ -83,8 +81,8 @@ public class JdkAsyncHttpClientBuilder {
 
     /**
      * Sets the executor to be used for asynchronous and dependent tasks. This cannot be null.
-     *
-     * <p> If this method is not invoked prior to {@linkplain #build() building}, a default executor is created for each
+     * <p>
+     * If this method is not invoked prior to {@linkplain #build() building}, a default executor is created for each
      * newly built {@code HttpClient}.
      *
      * @param executor the executor to be used for asynchronous and dependent tasks
@@ -151,8 +149,8 @@ public class JdkAsyncHttpClientBuilder {
      */
     public HttpClient build() {
         java.net.http.HttpClient.Builder httpClientBuilder = this.httpClientBuilder == null
-                     ? java.net.http.HttpClient.newBuilder()
-                     : this.httpClientBuilder;
+            ? java.net.http.HttpClient.newBuilder()
+            : this.httpClientBuilder;
 
         httpClientBuilder = (this.connectionTimeout != null)
             ? httpClientBuilder.connectTimeout(this.connectionTimeout)
@@ -209,15 +207,13 @@ public class JdkAsyncHttpClientBuilder {
         Set<String> allowRestrictedHeaders = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
 
         // Combine the set of all allowed restricted headers from both sources
-        allowRestrictedHeaders.addAll(
-                Arrays.stream(allowRestrictedHeadersSystemProperties)
-                .map(String::trim)
-                .collect(Collectors.toSet()));
+        for (String header : allowRestrictedHeadersSystemProperties) {
+            allowRestrictedHeaders.add(header.trim());
+        }
 
-        allowRestrictedHeaders.addAll(
-            Arrays.stream(allowRestrictedHeadersNetProperties)
-                .map(String::trim)
-                .collect(Collectors.toSet()));
+        for (String header : allowRestrictedHeadersNetProperties) {
+            allowRestrictedHeaders.add(header.trim());
+        }
 
         return allowRestrictedHeaders;
     }

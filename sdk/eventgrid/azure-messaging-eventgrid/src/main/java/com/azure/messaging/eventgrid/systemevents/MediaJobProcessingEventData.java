@@ -5,7 +5,15 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Immutable;
+import java.util.Map;
 
-/** The MediaJobProcessingEventData model. */
+/** Job processing event data. */
 @Immutable
-public final class MediaJobProcessingEventData extends MediaJobStateChangeEventData {}
+public final class MediaJobProcessingEventData extends MediaJobStateChangeEventData {
+    /** {@inheritDoc} */
+    @Override
+    public MediaJobProcessingEventData setCorrelationData(Map<String, String> correlationData) {
+        super.setCorrelationData(correlationData);
+        return this;
+    }
+}

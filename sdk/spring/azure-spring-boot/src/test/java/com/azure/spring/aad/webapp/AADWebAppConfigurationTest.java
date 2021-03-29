@@ -72,7 +72,7 @@ public class AADWebAppConfigurationTest {
                     azure.getProviderDetails().getAuthorizationUri());
                 assertEquals(endpoints.tokenEndpoint(), azure.getProviderDetails().getTokenUri());
                 assertEquals(endpoints.jwkSetEndpoint(), azure.getProviderDetails().getJwkSetUri());
-                assertEquals("{baseUrl}/login/oauth2/code/{registrationId}", azure.getRedirectUriTemplate());
+                assertEquals("{baseUrl}/login/oauth2/code/", azure.getRedirectUriTemplate());
                 assertDefaultScopes(azure, "openid", "profile");
             });
     }
@@ -290,6 +290,58 @@ public class AADWebAppConfigurationTest {
             });
     }
 
+    @Test(expected = IllegalStateException.class)
+    public void multiTenantWithAllowedGroupsConfiguredTest1() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.tenant-id=",
+                "azure.activedirectory.user-group.allowed-groups=group1,group2"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+            });
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void multiTenantWithAllowedGroupsConfiguredTest2() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.tenant-id=common",
+                "azure.activedirectory.user-group.allowed-groups=group1,group2"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+            });
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void multiTenantWithAllowedGroupsConfiguredTest3() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.tenant-id=organizations",
+                "azure.activedirectory.user-group.allowed-groups=group1,group2"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+            });
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void multiTenantWithAllowedGroupsConfiguredTest4() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.tenant-id=consumers",
+                "azure.activedirectory.user-group.allowed-groups=group1,group2"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+            });
+    }
+
     @Test
     public void groupConfiguration() {
         WebApplicationContextRunnerUtils
@@ -301,7 +353,7 @@ public class AADWebAppConfigurationTest {
                 assertDefaultScopes(
                     clientRepo.getAzureClient(),
                     "openid", "profile", "https://graph.microsoft.com/User.Read",
-                    "https://graph.microsoft.com/Directory.AccessAsUser.All"
+                    "https://graph.microsoft.com/Directory.Read.All"
                 );
             });
     }
@@ -349,7 +401,7 @@ public class AADWebAppConfigurationTest {
         assertEquals(resourceServerCount(scopes), 0);
         scopes.add("https://graph.microsoft.com/User.Read");
         assertEquals(resourceServerCount(scopes), 1);
-        scopes.add("https://graph.microsoft.com/Directory.AccessAsUser.All");
+        scopes.add("https://graph.microsoft.com/Directory.Read.All");
         assertEquals(resourceServerCount(scopes), 1);
         scopes.add("https://manage.office.com/ActivityFeed.Read");
         assertEquals(resourceServerCount(scopes), 2);

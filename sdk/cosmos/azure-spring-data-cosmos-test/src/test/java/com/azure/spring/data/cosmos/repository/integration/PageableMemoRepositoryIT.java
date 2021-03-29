@@ -6,15 +6,15 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.spring.data.cosmos.CosmosFactory;
+import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.domain.Importance;
 import com.azure.spring.data.cosmos.domain.PageableMemo;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.PageableMemoRepository;
-import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,10 +42,8 @@ public class PageableMemoRepositoryIT {
 
     private static final int TOTAL_CONTENT_SIZE = 500;
 
-    private static final CosmosEntityInformation<PageableMemo, String> entityInformation =
-        new CosmosEntityInformation<>(PageableMemo.class);
-
-    private static CosmosTemplate staticTemplate;
+    @ClassRule
+    public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
     private CosmosTemplate template;
@@ -65,11 +63,11 @@ public class PageableMemoRepositoryIT {
 
     @Before
     public void setUp() {
+        collectionManager.ensureContainersCreated(template, PageableMemo.class);
+
         if (isSetupDone) {
             return;
         }
-        template.createContainerIfNotExists(entityInformation);
-        staticTemplate = template;
         memoSet = new HashSet<>();
         final Random random = new Random();
         final Importance[] importanceValues = Importance.values();
@@ -84,11 +82,6 @@ public class PageableMemoRepositoryIT {
             memoSet.add(memo);
         }
         isSetupDone = true;
-    }
-
-    @AfterClass
-    public static void afterClassCleanup() {
-        staticTemplate.deleteContainer(entityInformation.getContainerName());
     }
 
     @Test
@@ -142,7 +135,7 @@ public class PageableMemoRepositoryIT {
 
         final CosmosAsyncClient cosmosAsyncClient = applicationContext.getBean(CosmosAsyncClient.class);
         return cosmosAsyncClient.getDatabase(cosmosFactory.getDatabaseName())
-                           .getContainer(entityInformation.getContainerName())
+                           .getContainer(collectionManager.getContainerName(PageableMemo.class))
                            .queryItems(query, options, PageableMemo.class)
                            .byPage();
     }

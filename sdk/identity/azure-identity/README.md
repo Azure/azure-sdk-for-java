@@ -24,7 +24,7 @@ Maven dependency for Azure Secret Client library. Add it to your project's pom f
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.2.2</version>
+    <version>1.2.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -378,6 +378,7 @@ Currently the following client libraries support authenticating with `TokenCrede
 - [azure-eventhubs][eventhubs_client_library]
 - [azure-security-keyvault-keys][keys_client_library]
 - [azure-security-keyvault-secrets][secrets_client_library]
+- [microsoft-graph-sdk][https://github.com/microsoftgraph/msgraph-sdk-java]
 
 ## Contributing
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.

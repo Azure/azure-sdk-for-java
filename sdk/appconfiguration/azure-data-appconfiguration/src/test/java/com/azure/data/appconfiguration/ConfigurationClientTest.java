@@ -21,17 +21,18 @@ import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ConfigurationClientTest extends ConfigurationClientTestBase {
     private final ClientLogger logger = new ClientLogger(ConfigurationClientTest.class);
@@ -430,6 +431,33 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         });
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listConfigurationSettingsWithNullSelector(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
+
+        String key = getKey();
+        String key2 = getKey();
+        // Delete all existing settings in the resource
+        final PagedIterable<ConfigurationSetting> configurationSettings = client.listConfigurationSettings(null);
+        for (ConfigurationSetting setting : configurationSettings) {
+            assertConfigurationEquals(setting,
+                client.deleteConfigurationSettingWithResponse(setting, false, Context.NONE));
+        }
+        listWithMultipleKeysRunner(key, key2, (setting, setting2) -> {
+            assertConfigurationEquals(setting,
+                client.addConfigurationSettingWithResponse(setting, Context.NONE).getValue());
+            assertConfigurationEquals(setting2,
+                client.addConfigurationSettingWithResponse(setting2, Context.NONE).getValue());
+
+            final PagedIterable<ConfigurationSetting> configurationSettingIterable =
+                client.listConfigurationSettings(new SettingSelector().setKeyFilter(key + "," + key2));
+            assertEquals(2, configurationSettingIterable.stream().count());
+            return configurationSettingIterable;
+        });
+    }
+
     /**
      * Verifies that ConfigurationSettings can be added with different labels and that we can fetch those ConfigurationSettings
      * from the service when filtering by their labels.
@@ -566,6 +594,9 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         validateListRevisions(updated2, revisions.get(0));
         validateListRevisions(updated, revisions.get(1));
         validateListRevisions(original, revisions.get(2));
+
+        // Verifies that we have revision list size greater than 0. The count number of revision changes.
+        assertTrue(client.listRevisions(null).stream().collect(Collectors.toList()).size() > 0);
     }
 
     /**

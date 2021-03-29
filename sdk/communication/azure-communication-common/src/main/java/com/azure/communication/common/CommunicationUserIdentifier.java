@@ -7,14 +7,14 @@ import com.azure.core.util.CoreUtils;
 /**
  * Communication identifier for Communication Services Users
  */
-public class CommunicationUserIdentifier extends CommunicationIdentifier {
+public final class CommunicationUserIdentifier extends CommunicationIdentifier {
 
     private final String id;
 
     /**
      * Creates a CommunicationUserIdentifier object
-     * 
-     * @param id the string identifier representing the identity
+     *
+     * @param id id of the communication user.
      * @throws IllegalArgumentException thrown if id parameter fail the validation.
      */
     public CommunicationUserIdentifier(String id) {
@@ -25,9 +25,28 @@ public class CommunicationUserIdentifier extends CommunicationIdentifier {
     }
 
     /**
-     * @return the string identifier representing the object identity
+     * Get id of the communication user.
+     * @return id of the communication user.
      */
     public String getId() {
         return id;
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        }
+
+        if (!(that instanceof CommunicationUserIdentifier)) {
+            return false;
+        }
+
+        return ((CommunicationUserIdentifier) that).getId().equals(id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
     }
 }

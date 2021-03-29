@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.ChangeFeed;
 import com.azure.resourcemanager.storage.models.CorsRules;
 import com.azure.resourcemanager.storage.models.DeleteRetentionPolicy;
+import com.azure.resourcemanager.storage.models.LastAccessTimeTrackingPolicy;
 import com.azure.resourcemanager.storage.models.RestorePolicyProperties;
 import com.azure.resourcemanager.storage.models.Sku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -80,6 +81,13 @@ public class BlobServicePropertiesInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.containerDeleteRetentionPolicy")
     private DeleteRetentionPolicy containerDeleteRetentionPolicy;
+
+    /*
+     * The blob service property to configure last access time based tracking
+     * policy.
+     */
+    @JsonProperty(value = "properties.lastAccessTimeTrackingPolicy")
+    private LastAccessTimeTrackingPolicy lastAccessTimeTrackingPolicy;
 
     /**
      * Get the sku property: Sku name and tier.
@@ -260,6 +268,29 @@ public class BlobServicePropertiesInner extends ProxyResource {
     }
 
     /**
+     * Get the lastAccessTimeTrackingPolicy property: The blob service property to configure last access time based
+     * tracking policy.
+     *
+     * @return the lastAccessTimeTrackingPolicy value.
+     */
+    public LastAccessTimeTrackingPolicy lastAccessTimeTrackingPolicy() {
+        return this.lastAccessTimeTrackingPolicy;
+    }
+
+    /**
+     * Set the lastAccessTimeTrackingPolicy property: The blob service property to configure last access time based
+     * tracking policy.
+     *
+     * @param lastAccessTimeTrackingPolicy the lastAccessTimeTrackingPolicy value to set.
+     * @return the BlobServicePropertiesInner object itself.
+     */
+    public BlobServicePropertiesInner withLastAccessTimeTrackingPolicy(
+        LastAccessTimeTrackingPolicy lastAccessTimeTrackingPolicy) {
+        this.lastAccessTimeTrackingPolicy = lastAccessTimeTrackingPolicy;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -282,6 +313,9 @@ public class BlobServicePropertiesInner extends ProxyResource {
         }
         if (containerDeleteRetentionPolicy() != null) {
             containerDeleteRetentionPolicy().validate();
+        }
+        if (lastAccessTimeTrackingPolicy() != null) {
+            lastAccessTimeTrackingPolicy().validate();
         }
     }
 }

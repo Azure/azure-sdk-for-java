@@ -3,8 +3,11 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
@@ -73,7 +76,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  *
  * <p>
  * Please refer to the
- * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
+ * <a href=https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
  * Docs</a> for more information.
  */
 public class BlobAsyncClient extends BlobAsyncClientBase {
@@ -168,7 +171,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      */
     @Override
     public BlobAsyncClient getSnapshotClient(String snapshot) {
-        return new BlobAsyncClient(getHttpPipeline(), getBlobUrl(), getServiceVersion(), getAccountName(),
+        return new BlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), snapshot, getCustomerProvidedKey(), encryptionScope, getVersionId());
     }
 
@@ -181,7 +184,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      */
     @Override
     public BlobAsyncClient getVersionClient(String versionId) {
-        return new BlobAsyncClient(getHttpPipeline(), getBlobUrl(), getServiceVersion(), getAccountName(),
+        return new BlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(), encryptionScope, versionId);
     }
 
@@ -263,6 +266,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions) {
         try {
             return upload(data, parallelTransferOptions, false);
@@ -304,6 +308,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @param overwrite Whether or not to overwrite, should the blob already exist.
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions,
         boolean overwrite) {
         try {
@@ -322,6 +327,62 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
             return overwriteCheck
                 .then(uploadWithResponse(data, parallelTransferOptions, null, null, null,
+                    requestConditions)).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+
+    /**
+     * Creates a new block blob. By default this method will not overwrite an existing blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.upload#BinaryData}
+     *
+     * @param data The data to write to the blob.
+     * @return A reactive response containing the information of the uploaded block blob.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlockBlobItem> upload(BinaryData data) {
+        try {
+            return upload(data, false);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.upload#BinaryData-boolean}
+     *
+     * @param data The data to write to the blob.
+     * @param overwrite Whether or not to overwrite, should the blob already exist.
+     * @return A reactive response containing the information of the uploaded block blob.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlockBlobItem> upload(BinaryData data,
+                                      boolean overwrite) {
+        try {
+            Mono<Void> overwriteCheck;
+            BlobRequestConditions requestConditions;
+
+            if (overwrite) {
+                overwriteCheck = Mono.empty();
+                requestConditions = null;
+            } else {
+                overwriteCheck = exists().flatMap(exists -> exists
+                    ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
+                    : Mono.empty());
+                requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+            }
+
+            return overwriteCheck
+                .then(uploadWithResponse(Flux.just(ByteBuffer.wrap(data.toBytes())), null, null, null, null,
                     requestConditions)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -371,6 +432,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @param requestConditions {@link BlobRequestConditions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data,
         ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers, Map<String, String> metadata,
         AccessTier tier, BlobRequestConditions requestConditions) {
@@ -416,7 +478,31 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * expected to produce the same values across subscriptions.
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockBlobItem>> uploadWithResponse(BlobParallelUploadOptions options) {
+        /*
+        The following is catalogue of all the places we allocate memory/copy in any upload method a justifaction for
+        that case current as of 1/13/21.
+        - Async buffered upload chunked upload: We used an UploadBufferPool. This will allocate memory as needed up to
+        the configured maximum. This is necessary to support replayability on retires. Each flux to come out of the pool
+        is a Flux.just() of up to two deep copied buffers, so it is replayable. It also allows us to optimize the upload
+        by uploading the maximum amount per block. Finally, in the case of chunked uploading, it allows the customer to
+        pass data without knowing the size. Note that full upload does not need a deep copy because the Flux emitted by
+        the PayloadSizeGate in the full upload case is already replayable and the length is maintained by the gate.
+        - Sync buffered upload: converting the input stream to a flux involves creating a buffer for each stream read.
+        Using a new buffer per read ensures that the reads are safe and not overwriting data in buffers that were passed
+        to the async upload but have not yet been sent. This covers both full and chunked uploads in the sync case.
+        - BlobOutputStream: A deep copy is made of any buffer passed to write. While async copy does streamline our code
+        and allow for some potential parallelization, this extra copy is necessary to ensure that customers writing to
+        the stream in a tight loop are not overwriting data previously given to the stream before it has been sent.
+
+        Taken together, these should support retries and protect against data being overwritten in all upload scenarios.
+
+        One note is that there is no deep copy in the uploadFull method. This is unnecessary as explained in
+        uploadFullOrChunked because the Flux coming out of the size gate in that case is already replayable and reusing
+        buffers is not a common scenario for async like it is in sync (and we already buffer in sync to convert from a
+        stream).
+         */
         try {
             StorageImplUtils.assertNotNull("options", options);
 
@@ -456,6 +542,12 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         Flux<ByteBuffer> data, long length, ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers,
         Map<String, String> metadata, Map<String, String> tags, AccessTier tier,
         BlobRequestConditions requestConditions, boolean computeMd5) {
+
+        /*
+        Note that there is no need to buffer here as the flux returned by the size gate in this case is created
+        from an iterable and is therefore replayable.
+         */
+
         // Report progress as necessary.
         Flux<ByteBuffer> progressData = ProgressReporter.addProgressReporting(data,
             parallelTransferOptions.getProgressReceiver());
@@ -495,6 +587,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
          Write to the pool and upload the output.
          */
         return chunkedSource.concatMap(pool::write)
+            .limitRate(parallelTransferOptions.getMaxConcurrency()) // This guarantees that concatMap will only buffer maxConcurrency * chunkSize data
             .concatWith(Flux.defer(pool::flush))
             .flatMapSequential(bufferAggregator -> {
                 // Report progress as necessary.
@@ -534,6 +627,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @return An empty response
      * @throws UncheckedIOException If an I/O error occurs
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadFromFile(String filePath) {
         try {
             return uploadFromFile(filePath, false);
@@ -555,6 +649,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @return An empty response
      * @throws UncheckedIOException If an I/O error occurs
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadFromFile(String filePath, boolean overwrite) {
         try {
             Mono<Void> overwriteCheck = Mono.empty();
@@ -599,6 +694,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @return An empty response
      * @throws UncheckedIOException If an I/O error occurs
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions requestConditions) {
@@ -622,6 +718,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response containing the information of the uploaded block blob.
      * @throws UncheckedIOException If an I/O error occurs
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockBlobItem>> uploadFromFileWithResponse(BlobUploadFromFileOptions options) {
         StorageImplUtils.assertNotNull("options", options);
         Long originalBlockSize = (options.getParallelTransferOptions() == null)

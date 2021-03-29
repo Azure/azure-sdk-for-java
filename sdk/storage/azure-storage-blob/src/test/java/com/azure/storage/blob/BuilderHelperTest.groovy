@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.credential.AzureSasCredential
+import com.azure.core.credential.TokenCredential
 import com.azure.core.http.*
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.test.http.MockHttpResponse
@@ -37,7 +39,8 @@ class BuilderHelperTest extends Specification {
      */
     def "Fresh date applied on retry"() {
         when:
-        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, requestRetryOptions, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
+        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, null,
+            endpoint, requestRetryOptions, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
             new FreshDateTestClient(), new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTest.class))
 
         then:
@@ -151,7 +154,8 @@ class BuilderHelperTest extends Specification {
     @Unroll
     def "Custom application id in UA string"() {
         when:
-        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, new RequestRetryOptions(), new HttpLogOptions().setApplicationId(logOptionsUA), new ClientOptions().setApplicationId(clientOptionsUA),
+        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, null,
+            endpoint, new RequestRetryOptions(), new HttpLogOptions().setApplicationId(logOptionsUA), new ClientOptions().setApplicationId(clientOptionsUA),
             new ApplicationIdUAStringTestClient(expectedUA), new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTest.class))
 
         then:
@@ -308,7 +312,8 @@ class BuilderHelperTest extends Specification {
         headers.add(new Header("User-Agent", "overwritten"))
 
         when:
-        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, new RequestRetryOptions(), BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions().setHeaders(headers),
+        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, null,
+            endpoint, new RequestRetryOptions(), BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions().setHeaders(headers),
             new ClientOptionsHeadersTestClient(headers), new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTest.class))
 
         then:
@@ -437,6 +442,220 @@ class BuilderHelperTest extends Specification {
         StepVerifier.create(pageBlobClient.getHttpPipeline().send(request(pageBlobClient.getBlobUrl())))
             .assertNext({ it.getStatusCode() == 200 })
             .verifyComplete()
+    }
+
+    def "Does not throw on ambiguous credentials, without AzureSasCredential"(){
+        when:
+        new BlobClientBuilder()
+            .endpoint(endpoint)
+            .blobName("foo")
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .credential(Mock(TokenCredential.class))
+            .sasToken("foo")
+            .buildClient()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new SpecializedBlobClientBuilder()
+            .endpoint(endpoint)
+            .blobName("foo")
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .credential(Mock(TokenCredential.class))
+            .sasToken("foo")
+            .buildBlockBlobClient()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new BlobContainerClientBuilder()
+            .endpoint(endpoint)
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .credential(Mock(TokenCredential.class))
+            .sasToken("foo")
+            .buildClient()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new BlobServiceClientBuilder()
+            .endpoint(endpoint)
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .credential(Mock(TokenCredential.class))
+            .sasToken("foo")
+            .buildClient()
+
+        then:
+        noExceptionThrown()
+    }
+
+    def "Throws on ambiguous credentials, with AzureSasCredential"() {
+        when:
+        new BlobClientBuilder()
+            .endpoint(endpoint)
+            .blobName("foo")
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new BlobClientBuilder()
+            .endpoint(endpoint)
+            .blobName("foo")
+            .credential(Mock(TokenCredential.class))
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new BlobClientBuilder()
+            .endpoint(endpoint)
+            .blobName("foo")
+            .sasToken("foo")
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new BlobClientBuilder()
+            .endpoint(endpoint + "?sig=foo")
+            .blobName("foo")
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new SpecializedBlobClientBuilder()
+            .endpoint(endpoint)
+            .blobName("foo")
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .credential(new AzureSasCredential("foo"))
+            .buildBlockBlobClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new SpecializedBlobClientBuilder()
+            .endpoint(endpoint)
+            .blobName("foo")
+            .credential(Mock(TokenCredential.class))
+            .credential(new AzureSasCredential("foo"))
+            .buildBlockBlobClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new SpecializedBlobClientBuilder()
+            .endpoint(endpoint)
+            .blobName("foo")
+            .sasToken("foo")
+            .credential(new AzureSasCredential("foo"))
+            .buildBlockBlobClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new SpecializedBlobClientBuilder()
+            .endpoint(endpoint + "?sig=foo")
+            .blobName("foo")
+            .credential(new AzureSasCredential("foo"))
+            .buildBlockBlobClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new BlobContainerClientBuilder()
+            .endpoint(endpoint)
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new BlobContainerClientBuilder()
+            .endpoint(endpoint)
+            .credential(Mock(TokenCredential.class))
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new BlobContainerClientBuilder()
+            .endpoint(endpoint)
+            .sasToken("foo")
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new BlobContainerClientBuilder()
+            .endpoint(endpoint + "?sig=foo")
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new BlobServiceClientBuilder()
+            .endpoint(endpoint)
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new BlobServiceClientBuilder()
+            .endpoint(endpoint)
+            .credential(Mock(TokenCredential.class))
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new BlobServiceClientBuilder()
+            .endpoint(endpoint)
+            .sasToken("foo")
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new BlobServiceClientBuilder()
+            .endpoint(endpoint + "?sig=foo")
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
     }
 
     private static final class FreshDateTestClient implements HttpClient {

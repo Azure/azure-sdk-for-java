@@ -12,7 +12,7 @@ import com.azure.ai.metricsadvisor.models.ListAlertOptions;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesAlertedOptions;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesDetectedFilter;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesDetectedOptions;
-import com.azure.ai.metricsadvisor.models.ListDimensionValuesWithAnomaliesOptions;
+import com.azure.ai.metricsadvisor.models.ListAnomalyDimensionValuesOptions;
 import com.azure.ai.metricsadvisor.models.ListIncidentsAlertedOptions;
 import com.azure.ai.metricsadvisor.models.ListIncidentsDetectedOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricDimensionValuesOptions;
@@ -262,25 +262,25 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAsyncClient#listDimensionValuesWithAnomalies(String, String, OffsetDateTime, OffsetDateTime, ListDimensionValuesWithAnomaliesOptions)}.
+     * Code snippet for {@link MetricsAdvisorAsyncClient#listAnomalyDimensionValues(String, String, OffsetDateTime, OffsetDateTime, ListAnomalyDimensionValuesOptions)}.
      */
-    public void listValuesOfDimensionWithAnomalies() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listDimensionValuesWithAnomalies#String-String-OffsetDateTime-OffsetDateTime-ListDimensionValuesWithAnomaliesOptions
+    public void listAnomalyDimensionValues() {
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomalyDimensionValues#String-String-OffsetDateTime-OffsetDateTime-ListAnomalyDimensionValuesOptions
         final String detectionConfigurationId = "c0f2539f-b804-4ab9-a70f-0da0c89c76d8";
         final String dimensionName = "Dim1";
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
-        final ListDimensionValuesWithAnomaliesOptions options
-            = new ListDimensionValuesWithAnomaliesOptions()
+        final ListAnomalyDimensionValuesOptions options
+            = new ListAnomalyDimensionValuesOptions()
             .setTop(10);
 
-        metricsAdvisorAsyncClient.listDimensionValuesWithAnomalies(detectionConfigurationId,
+        metricsAdvisorAsyncClient.listAnomalyDimensionValues(detectionConfigurationId,
             dimensionName,
             startTime, endTime, options)
             .subscribe(dimensionValue -> {
                 System.out.printf("DataFeedDimension Value: %s%n", dimensionValue);
             });
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listDimensionValuesWithAnomalies#String-String-OffsetDateTime-OffsetDateTime-ListDimensionValuesWithAnomaliesOptions
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomalyDimensionValues#String-String-OffsetDateTime-OffsetDateTime-ListAnomalyDimensionValuesOptions
     }
 
     /**

@@ -1,7 +1,19 @@
 # Release History
 
-## 12.4.0-beta.2 (Unreleased)
+## 12.5.0-beta.2 (2021-03-29)
+- Fixed a bug where files/directories in root directories could not be renamed.
+- Fixed a bug where more data would be buffered in buffered upload than expected due to Reactor's concatMap operator.
 
+## 12.5.0-beta.1 (2021-02-10)
+- Added support for the 2020-06-12 service version. 
+- Added support to undelete a file system. 
+
+## 12.4.1 (2021-03-19)
+- Updated `azure-storage-blob` version to `12.10.1` to pickup fixes for blob output stream.
+
+## 12.4.0 (2021-01-14)
+- GA release
+- Fixed bug where getFileClient and getSubDirectoryClient on DirectoryClient would throw IllegalArgumentException if either resource had special characters.
 
 ## 12.4.0-beta.1 (2020-12-07)
 - Added support to list paths on a directory.

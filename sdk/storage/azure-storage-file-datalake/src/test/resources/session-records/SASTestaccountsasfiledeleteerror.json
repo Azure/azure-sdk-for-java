@@ -1,172 +1,172 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsaccountsasfiledeleteerror069296216972fe5ec24b?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsaccountsasfiledeleteerror023328476c4ad723984c?restype=container",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.9.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "da22ff92-8c2c-417f-968b-3ba4d9f37639"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8958c89a-00e5-4579-b8e7-ecfd53143423"
     },
     "Response" : {
-      "x-ms-version" : "2020-02-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D84AC70A5D766D",
-      "Last-Modified" : "Thu, 27 Aug 2020 20:23:20 GMT",
+      "eTag" : "0x8D8D9EC7473F120",
+      "Last-Modified" : "Fri, 26 Feb 2021 00:21:26 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "638cffbe-b01e-0003-07af-7cacc4000000",
-      "Date" : "Thu, 27 Aug 2020 20:23:20 GMT",
-      "x-ms-client-request-id" : "da22ff92-8c2c-417f-968b-3ba4d9f37639"
+      "x-ms-request-id" : "b5dcbf6a-501e-006e-1ed5-0b883b000000",
+      "x-ms-client-request-id" : "8958c89a-00e5-4579-b8e7-ecfd53143423",
+      "Date" : "Fri, 26 Feb 2021 00:21:25 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsaccountsasfiledeleteerror069296216972fe5ec24b/javapathaccountsasfiledeleteerror109574e47fef0b5b29?resource=file",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsaccountsasfiledeleteerror023328476c4ad723984c/javapathaccountsasfiledeleteerror147660d9c455e70568?resource=file",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.3.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "47a755b6-0a57-40d5-8aa4-70720e0650cc"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.2 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "309ccf5f-7ad2-46f4-9955-d9d61ad9e4a1"
     },
     "Response" : {
-      "x-ms-version" : "2020-02-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D84AC70A96B13D",
-      "Last-Modified" : "Thu, 27 Aug 2020 20:23:20 GMT",
+      "eTag" : "0x8D8D9EC7480DDDA",
+      "Last-Modified" : "Fri, 26 Feb 2021 00:21:26 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "1f2acfba-101f-000a-6aaf-7ce917000000",
-      "Date" : "Thu, 27 Aug 2020 20:23:19 GMT",
-      "x-ms-client-request-id" : "47a755b6-0a57-40d5-8aa4-70720e0650cc"
+      "x-ms-request-id" : "a73efeec-f01f-0077-77d5-0b0880000000",
+      "x-ms-client-request-id" : "309ccf5f-7ad2-46f4-9955-d9d61ad9e4a1",
+      "Date" : "Fri, 26 Feb 2021 00:21:25 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsaccountsasfiledeleteerror069296216972fe5ec24b/javapathaccountsasfiledeleteerror109574e47fef0b5b29?position=0&action=append",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsaccountsasfiledeleteerror023328476c4ad723984c/javapathaccountsasfiledeleteerror147660d9c455e70568?action=append&position=0",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.3.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "28b10a70-2a92-411c-9f89-abcc9f33c844",
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.2 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "53706932-e806-4f8b-8c43-91597798283e",
       "Content-Type" : "application/octet-stream"
     },
     "Response" : {
-      "x-ms-version" : "2020-02-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
       "x-ms-request-server-encrypted" : "true",
-      "x-ms-request-id" : "1f2acfbb-101f-000a-6baf-7ce917000000",
-      "Date" : "Thu, 27 Aug 2020 20:23:20 GMT",
-      "x-ms-client-request-id" : "28b10a70-2a92-411c-9f89-abcc9f33c844"
+      "x-ms-request-id" : "a73efefa-f01f-0077-04d5-0b0880000000",
+      "x-ms-client-request-id" : "53706932-e806-4f8b-8c43-91597798283e",
+      "Date" : "Fri, 26 Feb 2021 00:21:25 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsaccountsasfiledeleteerror069296216972fe5ec24b/javapathaccountsasfiledeleteerror109574e47fef0b5b29?position=7&retainUncommittedData=false&close=false&action=flush",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsaccountsasfiledeleteerror023328476c4ad723984c/javapathaccountsasfiledeleteerror147660d9c455e70568?action=flush&position=7&retainUncommittedData=false&close=false",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.3.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "09a00428-44ae-4594-bc3f-b3ca7ce78e0a"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.2 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2acdc5c3-713d-44d7-a72a-541c322b7189"
     },
     "Response" : {
-      "x-ms-version" : "2020-02-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D84AC70AB73861",
-      "Last-Modified" : "Thu, 27 Aug 2020 20:23:21 GMT",
+      "eTag" : "0x8D8D9EC74968552",
+      "Last-Modified" : "Fri, 26 Feb 2021 00:21:26 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "200",
       "x-ms-request-server-encrypted" : "false",
-      "x-ms-request-id" : "1f2acfbc-101f-000a-6caf-7ce917000000",
-      "Date" : "Thu, 27 Aug 2020 20:23:20 GMT",
-      "x-ms-client-request-id" : "09a00428-44ae-4594-bc3f-b3ca7ce78e0a"
+      "x-ms-request-id" : "a73eff04-f01f-0077-0ed5-0b0880000000",
+      "x-ms-client-request-id" : "2acdc5c3-713d-44d7-a72a-541c322b7189",
+      "Date" : "Fri, 26 Feb 2021 00:21:25 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsaccountsasfiledeleteerror069296216972fe5ec24b/javapathaccountsasfiledeleteerror262152880fccf505cd?resource=file",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsaccountsasfiledeleteerror023328476c4ad723984c/javapathaccountsasfiledeleteerror214214977f0a6ce1ea?resource=file",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.3.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f5d32dca-c043-4c16-b94e-8a8ab93eafb4"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.2 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "31ba5942-162a-405e-8cbc-1eac7e58e701"
     },
     "Response" : {
-      "x-ms-version" : "2020-02-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D84AC70AF5D66C",
-      "Last-Modified" : "Thu, 27 Aug 2020 20:23:21 GMT",
+      "eTag" : "0x8D8D9EC74A29F1D",
+      "Last-Modified" : "Fri, 26 Feb 2021 00:21:26 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "4a505986-601f-005d-65af-7c4724000000",
-      "Date" : "Thu, 27 Aug 2020 20:23:21 GMT",
-      "x-ms-client-request-id" : "f5d32dca-c043-4c16-b94e-8a8ab93eafb4"
+      "x-ms-request-id" : "a73eff0e-f01f-0077-18d5-0b0880000000",
+      "x-ms-client-request-id" : "31ba5942-162a-405e-8cbc-1eac7e58e701",
+      "Date" : "Fri, 26 Feb 2021 00:21:25 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsaccountsasfiledeleteerror069296216972fe5ec24b/javapathaccountsasfiledeleteerror262152880fccf505cd?sv=2020-04-08&ss=b&srt=sco&se=2020-08-28T20%3A23%3A21Z&sp=r&sig=REDACTED",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsaccountsasfiledeleteerror023328476c4ad723984c/javapathaccountsasfiledeleteerror214214977f0a6ce1ea?sv=2020-06-12&ss=b&srt=sco&se=2021-02-27T00%3A21%3A26Z&sp=r&sig=REDACTED",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.3.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "809ff685-d968-4fcb-97a1-b3b91c4c650a"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.2 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d7f1d4e5-8b9f-4bbb-ab65-9562035ca41d"
     },
     "Response" : {
-      "x-ms-version" : "2020-02-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "AuthorizationPermissionMismatch",
       "retry-after" : "0",
       "Content-Length" : "227",
       "StatusCode" : "403",
-      "x-ms-request-id" : "4a505987-601f-005d-66af-7c4724000000",
-      "Body" : "{\"error\":{\"code\":\"AuthorizationPermissionMismatch\",\"message\":\"This request is not authorized to perform this operation using this permission.\\nRequestId:4a505987-601f-005d-66af-7c4724000000\\nTime:2020-08-27T20:23:21.6969719Z\"}}",
-      "Date" : "Thu, 27 Aug 2020 20:23:21 GMT",
-      "x-ms-client-request-id" : "809ff685-d968-4fcb-97a1-b3b91c4c650a",
+      "x-ms-request-id" : "a73eff1f-f01f-0077-29d5-0b0880000000",
+      "Body" : "{\"error\":{\"code\":\"AuthorizationPermissionMismatch\",\"message\":\"This request is not authorized to perform this operation using this permission.\\nRequestId:a73eff1f-f01f-0077-29d5-0b0880000000\\nTime:2021-02-26T00:21:26.6033180Z\"}}",
+      "x-ms-client-request-id" : "d7f1d4e5-8b9f-4bbb-ab65-9562035ca41d",
+      "Date" : "Fri, 26 Feb 2021 00:21:26 GMT",
       "Content-Type" : "application/json;charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net?prefix=jtfsaccountsasfiledeleteerror&comp=list",
+    "Uri" : "https://REDACTED.blob.core.windows.net?comp=list&prefix=jtfsaccountsasfiledeleteerror",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.9.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "ef1a743c-2a3a-49d8-810c-75a107316fc3"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ea7b4cce-e134-46bc-a7c9-764989fdb4e3"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2020-02-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "638d0018-b01e-0003-4caf-7cacc4000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gaprahnscanary.blob.core.windows.net/\"><Prefix>jtfsaccountsasfiledeleteerror</Prefix><Containers><Container><Name>jtfsaccountsasfiledeleteerror069296216972fe5ec24b</Name><Properties><Last-Modified>Thu, 27 Aug 2020 20:23:20 GMT</Last-Modified><Etag>\"0x8D84AC70A5D766D\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Thu, 27 Aug 2020 20:23:21 GMT",
-      "x-ms-client-request-id" : "ef1a743c-2a3a-49d8-810c-75a107316fc3",
+      "x-ms-request-id" : "b5dcc00f-501e-006e-36d5-0b883b000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gapracontainerrestorehns.blob.core.windows.net/\"><Prefix>jtfsaccountsasfiledeleteerror</Prefix><Containers><Container><Name>jtfsaccountsasfiledeleteerror023328476c4ad723984c</Name><Properties><Last-Modified>Fri, 26 Feb 2021 00:21:26 GMT</Last-Modified><Etag>\"0x8D8D9EC7473F120\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "ea7b4cce-e134-46bc-a7c9-764989fdb4e3",
+      "Date" : "Fri, 26 Feb 2021 00:21:26 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsaccountsasfiledeleteerror069296216972fe5ec24b?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsaccountsasfiledeleteerror023328476c4ad723984c?restype=container",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.9.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "88eb4530-826d-4355-9cbe-ca9db4bba407"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "497c98f6-7657-478a-8e01-597ab50b139e"
     },
     "Response" : {
-      "x-ms-version" : "2020-02-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "638d001b-b01e-0003-4faf-7cacc4000000",
-      "Date" : "Thu, 27 Aug 2020 20:23:21 GMT",
-      "x-ms-client-request-id" : "88eb4530-826d-4355-9cbe-ca9db4bba407"
+      "x-ms-request-id" : "b5dcc02c-501e-006e-52d5-0b883b000000",
+      "x-ms-client-request-id" : "497c98f6-7657-478a-8e01-597ab50b139e",
+      "Date" : "Fri, 26 Feb 2021 00:21:26 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtfsaccountsasfiledeleteerror069296216972fe5ec24b", "javapathaccountsasfiledeleteerror109574e47fef0b5b29", "javapathaccountsasfiledeleteerror262152880fccf505cd", "2020-08-27T20:23:21.667243Z" ]
+  "variables" : [ "jtfsaccountsasfiledeleteerror023328476c4ad723984c", "javapathaccountsasfiledeleteerror147660d9c455e70568", "javapathaccountsasfiledeleteerror214214977f0a6ce1ea", "2021-02-26T00:21:26.546485200Z" ]
 }

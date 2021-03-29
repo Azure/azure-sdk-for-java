@@ -5,9 +5,11 @@ package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpLink;
+import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
+import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
@@ -82,10 +84,11 @@ public class ReactorSessionTest {
     private TokenManagerProvider tokenManagerProvider;
 
     private Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
+    private AutoCloseable mocksCloseable;
 
     @BeforeEach
     public void setup() throws IOException {
-        MockitoAnnotations.initMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
 
         this.handler = new SessionHandler(ID, HOST, ENTITY_PATH, reactorDispatcher, Duration.ofSeconds(60));
         this.cbsNodeSupplier = Mono.just(cbsNode);
@@ -103,14 +106,18 @@ public class ReactorSessionTest {
             return null;
         }).when(reactorDispatcher).invoke(any());
 
-        AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(new AmqpRetryOptions());
+        final AmqpRetryOptions options = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
         this.reactorSession = new ReactorSession(session, handler, NAME, reactorProvider, reactorHandlerProvider,
-            cbsNodeSupplier, tokenManagerProvider, serializer, TIMEOUT, retryPolicy);
+            cbsNodeSupplier, tokenManagerProvider, serializer, options);
     }
 
     @AfterEach
-    public void teardown() {
+    public void teardown() throws Exception {
         Mockito.framework().clearInlineMocks();
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     @Test
@@ -132,9 +139,8 @@ public class ReactorSessionTest {
             .then(() -> handler.onSessionRemoteOpen(event))
             .expectNext(AmqpEndpointState.ACTIVE)
             .then(() -> handler.close())
-            .expectNext(AmqpEndpointState.CLOSED)
             .expectComplete()
-            .verify(Duration.ofSeconds(10));
+            .verify();
     }
 
     @Test
@@ -151,9 +157,14 @@ public class ReactorSessionTest {
         // Arrange
         final String linkName = "test-link-name";
         final String entityPath = "test-entity-path";
-        final AmqpRetryPolicy amqpRetryPolicy = mock(AmqpRetryPolicy.class);
+
+        final Duration timeout = Duration.ofSeconds(10);
+        final AmqpRetryOptions options = new AmqpRetryOptions().setTryTimeout(timeout)
+            .setMaxRetries(1)
+            .setMode(AmqpRetryMode.FIXED);
+        final AmqpRetryPolicy amqpRetryPolicy = new FixedAmqpRetryPolicy(options);
+
         final Map<Symbol, Object> linkProperties = new HashMap<>();
-        final Duration timeout = Duration.ofSeconds(30);
         final TokenManager tokenManager = mock(TokenManager.class);
         final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath);
 
@@ -187,9 +198,14 @@ public class ReactorSessionTest {
         // Arrange
         final String linkName = "test-link-name";
         final String entityPath = "test-entity-path";
-        final AmqpRetryPolicy amqpRetryPolicy = mock(AmqpRetryPolicy.class);
+
+        final Duration timeout = Duration.ofSeconds(10);
+        final AmqpRetryOptions options = new AmqpRetryOptions().setTryTimeout(timeout)
+            .setMaxRetries(1)
+            .setMode(AmqpRetryMode.FIXED);
+        final AmqpRetryPolicy amqpRetryPolicy = new FixedAmqpRetryPolicy(options);
+
         final Map<Symbol, Object> linkProperties = new HashMap<>();
-        final Duration timeout = Duration.ofSeconds(30);
         final TokenManager tokenManager = mock(TokenManager.class);
         final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath);
 

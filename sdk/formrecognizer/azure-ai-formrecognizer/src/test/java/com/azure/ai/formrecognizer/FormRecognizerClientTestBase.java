@@ -39,6 +39,7 @@ import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -293,7 +294,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     private static void validateBoundingBoxData(List<Float> expectedBoundingBox, FieldBoundingBox actualFieldBoundingBox) {
-        // TODO (Service Bug) To be fixed in preview 3
+        // TODO (Service Bug) https://github.com/Azure/azure-sdk-for-java/issues/18967 To be fixed in preview 3
         // assertNotNull(actualFieldBoundingBox);
         // assertNotNull(actualFieldBoundingBox.getPoints());
         if (actualFieldBoundingBox != null && actualFieldBoundingBox.getPoints() != null) {
@@ -324,37 +325,53 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                     }
                     break;
                 case DATE:
-                    assertEquals(expectedFieldValue.getValueDate(), actualFormField.getValue().asDate());
+                    if (expectedFieldValue.getValueDate() != null) {
+                        assertEquals(expectedFieldValue.getValueDate(), actualFormField.getValue().asDate());
+                    }
                     break;
                 case TIME:
-                    assertEquals(LocalTime.parse(expectedFieldValue.getValueTime(),
-                        DateTimeFormatter.ofPattern("HH:mm:ss")), actualFormField.getValue().asTime());
+                    if (expectedFieldValue.getValueTime() != null) {
+                        assertEquals(LocalTime.parse(expectedFieldValue.getValueTime(),
+                            DateTimeFormatter.ofPattern("HH:mm:ss")), actualFormField.getValue().asTime());
+                    }
                     break;
                 case STRING:
-                    if (actualFormField.getName() != "ReceiptType") {
-                        assertEquals(expectedFieldValue.getValueString(), actualFormField.getValue().asString());
+                    if (expectedFieldValue.getValueString() != null) {
+                        if (!"ReceiptType".equals(actualFormField.getName())) {
+                            assertEquals(expectedFieldValue.getValueString(), actualFormField.getValue().asString());
+                        }
                     }
                     break;
                 case INTEGER:
-                    assertEquals(expectedFieldValue.getValueInteger(), actualFormField.getValue().asLong());
+                    if (expectedFieldValue.getValueInteger() != null) {
+                        assertEquals(expectedFieldValue.getValueInteger(), actualFormField.getValue().asLong());
+                    }
                     break;
                 case PHONE_NUMBER:
-                    assertEquals(expectedFieldValue.getValuePhoneNumber(), actualFormField.getValue().asPhoneNumber());
+                    if (expectedFieldValue.getValuePhoneNumber() != null) {
+                        assertEquals(expectedFieldValue.getValuePhoneNumber(),
+                            actualFormField.getValue().asPhoneNumber());
+                    }
                     break;
                 case OBJECT:
-                    expectedFieldValue.getValueObject().forEach((key, formField) -> {
-                        FormField actualFormFieldValue = actualFormField.getValue().asMap().get(key);
-                        validateFieldValueTransforms(formField, actualFormFieldValue, readResults,
-                            includeFieldElements);
-                    });
+                    if (expectedFieldValue.getValueObject() != null) {
+                        expectedFieldValue.getValueObject().forEach((key, formField) -> {
+                            FormField actualFormFieldValue = actualFormField.getValue().asMap().get(key);
+                            validateFieldValueTransforms(formField, actualFormFieldValue, readResults,
+                                includeFieldElements);
+                        });
+                    }
                     break;
                 case ARRAY:
-                    assertEquals(expectedFieldValue.getValueArray().size(), actualFormField.getValue().asList().size());
-                    for (int i = 0; i < expectedFieldValue.getValueArray().size(); i++) {
-                        FieldValue expectedReceiptItem = expectedFieldValue.getValueArray().get(i);
-                        FormField actualReceiptItem = actualFormField.getValue().asList().get(i);
-                        validateFieldValueTransforms(expectedReceiptItem, actualReceiptItem, readResults,
-                            includeFieldElements);
+                    if (expectedFieldValue.getValueArray() != null) {
+                        assertEquals(expectedFieldValue.getValueArray().size(),
+                            actualFormField.getValue().asList().size());
+                        for (int i = 0; i < expectedFieldValue.getValueArray().size(); i++) {
+                            FieldValue expectedReceiptItem = expectedFieldValue.getValueArray().get(i);
+                            FormField actualReceiptItem = actualFormField.getValue().asList().get(i);
+                            validateFieldValueTransforms(expectedReceiptItem, actualReceiptItem, readResults,
+                                includeFieldElements);
+                        }
                     }
                     break;
                 default:
@@ -394,7 +411,9 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
+    @Disabled
     abstract void recognizeReceiptFromDataMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+    // TODO: (https://github.com/Azure/azure-sdk-for-java/issues/20012)
 
     // Receipt - URL
 
@@ -812,10 +831,9 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         });
     }
 
-    static void validateMultiPageDataLabeled(List<RecognizedForm> actualRecognizedFormsList) {
+    static void validateMultiPageDataLabeled(List<RecognizedForm> actualRecognizedFormsList, String modelId) {
         actualRecognizedFormsList.forEach(recognizedForm -> {
-            // TODO (#14889): assertEquals("custom:modelId", recognizedForm.getFormType());
-            // assertEquals("custom:form", recognizedForm.getFormType());
+            assertEquals("custom:" + modelId, recognizedForm.getFormType());
             assertEquals(1, recognizedForm.getPageRange().getFirstPageNumber());
             assertEquals(3, recognizedForm.getPageRange().getLastPageNumber());
             assertEquals(3, recognizedForm.getPages().size());
@@ -865,7 +883,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         Map<String, FormField> businessCard2Fields = businessCard2.getFields();
         List<FormField> email2List = businessCard2Fields.get("Emails").getValue().asList();
         assertEquals("avery.smith@contoso.com", email2List.get(0).getValue().asString());
-        List<FormField> phoneNumber2List = businessCard2Fields.get("OtherPhones").getValue().asList();
+        List<FormField> phoneNumber2List = businessCard2Fields.get("WorkPhones").getValue().asList();
         assertEquals("+44 (0) 20 9876 5432", phoneNumber2List.get(0).getValueData().getText());
         assertNotNull(businessCard2.getPages());
 
