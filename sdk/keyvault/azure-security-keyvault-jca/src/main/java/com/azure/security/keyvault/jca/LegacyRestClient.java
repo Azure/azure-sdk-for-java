@@ -5,10 +5,10 @@ package com.azure.security.keyvault.jca;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.entity.EntityBuilder;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -52,7 +52,7 @@ class LegacyRestClient implements RestClient {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpPost httpPost = new HttpPost(url);
             httpPost.setEntity(
-                (HttpEntity) EntityBuilder.create().setContentType(ContentType.create(contentType)).setText(body));
+                new StringEntity(body, ContentType.create(contentType)));
             result = client.execute(httpPost, responseHandler());
         } catch (IOException ioe) {
             ioe.printStackTrace();
