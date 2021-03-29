@@ -213,9 +213,10 @@ public final class SmsClientBuilder {
 
     private AzureCommunicationSMSServiceImpl createServiceImpl() {
         Objects.requireNonNull(endpoint);
-
+        if (this.pipeline == null) {
+            Objects.requireNonNull(httpClient);
+        }
         HttpPipeline builderPipeline = this.pipeline;
-
         if (this.pipeline == null) {
             builderPipeline = createHttpPipeline(httpClient);
         }

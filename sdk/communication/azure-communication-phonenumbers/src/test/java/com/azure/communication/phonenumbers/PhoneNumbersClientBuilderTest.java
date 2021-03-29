@@ -161,6 +161,13 @@ public class PhoneNumbersClientBuilderTest {
     }
 
     @Test()
+    public void buildClientNoPipelineNoHttpClient() {
+        assertThrows(NullPointerException.class, () -> {
+            this.clientBuilder.endpoint(ENDPOINT).credential(new AzureKeyCredential(ACCESSKEY)).buildClient();
+        });
+    }
+
+    @Test()
     public void buildClientNoPipelineNoCredentials() {
         assertThrows(NullPointerException.class, () -> {
             this.clientBuilder.endpoint(ENDPOINT).httpClient(this.httpClient).buildClient();
@@ -280,6 +287,12 @@ public class PhoneNumbersClientBuilderTest {
         });
     }
 
+    @Test()
+    public void buildAsyncClientNoPipelineNoHttpClientThrows() {
+        assertThrows(NullPointerException.class, () -> {
+            this.clientBuilder.endpoint(ENDPOINT).credential(new AzureKeyCredential(ACCESSKEY)).buildClient();
+        });
+    }
 
     @Test()
     public void buildAsyncClientNoPipelineNoCredentialsThrows() {

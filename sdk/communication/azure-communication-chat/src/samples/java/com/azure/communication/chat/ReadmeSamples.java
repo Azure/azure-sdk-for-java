@@ -15,7 +15,10 @@ import com.azure.communication.chat.models.SendChatMessageOptions;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.CommunicationTokenCredential;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +40,11 @@ public class ReadmeSamples {
     public ChatClient createChatClient() {
         String endpoint = "https://<RESOURCE_NAME>.communcationservices.azure.com";
 
+        // Create an HttpClient builder of your choice and customize it
+        // Use com.azure.core.http.netty.NettyAsyncHttpClientBuilder if that suits your needs
+        NettyAsyncHttpClientBuilder httpClientBuilder = new NettyAsyncHttpClientBuilder();
+        HttpClient httpClient = httpClientBuilder.build();
+
         // Your user access token retrieved from your trusted service
         String token = "SECRET";
         CommunicationTokenCredential credential = new CommunicationTokenCredential(token);
@@ -44,7 +52,8 @@ public class ReadmeSamples {
         // Initialize the chat client
         final ChatClientBuilder builder = new ChatClientBuilder();
         builder.endpoint(endpoint)
-            .credential(credential);
+            .credential(credential)
+            .httpClient(httpClient);
         ChatClient chatClient = builder.buildClient();
 
         return chatClient;
@@ -135,6 +144,7 @@ public class ReadmeSamples {
             .setContent("Message content")
             .setSenderDisplayName("Sender Display Name");
 
+
         SendChatMessageResult sendResult = chatThreadClient.sendMessage(sendChatMessageOptions);
     }
 
@@ -222,6 +232,7 @@ public class ReadmeSamples {
         ChatParticipant secondParticipant = new ChatParticipant()
             .setCommunicationIdentifier(user2)
             .setDisplayName("Display Name 2");
+
 
         participants.add(firstParticipant);
         participants.add(secondParticipant);
