@@ -334,10 +334,6 @@ public class ReactorConnection implements AmqpConnection {
         String linkName, String entityPath) {
 
         final Flux<RequestResponseChannel> createChannel = createSession(sessionName)
-            .onErrorResume(error -> {
-                final boolean isAmqpException = error instanceof AmqpException;
-                return isDisposed.get() && isAmqpException;
-            }, error -> Mono.empty())
             .cast(ReactorSession.class)
             .map(reactorSession -> new RequestResponseChannel(this, getId(), getFullyQualifiedNamespace(), linkName,
                 entityPath, reactorSession.session(), connectionOptions.getRetry(), handlerProvider, reactorProvider,
@@ -346,10 +342,11 @@ public class ReactorConnection implements AmqpConnection {
                 logger.info("connectionId[{}] entityPath[{}] linkName[{}] Emitting new response channel.",
                     getId(), entityPath, linkName);
             })
-            .repeat(() -> !isDisposed.get());
+            .repeat();
 
-        return createChannel.subscribeWith(new AmqpChannelProcessor<>(connectionId, entityPath,
-            channel -> channel.getEndpointStates(), retryPolicy,
+        return createChannel.takeUntilOther(Mono.firstWithSignal(isClosedMono.asMono(), shutdownSignalSink.asMono()))
+            .subscribeWith(new AmqpChannelProcessor<>(connectionId, entityPath,
+                channel -> channel.getEndpointStates(), retryPolicy,
             new ClientLogger(RequestResponseChannel.class + ":" + entityPath)));
     }
 
@@ -539,10 +536,12 @@ public class ReactorConnection implements AmqpConnection {
             }
 
             if (session instanceof ReactorSession) {
-                ((ReactorSession) session).dispose("Closing session.", null, true);
+                ((ReactorSession) session).dispose("Closing session.", null, true)
+                    .subscribe();
             } else {
                 session.dispose();
             }
+
             subscription.dispose();
         }
 
