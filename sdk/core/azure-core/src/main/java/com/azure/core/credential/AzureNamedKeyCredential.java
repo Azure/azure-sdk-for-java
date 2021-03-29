@@ -9,6 +9,15 @@ import java.util.Objects;
 
 /**
  * Represents a credential with a key name and the key and uses the key to authenticate to an Azure Service.
+ *
+ * <p>The named credential can be created for keys which have a name identifier associated with them.</p>
+ *
+ * <p><strong>Code Samples</strong></p>
+ *
+ * <p>Create a named credential for a service specific sas key.</p>
+ *
+ * {@codesnippet com.azure.core.credential.azureNamedKeyCredenialSasKey}
+ *
  */
 public final class AzureNamedKeyCredential {
     private final ClientLogger logger = new ClientLogger(AzureNamedKeyCredential.class);
