@@ -217,7 +217,7 @@ public final class ModelsRepositoryClientBuilder {
      * @return the updated ModelsRepositoryClientBuilder instance for fluent building.
      */
     public ModelsRepositoryClientBuilder repositoryEndpoint(String repositoryEndpoint) {
-        this.repositoryEndpoint = convertToUri(repositoryEndpoint);;
+        this.repositoryEndpoint = convertToUri(repositoryEndpoint);
         return this;
     }
 

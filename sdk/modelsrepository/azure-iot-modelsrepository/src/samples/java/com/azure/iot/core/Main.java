@@ -24,10 +24,8 @@ public class Main {
         ModelResolutionSamples.getMultipleModelsFromGlobalRepository();
 
         Scanner userInput = new Scanner(System.in);
-        while(true) {
-            System.out.println("Press any key to exit.");
-            userInput.nextLine();
-            System.exit(1);
-        }
+        System.out.println("Press any key to exit.");
+        userInput.nextLine();
+        System.exit(1);
     }
 }
