@@ -78,9 +78,9 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     }
 
     DataLakeDirectoryAsyncClient(DataLakePathAsyncClient dataLakePathAsyncClient) {
-        super(dataLakePathAsyncClient.getHttpPipeline(), dataLakePathAsyncClient.getPathUrl(),
+        super(dataLakePathAsyncClient.getHttpPipeline(), dataLakePathAsyncClient.getAccountUrl(),
             dataLakePathAsyncClient.getServiceVersion(), dataLakePathAsyncClient.getAccountName(),
-            dataLakePathAsyncClient.getFileSystemName(), dataLakePathAsyncClient.pathName,
+            dataLakePathAsyncClient.getFileSystemName(), Utility.urlEncode(dataLakePathAsyncClient.pathName),
             PathResourceType.DIRECTORY, dataLakePathAsyncClient.getBlockBlobAsyncClient());
     }
 
@@ -179,8 +179,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
 
         String pathPrefix = getObjectPath().isEmpty() ? "" : getObjectPath() + "/";
 
-        return new DataLakeFileAsyncClient(getHttpPipeline(),
-            StorageImplUtils.appendToUrlPath(getPathUrl(), Utility.urlEncode(Utility.urlDecode(fileName))).toString(),
+        return new DataLakeFileAsyncClient(getHttpPipeline(), getAccountUrl(),
             getServiceVersion(), getAccountName(), getFileSystemName(), Utility.urlEncode(pathPrefix
             + Utility.urlDecode(fileName)), blockBlobAsyncClient);
     }
@@ -328,9 +327,8 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
 
         String pathPrefix = getObjectPath().isEmpty() ? "" : getObjectPath() + "/";
 
-        return new DataLakeDirectoryAsyncClient(getHttpPipeline(),
-            StorageImplUtils.appendToUrlPath(getPathUrl(), Utility.urlEncode(Utility.urlDecode(subdirectoryName)))
-                .toString(), getServiceVersion(), getAccountName(), getFileSystemName(),
+        return new DataLakeDirectoryAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
+            getAccountName(), getFileSystemName(),
             Utility.urlEncode(pathPrefix + Utility.urlDecode(subdirectoryName)), blockBlobAsyncClient);
     }
 
@@ -571,7 +569,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
                     response.getStatusCode(),
                     response.getHeaders(),
                     response.getValue().getPaths(),
-                    response.getDeserializedHeaders().getContinuation(),
+                    response.getDeserializedHeaders().getXMsContinuation(),
                     response.getDeserializedHeaders()));
 
         return new PagedFlux<>(() -> func.apply(null), func).mapPage(Transforms::toPathItem);
@@ -581,9 +579,9 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         boolean userPrincipleNameReturned, Integer maxResults, Duration timeout) {
 
         return StorageImplUtils.applyOptionalTimeout(
-            this.fileSystemDataLakeStorage.fileSystems().listPathsWithRestResponseAsync(
-                recursive, marker, getDirectoryPath(), maxResults, userPrincipleNameReturned, null,
-                null, Context.NONE), timeout);
+            this.fileSystemDataLakeStorage.getFileSystems().listPathsWithResponseAsync(
+                recursive, null, null, marker, getDirectoryPath(), maxResults, userPrincipleNameReturned,
+                Context.NONE), timeout);
     }
 
     /**

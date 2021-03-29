@@ -21,6 +21,7 @@ import com.azure.messaging.eventgrid.systemevents.AcsChatThreadDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatThreadPropertiesUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatThreadPropertiesUpdatedPerUserEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatThreadWithUserDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsRecordingFileStatusUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsSmsDeliveryReportReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsSmsReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueDeletedEventData;
@@ -442,19 +443,36 @@ public final class SystemEventNames {
     public static final String COMMUNICATION_CHAT_MESSAGE_RECEIVED_IN_THREAD =
         "Microsoft.Communication.ChatMessageReceivedInThread";
     public static final String COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD =
-        "Microsoft.Communication.ChatParticipantAddedToThread";
+        "Microsoft.Communication.ChatThreadParticipantAdded";
     public static final String COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD_WITH_USER =
         "Microsoft.Communication.ChatParticipantAddedToThreadWithUser";
+
+    /**
+     * @deprecated As of 4.1.0, replaced by {@link #COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD}.
+     */
+    @Deprecated
     public static final String COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD =
-        "Microsoft.Communication.ChatParticipantRemovedFromThread";
+        "Microsoft.Communication.ChatThreadParticipantRemoved";
+    public static final String COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD =
+        "Microsoft.Communication.ChatThreadParticipantRemoved";
+
+    /**
+     * @deprecated @deprecated As of 4.1.0, replaced by {@link #COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD_WITH_USER}.
+     */
+    @Deprecated
     public static final String COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD_WITH_USER =
         "Microsoft.Communication.ChatParticipantRemovedFromThreadWithUser";
+    public static final String COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD_WITH_USER =
+        "Microsoft.Communication.ChatParticipantRemovedFromThreadWithUser";
+
     public static final String COMMUNICATION_CHAT_THREAD_CREATED =
         "Microsoft.Communication.ChatThreadCreated";
     public static final String COMMUNICATION_CHAT_THREAD_DELETED =
         "Microsoft.Communication.ChatThreadDeleted";
     public static final String COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED =
         "Microsoft.Communication.ChatThreadPropertiesUpdated";
+    public static final String COMMUNICATION_RECORDING_FILE_STATUS_UPDATED =
+        "Microsoft.Communication.RecordingFileStatusUpdated";
 
     // Web
     public static final String WEB_APP_UPDATED = "Microsoft.Web.AppUpdated";
@@ -599,10 +617,13 @@ public final class SystemEventNames {
             put(COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD, AcsChatParticipantAddedToThreadEventData.class);
             put(COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD_WITH_USER, AcsChatParticipantAddedToThreadWithUserEventData.class);
             put(COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD, AcsChatParticipantRemovedFromThreadEventData.class);
+            put(COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD, AcsChatParticipantRemovedFromThreadEventData.class);
             put(COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD_WITH_USER, AcsChatParticipantRemovedFromThreadWithUserEventData.class);
+            put(COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD_WITH_USER, AcsChatParticipantRemovedFromThreadWithUserEventData.class);
             put(COMMUNICATION_CHAT_THREAD_CREATED, AcsChatThreadCreatedEventData.class);
             put(COMMUNICATION_CHAT_THREAD_DELETED, AcsChatThreadDeletedEventData.class);
             put(COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED, AcsChatThreadPropertiesUpdatedEventData.class);
+            put(COMMUNICATION_RECORDING_FILE_STATUS_UPDATED, AcsRecordingFileStatusUpdatedEventData.class);
 
             // Web events
             put(WEB_APP_UPDATED, WebAppUpdatedEventData.class);

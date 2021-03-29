@@ -39,10 +39,10 @@ final class GeoJsonSerializer extends JsonSerializer<GeoObject> {
             writeType(GeoJsonDeserializer.POINT_TYPE, gen);
             gen.writeFieldName(GeoJsonDeserializer.COORDINATES_PROPERTY);
             writePosition(((GeoPoint) value).getCoordinates(), gen);
-        } else if (value instanceof GeoLine) {
+        } else if (value instanceof GeoLineString) {
             writeType(GeoJsonDeserializer.LINE_STRING_TYPE, gen);
             gen.writeFieldName(GeoJsonDeserializer.COORDINATES_PROPERTY);
-            writePositions(((GeoLine) value).getCoordinates(), gen);
+            writePositions(((GeoLineString) value).getCoordinates(), gen);
         } else if (value instanceof GeoPolygon) {
             writeType(GeoJsonDeserializer.POLYGON_TYPE, gen);
             gen.writeArrayFieldStart(GeoJsonDeserializer.COORDINATES_PROPERTY);
@@ -57,10 +57,10 @@ final class GeoJsonSerializer extends JsonSerializer<GeoObject> {
                 writePosition(point.getCoordinates(), gen);
             }
             gen.writeEndArray();
-        } else if (value instanceof GeoLineCollection) {
+        } else if (value instanceof GeoLineStringCollection) {
             writeType(GeoJsonDeserializer.MULTI_LINE_STRING_TYPE, gen);
             gen.writeArrayFieldStart(GeoJsonDeserializer.COORDINATES_PROPERTY);
-            for (GeoLine line : ((GeoLineCollection) value).getLines()) {
+            for (GeoLineString line : ((GeoLineStringCollection) value).getLines()) {
                 writePositions(line.getCoordinates(), gen);
             }
             gen.writeEndArray();

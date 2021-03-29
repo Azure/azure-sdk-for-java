@@ -3,7 +3,7 @@
 
 package com.azure.spring.sample.aad.b2c.security;
 
-import com.azure.spring.aad.webapi.AADJwtBearerTokenAuthenticationConverter;
+import com.azure.spring.autoconfigure.b2c.AADB2CJwtBearerTokenAuthenticationConverter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -16,6 +16,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests((requests) -> requests.anyRequest().authenticated())
             .oauth2ResourceServer()
             .jwt()
-            .jwtAuthenticationConverter(new AADJwtBearerTokenAuthenticationConverter());
+            .jwtAuthenticationConverter(new AADB2CJwtBearerTokenAuthenticationConverter());
     }
 }

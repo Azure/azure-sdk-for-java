@@ -5,13 +5,9 @@ package com.azure.iot.modelsrepository;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.stream.Stream;
 
 class DtmiConventionTests {
 
@@ -35,8 +31,15 @@ class DtmiConventionTests {
     }
 
     @ParameterizedTest
-    @MethodSource("getModelUriTestsSupplier")
-    public void getModelUriTests(String repository, String expectedUri) throws URISyntaxException {
+    @CsvSource({
+        "https://localhost/repository/, https://localhost/repository/dtmi/com/example/thermostat-1.json",
+        "https://localhost/REPOSITORY,  https://localhost/REPOSITORY/dtmi/com/example/thermostat-1.json",
+        "file:///path/to/repository/,   file:///path/to/repository/dtmi/com/example/thermostat-1.json",
+        "file://path/to/RepoSitory,     file://path/to/RepoSitory/dtmi/com/example/thermostat-1.json",
+        "C:/path/to/repository/,        C:/path/to/repository/dtmi/com/example/thermostat-1.json",
+        "//server//repository,          //server//repository/dtmi/com/example/thermostat-1.json"
+    })
+    public void getModelUriTests(String repository, String expectedUri) {
         final String dtmi = "dtmi:com:example:Thermostat;1";
 
         URI repositoryUri = DtmiConventions.convertToUri(repository);
@@ -48,23 +51,6 @@ class DtmiConventionTests {
 
         URI modelUri = DtmiConventions.getModelUri(dtmi, repositoryUri, false);
         Assertions.assertEquals(expectedUri, modelUri.toString());
-    }
-
-    private static Stream<Arguments> getModelUriTestsSupplier() {
-        return Stream.of(
-            Arguments.of("https://localhost/repository/",
-                "https://localhost/repository/dtmi/com/example/thermostat-1.json"),
-            Arguments.of("https://localhost/REPOSITORY",
-                "https://localhost/REPOSITORY/dtmi/com/example/thermostat-1.json"),
-            Arguments.of("file:///path/to/repository/",
-                "file:///path/to/repository/dtmi/com/example/thermostat-1.json"),
-            Arguments.of("file://path/to/RepoSitory", "file://path/to/RepoSitory/dtmi/com/example/thermostat-1.json")
-
-            // TODO: These were disabled as they fail in Linux and macOS, likely due to '\' in the URI.
-//            Arguments.of("C:\\path\\to\\repository\\",
-//                "file:///C:/path/to/repository/dtmi/com/example/thermostat-1.json"),
-//            Arguments.of("\\\\server\\repository", "file:////server/repository/dtmi/com/example/thermostat-1.json")
-        );
     }
 
     @ParameterizedTest

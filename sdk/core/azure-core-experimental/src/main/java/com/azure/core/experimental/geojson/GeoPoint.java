@@ -3,12 +3,15 @@
 
 package com.azure.core.experimental.geojson;
 
+import com.azure.core.annotation.Immutable;
+
 import java.util.Map;
 import java.util.Objects;
 
 /**
  * Represents a geometric point.
  */
+@Immutable
 public final class GeoPoint extends GeoObject {
     private final GeoPosition coordinates;
 
