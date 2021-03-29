@@ -341,7 +341,7 @@ public final class ModelsRepositoryClientBuilder {
         try {
             return new URI(uri);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid uri format", e);
+            throw new IllegalArgumentException("Invalid URI format", e);
         }
     }
 }
