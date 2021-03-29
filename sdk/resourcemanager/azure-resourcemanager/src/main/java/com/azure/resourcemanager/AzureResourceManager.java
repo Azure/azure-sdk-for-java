@@ -103,6 +103,7 @@ import com.azure.resourcemanager.resources.models.Providers;
 import com.azure.resourcemanager.resources.models.ResourceGroups;
 import com.azure.resourcemanager.resources.models.Subscription;
 import com.azure.resourcemanager.resources.models.Subscriptions;
+import com.azure.resourcemanager.resources.models.TagOperations;
 import com.azure.resourcemanager.resources.models.Tenants;
 import com.azure.resourcemanager.search.SearchServiceManager;
 import com.azure.resourcemanager.search.models.SearchServices;
@@ -844,5 +845,10 @@ public final class AzureResourceManager {
     /** @return entry point to private endpoints management */
     public PrivateEndpoints privateEndpoints() {
         return this.networkManager.privateEndpoints();
+    }
+
+    /** @return entry point to tag management management */
+    public TagOperations tagOperations() {
+        return this.resourceManager.tagOperations();
     }
 }
