@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.formrecognizer.perf;
+package com.azure.ai.formrecognizer.perf;
 
 import com.azure.perf.test.core.PerfStressProgram;
 

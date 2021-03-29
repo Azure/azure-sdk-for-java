@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.formrecognizer.perf;
+package com.azure.ai.formrecognizer.perf;
 
 import com.azure.ai.formrecognizer.models.RecognizedForm;
-import com.azure.formrecognizer.perf.core.ServiceTest;
+import com.azure.ai.formrecognizer.perf.core.ServiceTest;
 import com.azure.perf.test.core.PerfStressOptions;
 import reactor.core.publisher.Mono;
 
