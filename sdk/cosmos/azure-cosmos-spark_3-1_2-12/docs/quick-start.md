@@ -15,7 +15,7 @@ You can use any other Spark 3.1.1 spark offering as well, also you should be abl
 - An active Azure account. If you don't have one, you can sign up for a 
   [free account](https://azure.microsoft.com/try/cosmosdb/).
   Alternatively, you can use the
-  [use Azure Cosmos DB Emulator](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/local-emulator.md) for development and testing.
+  [use Azure Cosmos DB Emulator](https://docs.microsoft.com/azure/cosmos-db/local-emulator) for development and testing.
 - [Azure Databricks](https://docs.microsoft.com/azure/databricks/release-notes/runtime/8.0)
   Runtime 8.0 with Spark 3.1.1.
 - (Optional) [SLF4J binding](https://www.slf4j.org/manual.html) is used to associate a
