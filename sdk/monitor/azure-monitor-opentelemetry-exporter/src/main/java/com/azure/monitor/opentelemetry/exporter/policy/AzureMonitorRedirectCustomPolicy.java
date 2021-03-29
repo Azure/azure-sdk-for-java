@@ -30,6 +30,8 @@ public class AzureMonitorRedirectCustomPolicy implements HttpPipelinePolicy {
 
     /**
      * Creates {@link AzureMonitorRedirectCustomPolicy} with provided maxRedirectRetries.
+     *
+     * @param maxRedirectRetries The maximum retries through pipeline when a redirect is received as response
      */
     public AzureMonitorRedirectCustomPolicy(int maxRedirectRetries) {
         this.maxRedirectRetries = maxRedirectRetries;
