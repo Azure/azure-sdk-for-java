@@ -134,21 +134,26 @@ class PartitionControllerImpl implements PartitionController {
     }
 
     private WorkerTask processPartition(PartitionSupervisor partitionSupervisor, Lease lease) {
-        CancellationToken cancellationToken = this.shutdownCts.getToken();
+        CancellationToken shutdownToken = this.shutdownCts.getToken();
+        CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
         WorkerTask partitionSupervisorTask =
             new WorkerTask(
                 lease,
-                shutdownCts,
-                getWorkerJob(partitionSupervisor, lease, cancellationToken));
+                cancellationTokenSource,
+                getWorkerJob(partitionSupervisor, lease, shutdownToken, cancellationTokenSource));
 
         this.scheduler.schedule(partitionSupervisorTask);
 
         return partitionSupervisorTask;
     }
 
-    private Mono<Void> getWorkerJob(PartitionSupervisor partitionSupervisor, Lease lease, CancellationToken cancellationToken) {
-        return partitionSupervisor.run(cancellationToken)
+    private Mono<Void> getWorkerJob(
+        PartitionSupervisor partitionSupervisor,
+        Lease lease,
+        CancellationToken shutdownToken,
+        CancellationTokenSource cancellationTokenSource) {
+        return partitionSupervisor.run(shutdownToken, cancellationTokenSource)
             .onErrorResume(throwable -> {
                 if (throwable instanceof PartitionSplitException) {
                     PartitionSplitException ex = (PartitionSplitException) throwable;

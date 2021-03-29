@@ -32,8 +32,7 @@ class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
     private final ChangeFeedObserver observer;
     private final PartitionProcessor processor;
     private final LeaseRenewer renewer;
-    private CancellationTokenSource renewerCancellation;
-    private CancellationTokenSource processorCancellation;
+    private CancellationTokenSource cancellationTokenSource;
 
     private volatile RuntimeException resultException;
 
@@ -52,21 +51,19 @@ class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
     }
 
     @Override
-    public Mono<Void> run(CancellationToken shutdownToken) {
+    public Mono<Void> run(CancellationToken shutdownToken, CancellationTokenSource cancellationTokenSource) {
         this.resultException = null;
 
         ChangeFeedObserverContext context = new ChangeFeedObserverContextImpl(this.lease.getLeaseToken());
 
         this.observer.open(context);
 
-        this.processorCancellation = new CancellationTokenSource();
+        this.cancellationTokenSource = cancellationTokenSource;
 
-        this.scheduler.schedule(() -> this.processor.run(this.processorCancellation.getToken())
+        this.scheduler.schedule(() -> this.processor.run(this.cancellationTokenSource.getToken())
             .subscribe());
 
-        this.renewerCancellation = new CancellationTokenSource();
-
-        this.scheduler.schedule(() -> this.renewer.run(this.renewerCancellation.getToken())
+        this.scheduler.schedule(() -> this.renewer.run(this.cancellationTokenSource.getToken())
             .subscribe());
 
         return Mono.just(this)
@@ -81,8 +78,7 @@ class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
 
         try {
 
-            this.processorCancellation.cancel();
-            this.renewerCancellation.cancel();
+            this.cancellationTokenSource.cancel();
 
             if (this.processor.getResultException() != null) {
                 throw this.processor.getResultException();
@@ -128,10 +124,8 @@ class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
 
     @Override
     public void close() throws IOException {
-        if (this.processorCancellation != null) {
-            this.processorCancellation.close();
+        if (this.cancellationTokenSource != null) {
+            this.cancellationTokenSource.close();
         }
-
-        this.renewerCancellation.close();
     }
 }

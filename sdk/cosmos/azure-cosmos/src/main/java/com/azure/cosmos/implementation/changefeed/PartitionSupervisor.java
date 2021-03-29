@@ -11,10 +11,11 @@ public interface PartitionSupervisor {
     /**
      * Runs the task.
      *
-     * @param cancellationToken the cancellation token.
+     * @param shutdownToken the cancellation token.
+     * @param cancellationTokenSource the cancellation token source for other tasks.
      * @return a deferred operation of this call.
      */
-    Mono<Void> run(CancellationToken cancellationToken);
+    Mono<Void> run(CancellationToken shutdownToken, CancellationTokenSource cancellationTokenSource);
 
     /**
      * @return the inner exception if any, otherwise null.
