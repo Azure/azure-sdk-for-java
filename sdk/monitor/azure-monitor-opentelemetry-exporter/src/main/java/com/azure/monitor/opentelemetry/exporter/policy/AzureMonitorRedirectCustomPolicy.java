@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+
 package com.azure.monitor.opentelemetry.exporter.policy;
 
 import com.azure.core.http.HttpPipelineCallContext;
@@ -10,17 +12,27 @@ import reactor.core.publisher.Mono;
 
 import java.net.HttpURLConnection;
 
+/**
+ * A HttpPipeline policy that retries when a HTTP Redirect is received as response.
+ */
 public class AzureMonitorRedirectCustomPolicy implements HttpPipelinePolicy {
+
     private final ClientLogger logger = new ClientLogger(AzureMonitorRedirectCustomPolicy.class);
-    private final int max_redirect_retries;
+    private final int maxRedirectRetries;
     private String redirectedEndpointUrl;
 
+    /**
+     * Creates {@link AzureMonitorRedirectCustomPolicy} with default maxRedirectRetries values as 10.
+     */
     public AzureMonitorRedirectCustomPolicy() {
-        max_redirect_retries = 10;
+        maxRedirectRetries = 10;
     }
 
-    public AzureMonitorRedirectCustomPolicy(int max_retries) {
-        max_redirect_retries = max_retries;
+    /**
+     * Creates {@link AzureMonitorRedirectCustomPolicy} with provided {@param maxRedirectRetries}.
+     */
+    public AzureMonitorRedirectCustomPolicy(int maxRedirectRetries) {
+        this.maxRedirectRetries = maxRedirectRetries;
     }
 
     @Override
@@ -41,9 +53,9 @@ public class AzureMonitorRedirectCustomPolicy implements HttpPipelinePolicy {
             .flatMap(httpResponse -> {
                 if (shouldRetryWithRedirect(httpResponse.getStatusCode(), retryCount)) {
                     String responseLocation = httpResponse.getHeaderValue("Location");
-                    if(responseLocation != null && !responseLocation.equals(context.getHttpRequest().getUrl().toString())) {
+                    if (responseLocation != null && !responseLocation.equals(context.getHttpRequest().getUrl().toString())) {
                         this.redirectedEndpointUrl = responseLocation;
-                        return attemptRetry(context, next, originalHttpRequest, retryCount+1);
+                        return attemptRetry(context, next, originalHttpRequest, retryCount + 1);
                     }
                 }
                 return Mono.just(httpResponse);
@@ -52,12 +64,19 @@ public class AzureMonitorRedirectCustomPolicy implements HttpPipelinePolicy {
                 err)));
     }
 
+    /**
+     * Determines the delay duration that should be waited before retrying.
+     *
+     * @param statusCode HTTP response status code
+     * @param tryCount Redirect retries so far
+     * @return True if statusCode corresponds to HTTP redirect response codes and redirect
+     * retries is less than {@code maxRedirectRetries}.
+     */
     private boolean shouldRetryWithRedirect(int statusCode, int tryCount) {
-        if( tryCount >= max_redirect_retries) {
-            logger.verbose("Max redirect retries limit reached:%d.", max_redirect_retries);
+        if (tryCount >= maxRedirectRetries) {
+            logger.verbose("Max redirect retries limit reached:%d.", maxRedirectRetries);
             return false;
         }
-
         return statusCode == HttpURLConnection.HTTP_MOVED_TEMP
                 || statusCode == HttpURLConnection.HTTP_MOVED_PERM
                 || statusCode == 308;

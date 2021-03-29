@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+
 package com.azure.monitor.opentelemetry.exporter.policy;
 
 import com.azure.core.http.*;
@@ -32,7 +34,7 @@ public class AzureMonitorRedirectCustomPolicyTest {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     Assertions.assertTrue(count++ < maxRetries);
-                    if(request.getUrl().toString().equals("http://localhost/")) {
+                    if (request.getUrl().toString().equals("http://localhost/")) {
                         return Mono.just(new MockHttpResponse(request, 308, httpHeader));
                     } else {
                         return Mono.just(new MockHttpResponse(request, 200));
@@ -58,7 +60,7 @@ public class AzureMonitorRedirectCustomPolicyTest {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     Map<String, String> headers = new HashMap<>();
-                    headers.put("Location", "http://redirecthost/"+count);
+                    headers.put("Location", "http://redirecthost/" + count);
                     HttpHeaders httpHeader = new HttpHeaders(headers);
                     Assertions.assertTrue(count++ < maxRetries);
                     return Mono.just(new MockHttpResponse(request, 308, httpHeader));
@@ -86,7 +88,7 @@ public class AzureMonitorRedirectCustomPolicyTest {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     Assertions.assertTrue(count++ < maxRetries);
-                    if(request.getUrl().toString().equals("http://localhost/")) {
+                    if (request.getUrl().toString().equals("http://localhost/")) {
                         return Mono.just(new MockHttpResponse(request, 308, httpHeader));
                     } else {
                         return Mono.just(new MockHttpResponse(request, 200));
@@ -119,10 +121,10 @@ public class AzureMonitorRedirectCustomPolicyTest {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     Assertions.assertTrue(count++ < maxRetries);
-                    if(count == 0) {
+                    if (count == 0) {
                         System.out.println("Unavailable");
                         return Mono.just(new MockHttpResponse(request, 500));
-                    } else if(request.getUrl().toString().equals("http://localhost/")) {
+                    } else if (request.getUrl().toString().equals("http://localhost/")) {
                         System.out.println("Redirect");
                         return Mono.just(new MockHttpResponse(request, 308, httpHeader));
                     } else {
