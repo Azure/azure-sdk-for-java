@@ -126,7 +126,7 @@ this channel is open by default, you can handle the error message in this way:
     // Replace group with spring.cloud.stream.bindings.input.group
     @ServiceActivator(inputChannel = "{destination}.{group}.errors")
     public void consumerError(Message<?> message) {
-        System.out.println("Handling customer ERROR: " + message);
+        LOGGER.error("Handling customer ERROR: " + message);
     }
 ```
 
@@ -142,7 +142,7 @@ you can handle the error message in this way:
     // Replace destination with spring.cloud.stream.bindings.output.destination
     @ServiceActivator(inputChannel = "{destination}.errors")
     public void producerError(Message<?> message) {
-        System.out.println("Handling Producer ERROR: " + message);
+        LOGGER.error("Handling Producer ERROR: " + message);
     }
 ```
 

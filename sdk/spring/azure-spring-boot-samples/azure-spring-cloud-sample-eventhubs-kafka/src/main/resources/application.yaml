@@ -9,7 +9,7 @@ spring:
         namespace: [eventhub-namespace]
     stream:
       function:
-        definition: consume;supply;
+        definition: consume;supply
       bindings:
         consume-in-0:
           destination: [eventhub-name]
