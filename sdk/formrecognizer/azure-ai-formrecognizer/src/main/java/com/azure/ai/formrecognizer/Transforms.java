@@ -54,6 +54,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.implementation.Utility.forEachWithIndex;
 import static com.azure.ai.formrecognizer.implementation.models.FieldValueType.ARRAY;
+import static com.azure.ai.formrecognizer.implementation.models.FieldValueType.OBJECT;
 
 /**
  * Helper class to convert service level models to SDK exposed models.
@@ -312,7 +313,8 @@ final class Transforms {
                     //
                     // In these scenarios we do not set a ValueData.
                     if (fieldValue.getText() == null && fieldValue.getPage() == null
-                        && CoreUtils.isNullOrEmpty(fieldValue.getBoundingBox())) {
+                        && CoreUtils.isNullOrEmpty(fieldValue.getBoundingBox())
+                        && ARRAY == fieldValue.getType() && OBJECT == fieldValue.getType()) {
                         valueData = null;
                     } else {
                         valueData = new FieldData(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
