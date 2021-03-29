@@ -60,16 +60,17 @@ Use the partner release pipeline to release.
 
 ### OSS compliance
 
+[Component Governance](https://dev.azure.com/azure-sdk/internal/_componentGovernance/106501?_a=components&typeId=6129920&alerts-view-option=active)
+automatically tracks master branch.
+
 For each release we need to go over the OSS compliance steps:
 
-1) Ensure the branch is tracked by Component Governance: https://dev.azure.com/azure-sdk/internal/_componentGovernance/106501?_a=components&typeId=6129920&alerts-view-option=active
-   master branch is automatically tracked. For the master branch you need to manually trigger the run.
-2) To add OSS components (or 3rd party source code) missed by CG, create a cgmanifest.json file. This typically happens if you manually copy code 
+1) To add OSS components (or 3rd party source code) missed by CG, create a cgmanifest.json file. This typically happens if you manually copy code 
    without adding maven dependency. howto https://docs.opensource.microsoft.com/tools/cg/cgmanifest.html.
-3) Check for "legal alerts" and "security alerts". If you do not see a "legal alert" 
+2) Check for "legal alerts" and "security alerts". If you do not see a "legal alert" 
    nor "unsupported component" banner for OSS in your “Components” list in CG,
    that means those components are "auto-approved" and do not need CELA review.
-4) As we are shipping an uber jar, we need to keep https://github.com/Azure/azure-sdk-for-java/blob/master/NOTICE.txt is up to date with all the new dependencies repackaged in the spark connector.
+3) As we are shipping an uber jar, we need to keep https://github.com/Azure/azure-sdk-for-java/blob/master/NOTICE.txt is up to date with all the new dependencies repackaged in the spark connector.
 
 #### Tracking third party library used in the uber jar.
 
