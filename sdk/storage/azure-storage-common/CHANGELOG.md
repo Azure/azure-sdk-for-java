@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.11.0-beta.2 (2021-03-29)
-- Update `azure-storage-core` to version `1.14.1`
+- Update `azure-core` to version `1.14.1`
 
 ## 12.11.0-beta.1 (2021-02-10)
 - Added support to log retries 
