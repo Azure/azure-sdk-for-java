@@ -201,7 +201,6 @@ public final class ChatClientBuilder {
             pipeline = httpPipeline;
         } else {
             Objects.requireNonNull(communicationTokenCredential);
-            Objects.requireNonNull(httpClient);
             CommunicationBearerTokenCredential tokenCredential =
                 new CommunicationBearerTokenCredential(communicationTokenCredential);
 
