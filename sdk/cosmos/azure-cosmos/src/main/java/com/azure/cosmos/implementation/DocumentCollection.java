@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.caches.SerializableWrapper;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
@@ -12,6 +13,10 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.UniqueKeyPolicy;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import static com.azure.cosmos.BridgeInternal.setProperty;
 
@@ -404,5 +409,30 @@ public final class DocumentCollection extends Resource {
     public String toJson() {
         this.populatePropertyBag();
         return super.toJson();
+    }
+
+    public static class SerializableDocumentCollection implements SerializableWrapper<DocumentCollection> {
+        private static final long serialVersionUID = 1l;
+        public static SerializableDocumentCollection from(DocumentCollection documentCollection) {
+            SerializableDocumentCollection serializableDocumentCollection = new SerializableDocumentCollection();
+            serializableDocumentCollection.documentCollection = documentCollection;
+            return serializableDocumentCollection;
+        }
+
+        transient DocumentCollection documentCollection;
+
+        public DocumentCollection getWrappedItem() {
+            return documentCollection;
+        }
+
+        private void writeObject(ObjectOutputStream objectOutputStream) throws IOException {
+            documentCollection.populatePropertyBag();
+            objectOutputStream.writeObject(documentCollection.getPropertyBag());
+        }
+
+        private void readObject(ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
+            ObjectNode objectNode = (ObjectNode) objectInputStream.readObject();
+            this.documentCollection = new DocumentCollection(objectNode);
+        }
     }
 }

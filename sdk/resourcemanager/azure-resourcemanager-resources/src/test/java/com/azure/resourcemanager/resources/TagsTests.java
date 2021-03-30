@@ -5,6 +5,7 @@ package com.azure.resourcemanager.resources;
 
 import com.azure.resourcemanager.resources.implementation.TypeSerializationTests;
 import com.azure.resourcemanager.resources.models.GenericResource;
+import com.azure.resourcemanager.resources.models.TagResource;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -23,15 +24,16 @@ public class TagsTests extends ResourceManagementTest {
             originalTags = new HashMap<>();
         }
 
-        Map<String, String> updatedTags = resourceClient.tagOperations().updateTags(resource, new TypeSerializationTests.Map1<>("tag.1", "value.1"));
-        Assertions.assertEquals(1, updatedTags.size());
-        Assertions.assertTrue(updatedTags.containsKey("tag.1"));
-        Assertions.assertEquals("value.1", updatedTags.get("tag.1"));
+        TagResource updatedTags = resourceClient.tagOperations().updateTags(resource, new TypeSerializationTests.Map1<>("tag.1", "value.1"));
+        Assertions.assertNotNull(updatedTags.tags());
+        Assertions.assertEquals(1, updatedTags.tags().size());
+        Assertions.assertTrue(updatedTags.tags().containsKey("tag.1"));
+        Assertions.assertEquals("value.1", updatedTags.tags().get("tag.1"));
 
         updatedTags = resourceClient.tagOperations().updateTags(resource, new HashMap<>());
-        Assertions.assertEquals(0, updatedTags.size());
+        Assertions.assertEquals(0, updatedTags.tags().size());
 
         updatedTags = resourceClient.tagOperations().updateTags(resource, originalTags);
-        Assertions.assertEquals(originalTags, updatedTags);
+        Assertions.assertEquals(originalTags, updatedTags.tags());
     }
 }

@@ -118,6 +118,7 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withTransportClientSharing(this.enableTransportClientSharing)
                                        .withContentResponseOnWriteEnabled(this.contentResponseOnWriteEnabled)
                                        .withTokenCredential(this.tokenCredential)
+                                       .withState(builder.metadataCaches())
                                        .withPermissionFeed(permissionList)
                                        .build();
     }
