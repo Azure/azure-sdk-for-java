@@ -1,6 +1,7 @@
 # Release History
 
 ## 3.1.0-beta.3 (Unreleased)
+- Defaults to the latest supported API version, which currently is `2.1-preview.3`.
 
 ## 3.0.6 (2021-03-10)
 ### Dependency updates

@@ -17,12 +17,6 @@ parameters:
   - name: PreTestSteps
     type: object
     default: []
-  - name: TestOptions
-    type: string
-    default: '$(DefaultOptions) -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dparallel-test-playback'
-  - name: TestGoals
-    type: string
-    default: verify
   - name: MatrixConfigs
     type: object
   - name: AdditionalMatrixConfigs
@@ -50,16 +44,6 @@ jobs:
           ArtifactName: 'packages'
 
     steps:
-      - ${{if eq(parameters.TestPipeline, 'true')}}:
-        - task: PowerShell@2
-          displayName: Prep template pipeline for release
-          condition: succeeded()
-          inputs:
-            pwsh: true
-            workingDirectory: $(Build.SourcesDirectory)
-            filePath: eng/scripts/SetTestPipelineVersion.ps1
-            arguments: '-BuildID $(Build.BuildId)'
-
       - script: |
           echo "##vso[build.addbuildtag]Scheduled"
         displayName: 'Tag scheduled builds'
@@ -69,6 +53,12 @@ jobs:
         displayName: 'Use Python 3.6'
         inputs:
           versionSpec: '3.6'
+
+      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+        parameters:
+          PackageName: "azure-sdk-template"
+          ServiceDirectory: "template"
+          TestPipeline: ${{ parameters.TestPipeline }}
 
       - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
         parameters:
@@ -105,11 +95,11 @@ jobs:
           AdditionalModules: ${{parameters.AdditionalModules}}
 
       - task: Maven@3
-        displayName: 'Build and Package , JDK Version: $(JavaBuildVersion)'
+        displayName: 'Build and Package, JDK Version: $(JavaBuildVersion)'
         inputs:
           mavenPomFile: pom.xml
           goals: 'deploy'
-          options: '$(DefaultOptions) -DskipTests -Dinject-codesnippets -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
+          options: '$(DefaultOptions) -T 1C -DskipTests -Dinject-codesnippets -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)
@@ -127,15 +117,16 @@ jobs:
             -TargetDirectory $(Build.ArtifactStagingDirectory)
             -InformationAction Continue
 
-      - publish: $(Build.ArtifactStagingDirectory)
-        displayName: 'Publish Artifacts $(ArtifactName)'
-        artifact: '$(ArtifactName)'
-
-      - template: ../steps/upload-repository-on-failure.yml
-
-      - template: /eng/pipelines/templates/steps/create-apireview.yml
+      - template: /eng/common/pipelines/templates/steps/create-apireview.yml
         parameters:
           Artifacts: ${{parameters.Artifacts}}
+
+      - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+        parameters:
+          ArtifactPath: $(Build.ArtifactStagingDirectory)
+          ArtifactName: '$(ArtifactName)'
+
+      - template: ../steps/upload-repository-on-failure.yml
 
   - job: 'Analyze'
     condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
@@ -156,6 +147,12 @@ jobs:
         displayName: 'Use Python 3.6'
         inputs:
           versionSpec: '3.6'
+
+      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+        parameters:
+          PackageName: "azure-sdk-template"
+          ServiceDirectory: "template"
+          TestPipeline: ${{ parameters.TestPipeline }}
 
       - script: |
           pip install setuptools wheel
@@ -242,5 +239,3 @@ jobs:
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
         PreTestSteps: ${{ parameters.PreTestSteps }}
-        TestOptions: ${{ parameters.TestOptions }}
-        TestGoals: ${{ parameters.TestGoals }}

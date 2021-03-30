@@ -54,7 +54,7 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
     }
 
     @Override
-    protected Mono<Range<String>> getEffectiveRange(
+    public Mono<Range<String>> getEffectiveRange(
         IRoutingMapProvider routingMapProvider,
         MetadataDiagnosticsContext metadataDiagnosticsCtx,
         Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {

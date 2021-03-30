@@ -12,7 +12,7 @@ import com.azure.cosmos.util.Beta;
  * The type Cosmos client encryption key response.
  */
 @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public class CosmosClientEncryptionKeyResponse extends CosmosResponse<CosmosClientEncryptionKeyProperties>  {
+public final class CosmosClientEncryptionKeyResponse extends CosmosResponse<CosmosClientEncryptionKeyProperties>  {
     CosmosClientEncryptionKeyResponse(ResourceResponse<ClientEncryptionKey> response) {
         super(response);
         String bodyAsString = response.getBodyAsString();

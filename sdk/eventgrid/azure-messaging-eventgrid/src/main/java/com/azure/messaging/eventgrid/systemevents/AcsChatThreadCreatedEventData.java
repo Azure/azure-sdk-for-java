@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Schema of the Data property of an EventGridEvent for an Microsoft.Communication.ChatThreadCreatedWithUser event. */
+/** Schema of the Data property of an EventGridEvent for an Microsoft.Communication.ChatThreadCreated event. */
 @Fluent
 public final class AcsChatThreadCreatedEventData extends AcsChatThreadEventInThreadBaseProperties {
     /*
@@ -105,6 +105,13 @@ public final class AcsChatThreadCreatedEventData extends AcsChatThreadEventInThr
     @Override
     public AcsChatThreadCreatedEventData setVersion(Long version) {
         super.setVersion(version);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatThreadCreatedEventData setTransactionId(String transactionId) {
+        super.setTransactionId(transactionId);
         return this;
     }
 
