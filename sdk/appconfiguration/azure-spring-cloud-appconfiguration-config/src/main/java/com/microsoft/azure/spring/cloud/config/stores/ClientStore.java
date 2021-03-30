@@ -10,10 +10,13 @@ import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -136,8 +139,38 @@ public class ClientStore {
      * @return List of Configuration Settings.
      */
     public final ConfigurationSetting getRevison(SettingSelector settingSelector, String storeName) {
+        PagedResponse<ConfigurationSetting> configurationRevision = null;
+        int retryCount = 0;
+
         ConfigurationAsyncClient client = getClient(storeName);
-        return client.listRevisions(settingSelector).blockFirst();
+        while (retryCount <= appProperties.getMaxRetries()) {
+            configurationRevision = client.listRevisions(settingSelector).byPage().blockFirst();
+
+            if (configurationRevision != null
+                && configurationRevision.getStatusCode() == HttpStatus.TOO_MANY_REQUESTS.value()) {
+                HttpHeader retryAfterHeader = configurationRevision.getHeaders().get("retry-after-ms");
+
+                if (retryAfterHeader != null) {
+                    try {
+                        Integer retryAfter = Integer.valueOf(retryAfterHeader.getValue());
+
+                        Thread.sleep(retryAfter);
+                    } catch (NumberFormatException e) {
+                        LOGGER.warn("Unable to parse Retry After value.", e);
+                    } catch (InterruptedException e) {
+                        LOGGER.warn("Failed to wait after getting 429.", e);
+                    }
+                }
+
+                configurationRevision = null;
+            } else if (configurationRevision != null && configurationRevision.getItems().size() > 0) {
+                return configurationRevision.getItems().get(0);
+            } else {
+                return null;
+            }
+            retryCount++;
+        }
+        return null;
     }
 
     /**

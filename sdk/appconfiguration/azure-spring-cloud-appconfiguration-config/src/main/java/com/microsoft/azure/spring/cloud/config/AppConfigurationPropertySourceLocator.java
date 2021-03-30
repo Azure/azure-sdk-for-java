@@ -76,7 +76,6 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
     @Override
     public PropertySource<?> locate(Environment environment) {
-        LOGGER.error(environment.getProperty("spring.jmx.default-domain"));
         if (!(environment instanceof ConfigurableEnvironment)) {
             return null;
         }
