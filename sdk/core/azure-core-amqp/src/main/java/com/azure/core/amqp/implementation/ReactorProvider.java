@@ -55,24 +55,28 @@ public class ReactorProvider {
      * @return A new reactor instance.
      */
     private Reactor createReactor(final int maxFrameSize, final Handler globalHandler,
-                                  final BaseHandler... baseHandlers) throws IOException {
+        final BaseHandler... baseHandlers) throws IOException {
         Objects.requireNonNull(baseHandlers);
         Objects.requireNonNull(globalHandler);
 
-        if (maxFrameSize <= 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'maxFrameSize' must be a positive number."));
-        }
-
-        final ReactorOptions reactorOptions = new ReactorOptions();
-        reactorOptions.setMaxFrameSize(maxFrameSize);
-        reactorOptions.setEnableSaslByDefault(true);
-
-        final Reactor reactor = Proton.reactor(reactorOptions, baseHandlers);
-        reactor.setGlobalHandler(globalHandler);
-
-        final ReactorDispatcher dispatcher = new ReactorDispatcher(reactor);
-
         synchronized (lock) {
+            if (this.reactor != null) {
+                return this.reactor;
+            }
+
+            if (maxFrameSize <= 0) {
+                throw logger.logExceptionAsError(new IllegalArgumentException("'maxFrameSize' must be a positive number."));
+            }
+
+            final ReactorOptions reactorOptions = new ReactorOptions();
+            reactorOptions.setMaxFrameSize(maxFrameSize);
+            reactorOptions.setEnableSaslByDefault(true);
+
+            final Reactor reactor = Proton.reactor(reactorOptions, baseHandlers);
+            reactor.setGlobalHandler(globalHandler);
+
+            final ReactorDispatcher dispatcher = new ReactorDispatcher(reactor);
+
             this.reactor = reactor;
             this.reactorDispatcher = dispatcher;
         }
