@@ -1008,7 +1008,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     FormField countryFormField = recognizedFields.get("Country");
                     if (countryFormField != null) {
                         if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                            String country = countryFormField.getValue().asPhoneNumber();
+                            String country = countryFormField.getValue().asCountry();
                             System.out.printf("Country: %s, confidence: %.2f%n",
                                 country, countryFormField.getConfidence());
                         }
@@ -1038,7 +1038,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for
-     * {@link FormRecognizerAsyncClient#beginRecognizeInvoicesFromUrl(String, RecognizeInvoicesOptions)}
+     * {@link FormRecognizerAsyncClient#beginRecognizeIdDocumentsFromUrl(String, RecognizeIDDocumentOptions)}
      */
     public void beginRecognizeIdDocumentsFromUrlWithOptions() {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdDocumentsFromUrl#string-RecognizeIDDocumentOptions
@@ -1077,7 +1077,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     FormField countryFormField = recognizedFields.get("Country");
                     if (countryFormField != null) {
                         if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                            String country = countryFormField.getValue().asPhoneNumber();
+                            String country = countryFormField.getValue().asCountry();
                             System.out.printf("Country: %s, confidence: %.2f%n",
                                 country, countryFormField.getConfidence());
                         }
@@ -1145,7 +1145,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     FormField countryFormField = recognizedFields.get("Country");
                     if (countryFormField != null) {
                         if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                            String country = countryFormField.getValue().asPhoneNumber();
+                            String country = countryFormField.getValue().asCountry();
                             System.out.printf("Country: %s, confidence: %.2f%n",
                                 country, countryFormField.getConfidence());
                         }
@@ -1222,7 +1222,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     FormField countryFormField = recognizedFields.get("Country");
                     if (countryFormField != null) {
                         if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                            String country = countryFormField.getValue().asPhoneNumber();
+                            String country = countryFormField.getValue().asCountry();
                             System.out.printf("Country: %s, confidence: %.2f%n",
                                 country, countryFormField.getConfidence());
                         }

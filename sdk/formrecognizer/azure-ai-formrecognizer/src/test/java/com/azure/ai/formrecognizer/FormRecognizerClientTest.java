@@ -50,7 +50,6 @@ import static com.azure.ai.formrecognizer.TestUtils.NON_EXIST_MODEL_ID;
 import static com.azure.ai.formrecognizer.TestUtils.SELECTION_MARK_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.getContentDetectionFileData;
 import static com.azure.ai.formrecognizer.TestUtils.validateExceptionSource;
-import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
 import static com.azure.ai.formrecognizer.models.FormContentType.APPLICATION_PDF;
 import static com.azure.ai.formrecognizer.models.FormContentType.IMAGE_JPEG;
 import static org.junit.jupiter.api.Assertions.assertEquals;

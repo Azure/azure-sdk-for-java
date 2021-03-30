@@ -589,7 +589,7 @@ public final class FormRecognizerClient {
     /**
      * Analyze ID documents using optical character recognition (OCR) and a prebuilt ID trained
      * model to extract key information from passports.
-     * See <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/concept-identification-cards#fields-extracted">here</a> for fields found on an ID document.
+     * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an ID document.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
      *
@@ -613,7 +613,7 @@ public final class FormRecognizerClient {
     /**
      * Analyze ID documents using optical character recognition (OCR) and a prebuilt ID trained
      * model to extract key information from passports.
-     * See <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/concept-identification-cards#fields-extracted">here</a> for fields found on an ID document.
+     * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an ID document.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
      *
@@ -641,14 +641,14 @@ public final class FormRecognizerClient {
     /**
      * Analyze ID documents using optical character recognition (OCR) and a prebuilt ID trained
      * model to extract key information from passports.
-     * See <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/concept-identification-cards#fields-extracted">here</a> for fields found on an ID document.
+     * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an ID document.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIDDocuments#InputStream-long}
      *
-     * @param iDDocument The data of the business card to recognize ID Document information from.
+     * @param iDDocument The data of the id document to recognize ID Document information from.
      * @param length The exact length of the data.
      *
      * @return A {@link SyncPoller} that polls the recognize ID Document operation until it has completed,
@@ -666,14 +666,14 @@ public final class FormRecognizerClient {
     /**
      * Analyze ID documents using optical character recognition (OCR) and a prebuilt ID trained
      * model to extract key information from passports.
-     * See <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/concept-identification-cards#fields-extracted">here</a> for fields found on an ID document.
+     * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an ID document.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIDDocuments#InputStream-long-RecognizeIDDocumentOptions-Context}
      *
-     * @param iDDocument The data of the business card to recognize ID Document information from.
+     * @param iDDocument The data of the id document to recognize information from.
      * @param length The exact length of the data.
      * @param recognizeIDDocumentOptions The additional configurable {@link RecognizeIDDocumentOptions options}
      * that may be passed when analyzing an ID Document.

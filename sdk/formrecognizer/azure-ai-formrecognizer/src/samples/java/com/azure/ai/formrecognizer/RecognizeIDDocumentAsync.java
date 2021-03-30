@@ -25,7 +25,7 @@ import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffe
 /**
  * Async sample for recognizing commonly found license fields from a local file input stream of an license ID document.
  * See fields found on an license here:
- * https://docs.microsoft.com/azure/cognitive-services/form-recognizer/concept-identification-cards#fields-extracted
+ * https://aka.ms/formrecognizer/iddocumentfields
  */
 public class RecognizeIDDocumentAsync {
 
@@ -43,11 +43,11 @@ public class RecognizeIDDocumentAsync {
             .buildAsyncClient();
 
         File idDocument = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/java/"
-            + "sample-forms/ID documents/license_2.jpg");
+            + "sample-forms/ID documents/license.jpg");
         byte[] fileContent = Files.readAllBytes(idDocument.toPath());
         PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeIDPoller
-            = client.beginRecognizeIdDocuments(toFluxByteBuffer(new ByteArrayInputStream(fileContent))
-            , fileContent.length);
+            = client.beginRecognizeIdDocuments(toFluxByteBuffer(new ByteArrayInputStream(fileContent)),
+            fileContent.length);
 
         Mono<List<RecognizedForm>> idDocumentPollerResult = recognizeIDPoller
             .last()
@@ -78,7 +78,7 @@ public class RecognizeIDDocumentAsync {
                 FormField countryFormField = recognizedFields.get("Country");
                 if (countryFormField != null) {
                     if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                        String country = countryFormField.getValue().asPhoneNumber();
+                        String country = countryFormField.getValue().asCountry();
                         System.out.printf("Country: %s, confidence: %.2f%n",
                             country, countryFormField.getConfidence());
                     }

@@ -53,7 +53,7 @@ public final class RecognizeIDDocumentOptions {
      *
      * @param contentType the provided form content type.
      *
-     * @return the updated {@code RecognizeBusinessCardOptions} value.
+     * @return the updated {@code RecognizeIDDocumentOptions} value.
      */
     public RecognizeIDDocumentOptions setContentType(final FormContentType contentType) {
         this.contentType = contentType;
@@ -65,7 +65,7 @@ public final class RecognizeIDDocumentOptions {
      *
      * @param includeFieldElements the boolean to specify if to include form element references in the result.
      *
-     * @return the updated {@code RecognizeBusinessCardOptions} value.
+     * @return the updated {@code RecognizeIDDocumentOptions} value.
      */
     public RecognizeIDDocumentOptions setFieldElementsIncluded(final boolean includeFieldElements) {
         this.includeFieldElements = includeFieldElements;
@@ -78,7 +78,7 @@ public final class RecognizeIDDocumentOptions {
      *
      * @param pollInterval the duration to specify between each poll for the operation status.
      *
-     * @return the updated {@code RecognizeBusinessCardOptions} value.
+     * @return the updated {@code RecognizeIDDocumentOptions} value.
      */
     public RecognizeIDDocumentOptions setPollInterval(final Duration pollInterval) {
         this.pollInterval = pollInterval == null ? DEFAULT_POLL_INTERVAL : pollInterval;

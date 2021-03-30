@@ -98,7 +98,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final String MULTIPAGE_BUSINESS_CARD_PDF = "business-card-multipage.pdf";
     static final String INVOICE_PDF = "Invoice_1.pdf";
     static final String MULTIPAGE_VENDOR_INVOICE_PDF = "multipage_vendor_invoice.pdf";
-    static final String LICENSE_CARD_JPG = "license_2.jpg";
+    static final String LICENSE_CARD_JPG = "license.jpg";
 
     // Error code
     static final String BAD_ARGUMENT_CODE = "BadArgument";

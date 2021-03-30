@@ -947,7 +947,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 FormField countryFormField = recognizedFields.get("Country");
                 if (countryFormField != null) {
                     if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                        String country = countryFormField.getValue().asPhoneNumber();
+                        String country = countryFormField.getValue().asCountry();
                         System.out.printf("Country: %s, confidence: %.2f%n",
                             country, countryFormField.getConfidence());
                     }
@@ -980,7 +980,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                     }
                 }
             });
-        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIDDocumentsFromUrl#string
+        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdDocumentsFromUrl#string
     }
 
     /**
@@ -1021,7 +1021,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 FormField countryFormField = recognizedFields.get("Country");
                 if (countryFormField != null) {
                     if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                        String country = countryFormField.getValue().asPhoneNumber();
+                        String country = countryFormField.getValue().asCountry();
                         System.out.printf("Country: %s, confidence: %.2f%n",
                             country, countryFormField.getConfidence());
                     }
@@ -1084,7 +1084,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 FormField countryFormField = recognizedFields.get("Country");
                 if (countryFormField != null) {
                     if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                        String country = countryFormField.getValue().asPhoneNumber();
+                        String country = countryFormField.getValue().asCountry();
                         System.out.printf("Country: %s, confidence: %.2f%n",
                             country, countryFormField.getConfidence());
                     }
@@ -1157,7 +1157,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 FormField countryFormField = recognizedFields.get("Country");
                 if (countryFormField != null) {
                     if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                        String country = countryFormField.getValue().asPhoneNumber();
+                        String country = countryFormField.getValue().asCountry();
                         System.out.printf("Country: %s, confidence: %.2f%n",
                             country, countryFormField.getConfidence());
                     }
@@ -1190,6 +1190,6 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                     }
                 }
             });
+        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIDDocuments#InputStream-long-RecognizeIDDocumentOptions-Context
     }
-    // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIDDocuments#InputStream-long-RecognizeIDDocumentOptions-Context
 }
