@@ -62,7 +62,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queuesastestsqueuesasenqueuedequeuewithidentifier89057acd/messages?sv=2020-06-12&si=8b98f817-f76e-4c22-b016-98eb1b13d47d&sig=REDACTED",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queuesastestsqueuesasenqueuedequeuewithidentifier89057acd/messages?sv=2020-08-04&si=8b98f817-f76e-4c22-b016-98eb1b13d47d&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
@@ -84,7 +84,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queuesastestsqueuesasenqueuedequeuewithidentifier89057acd/messages?numofmessages=2&visibilitytimeout=30&sv=2020-06-12&si=8b98f817-f76e-4c22-b016-98eb1b13d47d&sig=REDACTED",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queuesastestsqueuesasenqueuedequeuewithidentifier89057acd/messages?numofmessages=2&visibilitytimeout=30&sv=2020-08-04&si=8b98f817-f76e-4c22-b016-98eb1b13d47d&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",

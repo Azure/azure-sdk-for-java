@@ -108,7 +108,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsfileuserdelegation0sastestfileuserdelegatione51497078b7/javapathfileuserdelegation1sastestfileuserdelegatione5167910f?sv=2020-06-12&spr=https%2Chttp&st=2021-02-25T00%3A21%3A16Z&se=2021-02-27T00%3A21%3A16Z&sip=0.0.0.0-255.255.255.255&skoid=c4f48289-bb84-4086-b250-6f94a8f64cee&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2021-02-25T00%3A21%3A16Z&ske=2021-02-27T00%3A21%3A16Z&sks=b&skv=2020-06-12&sr=b&sp=racwdlmeop&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsfileuserdelegation0sastestfileuserdelegatione51497078b7/javapathfileuserdelegation1sastestfileuserdelegatione5167910f?sv=2020-08-04&spr=https%2Chttp&st=2021-02-25T00%3A21%3A16Z&se=2021-02-27T00%3A21%3A16Z&sip=0.0.0.0-255.255.255.255&skoid=c4f48289-bb84-4086-b250-6f94a8f64cee&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2021-02-25T00%3A21%3A16Z&ske=2021-02-27T00%3A21%3A16Z&sks=b&skv=2020-06-12&sr=b&sp=racwdlmeop&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
@@ -143,7 +143,7 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsfileuserdelegation0sastestfileuserdelegatione51497078b7/javapathfileuserdelegation1sastestfileuserdelegatione5167910f?sv=2020-06-12&spr=https%2Chttp&st=2021-02-25T00%3A21%3A16Z&se=2021-02-27T00%3A21%3A16Z&sip=0.0.0.0-255.255.255.255&skoid=c4f48289-bb84-4086-b250-6f94a8f64cee&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2021-02-25T00%3A21%3A16Z&ske=2021-02-27T00%3A21%3A16Z&sks=b&skv=2020-06-12&sr=b&sp=racwdlmeop&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsfileuserdelegation0sastestfileuserdelegatione51497078b7/javapathfileuserdelegation1sastestfileuserdelegatione5167910f?sv=2020-08-04&spr=https%2Chttp&st=2021-02-25T00%3A21%3A16Z&se=2021-02-27T00%3A21%3A16Z&sip=0.0.0.0-255.255.255.255&skoid=c4f48289-bb84-4086-b250-6f94a8f64cee&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2021-02-25T00%3A21%3A16Z&ske=2021-02-27T00%3A21%3A16Z&sks=b&skv=2020-06-12&sr=b&sp=racwdlmeop&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",

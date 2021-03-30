@@ -43,7 +43,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.blob.preprod.core.windows.net/jtfsrenamefilesystemsas2498666ca53b0b3ca94d0d9?restype=container&comp=rename&sv=2020-06-12&ss=b&srt=c&se=2020-12-17T21%3A33%3A33Z&sp=rwdxlacuptf&sig=REDACTED",
+    "Uri" : "https://REDACTED.blob.preprod.core.windows.net/jtfsrenamefilesystemsas2498666ca53b0b3ca94d0d9?restype=container&comp=rename&sv=2020-08-04&ss=b&srt=c&se=2020-12-17T21%3A33%3A33Z&sp=rwdxlacuptf&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
@@ -62,7 +62,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.preprod.core.windows.net/jtfsrenamefilesystemsas2498666ca53b0b3ca94d0d9?restype=container&sv=2020-06-12&ss=b&srt=c&se=2020-12-17T21%3A33%3A33Z&sp=rwdxlacuptf&sig=REDACTED",
+    "Uri" : "https://REDACTED.blob.preprod.core.windows.net/jtfsrenamefilesystemsas2498666ca53b0b3ca94d0d9?restype=container&sv=2020-08-04&ss=b&srt=c&se=2020-12-17T21%3A33%3A33Z&sp=rwdxlacuptf&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
@@ -89,7 +89,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.blob.preprod.core.windows.net/jtfsrenamefilesystemsas2498666ca53b0b3ca94d0d9?restype=container&sv=2020-06-12&ss=b&srt=c&se=2020-12-17T21%3A33%3A33Z&sp=rwdxlacuptf&sig=REDACTED",
+    "Uri" : "https://REDACTED.blob.preprod.core.windows.net/jtfsrenamefilesystemsas2498666ca53b0b3ca94d0d9?restype=container&sv=2020-08-04&ss=b&srt=c&se=2020-12-17T21%3A33%3A33Z&sp=rwdxlacuptf&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
