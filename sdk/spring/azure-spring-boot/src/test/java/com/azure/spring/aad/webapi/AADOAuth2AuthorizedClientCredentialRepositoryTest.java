@@ -45,14 +45,14 @@ public class AADOAuth2AuthorizedClientCredentialRepositoryTest {
             + "R-s_LOz1eBiMboKWIPiQZwWQ-peGNsalNriss4_x4pwOwYlMqeZJBk1tIyON0nYNLTU169_KSGHIlTtVtaAlNnt9C2Ajg1PTvJvj3fsg"
             + "FhZpRbO4XBs6nEjFSwPC0RII36raH9wjgveNn63LPg";
 
-    private ClientRegistration fake;
-    private Authentication principal;
+    private ClientRegistration fakeClientRegistration;
+    private Authentication mockPrincipal;
     private OAuth2AuthorizedClient oAuth2AuthorizedClient;
     private InMemoryClientRegistrationRepository clientRegistrationsRepo;
     private AADResourceServerOAuth2AuthorizedClientRepository authorizedRepo;
     private InMemoryOAuth2AuthorizedClientService inMemoryOAuth2AuthorizedClientService;
-    private HttpServletRequest request = mock(MockHttpServletRequest.class);
-    private HttpServletResponse response = mock(MockHttpServletResponse.class);
+    private HttpServletRequest mockRequest = mock(MockHttpServletRequest.class);
+    private HttpServletResponse mockResponse = mock(MockHttpServletResponse.class);
 
     @BeforeEach
     public void setup() {
@@ -69,7 +69,7 @@ public class AADOAuth2AuthorizedClientCredentialRepositoryTest {
         context.register(AADResourceServerClientConfiguration.class);
         context.refresh();
         clientRegistrationsRepo = context.getBean(InMemoryClientRegistrationRepository.class);
-        fake = ClientRegistration
+        fakeClientRegistration = ClientRegistration
             .withRegistrationId("fake")
             .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
             .tokenUri("https://login.microsoftonline.com/xxxx-xxxxx-xxxx/oauth2/v2.0/token")
@@ -77,19 +77,19 @@ public class AADOAuth2AuthorizedClientCredentialRepositoryTest {
             .clientId("xxxx-xxxxx-xxxx").build();
         OAuth2AccessToken oAuth2AccessToken = mock(OAuth2AccessToken.class);
         when(oAuth2AccessToken.getTokenValue()).thenReturn(CLIENT_CREDENTIAL_ACCESS_TOKEN);
-        oAuth2AuthorizedClient = new OAuth2AuthorizedClient(fake, "fake-name", oAuth2AccessToken);
-        principal = mock(JwtAuthenticationToken.class);
-        when(principal.getName()).thenReturn("fake-name");
+        oAuth2AuthorizedClient = new OAuth2AuthorizedClient(fakeClientRegistration, "fake-name", oAuth2AccessToken);
+        mockPrincipal = mock(JwtAuthenticationToken.class);
+        when(mockPrincipal.getName()).thenReturn("fake-name");
         inMemoryOAuth2AuthorizedClientService = new InMemoryOAuth2AuthorizedClientService(clientRegistrationsRepo);
         authorizedRepo = new AADResourceServerOAuth2AuthorizedClientRepository(inMemoryOAuth2AuthorizedClientService,
             clientRegistrationsRepo);
-        authorizedRepo.saveAuthorizedClient(oAuth2AuthorizedClient, principal, request, response);
+        authorizedRepo.saveAuthorizedClient(oAuth2AuthorizedClient, mockPrincipal, mockRequest, mockResponse);
     }
 
     @Test
     public void testAuthorizedClientCache() {
         OAuth2AuthorizedClient authorizedClient = inMemoryOAuth2AuthorizedClientService
-            .loadAuthorizedClient(fake.getRegistrationId(), "fake-name");
+            .loadAuthorizedClient(fakeClientRegistration.getRegistrationId(), "fake-name");
         Assertions.assertNotNull(authorizedClient);
         Assertions.assertEquals(CLIENT_CREDENTIAL_ACCESS_TOKEN, authorizedClient.getAccessToken().getTokenValue());
     }
@@ -97,7 +97,7 @@ public class AADOAuth2AuthorizedClientCredentialRepositoryTest {
     @Test
     public void testLoadAuthorizedClient() {
         OAuth2AuthorizedClient authorizedClient = authorizedRepo.loadAuthorizedClient(
-            "fake", principal, request);
+            "fake", mockPrincipal, mockRequest);
         Assertions.assertNotNull(authorizedClient);
         Assertions.assertEquals(CLIENT_CREDENTIAL_ACCESS_TOKEN, authorizedClient.getAccessToken().getTokenValue());
     }
@@ -105,7 +105,7 @@ public class AADOAuth2AuthorizedClientCredentialRepositoryTest {
     @Test
     public void testLoadNotExistAuthorizedClient() {
         OAuth2AuthorizedClient authorizedClient = authorizedRepo.loadAuthorizedClient(
-            "fake-2", principal, request);
+            "fake-2", mockPrincipal, mockRequest);
         Assertions.assertNull(authorizedClient);
     }
 
