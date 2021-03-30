@@ -32,7 +32,7 @@ public class RntbdRequestRecordTests {
     }
 
     @Test(groups = { "unit" }, dataProvider = "rntbdRequestArgs")
-    public void expireRecord(OperationType operationType, boolean requestSent, Class exceptionType) throws URISyntaxException {
+    public void expireRecord(OperationType operationType, boolean requestSent, Class<?> exceptionType) throws URISyntaxException {
 
         RntbdRequestArgs requestArgs = new RntbdRequestArgs(
             RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), operationType, ResourceType.Document),
