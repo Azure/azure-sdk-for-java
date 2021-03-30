@@ -24,13 +24,15 @@ public class RntbdRequestRecordTests {
     @DataProvider
     public static Object[][] rntbdRequestArgs() {
         return new Object[][]{
-            { OperationType.Read, GoneException.class },
-            { OperationType.Create, RequestTimeoutException.class },
+            // OperationType, request sent, expected exception
+            { OperationType.Read, true, GoneException.class },
+            { OperationType.Create, false, GoneException.class },
+            { OperationType.Create, true, RequestTimeoutException.class }
         };
     }
 
     @Test(groups = { "unit" }, dataProvider = "rntbdRequestArgs")
-    public void expireRecord(OperationType operationType, Class exceptionType) throws URISyntaxException {
+    public void expireRecord(OperationType operationType, boolean requestSent, Class exceptionType) throws URISyntaxException {
 
         RntbdRequestArgs requestArgs = new RntbdRequestArgs(
             RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), operationType, ResourceType.Document),
@@ -39,6 +41,9 @@ public class RntbdRequestRecordTests {
 
         RntbdRequestTimer requestTimer = new RntbdRequestTimer(5000, 5000);
         RntbdRequestRecord record = new AsyncRntbdRequestRecord(requestArgs, requestTimer);
+        if (requestSent) {
+            record.setSendingRequestHasStarted();
+        }
         record.expire();
 
         try{
