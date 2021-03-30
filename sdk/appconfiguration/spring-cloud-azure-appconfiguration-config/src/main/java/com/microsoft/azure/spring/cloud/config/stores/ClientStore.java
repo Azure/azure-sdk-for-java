@@ -160,7 +160,7 @@ public class ClientStore {
                 }
 
                 configurationRevision = null;
-            } else if (configurationRevision != null) {
+            } else if (configurationRevision != null && configurationRevision.getItems().size() > 0) {
                 return configurationRevision.getItems().get(0);
             } else {
                 return null;
