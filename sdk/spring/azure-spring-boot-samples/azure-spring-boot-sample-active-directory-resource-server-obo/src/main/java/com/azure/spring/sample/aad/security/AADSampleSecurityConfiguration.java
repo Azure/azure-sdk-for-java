@@ -18,5 +18,6 @@ public class AADSampleSecurityConfiguration extends AADResourceServerWebSecurity
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
+        http.authorizeRequests((requests) -> requests.anyRequest().authenticated());
     }
 }

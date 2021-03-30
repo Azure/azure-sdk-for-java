@@ -19,9 +19,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        // @formatter:off
         http.authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
-                .apply(configurer);
+            .apply(configurer);
+        // @formatter:off
     }
 }
