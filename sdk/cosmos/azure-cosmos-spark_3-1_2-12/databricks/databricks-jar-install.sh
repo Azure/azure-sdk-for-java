@@ -3,7 +3,7 @@
 CLUSTER_NAME=$1
 JARPATH=$2
 [[ -z "$CLUSTER_NAME" ]] && exit 1
-[[ -z "$JARFILE" ]] && exit 1
+[[ -z "$JARPATH" ]] && exit 1
 
 echo "Looking for cluster '$CLUSTER_NAME'"
 
