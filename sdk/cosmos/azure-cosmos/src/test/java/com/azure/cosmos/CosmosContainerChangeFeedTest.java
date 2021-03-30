@@ -862,12 +862,12 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         public boolean retry(ITestResult iTestResult) {
             int retryAttemptSnapshot = this.retryAttempts.incrementAndGet();
 
-            if (retryAttemptSnapshot <= this.retryLimit) {
+            if (retryAttemptSnapshot <= retryLimit) {
                 logger.warn(
                     "Test '{}' failed. Retry attempt: {} - Retry limit: {}",
                     iTestResult.getTestName(),
                     retryAttemptSnapshot,
-                    this.retryLimit);
+                    retryLimit);
 
                 return true;
             }
@@ -876,7 +876,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                 "Test '{}' failed. Retry attempt: {} - Retry limit: {}",
                 iTestResult.getTestName(),
                 retryAttemptSnapshot,
-                this.retryLimit);
+                retryLimit);
 
             return false;
         }
