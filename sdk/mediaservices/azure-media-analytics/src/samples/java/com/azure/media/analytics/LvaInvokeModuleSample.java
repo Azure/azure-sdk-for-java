@@ -8,6 +8,7 @@ import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 
+import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.media.analytics.models.*;
 import com.microsoft.azure.sdk.iot.service.*;
 import com.microsoft.azure.sdk.iot.service.devicetwin.*;
@@ -19,7 +20,7 @@ import java.util.Arrays;
 
 public class LvaInvokeModuleSample {
 
-    private static final String connectionString = "connectionString" ;
+    private static final String connectionString = "HostName=lvasamplehubnpctns45jvoji.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=dburWgVNqX+/xuOpSfXMKQdkr4nypY7HbwmwduL3mbs=" ;
     private static final String deviceId = "lva-sample-device";
     private static final String moduleId = "lvaEdge";
     private static final IotHubServiceClientProtocol protocol =
@@ -29,7 +30,7 @@ public class LvaInvokeModuleSample {
 
     //where/how to add methodName to payload? methodName is apart of class so when serialized is called here, methodName gets serialized into payload
     private static String serialize(MethodRequest request) {
-        JsonSerializer serializer = JsonSerializerProviders.createInstance();
+        ObjectSerializer serializer = JsonSerializerProviders.createInstance();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         serializer.serialize(outputStream, request);
         String payload = outputStream.toString(StandardCharsets.UTF_8);
@@ -96,21 +97,22 @@ public class LvaInvokeModuleSample {
     }
 
     private static MethodResult invokeDirectMethod(DeviceMethod client, String payload) throws IOException, IotHubException {
-        //ServiceClient client = ServiceClient.createFromConnectionString(connectionString, protocol);
         //CompletableFuture<Void> future = client.openAsync();
         //future.get();
         //Message msg = new Message(payload);
         //client.send(deviceId, moduleId, msg);
-        return client.invoke(deviceId, moduleId, null, null, payload);
+        return client.invoke(deviceId, moduleId, "methodName", null, null, payload);
     }
     public static void main(String[] args) throws IOException, IotHubException {
         PipelineTopology pipelineTopology = buildPipeLineTopology();
         LivePipeline livePipeline = buildLivePipeline();
         DeviceMethod dClient = DeviceMethod.createFromConnectionString(connectionString);
+        //ServiceClient sClient = ServiceClient.createFromConnectionString(connectionString, protocol);
 
         PipelineTopologySetRequest setPipelineTopologyRequest = new PipelineTopologySetRequest();
         setPipelineTopologyRequest.setPipelineTopology(pipelineTopology);
         MethodResult setPipelineResult = invokeDirectMethod(dClient, serialize(setPipelineTopologyRequest));
+        System.out.println(setPipelineResult);
 
         PipelineTopologyListRequest listTopologyRequest = new PipelineTopologyListRequest();
         MethodResult listPipelineResult = invokeDirectMethod(dClient, serialize(listTopologyRequest));

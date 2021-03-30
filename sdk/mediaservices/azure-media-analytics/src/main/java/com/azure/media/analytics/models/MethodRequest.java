@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "pipelineTopologySet", value = PipelineTopologySetRequest.class),
     @JsonSubTypes.Type(name = "PipelineTopologySetRequestBody", value = PipelineTopologySetRequestBody.class),
     @JsonSubTypes.Type(name = "livePipelineSet", value = LivePipelineSetRequest.class),
-    @JsonSubTypes.Type(name = "livePipelineSetRequestBody", value = LivePipelineSetRequestBody.class),
+    @JsonSubTypes.Type(name = "LivePipelineSetRequestBody", value = LivePipelineSetRequestBody.class),
     @JsonSubTypes.Type(name = "ItemNonSetRequestBase", value = ItemNonSetRequestBase.class),
     @JsonSubTypes.Type(name = "pipelineTopologyList", value = PipelineTopologyListRequest.class),
     @JsonSubTypes.Type(name = "livePipelineList", value = LivePipelineListRequest.class)
@@ -37,11 +37,6 @@ public class MethodRequest {
      */
     @JsonProperty(value = "@apiVersion")
     private String apiVersion;
-
-    /** Creates an instance of MethodRequest class. */
-    public MethodRequest() {
-        apiVersion = "1.0";
-    }
 
     /**
      * Get the apiVersion property: api version.

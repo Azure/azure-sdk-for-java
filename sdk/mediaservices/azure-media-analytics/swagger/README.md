@@ -22,7 +22,8 @@ sync-methods: none
 add-context-parameter: true
 models-subpackage: models
 custom-types-subpacakge: models
-customization-class: src/main/java/MethodRequestCustomizations.java
+customization-class: com.azure.media.analytics.MethodRequestCustomizations
+customization-jar-path: target/azure-media-analytics-customizations-1.0.0-beta.1.jar
 context-client-method-parameter: true
-use: '@autorest/java@4.0.18'
+use: '@autorest/java@4.0.22'
 ```

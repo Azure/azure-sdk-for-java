@@ -6,7 +6,6 @@
 
 module com.azure.media.analytics {
     requires transitive com.azure.core;
-    requires azure.autorest.customization;
 
     exports com.azure.media.analytics;
 

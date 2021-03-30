@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Represents the livePipelineSet request body. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "methodName")
-@JsonTypeName("livePipelineSetRequestBody")
+@JsonTypeName("LivePipelineSetRequestBody")
 @Fluent
 public final class LivePipelineSetRequestBody extends MethodRequest {
     /*
