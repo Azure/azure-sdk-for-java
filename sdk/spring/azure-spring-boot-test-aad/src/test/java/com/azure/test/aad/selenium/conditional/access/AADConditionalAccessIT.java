@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.test.aad.selenium.conditional.access;
 
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
@@ -33,6 +36,9 @@ public class AADConditionalAccessIT {
     private static final String WEB_API_A_ENDPOINT = "http://localhost:8882/webapiA";
     private static final Logger LOGGER = LoggerFactory.getLogger(AADConditionalAccessIT.class);
 
+    /**
+     * Before running this test case, follow the @see<a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-test-aad/README.md#what-is-aad-conditional-access-in-aad">guide</a> to start @see <a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-test-aad-obo/src/test/java/com/azure/test/aad/webapi/conditional/access/webapi/a/ConditionalAccessPolicyTestWebApiA.java">WebapiA</a> and @see <a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-test-aad-resource-server/src/test/java/com/azure/test/aad/conditional/access/webapi/b/ConditionalAccessPolicyTestWebApiB.java">webapiB</a> at first.
+     */
     @Ignore
     @Test
     public void conditionalAccessTest() {

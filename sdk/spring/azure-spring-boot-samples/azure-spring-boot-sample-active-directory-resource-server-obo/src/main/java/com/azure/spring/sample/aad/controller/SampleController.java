@@ -64,14 +64,14 @@ public class SampleController {
 
     /**
      * Call custom resources, combine all the response and return.
-     * @param webapiB authorized client for Custom
+     * @param webapiBClient authorized client for Custom
      * @return Response Graph and Custom data.
      */
     @PreAuthorize("hasAuthority('SCOPE_Obo.WebApiA.ExampleScope')")
-    @GetMapping("webapiA")
+    @GetMapping("webapiA/webapiB")
     public String callCustom(
-        @RegisteredOAuth2AuthorizedClient("webapiB") OAuth2AuthorizedClient webapiB) {
-        return callWebApiBEndpoint(webapiB);
+        @RegisteredOAuth2AuthorizedClient("webapiB") OAuth2AuthorizedClient webapiBClient) {
+        return callWebApiBEndpoint(webapiBClient);
     }
 
     /**
@@ -97,15 +97,15 @@ public class SampleController {
 
     /**
      * Call custom local file endpoint
-     * @param webapiB Authorized Client
+     * @param webapiBClient Authorized Client
      * @return Response string data.
      */
-    private String callWebApiBEndpoint(OAuth2AuthorizedClient webapiB) {
-        if (null != webapiB) {
+    private String callWebApiBEndpoint(OAuth2AuthorizedClient webapiBClient) {
+        if (null != webapiBClient) {
             String body = webClient
                 .get()
                 .uri(CUSTOM_LOCAL_FILE_ENDPOINT)
-                .attributes(oauth2AuthorizedClient(webapiB))
+                .attributes(oauth2AuthorizedClient(webapiBClient))
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();

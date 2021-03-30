@@ -406,17 +406,18 @@ Follow the guide to [add app roles in your application and assign to users or gr
         return "Admin message";
     }
     ```
+
 #### Support Conditional Access in web application.
   
 This starter supports [Conditional Access] policy. By using [Conditional Access] policies, you can apply the right **access controls** when needed to keep your organization secure. **Access controls** has many concepts, [Block Access] and [Grant Access] are important. In some scenarios, this stater will help you complete [Grant Access] controls. 
  
-In [Resource server visiting other resource server] scenario(For better description, we think that resource server as **webapiA** and the other resource servers as **webapiB**), When we configure the webapiB application with Conditional Access(such as [multi-factor authentication]), this stater will help us send the Conditional Access information of the webapiA to the web application and the web application will help us complete the Conditional Access Policy. As shown below:
+In [Resource server visiting other resource server] scenario(For better description, we think that resource server with OBO function as **webapiA** and the other resource servers as **webapiB**), When we configure the webapiB application with Conditional Access(such as [multi-factor authentication]), this stater will help us send the Conditional Access information of the webapiA to the web application and the web application will help us complete the Conditional Access Policy. As shown below:
 
   ![aad-conditional-access-flow.png](resource/aad-conditional-access-flow.png)
   
   
   
-  We can use our sample to create a Conditional Access scenario.
+ We can use our sample to create a Conditional Access scenario.
   1. **webapp**: [azure-spring-boot-sample-active-directory-webapp].
   1. **webapiA**:  [azure-spring-boot-sample-active-directory-resource-server-obo].
   1. **webapiB**: [azure-spring-boot-sample-active-directory-resource-server]. 
@@ -474,7 +475,7 @@ In [Resource server visiting other resource server] scenario(For better descript
       
 * Step 5: Write your Java code:  	
     - webapp :
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/CallOboServerController.java#L34-L38 -->    
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/WebapiController.java#L34-L38 -->    
     ```java
     @GetMapping("/webapiA")
     @ResponseBody
