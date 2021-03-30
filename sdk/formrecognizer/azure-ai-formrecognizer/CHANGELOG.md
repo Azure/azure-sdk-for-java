@@ -5,6 +5,7 @@
 - Added property `Pages` to `RecognizeReceiptsOptions`, `RecognizeInvoicesOptions`, `RecognizeBusinessCardsOptions`
   and `RecognizeCustomFormOptions` to specify the page numbers to analyze.
 - Added support for `FormContentType` `image/bmp` when analyzing custom forms.
+- Added support for pre-built ID documents recognition.
 
 ## 3.0.6 (2021-03-10)
 ### Dependency updates

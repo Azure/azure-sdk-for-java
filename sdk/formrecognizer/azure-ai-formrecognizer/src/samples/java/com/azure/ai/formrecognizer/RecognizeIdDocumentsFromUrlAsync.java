@@ -11,45 +11,33 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
-
 /**
- * Async sample for recognizing commonly found license fields from a local file input stream of an license ID document.
+ * Async sample for recognizing commonly found ID document fields from a file source URL.
  * See fields found on an license here:
  * https://aka.ms/formrecognizer/iddocumentfields
  */
-public class RecognizeIDDocumentAsync {
+public class RecognizeIdDocumentsFromUrlAsync {
 
     /**
      * Main method to invoke this demo.
      *
      * @param args Unused. Arguments to the program.
-     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
-    public static void main(final String[] args) throws IOException {
+    public static void main(final String[] args) {
         // Instantiate a client that will be used to call the service.
         FormRecognizerAsyncClient client = new FormRecognizerClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        File idDocument = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/java/"
-            + "sample-forms/ID documents/license.jpg");
-        byte[] fileContent = Files.readAllBytes(idDocument.toPath());
-
-        PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeIDPoller
-            = client.beginRecognizeIdDocuments(
-            toFluxByteBuffer(new ByteArrayInputStream(fileContent)),
-            fileContent.length);
+        String licenseDocumentUrl = "<update>";
+        PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeIDPoller =
+            client.beginRecognizeIdDocumentsFromUrl(licenseDocumentUrl);
 
         Mono<List<RecognizedForm>> idDocumentPollerResult = recognizeIDPoller
             .last()
