@@ -70,7 +70,7 @@ The services available via `azure-resourcemanager` are listed as below:
 - SQL
 - Storage
 - Traffic Manager
-- Search (preview)
+- Search
 </details>
 
 In the case where you are interested in certain service above or the service not included in the multi-service package, you can choose to use the single-service package for each service. Those packages follow the same naming patterns and design principals. For example, the package for Media Services has the following artifact information.
@@ -157,7 +157,7 @@ The key concepts of Azure Management Libraries includes:
 - Fluent interface to manage Azure resources.
 - Dependency across Azure resources.
 - Batch Azure resource provisioning.
-- Integration with Azure role-based access control.
+- Integration with [Azure role-based access control][rbac].
 - Asynchronous operations with [Reactor][reactor]. (Preview)
 - Configurable client, e.g. configuring HTTP client, retries, logging, etc.
 - [API design][design]
@@ -388,3 +388,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [design_preview]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/DESIGN_PREVIEW.md
 [throttling]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/THROTTLING.md
 [reactor]: https://projectreactor.io/
+[rbac]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/RBAC.md
