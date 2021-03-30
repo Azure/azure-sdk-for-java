@@ -12,6 +12,7 @@ import com.azure.core.http.MockHttpResponse;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.UnixTime;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
@@ -569,7 +570,14 @@ public class HttpResponseBodyDecoderTests {
             Arguments.of(createParameterizedFlux(createParameterizedResponseBase(void.class)), false),
             Arguments.of(createParameterizedFlux(createParameterizedResponseBase(Void.class)), false),
             Arguments.of(createParameterizedFlux(createParameterizedResponseBase(Void.TYPE)), false),
-            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(JsonPatchDocument.class)), true)
+            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(JsonPatchDocument.class)), true),
+
+            // Custom implementations of Response and ResponseBase.
+            Arguments.of(VoidResponse.class, false),
+            Arguments.of(StringResponse.class, true),
+
+            Arguments.of(VoidResponseWithDeserializedHeaders.class, false),
+            Arguments.of(StringResponseWithDeserializedHeaders.class, true)
         );
     }
 
@@ -587,5 +595,31 @@ public class HttpResponseBodyDecoderTests {
 
     private static ParameterizedType createParameterizedResponseBase(Type genericType) {
         return TypeUtil.createParameterizedType(ResponseBase.class, HttpHeaders.class, genericType);
+    }
+
+    private static final class VoidResponse extends SimpleResponse<Void> {
+        public VoidResponse(Response<?> response, Void value) {
+            super(response, value);
+        }
+    }
+
+    private static final class StringResponse extends SimpleResponse<String> {
+        public StringResponse(Response<?> response, String value) {
+            super(response, value);
+        }
+    }
+
+    private static final class VoidResponseWithDeserializedHeaders extends ResponseBase<HttpHeaders, Void> {
+        public VoidResponseWithDeserializedHeaders(HttpRequest request, int statusCode, HttpHeaders headers, Void value,
+            HttpHeaders deserializedHeaders) {
+            super(request, statusCode, headers, value, deserializedHeaders);
+        }
+    }
+
+    private static final class StringResponseWithDeserializedHeaders extends ResponseBase<HttpHeaders, String> {
+        public StringResponseWithDeserializedHeaders(HttpRequest request, int statusCode, HttpHeaders headers,
+            String value, HttpHeaders deserializedHeaders) {
+            super(request, statusCode, headers, value, deserializedHeaders);
+        }
     }
 }

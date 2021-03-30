@@ -32,11 +32,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
+
+import static com.azure.core.implementation.TypeUtil.getRawClass;
+import static com.azure.core.implementation.TypeUtil.typeImplementsInterface;
 
 /**
  * Decoder to decode body of HTTP response.
  */
 public final class HttpResponseBodyDecoder {
+    private static final Map<Type, Boolean> RETURN_TYPE_DECODE_ABLE_MAP = new ConcurrentHashMap<>();
+
     // TODO (jogiles) JavaDoc (even though it is non-public
     static Mono<Object> decode(final String body,
         final HttpResponse httpResponse,
@@ -352,61 +359,65 @@ public final class HttpResponseBodyDecoder {
             return false;
         }
 
-        returnType = unwrapReturnType(returnType);
+        return RETURN_TYPE_DECODE_ABLE_MAP.computeIfAbsent(returnType, type -> {
+            type = unwrapReturnType(type);
 
-        return !TypeUtil.isTypeOrSubTypeOf(returnType, BinaryData.class)
-            && !TypeUtil.isTypeOrSubTypeOf(returnType, byte[].class)
-            && !TypeUtil.isTypeOrSubTypeOf(returnType, ByteBuffer.class)
-            && !TypeUtil.isTypeOrSubTypeOf(returnType, InputStream.class)
-            && !TypeUtil.isTypeOrSubTypeOf(returnType, Void.TYPE)
-            && !TypeUtil.isTypeOrSubTypeOf(returnType, Void.class);
+            return !TypeUtil.isTypeOrSubTypeOf(type, BinaryData.class)
+                && !TypeUtil.isTypeOrSubTypeOf(type, byte[].class)
+                && !TypeUtil.isTypeOrSubTypeOf(type, ByteBuffer.class)
+                && !TypeUtil.isTypeOrSubTypeOf(type, InputStream.class)
+                && !TypeUtil.isTypeOrSubTypeOf(type, Void.TYPE)
+                && !TypeUtil.isTypeOrSubTypeOf(type, Void.class);
+        });
     }
 
     private static Type unwrapReturnType(Type returnType) {
-        // Begin by checking if the return type is an exact instance of ResponseBase.
-        // If it is unwrap the second generic type (the body type).
-        if (TypeUtil.getRawClass(returnType) == ResponseBase.class) {
+        // First check if the return type is assignable, is a sub-type, to ResponseBase.
+        // If it is begin walking up the super type hierarchy until ResponseBase is the raw type.
+        // Then unwrap the second generic type (body type).
+        if (TypeUtil.isTypeOrSubTypeOf(returnType, ResponseBase.class)) {
+            returnType = walkSuperTypesUntil(returnType, type -> getRawClass(type) == ResponseBase.class);
+
             return unwrapReturnType(TypeUtil.getTypeArguments(returnType)[1]);
         }
 
-        // Then check if the return type is assignable, is a sub-type, to ResponseBase.
-        // If it is begin walking up the super type hierarchy until ResponseBase is the raw type.
-        // From there, again, unwrap the second generic type.
-        if (TypeUtil.isTypeOrSubTypeOf(returnType, ResponseBase.class)) {
-            while (!(returnType instanceof ResponseBase)) {
-                returnType = TypeUtil.getSuperType(returnType);
-            }
-
-            return unwrapReturnType(returnType);
-        }
-
-        // Then check if the return type is an exact instance of Response.
-        // If it is unwrap its only generic type.
-        if (TypeUtil.getRawClass(returnType) == Response.class) {
-            return unwrapReturnType(TypeUtil.getTypeArgument(returnType));
-        }
-
         // Then, like ResponseBase, check if the return type is assignable to Response.
-        // If it is begin walking up the super type hierarchy until Response is the raw type.
-        // From there, again, unwrap its only generic type.
+        // If it is begin walking up the super type hierarchy until the raw type implements Response.
+        // Then unwrap its only generic type.
         if (TypeUtil.isTypeOrSubTypeOf(returnType, Response.class)) {
             // Handling for Response is slightly different as it is an interface unlike ResponseBase which is a class.
             // The super class hierarchy needs be walked until the super class itself implements Response.
-            while (!TypeUtil.typeImplementsInterface(returnType, Response.class)) {
-                returnType = TypeUtil.getSuperType(returnType);
-            }
+            returnType = walkSuperTypesUntil(returnType, type -> typeImplementsInterface(type, Response.class));
 
             return unwrapReturnType(TypeUtil.getTypeArgument(returnType));
         }
 
         // Then check if the return type is a Mono or Flux and unwrap its only generic type.
-        if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class)
-            || TypeUtil.isTypeOrSubTypeOf(returnType, Flux.class)) {
+        if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class)) {
+            returnType = walkSuperTypesUntil(returnType, type -> getRawClass(type) == Mono.class);
+
+            return unwrapReturnType(TypeUtil.getTypeArgument(returnType));
+        }
+
+        if (TypeUtil.isTypeOrSubTypeOf(returnType, Flux.class)) {
+            returnType = walkSuperTypesUntil(returnType, type -> getRawClass(type) == Flux.class);
+
             return unwrapReturnType(TypeUtil.getTypeArgument(returnType));
         }
 
         // Finally, there is no more unwrapping to perform and return the type as-is.
         return returnType;
+    }
+
+    /*
+     * Helper method that walks up the super types until the type is an instance of the Class.
+     */
+    private static Type walkSuperTypesUntil(Type type, Predicate<Type> untilChecker) {
+        while (!untilChecker.test(type)) {
+            type = TypeUtil.getSuperType(type);
+        }
+
+        return type;
     }
 
     /**

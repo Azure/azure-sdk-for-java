@@ -123,7 +123,9 @@ public final class TypeUtil {
      * @return Whether the type implements the interface.
      */
     public static boolean typeImplementsInterface(Type type, Class<?> interfaceClass) {
-        if (type instanceof ParameterizedType) {
+        if (getRawClass(type) == interfaceClass) {
+            return true; // Type is already the interface.
+        } else if (type instanceof ParameterizedType) {
             return typeImplementsInterface(((ParameterizedType) type).getRawType(), interfaceClass);
         } else {
             Class<?> clazz = (Class<?>) type;
