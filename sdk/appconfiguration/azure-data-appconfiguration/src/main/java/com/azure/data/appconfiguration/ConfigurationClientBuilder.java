@@ -108,6 +108,7 @@ public final class ConfigurationClientBuilder {
      * ConfigurationAsyncClient ConfigurationAsyncClients}.
      */
     public ConfigurationClientBuilder() {
+        httpLogOptions = new HttpLogOptions();
     }
 
     /**
@@ -167,9 +168,9 @@ public final class ConfigurationClientBuilder {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
+
         String applicationId =
             clientOptions == null ? httpLogOptions.getApplicationId() : clientOptions.getApplicationId();
-        HttpLogOptions buildLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
         policies.add(new UserAgentPolicy(applicationId, CLIENT_NAME, CLIENT_VERSION, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
@@ -205,7 +206,7 @@ public final class ConfigurationClientBuilder {
         }
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(buildLogOptions));
+        policies.add(new HttpLoggingPolicy(httpLogOptions));
 
         // customized pipeline
         HttpPipeline pipeline = new HttpPipelineBuilder()
