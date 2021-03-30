@@ -11,14 +11,18 @@ public interface PartitionSupervisor {
     /**
      * Runs the task.
      *
-     * @param shutdownToken the cancellation token.
-     * @param cancellationTokenSource the cancellation token source for other tasks.
+     * @param cancellationToken the cancellation token.
      * @return a deferred operation of this call.
      */
-    Mono<Void> run(CancellationToken shutdownToken, CancellationTokenSource cancellationTokenSource);
+    Mono<Void> run(CancellationToken cancellationToken);
 
     /**
      * @return the inner exception if any, otherwise null.
      */
     RuntimeException getResultException();
+
+    /**
+     * Close partition supervisor and cancel all internal jobs.
+     */
+    void shutdown();
 }

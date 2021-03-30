@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
-import com.azure.cosmos.implementation.changefeed.CancellationTokenSource;
 import com.azure.cosmos.implementation.changefeed.Lease;
+import com.azure.cosmos.implementation.changefeed.PartitionSupervisor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -18,12 +18,12 @@ class WorkerTask extends Thread {
     private AtomicBoolean done;
     private Mono<Void> job;
     private Lease lease;
-    private CancellationTokenSource taskCancelCts;
+    private PartitionSupervisor partitionSupervisor;
 
-    WorkerTask(Lease lease, CancellationTokenSource taskCancelCts, Mono<Void> job) {
+    WorkerTask(Lease lease, PartitionSupervisor partitionSupervisor, Mono<Void> job) {
         this.lease = lease;
         this.job = job;
-        this.taskCancelCts = taskCancelCts;
+        this.partitionSupervisor = partitionSupervisor;
         done = new AtomicBoolean(false);
     }
 
@@ -40,7 +40,7 @@ class WorkerTask extends Thread {
     }
 
     public void cancelJob() {
-        this.taskCancelCts.cancel();
+        this.partitionSupervisor.shutdown();
         this.interrupt();
     }
 

@@ -110,7 +110,7 @@ class PartitionControllerImpl implements PartitionController {
 
     private Mono<Void> removeLease(Lease lease) {
         return Mono.just(this)
-            .flatMap(dummy -> {
+            .flatMap(value -> {
                 WorkerTask workerTask = this.currentlyOwnedPartitions.remove(lease.getLeaseToken());
                 if (workerTask != null && workerTask.isRunning()) {
                     workerTask.cancelJob();
@@ -135,13 +135,12 @@ class PartitionControllerImpl implements PartitionController {
 
     private WorkerTask processPartition(PartitionSupervisor partitionSupervisor, Lease lease) {
         CancellationToken shutdownToken = this.shutdownCts.getToken();
-        CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
         WorkerTask partitionSupervisorTask =
             new WorkerTask(
                 lease,
-                cancellationTokenSource,
-                getWorkerJob(partitionSupervisor, lease, shutdownToken, cancellationTokenSource));
+                partitionSupervisor,
+                getWorkerJob(partitionSupervisor, lease, shutdownToken));
 
         this.scheduler.schedule(partitionSupervisorTask);
 
@@ -151,9 +150,8 @@ class PartitionControllerImpl implements PartitionController {
     private Mono<Void> getWorkerJob(
         PartitionSupervisor partitionSupervisor,
         Lease lease,
-        CancellationToken shutdownToken,
-        CancellationTokenSource cancellationTokenSource) {
-        return partitionSupervisor.run(shutdownToken, cancellationTokenSource)
+        CancellationToken shutdownToken) {
+        return partitionSupervisor.run(shutdownToken)
             .onErrorResume(throwable -> {
                 if (throwable instanceof PartitionSplitException) {
                     PartitionSplitException ex = (PartitionSplitException) throwable;
