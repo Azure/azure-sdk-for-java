@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.textanalytics.perf;
 
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -8,7 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class DetectLanguageTest extends ServiceTest<TextAnalyticsStressOptions>{
+/**
+ * Performance test for detect language API.
+ */
+public class DetectLanguageTest extends ServiceTest<TextAnalyticsStressOptions> {
 
     /**
      * Creates an instance of performance test.
@@ -32,11 +38,10 @@ public class DetectLanguageTest extends ServiceTest<TextAnalyticsStressOptions>{
             new TextAnalyticsRequestOptions().setIncludeStatistics(true))
             .map(result -> result.stream().count())
             .handle((val, sink) -> {
-                if(val == options.getDocumentCount()) {
+                if (val == options.getDocumentCount()) {
                     sink.next(val);
                 } else {
-                    sink.error(new IllegalStateException("The result count doesn't match the input doc " +
-                        "count"));
+                    sink.error(new IllegalStateException("The result count doesn't match the input doc count"));
                 }
             })
             .then();

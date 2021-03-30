@@ -277,7 +277,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\](generated-test-sources|generatedtestsources)[/\\]"/>
 
   <!-- Allows the HttpPipelinePolicy derived class in Implementation folder -->
-  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryCredentialsPolicy.java"/> 
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryCredentialsPolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.messaging.servicebus.implementation.ServiceBusTokenCredentialHttpPolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.messaging.eventgrid.implementation.CloudEventTracingPipelinePolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy.java"/>
@@ -286,7 +286,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy.java"/>
- 
+
 
   <!-- Fields tenantId, clientId and clientSecret are not set in all constructors. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.KeyVaultClient"/>
@@ -399,12 +399,12 @@ the main ServiceBusClientBuilder. -->
             files="com.azure.cosmos.ClientSideRequestStatistics"/> <!-- Need OperatingSystemMXBean from sun to obtain cpu info -->
 
   <!-- perf-test files are not public API, so they don't need to fulfill all requirements. -->
-  <suppress checks="Javadoc" files=".*[/\\]azure-storage-perf|azure-search-perf|azure-identity-perf|azure-template-perf[/\\].*\.java"/>
+  <suppress checks="Javadoc" files=".*[/\\]azure-storage-perf|azure-search-perf|azure-identity-perf|azure-ai-textanalytics-perf|azure-template-perf[/\\].*\.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFields"
             files=".*[/\\]azure-identity-perf|azure-search-perf[/\\].*\.java"/>
-  <suppress checks="GoodLogging" files=".*[/\\]azure-storage-perf|azure-search-perf|perf-test-core[/\\].*\.java"/>
+  <suppress checks="GoodLogging" files=".*[/\\]azure-storage-perf|azure-search-perf|azure-ai-textanalytics-perf|perf-test-core[/\\].*\.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
-            files=".*[/\\]azure-identity-perf|azure-search-perf|azure-storage-perf|perf-test-core|azure-template-perf[/\\].*\.java"/>
+            files=".*[/\\]azure-identity-perf|azure-search-perf|azure-storage-perf|azure-ai-textanalytics-perf|perf-test-core|azure-template-perf[/\\].*\.java"/>
   <!-- Azure Search test models -->
   <suppress checks="StaticVariableName|VisibilityModifier"
             files="com.azure.search.perf.*.java|com.azure.messaging.servicebus.perf.*.java"/>
@@ -419,6 +419,8 @@ the main ServiceBusClientBuilder. -->
             files="com.azure.perf.test.core.PerfStressOptions.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
             files="com.azure.messaging.servicebus.perf.ServiceBusStressOptions.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
+            files="com.azure.ai.textanalytics.perf.TextAnalyticsStressOptions.java"/>
 
   <!-- Nested blocks are still readable in the switch statements in Avro. -->
   <suppress checks="AvoidNestedBlocks" files="com.azure.storage.internal.avro.implementation.schema.AvroSchema.java"/>

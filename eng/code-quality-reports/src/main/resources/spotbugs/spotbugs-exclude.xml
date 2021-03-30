@@ -747,8 +747,9 @@
     <Or>
       <Package name="com.azure.storage.blob.perf"/>
       <Package name="com.azure.storage.blob.perf.core"/>
+      <Package name="com.azure.ai.textanalytics.perf"/>
     </Or>
-    <Bug pattern="BC_UNCONFIRMED_CAST, DM_EXIT, RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST, DM_EXIT, RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE, PZLA_PREFER_ZERO_LENGTH_ARRAYS, EI_EXPOSE_REP2"/>
   </Match>
 
   <Match>
@@ -1870,14 +1871,14 @@
     <Method name="setContentBytes"/>
     <Bug pattern="EI_EXPOSE_REP2"/>
   </Match>
-  
+
    <!-- Returning a new copy of the object is not necessary -->
   <Match>
     <Class name="com.azure.cosmos.implementation.ClientEncryptionKey"/>
     <Method name="getWrappedDataEncryptionKey"/>
     <Bug pattern="EI_EXPOSE_REP"/>
   </Match>
-  
+
    <!-- Returning a new copy of the object is not necessary -->
   <Match>
     <Class name="com.azure.cosmos.implementation.ClientEncryptionKey"/>
