@@ -118,7 +118,7 @@ public class ReceiveLinkHandler extends LinkHandler {
                         link.getRemoteCondition(), delivery.isSettled());
                 } else {
                     logger.warning("connectionId[{}], entityPath[{}] delivery.isSettled[{}] Settled delivery with no "
-                            +" link.",
+                            + " link.",
                         getConnectionId(), entityPath, delivery.isSettled());
                 }
             } else {
