@@ -196,7 +196,7 @@ you should be redirected to login page.
 
 4. Click link with the login user flow, you should be redirected Azure AD B2C to start the authentication process.
 
-4. After you have logged in successfully, you should see the sample `home page` from the browser.
+5. After you have logged in successfully, you should see the sample `home page` from the browser.
 
 ## Troubleshooting
 ### Enable client logging
