@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class WebController {
 
-    private static final String EVENT_HUB_NAME = "event-0329-hub";
+    private static final String EVENT_HUB_NAME = "event-hub-name";
     private static final String CONSUMER_GROUP = "$Default";
 
     @Autowired

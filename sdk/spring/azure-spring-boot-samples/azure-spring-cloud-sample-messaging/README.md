@@ -2,7 +2,7 @@
 
 ## Key concepts
 
-This code sample demonstrates how to use [AzureMessageListener.java][annotation-azure-message-listener] to listen to events from event hub.
+This code sample demonstrates how to use [AzureMessageListener.java][annotation-azure-message-listener] to listen to events from Event Hubs.
 
 ## Getting started
 
@@ -14,9 +14,11 @@ Running this sample will be charged by Azure. You can check the usage and bill a
 
 ### Create Azure resources
 
-1.  Create [Azure Event Hubs][create-event-hubs].
+1.  Create [Azure Event Hubs Namespace][create-event-hubs-namespace].
     Please note `Basic` tier is unsupported. After creating the Azure Event Hub, you
-    can create your own Consumer Group or use the default "$Default" Consumer Group.
+    can create your own Consumer Group or use the default `$Default` Consumer Group.
+    
+1.  Create [Azure Event Hub][create-event-hub-instance] and named `event-hub-name`.
 
 1.  Create [Azure Storage][create-azure-storage] for checkpoint use.
 
@@ -57,7 +59,8 @@ Running this sample will be charged by Azure. You can check the usage and bill a
 
 [azure-account]: https://azure.microsoft.com/account/
 [azure-portal]: https://ms.portal.azure.com/
-[create-event-hubs]: https://docs.microsoft.com/azure/event-hubs/ 
+[create-event-hubs-namespace]: https://docs.microsoft.com/azure/event-hubs/event-hubs-create#create-an-event-hubs-namespace
+[create-event-hub-instance]: https://docs.microsoft.com/azure/event-hubs/event-hubs-create#create-an-event-hub
 [create-azure-storage]: https://docs.microsoft.com/azure/storage/ 
 [annotation-azure-message-listener]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-cloud-messaging/src/main/java/com/azure/spring/messaging/annotation/AzureMessageListener.java
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
