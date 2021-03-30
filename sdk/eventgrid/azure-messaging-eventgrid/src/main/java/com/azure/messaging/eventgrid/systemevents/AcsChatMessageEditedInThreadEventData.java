@@ -108,6 +108,13 @@ public final class AcsChatMessageEditedInThreadEventData extends AcsChatMessageE
 
     /** {@inheritDoc} */
     @Override
+    public AcsChatMessageEditedInThreadEventData setTransactionId(String transactionId) {
+        super.setTransactionId(transactionId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public AcsChatMessageEditedInThreadEventData setThreadId(String threadId) {
         super.setThreadId(threadId);
         return this;

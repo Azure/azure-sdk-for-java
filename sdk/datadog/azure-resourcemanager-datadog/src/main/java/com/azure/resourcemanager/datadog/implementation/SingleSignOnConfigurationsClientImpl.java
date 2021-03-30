@@ -130,7 +130,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
     /**
      * List the single sign-on configurations for a given monitor resource.
      *
-     * @param resourceGroupName The name of the resource group to which the Datadog resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -181,13 +181,13 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List the single sign-on configurations for a given monitor resource.
      *
-     * @param resourceGroupName The name of the resource group to which the Datadog resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -242,7 +242,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
     /**
      * List the single sign-on configurations for a given monitor resource.
      *
-     * @param resourceGroupName The name of the resource group to which the Datadog resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -258,7 +258,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
     /**
      * List the single sign-on configurations for a given monitor resource.
      *
-     * @param resourceGroupName The name of the resource group to which the Datadog resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -277,7 +277,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
     /**
      * List the single sign-on configurations for a given monitor resource.
      *
-     * @param resourceGroupName The name of the resource group to which the Datadog resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -292,7 +292,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
     /**
      * List the single sign-on configurations for a given monitor resource.
      *
-     * @param resourceGroupName The name of the resource group to which the Datadog resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -309,7 +309,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
     /**
      * Configures single-sign-on for this resource.
      *
-     * @param resourceGroupName The name of the resource group to which the Datadog resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
      * @param body The body parameter.
@@ -362,13 +362,13 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
                             body,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Configures single-sign-on for this resource.
      *
-     * @param resourceGroupName The name of the resource group to which the Datadog resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
      * @param body The body parameter.
@@ -429,7 +429,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
     /**
      * Configures single-sign-on for this resource.
      *
-     * @param resourceGroupName The name of the resource group to which the Datadog resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
      * @param body The body parameter.
@@ -460,7 +460,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
     /**
      * Configures single-sign-on for this resource.
      *
-     * @param resourceGroupName The name of the resource group to which the Datadog resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
      * @param body The body parameter.
@@ -494,7 +494,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
     /**
      * Configures single-sign-on for this resource.
      *
-     * @param resourceGroupName The name of the resource group to which the Datadog resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
      * @param body The body parameter.
@@ -516,7 +516,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
     /**
      * Configures single-sign-on for this resource.
      *
-     * @param resourceGroupName The name of the resource group to which the Datadog resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
      * @param body The body parameter.
@@ -541,7 +541,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
     /**
      * Configures single-sign-on for this resource.
      *
-     * @param resourceGroupName The name of the resource group to which the Datadog resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
      * @param body The body parameter.
@@ -561,7 +561,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
     /**
      * Configures single-sign-on for this resource.
      *
-     * @param resourceGroupName The name of the resource group to which the Datadog resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -581,7 +581,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
     /**
      * Configures single-sign-on for this resource.
      *
-     * @param resourceGroupName The name of the resource group to which the Datadog resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
      * @param body The body parameter.
@@ -606,7 +606,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
     /**
      * Configures single-sign-on for this resource.
      *
-     * @param resourceGroupName The name of the resource group to which the Datadog resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
      * @param body The body parameter.
@@ -624,7 +624,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
     /**
      * Configures single-sign-on for this resource.
      *
-     * @param resourceGroupName The name of the resource group to which the Datadog resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -642,7 +642,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
     /**
      * Configures single-sign-on for this resource.
      *
-     * @param resourceGroupName The name of the resource group to which the Datadog resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
      * @param body The body parameter.
@@ -665,7 +665,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
     /**
      * Gets the datadog single sign-on resource for the given Monitor.
      *
-     * @param resourceGroupName The name of the resource group to which the Datadog resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -713,13 +713,13 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the datadog single sign-on resource for the given Monitor.
      *
-     * @param resourceGroupName The name of the resource group to which the Datadog resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
      * @param context The context to associate with this operation.
@@ -771,7 +771,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
     /**
      * Gets the datadog single sign-on resource for the given Monitor.
      *
-     * @param resourceGroupName The name of the resource group to which the Datadog resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -796,7 +796,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
     /**
      * Gets the datadog single sign-on resource for the given Monitor.
      *
-     * @param resourceGroupName The name of the resource group to which the Datadog resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -813,7 +813,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
     /**
      * Gets the datadog single sign-on resource for the given Monitor.
      *
-     * @param resourceGroupName The name of the resource group to which the Datadog resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
      * @param context The context to associate with this operation.
@@ -860,7 +860,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

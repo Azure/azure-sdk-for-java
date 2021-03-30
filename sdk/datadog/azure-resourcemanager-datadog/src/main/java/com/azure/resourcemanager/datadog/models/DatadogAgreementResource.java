@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.datadog.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.datadog.fluent.models.DatadogAgreementResourceInner;
 
 /** An immutable client-side representation of DatadogAgreementResource. */
@@ -35,6 +36,13 @@ public interface DatadogAgreementResource {
      * @return the properties value.
      */
     DatadogAgreementProperties properties();
+
+    /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.datadog.fluent.models.DatadogAgreementResourceInner object.

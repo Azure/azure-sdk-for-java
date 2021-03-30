@@ -319,8 +319,6 @@
     <Or>
       <Class name="com.azure.core.http.HttpPipelineNextPolicy"/>
       <Class name="com.azure.core.http.HttpRequest"/>
-      <Class
-        name="~com\.azure\.core\.auth\.credentials\.(MSIConfigurationForAppService|MSIConfigurationForVirtualMachine)"/>
     </Or>
     <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
   </Match>
@@ -349,37 +347,6 @@
   <Match>
     <Class name="com.azure.core.implementation.TypeUtil"/>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
-  </Match>
-
-  <!-- These fields are designed to be not written. They are for deserializing. -->
-  <Match>
-    <Class name="com.azure.core.auth.credentials.AzureCliSubscription$UserInfo"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <!-- These fields are designed to be not read. They are for deserializing. -->
-  <Match>
-    <Class name="com.azure.core.auth.credentials.AzureCliToken"/>
-    <Bug pattern="URF_UNREAD_FIELD"/>
-  </Match>
-
-  <!-- These fields are designed to be not used. They are for deserializing. -->
-  <Match>
-    <Class name="~com\.azure\.core\.auth\.credentials\.(AzureCliToken|AzureCliSubscription)"/>
-    <Bug pattern="UUF_UNUSED_FIELD"/>
-  </Match>
-
-  <!-- These fields are designed to be anonymous and not static. They are for letting the jackson serializer know what
-  type to use. -->
-  <Match>
-    <Class name="com.azure.core.auth.credentials.AzureCliCredentials"/>
-    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
-  </Match>
-
-  <!-- These fields has checked null and initialized in the constructor. -->
-  <Match>
-    <Class name="com.azure.core.auth.credentials.AzureCliCredentials"/>
-    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
 
   <!-- The fields are checked for null in the build method and throw exceptions if values for fields are not specified. -->
@@ -716,12 +683,6 @@
   <!-- Initial implementation of Storage Blob Batch is using an inline class -->
   <Match>
     <Class name="com.azure.storage.blob.batch.BlobBatchAsyncClient"/>
-    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
-  </Match>
-
-  <!-- Initial implementation of JacksonDeserializer is using an inline class-->
-  <Match>
-    <Class name="com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer"/>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 

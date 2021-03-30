@@ -52,10 +52,10 @@ final class GeoJsonDeserializer extends JsonDeserializer<GeoObject> {
         MODULE = new SimpleModule()
             .addDeserializer(GeoObject.class, new GeoJsonDeserializer())
             .addDeserializer(GeoPoint.class, geoSubclassDeserializer(GeoPoint.class))
-            .addDeserializer(GeoLine.class, geoSubclassDeserializer(GeoLine.class))
+            .addDeserializer(GeoLineString.class, geoSubclassDeserializer(GeoLineString.class))
             .addDeserializer(GeoPolygon.class, geoSubclassDeserializer(GeoPolygon.class))
             .addDeserializer(GeoPointCollection.class, geoSubclassDeserializer(GeoPointCollection.class))
-            .addDeserializer(GeoLineCollection.class, geoSubclassDeserializer(GeoLineCollection.class))
+            .addDeserializer(GeoLineStringCollection.class, geoSubclassDeserializer(GeoLineStringCollection.class))
             .addDeserializer(GeoPolygonCollection.class, geoSubclassDeserializer(GeoPolygonCollection.class))
             .addDeserializer(GeoCollection.class, geoSubclassDeserializer(GeoCollection.class));
     }
@@ -87,7 +87,7 @@ final class GeoJsonDeserializer extends JsonDeserializer<GeoObject> {
             case POINT_TYPE:
                 return new GeoPoint(readCoordinate(coordinates), boundingBox, properties);
             case LINE_STRING_TYPE:
-                return new GeoLine(readCoordinates(coordinates), boundingBox, properties);
+                return new GeoLineString(readCoordinates(coordinates), boundingBox, properties);
             case POLYGON_TYPE:
                 List<GeoLinearRing> rings = new ArrayList<>();
                 coordinates.forEach(ring -> rings.add(new GeoLinearRing(readCoordinates(ring))));
@@ -99,10 +99,10 @@ final class GeoJsonDeserializer extends JsonDeserializer<GeoObject> {
 
                 return new GeoPointCollection(points, boundingBox, properties);
             case MULTI_LINE_STRING_TYPE:
-                List<GeoLine> lines = new ArrayList<>();
-                coordinates.forEach(line -> lines.add(new GeoLine(readCoordinates(line))));
+                List<GeoLineString> lines = new ArrayList<>();
+                coordinates.forEach(line -> lines.add(new GeoLineString(readCoordinates(line))));
 
-                return new GeoLineCollection(lines, boundingBox, properties);
+                return new GeoLineStringCollection(lines, boundingBox, properties);
             case MULTI_POLYGON_TYPE:
                 return readMultiPolygon(coordinates, boundingBox, properties);
             default:
