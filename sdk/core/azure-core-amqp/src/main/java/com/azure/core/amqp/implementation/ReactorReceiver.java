@@ -4,9 +4,11 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -68,7 +70,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
             .autoConnect();
         this.endpointStates = this.handler.getEndpointStates()
             .map(state -> {
-                logger.verbose("connectionId[{}], path[{}], linkName[{}]: State {}", handler.getConnectionId(),
+                logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] State {}", handler.getConnectionId(),
                     entityPath, getLinkName(), state);
                 return AmqpEndpointStateUtil.getConnectionState(state);
             })
@@ -79,10 +81,15 @@ public class ReactorReceiver implements AmqpReceiveLink {
                 logger.verbose("Token refreshed: {}", response);
                 hasAuthorized.set(true);
             }, error -> {
-                logger.info("connectionId[{}], path[{}], linkName[{}] - tokenRenewalFailure[{}]",
+                logger.info("connectionId[{}] entityPath{}] linkName[{}] tokenRenewalFailure[{}]",
                     handler.getConnectionId(), this.entityPath, getLinkName(), error.getMessage());
                 hasAuthorized.set(false);
-            }, () -> hasAuthorized.set(false));
+                dispose(new ErrorCondition(Symbol.getSymbol(AmqpErrorCondition.NOT_ALLOWED.getErrorCondition()),
+                    error.getMessage()));
+            }, () -> {
+                hasAuthorized.set(false);
+                dispose();
+            });
     }
 
     @Override
@@ -124,7 +131,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
 
     @Override
     public String getLinkName() {
-        return receiver.getName();
+        return handler.getLinkName();
     }
 
     @Override
@@ -158,13 +165,15 @@ public class ReactorReceiver implements AmqpReceiveLink {
                 handler.close();
             });
         } catch (IOException e) {
-            logger.warning("Could not schedule disposing of receiver on ReactorDispatcher.", e);
+            logger.warning("connectionId[{}] linkName[{}] Could not schedule disposing of receiver.",
+                handler.getConnectionId(), getLinkName(), e);
+            receiver.free();
             handler.close();
         }
     }
 
     /**
-     * Disposes of the sender when an exception is encountered.
+     * Disposes of the receiver when an exception is encountered.
      *
      * @param condition Error condition associated with close operation.
      */
@@ -173,7 +182,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
             return;
         }
 
-        logger.verbose("connectionId[{}], path[{}], linkName[{}]: setting error condition {}",
+        logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Setting error condition {}",
             handler.getConnectionId(), entityPath, getLinkName(), condition);
 
         if (receiver.getLocalState() != EndpointState.CLOSED) {
@@ -190,7 +199,10 @@ public class ReactorReceiver implements AmqpReceiveLink {
                 handler.close();
             });
         } catch (IOException e) {
-            logger.warning("Could not schedule disposing of receiver on ReactorDispatcher.", e);
+            logger.warning("connectionId[{}] entityPath[{}] linkName[{}] Could not schedule disposing of receiver "
+                + "on dispatcher. Manually invoking.", handler.getConnectionId(), entityPath, getLinkName(), e);
+
+            receiver.free();
             handler.close();
         }
 
@@ -212,6 +224,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
 
     @Override
     public String toString() {
-        return String.format("link name: [%s], entity path: [%s]", receiver.getName(), entityPath);
+        return String.format("connectionId: [%s] entity path: [%s] linkName: [%s]", receiver.getName(), entityPath,
+            getLinkName());
     }
 }
