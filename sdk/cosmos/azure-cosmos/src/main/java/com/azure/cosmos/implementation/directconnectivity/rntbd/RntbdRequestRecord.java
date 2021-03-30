@@ -229,14 +229,13 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
 
     public boolean expire() {
         final CosmosException error;
-        if (this.args.serviceRequest().isReadOnly()) {
-            // Always converting RequestTimeoutException to GoneException for ReadOnly request. Since they can be safely retried.
-            error = new GoneException(this.toString(), null, this.args.physicalAddress());
-        } else if (!this.hasSendingRequestStarted()) {
-            // If request not sent for write request, converting to GoneException so it can be retried.
+        if (this.args.serviceRequest().isReadOnly() || !this.hasSendingRequestStarted()) {
+            // Convert from requestTimeoutException to GoneException for the following two scenarios so they can be safely retried:
+            // 1. RequestOnly request
+            // 2. Write request but not sent yet
             error = new GoneException(this.toString(), null, this.args.physicalAddress());
         } else {
-            // For write request sent, converting to requestTimeout, will not be retried.
+            // For sent write request, converting to requestTimeout, will not be retried.
             error = new RequestTimeoutException(this.toString(), this.args.physicalAddress());
         }
 

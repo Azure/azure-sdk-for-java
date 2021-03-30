@@ -8,7 +8,6 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -18,6 +17,7 @@ import java.util.concurrent.ExecutionException;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class RntbdRequestRecordTests {
 
@@ -48,12 +48,12 @@ public class RntbdRequestRecordTests {
 
         try{
             record.get();
-            Assert.fail("RntbdRequestRecord should complete with exception");
+            fail("RntbdRequestRecord should complete with exception");
         } catch (ExecutionException e) {
             Throwable innerException = e.getCause();
             assertThat(innerException).isInstanceOf(exceptionType);
         } catch (Exception e) {
-            Assert.fail();
+            fail("Wrong exception");
         }
     }
 }
