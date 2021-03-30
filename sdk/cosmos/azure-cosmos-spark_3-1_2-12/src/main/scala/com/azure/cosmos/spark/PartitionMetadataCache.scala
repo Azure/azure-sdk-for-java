@@ -63,7 +63,6 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
             feedRange: NormalizedRange,
             maxStaleness: Option[Duration] = None): SMono[PartitionMetadata] = {
 
-    assertOnSparkDriver()
     requireNotNull(cosmosClientConfig, "cosmosClientConfig")
 
     val key = PartitionMetadata.createKey(
@@ -120,7 +119,6 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
     key: String
   ): SMono[PartitionMetadata] = {
 
-    assertOnSparkDriver()
     val metadataObservable = readPartitionMetadata(
       userConfig,
       cosmosClientConfiguration,
