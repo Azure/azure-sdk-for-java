@@ -97,10 +97,6 @@ public final class ReactorDispatcher {
     }
 
     private void signalWorkQueue() throws IOException {
-        if (dequeueInProgress.get()) {
-            return;
-        }
-
         try {
             ByteBuffer oneByteBuffer = ByteBuffer.allocate(1);
             while (this.ioSignal.sink().write(oneByteBuffer) == 0) {
@@ -115,7 +111,7 @@ public final class ReactorDispatcher {
     private final class WorkScheduler implements Callback {
         @Override
         public void run(Selectable selectable) {
-            if (dequeueInProgress.getAndSet(true)) {
+            if (!dequeueInProgress.compareAndSet(false,true)) {
                 return;
             }
 
