@@ -106,12 +106,18 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         assertThat(provider.count()).isEqualTo(0);
         assertThat(collectionInfoByNameMap.size()).isEqualTo(0);
         assertThat(routingMap.size()).isEqualTo(0);
+        assertThat(ReflectionUtils.isInitialized(cosmosAsyncContainer).get()).isFalse();
+
+        // Calling it twice to make sure no side effect of second time no-op call
+        cosmosAsyncContainer.openConnectionsAndInitCaches().block();
         cosmosAsyncContainer.openConnectionsAndInitCaches().block();
 
         // Verifying collectionInfoByNameMap size
         assertThat(collectionInfoByNameMap.size()).isEqualTo(1);
         // Verifying routingMap size
         assertThat(routingMap.size()).isEqualTo(1);
+        // Verifying isInitialized is true
+        assertThat(ReflectionUtils.isInitialized(cosmosAsyncContainer).get()).isTrue();
 
         List<FeedRange> feedRanges =
             rxDocumentClient.getFeedRanges(cosmosAsyncContainer.getLink()).block();
@@ -130,12 +136,22 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         collectionInfoByNameMap = getCollectionInfoByNameMap(rxDocumentClient);
         assertThat(collectionInfoByNameMap.size()).isEqualTo(0);
         assertThat(routingMap.size()).isEqualTo(0);
+        CosmosAsyncContainer gatewayAsyncContainer =
+            gatewayCosmosAsyncClient.getDatabase(cosmosDatabase.getId()).getContainer(cosmosContainer.getId());
+        assertThat(ReflectionUtils.isInitialized(gatewayAsyncContainer).get()).isFalse();
+
         // Verifying no error when initializeContainer called on gateway mode
-        gatewayCosmosAsyncClient.getDatabase(cosmosDatabase.getId()).getContainer(cosmosContainer.getId()).openConnectionsAndInitCaches().block();
+        // Calling it twice to make sure no side effect of second time no-op call
+        gatewayAsyncContainer.openConnectionsAndInitCaches().block();
+        gatewayAsyncContainer.openConnectionsAndInitCaches().block();
+
         // Verifying collectionInfoByNameMap size
         assertThat(collectionInfoByNameMap.size()).isEqualTo(1);
         // Verifying routingMap size
         assertThat(routingMap.size()).isEqualTo(1);
+        // Verifying isInitialized is true
+        assertThat(ReflectionUtils.isInitialized(gatewayAsyncContainer).get()).isTrue();
+
 
         feedRanges =
             rxDocumentClient.getFeedRanges(BridgeInternal.extractContainerSelfLink(cosmosAsyncContainer)).block();
@@ -162,6 +178,10 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         assertThat(provider.count()).isEqualTo(0);
         assertThat(collectionInfoByNameMap.size()).isEqualTo(0);
         assertThat(routingMap.size()).isEqualTo(0);
+        assertThat(ReflectionUtils.isInitialized(cosmosContainer.asyncContainer).get()).isFalse();
+
+        // Calling it twice to make sure no side effect of second time no-op call
+        cosmosContainer.openConnectionsAndInitCaches();
         cosmosContainer.openConnectionsAndInitCaches();
 
         // Verifying collectionInfoByNameMap size
@@ -179,6 +199,8 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         assertThat(provider.count()).isLessThanOrEqualTo(maxNumberOfConnection);
         // Verifying partitionKeyRanges list size
         assertThat(collectionRoutingMap.getOrderedPartitionKeyRanges().size()).isEqualTo(feedRanges.size());
+        // Verifying isInitialized is true
+        assertThat(ReflectionUtils.isInitialized(cosmosContainer.asyncContainer).get()).isTrue();
 
         rxDocumentClient =
             (RxDocumentClientImpl) gatewayCosmosClient.asyncClient().getDocClientWrapper();
@@ -186,12 +208,21 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         collectionInfoByNameMap = getCollectionInfoByNameMap(rxDocumentClient);
         assertThat(collectionInfoByNameMap.size()).isEqualTo(0);
         assertThat(routingMap.size()).isEqualTo(0);
+        CosmosContainer gatewayContainer =
+            gatewayCosmosClient.getDatabase(cosmosDatabase.getId()).getContainer(cosmosContainer.getId());
+        assertThat(ReflectionUtils.isInitialized(gatewayContainer.asyncContainer).get()).isFalse();
+
         // Verifying no error when initializeContainer called on gateway mode
-        gatewayCosmosClient.getDatabase(cosmosDatabase.getId()).getContainer(cosmosContainer.getId()).openConnectionsAndInitCaches();
+        // Calling it twice to make sure no side effect of second time no-op call
+        gatewayContainer.openConnectionsAndInitCaches();
+        gatewayContainer.openConnectionsAndInitCaches();
+
         // Verifying collectionInfoByNameMap size
         assertThat(collectionInfoByNameMap.size()).isEqualTo(1);
         // Verifying routingMap size
         assertThat(routingMap.size()).isEqualTo(1);
+        // Verifying isInitialized is true
+        assertThat(ReflectionUtils.isInitialized(gatewayContainer.asyncContainer).get()).isTrue();
 
         feedRanges =
             rxDocumentClient.getFeedRanges(BridgeInternal.extractContainerSelfLink(cosmosAsyncContainer)).block();

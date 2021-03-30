@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
@@ -38,6 +39,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  *
@@ -283,5 +285,9 @@ public class ReflectionUtils {
     @SuppressWarnings("unchecked")
     public static <T> ConcurrentHashMap<String, ?> getValueMap(AsyncCache<String, T> asyncCache) {
         return get(ConcurrentHashMap.class, asyncCache, "values");
+    }
+
+    public static AtomicBoolean isInitialized(CosmosAsyncContainer cosmosAsyncContainer) {
+        return get(AtomicBoolean.class, cosmosAsyncContainer, "isInitialized");
     }
 }

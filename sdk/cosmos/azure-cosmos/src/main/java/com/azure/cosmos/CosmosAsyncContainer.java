@@ -60,6 +60,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -96,6 +97,7 @@ public class CosmosAsyncContainer {
     private final String readAllConflictsSpanName;
     private final String queryConflictsSpanName;
     private final String batchSpanName;
+    private final AtomicBoolean isInitialized;
     private CosmosAsyncScripts scripts;
 
     CosmosAsyncContainer(String id, CosmosAsyncDatabase database) {
@@ -119,6 +121,7 @@ public class CosmosAsyncContainer {
         this.readAllConflictsSpanName = "readAllConflicts." + this.id;
         this.queryConflictsSpanName = "queryConflicts." + this.id;
         this.batchSpanName = "transactionalBatch." + this.id;
+        this.isInitialized = new AtomicBoolean(false);
     }
 
     /**
@@ -432,22 +435,27 @@ public class CosmosAsyncContainer {
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<Void> openConnectionsAndInitCaches() {
-        return this.getFeedRanges().flatMap(feedRanges -> {
-            List<Flux<FeedResponse<ObjectNode>>> fluxList = new ArrayList<>();
-            SqlQuerySpec querySpec = new SqlQuerySpec();
-            querySpec.setQueryText("select * from c where c.id = @id");
-            querySpec.setParameters(Collections.singletonList(new SqlParameter("@id",
-                UUID.randomUUID().toString())));
-            for (FeedRange feedRange : feedRanges) {
-                CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-                options.setFeedRange(feedRange);
-                CosmosPagedFlux<ObjectNode> cosmosPagedFlux = this.queryItems(querySpec, options,
-                    ObjectNode.class);
-                fluxList.add(cosmosPagedFlux.byPage());
-            }
-            Mono<List<FeedResponse<ObjectNode>>> listMono = Flux.merge(fluxList).collectList();
-            return listMono.flatMap(objects -> Mono.empty());
-        });
+        if(isInitialized.compareAndSet(false, true)) {
+            return this.getFeedRanges().flatMap(feedRanges -> {
+                List<Flux<FeedResponse<ObjectNode>>> fluxList = new ArrayList<>();
+                SqlQuerySpec querySpec = new SqlQuerySpec();
+                querySpec.setQueryText("select * from c where c.id = @id");
+                querySpec.setParameters(Collections.singletonList(new SqlParameter("@id",
+                    UUID.randomUUID().toString())));
+                for (FeedRange feedRange : feedRanges) {
+                    CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+                    options.setFeedRange(feedRange);
+                    CosmosPagedFlux<ObjectNode> cosmosPagedFlux = this.queryItems(querySpec, options,
+                        ObjectNode.class);
+                    fluxList.add(cosmosPagedFlux.byPage());
+                }
+                Mono<List<FeedResponse<ObjectNode>>> listMono = Flux.merge(fluxList).collectList();
+                return listMono.flatMap(objects -> Mono.empty());
+            });
+        } else {
+            logger.warn("openConnectionsAndInitCaches is already called once on Container {}, no operation will take place in this call", this.getId());
+            return Mono.empty();
+        }
     }
 
     /**
