@@ -75,9 +75,9 @@ public class AADOAuth2AuthorizedClientCredentialRepositoryTest {
             .tokenUri("https://login.microsoftonline.com/xxxx-xxxxx-xxxx/oauth2/v2.0/token")
             .scope("https://xiaozhusampleb2c.onmicrosoft.com/xxxx-xxxxx-xxxx/.default")
             .clientId("xxxx-xxxxx-xxxx").build();
-        OAuth2AccessToken oAuth2AccessToken = mock(OAuth2AccessToken.class);
-        when(oAuth2AccessToken.getTokenValue()).thenReturn(CLIENT_CREDENTIAL_ACCESS_TOKEN);
-        oAuth2AuthorizedClient = new OAuth2AuthorizedClient(fakeClientRegistration, "fake-name", oAuth2AccessToken);
+        OAuth2AccessToken mockOAuth2AccessToken = mock(OAuth2AccessToken.class);
+        when(mockOAuth2AccessToken.getTokenValue()).thenReturn(CLIENT_CREDENTIAL_ACCESS_TOKEN);
+        oAuth2AuthorizedClient = new OAuth2AuthorizedClient(fakeClientRegistration, "fake-name", mockOAuth2AccessToken);
         mockPrincipal = mock(JwtAuthenticationToken.class);
         when(mockPrincipal.getName()).thenReturn("fake-name");
         inMemoryOAuth2AuthorizedClientService = new InMemoryOAuth2AuthorizedClientService(clientRegistrationsRepo);
