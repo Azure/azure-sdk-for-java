@@ -31,11 +31,11 @@ dbfs rm --recursive dbfs:/tmp/libraries
 for file in $JARPATH/*.jar
 do
 	echo "$file"
-	$filename=${file##*/}
+	filename=${file##*/}
 	echo "$filename"
-	if [[ "$filename" == *"azure-cosmos-spark_3-1_2-12"* ]]
+	if [[ "$filename" != *"original"* && "$filename" != *"sources"* && "$filename" != *"javadoc"* ]]
 	then
-		$JARFILE = $filename
+		JARFILE=$filename
 	fi
 done
 
