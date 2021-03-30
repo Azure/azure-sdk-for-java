@@ -33,7 +33,11 @@ public class CustomModelRecognitionTest extends ServiceTest<PerfStressOptions> {
         List<RecognizedForm> recognizedForms =
             formrecognizerClient.beginRecognizeCustomFormsFromUrl(modelId, URL_TEST_FILE_FORMAT + FORM_JPG)
                 .getFinalResult();
-        assert recognizedForms != null;
+        recognizedForms.stream()
+            .forEach(recognizedForm -> {
+                assert recognizedForm.getFields() != null;
+            });
+
     }
 
     @Override

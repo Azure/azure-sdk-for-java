@@ -70,13 +70,15 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
             String trainingDocumentsUrl = Configuration.getGlobalConfiguration()
                 .get("FORMRECOGNIZER_TRAINING_CONTAINER_SAS_URL");
             if (CoreUtils.isNullOrEmpty(trainingDocumentsUrl)) {
-                return Mono.error(new RuntimeException("'FORMRECOGNIZER_TRAINING_CONTAINER_SAS_URL' is required."));
+                return Mono.error(new RuntimeException(
+                    String.format(CONFIGURATION_ERROR, "FORMRECOGNIZER_TRAINING_CONTAINER_SAS_URL")));
             }
             SyncPoller<FormRecognizerOperationResult, CustomFormModel>
                 syncPoller = formTrainingAsyncClient
                 .beginTraining(trainingDocumentsUrl,
                     true,
-                    new TrainingOptions().setModelName("labeled-perf-model")).getSyncPoller();
+                    new TrainingOptions().setModelName("labeled-perf-model"))
+                .getSyncPoller();
             modelId = syncPoller.getFinalResult().getModelId();
             return Mono.empty();
         }).then();

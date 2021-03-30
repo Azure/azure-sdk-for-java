@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-formrecognizer-perf</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-formrecognizer-perf;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer-perf;current} -->
   <packaging>jar</packaging>
 
   <properties>
