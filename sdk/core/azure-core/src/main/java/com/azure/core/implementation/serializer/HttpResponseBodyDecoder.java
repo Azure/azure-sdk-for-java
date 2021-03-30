@@ -363,24 +363,49 @@ public final class HttpResponseBodyDecoder {
     }
 
     private static Type unwrapReturnType(Type returnType) {
-        // First check if the return type is ResponseBase (this must happen before checking Response as ResponseBase is
-        // a sub-type of Response).
-        // If this return type is ResponseBase, get its second generic (body type) an unwrap it further.
-        if (TypeUtil.isTypeOrSubTypeOf(returnType, ResponseBase.class)) {
-            Type[] genericTypes = TypeUtil.getTypeArguments(returnType);
-            if (genericTypes.length == 2) {
-                return unwrapReturnType(genericTypes[1]);
-            }
+        // Begin by checking if the return type is an exact instance of ResponseBase.
+        // If it is unwrap the second generic type (the body type).
+        if (returnType instanceof ResponseBase) {
+            return unwrapReturnType(TypeUtil.getTypeArguments(returnType)[1]);
         }
 
-        // Else if the return type is a Mono, Flux, or Response unwrap its first, and only, generic further.
-        if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class)
-            || TypeUtil.isTypeOrSubTypeOf(returnType, Flux.class)
-            || TypeUtil.isTypeOrSubTypeOf(returnType, Response.class)) {
+        // Then check if the return type is assignable, is a sub-type, to ResponseBase.
+        // If it is begin walking up the super type hierarchy until ResponseBase is the raw type.
+        // From there, again, unwrap the second generic type.
+        if (TypeUtil.isTypeOrSubTypeOf(returnType, ResponseBase.class)) {
+            while (!(returnType instanceof ResponseBase)) {
+                returnType = TypeUtil.getSuperType(returnType);
+            }
+
+            return unwrapReturnType(returnType);
+        }
+
+        // Then check if the return type is an exact instance of Response.
+        // If it is unwrap its only generic type.
+        if (returnType instanceof Response) {
             return unwrapReturnType(TypeUtil.getTypeArgument(returnType));
         }
 
-        // Otherwise there is no more unwrapping to perform, return the type as-is.
+        // Then, like ResponseBase, check if the return type is assignable to Response.
+        // If it is begin walking up the super type hierarchy until Response is the raw type.
+        // From there, again, unwrap its only generic type.
+        if (TypeUtil.isTypeOrSubTypeOf(returnType, Response.class)) {
+            // Handling for Response is slightly different as it is an interface unlike ResponseBase which is a class.
+            // The super class hierarchy needs be walked until the super class itself implements Response.
+            while (!TypeUtil.typeImplementsInterface(returnType, Response.class)) {
+                returnType = TypeUtil.getSuperType(returnType);
+            }
+
+            return unwrapReturnType(TypeUtil.getTypeArgument(returnType));
+        }
+
+        // Then check if the return type is a Mono or Flux and unwrap its only generic type.
+        if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class)
+            || TypeUtil.isTypeOrSubTypeOf(returnType, Flux.class)) {
+            return unwrapReturnType(TypeUtil.getTypeArgument(returnType));
+        }
+
+        // Finally, there is no more unwrapping to perform and return the type as-is.
         return returnType;
     }
 
