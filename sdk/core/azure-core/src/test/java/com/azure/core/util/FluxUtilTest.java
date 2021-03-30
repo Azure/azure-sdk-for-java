@@ -189,12 +189,12 @@ public class FluxUtilTest {
 
         Flux<ByteBuffer> fileReader = Flux.using(() -> AsynchronousFileChannel.open(file.toPath(),
             StandardOpenOption.READ), FluxUtil::readFile, channel -> {
-            try {
-                channel.close();
-            } catch (IOException ex) {
-                throw new UncheckedIOException(ex);
-            }
-        });
+                try {
+                    channel.close();
+                } catch (IOException ex) {
+                    throw new UncheckedIOException(ex);
+                }
+            });
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(fileReader, expectedFileBytes.length))
             .assertNext(bytes -> assertArrayEquals(expectedFileBytes, bytes))

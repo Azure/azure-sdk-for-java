@@ -365,7 +365,7 @@ public final class HttpResponseBodyDecoder {
     private static Type unwrapReturnType(Type returnType) {
         // Begin by checking if the return type is an exact instance of ResponseBase.
         // If it is unwrap the second generic type (the body type).
-        if (returnType instanceof ResponseBase) {
+        if (TypeUtil.getRawClass(returnType) == ResponseBase.class) {
             return unwrapReturnType(TypeUtil.getTypeArguments(returnType)[1]);
         }
 
@@ -382,7 +382,7 @@ public final class HttpResponseBodyDecoder {
 
         // Then check if the return type is an exact instance of Response.
         // If it is unwrap its only generic type.
-        if (returnType instanceof Response) {
+        if (TypeUtil.getRawClass(returnType) == Response.class) {
             return unwrapReturnType(TypeUtil.getTypeArgument(returnType));
         }
 
