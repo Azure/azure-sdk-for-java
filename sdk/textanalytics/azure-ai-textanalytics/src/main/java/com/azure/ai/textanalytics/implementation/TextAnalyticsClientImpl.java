@@ -15,7 +15,6 @@ import com.azure.ai.textanalytics.implementation.models.HealthResponse;
 import com.azure.ai.textanalytics.implementation.models.HealthcareJobState;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.LanguageBatchInput;
-import com.azure.ai.textanalytics.implementation.models.LanguageInput;
 import com.azure.ai.textanalytics.implementation.models.LanguageResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.PiiCategory;
@@ -47,17 +46,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-<<<<<<< HEAD
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-=======
 import java.util.List;
->>>>>>> upstream/master
 import java.util.UUID;
-
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the TextAnalyticsClient type. */
@@ -266,16 +256,6 @@ public final class TextAnalyticsClientImpl {
                 @BodyParam("application/json") LanguageBatchInput input,
                 @HeaderParam("Accept") String accept,
                 Context context);
-
-        @Post("/languages")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<LanguageResult>> languages(
-            @HostParam("Endpoint") String endpoint,
-            @QueryParam("model-version") String modelVersion,
-            @QueryParam("showStats") Boolean showStats,
-            @BodyParam("application/json") byte[] input,
-            Context context);
 
         @Post("/sentiment")
         @ExpectedResponses({200})

@@ -52,11 +52,8 @@
       </activation>
       <modules>
         <module>azure-ai-textanalytics</module>
-        <module>../core/azure-core</module>
+        <module>azure-ai-textanalytics-perf</module>
       </modules>
     </profile>
   </profiles>
-  <modules>
-    <module>azure-ai-textanalytics-perf</module>
-  </modules>
 </project>

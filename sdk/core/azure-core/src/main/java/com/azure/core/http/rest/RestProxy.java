@@ -122,10 +122,10 @@ public final class RestProxy implements InvocationHandler {
             }
 
             final SwaggerMethodParser methodParser = getMethodParser(method);
+            final HttpRequest request = createHttpRequest(methodParser, args);
             Context context = methodParser.setContext(args)
                 .addData("caller-method", methodParser.getFullyQualifiedMethodName())
                 .addData("azure-eagerly-read-response", isReturnTypeDecodable(methodParser.getReturnType()));
-            final HttpRequest request = createHttpRequest(methodParser, args, context);
             context = startTracingSpan(method, context);
 
             if (request.getBody() != null) {
@@ -205,7 +205,7 @@ public final class RestProxy implements InvocationHandler {
      * @return a HttpRequest
      * @throws IOException thrown if the body contents cannot be serialized
      */
-    private HttpRequest createHttpRequest(SwaggerMethodParser methodParser, Object[] args, Context context) throws IOException {
+    private HttpRequest createHttpRequest(SwaggerMethodParser methodParser, Object[] args) throws IOException {
         // Sometimes people pass in a full URL for the value of their PathParam annotated argument.
         // This definitely happens in paging scenarios. In that case, just use the full URL and
         // ignore the Host annotation.
@@ -236,7 +236,7 @@ public final class RestProxy implements InvocationHandler {
 
         final URL url = urlBuilder.toUrl();
         final HttpRequest request = configRequest(new HttpRequest(methodParser.getHttpMethod(), url),
-            methodParser, args, context);
+            methodParser, args);
 
         // Headers from Swagger method arguments always take precedence over inferred headers from body types
         HttpHeaders httpHeaders = request.getHeaders();
@@ -247,7 +247,7 @@ public final class RestProxy implements InvocationHandler {
 
     @SuppressWarnings("unchecked")
     private HttpRequest configRequest(final HttpRequest request, final SwaggerMethodParser methodParser,
-        final Object[] args, Context context) throws IOException {
+        final Object[] args) throws IOException {
         final Object bodyContentObject = methodParser.setBody(args);
         if (bodyContentObject == null) {
             request.getHeaders().set("Content-Length", "0");
@@ -258,8 +258,7 @@ public final class RestProxy implements InvocationHandler {
             // If this is null or empty, the service interface definition is incomplete and should
             // be fixed to ensure correct definitions are applied
             if (contentType == null || contentType.isEmpty()) {
-                if ((bodyContentObject instanceof byte[] && !context.getData("json-payload").isPresent())
-                    || bodyContentObject instanceof String) {
+                if (bodyContentObject instanceof byte[] || bodyContentObject instanceof String) {
                     contentType = ContentType.APPLICATION_OCTET_STREAM;
                 } else {
                     contentType = ContentType.APPLICATION_JSON;
@@ -282,17 +281,11 @@ public final class RestProxy implements InvocationHandler {
             }
 
             if (isJson) {
-                if (bodyContentObject instanceof byte[] && context.getData("json-payload").isPresent()) {
-                    byte[] body = (byte[]) bodyContentObject;
-                    request.setHeader("Content-Length", String.valueOf(body.length));
-                    request.setBody(Flux.defer(() -> Flux.just(ByteBuffer.wrap(body, 0, body.length))));
-                } else {
-                    ByteArrayOutputStream stream = new AccessibleByteArrayOutputStream();
-                    serializer.serialize(bodyContentObject, SerializerEncoding.JSON, stream);
+                ByteArrayOutputStream stream = new AccessibleByteArrayOutputStream();
+                serializer.serialize(bodyContentObject, SerializerEncoding.JSON, stream);
 
-                    request.setHeader("Content-Length", String.valueOf(stream.size()));
-                    request.setBody(Flux.defer(() -> Flux.just(ByteBuffer.wrap(stream.toByteArray(), 0, stream.size()))));
-                }
+                request.setHeader("Content-Length", String.valueOf(stream.size()));
+                request.setBody(Flux.defer(() -> Flux.just(ByteBuffer.wrap(stream.toByteArray(), 0, stream.size()))));
             } else if (FluxUtil.isFluxByteBuffer(methodParser.getBodyJavaType())) {
                 // Content-Length or Transfer-Encoding: chunked must be provided by a user-specified header when a
                 // Flowable<byte[]> is given for the body.
