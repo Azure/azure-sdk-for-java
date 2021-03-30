@@ -118,7 +118,7 @@
       "Content-Type" : "application/octet-stream",
       "x-ms-version" : "2020-06-12",
       "x-ms-copy-id" : "3fab4a4e-0cec-459b-8d66-cd6e150980dc",
-      "x-ms-copy-source" : "https://seancanary.blob.core.windows.net/jtccopywithtier0blobapitestcopywithtier109626204cc1798b/javablobcopywithtier2blobapitestcopywithtier109044203de0f?sv=2020-06-12&se=2021-02-02T01%3A08%3A44Z&sr=b&sp=r",
+      "x-ms-copy-source" : "https://seancanary.blob.core.windows.net/jtccopywithtier0blobapitestcopywithtier109626204cc1798b/javablobcopywithtier2blobapitestcopywithtier109044203de0f?sv=2020-08-04&se=2021-02-02T01%3A08%3A44Z&sr=b&sp=r",
       "x-ms-copy-progress" : "7/7",
       "Date" : "Tue, 02 Feb 2021 00:08:44 GMT",
       "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",

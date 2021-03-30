@@ -107,7 +107,7 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsdirectorysaspermissionfail03969435fcfe3421c14/javapathdirectorysaspermissionfail23631300c5e22a243?sv=2020-06-12&spr=https%2Chttp&st=2021-02-25T00%3A20%3A45Z&se=2021-02-27T00%3A20%3A45Z&sip=0.0.0.0-255.255.255.255&sr=d&sp=cwd&sdd=1&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsdirectorysaspermissionfail03969435fcfe3421c14/javapathdirectorysaspermissionfail23631300c5e22a243?sv=2020-08-04&spr=https%2Chttp&st=2021-02-25T00%3A20%3A45Z&se=2021-02-27T00%3A20%3A45Z&sip=0.0.0.0-255.255.255.255&sr=d&sp=cwd&sdd=1&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",

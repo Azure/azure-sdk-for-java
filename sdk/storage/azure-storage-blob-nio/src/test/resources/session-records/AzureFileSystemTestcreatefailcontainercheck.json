@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreatefailcontainercheck177698e4f54bb0cf23405?restype=container&sv=2020-06-12&ss=b&srt=c&se=2021-02-07T17%3A20%3A12Z&sp=d&sig=REDACTED",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreatefailcontainercheck177698e4f54bb0cf23405?restype=container&sv=2020-08-04&ss=b&srt=c&se=2021-02-07T17%3A20%3A12Z&sp=d&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",

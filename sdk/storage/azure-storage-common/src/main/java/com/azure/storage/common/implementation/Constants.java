@@ -198,7 +198,7 @@ public final class Constants {
         /**
          * The current storage version header value.
          */
-        public static final String TARGET_STORAGE_VERSION = "2020-06-12";
+        public static final String TARGET_STORAGE_VERSION = "2020-08-04";
 
         /**
          * Error code returned from the service.

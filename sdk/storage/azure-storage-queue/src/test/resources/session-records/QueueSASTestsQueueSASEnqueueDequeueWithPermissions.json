@@ -42,7 +42,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queuesastestsqueuesasenqueuedequeuewithpermissions247684c/messages?sv=2020-06-12&spr=https%2Chttp&st=2020-12-13T20%3A00%3A01Z&se=2020-12-15T20%3A00%3A01Z&sip=0.0.0.0-255.255.255.255&sp=rap&sig=REDACTED",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queuesastestsqueuesasenqueuedequeuewithpermissions247684c/messages?sv=2020-08-04&spr=https%2Chttp&st=2020-12-13T20%3A00%3A01Z&se=2020-12-15T20%3A00%3A01Z&sip=0.0.0.0-255.255.255.255&sp=rap&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
@@ -64,7 +64,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queuesastestsqueuesasenqueuedequeuewithpermissions247684c/messages?numofmessages=2&visibilitytimeout=30&sv=2020-06-12&spr=https%2Chttp&st=2020-12-13T20%3A00%3A01Z&se=2020-12-15T20%3A00%3A01Z&sip=0.0.0.0-255.255.255.255&sp=rap&sig=REDACTED",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queuesastestsqueuesasenqueuedequeuewithpermissions247684c/messages?numofmessages=2&visibilitytimeout=30&sv=2020-08-04&spr=https%2Chttp&st=2020-12-13T20%3A00%3A01Z&se=2020-12-15T20%3A00%3A01Z&sip=0.0.0.0-255.255.255.255&sp=rap&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
@@ -86,7 +86,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queuesastestsqueuesasenqueuedequeuewithpermissions247684c/messages/2d3bb428-d3e0-4b05-8235-32d5f5848feb?popreceipt=AgAAAAMAAAAAAAAAtcfFtFPS1gE%3D&visibilitytimeout=3600&sv=2020-06-12&spr=https%2Chttp&st=2020-12-13T20%3A00%3A01Z&se=2020-12-15T20%3A00%3A01Z&sip=0.0.0.0-255.255.255.255&sp=rap&sig=REDACTED",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queuesastestsqueuesasenqueuedequeuewithpermissions247684c/messages/2d3bb428-d3e0-4b05-8235-32d5f5848feb?popreceipt=AgAAAAMAAAAAAAAAtcfFtFPS1gE%3D&visibilitytimeout=3600&sv=2020-08-04&spr=https%2Chttp&st=2020-12-13T20%3A00%3A01Z&se=2020-12-15T20%3A00%3A01Z&sip=0.0.0.0-255.255.255.255&sp=rap&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",

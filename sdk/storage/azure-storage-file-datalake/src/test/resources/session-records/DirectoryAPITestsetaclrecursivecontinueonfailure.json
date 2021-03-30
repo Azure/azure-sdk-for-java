@@ -429,7 +429,7 @@
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfssetaclrecursivecontinueonfailure0981414e4d28cfaa/javapathsetaclrecursivecontinueonfailure2423884b053277?action=setAccessControlRecursive&mode=set&forceFlag=true&sv=2020-06-12&se=2021-02-26T00%3A15%3A47Z&skoid=c4f48289-bb84-4086-b250-6f94a8f64cee&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2021-02-25T23%3A15%3A47Z&ske=2021-02-26T00%3A15%3A47Z&sks=b&skv=2020-06-12&suoid=8950456e-8c1a-4d33-ad57-2f215ff06c5e&sr=d&sp=racwdlmeop&sdd=1&sig=REDACTED",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfssetaclrecursivecontinueonfailure0981414e4d28cfaa/javapathsetaclrecursivecontinueonfailure2423884b053277?action=setAccessControlRecursive&mode=set&forceFlag=true&sv=2020-08-04&se=2021-02-26T00%3A15%3A47Z&skoid=c4f48289-bb84-4086-b250-6f94a8f64cee&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2021-02-25T23%3A15%3A47Z&ske=2021-02-26T00%3A15%3A47Z&sks=b&skv=2020-06-12&suoid=8950456e-8c1a-4d33-ad57-2f215ff06c5e&sr=d&sp=racwdlmeop&sdd=1&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.2 (11.0.6; Windows 10; 10.0)",

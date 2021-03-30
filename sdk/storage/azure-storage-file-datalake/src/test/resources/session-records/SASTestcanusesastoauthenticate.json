@@ -107,7 +107,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfscanusesastoauthenticate0502822d19f531301d452?restype=container&sv=2020-06-12&ss=b&srt=sco&se=2021-02-27T00%3A21%3A41Z&sp=r&sig=REDACTED",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfscanusesastoauthenticate0502822d19f531301d452?restype=container&sv=2020-08-04&ss=b&srt=sco&se=2021-02-27T00%3A21%3A41Z&sp=r&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
@@ -134,7 +134,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfscanusesastoauthenticate0502822d19f531301d452?restype=container&sv=2020-06-12&ss=b&srt=sco&se=2021-02-27T00%3A21%3A41Z&sp=r&sig=REDACTED",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfscanusesastoauthenticate0502822d19f531301d452?restype=container&sv=2020-08-04&ss=b&srt=sco&se=2021-02-27T00%3A21%3A41Z&sp=r&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
@@ -161,7 +161,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfscanusesastoauthenticate0502822d19f531301d452?restype=container&sv=2020-06-12&se=2021-02-27T00%3A21%3A41Z&sp=r&sig=REDACTED&ss=b&srt=sco",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfscanusesastoauthenticate0502822d19f531301d452?restype=container&sv=2020-08-04&se=2021-02-27T00%3A21%3A41Z&sp=r&sig=REDACTED&ss=b&srt=sco",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
@@ -188,7 +188,7 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfscanusesastoauthenticate0502822d19f531301d452/javapathcanusesastoauthenticate212064a188e7f9e8174?sv=2020-06-12&ss=b&srt=sco&se=2021-02-27T00%3A21%3A41Z&sp=r&sig=REDACTED",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfscanusesastoauthenticate0502822d19f531301d452/javapathcanusesastoauthenticate212064a188e7f9e8174?sv=2020-08-04&ss=b&srt=sco&se=2021-02-27T00%3A21%3A41Z&sp=r&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
@@ -222,7 +222,7 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfscanusesastoauthenticate0502822d19f531301d452/javapathcanusesastoauthenticate212064a188e7f9e8174?sv=2020-06-12&ss=b&srt=sco&se=2021-02-27T00%3A21%3A41Z&sp=r&sig=REDACTED",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfscanusesastoauthenticate0502822d19f531301d452/javapathcanusesastoauthenticate212064a188e7f9e8174?sv=2020-08-04&ss=b&srt=sco&se=2021-02-27T00%3A21%3A41Z&sp=r&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
@@ -256,7 +256,7 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfscanusesastoauthenticate0502822d19f531301d452/javapathcanusesastoauthenticate212064a188e7f9e8174?sv=2020-06-12&se=2021-02-27T00%3A21%3A41Z&sp=r&sig=REDACTED&ss=b&srt=sco",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfscanusesastoauthenticate0502822d19f531301d452/javapathcanusesastoauthenticate212064a188e7f9e8174?sv=2020-08-04&se=2021-02-27T00%3A21%3A41Z&sp=r&sig=REDACTED&ss=b&srt=sco",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
@@ -290,7 +290,7 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfscanusesastoauthenticate0502822d19f531301d452/javapathcanusesastoauthenticate212064a188e7f9e8174?sv=2020-06-12&ss=b&srt=sco&se=2021-02-27T00%3A21%3A41Z&sp=r&sig=REDACTED",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfscanusesastoauthenticate0502822d19f531301d452/javapathcanusesastoauthenticate212064a188e7f9e8174?sv=2020-08-04&ss=b&srt=sco&se=2021-02-27T00%3A21%3A41Z&sp=r&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
@@ -324,7 +324,7 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfscanusesastoauthenticate0502822d19f531301d452/javapathcanusesastoauthenticate212064a188e7f9e8174?sv=2020-06-12&ss=b&srt=sco&se=2021-02-27T00%3A21%3A41Z&sp=r&sig=REDACTED",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfscanusesastoauthenticate0502822d19f531301d452/javapathcanusesastoauthenticate212064a188e7f9e8174?sv=2020-08-04&ss=b&srt=sco&se=2021-02-27T00%3A21%3A41Z&sp=r&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
@@ -358,7 +358,7 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfscanusesastoauthenticate0502822d19f531301d452/javapathcanusesastoauthenticate212064a188e7f9e8174?sv=2020-06-12&se=2021-02-27T00%3A21%3A41Z&sp=r&sig=REDACTED&ss=b&srt=sco",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfscanusesastoauthenticate0502822d19f531301d452/javapathcanusesastoauthenticate212064a188e7f9e8174?sv=2020-08-04&se=2021-02-27T00%3A21%3A41Z&sp=r&sig=REDACTED&ss=b&srt=sco",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",

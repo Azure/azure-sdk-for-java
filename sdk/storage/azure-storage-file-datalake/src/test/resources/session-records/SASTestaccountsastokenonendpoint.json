@@ -86,7 +86,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsaccountsastokenonendpoint2798403ab1265aa97c4d?restype=container&sv=2020-06-12&se=2021-02-27T00%3A21%3A28Z&sp=rc&sig=REDACTED&ss=b&srt=sco",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsaccountsastokenonendpoint2798403ab1265aa97c4d?restype=container&sv=2020-08-04&se=2021-02-27T00%3A21%3A28Z&sp=rc&sig=REDACTED&ss=b&srt=sco",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
