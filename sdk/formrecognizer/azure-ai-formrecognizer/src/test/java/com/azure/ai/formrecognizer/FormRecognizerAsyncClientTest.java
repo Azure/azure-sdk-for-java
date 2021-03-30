@@ -2018,9 +2018,12 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeIdDocuments(toFluxByteBuffer(data), dataLength,
-                    new RecognizeIDDocumentOptions().setContentType(FormContentType.IMAGE_JPEG)
-                        .setFieldElementsIncluded(true).setPollInterval(durationTestMode))
+                client.beginRecognizeIdDocuments(toFluxByteBuffer(data),
+                    dataLength,
+                    new RecognizeIDDocumentOptions()
+                        .setContentType(FormContentType.IMAGE_JPEG)
+                        .setFieldElementsIncluded(true)
+                        .setPollInterval(durationTestMode))
                     .getSyncPoller();
             syncPoller.waitForCompletion();
             validatePrebuiltResultData(syncPoller.getFinalResult(), true, ID);
