@@ -128,9 +128,18 @@ public abstract class Handler extends BaseHandler implements Closeable {
             return;
         }
 
+        final boolean shouldEmit;
+        synchronized (endpointLock) {
+            shouldEmit = lastEndpoint != EndpointState.CLOSED;
+            lastEndpoint = EndpointState.CLOSED;
+        }
+
+        if (shouldEmit) {
+            endpointStates.emitNext(EndpointState.CLOSED, Sinks.EmitFailureHandler.FAIL_FAST);
+        }
+
         endpointStates.emitComplete((signalType, emitResult) -> {
-            logger.verbose("connectionId[{}] signal[{}] result[{}] Could not emit complete.", connectionId,
-                signalType, emitResult);
+            logger.verbose("connectionId[{}] result[{}] Could not emit complete.", connectionId, emitResult);
 
             return false;
         });

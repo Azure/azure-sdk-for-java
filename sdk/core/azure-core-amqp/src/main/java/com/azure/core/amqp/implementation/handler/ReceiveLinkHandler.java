@@ -37,7 +37,7 @@ public class ReceiveLinkHandler extends LinkHandler {
     }
 
     public Flux<Delivery> getDeliveredMessages() {
-        return deliveries.asFlux().doOnNext(delivery -> queuedDeliveries.remove(delivery));
+        return deliveries.asFlux().doOnNext(queuedDeliveries::remove);
     }
 
     @Override
@@ -100,7 +100,7 @@ public class ReceiveLinkHandler extends LinkHandler {
         final Delivery delivery = event.getDelivery();
         final Receiver link = (Receiver) delivery.getLink();
 
-        // If a message spans across deliveries (for ex: 200k message will be 4 frames (deliveries) 64k 64k 64k 8k),
+        // If a message spans across deliveries (for ex: 200kb message will be 4 frames (deliveries) 64k 64k 64k 8k),
         // all until "last-1" deliveries will be partial
         // reactor will raise onDelivery event for all of these - we only need the last one
         if (!delivery.isPartial()) {
@@ -149,6 +149,10 @@ public class ReceiveLinkHandler extends LinkHandler {
 
     @Override
     public void onLinkRemoteClose(Event event) {
+        if (isTerminated.get()) {
+            return;
+        }
+
         deliveries.emitComplete((signalType, emitResult) -> {
             logger.info("connectionId[{}] linkName[{}] signalType[{}] emitResult[{}] Could not complete 'deliveries'.",
                 getConnectionId(), linkName, signalType, emitResult);
