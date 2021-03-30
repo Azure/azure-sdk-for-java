@@ -22,7 +22,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.messaging.support.NativeMessageHeaderAccessor.NATIVE_HEADERS;
 
-public class EventHubMessageConverterTest extends AzureMessageConverterTest<EventData> {
+public class EventHubMessageConverterTest extends AzureMessageConverterTest<EventData, EventData> {
 
     private static final String EVENT_DATA = "event-hub-test-string";
 
@@ -38,7 +38,7 @@ public class EventHubMessageConverterTest extends AzureMessageConverterTest<Even
     }
 
     @Override
-    public AzureMessageConverter<EventData> getConverter() {
+    public AzureMessageConverter<EventData, EventData> getConverter() {
         return new EventHubMessageConverter();
     }
 

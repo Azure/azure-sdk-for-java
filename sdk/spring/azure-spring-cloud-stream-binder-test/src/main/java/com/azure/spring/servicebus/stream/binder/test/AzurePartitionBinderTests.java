@@ -97,8 +97,7 @@ public abstract class AzurePartitionBinderTests<B extends AbstractTestBinder<
         // but subscriber is not ready in the downstream
         //moduleOutputChannel.send(message);
         CountDownLatch latch = new CountDownLatch(1);
-        AtomicReference<Message<byte[]>> inboundMessageRef = new AtomicReference<>();
-        moduleInputChannel.subscribe(message1 -> {
+        AtomicReference<Message<byte[]>> inboundMessageRef = new AtomicReference<>(); moduleInputChannel.subscribe(message1 -> {
             try {
                 inboundMessageRef.set((Message<byte[]>) message1);
             } finally {

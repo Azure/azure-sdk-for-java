@@ -6,7 +6,6 @@ package com.azure.spring.servicebus.stream.binder;
 import com.azure.spring.servicebus.stream.binder.properties.ServiceBusConsumerProperties;
 import com.azure.spring.servicebus.stream.binder.properties.ServiceBusProducerProperties;
 import com.azure.spring.servicebus.stream.binder.test.AzurePartitionBinderTests;
-import com.microsoft.azure.servicebus.QueueClient;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
 import com.azure.spring.integration.servicebus.queue.support.ServiceBusQueueTestOperation;
 import org.junit.Before;
@@ -35,18 +34,19 @@ public class ServiceBusQueuePartitionBinderTests extends
     @Mock
     ServiceBusQueueClientFactory clientFactory;
 
-    @Mock
-    QueueClient queueClient;
+   /* @Mock
+    QueueClient queueClient;*/ // TODO because QueueClient is no longer used
 
     private ServiceBusQueueTestBinder binder;
 
     @Before
     public void setUp() {
-        when(this.clientFactory.getOrCreateClient(anyString())).thenReturn(this.queueClient);
+        //TODO
+       /* when(this.clientFactory.getOrCreateClient(anyString())).thenReturn(this.queueClient);
         CompletableFuture<Void> future = new CompletableFuture<>();
         future.complete(null);
         when(this.queueClient.completeAsync(any())).thenReturn(future);
-        this.binder = new ServiceBusQueueTestBinder(new ServiceBusQueueTestOperation(this.clientFactory));
+        this.binder = new ServiceBusQueueTestBinder(new ServiceBusQueueTestOperation(this.clientFactory));*/
     }
 
     @Override

@@ -3,10 +3,8 @@
 
 package com.azure.spring.integration.servicebus;
 
+import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.microsoft.azure.servicebus.IMessage;
-import com.microsoft.azure.servicebus.MessageHandlerOptions;
-import com.microsoft.azure.servicebus.SessionHandlerOptions;
 import com.azure.spring.integration.core.api.CheckpointConfig;
 import com.azure.spring.integration.core.api.CheckpointMode;
 import com.azure.spring.integration.core.api.PartitionSupplier;
@@ -60,22 +58,17 @@ public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements Se
                                                  PartitionSupplier partitionSupplier) {
         Assert.hasText(destination, "destination can't be null or empty");
         String partitionKey = getPartitionKey(partitionSupplier);
-        IMessage serviceBusMessage = messageConverter.fromMessage(message, IMessage.class);
+        ServiceBusMessage serviceBusMessage = messageConverter.fromMessage(message, ServiceBusMessage.class);
 
         if (StringUtils.hasText(partitionKey)) {
             serviceBusMessage.setPartitionKey(partitionKey);
         }
 
-        return this.senderFactory.getOrCreateSender(destination).sendAsync(serviceBusMessage);
+       // return this.senderFactory.getOrCreateSender(destination).sendAsync(serviceBusMessage);
+       return null; // TODO: use the processor client to send service bus message
     }
 
-    protected MessageHandlerOptions buildHandlerOptions() {
-        return new MessageHandlerOptions(this.clientConfig.getConcurrency(), false, Duration.ofMinutes(5));
-    }
 
-    protected SessionHandlerOptions buildSessionHandlerOptions() {
-        return new SessionHandlerOptions(this.clientConfig.getConcurrency(), false, Duration.ofMinutes(5));
-    }
 
     protected ExecutorService buildHandlerExecutors(String threadPrefix) {
         ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat(threadPrefix + "-%d").build();

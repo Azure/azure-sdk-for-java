@@ -3,7 +3,6 @@
 
 package com.azure.spring.integration.servicebus.factory;
 
-import com.microsoft.azure.servicebus.IQueueClient;
 
 /**
  * Factory to return functional creator of service bus queue client
@@ -16,5 +15,5 @@ public interface ServiceBusQueueClientFactory extends ServiceBusSenderFactory {
      * @param name name
      * @return queue client
      */
-    IQueueClient getOrCreateClient(String name);
+  //  IQueueClient getOrCreateClient(String name); // TODO replaced with a new method that returns a processor client.
 }

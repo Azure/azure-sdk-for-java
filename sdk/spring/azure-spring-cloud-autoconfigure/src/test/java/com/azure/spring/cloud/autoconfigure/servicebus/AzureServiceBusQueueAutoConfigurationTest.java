@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
+import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
@@ -12,7 +13,6 @@ import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStrin
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueOperation;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate;
-import com.microsoft.azure.servicebus.QueueClient;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -41,7 +41,7 @@ public class AzureServiceBusQueueAutoConfigurationTest {
 
     @Test
     public void testWithoutAzureServiceBusQueueClient() {
-        this.contextRunner.withClassLoader(new FilteredClassLoader(QueueClient.class))
+        this.contextRunner.withClassLoader(new FilteredClassLoader(ServiceBusProcessorClient.class))
                           .run(context -> assertThat(context).doesNotHaveBean(ServiceBusQueueOperation.class));
     }
 

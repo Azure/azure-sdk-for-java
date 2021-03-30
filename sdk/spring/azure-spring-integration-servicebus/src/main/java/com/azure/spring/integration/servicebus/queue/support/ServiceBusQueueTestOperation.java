@@ -3,15 +3,16 @@
 
 package com.azure.spring.integration.servicebus.queue.support;
 
+import com.azure.messaging.servicebus.ServiceBusMessage;
+import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import com.azure.spring.integration.core.api.CheckpointConfig;
+import com.azure.spring.integration.servicebus.InboundServiceBusMessageConsumer;
 import com.azure.spring.integration.servicebus.ServiceBusMessageHandler;
 import com.azure.spring.integration.servicebus.ServiceBusRuntimeException;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import com.microsoft.azure.servicebus.IMessage;
-import com.microsoft.azure.servicebus.IMessageHandler;
-import com.microsoft.azure.servicebus.IQueueClient;
-import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import com.azure.spring.integration.core.api.PartitionSupplier;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate;
@@ -27,11 +28,15 @@ import java.util.function.Consumer;
  * A test implementation of {@link ServiceBusQueueTemplate}. This is used for testing.
  */
 public class ServiceBusQueueTestOperation extends ServiceBusQueueTemplate {
-    private final Multimap<String, IMessage> topicsByName = ArrayListMultimap.create();
-    private final Multimap<String, IMessageHandler> handlersByQueue = ArrayListMultimap.create();
+    private final Multimap<String, ServiceBusMessage> topicsByName = ArrayListMultimap.create();
+    private final Multimap<String, InboundServiceBusMessageConsumer> consumersByQueue = ArrayListMultimap.create();
+    private CheckpointConfig checkpointConfig;
+    private ServiceBusMessageConverter serviceBusMessageConverter;
 
-    public ServiceBusQueueTestOperation(ServiceBusQueueClientFactory clientFactory) {
+    public ServiceBusQueueTestOperation(ServiceBusQueueClientFactory clientFactory, CheckpointConfig checkpointConfig, ServiceBusMessageConverter serviceBusMessageConverter) {
         super(clientFactory, new ServiceBusMessageConverter());
+        this.checkpointConfig = checkpointConfig;
+        this.serviceBusMessageConverter = serviceBusMessageConverter;
     }
 
     public static <E> Optional<E> getRandom(Collection<E> e) {
@@ -45,10 +50,10 @@ public class ServiceBusQueueTestOperation extends ServiceBusQueueTemplate {
     public <U> CompletableFuture<Void> sendAsync(String name, Message<U> message, PartitionSupplier partitionSupplier) {
         CompletableFuture<Void> future = new CompletableFuture<>();
 
-        IMessage azureMessage = getMessageConverter().fromMessage(message, IMessage.class);
+        ServiceBusMessage azureMessage = getMessageConverter().fromMessage(message, ServiceBusMessage.class);
 
         topicsByName.put(name, azureMessage);
-        getRandom(handlersByQueue.get(name)).map(c -> c.onMessageAsync(azureMessage));
+      //  getRandom(consumersByQueue.get(name)).ifPresent(c -> c.accept(azureMessage)); //TODO
 
         future.complete(null);
         return future;
@@ -57,22 +62,18 @@ public class ServiceBusQueueTestOperation extends ServiceBusQueueTemplate {
     @Override
     @SuppressWarnings({ "rawtypes", "unchecked" })
     protected void internalSubscribe(String name, Consumer<Message<?>> consumer, Class<?> payloadType) {
-        IQueueClient queueClient = this.senderFactory.getOrCreateClient(name);
 
-        ServiceBusMessageHandler handler = new QueueMessageHandler(consumer, payloadType, queueClient);
+        ServiceBusProcessorClient processorClient = null; //TODO  the logic of obtaining the instance of processor client
+        InboundServiceBusMessageConsumer inboundConsumer = new InboundServiceBusMessageConsumer(name, null, checkpointConfig, serviceBusMessageConverter,consumer, payloadType);
 
-        try {
-            queueClient.registerMessageHandler(handler);
-        } catch (ServiceBusException | InterruptedException e) {
-            throw new ServiceBusRuntimeException("Failed to internalSubscribe message handler", e);
-        }
+        processorClient.start();
 
-        handlersByQueue.put(name, handler);
+        consumersByQueue.put(name, inboundConsumer);
     }
 
     @Override
     public boolean unsubscribe(String name) {
-        handlersByQueue.removeAll(name);
+        consumersByQueue.removeAll(name);
         return true;
     }
 }

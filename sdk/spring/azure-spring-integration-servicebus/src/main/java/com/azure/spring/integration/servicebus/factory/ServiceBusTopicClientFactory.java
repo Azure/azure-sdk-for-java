@@ -3,7 +3,6 @@
 
 package com.azure.spring.integration.servicebus.factory;
 
-import com.microsoft.azure.servicebus.ISubscriptionClient;
 
 /**
  * Factory to return functional creator of service bus topic and subscription client
@@ -17,5 +16,5 @@ public interface ServiceBusTopicClientFactory extends ServiceBusSenderFactory {
      * @param subscription subscription
      * @return subscription client
      */
-    ISubscriptionClient getOrCreateSubscriptionClient(String topic, String subscription);
+    //ISubscriptionClient getOrCreateSubscriptionClient(String topic, String subscription);  // TODO replaced with a new method that returns a processor client
 }

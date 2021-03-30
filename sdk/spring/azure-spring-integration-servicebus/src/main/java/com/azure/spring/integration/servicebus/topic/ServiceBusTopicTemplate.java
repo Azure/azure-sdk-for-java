@@ -3,17 +3,12 @@
 
 package com.azure.spring.integration.servicebus.topic;
 
-import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
-import com.azure.spring.integration.servicebus.ServiceBusMessageHandler;
-import com.azure.spring.integration.servicebus.ServiceBusRuntimeException;
-import com.azure.spring.integration.servicebus.ServiceBusTemplate;
+import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+import com.azure.messaging.servicebus.ServiceBusErrorContext;
+import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+import com.azure.spring.integration.servicebus.*;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.google.common.collect.Sets;
-import com.microsoft.azure.servicebus.IMessage;
-import com.microsoft.azure.servicebus.IMessageSession;
-import com.microsoft.azure.servicebus.ISessionHandler;
-import com.microsoft.azure.servicebus.ISubscriptionClient;
-import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import com.azure.spring.cloud.context.core.util.Tuple;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
 import org.slf4j.Logger;
@@ -44,6 +39,8 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
     private static final String MSG_SUCCESS_CHECKPOINT = "Consumer group '%s' of topic '%s' checkpointed %s in %s mode";
 
     private final Set<Tuple<String, String>> nameAndConsumerGroups = Sets.newConcurrentHashSet();
+    private String topicName;
+    private String subscriptionName;
 
     public ServiceBusTopicTemplate(ServiceBusTopicClientFactory clientFactory,
                                    ServiceBusMessageConverter messageConverter) {
@@ -87,27 +84,39 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
     @SuppressWarnings({ "rawtypes", "unchecked" })
     protected void internalSubscribe(String name, String consumerGroup, Consumer<Message<?>> consumer,
                                      Class<?> payloadType) {
-        ISubscriptionClient subscriptionClient = this.senderFactory.getOrCreateSubscriptionClient(name, consumerGroup);
+        this.topicName = name;
+        this.subscriptionName = consumerGroup;
+        InboundServiceBusMessageConsumer processMessage = new InboundServiceBusMessageConsumer(name, consumerGroup, checkpointConfig, messageConverter, consumer, payloadType);
+        Consumer<ServiceBusErrorContext> processError = errorContext -> {
+             //TODO is this consumer useful?
 
-        String threadPrefix = String.format("%s-%s-handler", name, consumerGroup);
+        };
 
-        try {
-            subscriptionClient.setPrefetchCount(this.clientConfig.getPrefetchCount());
 
-            // Register SessionHandler id sessions are enabled.
-            // Handlers are mutually exclusive.
-            final TopicMessageHandler msgHandler = new TopicMessageHandler(consumer, payloadType, subscriptionClient);
-            final ExecutorService executors = buildHandlerExecutors(threadPrefix);
+        ServiceBusProcessorClient processorClient;
 
-            if (this.clientConfig.isSessionsEnabled()) {
-                subscriptionClient.registerSessionHandler(msgHandler, buildSessionHandlerOptions(), executors);
-            } else {
-                subscriptionClient.registerMessageHandler(msgHandler, buildHandlerOptions(), executors);
-            }
-        } catch (ServiceBusException | InterruptedException e) {
-            LOGGER.error("Failed to register topic message handler", e);
-            throw new ServiceBusRuntimeException("Failed to register topic message handler", e);
-        }
+        if (this.clientConfig.isSessionsEnabled()) {
+            processorClient = new ServiceBusClientBuilder()
+                .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
+                .sessionProcessor()
+                .topicName(name)
+                .subscriptionName(consumerGroup)
+                .maxConcurrentSessions(3)
+                .processMessage(processMessage)
+                .processError(processError)
+                .buildProcessorClient();
+        } else {
+            processorClient = new ServiceBusClientBuilder()
+                .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
+                .processor()
+                .topicName(name)
+                .subscriptionName(consumerGroup)
+                .processMessage(processMessage)
+                .processError(processError)
+                .buildProcessorClient();
+
+        }  //TODO need remove this logic of instantiating processor client into DefaultServiceBusTopicClientFactory.
+        processorClient.start();
     }
 
     @Override
@@ -115,51 +124,6 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
         this.clientConfig = clientConfig;
     }
 
-    protected class TopicMessageHandler<U> extends ServiceBusMessageHandler<U> implements ISessionHandler {
-        private final ISubscriptionClient subscriptionClient;
 
-        public TopicMessageHandler(Consumer<Message<U>> consumer, Class<U> payloadType,
-                                   ISubscriptionClient subscriptionClient) {
-            super(consumer, payloadType, ServiceBusTopicTemplate.this.getCheckpointConfig(),
-                ServiceBusTopicTemplate.this.getMessageConverter());
-            this.subscriptionClient = subscriptionClient;
-        }
-
-        @Override
-        protected CompletableFuture<Void> success(UUID uuid) {
-            return subscriptionClient.completeAsync(uuid);
-        }
-
-        @Override
-        protected CompletableFuture<Void> failure(UUID uuid) {
-            return subscriptionClient.abandonAsync(uuid);
-        }
-
-        @Override
-        protected String buildCheckpointFailMessage(Message<?> message) {
-            return String.format(MSG_FAIL_CHECKPOINT, subscriptionClient.getSubscriptionName(),
-                subscriptionClient.getTopicName(), message);
-        }
-
-        @Override
-        protected String buildCheckpointSuccessMessage(Message<?> message) {
-            return String.format(MSG_SUCCESS_CHECKPOINT, subscriptionClient.getSubscriptionName(),
-                subscriptionClient.getTopicName(), message, getCheckpointConfig().getCheckpointMode());
-        }
-
-        // ISessionHandler
-        @Override
-        public CompletableFuture<Void> onMessageAsync(IMessageSession session, IMessage message) {
-            return super.onMessageAsync(message);
-        }
-
-
-        @Override
-        @SuppressWarnings({ "rawtypes", "unchecked" })
-        public CompletableFuture<Void> OnCloseSessionAsync(IMessageSession session) {
-            LOGGER.info("Closed session '" + session.getSessionId() + "' for subscription: " + session.getEntityPath());
-            return CompletableFuture.completedFuture(null);
-        }
-    }
 
 }

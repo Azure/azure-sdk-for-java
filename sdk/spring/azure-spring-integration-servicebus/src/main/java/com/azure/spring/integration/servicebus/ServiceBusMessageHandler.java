@@ -3,9 +3,7 @@
 
 package com.azure.spring.integration.servicebus;
 
-import com.microsoft.azure.servicebus.ExceptionPhase;
-import com.microsoft.azure.servicebus.IMessage;
-import com.microsoft.azure.servicebus.IMessageHandler;
+
 import com.azure.spring.integration.core.AzureCheckpointer;
 import com.azure.spring.integration.core.AzureHeaders;
 import com.azure.spring.integration.core.api.CheckpointConfig;
@@ -27,7 +25,9 @@ import java.util.function.Consumer;
  * Message handler for Service Bus.
  * @param <U> The type of message payload.
  */
-public abstract class ServiceBusMessageHandler<U> implements IMessageHandler {
+
+//TODO. This class may need to be obsoleted .  we don't need message handler anymore, its duty is removed to InboundServiceBusMessageConsumer.java
+public abstract class ServiceBusMessageHandler<U> {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusMessageHandler.class);
     protected final Consumer<Message<U>> consumer;
     protected final Class<U> payloadType;
@@ -42,32 +42,9 @@ public abstract class ServiceBusMessageHandler<U> implements IMessageHandler {
         this.messageConverter = messageConverter;
     }
 
-    @Override
-    public CompletableFuture<Void> onMessageAsync(IMessage serviceBusMessage) {
-        Map<String, Object> headers = new HashMap<>();
-        headers.put(AzureHeaders.LOCK_TOKEN, serviceBusMessage.getLockToken());
 
-        Checkpointer checkpointer = new AzureCheckpointer(() -> this.success(serviceBusMessage.getLockToken()),
-            () -> this.failure(serviceBusMessage.getLockToken()));
 
-        if (checkpointConfig.getCheckpointMode() == CheckpointMode.MANUAL) {
-            headers.put(AzureHeaders.CHECKPOINTER, checkpointer);
-        }
 
-        Message<U> message = messageConverter.toMessage(serviceBusMessage, new MessageHeaders(headers), payloadType);
-        consumer.accept(message);
-
-        if (checkpointConfig.getCheckpointMode() == CheckpointMode.RECORD) {
-            return checkpointer.success().whenComplete((v, t) -> checkpointHandler(message, t));
-        }
-
-        return CompletableFuture.completedFuture(null);
-    }
-
-    @Override
-    public void notifyException(Throwable exception, ExceptionPhase phase) {
-        LOGGER.error(String.format("Exception encountered in phase %s", phase), exception);
-    }
 
     protected abstract CompletableFuture<Void> success(UUID uuid);
 

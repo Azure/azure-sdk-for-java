@@ -35,7 +35,7 @@ import com.azure.spring.integration.core.AzureHeaders;
  * For the items can be set by Spring message header there are 8 items can be set by both IMessage and ServiceBusMessage:
  * CorrelationId, MessageId, PartitionKey, To, TimeToLive, ScheduledEnqueueTime, ReplyToSessionId, SessionId
  *
- * @see com.microsoft.azure.servicebus.IMessage
+ * @see com.azure.messaging.servicebus.ServiceBusMessage
  * @see <a href="https://github.com/Azure/azure-sdk-for-java/blob/azure-messaging-servicebus_7.1.0/sdk/servicebus/azure-messaging-servicebus/src/main/java/com/azure/messaging/servicebus/ServiceBusMessage.java">com.azure.messaging.servicebus.ServiceBusMessage</a>
  */
 public class ServiceBusMessageHeaders extends AzureHeaders {
