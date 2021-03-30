@@ -9,6 +9,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.iot.modelsrepository.implementation.ModelsRepositoryConstants;
 import org.junit.jupiter.params.provider.Arguments;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -80,5 +81,20 @@ class TestHelper {
         String[] configuredServiceVersionList = SERVICE_VERSION_FROM_ENV.split(",");
         return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
             serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
+    }
+
+    /**
+     * Converts a string to {@link URI}
+     *
+     * @param uri String format of the path
+     * @return {@link URI} representation of the path/uri.
+     * @throws IllegalArgumentException If the {@code uri} is invalid.
+     */
+    public static URI convertToUri(String uri) throws IllegalArgumentException {
+        try {
+            return new URI(uri);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid URI format", e);
+        }
     }
 }

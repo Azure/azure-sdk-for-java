@@ -33,18 +33,6 @@ public final class TableImpl implements Table {
         return this.innerModel().retentionInDays();
     }
 
-    public Boolean isTroubleshootingAllowed() {
-        return this.innerModel().isTroubleshootingAllowed();
-    }
-
-    public Boolean isTroubleshootEnabled() {
-        return this.innerModel().isTroubleshootEnabled();
-    }
-
-    public String lastTroubleshootDate() {
-        return this.innerModel().lastTroubleshootDate();
-    }
-
     public TableInner innerModel() {
         return this.innerObject;
     }
