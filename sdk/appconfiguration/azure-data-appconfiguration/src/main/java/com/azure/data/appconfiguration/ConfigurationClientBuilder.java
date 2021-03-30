@@ -40,6 +40,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.core.util.CoreUtils.getApplicationId;
+
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link
  * ConfigurationClient ConfigurationClients} and {@link ConfigurationAsyncClient ConfigurationAsyncClients}, call {@link
@@ -168,10 +170,8 @@ public final class ConfigurationClientBuilder {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-
-        String applicationId =
-            clientOptions == null ? httpLogOptions.getApplicationId() : clientOptions.getApplicationId();
-        policies.add(new UserAgentPolicy(applicationId, CLIENT_NAME, CLIENT_VERSION, buildConfiguration));
+        policies.add(new UserAgentPolicy(
+            getApplicationId(clientOptions, httpLogOptions), CLIENT_NAME, CLIENT_VERSION, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
         policies.add(ADD_HEADERS_POLICY);
