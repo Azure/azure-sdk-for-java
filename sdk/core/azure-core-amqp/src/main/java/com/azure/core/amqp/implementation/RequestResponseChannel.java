@@ -76,6 +76,9 @@ public class RequestResponseChannel implements Disposable {
     private final String connectionId;
     private final String activeEndpointTimeoutMessage;
 
+    private volatile AmqpEndpointState sendLinkEndpoint;
+    private volatile AmqpEndpointState receiveLinkEndpoint;
+
     /**
      * Creates a new instance of {@link RequestResponseChannel} to send and receive responses from the {@code
      * entityPath} in the message broker.
@@ -136,15 +139,6 @@ public class RequestResponseChannel implements Disposable {
 
         //@formatter:off
         this.subscriptions = Disposables.composite(
-            Flux.merge(receiveLinkHandler.getEndpointStates(), sendLinkHandler.getEndpointStates())
-                .map(e -> {
-                    final AmqpEndpointState endpointState = AmqpEndpointStateUtil.getConnectionState(e);
-                    endpointStates.emitNext(endpointState,
-                        (signalType, emitResult) -> onEmitSinkFailure(signalType, emitResult,
-                            "ReceiveLinkHandler. Error emitting endpoint state."));
-                    return endpointState;
-                })
-                .subscribe(),
             receiveLinkHandler.getDeliveredMessages()
                 .map(this::decodeDelivery)
                 .subscribe(message -> {
@@ -155,6 +149,7 @@ public class RequestResponseChannel implements Disposable {
                 }),
 
             receiveLinkHandler.getEndpointStates().subscribe(state -> {
+                updateEndpointState(null, AmqpEndpointStateUtil.getConnectionState(state));
             }, error -> {
                 handleError(error, "Error in ReceiveLinkHandler.");
                 onTerminalState("ReceiveLinkHandler");
@@ -164,6 +159,7 @@ public class RequestResponseChannel implements Disposable {
             }),
 
             sendLinkHandler.getEndpointStates().subscribe(state -> {
+                updateEndpointState(AmqpEndpointStateUtil.getConnectionState(state), null);
             }, error -> {
                 handleError(error, "Error in SendLinkHandler.");
                 onTerminalState("SendLinkHandler");
@@ -172,10 +168,10 @@ public class RequestResponseChannel implements Disposable {
                 onTerminalState("SendLinkHandler");
             }),
 
-            amqpConnection.getShutdownSignals().subscribe(signal -> {
+            amqpConnection.getShutdownSignals().next().flatMap(signal -> {
                 logger.verbose("connectionId[{}] linkName[{}]: Shutdown signal received.", connectionId, linkName);
-                disposeAsync("Connection shutdown.").subscribe();
-            })
+                return disposeAsync(" Shutdown signal received.");
+            }).subscribe()
         );
         //@formatter:on
 
@@ -389,5 +385,20 @@ public class RequestResponseChannel implements Disposable {
             connectionId, linkName, signalType, emitResult, message);
 
         return false;
+    }
+
+    private synchronized void updateEndpointState(AmqpEndpointState newSendLink, AmqpEndpointState newReceiveLink) {
+        if (newSendLink != null) {
+            sendLinkEndpoint = newSendLink;
+        } else if (newReceiveLink != null) {
+            receiveLinkEndpoint = newReceiveLink;
+        }
+
+        logger.verbose("connectionId[{}] linkName[{}] sendState[{}] receiveState[{}] Updating endpoint states.",
+            connectionId, linkName, sendLinkEndpoint, receiveLinkEndpoint);
+
+        if (sendLinkEndpoint == receiveLinkEndpoint) {
+            endpointStates.emitNext(sendLinkEndpoint, Sinks.EmitFailureHandler.FAIL_FAST);
+        }
     }
 }
