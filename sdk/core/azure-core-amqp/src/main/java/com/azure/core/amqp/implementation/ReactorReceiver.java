@@ -27,10 +27,6 @@ import java.util.function.Supplier;
  * Handles receiving events from Event Hubs service and translating them to proton-j messages.
  */
 public class ReactorReceiver implements AmqpReceiveLink {
-    // Initial value is true because we could not have created this receiver without authorising against the CBS node
-    // first.
-    private final AtomicBoolean hasAuthorized = new AtomicBoolean(true);
-
     private final String entityPath;
     private final Receiver receiver;
     private final ReceiveLinkHandler handler;
@@ -78,16 +74,16 @@ public class ReactorReceiver implements AmqpReceiveLink {
 
         this.subscriptions = this.tokenManager.getAuthorizationResults().subscribe(
             response -> {
-                logger.verbose("Token refreshed: {}", response);
-                hasAuthorized.set(true);
+                logger.verbose("connectionId[{}] linkName[{}] Token refreshed. {}", handler.getConnectionId(),
+                    getLinkName(), response);
             }, error -> {
                 logger.info("connectionId[{}] entityPath{}] linkName[{}] tokenRenewalFailure[{}]",
                     handler.getConnectionId(), this.entityPath, getLinkName(), error.getMessage());
-                hasAuthorized.set(false);
                 dispose(new ErrorCondition(Symbol.getSymbol(AmqpErrorCondition.NOT_ALLOWED.getErrorCondition()),
                     error.getMessage()));
             }, () -> {
-                hasAuthorized.set(false);
+                logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Authorization completed. Disposing.",
+                    handler.getConnectionId(), entityPath, getLinkName());
                 dispose();
             });
     }
