@@ -13,7 +13,7 @@
   <artifactId>azure-media-analytics</artifactId>
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-media-analytics<current} -->
 
-  <name>Microsoft Azure SDK for Template</name>
+  <name>Microsoft Azure SDK for Media Analytics</name>
   <description>This package contains Microsoft Azure SDK for Template.</description>
 
   <distributionManagement>
@@ -50,6 +50,32 @@
       <artifactId>junit-jupiter-params</artifactId>
       <version>5.6.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-serializer-json-jackson</artifactId>
+      <version>1.2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure.sdk.iot</groupId>
+      <artifactId>iot-service-client</artifactId>
+      <version>1.26.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure.sdk.iot</groupId>
+      <artifactId>iot-device-client</artifactId>
+      <version>1.29.4</version>
+      <!--This is the current version number as of the writing of this document. Yours may be different.-->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-media-analytics</artifactId>
+      <version>1.0.0-beta.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.azure.tools</groupId>
+      <artifactId>azure-autorest-customization</artifactId>
+      <version>1.0.0-beta.2</version>
     </dependency>
   </dependencies>
 
