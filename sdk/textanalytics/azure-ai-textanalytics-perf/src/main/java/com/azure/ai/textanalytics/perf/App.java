@@ -19,6 +19,11 @@ import com.azure.perf.test.core.PerfStressProgram;
  * Configurations} section. Then run the App's main method.
  */
 public class App {
+    /**
+     * Main method to invoke performance tests
+     *
+     * @param args Arguments to the performance tests.
+     */
     public static void main(String[] args) {
         PerfStressProgram.run(new Class<?>[]{DetectLanguageTest.class}, args);
     }

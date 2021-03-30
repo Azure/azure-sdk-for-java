@@ -26,6 +26,8 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
      * The base class for Azure Text Analytics tests.
      *
      * @param options the configurable options for performing perf testing on this class.
+     *
+     * @throws RuntimeException if "AZURE_TEXT_ANALYTICS_ENDPOINT" or "AZURE_TEXT_ANALYTICS_API_KEY" is null or empty.
      */
     public ServiceTest(TOptions options) {
         super(options);

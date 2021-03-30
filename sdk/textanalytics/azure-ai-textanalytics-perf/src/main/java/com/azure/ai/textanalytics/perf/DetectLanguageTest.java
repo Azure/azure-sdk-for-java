@@ -3,37 +3,39 @@
 
 package com.azure.ai.textanalytics.perf;
 
-import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.perf.core.ServiceTest;
 import com.azure.perf.test.core.PerfStressOptions;
 import reactor.core.publisher.Mono;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Performs custom model recognition operations.
  */
 public class DetectLanguageTest extends ServiceTest<PerfStressOptions> {
+    List<String> documents = new ArrayList<>();
+
     /**
-     * The CustomModelRecognitionTest class.
+     * The DetectLanguageTest class.
      *
      * @param options the configurable options for perf testing this class
      */
     public DetectLanguageTest(PerfStressOptions options) {
         super(options);
+        final int documentSize = options.getCount();
+        for (int i = 0; i < documentSize; i++) {
+            documents.add("Detta är ett dokument skrivet på engelska.");
+        }
     }
 
     @Override
     public void run() {
-        final DetectedLanguage detectedLanguage = textAnalyticsClient.detectLanguage(
-            "Detta är ett dokument skrivet på engelska.");
-        assert "swedish".equals(detectedLanguage.getName());
+        textAnalyticsClient.detectLanguageBatch(documents, "en", null);
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return textAnalyticsAsyncClient.detectLanguage("Detta är ett dokument skrivet på engelska.")
-                   .flatMap(
-                       result -> "swedish".equals(result.getName())
-                                     ? Mono.empty()
-                                     : Mono.error(new RuntimeException("Expected detected language.")));
+        return textAnalyticsAsyncClient.detectLanguageBatch(documents, "en", null).then();
     }
 }

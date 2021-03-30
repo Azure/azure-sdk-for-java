@@ -20,27 +20,19 @@ AZURE_TEXTANALYTICS_API_KEY=<text analytics API Key>
 ```
 
 ### Adding the package to your product
-[//]: # ({x-version-update-start;com.azure:azure-ai-textanalytics;current})
-```xml
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-ai-textanalytics</artifactId>
-    <version>5.1.0-beta.6</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
 
 ## Key concepts
 
 ## Examples
 #### Executing the performance test
 1. Compile the performance project into a standalone jar using the command from the root of the perf project folder
-   ```java
-   mvn clean package
+   ```
+   mvn clean package -f sdk/textanalytics/azure-ai-textanalytics-perf/pom.xml
 
 2. Execute the corresponding perf test in the project using the command.
-   ```java
+   ```
    java -jar <path-to-packaged-jar-with-dependencies-from-step-1> <options-for-the-test>
+   java -jar sdk/textanalytics/azure-ai-textanalytics-perf/target/azure-ai-textanalytics-perf-1.0.0-beta.1-jar-with-dependencies.jar detectlanguage --warmup 1 --iterations 1 --parallel 50 --duration 15 --count 1000
 
 #### Common perf test command line options for Text Analytics
 - `--duration` - Number of seconds to run the main test for. Default is 10.
