@@ -598,26 +598,26 @@ public class HttpResponseBodyDecoderTests {
     }
 
     private static final class VoidResponse extends SimpleResponse<Void> {
-        public VoidResponse(Response<?> response, Void value) {
+        VoidResponse(Response<?> response, Void value) {
             super(response, value);
         }
     }
 
     private static final class StringResponse extends SimpleResponse<String> {
-        public StringResponse(Response<?> response, String value) {
+        StringResponse(Response<?> response, String value) {
             super(response, value);
         }
     }
 
     private static final class VoidResponseWithDeserializedHeaders extends ResponseBase<HttpHeaders, Void> {
-        public VoidResponseWithDeserializedHeaders(HttpRequest request, int statusCode, HttpHeaders headers, Void value,
+        VoidResponseWithDeserializedHeaders(HttpRequest request, int statusCode, HttpHeaders headers, Void value,
             HttpHeaders deserializedHeaders) {
             super(request, statusCode, headers, value, deserializedHeaders);
         }
     }
 
     private static final class StringResponseWithDeserializedHeaders extends ResponseBase<HttpHeaders, String> {
-        public StringResponseWithDeserializedHeaders(HttpRequest request, int statusCode, HttpHeaders headers,
+        StringResponseWithDeserializedHeaders(HttpRequest request, int statusCode, HttpHeaders headers,
             String value, HttpHeaders deserializedHeaders) {
             super(request, statusCode, headers, value, deserializedHeaders);
         }
