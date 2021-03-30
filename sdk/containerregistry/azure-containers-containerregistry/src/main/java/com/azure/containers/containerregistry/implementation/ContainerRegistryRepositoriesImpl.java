@@ -4,7 +4,6 @@
 
 package com.azure.containers.containerregistry.implementation;
 
-import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistryRepositoriesCreateManifestResponse;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistryRepositoriesGetManifestsNextResponse;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistryRepositoriesGetManifestsResponse;
@@ -17,6 +16,7 @@ import com.azure.containers.containerregistry.implementation.models.RegistryArti
 import com.azure.containers.containerregistry.implementation.models.RepositoryProperties;
 import com.azure.containers.containerregistry.implementation.models.TagAttributesBase;
 import com.azure.containers.containerregistry.implementation.models.TagProperties;
+import com.azure.containers.containerregistry.models.AcrErrorsException;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -128,7 +128,7 @@ public final class ContainerRegistryRepositoriesImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("name") String name,
                 @QueryParam("last") String last,
-                @QueryParam("pageSize") Integer pageSize,
+                @QueryParam("n") Integer n,
                 @QueryParam("orderby") String orderby,
                 @QueryParam("digest") String digest,
                 @HeaderParam("Accept") String accept,
@@ -172,7 +172,7 @@ public final class ContainerRegistryRepositoriesImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("name") String name,
                 @QueryParam("last") String last,
-                @QueryParam("pageSize") Integer pageSize,
+                @QueryParam("n") Integer n,
                 @QueryParam("orderby") String orderby,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -609,7 +609,7 @@ public final class ContainerRegistryRepositoriesImpl {
      * @param name Name of the image (including the namespace).
      * @param last Query parameter for the last item in previous query. Result set will include values lexically after
      *     last.
-     * @param pageSize query parameter for max number of items.
+     * @param n query parameter for max number of items.
      * @param orderby orderby query parameter.
      * @param digest filter by digest.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -619,19 +619,12 @@ public final class ContainerRegistryRepositoriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<TagAttributesBase>> getTagsSinglePageAsync(
-            String name, String last, Integer pageSize, String orderby, String digest) {
+            String name, String last, Integer n, String orderby, String digest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.getTags(
-                                        this.client.getEndpoint(),
-                                        name,
-                                        last,
-                                        pageSize,
-                                        orderby,
-                                        digest,
-                                        accept,
-                                        context))
+                                        this.client.getEndpoint(), name, last, n, orderby, digest, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -649,7 +642,7 @@ public final class ContainerRegistryRepositoriesImpl {
      * @param name Name of the image (including the namespace).
      * @param last Query parameter for the last item in previous query. Result set will include values lexically after
      *     last.
-     * @param pageSize query parameter for max number of items.
+     * @param n query parameter for max number of items.
      * @param orderby orderby query parameter.
      * @param digest filter by digest.
      * @param context The context to associate with this operation.
@@ -660,9 +653,9 @@ public final class ContainerRegistryRepositoriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<TagAttributesBase>> getTagsSinglePageAsync(
-            String name, String last, Integer pageSize, String orderby, String digest, Context context) {
+            String name, String last, Integer n, String orderby, String digest, Context context) {
         final String accept = "application/json";
-        return service.getTags(this.client.getEndpoint(), name, last, pageSize, orderby, digest, accept, context)
+        return service.getTags(this.client.getEndpoint(), name, last, n, orderby, digest, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -680,7 +673,7 @@ public final class ContainerRegistryRepositoriesImpl {
      * @param name Name of the image (including the namespace).
      * @param last Query parameter for the last item in previous query. Result set will include values lexically after
      *     last.
-     * @param pageSize query parameter for max number of items.
+     * @param n query parameter for max number of items.
      * @param orderby orderby query parameter.
      * @param digest filter by digest.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -690,9 +683,9 @@ public final class ContainerRegistryRepositoriesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TagAttributesBase> getTagsAsync(
-            String name, String last, Integer pageSize, String orderby, String digest) {
+            String name, String last, Integer n, String orderby, String digest) {
         return new PagedFlux<>(
-                () -> getTagsSinglePageAsync(name, last, pageSize, orderby, digest),
+                () -> getTagsSinglePageAsync(name, last, n, orderby, digest),
                 nextLink -> getTagsNextSinglePageAsync(nextLink));
     }
 
@@ -702,7 +695,7 @@ public final class ContainerRegistryRepositoriesImpl {
      * @param name Name of the image (including the namespace).
      * @param last Query parameter for the last item in previous query. Result set will include values lexically after
      *     last.
-     * @param pageSize query parameter for max number of items.
+     * @param n query parameter for max number of items.
      * @param orderby orderby query parameter.
      * @param digest filter by digest.
      * @param context The context to associate with this operation.
@@ -713,9 +706,9 @@ public final class ContainerRegistryRepositoriesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TagAttributesBase> getTagsAsync(
-            String name, String last, Integer pageSize, String orderby, String digest, Context context) {
+            String name, String last, Integer n, String orderby, String digest, Context context) {
         return new PagedFlux<>(
-                () -> getTagsSinglePageAsync(name, last, pageSize, orderby, digest, context),
+                () -> getTagsSinglePageAsync(name, last, n, orderby, digest, context),
                 nextLink -> getTagsNextSinglePageAsync(nextLink, context));
     }
 
@@ -948,7 +941,7 @@ public final class ContainerRegistryRepositoriesImpl {
      * @param name Name of the image (including the namespace).
      * @param last Query parameter for the last item in previous query. Result set will include values lexically after
      *     last.
-     * @param pageSize query parameter for max number of items.
+     * @param n query parameter for max number of items.
      * @param orderby orderby query parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -957,12 +950,12 @@ public final class ContainerRegistryRepositoriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ManifestAttributesBase>> getManifestsSinglePageAsync(
-            String name, String last, Integer pageSize, String orderby) {
+            String name, String last, Integer n, String orderby) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.getManifests(
-                                        this.client.getEndpoint(), name, last, pageSize, orderby, accept, context))
+                                        this.client.getEndpoint(), name, last, n, orderby, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -980,7 +973,7 @@ public final class ContainerRegistryRepositoriesImpl {
      * @param name Name of the image (including the namespace).
      * @param last Query parameter for the last item in previous query. Result set will include values lexically after
      *     last.
-     * @param pageSize query parameter for max number of items.
+     * @param n query parameter for max number of items.
      * @param orderby orderby query parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -990,9 +983,9 @@ public final class ContainerRegistryRepositoriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ManifestAttributesBase>> getManifestsSinglePageAsync(
-            String name, String last, Integer pageSize, String orderby, Context context) {
+            String name, String last, Integer n, String orderby, Context context) {
         final String accept = "application/json";
-        return service.getManifests(this.client.getEndpoint(), name, last, pageSize, orderby, accept, context)
+        return service.getManifests(this.client.getEndpoint(), name, last, n, orderby, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1010,7 +1003,7 @@ public final class ContainerRegistryRepositoriesImpl {
      * @param name Name of the image (including the namespace).
      * @param last Query parameter for the last item in previous query. Result set will include values lexically after
      *     last.
-     * @param pageSize query parameter for max number of items.
+     * @param n query parameter for max number of items.
      * @param orderby orderby query parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -1018,10 +1011,9 @@ public final class ContainerRegistryRepositoriesImpl {
      * @return manifest attributes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ManifestAttributesBase> getManifestsAsync(
-            String name, String last, Integer pageSize, String orderby) {
+    public PagedFlux<ManifestAttributesBase> getManifestsAsync(String name, String last, Integer n, String orderby) {
         return new PagedFlux<>(
-                () -> getManifestsSinglePageAsync(name, last, pageSize, orderby),
+                () -> getManifestsSinglePageAsync(name, last, n, orderby),
                 nextLink -> getManifestsNextSinglePageAsync(nextLink));
     }
 
@@ -1031,7 +1023,7 @@ public final class ContainerRegistryRepositoriesImpl {
      * @param name Name of the image (including the namespace).
      * @param last Query parameter for the last item in previous query. Result set will include values lexically after
      *     last.
-     * @param pageSize query parameter for max number of items.
+     * @param n query parameter for max number of items.
      * @param orderby orderby query parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1041,9 +1033,9 @@ public final class ContainerRegistryRepositoriesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManifestAttributesBase> getManifestsAsync(
-            String name, String last, Integer pageSize, String orderby, Context context) {
+            String name, String last, Integer n, String orderby, Context context) {
         return new PagedFlux<>(
-                () -> getManifestsSinglePageAsync(name, last, pageSize, orderby, context),
+                () -> getManifestsSinglePageAsync(name, last, n, orderby, context),
                 nextLink -> getManifestsNextSinglePageAsync(nextLink, context));
     }
 

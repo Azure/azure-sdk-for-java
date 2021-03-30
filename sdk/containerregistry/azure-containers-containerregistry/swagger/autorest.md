@@ -1,4 +1,4 @@
-# Azure Container Registry client library swagger file
+# Azure Containers ContainerRegistry APIs for Java
 
 > see https://aka.ms/autorest
 
@@ -38,6 +38,8 @@ generate-client-interfaces: false
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 context-client-method-parameter: true
+service-interface-as-public: true 
 models-subpackage: implementation.models
-service-interface-as-public: true
+custom-types: AcrErrorsException,DeleteRepositoryResult,AcrErrors
+custom-types-subpackage: models
 ```

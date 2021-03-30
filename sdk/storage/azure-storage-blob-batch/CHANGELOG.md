@@ -1,5 +1,8 @@
 # Release History
 
+## 12.9.0-beta.3 (Unreleased)
+
+
 ## 12.9.0-beta.2 (2021-03-29)
 - Update `azure-storage-blob` to version `12.11.0-beta.2`
 

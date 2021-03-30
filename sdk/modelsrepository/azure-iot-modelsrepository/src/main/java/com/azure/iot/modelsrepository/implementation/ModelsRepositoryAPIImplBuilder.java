@@ -17,6 +17,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.iot.modelsrepository.ModelsRepositoryServiceVersion;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -191,7 +192,7 @@ public final class ModelsRepositoryAPIImplBuilder {
      */
     public ModelsRepositoryAPIImpl buildClient() {
         if (apiVersion == null) {
-            this.apiVersion = "2021-03-18";
+            this.apiVersion = ModelsRepositoryServiceVersion.getLatest().toString();
         }
         if (host == null) {
             this.host = ModelsRepositoryConstants.DEFAULT_MODELS_REPOSITORY_ENDPOINT;
