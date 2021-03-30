@@ -5,6 +5,7 @@ package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.messaging.Modified;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
@@ -103,19 +104,22 @@ public class ReceiveLinkHandler extends LinkHandler {
         // If a message spans across deliveries (for ex: 200kb message will be 4 frames (deliveries) 64k 64k 64k 8k),
         // all until "last-1" deliveries will be partial
         // reactor will raise onDelivery event for all of these - we only need the last one
+        final boolean wasSettled = delivery.isSettled();
         if (!delivery.isPartial()) {
             // One of our customers hit an issue - where duplicate 'Delivery' events are raised to Reactor in
             // proton-j layer
             // While processing the duplicate event - reactor hits an IllegalStateException in proton-j layer
             // before we fix proton-j - this work around ensures that we ignore the duplicate Delivery event
-            if (delivery.isSettled()) {
+            if (wasSettled) {
                 if (link != null) {
-                    logger.verbose("onDelivery connectionId[{}], entityPath[{}], linkName[{}], updatedLinkCredit[{}],"
-                            + " remoteCredit[{}], remoteCondition[{}], delivery.isSettled[{}]",
+                    logger.info("onDelivery connectionId[{}], entityPath[{}], linkName[{}], updatedLinkCredit[{}],"
+                            + " remoteCredit[{}], remoteCondition[{}], delivery.isSettled[{}] Was already settled.",
                         getConnectionId(), entityPath, link.getName(), link.getCredit(), link.getRemoteCredit(),
                         link.getRemoteCondition(), delivery.isSettled());
                 } else {
-                    logger.warning("connectionId[{}], delivery.isSettled[{}]", getConnectionId(), delivery.isSettled());
+                    logger.warning("connectionId[{}], entityPath[{}] delivery.isSettled[{}] Settled delivery with no "
+                            +" link.",
+                        getConnectionId(), entityPath, delivery.isSettled());
                 }
             } else {
                 if (link.getLocalState() == EndpointState.CLOSED) {
@@ -140,10 +144,12 @@ public class ReceiveLinkHandler extends LinkHandler {
         }
 
         if (link != null) {
-            logger.verbose("onDelivery connectionId[{}], entityPath[{}], linkName[{}], updatedLinkCredit[{}],"
-                    + "remoteCredit[{}], remoteCondition[{}], delivery.isPartial[{}]",
-                getConnectionId(), entityPath, link.getName(), link.getCredit(), link.getRemoteCredit(),
-                link.getRemoteCondition(), delivery.isPartial());
+            final ErrorCondition condition = link.getRemoteCondition();
+            logger.verbose("onDelivery connectionId[{}], linkName[{}], updatedLinkCredit[{}],"
+                    + "remoteCredit[{}], remoteCondition[{}], delivery.isPartial[{}], delivery.isSettled[{}]",
+                getConnectionId(), link.getName(), link.getCredit(), link.getRemoteCredit(),
+                condition != null && condition.getCondition() != null ? condition : "N/A",
+                delivery.isPartial(), wasSettled);
         }
     }
 
