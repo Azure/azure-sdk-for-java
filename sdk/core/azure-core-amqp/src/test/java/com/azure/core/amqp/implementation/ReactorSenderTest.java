@@ -213,10 +213,6 @@ public class ReactorSenderTest {
         final ReactorSender reactorSender = new ReactorSender(ENTITY_PATH, sender, handler, reactorProvider,
             tokenManager, messageSerializer, options);
 
-        final ReactorDispatcher reactorDispatcherMock = mock(ReactorDispatcher.class);
-        when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcherMock);
-        doNothing().when(reactorDispatcherMock).invoke(any(Runnable.class));
-
         // Creating delivery for sending.
         final Delivery deliveryToSend = mock(Delivery.class);
         doNothing().when(deliveryToSend).setMessageFormat(anyInt());
@@ -230,7 +226,9 @@ public class ReactorSenderTest {
         }).when(dispatcher).invoke(any(Runnable.class));
 
         // Act
-        reactorSender.send(message, transactionalState).subscribe();
+        StepVerifier.create(reactorSender.send(message, transactionalState))
+            .expectError(AmqpException.class) // Because we did not process a "delivered message", it'll timeout.
+            .verify();
 
         // Assert
         DeliveryState deliveryState = deliveryStateArgumentCaptor.getValue();
