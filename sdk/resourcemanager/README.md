@@ -355,6 +355,80 @@ AzureResourceManager azure = AzureResourceManager
     .withDefaultSubscription();
 ```
 
+### Dependency management
+
+[Azure Core][azure_core] (`azure-core`) is the shared library for  all packages under `com.azure`.
+It guarantees backward compatibility.
+
+However, if one accidentally uses an older version of it via transitive dependencies, it might cause problem in runtime.
+This case could happen when one module depends on multiple Azure Java SDKs with different versions, which in turn depends on different versions of `azure-core`.
+
+Maven dependency plugin would help to diagnostic this problem.
+Here is an artificial example.
+
+```shell
+mvn dependency:tree -Dincludes=com.azure:azure-core
+
+[INFO] com.microsoft.azure:azure-sdk-test:jar:1.0-SNAPSHOT
+[INFO] \- com.azure:azure-identity:jar:1.2.2:compile
+[INFO]    \- com.azure:azure-core:jar:1.12.0:compile
+```
+
+We can see the `azure-core` resolved as 1.12.0.
+
+```shell
+mvn dependency:tree -Dverbose=true -Dincludes=com.azure:azure-core
+
+[INFO] com.microsoft.azure:azure-sdk-test:jar:1.0-SNAPSHOT
+[INFO] +- com.azure:azure-identity:jar:1.2.2:compile
+[INFO] |  +- com.azure:azure-core:jar:1.12.0:compile
+[INFO] |  \- com.azure:azure-core-http-netty:jar:1.7.1:compile
+[INFO] |     \- (com.azure:azure-core:jar:1.12.0:compile - omitted for duplicate)
+[INFO] +- com.azure.resourcemanager:azure-resourcemanager:jar:2.2.0:compile
+[INFO] |  +- com.azure.resourcemanager:azure-resourcemanager-resources:jar:2.2.0:compile
+[INFO] |  |  +- (com.azure:azure-core:jar:1.13.0:compile - omitted for conflict with 1.12.0)
+[INFO] |  |  \- com.azure:azure-core-management:jar:1.1.1:compile
+[INFO] |  |     \- (com.azure:azure-core:jar:1.13.0:compile - omitted for conflict with 1.12.0)
+[INFO] |  \- com.azure.resourcemanager:azure-resourcemanager-keyvault:jar:2.2.0:compile
+[INFO] |     +- com.azure:azure-security-keyvault-keys:jar:4.2.5:compile
+[INFO] |     |  \- (com.azure:azure-core:jar:1.13.0:compile - omitted for conflict with 1.12.0)
+[INFO] |     \- com.azure:azure-security-keyvault-secrets:jar:4.2.5:compile
+[INFO] |        \- (com.azure:azure-core:jar:1.13.0:compile - omitted for conflict with 1.12.0)
+[INFO] \- com.azure:azure-storage-blob:jar:12.10.2:compile
+[INFO]    +- (com.azure:azure-core:jar:1.12.0:compile - omitted for duplicate)
+[INFO]    \- com.azure:azure-storage-common:jar:12.10.1:compile
+[INFO]       \- (com.azure:azure-core:jar:1.12.0:compile - omitted for duplicate)
+```
+
+From the module, we can see there is multiple SDKs depends on different versions of `azure-core`, and the latest would be 1.13.0.
+
+If we run the module, we will encounter this error in runtime.
+
+```
+java.lang.NoSuchMethodError: 'com.azure.core.http.HttpHeaders com.azure.core.http.HttpHeaders.set(java.lang.String, java.lang.String)'
+```
+
+The cause is that this method was not available in 1.12.0 `azure-core`, and now being used by some SDK that depends on 1.13.0 `azure-core`.
+
+In this example, apparently the problem is that we used an old version of `azure-identity`. After upgrade it to 1.2.3, problem solved.
+
+Better, one can explicitly put `azure-core` as the first dependency, and keep it up-to-date.
+
+Alternatively, maven dependency management will also help to control the version in transitive dependencies.
+Here is a sample dependency management section in maven POM.
+
+```xml
+<dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>${azure-core.version}</version>
+    </dependency>
+  </dependencies>
+</dependencyManagement>
+```
+
 ### ARM throttling
 
 Azure Resource Manager applies throttling on the number of requests sent from client within certain span of time.
