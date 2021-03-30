@@ -2,7 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal, Strings}
+import com.azure.cosmos.CosmosException
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, HttpConstants, SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver, requireNotNull}
 import com.fasterxml.jackson.databind.node.ObjectNode
@@ -119,32 +120,33 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
     key: String
   ): SMono[PartitionMetadata] = {
 
-    val metadataObservable = readPartitionMetadata(
+    readPartitionMetadata(
       userConfig,
       cosmosClientConfiguration,
       cosmosClientStateHandle,
       cosmosContainerConfig,
-      feedRange
+      feedRange,
+      tolerateNotFound = false
     )
-
-    metadataObservable
       .map(metadata => {
-        cache.put(key, metadata)
-        metadata
+        cache.put(key, metadata.get)
+        metadata.get
       })
       .subscribeOn(Schedulers.boundedElastic())
   }
 
   this.startRefreshTimer()
 
+  //scalastyle:off method.length
   private def readPartitionMetadata
   (
     userConfig: Map[String, String],
     cosmosClientConfiguration: CosmosClientConfiguration,
     cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
     cosmosContainerConfig: CosmosContainerConfig,
-    feedRange: NormalizedRange
-  ): SMono[PartitionMetadata] = {
+    feedRange: NormalizedRange,
+    tolerateNotFound: Boolean
+  ): SMono[Option[PartitionMetadata]] = {
     val client = CosmosClientCache.apply(cosmosClientConfiguration, cosmosClientStateHandle)
     val container = ThroughputControlHelper.getContainer(userConfig, cosmosContainerConfig, client)
 
@@ -171,7 +173,7 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
       .collectList()
       .asScala
       .map(_ => {
-        PartitionMetadata(
+        Some(PartitionMetadata(
           userConfig,
           cosmosClientConfiguration,
           cosmosClientStateHandle,
@@ -180,9 +182,25 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
           assertNotNull(lastDocumentCount.get, "lastDocumentCount"),
           assertNotNull(lastTotalDocumentSize.get, "lastTotalDocumentSize"),
           assertNotNullOrEmpty(lastContinuationToken.get, "continuationToken")
-        )
+        ))
+      })
+      .onErrorResume((throwable: Throwable) => {
+        throwable match {
+          case cosmosException: CosmosException =>
+            if (tolerateNotFound &&
+              cosmosException.getStatusCode == HttpConstants.StatusCodes.NOTFOUND &&
+              cosmosException.getSubStatusCode == 0) {
+
+              SMono.just(None)
+            } else {
+
+              SMono.error(throwable)
+            }
+          case _ => SMono.error(throwable)
+        }
       })
   }
+  //scalastyle:on method.length
 
   def injectTestData(cosmosContainerConfig: CosmosContainerConfig,
                      feedRange: NormalizedRange,
@@ -283,22 +301,29 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
         metadataSnapshot.cosmosClientConfig,
         metadataSnapshot.cosmosClientStateHandle,
         metadataSnapshot.cosmosContainerConfig,
-        metadataSnapshot.feedRange
-      ).map(metadata => {
-        val key = PartitionMetadata.createKey(
-          metadataSnapshot.cosmosContainerConfig.database,
-          metadataSnapshot.cosmosContainerConfig.container,
-          metadataSnapshot.feedRange
-        )
-        metadata.lastRetrieved.set(metadataSnapshot.lastRetrieved.get())
-        if (cache.replace(key, metadataSnapshot, metadata)) {
-          logTrace(s"Updated partition metadata '$key'")
-        } else {
-          logWarning(s"Ignored retrieved metadata due to concurrent update of partition metadata '$key'")
-        }
+        metadataSnapshot.feedRange,
+        tolerateNotFound = true
+      )
+        .map(metadata => {
+          val key = PartitionMetadata.createKey(
+            metadataSnapshot.cosmosContainerConfig.database,
+            metadataSnapshot.cosmosContainerConfig.container,
+            metadataSnapshot.feedRange
+          )
+          if (metadata.isDefined) {
+            metadata.get.lastRetrieved.set(metadataSnapshot.lastRetrieved.get())
+            if (cache.replace(key, metadataSnapshot, metadata.get)) {
+              logTrace(s"Updated partition metadata '$key'")
+            } else {
+              logDebug(s"Ignored retrieved metadata due to concurrent update of partition metadata '$key'")
+            }
+          } else {
+            logDebug(s"Removing partition metadata '$key' because container doesn't exist anymore")
+            this.purge(metadataSnapshot.cosmosContainerConfig, metadataSnapshot.feedRange)
+          }
 
-        Nothing
-      })
+          Nothing
+        })
     } else {
       SMono.just(Nothing)
     }
