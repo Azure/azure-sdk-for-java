@@ -2,8 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.CosmosException
-import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, HttpConstants, SparkBridgeImplementationInternal, Strings}
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver, requireNotNull}
 import com.fasterxml.jackson.databind.node.ObjectNode
@@ -185,18 +184,10 @@ private object PartitionMetadataCache extends CosmosLoggingTrait {
         ))
       })
       .onErrorResume((throwable: Throwable) => {
-        throwable match {
-          case cosmosException: CosmosException =>
-            if (tolerateNotFound &&
-              cosmosException.getStatusCode == HttpConstants.StatusCodes.NOTFOUND &&
-              cosmosException.getSubStatusCode == 0) {
-
-              SMono.just(None)
-            } else {
-
-              SMono.error(throwable)
-            }
-          case _ => SMono.error(throwable)
+        if (tolerateNotFound && Exceptions.isNotFoundException(throwable)) {
+          SMono.just(None)
+        } else {
+          SMono.error(throwable)
         }
       })
   }

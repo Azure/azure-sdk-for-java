@@ -7,6 +7,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.RetryAnalyzer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
@@ -192,7 +193,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             expectedEventCountAfterUpdates);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT, retryAnalyzer = RetryAnalyzer.class)
     public void asyncChangeFeed_fromBeginning_incremental_forLogicalPartition() throws Exception {
         this.createContainer(
             (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createIncrementalPolicy())
@@ -850,35 +851,5 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             .as("check Resource Id")
             .isEqualTo(containerProperties.getId());
 
-    }
-
-    static class FlakyTestRetryAnalyzer implements IRetryAnalyzer {
-        static final Logger logger = LoggerFactory.getLogger(TestSuiteBase.class.getSimpleName());
-        static final int retryLimit = 3;
-
-        final AtomicInteger retryAttempts = new AtomicInteger(0);
-
-        @Override
-        public boolean retry(ITestResult iTestResult) {
-            int retryAttemptSnapshot = this.retryAttempts.incrementAndGet();
-
-            if (retryAttemptSnapshot <= retryLimit) {
-                logger.warn(
-                    "Test '{}' failed. Retry attempt: {} - Retry limit: {}",
-                    iTestResult.getTestName(),
-                    retryAttemptSnapshot,
-                    retryLimit);
-
-                return true;
-            }
-
-            logger.error(
-                "Test '{}' failed. Retry attempt: {} - Retry limit: {}",
-                iTestResult.getTestName(),
-                retryAttemptSnapshot,
-                retryLimit);
-
-            return false;
-        }
     }
 }
