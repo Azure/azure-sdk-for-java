@@ -49,7 +49,8 @@ import java.util.concurrent.ExecutionException;
  */
 public class AADResourceServerOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClientRepository {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AADResourceServerOAuth2AuthorizedClientRepository.class);
+    private static final Logger LOGGER =
+        LoggerFactory.getLogger(AADResourceServerOAuth2AuthorizedClientRepository.class);
 
     private static final String OBO_AUTHORIZEDCLIENT_PREFIX = "obo_authorizedclient_";
 
@@ -80,8 +81,8 @@ public class AADResourceServerOAuth2AuthorizedClientRepository implements OAuth2
         if (clientRegistration.getAuthorizationGrantType().getValue().equals(
             AADAuthorizationGrantType.ON_BEHALF_OF.getValue())) {
             return loadOboAuthorizedClient(clientRegistration, registrationId, principal, request);
-        } else if (clientRegistration.getAuthorizationGrantType().getValue().equals
-            (AADAuthorizationGrantType.CLIENT_CREDENTIALS.getValue())) {
+        } else if (clientRegistration.getAuthorizationGrantType().getValue()
+                                     .equals(AADAuthorizationGrantType.CLIENT_CREDENTIALS.getValue())) {
             return this.oAuth2AuthorizedClientService.loadAuthorizedClient(registrationId, principal.getName());
         }
         return null;

@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.aad;
 
+/**
+ * Defines grant types: client_credentials, authorization_code, on-behalf-of.
+ */
 public enum AADAuthorizationGrantType {
 
     CLIENT_CREDENTIALS("client_credentials"),
