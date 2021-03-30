@@ -21,7 +21,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class ReceiveLinkHandler extends LinkHandler {
     private final String linkName;
     private final AtomicBoolean isFirstResponse = new AtomicBoolean(true);
-    private final Sinks.Many<Delivery> deliveries = Sinks.many().multicast().directBestEffort();
+    private final AtomicBoolean isTerminated = new AtomicBoolean();
+    private final Sinks.Many<Delivery> deliveries = Sinks.many().multicast().onBackpressureBuffer();
     private final Set<Delivery> queuedDeliveries = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private final String entityPath;
 
@@ -41,6 +42,10 @@ public class ReceiveLinkHandler extends LinkHandler {
 
     @Override
     public void close() {
+        if (isTerminated.getAndSet(true)) {
+            return;
+        }
+
         deliveries.emitComplete((signalType, emitResult) -> {
             logger.verbose("connectionId[{}], entityPath[{}], linkName[{}] Could not emit complete.",
                 getConnectionId(), entityPath, linkName);
@@ -124,9 +129,11 @@ public class ReceiveLinkHandler extends LinkHandler {
                 } else {
                     queuedDeliveries.add(delivery);
                     deliveries.emitNext(delivery, (signalType, emitResult) -> {
-                        logger.warning("connectionId[{}], entityPath[{}], linkName[{}] Could not emit delivery. {}",
-                            getConnectionId(), entityPath, linkName, delivery);
-                        return false;
+                        logger.warning("connectionId[{}], entityPath[{}], linkName[{}], emitResult[{}] "
+                                + "Could not emit delivery. {}",
+                            getConnectionId(), entityPath, linkName, emitResult, delivery);
+
+                        return emitResult == Sinks.EmitResult.FAIL_OVERFLOW;
                     });
                 }
             }
