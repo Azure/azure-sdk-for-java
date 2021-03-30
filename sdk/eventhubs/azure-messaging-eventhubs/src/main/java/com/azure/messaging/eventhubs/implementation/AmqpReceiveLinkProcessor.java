@@ -396,7 +396,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     private void drain() {
         // If there are multiple threads that enter this, they'll have incremented the wip number, and we'll know
         // how many were 'missed'.
-        if (wip.compareAndSet(0, 1)) {
+        if (wip.getAndIncrement() != 0) {
             return;
         }
 
