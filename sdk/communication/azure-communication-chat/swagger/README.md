@@ -31,7 +31,7 @@ To update generated files for chat service, run the following command
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/communication/data-plane/Microsoft.CommunicationServicesChat/stable/2021-03-07/communicationserviceschat.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0d832037c324f08da297bb292b5ad91c47f5fa23/specification/communication/data-plane/Microsoft.CommunicationServicesChat/stable/2021-03-07/communicationserviceschat.json
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
