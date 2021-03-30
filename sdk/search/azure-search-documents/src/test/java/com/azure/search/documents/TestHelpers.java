@@ -350,4 +350,24 @@ public final class TestHelpers {
             throw new RuntimeException(ex);
         }
     }
+
+    public static String createGeographyPolygon(String... coordinates) {
+        if (coordinates.length % 2 != 0) {
+            throw new RuntimeException("'coordinates' must contain pairs of two.");
+        }
+
+        StringBuilder builder = new StringBuilder("geography'POLYGON((");
+
+        for (int i = 0; i < coordinates.length; i += 2) {
+            if (i != 0) {
+                builder.append(',');
+            }
+
+            builder.append(coordinates[i])
+                .append(' ')
+                .append(coordinates[i + 1]);
+        }
+
+        return builder.append("))'").toString();
+    }
 }
