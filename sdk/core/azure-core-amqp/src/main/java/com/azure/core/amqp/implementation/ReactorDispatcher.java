@@ -17,22 +17,22 @@ import java.nio.channels.Pipe;
 import java.time.Duration;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * {@link Reactor} is not thread-safe - all calls to {@link Proton} APIs should be on the Reactor Thread.
- * {@link Reactor} works out-of-box for all event driven API - ex: onReceive - which could raise upon onSocketRead.
- * {@link Reactor} doesn't support APIs like send() out-of-box - which could potentially run on different thread to that
- * of the Reactor thread.
+ * {@link Reactor} is not thread-safe - all calls to {@link Proton} APIs should be on the Reactor Thread. {@link
+ * Reactor} works out-of-box for all event driven API - ex: onReceive - which could raise upon onSocketRead. {@link
+ * Reactor} doesn't support APIs like send() out-of-box - which could potentially run on different thread to that of the
+ * Reactor thread.
  *
  * <p>
- * The following utility class is used to generate an Event to hook into {@link Reactor}'s event delegation pattern.
- * It uses a {@link Pipe} as the IO on which Reactor listens to.
+ * The following utility class is used to generate an Event to hook into {@link Reactor}'s event delegation pattern. It
+ * uses a {@link Pipe} as the IO on which Reactor listens to.
  * </p>
  *
  * <p>
- * Cardinality: Multiple {@link ReactorDispatcher}'s could be attached to 1 {@link Reactor}.
- * Each {@link ReactorDispatcher} should be initialized synchronously - as it calls API in {@link Reactor} which is not
+ * Cardinality: Multiple {@link ReactorDispatcher}'s could be attached to 1 {@link Reactor}. Each {@link
+ * ReactorDispatcher} should be initialized synchronously - as it calls API in {@link Reactor} which is not
  * thread-safe.
  * </p>
  */
@@ -43,7 +43,7 @@ public final class ReactorDispatcher {
     private final Pipe ioSignal;
     private final ConcurrentLinkedQueue<Work> workQueue;
     private final WorkScheduler workScheduler;
-    private final AtomicBoolean dequeueInProgress = new AtomicBoolean();
+    private final AtomicInteger wip = new AtomicInteger();
 
     public ReactorDispatcher(final Reactor reactor) throws IOException {
         this.reactor = reactor;
@@ -111,11 +111,15 @@ public final class ReactorDispatcher {
     private final class WorkScheduler implements Callback {
         @Override
         public void run(Selectable selectable) {
-            if (!dequeueInProgress.compareAndSet(false,true)) {
+            // If there are multiple threads that enter this, they'll have incremented the wip number, and we'll know
+            // how many were 'missed'.
+            if (wip.getAndIncrement() != 0) {
                 return;
             }
 
-            try {
+            int missed = 1;
+
+            while (missed != 0) {
                 try {
                     ByteBuffer oneKbByteBuffer = ByteBuffer.allocate(1024);
                     while (ioSignal.source().read(oneKbByteBuffer) > 0) {
@@ -138,8 +142,10 @@ public final class ReactorDispatcher {
                         topWork.dispatchHandler.onTimerTask(null);
                     }
                 }
-            } finally {
-                dequeueInProgress.set(false);
+
+                // If there are multiple threads that tried to enter this, we would have missed some, so we'll go back
+                // through the loop until we have not missed any other work.
+                missed = wip.addAndGet(-missed);
             }
         }
     }
