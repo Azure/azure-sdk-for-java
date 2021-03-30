@@ -159,7 +159,6 @@ public final class DataExportsClientImpl implements DataExportsClient {
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -170,7 +169,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .<PagedResponse<DataExportInner>>map(
@@ -213,7 +212,6 @@ public final class DataExportsClientImpl implements DataExportsClient {
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -222,7 +220,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context)
             .map(
@@ -337,7 +335,6 @@ public final class DataExportsClientImpl implements DataExportsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -349,7 +346,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
                             resourceGroupName,
                             workspaceName,
                             dataExportName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             parameters,
                             accept,
                             context))
@@ -403,7 +400,6 @@ public final class DataExportsClientImpl implements DataExportsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -413,7 +409,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
                 resourceGroupName,
                 workspaceName,
                 dataExportName,
-                apiVersion,
+                this.client.getApiVersion(),
                 parameters,
                 accept,
                 context);
@@ -523,7 +519,6 @@ public final class DataExportsClientImpl implements DataExportsClient {
         if (dataExportName == null) {
             return Mono.error(new IllegalArgumentException("Parameter dataExportName is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -535,7 +530,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
                             resourceGroupName,
                             workspaceName,
                             dataExportName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -578,7 +573,6 @@ public final class DataExportsClientImpl implements DataExportsClient {
         if (dataExportName == null) {
             return Mono.error(new IllegalArgumentException("Parameter dataExportName is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -588,7 +582,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
                 resourceGroupName,
                 workspaceName,
                 dataExportName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -687,7 +681,6 @@ public final class DataExportsClientImpl implements DataExportsClient {
         if (dataExportName == null) {
             return Mono.error(new IllegalArgumentException("Parameter dataExportName is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -699,7 +692,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
                             resourceGroupName,
                             workspaceName,
                             dataExportName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -742,7 +735,6 @@ public final class DataExportsClientImpl implements DataExportsClient {
         if (dataExportName == null) {
             return Mono.error(new IllegalArgumentException("Parameter dataExportName is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -752,7 +744,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
                 resourceGroupName,
                 workspaceName,
                 dataExportName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
