@@ -163,7 +163,7 @@ public class Configuration {
     @Parameter(names = "-bulkloadBatchSize", description = "Control the number of documents uploaded in each BulkExecutor load iteration (Only supported for the LinkedInCtlWorkload)")
     private int bulkloadBatchSize = 200000;
 
-    @Parameter(names = "-testScenario", description = "The test scenario (GET, SQL) for the LinkedInCtlWorkload")
+    @Parameter(names = "-testScenario", description = "The test scenario (GET, QUERY) for the LinkedInCtlWorkload")
     private String testScenario = "GET";
 
     public enum Environment {
