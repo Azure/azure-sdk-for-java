@@ -13,16 +13,19 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.UnixTime;
 import com.azure.core.util.Base64Url;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.DateTimeRfc1123;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -326,35 +329,59 @@ public final class HttpResponseBodyDecoder {
     }
 
     /**
-     * Checks if the {@code returnType} is a decodable type.
+     * Checks if the {@code returnType} is a decode-able type.
+     * <p>
+     * Types that aren't decode-able are the following (including sub-types):
+     * <ul>
+     * <li>BinaryData</li>
+     * <li>byte[]</li>
+     * <li>ByteBuffer</li>
+     * <li>InputStream</li>
+     * <li>Void</li>
+     * <li>void</li>
+     * </ul>
+     *
+     * Reactive, {@link Mono} and {@link Flux}, and Response, {@link Response} and {@link ResponseBase}, generics are
+     * cracked open and their generic types are inspected for being one of the types above.
      *
      * @param returnType The return type of the method.
-     * @return True if the return type is decodable, false otherwise.
+     * @return Flag indicating if the return type is decode-able.
      */
     public static boolean isReturnTypeDecodable(Type returnType) {
         if (returnType == null) {
             return false;
         }
 
-        // Unwrap from Mono
-        if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class)) {
-            returnType = TypeUtil.getTypeArgument(returnType);
-        }
+        returnType = unwrapReturnType(returnType);
 
-        // Find body for complex responses
+        return !TypeUtil.isTypeOrSubTypeOf(returnType, BinaryData.class)
+            && !TypeUtil.isTypeOrSubTypeOf(returnType, byte[].class)
+            && !TypeUtil.isTypeOrSubTypeOf(returnType, ByteBuffer.class)
+            && !TypeUtil.isTypeOrSubTypeOf(returnType, InputStream.class)
+            && !TypeUtil.isTypeOrSubTypeOf(returnType, Void.TYPE)
+            && !TypeUtil.isTypeOrSubTypeOf(returnType, Void.class);
+    }
+
+    private static Type unwrapReturnType(Type returnType) {
+        // First check if the return type is ResponseBase (this must happen before checking Response as ResponseBase is
+        // a sub-type of Response).
+        // If this return type is ResponseBase, get its second generic (body type) an unwrap it further.
         if (TypeUtil.isTypeOrSubTypeOf(returnType, ResponseBase.class)) {
-            ParameterizedType parameterizedType =
-                (ParameterizedType) TypeUtil.getSuperType(returnType, ResponseBase.class);
-            if (parameterizedType.getActualTypeArguments().length == 2) {
-                // check body type
-                returnType = parameterizedType.getActualTypeArguments()[1];
+            Type[] genericTypes = TypeUtil.getTypeArguments(returnType);
+            if (genericTypes.length == 2) {
+                return unwrapReturnType(genericTypes[1]);
             }
         }
 
-        return !FluxUtil.isFluxByteBuffer(returnType)
-            && !TypeUtil.isTypeOrSubTypeOf(returnType, byte[].class)
-            && !TypeUtil.isTypeOrSubTypeOf(returnType, Void.TYPE)
-            && !TypeUtil.isTypeOrSubTypeOf(returnType, Void.class);
+        // Else if the return type is a Mono, Flux, or Response unwrap its first, and only, generic further.
+        if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class)
+            || TypeUtil.isTypeOrSubTypeOf(returnType, Flux.class)
+            || TypeUtil.isTypeOrSubTypeOf(returnType, Response.class)) {
+            return unwrapReturnType(TypeUtil.getTypeArgument(returnType));
+        }
+
+        // Otherwise there is no more unwrapping to perform, return the type as-is.
+        return returnType;
     }
 
     /**

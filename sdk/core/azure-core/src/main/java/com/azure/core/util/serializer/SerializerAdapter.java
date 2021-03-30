@@ -156,13 +156,13 @@ public interface SerializerAdapter {
          * Using ByteArrayOutputStream.toString is better as it won't duplicate the underlying buffer as toByteArray
          * would but it doesn't have support for passing a Charset until Java 10.
          */
-        return deserialize(converterStream.toString("UTF-8"), type, encoding);
+        return deserialize(converterStream.toString(StandardCharsets.UTF_8.name()), type, encoding);
     }
 
     /**
      * Deserialize the provided headers returned from a REST API to an entity instance declared as the model to hold
      * 'Matching' headers.
-     *
+     * <p>
      * 'Matching' headers are the REST API returned headers those with:
      *
      * <ol>
