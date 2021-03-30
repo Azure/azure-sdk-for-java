@@ -3,27 +3,26 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.*;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.ApplicationInsightsClientImpl;
 import com.azure.monitor.opentelemetry.exporter.implementation.ApplicationInsightsClientImplBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.NdJsonSerializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
 
 /**
  * This class provides a fluent builder API to instantiate {@link AzureMonitorTraceExporter} that implements
@@ -31,11 +30,13 @@ import java.util.Objects;
  */
 public final class AzureMonitorExporterBuilder {
     private static final String APPLICATIONINSIGHTS_CONNECTION_STRING = "APPLICATIONINSIGHTS_CONNECTION_STRING";
+    private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE = "https://monitor.azure.com";
     private final ClientLogger logger = new ClientLogger(AzureMonitorExporterBuilder.class);
     private final ApplicationInsightsClientImplBuilder restServiceClientBuilder;
     private String instrumentationKey;
     private String connectionString;
     private AzureMonitorExporterServiceVersion serviceVersion;
+    private TokenCredential credential;
 
     /**
      * Creates an instance of {@link AzureMonitorExporterBuilder}.
@@ -168,6 +169,21 @@ public final class AzureMonitorExporterBuilder {
         if (endpoint != null) {
             this.endpoint(endpoint);
         }
+        String authorizationType = keyValues.get("Authorization");
+        if (authorizationType != null && authorizationType.equals("aad") && this.credential == null) {
+            // Use user assigned managed Identity's client Id if provided
+            String clientId = keyValues.get("AppId");
+            if (clientId != null) {
+                // User Assigned Managed Identity
+                this.credential = new DefaultAzureCredentialBuilder()
+                    .managedIdentityClientId(clientId)
+                    .build();
+            } else {
+                // System Assigned Managed Identity
+                this.credential = new DefaultAzureCredentialBuilder()
+                    .build();
+            }
+        }
         this.connectionString = connectionString;
         return this;
     }
@@ -180,6 +196,17 @@ public final class AzureMonitorExporterBuilder {
      */
     public AzureMonitorExporterBuilder serviceVersion(AzureMonitorExporterServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
+        return this;
+    }
+
+    /**
+     * Sets the token credential required for authentication with the ingestion endpoint service.
+     *
+     * @param credential The Azure Identity TokenCredential.
+     * @return The update {@link AzureMonitorExporterBuilder} object.
+     */
+    public AzureMonitorExporterBuilder credential(TokenCredential credential) {
+        this.credential = credential;
         return this;
     }
 
@@ -230,6 +257,11 @@ public final class AzureMonitorExporterBuilder {
         jacksonAdapter.serializer().registerModule(ndjsonModule);
         ndjsonModule.addSerializer(new NdJsonSerializer());
         restServiceClientBuilder.serializerAdapter(jacksonAdapter);
+        if (this.credential != null) {
+            // Add authentication policy to HttpPipeline
+            BearerTokenAuthenticationPolicy authenticationPolicy= new BearerTokenAuthenticationPolicy(this.credential, APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE );
+            restServiceClientBuilder.addPolicy(authenticationPolicy);
+        }
         ApplicationInsightsClientImpl restServiceClient = restServiceClientBuilder.buildClient();
 
         return new MonitorExporterAsyncClient(restServiceClient);
