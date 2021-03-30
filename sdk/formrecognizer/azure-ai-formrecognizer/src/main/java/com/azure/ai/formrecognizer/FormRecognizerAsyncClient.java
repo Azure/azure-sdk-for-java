@@ -801,7 +801,7 @@ public final class FormRecognizerAsyncClient {
 
     /**
      * Analyze ID documents using optical character recognition (OCR) and a prebuilt ID trained
-     * model to extract key information from passports.
+     * model to extract key information from passports and US driver licenses.
      * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an ID document.
      *
      * <p>The service does not support cancellation of the long running operation and returns with an
@@ -826,7 +826,7 @@ public final class FormRecognizerAsyncClient {
 
     /**
      * Analyze ID documents using optical character recognition (OCR) and a prebuilt ID trained
-     * model to extract key information from passports.
+     * model to extract key information from passports and US driver licenses.
      * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an ID document.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
@@ -884,7 +884,7 @@ public final class FormRecognizerAsyncClient {
 
     /**
      * Analyze ID documents using optical character recognition (OCR) and a prebuilt ID trained
-     * model to extract key information from passports.
+     * model to extract key information from passports and US driver licenses.
      * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an ID document.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
@@ -912,7 +912,7 @@ public final class FormRecognizerAsyncClient {
 
     /**
      * Analyze ID documents using optical character recognition (OCR) and a prebuilt ID trained
-     * model to extract key information from passports.
+     * model to extract key information from passports and US driver licenses.
      * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an ID document.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
