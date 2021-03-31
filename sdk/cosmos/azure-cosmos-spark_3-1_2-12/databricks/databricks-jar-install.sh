@@ -2,10 +2,8 @@
 
 CLUSTER_NAME=$1
 JARPATH=$2
-JARFILE=$3
 [[ -z "$CLUSTER_NAME" ]] && exit 1
-[[ -z "$JARFILE" ]] && exit 1
-[[ -z "$JARFILE" ]] && exit 1
+[[ -z "$JARPATH" ]] && exit 1
 
 echo "Looking for cluster '$CLUSTER_NAME'"
 
@@ -29,6 +27,21 @@ bash sdk/cosmos/azure-cosmos-spark_3-1_2-12/databricks/databricks-cluster-restar
 
 echo "Deleting files in dbfs:/tmp/libraries"
 dbfs rm --recursive dbfs:/tmp/libraries
+
+for file in $JARPATH/*.jar
+do
+	filename=${file##*/}
+	if [[ "$filename" != *"original"* && "$filename" != *"sources"* && "$filename" != *"javadoc"* ]]
+	then
+		JARFILE=$filename
+	fi
+done
+
+if [[ -z "$JARFILE" ]]
+then
+	echo "Cannot find a Jar file name azure-cosmos-spark_3-1_2-12"
+	exit 1
+fi
 
 echo "Copying files to DBFS $JARPATH/$JARFILE"
 dbfs cp $JARPATH/$JARFILE dbfs:/tmp/libraries/$JARFILE --overwrite
