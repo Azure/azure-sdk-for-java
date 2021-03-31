@@ -22,6 +22,9 @@ public abstract class Handler extends BaseHandler implements Closeable {
         .latestOrDefault(EndpointState.UNINITIALIZED);
     private final String connectionId;
     private final String hostname;
+    private final Object endpointLock = new Object();
+
+    private volatile EndpointState lastEndpoint = null;
 
     final ClientLogger logger;
 
@@ -71,9 +74,22 @@ public abstract class Handler extends BaseHandler implements Closeable {
         return endpointStates.asFlux();
     }
 
+    /**
+     * Emits the next endpoint. If the previous endpoint was emitted, it is skipped.
+     *
+     * @param state The next endpoint state to emit.
+     */
     void onNext(EndpointState state) {
         if (isTerminal.get()) {
             return;
+        }
+
+        synchronized (endpointLock) {
+            if (lastEndpoint == state) {
+                return;
+            }
+
+            lastEndpoint = state;
         }
 
         endpointStates.emitNext(state, (signalType, emitResult) -> {
@@ -84,6 +100,11 @@ public abstract class Handler extends BaseHandler implements Closeable {
         });
     }
 
+    /**
+     * Emits an error if the handler has not reached a terminal state already.
+     *
+     * @param error The error to emit.
+     */
     void onError(Throwable error) {
         if (isTerminal.getAndSet(true)) {
             return;
@@ -107,9 +128,18 @@ public abstract class Handler extends BaseHandler implements Closeable {
             return;
         }
 
+        final boolean shouldEmit;
+        synchronized (endpointLock) {
+            shouldEmit = lastEndpoint != EndpointState.CLOSED;
+            lastEndpoint = EndpointState.CLOSED;
+        }
+
+        if (shouldEmit) {
+            endpointStates.emitNext(EndpointState.CLOSED, Sinks.EmitFailureHandler.FAIL_FAST);
+        }
+
         endpointStates.emitComplete((signalType, emitResult) -> {
-            logger.verbose("connectionId[{}] signal[{}] result[{}] Could not emit complete.", connectionId,
-                signalType, emitResult);
+            logger.verbose("connectionId[{}] result[{}] Could not emit complete.", connectionId, emitResult);
 
             return false;
         });

@@ -9,6 +9,7 @@ import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
@@ -22,7 +23,6 @@ import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
-import org.apache.qpid.proton.engine.Record;
 import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.impl.DeliveryImpl;
 import org.apache.qpid.proton.message.Message;
@@ -82,6 +82,8 @@ public class ReactorSenderTest {
     @Mock
     private ReactorProvider reactorProvider;
     @Mock
+    private ReactorDispatcher dispatcher;
+    @Mock
     private TokenManager tokenManager;
     @Mock
     private Reactor reactor;
@@ -95,10 +97,9 @@ public class ReactorSenderTest {
     private ReactorDispatcher reactorDispatcher;
 
     @Captor
-    private ArgumentCaptor<Runnable> dispatcherCaptor;
-    @Captor
     private  ArgumentCaptor<DeliveryState> deliveryStateArgumentCaptor;
 
+    private final TestPublisher<AmqpResponseCode> authorizationResults = TestPublisher.createCold();
     private Message message;
     private AmqpRetryOptions options;
     private AutoCloseable mocksCloseable;
@@ -120,7 +121,9 @@ public class ReactorSenderTest {
         when(handler.getEndpointStates()).thenReturn(endpointStatePublisher.flux());
         endpointStatePublisher.next(EndpointState.ACTIVE);
 
-        when(tokenManager.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.ACCEPTED));
+        when(tokenManager.getAuthorizationResults()).thenReturn(authorizationResults.flux());
+        authorizationResults.next(AmqpResponseCode.ACCEPTED);
+
         when(sender.getCredit()).thenReturn(100);
         when(sender.advance()).thenReturn(true);
         doNothing().when(selectable).setChannel(any());
@@ -129,21 +132,7 @@ public class ReactorSenderTest {
         doNothing().when(selectable).setReading(true);
         doNothing().when(reactor).update(selectable);
 
-        when(reactor.attachments()).thenReturn(new Record() {
-            @Override
-            public <T> T get(Object o, Class<T> aClass) {
-                return null;
-            }
-
-            @Override
-            public <T> void set(Object o, Class<T> aClass, T t) {
-            }
-
-            @Override
-            public void clear() {
-            }
-        });
-        when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
+        when(reactorProvider.getReactorDispatcher()).thenReturn(dispatcher);
         when(sender.getRemoteMaxMessageSize()).thenReturn(UnsignedLong.valueOf(1000));
 
         options = new AmqpRetryOptions()
@@ -241,25 +230,22 @@ public class ReactorSenderTest {
         final ReactorSender reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
             reactorProvider, tokenManager, messageSerializer, options);
 
-        final ReactorDispatcher reactorDispatcherMock = mock(ReactorDispatcher.class);
-        when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcherMock);
-        doNothing().when(reactorDispatcherMock).invoke(any(Runnable.class));
-
         // Creating delivery for sending.
         final Delivery deliveryToSend = mock(Delivery.class);
         doNothing().when(deliveryToSend).setMessageFormat(anyInt());
         doNothing().when(deliveryToSend).disposition(deliveryStateArgumentCaptor.capture());
         when(sender.delivery(any(byte[].class))).thenReturn(deliveryToSend);
 
+        doAnswer(invocationOnMock -> {
+            final Runnable work = invocationOnMock.getArgument(0);
+            work.run();
+            return null;
+        }).when(dispatcher).invoke(any(Runnable.class));
+
         // Act
-        reactorSender.send(message, transactionalState).subscribe();
-
-        verify(reactorDispatcherMock).invoke(dispatcherCaptor.capture());
-
-        List<Runnable> invocations = dispatcherCaptor.getAllValues();
-
-        // Apply the invocation.
-        invocations.get(0).run();
+        StepVerifier.create(reactorSender.send(message, transactionalState))
+            .expectError(AmqpException.class) // Because we did not process a "delivered message", it'll timeout.
+            .verify();
 
         // Assert
         DeliveryState deliveryState = deliveryStateArgumentCaptor.getValue();
@@ -593,5 +579,48 @@ public class ReactorSenderTest {
             assertNotNull(work);
             work.run();
         });
+    @Test
+    void closesWhenNoLongerAuthorized() throws IOException {
+        // Arrange
+        final ReactorSender reactorSender = new ReactorSender(ENTITY_PATH, sender, handler, reactorProvider,
+            tokenManager, messageSerializer, options);
+        final AmqpException error = new AmqpException(false, AmqpErrorCondition.ILLEGAL_STATE, "not-allowed",
+            new AmqpErrorContext("foo-bar"));
+
+        final Message message = mock(Message.class);
+
+        doAnswer(invocationOnMock -> {
+            final Runnable work = invocationOnMock.getArgument(0);
+            work.run();
+            return null;
+        }).when(dispatcher).invoke(any(Runnable.class));
+
+        // Act
+        authorizationResults.error(error);
+
+        // Assert and Act
+        StepVerifier.create(reactorSender.send(message))
+            .expectError(IllegalStateException.class)
+            .verify();
+    }
+
+    @Test
+    void closesWhenAuthorizationResultsComplete() throws IOException {
+        // Arrange
+        final ReactorSender reactorSender = new ReactorSender(ENTITY_PATH, sender, handler, reactorProvider,
+            tokenManager, messageSerializer, options);
+
+        doAnswer(invocationOnMock -> {
+            final Runnable work = invocationOnMock.getArgument(0);
+            work.run();
+            return null;
+        }).when(dispatcher).invoke(any(Runnable.class));
+
+        authorizationResults.complete();
+
+        // Assert and Act
+        StepVerifier.create(reactorSender.send(message))
+            .expectError(IllegalStateException.class)
+            .verify();
     }
 }

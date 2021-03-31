@@ -106,8 +106,8 @@ class ReactorExecutor implements Closeable {
             final String message = !CoreUtils.isNullOrEmpty(cause.getMessage())
                 ? cause.getMessage()
                 : !CoreUtils.isNullOrEmpty(handlerException.getMessage())
-                    ? handlerException.getMessage()
-                    : "Reactor encountered unrecoverable error";
+                ? handlerException.getMessage()
+                : "Reactor encountered unrecoverable error";
 
             final AmqpException exception;
             final AmqpErrorContext errorContext = new AmqpErrorContext(hostname);

@@ -149,6 +149,7 @@ public class ReactorSessionTest {
             .then(() -> handler.onSessionRemoteOpen(event))
             .expectNext(AmqpEndpointState.ACTIVE)
             .then(() -> handler.close())
+            .expectNext(AmqpEndpointState.CLOSED)
             .expectComplete()
             .verify();
     }

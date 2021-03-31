@@ -106,7 +106,7 @@ public final class AccessTokensImpl {
      */
     @Host("{url}")
     @ServiceInterface(name = "ContainerRegistryAcc")
-    interface AccessTokensServiceImpl {
+    public interface AccessTokensServiceImpl {
         @Post("/oauth2/token")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)

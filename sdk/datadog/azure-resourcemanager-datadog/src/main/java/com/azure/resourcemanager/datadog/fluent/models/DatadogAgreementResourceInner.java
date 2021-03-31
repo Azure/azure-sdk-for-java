@@ -6,6 +6,7 @@ package com.azure.resourcemanager.datadog.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datadog.models.DatadogAgreementProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -21,6 +22,12 @@ public final class DatadogAgreementResourceInner extends ProxyResource {
      */
     @JsonProperty(value = "properties")
     private DatadogAgreementProperties properties;
+
+    /*
+     * Metadata pertaining to creation and last modification of the resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
      * Get the properties property: Represents the properties of the resource.
@@ -40,6 +47,15 @@ public final class DatadogAgreementResourceInner extends ProxyResource {
     public DatadogAgreementResourceInner withProperties(DatadogAgreementProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**

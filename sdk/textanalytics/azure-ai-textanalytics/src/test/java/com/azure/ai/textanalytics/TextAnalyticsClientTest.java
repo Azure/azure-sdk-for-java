@@ -2176,7 +2176,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         analyzeHealthcareEntitiesForAssertionRunner((documents, options) -> {
             SyncPoller<AnalyzeHealthcareEntitiesOperationDetail,
                           PagedIterable<AnalyzeHealthcareEntitiesResultCollection>> syncPoller =
-                client.beginAnalyzeHealthcareEntities(documents, "en", options, Context.NONE);
+                client.beginAnalyzeHealthcareEntities(documents, "en", options);
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             PagedIterable<AnalyzeHealthcareEntitiesResultCollection> healthcareTaskResults = syncPoller.getFinalResult();

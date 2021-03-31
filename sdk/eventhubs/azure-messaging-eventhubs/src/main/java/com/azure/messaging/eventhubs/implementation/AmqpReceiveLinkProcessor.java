@@ -410,17 +410,20 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     }
 
     private void drain() {
-        // If someone is already in this loop, then we are already clearing the queue.
-        if (!wip.compareAndSet(0, 1)) {
+        // If there are multiple threads that enter this, they'll have incremented the wip number, and we'll know
+        // how many were 'missed'.
+        if (wip.getAndIncrement() != 0) {
             return;
         }
 
-        try {
+        int missed = 1;
+
+        while (missed != 0) {
             drainQueue();
-        } finally {
-            if (wip.decrementAndGet() != 0) {
-                logger.warning("There is another worker in drainLoop. But there should only be 1 worker.");
-            }
+
+            // If there are multiple threads that tried to enter this, we would have missed some, so we'll go back
+            // through the loop until we have not missed any other work.
+            missed = wip.addAndGet(-missed);
         }
     }
 

@@ -7,7 +7,6 @@ import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
@@ -93,8 +92,8 @@ class ServiceBusReceiveLinkProcessorTest {
     void setup() {
         MockitoAnnotations.initMocks(this);
 
-        linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy, ServiceBusReceiveMode.PEEK_LOCK);
-        linkProcessorNoPrefetch = new ServiceBusReceiveLinkProcessor(0, retryPolicy, ServiceBusReceiveMode.PEEK_LOCK);
+        linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy);
+        linkProcessorNoPrefetch = new ServiceBusReceiveLinkProcessor(0, retryPolicy);
 
         when(link1.getEndpointStates()).thenReturn(endpointProcessor.flux());
         when(link1.receive()).thenReturn(messagePublisher.flux());
@@ -107,12 +106,8 @@ class ServiceBusReceiveLinkProcessorTest {
 
     @Test
     void constructor() {
-        assertThrows(NullPointerException.class, () -> new ServiceBusReceiveLinkProcessor(PREFETCH, null,
-            ServiceBusReceiveMode.PEEK_LOCK));
-        assertThrows(IllegalArgumentException.class, () -> new ServiceBusReceiveLinkProcessor(-1, retryPolicy,
-            ServiceBusReceiveMode.PEEK_LOCK));
-        assertThrows(NullPointerException.class, () -> new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy,
-            null));
+        assertThrows(NullPointerException.class, () -> new ServiceBusReceiveLinkProcessor(PREFETCH, null));
+        assertThrows(IllegalArgumentException.class, () -> new ServiceBusReceiveLinkProcessor(-1, retryPolicy));
     }
 
     /**
@@ -139,6 +134,9 @@ class ServiceBusReceiveLinkProcessorTest {
         assertTrue(processor.isTerminated());
         assertFalse(processor.hasError());
         assertNull(processor.getError());
+
+        // dispose the processor
+        processor.dispose();
 
         // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
         verify(link1, times(3)).addCredits(eq(PREFETCH - 1));
@@ -570,6 +568,9 @@ class ServiceBusReceiveLinkProcessorTest {
         assertTrue(processor.isTerminated());
         assertFalse(processor.hasError());
         assertNull(processor.getError());
+
+        // dispose the processor
+        processor.dispose();
 
         // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
         verify(link1, times(3)).addCredits(eq(PREFETCH));

@@ -36,10 +36,6 @@ import static com.azure.core.util.FluxUtil.monoError;
  * Handles receiving events from Event Hubs service and translating them to proton-j messages.
  */
 public class ReactorReceiver implements AmqpReceiveLink {
-    // Initial value is true because we could not have created this receiver without authorising against the CBS node
-    // first.
-    private final AtomicBoolean hasAuthorized = new AtomicBoolean(true);
-
     private final String entityPath;
     private final Receiver receiver;
     private final ReceiveLinkHandler handler;
@@ -100,8 +96,8 @@ public class ReactorReceiver implements AmqpReceiveLink {
         this.retryOptions = retryOptions;
         this.endpointStates = this.handler.getEndpointStates()
             .map(state -> {
-                logger.verbose("connectionId[{}], linkName[{}] State {}", handler.getConnectionId(), getLinkName(),
-                    state);
+                logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] State {}", handler.getConnectionId(),
+                    entityPath, getLinkName(), state);
                 return AmqpEndpointStateUtil.getConnectionState(state);
             })
             .doOnError(error -> {
@@ -140,8 +136,10 @@ public class ReactorReceiver implements AmqpReceiveLink {
                 }).subscribe(response -> {
                     logger.verbose("connectionId[{}] linkName[{}] response[{}] Token refreshed.",
                         handler.getConnectionId(), getLinkName(), response);
-                    hasAuthorized.set(true);
-                }, error -> hasAuthorized.set(false), () -> hasAuthorized.set(false)),
+                }, error -> {}, () -> {
+                        logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Authorization completed.",
+                        handler.getConnectionId(), entityPath, getLinkName());
+                    }),
 
             amqpConnection.getShutdownSignals().flatMap(signal -> {
                 logger.verbose("connectionId[{}] linkName[{}] Shutdown signal received.", handler.getConnectionId(),
@@ -298,6 +296,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
 
     @Override
     public String toString() {
-        return String.format("link name: [%s], entity path: [%s]", receiver.getName(), entityPath);
+        return String.format("connectionId: [%s] entity path: [%s] linkName: [%s]", receiver.getName(), entityPath,
+            getLinkName());
     }
 }

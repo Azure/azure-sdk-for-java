@@ -10,7 +10,9 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Source;
@@ -77,7 +79,9 @@ class ReactorReceiverTest {
 
     private final TestPublisher<AmqpShutdownSignal> shutdownSignals = TestPublisher.create();
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
+    private final TestPublisher<AmqpResponseCode> testPublisher = TestPublisher.createCold();
 
+    private TokenManager tokenManager;
     private ReceiveLinkHandler receiverHandler;
     private ReactorReceiver reactorReceiver;
     private AutoCloseable mocksCloseable;
@@ -107,8 +111,8 @@ class ReactorReceiverTest {
         final String entityPath = "test-entity-path";
         receiverHandler = new ReceiveLinkHandler("test-connection-id", "test-host",
             "test-receiver-name", entityPath);
-        final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(Mono.just(cbsNode),
-            "test-tokenAudience", "test-scopes");
+
+        when(tokenManager.getAuthorizationResults()).thenReturn(testPublisher.flux());
 
         when(amqpConnection.getShutdownSignals()).thenReturn(shutdownSignals.flux());
 
@@ -179,6 +183,7 @@ class ReactorReceiverTest {
             .then(() -> receiverHandler.onLinkRemoteOpen(event))
             .expectNext(AmqpEndpointState.ACTIVE)
             .then(() -> receiverHandler.close())
+            .expectNext(AmqpEndpointState.CLOSED)
             .verifyComplete();
     }
 
@@ -213,7 +218,6 @@ class ReactorReceiverTest {
 
         verify(link).setCondition(captor.capture());
         Assertions.assertSame(condition, captor.getValue());
-
     }
 
     @Test
@@ -274,6 +278,12 @@ class ReactorReceiverTest {
 
         when(creditSupplier.get()).thenReturn(creditsToAdd);
         reactorReceiver.setEmptyCreditListener(creditSupplier);
+
+        doAnswer(invocationOnMock -> {
+            final Runnable work = invocationOnMock.getArgument(0);
+            work.run();
+            return null;
+        }).when(dispatcher).invoke(any(Runnable.class));
 
         // Act & Assert
         StepVerifier.create(reactorReceiver.receive())
@@ -517,5 +527,40 @@ class ReactorReceiverTest {
         verify(receiver).close();
 
         shutdownSignals.assertNoSubscribers();
+        // Verify that the get addCredits was called on that dispatcher.
+        verify(receiver).flow(10);
+    }
+
+    @Test
+    void closesWhenNoLongerAuthorized() throws IOException {
+        // Arrange
+        final AmqpException error = new AmqpException(false, AmqpErrorCondition.ILLEGAL_STATE, "not-allowed",
+            new AmqpErrorContext("foo-bar"));
+
+        doAnswer(invocationOnMock -> {
+            final Runnable work = invocationOnMock.getArgument(0);
+            work.run();
+            return null;
+        }).when(dispatcher).invoke(any(Runnable.class));
+
+        // Assert and Act
+        StepVerifier.create(reactorReceiver.receive())
+            .then(() -> testPublisher.error(error))
+            .verifyComplete();
+    }
+
+    @Test
+    void closesWhenAuthorizationResultsComplete() throws IOException {
+        // Arrange
+        doAnswer(invocationOnMock -> {
+            final Runnable work = invocationOnMock.getArgument(0);
+            work.run();
+            return null;
+        }).when(dispatcher).invoke(any(Runnable.class));
+
+        // Assert and Act
+        StepVerifier.create(reactorReceiver.receive())
+            .then(testPublisher::complete)
+            .verifyComplete();
     }
 }

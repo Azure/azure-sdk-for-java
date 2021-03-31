@@ -19,9 +19,9 @@ public class SendLinkHandler extends LinkHandler {
     private final String linkName;
     private final String entityPath;
     private final AtomicBoolean isFirstFlow = new AtomicBoolean(true);
-    private final AtomicBoolean isClosed = new AtomicBoolean();
+    private final AtomicBoolean isTerminated = new AtomicBoolean();
     private final Sinks.Many<Integer> creditProcessor = Sinks.many().unicast().onBackpressureBuffer();
-    private final Sinks.Many<Delivery> deliveryProcessor = Sinks.many().multicast().directBestEffort();
+    private final Sinks.Many<Delivery> deliveryProcessor = Sinks.many().multicast().onBackpressureBuffer();
 
     public SendLinkHandler(String connectionId, String hostname, String linkName, String entityPath) {
         super(connectionId, hostname, entityPath, new ClientLogger(SendLinkHandler.class));
@@ -43,7 +43,7 @@ public class SendLinkHandler extends LinkHandler {
 
     @Override
     public void close() {
-        if (isClosed.getAndSet(true)) {
+        if (isTerminated.getAndSet(true)) {
             return;
         }
 

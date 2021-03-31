@@ -25,6 +25,7 @@ public class HandlerTest {
         StepVerifier.create(handler.getEndpointStates())
             .expectNext(EndpointState.UNINITIALIZED)
             .then(handler::close)
+            .expectNext(EndpointState.CLOSED)
             .verifyComplete();
     }
 
@@ -38,6 +39,7 @@ public class HandlerTest {
             .then(() -> handler.onNext(EndpointState.ACTIVE))
             .expectNext(EndpointState.ACTIVE)
             .then(handler::close)
+            .expectNext(EndpointState.CLOSED)
             .verifyComplete();
     }
 
@@ -86,12 +88,13 @@ public class HandlerTest {
             .then(() -> handler.onNext(EndpointState.ACTIVE))
             .expectNext(EndpointState.ACTIVE)
             .then(() -> handler.close())
+            .expectNext(EndpointState.CLOSED)
             .expectComplete()
             .verify();
 
         // The last state is always replayed before it is closed.
         StepVerifier.create(handler.getEndpointStates())
-            .expectNext(EndpointState.ACTIVE)
+            .expectNext(EndpointState.CLOSED)
             .expectComplete()
             .verify();
     }
