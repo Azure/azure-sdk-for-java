@@ -6,6 +6,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
@@ -341,6 +342,12 @@ public abstract class IntegrationTestBase extends TestBase {
                     closeable.getClass().getSimpleName()), error);
             }
         }
+    }
+
+    protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled, AmqpMessageBody amqpMessageBody) {
+        final ServiceBusMessage message = new ServiceBusMessage(amqpMessageBody);
+        logger.verbose("Message id '{}'.", messageId);
+        return isSessionEnabled ? message.setSessionId(sessionId) : message;
     }
 
     protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled) {

@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.models.AmqpAddress;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpMessageBody;
+import com.azure.core.amqp.models.AmqpMessageBodyType;
 import com.azure.core.amqp.models.AmqpMessageHeader;
 import com.azure.core.amqp.models.AmqpMessageId;
 import com.azure.core.amqp.models.AmqpMessageProperties;
@@ -620,6 +621,77 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .thenCancel()
             .verify();
 
+    }
+
+    /**
+     * Verifies that we can send and receive a message AMQP Sequence andValue object.
+     */
+    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
+    @ParameterizedTest
+    void receiveMessageAmqpTypes(MessagingEntityType entityType, boolean isSessionEnabled) {
+        // Arrange
+        final int entityIndex = TestUtils.USE_CASE_AMQP_TYPES;
+        final boolean shareConnection = false;
+        final boolean useCredentials = false;
+        final Duration shortWait = Duration.ofSeconds(3);
+        final Long expectedLongValue = Long.parseLong("6");
+
+        this.sender = getSenderBuilder(useCredentials, entityType, entityIndex, isSessionEnabled, shareConnection)
+            .buildAsyncClient();
+
+        // Send  value Object
+        String messageId = UUID.randomUUID().toString();
+        ServiceBusMessage message = getMessage(messageId, isSessionEnabled, AmqpMessageBody.fromValue(expectedLongValue));
+        sendMessage(message).block(TIMEOUT);
+
+        // send SEQUENCE
+        messageId = UUID.randomUUID().toString();
+
+        List<Object> sequenceData = new ArrayList<>();
+        sequenceData.add("A1");
+        sequenceData.add(1L);
+        sequenceData.add(2);
+
+        message = getMessage(messageId, isSessionEnabled, AmqpMessageBody.fromSequence(sequenceData));
+        sendMessage(message).block(TIMEOUT);
+
+        // Now create receiver
+        if (isSessionEnabled) {
+            assertNotNull(sessionId, "'sessionId' should have been set.");
+            this.sessionReceiver = getSessionReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
+                .buildAsyncClient();
+            this.receiver = this.sessionReceiver.acceptSession(sessionId).block();
+        } else {
+            this.receiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
+                .buildAsyncClient();
+        }
+
+        // Assert
+        StepVerifier.create(receiver.receiveMessages())
+            .assertNext(receivedMessage -> {
+                AmqpAnnotatedMessage amqpAnnotatedMessage = receivedMessage.getRawAmqpMessage();
+                AmqpMessageBodyType type = amqpAnnotatedMessage.getBody().getBodyType();
+                assertEquals(AmqpMessageBodyType.VALUE, type);
+                Object value = amqpAnnotatedMessage.getBody().getValue();
+                assertTrue(value instanceof Long);
+                assertEquals(expectedLongValue.longValue(), ((Long) value).longValue());
+            })
+            .assertNext(receivedMessage -> {
+                AmqpAnnotatedMessage amqpAnnotatedMessage = receivedMessage.getRawAmqpMessage();
+                AmqpMessageBodyType type = amqpAnnotatedMessage.getBody().getBodyType();
+                assertEquals(AmqpMessageBodyType.SEQUENCE, type);
+                assertArrayEquals(sequenceData.toArray(), amqpAnnotatedMessage.getBody().getSequence().toArray());
+            })
+            .thenAwait(shortWait) // Give time for autoComplete to finish
+            .thenCancel()
+            .verify();
+
+        if (!isSessionEnabled) {
+            StepVerifier.create(receiver.receiveMessages())
+                .thenAwait(shortWait)
+                .thenCancel()
+                .verify();
+        }
     }
 
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")

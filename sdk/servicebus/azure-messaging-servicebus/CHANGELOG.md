@@ -1,6 +1,9 @@
 # Release History
 
 ## 7.2.0-beta.1 (Unreleased)
+### New Features
+- Issue [17614](https://github.com/Azure/azure-sdk-for-java/issues/17614) : Adding support for AMQP Data types SEQUENCE 
+  and VALUE.
 ### Bug Fixes
 - Fix issue [19923](https://github.com/Azure/azure-sdk-for-java/issues/19923) for session receiver only: Fix a silent 
 error 'java.lang.ArithmeticException: long overflow' by not starting 'LockRenewOperation' for each received message.

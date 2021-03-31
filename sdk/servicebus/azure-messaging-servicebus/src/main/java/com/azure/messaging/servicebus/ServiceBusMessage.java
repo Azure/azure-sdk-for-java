@@ -95,6 +95,16 @@ public class ServiceBusMessage {
     }
 
     /**
+     *
+     * @param amqpMessageBody amqp message body.
+     */
+    public ServiceBusMessage(AmqpMessageBody amqpMessageBody) {
+        Objects.requireNonNull(amqpMessageBody, "'body' cannot be null.");
+        this.context = Context.NONE;
+        this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(amqpMessageBody);
+    }
+
+    /**
      * Creates a {@link ServiceBusMessage} using properties from {@code receivedMessage}. This is normally used when a
      * {@link ServiceBusReceivedMessage} needs to be sent to another entity.
      *
@@ -225,6 +235,7 @@ public class ServiceBusMessage {
      * of {@link #getApplicationProperties()} when creating the event, to associate serialization hints as an aid to
      * consumers who wish to deserialize the binary data.</p>
      *
+     * @throws IllegalStateException if called for the messages which are not of binary data type.
      * @return Binary data representing the payload.
      */
     public BinaryData getBody() {
@@ -234,7 +245,7 @@ public class ServiceBusMessage {
                 return BinaryData.fromBytes(amqpAnnotatedMessage.getBody().getFirstData());
             case SEQUENCE:
             case VALUE:
-                throw logger.logExceptionAsError(new UnsupportedOperationException("Not supported AmqpBodyType: "
+                throw logger.logExceptionAsError(new IllegalStateException("Message  body type is not DATA, instead it is: "
                     + type.toString()));
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown AmqpBodyType: "
