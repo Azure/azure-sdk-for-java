@@ -97,10 +97,6 @@ public final class ReactorDispatcher {
     }
 
     private void signalWorkQueue() throws IOException {
-        if (dequeueInProgress.get()) {
-            return;
-        }
-
         try {
             ByteBuffer oneByteBuffer = ByteBuffer.allocate(1);
             while (this.ioSignal.sink().write(oneByteBuffer) == 0) {
