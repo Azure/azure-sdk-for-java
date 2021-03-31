@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.aad;
 
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+
 /**
  * Defines grant types: client_credentials, authorization_code, on-behalf-of.
  */
@@ -19,5 +21,9 @@ public enum AADAuthorizationGrantType {
 
     public String getValue() {
         return authorizationGrantType;
+    }
+
+    public boolean isSameGrantType(AuthorizationGrantType grantType){
+        return this.authorizationGrantType.equals(grantType.getValue());
     }
 }

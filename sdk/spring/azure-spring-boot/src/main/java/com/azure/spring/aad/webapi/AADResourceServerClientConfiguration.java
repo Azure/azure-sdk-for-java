@@ -84,11 +84,11 @@ public class AADResourceServerClientConfiguration {
         for (String id : properties.getAuthorizationClients().keySet()) {
             AuthorizationClientProperties authorizationProperties = properties.getAuthorizationClients().get(id);
             // The default is null in order to be compatible with previous OBO flow.
-            if (authorizationProperties.getAuthorizationGrantType() == null || authorizationProperties
-                .getAuthorizationGrantType().equals(AADAuthorizationGrantType.ON_BEHALF_OF.getValue())) {
+            if (authorizationProperties.getAuthorizationGrantType() == null || AADAuthorizationGrantType.ON_BEHALF_OF
+                .equals(authorizationProperties.getAuthorizationGrantType())) {
                 result.add(createOboClientBuilder(id, authorizationProperties));
-            } else if (authorizationProperties.getAuthorizationGrantType().equals(AADAuthorizationGrantType
-                .CLIENT_CREDENTIALS.getValue())) {
+            } else if (AADAuthorizationGrantType.CLIENT_CREDENTIALS
+                .equals(authorizationProperties.getAuthorizationGrantType())) {
                 result.add(createWebClientBuilder(id, authorizationProperties));
             }
         }

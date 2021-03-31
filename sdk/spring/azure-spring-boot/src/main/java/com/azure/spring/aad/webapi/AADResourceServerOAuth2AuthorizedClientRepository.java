@@ -71,19 +71,18 @@ public class AADResourceServerOAuth2AuthorizedClientRepository implements OAuth2
     @Override
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public <T extends OAuth2AuthorizedClient> T loadAuthorizedClient(String registrationId,
-                                                                     Authentication principal,
+                                                                     Authentication authentication,
                                                                      HttpServletRequest request) {
         ClientRegistration clientRegistration = repository.findByRegistrationId(registrationId);
         if (clientRegistration == null) {
             LOGGER.error("Not found the ClientRegistration, registrationId={}", registrationId);
             return null;
         }
-        if (clientRegistration.getAuthorizationGrantType().getValue().equals(
-            AADAuthorizationGrantType.ON_BEHALF_OF.getValue())) {
-            return loadOboAuthorizedClient(clientRegistration, registrationId, principal, request);
-        } else if (clientRegistration.getAuthorizationGrantType().getValue()
-                                     .equals(AADAuthorizationGrantType.CLIENT_CREDENTIALS.getValue())) {
-            return this.oAuth2AuthorizedClientService.loadAuthorizedClient(registrationId, principal.getName());
+        if (AADAuthorizationGrantType.ON_BEHALF_OF.isSameGrantType(clientRegistration.getAuthorizationGrantType())) {
+            return loadOboAuthorizedClient(clientRegistration, registrationId, authentication, request);
+        } else if (AADAuthorizationGrantType.CLIENT_CREDENTIALS
+            .isSameGrantType(clientRegistration.getAuthorizationGrantType())) {
+            return this.oAuth2AuthorizedClientService.loadAuthorizedClient(registrationId, authentication.getName());
         }
         return null;
     }
@@ -91,17 +90,17 @@ public class AADResourceServerOAuth2AuthorizedClientRepository implements OAuth2
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private <T extends OAuth2AuthorizedClient> T loadOboAuthorizedClient(ClientRegistration clientRegistration,
                                                                          String registrationId,
-                                                                         Authentication principal,
+                                                                         Authentication authentication,
                                                                          HttpServletRequest request) {
         String oboAuthorizedClientAttributeName = OBO_AUTHORIZEDCLIENT_PREFIX + registrationId;
         if (request.getAttribute(oboAuthorizedClientAttributeName) != null) {
             return (T) request.getAttribute(oboAuthorizedClientAttributeName);
         }
-        if (!(principal instanceof AbstractOAuth2TokenAuthenticationToken)) {
-            throw new IllegalStateException("Unsupported token implementation " + principal.getClass());
+        if (!(authentication instanceof AbstractOAuth2TokenAuthenticationToken)) {
+            throw new IllegalStateException("Unsupported token implementation " + authentication.getClass());
         }
         try {
-            String accessToken = ((AbstractOAuth2TokenAuthenticationToken<?>) principal).getToken()
+            String accessToken = ((AbstractOAuth2TokenAuthenticationToken<?>) authentication).getToken()
                                                                                         .getTokenValue();
             OnBehalfOfParameters parameters = OnBehalfOfParameters
                 .builder(clientRegistration.getScopes(), new UserAssertion(accessToken))
@@ -119,7 +118,7 @@ public class AADResourceServerOAuth2AuthorizedClientRepository implements OAuth2
                 Instant.ofEpochMilli(iat.getTime()),
                 Instant.ofEpochMilli(exp.getTime()));
             OAuth2AuthorizedClient oAuth2AuthorizedClient = new OAuth2AuthorizedClient(clientRegistration,
-                principal.getName(),
+                authentication.getName(),
                 oAuth2AccessToken);
             request.setAttribute(oboAuthorizedClientAttributeName, (T) oAuth2AuthorizedClient);
             return (T) oAuth2AuthorizedClient;
