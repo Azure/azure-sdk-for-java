@@ -4,6 +4,7 @@ package com.azure.cosmos.spark
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, BooleanNode, ObjectNode}
+import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.catalyst.expressions.GenericRowWithSchema
 import org.apache.spark.sql.types.{ArrayType, BinaryType, BooleanType, DateType,
   Decimal, DecimalType, DoubleType, FloatType, IntegerType, LongType, MapType,
@@ -176,22 +177,29 @@ class CosmosRowConverterSpec extends UnitSpec {
 
   "struct in spark row" should "translate to ObjectNode" in {
     val colName1 = "testCol1"
+    val colName2 = "testCol2"
 
     val structCol1Name = "structCol"
+    val structCol2Name = "structCol2"
     val structCol1Val = "testVal"
+    val structCol2Val = "testVal2"
     val colVal1Definition: StructType = StructType(Seq(StructField(structCol1Name, StringType)))
+    val colVal2Definition: StructType = StructType(Seq(StructField(structCol2Name, StringType)))
     val colVal1 = new GenericRowWithSchema(
       Array(structCol1Val),
       colVal1Definition)
+    val coLVal2 = InternalRow(structCol2Val)
 
     val row = new GenericRowWithSchema(
-      Array(colVal1),
-      StructType(Seq(StructField(colName1, colVal1Definition))))
+      Array(colVal1, coLVal2),
+      StructType(Seq(StructField(colName1, colVal1Definition), StructField(colName2, colVal2Definition))))
 
     val objectNode = CosmosRowConverter.fromRowToObjectNode(row)
     objectNode.get(colName1).isInstanceOf[ObjectNode] shouldBe true
     val nestedNode = objectNode.get(colName1).asInstanceOf[ObjectNode]
     nestedNode.get(structCol1Name).asText() shouldEqual structCol1Val
+    val nestedNode2 = objectNode.get(colName2).asInstanceOf[ObjectNode]
+    nestedNode2.get(structCol2Name).asText() shouldEqual structCol2Val
   }
 
   "rawJson in spark row" should "translate to ObjectNode" in {
