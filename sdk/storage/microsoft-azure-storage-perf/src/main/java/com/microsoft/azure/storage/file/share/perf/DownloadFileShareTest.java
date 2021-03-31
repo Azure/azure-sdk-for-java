@@ -3,6 +3,7 @@
 
 package com.microsoft.azure.storage.file.share.perf;
 
+import com.azure.perf.test.core.NullOutputStream;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.TestDataCreationHelper;
 import com.microsoft.azure.storage.StorageException;
@@ -17,14 +18,14 @@ import java.util.UUID;
 
 public class DownloadFileShareTest extends DirectoryTest<PerfStressOptions> {
     private static final OutputStream DEV_NULL = new NullOutputStream();
-    private static final String FILE_NAME = "perfstress-file-" + UUID.randomUUID().toString();
 
     private final CloudFile cloudFile;
 
     public DownloadFileShareTest(PerfStressOptions options) {
         super(options);
         try {
-            cloudFile = cloudFileDirectory.getFileReference(FILE_NAME);
+            String fileName = "perfstress-file-" + UUID.randomUUID().toString();
+            cloudFile = cloudFileDirectory.getFileReference(fileName);
         } catch (URISyntaxException | StorageException e) {
             throw new RuntimeException(e);
         }
@@ -33,10 +34,11 @@ public class DownloadFileShareTest extends DirectoryTest<PerfStressOptions> {
     // Required resource setup goes here, upload the file to be downloaded during tests.
 
     @Override
-    public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync()
+    public Mono<Void> setupAsync() {
+        return super.setupAsync()
             .then(Mono.fromCallable(() -> {
                 try {
+                    cloudFile.create(options.getSize());
                     cloudFile.upload(TestDataCreationHelper.createRandomInputStream(options.getSize()),
                         options.getSize());
                     return 1;
@@ -54,21 +56,6 @@ public class DownloadFileShareTest extends DirectoryTest<PerfStressOptions> {
             cloudFile.download(DEV_NULL);
         } catch (StorageException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    static class NullOutputStream extends OutputStream {
-        @Override
-        public void write(int b) {
-
-        }
-
-        @Override
-        public void write(byte[] b) {
-        }
-
-        @Override
-        public void write(byte[] b, int off, int len) {
         }
     }
 

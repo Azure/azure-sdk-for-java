@@ -8,9 +8,6 @@ import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.file.CloudFile;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.util.UUID;
 
@@ -25,28 +22,17 @@ public abstract class FileTestBase<TOptions extends PerfStressOptions> extends D
         String fileName = "randomfiletest-" + UUID.randomUUID().toString();
 
         try {
-            cloudFile =  cloudFileDirectory.getFileReference(fileName);
+            cloudFile = cloudFileDirectory.getFileReference(fileName);
         } catch (URISyntaxException | StorageException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public long copyStream(InputStream input, OutputStream out) throws IOException {
-        long transferred = 0;
-        byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
-        int read;
-        while ((read = input.read(buffer, 0, DEFAULT_BUFFER_SIZE)) >= 0) {
-            out.write(buffer, 0, read);
-            transferred += read;
-        }
-        return transferred;
-    }
-
     @Override
     public Mono<Void> setupAsync() {
-        return Mono.fromCallable(() -> {
+        return super.setupAsync().then(Mono.fromCallable(() -> {
             cloudFile.create(options.getSize() + DEFAULT_BUFFER_SIZE);
             return 1;
-        }).then(super.cleanupAsync());
+        })).then();
     }
 }

@@ -12,15 +12,14 @@ import java.net.URISyntaxException;
 import java.util.UUID;
 
 public abstract class DirectoryTest<TOptions extends PerfStressOptions> extends ShareTest<TOptions> {
-    private static final String DIRECTORY_NAME = "perfstress-directory-" + UUID.randomUUID().toString();
-
     protected final CloudFileDirectory cloudFileDirectory;
 
     public DirectoryTest(TOptions options) {
         super(options);
         // Setup the container clients
         try {
-            cloudFileDirectory = cloudFileShare.getRootDirectoryReference().getDirectoryReference(DIRECTORY_NAME);
+            String directoryName = "perfstress-directory-" + UUID.randomUUID().toString();
+            cloudFileDirectory = cloudFileShare.getRootDirectoryReference().getDirectoryReference(directoryName);
         } catch (URISyntaxException | StorageException e) {
             throw new RuntimeException(e);
         }
@@ -28,8 +27,8 @@ public abstract class DirectoryTest<TOptions extends PerfStressOptions> extends 
 
     // NOTE: the pattern setup the parent first, then yourself.
     @Override
-    public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync()
+    public Mono<Void> setupAsync() {
+        return super.setupAsync()
             .then(Mono.fromCallable(() -> {
                 cloudFileDirectory.create();
                 return 1; }))

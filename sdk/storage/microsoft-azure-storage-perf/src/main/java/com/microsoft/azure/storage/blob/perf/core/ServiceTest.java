@@ -6,7 +6,6 @@ package com.microsoft.azure.storage.blob.perf.core;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 
-import com.azure.core.util.Configuration;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
 import com.microsoft.azure.storage.CloudStorageAccount;
@@ -16,12 +15,10 @@ import com.microsoft.azure.storage.blob.CloudBlobClient;
 public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
 
     protected final CloudBlobClient cloudBlobClient;
-    private final Configuration configuration;
 
     public ServiceTest(TOptions options) {
         super(options);
-        configuration = Configuration.getGlobalConfiguration().clone();
-        String connectionString = configuration.get("STORAGE_CONNECTION_STRING");
+        String connectionString = System.getenv("STORAGE_CONNECTION_STRING");
 
         if (connectionString == null || connectionString.isEmpty()) {
             throw new IllegalStateException("Environment variable STORAGE_CONNECTION_STRING must be set");

@@ -16,8 +16,6 @@ import java.net.URISyntaxException;
 import java.util.UUID;
 
 public class DownloadToFileShareTest extends DirectoryTest<PerfStressOptions> {
-    private static final String FILE_NAME = "perfstress-file-" + UUID.randomUUID().toString();
-
     private final File targetFile;
     private final String targetFilePath;
     private final CloudFile cloudFile;
@@ -25,9 +23,10 @@ public class DownloadToFileShareTest extends DirectoryTest<PerfStressOptions> {
     public DownloadToFileShareTest(PerfStressOptions options) {
         super(options);
         try {
+            String fileName = "perfstress-file-" + UUID.randomUUID().toString();
             targetFile = new File(UUID.randomUUID().toString());
             targetFilePath = targetFile.getAbsolutePath();
-            cloudFile = cloudFileDirectory.getFileReference(FILE_NAME);
+            cloudFile = cloudFileDirectory.getFileReference(fileName);
         } catch (URISyntaxException | StorageException e) {
             throw new RuntimeException(e);
         }
@@ -35,10 +34,11 @@ public class DownloadToFileShareTest extends DirectoryTest<PerfStressOptions> {
 
     // Required resource setup goes here, upload the file to be downloaded during tests.
     @Override
-    public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync()
+    public Mono<Void> setupAsync() {
+        return super.setupAsync()
             .then(Mono.fromCallable(() -> {
                 try {
+                    cloudFile.create(options.getSize());
                     cloudFile.upload(TestDataCreationHelper.createRandomInputStream(options.getSize()),
                         options.getSize());
                     return 1;

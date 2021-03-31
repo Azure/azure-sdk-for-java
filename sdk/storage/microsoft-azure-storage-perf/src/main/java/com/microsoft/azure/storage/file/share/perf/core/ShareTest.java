@@ -12,15 +12,14 @@ import java.net.URISyntaxException;
 import java.util.UUID;
 
 public abstract class ShareTest<TOptions extends PerfStressOptions> extends ServiceTest<TOptions> {
-    private static final String SHARE_NAME = "perfstress-share-" + UUID.randomUUID().toString();
-
     protected final CloudFileShare cloudFileShare;
 
     public ShareTest(TOptions options) {
         super(options);
         // Setup the container clients
         try {
-            cloudFileShare = cloudFileClient.getShareReference(SHARE_NAME);
+            String shareName = "perfstress-share-" + UUID.randomUUID().toString();
+            cloudFileShare = cloudFileClient.getShareReference(shareName);
         } catch (URISyntaxException | StorageException e) {
             throw new RuntimeException(e);
         }
@@ -28,12 +27,12 @@ public abstract class ShareTest<TOptions extends PerfStressOptions> extends Serv
 
     // NOTE: the pattern setup the parent first, then yourself.
     @Override
-    public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync()
+    public Mono<Void> setupAsync() {
+        return super.setupAsync()
             .then(Mono.fromCallable(() -> {
                 cloudFileShare.create();
-                return 1; }))
-            .then();
+                return 1;
+            })).then();
     }
 
     // NOTE: the pattern, cleanup yourself, then the parent.

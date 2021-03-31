@@ -66,11 +66,13 @@ public class UploadFromFileShareTest extends FileTestBase<PerfStressOptions> {
     }
 
     private Mono<Void> deleteTempFile() {
-        try {
-            Files.delete(TEMP_FILE);
-            return Mono.empty();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return Mono.defer(() -> {
+            try {
+                Files.delete(TEMP_FILE);
+                return Mono.empty();
+            } catch (IOException e) {
+                return Mono.error(new RuntimeException(e));
+            }
+        });
     }
 }
