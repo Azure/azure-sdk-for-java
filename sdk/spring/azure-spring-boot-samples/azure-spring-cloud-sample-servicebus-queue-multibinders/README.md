@@ -37,6 +37,9 @@ and bill at [this link][azure-account].
     spring:
       cloud:
         stream:
+          #To specify which functional bean to bind to the external destination(s) exposed by the bindings
+          function:
+            definition: consume1;supply1;consume2;supply2
           bindings:
             consume1-in-0:
               destination: [servicebus-queue-1-name]
@@ -68,10 +71,6 @@ and bill at [this link][azure-account].
                     azure:
                       servicebus:
                         connection-string: [servicebus-namespace-2-connection-string]
-    
-          #To specify which functional bean to bind to the external destination(s) exposed by the bindings
-          function:
-            definition: consume1;supply1;consume2;supply2;
           poller:
             initial-delay: 0
             fixed-delay: 1000

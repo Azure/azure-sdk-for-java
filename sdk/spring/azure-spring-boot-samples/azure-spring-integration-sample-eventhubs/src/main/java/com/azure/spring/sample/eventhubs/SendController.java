@@ -5,6 +5,8 @@ package com.azure.spring.sample.eventhubs;
 
 import com.azure.spring.integration.core.api.reactor.DefaultMessageHandler;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.integration.annotation.MessagingGateway;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SendController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(SendController.class);
     private static final String OUTPUT_CHANNEL = "output";
     private static final String EVENTHUB_NAME = "eventhub1";
 
@@ -44,12 +47,12 @@ public class SendController {
         handler.setSendCallback(new ListenableFutureCallback<Void>() {
             @Override
             public void onSuccess(Void result) {
-                System.out.println("Message was sent successfully.");
+                LOGGER.info("Message was sent successfully.");
             }
 
             @Override
             public void onFailure(Throwable ex) {
-                System.out.println("There was an error sending the message.");
+                LOGGER.error("There was an error sending the message.", ex);
             }
         });
 

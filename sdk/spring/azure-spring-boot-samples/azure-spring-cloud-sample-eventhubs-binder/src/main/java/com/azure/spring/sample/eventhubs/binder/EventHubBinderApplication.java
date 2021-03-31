@@ -43,7 +43,7 @@ public class EventHubBinderApplication {
 
             checkpointer.success()
                         .doOnSuccess(success -> LOGGER.info("Message '{}' successfully checkpointed", message.getPayload()))
-                        .doOnError(error -> LOGGER.error("Exception: {}", error.getMessage()))
+                        .doOnError(error -> LOGGER.error("Exception found", error))
                         .subscribe();
         };
     }
