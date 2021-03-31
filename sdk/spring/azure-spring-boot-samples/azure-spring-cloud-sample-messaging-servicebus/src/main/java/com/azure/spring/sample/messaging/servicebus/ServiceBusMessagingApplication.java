@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.sample.servicebus.messaging;
+package com.azure.spring.sample.messaging.servicebus;
 
 import com.azure.spring.messaging.annotation.EnableAzureMessaging;
 import org.springframework.boot.SpringApplication;

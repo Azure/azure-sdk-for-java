@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.sample.messaging;
+package com.azure.spring.sample.messaging.eventhubs;
 
 public class User {
     private String name;

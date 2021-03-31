@@ -9,10 +9,10 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>azure-spring-cloud-sample-messaging</artifactId>
+  <artifactId>azure-spring-cloud-sample-messaging-eventhubs</artifactId>
   <groupId>com.azure.spring</groupId>
-  <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-sample-messaging;current} -->
-  <name>Azure Spring Cloud Sample Messaging</name>
+  <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-sample-messaging-eventhubs;current} -->
+  <name>Azure Spring Cloud Sample Messaging Event hubs</name>
 
   <dependencyManagement>
     <dependencies>

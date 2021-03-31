@@ -1,4 +1,4 @@
-# Spring Cloud Azure Service Bus Messaging Sample shared library for Java
+# Spring Cloud Azure Messaging Service Bus Sample shared library for Java
 
 ## Key concepts
 
@@ -28,13 +28,13 @@ dependency `azure-spring-cloud-messaging`.
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-starter-servicebus</artifactId>
-      <version>2.3.0</version>
+      <version>2.3.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-servicebus;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-messaging</artifactId>
-      <version>2.3.0</version>
+      <version>2.3.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-messaging;current} -->
     </dependency>
 ```
 
