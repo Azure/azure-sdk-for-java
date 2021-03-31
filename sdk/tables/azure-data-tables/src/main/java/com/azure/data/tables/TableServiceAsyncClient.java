@@ -162,9 +162,13 @@ public class TableServiceAsyncClient {
         try {
             return implementation.getTables().createWithResponseAsync(properties, null,
                 ResponseFormat.RETURN_NO_CONTENT, null, context)
+                .doOnError(throwable -> {
+                    if (throwable instanceof com.azure.data.tables.implementation.models.TableServiceErrorException) {
+                        throw toTableServiceErrorException(
+                            (com.azure.data.tables.implementation.models.TableServiceErrorException) throwable);
+                    }
+                })
                 .map(response -> new SimpleResponse<>(response, null));
-        } catch (com.azure.data.tables.implementation.models.TableServiceErrorException tableServiceErrorException) {
-            return monoError(logger, toTableServiceErrorException(tableServiceErrorException));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -236,9 +240,13 @@ public class TableServiceAsyncClient {
 
         try {
             return implementation.getTables().deleteWithResponseAsync(tableName, null, context)
+                .doOnError(throwable -> {
+                    if (throwable instanceof com.azure.data.tables.implementation.models.TableServiceErrorException) {
+                        throw toTableServiceErrorException(
+                            (com.azure.data.tables.implementation.models.TableServiceErrorException) throwable);
+                    }
+                })
                 .map(response -> new SimpleResponse<>(response, null));
-        } catch (com.azure.data.tables.implementation.models.TableServiceErrorException tableServiceErrorException) {
-            return monoError(logger, toTableServiceErrorException(tableServiceErrorException));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -300,6 +308,12 @@ public class TableServiceAsyncClient {
 
         try {
             return implementation.getTables().queryWithResponseAsync(null, nextTableName, queryOptions, context)
+                .doOnError(throwable -> {
+                    if (throwable instanceof com.azure.data.tables.implementation.models.TableServiceErrorException) {
+                        throw toTableServiceErrorException(
+                            (com.azure.data.tables.implementation.models.TableServiceErrorException) throwable);
+                    }
+                })
                 .flatMap(response -> {
                     TableQueryResponse tableQueryResponse = response.getValue();
 
@@ -320,8 +334,6 @@ public class TableServiceAsyncClient {
                         response.getDeserializedHeaders().getXMsContinuationNextTableName()));
 
                 });
-        } catch (com.azure.data.tables.implementation.models.TableServiceErrorException tableServiceErrorException) {
-            return monoError(logger, toTableServiceErrorException(tableServiceErrorException));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

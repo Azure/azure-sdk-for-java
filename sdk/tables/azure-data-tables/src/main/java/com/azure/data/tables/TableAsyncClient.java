@@ -201,9 +201,13 @@ public final class TableAsyncClient {
         try {
             return implementation.getTables().createWithResponseAsync(properties, null,
                 ResponseFormat.RETURN_NO_CONTENT, null, context)
+                .doOnError(throwable -> {
+                    if (throwable instanceof com.azure.data.tables.implementation.models.TableServiceErrorException) {
+                        throw toTableServiceErrorException(
+                            (com.azure.data.tables.implementation.models.TableServiceErrorException) throwable);
+                    }
+                })
                 .map(response -> new SimpleResponse<>(response, null));
-        } catch (com.azure.data.tables.implementation.models.TableServiceErrorException tableServiceErrorException) {
-            return monoError(logger, toTableServiceErrorException(tableServiceErrorException));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -253,13 +257,15 @@ public final class TableAsyncClient {
 
         try {
             return implementation.getTables().insertEntityWithResponseAsync(tableName, timeoutInt, null,
-                ResponseFormat.RETURN_NO_CONTENT, entity.getProperties(),
-                null, context).map(response -> {
-                return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                    null);
-            });
-        } catch (com.azure.data.tables.implementation.models.TableServiceErrorException tableServiceErrorException) {
-            return monoError(logger, toTableServiceErrorException(tableServiceErrorException));
+                ResponseFormat.RETURN_NO_CONTENT, entity.getProperties(), null, context)
+                .doOnError(throwable -> {
+                    if (throwable instanceof com.azure.data.tables.implementation.models.TableServiceErrorException) {
+                        throw toTableServiceErrorException(
+                            (com.azure.data.tables.implementation.models.TableServiceErrorException) throwable);
+                    }
+                })
+                .map(response ->
+                    new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -345,15 +351,33 @@ public final class TableAsyncClient {
         try {
             if (updateMode == UpdateMode.REPLACE) {
                 return implementation.getTables().updateEntityWithResponseAsync(tableName, entity.getPartitionKey(),
-                    entity.getRowKey(), timeoutInt, null, null, entity.getProperties(), null, context).map(response ->
-                    new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
+                    entity.getRowKey(), timeoutInt, null, null, entity.getProperties(), null, context)
+                    .doOnError(throwable -> {
+                        if (throwable
+                            instanceof com.azure.data.tables.implementation.models.TableServiceErrorException) {
+
+                            throw toTableServiceErrorException(
+                                (com.azure.data.tables.implementation.models.TableServiceErrorException) throwable);
+                        }
+                    })
+                    .map(response ->
+                        new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                            null));
             } else {
                 return implementation.getTables().mergeEntityWithResponseAsync(tableName, entity.getPartitionKey(),
-                    entity.getRowKey(), timeoutInt, null, null, entity.getProperties(), null, context).map(response ->
-                    new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
+                    entity.getRowKey(), timeoutInt, null, null, entity.getProperties(), null, context)
+                    .doOnError(throwable -> {
+                        if (throwable
+                            instanceof com.azure.data.tables.implementation.models.TableServiceErrorException) {
+
+                            throw toTableServiceErrorException(
+                                (com.azure.data.tables.implementation.models.TableServiceErrorException) throwable);
+                        }
+                    })
+                    .map(response ->
+                        new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                            null));
             }
-        } catch (com.azure.data.tables.implementation.models.TableServiceErrorException tableServiceErrorException) {
-            return monoError(logger, toTableServiceErrorException(tableServiceErrorException));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -459,15 +483,33 @@ public final class TableAsyncClient {
         try {
             if (updateMode == UpdateMode.REPLACE) {
                 return implementation.getTables().updateEntityWithResponseAsync(tableName, entity.getPartitionKey(),
-                    entity.getRowKey(), timeoutInt, null, eTag, entity.getProperties(), null, context).map(response ->
-                    new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
+                    entity.getRowKey(), timeoutInt, null, eTag, entity.getProperties(), null, context)
+                    .doOnError(throwable -> {
+                        if (throwable
+                            instanceof com.azure.data.tables.implementation.models.TableServiceErrorException) {
+
+                            throw toTableServiceErrorException(
+                                (com.azure.data.tables.implementation.models.TableServiceErrorException) throwable);
+                        }
+                    })
+                    .map(response ->
+                        new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                            null));
             } else {
                 return implementation.getTables().mergeEntityWithResponseAsync(tableName, entity.getPartitionKey(),
-                    entity.getRowKey(), timeoutInt, null, eTag, entity.getProperties(), null, context).map(response ->
-                    new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
+                    entity.getRowKey(), timeoutInt, null, eTag, entity.getProperties(), null, context)
+                    .doOnError(throwable -> {
+                        if (throwable
+                            instanceof com.azure.data.tables.implementation.models.TableServiceErrorException) {
+
+                            throw toTableServiceErrorException(
+                                (com.azure.data.tables.implementation.models.TableServiceErrorException) throwable);
+                        }
+                    })
+                    .map(response ->
+                        new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                            null));
             }
-        } catch (com.azure.data.tables.implementation.models.TableServiceErrorException tableServiceErrorException) {
-            return monoError(logger, toTableServiceErrorException(tableServiceErrorException));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -502,9 +544,13 @@ public final class TableAsyncClient {
 
         try {
             return implementation.getTables().deleteWithResponseAsync(tableName, null, context)
+                .doOnError(throwable -> {
+                    if (throwable instanceof com.azure.data.tables.implementation.models.TableServiceErrorException) {
+                        throw toTableServiceErrorException(
+                            (com.azure.data.tables.implementation.models.TableServiceErrorException) throwable);
+                    }
+                })
                 .map(response -> new SimpleResponse<>(response, null));
-        } catch (com.azure.data.tables.implementation.models.TableServiceErrorException tableServiceErrorException) {
-            return monoError(logger, toTableServiceErrorException(tableServiceErrorException));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -579,12 +625,15 @@ public final class TableAsyncClient {
 
         try {
             return implementation.getTables().deleteEntityWithResponseAsync(tableName, partitionKey, rowKey, matchParam,
-                timeoutInt, null, null, context).map(response -> {
-                return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                    null);
-            });
-        } catch (com.azure.data.tables.implementation.models.TableServiceErrorException tableServiceErrorException) {
-            return monoError(logger, toTableServiceErrorException(tableServiceErrorException));
+                timeoutInt, null, null, context)
+                .doOnError(throwable -> {
+                    if (throwable instanceof com.azure.data.tables.implementation.models.TableServiceErrorException) {
+                        throw toTableServiceErrorException(
+                            (com.azure.data.tables.implementation.models.TableServiceErrorException) throwable);
+                    }
+                })
+                .map(response ->
+                    new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -702,6 +751,12 @@ public final class TableAsyncClient {
         try {
             return implementation.getTables().queryEntitiesWithResponseAsync(tableName, null, null,
                 nextPartitionKey, nextRowKey, queryOptions, context)
+                .doOnError(throwable -> {
+                    if (throwable instanceof com.azure.data.tables.implementation.models.TableServiceErrorException) {
+                        throw toTableServiceErrorException(
+                            (com.azure.data.tables.implementation.models.TableServiceErrorException) throwable);
+                    }
+                })
                 .flatMap(response -> {
                     final TableEntityQueryResponse tablesQueryEntityResponse = response.getValue();
 
@@ -723,10 +778,7 @@ public final class TableAsyncClient {
                     return Mono.just(new EntityPaged<>(response, entities,
                         response.getDeserializedHeaders().getXMsContinuationNextPartitionKey(),
                         response.getDeserializedHeaders().getXMsContinuationNextRowKey()));
-
                 });
-        } catch (com.azure.data.tables.implementation.models.TableServiceErrorException tableServiceErrorException) {
-            return monoError(logger, toTableServiceErrorException(tableServiceErrorException));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -919,6 +971,12 @@ public final class TableAsyncClient {
         try {
             return implementation.getTables().queryEntityWithPartitionAndRowKeyWithResponseAsync(tableName, partitionKey,
                 rowKey, timeoutInt, null, queryOptions, context)
+                .doOnError(throwable -> {
+                    if (throwable instanceof com.azure.data.tables.implementation.models.TableServiceErrorException) {
+                        throw toTableServiceErrorException(
+                            (com.azure.data.tables.implementation.models.TableServiceErrorException) throwable);
+                    }
+                })
                 .handle((response, sink) -> {
                     final Map<String, Object> matchingEntity = response.getValue();
 
@@ -936,8 +994,6 @@ public final class TableAsyncClient {
                     sink.next(new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                         EntityHelper.convertToSubclass(entity, resultType, logger)));
                 });
-        } catch (com.azure.data.tables.implementation.models.TableServiceErrorException tableServiceErrorException) {
-            return monoError(logger, toTableServiceErrorException(tableServiceErrorException));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
