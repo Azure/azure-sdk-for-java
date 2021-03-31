@@ -26,16 +26,18 @@ import com.azure.data.tables.implementation.models.ResponseFormat;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableQueryResponse;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
-import com.azure.data.tables.implementation.models.TableServiceErrorException;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableItem;
+import com.azure.data.tables.models.TableServiceErrorException;
+import reactor.core.publisher.Mono;
+
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
-import reactor.core.publisher.Mono;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.data.tables.implementation.Utils.toTableServiceErrorException;
 
 /**
  * Provides an asynchronous service client for accessing the Azure Tables service.
@@ -116,7 +118,7 @@ public class TableServiceAsyncClient {
      *
      * @param tableName The name of the table.
      * @return A {@link TableAsyncClient} instance for the provided table in the account.
-     * @throws NullPointerException if {@code tableName} is {@code null} or empty.
+     * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
      */
     public TableAsyncClient getTableClient(String tableName) {
         return new TableClientBuilder()
@@ -161,6 +163,8 @@ public class TableServiceAsyncClient {
             return implementation.getTables().createWithResponseAsync(properties, null,
                 ResponseFormat.RETURN_NO_CONTENT, null, context)
                 .map(response -> new SimpleResponse<>(response, null));
+        } catch (com.azure.data.tables.implementation.models.TableServiceErrorException tableServiceErrorException) {
+            return monoError(logger, toTableServiceErrorException(tableServiceErrorException));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -229,8 +233,15 @@ public class TableServiceAsyncClient {
 
     Mono<Response<Void>> deleteTableWithResponse(String tableName, Context context) {
         context = context == null ? Context.NONE : context;
-        return implementation.getTables().deleteWithResponseAsync(tableName, null, context)
-            .map(response -> new SimpleResponse<>(response, null));
+
+        try {
+            return implementation.getTables().deleteWithResponseAsync(tableName, null, context)
+                .map(response -> new SimpleResponse<>(response, null));
+        } catch (com.azure.data.tables.implementation.models.TableServiceErrorException tableServiceErrorException) {
+            return monoError(logger, toTableServiceErrorException(tableServiceErrorException));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -286,23 +297,34 @@ public class TableServiceAsyncClient {
             .setFilter(options.getFilter())
             .setTop(options.getTop())
             .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
-        return implementation.getTables().queryWithResponseAsync(null, nextTableName, queryOptions, context)
-            .flatMap(response -> {
-                TableQueryResponse tableQueryResponse = response.getValue();
-                if (tableQueryResponse == null) {
-                    return Mono.empty();
-                }
-                List<TableResponseProperties> tableResponsePropertiesList = tableQueryResponse.getValue();
-                if (tableResponsePropertiesList == null) {
-                    return Mono.empty();
-                }
-                final List<TableItem> tables = tableResponsePropertiesList.stream()
-                    .map(ModelHelper::createItem).collect(Collectors.toList());
 
-                return Mono.just(new TablePaged(response, tables,
-                    response.getDeserializedHeaders().getXMsContinuationNextTableName()));
+        try {
+            return implementation.getTables().queryWithResponseAsync(null, nextTableName, queryOptions, context)
+                .flatMap(response -> {
+                    TableQueryResponse tableQueryResponse = response.getValue();
 
-            });
+                    if (tableQueryResponse == null) {
+                        return Mono.empty();
+                    }
+
+                    List<TableResponseProperties> tableResponsePropertiesList = tableQueryResponse.getValue();
+
+                    if (tableResponsePropertiesList == null) {
+                        return Mono.empty();
+                    }
+
+                    final List<TableItem> tables = tableResponsePropertiesList.stream()
+                        .map(ModelHelper::createItem).collect(Collectors.toList());
+
+                    return Mono.just(new TablePaged(response, tables,
+                        response.getDeserializedHeaders().getXMsContinuationNextTableName()));
+
+                });
+        } catch (com.azure.data.tables.implementation.models.TableServiceErrorException tableServiceErrorException) {
+            return monoError(logger, toTableServiceErrorException(tableServiceErrorException));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     private static class TablePaged implements PagedResponse<TableItem> {

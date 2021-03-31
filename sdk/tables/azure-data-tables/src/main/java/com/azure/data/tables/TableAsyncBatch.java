@@ -20,8 +20,8 @@ import com.azure.data.tables.models.BatchOperationResponse;
 import com.azure.data.tables.implementation.models.BatchRequestBody;
 import com.azure.data.tables.implementation.models.BatchSubRequest;
 import com.azure.data.tables.implementation.models.TableServiceError;
-import com.azure.data.tables.implementation.models.TableServiceErrorException;
 import com.azure.data.tables.models.TableEntity;
+import com.azure.data.tables.models.TableServiceErrorException;
 import com.azure.data.tables.models.UpdateMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -34,6 +34,7 @@ import java.util.List;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.data.tables.implementation.Utils.toTableServiceError;
 
 /**
  * Provides a batch object for asynchronously executing a transaction containing one or more operations on entities
@@ -337,7 +338,8 @@ public final class TableAsyncBatch {
             } else if (errorMessage != null) {
                 message += " " + errorMessage;
             }
-            return monoError(logger, new TableServiceErrorException(message, null, error));
+
+            return monoError(logger, new TableServiceErrorException(message, null, toTableServiceError(error)));
         } else {
             return Mono.just(new SimpleResponse<>(response, Arrays.asList(response.getValue())));
         }
