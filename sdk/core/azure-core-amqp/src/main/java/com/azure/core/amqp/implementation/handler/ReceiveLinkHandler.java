@@ -47,12 +47,6 @@ public class ReceiveLinkHandler extends LinkHandler {
             return;
         }
 
-        deliveries.emitComplete((signalType, emitResult) -> {
-            logger.verbose("connectionId[{}], entityPath[{}], linkName[{}] Could not emit complete.",
-                getConnectionId(), entityPath, linkName);
-            return false;
-        });
-
         super.close();
 
         queuedDeliveries.forEach(delivery -> {
