@@ -34,7 +34,7 @@ public class SendReceiveAmqpMessageBodySample {
      * Service Bus with AMQP Sequence message body
      */
     @Test
-    public void run() throws InterruptedException{
+    public void run() throws InterruptedException {
         AtomicBoolean sampleSuccessful = new AtomicBoolean(true);
         CountDownLatch countdownLatch = new CountDownLatch(1);
 
@@ -71,30 +71,30 @@ public class SendReceiveAmqpMessageBodySample {
 
         sender.sendMessage(new ServiceBusMessage(AmqpMessageBody.fromSequence(list)));
 
+        // Now receive the data.
         Disposable subscription = receiver.receiveMessages()
             .subscribe(message -> {
-                    AmqpMessageBody amqpMessageBody = message.getRawAmqpMessage().getBody();
-                    // You should check the body type of the received message and call appropriate getter
-                    // on AMQPMessageBody
-                    switch (amqpMessageBody.getBodyType()) {
-                        case SEQUENCE:
-                            amqpMessageBody.getSequence().forEach(payload -> {
-                                System.out.printf("Sequence #: %s, Body Type: %s, Contents: %s%n", message.getSequenceNumber(),
-                                    amqpMessageBody.getBodyType(), payload);
-                            });
-                            break;
-                        case VALUE:
+                AmqpMessageBody amqpMessageBody = message.getRawAmqpMessage().getBody();
+                // You should check the body type of the received message and call appropriate getter on AMQPMessageBody
+                switch (amqpMessageBody.getBodyType()) {
+                    case SEQUENCE:
+                        amqpMessageBody.getSequence().forEach(payload -> {
                             System.out.printf("Sequence #: %s, Body Type: %s, Contents: %s%n", message.getSequenceNumber(),
-                                amqpMessageBody.getBodyType(), amqpMessageBody.getValue());
-                            break;
-                        case DATA:
-                            System.out.printf("Sequence #: %s. Contents: %s%n", message.getSequenceNumber(),
+                                amqpMessageBody.getBodyType(), payload);
+                        });
+                        break;
+                    case VALUE:
+                        System.out.printf("Sequence #: %s, Body Type: %s, Contents: %s%n", message.getSequenceNumber(),
+                            amqpMessageBody.getBodyType(), amqpMessageBody.getValue());
+                        break;
+                    case DATA:
+                        System.out.printf("Sequence #: %s. Contents: %s%n", message.getSequenceNumber(),
                                 message.getBody().toString());
-                            break;
-                        default:
-                            System.out.println("Invalid data type.");
-                    }
-                },
+                        break;
+                    default:
+                        System.out.println("Invalid message body type: " + amqpMessageBody.getBodyType());
+                }
+            },
                 error -> {
                     System.err.println("Error occurred while receiving message: " + error);
                     sampleSuccessful.set(false);

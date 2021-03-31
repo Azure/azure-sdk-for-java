@@ -249,8 +249,8 @@ public class ServiceBusMessage {
                 return BinaryData.fromBytes(amqpAnnotatedMessage.getBody().getFirstData());
             case SEQUENCE:
             case VALUE:
-                throw logger.logExceptionAsError(new IllegalStateException("Message  body type is not DATA, instead " +
-                    "it is: " + type.toString()));
+                throw logger.logExceptionAsError(new IllegalStateException("Message  body type is not DATA, instead "
+                    + "it is: " + type.toString()));
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown AmqpBodyType: "
                     + type.toString()));

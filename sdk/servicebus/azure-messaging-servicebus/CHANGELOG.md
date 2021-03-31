@@ -1,6 +1,6 @@
 # Release History
 
-## 7.2.0-beta.1 (Unreleased)
+## 7.3.0-beta.1 (Unreleased)
 ### New Features
 - Issue [17614](https://github.com/Azure/azure-sdk-for-java/issues/17614) : Adding support for AMQP Data types SEQUENCE 
   and VALUE. It support sending and receiving of only one AMQP Sequence at present.
