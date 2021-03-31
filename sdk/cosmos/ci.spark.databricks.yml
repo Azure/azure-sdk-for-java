@@ -45,7 +45,7 @@ jobs:
     displayName: Importing Jars
     inputs:
       filePath: databricks/databricks-jar-install.sh
-      arguments: '$(DatabricksClusterName) $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3-1_2-12/target azure-cosmos-spark_3-1_2-12-4.0.0-beta.2.jar '
+      arguments: '$(DatabricksClusterName) $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3-1_2-12/target
   - task: Bash@3
     displayName: Importing and executing notebooks
     inputs:
