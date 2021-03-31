@@ -116,8 +116,6 @@ public class ServiceBusMessage {
      * @param receivedMessage The received message to create new message from.
      *
      * @throws NullPointerException if {@code receivedMessage} is {@code null}.
-     * @throws UnsupportedOperationException if {@link AmqpMessageBodyType} is {@link AmqpMessageBodyType#SEQUENCE}
-     *     or {@link AmqpMessageBodyType#VALUE}.
      * @throws IllegalStateException for invalid {@link AmqpMessageBodyType}.
      */
     public ServiceBusMessage(ServiceBusReceivedMessage receivedMessage) {
@@ -131,12 +129,13 @@ public class ServiceBusMessage {
                     .getFirstData());
                 break;
             case SEQUENCE:
+                amqpMessageBody = AmqpMessageBody.fromSequence(receivedMessage.getRawAmqpMessage().getBody()
+                    .getSequence());
+                break;
             case VALUE:
-                // This should not happen because we will not create `ServiceBusReceivedMessage` with these types.
-                throw logger.logExceptionAsError(new UnsupportedOperationException(
-                    "This constructor only supports the AMQP Data body type at present. Track this issue, "
-                        + "https://github.com/Azure/azure-sdk-for-java/issues/17614 for other body type support in "
-                        + "future."));
+                amqpMessageBody = AmqpMessageBody.fromValue(receivedMessage.getRawAmqpMessage().getBody()
+                    .getValue());
+                break;
             default:
                 throw logger.logExceptionAsError(new IllegalStateException("Body type not valid "
                     + bodyType.toString()));

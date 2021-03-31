@@ -3,8 +3,6 @@
 
 package com.azure.messaging.servicebus;
 
-import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseUtils;
@@ -57,6 +55,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME_NAME;
 
 /**
  * Deserializes and serializes messages to and from Azure Service Bus.
@@ -135,7 +136,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         } else if (brokeredBodyType == AmqpMessageBodyType.SEQUENCE) {
             List<Object> sequenceList = brokeredMessage.getRawAmqpMessage().getBody().getSequence();
             amqpMessage.setBody(new AmqpSequence(sequenceList));
-   } else if (brokeredBodyType == AmqpMessageBodyType.VALUE) {
+        } else if (brokeredBodyType == AmqpMessageBodyType.VALUE) {
             amqpMessage.setBody(new AmqpValue(brokeredMessage.getRawAmqpMessage().getBody().getValue()));
         }
 
@@ -350,15 +351,16 @@ class ServiceBusMessageSerializer implements MessageSerializer {
 
     private ServiceBusReceivedMessage deserializeMessage(Message amqpMessage) {
         final Section body = amqpMessage.getBody();
-        AmqpMessageBody amqpMessageBody =  null;
+        AmqpMessageBody amqpMessageBody;
         if (body != null) {
             if (body instanceof Data) {
                 final Binary messageData = ((Data) body).getValue();
                 amqpMessageBody = AmqpMessageBody.fromData(messageData.getArray());
             } else if (body instanceof AmqpValue) {
-                amqpMessageBody = AmqpMessageBody.fromValue(((AmqpValue)body).getValue());
+                amqpMessageBody = AmqpMessageBody.fromValue(((AmqpValue) body).getValue());
             } else if (body instanceof AmqpSequence) {
-                List messageData = ((AmqpSequence) body).getValue();
+                @SuppressWarnings("unchecked")
+                List<Object> messageData = ((AmqpSequence) body).getValue();
                 amqpMessageBody = AmqpMessageBody.fromSequence(messageData);
 
             } else {

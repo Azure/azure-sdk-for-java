@@ -56,11 +56,11 @@ public final class AmqpMessageBody {
     }
 
     /**
-     * Creates instance of {@link AmqpMessageBody} with given {@link Object value}.
+     * Creates an instance of {@link AmqpMessageBody} with given {@link Object value}.
      *
-     * @param value used to create another instance of {@link AmqpMessageBody}.
+     * @param value used to create an instance of {@link AmqpMessageBody}.
      *
-     * @return AmqpMessageBody Newly created instance.
+     * @return AmqpMessageBody newly created instance.
      *
      * @throws NullPointerException if {@code value} is null.
      */
@@ -73,10 +73,10 @@ public final class AmqpMessageBody {
     }
 
     /**
-     * Creates instance of {@link AmqpMessageBody} with given {@link List sequence}. It support only one
+     * Creates an instance of {@link AmqpMessageBody} with given {@link List sequence}. It supports only one
      * {@code sequence} at present.
      *
-     * @param sequence used to create another instance of {@link AmqpMessageBody}.
+     * @param sequence used to create an instance of {@link AmqpMessageBody}.
      *
      * @return AmqpMessageBody Newly created instance.
      *
@@ -148,14 +148,14 @@ public final class AmqpMessageBody {
     }
 
     /**
-     * Gets the AMQP Value set on this {@link AmqpMessageBody}. It can be any premitive AMQP Data types.
+     * Gets the AMQP Value set on this {@link AmqpMessageBody}. It can be any primitive AMQP Data types.
      *
      * <p><b>Client should test for {@link AmqpMessageBodyType} before calling corresponding get method. Get methods not
      * corresponding to the type of the body throws exception.</b></p>
      *
      * <p><strong>How to check for {@link AmqpMessageBodyType}</strong></p>
      * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
-     * @return data set on {@link AmqpMessageBody}.
+     * @return value of this {@link AmqpMessageBody} instance.
      *
      * @throws IllegalArgumentException If {@link AmqpMessageBodyType} is not {@link AmqpMessageBodyType#DATA DATA}.
      * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format" target="_blank">
@@ -179,10 +179,9 @@ public final class AmqpMessageBody {
      *
      * <p><strong>How to check for {@link AmqpMessageBodyType}</strong></p>
      * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
-     * @return data set on {@link AmqpMessageBody}.
+     * @return sequence of this {@link AmqpMessageBody} instance.
      *
      * @throws IllegalArgumentException If {@link AmqpMessageBodyType} is not {@link AmqpMessageBodyType#DATA DATA}.
-     * @throws UnsupportedOperationException If you try to modify returned sequence.
      * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format" target="_blank">
      *     Amqp Message Format.</a>
      */

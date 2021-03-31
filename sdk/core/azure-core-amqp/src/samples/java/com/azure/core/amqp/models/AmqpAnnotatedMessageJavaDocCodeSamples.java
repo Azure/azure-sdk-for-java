@@ -4,6 +4,7 @@
 package com.azure.core.amqp.models;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Class contains sample code snippets that will be used in javadocs.
@@ -26,14 +27,13 @@ public class AmqpAnnotatedMessageJavaDocCodeSamples {
             case SEQUENCE:
                 List<Object> sequenceData = amqpAnnotatedMessage.getBody().getSequence();
                 sequenceData.forEach(System.out::println);
-
                 break;
             case VALUE:
                 amqpValue = amqpAnnotatedMessage.getBody().getValue();
                 System.out.println(amqpValue);
                 break;
             default:
-                throw new RuntimeException("Body type is not valid.");
+                throw new RuntimeException(String.format(Locale.US, "Body type [%s] is not valid.", bodyType));
         }
         // END: com.azure.core.amqp.models.AmqpBodyType.checkBodyType
     }
