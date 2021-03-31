@@ -196,6 +196,8 @@ extends:
         groupId: com.azure.spring
       - name: azure-spring-cloud-sample-messaging
         groupId: com.azure.spring
+      - name: azure-spring-cloud-sample-servicebus-messaging
+        groupId: com.azure.spring
       - name: azure-spring-cloud-sample-eventhubs-multibinders
         groupId: com.azure.spring
       - name: azure-spring-integration-sample-servicebus
