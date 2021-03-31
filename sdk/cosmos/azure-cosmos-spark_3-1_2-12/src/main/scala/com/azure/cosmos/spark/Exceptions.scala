@@ -3,6 +3,8 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosException
+import com.azure.cosmos.implementation.HttpConstants
+import reactor.core.scala.publisher.SMono
 
 private object Exceptions {
   def isResourceExistsException(cosmosException: CosmosException): Boolean = {
@@ -17,5 +19,18 @@ private object Exceptions {
       cosmosException.getStatusCode == CosmosConstants.StatusCodes.ServiceUnavailable ||
       cosmosException.getStatusCode == CosmosConstants.StatusCodes.InternalServerError ||
     cosmosException.getStatusCode == CosmosConstants.StatusCodes.Timeout
+  }
+
+  def isNotFoundException(throwable: Throwable): Boolean = {
+    throwable match {
+      case cosmosException: CosmosException =>
+        if (cosmosException.getStatusCode == HttpConstants.StatusCodes.NOTFOUND &&
+          cosmosException.getSubStatusCode == 0) {
+          true
+        } else {
+          false
+        }
+      case _ => false
+    }
   }
 }

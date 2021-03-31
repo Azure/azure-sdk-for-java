@@ -23,20 +23,35 @@ public interface SerializerAdapter {
     /**
      * Serializes an object into a string.
      *
-     * @param object the object to serialize
-     * @param encoding the encoding to use for serialization
-     * @return the serialized string. Null if the object to serialize is null
-     * @throws IOException exception from serialization
+     * @param object The object to serialize.
+     * @param encoding The serialization encoding.
+     * @return The object serialized as a string using the specified encoding. If the object is null null is returned.
+     * @throws IOException If an IO exception was thrown during serialization.
      */
     String serialize(Object object, SerializerEncoding encoding) throws IOException;
+
+    /**
+     * Serializes an object into a byte array.
+     *
+     * @param object The object to serialize.
+     * @param encoding The serialization encoding.
+     * @return The object serialized as a byte array.
+     * @throws IOException If an IO exception was thrown during serialization.
+     */
+    default byte[] serializeToBytes(Object object, SerializerEncoding encoding) throws IOException {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        serialize(object, encoding, stream);
+
+        return stream.toByteArray();
+    }
 
     /**
      * Serializes an object and writes its output into an {@link OutputStream}.
      *
      * @param object The object to serialize.
-     * @param encoding The encoding to use for serialization.
+     * @param encoding The serialization encoding.
      * @param outputStream The {@link OutputStream} where the serialized object will be written.
-     * @throws IOException exception from serialization
+     * @throws IOException If an IO exception was thrown during serialization.
      */
     default void serialize(final Object object, final SerializerEncoding encoding, OutputStream outputStream)
         throws IOException {
@@ -48,10 +63,10 @@ public interface SerializerAdapter {
     }
 
     /**
-     * Serializes an object into a raw string. The leading and trailing quotes will be trimmed.
+     * Serializes an object into a raw string, leading and trailing quotes will be trimmed.
      *
-     * @param object the object to serialize
-     * @return the serialized string. Null if the object to serialize is null
+     * @param object The object to serialize.
+     * @return The object serialized as a string. If the object is null null is returned.
      */
     String serializeRaw(Object object);
 
@@ -59,9 +74,9 @@ public interface SerializerAdapter {
      * Serializes a list into a string with the delimiter specified with the Swagger collection format joining each
      * individual serialized items in the list.
      *
-     * @param list the list to serialize
-     * @param format the Swagger collection format
-     * @return the serialized string
+     * @param list The list to serialize.
+     * @param format The collection joining format.
+     * @return The list serialized as a joined string.
      */
     String serializeList(List<?> list, CollectionFormat format);
 
@@ -69,14 +84,15 @@ public interface SerializerAdapter {
      * Serializes an iterable into a string with the delimiter specified with the Swagger collection format joining each
      * individual serialized items in the list.
      *
-     * @param iterable the iterable to serialize
-     * @param format the Swagger collection format
-     * @return the serialized string
+     * @param iterable The iterable to serialize.
+     * @param format The collection joining format.
+     * @return The iterable serialized as a joined string.
      */
     default String serializeIterable(Iterable<?> iterable, CollectionFormat format) {
         if (iterable == null) {
             return null;
         }
+
         return StreamSupport.stream(iterable.spliterator(), false)
             .map(this::serializeRaw)
             .map(serializedString -> serializedString == null ? "" : serializedString)
@@ -84,26 +100,40 @@ public interface SerializerAdapter {
     }
 
     /**
-     * Deserializes a string into a {@code T} object.
+     * Deserializes a string into an object.
      *
-     * @param value the string value to deserialize
-     * @param <T> the type of the deserialized object
-     * @param type the type to deserialize
-     * @param encoding the encoding used in the serialized value
-     * @return the deserialized object
-     * @throws IOException exception from deserialization
+     * @param value The string to deserialize.
+     * @param <T> The type of the deserialized object.
+     * @param type The type of the deserialized object.
+     * @param encoding The deserialization encoding.
+     * @return The string deserialized into an object.
+     * @throws IOException If an IO exception was thrown during deserialization.
      */
     <T> T deserialize(String value, Type type, SerializerEncoding encoding) throws IOException;
 
     /**
-     * Deserializes a byte[] into a {@code T} object.
+     * Deserializes a byte array into an object.
      *
-     * @param inputStream The {@link InputStream} containing the serialized object data to deserialize.
-     * @param type The type to deserialize.
-     * @param encoding The encoding used to serialize value.
+     * @param bytes The byte array to deserialize.
+     * @param type The type of the deserialized object.
+     * @param encoding The deserialization encoding.
      * @param <T> The type of the deserialized object.
-     * @return The deserialized object, or null if it cannot be deserialized.
-     * @throws IOException exception from deserialization
+     * @return The string deserialized into an object.
+     * @throws IOException If an IO exception was thrown during serialization.
+     */
+    default <T> T deserialize(byte[] bytes, Type type, SerializerEncoding encoding) throws IOException {
+        return deserialize(new String(bytes, StandardCharsets.UTF_8), type, encoding);
+    }
+
+    /**
+     * Deserializes a stream into an object.
+     *
+     * @param inputStream The {@link InputStream} to deserialize.
+     * @param type The type of the deserialized object.
+     * @param encoding The deserialization encoding.
+     * @param <T> The type of the deserialized object.
+     * @return The stream deserialized into an object.
+     * @throws IOException If an IO exception was thrown during serialization.
      */
     default <T> T deserialize(final InputStream inputStream, final Type type, final SerializerEncoding encoding)
         throws IOException {
@@ -126,13 +156,13 @@ public interface SerializerAdapter {
          * Using ByteArrayOutputStream.toString is better as it won't duplicate the underlying buffer as toByteArray
          * would but it doesn't have support for passing a Charset until Java 10.
          */
-        return deserialize(converterStream.toString("UTF-8"), type, encoding);
+        return deserialize(converterStream.toString(StandardCharsets.UTF_8.name()), type, encoding);
     }
 
     /**
      * Deserialize the provided headers returned from a REST API to an entity instance declared as the model to hold
      * 'Matching' headers.
-     *
+     * <p>
      * 'Matching' headers are the REST API returned headers those with:
      *
      * <ol>

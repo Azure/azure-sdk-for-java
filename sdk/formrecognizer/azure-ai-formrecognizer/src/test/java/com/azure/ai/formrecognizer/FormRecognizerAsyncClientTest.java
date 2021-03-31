@@ -1351,6 +1351,38 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         }), SELECTION_MARK_PDF);
     }
 
+    /**
+     * Verifies custom form data for an URL using specified pages.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeCustomFormUrlLabeledDataWithPages(HttpClient httpClient,
+                                                                      FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        urlRunner(fileUrl ->
+            beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
+                    getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
+                        useTrainingLabels, new TrainingOptions().setPollInterval(durationTestMode))
+                        .getSyncPoller();
+                trainingPoller.waitForCompletion();
+
+                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
+                    client.beginRecognizeCustomFormsFromUrl(
+                        trainingPoller.getFinalResult().getModelId(),
+                        fileUrl,
+                        new RecognizeCustomFormsOptions()
+                            .setFieldElementsIncluded(true)
+                            .setPollInterval(durationTestMode)
+                            .setPages(Collections.singletonList("1")))
+                        .getSyncPoller();
+                syncPoller.waitForCompletion();
+                List<RecognizedForm> recognizedForms = syncPoller.getFinalResult();
+                validateRecognizedResult(recognizedForms, true, true);
+                assertEquals(1, recognizedForms.size());
+            }), FORM_JPG);
+    }
+
     // Business Card Recognition
 
     /**
@@ -1649,6 +1681,44 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         }, RECEIPT_CONTOSO_JPG);
     }
 
+    /**
+     * Verify pages parameter passed when specified by user.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void receiptWithPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        urlRunner(sourceUrl -> {
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeReceiptsFromUrl(sourceUrl,
+                    new RecognizeReceiptsOptions()
+                        .setPollInterval(durationTestMode)
+                        .setPages(Collections.singletonList("1")))
+                    .getSyncPoller();
+            List<RecognizedForm> recognizedForms = syncPoller.getFinalResult();
+            assertEquals(1, recognizedForms.size());
+        }, RECEIPT_CONTOSO_JPG);
+    }
+
+    /**
+     * Verify pages parameter passed when specified by user for business cards API.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void businessCardWithPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        urlRunner(sourceUrl -> {
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeBusinessCardsFromUrl(sourceUrl,
+                    new RecognizeBusinessCardsOptions()
+                        .setPollInterval(durationTestMode)
+                        .setPages(Collections.singletonList("1")))
+                    .getSyncPoller();
+            List<RecognizedForm> recognizedForms = syncPoller.getFinalResult();
+            assertEquals(1, recognizedForms.size());
+        }, BUSINESS_CARD_JPG);
+    }
+
     // Invoice recognition
 
     // Invoice - non-URL
@@ -1865,6 +1935,23 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             syncPoller.getFinalResult();
             // need to update this method for removing flakiness
             validateNetworkCallRecord("locale", "en-US");
+        }, INVOICE_PDF);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeInvoiceWithPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        urlRunner(sourceUrl -> {
+            final SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeInvoicesFromUrl(sourceUrl,
+                    new RecognizeInvoicesOptions()
+                        .setPollInterval(durationTestMode)
+                        .setLocale(FormRecognizerLocale.EN_US)
+                        .setPages(Collections.singletonList("1")))
+                    .getSyncPoller();
+            List<RecognizedForm> recognizedForms = syncPoller.getFinalResult();
+            assertEquals(1, recognizedForms.size());
         }, INVOICE_PDF);
     }
 }

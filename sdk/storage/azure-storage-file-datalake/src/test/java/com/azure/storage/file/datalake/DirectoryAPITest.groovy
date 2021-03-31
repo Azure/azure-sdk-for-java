@@ -2990,6 +2990,19 @@ class DirectoryAPITest extends APISpec {
         response.getValue().size() == 2
     }
 
+    def "List paths max results by page"() {
+        setup:
+        def dirName = generatePathName()
+        def dir = fsc.getDirectoryClient(dirName)
+        dir.create()
+        setupDirectoryForListing(dir)
+
+        expect:
+        for (def page : dir.listPaths(false, false, null, null).iterableByPage(2)) {
+            assert page.getValue().size() <= 2
+        }
+    }
+
     def "List paths error"() {
         def dirName = generatePathName()
         def dir = fsc.getDirectoryClient(dirName)
