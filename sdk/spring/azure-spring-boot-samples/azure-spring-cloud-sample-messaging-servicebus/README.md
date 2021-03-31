@@ -20,23 +20,20 @@ Running this sample will be charged by Azure. You can check the usage and bill a
 1.  Create [Azure Service Bus Topic][create-service-bus-topic] and named `topic`. After creating the Azure Service Bus Topic,
     you can create the subscription [Azure Service Bus Topic subscription][create-subscription] to the topic and named `sub` .
 
-## Dependency
+
+### Include the package
 Because dependency `azure-spring-cloud-starter-servicebus` does not introduce the dependency about messaging, we need to add
 dependency `azure-spring-cloud-messaging`.
 
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-messaging;current})
+```xml
+<dependency>
+    <groupId>com.azure.spring</groupId>
+    <artifactId>azure-spring-cloud-messaging</artifactId>
+    <version>3.0.0</version>
+</dependency>
 ```
-    <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-starter-servicebus</artifactId>
-      <version>2.3.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-servicebus;current} -->
-    </dependency>
-
-    <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-messaging</artifactId>
-      <version>2.3.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-messaging;current} -->
-    </dependency>
-```
+[//]: # ({x-version-update-end})
 
 ## Examples
 
