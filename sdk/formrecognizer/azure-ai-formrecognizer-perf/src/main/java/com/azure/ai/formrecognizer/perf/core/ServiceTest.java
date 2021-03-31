@@ -37,6 +37,8 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
      * The base class for Azure Formrecognizer tests.
      *
      * @param options the configurable options for performing perf testing on this class.
+     * 
+     * @throws RuntimeException if "AZURE_FORMRECOGNIZER_API_KEY" or "AZURE_FORMRECOGNIZER_ENDPOINT" is null or empty.
      */
     public ServiceTest(TOptions options) {
         super(options);
@@ -63,6 +65,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
 
     /**
      * Runs the setup required prior to running the performance test.
+     * @throws RuntimeException if "FORMRECOGNIZER_TRAINING_CONTAINER_SAS_URL" is null or empty.
      */
     @Override
     public Mono<Void> globalSetupAsync() {

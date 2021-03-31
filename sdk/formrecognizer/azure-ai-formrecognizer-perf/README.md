@@ -21,27 +21,21 @@ FORMRECOGNIZER_TRAINING_CONTAINER_SAS_URL=<SAS url for container with training d
 ```
 
 ### Adding the package to your product
-[//]: # ({x-version-update-start;com.azure:azure-ai-formrecognizer;current})
-```xml
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>3.1.0-beta.3</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
 
 ## Key concepts
 
 ## Examples
 #### Executing the performance test
 1. Compile the performance project into a standalone jar using the command from the root of the perf project folder
-   ```java
+    ```java
    mvn clean package
 
 2. Execute the corresponding perf test in the project using the command.
    ```java
    java -jar <path-to-packaged-jar-with-dependencies-from-step-1> <options-for-the-test>
+   
+   java -jar sdk/formrecognizer/azure-ai-formrecognizer-perf/target/azure-ai-formrecognizer-perf-1.0.0-beta.1-jar-with-dependencies.jar custommodelrecognitiontest --warmup 1 --iterations 1 --parallel 5 --duration 120 --count 2
+```
 
 #### Common perf test command line options for Form Recognizer
 - `--duration` - Number of seconds to run the main test for. Default is 10.
