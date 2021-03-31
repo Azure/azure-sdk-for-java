@@ -41,6 +41,6 @@ public class EventHubKafkaBinderApplication {
 
     @Bean
     public Consumer<Message<String>> consume() {
-        return message -> LOGGER.info("New message received: '{}'", message.getPayload());
+        return message -> LOGGER.info("New message received: '{}'", message);
     }
 }
