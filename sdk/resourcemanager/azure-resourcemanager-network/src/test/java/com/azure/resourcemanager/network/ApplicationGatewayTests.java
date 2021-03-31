@@ -253,7 +253,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
                 .withIdentity(serviceIdentity)
                 .defineSslCertificate("ssl1")
                     .withKeyVaultSecretId(secretId)
-                .attach()
+                    .attach()
                 .withExistingPublicIpAddress(pip)
                 .withTier(ApplicationGatewayTier.WAF_V2)
                 .withSize(ApplicationGatewaySkuName.WAF_V2)
