@@ -42,11 +42,11 @@ public class DtmiConventionsSamples {
             // Prints: file:///path/to/repository/dtmi/com/example/thermostat-1.json
             System.out.println(fullyQualifiedModelUri);
 
-            // Remote repository example
+            // Remote repository example with expanded enabled.
             URI remoteRepositoryUri = new URI("https://contoso.com/models/");
-            fullyQualifiedModelUri = DtmiConventions.getModelUri("dtmi:com:example:Thermostat;1", remoteRepositoryUri, false).toString();
+            fullyQualifiedModelUri = DtmiConventions.getModelUri("dtmi:com:example:Thermostat;1", remoteRepositoryUri, true).toString();
 
-            // Prints: https://constoso.com/models/dtmi/com/example/thermostat-1.json
+            // Prints: https://constoso.com/models/dtmi/com/example/thermostat-1.expanded.json
             System.out.println(fullyQualifiedModelUri);
         } catch (URISyntaxException ex) {
             System.out.println("Invalid URI path has been used to instantiate the URI object. Exiting...");

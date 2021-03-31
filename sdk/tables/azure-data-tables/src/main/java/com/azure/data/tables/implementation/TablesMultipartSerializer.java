@@ -17,6 +17,7 @@ import com.azure.data.tables.implementation.models.TableServiceError;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -40,7 +41,7 @@ public class TablesMultipartSerializer extends TablesJacksonSerializer {
 
         BatchOperationResponse build() {
             BatchOperationResponse response = ModelHelper.createBatchOperationResponse(statusCode, value);
-            headers.forEach(h -> response.getHeaders().put(h.getName(), h.getValue()));
+            headers.forEach(h -> response.getHeaders().set(h.getName(), h.getValue()));
             return response;
         }
 
@@ -53,7 +54,7 @@ public class TablesMultipartSerializer extends TablesJacksonSerializer {
         }
 
         void putHeader(String name, String value) {
-            this.headers.put(name, value);
+            this.headers.set(name, value);
         }
     }
 
@@ -66,6 +67,22 @@ public class TablesMultipartSerializer extends TablesJacksonSerializer {
         } else {
             super.serialize(object, encoding, outputStream);
         }
+    }
+
+    @Override
+    public String serialize(Object object, SerializerEncoding encoding) throws IOException {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        serialize(object, encoding, stream);
+
+        return stream.toString(StandardCharsets.UTF_8.name());
+    }
+
+    @Override
+    public byte[] serializeToBytes(Object object, SerializerEncoding encoding) throws IOException {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        serialize(object, encoding, stream);
+
+        return stream.toByteArray();
     }
 
     private void writeMultipartPart(Object object, SerializerEncoding encoding, OutputStream os) throws IOException {
@@ -114,11 +131,15 @@ public class TablesMultipartSerializer extends TablesJacksonSerializer {
 
     @Override
     public <U> U deserialize(String value, Type type, SerializerEncoding serializerEncoding) throws IOException {
+        return deserialize(value.getBytes(StandardCharsets.UTF_8), type, serializerEncoding);
+    }
+
+    @Override
+    public <U> U deserialize(byte[] bytes, Type type, SerializerEncoding encoding) throws IOException {
         if (type == BatchOperationResponse.class) {
-            return deserialize(new ByteArrayInputStream(value.getBytes(StandardCharsets.UTF_8)), type,
-                serializerEncoding);
+            return deserialize(new ByteArrayInputStream(bytes), type, encoding);
         } else {
-            return super.deserialize(value, type, serializerEncoding);
+            return super.deserialize(bytes, type, encoding);
         }
     }
 

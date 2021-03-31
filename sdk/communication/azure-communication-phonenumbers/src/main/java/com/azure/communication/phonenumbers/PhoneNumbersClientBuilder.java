@@ -284,9 +284,6 @@ public final class PhoneNumbersClientBuilder {
     private void validateRequiredFields() {
         Objects.requireNonNull(this.endpoint);
 
-        if (this.pipeline == null) {
-            Objects.requireNonNull(this.httpClient);
-        }
     }
 
     private PhoneNumberAdminClientImpl createPhoneNumberAdminClient() {
