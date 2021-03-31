@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.network;
 
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.keyvault.models.Secret;
@@ -203,6 +204,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void canCreateApplicationGatewayWithSslCertificate() throws Exception {
         String appGatewayName = generateRandomResourceName("agwaf", 15);
         String appPublicIp = generateRandomResourceName("pip", 15);
