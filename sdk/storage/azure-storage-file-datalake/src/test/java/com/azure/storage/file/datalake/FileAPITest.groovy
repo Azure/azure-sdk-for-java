@@ -7,40 +7,18 @@ import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
-import com.azure.storage.blob.models.BlockListType
-import com.azure.storage.file.datalake.models.DownloadRetryOptions
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.ProgressReceiver
 import com.azure.storage.common.implementation.Constants
-import com.azure.storage.file.datalake.models.AccessTier
-import com.azure.storage.file.datalake.models.DataLakeRequestConditions
-import com.azure.storage.file.datalake.models.DataLakeStorageException
-import com.azure.storage.file.datalake.models.FileExpirationOffset
-import com.azure.storage.file.datalake.models.FileQueryArrowField
-import com.azure.storage.file.datalake.models.FileQueryArrowFieldType
-import com.azure.storage.file.datalake.models.FileQueryArrowSerialization
-import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization
-import com.azure.storage.file.datalake.models.FileQueryError
-import com.azure.storage.file.datalake.models.FileQueryJsonSerialization
-import com.azure.storage.file.datalake.models.FileQueryProgress
-import com.azure.storage.file.datalake.models.FileQuerySerialization
-import com.azure.storage.file.datalake.models.FileRange
-import com.azure.storage.file.datalake.models.LeaseStateType
-import com.azure.storage.file.datalake.models.LeaseStatusType
-import com.azure.storage.file.datalake.models.PathAccessControl
-import com.azure.storage.file.datalake.models.PathAccessControlEntry
-import com.azure.storage.file.datalake.models.PathHttpHeaders
-import com.azure.storage.file.datalake.models.PathPermissions
-import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry
-import com.azure.storage.file.datalake.models.RolePermissions
+import com.azure.storage.file.datalake.models.*
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions
 import com.azure.storage.file.datalake.options.FileQueryOptions
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions
-import spock.lang.Ignore
 import reactor.core.Exceptions
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
+import spock.lang.Ignore
 import spock.lang.Requires
 import spock.lang.Unroll
 
@@ -3154,6 +3132,41 @@ class FileAPITest extends APISpec {
         1000      | '\n'            || _
     }
 
+    @Unroll
+    def "Query Input parquet"() {
+        setup:
+        String fileName = "parquet.parquet"
+        ClassLoader classLoader = getClass().getClassLoader()
+        File f = new File(classLoader.getResource(fileName).getFile())
+        FileQueryParquetSerialization ser = new FileQueryParquetSerialization()
+        fc.uploadFromFile(f.getAbsolutePath(), true)
+        byte[] expectedData = "0,mdifjt55.ea3,mdifjt55.ea3\n".getBytes()
+
+        def expression = "select * from blobstorage where id < 1;"
+
+        FileQueryOptions optionsIs = new FileQueryOptions(expression).setInputSerialization(ser)
+        OutputStream os = new ByteArrayOutputStream()
+        FileQueryOptions optionsOs = new FileQueryOptions(expression, os).setInputSerialization(ser)
+
+        /* Input Stream. */
+        when:
+        InputStream qqStream = fc.openQueryInputStreamWithResponse(optionsIs).getValue()
+        byte[] queryData = readFromInputStream(qqStream, expectedData.length)
+
+        then:
+        notThrown(IOException)
+        queryData == expectedData
+
+        /* Output Stream. */
+        when:
+        fc.queryWithResponse(optionsOs, null, null)
+        byte[] osData = os.toByteArray()
+
+        then:
+        notThrown(BlobStorageException)
+        osData == expectedData
+    }
+
     def "Query Input csv Output json"() {
         setup:
         FileQueryDelimitedSerialization inSer = new FileQueryDelimitedSerialization()
@@ -3481,6 +3494,28 @@ class FileAPITest extends APISpec {
         when:
         options = new FileQueryOptions(expression, new ByteArrayOutputStream())
             .setInputSerialization(inSer)
+        fc.queryWithResponse(options, null, null)
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    def "Query parquet output IA"() {
+        setup:
+        def outSer = new FileQueryParquetSerialization()
+        def expression = "SELECT * from BlobStorage"
+        FileQueryOptions options = new FileQueryOptions(expression)
+            .setOutputSerialization(outSer)
+
+        when:
+        InputStream stream = fc.openQueryInputStreamWithResponse(options).getValue()  /* Don't need to call read. */
+
+        then:
+        thrown(IllegalArgumentException)
+
+        when:
+        options = new FileQueryOptions(expression, new ByteArrayOutputStream())
+            .setOutputSerialization(outSer)
         fc.queryWithResponse(options, null, null)
 
         then:
