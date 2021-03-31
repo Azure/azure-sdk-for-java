@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.ItemDeserializer;
@@ -20,10 +21,14 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.batch.BulkExecutor;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.QueryInfo;
+import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupFactory;
 import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
 import com.azure.cosmos.implementation.throughputControl.config.LocalThroughputControlGroup;
+import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupFactory;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosConflictProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -31,8 +36,8 @@ import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
@@ -497,6 +502,23 @@ public class CosmosAsyncContainer {
         return pagedFluxOptionsFluxFunction;
     }
 
+    <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryItemsInternalFunc(
+        Mono<SqlQuerySpec> sqlQuerySpecMono, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType) {
+        Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction = (pagedFluxOptions -> {
+            String spanName = this.queryItemsSpanName;
+            pagedFluxOptions.setTracerAndTelemetryInformation(spanName, database.getId(),
+                this.getId(), OperationType.Query, ResourceType.Document, this.getDatabase().getClient());
+            setContinuationTokenAndMaxItemCount(pagedFluxOptions, cosmosQueryRequestOptions);
+
+            return sqlQuerySpecMono.flux()
+                .flatMap(sqlQuerySpec -> getDatabase().getDocClientWrapper()
+                    .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, cosmosQueryRequestOptions))
+                .map(response -> prepareFeedResponse(response, false, classType));
+        });
+
+        return pagedFluxOptionsFluxFunction;
+    }
+
     /**
      * Query for items in the change feed of the current container using the {@link CosmosChangeFeedRequestOptions}.
      * <p>
@@ -823,7 +845,6 @@ public class CosmosAsyncContainer {
      * @param classType   class type
      * @return a Mono with feed response of cosmos items
      */
-    @Beta(value = Beta.SinceVersion.V4_4_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> Mono<FeedResponse<T>> readMany(
         List<CosmosItemIdentity> itemIdentityList,
         Class<T> classType) {
@@ -840,7 +861,6 @@ public class CosmosAsyncContainer {
      * @param classType   class type
      * @return a Mono with feed response of cosmos items
      */
-    @Beta(value = Beta.SinceVersion.V4_4_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> Mono<FeedResponse<T>> readMany(
         List<CosmosItemIdentity> itemIdentityList,
         String sessionToken,
@@ -1478,6 +1498,50 @@ public class CosmosAsyncContainer {
     }
 
     /**
+     * Attempts to split a feedrange into {@lparamtargetedCountAfterAplit} sub ranges. This is a best
+     * effort - it is possible that the list of feed ranges returned has less than {@lparamtargetedCountAfterAplit}
+     * sub ranges
+     * @param feedRange
+     * @param targetedCountAfterSplit
+     * @return list of feed ranges after attempted split operation
+     */
+    Mono<List<FeedRangeEpkImpl>> trySplitFeedRange(FeedRange feedRange, int targetedCountAfterSplit) {
+        checkNotNull(feedRange, "Argument 'feedRange' must not be null.");
+
+        final AsyncDocumentClient clientWrapper = this.database.getDocClientWrapper();
+        Mono<Utils.ValueHolder<DocumentCollection>> getCollectionObservable = clientWrapper
+            .getCollectionCache()
+            .resolveByNameAsync(null, this.link, null)
+            .map(collection -> Utils.ValueHolder.initialize(collection));
+
+        return FeedRangeInternal
+            .convert(feedRange)
+            .trySplit(
+                clientWrapper.getPartitionKeyRangeCache(),
+                null,
+                getCollectionObservable,
+                targetedCountAfterSplit
+            );
+    }
+
+    Mono<Range<String>> getNormalizedEffectiveRange(FeedRange feedRange) {
+        checkNotNull(feedRange, "Argument 'feedRange' must not be null.");
+
+        final AsyncDocumentClient clientWrapper = this.database.getDocClientWrapper();
+        Mono<Utils.ValueHolder<DocumentCollection>> getCollectionObservable = clientWrapper
+            .getCollectionCache()
+            .resolveByNameAsync(null, this.link, null)
+            .map(collection -> Utils.ValueHolder.initialize(collection));
+
+        return FeedRangeInternal
+            .convert(feedRange)
+            .getNormalizedEffectiveRange(
+                clientWrapper.getPartitionKeyRangeCache(),
+                null,
+                getCollectionObservable);
+    }
+
+     /**
      * Enable the throughput control group with local control mode.
      *
      * {@codesnippet com.azure.cosmos.throughputControl.localControl}

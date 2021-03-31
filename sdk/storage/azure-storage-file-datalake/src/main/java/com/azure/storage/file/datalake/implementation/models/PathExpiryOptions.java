@@ -8,28 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for PathExpiryOptions.
- */
+/** Defines values for PathExpiryOptions. */
 public final class PathExpiryOptions extends ExpandableStringEnum<PathExpiryOptions> {
-    /**
-     * Static value NeverExpire for PathExpiryOptions.
-     */
+    /** Static value NeverExpire for PathExpiryOptions. */
     public static final PathExpiryOptions NEVER_EXPIRE = fromString("NeverExpire");
 
-    /**
-     * Static value RelativeToCreation for PathExpiryOptions.
-     */
+    /** Static value RelativeToCreation for PathExpiryOptions. */
     public static final PathExpiryOptions RELATIVE_TO_CREATION = fromString("RelativeToCreation");
 
-    /**
-     * Static value RelativeToNow for PathExpiryOptions.
-     */
+    /** Static value RelativeToNow for PathExpiryOptions. */
     public static final PathExpiryOptions RELATIVE_TO_NOW = fromString("RelativeToNow");
 
-    /**
-     * Static value Absolute for PathExpiryOptions.
-     */
+    /** Static value Absolute for PathExpiryOptions. */
     public static final PathExpiryOptions ABSOLUTE = fromString("Absolute");
 
     /**
@@ -43,9 +33,7 @@ public final class PathExpiryOptions extends ExpandableStringEnum<PathExpiryOpti
         return fromString(name, PathExpiryOptions.class);
     }
 
-    /**
-     * @return known PathExpiryOptions values.
-     */
+    /** @return known PathExpiryOptions values. */
     public static Collection<PathExpiryOptions> values() {
         return values(PathExpiryOptions.class);
     }

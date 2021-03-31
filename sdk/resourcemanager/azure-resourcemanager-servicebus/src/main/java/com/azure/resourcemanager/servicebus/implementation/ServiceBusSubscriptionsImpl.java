@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 import com.azure.resourcemanager.servicebus.fluent.SubscriptionsClient;
-import com.azure.resourcemanager.servicebus.fluent.models.SubscriptionResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SBSubscriptionInner;
 import com.azure.resourcemanager.servicebus.models.ServiceBusSubscription;
 import com.azure.resourcemanager.servicebus.models.ServiceBusSubscriptions;
 import com.azure.resourcemanager.servicebus.models.Topic;
@@ -22,7 +22,7 @@ class ServiceBusSubscriptionsImpl
     extends ServiceBusChildResourcesImpl<
         ServiceBusSubscription,
         ServiceBusSubscriptionImpl,
-        SubscriptionResourceInner,
+        SBSubscriptionInner,
         SubscriptionsClient,
         ServiceBusManager,
         Topic>
@@ -60,18 +60,18 @@ class ServiceBusSubscriptionsImpl
     }
 
     @Override
-    protected Mono<SubscriptionResourceInner> getInnerByNameAsync(String name) {
+    protected Mono<SBSubscriptionInner> getInnerByNameAsync(String name) {
         return this.innerModel().getAsync(this.resourceGroupName, this.namespaceName, this.topicName, name);
     }
 
     @Override
-    protected PagedFlux<SubscriptionResourceInner> listInnerAsync() {
-        return this.innerModel().listAllAsync(this.resourceGroupName, this.namespaceName, this.topicName);
+    protected PagedFlux<SBSubscriptionInner> listInnerAsync() {
+        return this.innerModel().listByTopicAsync(this.resourceGroupName, this.namespaceName, this.topicName);
     }
 
     @Override
-    protected PagedIterable<SubscriptionResourceInner> listInner() {
-        return this.innerModel().listAll(this.resourceGroupName, this.namespaceName, this.topicName);
+    protected PagedIterable<SBSubscriptionInner> listInner() {
+        return this.innerModel().listByTopic(this.resourceGroupName, this.namespaceName, this.topicName);
     }
 
     @Override
@@ -80,18 +80,16 @@ class ServiceBusSubscriptionsImpl
                 this.namespaceName,
                 this.topicName,
                 name,
-                this.region,
-                new SubscriptionResourceInner(),
+                new SBSubscriptionInner(),
                 this.manager());
     }
 
     @Override
-    protected ServiceBusSubscriptionImpl wrapModel(SubscriptionResourceInner inner) {
+    protected ServiceBusSubscriptionImpl wrapModel(SBSubscriptionInner inner) {
         return new ServiceBusSubscriptionImpl(this.resourceGroupName,
                 this.namespaceName,
                 this.topicName,
                 inner.name(),
-                this.region,
                 inner,
                 this.manager());
     }

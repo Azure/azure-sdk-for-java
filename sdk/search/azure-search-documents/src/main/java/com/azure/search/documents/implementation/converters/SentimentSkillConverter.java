@@ -3,11 +3,7 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.SentimentSkill;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.SentimentSkill} and
@@ -21,11 +17,7 @@ public final class SentimentSkillConverter {
         if (obj == null) {
             return null;
         }
-
-        List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null
-            : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-
-        SentimentSkill sentimentSkill = new SentimentSkill(inputs, obj.getOutputs());
+        SentimentSkill sentimentSkill = new SentimentSkill(obj.getInputs(), obj.getOutputs());
 
         String name = obj.getName();
         sentimentSkill.setName(name);
@@ -50,12 +42,9 @@ public final class SentimentSkillConverter {
             return null;
         }
 
-        List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
-            obj.getOutputs() == null ? null
-                : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-
         com.azure.search.documents.indexes.implementation.models.SentimentSkill sentimentSkill =
-            new com.azure.search.documents.indexes.implementation.models.SentimentSkill(inputs, obj.getOutputs());
+            new com.azure.search.documents.indexes.implementation.models.SentimentSkill(obj.getInputs(),
+                obj.getOutputs());
 
 
         String name = obj.getName();

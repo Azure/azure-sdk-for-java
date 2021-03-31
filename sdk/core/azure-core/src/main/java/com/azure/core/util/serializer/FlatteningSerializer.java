@@ -223,7 +223,9 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
 
     @Override
     public void resolve(SerializerProvider provider) throws JsonMappingException {
-        ((ResolvableSerializer) defaultSerializer).resolve(provider);
+        if (this.defaultSerializer instanceof ResolvableSerializer) {
+            ((ResolvableSerializer) this.defaultSerializer).resolve(provider);
+        }
     }
 
     @Override

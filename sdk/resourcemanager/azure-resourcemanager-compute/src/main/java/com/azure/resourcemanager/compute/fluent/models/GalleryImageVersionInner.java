@@ -23,7 +23,7 @@ public class GalleryImageVersionInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageVersionInner.class);
 
     /*
-     * Describes the basic gallery artifact publishing profile.
+     * The publishing profile of a gallery Image Version.
      */
     @JsonProperty(value = "properties.publishingProfile")
     private GalleryImageVersionPublishingProfile publishingProfile;
@@ -47,7 +47,7 @@ public class GalleryImageVersionInner extends Resource {
     private ReplicationStatus replicationStatus;
 
     /**
-     * Get the publishingProfile property: Describes the basic gallery artifact publishing profile.
+     * Get the publishingProfile property: The publishing profile of a gallery Image Version.
      *
      * @return the publishingProfile value.
      */
@@ -56,7 +56,7 @@ public class GalleryImageVersionInner extends Resource {
     }
 
     /**
-     * Set the publishingProfile property: Describes the basic gallery artifact publishing profile.
+     * Set the publishingProfile property: The publishing profile of a gallery Image Version.
      *
      * @param publishingProfile the publishingProfile value to set.
      * @return the GalleryImageVersionInner object itself.

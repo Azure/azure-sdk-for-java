@@ -4,14 +4,13 @@
 
 package com.azure.communication.phonenumbers.implementation.models;
 
-import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
 /** Contains all response data for the getOperation operation. */
 public final class PhoneNumbersGetOperationResponse
-        extends ResponseBase<PhoneNumbersGetOperationHeaders, PhoneNumberOperation> {
+        extends ResponseBase<PhoneNumbersGetOperationHeaders, PhoneNumberRawOperation> {
     /**
      * Creates an instance of PhoneNumbersGetOperationResponse.
      *
@@ -25,14 +24,14 @@ public final class PhoneNumbersGetOperationResponse
             HttpRequest request,
             int statusCode,
             HttpHeaders rawHeaders,
-            PhoneNumberOperation value,
+            PhoneNumberRawOperation value,
             PhoneNumbersGetOperationHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
     /** @return the deserialized response body. */
     @Override
-    public PhoneNumberOperation getValue() {
+    public PhoneNumberRawOperation getValue() {
         return super.getValue();
     }
 }

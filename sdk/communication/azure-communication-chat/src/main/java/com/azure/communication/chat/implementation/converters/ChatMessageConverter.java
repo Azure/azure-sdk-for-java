@@ -29,7 +29,7 @@ public final class ChatMessageConverter {
             .setSenderDisplayName(obj.getSenderDisplayName());
 
         if (obj.getSenderCommunicationIdentifier() != null) {
-            chatMessage.setSenderCommunicationIdentifier(
+            chatMessage.setSender(
                 CommunicationIdentifierConverter.convert(obj.getSenderCommunicationIdentifier()));
         }
 

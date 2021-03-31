@@ -4,34 +4,47 @@
 
 package com.azure.resourcemanager.servicebus.models;
 
-import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import java.util.Collection;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 /** Defines values for SkuName. */
-public final class SkuName extends ExpandableStringEnum<SkuName> {
-    /** Static value Basic for SkuName. */
-    public static final SkuName BASIC = fromString("Basic");
+public enum SkuName {
+    /** Enum value Basic. */
+    BASIC("Basic"),
 
-    /** Static value Standard for SkuName. */
-    public static final SkuName STANDARD = fromString("Standard");
+    /** Enum value Standard. */
+    STANDARD("Standard"),
 
-    /** Static value Premium for SkuName. */
-    public static final SkuName PREMIUM = fromString("Premium");
+    /** Enum value Premium. */
+    PREMIUM("Premium");
 
-    /**
-     * Creates or finds a SkuName from its string representation.
-     *
-     * @param name a name to look for.
-     * @return the corresponding SkuName.
-     */
-    @JsonCreator
-    public static SkuName fromString(String name) {
-        return fromString(name, SkuName.class);
+    /** The actual serialized value for a SkuName instance. */
+    private final String value;
+
+    SkuName(String value) {
+        this.value = value;
     }
 
-    /** @return known SkuName values. */
-    public static Collection<SkuName> values() {
-        return values(SkuName.class);
+    /**
+     * Parses a serialized value to a SkuName instance.
+     *
+     * @param value the serialized value to parse.
+     * @return the parsed SkuName object, or null if unable to parse.
+     */
+    @JsonCreator
+    public static SkuName fromString(String value) {
+        SkuName[] items = SkuName.values();
+        for (SkuName item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

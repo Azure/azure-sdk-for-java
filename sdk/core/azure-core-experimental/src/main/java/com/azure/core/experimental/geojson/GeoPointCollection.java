@@ -3,6 +3,8 @@
 
 package com.azure.core.experimental.geojson;
 
+import com.azure.core.annotation.Immutable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.Objects;
 /**
  * Represents a collection of {@link GeoPoint GeoPoints}.
  */
+@Immutable
 public final class GeoPointCollection extends GeoObject {
     private final List<GeoPoint> points;
 
@@ -55,7 +58,7 @@ public final class GeoPointCollection extends GeoObject {
      * @return An unmodifiable representation of the {@link GeoPosition geometric positions} representing this
      * multi-point.
      */
-    public GeoArray<GeoPosition> getCoordinates() {
+    GeoArray<GeoPosition> getCoordinates() {
         return new GeoArray<>(this);
     }
 

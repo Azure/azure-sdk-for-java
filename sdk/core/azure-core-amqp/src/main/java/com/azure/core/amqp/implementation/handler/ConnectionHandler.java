@@ -44,7 +44,6 @@ public class ConnectionHandler extends Handler {
     static final int MAX_FRAME_SIZE = 65536;
 
     private final Map<String, Object> connectionProperties;
-    private final ClientLogger logger = new ClientLogger(ConnectionHandler.class);
     private final ConnectionOptions connectionOptions;
     private final SslPeerDetails peerDetails;
 
@@ -57,7 +56,8 @@ public class ConnectionHandler extends Handler {
     public ConnectionHandler(final String connectionId, final ConnectionOptions connectionOptions,
         SslPeerDetails peerDetails) {
         super(connectionId,
-            Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.").getHostname());
+            Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.").getHostname(),
+            new ClientLogger(ConnectionHandler.class));
         add(new Handshaker());
 
         this.connectionOptions = connectionOptions;
@@ -144,7 +144,7 @@ public class ConnectionHandler extends Handler {
             sslDomain.setSslContext(defaultSslContext);
             sslDomain.setPeerAuthentication(SslDomain.VerifyMode.VERIFY_PEER);
         } else if (verifyMode == SslDomain.VerifyMode.ANONYMOUS_PEER) {
-            logger.warning("{} is not secure.", verifyMode);
+            logger.warning("connectionId[{}] '{}' is not secure.", getConnectionId(), verifyMode);
             sslDomain.setPeerAuthentication(SslDomain.VerifyMode.ANONYMOUS_PEER);
         } else {
             throw logger.logExceptionAsError(new UnsupportedOperationException(
@@ -156,10 +156,15 @@ public class ConnectionHandler extends Handler {
 
     @Override
     public void onConnectionInit(Event event) {
-        logger.info("onConnectionInit hostname[{}], connectionId[{}], amqpHostname[{}]", getHostname(),
-            getConnectionId(), connectionOptions.getFullyQualifiedNamespace());
+        logger.info("onConnectionInit connectionId[{}] hostname[{}] amqpHostname[{}]",
+            getConnectionId(), getHostname(), connectionOptions.getFullyQualifiedNamespace());
 
         final Connection connection = event.getConnection();
+        if (connection == null) {
+            logger.warning("connectionId[{}] Underlying connection is null. Should not be possible.");
+            close();
+            return;
+        }
 
         // Set the hostname of the AMQP message broker. This may be different from the actual underlying transport
         // in the case we are using an intermediary to connect to Event Hubs.
@@ -290,7 +295,7 @@ public class ConnectionHandler extends Handler {
         final ErrorCondition error = connection.getCondition();
 
         logErrorCondition("onConnectionFinal", connection, error);
-        onNext(connection.getRemoteState());
+        onNext(EndpointState.CLOSED);
 
         // Complete the processors because they no longer have any work to do.
         close();
@@ -318,10 +323,10 @@ public class ConnectionHandler extends Handler {
     }
 
     private void logErrorCondition(String eventName, Connection connection, ErrorCondition error) {
-        logger.info("{} hostname[{}], connectionId[{}], errorCondition[{}], errorDescription[{}]",
+        logger.info("{} connectionId[{}] hostname[{}] errorCondition[{}] errorDescription[{}]",
             eventName,
-            connection.getHostname(),
             getConnectionId(),
+            connection.getHostname(),
             error != null ? error.getCondition() : ClientConstants.NOT_APPLICABLE,
             error != null ? error.getDescription() : ClientConstants.NOT_APPLICABLE);
     }

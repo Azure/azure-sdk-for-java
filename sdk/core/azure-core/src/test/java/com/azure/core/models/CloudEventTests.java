@@ -3,7 +3,7 @@
 
 package com.azure.core.models;
 
-import com.azure.core.implementation.serializer.JacksonSerializer;
+import com.azure.core.implementation.serializer.DefaultJsonSerializer;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class CloudEventTests {
-    private static final JacksonSerializer SERIALIZER = new JacksonSerializer();
+    private static final DefaultJsonSerializer SERIALIZER = new DefaultJsonSerializer();
 
     @Test
     public void testRoundTripCloudEvents() throws IOException {

@@ -7,7 +7,6 @@ import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
-import com.azure.ai.formrecognizer.implementation.models.ContentType1;
 import com.azure.ai.formrecognizer.implementation.models.Language;
 import com.azure.ai.formrecognizer.implementation.models.Locale;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
@@ -139,13 +138,17 @@ public final class FormRecognizerAsyncClient {
             Objects.requireNonNull(formUrl, "'formUrl' is required and cannot be null.");
             Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
 
-            recognizeCustomFormsOptions = getRecognizeCustomFormOptions(recognizeCustomFormsOptions);
-            final boolean isFieldElementsIncluded = recognizeCustomFormsOptions.isFieldElementsIncluded();
+            final RecognizeCustomFormsOptions finalRecognizeCustomFormsOptions
+                = getRecognizeCustomFormOptions(recognizeCustomFormsOptions);
+            final boolean isFieldElementsIncluded = finalRecognizeCustomFormsOptions.isFieldElementsIncluded();
             return new PollerFlux<>(
-                recognizeCustomFormsOptions.getPollInterval(),
+                finalRecognizeCustomFormsOptions.getPollInterval(),
                 urlActivationOperation(() ->
-                    service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
-                        isFieldElementsIncluded, new SourcePath().setSource(formUrl), context)
+                        service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
+                            isFieldElementsIncluded,
+                            finalRecognizeCustomFormsOptions.getPages(),
+                            new SourcePath().setSource(formUrl),
+                            context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
                     logger),
@@ -231,17 +234,23 @@ public final class FormRecognizerAsyncClient {
             Objects.requireNonNull(form, "'form' is required and cannot be null.");
             Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
 
-            recognizeCustomFormsOptions = getRecognizeCustomFormOptions(recognizeCustomFormsOptions);
+            final RecognizeCustomFormsOptions finalRecognizeCustomFormsOptions
+                = getRecognizeCustomFormOptions(recognizeCustomFormsOptions);
             final boolean isFieldElementsIncluded = recognizeCustomFormsOptions.isFieldElementsIncluded();
             return new PollerFlux<>(
-                recognizeCustomFormsOptions.getPollInterval(),
+                finalRecognizeCustomFormsOptions.getPollInterval(),
                 streamActivationOperation(
                     contentType -> service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
-                        ContentType.fromString(contentType.toString()), form, length, isFieldElementsIncluded, context)
+                        ContentType.fromString(contentType.toString()),
+                        form,
+                        length,
+                        isFieldElementsIncluded,
+                        finalRecognizeCustomFormsOptions.getPages(),
+                        context)
                         .map(response ->
                             new FormRecognizerOperationResult(
                                 parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
-                    form, recognizeCustomFormsOptions.getContentType()),
+                    form, finalRecognizeCustomFormsOptions.getContentType()),
                 pollingOperation(
                     resultUuid -> service.getAnalyzeFormResultWithResponseAsync(
                         UUID.fromString(modelId), resultUuid, context)),
@@ -319,9 +328,10 @@ public final class FormRecognizerAsyncClient {
                 finalRecognizeContentOptions.getPollInterval(),
                 urlActivationOperation(
                     () -> service.analyzeLayoutAsyncWithResponseAsync(
+                        finalRecognizeContentOptions.getPages(),
                         finalRecognizeContentOptions.getLanguage() == null
                             ? null : Language.fromString(finalRecognizeContentOptions.getLanguage().toString()),
-                        finalRecognizeContentOptions.getPages(),
+                        null,
                         new SourcePath().setSource(formUrl),
                         context)
                         .map(response -> new FormRecognizerOperationResult(
@@ -408,9 +418,10 @@ public final class FormRecognizerAsyncClient {
                     contentType -> service.analyzeLayoutAsyncWithResponseAsync(contentType,
                         form,
                         length,
+                        finalRecognizeContentOptions.getPages(),
                         finalRecognizeContentOptions.getLanguage() == null
                             ? null : Language.fromString(finalRecognizeContentOptions.getLanguage().toString()),
-                        finalRecognizeContentOptions.getPages(),
+                        null,
                         context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
@@ -482,14 +493,16 @@ public final class FormRecognizerAsyncClient {
         try {
             Objects.requireNonNull(receiptUrl, "'receiptUrl' is required and cannot be null.");
 
-            recognizeReceiptsOptions = getRecognizeReceiptOptions(recognizeReceiptsOptions);
-            final boolean isFieldElementsIncluded = recognizeReceiptsOptions.isFieldElementsIncluded();
-            final FormRecognizerLocale localeInfo  = recognizeReceiptsOptions.getLocale();
+            final RecognizeReceiptsOptions finalRecognizeReceiptsOptions
+                = getRecognizeReceiptOptions(recognizeReceiptsOptions);
+            final boolean isFieldElementsIncluded = finalRecognizeReceiptsOptions.isFieldElementsIncluded();
+            final FormRecognizerLocale localeInfo  = finalRecognizeReceiptsOptions.getLocale();
             return new PollerFlux<>(
-                recognizeReceiptsOptions.getPollInterval(),
+                finalRecognizeReceiptsOptions.getPollInterval(),
                 urlActivationOperation(
                     () -> service.analyzeReceiptAsyncWithResponseAsync(isFieldElementsIncluded,
                         localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
+                        finalRecognizeReceiptsOptions.getPages(),
                         new SourcePath().setSource(receiptUrl),
                         context)
                         .map(response -> new FormRecognizerOperationResult(
@@ -574,11 +587,12 @@ public final class FormRecognizerAsyncClient {
         Context context) {
         try {
             Objects.requireNonNull(receipt, "'receipt' is required and cannot be null.");
-            recognizeReceiptsOptions = getRecognizeReceiptOptions(recognizeReceiptsOptions);
-            final boolean isFieldElementsIncluded = recognizeReceiptsOptions.isFieldElementsIncluded();
-            final FormRecognizerLocale localeInfo = recognizeReceiptsOptions.getLocale();
+            final RecognizeReceiptsOptions finalRecognizeReceiptsOptions
+                = getRecognizeReceiptOptions(recognizeReceiptsOptions);
+            final boolean isFieldElementsIncluded = finalRecognizeReceiptsOptions.isFieldElementsIncluded();
+            final FormRecognizerLocale localeInfo  = finalRecognizeReceiptsOptions.getLocale();
             return new PollerFlux<>(
-                recognizeReceiptsOptions.getPollInterval(),
+                finalRecognizeReceiptsOptions.getPollInterval(),
                 streamActivationOperation(
                     (contentType -> service.analyzeReceiptAsyncWithResponseAsync(
                         contentType,
@@ -586,10 +600,11 @@ public final class FormRecognizerAsyncClient {
                         length,
                         isFieldElementsIncluded,
                         localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
+                        finalRecognizeReceiptsOptions.getPages(),
                         context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
-                    receipt, recognizeReceiptsOptions.getContentType()),
+                    receipt, finalRecognizeReceiptsOptions.getContentType()),
                 pollingOperation(resultId -> service.getAnalyzeReceiptResultWithResponseAsync(resultId, context)),
                 (activationResponse, pollingContext) -> monoError(logger,
                     new RuntimeException("Cancellation is not supported")),
@@ -659,14 +674,16 @@ public final class FormRecognizerAsyncClient {
         try {
             Objects.requireNonNull(businessCardUrl, "'businessCardUrl' is required and cannot be null.");
 
-            recognizeBusinessCardsOptions = getRecognizeBusinessCardsOptions(recognizeBusinessCardsOptions);
-            final boolean isFieldElementsIncluded = recognizeBusinessCardsOptions.isFieldElementsIncluded();
-            final FormRecognizerLocale localeInfo = recognizeBusinessCardsOptions.getLocale();
+            final RecognizeBusinessCardsOptions finalRecognizeBusinessCardsOptions
+                = getRecognizeBusinessCardsOptions(recognizeBusinessCardsOptions);
+            final boolean isFieldElementsIncluded = finalRecognizeBusinessCardsOptions.isFieldElementsIncluded();
+            final FormRecognizerLocale localeInfo = finalRecognizeBusinessCardsOptions.getLocale();
             return new PollerFlux<>(
-                recognizeBusinessCardsOptions.getPollInterval(),
+                finalRecognizeBusinessCardsOptions.getPollInterval(),
                 urlActivationOperation(
                     () -> service.analyzeBusinessCardAsyncWithResponseAsync(isFieldElementsIncluded,
                         localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
+                        finalRecognizeBusinessCardsOptions.getPages(),
                         new SourcePath().setSource(businessCardUrl),
                         context)
                         .map(response -> new FormRecognizerOperationResult(
@@ -749,9 +766,10 @@ public final class FormRecognizerAsyncClient {
         Context context) {
         try {
             Objects.requireNonNull(businessCard, "'businessCard' is required and cannot be null.");
-            recognizeBusinessCardsOptions = getRecognizeBusinessCardsOptions(recognizeBusinessCardsOptions);
-            final boolean isFieldElementsIncluded = recognizeBusinessCardsOptions.isFieldElementsIncluded();
-            final FormRecognizerLocale localeInfo = recognizeBusinessCardsOptions.getLocale();
+            final RecognizeBusinessCardsOptions finalRecognizeBusinessCardsOptions
+                = getRecognizeBusinessCardsOptions(recognizeBusinessCardsOptions);
+            final boolean isFieldElementsIncluded = finalRecognizeBusinessCardsOptions.isFieldElementsIncluded();
+            final FormRecognizerLocale localeInfo = finalRecognizeBusinessCardsOptions.getLocale();
             return new PollerFlux<>(
                 recognizeBusinessCardsOptions.getPollInterval(),
                 streamActivationOperation(
@@ -761,10 +779,11 @@ public final class FormRecognizerAsyncClient {
                         length,
                         isFieldElementsIncluded,
                         localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
+                        finalRecognizeBusinessCardsOptions.getPages(),
                         context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
-                    businessCard, recognizeBusinessCardsOptions.getContentType()),
+                    businessCard, finalRecognizeBusinessCardsOptions.getContentType()),
                 pollingOperation(resultId -> service.getAnalyzeBusinessCardResultWithResponseAsync(resultId, context)),
                 (activationResponse, pollingContext) -> monoError(logger,
                     new RuntimeException("Cancellation is not supported")),
@@ -784,13 +803,13 @@ public final class FormRecognizerAsyncClient {
      */
     private Function<PollingContext<FormRecognizerOperationResult>, Mono<FormRecognizerOperationResult>>
         streamActivationOperation(
-        Function<ContentType1, Mono<FormRecognizerOperationResult>> activationOperation, Flux<ByteBuffer> form,
+        Function<ContentType, Mono<FormRecognizerOperationResult>> activationOperation, Flux<ByteBuffer> form,
         FormContentType contentType) {
         return pollingContext -> {
             try {
                 Objects.requireNonNull(form, "'form' is required and cannot be null.");
                 if (contentType != null) {
-                    return activationOperation.apply(ContentType1.fromString(contentType.toString()))
+                    return activationOperation.apply(ContentType.fromString(contentType.toString()))
                         .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
                 } else {
                     return detectContentType(form)
@@ -922,14 +941,16 @@ public final class FormRecognizerAsyncClient {
         try {
             Objects.requireNonNull(invoiceUrl, "'invoiceUrl' is required and cannot be null.");
 
-            recognizeInvoicesOptions = getRecognizeInvoicesOptions(recognizeInvoicesOptions);
-            final boolean isFieldElementsIncluded = recognizeInvoicesOptions.isFieldElementsIncluded();
-            final FormRecognizerLocale localeInfo  = recognizeInvoicesOptions.getLocale();
+            final RecognizeInvoicesOptions finalRecognizeInvoicesOptions
+                = getRecognizeInvoicesOptions(recognizeInvoicesOptions);
+            final boolean isFieldElementsIncluded = finalRecognizeInvoicesOptions.isFieldElementsIncluded();
+            final FormRecognizerLocale localeInfo  = finalRecognizeInvoicesOptions.getLocale();
             return new PollerFlux<>(
-                recognizeInvoicesOptions.getPollInterval(),
+                finalRecognizeInvoicesOptions.getPollInterval(),
                 urlActivationOperation(
                     () -> service.analyzeInvoiceAsyncWithResponseAsync(isFieldElementsIncluded,
                         localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
+                        finalRecognizeInvoicesOptions.getPages(),
                         new SourcePath().setSource(invoiceUrl),
                         context)
                         .map(response -> new FormRecognizerOperationResult(
@@ -1014,11 +1035,12 @@ public final class FormRecognizerAsyncClient {
         Context context) {
         try {
             Objects.requireNonNull(invoice, "'invoice' is required and cannot be null.");
-            recognizeInvoicesOptions = getRecognizeInvoicesOptions(recognizeInvoicesOptions);
-            final boolean isFieldElementsIncluded = recognizeInvoicesOptions.isFieldElementsIncluded();
-            final FormRecognizerLocale localeInfo = recognizeInvoicesOptions.getLocale();
+            final RecognizeInvoicesOptions finalRecognizeInvoicesOptions
+                = getRecognizeInvoicesOptions(recognizeInvoicesOptions);
+            final boolean isFieldElementsIncluded = finalRecognizeInvoicesOptions.isFieldElementsIncluded();
+            final FormRecognizerLocale localeInfo  = finalRecognizeInvoicesOptions.getLocale();
             return new PollerFlux<>(
-                recognizeInvoicesOptions.getPollInterval(),
+                finalRecognizeInvoicesOptions.getPollInterval(),
                 streamActivationOperation(
                     (contentType -> service.analyzeInvoiceAsyncWithResponseAsync(
                         contentType,
@@ -1026,10 +1048,11 @@ public final class FormRecognizerAsyncClient {
                         length,
                         isFieldElementsIncluded,
                         localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
+                        finalRecognizeInvoicesOptions.getPages(),
                         context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
-                    invoice, recognizeInvoicesOptions.getContentType()),
+                    invoice, finalRecognizeInvoicesOptions.getContentType()),
                 pollingOperation(resultId -> service.getAnalyzeInvoiceResultWithResponseAsync(resultId, context)),
                 (activationResponse, pollingContext) -> monoError(logger,
                     new RuntimeException("Cancellation is not supported")),
