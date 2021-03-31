@@ -4,7 +4,12 @@ package com.azure.spring.aad.webapi;
 
 import com.azure.spring.aad.AADAuthorizationGrantType;
 import com.azure.spring.autoconfigure.aad.Constants;
-import com.microsoft.aad.msal4j.*;
+import com.microsoft.aad.msal4j.ConfidentialClientApplication;
+import com.microsoft.aad.msal4j.OnBehalfOfParameters;
+import com.microsoft.aad.msal4j.UserAssertion;
+import com.microsoft.aad.msal4j.MsalInteractionRequiredException;
+import com.microsoft.aad.msal4j.ClientCredentialFactory;
+import com.microsoft.aad.msal4j.IClientSecret;
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTParser;
 import org.slf4j.Logger;
@@ -45,9 +50,9 @@ public class AADOBOOAuth2AuthorizedClientProvider implements OAuth2AuthorizedCli
     private static final Logger LOGGER = LoggerFactory.getLogger(AADOBOOAuth2AuthorizedClientProvider.class);
 
 
-    private Clock clock = Clock.systemUTC();
+    private final Clock clock = Clock.systemUTC();
 
-    private Duration clockSkew = Duration.ofSeconds(60);
+    private final Duration clockSkew = Duration.ofSeconds(60);
 
 
     @Override

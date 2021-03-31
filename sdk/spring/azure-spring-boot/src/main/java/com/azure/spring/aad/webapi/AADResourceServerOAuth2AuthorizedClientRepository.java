@@ -54,8 +54,8 @@ public class AADResourceServerOAuth2AuthorizedClientRepository implements OAuth2
         if (clientRegistration.getAuthorizationGrantType().getValue().equals(
             AADAuthorizationGrantType.ON_BEHALF_OF.getValue())) {
             return this.oAuth2AuthorizedClientService.loadAuthorizedClient(registrationId, authentication.getName());
-        } else if (clientRegistration.getAuthorizationGrantType().getValue().equals
-            (AADAuthorizationGrantType.CLIENT_CREDENTIALS.getValue())) {
+        } else if (clientRegistration.getAuthorizationGrantType().getValue().equals(
+            AADAuthorizationGrantType.CLIENT_CREDENTIALS.getValue())) {
             return this.oAuth2AuthorizedClientService.loadAuthorizedClient(registrationId, authentication.getName());
         }
         return null;
