@@ -12,7 +12,9 @@ import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.UniqueKeyPolicy;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -412,7 +414,8 @@ public final class DocumentCollection extends Resource {
     }
 
     public static class SerializableDocumentCollection implements SerializableWrapper<DocumentCollection> {
-        private static final long serialVersionUID = 1l;
+        private static final long serialVersionUID = 2l;
+        private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
         public static SerializableDocumentCollection from(DocumentCollection documentCollection) {
             SerializableDocumentCollection serializableDocumentCollection = new SerializableDocumentCollection();
             serializableDocumentCollection.documentCollection = documentCollection;
@@ -427,12 +430,18 @@ public final class DocumentCollection extends Resource {
 
         private void writeObject(ObjectOutputStream objectOutputStream) throws IOException {
             documentCollection.populatePropertyBag();
-            objectOutputStream.writeObject(documentCollection.getPropertyBag());
+            ObjectNode docCollectionNode = OBJECT_MAPPER.createObjectNode();
+            docCollectionNode.set("col", documentCollection.getPropertyBag());
+            docCollectionNode.set("altLink", TextNode.valueOf(documentCollection.getAltLink()));
+            objectOutputStream.writeObject(docCollectionNode);
         }
 
         private void readObject(ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
             ObjectNode objectNode = (ObjectNode) objectInputStream.readObject();
-            this.documentCollection = new DocumentCollection(objectNode);
+            ObjectNode collectionNode = (ObjectNode)objectNode.get("col");
+            String altLink = objectNode.get("altLink").asText();
+            this.documentCollection = new DocumentCollection(collectionNode);
+            this.documentCollection.setAltLink(altLink);
         }
     }
 }
