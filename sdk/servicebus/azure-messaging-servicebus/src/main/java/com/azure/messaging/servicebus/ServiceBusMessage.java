@@ -95,8 +95,13 @@ public class ServiceBusMessage {
     }
 
     /**
+     * This constructor provides an easy way to create {@link ServiceBusMessage} with message body as AMQP Data types
+     * {@code SEQUENCE} and {@code VALUE}. It support sending and receiving of only one AMQP Sequence at present.
+     * If you are sending message with single byte array or String data, you can also use other constructor.
      *
      * @param amqpMessageBody amqp message body.
+     *
+     * @throws NullPointerException if {@code amqpMessageBody} is {@code null}.
      */
     public ServiceBusMessage(AmqpMessageBody amqpMessageBody) {
         Objects.requireNonNull(amqpMessageBody, "'body' cannot be null.");
@@ -245,8 +250,8 @@ public class ServiceBusMessage {
                 return BinaryData.fromBytes(amqpAnnotatedMessage.getBody().getFirstData());
             case SEQUENCE:
             case VALUE:
-                throw logger.logExceptionAsError(new IllegalStateException("Message  body type is not DATA, instead it is: "
-                    + type.toString()));
+                throw logger.logExceptionAsError(new IllegalStateException("Message  body type is not DATA, instead " +
+                    "it is: " + type.toString()));
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown AmqpBodyType: "
                     + type.toString()));
