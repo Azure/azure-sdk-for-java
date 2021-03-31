@@ -136,9 +136,12 @@ public class ReactorReceiver implements AmqpReceiveLink {
                 }).subscribe(response -> {
                     logger.verbose("connectionId[{}] linkName[{}] response[{}] Token refreshed.",
                         handler.getConnectionId(), getLinkName(), response);
-                }, error -> {}, () -> {
+                }, error -> {
+                    }, () -> {
                         logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Authorization completed.",
-                        handler.getConnectionId(), entityPath, getLinkName());
+                            handler.getConnectionId(), entityPath, getLinkName());
+
+                        dispose("Authorization completed. Disposing.", null).subscribe();
                     }),
 
             amqpConnection.getShutdownSignals().flatMap(signal -> {

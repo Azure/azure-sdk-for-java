@@ -484,7 +484,6 @@ class ReactorConnectionTest {
             .then(() -> connectionHandler.onConnectionRemoteClose(closeEvent))
             .expectNext(AmqpEndpointState.CLOSED)
             .then(() -> connectionHandler.onConnectionFinal(finalEvent))
-            .expectNext(AmqpEndpointState.CLOSED)
             .verifyComplete();
 
         StepVerifier.create(connection.getEndpointStates())

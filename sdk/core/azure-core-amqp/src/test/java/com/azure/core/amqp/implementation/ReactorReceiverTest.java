@@ -560,6 +560,12 @@ class ReactorReceiverTest {
     @Test
     void closesWhenAuthorizationResultsComplete() throws IOException {
         // Arrange
+        final Event event = mock(Event.class);
+        final Link link = mock(Link.class);
+
+        when(event.getLink()).thenReturn(link);
+        when(link.getLocalState()).thenReturn(EndpointState.CLOSED);
+
         doAnswer(invocationOnMock -> {
             final Runnable work = invocationOnMock.getArgument(0);
             work.run();

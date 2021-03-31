@@ -163,7 +163,9 @@ class ReactorSender implements AmqpSendLink {
             }, error -> {
                 }, () -> {
                     logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Authorization completed. Disposing.",
-                    handler.getConnectionId(), entityPath, getLinkName());
+                        handler.getConnectionId(), entityPath, getLinkName());
+
+                    dispose("Authorization completed. Disposing.", null).subscribe();
                 }));
         }
     }
