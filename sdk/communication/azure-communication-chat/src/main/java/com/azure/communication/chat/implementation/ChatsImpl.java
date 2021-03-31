@@ -64,7 +64,7 @@ public final class ChatsImpl {
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<CreateChatThreadResult>> createChatThread(
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("repeatability-Request-Id") String repeatabilityRequestId,
+                @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") CreateChatThreadOptions createChatThreadRequest,
                 @HeaderParam("Accept") String accept,

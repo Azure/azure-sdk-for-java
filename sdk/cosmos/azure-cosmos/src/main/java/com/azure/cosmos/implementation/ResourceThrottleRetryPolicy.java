@@ -37,7 +37,7 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
     }
 
     public ResourceThrottleRetryPolicy(int maxAttemptCount, Duration maxWaitTime, int backoffDelayFactor) {
-        Utils.checkStateOrThrow(maxWaitTime.getSeconds() < Integer.MAX_VALUE / 1000, "maxWaitTime", "maxWaitTime must be less than " + Integer.MAX_VALUE / 1000);
+        Utils.checkStateOrThrow(maxWaitTime.getSeconds() <= Integer.MAX_VALUE / 1000, "maxWaitTime", "maxWaitTime must not be larger than " + Integer.MAX_VALUE / 1000);
 
         this.maxAttemptCount = maxAttemptCount;
         this.backoffDelayFactor = backoffDelayFactor;
@@ -53,7 +53,7 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
         if (this.currentAttemptCount < this.maxAttemptCount &&
                 (retryDelay = checkIfRetryNeeded(exception)) != null) {
             this.currentAttemptCount++;
-            logger.warn(
+            logger.debug(
                     "Operation will be retried after {} milliseconds. Current attempt {}, Cumulative delay {}",
                     retryDelay.toMillis(),
                     this.currentAttemptCount,
@@ -61,10 +61,18 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
                     exception);
             return Mono.just(ShouldRetryResult.retryAfter(retryDelay));
         } else {
-            logger.debug(
+            if (retryDelay != null) {
+                logger.warn(
                     "Operation will NOT be retried. Current attempt {}",
                     this.currentAttemptCount,
                     exception);
+            } else {
+                logger.debug(
+                    "Operation will NOT be retried - not a throttled request. Current attempt {}",
+                    this.currentAttemptCount,
+                    exception);
+            }
+
             return Mono.just(ShouldRetryResult.noRetry());
         }
     }

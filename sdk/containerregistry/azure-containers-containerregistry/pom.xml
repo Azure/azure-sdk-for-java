@@ -34,7 +34,7 @@
     <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
 
     <!-- If skipping test coverage is absolutely necessary, for example resources cannot be provisioned uncomment this -->
-    <jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>
+    <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
   </properties>
 
   <dependencies>
@@ -79,5 +79,41 @@
       <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.2.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
+  <profiles>
+    <profile>
+      <id>is.jdk.11</id>
+      <activation>
+        <jdk>[9,)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <argLine>
+                --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
+                --add-opens com.azure.containers.containerregistry/com.azure.containers.containerregistry=ALL-UNNAMED
+                --add-opens com.azure.containers.containerregistry/com.azure.containers.containerregistry.models=ALL-UNNAMED
+                --add-opens com.azure.containers.containerregistry/com.azure.containers.containerregistry.implementation=ALL-UNNAMED
+                --add-opens com.azure.containers.containerregistry/com.azure.containers.containerregistry.implementation.models=ALL-UNNAMED
+                --add-reads com.azure.core=ALL-UNNAMED
+                --add-reads com.azure.core.test=ALL-UNNAMED
+                --add-reads com.azure.core.http.netty=ALL-UNNAMED
+              </argLine>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

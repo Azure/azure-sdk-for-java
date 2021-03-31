@@ -17,21 +17,22 @@ import java.nio.channels.Pipe;
 import java.time.Duration;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * {@link Reactor} is not thread-safe - all calls to {@link Proton} APIs should be on the Reactor Thread.
- * {@link Reactor} works out-of-box for all event driven API - ex: onReceive - which could raise upon onSocketRead.
- * {@link Reactor} doesn't support APIs like send() out-of-box - which could potentially run on different thread to that
- * of the Reactor thread.
+ * {@link Reactor} is not thread-safe - all calls to {@link Proton} APIs should be on the Reactor Thread. {@link
+ * Reactor} works out-of-box for all event driven API - ex: onReceive - which could raise upon onSocketRead. {@link
+ * Reactor} doesn't support APIs like send() out-of-box - which could potentially run on different thread to that of the
+ * Reactor thread.
  *
  * <p>
- * The following utility class is used to generate an Event to hook into {@link Reactor}'s event delegation pattern.
- * It uses a {@link Pipe} as the IO on which Reactor listens to.
+ * The following utility class is used to generate an Event to hook into {@link Reactor}'s event delegation pattern. It
+ * uses a {@link Pipe} as the IO on which Reactor listens to.
  * </p>
  *
  * <p>
- * Cardinality: Multiple {@link ReactorDispatcher}'s could be attached to 1 {@link Reactor}.
- * Each {@link ReactorDispatcher} should be initialized synchronously - as it calls API in {@link Reactor} which is not
+ * Cardinality: Multiple {@link ReactorDispatcher}'s could be attached to 1 {@link Reactor}. Each {@link
+ * ReactorDispatcher} should be initialized synchronously - as it calls API in {@link Reactor} which is not
  * thread-safe.
  * </p>
  */
@@ -42,6 +43,7 @@ public final class ReactorDispatcher {
     private final Pipe ioSignal;
     private final ConcurrentLinkedQueue<Work> workQueue;
     private final WorkScheduler workScheduler;
+    private final AtomicInteger wip = new AtomicInteger();
 
     public ReactorDispatcher(final Reactor reactor) throws IOException {
         this.reactor = reactor;
@@ -109,26 +111,41 @@ public final class ReactorDispatcher {
     private final class WorkScheduler implements Callback {
         @Override
         public void run(Selectable selectable) {
-            try {
-                ByteBuffer oneKbByteBuffer = ByteBuffer.allocate(1024);
-                while (ioSignal.source().read(oneKbByteBuffer) > 0) {
-                    // read until the end of the stream
-                    oneKbByteBuffer = ByteBuffer.allocate(1024);
-                }
-            } catch (ClosedChannelException ignorePipeClosedDuringReactorShutdown) {
-                logger.info("WorkScheduler.run() failed with an error: %s", ignorePipeClosedDuringReactorShutdown);
-            } catch (IOException ioException) {
-                logger.error("WorkScheduler.run() failed with an error: %s", ioException);
-                throw logger.logExceptionAsError(new RuntimeException(ioException));
+            // If there are multiple threads that enter this, they'll have incremented the wip number, and we'll know
+            // how many were 'missed'.
+            if (wip.getAndIncrement() != 0) {
+                return;
             }
 
-            Work topWork;
-            while ((topWork = workQueue.poll()) != null) {
-                if (topWork.delay != null) {
-                    reactor.schedule((int) topWork.delay.toMillis(), topWork.dispatchHandler);
-                } else {
-                    topWork.dispatchHandler.onTimerTask(null);
+            int missed = 1;
+
+            while (missed != 0) {
+                try {
+                    ByteBuffer oneKbByteBuffer = ByteBuffer.allocate(1024);
+                    while (ioSignal.source().read(oneKbByteBuffer) > 0) {
+                        // read until the end of the stream
+                        oneKbByteBuffer = ByteBuffer.allocate(1024);
+                    }
+                } catch (ClosedChannelException ignorePipeClosedDuringReactorShutdown) {
+                    logger.info("WorkScheduler.run() failed with an error. Can be ignored.",
+                        ignorePipeClosedDuringReactorShutdown);
+                } catch (IOException ioException) {
+                    throw logger.logExceptionAsError(new RuntimeException(
+                        String.format("WorkScheduler.run() failed with an error: %s", ioException), ioException));
                 }
+
+                Work topWork;
+                while ((topWork = workQueue.poll()) != null) {
+                    if (topWork.delay != null) {
+                        reactor.schedule((int) topWork.delay.toMillis(), topWork.dispatchHandler);
+                    } else {
+                        topWork.dispatchHandler.onTimerTask(null);
+                    }
+                }
+
+                // If there are multiple threads that tried to enter this, we would have missed some, so we'll go back
+                // through the loop until we have not missed any other work.
+                missed = wip.addAndGet(-missed);
             }
         }
     }
