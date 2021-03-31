@@ -109,7 +109,6 @@ azure:
     tenant-id:           # The Tenant ID for your Azure Key Vault (needed if you are not using managed identity).
     client-id:           # The Client ID that has been setup with access to your Azure Key Vault (needed if you are not using managed identity).
     client-secret:       # The Client Secret that will be used for accessing your Azure Key Vault (needed if you are not using managed identity).
-    # managed-identity:  # The user-assigned managed identity object-id to use.
 server:
   port: 8443
   ssl:
@@ -141,12 +140,13 @@ Make sure the client-id can access target Key Vault. Here are steps to configure
 
 #### Using a managed identity
 
-If you are using managed identity instead of client-id, add these items in your `application.yml`:
+If you are using managed identity instead of App registrations, add these items in your `application.yml`:
 
 ```yaml
 azure:
   keyvault:
     uri: <the URI of the Azure Key Vault to use>
+    managed-identity: # client-id of the user-assigned managed identity to use. If empty, then system-assigned managed identity will be used.
 server:
   ssl:
     key-alias: <the name of the certificate in Azure Key Vault to use>
@@ -167,7 +167,6 @@ azure:
     tenant-id:           # The Tenant ID for your Azure Key Vault (needed if you are not using managed identity).
     client-id:           # The Client ID that has been setup with access to your Azure Key Vault (needed if you are not using managed identity).
     client-secret:       # The Client Secret that will be used for accessing your Azure Key Vault (needed if you are not using managed identity).
-    # managed-identity:  # The user-assigned managed identity object-id to use.
 ```
 Make sure the client-id can access target Key Vault. 
 
@@ -201,11 +200,12 @@ public RestTemplate restTemplateWithTLS() throws Exception {
 
 #### Using a managed identity
 
-If you are using managed identity instead of client-id, add these items in your `application.yml`:
+If you are using managed identity instead of App registration, add these items in your `application.yml`:
 ```yaml
 azure:
   keyvault:
     uri: <the URI of the Azure Key Vault to use>
+    managed-identity:  # client-id of the user-assigned managed identity to use. If empty, then system-assigned managed identity will be used.
 ```
 Make sure the managed identity can access target Key Vault.
 

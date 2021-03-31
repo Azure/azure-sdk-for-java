@@ -144,7 +144,7 @@ class AuthClient extends DelegateRestClient {
            .append("?api-version=2017-09-01")
            .append(RESOURCE_FRAGMENT).append(resource);
         if (identity != null) {
-            url.append("&objectid=").append(identity);
+            url.append("&clientid=").append(identity);
         }
 
         HashMap<String, String> headers = new HashMap<>();
