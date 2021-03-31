@@ -20,6 +20,7 @@ import com.azure.storage.file.datalake.models.FileQueryArrowField
 import com.azure.storage.file.datalake.models.FileQueryArrowFieldType
 import com.azure.storage.file.datalake.models.FileQueryArrowSerialization
 import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization
+import com.azure.storage.file.datalake.models.FileQueryParquetSerialization
 import com.azure.storage.file.datalake.models.FileQueryError
 import com.azure.storage.file.datalake.models.FileQueryJsonSerialization
 import com.azure.storage.file.datalake.models.FileQueryProgress
