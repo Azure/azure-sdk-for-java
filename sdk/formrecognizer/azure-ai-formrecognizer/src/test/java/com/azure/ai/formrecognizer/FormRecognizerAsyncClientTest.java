@@ -10,6 +10,7 @@ import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.FormRecognizerLanguage;
 import com.azure.ai.formrecognizer.models.FormRecognizerLocale;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
+import com.azure.ai.formrecognizer.models.ReadingOrder;
 import com.azure.ai.formrecognizer.models.RecognizeBusinessCardsOptions;
 import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
@@ -1956,6 +1957,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             assertEquals(1, recognizedForms.size());
         }, INVOICE_PDF);
     }
+
     // ID Document Recognition
 
     /**
@@ -2137,5 +2139,44 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             syncPoller.waitForCompletion();
             validatePrebuiltResultData(syncPoller.getFinalResult(), true, ID);
         }, LICENSE_CARD_JPG);
+    }
+
+    /**
+     * Verify reading order parameter passed when specified by user.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeContentWithReadingOrder(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        urlRunner(sourceUrl -> {
+            final SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller =
+                client.beginRecognizeContentFromUrl(sourceUrl,
+                    new RecognizeContentOptions()
+                        .setPollInterval(durationTestMode)
+                        .setReadingOrder(ReadingOrder.BASIC))
+                    .getSyncPoller();
+            syncPoller.getFinalResult();
+            validateNetworkCallRecord("readingOrder", "basic");
+        }, FORM_JPG);
+    }
+
+    /**
+     * Verify reading order parameter passed when specified by user.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeContentWithReadingOrderNatural(HttpClient httpClient,
+                                                        FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        urlRunner(sourceUrl -> {
+            final SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller =
+                client.beginRecognizeContentFromUrl(sourceUrl,
+                    new RecognizeContentOptions()
+                        .setPollInterval(durationTestMode)
+                        .setReadingOrder(ReadingOrder.NATURAL))
+                    .getSyncPoller();
+            syncPoller.getFinalResult();
+            validateNetworkCallRecord("readingOrder", "natural");
+        }, FORM_JPG);
     }
 }
