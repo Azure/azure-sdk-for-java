@@ -54,7 +54,7 @@ public class AADOBOOAuth2AuthorizedClientProvider implements OAuth2AuthorizedCli
     public OAuth2AuthorizedClient authorize(OAuth2AuthorizationContext context) {
         Assert.notNull(context, "context cannot be null");
         ClientRegistration clientRegistration = context.getClientRegistration();
-        if (!AADAuthorizationGrantType.ON_BEHALF_OF.equals(clientRegistration.getAuthorizationGrantType())) {
+        if (!AADAuthorizationGrantType.ON_BEHALF_OF.getValue().equals(clientRegistration.getAuthorizationGrantType().getValue())) {
             return null;
         }
 
@@ -101,6 +101,7 @@ public class AADOBOOAuth2AuthorizedClientProvider implements OAuth2AuthorizedCli
             OAuth2AuthorizedClient oAuth2AuthorizedClient = new OAuth2AuthorizedClient(clientRegistration,
                 principal.getName(),
                 oAuth2AccessToken);
+            LOGGER.info("load obo authorized client success");
             return (T) oAuth2AuthorizedClient;
         } catch (ExecutionException exception) {
             // Handle conditional access policy, step 1.

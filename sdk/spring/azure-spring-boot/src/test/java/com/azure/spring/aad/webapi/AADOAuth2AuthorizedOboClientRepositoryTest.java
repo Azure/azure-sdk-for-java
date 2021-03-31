@@ -41,8 +41,7 @@ public class AADOAuth2AuthorizedOboClientRepositoryTest {
     private JwtAuthenticationToken jwtAuthenticationToken;
     private MockHttpServletRequest mockHttpServletRequest;
 
-    private OAuth2AccessToken oAuth2AccessToken;
-    private OAuth2AuthorizedClient oAuth2AuthorizedClient;
+    private OAuth2AuthorizedClient mockOAuth2AuthorizedClient;
     private OAuth2AuthorizedClientService oAuth2AuthorizedClientService;
 
     @BeforeEach
@@ -66,13 +65,12 @@ public class AADOAuth2AuthorizedOboClientRepositoryTest {
     @SuppressWarnings("unchecked")
     public void setupForAzureAuthorizedClient() {
 
-        OAuth2AccessToken mock = mock(OAuth2AccessToken.class);
-        when(mock.getTokenValue()).thenReturn(OBO_ACCESS_TOKEN_1);
+        OAuth2AccessToken mockAccessToken = mock(OAuth2AccessToken.class);
+        when(mockAccessToken.getTokenValue()).thenReturn(OBO_ACCESS_TOKEN_1);
 
+        InMemoryClientRegistrationRepository mockClientRegistrationsRepo = mock(InMemoryClientRegistrationRepository.class);
 
-        InMemoryClientRegistrationRepository clientRegistrationsRepo = mock(InMemoryClientRegistrationRepository.class);
-
-        when(clientRegistrationsRepo.findByRegistrationId(any())).thenReturn(ClientRegistration
+        when(mockClientRegistrationsRepo.findByRegistrationId(any())).thenReturn(ClientRegistration
             .withRegistrationId(FAKE_GRAPH)
             .authorizationGrantType(new AuthorizationGrantType("on-behalf-of"))
             .redirectUri("{baseUrl}/login/oauth2/code/")
@@ -83,23 +81,20 @@ public class AADOAuth2AuthorizedOboClientRepositoryTest {
             .scope("User.read")
             .clientId("2c47b831-d838-464f-a684-fa79cbd64f20").build());
 
-        oAuth2AuthorizedClient = mock(OAuth2AuthorizedClient.class);
-        ClientRegistration clientRegistration = mock(ClientRegistration.class);
-        when(clientRegistration.getRegistrationId()).thenReturn(FAKE_GRAPH);
-        when(oAuth2AuthorizedClient.getClientRegistration()).thenReturn(clientRegistration);
+        ClientRegistration mockClientRegistration = mock(ClientRegistration.class);
+        when(mockClientRegistration.getRegistrationId()).thenReturn(FAKE_GRAPH);
 
-        oAuth2AccessToken = mock(OAuth2AccessToken.class);
-        when(oAuth2AccessToken.getTokenValue()).thenReturn(OBO_ACCESS_TOKEN_1);
-        when(oAuth2AuthorizedClient.getAccessToken()).thenReturn(oAuth2AccessToken);
+        mockOAuth2AuthorizedClient = mock(OAuth2AuthorizedClient.class);
+        when(mockOAuth2AuthorizedClient.getClientRegistration()).thenReturn(mockClientRegistration);
+        when(mockOAuth2AuthorizedClient.getAccessToken()).thenReturn(mockAccessToken);
 
-
-        oAuth2AuthorizedClientService = new InMemoryOAuth2AuthorizedClientService(clientRegistrationsRepo);
-        Authentication principle = mock(Authentication.class);
-        when(principle.getName()).thenReturn(FAKE_PRINCIPAL_NAME);
-        oAuth2AuthorizedClientService.saveAuthorizedClient(oAuth2AuthorizedClient, principle);
+        oAuth2AuthorizedClientService = new InMemoryOAuth2AuthorizedClientService(mockClientRegistrationsRepo);
+        Authentication mockPrinciple = mock(Authentication.class);
+        when(mockPrinciple.getName()).thenReturn(FAKE_PRINCIPAL_NAME);
+        oAuth2AuthorizedClientService.saveAuthorizedClient(mockOAuth2AuthorizedClient, mockPrinciple);
         authorizedRepo = new AADResourceServerOAuth2AuthorizedClientRepository(
             oAuth2AuthorizedClientService,
-            clientRegistrationsRepo) {
+            mockClientRegistrationsRepo) {
         };
 
         final Jwt mockJwt = mock(Jwt.class);
@@ -117,9 +112,7 @@ public class AADOAuth2AuthorizedOboClientRepositoryTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testLoadAzureAuthorizedClient() {
-
         Assertions.assertEquals(OBO_ACCESS_TOKEN_1, client.getAccessToken().getTokenValue());
-
     }
 
     @Test
@@ -134,7 +127,7 @@ public class AADOAuth2AuthorizedOboClientRepositoryTest {
         );
 
         Assertions.assertEquals(OBO_ACCESS_TOKEN_1, client.getAccessToken().getTokenValue());
-        Assertions.assertEquals(oAuth2AuthorizedClient, client);
+        Assertions.assertEquals(mockOAuth2AuthorizedClient, client);
     }
 
     @Test
