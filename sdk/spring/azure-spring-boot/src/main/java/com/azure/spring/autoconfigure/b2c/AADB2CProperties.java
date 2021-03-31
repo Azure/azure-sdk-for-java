@@ -81,7 +81,6 @@ public class AADB2CProperties implements InitializingBean {
     /**
      * The application secret that registered under b2c tenant.
      */
-    @NotBlank(message = "client secret should not be blank")
     private String clientSecret;
 
     @URL(message = "logout success should be valid URL")
@@ -116,13 +115,16 @@ public class AADB2CProperties implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
-        if (StringUtils.isEmpty(tenant) && StringUtils.isEmpty(baseUri)) {
-            throw new AADB2CConfigurationException("'tenant' and 'baseUri' at least configure one item.");
-        }
-
-        if (!userFlows.keySet().contains(loginFlow)) {
-            throw new AADB2CConfigurationException("Sign in user flow key '"
-                + loginFlow + "' is not in 'user-flows' map.");
+        //When tenantId is not configured, enable AAD B2C user flow related property checking
+        //When the tenantId has been configured, the check is not turned on
+        if (StringUtils.isEmpty(tenantId)) {
+            if (StringUtils.isEmpty(tenant) && StringUtils.isEmpty(baseUri)) {
+                throw new AADB2CConfigurationException("'tenant' and 'baseUri' at least configure one item.");
+            }
+            if (!userFlows.keySet().contains(loginFlow)) {
+                throw new AADB2CConfigurationException("Sign in user flow key '"
+                    + loginFlow + "' is not in 'user-flows' map.");
+            }
         }
     }
 

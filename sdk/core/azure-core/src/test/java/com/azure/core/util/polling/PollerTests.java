@@ -53,13 +53,16 @@ public class PollerTests {
     @Mock
     private BiFunction<PollingContext<Response>, PollResponse<Response>, Mono<Response>> cancelOperation;
 
+    private AutoCloseable openMocks;
+
     @BeforeEach
     public void beforeTest() {
-        MockitoAnnotations.initMocks(this);
+        this.openMocks = MockitoAnnotations.openMocks(this);
     }
 
     @AfterEach
-    public void afterTest() {
+    public void afterTest() throws Exception {
+        openMocks.close();
         Mockito.framework().clearInlineMocks();
     }
 

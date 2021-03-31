@@ -36,7 +36,6 @@ import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.implementation.throughputControl.ThroughputControlMode;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.FeedResponse;
@@ -797,8 +796,8 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static ThroughputControlMode getThroughputControlMode(ThroughputControlGroup throughputControlGroup) {
-        return throughputControlGroup.getControlMode();
+    public static int getPayloadLength(TransactionalBatchResponse transactionalBatchResponse) {
+        return transactionalBatchResponse.getResponseLength();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -807,7 +806,7 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncContainer getTargetContainerFromThroughputControlGroup(ThroughputControlGroup controlGroup) {
-        return controlGroup.getTargetContainer();
+    public static CosmosAsyncContainer getControlContainerFromThroughputGlobalControlConfig(GlobalThroughputControlConfig globalControlConfig) {
+        return globalControlConfig.getControlContainer();
     }
 }

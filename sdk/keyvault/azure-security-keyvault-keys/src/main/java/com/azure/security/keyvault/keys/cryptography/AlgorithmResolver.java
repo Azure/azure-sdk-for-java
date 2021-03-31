@@ -23,10 +23,6 @@ class AlgorithmResolver {
         DEFAULT.put(Aes192CbcHmacSha384.ALGORITHM_NAME, new Aes192CbcHmacSha384());
         DEFAULT.put(Aes256CbcHmacSha512.ALGORITHM_NAME, new Aes256CbcHmacSha512());
 
-        DEFAULT.put(Aes128Gcm.ALGORITHM_NAME, new Aes128Gcm());
-        DEFAULT.put(Aes192Gcm.ALGORITHM_NAME, new Aes192Gcm());
-        DEFAULT.put(Aes256Gcm.ALGORITHM_NAME, new Aes256Gcm());
-
         DEFAULT.put(Aes128Kw.ALGORITHM_NAME, new Aes128Kw());
         DEFAULT.put(Aes192Kw.ALGORITHM_NAME, new Aes192Kw());
         DEFAULT.put(Aes256Kw.ALGORITHM_NAME, new Aes256Kw());

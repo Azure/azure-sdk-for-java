@@ -29,7 +29,7 @@ Follow the guide of [AAD B2C user flows creation](https://docs.microsoft.com/azu
 1. Fill in `${your-tenant-authorization-server-base-uri}` from **Azure AD B2C** portal `App registrations` blade, select **Endpoints**, copy the base endpoint uri(Global cloud format may looks like
 `https://{your-tenant-name}.b2clogin.com/{your-tenant-name}.onmicrosoft.com`, China Cloud looks like `https://{your-tenant-name}.b2clogin.cn/{your-tenant-name}.partner.onmschina.cn`). 
 
-    **NOTE**: The `azure.activedirectory.b2c.tenant` has been deprecated. Please `use azure.activedirectory.b2c.base-uri` instead.
+    **NOTE**: The `azure.activedirectory.b2c.tenant` has been deprecated. Please use `azure.activedirectory.b2c.base-uri` instead.
 
 2. Select one registered instance under `Applications` from portal, and then:
     1. Fill in `${your-client-id}` from `Application ID`.

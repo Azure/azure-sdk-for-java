@@ -10,6 +10,8 @@ import com.azure.spring.data.cosmos.repository.query.AbstractCosmosQuery;
 import com.azure.spring.data.cosmos.repository.query.CosmosParameterAccessor;
 import com.azure.spring.data.cosmos.repository.query.CosmosParameterParameterAccessor;
 import com.azure.spring.data.cosmos.repository.query.CosmosQueryMethod;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.ResultProcessor;
 
 import java.util.List;
@@ -44,13 +46,19 @@ public class StringBasedCosmosQuery extends AbstractCosmosQuery {
         final ResultProcessor processor = getQueryMethod().getResultProcessor().withDynamicProjection(accessor);
 
         List<SqlParameter> sqlParameters = getQueryMethod().getParameters().stream()
+                            .filter(p -> !Pageable.class.isAssignableFrom(p.getType()) && !Sort.class.isAssignableFrom(p.getType()))
                             .map(p -> new SqlParameter("@" + p.getName().orElse(""),
                                                        toCosmosDbValue(parameters[p.getIndex()])))
                             .collect(Collectors.toList());
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query, sqlParameters);
-        return this.operations.runQuery(querySpec, processor.getReturnedType().getDomainType(),
-                                        processor.getReturnedType().getReturnedType());
+        if (isPageQuery()) {
+            return this.operations.runPaginationQuery(querySpec, accessor.getPageable(), processor.getReturnedType().getDomainType(),
+                                                      processor.getReturnedType().getReturnedType());
+        } else {
+            return this.operations.runQuery(querySpec, accessor.getSort(), processor.getReturnedType().getDomainType(),
+                                            processor.getReturnedType().getReturnedType());
+        }
     }
 
     @Override

@@ -6,7 +6,7 @@ import com.azure.core.annotation.Fluent;
 
 /** The PhoneNumberSearchOptions model. */
 @Fluent
-public class PhoneNumberSearchOptions {
+public final class PhoneNumberSearchOptions {
 
     private String areaCode;
     private Integer quantity;

@@ -5,7 +5,6 @@ package com.azure.storage.blob.perf.core;
 
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.perf.test.core.PerfStressHttpClient;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
 import com.azure.storage.blob.BlobServiceAsyncClient;
@@ -29,8 +28,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
 
         // Setup the service client
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-            .connectionString(connectionString)
-            .httpClient(PerfStressHttpClient.create(options));
+            .connectionString(connectionString);
 
         blobServiceClient = builder.buildClient();
         blobServiceAsyncClient = builder.buildAsyncClient();
