@@ -24,7 +24,7 @@ import static com.azure.perf.test.core.TestDataCreationHelper.createRandomInputS
 public class DownloadFileShareTest extends DirectoryTest<PerfStressOptions> {
     private static final int BUFFER_SIZE = 16 * 1024 * 1024;
     private static final OutputStream DEV_NULL = new NullOutputStream();
-    private static final String FILE_NAME = "perfstress-filev11-" + UUID.randomUUID().toString();
+    private final Path tempFile;
 
     protected final ShareFileClient shareFileClient;
     protected final ShareFileAsyncClient shareFileAsyncClient;
@@ -33,15 +33,15 @@ public class DownloadFileShareTest extends DirectoryTest<PerfStressOptions> {
 
     public DownloadFileShareTest(PerfStressOptions options) {
         super(options);
-        shareFileClient = shareDirectoryClient.getFileClient(FILE_NAME);
-        shareFileAsyncClient = shareDirectoryAsyncClient.getFileClient(FILE_NAME);
+        tempFile = setupFile();
+        String fileName = "perfstressdfilev11" + UUID.randomUUID().toString();
+        shareFileClient = shareDirectoryClient.getFileClient(fileName);
+        shareFileAsyncClient = shareDirectoryAsyncClient.getFileClient(fileName);
     }
 
-    private static final Path TEMP_FILE;
-
-    static {
+    private Path setupFile() {
         try {
-            TEMP_FILE = Files.createTempFile(null, null);
+            return Files.createTempFile(null, null);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -49,7 +49,7 @@ public class DownloadFileShareTest extends DirectoryTest<PerfStressOptions> {
 
     private Mono<Long> createTempFile() {
         try (InputStream inputStream = createRandomInputStream(options.getSize());
-             OutputStream outputStream = new FileOutputStream(TEMP_FILE.toString())) {
+             OutputStream outputStream = new FileOutputStream(tempFile.toString())) {
             return Mono.just(TestDataCreationHelper.copyStream(inputStream, outputStream, 8192));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -57,11 +57,11 @@ public class DownloadFileShareTest extends DirectoryTest<PerfStressOptions> {
     }
 
     // Required resource setup goes here, upload the file to be downloaded during tests.
-    public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync()
+    public Mono<Void> setupAsync() {
+        return super.setupAsync()
             .then(createTempFile())
             .flatMap(dataSize -> shareFileAsyncClient.create(dataSize))
-            .then(shareFileAsyncClient.uploadFromFile(TEMP_FILE.toString()))
+            .then(shareFileAsyncClient.uploadFromFile(tempFile.toString()))
             .then();
     }
 

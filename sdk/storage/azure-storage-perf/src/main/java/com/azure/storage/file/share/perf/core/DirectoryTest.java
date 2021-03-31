@@ -11,21 +11,19 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 public abstract class DirectoryTest<TOptions extends PerfStressOptions> extends ShareTest<TOptions> {
-    private static final String DIRECTORY_NAME = "perfstress-directoryv11-" + UUID.randomUUID().toString();
-
     protected final ShareDirectoryClient shareDirectoryClient;
     protected final ShareDirectoryAsyncClient shareDirectoryAsyncClient;
 
     public DirectoryTest(TOptions options) {
         super(options);
         // Setup the container clients
-        shareDirectoryClient = shareClient.getDirectoryClient(DIRECTORY_NAME);
-        shareDirectoryAsyncClient = shareAsyncClient.getDirectoryClient(DIRECTORY_NAME);
+        String directroyName = "perfstressdirectoryv11" + UUID.randomUUID().toString();
+        shareDirectoryClient = shareClient.getDirectoryClient(directroyName);
+        shareDirectoryAsyncClient = shareAsyncClient.getDirectoryClient(directroyName);
     }
 
-    // NOTE: the pattern setup the parent first, then yourself.
     @Override
-    public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync().then(shareDirectoryAsyncClient.create().then());
+    public Mono<Void> setupAsync() {
+        return super.setupAsync().then(Mono.defer(() -> shareDirectoryAsyncClient.create())).then();
     }
 }

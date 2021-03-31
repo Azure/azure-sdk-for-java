@@ -12,6 +12,7 @@ import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
 
 public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
+    protected static final long MAX_SHARE_SIZE = 4398046511104l;
 
     protected final ShareServiceClient shareServiceClient;
     protected final ShareServiceAsyncClient shareServiceAsyncClient;
@@ -21,7 +22,6 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         super(options);
         configuration = Configuration.getGlobalConfiguration().clone();
         String connectionString = configuration.get("STORAGE_CONNECTION_STRING");
-
         if (CoreUtils.isNullOrEmpty(connectionString)) {
             throw new IllegalStateException("Environment variable STORAGE_CONNECTION_STRING must be set");
         }

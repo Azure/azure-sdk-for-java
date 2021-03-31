@@ -35,4 +35,9 @@ public class UploadFileShareTest extends FileTestBase<PerfStressOptions> {
         return shareFileAsyncClient.upload(byteBufferFlux, options.getSize())
             .then();
     }
+
+    @Override
+    public Mono<Void> setupAsync() {
+        return super.setupAsync().then(Mono.defer(() -> shareFileAsyncClient.create(options.getSize()))).then();
+    }
 }

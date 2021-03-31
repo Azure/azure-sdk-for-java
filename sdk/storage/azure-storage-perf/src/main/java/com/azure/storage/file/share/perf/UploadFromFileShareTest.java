@@ -64,4 +64,10 @@ public class UploadFromFileShareTest extends FileTestBase<PerfStressOptions> {
     public Mono<Void> runAsync() {
         return shareFileAsyncClient.uploadFromFile(TEMP_FILE_PATH);
     }
+
+    @Override
+    public Mono<Void> setupAsync() {
+        return super.setupAsync().then(Mono.defer(() -> shareFileAsyncClient
+            .create(options.getSize() + DEFAULT_BUFFER_SIZE))).then();
+    }
 }

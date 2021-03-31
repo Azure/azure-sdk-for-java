@@ -19,19 +19,15 @@ public abstract class ShareTest<TOptions extends PerfStressOptions> extends Serv
     public ShareTest(TOptions options) {
         super(options);
         // Setup the container clients
-        shareClient = shareServiceClient.getShareClient(SHARE_NAME);
-        shareAsyncClient = shareServiceAsyncClient.getShareAsyncClient(SHARE_NAME);
+        String shareName = "perfstress-sharev11-" + UUID.randomUUID().toString();
+        shareClient = shareServiceClient.getShareClient(shareName);
+        shareAsyncClient = shareServiceAsyncClient.getShareAsyncClient(shareName);
     }
 
-    // NOTE: the pattern setup the parent first, then yourself.
     @Override
-    public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync().then(shareAsyncClient.create().then());
-    }
-
-    // NOTE: the pattern, cleanup yourself, then the parent.
-    @Override
-    public Mono<Void> globalCleanupAsync() {
-        return shareAsyncClient.delete().then(super.globalCleanupAsync());
+    public Mono<Void> setupAsync() {
+        return super.setupAsync().then(Mono.defer(() -> {
+            return Mono.just(shareClient.create());
+        })).then();
     }
 }

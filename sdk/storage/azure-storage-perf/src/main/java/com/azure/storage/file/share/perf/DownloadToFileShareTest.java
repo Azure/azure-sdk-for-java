@@ -15,20 +15,21 @@ import java.util.UUID;
 import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
 
 public class DownloadToFileShareTest extends DirectoryTest<PerfStressOptions> {
-    private static final String FILE_NAME = "perfstress-file-" + UUID.randomUUID().toString();
 
     protected final ShareFileClient shareFileClient;
     protected final ShareFileAsyncClient shareFileAsyncClient;
 
+
     public DownloadToFileShareTest(PerfStressOptions options) {
         super(options);
-        shareFileClient = shareDirectoryClient.getFileClient(FILE_NAME);
-        shareFileAsyncClient = shareDirectoryAsyncClient.getFileClient(FILE_NAME);
+        String fileName = "perfstressdfile" + UUID.randomUUID().toString();
+        shareFileClient = shareDirectoryClient.getFileClient(fileName);
+        shareFileAsyncClient = shareDirectoryAsyncClient.getFileClient(fileName);
     }
 
     // Required resource setup goes here, upload the file to be downloaded during tests.
-    public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync()
+    public Mono<Void> setupAsync() {
+        return super.setupAsync()
             .then(shareFileAsyncClient.create(options.getSize()))
             .then(shareFileAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), options.getSize()))
             .then();
