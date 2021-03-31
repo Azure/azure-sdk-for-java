@@ -45,6 +45,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -139,7 +141,9 @@ class ServiceBusReceiveLinkProcessorTest {
         processor.dispose();
 
         // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
-        verify(link1, times(3)).addCredits(eq(PREFETCH - 1));
+        // Sometime the test thread processor subscriber completes earlier than reactor thread.
+        verify(link1, atMost(3)).addCredits(eq(PREFETCH - 1));
+        verify(link1, atLeast(2)).addCredits(eq(PREFETCH - 1));
     }
 
     /**
@@ -572,16 +576,19 @@ class ServiceBusReceiveLinkProcessorTest {
         // dispose the processor
         processor.dispose();
 
-        // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
-        verify(link1, times(3)).addCredits(eq(PREFETCH));
         verify(link1).setEmptyCreditListener(creditSupplierCaptor.capture());  // Add 0.
-
         Supplier<Integer> value = creditSupplierCaptor.getValue();
         assertNotNull(value);
 
         final Integer creditValue = value.get();
 
         assertEquals(0, creditValue);
+
+        // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
+        // Sometime the test thread processor subscriber completes earlier than reactor thread.
+        verify(link1, atMost(3)).addCredits(eq(PREFETCH));
+        verify(link1, atLeast(2)).addCredits(eq(PREFETCH));
+
     }
 
     /**
