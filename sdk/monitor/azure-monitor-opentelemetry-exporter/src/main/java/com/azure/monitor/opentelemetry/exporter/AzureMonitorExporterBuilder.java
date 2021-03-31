@@ -6,7 +6,11 @@ package com.azure.monitor.opentelemetry.exporter;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.policy.*;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -30,7 +34,7 @@ import java.util.Objects;
  */
 public final class AzureMonitorExporterBuilder {
     private static final String APPLICATIONINSIGHTS_CONNECTION_STRING = "APPLICATIONINSIGHTS_CONNECTION_STRING";
-    private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE = "https://monitor.azure.com";
+    private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE = "https://monitor.azure.com/.default";
     private final ClientLogger logger = new ClientLogger(AzureMonitorExporterBuilder.class);
     private final ApplicationInsightsClientImplBuilder restServiceClientBuilder;
     private String instrumentationKey;
@@ -259,7 +263,7 @@ public final class AzureMonitorExporterBuilder {
         restServiceClientBuilder.serializerAdapter(jacksonAdapter);
         if (this.credential != null) {
             // Add authentication policy to HttpPipeline
-            BearerTokenAuthenticationPolicy authenticationPolicy= new BearerTokenAuthenticationPolicy(this.credential, APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE );
+            BearerTokenAuthenticationPolicy authenticationPolicy = new BearerTokenAuthenticationPolicy(this.credential, APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE);
             restServiceClientBuilder.addPolicy(authenticationPolicy);
         }
         ApplicationInsightsClientImpl restServiceClient = restServiceClientBuilder.buildClient();
