@@ -23,7 +23,7 @@ public enum AADAuthorizationGrantType {
         return authorizationGrantType;
     }
 
-    public boolean isSameGrantType(AuthorizationGrantType grantType){
+    public boolean isSameGrantType(AuthorizationGrantType grantType) {
         return this.authorizationGrantType.equals(grantType.getValue());
     }
 }
