@@ -10,12 +10,8 @@ package com.azure.media.analytics.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Represents the livePipelineSet request. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "methodName")
-@JsonTypeName("livePipelineSet")
 @Fluent
 public final class LivePipelineSetRequest extends MethodRequest {
     /*
@@ -23,6 +19,17 @@ public final class LivePipelineSetRequest extends MethodRequest {
      */
     @JsonProperty(value = "livePipeline", required = true)
     private LivePipeline livePipeline;
+
+    /*
+     * method name
+     */
+    @JsonProperty(value = "methodName", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private String methodName;
+
+    /** Creates an instance of LivePipelineSetRequest class. */
+    public LivePipelineSetRequest() {
+        methodName = "livePipelineSet";
+    }
 
     /**
      * Get the livePipeline property: Represents a unique live pipeline.
@@ -42,5 +49,22 @@ public final class LivePipelineSetRequest extends MethodRequest {
     public LivePipelineSetRequest setLivePipeline(LivePipeline livePipeline) {
         this.livePipeline = livePipeline;
         return this;
+    }
+
+    /**
+     * Get the methodName property: method name.
+     *
+     * @return the methodName value.
+     */
+    public String getMethodName() {
+        return this.methodName;
+    }
+
+    public String getPayloadAsJson() {
+        LivePipelineSetRequestBody setRequestBody = new LivePipelineSetRequestBody();
+        setRequestBody.setName(this.livePipeline.getName());
+        setRequestBody.setSystemData(this.livePipeline.getSystemData());
+        setRequestBody.setProperties(this.livePipeline.getProperties());
+        return setRequestBody.getPayloadAsJson();
     }
 }

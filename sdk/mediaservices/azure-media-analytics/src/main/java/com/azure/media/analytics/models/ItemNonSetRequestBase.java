@@ -10,25 +10,8 @@ package com.azure.media.analytics.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** The ItemNonSetRequestBase model. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "methodName",
-        defaultImpl = ItemNonSetRequestBase.class)
-@JsonTypeName("ItemNonSetRequestBase")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "pipelineTopologyGet", value = PipelineTopologyGetRequest.class),
-    @JsonSubTypes.Type(name = "pipelineTopologyDelete", value = PipelineTopologyDeleteRequest.class),
-    @JsonSubTypes.Type(name = "livePipelineGet", value = LivePipelineGetRequest.class),
-    @JsonSubTypes.Type(name = "livePipelineActivate", value = LivePipelineActivateRequest.class),
-    @JsonSubTypes.Type(name = "livePipelineDeactivate", value = LivePipelineDeactivateRequest.class),
-    @JsonSubTypes.Type(name = "livePipelineDelete", value = LivePipelineDeleteRequest.class)
-})
 @Fluent
 public class ItemNonSetRequestBase extends MethodRequest {
     /*

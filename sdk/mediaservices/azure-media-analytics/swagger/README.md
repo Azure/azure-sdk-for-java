@@ -27,3 +27,41 @@ customization-jar-path: target/azure-media-analytics-customizations-1.0.0-beta.1
 context-client-method-parameter: true
 use: '@autorest/java@4.0.22'
 ```
+
+### discriminator vs default enum
+```yaml
+directive:
+- from: AzureVideoAnalyzerSdkDefinitions.json
+  where: $.definitions
+  transform: >
+    let definitionKeys = Object.keys($);
+    for(let i = 0; i < definitionKeys.length; i++) {
+      if(definitionKeys[i] === "MethodRequest") {
+        $[definitionKeys[i]].required = ["@apiVersion"];
+        delete $[definitionKeys[i]].properties.methodName;
+        delete $[definitionKeys[i]].discriminator;
+      }
+      else {
+        if($[definitionKeys[i]]["x-ms-discriminator-value"]) {
+          let definition = $[definitionKeys[i]];
+          let value = definition["x-ms-discriminator-value"];
+          delete definition["x-ms-discriminator-value"];
+          if(!definition.properties) {
+            definition.properties = {};
+          }
+          definition.properties.methodName = {
+            "type": "string",
+            "description": "method name",
+            "readOnly": true,
+            "enum": [value]
+          };
+          if(definition.required){
+            definition.required.push("methodName");
+          }
+          else {
+            definition.required = ["methodName"];
+          }
+        }
+      }
+    }    
+```

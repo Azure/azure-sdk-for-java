@@ -9,34 +9,26 @@
 package com.azure.media.analytics.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.serializer.JsonSerializerProviders;
+import com.azure.core.util.serializer.ObjectSerializer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 
 /** Base Class for Method Requests. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "methodName",
-        defaultImpl = MethodRequest.class)
-@JsonTypeName("MethodRequest")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "pipelineTopologySet", value = PipelineTopologySetRequest.class),
-    @JsonSubTypes.Type(name = "PipelineTopologySetRequestBody", value = PipelineTopologySetRequestBody.class),
-    @JsonSubTypes.Type(name = "livePipelineSet", value = LivePipelineSetRequest.class),
-    @JsonSubTypes.Type(name = "LivePipelineSetRequestBody", value = LivePipelineSetRequestBody.class),
-    @JsonSubTypes.Type(name = "ItemNonSetRequestBase", value = ItemNonSetRequestBase.class),
-    @JsonSubTypes.Type(name = "pipelineTopologyList", value = PipelineTopologyListRequest.class),
-    @JsonSubTypes.Type(name = "livePipelineList", value = LivePipelineListRequest.class)
-})
 @Fluent
 public class MethodRequest {
     /*
      * api version
      */
-    @JsonProperty(value = "@apiVersion")
+    @JsonProperty(value = "@apiVersion", required = true)
     private String apiVersion;
+
+    /** Creates an instance of MethodRequest class. */
+    public MethodRequest() {
+        apiVersion = "1.0";
+    }
 
     /**
      * Get the apiVersion property: api version.
@@ -56,5 +48,14 @@ public class MethodRequest {
     public MethodRequest setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
         return this;
+    }
+
+    @JsonIgnore
+    public String getPayloadAsJson() {
+        ObjectSerializer serializer = JsonSerializerProviders.createInstance();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        serializer.serialize(outputStream, this);
+        String payload = outputStream.toString(StandardCharsets.UTF_8);
+        return payload;
     }
 }

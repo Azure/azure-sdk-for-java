@@ -9,11 +9,28 @@
 package com.azure.media.analytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents the pipelineTopologyDelete request. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "methodName")
-@JsonTypeName("pipelineTopologyDelete")
 @Immutable
-public final class PipelineTopologyDeleteRequest extends ItemNonSetRequestBase {}
+public final class PipelineTopologyDeleteRequest extends ItemNonSetRequestBase {
+    /*
+     * method name
+     */
+    @JsonProperty(value = "methodName", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private String methodName;
+
+    /** Creates an instance of PipelineTopologyDeleteRequest class. */
+    public PipelineTopologyDeleteRequest() {
+        methodName = "pipelineTopologyDelete";
+    }
+
+    /**
+     * Get the methodName property: method name.
+     *
+     * @return the methodName value.
+     */
+    public String getMethodName() {
+        return this.methodName;
+    }
+}

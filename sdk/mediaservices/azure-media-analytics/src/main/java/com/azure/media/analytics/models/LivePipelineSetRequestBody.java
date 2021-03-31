@@ -10,12 +10,8 @@ package com.azure.media.analytics.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Represents the livePipelineSet request body. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "methodName")
-@JsonTypeName("LivePipelineSetRequestBody")
 @Fluent
 public final class LivePipelineSetRequestBody extends MethodRequest {
     /*

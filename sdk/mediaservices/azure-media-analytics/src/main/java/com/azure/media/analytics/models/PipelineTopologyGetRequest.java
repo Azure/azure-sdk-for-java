@@ -9,11 +9,28 @@
 package com.azure.media.analytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents the pipelineTopologyGet request. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "methodName")
-@JsonTypeName("pipelineTopologyGet")
 @Immutable
-public final class PipelineTopologyGetRequest extends ItemNonSetRequestBase {}
+public final class PipelineTopologyGetRequest extends ItemNonSetRequestBase {
+    /*
+     * method name
+     */
+    @JsonProperty(value = "methodName", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private String methodName;
+
+    /** Creates an instance of PipelineTopologyGetRequest class. */
+    public PipelineTopologyGetRequest() {
+        methodName = "pipelineTopologyGet";
+    }
+
+    /**
+     * Get the methodName property: method name.
+     *
+     * @return the methodName value.
+     */
+    public String getMethodName() {
+        return this.methodName;
+    }
+}

@@ -16,8 +16,9 @@ public class MethodRequestCustomizations extends Customization {
     }
 
     private void customizeModelsPackage(PackageCustomization packageCustomization) {
-        //customizePipelineSetRequest(packageCustomization.getClass("PipelineTopologySetRequest"));
-        //customizeMethodRequest(packageCustomization.getClass("MethodRequest"));
+        customizeMethodRequest(packageCustomization.getClass("MethodRequest"));
+        customizePipelineSetRequest(packageCustomization.getClass("PipelineTopologySetRequest"));
+        customizeLivePipelineSetRequest(packageCustomization.getClass("LivePipelineSetRequest"));
     }
 
     private void customizePipelineSetRequest(ClassCustomization classCustomization) {
@@ -25,27 +26,34 @@ public class MethodRequestCustomizations extends Customization {
             "public String getPayloadAsJson() {\n" +
                 "    PipelineTopologySetRequestBody setRequestBody = new PipelineTopologySetRequestBody();\n" +
                 "    setRequestBody.setName(this.pipelineTopology.getName());\n" +
-                "    ObjectSerializer serializer = JsonSerializerProviders.createInstance();\n" +
-                "    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();\n" +
-                "    serializer.serialize(outputStream, setRequestBody);\n" +
-                "    String payload = outputStream.toString(StandardCharsets.UTF_8);\n" +
-                "    return payload;\n" +
+                "    setRequestBody.setSystemData(this.pipelineTopology.getSystemData());\n" +
+                "    setRequestBody.setProperties(this.pipelineTopology.getProperties());\n" +
+                "    return setRequestBody.getPayloadAsJson();\n" +
+                "}"
+        );
+    }
+    private void customizeLivePipelineSetRequest(ClassCustomization classCustomization) {
+        classCustomization.addMethod(
+            "public String getPayloadAsJson() {\n" +
+                "    LivePipelineSetRequestBody setRequestBody = new LivePipelineSetRequestBody();\n" +
+                "    setRequestBody.setName(this.livePipeline.getName());\n" +
+                "    setRequestBody.setSystemData(this.livePipeline.getSystemData());\n" +
+                "    setRequestBody.setProperties(this.livePipeline.getProperties());\n" +
+                "    return setRequestBody.getPayloadAsJson();\n" +
                 "}"
         );
     }
     private void customizeMethodRequest(ClassCustomization classCustomization) {
-        /*classCustomization.addMethod(
+        classCustomization.addMethod(
             "public String getPayloadAsJson() {\n" +
-                "    PipelineTopologySetRequestBody setRequestBody = new PipelineTopologySetRequestBody();\n" +
-                "    setRequestBody.setName(this.pipelineTopology.getName());\n" +
                 "    ObjectSerializer serializer = JsonSerializerProviders.createInstance();\n" +
                 "    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();\n" +
-                "    serializer.serialize(outputStream, setRequestBody);\n" +
+                "    serializer.serialize(outputStream, this);\n" +
                 "    String payload = outputStream.toString(StandardCharsets.UTF_8);\n" +
                 "    return payload;\n" +
                 "}"
-        );*/
+        );
+        classCustomization.getMethod("getPayloadAsJson").addAnnotation("@JsonIgnore");
     }
-
 
 }

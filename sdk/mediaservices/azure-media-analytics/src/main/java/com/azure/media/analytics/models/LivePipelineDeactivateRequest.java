@@ -9,11 +9,28 @@
 package com.azure.media.analytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents the livePipelineDeactivate request. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "methodName")
-@JsonTypeName("livePipelineDeactivate")
 @Immutable
-public final class LivePipelineDeactivateRequest extends ItemNonSetRequestBase {}
+public final class LivePipelineDeactivateRequest extends ItemNonSetRequestBase {
+    /*
+     * method name
+     */
+    @JsonProperty(value = "methodName", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private String methodName;
+
+    /** Creates an instance of LivePipelineDeactivateRequest class. */
+    public LivePipelineDeactivateRequest() {
+        methodName = "livePipelineDeactivate";
+    }
+
+    /**
+     * Get the methodName property: method name.
+     *
+     * @return the methodName value.
+     */
+    public String getMethodName() {
+        return this.methodName;
+    }
+}

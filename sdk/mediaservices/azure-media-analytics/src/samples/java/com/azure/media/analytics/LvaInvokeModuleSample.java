@@ -1,11 +1,9 @@
 
 package com.azure.media.analytics;
 
-import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 
 import java.io.ByteArrayOutputStream;
-import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 
 import com.azure.core.util.serializer.ObjectSerializer;
@@ -20,133 +18,161 @@ import java.util.Arrays;
 
 public class LvaInvokeModuleSample {
 
-    private static final String connectionString = "HostName=lvasamplehubnpctns45jvoji.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=dburWgVNqX+/xuOpSfXMKQdkr4nypY7HbwmwduL3mbs=" ;
+    private static final String connectionString = "connectionString" ;
     private static final String deviceId = "lva-sample-device";
-    private static final String moduleId = "lvaEdge";
-    private static final IotHubServiceClientProtocol protocol =
-        IotHubServiceClientProtocol.AMQPS;
+    private static final String moduleId = "mediaEdge";
     private static final String topologyName = "javaPipelineTopology";
     private static final String livePipelineName = "javaLivePipeline";
 
-    //where/how to add methodName to payload? methodName is apart of class so when serialized is called here, methodName gets serialized into payload
-    private static String serialize(MethodRequest request) {
-        ObjectSerializer serializer = JsonSerializerProviders.createInstance();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        serializer.serialize(outputStream, request);
-        String payload = outputStream.toString(StandardCharsets.UTF_8);
-
-        return payload;
-    }
-
     private static PipelineTopology buildPipeLineTopology() {
-        RtspSource rtspSource = new RtspSource();
-        UnsecuredEndpoint endpoint = new UnsecuredEndpoint();
-        UsernamePasswordCredentials creds = new UsernamePasswordCredentials();
-        creds.setUsername("${rtspUsername}");
-        creds.setPassword("${rtspPassword}");
-        endpoint.setCredentials(creds);
-        rtspSource.setEndpoint(endpoint);
+        Source msgSource = new IotHubMessageSource()
+            .setHubInputName("${hubSourceInput}")
+            .setName("iotMsgSource");
 
-        NodeInput nodeInput = new NodeInput();
-        AssetSink assetSink = new AssetSink();
-        assetSink.setName("assetSink");
-        assetSink.setInputs(Arrays.asList(nodeInput));
-        assetSink.setAssetContainerSasUrl("sampleAsset-${System.GraphTopologyName}-${System.GraphInstanceName}");
-        assetSink.setLocalMediaCachePath("/var/lib/azuremediaservices/tmp/");
-        assetSink.setLocalMediaCacheMaximumSizeMiB("2048");
+        UsernamePasswordCredentials creds = new UsernamePasswordCredentials()
+            .setUsername("${rtspUsername}")
+            .setPassword("${rtspPassword}");
+        Endpoint endpoint = new UnsecuredEndpoint()
+            .setUrl("${rtspUrl}")
+            .setCredentials(creds);
+        RtspSource rtspSource = new RtspSource()
+            .setEndpoint(endpoint);
+        rtspSource.setName("rtspSource");
 
-        PipelineTopology pipelineTopology = new PipelineTopology();
-        pipelineTopology.setName(topologyName);
-        PipelineTopologyProperties pipeProps = new PipelineTopologyProperties();
-        ParameterDeclaration userName = new ParameterDeclaration();
-        userName.setName("rtspUserName");
-        userName.setType(ParameterType.STRING);
-        ParameterDeclaration password = new ParameterDeclaration();
-        password.setName("rtspPassword");
-        password.setType(ParameterType.SECRET_STRING);
-        ParameterDeclaration url = new ParameterDeclaration();
-        url.setName("rtspUrl");
-        url.setType(ParameterType.STRING);
-        pipeProps.setParameters(Arrays.asList(userName, password, url));
-        pipeProps.setSources(Arrays.asList(rtspSource));
-        pipeProps.setSinks(Arrays.asList(assetSink));
+        NodeInput rtspInput = new NodeInput()
+            .setNodeName("rtspSource");
 
-        pipelineTopology.setProperties(pipeProps);
+        OutputSelector rtspOutputSelector = new OutputSelector()
+            .setProperty(OutputSelectorProperty.MEDIA_TYPE)
+            .setOperator(OutputSelectorOperator.IS)
+            .setValue("video");
+        ImageScale imageScale = new ImageScale()
+            .setMode(ImageScaleMode.PRESERVE_ASPECT_RATIO)
+            .setHeight("416")
+            .setWidth("416");
+        ImageFormatBmp imageFormat = new ImageFormatBmp();
+        Image image = new Image()
+            .setScale(imageScale)
+            .setFormat(imageFormat);
+        ExtensionProcessorBase httpExtension = new HttpExtension()
+            .setEndpoint(endpoint)
+            .setImage(image);
+        httpExtension.setName("inferenceClient");
+        httpExtension.setInputs(Arrays.asList(rtspInput));
+
+        NodeInput nodeInput = new NodeInput()
+            .setNodeName("inferenceClient");
+
+        IotHubMessageSink msgSink = new IotHubMessageSink()
+            .setHubOutputName("${hubSinkOutputName}");
+        msgSink.setName("msgSink");
+        msgSink.setInputs(Arrays.asList(nodeInput));
+
+        ParameterDeclaration userName = new ParameterDeclaration()
+            .setName("rtspUserName")
+            .setType(ParameterType.STRING);
+        ParameterDeclaration password = new ParameterDeclaration()
+            .setName("rtspPassword")
+            .setType(ParameterType.SECRET_STRING);
+        ParameterDeclaration url = new ParameterDeclaration()
+            .setName("rtspUrl")
+            .setType(ParameterType.STRING);
+        ParameterDeclaration hubOutput = new ParameterDeclaration()
+            .setName("hubSinkOutputName")
+            .setType(ParameterType.STRING);
+
+        PipelineTopologyProperties pipeProps = new PipelineTopologyProperties()
+            .setParameters(Arrays.asList(userName, password, url, hubOutput))
+            .setSources(Arrays.asList(rtspSource))
+            .setSinks(Arrays.asList(msgSink))
+            .setProcessors(Arrays.asList(httpExtension));
+
+        PipelineTopology pipelineTopology = new PipelineTopology()
+            .setName(topologyName)
+            .setProperties(pipeProps);
 
         return pipelineTopology;
     }
 
     private static LivePipeline buildLivePipeline() {
-        ParameterDefinition urlParam = new ParameterDefinition();
-        urlParam.setName("rtspUrl");
-        urlParam.setValue("rtsp://sample-url-from-camera");
+        ParameterDefinition hubParam = new ParameterDefinition()
+            .setName("hubSinkOutputName")
+            .setValue("testHubOutput");
+        ParameterDefinition userParam = new ParameterDefinition()
+            .setName("rtspUserName")
+            .setValue("testuser");
+        ParameterDefinition urlParam = new ParameterDefinition()
+            .setName("rtspUrl")
+            .setValue("rtsp://sample-url-from-camera");
+        ParameterDefinition passParam = new ParameterDefinition()
+            .setName("rtspPassword")
+            .setValue("testpass");
 
-        ParameterDefinition passParam = new ParameterDefinition();
-        passParam.setName("rtspPassword");
-        passParam.setValue("testpass");
+        LivePipelineProperties livePipelineProps = new LivePipelineProperties()
+            .setParameters(Arrays.asList(urlParam, userParam, passParam, hubParam))
+            .setTopologyName(topologyName);
 
-        LivePipelineProperties livePipelineProps = new LivePipelineProperties();
-        livePipelineProps.setParameters(Arrays.asList(urlParam, passParam));
-        livePipelineProps.setTopologyName(topologyName);
-
-        LivePipeline livePipeline = new LivePipeline();
-        livePipeline.setName(livePipelineName);
-        livePipeline.setProperties(livePipelineProps);
+        LivePipeline livePipeline = new LivePipeline()
+        .setName(livePipelineName)
+        .setProperties(livePipelineProps);
 
         return livePipeline;
     }
 
-    private static MethodResult invokeDirectMethod(DeviceMethod client, String payload) throws IOException, IotHubException {
+    private static MethodResult invokeDirectMethodHelper(DeviceMethod client, String methodName, String payload) throws IOException, IotHubException {
         //CompletableFuture<Void> future = client.openAsync();
         //future.get();
         //Message msg = new Message(payload);
         //client.send(deviceId, moduleId, msg);
-        return client.invoke(deviceId, moduleId, "methodName", null, null, payload);
+        return client.invoke(deviceId, moduleId, methodName, null, null, payload);
     }
+
     public static void main(String[] args) throws IOException, IotHubException {
         PipelineTopology pipelineTopology = buildPipeLineTopology();
         LivePipeline livePipeline = buildLivePipeline();
         DeviceMethod dClient = DeviceMethod.createFromConnectionString(connectionString);
-        //ServiceClient sClient = ServiceClient.createFromConnectionString(connectionString, protocol);
 
-        PipelineTopologySetRequest setPipelineTopologyRequest = new PipelineTopologySetRequest();
-        setPipelineTopologyRequest.setPipelineTopology(pipelineTopology);
-        MethodResult setPipelineResult = invokeDirectMethod(dClient, serialize(setPipelineTopologyRequest));
+        PipelineTopologySetRequest setPipelineTopologyRequest = new PipelineTopologySetRequest()
+            .setPipelineTopology(pipelineTopology);
+        MethodResult setPipelineResult = invokeDirectMethodHelper(dClient, setPipelineTopologyRequest.getMethodName(), setPipelineTopologyRequest.getPayloadAsJson());
         System.out.println(setPipelineResult);
-
-        PipelineTopologyListRequest listTopologyRequest = new PipelineTopologyListRequest();
-        MethodResult listPipelineResult = invokeDirectMethod(dClient, serialize(listTopologyRequest));
 
         PipelineTopologyGetRequest getTopologyRequest = new PipelineTopologyGetRequest();
         getTopologyRequest.setName(pipelineTopology.getName());
-        MethodResult getPipelineResult = invokeDirectMethod(dClient, serialize(getTopologyRequest));
+        MethodResult getTopologyResult = invokeDirectMethodHelper(dClient, getTopologyRequest.getMethodName(), getTopologyRequest.getPayloadAsJson());
+        System.out.println(getTopologyResult);
+
+        PipelineTopologyListRequest listTopologyRequest = new PipelineTopologyListRequest();
+        MethodResult listPipelineResult = invokeDirectMethodHelper(dClient, listTopologyRequest.getMethodName(), listTopologyRequest.getPayloadAsJson());
+        System.out.println(listPipelineResult);
 
         LivePipelineSetRequest setLivePipelineRequest = new LivePipelineSetRequest();
         setLivePipelineRequest.setLivePipeline(livePipeline);
-        MethodResult setLivePipelineResult = invokeDirectMethod(dClient, serialize(setLivePipelineRequest));
+        MethodResult setLivePipelineResult = invokeDirectMethodHelper(dClient, setLivePipelineRequest.getMethodName(), setLivePipelineRequest.getPayloadAsJson());
+        System.out.println(setLivePipelineResult);
 
         LivePipelineListRequest listLivePipelineRequest = new LivePipelineListRequest();
-        MethodResult liveLivePipelineResult = invokeDirectMethod(dClient, serialize(listLivePipelineRequest));
+        MethodResult liveLivePipelineResult = invokeDirectMethodHelper(dClient, listLivePipelineRequest.getMethodName(), listLivePipelineRequest.getPayloadAsJson());
 
         LivePipelineActivateRequest activateLivePipelineRequest = new LivePipelineActivateRequest();
         activateLivePipelineRequest.setName(livePipeline.getName());
-        MethodResult activateLivePipelineResult = invokeDirectMethod(dClient, serialize(activateLivePipelineRequest));
+        MethodResult activateLivePipelineResult = invokeDirectMethodHelper(dClient,activateLivePipelineRequest.getMethodName(), activateLivePipelineRequest.getPayloadAsJson());
 
         LivePipelineGetRequest getLivePipelineRequest = new LivePipelineGetRequest();
         getLivePipelineRequest.setName(livePipeline.getName());
-        MethodResult getLivePipelineResult = invokeDirectMethod(dClient, serialize(getLivePipelineRequest));
+        MethodResult getLivePipelineResult = invokeDirectMethodHelper(dClient, getLivePipelineRequest.getMethodName(), getLivePipelineRequest.getPayloadAsJson());
 
         LivePipelineDeactivateRequest deactivateLivePipelineRequest = new LivePipelineDeactivateRequest();
         deactivateLivePipelineRequest.setName(livePipeline.getName());
-        MethodResult deactivateLivePipelineResult = invokeDirectMethod(dClient, serialize(deactivateLivePipelineRequest));
+        MethodResult deactivateLivePipelineResult = invokeDirectMethodHelper(dClient, deactivateLivePipelineRequest.getMethodName(), deactivateLivePipelineRequest.getPayloadAsJson());
 
         LivePipelineDeleteRequest deleteLivePipelineRequest = new LivePipelineDeleteRequest();
         deleteLivePipelineRequest.setName(livePipeline.getName());
-        MethodResult deleteLivePipelineResult = invokeDirectMethod(dClient, serialize(deleteLivePipelineRequest));
+        MethodResult deleteLivePipelineResult = invokeDirectMethodHelper(dClient, deleteLivePipelineRequest.getMethodName(), deleteLivePipelineRequest.getPayloadAsJson());
 
         PipelineTopologyDeleteRequest deletePipelineRequest = new PipelineTopologyDeleteRequest();
         deletePipelineRequest.setName(livePipeline.getName());
-        MethodResult deletePipelineResult = invokeDirectMethod(dClient, serialize(deletePipelineRequest));
+        MethodResult deletePipelineResult = invokeDirectMethodHelper(dClient, deletePipelineRequest.getMethodName(), deleteLivePipelineRequest.getPayloadAsJson());
 
     }
 }

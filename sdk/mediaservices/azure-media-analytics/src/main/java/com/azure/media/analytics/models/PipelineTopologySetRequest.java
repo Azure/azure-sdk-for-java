@@ -10,13 +10,8 @@ package com.azure.media.analytics.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Represents the pipelineTopologySet request. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "methodName")
-@JsonTypeName("pipelineTopologySet")
-
 @Fluent
 public final class PipelineTopologySetRequest extends MethodRequest {
     /*
@@ -24,6 +19,17 @@ public final class PipelineTopologySetRequest extends MethodRequest {
      */
     @JsonProperty(value = "pipelineTopology", required = true)
     private PipelineTopology pipelineTopology;
+
+    /*
+     * method name
+     */
+    @JsonProperty(value = "methodName", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private String methodName;
+
+    /** Creates an instance of PipelineTopologySetRequest class. */
+    public PipelineTopologySetRequest() {
+        methodName = "pipelineTopologySet";
+    }
 
     /**
      * Get the pipelineTopology property: The definition of a pipeline topology.
@@ -43,5 +49,22 @@ public final class PipelineTopologySetRequest extends MethodRequest {
     public PipelineTopologySetRequest setPipelineTopology(PipelineTopology pipelineTopology) {
         this.pipelineTopology = pipelineTopology;
         return this;
+    }
+
+    /**
+     * Get the methodName property: method name.
+     *
+     * @return the methodName value.
+     */
+    public String getMethodName() {
+        return this.methodName;
+    }
+
+    public String getPayloadAsJson() {
+        PipelineTopologySetRequestBody setRequestBody = new PipelineTopologySetRequestBody();
+        setRequestBody.setName(this.pipelineTopology.getName());
+        setRequestBody.setSystemData(this.pipelineTopology.getSystemData());
+        setRequestBody.setProperties(this.pipelineTopology.getProperties());
+        return setRequestBody.getPayloadAsJson();
     }
 }
