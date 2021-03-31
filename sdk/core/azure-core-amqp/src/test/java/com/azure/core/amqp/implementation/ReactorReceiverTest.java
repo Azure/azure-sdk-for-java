@@ -76,19 +76,20 @@ class ReactorReceiverTest {
     private Supplier<Integer> creditSupplier;
     @Mock
     private AmqpConnection amqpConnection;
+    @Mock
+    private TokenManager tokenManager;
 
     private final TestPublisher<AmqpShutdownSignal> shutdownSignals = TestPublisher.create();
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
-    private final TestPublisher<AmqpResponseCode> testPublisher = TestPublisher.createCold();
+    private final TestPublisher<AmqpResponseCode> authorizationResults = TestPublisher.createCold();
 
-    private TokenManager tokenManager;
     private ReceiveLinkHandler receiverHandler;
     private ReactorReceiver reactorReceiver;
     private AutoCloseable mocksCloseable;
 
     @BeforeAll
     static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(10));
     }
 
     @AfterAll
@@ -112,7 +113,7 @@ class ReactorReceiverTest {
         receiverHandler = new ReceiveLinkHandler("test-connection-id", "test-host",
             "test-receiver-name", entityPath);
 
-        when(tokenManager.getAuthorizationResults()).thenReturn(testPublisher.flux());
+        when(tokenManager.getAuthorizationResults()).thenReturn(authorizationResults.flux());
 
         when(amqpConnection.getShutdownSignals()).thenReturn(shutdownSignals.flux());
 
@@ -283,7 +284,7 @@ class ReactorReceiverTest {
             final Runnable work = invocationOnMock.getArgument(0);
             work.run();
             return null;
-        }).when(dispatcher).invoke(any(Runnable.class));
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
 
         // Act & Assert
         StepVerifier.create(reactorReceiver.receive())
@@ -371,9 +372,8 @@ class ReactorReceiverTest {
         // Act
         StepVerifier.create(reactorReceiver.getEndpointStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
-            .then(() -> {
-                shutdownSignals.next(shutdownSignal);
-            })
+            .then(() -> shutdownSignals.next(shutdownSignal))
+            .expectNext(AmqpEndpointState.CLOSED)
             .expectComplete()
             .verify();
 
@@ -435,6 +435,11 @@ class ReactorReceiverTest {
         StepVerifier.create(reactorReceiver.getEndpointStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
             .then(() -> receiverHandler.onLinkFinal(event))
+            .expectNext(AmqpEndpointState.CLOSED)
+            .verifyComplete();
+
+        StepVerifier.create(reactorReceiver.getEndpointStates())
+            .expectNext(AmqpEndpointState.CLOSED)
             .verifyComplete();
 
         assertTrue(reactorReceiver.isDisposed());
@@ -527,8 +532,6 @@ class ReactorReceiverTest {
         verify(receiver).close();
 
         shutdownSignals.assertNoSubscribers();
-        // Verify that the get addCredits was called on that dispatcher.
-        verify(receiver).flow(10);
     }
 
     @Test
@@ -541,11 +544,16 @@ class ReactorReceiverTest {
             final Runnable work = invocationOnMock.getArgument(0);
             work.run();
             return null;
-        }).when(dispatcher).invoke(any(Runnable.class));
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
+        doAnswer(invocationOnMock -> {
+            receiverHandler.onLinkRemoteClose(event);
+            return null;
+        }).when(receiver).close();
 
         // Assert and Act
         StepVerifier.create(reactorReceiver.receive())
-            .then(() -> testPublisher.error(error))
+            .then(() -> authorizationResults.error(error))
             .verifyComplete();
     }
 
@@ -556,11 +564,16 @@ class ReactorReceiverTest {
             final Runnable work = invocationOnMock.getArgument(0);
             work.run();
             return null;
-        }).when(dispatcher).invoke(any(Runnable.class));
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
+        doAnswer(invocationOnMock -> {
+            receiverHandler.onLinkRemoteClose(event);
+            return null;
+        }).when(receiver).close();
 
         // Assert and Act
         StepVerifier.create(reactorReceiver.receive())
-            .then(testPublisher::complete)
+            .then(authorizationResults::complete)
             .verifyComplete();
     }
 }

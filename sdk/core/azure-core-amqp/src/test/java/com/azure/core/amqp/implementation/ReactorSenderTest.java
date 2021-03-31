@@ -12,6 +12,7 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
+import com.azure.core.amqp.exception.OperationCancelledException;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -28,8 +29,10 @@ import org.apache.qpid.proton.engine.impl.DeliveryImpl;
 import org.apache.qpid.proton.message.Message;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -45,17 +48,13 @@ import reactor.test.publisher.TestPublisher;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
@@ -70,7 +69,7 @@ import static org.mockito.Mockito.when;
  */
 public class ReactorSenderTest {
     private static final String ENTITY_PATH = "entity-path";
-    private final TestPublisher<AmqpShutdownSignal> shutdownSignals = TestPublisher.create();
+    private final TestPublisher<AmqpShutdownSignal> shutdownSignals = TestPublisher.createCold();
     private final TestPublisher<EndpointState> endpointStatePublisher = TestPublisher.createCold();
 
     @Mock
@@ -81,8 +80,6 @@ public class ReactorSenderTest {
     private SendLinkHandler handler;
     @Mock
     private ReactorProvider reactorProvider;
-    @Mock
-    private ReactorDispatcher dispatcher;
     @Mock
     private TokenManager tokenManager;
     @Mock
@@ -132,11 +129,11 @@ public class ReactorSenderTest {
         doNothing().when(selectable).setReading(true);
         doNothing().when(reactor).update(selectable);
 
-        when(reactorProvider.getReactorDispatcher()).thenReturn(dispatcher);
+        when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
         when(sender.getRemoteMaxMessageSize()).thenReturn(UnsignedLong.valueOf(1000));
 
         options = new AmqpRetryOptions()
-            .setTryTimeout(Duration.ofSeconds(10))
+            .setTryTimeout(Duration.ofSeconds(2))
             .setMode(AmqpRetryMode.EXPONENTIAL);
 
         message = Proton.message();
@@ -153,6 +150,16 @@ public class ReactorSenderTest {
         if (mocksCloseable != null) {
             mocksCloseable.close();
         }
+    }
+
+    @BeforeAll
+    public static void beforeAll() {
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(10));
+    }
+
+    @AfterAll
+    public static void afterAll() {
+        StepVerifier.resetDefaultTimeout();
     }
 
     @Test
@@ -240,7 +247,7 @@ public class ReactorSenderTest {
             final Runnable work = invocationOnMock.getArgument(0);
             work.run();
             return null;
-        }).when(dispatcher).invoke(any(Runnable.class));
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
 
         // Act
         StepVerifier.create(reactorSender.send(message, transactionalState))
@@ -326,7 +333,7 @@ public class ReactorSenderTest {
      * Verifies that when an exception occurs in the parent, the connection is also closed.
      */
     @Test
-    void parentDisposesConnection() {
+    void parentDisposesConnection() throws IOException {
         // Arrange
         final ReactorSender reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
             reactorProvider, tokenManager, messageSerializer, options);
@@ -337,10 +344,14 @@ public class ReactorSenderTest {
             return null;
         }).when(sender).close();
 
+        doAnswer(invocationOnMock -> {
+            final Runnable work = invocationOnMock.getArgument(0);
+            work.run();
+            return null;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
         // Act
         shutdownSignals.next(shutdownSignal);
-
-        invokeDispatcher();
 
         // Assert
         assertTrue(reactorSender.isDisposed());
@@ -355,7 +366,7 @@ public class ReactorSenderTest {
      * Verifies that when an exception occurs in the parent, the endpoints are also disposed.
      */
     @Test
-    void parentClosesEndpoint() {
+    void parentClosesEndpoint() throws IOException {
         // Arrange
         final ReactorSender reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
             reactorProvider, tokenManager, messageSerializer, options);
@@ -366,13 +377,16 @@ public class ReactorSenderTest {
             return null;
         }).when(sender).close();
 
+        doAnswer(invocationOnMock -> {
+            final Runnable work = invocationOnMock.getArgument(0);
+            work.run();
+            return null;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
         // Act
         StepVerifier.create(reactorSender.getEndpointStates())
             .expectNext(AmqpEndpointState.ACTIVE)
-            .then(() -> {
-                shutdownSignals.next(shutdownSignal);
-                invokeDispatcher();
-            })
+            .then(() -> shutdownSignals.next(shutdownSignal))
             .expectComplete()
             .verify();
 
@@ -419,10 +433,16 @@ public class ReactorSenderTest {
      * A complete in the handler will also close the sender.
      */
     @Test
-    void disposesOnHandlerComplete() {
+    void disposesOnHandlerComplete() throws IOException {
         // Arrange
         final ReactorSender reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
             reactorProvider, tokenManager, messageSerializer, options);
+
+        doAnswer(invocationOnMock -> {
+            final Runnable work = invocationOnMock.getArgument(0);
+            work.run();
+            return null;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
 
         // Act and Assert
         StepVerifier.create(reactorSender.getEndpointStates())
@@ -435,8 +455,6 @@ public class ReactorSenderTest {
             .expectComplete()
             .verify();
 
-        invokeDispatcher();
-
         assertTrue(reactorSender.isDisposed());
 
         verify(tokenManager).close();
@@ -446,7 +464,7 @@ public class ReactorSenderTest {
     }
 
     @Test
-    void disposeCompletes() {
+    void disposeCompletes() throws IOException {
         // Arrange
         final ReactorSender reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
             reactorProvider, tokenManager, messageSerializer, options);
@@ -460,9 +478,14 @@ public class ReactorSenderTest {
             return null;
         }).when(sender).close();
 
+        doAnswer(invocationOnMock -> {
+            final Runnable work = invocationOnMock.getArgument(0);
+            work.run();
+            return null;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
         // Act
         StepVerifier.create(reactorSender.dispose(message, condition))
-            .then(() -> invokeDispatcher())
             .expectComplete()
             .verify();
 
@@ -565,25 +588,11 @@ public class ReactorSenderTest {
         shutdownSignals.assertNoSubscribers();
     }
 
-    /**
-     * Manually captures the Runnable in the dispatcher so we can invoke it to verify contents.
-     */
-    private void invokeDispatcher() {
-        try {
-            verify(reactorDispatcher, atLeastOnce()).invoke(dispatcherCaptor.capture());
-        } catch (IOException e) {
-            fail("Should not have caused an IOException. " + e);
-        }
-
-        dispatcherCaptor.getAllValues().forEach(work -> {
-            assertNotNull(work);
-            work.run();
-        });
     @Test
     void closesWhenNoLongerAuthorized() throws IOException {
         // Arrange
-        final ReactorSender reactorSender = new ReactorSender(ENTITY_PATH, sender, handler, reactorProvider,
-            tokenManager, messageSerializer, options);
+        final ReactorSender reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
+            reactorProvider, tokenManager, messageSerializer, options);
         final AmqpException error = new AmqpException(false, AmqpErrorCondition.ILLEGAL_STATE, "not-allowed",
             new AmqpErrorContext("foo-bar"));
 
@@ -593,34 +602,38 @@ public class ReactorSenderTest {
             final Runnable work = invocationOnMock.getArgument(0);
             work.run();
             return null;
-        }).when(dispatcher).invoke(any(Runnable.class));
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
 
         // Act
-        authorizationResults.error(error);
 
         // Assert and Act
         StepVerifier.create(reactorSender.send(message))
-            .expectError(IllegalStateException.class)
+            .then(() -> authorizationResults.error(error))
+            .expectError(OperationCancelledException.class)
             .verify();
     }
 
     @Test
     void closesWhenAuthorizationResultsComplete() throws IOException {
         // Arrange
-        final ReactorSender reactorSender = new ReactorSender(ENTITY_PATH, sender, handler, reactorProvider,
-            tokenManager, messageSerializer, options);
+        final ReactorSender reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
+            reactorProvider, tokenManager, messageSerializer, options);
 
         doAnswer(invocationOnMock -> {
             final Runnable work = invocationOnMock.getArgument(0);
             work.run();
             return null;
-        }).when(dispatcher).invoke(any(Runnable.class));
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
 
-        authorizationResults.complete();
+        doAnswer(invocationOnMock -> {
+            endpointStatePublisher.complete();
+            return null;
+        }).when(sender).close();
 
         // Assert and Act
         StepVerifier.create(reactorSender.send(message))
-            .expectError(IllegalStateException.class)
+            .then(() -> authorizationResults.complete())
+            .expectError(OperationCancelledException.class)
             .verify();
     }
 }
