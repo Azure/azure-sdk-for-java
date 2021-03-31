@@ -184,7 +184,7 @@ function Get-java-GithubIoDocIndex()
   # Update the main.js and docfx.json language content
   UpdateDocIndexFiles -appTitleLang "Java"
   # Fetch out all package metadata from csv file.
-  $metadata = Get-CSVMetadata -MetadataUri $MetadataUri
+  $metadata = Get-CSVMetadata -MetadataUri "C:\sdk\azure-sdk\_data\releases\latest\java-packages.csv"
   # Leave the track 2 packages if multiple packages fetched out.
   $clientPackages = $metadata | Where-Object { $_.GroupId -eq 'com.azure' }
   $nonClientPackages = $metadata | Where-Object { $_.GroupId -ne 'com.azure' -and !$clientPackages.Package.Contains($_.Package) }
@@ -199,48 +199,120 @@ function Get-java-GithubIoDocIndex()
 
 # a "package.json configures target packages for all the monikers in a Repository, it also has a slightly different
 # schema than the moniker-specific json config that is seen in python and js
-function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$null)
-{
-  $pkgJsonLoc = (Join-Path -Path $ciRepo -ChildPath $locationInDocRepo)
-
-  if (-not (Test-Path $pkgJsonLoc)) {
-    Write-Error "Unable to locate package json at location $pkgJsonLoc, exiting."
+# details on CSV schema can be found here
+# https://review.docs.microsoft.com/en-us/help/onboard/admin/reference/dotnet/documenting-nuget?branch=master#set-up-the-ci-job
+function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo)
+{ 
+  # Read csv,
+  # Compare with current package.son
+  Write-Host "I am in update-java-ciconfig"
+  $csvLoc = (Join-Path -Path $ciRepo -ChildPath $locationInDocRepo[0].path_to_config)
+  if (-not (Test-Path $csvLoc)) {
+    Write-Error "Unable to locate package csv at location $csvLoc, exiting."
     exit(1)
   }
 
-  $allJsonData = Get-Content $pkgJsonLoc | ConvertFrom-Json
+  $allCSVRows = Get-Content $csvLoc | Out-String | ConvertFrom-Json
+  $visibleInCI = @{}  
 
-  $visibleInCI = @{}
-
-  for ($i=0; $i -lt $allJsonData[$monikerId].packages.Length; $i++) {
-    $pkgDef = $allJsonData[$monikerId].packages[$i]
-    $visibleInCI[$pkgDef.packageArtifactId] = $i
+  # Fetch out all package metadata from csv file.
+  $metadata = Get-CSVMetadata -MetadataUri $MetadataUri | Where-Object {$_.MSdocs -ne "NA"} 
+  Write-Host $metadata.Length
+  # Write stuff into json file
+  $preview =  @{
+    language = "java"
+    output_path = "preview/docs-ref-autogen"
+    packages = @()
+  }
+  $latest = @{
+    language = "java"
+    output_path = "docs-ref-autogen"
+    packages = @()
   }
 
-  foreach ($releasingPkg in $pkgs) {
-    if ($visibleInCI.ContainsKey($releasingPkg.PackageId)) {
-      $packagesIndex = $visibleInCI[$releasingPkg.PackageId]
-      $existingPackageDef = $allJsonData[$monikerId].packages[$packagesIndex]
-      $existingPackageDef.packageVersion = $releasingPkg.PackageVersion
+  for ($i=0; $i -lt $metadata.Length; $i++) {
+    if (!$metadata[$i].Package) {
+      continue
     }
-    else {
-      $newItem = New-Object PSObject -Property @{
-        packageDownloadUrl = "https://repo1.maven.org/maven2"
-        packageGroupId = $releasingPkg.GroupId
-        packageArtifactId = $releasingPkg.PackageId
-        packageVersion = $releasingPkg.PackageVersion
-        inputPath = @()
-        excludePath = @()
+    if ($metadata[$i].VersionGA) {
+      # Fill in the latest first
+      $latest_object = @{}
+      $latest_object["packageDownloadUrl"] = "https://repo1.maven.org/maven2"
+      $latest_object["packageGroupId"] = $metadata[$i].GroupId
+      $latest_object["packageArtifactId"] = $metadata[$i].Package
+      $latest_object["packageVersion"] = $metadata[$i].VersionGA
+      $latest.packages += $latest_object
+    }
+    elseif ($metadata[$i].VersionPreview) {
+      # Then fill in the preview 
+      $preview_object = @{}
+      $preview_object["packageDownloadUrl"] = "https://repo1.maven.org/maven2"
+      $preview_object["packageGroupId"] = $metadata[$i].GroupId
+      $preview_object["packageArtifactId"] = $metadata[$i].Package
+      $preview_object["packageVersion"] = $metadata[$i].VersionPreview
+      $preview.packages += $preview_object
+    }
+  }
+  $jsonRepresentation = @($latest, $preview)
+  $jsonRepresentation | ConvertTo-Json -depth 100 | Out-File "temp_package.json"
+  $newMeta = @()
+
+  
+  for ($i=0; $i -lt $allCSVRows.Length; $i++) {
+    $packages = $allCSVRows[$i].packages
+    Write-Host $packages.Length
+    for ($j=0; $j -lt $packages.Length; $j++) {
+      $pkg = $packages[$j].packageArtifactId
+      $groupId = $packages[$j].packageGroupId
+      # get rid of the modifiers to get just the package id
+      #$id = $pkg.split(",")[0] -replace "\[.*?\]", ""
+      if ($pkg -and !($metadata.Package -contains $pkg -and $metadata.GroupId -contains $groupId)) {
+        Write-Host "Here is a package not found in csv: $pkg"
+        #$metadata
       }
-
-      $allJsonData[$monikerId].packages += $newItem
+      elseif($pkg) {
+        $visibleInCI[$pkg] = $packages[$j].packageGroupId
+      }
     }
   }
 
-  $jsonContent = $allJsonData | ConvertTo-Json -Depth 10 | % {$_ -replace "(?m)  (?<=^(?:  )*)", "    " }
-
-  Set-Content -Path $pkgJsonLoc -Value $jsonContent
+  Write-Host $newMeta.Length
+  $newMeta | Export-Csv -Path "outfile.csv" -NoTypeInformation
 }
+    #Write-Host $id
+
+ 
+  # $csvLoc = (Join-Path -Path $ciRepo -ChildPath $locationInDocRepo)
+  
+  # if (-not (Test-Path $csvLoc)) {
+  #   Write-Error "Unable to locate package csv at location $csvLoc, exiting."
+  #   exit(1)
+  # }
+
+  # $allCSVRows = Get-Content $csvLoc
+  # $visibleInCI = @{}
+
+  # # first pull what's already available
+
+
+  # foreach ($releasingPkg in $pkgs) {
+  #   $installModifiers = "tfm=netstandard2.0"
+  #   if ($releasingPkg.IsPrerelease) {
+  #     $installModifiers += ";isPrerelease=true"
+  #   }
+  #   $lineId = $releasingPkg.PackageId.Replace(".","").ToLower()
+
+  #   if ($visibleInCI.ContainsKey($releasingPkg.PackageId)) {
+  #     $packagesIndex = $visibleInCI[$releasingPkg.PackageId]
+  #     $allCSVRows[$packagesIndex] = "$($lineId),[$installModifiers]$($releasingPkg.PackageId)"
+  #   }
+  #   else {
+  #     $newItem = "$($lineId),[$installModifiers]$($releasingPkg.PackageId)"
+  #     $allCSVRows += ($newItem)
+  #   }
+  # }
+
+  # Set-Content -Path $csvLoc -Value $allCSVRows
 
 # function is used to filter packages to submit to API view tool
 function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName)
