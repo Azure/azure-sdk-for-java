@@ -3,9 +3,11 @@
 package com.azure.spring.autoconfigure.b2c;
 
 import net.minidev.json.JSONArray;
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 
 import java.time.Instant;
@@ -61,6 +63,8 @@ public class AADB2CUserPrincipalTest {
         assertThat(principal.getAttributes()).isNotEmpty();
         assertThat(principal.getAttributes()).hasSize(2);
         assertThat(principal.getAuthorities()).hasSize(4);
+        Assert.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("SCOPE_Order.read")));
+        Assert.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.write")));
     }
 
     @Test
@@ -74,6 +78,10 @@ public class AADB2CUserPrincipalTest {
         assertThat(principal.getAttributes()).isNotEmpty();
         assertThat(principal.getAttributes()).hasSize(2);
         assertThat(principal.getAuthorities()).hasSize(2);
+        Assert.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("SCOPE_Order.read")));
+        Assert.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("SCOPE_Order.write")));
+        Assert.assertFalse(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.read")));
+        Assert.assertFalse(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.write")));
     }
 
     @Test
@@ -87,6 +95,10 @@ public class AADB2CUserPrincipalTest {
         assertThat(principal.getAttributes()).isNotEmpty();
         assertThat(principal.getAttributes()).hasSize(2);
         assertThat(principal.getAuthorities()).hasSize(2);
+        Assert.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.read")));
+        Assert.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.write")));
+        Assert.assertFalse(principal.getAuthorities().contains(new SimpleGrantedAuthority("SCOPE_Order.read")));
+        Assert.assertFalse(principal.getAuthorities().contains(new SimpleGrantedAuthority("SCOPE_Order.write")));
     }
 
     @Test
@@ -100,6 +112,10 @@ public class AADB2CUserPrincipalTest {
         assertThat(principal.getAttributes()).isNotEmpty();
         assertThat(principal.getAttributes()).hasSize(2);
         assertThat(principal.getAuthorities()).hasSize(2);
+        Assert.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("SCOPE_Order.read")));
+        Assert.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("SCOPE_Order.write")));
+        Assert.assertFalse(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.read")));
+        Assert.assertFalse(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.write")));
     }
 
     @Test
@@ -114,5 +130,9 @@ public class AADB2CUserPrincipalTest {
         assertThat(principal.getAttributes()).isNotEmpty();
         assertThat(principal.getAttributes()).hasSize(2);
         assertThat(principal.getAuthorities()).hasSize(2);
+        Assert.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.read")));
+        Assert.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.write")));
+        Assert.assertFalse(principal.getAuthorities().contains(new SimpleGrantedAuthority("SCOPE_Order.read")));
+        Assert.assertFalse(principal.getAuthorities().contains(new SimpleGrantedAuthority("SCOPE_Order.write")));
     }
 }
