@@ -27,7 +27,7 @@ import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffe
  * See fields found on an license here:
  * https://aka.ms/formrecognizer/iddocumentfields
  */
-public class RecognizeIDDocumentAsync {
+public class RecognizeIdDocumentsAsync {
 
     /**
      * Main method to invoke this demo.

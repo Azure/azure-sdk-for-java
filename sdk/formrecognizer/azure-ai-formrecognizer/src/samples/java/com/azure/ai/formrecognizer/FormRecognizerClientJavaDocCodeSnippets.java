@@ -6,7 +6,7 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.models.FormRecognizerLocale;
 import com.azure.ai.formrecognizer.models.RecognizeBusinessCardsOptions;
 import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
-import com.azure.ai.formrecognizer.models.RecognizeIDDocumentOptions;
+import com.azure.ai.formrecognizer.models.RecognizeIdDocumentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeInvoicesOptions;
 import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.FieldValueType;
@@ -988,12 +988,12 @@ public class FormRecognizerClientJavaDocCodeSnippets {
      * {@link FormRecognizerAsyncClient#beginRecognizeInvoicesFromUrl(String, RecognizeInvoicesOptions)}
      */
     public void beginRecognizeIDDocumentsFromUrlWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIDDocumentsFromUrl#string-RecognizeIDDocumentOptions-Context
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIDDocumentsFromUrl#string-RecognizeIdDocumentOptions-Context
         String licenseDocumentUrl = "licenseDocumentUrl";
         boolean includeFieldElements = true;
         // if training polling operation completed, retrieve the final result.
         formRecognizerClient.beginRecognizeIdDocumentsFromUrl(licenseDocumentUrl,
-            new RecognizeIDDocumentOptions()
+            new RecognizeIdDocumentOptions()
                 .setFieldElementsIncluded(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
             .getFinalResult()
@@ -1045,7 +1045,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                     }
                 }
             });
-        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIDDocumentsFromUrl#string-RecognizeIDDocumentOptions-Context
+        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIDDocumentsFromUrl#string-RecognizeIdDocumentOptions-Context
     }
 
     /**
@@ -1113,13 +1113,13 @@ public class FormRecognizerClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for
-     * {@link FormRecognizerClient#beginRecognizeIdDocuments(InputStream, long, RecognizeIDDocumentOptions, Context)} with
+     * {@link FormRecognizerClient#beginRecognizeIdDocuments(InputStream, long, RecognizeIdDocumentOptions, Context)} with
      * options
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeIDDocumentsWithOptions() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIDDocuments#InputStream-long-RecognizeIDDocumentOptions-Context
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIDDocuments#InputStream-long-RecognizeIdDocumentOptions-Context
         File licenseDocument = new File("local/file_path/license.jpg");
         boolean includeFieldElements = true;
         // Utility method to convert input stream to Byte buffer
@@ -1127,7 +1127,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         // if training polling operation completed, retrieve the final result.
         formRecognizerClient.beginRecognizeIdDocuments(inputStream,
             licenseDocument.length(),
-            new RecognizeIDDocumentOptions()
+            new RecognizeIdDocumentOptions()
                 .setContentType(FormContentType.IMAGE_JPEG)
                 .setFieldElementsIncluded(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(5)),
@@ -1190,6 +1190,6 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                     }
                 }
             });
-        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIDDocuments#InputStream-long-RecognizeIDDocumentOptions-Context
+        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIDDocuments#InputStream-long-RecognizeIdDocumentOptions-Context
     }
 }

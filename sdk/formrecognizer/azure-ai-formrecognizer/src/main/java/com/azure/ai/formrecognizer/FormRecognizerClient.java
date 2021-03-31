@@ -11,7 +11,7 @@ import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizeBusinessCardsOptions;
 import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
-import com.azure.ai.formrecognizer.models.RecognizeIDDocumentOptions;
+import com.azure.ai.formrecognizer.models.RecognizeIdDocumentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeInvoicesOptions;
 import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
@@ -587,7 +587,7 @@ public final class FormRecognizerClient {
     }
 
     /**
-     * Analyze ID documents using optical character recognition (OCR) and a prebuilt ID trained
+     * Analyze ID documents using optical character recognition (OCR) and a prebuilt model trained on ID documents
      * model to extract key information from passports and US driver licenses.
      * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an ID document.
      * <p>The service does not support cancellation of the long running operation and returns with an
@@ -611,17 +611,17 @@ public final class FormRecognizerClient {
     }
 
     /**
-     * Analyze ID documents using optical character recognition (OCR) and a prebuilt ID trained
+     * Analyze ID documents using optical character recognition (OCR) and a prebuilt model trained on ID documents
      * model to extract key information from passports and US driver licenses.
      * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an ID document.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIDDocumentsFromUrl#string-RecognizeIDDocumentOptions-Context}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIDDocumentsFromUrl#string-RecognizeIdDocumentOptions-Context}
      *
      * @param iDDocumentUrl The source URL to the input ID Document.
-     * @param recognizeIDDocumentOptions The additional configurable {@link RecognizeIDDocumentOptions options}
+     * @param recognizeIdDocumentOptions The additional configurable {@link RecognizeIdDocumentOptions options}
      * that may be passed when analyzing an ID Document.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
@@ -633,13 +633,13 @@ public final class FormRecognizerClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdDocumentsFromUrl(
-        String iDDocumentUrl, RecognizeIDDocumentOptions recognizeIDDocumentOptions, Context context) {
-        return client.beginRecognizeIdDocumentsFromUrl(iDDocumentUrl, recognizeIDDocumentOptions, context)
+        String iDDocumentUrl, RecognizeIdDocumentOptions recognizeIdDocumentOptions, Context context) {
+        return client.beginRecognizeIdDocumentsFromUrl(iDDocumentUrl, recognizeIdDocumentOptions, context)
             .getSyncPoller();
     }
 
     /**
-     * Analyze ID documents using optical character recognition (OCR) and a prebuilt ID trained
+     * Analyze ID documents using optical character recognition (OCR) and a prebuilt model trained on ID documents
      * model to extract key information from passports and US driver licenses.
      * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an ID document.
      * <p>The service does not support cancellation of the long running operation and returns with an
@@ -664,18 +664,18 @@ public final class FormRecognizerClient {
     }
 
     /**
-     * Analyze ID documents using optical character recognition (OCR) and a prebuilt ID trained
+     * Analyze ID documents using optical character recognition (OCR) and a prebuilt model trained on ID documents
      * model to extract key information from passports and US driver licenses.
      * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an ID document.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIDDocuments#InputStream-long-RecognizeIDDocumentOptions-Context}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIDDocuments#InputStream-long-RecognizeIdDocumentOptions-Context}
      *
      * @param iDDocument The data of the id document to recognize information from.
      * @param length The exact length of the data.
-     * @param recognizeIDDocumentOptions The additional configurable {@link RecognizeIDDocumentOptions options}
+     * @param recognizeIdDocumentOptions The additional configurable {@link RecognizeIdDocumentOptions options}
      * that may be passed when analyzing an ID Document.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
@@ -687,9 +687,9 @@ public final class FormRecognizerClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdDocuments(
-        InputStream iDDocument, long length, RecognizeIDDocumentOptions recognizeIDDocumentOptions,
+        InputStream iDDocument, long length, RecognizeIdDocumentOptions recognizeIdDocumentOptions,
         Context context) {
         return client.beginRecognizeIdDocuments(toFluxByteBuffer(iDDocument), length,
-            recognizeIDDocumentOptions, context).getSyncPoller();
+            recognizeIdDocumentOptions, context).getSyncPoller();
     }
 }

@@ -16,13 +16,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Sample for recognizing commonly found invoice fields from a file source URL of an invoice document.
- * For a suggested approach to
- * extracting information from a general recognized form, see StronglyTypedRecognizedForm.java.
- * See fields found on a invoice here:
- * https://aka.ms/formrecognizer/invoicefields
+ * Sample for recognizing commonly found ID document fields from a file source URL of an invoice document.
+ * See fields found on an ID document here:
+ * https://aka.ms/formrecognizer/iddocumentfields
  */
-public class RecognizeIDDocumentFromUrl {
+public class RecognizeIdDocumentsFromUrl {
 
     /**
      * Main method to invoke this demo.

@@ -6,7 +6,7 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.models.FormRecognizerLocale;
 import com.azure.ai.formrecognizer.models.RecognizeBusinessCardsOptions;
 import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
-import com.azure.ai.formrecognizer.models.RecognizeIDDocumentOptions;
+import com.azure.ai.formrecognizer.models.RecognizeIdDocumentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeInvoicesOptions;
 import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.FieldValueType;
@@ -1038,15 +1038,15 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for
-     * {@link FormRecognizerAsyncClient#beginRecognizeIdDocumentsFromUrl(String, RecognizeIDDocumentOptions)}
+     * {@link FormRecognizerAsyncClient#beginRecognizeIdDocumentsFromUrl(String, RecognizeIdDocumentOptions)}
      */
     public void beginRecognizeIdDocumentsFromUrlWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdDocumentsFromUrl#string-RecognizeIDDocumentOptions
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdDocumentsFromUrl#string-RecognizeIdDocumentOptions
         String licenseDocumentUrl = "licenseDocumentUrl";
         boolean includeFieldElements = true;
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeIdDocumentsFromUrl(licenseDocumentUrl,
-            new RecognizeIDDocumentOptions()
+            new RecognizeIdDocumentOptions()
                 .setFieldElementsIncluded(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(5)))
             .flatMap(AsyncPollResponse::getFinalResult)
@@ -1102,7 +1102,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     }
                 }
             });
-        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdDocumentsFromUrl#string-RecognizeIDDocumentOptions
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdDocumentsFromUrl#string-RecognizeIdDocumentOptions
     }
 
     /**
@@ -1175,13 +1175,13 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for
-     * {@link FormRecognizerAsyncClient#beginRecognizeIdDocuments(Flux, long, RecognizeIDDocumentOptions)} with
+     * {@link FormRecognizerAsyncClient#beginRecognizeIdDocuments(Flux, long, RecognizeIdDocumentOptions)} with
      * options
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeIDDocumentsWithOptions() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdDocuments#Flux-long-RecognizeIDDocumentOptions
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdDocuments#Flux-long-RecognizeIdDocumentOptions
         File licenseDocument = new File("local/file_path/license.jpg");
         boolean includeFieldElements = true;
         // Utility method to convert input stream to Byte buffer
@@ -1190,7 +1190,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeIdDocuments(buffer,
             licenseDocument.length(),
-            new RecognizeIDDocumentOptions()
+            new RecognizeIdDocumentOptions()
                 .setContentType(FormContentType.IMAGE_JPEG)
                 .setFieldElementsIncluded(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(5)))
@@ -1247,6 +1247,6 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     }
                 }
             });
-        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdDocuments#Flux-long-RecognizeIDDocumentOptions
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdDocuments#Flux-long-RecognizeIdDocumentOptions
     }
 }

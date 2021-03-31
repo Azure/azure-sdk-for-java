@@ -24,7 +24,7 @@ import java.util.Map;
  * See fields found on a ID document here:
  * https://aka.ms/formrecognizer/iddocumentfields
  */
-public class RecognizeIDDocuments {
+public class RecognizeIdDocuments {
 
     /**
      * Main method to invoke this demo.
