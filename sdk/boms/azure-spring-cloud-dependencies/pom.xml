@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-cloud-dependencies</artifactId>
+  <version>2.3.0</version>
+  <packaging>pom</packaging>
+
+  <name>Azure Spring Cloud dependencies BOM</name>
+  <description>BOM for Azure Spring Cloud dependencies</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <licenses>
+    <license>
+      <name>The MIT License (MIT)</name>
+      <url>http://opensource.org/licenses/MIT</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>microsoft</id>
+      <name>Microsoft Corporation</name>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:git://github.com/azure/azure-sdk-for-java</connection>
+    <developerConnection>scm:git:git://github.com/azure/azure-sdk-for-java</developerConnection>
+    <url>https://github.com/azure/azure-sdk-for-java</url>
+  </scm>
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/azure/azure-sdk-for-java/issues</url>
+  </issueManagement>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
+    <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+    <spring.boot.version>2.4.3</spring.boot.version>
+    <spring.cloud.version>2020.0.1</spring.cloud.version>
+    <azure.spring.cloud.version>2.3.0</azure.spring.cloud.version>
+    <azure.cloud.appconfiguration.config>1.3.0</azure.cloud.appconfiguration.config>
+    <azure-resourcemanager.version>2.3.0</azure-resourcemanager.version>
+    <azure.eventhubs.version>5.6.0</azure.eventhubs.version>
+    <azure.eventhubs.checkpoint.store.version>1.5.1</azure.eventhubs.checkpoint.store.version>
+    <azure.storage.blob.version>12.10.0</azure.storage.blob.version>
+    <azure.storage.file.version>12.8.0</azure.storage.file.version>
+    <azure.storage.queue.version>12.8.0</azure.storage.queue.version>
+    <azure.servicebus.version>3.6.1</azure.servicebus.version>
+    <azure-core.version>1.14.1</azure-core.version>
+    <azure-identity-spring.version>1.3.0</azure-identity-spring.version>
+    <azure-data-appconfiguration.version>1.1.10</azure-data-appconfiguration.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring.boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${spring.cloud.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <!--Spring Cloud Azure modules-->
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>azure-spring-cloud-autoconfigure</artifactId>
+        <version>${azure.spring.cloud.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>azure-spring-cloud-context</artifactId>
+        <version>${azure.spring.cloud.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>azure-spring-integration-core</artifactId>
+        <version>${azure.spring.cloud.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>azure-spring-integration-eventhubs</artifactId>
+        <version>${azure.spring.cloud.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>azure-spring-integration-servicebus</artifactId>
+        <version>${azure.spring.cloud.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>azure-spring-integration-storage-queue</artifactId>
+        <version>${azure.spring.cloud.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>azure-spring-cloud-storage</artifactId>
+        <version>${azure.spring.cloud.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>azure-spring-cloud-stream-binder-servicebus-core</artifactId>
+        <version>${azure.spring.cloud.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>azure-spring-cloud-stream-binder-eventhubs</artifactId>
+        <version>${azure.spring.cloud.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>azure-spring-cloud-stream-binder-servicebus-topic</artifactId>
+        <version>${azure.spring.cloud.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>azure-spring-cloud-stream-binder-servicebus-queue</artifactId>
+        <version>${azure.spring.cloud.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>azure-spring-cloud-stream-binder-test</artifactId>
+        <version>${azure.spring.cloud.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
+        <version>${azure.cloud.appconfiguration.config}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>spring-cloud-azure-appconfiguration-config-web</artifactId>
+        <version>${azure.cloud.appconfiguration.config}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>azure-spring-cloud-messaging</artifactId>
+        <version>${azure.spring.cloud.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-messaging-eventhubs</artifactId>
+        <version>${azure.eventhubs.version}</version>
+      </dependency>
+
+      <!-- Contains Azure Storage Blobs checkpoint store when using EventProcessorClient -->
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
+        <version>${azure.eventhubs.checkpoint.store.version}</version>
+      </dependency>
+
+      <!-- Storage -->
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-storage-blob</artifactId>
+        <version>${azure.storage.blob.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-storage-file-share</artifactId>
+        <version>${azure.storage.file.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-storage-queue</artifactId>
+        <version>${azure.storage.queue.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-servicebus</artifactId>
+        <version>${azure.servicebus.version}</version>
+      </dependency>
+
+      <!--Spring Cloud Azure Starters-->
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>azure-spring-cloud-starter-cache</artifactId>
+        <version>${azure.spring.cloud.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>azure-spring-cloud-starter-servicebus</artifactId>
+        <version>${azure.spring.cloud.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>azure-spring-cloud-storage</artifactId>
+        <version>${azure.spring.cloud.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>azure-spring-cloud-starter-eventhubs</artifactId>
+        <version>${azure.spring.cloud.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>azure-spring-cloud-starter-eventhubs-kafka</artifactId>
+        <version>${azure.spring.cloud.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>azure-spring-cloud-starter-storage-queue</artifactId>
+        <version>${azure.spring.cloud.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>spring-cloud-starter-azure-appconfiguration-config</artifactId>
+        <version>${azure.cloud.appconfiguration.config}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>azure-spring-cloud-telemetry</artifactId>
+        <version>${azure.spring.cloud.version}</version>
+      </dependency>
+
+      <!--Azure SDK-->
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core</artifactId>
+        <version>${azure-core.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>azure-identity-spring</artifactId>
+        <version>${azure-identity-spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-data-appconfiguration</artifactId>
+        <version>${azure-data-appconfiguration.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <plugins>
+      <!-- Copy the pom file to output -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>copy</id>
+            <phase>package</phase>
+            <configuration>
+              <target>
+                <copy file="${project.pomFile}" tofile="${packageOutputDirectory}/${project.build.finalName}.pom"/>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
