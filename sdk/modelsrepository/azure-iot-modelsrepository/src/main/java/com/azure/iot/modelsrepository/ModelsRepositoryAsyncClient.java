@@ -32,10 +32,10 @@ public final class ModelsRepositoryAsyncClient {
     private final ModelsRepositoryServiceVersion serviceVersion;
     private final RepositoryHandler repositoryHandler;
     private final ModelDependencyResolution defaultDependencyResolutionOption;
-    private final URI repositoryUri;
+    private final URI repositoryEndpoint;
 
     ModelsRepositoryAsyncClient(
-        URI repositoryUri,
+        URI repositoryEndpoint,
         HttpPipeline pipeline,
         ModelsRepositoryServiceVersion serviceVersion,
         ModelDependencyResolution dependencyResolutionOption) {
@@ -44,24 +44,24 @@ public final class ModelsRepositoryAsyncClient {
         this.serviceVersion = serviceVersion;
 
         this.defaultDependencyResolutionOption = dependencyResolutionOption;
-        this.repositoryUri = repositoryUri;
+        this.repositoryEndpoint = repositoryEndpoint;
 
         ModelsRepositoryAPIImpl protocolLayer = new ModelsRepositoryAPIImplBuilder()
             .apiVersion(this.serviceVersion.toString())
-            .host(repositoryUri.toString())
+            .host(repositoryEndpoint.toString())
             .pipeline(pipeline)
             .serializerAdapter(jacksonAdapter)
             .buildClient();
 
-        this.repositoryHandler = new RepositoryHandler(repositoryUri, protocolLayer);
+        this.repositoryHandler = new RepositoryHandler(repositoryEndpoint, protocolLayer);
     }
 
     /**
-     * Gets the repository uri that the client has been initialized with.
-     * @return The target repository uri.
+     * Gets the repository endpoint that the client has been initialized with.
+     * @return The target repository endpoint.
      */
-    public URI getRepositoryUri() {
-        return this.repositoryUri;
+    public String getRepositoryEndpoint() {
+        return this.repositoryEndpoint.toString();
     }
 
     /**

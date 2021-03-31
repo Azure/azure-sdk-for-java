@@ -110,6 +110,31 @@ class ServiceAPITest extends APISpec {
         fileSystems.each { fileSystem -> fileSystem.delete() }
     }
 
+    def "List file systems maxResults by page"() {
+        setup:
+        def NUM_FILESYSTEMS = 5
+        def PAGE_RESULTS = 3
+        def fileSystemName = generateFileSystemName()
+        def fileSystemPrefix = fileSystemName.substring(0, Math.min(60, fileSystemName.length()))
+
+        def fileSystems = [] as Collection<DataLakeFileSystemClient>
+        for (i in (1..NUM_FILESYSTEMS)) {
+            fileSystems << primaryDataLakeServiceClient.createFileSystem(fileSystemPrefix + i)
+        }
+
+        expect:
+        for (def page : primaryDataLakeServiceClient.listFileSystems(new ListFileSystemsOptions()
+            .setPrefix(fileSystemPrefix)
+            .setMaxResultsPerPage(), null)
+            .iterableByPage(PAGE_RESULTS)) {
+            assert page.getValue().size() <= PAGE_RESULTS
+        }
+
+        cleanup:
+        fileSystems.each { fileSystem -> fileSystem.delete() }
+    }
+
+
     def "List file systems error"() {
         when:
         PagedIterable<FileSystemItem> items =  primaryDataLakeServiceClient.listFileSystems()

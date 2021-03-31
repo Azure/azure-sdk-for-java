@@ -70,6 +70,9 @@ stages:
         MatrixReplace:
           - ${{ each replacement in parameters.MatrixReplace }}:
             - ${{ replacement }}
+          - ${{ if eq(parameters.SDKType, 'data') }}:
+            - TestGoals=.*/verify
+            - TestOptions=.*/-am
           - AZURE_TEST.*=.*/
 
 

@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class WebController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebController.class);
-    private static final String EVENT_HUB_NAME = "eventhub1";
-    private static final String CONSUMER_GROUP = "cg1";
+    private static final String EVENT_HUB_NAME = "event-hub-name";
+    private static final String CONSUMER_GROUP = "$Default";
 
     @Autowired
     EventHubOperation eventHubOperation;

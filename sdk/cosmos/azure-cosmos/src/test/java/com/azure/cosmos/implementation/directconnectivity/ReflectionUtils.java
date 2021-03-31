@@ -69,7 +69,7 @@ public class ReflectionUtils {
 
     @SuppressWarnings("unchecked")
     // Note: @moderakh @kushagraThapar - klass is not used but still casting to T
-    private static <T> T get(Class<T> klass, Object object, String fieldName) {
+    public static <T> T get(Class<T> klass, Object object, String fieldName) {
         try {
             return (T) FieldUtils.readField(object, fieldName, true);
         } catch (IllegalAccessException e) {

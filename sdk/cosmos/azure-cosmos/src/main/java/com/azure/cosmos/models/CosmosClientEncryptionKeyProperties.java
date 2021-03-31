@@ -31,6 +31,14 @@ public final class CosmosClientEncryptionKeyProperties {
         this.clientEncryptionKey = clientEncryptionKey;
     }
 
+    /**
+     * Constructor.
+     *
+     * @param id Unique identifier for the client encryption key.
+     * @param encryptionAlgorithm Encryption algorithm that will be used along with this client encryption key to encrypt/decrypt data.
+     * @param wrappedDataEncryptionKey Wrapped (encrypted) form of the client encryption key.
+     * @param encryptionKeyWrapMetadata Metadata used by the configured key wrapping provider in order to unwrap the key.
+     */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosClientEncryptionKeyProperties(String id,
                                         String encryptionAlgorithm,
@@ -43,33 +51,60 @@ public final class CosmosClientEncryptionKeyProperties {
         this.clientEncryptionKey.setEncryptionKeyWrapMetadata(encryptionKeyWrapMetadata);
     }
 
+    /**
+     * Gets the  encryption algorithm that will be used along with this client encryption key to encrypt/decrypt data.
+     * @return encryptionAlgorithm
+     */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getEncryptionAlgorithm() {
         return this.clientEncryptionKey.getEncryptionAlgorithm();
     }
 
+    /**
+     * Sets the  encryption algorithm that will be used along with this client encryption key to encrypt/decrypt data.
+     * @param encryptionAlgorithm the  encryption algorithm that will be used along with this client encryption key to encrypt/decrypt data.
+     * @return CosmosClientEncryptionKeyProperties
+     */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosClientEncryptionKeyProperties setEncryptionAlgorithm(String encryptionAlgorithm) {
         this.clientEncryptionKey.setEncryptionAlgorithm(encryptionAlgorithm);
         return this;
     }
 
+    /**
+     * Gets the wrapped form of the client encryption key.
+     * @return wrappedDataEncryptionKey
+     */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public byte[] getWrappedDataEncryptionKey() {
         return this.clientEncryptionKey.getWrappedDataEncryptionKey();
     }
 
+    /**
+     * Sets the wrapped form of the client encryption key.
+     * @param wrappedDataEncryptionKey the wrapped form of the client encryption key.
+     * @return CosmosClientEncryptionKeyProperties
+     */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosClientEncryptionKeyProperties setWrappedDataEncryptionKey(byte[] wrappedDataEncryptionKey) {
         this.clientEncryptionKey.setWrappedDataEncryptionKey(wrappedDataEncryptionKey);
         return this;
     }
 
+    /**
+     * Gets the metadata for the wrapping provider that can be used to unwrap the wrapped client encryption key.
+     * @return encryptionKeyWrapMetadata
+     */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public EncryptionKeyWrapMetadata getEncryptionKeyWrapMetadata() {
         return this.clientEncryptionKey.getEncryptionKeyWrapMetadata();
     }
 
+    /**
+     * Sets the  metadata for the wrapping provider that can be used to unwrap the wrapped client encryption key.
+     * @param encryptionKeyWrapMetadata the  metadata for the wrapping provider that can be used to unwrap the wrapped client encryption key.
+     * @return CosmosClientEncryptionKeyProperties
+     */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosClientEncryptionKeyProperties setEncryptionKeyWrapMetadata(EncryptionKeyWrapMetadata encryptionKeyWrapMetadata) {
         this.clientEncryptionKey.setEncryptionKeyWrapMetadata(encryptionKeyWrapMetadata);

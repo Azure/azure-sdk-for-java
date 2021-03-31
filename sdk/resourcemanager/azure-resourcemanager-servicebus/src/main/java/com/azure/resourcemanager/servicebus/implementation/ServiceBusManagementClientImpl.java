@@ -10,9 +10,15 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
+import com.azure.resourcemanager.servicebus.fluent.DisasterRecoveryConfigsClient;
+import com.azure.resourcemanager.servicebus.fluent.EventHubsClient;
+import com.azure.resourcemanager.servicebus.fluent.MigrationConfigsClient;
 import com.azure.resourcemanager.servicebus.fluent.NamespacesClient;
 import com.azure.resourcemanager.servicebus.fluent.OperationsClient;
+import com.azure.resourcemanager.servicebus.fluent.PremiumMessagingRegionsClient;
 import com.azure.resourcemanager.servicebus.fluent.QueuesClient;
+import com.azure.resourcemanager.servicebus.fluent.RegionsClient;
+import com.azure.resourcemanager.servicebus.fluent.RulesClient;
 import com.azure.resourcemanager.servicebus.fluent.ServiceBusManagementClient;
 import com.azure.resourcemanager.servicebus.fluent.SubscriptionsClient;
 import com.azure.resourcemanager.servicebus.fluent.TopicsClient;
@@ -99,18 +105,6 @@ public final class ServiceBusManagementClientImpl extends AzureServiceClient imp
         return this.defaultPollInterval;
     }
 
-    /** The OperationsClient object to access its operations. */
-    private final OperationsClient operations;
-
-    /**
-     * Gets the OperationsClient object to access its operations.
-     *
-     * @return the OperationsClient object.
-     */
-    public OperationsClient getOperations() {
-        return this.operations;
-    }
-
     /** The NamespacesClient object to access its operations. */
     private final NamespacesClient namespaces;
 
@@ -145,6 +139,90 @@ public final class ServiceBusManagementClientImpl extends AzureServiceClient imp
      */
     public TopicsClient getTopics() {
         return this.topics;
+    }
+
+    /** The DisasterRecoveryConfigsClient object to access its operations. */
+    private final DisasterRecoveryConfigsClient disasterRecoveryConfigs;
+
+    /**
+     * Gets the DisasterRecoveryConfigsClient object to access its operations.
+     *
+     * @return the DisasterRecoveryConfigsClient object.
+     */
+    public DisasterRecoveryConfigsClient getDisasterRecoveryConfigs() {
+        return this.disasterRecoveryConfigs;
+    }
+
+    /** The EventHubsClient object to access its operations. */
+    private final EventHubsClient eventHubs;
+
+    /**
+     * Gets the EventHubsClient object to access its operations.
+     *
+     * @return the EventHubsClient object.
+     */
+    public EventHubsClient getEventHubs() {
+        return this.eventHubs;
+    }
+
+    /** The MigrationConfigsClient object to access its operations. */
+    private final MigrationConfigsClient migrationConfigs;
+
+    /**
+     * Gets the MigrationConfigsClient object to access its operations.
+     *
+     * @return the MigrationConfigsClient object.
+     */
+    public MigrationConfigsClient getMigrationConfigs() {
+        return this.migrationConfigs;
+    }
+
+    /** The OperationsClient object to access its operations. */
+    private final OperationsClient operations;
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     *
+     * @return the OperationsClient object.
+     */
+    public OperationsClient getOperations() {
+        return this.operations;
+    }
+
+    /** The PremiumMessagingRegionsClient object to access its operations. */
+    private final PremiumMessagingRegionsClient premiumMessagingRegions;
+
+    /**
+     * Gets the PremiumMessagingRegionsClient object to access its operations.
+     *
+     * @return the PremiumMessagingRegionsClient object.
+     */
+    public PremiumMessagingRegionsClient getPremiumMessagingRegions() {
+        return this.premiumMessagingRegions;
+    }
+
+    /** The RulesClient object to access its operations. */
+    private final RulesClient rules;
+
+    /**
+     * Gets the RulesClient object to access its operations.
+     *
+     * @return the RulesClient object.
+     */
+    public RulesClient getRules() {
+        return this.rules;
+    }
+
+    /** The RegionsClient object to access its operations. */
+    private final RegionsClient regions;
+
+    /**
+     * Gets the RegionsClient object to access its operations.
+     *
+     * @return the RegionsClient object.
+     */
+    public RegionsClient getRegions() {
+        return this.regions;
     }
 
     /** The SubscriptionsClient object to access its operations. */
@@ -183,11 +261,17 @@ public final class ServiceBusManagementClientImpl extends AzureServiceClient imp
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2015-08-01";
-        this.operations = new OperationsClientImpl(this);
+        this.apiVersion = "2017-04-01";
         this.namespaces = new NamespacesClientImpl(this);
         this.queues = new QueuesClientImpl(this);
         this.topics = new TopicsClientImpl(this);
+        this.disasterRecoveryConfigs = new DisasterRecoveryConfigsClientImpl(this);
+        this.eventHubs = new EventHubsClientImpl(this);
+        this.migrationConfigs = new MigrationConfigsClientImpl(this);
+        this.operations = new OperationsClientImpl(this);
+        this.premiumMessagingRegions = new PremiumMessagingRegionsClientImpl(this);
+        this.rules = new RulesClientImpl(this);
+        this.regions = new RegionsClientImpl(this);
         this.subscriptions = new SubscriptionsClientImpl(this);
     }
 }

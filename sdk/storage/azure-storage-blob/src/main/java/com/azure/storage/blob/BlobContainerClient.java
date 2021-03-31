@@ -501,7 +501,8 @@ public final class BlobContainerClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobContainerClient.listBlobs#ListBlobsOptions-Duration}
      *
-     * @param options {@link ListBlobsOptions}
+     * @param options {@link ListBlobsOptions}. If iterating by page, the page size passed to byPage methods such as
+     * {@link PagedIterable#iterableByPage(int)} will be preferred over the value set on these options.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The listed blobs, flattened.
      */
@@ -525,7 +526,8 @@ public final class BlobContainerClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobContainerClient.listBlobs#ListBlobsOptions-String-Duration}
      *
-     * @param options {@link ListBlobsOptions}
+     * @param options {@link ListBlobsOptions}. If iterating by page, the page size passed to byPage methods such as
+     * {@link PagedIterable#iterableByPage(int)} will be preferred over the value set on these options.
      * @param continuationToken Identifies the portion of the list to be returned with the next list operation.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The listed blobs, flattened.
@@ -600,7 +602,8 @@ public final class BlobContainerClient {
      * {@codesnippet com.azure.storage.blob.BlobContainerClient.listBlobsByHierarchy#String-ListBlobsOptions-Duration}
      *
      * @param delimiter The delimiter for blob hierarchy, "/" for hierarchy based on directories
-     * @param options {@link ListBlobsOptions}
+     * @param options {@link ListBlobsOptions}. If iterating by page, the page size passed to byPage methods such as
+     * {@link PagedIterable#iterableByPage(int)} will be preferred over the value set on these options.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return A reactive response emitting the prefixes and blobs.
      */
