@@ -14,6 +14,16 @@
   <artifactId>azure-spring-data-sample-gremlin-web-service</artifactId>
   <name>Azure Spring Data Sample Gremlin - Web Service</name>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core</artifactId>
+        <version>1.14.1</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
