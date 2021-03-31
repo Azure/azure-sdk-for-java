@@ -62,6 +62,7 @@ public class TableServiceAsyncClient {
         try {
             final URI uri = URI.create(url);
             this.accountName = uri.getHost().split("\\.", 2)[0];
+
             logger.verbose("Table Service URI: {}", uri);
         } catch (IllegalArgumentException ex) {
             throw logger.logExceptionAsError(ex);
@@ -73,7 +74,6 @@ public class TableServiceAsyncClient {
             .pipeline(pipeline)
             .version(serviceVersion.getVersion())
             .buildClient();
-
         this.pipeline = implementation.getHttpPipeline();
     }
 
@@ -134,8 +134,8 @@ public class TableServiceAsyncClient {
      *
      * @param tableName The name of the table to create.
      * @return An empty reactive result.
-     * @throws IllegalArgumentException if {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException if a table with the same name already exists within the service.
+     * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
+     * @throws TableServiceErrorException If a table with the same name already exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createTable(String tableName) {
@@ -147,8 +147,8 @@ public class TableServiceAsyncClient {
      *
      * @param tableName The name of the table to create.
      * @return A reactive result containing the HTTP response.
-     * @throws IllegalArgumentException if {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException if a table with the same name already exists within the service.
+     * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
+     * @throws TableServiceErrorException If a table with the same name already exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createTableWithResponse(String tableName) {
@@ -175,7 +175,7 @@ public class TableServiceAsyncClient {
      *
      * @param tableName The name of the table to create.
      * @return An empty reactive result.
-     * @throws IllegalArgumentException if {@code tableName} is {@code null} or empty.
+     * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createTableIfNotExists(String tableName) {
@@ -187,7 +187,7 @@ public class TableServiceAsyncClient {
      *
      * @param tableName The name of the table to create.
      * @return A reactive result containing the HTTP response.
-     * @throws IllegalArgumentException if {@code tableName} is {@code null} or empty.
+     * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createTableIfNotExistsWithResponse(String tableName) {
@@ -210,8 +210,8 @@ public class TableServiceAsyncClient {
      *
      * @param tableName The name of the table to delete.
      * @return An empty reactive result.
-     * @throws IllegalArgumentException if {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException if no table with the provided name exists within the service.
+     * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
+     * @throws TableServiceErrorException If no table with the provided name exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteTable(String tableName) {
@@ -223,8 +223,8 @@ public class TableServiceAsyncClient {
      *
      * @param tableName The name of the table to delete.
      * @return A reactive result containing the HTTP response.
-     * @throws IllegalArgumentException if {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException if no table with the provided name exists within the service.
+     * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
+     * @throws TableServiceErrorException If no table with the provided name exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTableWithResponse(String tableName) {
@@ -257,17 +257,17 @@ public class TableServiceAsyncClient {
     /**
      * Lists tables using the parameters in the provided options.
      *
-     * If the `filter` parameter in the options is set, only tables matching the filter will be returned. If the `top`
+     * If the 'filter' parameter in the options is set, only tables matching the filter will be returned. If the 'top'
      * parameter is set, the number of returned tables will be limited to that value.
      *
-     * @param options The `filter` and `top` OData query options to apply to this operation.
+     * @param options The 'filter' and 'top' OData query options to apply to this operation.
      *
      * @return A paged reactive result containing matching tables within the account.
-     * @throws IllegalArgumentException if one or more of the OData query options in {@code options} is malformed.
+     * @throws IllegalArgumentException If one or more of the OData query options in {@code options} is malformed.
+     * @throws TableServiceErrorException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TableItem> listTables(ListTablesOptions options) {
-
         return new PagedFlux<>(
             () -> withContext(context -> listTablesFirstPage(context, options)),
             token -> withContext(context -> listTablesNextPage(token, context, options)));

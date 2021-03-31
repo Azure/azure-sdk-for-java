@@ -79,30 +79,33 @@ public final class TableAsyncBatch {
      * @param entity The entity to insert.
      *
      * @return The updated {@link TableAsyncBatch}.
-     * @throws IllegalArgumentException if the entity's partition key does not match the partition key provided when
+     *
+     * @throws IllegalArgumentException If the entity's partition key does not match the partition key provided when
      * creating this {@link TableAsyncBatch} object, if the entity's row key is {@code null} or empty, or if another
      * operation with the same row key has already been added to the batch.
-     * @throws IllegalStateException if this method is called after the batch has been submitted.
+     * @throws IllegalStateException If this method is called after the batch has been submitted.
      */
     public TableAsyncBatch createEntity(TableEntity entity) {
         validate(entity);
         addOperation(new BatchOperation.CreateEntity(entity));
+
         return this;
     }
 
     /**
      * Inserts an entity into the table if it does not exist, or merges the entity with the existing entity otherwise.
      *
-     * If no entity exists within the table having the same partition key and row key as the provided entity, it will
-     * be inserted. Otherwise, the provided entity's properties will be merged into the existing entity.
+     * If no entity exists within the table having the same partition key and row key as the provided entity, it will be
+     * inserted. Otherwise, the provided entity's properties will be merged into the existing entity.
      *
      * @param entity The entity to upsert.
      *
      * @return The updated {@link TableAsyncBatch}.
-     * @throws IllegalArgumentException if the entity's partition key does not match the partition key provided when
+     *
+     * @throws IllegalArgumentException If the entity's partition key does not match the partition key provided when
      * creating this {@link TableAsyncBatch} object, if the entity's row key is {@code null} or empty, or if another
      * operation with the same row key has already been added to the batch.
-     * @throws IllegalStateException if this method is called after the batch has been submitted.
+     * @throws IllegalStateException If this method is called after the batch has been submitted.
      */
     public TableAsyncBatch upsertEntity(TableEntity entity) {
         return upsertEntity(entity, UpdateMode.MERGE);
@@ -112,8 +115,8 @@ public final class TableAsyncBatch {
      * Inserts an entity into the table if it does not exist, or updates the existing entity using the specified update
      * mode otherwise.
      *
-     * If no entity exists within the table having the same partition key and row key as the provided entity, it will
-     * be inserted. Otherwise, the existing entity will be updated according to the specified update mode.
+     * If no entity exists within the table having the same partition key and row key as the provided entity, it will be
+     * inserted. Otherwise, the existing entity will be updated according to the specified update mode.
      *
      * When the update mode is 'MERGE', the provided entity's properties will be merged into the existing entity. When
      * the update mode is 'REPLACE', the provided entity's properties will completely replace those in the existing
@@ -123,14 +126,16 @@ public final class TableAsyncBatch {
      * @param updateMode The type of update to perform if the entity already exits.
      *
      * @return The updated {@link TableAsyncBatch}.
-     * @throws IllegalArgumentException if the entity's partition key does not match the partition key provided when
+     *
+     * @throws IllegalArgumentException If the entity's partition key does not match the partition key provided when
      * creating this {@link TableAsyncBatch} object, if the entity's row key is {@code null} or empty, or if another
      * operation with the same row key has already been added to the batch.
-     * @throws IllegalStateException if this method is called after the batch has been submitted.
+     * @throws IllegalStateException If this method is called after the batch has been submitted.
      */
     public TableAsyncBatch upsertEntity(TableEntity entity, UpdateMode updateMode) {
         validate(entity);
         addOperation(new BatchOperation.UpsertEntity(entity, updateMode));
+
         return this;
     }
 
@@ -140,10 +145,11 @@ public final class TableAsyncBatch {
      * @param entity The entity to update.
      *
      * @return The updated {@link TableAsyncBatch}.
-     * @throws IllegalArgumentException if the entity's partition key does not match the partition key provided when
+     *
+     * @throws IllegalArgumentException If the entity's partition key does not match the partition key provided when
      * creating this {@link TableAsyncBatch} object, if the entity's row key is {@code null} or empty, or if another
      * operation with the same row key has already been added to the batch.
-     * @throws IllegalStateException if this method is called after the batch has been submitted.
+     * @throws IllegalStateException If this method is called after the batch has been submitted.
      */
     public TableAsyncBatch updateEntity(TableEntity entity) {
         return updateEntity(entity, UpdateMode.MERGE);
@@ -160,10 +166,11 @@ public final class TableAsyncBatch {
      * @param updateMode The type of update to perform.
      *
      * @return The updated {@link TableAsyncBatch}.
-     * @throws IllegalArgumentException if the entity's partition key does not match the partition key provided when
+     *
+     * @throws IllegalArgumentException If the entity's partition key does not match the partition key provided when
      * creating this {@link TableAsyncBatch} object, if the entity's row key is {@code null} or empty, or if another
      * operation with the same row key has already been added to the batch.
-     * @throws IllegalStateException if this method is called after the batch has been submitted.
+     * @throws IllegalStateException If this method is called after the batch has been submitted.
      */
     public TableAsyncBatch updateEntity(TableEntity entity, UpdateMode updateMode) {
         return updateEntity(entity, updateMode, false);
@@ -182,14 +189,16 @@ public final class TableAsyncBatch {
      * service. If the values do not match, the update will not occur and an exception will be thrown.
      *
      * @return The updated {@link TableAsyncBatch}.
-     * @throws IllegalArgumentException if the entity's partition key does not match the partition key provided when
+     *
+     * @throws IllegalArgumentException If the entity's partition key does not match the partition key provided when
      * creating this {@link TableAsyncBatch} object, if the entity's row key is {@code null} or empty, or if another
      * operation with the same row key has already been added to the batch.
-     * @throws IllegalStateException if this method is called after the batch has been submitted.
+     * @throws IllegalStateException If this method is called after the batch has been submitted.
      */
     public TableAsyncBatch updateEntity(TableEntity entity, UpdateMode updateMode, boolean ifUnchanged) {
         validate(entity);
         addOperation(new BatchOperation.UpdateEntity(entity, updateMode, ifUnchanged));
+
         return this;
     }
 
@@ -199,9 +208,10 @@ public final class TableAsyncBatch {
      * @param rowKey The row key of the entity.
      *
      * @return The updated {@link TableAsyncBatch}.
-     * @throws IllegalArgumentException if the provided row key is {@code null} or empty, or if another operation with
+     *
+     * @throws IllegalArgumentException If the provided row key is {@code null} or empty, or if another operation with
      * the same row key has already been added to the batch.
-     * @throws IllegalStateException if this method is called after the batch has been submitted.
+     * @throws IllegalStateException If this method is called after the batch has been submitted.
      */
     public TableAsyncBatch deleteEntity(String rowKey) {
         return deleteEntity(rowKey, "*");
@@ -215,13 +225,15 @@ public final class TableAsyncBatch {
      * the delete will not occur and an exception will be thrown.
      *
      * @return The updated {@link TableAsyncBatch}.
-     * @throws IllegalArgumentException if the provided row key is {@code null} or empty, or if another operation with
+     *
+     * @throws IllegalArgumentException If the provided row key is {@code null} or empty, or if another operation with
      * the same row key has already been added to the batch.
-     * @throws IllegalStateException if this method is called after the batch has been submitted.
+     * @throws IllegalStateException If this method is called after the batch has been submitted.
      */
     public TableAsyncBatch deleteEntity(String rowKey, String eTag) {
         validate(partitionKey, rowKey);
         addOperation(new BatchOperation.DeleteEntity(partitionKey, rowKey, eTag));
+
         return this;
     }
 
@@ -239,9 +251,10 @@ public final class TableAsyncBatch {
      * the batch will succeed, or if a failure occurs, all operations in the batch will be rolled back.
      *
      * @return A reactive result containing a list of sub-responses for each operation in the batch.
+     *
+     * @throws IllegalStateException If no operations have been added to the batch.
      * @throws TableServiceErrorException if any operation within the batch fails. See the documentation for the client
      * methods in {@link TableAsyncClient} to understand the conditions that may cause a given operation to fail.
-     * @throws IllegalStateException if no operations have been added to the batch.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public synchronized Mono<List<BatchOperationResponse>> submitTransaction() {
@@ -254,9 +267,10 @@ public final class TableAsyncBatch {
      *
      * @return A reactive result containing the HTTP response produced for the batch itself. The response's value will
      * contain a list of sub-responses for each operation in the batch.
+     *
+     * @throws IllegalStateException If no operations have been added to the batch.
      * @throws TableServiceErrorException if any operation within the batch fails. See the documentation for the client
      * methods in {@link TableAsyncClient} to understand the conditions that may cause a given operation to fail.
-     * @throws IllegalStateException if no operations have been added to the batch.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public synchronized Mono<Response<List<BatchOperationResponse>>> submitTransactionWithResponse() {
@@ -311,6 +325,7 @@ public final class TableAsyncBatch {
                         && error.getOdataError().getMessage().getValue() != null) {
 
                         String message = error.getOdataError().getMessage().getValue();
+
                         try {
                             int failedIndex = Integer.parseInt(message.substring(0, message.indexOf(":")));
                             failedOperation = changes.getContents().get(failedIndex).getOperation();
@@ -333,6 +348,7 @@ public final class TableAsyncBatch {
 
         if (error != null || errorMessage != null) {
             String message = "An operation within the batch failed, the transaction has been rolled back.";
+
             if (failedOperation != null) {
                 message += " The failed operation was: " + failedOperation.toString();
             } else if (errorMessage != null) {
