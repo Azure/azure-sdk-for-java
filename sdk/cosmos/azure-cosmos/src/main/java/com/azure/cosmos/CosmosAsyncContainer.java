@@ -426,14 +426,22 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Initializes the container by warming up the caches and connections.
-     * <br>The execution of this method is expected to result in some RU charges to your account.
+     * Initializes the container by warming up the caches and connections for the current read region.
+     *
+     * <p><br>The execution of this method is expected to result in some RU charges to your account.
      * The number of RU consumed by this request varies, depending on data consistency, size of the overall data in the container,
      * item indexing, number of projections. For more information regarding RU considerations please visit
      * <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/request-units#request-unit-considerations">https://docs.microsoft.com/en-us/azure/cosmos-db/request-units#request-unit-considerations</a>.
+     * </p>
+     *
+     * <p>
+     * <br>NOTE: This API ideally should be called only once during application initialization before any workload.
+     * <br>In case of any transient error, caller should consume the error and continue the regular workload.
+     * </p>
+     *
      * @return Mono of Void
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<Void> openConnectionsAndInitCaches() {
         if(isInitialized.compareAndSet(false, true)) {
             return this.getFeedRanges().flatMap(feedRanges -> {
