@@ -29,6 +29,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
+import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -195,7 +196,7 @@ public final class ConfigurationClientBuilder {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
         }
-
+        policies.add(new SyncTokenPolicy());
         policies.addAll(perRetryPolicies);
 
         if (clientOptions != null) {
