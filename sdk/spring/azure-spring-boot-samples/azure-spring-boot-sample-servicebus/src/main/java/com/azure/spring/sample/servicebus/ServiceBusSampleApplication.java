@@ -52,7 +52,7 @@ public class ServiceBusSampleApplication implements CommandLineRunner {
         final String messageBody = "queue message";
 
         queueSender.sendMessage(new ServiceBusMessage(BinaryData.fromBytes(messageBody.getBytes(UTF_8)))).subscribe(
-            v -> LOGGER.info("Sent message: " + messageBody),
+            v -> LOGGER.info("Sent message: {}", messageBody),
             e -> LOGGER.error("Error occurred while sending message", e),
             () -> LOGGER.info("Send message to queue complete.")
         );
@@ -64,7 +64,7 @@ public class ServiceBusSampleApplication implements CommandLineRunner {
 
     private void receiveQueueMessage() throws InterruptedException {
         queueReceiver.receiveMessages().subscribe(message ->
-            LOGGER.info("Received Message: " + message.getBody().toString()));
+            LOGGER.info("Received Message: {}", message.getBody().toString()));
 
         TimeUnit.SECONDS.sleep(5);
 
@@ -75,7 +75,7 @@ public class ServiceBusSampleApplication implements CommandLineRunner {
         final String messageBody = "topic message";
 
         topicSender.sendMessage(new ServiceBusMessage(BinaryData.fromBytes(messageBody.getBytes(UTF_8)))).subscribe(
-            v -> LOGGER.info("Sent message: " + messageBody),
+            v -> LOGGER.info("Sent message: {}", messageBody),
             e -> LOGGER.error("Error occurred while sending message", e),
             () -> LOGGER.info("Send message to topic complete.")
         );
@@ -87,7 +87,7 @@ public class ServiceBusSampleApplication implements CommandLineRunner {
 
     private void receiveSubscriptionMessage() throws InterruptedException {
         topicSubscriber.receiveMessages().subscribe(message ->
-            LOGGER.info("Received Message: " + message.getBody().toString()));
+            LOGGER.info("Received Message: {}", message.getBody().toString()));
 
         TimeUnit.SECONDS.sleep(10);
 
