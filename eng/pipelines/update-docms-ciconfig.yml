@@ -1,29 +1,29 @@
 jobs:
   - job: UpdateDocMsCIConfig
-  pool:
+    pool:
       vmImage: windows-2019
-  steps:
-  - pwsh: |
-    git clone https://github.com/Azure/azure-docs-sdk-java $(Pipeline.Workspace)/repo
-    displayName: Clone Documentation Repository
-    ignoreLASTEXITCODE: false
-  - task: PowerShell@2
-    displayName: 'Update Docs.MS CI Targeted Packages'
-    inputs:
-      targetType: filePath
-      filePath: eng/scripts/update-docs-ci.ps1
-      arguments: >
-        -DocRepoLocation $(Pipeline.Workspace)/repo
-        -Configs $(CIConfigs)
-      pwsh: true
-    env:
-      GH_TOKEN: $(azuresdk-github-pat)
-  - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
-    parameters:
-      BaseRepoBranch: 'a-test-branch'
-      BaseRepoOwner: 'Azure'
-      CommitMsg: "Update targeting packages based on release csv."
-      TargetRepoName: 'a-test-branch'
-      TargetRepoOwner: 'Azure'
-      WorkingDirectory: $(Pipeline.Workspace)/repo
-      ScriptDirectory: $(Pipeline.Workspace)/eng/common/scripts
+    steps:
+    - pwsh: |
+      git clone https://github.com/Azure/azure-docs-sdk-java $(Pipeline.Workspace)/repo
+      displayName: Clone Documentation Repository
+      ignoreLASTEXITCODE: false
+    - task: PowerShell@2
+      displayName: 'Update Docs.MS CI Targeted Packages'
+      inputs:
+        targetType: filePath
+        filePath: eng/scripts/update-docs-ci.ps1
+        arguments: >
+          -DocRepoLocation $(Pipeline.Workspace)/repo
+          -Configs $(CIConfigs)
+        pwsh: true
+      env:
+        GH_TOKEN: $(azuresdk-github-pat)
+    - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
+      parameters:
+        BaseRepoBranch: 'a-test-branch'
+        BaseRepoOwner: 'Azure'
+        CommitMsg: "Update targeting packages based on release csv."
+        TargetRepoName: 'a-test-branch'
+        TargetRepoOwner: 'Azure'
+        WorkingDirectory: $(Pipeline.Workspace)/repo
+        ScriptDirectory: $(Pipeline.Workspace)/eng/common/scripts
