@@ -33,15 +33,17 @@ public final class TableUtils {
         String languageCode = null;
         String errorMessage = null;
 
-        final TableServiceErrorOdataError odataError = tableServiceError.getOdataError();
+        if (tableServiceError != null) {
+            final TableServiceErrorOdataError odataError = tableServiceError.getOdataError();
 
-        if (odataError != null) {
-            errorCode = odataError.getCode();
-            TableServiceErrorOdataErrorMessage odataErrorMessage = odataError.getMessage();
+            if (odataError != null) {
+                errorCode = odataError.getCode();
+                TableServiceErrorOdataErrorMessage odataErrorMessage = odataError.getMessage();
 
-            if (odataErrorMessage != null) {
-                languageCode = odataErrorMessage.getLang();
-                errorMessage = odataErrorMessage.getValue();
+                if (odataErrorMessage != null) {
+                    languageCode = odataErrorMessage.getLang();
+                    errorMessage = odataErrorMessage.getValue();
+                }
             }
         }
 
