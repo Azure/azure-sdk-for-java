@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.microsoft.azure.eventhubs;
+package com.azure.spring.test.eventhubs;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
