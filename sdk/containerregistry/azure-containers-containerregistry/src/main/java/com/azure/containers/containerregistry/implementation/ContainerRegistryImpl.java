@@ -141,7 +141,7 @@ public final class ContainerRegistryImpl {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint Registry login endpoint.
      */
-    ContainerRegistryImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
+    public ContainerRegistryImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;

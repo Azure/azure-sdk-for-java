@@ -70,6 +70,30 @@ class FilterAnalyzerSpec extends UnitSpec {
     query.parameterValues should contain theSameElementsInOrderAs List("خوارزمی")
   }
 
+  "nested filter" should "be translated to nested cosmos json filter" in {
+    val filterProcessor = FilterAnalyzer()
+
+    val filters = Array[Filter](
+      EqualTo("mathematician", "خوارزمی"),
+      EqualTo("mathematician.book", "Algorithmo de Numero Indorum"),
+      In("mathematician.work", Array("Algebra", "Algorithm")))
+
+    val analyzedQuery = filterProcessor.analyze(filters)
+    analyzedQuery.filtersNotSupportedByCosmos shouldBe empty
+    analyzedQuery.filtersToBePushedDownToCosmos should contain theSameElementsInOrderAs filters
+
+    val query = analyzedQuery.cosmosParametrizedQuery
+    query.queryTest shouldEqual "SELECT * FROM r WHERE r['mathematician']=@param0" +
+      " AND r['mathematician']['book']=@param1" +
+      " AND r['mathematician']['work'] IN (@param2,@param3)"
+    query.parameterNames should contain theSameElementsInOrderAs List("@param0", "@param1", "@param2", "@param3")
+    query.parameterValues should contain theSameElementsInOrderAs
+      List("خوارزمی",
+      "Algorithmo de Numero Indorum",
+      "Algebra",
+      "Algorithm")
+  }
+
   "no filter" should "be translated to cosmos query with no where clause" in {
     val filterProcessor = FilterAnalyzer()
 

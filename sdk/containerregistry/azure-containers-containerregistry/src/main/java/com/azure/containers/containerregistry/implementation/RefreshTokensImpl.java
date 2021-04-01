@@ -4,9 +4,9 @@
 
 package com.azure.containers.containerregistry.implementation;
 
-import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.containers.containerregistry.implementation.models.Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema;
 import com.azure.containers.containerregistry.implementation.models.RefreshToken;
+import com.azure.containers.containerregistry.models.AcrErrorsException;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;

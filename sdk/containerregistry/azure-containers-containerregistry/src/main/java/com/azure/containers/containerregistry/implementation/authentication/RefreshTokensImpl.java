@@ -63,14 +63,14 @@ public final class RefreshTokensImpl {
      */
     @Host("{url}")
     @ServiceInterface(name = "ContainerRegistryCon")
-    private interface RefreshTokenService {
+    public interface RefreshTokenService {
         // @Multipart not supported by RestProxy
         @Post("/oauth2/exchange")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
         Mono<Response<AcrRefreshToken>> getRefreshToken(
             @HostParam("url") String url,
-            @FormParam(value = "grant-type", encoded = true) String grantType,
+            @FormParam(value = "grant_type", encoded = true) String grantType,
             @FormParam(value = "service", encoded = true) String service,
             @FormParam(value = "access_token", encoded = true) String accessToken,
             @FormParam(value = "tenant", encoded = true) String tenant,
