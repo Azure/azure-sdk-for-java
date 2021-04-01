@@ -24,7 +24,7 @@ jobs:
         filePath: eng/scripts/update-docs-ci.ps1
         arguments: >
           -DocRepoLocation $(Build.SourcesDirectory)/repo
-          -Configs $(CIConfigs)
+          -Configs "{'targets':[{'path_to_config':'package.json','mode':'Preview','monikerid':'1','content_folder':'docs-ref-services/preview'},{'path_to_config':'package.json','mode':'Latest','monikerid':'0','content_folder':'docs-ref-services/latest'}]}"
         pwsh: true
       env:
         GH_TOKEN: $(azuresdk-github-pat)
