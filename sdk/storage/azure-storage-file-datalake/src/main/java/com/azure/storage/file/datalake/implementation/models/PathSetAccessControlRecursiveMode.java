@@ -7,28 +7,18 @@ package com.azure.storage.file.datalake.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for PathSetAccessControlRecursiveMode.
- */
+/** Defines values for PathSetAccessControlRecursiveMode. */
 public enum PathSetAccessControlRecursiveMode {
-    /**
-     * Enum value set.
-     */
+    /** Enum value set. */
     SET("set"),
 
-    /**
-     * Enum value modify.
-     */
+    /** Enum value modify. */
     MODIFY("modify"),
 
-    /**
-     * Enum value remove.
-     */
+    /** Enum value remove. */
     REMOVE("remove");
 
-    /**
-     * The actual serialized value for a PathSetAccessControlRecursiveMode instance.
-     */
+    /** The actual serialized value for a PathSetAccessControlRecursiveMode instance. */
     private final String value;
 
     PathSetAccessControlRecursiveMode(String value) {

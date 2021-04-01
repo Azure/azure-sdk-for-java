@@ -82,7 +82,7 @@ public class Authentication {
 
     private static void beginRecognizeCustomFormsFromUrl(FormRecognizerClient formRecognizerClient) {
         String receiptUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer"
-            + "/azure-ai-formrecognizer/src/samples/java/sample-forms/receipts/contoso-allinone.jpg";
+            + "/azure-ai-formrecognizer/src/samples/resources/java/sample-forms/receipts/contoso-allinone.jpg";
 
         SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> recognizeReceiptPoller =
             formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl);

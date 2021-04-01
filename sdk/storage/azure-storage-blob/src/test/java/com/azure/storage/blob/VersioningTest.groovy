@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.util.BinaryData
 import com.azure.core.util.Context
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobListDetails
@@ -88,6 +89,40 @@ class VersioningTest extends APISpec {
         then:
         outputV1.toByteArray() == contentV1.getBytes(StandardCharsets.UTF_8)
         outputV2.toByteArray() == contentV2.getBytes(StandardCharsets.UTF_8)
+    }
+
+    def "Download Blob by Version Streaming"() {
+        given:
+        def inputV1 = new ByteArrayInputStream(contentV1.getBytes(StandardCharsets.UTF_8))
+        def inputV2 = new ByteArrayInputStream(contentV2.getBytes(StandardCharsets.UTF_8))
+        def blobItemV1 = blobClient.getBlockBlobClient().upload(inputV1, inputV1.available())
+        def blobItemV2 = blobClient.getBlockBlobClient().upload(inputV2, inputV2.available(), true)
+
+        when:
+        def outputV1 = new ByteArrayOutputStream()
+        def outputV2 = new ByteArrayOutputStream()
+        blobClient.getVersionClient(blobItemV1.getVersionId()).downloadStream(outputV1)
+        blobClient.getVersionClient(blobItemV2.getVersionId()).downloadStream(outputV2)
+
+        then:
+        outputV1.toByteArray() == contentV1.getBytes(StandardCharsets.UTF_8)
+        outputV2.toByteArray() == contentV2.getBytes(StandardCharsets.UTF_8)
+    }
+
+    def "Download Blob by Version Binary Data"() {
+        given:
+        def inputV1 = new ByteArrayInputStream(contentV1.getBytes(StandardCharsets.UTF_8))
+        def inputV2 = new ByteArrayInputStream(contentV2.getBytes(StandardCharsets.UTF_8))
+        def blobItemV1 = blobClient.getBlockBlobClient().upload(inputV1, inputV1.available())
+        def blobItemV2 = blobClient.getBlockBlobClient().upload(inputV2, inputV2.available(), true)
+
+        when:
+        def outputV1 = blobClient.getVersionClient(blobItemV1.getVersionId()).downloadContent()
+        def outputV2 = blobClient.getVersionClient(blobItemV2.getVersionId()).downloadContent()
+
+        then:
+        outputV1.toString() == contentV1
+        outputV2.toString() == contentV2
     }
 
     def "Delete Blob by Version"() {

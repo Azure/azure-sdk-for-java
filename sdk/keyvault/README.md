@@ -106,7 +106,7 @@ To get the binaries of this library as distributed by Microsoft, ready for use w
 Clone the repo, then run `mvn compile` from the root directory.
 
 To run the recorded tests:
-1. If you have not already, you need to install the [Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files](https://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html) package.
+1. If you have not already, you need to install the [Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files](https://www.oracle.com/java/technologies/javase-jce8-downloads.html) package.
 2. run `mvn jetty:run` to start a jetty server. This starts a service that will block the terminal so you will likely want to open a second terminal to run the actual tests.
 3. In your second terminal run `mvn test`.
 

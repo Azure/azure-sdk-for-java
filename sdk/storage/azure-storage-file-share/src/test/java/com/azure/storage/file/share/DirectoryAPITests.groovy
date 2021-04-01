@@ -410,6 +410,35 @@ class DirectoryAPITests extends APISpec {
         "noOp"                                         | 3          | 0
     }
 
+    def "List max results by page"() {
+        given:
+        primaryDirectoryClient.create()
+        def nameList = new LinkedList()
+        def dirPrefix = testResourceName.randomName(methodName, 60)
+        for (int i = 0; i < 2; i++) {
+            def subDirClient = primaryDirectoryClient.getSubdirectoryClient(dirPrefix + i)
+            subDirClient.create()
+            for (int j = 0; j < 2; j++) {
+                def num = i * 2 + j + 3
+                subDirClient.createFile(dirPrefix + num, 1024)
+            }
+        }
+        primaryDirectoryClient.createFile(dirPrefix + 2, 1024)
+        for (int i = 0; i < 3; i++) {
+            nameList.add(dirPrefix + i)
+        }
+
+        when:
+        def fileRefIter = primaryDirectoryClient
+            .listFilesAndDirectories("directoryapitestslistmaxresultsbypage", null, null, null)
+            .iterableByPage(1).iterator()
+
+        then:
+        for (def page : fileRefIter) {
+            assert page.value.size() == 1
+        }
+    }
+
     @Unroll
     def "List handles"() {
         given:

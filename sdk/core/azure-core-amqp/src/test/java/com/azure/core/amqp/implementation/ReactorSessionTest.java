@@ -84,10 +84,11 @@ public class ReactorSessionTest {
     private TokenManagerProvider tokenManagerProvider;
 
     private Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
+    private AutoCloseable mocksCloseable;
 
     @BeforeEach
     public void setup() throws IOException {
-        MockitoAnnotations.initMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
 
         this.handler = new SessionHandler(ID, HOST, ENTITY_PATH, reactorDispatcher, Duration.ofSeconds(60));
         this.cbsNodeSupplier = Mono.just(cbsNode);
@@ -111,8 +112,12 @@ public class ReactorSessionTest {
     }
 
     @AfterEach
-    public void teardown() {
+    public void teardown() throws Exception {
         Mockito.framework().clearInlineMocks();
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     @Test
@@ -136,7 +141,7 @@ public class ReactorSessionTest {
             .then(() -> handler.close())
             .expectNext(AmqpEndpointState.CLOSED)
             .expectComplete()
-            .verify(Duration.ofSeconds(10));
+            .verify();
     }
 
     @Test

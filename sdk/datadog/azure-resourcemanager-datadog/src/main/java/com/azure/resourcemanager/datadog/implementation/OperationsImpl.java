@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datadog.implementation;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.datadog.MicrosoftDatadogManager;
 import com.azure.resourcemanager.datadog.fluent.OperationsClient;
 import com.azure.resourcemanager.datadog.fluent.models.OperationResultInner;
 import com.azure.resourcemanager.datadog.models.OperationResult;
@@ -19,9 +18,10 @@ public final class OperationsImpl implements Operations {
 
     private final OperationsClient innerClient;
 
-    private final MicrosoftDatadogManager serviceManager;
+    private final com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager;
 
-    public OperationsImpl(OperationsClient innerClient, MicrosoftDatadogManager serviceManager) {
+    public OperationsImpl(
+        OperationsClient innerClient, com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -40,7 +40,7 @@ public final class OperationsImpl implements Operations {
         return this.innerClient;
     }
 
-    private MicrosoftDatadogManager manager() {
+    private com.azure.resourcemanager.datadog.MicrosoftDatadogManager manager() {
         return this.serviceManager;
     }
 }

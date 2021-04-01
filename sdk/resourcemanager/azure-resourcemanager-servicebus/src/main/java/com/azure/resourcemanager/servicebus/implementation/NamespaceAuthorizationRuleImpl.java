@@ -3,12 +3,11 @@
 
 package com.azure.resourcemanager.servicebus.implementation;
 
-import com.azure.core.management.Region;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
-import com.azure.resourcemanager.servicebus.fluent.models.ResourceListKeysInner;
-import com.azure.resourcemanager.servicebus.fluent.models.SharedAccessAuthorizationRuleResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.AccessKeysInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
 import com.azure.resourcemanager.servicebus.models.NamespaceAuthorizationRule;
-import com.azure.resourcemanager.servicebus.models.Policykey;
+import com.azure.resourcemanager.servicebus.models.RegenerateAccessKeyParameters;
 import reactor.core.publisher.Mono;
 
 /**
@@ -16,27 +15,21 @@ import reactor.core.publisher.Mono;
  */
 class NamespaceAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<NamespaceAuthorizationRule,
     ServiceBusNamespaceImpl,
-    SharedAccessAuthorizationRuleResourceInner,
+    SBAuthorizationRuleInner,
     NamespaceAuthorizationRuleImpl,
     ServiceBusManager>
     implements
         NamespaceAuthorizationRule,
         NamespaceAuthorizationRule.Definition,
         NamespaceAuthorizationRule.Update {
-    private final Region region;
 
     NamespaceAuthorizationRuleImpl(String resourceGroupName,
                                    String namespaceName,
                                    String name,
-                                   Region region,
-                                   SharedAccessAuthorizationRuleResourceInner inner,
+                                   SBAuthorizationRuleInner inner,
                                    ServiceBusManager manager) {
         super(name, inner, manager);
-        this.region = region;
         this.withExistingParentResource(resourceGroupName, namespaceName);
-        if (inner.location() == null) {
-            inner.withLocation(this.region.toString());
-        }
     }
 
     @Override
@@ -45,7 +38,7 @@ class NamespaceAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<Namespace
     }
 
     @Override
-    protected Mono<SharedAccessAuthorizationRuleResourceInner> getInnerAsync() {
+    protected Mono<SBAuthorizationRuleInner> getInnerAsync() {
         return this.manager().serviceClient().getNamespaces()
                 .getAuthorizationRuleAsync(this.resourceGroupName(),
                         this.namespaceName(),
@@ -60,7 +53,7 @@ class NamespaceAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<Namespace
                 this.resourceGroupName(),
                 this.namespaceName(),
                 this.name(),
-                prepareForCreate(this.innerModel()))
+                this.innerModel().rights())
             .map(inner -> {
                 setInner(inner);
                 return self;
@@ -68,7 +61,7 @@ class NamespaceAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<Namespace
     }
 
     @Override
-    protected Mono<ResourceListKeysInner> getKeysInnerAsync() {
+    protected Mono<AccessKeysInner> getKeysInnerAsync() {
         return this.manager().serviceClient().getNamespaces()
                 .listKeysAsync(this.resourceGroupName(),
                         this.namespaceName(),
@@ -76,11 +69,11 @@ class NamespaceAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<Namespace
     }
 
     @Override
-    protected Mono<ResourceListKeysInner> regenerateKeysInnerAsync(Policykey policykey) {
+    protected Mono<AccessKeysInner> regenerateKeysInnerAsync(RegenerateAccessKeyParameters regenerateAccessKeyParameters) {
         return this.manager().serviceClient().getNamespaces()
                 .regenerateKeysAsync(this.resourceGroupName(),
-                        this.namespaceName(),
-                        this.name(),
-                        policykey);
+                    this.namespaceName(),
+                    this.name(),
+                    regenerateAccessKeyParameters);
     }
 }

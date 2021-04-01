@@ -4,6 +4,7 @@ package com.azure.core.tracing.opentelemetry.implementation;
 
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.StatusCode;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -18,9 +19,16 @@ public class AmqpTraceUtilTest {
     @Mock
     private Span parentSpan;
 
+    private AutoCloseable openMocks;
+
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        this.openMocks = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        this.openMocks.close();
     }
 
     @Test

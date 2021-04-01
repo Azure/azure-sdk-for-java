@@ -279,8 +279,6 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             if (item.has(PROPTYPE)) {
                 propType = item.getString(PROPTYPE);
             }
-            System.out.println("item.get(PROPTYPE) = " + item.get(PROPTYPE));
-            System.out.println("propType = " + propType);
             if (!observedTypes.contains(propType)) {
                 observedTypes.add(propType);
             } else {

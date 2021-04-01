@@ -16,6 +16,68 @@ import com.azure.resourcemanager.storagecache.fluent.models.StorageTargetInner;
 /** An instance of this class provides access to all the operations defined in StorageTargetsClient. */
 public interface StorageTargetsClient {
     /**
+     * Tells a storage target to refresh its DNS information.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginDnsRefresh(
+        String resourceGroupName, String cacheName, String storageTargetName);
+
+    /**
+     * Tells a storage target to refresh its DNS information.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginDnsRefresh(
+        String resourceGroupName, String cacheName, String storageTargetName, Context context);
+
+    /**
+     * Tells a storage target to refresh its DNS information.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void dnsRefresh(String resourceGroupName, String cacheName, String storageTargetName);
+
+    /**
+     * Tells a storage target to refresh its DNS information.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void dnsRefresh(String resourceGroupName, String cacheName, String storageTargetName, Context context);
+
+    /**
      * Returns a list of Storage Targets for the specified Cache.
      *
      * @param resourceGroupName Target resource group.
@@ -124,8 +186,7 @@ public interface StorageTargetsClient {
      * @param resourceGroupName Target resource group.
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of the Storage Target. Length of name must not be greater than 80 and chars must be
-     *     from the [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -140,8 +201,7 @@ public interface StorageTargetsClient {
      * @param resourceGroupName Target resource group.
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of the Storage Target. Length of name must not be greater than 80 and chars must be
-     *     from the [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -159,8 +219,7 @@ public interface StorageTargetsClient {
      * @param resourceGroupName Target resource group.
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of the Storage Target. Length of name must not be greater than 80 and chars must be
-     *     from the [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
      * @param storagetarget Object containing the definition of a Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -178,8 +237,7 @@ public interface StorageTargetsClient {
      * @param resourceGroupName Target resource group.
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of the Storage Target. Length of name must not be greater than 80 and chars must be
-     *     from the [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
      * @param storagetarget Object containing the definition of a Storage Target.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -202,8 +260,7 @@ public interface StorageTargetsClient {
      * @param resourceGroupName Target resource group.
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of the Storage Target. Length of name must not be greater than 80 and chars must be
-     *     from the [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
      * @param storagetarget Object containing the definition of a Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -221,8 +278,7 @@ public interface StorageTargetsClient {
      * @param resourceGroupName Target resource group.
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of the Storage Target. Length of name must not be greater than 80 and chars must be
-     *     from the [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -238,8 +294,7 @@ public interface StorageTargetsClient {
      * @param resourceGroupName Target resource group.
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of the Storage Target. Length of name must not be greater than 80 and chars must be
-     *     from the [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
      * @param storagetarget Object containing the definition of a Storage Target.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

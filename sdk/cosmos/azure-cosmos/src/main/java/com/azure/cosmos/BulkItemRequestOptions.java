@@ -3,7 +3,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.util.Beta;
 
 /**
@@ -11,21 +10,8 @@ import com.azure.cosmos.util.Beta;
  * creating bulk request using {@link BulkOperations}.
  */
 @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public final class BulkItemRequestOptions {
-
-    private String ifMatchETag;
-    private String ifNoneMatchETag;
-    private Boolean contentResponseOnWriteEnabled;
-
-    /**
-     * Gets the If-Match (ETag) associated with the operation in {@link CosmosItemOperation}.
-     *
-     * @return ifMatchETag the ifMatchETag associated with the request.
-     */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public String getIfMatchETag() {
-        return this.ifMatchETag;
-    }
+public final class BulkItemRequestOptions
+        extends BulkItemRequestOptionsBase {
 
     /**
      * Sets the If-Match (ETag) associated with the operation in {@link CosmosItemOperation}.
@@ -35,18 +21,8 @@ public final class BulkItemRequestOptions {
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkItemRequestOptions setIfMatchETag(final String ifMatchETag) {
-        this.ifMatchETag = ifMatchETag;
+        super.setIfMatchETagCore(ifMatchETag);
         return this;
-    }
-
-    /**
-     * Gets the If-None-Match (ETag) associated with the request in operation in {@link CosmosItemOperation}.
-     *
-     * @return the ifNoneMatchETag associated with the request.
-     */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public String getIfNoneMatchETag() {
-        return this.ifNoneMatchETag;
     }
 
     /**
@@ -57,26 +33,8 @@ public final class BulkItemRequestOptions {
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
-        this.ifNoneMatchETag = ifNoneMatchEtag;
+        super.setIfNoneMatchETagCore(ifNoneMatchEtag);
         return this;
-    }
-
-    /**
-     * Gets the boolean to only return the headers and status code in Cosmos DB response
-     * in case of Create, Update and Delete operations in {@link CosmosItemOperation}.
-     *
-     * If set to false, service doesn't return payload in the response. It reduces networking
-     * and CPU load by not sending the payload back over the network and serializing it on the client.
-     *
-     * This feature does not impact RU usage for read or write operations.
-     *
-     * By-default, this is null.
-     *
-     * @return a boolean indicating whether payload will be included in the response or not for this operation.
-     */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public Boolean isContentResponseOnWriteEnabled() {
-        return contentResponseOnWriteEnabled;
     }
 
     /**
@@ -100,15 +58,7 @@ public final class BulkItemRequestOptions {
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkItemRequestOptions setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
-        this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
+        super.setContentResponseOnWriteEnabledCore(contentResponseOnWriteEnabled);
         return this;
-    }
-
-    RequestOptions toRequestOptions() {
-        final RequestOptions requestOptions = new RequestOptions();
-        requestOptions.setIfMatchETag(getIfMatchETag());
-        requestOptions.setIfNoneMatchETag(getIfNoneMatchETag());
-        requestOptions.setContentResponseOnWriteEnabled(isContentResponseOnWriteEnabled());
-        return requestOptions;
     }
 }

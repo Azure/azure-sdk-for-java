@@ -4,8 +4,8 @@
 
 package com.azure.resourcemanager.datadog.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.datadog.MicrosoftDatadogManager;
 import com.azure.resourcemanager.datadog.fluent.models.MonitoringTagRulesInner;
 import com.azure.resourcemanager.datadog.models.MonitoringTagRules;
 import com.azure.resourcemanager.datadog.models.MonitoringTagRulesProperties;
@@ -14,7 +14,7 @@ public final class MonitoringTagRulesImpl
     implements MonitoringTagRules, MonitoringTagRules.Definition, MonitoringTagRules.Update {
     private MonitoringTagRulesInner innerObject;
 
-    private final MicrosoftDatadogManager serviceManager;
+    private final com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -32,11 +32,15 @@ public final class MonitoringTagRulesImpl
         return this.innerModel().properties();
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public MonitoringTagRulesInner innerModel() {
         return this.innerObject;
     }
 
-    private MicrosoftDatadogManager manager() {
+    private com.azure.resourcemanager.datadog.MicrosoftDatadogManager manager() {
         return this.serviceManager;
     }
 
@@ -73,7 +77,7 @@ public final class MonitoringTagRulesImpl
         return this;
     }
 
-    MonitoringTagRulesImpl(String name, MicrosoftDatadogManager serviceManager) {
+    MonitoringTagRulesImpl(String name, com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = new MonitoringTagRulesInner();
         this.serviceManager = serviceManager;
         this.ruleSetName = name;
@@ -104,7 +108,8 @@ public final class MonitoringTagRulesImpl
         return this;
     }
 
-    MonitoringTagRulesImpl(MonitoringTagRulesInner innerObject, MicrosoftDatadogManager serviceManager) {
+    MonitoringTagRulesImpl(
+        MonitoringTagRulesInner innerObject, com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

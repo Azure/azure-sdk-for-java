@@ -11,6 +11,9 @@ import com.azure.cosmos.benchmark.linkedin.data.EntityConfiguration;
 import com.azure.cosmos.benchmark.linkedin.data.InvitationsEntityConfiguration;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.ScheduledReporter;
+import com.codahale.metrics.jvm.CachedThreadStatesGaugeSet;
+import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
+import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
 import com.google.common.base.Preconditions;
 import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
@@ -20,6 +23,15 @@ import org.slf4j.LoggerFactory;
 public class LICtlWorkload {
     private static final Logger LOGGER = LoggerFactory.getLogger(LICtlWorkload.class);
 
+    /**
+     * The test scenarios supported for the LinkedIn CTL Workload
+     */
+    public enum Scenario {
+        GET,
+        QUERY,
+        COMPOSITE_READ
+    }
+
     private final Configuration _configuration;
     private final EntityConfiguration _entityConfiguration;
     private final CosmosAsyncClient _client;
@@ -28,7 +40,7 @@ public class LICtlWorkload {
     private final ScheduledReporter _reporter;
     private final ResourceManager _resourceManager;
     private final DataLoader _dataLoader;
-    private final GetTestRunner _getTestRunner;
+    private final TestRunner _testRunner;
 
     public LICtlWorkload(final Configuration configuration) {
         Preconditions.checkNotNull(configuration, "The Workload configuration defining the parameters can not be null");
@@ -39,17 +51,23 @@ public class LICtlWorkload {
         _bulkLoadClient = AsyncClientFactory.buildBulkLoadAsyncClient(configuration);
         _metricsRegistry =  new MetricRegistry();
         _reporter = ScheduledReporterFactory.create(_configuration, _metricsRegistry);
-        _resourceManager = _configuration.shouldManageResources()
-            ? new ResourceManagerImpl(_configuration, _entityConfiguration, _client)
-            : new NoopResourceManagerImpl();
+        _resourceManager = _configuration.shouldManageDatabase()
+            ? new DatabaseResourceManager(_configuration, _entityConfiguration, _client)
+            : new CollectionResourceManager(_configuration, _entityConfiguration, _client);
         _dataLoader = new DataLoader(_configuration, _entityConfiguration, _bulkLoadClient);
-        _getTestRunner = new GetTestRunner(_configuration, _client, _metricsRegistry, _entityConfiguration);
+        _testRunner = createTestRunner(_configuration);
     }
 
     public void setup() throws CosmosException {
-        _resourceManager.createDatabase();
+        if (_configuration.isEnableJvmStats()) {
+            LOGGER.info("Enabling JVM stats collection");
+            _metricsRegistry.register("gc", new GarbageCollectorMetricSet());
+            _metricsRegistry.register("threads", new CachedThreadStatesGaugeSet(10, TimeUnit.SECONDS));
+            _metricsRegistry.register("memory", new MemoryUsageGaugeSet());
+        }
 
-        _resourceManager.createContainer();
+        LOGGER.info("Creating resources");
+        _resourceManager.createResources();
 
         LOGGER.info("Loading data");
         _dataLoader.loadData();
@@ -59,10 +77,10 @@ public class LICtlWorkload {
     }
 
     public void run() {
-        LOGGER.info("Executing the Get test");
+        LOGGER.info("Executing the CosmosDB test");
         _reporter.start(_configuration.getPrintingInterval(), TimeUnit.SECONDS);
 
-        _getTestRunner.run();
+        _testRunner.run();
 
         _reporter.report();
     }
@@ -71,9 +89,22 @@ public class LICtlWorkload {
      * Close all existing resources, from CosmosDB collections to open connections
      */
     public void shutdown() {
-        _getTestRunner.cleanup();
+        _testRunner.cleanup();
         _resourceManager.deleteResources();
         _client.close();
         _reporter.close();
+    }
+
+    private TestRunner createTestRunner(Configuration configuration) {
+        final Scenario scenario = Scenario.valueOf(configuration.getTestScenario());
+        switch (scenario) {
+            case QUERY:
+                return new QueryTestRunner(_configuration, _client, _metricsRegistry, _entityConfiguration);
+            case COMPOSITE_READ:
+                return new CompositeReadTestRunner(_configuration, _client, _metricsRegistry, _entityConfiguration);
+            case GET:
+            default:
+                return new GetTestRunner(_configuration, _client, _metricsRegistry, _entityConfiguration);
+        }
     }
 }

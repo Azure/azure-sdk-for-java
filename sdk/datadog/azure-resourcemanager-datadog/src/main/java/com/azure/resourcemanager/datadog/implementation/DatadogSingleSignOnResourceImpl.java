@@ -4,8 +4,8 @@
 
 package com.azure.resourcemanager.datadog.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.datadog.MicrosoftDatadogManager;
 import com.azure.resourcemanager.datadog.fluent.models.DatadogSingleSignOnResourceInner;
 import com.azure.resourcemanager.datadog.models.DatadogSingleSignOnProperties;
 import com.azure.resourcemanager.datadog.models.DatadogSingleSignOnResource;
@@ -14,7 +14,7 @@ public final class DatadogSingleSignOnResourceImpl
     implements DatadogSingleSignOnResource, DatadogSingleSignOnResource.Definition, DatadogSingleSignOnResource.Update {
     private DatadogSingleSignOnResourceInner innerObject;
 
-    private final MicrosoftDatadogManager serviceManager;
+    private final com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -32,11 +32,15 @@ public final class DatadogSingleSignOnResourceImpl
         return this.innerModel().properties();
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public DatadogSingleSignOnResourceInner innerModel() {
         return this.innerObject;
     }
 
-    private MicrosoftDatadogManager manager() {
+    private com.azure.resourcemanager.datadog.MicrosoftDatadogManager manager() {
         return this.serviceManager;
     }
 
@@ -70,7 +74,8 @@ public final class DatadogSingleSignOnResourceImpl
         return this;
     }
 
-    DatadogSingleSignOnResourceImpl(String name, MicrosoftDatadogManager serviceManager) {
+    DatadogSingleSignOnResourceImpl(
+        String name, com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = new DatadogSingleSignOnResourceInner();
         this.serviceManager = serviceManager;
         this.configurationName = name;
@@ -99,7 +104,8 @@ public final class DatadogSingleSignOnResourceImpl
     }
 
     DatadogSingleSignOnResourceImpl(
-        DatadogSingleSignOnResourceInner innerObject, MicrosoftDatadogManager serviceManager) {
+        DatadogSingleSignOnResourceInner innerObject,
+        com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

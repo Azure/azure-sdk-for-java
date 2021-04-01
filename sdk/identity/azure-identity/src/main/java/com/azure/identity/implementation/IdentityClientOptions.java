@@ -7,7 +7,9 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
+import com.azure.identity.AuthenticationRecord;
 import com.azure.identity.AzureAuthorityHosts;
+import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.time.Duration;
@@ -33,6 +35,7 @@ public final class IdentityClientOptions {
     private String keePassDatabasePath;
     private boolean includeX5c;
     private AuthenticationRecord authenticationRecord;
+    private TokenCachePersistenceOptions tokenCachePersistenceOptions;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -242,7 +245,6 @@ public final class IdentityClientOptions {
         return this;
     }
 
-
     /**
      * Get the status whether x5c claim (public key of the certificate) should be included as part of the authentication
      * request or not.
@@ -271,5 +273,25 @@ public final class IdentityClientOptions {
      */
     public AuthenticationRecord getAuthenticationRecord() {
         return authenticationRecord;
+    }
+
+    /**
+     * Specifies the {@link TokenCachePersistenceOptions} to be used for token cache persistence.
+     *
+     * @param tokenCachePersistenceOptions the options configuration
+     * @return the updated identity client options
+     */
+    public IdentityClientOptions setTokenCacheOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
+        this.tokenCachePersistenceOptions = tokenCachePersistenceOptions;
+        return this;
+    }
+
+    /**
+     * Get the configured {@link TokenCachePersistenceOptions}
+     *
+     * @return the {@link TokenCachePersistenceOptions}
+     */
+    public TokenCachePersistenceOptions getTokenCacheOptions() {
+        return this.tokenCachePersistenceOptions;
     }
 }

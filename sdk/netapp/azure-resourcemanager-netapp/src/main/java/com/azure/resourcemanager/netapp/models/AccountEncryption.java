@@ -18,14 +18,14 @@ public final class AccountEncryption {
      * Encryption Key Source. Possible values are: 'Microsoft.NetApp'.
      */
     @JsonProperty(value = "keySource")
-    private KeySource keySource;
+    private String keySource;
 
     /**
      * Get the keySource property: Encryption Key Source. Possible values are: 'Microsoft.NetApp'.
      *
      * @return the keySource value.
      */
-    public KeySource keySource() {
+    public String keySource() {
         return this.keySource;
     }
 
@@ -35,7 +35,7 @@ public final class AccountEncryption {
      * @param keySource the keySource value to set.
      * @return the AccountEncryption object itself.
      */
-    public AccountEncryption withKeySource(KeySource keySource) {
+    public AccountEncryption withKeySource(String keySource) {
         this.keySource = keySource;
         return this;
     }
