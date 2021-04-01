@@ -135,7 +135,7 @@ class AuthClient extends DelegateRestClient {
         LOGGER.entering("AuthClient", "getAccessTokenOnAppService", resource);
         LOGGER.info("Getting access token using managed identity based on MSI_SECRET");
         if (identity != null) {
-            LOGGER.log(INFO, "Using managed identity with object ID: {0}", identity);
+            LOGGER.log(INFO, "Using managed identity with client ID: {0}", identity);
         }
         String result = null;
 
