@@ -203,7 +203,6 @@ function Get-java-GithubIoDocIndex()
 # https://review.docs.microsoft.com/en-us/help/onboard/admin/reference/dotnet/documenting-nuget?branch=master#set-up-the-ci-job
 function Update-java-CIConfig($ciRepo, $locationInDocRepo)
 { 
-  $pkgJsonLoc = (Join-Path -Path $ciRepo -ChildPath $locationInDocRepo)
   Write-Host "Updating the package.json in Java"
   # Read release csv file, and filter out by New=true, Hide!=true
   $metadata = Get-CSVMetadata -MetadataUri $MetadataUri | Where-Object {$_.New -eq "true"}  | Where-Object {$_.Hide -ne "true"} 
@@ -242,12 +241,12 @@ function Update-java-CIConfig($ciRepo, $locationInDocRepo)
   }
   $jsonRepresentation = @($latest, $preview)
   # Read package list from package.json
-  $csvLoc = (Join-Path -Path $ciRepo -ChildPath $locationInDocRepo[0].path_to_config)
-  if (-not (Test-Path $csvLoc)) {
-    Write-Error "Unable to locate package csv at location $csvLoc, exiting."
+  $pkgJsonLoc = (Join-Path -Path $ciRepo -ChildPath $locationInDocRepo)
+  if (-not (Test-Path $pkgJsonLoc)) {
+    Write-Error "Unable to locate package csv at location $pkgJsonLoc, exiting."
     exit(1)
   }
-  $allCSVRows = Get-Content $csvLoc | Out-String | ConvertFrom-Json
+  $allCSVRows = Get-Content $pkgJsonLoc | Out-String | ConvertFrom-Json
 
   for ($i=0; $i -lt $allCSVRows.Length; $i++) {
     $packages = $allCSVRows[$i].packages
