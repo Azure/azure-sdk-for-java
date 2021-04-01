@@ -189,7 +189,7 @@
             <revapi.ignore>
               <item>
                 <code>java.method.parameterTypeParameterChanged</code>
-                <package>com.azure.resourcemanager.resources.fluentcore.model</package>
+                <package>com.azure.resourcemanager.resources.fluentcore.collection</package>
               </item>
 
               <item>
