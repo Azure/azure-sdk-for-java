@@ -46,6 +46,7 @@ import static com.azure.search.documents.SearchTestBase.API_KEY;
 import static com.azure.search.documents.SearchTestBase.ENDPOINT;
 import static com.azure.search.documents.SearchTestBase.HOTELS_DATA_JSON;
 import static com.azure.search.documents.SearchTestBase.HOTELS_TESTS_INDEX_DATA_JSON;
+import static com.azure.search.documents.SearchTestBase.SERVICE_THROTTLE_SAFE_RETRY_POLICY;
 import static com.azure.search.documents.implementation.util.Utility.MAP_STRING_OBJECT_TYPE_REFERENCE;
 import static com.azure.search.documents.implementation.util.Utility.getDefaultSerializerAdapter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -339,7 +340,7 @@ public final class TestHelpers {
             SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
                 .endpoint(ENDPOINT)
                 .credential(new AzureKeyCredential(API_KEY))
-                .retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))))
+                .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
                 .buildClient();
 
             searchIndexClient.createOrUpdateIndex(index);

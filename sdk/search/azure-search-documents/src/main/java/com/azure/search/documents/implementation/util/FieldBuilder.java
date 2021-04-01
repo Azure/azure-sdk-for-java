@@ -64,6 +64,7 @@ public final class FieldBuilder {
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(CharSequence.class, SearchFieldDataType.STRING);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Character.class, SearchFieldDataType.STRING);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(char.class, SearchFieldDataType.STRING);
+        //noinspection UseOfObsoleteDateTimeApi
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Date.class, SearchFieldDataType.DATE_TIME_OFFSET);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(OffsetDateTime.class, SearchFieldDataType.DATE_TIME_OFFSET);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(GeoPoint.class, SearchFieldDataType.GEOGRAPHY_POINT);
