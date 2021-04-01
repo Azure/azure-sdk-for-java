@@ -38,7 +38,6 @@ import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.data.tables.implementation.TableUtils.toTableServiceErrorException;
 
 /**
  * Provides an asynchronous service client for accessing the Azure Tables service.
