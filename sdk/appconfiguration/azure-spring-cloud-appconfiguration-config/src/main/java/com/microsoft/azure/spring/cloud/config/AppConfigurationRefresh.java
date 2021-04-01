@@ -117,7 +117,9 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
     /**
      * Checks un-cached items for etag changes. If they have changed a RefreshEventData is published.
      *
-     * @param store the {@code store} for which to composite watched key names
+     * @param state The refresh state of the endpoint being checked.
+     * @param endpoint The App Config Endpoint being checked for refresh.
+     * @param cacheTime Amount of time to wait until next check of this endpoint.
      * @return Refresh event was triggered. No other sources need to be checked.
      */
     private boolean refresh(State state, String endpoint, Duration cacheTime) {
@@ -136,7 +138,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
                     etag = revision.getETag();
                 }
 
-                LOGGER.error(etag + " - " + watchKey.getETag());
+                LOGGER.debug(etag + " - " + watchKey.getETag());
                 if (etag != null && !etag.equals(watchKey.getETag())) {
                     LOGGER.trace(
                         "Some keys in store [{}] matching the key [{}] and label [{}] is updated, "

@@ -99,7 +99,10 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
         // Feature Management needs to be set in the last config store.
         while (configStoreIterator.hasNext()) {
             ConfigStore configStore = configStoreIterator.next();
-            if (configStore.isEnabled() && (startup.get() || StateHolder.getLoadState(configStore.getEndpoint()))) {
+
+            Boolean loadNewPropertySources = startup.get() || StateHolder.getLoadState(configStore.getEndpoint());
+
+            if (configStore.isEnabled() && loadNewPropertySources) {
                 addPropertySource(composite, configStore, applicationName, profiles, storeContextsMap,
                     !configStoreIterator.hasNext());
             } else if (!configStore.isEnabled()
@@ -131,7 +134,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
      */
     private void addPropertySource(CompositePropertySource composite, ConfigStore store, String applicationName,
         List<String> profiles, Map<String, List<String>> storeContextsMap, boolean initFeatures) {
-        
+
         List<String> contexts = new ArrayList<>();
         contexts.addAll(generateContexts(this.properties.getDefaultContext(), store));
         contexts.addAll(generateContexts(applicationName, store));
@@ -175,7 +178,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
         if (!StringUtils.hasText(applicationName)) {
             return result; // Ignore null or empty application name
         }
-        
+
         result.add(PATH_SPLITTER + applicationName + PATH_SPLITTER);
 
         return result;
