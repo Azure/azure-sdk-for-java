@@ -3,7 +3,6 @@
 
 package com.azure.containers.containerregistry.implementation.authentication;
 
-import com.azure.containers.containerregistry.implementation.models.PostContentSchemaGrantType;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -19,6 +18,8 @@ public class TokenServiceImpl {
 
     private final AccessTokensImpl accessTokensImpl;
     private final RefreshTokensImpl refreshTokenImpl;
+    private static final String REFRESHTOKEN_GRANTTYPE = "refresh_token";
+    private static final String ACCESSTOKEN_GRANTTYPE = "access_token";
 
     /**
      * Creates an instance of the token service impl class.TokenServiceImpl.java
@@ -44,7 +45,7 @@ public class TokenServiceImpl {
      *
      */
     public Mono<AccessToken> getAcrAccessTokenAsync(String acrRefreshToken, String scope, String serviceName) {
-        return this.accessTokensImpl.getAccessTokenAsync(PostContentSchemaGrantType.REFRESH_TOKEN.toString(), serviceName, scope, acrRefreshToken)
+        return this.accessTokensImpl.getAccessTokenAsync(REFRESHTOKEN_GRANTTYPE, serviceName, scope, acrRefreshToken)
             .map(token -> {
                 String accessToken = token.getAccessToken();
                 OffsetDateTime expirationTime = JsonWebToken.retrieveExpiration(accessToken);
@@ -60,7 +61,7 @@ public class TokenServiceImpl {
      */
     public Mono<AccessToken> getAcrRefreshTokenAsync(String aadAccessToken, String serviceName) {
         return this.refreshTokenImpl.getRefreshTokenAsync(
-            PostContentSchemaGrantType.ACCESS_TOKEN.toString(),
+            ACCESSTOKEN_GRANTTYPE,
             aadAccessToken,
             null,
             serviceName).map(token -> {

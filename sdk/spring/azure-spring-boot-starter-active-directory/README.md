@@ -73,18 +73,21 @@ example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot 
     
      (B). You can provide one by extending `AADWebSecurityConfigurerAdapter` and call `super.configure(http)` explicitly 
     in the `configure(HttpSecurity http)` function. Here is an example:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/AADOAuth2LoginConfigSample.java#L18-L29 -->
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/security/AADOAuth2LoginSecurityConfig.java#L11-L25 -->
     ```java
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
-    public class AADOAuth2LoginConfigSample extends AADWebSecurityConfigurerAdapter {
+    public class AADOAuth2LoginSecurityConfig extends AADWebSecurityConfigurerAdapter {
     
+        /**
+         * Add configuration logic as needed.
+         */
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             super.configure(http);
             http.authorizeRequests()
-                .antMatchers("/login").permitAll()
-                .anyRequest().authenticated();
+                    .anyRequest().authenticated();
+            // Do some custom configuration
         }
     }
     ```
@@ -127,7 +130,7 @@ example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot 
     Here, `graph` is the name of `OAuth2AuthorizedClient`, `scopes` means the scopes need to consent when login.
 
 * Step 4: Write your Java code:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/ClientController.java#L30-L38 -->
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/ClientController.java#L40-L48 -->
     ```java
     @GetMapping("/graph")
     @ResponseBody
@@ -187,19 +190,18 @@ To use **aad-starter** in this scenario, we need these steps:
     
     (B). You can provide one by extending `AADResourceServerWebSecurityConfigurerAdapter` and call `super.configure(http)` explicitly
     in the `configure(HttpSecurity http)` function. Here is an example:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/security/AADOAuth2LoginSecurityConfig.java#L11-L23 -->
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/src/main/java/com/azure/spring/sample/aad/security/AADOAuth2ResourceServerSecurityConfig.java#L12-L23 -->
     ```java
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
-    public class AADOAuth2LoginSecurityConfig extends AADWebSecurityConfigurerAdapter {
-    
+    public class AADOAuth2ResourceServerSecurityConfig extends AADResourceServerWebSecurityConfigurerAdapter {
         /**
          * Add configuration logic as needed.
          */
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             super.configure(http);
-            // Do some custom configuration
+            http.authorizeRequests((requests) -> requests.anyRequest().authenticated());
         }
     }
     ```
@@ -252,8 +254,9 @@ To use **aad-starter** in this scenario, we need these steps:
 
     Using `@RegisteredOAuth2AuthorizedClient` to access related resource server:
 
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L60-L63 -->
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L59-L63 --> 
     ```java
+    @PreAuthorize("hasAuthority('SCOPE_Obo.Graph.Read')")
     @GetMapping("call-graph")
     public String callGraph(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph) {
         return callMicrosoftGraphMeEndpoint(graph);
@@ -302,37 +305,43 @@ Here are some examples about how to use these properties:
 
 * Step 2: Add `@EnableGlobalMethodSecurity(prePostEnabled = true)` in web application:
 
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/AADOAuth2LoginConfigSample.java#L18-L29 -->
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/security/AADOAuth2LoginSecurityConfig.java#L11-L25 -->
     ```java
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
-    public class AADOAuth2LoginConfigSample extends AADWebSecurityConfigurerAdapter {
+    public class AADOAuth2LoginSecurityConfig extends AADWebSecurityConfigurerAdapter {
     
+        /**
+         * Add configuration logic as needed.
+         */
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             super.configure(http);
             http.authorizeRequests()
-                .antMatchers("/login").permitAll()
-                .anyRequest().authenticated();
+                    .anyRequest().authenticated();
+            // Do some custom configuration
         }
     }
     ```
 
     Then we can protect the method by `@PreAuthorize` annotation:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/RoleController.java#L13-L25 -->
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/RoleController.java#L11-L26 -->
     ```java
-    @GetMapping("group1")
-    @ResponseBody
-    @PreAuthorize("hasRole('ROLE_group1')")
-    public String group1() {
-        return "group1 message";
-    }
+    @Controller
+    public class RoleController {
+        @GetMapping("group1")
+        @ResponseBody
+        @PreAuthorize("hasRole('ROLE_group1')")
+        public String group1() {
+            return "group1 message";
+        }
     
-    @GetMapping("group2")
-    @ResponseBody
-    @PreAuthorize("hasRole('ROLE_group2')")
-    public String group2() {
-        return "group2 message";
+        @GetMapping("group2")
+        @ResponseBody
+        @PreAuthorize("hasRole('ROLE_group2')")
+        public String group2() {
+            return "group2 message";
+        }
     }
     ```
 

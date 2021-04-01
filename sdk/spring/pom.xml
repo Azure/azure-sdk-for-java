@@ -145,7 +145,8 @@
         <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp</module>
         <module>azure-spring-boot-samples/azure-spring-boot-sample-cosmos</module>
         <module>azure-spring-boot-samples/azure-spring-boot-sample-data-gremlin</module>
-        <module>azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates</module>
+        <module>azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-server-side</module>
+        <module>azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side</module>
         <module>azure-spring-boot-samples/azure-spring-boot-sample-keyvault-secrets</module>
         <module>azure-spring-boot-samples/azure-spring-boot-sample-mediaservices</module>
         <module>azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-queue</module>
