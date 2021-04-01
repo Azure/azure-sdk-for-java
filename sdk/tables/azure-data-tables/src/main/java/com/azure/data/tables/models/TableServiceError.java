@@ -9,17 +9,17 @@ public final class TableServiceError {
     /*
      * The service error code.
      */
-    private String errorCode;
+    private final String errorCode;
 
     /*
      * Language code of the error message.
      */
-    private String languageCode;
+    private final String languageCode;
 
     /*
      * The error message.
      */
-    private String errorMessage;
+    private final String errorMessage;
 
     /**
      * Create an instance of {@link TableServiceError}.
