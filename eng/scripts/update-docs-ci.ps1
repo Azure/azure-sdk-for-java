@@ -11,10 +11,13 @@ param (
   $DocRepoLocation, # the location of the cloned doc repo
 
   [Parameter(Mandatory = $true)]
-  $Configs # The configuration elements informing important locations within the cloned doc repo
+  $Configs, # The configuration elements informing important locations within the cloned doc repo
+
+  [Parameter(Mandatory = $true)]
+  $ScriptRepository = "eng/common/scripts"# The eng/common script path
 )
 
-. (Join-Path $PSScriptRoot common.ps1)
+. (Join-Path $ScriptRepository common.ps1)
 
 $targets = ($Configs | ConvertFrom-Json).targets
 
