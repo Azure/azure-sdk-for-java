@@ -39,7 +39,7 @@ class LegacyRestClient implements RestClient {
                     httpGet.addHeader(key, value);
                 });
             }
-            result = client.execute(httpGet, responseHandler());
+            result = client.execute(httpGet, createResponseHandler());
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -53,22 +53,22 @@ class LegacyRestClient implements RestClient {
             HttpPost httpPost = new HttpPost(url);
             httpPost.setEntity(
                 new StringEntity(body, ContentType.create(contentType)));
-            result = client.execute(httpPost, responseHandler());
+            result = client.execute(httpPost, createResponseHandler());
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
         return result;
     }
 
-    private ResponseHandler<String> responseHandler() {
+    private ResponseHandler<String> createResponseHandler() {
         return (HttpResponse response) -> {
             int status = response.getStatusLine().getStatusCode();
-            String result1 = null;
+            String result = null;
             if (status >= 200 && status < 300) {
                 HttpEntity entity = response.getEntity();
-                result1 = entity != null ? EntityUtils.toString(entity) : null;
+                result = entity != null ? EntityUtils.toString(entity) : null;
             }
-            return result1;
+            return result;
         };
     }
 }
