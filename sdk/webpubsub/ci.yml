@@ -4,12 +4,11 @@ trigger:
     include:
       - master
       - main
-      - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/signalr/
+      - sdk/webpubsub/
 
 pr:
   branches:
@@ -21,9 +20,13 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/signalr/
+      - sdk/webpubsub/
 
-stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml
-    parameters:
-      ServiceDirectory: signalr
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: webpubsub
+    Artifacts:
+      - name: azure-messaging-webpubsub
+        groupId: com.azure
+        safeName: azuremessagingwebpubsub
