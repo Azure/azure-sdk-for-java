@@ -46,35 +46,8 @@ public final class SyncTokenPolicy implements HttpPipelinePolicy {
             final String syncTokenValue = httpResponse.getHeaders().getValue(SYNC_TOKEN);
 
             // Skip sync-token updates of concurrent map if no 'Sync-Token' header
-            if (syncTokenValue == null) {
-                return Mono.just(httpResponse);
-            }
-
-            // Sync-Token header could have more than one value
-            final String[] syncTokens = syncTokenValue.split(COMMA);
-            for (final String syncTokenString : syncTokens) {
-                if (CoreUtils.isNullOrEmpty(syncTokenString)) {
-                    continue;
-                }
-
-                final SyncToken syncToken;
-                try {
-                    syncToken = new SyncToken(syncTokenString);
-                } catch (Exception ex){
-                    logger.warning(SKIP_INVALID_TOKEN, syncTokenString);
-                    continue;
-                }
-
-                final String tokenId = syncToken.getId();
-                // If the value is not thread safe and must be updated inside the method with a remapping function
-                // to ensure the entire operation is atomic.
-                syncTokenMap.compute(tokenId, (key, existingSyncToken) -> {
-                    if (existingSyncToken == null
-                            || syncToken.getSequenceNumber() > existingSyncToken.getSequenceNumber()) {
-                        return syncToken;
-                    }
-                    return existingSyncToken;
-                });
+            if (syncTokenValue != null) {
+                updateSyncToken(syncTokenValue);
             }
 
             return Mono.just(httpResponse);
@@ -89,5 +62,39 @@ public final class SyncTokenPolicy implements HttpPipelinePolicy {
     private String getSyncTokenHeader() {
         return syncTokenMap.values().stream().map(syncToken -> syncToken.getId() + EQUAL + syncToken.getValue())
                    .collect(Collectors.joining(COMMA));
+    }
+
+    /**
+     * Update the existing synchronization tokens.
+     *
+     * @param token an external synchronization token to ensure service requests receive up-to-date values.
+     */
+    public void updateSyncToken(String token) {
+        // Sync-Token header could have more than one value
+        final String[] syncTokens = token.split(COMMA);
+        for (final String syncTokenString : syncTokens) {
+            if (CoreUtils.isNullOrEmpty(syncTokenString)) {
+                continue;
+            }
+
+            final SyncToken syncToken;
+            try {
+                syncToken = new SyncToken(syncTokenString);
+            } catch (Exception ex){
+                logger.warning(SKIP_INVALID_TOKEN, syncTokenString);
+                continue;
+            }
+
+            final String tokenId = syncToken.getId();
+            // If the value is not thread safe and must be updated inside the method with a remapping function
+            // to ensure the entire operation is atomic.
+            syncTokenMap.compute(tokenId, (key, existingSyncToken) -> {
+                if (existingSyncToken == null
+                        || syncToken.getSequenceNumber() > existingSyncToken.getSequenceNumber()) {
+                    return syncToken;
+                }
+                return existingSyncToken;
+            });
+        }
     }
 }

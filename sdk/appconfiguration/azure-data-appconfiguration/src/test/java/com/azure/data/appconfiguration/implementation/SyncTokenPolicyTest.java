@@ -5,15 +5,14 @@ package com.azure.data.appconfiguration.implementation;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.http.MockHttpResponse;
-import org.junit.jupiter.api.BeforeEach;
+import com.azure.core.test.http.NoOpHttpClient;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -22,35 +21,23 @@ import java.net.URL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
 
 /**
  * Unit tests for Sync Token
  */
 public class SyncTokenPolicyTest {
     private static final long SEQUENCE_NUMBER = 28;
-    private static final long UPDATED_SEQUENCE_NUMBER = 30;
-    private static final String COMMA = ",";
     private static final String EQUAL = "=";
     private static final String ID = "jtqGc1I4";
-    private static final String LOCAL_HOST = "http://localhost/";
-    private static final String NEW_ID = "newID";
     private static final String SEMICOLON = ";";
     private static final String SN_NAME = "sn";
     private static final String SYNC_TOKEN = "Sync-Token";
-    private static final String UPDATED_VALUE = "UpdatedValue";
     private static final String VALUE = "MDoyOA==";
-
-    @Mock
-    private HttpPipelineCallContext httpPipelineCallContext;
-
-    @Mock
-    private HttpPipelineNextPolicy httpPipelineNextPolicy;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-    }
+    private static final String SYNC_TOKEN_VALUE = "syncToken1=val1";
+    private static final String FIRST = "first";
+    private static final String SECOND = "second";
+    private static final String REQUEST_ID = "requestId";
+    private static final String LOCAL_HOST = "http://localhost";
 
     /**
      * Parsing valid sync token
@@ -125,95 +112,86 @@ public class SyncTokenPolicyTest {
         assertThrows(IllegalArgumentException.class, () -> new SyncToken(constructSyncTokenString(ID, VALUE, SN_NAME, SEQUENCE_NUMBER) + "ABC"));
     }
 
-    /**
-     * Test for sync token policy with a single valid sync token
-     *
-     * @throws Exception URL exception
-     */
     @Test
-    @SuppressWarnings("unchecked")
-    public void singleSyncTokenTest() throws MalformedURLException {
-        // Arrange
-        final String firstResponseHeadersExpected = constructSyncTokenString(ID, VALUE, SN_NAME, SEQUENCE_NUMBER);
-        final String secondResponseHeaderExpected = constructSyncTokenString(ID, UPDATED_VALUE, SN_NAME, UPDATED_SEQUENCE_NUMBER);
-        final HttpRequest firstRequest = new HttpRequest(HttpMethod.GET, new URL(LOCAL_HOST), new HttpHeaders(), null);
-        final HttpRequest secondRequest = new HttpRequest(HttpMethod.GET, new URL(LOCAL_HOST),
-            new HttpHeaders().put(SYNC_TOKEN, firstResponseHeadersExpected), null);
-
-        final String secondResponseRequestHeaderExpected = constructSyncTokenString(ID, VALUE, null, null);
-
-        // Mock
-        when(httpPipelineCallContext.getHttpRequest()).thenReturn(firstRequest, secondRequest);
-        when(httpPipelineNextPolicy.process()).thenReturn(
-            Mono.just(new MockHttpResponse(firstRequest, 200, new HttpHeaders().put(SYNC_TOKEN, firstResponseHeadersExpected))),
-            Mono.just(new MockHttpResponse(secondRequest, 200, new HttpHeaders().put(SYNC_TOKEN, secondResponseHeaderExpected))));
-
+    public void setSyncTokenPolicyProcessTest() throws MalformedURLException {
         final SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
 
-        // Act
-        final HttpResponse firstResponse = syncTokenPolicy.process(httpPipelineCallContext, httpPipelineNextPolicy).block();
-        final HttpResponse secondResponse = syncTokenPolicy.process(httpPipelineCallContext, httpPipelineNextPolicy).block();
+        HttpPipelinePolicy auditorPolicy = (context, next) -> {
+            final String headerValue = context.getHttpRequest().getHeaders().getValue(SYNC_TOKEN);
+            final String requestId = context.getHttpRequest().getHeaders().getValue(REQUEST_ID);
+            if (requestId.equals(FIRST)) {
+                assertEquals("", headerValue);
+            } else if (requestId.equals(SECOND)) {
+                assertEquals(SYNC_TOKEN_VALUE, headerValue);
+            } else {
+                // do nothing
+            }
+            // Sequence number, sn is not used in the request header. It is included in the response header.
+            return next.process();
+        };
 
-        // Assertion
-        // verify the first response's request headers is empty
-        assertTrue(firstResponse.getRequest().getHeaders().getValue(SYNC_TOKEN).isEmpty());
-        // verify the first response headers
-        assertEquals(firstResponseHeadersExpected, firstResponse.getHeaders().getValue(SYNC_TOKEN));
-        // verify the second response's request header
-        assertEquals(
-            // Because the limitation of constructSyncTokenString() always return the string
-            // ending with semicolon, adding semicolon to the next line is only for validation
-            secondResponseRequestHeaderExpected.substring(0, secondResponseRequestHeaderExpected.length() - 1),
-            secondResponse.getRequest().getHeaders().getValue(SYNC_TOKEN));
-        // verify second response header
-        assertEquals(secondResponseHeaderExpected, secondResponse.getHeaders().getValue(SYNC_TOKEN));
+        final HttpPipeline pipeline =
+            new HttpPipelineBuilder()
+                .httpClient(new NoOpHttpClient() {
+                    @Override
+                    public Mono<HttpResponse> send(HttpRequest request) {
+                        return Mono.just(new MockHttpResponse(request, 200,
+                            new HttpHeaders().set(SYNC_TOKEN, SYNC_TOKEN_VALUE + ";sn=1")));
+                    }
+                })
+                .policies(syncTokenPolicy, auditorPolicy)
+                .build();
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, new URL(LOCAL_HOST));
+        request.getHeaders().set(REQUEST_ID, FIRST);
+        pipeline.send(request).block();
+        request.getHeaders().set(REQUEST_ID, SECOND);
+        pipeline.send(request).block();
     }
 
-    /**
-     * Test for multiple sync tokens
-     *
-     * @throws Exception URL exception
-     */
     @Test
-    @SuppressWarnings("unchecked")
-    public void multipleSyncTokensTest() throws Exception {
-        // Arrange
-        final String firstResponseHeadersExpected = constructSyncTokenString(ID, VALUE, SN_NAME, SEQUENCE_NUMBER) + COMMA
-                                                        + constructSyncTokenString(NEW_ID, UPDATED_VALUE, SN_NAME, UPDATED_SEQUENCE_NUMBER);
-        final String secondResponseHeaderExpected = constructSyncTokenString(ID, UPDATED_VALUE, SN_NAME, UPDATED_SEQUENCE_NUMBER);
-
-        final HttpRequest firstRequest = new HttpRequest(HttpMethod.GET, new URL(LOCAL_HOST), new HttpHeaders(), null);
-        final HttpRequest secondRequest = new HttpRequest(HttpMethod.GET, new URL(LOCAL_HOST),
-            new HttpHeaders().put(SYNC_TOKEN, firstResponseHeadersExpected), null);
-
-        final String secondResponseRequestHeaderExpectedPart1 = constructSyncTokenString(ID, VALUE, null, null);
-        final String secondResponseRequestHeaderExpectedPart2 = constructSyncTokenString(NEW_ID, UPDATED_VALUE, null, null);
-        // Because the limitation of constructSyncTokenString() always return the string ending with semicolon
-        final String secondResponseRequestHeaderExpected =
-            secondResponseRequestHeaderExpectedPart1.substring(0, secondResponseRequestHeaderExpectedPart1.length() - 1)
-                + COMMA + secondResponseRequestHeaderExpectedPart2.substring(0, secondResponseRequestHeaderExpectedPart2.length() - 1);
-
-        // Mock
-        when(httpPipelineCallContext.getHttpRequest()).thenReturn(firstRequest, secondRequest);
-        when(httpPipelineNextPolicy.process()).thenReturn(
-            Mono.just(new MockHttpResponse(firstRequest, 200, new HttpHeaders().put(SYNC_TOKEN, firstResponseHeadersExpected))),
-            Mono.just(new MockHttpResponse(secondRequest, 200, new HttpHeaders().put(SYNC_TOKEN, secondResponseHeaderExpected))));
-
+    public void externalSyncTokenIsSentWithRequestText() throws MalformedURLException {
         final SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
 
-        // Act
-        final HttpResponse firstResponse = syncTokenPolicy.process(httpPipelineCallContext, httpPipelineNextPolicy).block();
-        final HttpResponse secondResponse = syncTokenPolicy.process(httpPipelineCallContext, httpPipelineNextPolicy).block();
+        syncTokenPolicy.updateSyncToken(SYNC_TOKEN_VALUE + ";sn=1");
 
-        // Assertion
-        // verify the first response's request headers is empty
-        assertTrue(firstResponse.getRequest().getHeaders().getValue(SYNC_TOKEN).isEmpty());
-        // verify the first response headers
-        assertEquals(firstResponseHeadersExpected, firstResponse.getHeaders().getValue(SYNC_TOKEN));
-        // verify the second response's request header
-        assertEquals(secondResponseRequestHeaderExpected, secondResponse.getRequest().getHeaders().getValue(SYNC_TOKEN));
-        // verify second response header
-        assertEquals(secondResponseHeaderExpected, secondResponse.getHeaders().getValue(SYNC_TOKEN));
+        HttpPipelinePolicy auditorPolicy = (context, next) -> {
+            final String headerValue = context.getHttpRequest().getHeaders().getValue(SYNC_TOKEN);
+            // Sequence number, sn is not used in the request header. It is included in the response header.
+            assertEquals(SYNC_TOKEN_VALUE, headerValue);
+            return next.process();
+        };
+
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
+            .policies(syncTokenPolicy, auditorPolicy)
+            .build();
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, new URL(LOCAL_HOST));
+        pipeline.send(request).block();
+    }
+
+    @Test
+    public void externalSyncTokensFollowRulesWhenAddedTest() throws MalformedURLException {
+        final SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
+
+        syncTokenPolicy.updateSyncToken("syncToken1=val1;sn=1");
+        syncTokenPolicy.updateSyncToken("syncToken1=val2;sn=2,syncToken2=val3;sn=2");
+        syncTokenPolicy.updateSyncToken("syncToken2=val1;sn=1");
+
+        HttpPipelinePolicy auditorPolicy = (context, next) -> {
+            final String headerValue = context.getHttpRequest().getHeaders().getValue(SYNC_TOKEN);
+            // Sequence number, sn is not used in the request header. It is included in the response header.
+            assertTrue(headerValue.contains("syncToken2=val3"));
+            assertTrue(headerValue.contains("syncToken1=val2"));
+            return next.process();
+        };
+
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
+                                          .policies(syncTokenPolicy, auditorPolicy)
+                                          .build();
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, new URL(LOCAL_HOST));
+        pipeline.send(request).block();
     }
 
     private void syncTokenEquals(SyncToken syncToken, String id, String value, Long sn) {

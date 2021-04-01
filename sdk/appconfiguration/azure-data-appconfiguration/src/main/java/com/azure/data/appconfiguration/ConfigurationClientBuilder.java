@@ -104,6 +104,7 @@ public final class ConfigurationClientBuilder {
     private HttpPipeline pipeline;
     private HttpPipelinePolicy retryPolicy;
     private Configuration configuration;
+    private SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
     private ConfigurationServiceVersion version;
 
     /**
@@ -166,7 +167,7 @@ public final class ConfigurationClientBuilder {
 
         // if http pipeline is already defined
         if (pipeline != null) {
-            return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion);
+            return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion, syncTokenPolicy);
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -196,7 +197,7 @@ public final class ConfigurationClientBuilder {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
         }
-        policies.add(new SyncTokenPolicy());
+        policies.add(syncTokenPolicy);
         policies.addAll(perRetryPolicies);
 
         if (clientOptions != null) {
@@ -215,7 +216,7 @@ public final class ConfigurationClientBuilder {
                                     .httpClient(httpClient)
                                     .build();
 
-        return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion);
+        return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion, syncTokenPolicy);
     }
 
     /**
