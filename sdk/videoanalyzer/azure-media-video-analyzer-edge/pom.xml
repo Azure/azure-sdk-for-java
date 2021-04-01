@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-media-video-analyzer-edge</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-media-analytics<current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-media-video-analyzer-edge;current} -->
 
   <name>Microsoft Azure SDK for Media Video Analyzer Edge</name>
   <description>This package contains Microsoft Azure SDK for Media Video Analyzer Edge.</description>
@@ -58,12 +58,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-json-jackson</artifactId>
-      <version>1.2.0</version>
+      <version>1.1.2</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure.sdk.iot</groupId>
       <artifactId>iot-service-client</artifactId>
-      <version>1.28.0</version>
+      <version>1.28.0</version> <!-- {x-version-update;com.microsoft.azure.sdk.iot:iot-service-client;external_dependency} -->
     </dependency>
   </dependencies>
 

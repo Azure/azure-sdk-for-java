@@ -558,11 +558,6 @@
       <artifactId>azure-mixedreality-remoterendering</artifactId>
       <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-mixedreality-remoterendering;current} -->
     </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-media-analytics</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-media-analytics;current} -->
-    </dependency>
   </dependencies>
   <build>
     <plugins>
