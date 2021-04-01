@@ -484,8 +484,9 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
                 numberEmitted++;
                 isEmpty = messageQueue.isEmpty();
-                totalMessagesSent.addAndGet(numberEmitted);
             }
+
+            totalMessagesSent.addAndGet(numberEmitted);
 
             final long requestedMessages = REQUESTED.get(this);
             if (requestedMessages != Long.MAX_VALUE) {
