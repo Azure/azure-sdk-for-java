@@ -19,7 +19,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
     /*
      * Data flow reference.
      */
-    @JsonProperty(value = "typeProperties.dataflow")
+    @JsonProperty(value = "typeProperties.dataflow", required = true)
     private DataFlowReference dataflow;
 
     /*

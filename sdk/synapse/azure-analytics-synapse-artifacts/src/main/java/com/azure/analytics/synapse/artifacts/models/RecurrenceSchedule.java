@@ -32,7 +32,7 @@ public final class RecurrenceSchedule {
      * The days of the week.
      */
     @JsonProperty(value = "weekDays")
-    private List<DaysOfWeek> weekDays;
+    private List<DayOfWeek> weekDays;
 
     /*
      * The month days.
@@ -96,7 +96,7 @@ public final class RecurrenceSchedule {
      *
      * @return the weekDays value.
      */
-    public List<DaysOfWeek> getWeekDays() {
+    public List<DayOfWeek> getWeekDays() {
         return this.weekDays;
     }
 
@@ -106,7 +106,7 @@ public final class RecurrenceSchedule {
      * @param weekDays the weekDays value to set.
      * @return the RecurrenceSchedule object itself.
      */
-    public RecurrenceSchedule setWeekDays(List<DaysOfWeek> weekDays) {
+    public RecurrenceSchedule setWeekDays(List<DayOfWeek> weekDays) {
         this.weekDays = weekDays;
         return this;
     }
