@@ -197,12 +197,12 @@ function Get-java-GithubIoDocIndex()
   # Generate yml/md toc files and build site.
   GenerateDocfxTocContent -tocContent $tocContent -lang "Java"
 }
-function check_source_jar($artifactId, $groudId, $version) 
+function check-source-jar($artifactId, $groudId, $version) 
 {
   $groudIdUrl = $groudId.Replace(".", "/")
-  $MavenDownloadUrl = "$MavenDownloadSite/$groudIdUrl/$artifactId/$artifactId"
+  $MavenDownloadUrl = "$MavenDownloadSite/$groudIdUrl/$artifactId/$version"
   $resp = Invoke-WebRequest $MavenDownloadUrl
-  return true
+  return $resp -and $resp.Links.href.Contains("$artifactId-$version-sources.jar")
 }
 # a "package.json configures target packages for all the monikers in a Repository, it also has a slightly different
 # schema than the moniker-specific json config that is seen in python and js
@@ -212,7 +212,7 @@ function Update-java-CIConfig($ciRepo, $locationInDocRepo)
 { 
   Write-Host "Updating the package.json in Java"
   # Read release csv file, and filter out by New=true, Hide!=true
-  $metadata = Get-CSVMetadata -MetadataUri "https://github.com/sima-zhu/azure-sdk/blob/set_bom_hide_true/_data/releases/latest/java-packages.csv" | Where-Object {$_.New -eq "true"}  | Where-Object {$_.Hide -ne "true"} 
+  $metadata = Get-CSVMetadata -MetadataUri "https://raw.githubusercontent.com/sima-zhu/azure-sdk/set_bom_hide_true/_data/releases/latest/java-packages.csv" | Where-Object {$_.New -eq "true"}  | Where-Object {$_.Hide -ne "true"} 
   $preview =  @{
     language = "java"
     output_path = "preview/docs-ref-autogen"
@@ -229,7 +229,7 @@ function Update-java-CIConfig($ciRepo, $locationInDocRepo)
     }
     if ($metadata[$i].VersionGA) {
       # Fill in the latest first
-      if (!check_source_jar($metadata[$i].Package, $metadata[$i].GroupId, $metadata[$i].VersionGA)) {
+      if (!(check-source-jar -artifactId $metadata[$i].Package -groudId $metadata[$i].GroupId -version $metadata[$i].VersionGA)) {
         continue
       }
       $latest_object = @{}
@@ -241,7 +241,7 @@ function Update-java-CIConfig($ciRepo, $locationInDocRepo)
     }
     if ($metadata[$i].VersionPreview) {
       # Then fill in the preview 
-      if (!check_source_jar($metadata[$i].Package, $metadata[$i].GroupId, $metadata[$i].VersionGA)) {
+      if (!(check-source-jar -artifactId $metadata[$i].Package -groudId $metadata[$i].GroupId -version $metadata[$i].VersionPreview)) {
         continue
       }
       $preview_object = @{}
