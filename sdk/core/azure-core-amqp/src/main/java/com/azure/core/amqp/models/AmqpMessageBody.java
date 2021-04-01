@@ -22,6 +22,11 @@ import java.util.Objects;
  * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
  *
  * @see AmqpMessageBodyType
+ * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-types-v1.0-os.html#section-primitive-type-definitions" target="_blank">
+ *     Amqp primitive data type.</a>
+ * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format" target="_blank">
+ *     Amqp message format.</a>
+ *
  */
 public final class AmqpMessageBody {
     private final ClientLogger logger = new ClientLogger(AmqpMessageBody.class);
@@ -56,37 +61,42 @@ public final class AmqpMessageBody {
     }
 
     /**
-     * Creates an instance of {@link AmqpMessageBody} with given {@link Object value}.
+     * Creates an instance of {@link AmqpMessageBody} with the given {@link List sequence}. It supports only one
+     * {@code sequence} at present.
+     *
+     * @param sequence used to create an instance of {@link AmqpMessageBody}. A sequence can be {@link List} of
+     * {@link Object objects}. The {@link Object object} can be any of the AMQP supported primitive data type.
+     *
+     * @return newly created instance of {@link AmqpMessageBody}.
+     *
+     * @throws NullPointerException if {@code sequence} is null.
+     * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-types-v1.0-os.html#section-primitive-type-definitions" target="_blank">
+     *     Amqp primitive data type.</a>
+     */
+    public static AmqpMessageBody fromSequence(List<Object> sequence) {
+        Objects.requireNonNull(sequence, "'sequence' cannot be null.");
+        AmqpMessageBody body = new AmqpMessageBody();
+        body.sequence = sequence;
+        return body;
+    }
+
+    /**
+     * Creates an instance of {@link AmqpMessageBody} with given {@link Object value}. A value can be
+     * {@link Object object} which can be any of the AMQP supported primitive data type.
      *
      * @param value used to create an instance of {@link AmqpMessageBody}.
      *
-     * @return AmqpMessageBody newly created instance.
+     * @return newly created instance of {@link AmqpMessageBody}.
      *
      * @throws NullPointerException if {@code value} is null.
+     * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-types-v1.0-os.html#section-primitive-type-definitions" target="_blank">
+     *     Amqp primitive data type.</a>
      */
     public static AmqpMessageBody fromValue(Object value) {
         Objects.requireNonNull(value, "'value' cannot be null.");
         AmqpMessageBody body = new AmqpMessageBody();
         body.bodyType = AmqpMessageBodyType.VALUE;
         body.value = value;
-        return body;
-    }
-
-    /**
-     * Creates an instance of {@link AmqpMessageBody} with given {@link List sequence}. It supports only one
-     * {@code sequence} at present.
-     *
-     * @param sequence used to create an instance of {@link AmqpMessageBody}.
-     *
-     * @return AmqpMessageBody Newly created instance.
-     *
-     * @throws NullPointerException if {@code sequence} is null.
-     */
-    public static AmqpMessageBody fromSequence(List<Object> sequence) {
-        Objects.requireNonNull(sequence, "'sequence' cannot be null.");
-        AmqpMessageBody body = new AmqpMessageBody();
-        body.bodyType = AmqpMessageBodyType.SEQUENCE;
-        body.sequence = sequence;
         return body;
     }
 
@@ -148,30 +158,7 @@ public final class AmqpMessageBody {
     }
 
     /**
-     * Gets the AMQP Value set on this {@link AmqpMessageBody}. It can be any primitive AMQP Data types.
-     *
-     * <p><b>Client should test for {@link AmqpMessageBodyType} before calling corresponding get method. Get methods not
-     * corresponding to the type of the body throws exception.</b></p>
-     *
-     * <p><strong>How to check for {@link AmqpMessageBodyType}</strong></p>
-     * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
-     * @return value of this {@link AmqpMessageBody} instance.
-     *
-     * @throws IllegalArgumentException If {@link AmqpMessageBodyType} is not {@link AmqpMessageBodyType#DATA DATA}.
-     * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format" target="_blank">
-     *     Amqp Message Format.</a>
-     */
-    public Object getValue() {
-        if (bodyType != AmqpMessageBodyType.VALUE) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                String.format(Locale.US, "This method can be called if AMQP Message body type is 'VALUE'. "
-                        + "The actual type is [%s].", bodyType)));
-        }
-        return value;
-    }
-
-    /**
-     * Gets the unmodifiable AMQP Sequence set on this {@link AmqpMessageBody}.It support only one {@code sequence} at
+     * Gets the unmodifiable AMQP Sequence set on this {@link AmqpMessageBody}. It support only one {@code sequence} at
      * present.
      *
      * <p><b>Client should test for {@link AmqpMessageBodyType} before calling corresponding get method. Get methods not
@@ -181,9 +168,12 @@ public final class AmqpMessageBody {
      * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
      * @return sequence of this {@link AmqpMessageBody} instance.
      *
-     * @throws IllegalArgumentException If {@link AmqpMessageBodyType} is not {@link AmqpMessageBodyType#DATA DATA}.
-     * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format" target="_blank">
-     *     Amqp Message Format.</a>
+     * @throws IllegalArgumentException If {@link AmqpMessageBodyType} is not
+     *         {@link AmqpMessageBodyType#SEQUENCE SEQUENCE}.
+     * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-types-v1.0-os.html#section-primitive-type-definitions" target="_blank">
+     *     Amqp primitive data type.</a>
+     * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format" target="_blank">
+     *     Amqp message format.</a>
      */
     public List<Object> getSequence() {
         if (bodyType != AmqpMessageBodyType.SEQUENCE) {
@@ -193,5 +183,30 @@ public final class AmqpMessageBody {
         }
 
         return Collections.unmodifiableList(sequence);
+    }
+
+    /**
+     * Gets the AMQP value set on this {@link AmqpMessageBody} instance. It can be any of the primitive AMQP data type.
+     *
+     * <p><b>Client should test for {@link AmqpMessageBodyType} before calling corresponding get method. The 'Get'
+     * methods not corresponding to the type of the body throws exception.</b></p>
+     *
+     * <p><strong>How to check for {@link AmqpMessageBodyType}</strong></p>
+     * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
+     * @return value of this {@link AmqpMessageBody} instance.
+     *
+     * @throws IllegalArgumentException If {@link AmqpMessageBodyType} is not {@link AmqpMessageBodyType#VALUE VALUE}.
+     * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-types-v1.0-os.html#section-primitive-type-definitions" target="_blank">
+     *     Amqp primitive data type.</a>
+     * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format" target="_blank">
+     *     Amqp message format.</a>
+     */
+    public Object getValue() {
+        if (bodyType != AmqpMessageBodyType.VALUE) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format(Locale.US, "This method can be called if AMQP Message body type is 'VALUE'. "
+                    + "The actual type is [%s].", bodyType)));
+        }
+        return value;
     }
 }

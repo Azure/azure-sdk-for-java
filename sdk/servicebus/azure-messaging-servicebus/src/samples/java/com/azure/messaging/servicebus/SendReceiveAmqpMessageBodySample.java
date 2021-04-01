@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.models.AmqpMessageBody;
+import com.azure.core.amqp.models.AmqpMessageBodyType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.Disposable;
@@ -15,6 +16,18 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Sample demonstrates how to send and receive messages with {@link AmqpMessageBodyType type} of
+ * {@link AmqpMessageBodyType#SEQUENCE SEQUENCE} and {@link AmqpMessageBodyType#VALUE VALUE}.
+ * <p>
+ * Note that the message of type {@link AmqpMessageBodyType#SEQUENCE SEQUENCE} is limited to send and receive only one
+ * AmqpSequence only. And a {@link AmqpMessageBodyType#SEQUENCE SEQUENCE} can have list of Objects.
+ *
+ * The {@link Object object} can be any of the AMQP supported primitive data type.
+ *
+ * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-types-v1.0-os.html#section-primitive-type-definitions" target="_blank">
+ *     Amqp primitive data type.</a>
+ */
 public class SendReceiveAmqpMessageBodySample {
     String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
     String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
