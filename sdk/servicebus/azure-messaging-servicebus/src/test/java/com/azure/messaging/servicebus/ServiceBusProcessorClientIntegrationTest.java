@@ -6,7 +6,6 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -124,8 +123,8 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
             context.getFullyQualifiedNamespace(), context.getEntityPath());
     }
 
-    protected ServiceBusClientBuilder.ServiceBusProcessorClientBuilder getProcessorBuilder(boolean useCredentials, MessagingEntityType entityType,
-                                                                                           int entityIndex, boolean sharedConnection) {
+    protected ServiceBusClientBuilder.ServiceBusProcessorClientBuilder getProcessorBuilder(boolean useCredentials,
+        MessagingEntityType entityType, int entityIndex, boolean sharedConnection) {
 
         ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
         switch (entityType) {
@@ -147,7 +146,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
     }
 
     protected ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder getSessionProcessorBuilder(boolean useCredentials,
-       MessagingEntityType entityType, int entityIndex, boolean sharedConnection) {
+        MessagingEntityType entityType, int entityIndex, boolean sharedConnection) {
 
         ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
 
