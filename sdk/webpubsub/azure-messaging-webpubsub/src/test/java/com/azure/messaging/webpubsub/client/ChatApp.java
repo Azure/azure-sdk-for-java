@@ -4,8 +4,8 @@
 package com.azure.messaging.webpubsub.client;
 
 import com.azure.core.util.Configuration;
-import com.azure.messaging.webpubsub.WebPubSubClient;
 import com.azure.messaging.webpubsub.WebPubSubClientBuilder;
+import com.azure.messaging.webpubsub.WebPubSubServiceClient;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
@@ -27,7 +27,7 @@ public class ChatApp {
     private static final String WEB_SOCKET_URL = ENDPOINT + "/ws/client/?user=JGApp";
 
     private SimpleChatClient wsClient;
-    private WebPubSubClient webPubSubClient;
+    private WebPubSubServiceClient webPubsubServiceHubClient;
 
     private JRadioButton useWSBtn;
     private JRadioButton useWebPubSubBtn;
@@ -42,7 +42,7 @@ public class ChatApp {
         wsClient.connect(WEB_SOCKET_URL);
 
         // create an Azure Web Pub Sub client that connects to the default hub with no group specified
-        webPubSubClient = new WebPubSubClientBuilder()
+        webPubsubServiceHubClient = new WebPubSubClientBuilder()
             .connectionString(CONNECTION_STRING)
             .buildClient();
 
@@ -52,7 +52,7 @@ public class ChatApp {
                 super.windowClosing(e);
                 System.out.println("Closing connections...");
                 wsClient.closeConnection();
-//                webPubSubClient.closeConnection(); // TODO (jgiles) what connection ID to use?
+//                webPubsubServiceHubClient.closeConnection(); // TODO (jgiles) what connection ID to use?
                 System.out.println("Done closing connections");
                 System.exit(0);
             }
@@ -102,7 +102,7 @@ public class ChatApp {
             wsClient.sendMessage(message);
         } else {
             System.out.println("Sending using Web Pub Sub");
-            webPubSubClient.sendToAll(message);
+            webPubsubServiceHubClient.sendToAll(message);
         }
     }
 }

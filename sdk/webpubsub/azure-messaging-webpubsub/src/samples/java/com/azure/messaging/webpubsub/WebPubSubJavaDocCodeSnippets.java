@@ -16,7 +16,7 @@ public final class WebPubSubJavaDocCodeSnippets {
 
     public void createAsyncClientConnectionString() {
         // BEGIN: com.azure.messaging.webpubsub.webpubsubclientbuilder.connectionstring.async
-        WebPubSubAsyncClient client = new WebPubSubClientBuilder()
+        WebPubSubAsyncServiceClient client = new WebPubSubClientBuilder()
             .connectionString("<Insert connection string from Azure Portal>")
             .buildAsyncClient();
         // END: com.azure.messaging.webpubsub.webpubsubclientbuilder.connectionstring.async
@@ -24,7 +24,7 @@ public final class WebPubSubJavaDocCodeSnippets {
 
     public void createSyncClientConnectionString() {
         // BEGIN: com.azure.messaging.webpubsub.webpubsubclientbuilder.connectionstring.sync
-        WebPubSubClient client = new WebPubSubClientBuilder()
+        WebPubSubServiceClient client = new WebPubSubClientBuilder()
             .connectionString("<Insert connection string from Azure Portal>")
             .buildClient();
         // END: com.azure.messaging.webpubsub.webpubsubclientbuilder.connectionstring.sync
@@ -32,7 +32,7 @@ public final class WebPubSubJavaDocCodeSnippets {
 
     public void createAsyncClientCredentialEndpoint() {
         // BEGIN: com.azure.messaging.webpubsub.webpubsubclientbuilder.credential.endpoint.async
-        WebPubSubAsyncClient client = new WebPubSubClientBuilder()
+        WebPubSubAsyncServiceClient client = new WebPubSubClientBuilder()
             .credential(new AzureKeyCredential("<Insert key from Azure Portal>"))
             .endpoint("<Insert endpoint from Azure Portal>")
             .buildAsyncClient();
@@ -42,14 +42,14 @@ public final class WebPubSubJavaDocCodeSnippets {
     // ASYNC - HUB
 
     public void asyncSendToAllVarArgs() {
-        WebPubSubAsyncClient client = getAsyncClient();
+        WebPubSubAsyncServiceClient client = getAsyncClient();
         // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAll.String.String
         client.sendToAll("Hello world!").block();
         // END: com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAll.String.String
     }
 
     public void asyncSendToAllList() {
-        WebPubSubAsyncClient client = getAsyncClient();
+        WebPubSubAsyncServiceClient client = getAsyncClient();
         // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAll.String.List
         client.sendToAll("Hello world!").block();
         // END: com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAll.String.List
@@ -61,14 +61,14 @@ public final class WebPubSubJavaDocCodeSnippets {
     }
 
     public void asyncSendToAllBytesVarArgs() {
-        WebPubSubAsyncClient client = getAsyncClient();
+        WebPubSubAsyncServiceClient client = getAsyncClient();
         // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAllBytes.byte.String
         client.sendToAll("Hello world!".getBytes()).block();
         // END: com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAllBytes.byte.String
     }
 
     public void ayncSendToAllBytesList() {
-        WebPubSubAsyncClient client = getAsyncClient();
+        WebPubSubAsyncServiceClient client = getAsyncClient();
         // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAllBytes.byte.List
         client.sendToAll("Hello world!".getBytes()).block();
         // END: com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAllBytes.byte.List
@@ -83,17 +83,17 @@ public final class WebPubSubJavaDocCodeSnippets {
 
     public void asyncGroupClient() {
         // BEGIN: com.azure.messaging.webpubsub.webpubsubgroupasyncclient.instance
-        WebPubSubAsyncClient client = new WebPubSubClientBuilder()
+        WebPubSubAsyncServiceClient client = new WebPubSubClientBuilder()
             .connectionString("<Insert connection string from Azure Portal>")
             .hub("chat-portal")
             .buildAsyncClient();
 
-        WebPubSubGroupAsyncClient adminGroup = client.getGroupAsyncClient("admins");
+        WebPubSubAsyncGroup adminGroup = client.getAsyncGroup("admins");
         // END: com.azure.messaging.webpubsub.webpubsubgroupasyncclient.instance
     }
 
     public void groupAsyncSendToAllVarArgs() {
-        WebPubSubGroupAsyncClient groupClient = null;
+        WebPubSubAsyncGroup groupClient = null;
 
         // BEGIN: com.azure.messaging.webpubsub.webpubsubgroupasyncclient.sendToAll.String.String
         groupClient.sendToAll("Hello world!").block();
@@ -105,7 +105,7 @@ public final class WebPubSubJavaDocCodeSnippets {
     }
 
     public void groupAsyncSendToAllList() {
-        WebPubSubGroupAsyncClient groupClient = null;
+        WebPubSubAsyncGroup groupClient = null;
 
         // BEGIN: com.azure.messaging.webpubsub.webpubsubgroupasyncclient.sendToAll.String.List
         groupClient.sendToAll("Hello world!").block();
@@ -118,7 +118,7 @@ public final class WebPubSubJavaDocCodeSnippets {
     }
 
     public void groupAsyncSendToAllBytesVarArgs() {
-        WebPubSubGroupAsyncClient groupClient = null;
+        WebPubSubAsyncGroup groupClient = null;
 
         // BEGIN: com.azure.messaging.webpubsub.webpubsubgroupasyncclient.sendToAllBytes.byte.String
         groupClient.sendToAll("Hello world!".getBytes()).block();
@@ -130,7 +130,7 @@ public final class WebPubSubJavaDocCodeSnippets {
     }
 
     public void groupAsyncSendToAllBytesList() {
-        WebPubSubGroupAsyncClient groupClient = null;
+        WebPubSubAsyncGroup groupClient = null;
 
         // BEGIN: com.azure.messaging.webpubsub.webpubsubgroupasyncclient.sendToAllBytes.byte.List
         groupClient.sendToAll("Hello world!".getBytes()).block();
@@ -146,17 +146,17 @@ public final class WebPubSubJavaDocCodeSnippets {
 
     public void groupClient() {
         // BEGIN: com.azure.messaging.webpubsub.webpubsubgroupclient.instance
-        WebPubSubClient client = new WebPubSubClientBuilder()
+        WebPubSubServiceClient client = new WebPubSubClientBuilder()
             .connectionString("<Insert connection string from Azure Portal>")
             .hub("chat-portal")
             .buildClient();
 
-        WebPubSubGroupClient adminGroup = client.getGroupClient("admins");
+        WebPubSubGroup adminGroup = client.getGroup("admins");
         // END: com.azure.messaging.webpubsub.webpubsubgroupclient.instance
     }
 
     public void sendToAllVarArgs() {
-        WebPubSubClient client = getSyncClient();
+        WebPubSubServiceClient client = getSyncClient();
         // BEGIN: com.azure.messaging.webpubsub.webpubsubclient.sendToAll.String.String
         client.sendToAll("Hello world!");
         // END: com.azure.messaging.webpubsub.webpubsubclient.sendToAll.String.String
@@ -167,7 +167,7 @@ public final class WebPubSubJavaDocCodeSnippets {
     }
 
     public void sendToAllList() {
-        WebPubSubClient client = getSyncClient();
+        WebPubSubServiceClient client = getSyncClient();
         // BEGIN: com.azure.messaging.webpubsub.webpubsubclient.sendToAll.String.List
         client.sendToAll("Hello world!");
         // END: com.azure.messaging.webpubsub.webpubsubclient.sendToAll.String.List
@@ -179,7 +179,7 @@ public final class WebPubSubJavaDocCodeSnippets {
     }
 
     public void sendToAllBytesVarArgs() {
-        WebPubSubClient client = getSyncClient();
+        WebPubSubServiceClient client = getSyncClient();
         // BEGIN: com.azure.messaging.webpubsub.webpubsubclient.sendToAllBytes.byte.String
         client.sendToAll("Hello world!".getBytes());
         // END: com.azure.messaging.webpubsub.webpubsubclient.sendToAllBytes.byte.String
@@ -190,7 +190,7 @@ public final class WebPubSubJavaDocCodeSnippets {
     }
 
     public void sendToAllBytesList() {
-        WebPubSubClient client = getSyncClient();
+        WebPubSubServiceClient client = getSyncClient();
         // BEGIN: com.azure.messaging.webpubsub.webpubsubclient.sendToAllBytes.byte.List
         client.sendToAll("Hello world!".getBytes());
         // END: com.azure.messaging.webpubsub.webpubsubclient.sendToAllBytes.byte.List
@@ -204,7 +204,7 @@ public final class WebPubSubJavaDocCodeSnippets {
     // SYNC - GROUP
 
     public void groupSendToAllVarArgs() {
-        WebPubSubGroupClient client = null;
+        WebPubSubGroup client = null;
 
         // BEGIN: com.azure.messaging.webpubsub.webpubsubgroupclient.sendToAll.String.String
         client.sendToAll("Hello world!");
@@ -216,7 +216,7 @@ public final class WebPubSubJavaDocCodeSnippets {
     }
 
     public void groupSendToAllList() {
-        WebPubSubGroupClient client = null;
+        WebPubSubGroup client = null;
 
         // BEGIN: com.azure.messaging.webpubsub.webpubsubgroupclient.sendToAll.String.List
         client.sendToAll("Hello world!");
@@ -229,7 +229,7 @@ public final class WebPubSubJavaDocCodeSnippets {
     }
 
     public void groupSendToAllBytesVarArgs() {
-        WebPubSubGroupClient client = null;
+        WebPubSubGroup client = null;
 
         // BEGIN: com.azure.messaging.webpubsub.webpubsubgroupclient.sendToAllBytes.byte.String
         client.sendToAll("Hello world!".getBytes());
@@ -241,7 +241,7 @@ public final class WebPubSubJavaDocCodeSnippets {
     }
 
     public void groupSendToAllBytesList() {
-        WebPubSubGroupClient client = null;
+        WebPubSubGroup client = null;
 
         // BEGIN: com.azure.messaging.webpubsub.webpubsubgroupclient.sendToAllBytes.byte.List
         client.sendToAll("Hello world!".getBytes());
@@ -256,11 +256,11 @@ public final class WebPubSubJavaDocCodeSnippets {
 
     // MISC
 
-    private WebPubSubClient getSyncClient() {
+    private WebPubSubServiceClient getSyncClient() {
         return null;
     }
 
-    private WebPubSubAsyncClient getAsyncClient() {
+    private WebPubSubAsyncServiceClient getAsyncClient() {
         return null;
     }
 

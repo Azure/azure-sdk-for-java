@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.webpubsub.models.GetAuthenticationTokenOptions;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
@@ -19,8 +20,10 @@ import com.nimbusds.jwt.SignedJWT;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Map;
 
 import static java.time.LocalDateTime.now;
 
@@ -32,7 +35,7 @@ import static java.time.LocalDateTime.now;
  * @see WebPubSubClientBuilder
  */
 public final class WebPubSubAuthenticationPolicy implements HttpPipelinePolicy {
-    private final ClientLogger logger = new ClientLogger(WebPubSubAuthenticationPolicy.class);
+    private static final ClientLogger logger = new ClientLogger(WebPubSubAuthenticationPolicy.class);
 
     private final AzureKeyCredential credential;
 
@@ -52,24 +55,59 @@ public final class WebPubSubAuthenticationPolicy implements HttpPipelinePolicy {
         this.credential = credential;
     }
 
+    // TODO (jogiles) JavaDoc
+    public AzureKeyCredential getCredential() {
+        return credential;
+    }
+
     @Override
     public Mono<HttpResponse> process(final HttpPipelineCallContext context, final HttpPipelineNextPolicy next) {
+        final String audienceUrl = context.getHttpRequest().getUrl().toString();
+        final String token = getAuthenticationToken(audienceUrl, null, credential);
+
+        if (token != null) {
+            context.getHttpRequest().setHeader("Authorization", "Bearer " + token);
+        }
+
+        return next.process();
+    }
+
+    static String getAuthenticationToken(final String audienceUrl,
+                                         GetAuthenticationTokenOptions options,
+                                         final AzureKeyCredential credential) {
         try {
-            final JWTClaimsSet claims = new JWTClaimsSet.Builder()
-                  .audience(context.getHttpRequest().getUrl().toString())
-                  .expirationTime(Date.from(now().plusMinutes(10).atZone(ZoneId.systemDefault()).toInstant()))
-                  .build();
+            Duration expiresAfter = Duration.ofHours(1);
+            String userId = null;
+
+            if (options != null) {
+                expiresAfter = options.getExpiresAfter() == null ? expiresAfter : options.getExpiresAfter();
+                userId = options.getUserId();
+            }
+
+            final JWTClaimsSet.Builder claimsBuilder = new JWTClaimsSet.Builder()
+                .audience(audienceUrl)
+                .expirationTime(Date.from(now().plus(expiresAfter).atZone(ZoneId.systemDefault()).toInstant()));
+
+            if (userId != null && !userId.isEmpty()) {
+                claimsBuilder.subject(userId);
+            }
+
+            if (options != null) {
+                for (Map.Entry<String, Object> e : options.getClaims().entrySet()) {
+                    claimsBuilder.claim(e.getKey(), e.getValue());
+                }
+            }
+
+            final JWTClaimsSet claims = claimsBuilder.build();
 
             final JWSSigner signer = new MACSigner(credential.getKey().getBytes(StandardCharsets.UTF_8));
             final SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), claims);
             signedJWT.sign(signer);
-            final String token = signedJWT.serialize();
 
-            context.getHttpRequest().setHeader("Authorization", "Bearer " + token);
+            return signedJWT.serialize();
         } catch (final JOSEException e) {
-            return Mono.error(logger.logThrowableAsError(e));
+            logger.logThrowableAsError(e);
+            return null;
         }
-
-        return next.process();
     }
 }

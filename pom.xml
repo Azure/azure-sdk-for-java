@@ -108,6 +108,9 @@
 
         <!-- Text Analytics -->
         <module>sdk/textanalytics/azure-ai-textanalytics</module>
+
+        <!-- Web Pub Sub -->
+        <module>sdk/webpubsub/azure-messaging-webpubsub</module>
       </modules>
 
       <distributionManagement>
@@ -294,6 +297,10 @@
                   <group>
                     <title>Azure Text Analytics</title>
                     <packages>com.azure.ai.textanalytics*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Web Pub Sub</title>
+                    <package>com.azure.messaging.webpubsub*</package>
                   </group>
                 </groups>
                 <links>
@@ -483,6 +490,7 @@
                     -snippetpath ${project.basedir}/sdk/storage/azure-storage-file-share/src/samples/java
                     -snippetpath ${project.basedir}/sdk/storage/azure-storage-queue/src/samples/java
                     -snippetpath ${project.basedir}/sdk/textanalytics/azure-ai-textanalytics/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/webpubsub/azure-messaging-webpubsub/src/samples/java
                   </additionalOptions>
                   <aggregate>true</aggregate>
                   <doclint>all</doclint>

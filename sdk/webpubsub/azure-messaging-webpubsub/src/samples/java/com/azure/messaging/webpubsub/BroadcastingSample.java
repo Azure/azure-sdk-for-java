@@ -10,7 +10,7 @@ public class BroadcastingSample {
 
     public static void main(String[] args) {
         // build a sync client
-        WebPubSubClient chatHub = new WebPubSubClientBuilder()
+        WebPubSubServiceClient chatHub = new WebPubSubClientBuilder()
             .connectionString(CONNECTION_STRING)
             .hub("chat")
             .buildClient();
@@ -19,7 +19,7 @@ public class BroadcastingSample {
         chatHub.sendToAll("Hi there!");
 
         // send a text message to a particular group
-        WebPubSubGroupClient adminGroup = chatHub.getGroupClient("admin");
+        WebPubSubGroup adminGroup = chatHub.getGroup("admin");
         adminGroup.sendToAll("Hi admins!");
 
         // send binary data to the entire hub

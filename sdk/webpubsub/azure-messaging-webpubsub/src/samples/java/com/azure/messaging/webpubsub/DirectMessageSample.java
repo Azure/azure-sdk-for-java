@@ -10,7 +10,7 @@ public class DirectMessageSample {
 
     public static void main(String[] args) {
         // build a sync client
-        WebPubSubClient chatHub = new WebPubSubClientBuilder()
+        WebPubSubServiceClient chatHub = new WebPubSubClientBuilder()
             .connectionString(CONNECTION_STRING)
             .hub("chat")
             .buildClient();

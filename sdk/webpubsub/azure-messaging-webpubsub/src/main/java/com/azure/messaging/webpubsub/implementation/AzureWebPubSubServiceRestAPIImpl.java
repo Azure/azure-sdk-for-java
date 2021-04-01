@@ -74,16 +74,16 @@ public final class AzureWebPubSubServiceRestAPIImpl {
         return this.healthApis;
     }
 
-    /** The WebPubSubApisImpl object to access its operations. */
-    private final WebPubSubApisImpl webPubSubApis;
+    /** The WebPubSubsImpl object to access its operations. */
+    private final WebPubSubsImpl webPubSubs;
 
     /**
-     * Gets the WebPubSubApisImpl object to access its operations.
+     * Gets the WebPubSubsImpl object to access its operations.
      *
-     * @return the WebPubSubApisImpl object.
+     * @return the WebPubSubsImpl object.
      */
-    public WebPubSubApisImpl getWebPubSubApis() {
-        return this.webPubSubApis;
+    public WebPubSubsImpl getWebPubSubs() {
+        return this.webPubSubs;
     }
 
     /**
@@ -128,6 +128,6 @@ public final class AzureWebPubSubServiceRestAPIImpl {
         this.host = host;
         this.apiVersion = apiVersion;
         this.healthApis = new HealthApisImpl(this);
-        this.webPubSubApis = new WebPubSubApisImpl(this);
+        this.webPubSubs = new WebPubSubsImpl(this);
     }
 }

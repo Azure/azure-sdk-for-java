@@ -10,16 +10,16 @@ public class ManagingGroupsSample {
 
     public static void main(String[] args) {
         // build a sync client
-        WebPubSubClient chatHub = new WebPubSubClientBuilder()
+        WebPubSubServiceClient chatHub = new WebPubSubClientBuilder()
             .connectionString(CONNECTION_STRING)
             .hub("chat")
             .buildClient();
 
-        WebPubSubGroupClient adminGroup = chatHub.getGroupClient("admin");
+        WebPubSubGroup adminGroup = chatHub.getGroup("admin");
 
         // adding and removing users
         adminGroup.addUser("jogiles");
-        adminGroup.userExists("jogiles");
+        adminGroup.checkUserExists("jogiles");
         adminGroup.removeUser("another_user");
 
         // adding and removing specific connections

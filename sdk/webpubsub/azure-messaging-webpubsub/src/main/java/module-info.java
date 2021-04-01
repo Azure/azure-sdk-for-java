@@ -7,4 +7,5 @@ module com.azure.messaging.webpubsub {
     requires com.nimbusds.jose.jwt;
 
     exports com.azure.messaging.webpubsub;
+    exports com.azure.messaging.webpubsub.models;
 }
