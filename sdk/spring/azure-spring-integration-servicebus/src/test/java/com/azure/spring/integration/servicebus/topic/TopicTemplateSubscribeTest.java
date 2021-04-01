@@ -5,22 +5,27 @@ package com.azure.spring.integration.servicebus.topic;
 
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
+import com.azure.spring.integration.test.support.SubscribeByGroupOperationTest;
 import com.microsoft.azure.servicebus.IMessageHandler;
 import com.microsoft.azure.servicebus.SubscriptionClient;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
-import com.azure.spring.integration.test.support.SubscribeByGroupOperationTest;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.util.concurrent.ExecutorService;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ExtendWith(MockitoExtension.class)
 public class TopicTemplateSubscribeTest extends SubscribeByGroupOperationTest<ServiceBusTopicOperation> {
 
     @Mock
@@ -32,7 +37,7 @@ public class TopicTemplateSubscribeTest extends SubscribeByGroupOperationTest<Se
     @Mock
     private SubscriptionClient anotherSubscriptionClient;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         this.subscribeByGroupOperation = new ServiceBusTopicTemplate(mockClientFactory, new ServiceBusMessageConverter());
         when(this.mockClientFactory.getOrCreateSubscriptionClient(this.destination, this.consumerGroup))

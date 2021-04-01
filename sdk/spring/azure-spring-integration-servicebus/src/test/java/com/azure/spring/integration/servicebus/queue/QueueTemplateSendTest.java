@@ -8,19 +8,24 @@ import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConver
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
 import com.microsoft.azure.servicebus.IMessage;
 import com.microsoft.azure.servicebus.IQueueClient;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.util.concurrent.CompletableFuture;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @RunWith(MockitoJUnitRunner.class)
 public class QueueTemplateSendTest extends ServiceBusTemplateSendTest<ServiceBusQueueClientFactory, IQueueClient> {
 
-    @Before
+    @BeforeEach
     @Override
     public void setUp() {
         this.mockClientFactory = mock(ServiceBusQueueClientFactory.class);
@@ -30,5 +35,10 @@ public class QueueTemplateSendTest extends ServiceBusTemplateSendTest<ServiceBus
         when(this.mockClient.sendAsync(isA(IMessage.class))).thenReturn(future);
 
         this.sendOperation = new ServiceBusQueueTemplate(mockClientFactory, new ServiceBusMessageConverter());
+    }
+
+    @AfterEach
+    public void cleanUp() {
+        this.future = new CompletableFuture<>();
     }
 }

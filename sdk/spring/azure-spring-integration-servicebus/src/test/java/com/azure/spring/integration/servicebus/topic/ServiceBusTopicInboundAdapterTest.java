@@ -6,15 +6,21 @@ package com.azure.spring.integration.servicebus.topic;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusTopicInboundChannelAdapter;
 import com.azure.spring.integration.servicebus.topic.support.ServiceBusTopicTestOperation;
-import com.microsoft.azure.servicebus.SubscriptionClient;
 import com.azure.spring.integration.test.support.InboundChannelAdapterTest;
-import org.junit.runner.RunWith;
+import com.microsoft.azure.servicebus.SubscriptionClient;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ExtendWith(MockitoExtension.class)
 public class ServiceBusTopicInboundAdapterTest extends InboundChannelAdapterTest<ServiceBusTopicInboundChannelAdapter> {
 
     @Mock
@@ -23,6 +29,7 @@ public class ServiceBusTopicInboundAdapterTest extends InboundChannelAdapterTest
     @Mock
     SubscriptionClient subscriptionClient;
 
+    @BeforeEach
     @Override
     public void setUp() {
         when(this.clientFactory.getOrCreateSubscriptionClient(this.destination, this.consumerGroup))

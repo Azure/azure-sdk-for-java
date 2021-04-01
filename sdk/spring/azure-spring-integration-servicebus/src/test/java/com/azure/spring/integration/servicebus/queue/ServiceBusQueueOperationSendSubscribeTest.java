@@ -5,22 +5,27 @@ package com.azure.spring.integration.servicebus.queue;
 
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
 import com.azure.spring.integration.servicebus.queue.support.ServiceBusQueueTestOperation;
+import com.azure.spring.integration.test.support.SendSubscribeWithoutGroupOperationTest;
 import com.microsoft.azure.servicebus.IMessageHandler;
 import com.microsoft.azure.servicebus.IQueueClient;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
-import com.azure.spring.integration.test.support.SendSubscribeWithoutGroupOperationTest;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.util.concurrent.CompletableFuture;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ExtendWith(MockitoExtension.class)
 public class ServiceBusQueueOperationSendSubscribeTest
     extends SendSubscribeWithoutGroupOperationTest<ServiceBusQueueOperation> {
 
@@ -30,7 +35,7 @@ public class ServiceBusQueueOperationSendSubscribeTest
     @Mock
     IQueueClient queueClient;
 
-    @Before
+    @BeforeEach
     @Override
     public void setUp() {
         CompletableFuture<Void> future = new CompletableFuture<>();

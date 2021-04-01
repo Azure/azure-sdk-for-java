@@ -6,16 +6,19 @@ package com.azure.spring.integration.servicebus.queue;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusQueueInboundChannelAdapter;
 import com.azure.spring.integration.servicebus.queue.support.ServiceBusQueueTestOperation;
-import com.microsoft.azure.servicebus.IQueueClient;
 import com.azure.spring.integration.test.support.InboundChannelAdapterTest;
-import org.junit.runner.RunWith;
+import com.microsoft.azure.servicebus.IQueueClient;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ExtendWith(MockitoExtension.class)
 public class ServiceBusQueueInboundAdapterTest extends InboundChannelAdapterTest<ServiceBusQueueInboundChannelAdapter> {
 
     @Mock
@@ -24,6 +27,7 @@ public class ServiceBusQueueInboundAdapterTest extends InboundChannelAdapterTest
     @Mock
     IQueueClient queueClient;
 
+    @BeforeEach
     @Override
     public void setUp() {
         when(this.clientFactory.getOrCreateClient(anyString())).thenReturn(queueClient);

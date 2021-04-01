@@ -5,22 +5,24 @@ package com.azure.spring.integration.servicebus.topic;
 
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
 import com.azure.spring.integration.servicebus.topic.support.ServiceBusTopicTestOperation;
+import com.azure.spring.integration.test.support.SendSubscribeByGroupOperationTest;
 import com.microsoft.azure.servicebus.IMessageHandler;
 import com.microsoft.azure.servicebus.SubscriptionClient;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
-import com.azure.spring.integration.test.support.SendSubscribeByGroupOperationTest;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.concurrent.CompletableFuture;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ExtendWith(MockitoExtension.class)
 public class ServiceBusTopicOperationSendSubscribeTest
     extends SendSubscribeByGroupOperationTest<ServiceBusTopicOperation> {
 
@@ -30,7 +32,7 @@ public class ServiceBusTopicOperationSendSubscribeTest
     @Mock
     SubscriptionClient subscriptionClient;
 
-    @Before
+    @BeforeEach
     @Override
     public void setUp() {
         CompletableFuture<Void> future = new CompletableFuture<>();

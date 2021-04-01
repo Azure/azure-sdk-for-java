@@ -7,8 +7,9 @@ import com.azure.spring.servicebus.stream.binder.properties.ServiceBusExtendedBi
 import com.azure.spring.servicebus.stream.binder.properties.ServiceBusProducerProperties;
 import com.azure.spring.servicebus.stream.binder.provisioning.ServiceBusProducerDestination;
 import org.assertj.core.api.Assertions;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mockito;
 import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
 import org.springframework.cloud.stream.provisioning.ProducerDestination;
@@ -22,6 +23,7 @@ import org.springframework.messaging.MessageHandler;
 
 import static org.mockito.Mockito.mock;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ServiceBusMessageChannelBinderTest {
 
     @SuppressWarnings("unchecked")
@@ -40,7 +42,7 @@ public class ServiceBusMessageChannelBinderTest {
 
     private String destination = "dest";
 
-    @Before
+    @BeforeAll
     public void setUp() {
         producerProperties = new ExtendedProducerProperties<>(new ServiceBusProducerProperties());
         serviceBusMessageChannelBinder.setApplicationContext(applicationContext);

@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.servicebus.IMessage;
 import com.microsoft.azure.servicebus.Message;
 import com.microsoft.azure.servicebus.MessageBody;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.MessageHeaders;
 
@@ -30,9 +30,7 @@ import static com.azure.spring.integration.servicebus.converter.ServiceBusMessag
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.TIME_TO_LIVE;
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.TO;
 import static java.util.Collections.singletonList;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ServiceBusMessageConverterTest extends AzureMessageConverterTest<IMessage> {
     @Override
@@ -63,10 +61,10 @@ public class ServiceBusMessageConverterTest extends AzureMessageConverterTest<IM
             message.getHeaders().get(headerProperties, String.class));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void shouldRaiseIllegalIfPayloadNull() {
         IMessage message = new Message((MessageBody) null);
-        getConverter().toMessage(message, byte[].class);
+        assertThrows(IllegalArgumentException.class, () -> getConverter().toMessage(message, byte[].class));
     }
 
     @Test

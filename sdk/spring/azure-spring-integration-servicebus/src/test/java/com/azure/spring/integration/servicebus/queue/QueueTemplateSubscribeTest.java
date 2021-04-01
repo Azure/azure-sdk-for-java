@@ -5,14 +5,17 @@ package com.azure.spring.integration.servicebus.queue;
 
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
+import com.azure.spring.integration.test.support.SubscribeOperationTest;
 import com.microsoft.azure.servicebus.IMessageHandler;
 import com.microsoft.azure.servicebus.QueueClient;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
-import com.azure.spring.integration.test.support.SubscribeOperationTest;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.util.concurrent.ExecutorService;
 
@@ -20,7 +23,9 @@ import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ExtendWith(MockitoExtension.class)
 public class QueueTemplateSubscribeTest extends SubscribeOperationTest<ServiceBusQueueOperation> {
 
     @Mock
@@ -29,7 +34,7 @@ public class QueueTemplateSubscribeTest extends SubscribeOperationTest<ServiceBu
     @Mock
     private QueueClient queueClient;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         this.subscribeOperation = new ServiceBusQueueTemplate(mockClientFactory, new ServiceBusMessageConverter());
         when(this.mockClientFactory.getOrCreateClient(anyString())).thenReturn(queueClient);

@@ -5,18 +5,20 @@ package com.azure.spring.integration.test.support;
 
 import com.azure.spring.integration.core.converter.AzureMessageConverter;
 import com.azure.spring.integration.test.support.pojo.User;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class AzureMessageConverterTest<T> {
     protected String payload = "payload";
     protected String headerProperties = "headerProperties";
@@ -27,7 +29,7 @@ public abstract class AzureMessageConverterTest<T> {
 
     }
 
-    @Before
+    @BeforeAll
     public void setUp() {
         converter = getConverter();
         targetClass = getTargetClass();

@@ -3,17 +3,19 @@
 
 package com.azure.spring.integration.servicebus;
 
+import com.azure.spring.integration.core.api.SendOperation;
 import com.azure.spring.integration.servicebus.factory.ServiceBusSenderFactory;
+import com.azure.spring.integration.test.support.SendOperationTest;
 import com.microsoft.azure.servicebus.IMessage;
 import com.microsoft.azure.servicebus.IMessageSender;
-import com.azure.spring.integration.core.api.SendOperation;
-import com.azure.spring.integration.test.support.SendOperationTest;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInstance;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.*;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class ServiceBusTemplateSendTest<T extends ServiceBusSenderFactory, C extends IMessageSender>
     extends SendOperationTest<SendOperation> {
 
@@ -21,7 +23,7 @@ public abstract class ServiceBusTemplateSendTest<T extends ServiceBusSenderFacto
 
     protected C mockClient;
 
-    @Before
+    @BeforeEach
     public abstract void setUp();
 
     @Override

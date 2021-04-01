@@ -14,18 +14,23 @@ import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import com.azure.spring.integration.eventhub.support.EventHubTestOperation;
 import com.azure.spring.integration.test.support.pojo.User;
 import com.azure.spring.integration.test.support.reactor.SendSubscribeByGroupOperationTest;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.messaging.Message;
 import reactor.core.publisher.Mono;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+@ExtendWith(MockitoExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class EventHubOperationSendSubscribeTest extends SendSubscribeByGroupOperationTest<EventHubOperation> {
 
     @Mock
@@ -34,7 +39,7 @@ public class EventHubOperationSendSubscribeTest extends SendSubscribeByGroupOper
     @Mock
     PartitionContext partitionContext;
 
-    @Before
+    @BeforeEach
     @Override
     public void setUp() {
         when(this.eventContext.updateCheckpointAsync()).thenReturn(Mono.empty());

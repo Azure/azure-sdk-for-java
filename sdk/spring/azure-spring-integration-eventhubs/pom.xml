@@ -34,7 +34,7 @@
       <version>5.6.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
     </dependency>
 
-        <!-- Contains Azure Storage Blobs checkpoint store when using EventProcessorClient -->
+    <!-- Contains Azure Storage Blobs checkpoint store when using EventProcessorClient -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
@@ -56,9 +56,9 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.7.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <version>2.4.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

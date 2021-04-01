@@ -6,7 +6,8 @@ package com.azure.spring.integration.test.support;
 import com.google.common.collect.ImmutableMap;
 import com.azure.spring.integration.core.api.PartitionSupplier;
 import com.azure.spring.integration.core.api.SendOperation;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.NestedRuntimeException;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
@@ -14,9 +15,9 @@ import org.springframework.messaging.support.GenericMessage;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class SendOperationTest<O extends SendOperation> {
 
@@ -121,15 +122,16 @@ public abstract class SendOperationTest<O extends SendOperation> {
         verifyGetClientCreator(1);
     }
 
-    @Test(expected = NestedRuntimeException.class)
+    @Test
     public void testSendCreateSenderFailure() throws Throwable {
         whenSendWithException();
-
-        try {
-            this.sendOperation.sendAsync(destination, this.message, null).get();
-        } catch (ExecutionException e) {
-            throw e.getCause();
-        }
+        Assertions.assertThrows(NestedRuntimeException.class, () -> {
+            try {
+                this.sendOperation.sendAsync(destination, this.message, null).get();
+            } catch (ExecutionException e) {
+                throw e.getCause();
+            }
+        });
     }
 
     @Test

@@ -6,8 +6,10 @@ package com.azure.spring.eventhub.stream.binder;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProperties;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.Timeout;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.actuate.health.Health;
@@ -19,9 +21,9 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class EventHubBinderHealthIndicatorTest {
 
     @Mock
@@ -35,7 +37,7 @@ public class EventHubBinderHealthIndicatorTest {
 
     private EventHubHealthIndicator healthIndicator;
 
-    @Before
+    @BeforeAll
     public void init() {
         MockitoAnnotations.openMocks(this);
         when(clientFactory.getOrCreateProducerClient(anyString())).thenReturn(producerAsyncClient);
@@ -69,13 +71,13 @@ public class EventHubBinderHealthIndicatorTest {
         eventHubsInUse.put("eventhub-1", new EventHubMessageChannelBinder.EventHubInformation(null));
 
         when(binder.getEventHubsInUse()).thenReturn(eventHubsInUse);
-        when(producerAsyncClient.getEventHubProperties()).thenThrow(new IllegalStateException());
-
+        doThrow(new IllegalStateException()).when(producerAsyncClient).getEventHubProperties();
         final Health health = healthIndicator.health();
         assertThat(health.getStatus()).isEqualTo(Status.DOWN);
     }
 
-    @Test(timeout = 5000)
+    @Test
+    @Timeout(5000)
     public void testGetEventHubInfoTimeout() {
         healthIndicator.setTimeout(1);
 
