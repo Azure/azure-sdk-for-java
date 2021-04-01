@@ -46,7 +46,6 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  *
  * <p><strong>Create and run a session-enabled processor</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation}
- *
  * @see ServiceBusProcessorClientBuilder
  * @see ServiceBusSessionProcessorClientBuilder
  */
@@ -67,16 +66,15 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
 
     /**
      * Constructor to create a sessions-enabled processor.
-     *
      * @param sessionReceiverBuilder The session processor builder to create new instances of async clients.
-     * @param processMessage The message processing callback.
-     * @param processError The error handler.
-     * @param processorOptions Options to configure this instance of the processor.
+     * @param processMessage         The message processing callback.
+     * @param processError           The error handler.
+     * @param processorOptions       Options to configure this instance of the processor.
      */
     ServiceBusProcessorClient(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder sessionReceiverBuilder,
-        Consumer<ServiceBusReceivedMessageContext> processMessage,
-        Consumer<ServiceBusErrorContext> processError,
-        ServiceBusProcessorClientOptions processorOptions) {
+                              Consumer<ServiceBusReceivedMessageContext> processMessage,
+                              Consumer<ServiceBusErrorContext> processError,
+                              ServiceBusProcessorClientOptions processorOptions) {
         this.sessionReceiverBuilder = Objects.requireNonNull(sessionReceiverBuilder,
             "'sessionReceiverBuilder' cannot be null");
         this.processMessage = Objects.requireNonNull(processMessage, "'processMessage' cannot be null");
@@ -89,15 +87,14 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
 
     /**
      * Constructor to create a processor.
-     *
-     * @param receiverBuilder The processor builder to create new instances of async clients.
-     * @param processMessage The message processing callback.
-     * @param processError The error handler.
+     * @param receiverBuilder  The processor builder to create new instances of async clients.
+     * @param processMessage   The message processing callback.
+     * @param processError     The error handler.
      * @param processorOptions Options to configure this instance of the processor.
      */
     ServiceBusProcessorClient(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder,
-        Consumer<ServiceBusReceivedMessageContext> processMessage,
-        Consumer<ServiceBusErrorContext> processError, ServiceBusProcessorClientOptions processorOptions) {
+                              Consumer<ServiceBusReceivedMessageContext> processMessage,
+                              Consumer<ServiceBusErrorContext> processError, ServiceBusProcessorClientOptions processorOptions) {
         this.receiverBuilder = Objects.requireNonNull(receiverBuilder, "'receiverBuilder' cannot be null");
         this.processMessage = Objects.requireNonNull(processMessage, "'processMessage' cannot be null");
         this.processError = Objects.requireNonNull(processError, "'processError' cannot be null");
@@ -105,6 +102,18 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         this.asyncClient.set(receiverBuilder.buildAsyncClient());
         this.sessionReceiverBuilder = null;
         this.tracerProvider = processorOptions.getTracerProvider();
+    }
+
+    /**
+     * @return receiver options set by user;
+     */
+    ReceiverOptions getReceiverOptions() {
+        ReceiverOptions receiverOptions = null;
+        final ServiceBusReceiverAsyncClient client = asyncClient.get();
+        if (client != null) {
+            receiverOptions = client.getReceiverOptions();
+        }
+        return receiverOptions;
     }
 
     /**
@@ -177,7 +186,6 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     /**
      * Returns {@code true} if the processor is running. If the processor is stopped or closed, this method returns
      * {@code false}.
-     *
      * @return {@code true} if the processor is running; {@code false} otherwise.
      */
     public synchronized boolean isRunning() {
@@ -279,7 +287,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     }
 
     private Context startProcessTracingSpan(ServiceBusReceivedMessage receivedMessage, String entityPath,
-        String fullyQualifiedNamespace) {
+                                            String fullyQualifiedNamespace) {
 
         Object diagnosticId = receivedMessage.getApplicationProperties().get(DIAGNOSTIC_ID_KEY);
         if (diagnosticId == null || !tracerProvider.isEnabled()) {
@@ -301,7 +309,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     }
 
     private void abandonMessage(ServiceBusMessageContext serviceBusMessageContext,
-        ServiceBusReceiverAsyncClient receiverClient) {
+                                ServiceBusReceiverAsyncClient receiverClient) {
         try {
             receiverClient.abandon(serviceBusMessageContext.getMessage()).block();
         } catch (Exception exception) {

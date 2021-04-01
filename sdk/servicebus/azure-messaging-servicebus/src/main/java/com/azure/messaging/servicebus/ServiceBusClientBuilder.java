@@ -689,6 +689,24 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
+         * Sets the amount of time to continue auto-renewing the lock. Setting {@link Duration#ZERO} or {@code null}
+         * disables auto-renewal. For {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} mode,
+         * auto-renewal is disabled.
+         *
+         * @param maxAutoLockRenewDuration the amount of time to continue auto-renewing the lock. {@link Duration#ZERO}
+         * or {@code null} indicates that auto-renewal is disabled.
+         *
+         * @return The updated {@link ServiceBusSessionProcessorClientBuilder} object.
+         * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
+         */
+
+        public ServiceBusSessionProcessorClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
+            validateAndThrow(maxAutoLockRenewDuration);
+            sessionReceiverClientBuilder.maxAutoLockRenewDuration(maxAutoLockRenewDuration);
+            return this;
+        }
+
+        /**
          * Enables session processing roll-over by processing at most {@code maxConcurrentSessions}.
          *
          * @param maxConcurrentSessions Maximum number of concurrent sessions to process at any given time.
@@ -1208,6 +1226,24 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
+         * Sets the amount of time to continue auto-renewing the lock. Setting {@link Duration#ZERO} or {@code null}
+         * disables auto-renewal. For {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} mode,
+         * auto-renewal is disabled.
+         *
+         * @param maxAutoLockRenewDuration the amount of time to continue auto-renewing the lock. {@link Duration#ZERO}
+         * or {@code null} indicates that auto-renewal is disabled.
+         *
+         * @return The updated {@link ServiceBusProcessorClientBuilder} object.
+         * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
+         */
+
+        public ServiceBusProcessorClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
+            validateAndThrow(maxAutoLockRenewDuration);
+            serviceBusReceiverClientBuilder.maxAutoLockRenewDuration(maxAutoLockRenewDuration);
+            return this;
+        }
+
+        /**
          * Max concurrent messages that this processor should process. By default, this is set to 1.
          *
          * @param maxConcurrentCalls max concurrent messages that this processor should process.
@@ -1234,24 +1270,6 @@ public final class ServiceBusClientBuilder {
         public ServiceBusProcessorClientBuilder disableAutoComplete() {
             serviceBusReceiverClientBuilder.disableAutoComplete();
             processorClientOptions.setDisableAutoComplete(true);
-            return this;
-        }
-
-        /**
-         * Sets the amount of time to continue auto-renewing the lock. Setting {@link Duration#ZERO} or {@code null}
-         * disables auto-renewal. For {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} mode,
-         * auto-renewal is disabled.
-         *
-         * @param maxAutoLockRenewDuration the amount of time to continue auto-renewing the lock. {@link Duration#ZERO}
-         * or {@code null} indicates that auto-renewal is disabled.
-         *
-         * @return The updated {@link ServiceBusProcessorClientBuilder} object.
-         * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
-         */
-
-        public ServiceBusProcessorClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
-            validateAndThrow(maxAutoLockRenewDuration);
-            serviceBusReceiverClientBuilder.maxAutoLockRenewDuration(maxAutoLockRenewDuration);
             return this;
         }
 
