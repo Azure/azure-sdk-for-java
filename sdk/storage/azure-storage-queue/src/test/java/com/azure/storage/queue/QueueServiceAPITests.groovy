@@ -147,6 +147,27 @@ class QueueServiceAPITests extends APISpec {
         new QueuesSegmentOptions().setPrefix("queueserviceapitestslistqueues").setIncludeMetadata(true) | _
     }
 
+    def "List queues max results by page"() {
+        given:
+        def options = new QueuesSegmentOptions().setPrefix("queueserviceapitestslistqueues")
+        def queueName = testResourceName.randomName(methodName, 60)
+        LinkedList<QueueItem> testQueues = new LinkedList<>()
+        for (int i = 0; i < 3; i++) {
+            String version = Integer.toString(i)
+            QueueItem queue = new QueueItem().setName(queueName + version)
+            testQueues.add(queue)
+            primaryQueueServiceClient.createQueueWithResponse(queue.getName(), null, null, null)
+        }
+
+        when:
+        def queueListIter = primaryQueueServiceClient.listQueues(options, null, null).iterableByPage(2).iterator()
+
+        then:
+        for (def page : queueListIter) {
+            page.value.size() <= 2
+        }
+    }
+
     def "List empty queues"() {
         expect:
         // Queue was never made with the prefix, should expect no queues to be listed.

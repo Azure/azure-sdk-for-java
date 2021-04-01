@@ -5,6 +5,8 @@ package com.azure.spring.sample.messaging;
 
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import com.azure.spring.messaging.annotation.AzureMessageListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class WebController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(WebController.class);
     private static final String EVENT_HUB_NAME = "event-hub-name";
     private static final String CONSUMER_GROUP = "$Default";
 
@@ -31,6 +34,6 @@ public class WebController {
 
     @AzureMessageListener(destination = EVENT_HUB_NAME, group = CONSUMER_GROUP)
     public void handleMessage(User user) {
-        System.out.println(String.format("New message received: '%s'", user));
+        LOGGER.info("New message received: '{}'", user);
     }
 }

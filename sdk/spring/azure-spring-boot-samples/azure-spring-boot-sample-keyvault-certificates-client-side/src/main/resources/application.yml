@@ -1,0 +1,9 @@
+azure:
+  keyvault:
+    uri:                 # The URI to the Azure Key Vault used
+    tenant-id:           # The Tenant ID for your Azure Key Vault (needed if you are not using managed identity).
+    client-id:           # The Client ID that has been setup with access to your Azure Key Vault (needed if you are not using managed identity).
+    client-secret:       # The Client Secret that will be used for accessing your Azure Key Vault (needed if you are not using managed identity).
+    # managed-identity:  # The user-assigned managed identity object-id to use.
+server:
+  port: 8080
