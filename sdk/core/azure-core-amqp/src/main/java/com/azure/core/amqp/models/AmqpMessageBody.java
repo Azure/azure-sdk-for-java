@@ -76,6 +76,7 @@ public final class AmqpMessageBody {
     public static AmqpMessageBody fromSequence(List<Object> sequence) {
         Objects.requireNonNull(sequence, "'sequence' cannot be null.");
         AmqpMessageBody body = new AmqpMessageBody();
+        body.bodyType = AmqpMessageBodyType.SEQUENCE;
         body.sequence = sequence;
         return body;
     }
