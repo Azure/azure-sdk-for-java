@@ -62,7 +62,7 @@ io.projectreactor.netty:reactor-netty;1.0.4
 io.projectreactor:reactor-core;3.4.3
 io.reactivex:rxjava;1.3.8
 javax.annotation:javax.annotation-api;1.3.2
-javax.json:javax.json-api;1.1
+javax.json:javax.json-api;1.1.4
 javax.servlet:javax.servlet-api;4.0.1
 javax.validation:validation-api;2.0.1.Final
 mysql:mysql-connector-java;8.0.23
