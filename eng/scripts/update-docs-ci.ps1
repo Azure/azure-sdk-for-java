@@ -13,7 +13,7 @@ param (
   [Parameter(Mandatory = $true)]
   $Configs, # The configuration elements informing important locations within the cloned doc repo
 
-  [Parameter(Mandatory = $true)]
+  [Parameter(Mandatory = $false)]
   $ScriptRepository = "eng/common/scripts"# The eng/common script path
 )
 
