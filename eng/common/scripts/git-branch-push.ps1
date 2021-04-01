@@ -54,8 +54,8 @@ if ((git remote) -contains $RemoteName)
 }
 else 
 {
-  Write-Host "git remote add $RemoteName $GitUrl"
-  git remote add $RemoteName $GitUrl
+  Write-Host "git remote add $RemoteName $GitUrl -t $PRBranchName"
+  git remote add $RemoteName $GitUrl -t $PRBranchName
   if ($LASTEXITCODE -ne 0)
   {
     Write-Error "Unable to add remote LASTEXITCODE=$($LASTEXITCODE), see command output above."

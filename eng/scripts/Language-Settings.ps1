@@ -4,6 +4,7 @@ $PackageRepository = "Maven"
 $packagePattern = "*.pom"
 $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/java-packages.csv"
 $BlobStorageUrl = "https://azuresdkdocs.blob.core.windows.net/%24web?restype=container&comp=list&prefix=java%2F&delimiter=%2F"
+$MavenDownloadSite = "https://repo1.maven.org/maven2"
 
 function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory)
 {
@@ -196,7 +197,13 @@ function Get-java-GithubIoDocIndex()
   # Generate yml/md toc files and build site.
   GenerateDocfxTocContent -tocContent $tocContent -lang "Java"
 }
-
+function check_source_jar($artifactId, $groudId, $version) 
+{
+  $groudIdUrl = $groudId.Replace(".", "/")
+  $MavenDownloadUrl = "$MavenDownloadSite/$groudIdUrl/$artifactId/$artifactId"
+  $resp = Invoke-WebRequest $MavenDownloadUrl
+  
+}
 # a "package.json configures target packages for all the monikers in a Repository, it also has a slightly different
 # schema than the moniker-specific json config that is seen in python and js
 # details on CSV schema can be found here
@@ -220,10 +227,13 @@ function Update-java-CIConfig($ciRepo, $locationInDocRepo)
     if (!$metadata[$i].Package) {
       continue
     }
-    # Fill in the latest first
     if ($metadata[$i].VersionGA) {
+      # Fill in the latest first
+      if (!check_source_jar($metadata[$i].Package, $metadata[$i].GroupId, $metadata[$i].VersionGA)) {
+        continue
+      }
       $latest_object = @{}
-      $latest_object["packageDownloadUrl"] = "https://repo1.maven.org/maven2"
+      $latest_object["packageDownloadUrl"] = $MavenDownloadSite
       $latest_object["packageGroupId"] = $metadata[$i].GroupId
       $latest_object["packageArtifactId"] = $metadata[$i].Package
       $latest_object["packageVersion"] = $metadata[$i].VersionGA
@@ -231,8 +241,11 @@ function Update-java-CIConfig($ciRepo, $locationInDocRepo)
     }
     if ($metadata[$i].VersionPreview) {
       # Then fill in the preview 
+      if (!check_source_jar($metadata[$i].Package, $metadata[$i].GroupId, $metadata[$i].VersionGA)) {
+        continue
+      }
       $preview_object = @{}
-      $preview_object["packageDownloadUrl"] = "https://repo1.maven.org/maven2"
+      $preview_object["packageDownloadUrl"] = $MavenDownloadSite
       $preview_object["packageGroupId"] = $metadata[$i].GroupId
       $preview_object["packageArtifactId"] = $metadata[$i].Package
       $preview_object["packageVersion"] = $metadata[$i].VersionPreview
