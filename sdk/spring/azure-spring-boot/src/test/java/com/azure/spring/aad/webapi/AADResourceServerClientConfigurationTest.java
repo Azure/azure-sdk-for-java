@@ -18,7 +18,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AADResourceServerOboConfigurationTest {
+public class AADResourceServerClientConfigurationTest {
 
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
         .withPropertyValues(
@@ -29,7 +29,7 @@ public class AADResourceServerOboConfigurationTest {
     @Test
     public void testWithoutAnyPropertiesSet() {
         new WebApplicationContextRunner()
-            .withUserConfiguration(AADResourceServerOboConfiguration.class)
+            .withUserConfiguration(AADResourceServerClientConfiguration.class)
             .run(context -> {
                 assertThat(context).doesNotHaveBean(AADAuthenticationProperties.class);
                 assertThat(context).doesNotHaveBean(ClientRegistrationRepository.class);
@@ -40,7 +40,7 @@ public class AADResourceServerOboConfigurationTest {
     @Test
     public void testWithRequiredPropertiesSet() {
         new WebApplicationContextRunner()
-            .withUserConfiguration(AADResourceServerOboConfiguration.class)
+            .withUserConfiguration(AADResourceServerClientConfiguration.class)
             .withPropertyValues("azure.activedirectory.client-id=fake-client-id")
             .run(context -> {
                 assertThat(context).hasSingleBean(AADAuthenticationProperties.class);
@@ -52,30 +52,30 @@ public class AADResourceServerOboConfigurationTest {
     @Test
     public void testNotExistBearerTokenAuthenticationToken() {
         this.contextRunner
-            .withUserConfiguration(AADResourceServerOboConfiguration.class)
+            .withUserConfiguration(AADResourceServerClientConfiguration.class)
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .run(context -> assertThat(context).doesNotHaveBean(AADOAuth2OboAuthorizedClientRepository.class));
+            .run(context -> assertThat(context).doesNotHaveBean(AADResourceServerOAuth2AuthorizedClientRepository.class));
     }
 
     @Test
     public void testNotExistOAuth2LoginAuthenticationFilter() {
         this.contextRunner
-            .withUserConfiguration(AADResourceServerOboConfiguration.class)
+            .withUserConfiguration(AADResourceServerClientConfiguration.class)
             .withClassLoader(new FilteredClassLoader(OAuth2LoginAuthenticationFilter.class))
-            .run(context -> assertThat(context).doesNotHaveBean(AADOAuth2OboAuthorizedClientRepository.class));
+            .run(context -> assertThat(context).doesNotHaveBean(AADResourceServerOAuth2AuthorizedClientRepository.class));
     }
 
     @Test
     public void testOnlyGraphClient() {
         this.contextRunner
-            .withUserConfiguration(AADResourceServerOboConfiguration.class)
+            .withUserConfiguration(AADResourceServerClientConfiguration.class)
             .withPropertyValues("azure.activedirectory.authorization-clients.graph.scopes="
                 + "https://graph.microsoft.com/User.Read")
             .run(context -> {
                 final InMemoryClientRegistrationRepository oboRepo = context.getBean(
                     InMemoryClientRegistrationRepository.class);
                 final OAuth2AuthorizedClientRepository aadOboRepo = context.getBean(
-                    AADOAuth2OboAuthorizedClientRepository.class);
+                    AADResourceServerOAuth2AuthorizedClientRepository.class);
 
                 ClientRegistration graph = oboRepo.findByRegistrationId("graph");
                 Set<String> graphScopes = graph.getScopes();
@@ -90,7 +90,7 @@ public class AADResourceServerOboConfigurationTest {
     @Test
     public void testExistCustomAndGraphClient() {
         this.contextRunner
-            .withUserConfiguration(AADResourceServerOboConfiguration.class)
+            .withUserConfiguration(AADResourceServerClientConfiguration.class)
             .withPropertyValues("azure.activedirectory.authorization-clients.graph.scopes="
                 + "https://graph.microsoft.com/User.Read")
             .withPropertyValues("azure.activedirectory.authorization-clients.custom.scopes="
@@ -99,7 +99,7 @@ public class AADResourceServerOboConfigurationTest {
                 final InMemoryClientRegistrationRepository oboRepo = context.getBean(
                     InMemoryClientRegistrationRepository.class);
                 final OAuth2AuthorizedClientRepository aadOboRepo = context.getBean(
-                    AADOAuth2OboAuthorizedClientRepository.class);
+                    AADResourceServerOAuth2AuthorizedClientRepository.class);
 
                 ClientRegistration graph = oboRepo.findByRegistrationId("graph");
                 ClientRegistration custom = oboRepo.findByRegistrationId("custom");

@@ -14,6 +14,7 @@ import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizeBusinessCardsOptions;
 import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
+import com.azure.ai.formrecognizer.models.RecognizeIdDocumentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeInvoicesOptions;
 import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
@@ -35,12 +36,14 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.BUSINESS_CARD;
+import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.ID;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.INVOICE;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.RECEIPT;
 import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.CONTENT_GERMAN_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.TestUtils.FORM_JPG;
+import static com.azure.ai.formrecognizer.TestUtils.INVALID_IMAGE_URL_ERROR_CODE;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_SOURCE_URL_ERROR_CODE;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_URL;
 import static com.azure.ai.formrecognizer.TestUtils.NON_EXIST_MODEL_ID;
@@ -2039,5 +2042,198 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 Context.NONE);
             validateNetworkCallRecord("locale", "en-US");
         }, INVOICE_PDF);
+    }
+
+    // ID Document Recognition
+
+    /**
+     * Verifies license card data from a document using file data as source.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeLicenseCardData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeIdDocuments(data,
+                    dataLength,
+                    new RecognizeIdDocumentOptions()
+                        .setContentType(FormContentType.IMAGE_JPEG)
+                        .setPollInterval(durationTestMode),
+                    Context.NONE
+                    );
+            syncPoller.waitForCompletion();
+            validatePrebuiltResultData(syncPoller.getFinalResult(), false, ID);
+        }, LICENSE_CARD_JPG);
+    }
+
+    /**
+     * Verifies an exception thrown for a document using null data value.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeIDDocumentDataNullData(HttpClient httpClient,
+                                                FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerClient(httpClient, serviceVersion);
+        assertThrows(NullPointerException.class, () -> client.beginRecognizeIdDocuments(
+            null, 0));
+    }
+
+    /**
+     * Verifies content type will be auto detected when using custom form API with input stream data overload.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeLicenseDataWithContentTypeAutoDetection(HttpClient httpClient,
+                                                                 FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerClient(httpClient, serviceVersion);
+        localFilePathRunner((filePath, dataLength) -> {
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeIdDocuments(
+                getContentDetectionFileData(filePath),
+                dataLength,
+                new RecognizeIdDocumentOptions().setPollInterval(durationTestMode),
+                Context.NONE
+            );
+            syncPoller.waitForCompletion();
+            validatePrebuiltResultData(syncPoller.getFinalResult(), false, ID);
+        }, LICENSE_CARD_JPG);
+    }
+
+    /**
+     * Verifies ID Document data from a document using file data as source and including element reference details.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeLicenseDataIncludeFieldElements(HttpClient httpClient,
+                                                         FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeIdDocuments(data,
+                    dataLength,
+                    new RecognizeIdDocumentOptions()
+                        .setContentType(FormContentType.IMAGE_JPEG)
+                        .setFieldElementsIncluded(true)
+                        .setPollInterval(durationTestMode),
+                    Context.NONE);
+            syncPoller.waitForCompletion();
+            validatePrebuiltResultData(syncPoller.getFinalResult(), true, ID);
+        }, LICENSE_CARD_JPG);
+    }
+
+    /**
+     * Verifies ID Document data from a document using blank PDF.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled
+    public void recognizeIDDocumentWithBlankPdf(HttpClient httpClient,
+                                                FormRecognizerServiceVersion serviceVersion) {
+        // TODO: (service-bug) documentResult missing required fields
+        client = getFormRecognizerClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeIdDocuments(
+                    data,
+                    dataLength,
+                    new RecognizeIdDocumentOptions()
+                        .setContentType(FormContentType.APPLICATION_PDF)
+                        .setPollInterval(durationTestMode),
+                    Context.NONE
+                );
+            syncPoller.waitForCompletion();
+            validateBlankPdfResultData(syncPoller.getFinalResult());
+        }, BLANK_PDF);
+    }
+
+    /**
+     * Verify that ID Document recognition with damaged PDF file.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeIDDocumentFromDamagedPdf(HttpClient httpClient,
+                                                  FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerClient(httpClient, serviceVersion);
+        damagedPdfDataRunner((data, dataLength) -> {
+            HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
+                () -> client.beginRecognizeIdDocuments(
+                    data,
+                    dataLength,
+                    new RecognizeIdDocumentOptions()
+                        .setContentType(FormContentType.APPLICATION_PDF)
+                        .setPollInterval(durationTestMode),
+                    Context.NONE
+                ).getFinalResult());
+            FormRecognizerErrorInformation errorInformation =
+                (FormRecognizerErrorInformation) httpResponseException.getValue();
+            assertEquals(BAD_ARGUMENT_CODE, errorInformation.getErrorCode());
+        });
+    }
+
+    // ID Document - URL
+
+    /**
+     * Verifies business card data for a document using source as file url.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled
+    public void recognizeLicenseSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        // TODO: (enable once file uploaded on github)
+        client = getFormRecognizerClient(httpClient, serviceVersion);
+        urlRunner(sourceUrl -> {
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeIdDocumentsFromUrl(sourceUrl,
+                    new RecognizeIdDocumentOptions()
+                        .setPollInterval(durationTestMode),
+                    Context.NONE
+                );
+            syncPoller.waitForCompletion();
+            validatePrebuiltResultData(syncPoller.getFinalResult(), false, ID);
+        }, LICENSE_CARD_JPG);
+    }
+
+    /**
+     * Verifies that an exception is thrown for invalid source url.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeIDDocumentInvalidSourceUrl(HttpClient httpClient,
+                                                    FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerClient(httpClient, serviceVersion);
+        invalidSourceUrlRunner((invalidSourceUrl) -> {
+            HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
+                () -> client.beginRecognizeIdDocumentsFromUrl(
+                    invalidSourceUrl,
+                    new RecognizeIdDocumentOptions().setPollInterval(durationTestMode),
+                    Context.NONE
+                ).getFinalResult());
+            FormRecognizerErrorInformation errorInformation =
+                (FormRecognizerErrorInformation) errorResponseException.getValue();
+            assertEquals(INVALID_IMAGE_URL_ERROR_CODE, errorInformation.getErrorCode());
+        });
+    }
+
+    /**
+     * Verifies license ID data for a document using source as file url and include content when
+     * includeFieldElements is true.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled
+    public void recognizeIDDocumentFromUrlIncludeFieldElements(HttpClient httpClient,
+                                                               FormRecognizerServiceVersion serviceVersion) {
+        // TODO: (enable once file uploaded on github)
+        client = getFormRecognizerClient(httpClient, serviceVersion);
+        urlRunner(sourceUrl -> {
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeIdDocumentsFromUrl(sourceUrl,
+                    new RecognizeIdDocumentOptions().setFieldElementsIncluded(true)
+                        .setPollInterval(durationTestMode),
+                Context.NONE);
+            syncPoller.waitForCompletion();
+            validatePrebuiltResultData(syncPoller.getFinalResult(), true, ID);
+        }, LICENSE_CARD_JPG);
     }
 }

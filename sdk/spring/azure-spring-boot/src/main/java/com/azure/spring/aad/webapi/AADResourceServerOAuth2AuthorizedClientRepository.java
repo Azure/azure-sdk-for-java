@@ -3,11 +3,13 @@
 
 package com.azure.spring.aad.webapi;
 
+import com.azure.spring.aad.AADAuthorizationGrantType;
 import com.azure.spring.autoconfigure.aad.Constants;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.IClientSecret;
 import com.microsoft.aad.msal4j.MsalInteractionRequiredException;
+import com.microsoft.aad.msal4j.MsalServiceException;
 import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import com.microsoft.aad.msal4j.UserAssertion;
 import com.nimbusds.jwt.JWT;
@@ -18,6 +20,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
@@ -26,6 +29,7 @@ import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.server.resource.authentication.AbstractOAuth2TokenAuthenticationToken;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -42,19 +46,28 @@ import java.util.concurrent.ExecutionException;
 
 /**
  * <p>
- * OAuth2AuthorizedClientRepository for obo flow
+ * AADResourceServerOAuth2AuthorizedClientRepository for obo flow and client credential flow
  * </p>
  */
-public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedClientRepository {
+public class AADResourceServerOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClientRepository {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AADOAuth2OboAuthorizedClientRepository.class);
+    private static final Logger LOGGER =
+        LoggerFactory.getLogger(AADResourceServerOAuth2AuthorizedClientRepository.class);
 
     private static final String OBO_AUTHORIZEDCLIENT_PREFIX = "obo_authorizedclient_";
 
     private final ClientRegistrationRepository repository;
 
-    public AADOAuth2OboAuthorizedClientRepository(ClientRegistrationRepository repository) {
+    private final OAuth2AuthorizedClientService oAuth2AuthorizedClientService;
+
+    public AADResourceServerOAuth2AuthorizedClientRepository(ClientRegistrationRepository repository) {
+        this(null, repository);
+    }
+
+    public AADResourceServerOAuth2AuthorizedClientRepository(OAuth2AuthorizedClientService oAuth2AuthorizedClientService,
+                                                             ClientRegistrationRepository repository) {
         this.repository = repository;
+        this.oAuth2AuthorizedClientService = oAuth2AuthorizedClientService;
     }
 
     @Override
@@ -62,24 +75,35 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
     public <T extends OAuth2AuthorizedClient> T loadAuthorizedClient(String registrationId,
                                                                      Authentication authentication,
                                                                      HttpServletRequest request) {
+        ClientRegistration clientRegistration = repository.findByRegistrationId(registrationId);
+        if (clientRegistration == null) {
+            LOGGER.error("Not found the ClientRegistration, registrationId={}", registrationId);
+            return null;
+        }
+        if (AADAuthorizationGrantType.ON_BEHALF_OF.isSameGrantType(clientRegistration.getAuthorizationGrantType())) {
+            return loadOboAuthorizedClient(clientRegistration, registrationId, authentication, request);
+        } else if (AADAuthorizationGrantType.CLIENT_CREDENTIALS
+            .isSameGrantType(clientRegistration.getAuthorizationGrantType())) {
+            return this.oAuth2AuthorizedClientService.loadAuthorizedClient(registrationId, authentication.getName());
+        }
+        return null;
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    private <T extends OAuth2AuthorizedClient> T loadOboAuthorizedClient(ClientRegistration clientRegistration,
+                                                                         String registrationId,
+                                                                         Authentication authentication,
+                                                                         HttpServletRequest request) {
         String oboAuthorizedClientAttributeName = OBO_AUTHORIZEDCLIENT_PREFIX + registrationId;
         if (request.getAttribute(oboAuthorizedClientAttributeName) != null) {
             return (T) request.getAttribute(oboAuthorizedClientAttributeName);
         }
-
         if (!(authentication instanceof AbstractOAuth2TokenAuthenticationToken)) {
             throw new IllegalStateException("Unsupported token implementation " + authentication.getClass());
         }
-
         try {
             String accessToken = ((AbstractOAuth2TokenAuthenticationToken<?>) authentication).getToken()
-                                                                                             .getTokenValue();
-            ClientRegistration clientRegistration = repository.findByRegistrationId(registrationId);
-            if (clientRegistration == null) {
-                LOGGER.warn("Not found the ClientRegistration, registrationId={}", registrationId);
-                return null;
-            }
-
+                                                                                        .getTokenValue();
             OnBehalfOfParameters parameters = OnBehalfOfParameters
                 .builder(clientRegistration.getScopes(), new UserAssertion(accessToken))
                 .build();
@@ -108,6 +132,8 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
                     .map(Throwable::getCause)
                     .filter(e -> e instanceof MsalInteractionRequiredException)
                     .map(e -> (MsalInteractionRequiredException) e)
+                    .map(MsalServiceException::claims)
+                    .filter(StringUtils::hasText)
                     .ifPresent(this::replyForbiddenWithWwwAuthenticateHeader);
             LOGGER.error("Failed to load authorized client.", exception);
         } catch (InterruptedException | ParseException exception) {
@@ -117,13 +143,15 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
     }
 
     @Override
-    public void saveAuthorizedClient(OAuth2AuthorizedClient oAuth2AuthorizedClient, Authentication authentication,
-                                     HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+    public void saveAuthorizedClient(OAuth2AuthorizedClient oAuth2AuthorizedClient, Authentication principal,
+                                     HttpServletRequest request, HttpServletResponse response) {
+        this.oAuth2AuthorizedClientService.saveAuthorizedClient(oAuth2AuthorizedClient, principal);
     }
 
     @Override
-    public void removeAuthorizedClient(String clientRegistrationId, Authentication authentication,
-                                       HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+    public void removeAuthorizedClient(String clientRegistrationId, Authentication principal,
+                                       HttpServletRequest request, HttpServletResponse response) {
+        this.oAuth2AuthorizedClientService.removeAuthorizedClient(clientRegistrationId, principal.getName());
     }
 
     ConfidentialClientApplication createApp(ClientRegistration clientRegistration) {
@@ -155,17 +183,19 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
         return null;
     }
 
-    void replyForbiddenWithWwwAuthenticateHeader(MsalInteractionRequiredException exception) {
+    void replyForbiddenWithWwwAuthenticateHeader(String claims) {
         ServletRequestAttributes attr =
             (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpServletResponse response = attr.getResponse();
         Assert.notNull(response, "HttpServletResponse should not be null.");
         response.setStatus(HttpStatus.FORBIDDEN.value());
         Map<String, Object> parameters = new LinkedHashMap<>();
-        parameters.put(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS, exception.claims());
+        parameters.put(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS, claims);
         parameters.put(OAuth2ParameterNames.ERROR, OAuth2ErrorCodes.INVALID_TOKEN);
-        parameters.put(OAuth2ParameterNames.ERROR_DESCRIPTION, "The resource server requires higher privileges than "
+        parameters.put(OAuth2ParameterNames.ERROR_DESCRIPTION, "The resource server requires higher privileges "
+            + "than "
             + "provided by the access token");
         response.addHeader(HttpHeaders.WWW_AUTHENTICATE, Constants.BEARER_PREFIX + parameters.toString());
     }
+
 }
