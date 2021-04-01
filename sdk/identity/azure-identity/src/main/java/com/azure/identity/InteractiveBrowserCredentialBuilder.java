@@ -18,7 +18,6 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
     private Integer port;
     private boolean automaticAuthentication = true;
     private String redirectUrl;
-    String clientId = IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID;
 
     /**
      * Sets the port for the local HTTP server, for which {@code http://localhost:{port}} must be
@@ -122,6 +121,7 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      * @return a {@link InteractiveBrowserCredential} with the current configurations.
      */
     public InteractiveBrowserCredential build() {
+        String clientId = this.clientId != null ? this.clientId : IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID;
         ValidationUtil.validateInteractiveBrowserRedirectUrlSetup(getClass().getSimpleName(), port, redirectUrl);
         ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
                 put("clientId", clientId);

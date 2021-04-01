@@ -20,7 +20,6 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
         deviceCodeInfo -> System.out.println(deviceCodeInfo.getMessage());
 
     private boolean automaticAuthentication = true;
-    String clientId = IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID;
 
     /**
      * Sets the consumer to meet the device code challenge. If not specified a default consumer is used which prints
@@ -82,6 +81,7 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      * @return a {@link DeviceCodeCredential} with the current configurations.
      */
     public DeviceCodeCredential build() {
+        String clientId = this.clientId != null ? this.clientId : IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID;
         ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
                 put("clientId", clientId);
                 put("challengeConsumer", challengeConsumer);
