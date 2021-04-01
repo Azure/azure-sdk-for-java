@@ -96,7 +96,8 @@ public class ServiceBusMessage {
 
     /**
      * This constructor provides an easy way to create {@link ServiceBusMessage} with message body as AMQP Data types
-     * {@code SEQUENCE} and {@code VALUE}. It support sending and receiving of only one AMQP Sequence at present.
+     * {@code SEQUENCE} and {@code VALUE}.
+     * In case of {@code SEQUENCE}, tt support sending and receiving of only one AMQP Sequence at present.
      * If you are sending message with single byte array or String data, you can also use other constructor.
      *
      * @param amqpMessageBody amqp message body.

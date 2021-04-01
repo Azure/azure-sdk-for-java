@@ -81,8 +81,8 @@ public final class AmqpMessageBody {
     }
 
     /**
-     * Creates an instance of {@link AmqpMessageBody} with given {@link Object value}. A value can be
-     * {@link Object object} which can be any of the AMQP supported primitive data type.
+     * Creates an instance of {@link AmqpMessageBody} with the given {@link Object value}. A value can be any of the
+     * AMQP supported primitive data type.
      *
      * @param value used to create an instance of {@link AmqpMessageBody}.
      *
