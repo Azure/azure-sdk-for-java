@@ -41,7 +41,6 @@ import java.util.stream.Collectors;
  * </p>
  *
  * <p><strong>Creating an instance of DynamicRequest using the constructor</strong></p>
- * <p>
  * {@codesnippet com.azure.core.experimental.http.dynamicrequest.instantiation}
  *
  * <p>An Azure service client may provide methods that are specific to the service which returns an instance
@@ -52,14 +51,14 @@ import java.util.stream.Collectors;
  * Continuing with the pet store example, getting information about a pet requires making a
  * <a href="https://petstore.swagger.io/#/pet/getPetById">HTTP GET call
  * to the pet service</a> and setting the pet id in path param as shown in the sample below.
- * <p>
+ *
  * {@codesnippet com.azure.core.experimental.http.dynamicrequest.getrequest}
  *
  * <p><strong>Configuring the request with JSON body and making a HTTP POST request</strong></p>
  * To <a href="https://petstore.swagger.io/#/pet/addPet">add a new pet to the pet store</a>, a HTTP POST call should
  * be made to the service with the details of the pet that is to be added. The details of the pet are included as the
  * request body in JSON format.
- * <p>
+ *
  * The JSON structure for the request is defined as follows:
  * <pre>{@code
  * {
@@ -81,15 +80,14 @@ import java.util.stream.Collectors;
  *   "status": "available"
  * }
  * }</pre>
- * <p>
+ *
  * To create a concrete request, Json builder provided in javax package is used here for demonstration. However, any
  * other Json building library can be used to achieve similar results.
- * <p>
+ *
  * {@codesnippet com.azure.core.experimental.http.dynamicrequest.createjsonrequest}
  *
- * <p>
  * Now, this string representation of the JSON request can be set as body of DynamicRequest
- * <p>
+ *
  * {@codesnippet com.azure.core.experimental.http.dynamicrequest.postrequest}
  */
 public final class DynamicRequest {

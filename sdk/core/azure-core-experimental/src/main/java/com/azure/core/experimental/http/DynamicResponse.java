@@ -20,7 +20,6 @@ import com.azure.core.util.BinaryData;
  * </p>
  *
  * <p><strong>Reading the response of a HTTP GET request to get a pet from a petId</strong></p>
- * <p>
  * The structure of the JSON response for the GET call is shown below:
  * <pre>{@code
  * {
@@ -42,9 +41,9 @@ import com.azure.core.util.BinaryData;
  *   "status": "available"
  * }
  * }</pre>
- * <p>
+ *
  * This sample shows how to read the JSON response from the service and inspecting specific properties of the response.
- * <p>
+ *
  * {@codesnippet com.azure.core.experimental.http.dynamicresponse.readresponse}
  */
 public final class DynamicResponse {
