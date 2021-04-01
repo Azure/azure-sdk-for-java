@@ -48,7 +48,7 @@ private case class ItemsPartitionReader
 
   override def get(): InternalRow = {
     val objectNode = iterator.next()
-    CosmosRowConverter.fromObjectNodeToInternalRow(readSchema, objectNode)
+    CosmosRowConverter.fromObjectNodeToInternalRow(readSchema, objectNode, readConfig.jsonSchemaConversionMode)
   }
 
   override def close(): Unit = {
