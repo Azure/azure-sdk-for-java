@@ -230,7 +230,7 @@ class CosmosRowConverterSpec extends UnitSpec {
     val objectNode: ObjectNode = objectMapper.createObjectNode()
     objectNode.put(colName1, colVal1)
     objectNode.put(colName2, colVal2)
-    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
+    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, JsonSchemaConversionModes.Relaxed)
     row.getInt(0) shouldEqual colVal1
     row.getString(1) shouldEqual colVal2
   }
@@ -255,7 +255,7 @@ class CosmosRowConverterSpec extends UnitSpec {
     val schema = StructType(Seq(StructField(colName1, DoubleType), StructField(colName2, FloatType),
       StructField(colName3, LongType), StructField(colName4, DecimalType(precision = 2, scale = 2))))
 
-    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
+    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, JsonSchemaConversionModes.Relaxed)
     row.getDouble(0) shouldEqual colVal1
     row.getDouble(1) shouldEqual colVal2
     row.getLong(2) shouldEqual colVal3
@@ -282,11 +282,147 @@ class CosmosRowConverterSpec extends UnitSpec {
     val schema = StructType(Seq(StructField(colName1, DoubleType), StructField(colName2, FloatType),
       StructField(colName3, LongType), StructField(colName4, DecimalType(precision = 2, scale = 2))))
 
-    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
+    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, JsonSchemaConversionModes.Relaxed)
     row.getDouble(0) shouldEqual colVal1
     row.getFloat(1) shouldEqual colVal2
     row.getLong(2) shouldEqual colVal3
     row.getDecimal(3) shouldEqual colVal4
+  }
+
+  "invalid double in ObjectNode" should "throw in Strict mode" in {
+    val colName1 = "testCol1"
+    val colVal1 = "some invalid value"
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put(colName1, colVal1)
+    val schema = StructType(Seq(
+      StructField(colName1, DoubleType)))
+    try {
+      CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, JsonSchemaConversionModes.Strict)
+      fail("Should have thrown on invalid data")
+    }
+    catch {
+      case _: Exception => succeed
+    }
+  }
+
+  "invalid double in ObjectNode" should "return null in Relaxed mode" in {
+    val colName1 = "testCol1"
+    val colVal1 = "some invalid value"
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put(colName1, colVal1)
+    val schema = StructType(Seq(
+      StructField(colName1, DoubleType)))
+    try {
+      val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, JsonSchemaConversionModes.Relaxed)
+      row.isNullAt(0) shouldBe true
+    }
+    catch {
+      case _: Exception => fail("Should not throw in Relaxed mode")
+    }
+  }
+
+  "invalid long in ObjectNode" should "throw in Strict mode" in {
+    val colName1 = "testCol1"
+    val colVal1 = "some invalid value"
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put(colName1, colVal1)
+    val schema = StructType(Seq(
+      StructField(colName1, LongType)))
+    try {
+      CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, JsonSchemaConversionModes.Strict)
+      fail("Should have thrown on invalid data")
+    }
+    catch {
+      case _: Exception => succeed
+    }
+  }
+
+  "invalid long in ObjectNode" should "return null in Relaxed mode" in {
+    val colName1 = "testCol1"
+    val colVal1 = "some invalid value"
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put(colName1, colVal1)
+    val schema = StructType(Seq(
+      StructField(colName1, LongType)))
+    try {
+      val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, JsonSchemaConversionModes.Relaxed)
+      row.isNullAt(0) shouldBe true
+    }
+    catch {
+      case _: Exception => fail("Should not throw in Relaxed mode")
+    }
+  }
+
+  "invalid float in ObjectNode" should "throw in Strict mode" in {
+    val colName1 = "testCol1"
+    val colVal1 = "some invalid value"
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put(colName1, colVal1)
+    val schema = StructType(Seq(
+      StructField(colName1, FloatType)))
+    try {
+      CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, JsonSchemaConversionModes.Strict)
+      fail("Should have thrown on invalid data")
+    }
+    catch {
+      case _: Exception => succeed
+    }
+  }
+
+  "invalid float in ObjectNode" should "return null in Relaxed mode" in {
+    val colName1 = "testCol1"
+    val colVal1 = "some invalid value"
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put(colName1, colVal1)
+    val schema = StructType(Seq(
+      StructField(colName1, FloatType)))
+    try {
+      val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, JsonSchemaConversionModes.Relaxed)
+      row.isNullAt(0) shouldBe true
+    }
+    catch {
+      case _: Exception => fail("Should not throw in Relaxed mode")
+    }
+  }
+
+  "invalid decimal in ObjectNode" should "throw in Strict mode" in {
+    val colName1 = "testCol1"
+    val colVal1 = "some invalid value"
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put(colName1, colVal1)
+    val schema = StructType(Seq(
+      StructField(colName1, DecimalType(precision = 2, scale = 2))))
+    try {
+      CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, JsonSchemaConversionModes.Strict)
+      fail("Should have thrown on invalid data")
+    }
+    catch {
+      case _: Exception => succeed
+    }
+  }
+
+  "invalid decimal in ObjectNode" should "return null in Relaxed mode" in {
+    val colName1 = "testCol1"
+    val colVal1 = "some invalid value"
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put(colName1, colVal1)
+    val schema = StructType(Seq(
+      StructField(colName1, DecimalType(precision = 2, scale = 2))))
+    try {
+      val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, JsonSchemaConversionModes.Relaxed)
+      row.isNullAt(0) shouldBe true
+    }
+    catch {
+      case _: Exception => fail("Should not throw in Relaxed mode")
+    }
   }
 
   "null type in ObjectNode" should "translate to Row" in {
@@ -301,7 +437,7 @@ class CosmosRowConverterSpec extends UnitSpec {
     objectNode.put(colName1, colVal1)
     objectNode.put(colName2, colVal2)
 
-    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
+    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, JsonSchemaConversionModes.Relaxed)
     row.isNullAt(0) shouldBe true
     row.getString(1) shouldEqual colVal2
   }
@@ -316,7 +452,7 @@ class CosmosRowConverterSpec extends UnitSpec {
     val objectNode: ObjectNode = objectMapper.createObjectNode()
     objectNode.put(colName1, colVal1)
 
-    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
+    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, JsonSchemaConversionModes.Relaxed)
     row.isNullAt(1) shouldBe true
   }
 
@@ -330,7 +466,7 @@ class CosmosRowConverterSpec extends UnitSpec {
     colVal1.foreach(elem => arrayObjectNode.add(elem))
     objectNode.set(colName1, arrayObjectNode)
 
-    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
+    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, JsonSchemaConversionModes.Relaxed)
     val arrayNode = row.get(0).asInstanceOf[Array[Any]]
     arrayNode.length shouldEqual colVal1.length
     for (i <- 0 until colVal1.length)
@@ -350,7 +486,7 @@ class CosmosRowConverterSpec extends UnitSpec {
     objectNode.set(colName1, arrayObjectNode)
     objectNode.set(colName2, objectNode.binaryNode(colVal2))
 
-    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
+    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, JsonSchemaConversionModes.Relaxed)
     val nodeAsBinary = row.get(0).asInstanceOf[Array[Byte]]
     for (i <- 0 until colVal1.length)
       nodeAsBinary(i) shouldEqual colVal1(i)
@@ -387,7 +523,7 @@ class CosmosRowConverterSpec extends UnitSpec {
       StructField(colName2, TimestampType),
       StructField(colName3, TimestampType),
       StructField(colName4, TimestampType)))
-    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
+    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, JsonSchemaConversionModes.Relaxed)
     val asTime = row.get(0).asInstanceOf[Timestamp]
     asTime.compareTo(colVal1AsTime) shouldEqual 0
     val asTime2 = row.get(1).asInstanceOf[Timestamp]
@@ -396,6 +532,40 @@ class CosmosRowConverterSpec extends UnitSpec {
     asTime3.compareTo(colVal3AsTime) shouldEqual 0
     val asTime4 = row.get(3).asInstanceOf[Timestamp]
     asTime4.compareTo(colVal4AsTime) shouldEqual 0
+  }
+
+  "invalid time in ObjectNode" should "throw in Strict mode" in {
+    val colName1 = "testCol1"
+    val colVal1 = "some invalid value"
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put(colName1, colVal1)
+    val schema = StructType(Seq(
+      StructField(colName1, TimestampType)))
+    try {
+      CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, JsonSchemaConversionModes.Strict)
+      fail("Should have thrown on invalid data")
+    }
+    catch {
+      case _: Exception => succeed
+    }
+  }
+
+  "invalid time in ObjectNode" should "return null in Relaxed mode" in {
+    val colName1 = "testCol1"
+    val colVal1 = "some invalid value"
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put(colName1, colVal1)
+    val schema = StructType(Seq(
+      StructField(colName1, TimestampType)))
+    try {
+      val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, JsonSchemaConversionModes.Relaxed)
+      row.isNullAt(0) shouldBe true
+    }
+    catch {
+      case _: Exception => fail("Should not throw in Relaxed mode")
+    }
   }
 
   "date in ObjectNode" should "translate to Row" in {
@@ -424,7 +594,7 @@ class CosmosRowConverterSpec extends UnitSpec {
       StructField(colName2, DateType),
       StructField(colName3, DateType),
       StructField(colName4, DateType)))
-    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
+    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, JsonSchemaConversionModes.Relaxed)
     val asTime = row.get(0).asInstanceOf[Date]
     asTime.compareTo(colVal1AsTime) shouldEqual 0
     val asTime2 = row.get(1).asInstanceOf[Date]
@@ -433,6 +603,40 @@ class CosmosRowConverterSpec extends UnitSpec {
     asTime3.compareTo(colVal3AsTime) shouldEqual 0
     val asTime4 = row.get(3).asInstanceOf[Date]
     asTime4.compareTo(colVal4AsTime) shouldEqual 0
+  }
+
+  "invalid date in ObjectNode" should "throw in Strict mode" in {
+    val colName1 = "testCol1"
+    val colVal1 = "some invalid value"
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put(colName1, colVal1)
+    val schema = StructType(Seq(
+      StructField(colName1, DateType)))
+    try {
+      CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, JsonSchemaConversionModes.Strict)
+      fail("Should have thrown on invalid data")
+    }
+    catch {
+      case _: Exception => succeed
+    }
+  }
+
+  "invalid date in ObjectNode" should "return null in Relaxed mode" in {
+    val colName1 = "testCol1"
+    val colVal1 = "some invalid value"
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put(colName1, colVal1)
+    val schema = StructType(Seq(
+      StructField(colName1, DateType)))
+    try {
+      val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, JsonSchemaConversionModes.Relaxed)
+      row.isNullAt(0) shouldBe true
+    }
+    catch {
+      case _: Exception => fail("Should not throw in Relaxed mode")
+    }
   }
 
   "nested in ObjectNode" should "translate to Row" in {
@@ -447,7 +651,7 @@ class CosmosRowConverterSpec extends UnitSpec {
     objectNode.put(colName2, colVal2)
     val schema = StructType(Seq(StructField(colName1, StructType(Seq(StructField(colName1, StringType)))),
       StructField(colName2, StringType)))
-    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
+    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, JsonSchemaConversionModes.Relaxed)
     val asStruct = row.getStruct(0)
     asStruct.getString(0) shouldEqual colVal1
     row.getString(1) shouldEqual colVal2
@@ -460,7 +664,7 @@ class CosmosRowConverterSpec extends UnitSpec {
     val objectNode: ObjectNode = objectMapper.createObjectNode()
     objectNode.put(colName1, colVal1)
     val schema = StructType(Seq(StructField(CosmosTableSchemaInferrer.RawJsonBodyAttributeName, StringType)))
-    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
+    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, JsonSchemaConversionModes.Relaxed)
     row.getString(0) shouldEqual objectNode.toString
   }
 
@@ -474,14 +678,50 @@ class CosmosRowConverterSpec extends UnitSpec {
     val schemaIncorrectType = StructType(Seq(StructField(CosmosTableSchemaInferrer.LsnAttributeName, StringType)))
     schemaIncorrectType.size shouldEqual 1
     schemaIncorrectType.head.dataType shouldEqual StringType
-    val rowIncorrectType = CosmosRowConverter.fromObjectNodeToRow(schemaIncorrectType, objectNode)
+    val rowIncorrectType = CosmosRowConverter.fromObjectNodeToRow(schemaIncorrectType,
+                                                                  objectNode,
+                                                                  JsonSchemaConversionModes.Relaxed)
     rowIncorrectType.getString(0) shouldEqual "12345"
 
     val schema = StructType(Seq(StructField(CosmosTableSchemaInferrer.LsnAttributeName, LongType)))
     schema.size shouldEqual 1
     schema.head.dataType shouldEqual LongType
-    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
+    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, JsonSchemaConversionModes.Relaxed)
     row.getLong(0) shouldEqual 12345
+  }
+
+  "unknown mapping" should "throw in Strict mode" in {
+    val colName1 = "testCol1"
+    val colVal1 = "some invalid value"
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put(colName1, colVal1)
+    val schema = StructType(Seq(
+      StructField(colName1, BinaryType)))
+    try {
+      CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, JsonSchemaConversionModes.Strict)
+      fail("Should have thrown on invalid data")
+    }
+    catch {
+      case _: Exception => succeed
+    }
+  }
+
+  "unknown mapping" should "return null in Relaxed mode" in {
+    val colName1 = "testCol1"
+    val colVal1 = "some invalid value"
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put(colName1, colVal1)
+    val schema = StructType(Seq(
+      StructField(colName1, BinaryType)))
+    try {
+      val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, JsonSchemaConversionModes.Relaxed)
+      row.isNullAt(0) shouldBe true
+    }
+    catch {
+      case _: Exception => fail("Should not throw in Relaxed mode")
+    }
   }
 
   //scalastyle:on null
