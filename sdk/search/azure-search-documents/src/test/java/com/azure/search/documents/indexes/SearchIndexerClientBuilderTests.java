@@ -139,7 +139,7 @@ public class SearchIndexerClientBuilderTests {
 
     static HttpRequest request(String url) throws MalformedURLException {
         return new HttpRequest(HttpMethod.HEAD,
-            new URL(url), new HttpHeaders().put("Content-Length", "0"),
+            new URL(url), new HttpHeaders().set("Content-Length", "0"),
             Flux.empty());
     }
 
@@ -166,6 +166,7 @@ public class SearchIndexerClientBuilderTests {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void clientOptionsIsPreferredOverLogOptions() {
         SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
@@ -176,13 +177,14 @@ public class SearchIndexerClientBuilderTests {
             .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
             .httpClient(httpRequest -> {
                 assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("aNewApplication"));
-                return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
+                return Mono.just(new MockHttpResponse(httpRequest, 400));
             })
             .buildClient();
 
-        assertThrows(RuntimeException.class, () -> searchIndexerClient.getIndexer("anindexer"));
+        assertThrows(HttpResponseException.class, () -> searchIndexerClient.getIndexer("anindexer"));
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void applicationIdFallsBackToLogOptions() {
         SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
@@ -192,11 +194,11 @@ public class SearchIndexerClientBuilderTests {
             .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
             .httpClient(httpRequest -> {
                 assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("anOldApplication"));
-                return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
+                return Mono.just(new MockHttpResponse(httpRequest, 400));
             })
             .buildClient();
 
-        assertThrows(RuntimeException.class, () -> searchIndexerClient.getIndexer("anindexer"));
+        assertThrows(HttpResponseException.class, () -> searchIndexerClient.getIndexer("anindexer"));
     }
 
     @Test
@@ -209,10 +211,10 @@ public class SearchIndexerClientBuilderTests {
             .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
             .httpClient(httpRequest -> {
                 assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
-                return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
+                return Mono.just(new MockHttpResponse(httpRequest, 400));
             })
             .buildClient();
 
-        assertThrows(RuntimeException.class, () -> searchIndexerClient.getIndexer("anindexer"));
+        assertThrows(HttpResponseException.class, () -> searchIndexerClient.getIndexer("anindexer"));
     }
 }
