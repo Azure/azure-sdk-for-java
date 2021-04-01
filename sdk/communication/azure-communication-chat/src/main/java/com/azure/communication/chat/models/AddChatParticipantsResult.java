@@ -4,36 +4,34 @@
 
 package com.azure.communication.chat.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Result of the add chat participants operation. */
-@Fluent
+@Immutable
 public final class AddChatParticipantsResult {
     /*
-     * Errors encountered during the addition of the chat participant to the
-     * chat thread.
+     * The participants that failed to be added to the chat thread.
      */
-    @JsonProperty(value = "errors")
-    private AddChatParticipantsErrors errors;
+    @JsonProperty(value = "invalidParticipants", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ChatError> invalidParticipants;
 
     /**
-     * Get the errors property: Errors encountered during the addition of the chat participant to the chat thread.
      *
-     * @return the errors value.
+     * @param invalidParticipants List of errors relating to invalid participants
      */
-    public AddChatParticipantsErrors getErrors() {
-        return this.errors;
+    public AddChatParticipantsResult(List<ChatError> invalidParticipants) {
+        this.invalidParticipants = invalidParticipants;
     }
 
     /**
-     * Set the errors property: Errors encountered during the addition of the chat participant to the chat thread.
+     * Get the invalidParticipants property: The participants that failed to be added to the chat thread.
+     * The 'target' property of each ChatError will reference the failed participant.
      *
-     * @param errors the errors value to set.
-     * @return the AddChatParticipantsResult object itself.
+     * @return the invalidParticipants value.
      */
-    public AddChatParticipantsResult setErrors(AddChatParticipantsErrors errors) {
-        this.errors = errors;
-        return this;
+    public List<ChatError> getInvalidParticipants() {
+        return this.invalidParticipants;
     }
 }

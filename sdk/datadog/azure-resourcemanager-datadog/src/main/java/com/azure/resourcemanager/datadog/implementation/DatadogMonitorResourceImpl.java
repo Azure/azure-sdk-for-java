@@ -7,8 +7,8 @@ package com.azure.resourcemanager.datadog.implementation;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.datadog.MicrosoftDatadogManager;
 import com.azure.resourcemanager.datadog.fluent.models.DatadogApiKeyInner;
 import com.azure.resourcemanager.datadog.fluent.models.DatadogMonitorResourceInner;
 import com.azure.resourcemanager.datadog.models.DatadogApiKey;
@@ -29,7 +29,7 @@ public final class DatadogMonitorResourceImpl
     implements DatadogMonitorResource, DatadogMonitorResource.Definition, DatadogMonitorResource.Update {
     private DatadogMonitorResourceInner innerObject;
 
-    private final MicrosoftDatadogManager serviceManager;
+    private final com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -68,6 +68,10 @@ public final class DatadogMonitorResourceImpl
         return this.innerModel().identity();
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -80,7 +84,7 @@ public final class DatadogMonitorResourceImpl
         return this.innerObject;
     }
 
-    private MicrosoftDatadogManager manager() {
+    private com.azure.resourcemanager.datadog.MicrosoftDatadogManager manager() {
         return this.serviceManager;
     }
 
@@ -113,7 +117,7 @@ public final class DatadogMonitorResourceImpl
         return this;
     }
 
-    DatadogMonitorResourceImpl(String name, MicrosoftDatadogManager serviceManager) {
+    DatadogMonitorResourceImpl(String name, com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = new DatadogMonitorResourceInner();
         this.serviceManager = serviceManager;
         this.monitorName = name;
@@ -144,7 +148,9 @@ public final class DatadogMonitorResourceImpl
         return this;
     }
 
-    DatadogMonitorResourceImpl(DatadogMonitorResourceInner innerObject, MicrosoftDatadogManager serviceManager) {
+    DatadogMonitorResourceImpl(
+        DatadogMonitorResourceInner innerObject,
+        com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

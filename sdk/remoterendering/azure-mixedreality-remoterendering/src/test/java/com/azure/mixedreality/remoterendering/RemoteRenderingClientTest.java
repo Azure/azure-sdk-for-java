@@ -46,7 +46,8 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
 
         String conversionId = getRandomId("conversionTest");
 
-        SyncPoller<AssetConversion, AssetConversion> conversionPoller = client.beginConversion(conversionId, conversionOptions);
+        SyncPoller<AssetConversion, AssetConversion> conversionPoller = setSyncPollerPollInterval(client
+            .beginConversion(conversionId, conversionOptions));
 
         AssetConversion conversion0 = conversionPoller.poll().getValue();
 
@@ -116,7 +117,8 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
 
         String conversionId = getRandomId("failedConversionMissingAsset");
 
-        SyncPoller<AssetConversion, AssetConversion> conversionPoller = client.beginConversion(conversionId, conversionOptions);
+        SyncPoller<AssetConversion, AssetConversion> conversionPoller = setSyncPollerPollInterval(client
+            .beginConversion(conversionId, conversionOptions));
 
         AssetConversion conversion = conversionPoller.waitForCompletion().getValue();
 
@@ -137,7 +139,8 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
 
         String sessionId = getRandomId("sessionTest");
 
-        SyncPoller<RenderingSession, RenderingSession> sessionPoller = client.beginSession(sessionId, options);
+        SyncPoller<RenderingSession, RenderingSession> sessionPoller = setSyncPollerPollInterval(client
+            .beginSession(sessionId, options));
 
         RenderingSession session0 = sessionPoller.poll().getValue();
 

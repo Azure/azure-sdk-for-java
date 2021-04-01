@@ -34,7 +34,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createAsyncIdentityClientUsingManagedIdentity(HttpClient httpClient) {
         // Arrange
-        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClientBuilderUsingManagedIdentity(httpClient);
+        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         asyncClient = setupAsyncClient(builder, "createAsyncIdentityClientUsingManagedIdentity");
         assertNotNull(asyncClient);
 
@@ -52,7 +52,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createAsyncIdentityClientUsingConnectionString(HttpClient httpClient) {
         // Arrange
-        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClientUsingConnectionString(httpClient);
+        CommunicationIdentityClientBuilder builder = createClientBuilderUsingConnectionString(httpClient);
         asyncClient = setupAsyncClient(builder, "createAsyncIdentityClientUsingConnectionString");
         assertNotNull(asyncClient);
 
@@ -70,7 +70,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createUser(HttpClient httpClient) {
         // Arrange
-        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "createUser");
 
         // Action & Assert
@@ -86,7 +86,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createUserWithResponse(HttpClient httpClient) {
         // Arrange
-        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "createUserWithResponse");
 
         // Action & Assert
@@ -104,7 +104,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createUserAndToken(HttpClient httpClient) {
         // Arrange
-        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "createUserAndToken");
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
@@ -122,12 +122,12 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createUserAndTokenWithResponse(HttpClient httpClient) {
         // Arrange
-        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "createUserAndTokenWithResponse");
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
         // Action & Assert
-        Mono<Response<CommunicationUserIdentifierAndToken>> createUserAndToken = 
+        Mono<Response<CommunicationUserIdentifierAndToken>> createUserAndToken =
             asyncClient.createUserAndTokenWithResponse(scopes);
         StepVerifier.create(createUserAndToken)
             .assertNext(result -> {
@@ -142,7 +142,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createUserAndTokenNullScopes(HttpClient httpClient) {
         // Arrange
-        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "createUserAndTokenNullScopes");
 
         // Action & Assert
@@ -155,7 +155,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createUserAndTokenWithResponseNullScopes(HttpClient httpClient) {
         // Arrange
-        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "createUserAndTokenWithResponseNullScopes");
 
         // Action & Assert
@@ -168,7 +168,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void deleteUser(HttpClient httpClient) {
         // Arrange
-        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "deleteUser");
 
         // Action & Assert
@@ -184,7 +184,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void deleteUserWithResponse(HttpClient httpClient) {
         // Arrange
-        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "deleteUserWithResponse");
 
         // Action & Assert
@@ -203,7 +203,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void deleteUserWithNullUser(HttpClient httpClient) {
         // Arrange
-        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "deleteUserWithNullUser");
 
         // Action & Assert
@@ -216,7 +216,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void deleteUserWithResponseWithNullUser(HttpClient httpClient) {
         // Arrange
-        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "deleteUserWithResponseWithNullUser");
 
         // Action & Assert
@@ -229,7 +229,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void revokeToken(HttpClient httpClient) {
         // Arrange
-        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "revokeToken");
 
         // Action & Assert
@@ -249,7 +249,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void revokeTokenWithResponse(HttpClient httpClient) {
         // Arrange
-        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "revokeTokenWithResponse");
 
         // Action & Assert
@@ -263,7 +263,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
                         });
                 }))
             .assertNext(item -> {
-                assertEquals(204, item.getStatusCode(), "Expect status code to be 204");    
+                assertEquals(204, item.getStatusCode(), "Expect status code to be 204");
             })
             .verifyComplete();
     }
@@ -272,7 +272,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void revokeTokenWithNullUser(HttpClient httpClient) {
         // Arrange
-        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "revokeTokenWithNullUser");
 
         // Action & Assert
@@ -285,7 +285,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void revokeTokenWithResponseWithNullUser(HttpClient httpClient) {
         // Arrange
-        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "revokeTokenWithResponseWithNullUser");
 
         // Action & Assert
@@ -299,7 +299,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getToken(HttpClient httpClient) {
         // Arrange
-        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "getToken");
 
         // Action & Assert
@@ -322,7 +322,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getTokenWithResponse(HttpClient httpClient) {
         // Arrange
-        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "getTokenWithResponse");
 
         // Action & Assert
@@ -346,7 +346,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getTokenWithNullUser(HttpClient httpClient) {
         // Arrange
-        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "getTokenWithNullUser");
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
@@ -360,7 +360,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getTokenWithNullScope(HttpClient httpClient) {
         // Arrange
-        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "getTokenWithNullScope");
 
         // Action & Assert
@@ -372,7 +372,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getTokenWithResponseWithNullUser(HttpClient httpClient) {
         // Arrange
-        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "getTokenWithResponseWithNullUser");
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
@@ -386,7 +386,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createUserWithResponseUsingManagedIdentity(HttpClient httpClient) {
         // Arrange
-        CommunicationIdentityClientBuilder builder =  getCommunicationIdentityClientBuilderUsingManagedIdentity(httpClient);
+        CommunicationIdentityClientBuilder builder =  createClientBuilderUsingManagedIdentity(httpClient);
         asyncClient = setupAsyncClient(builder, "createUserWithResponseUsingManagedIdentity");
 
         // Action & Assert
@@ -404,7 +404,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createUserWithContextUsingManagedIdentity(HttpClient httpClient) {
         // Arrange
-        CommunicationIdentityClientBuilder builder =  getCommunicationIdentityClientBuilderUsingManagedIdentity(httpClient);
+        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         asyncClient = setupAsyncClient(builder, "createUserWithContextUsingManagedIdentity");
 
         // Action & Assert
@@ -421,7 +421,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void deleteUserUsingManagedIdentity(HttpClient httpClient) {
         // Arrange
-        CommunicationIdentityClientBuilder builder =  getCommunicationIdentityClientBuilderUsingManagedIdentity(httpClient);
+        CommunicationIdentityClientBuilder builder =  createClientBuilderUsingManagedIdentity(httpClient);
         asyncClient = setupAsyncClient(builder, "deleteUserUsingManagedIdentity");
 
         // Action & Assert
@@ -437,7 +437,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void deleteUserWithResponseUsingManagedIdentity(HttpClient httpClient) {
         // Arrange
-        CommunicationIdentityClientBuilder builder =  getCommunicationIdentityClientBuilderUsingManagedIdentity(httpClient);
+        CommunicationIdentityClientBuilder builder =  createClientBuilderUsingManagedIdentity(httpClient);
         asyncClient = setupAsyncClient(builder, "deleteUserWithResponseUsingManagedIdentity");
 
         // Action & Assert
@@ -456,7 +456,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void revokeTokenUsingManagedIdentity(HttpClient httpClient) {
         // Arrange
-        CommunicationIdentityClientBuilder builder =  getCommunicationIdentityClientBuilderUsingManagedIdentity(httpClient);
+        CommunicationIdentityClientBuilder builder =  createClientBuilderUsingManagedIdentity(httpClient);
         asyncClient = setupAsyncClient(builder, "revokeTokenUsingManagedIdentity");
 
         // Action & Assert
@@ -476,7 +476,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void revokeTokenWithResponseUsingManagedIdentity(HttpClient httpClient) {
         // Arrange
-        CommunicationIdentityClientBuilder builder =  getCommunicationIdentityClientBuilderUsingManagedIdentity(httpClient);
+        CommunicationIdentityClientBuilder builder =  createClientBuilderUsingManagedIdentity(httpClient);
         asyncClient = setupAsyncClient(builder, "revokeTokenWithResponseUsingManagedIdentity");
 
         // Action & Assert
@@ -490,7 +490,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
                         });
                 }))
             .assertNext(item -> {
-                assertEquals(204, item.getStatusCode(), "Expect status code to be 204");    
+                assertEquals(204, item.getStatusCode(), "Expect status code to be 204");
             })
             .verifyComplete();
     }
@@ -499,7 +499,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getTokenUsingManagedIdentity(HttpClient httpClient) {
         // Arrange
-        CommunicationIdentityClientBuilder builder =  getCommunicationIdentityClientBuilderUsingManagedIdentity(httpClient);
+        CommunicationIdentityClientBuilder builder =  createClientBuilderUsingManagedIdentity(httpClient);
         asyncClient = setupAsyncClient(builder, "getTokenUsingManagedIdentity");
 
         // Action & Assert
@@ -522,7 +522,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getTokenWithResponseUsingManagedIdentity(HttpClient httpClient) {
         // Arrange
-        CommunicationIdentityClientBuilder builder =  getCommunicationIdentityClientBuilderUsingManagedIdentity(httpClient);
+        CommunicationIdentityClientBuilder builder =  createClientBuilderUsingManagedIdentity(httpClient);
         asyncClient = setupAsyncClient(builder, "getTokenWithResponseUsingManagedIdentity");
 
         // Action & Assert

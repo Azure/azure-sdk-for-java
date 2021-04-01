@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
@@ -32,13 +33,14 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -93,6 +95,17 @@ public final class CosmosAsyncClient implements Closeable {
         this.clientTelemetryEnabled = builder.isClientTelemetryEnabled();
         this.contentResponseOnWriteEnabled = builder.isContentResponseOnWriteEnabled();
         this.tracerProvider = new TracerProvider(TRACER);
+
+        List<Permission> permissionList = new ArrayList<>();
+        if (this.permissions != null) {
+            permissionList =
+                this.permissions
+                    .stream()
+                    .map(permissionProperties -> ModelBridgeInternal.getPermission(permissionProperties))
+                    .filter(permission -> permission != null)
+                    .collect(Collectors.toList());
+        }
+
         this.asyncDocumentClient = new AsyncDocumentClient.Builder()
                                        .withServiceEndpoint(this.serviceEndpoint)
                                        .withMasterKeyOrResourceToken(this.keyOrResourceToken)
@@ -105,6 +118,8 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withTransportClientSharing(this.enableTransportClientSharing)
                                        .withContentResponseOnWriteEnabled(this.contentResponseOnWriteEnabled)
                                        .withTokenCredential(this.tokenCredential)
+                                       .withState(builder.metadataCaches())
+                                       .withPermissionFeed(permissionList)
                                        .build();
     }
 

@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.function.Supplier;
 
 import com.azure.communication.common.implementation.TokenParser;
 
@@ -28,7 +29,7 @@ public final class CommunicationTokenCredential implements AutoCloseable {
 
     private AccessToken accessToken;
     private final TokenParser tokenParser = new TokenParser();
-    private TokenRefresher refresher;
+    private Supplier<Mono<String>> refresher;
     private FetchingTask fetchingTask;
     private boolean isClosed = false;
 
@@ -52,11 +53,11 @@ public final class CommunicationTokenCredential implements AutoCloseable {
      * @param tokenRefreshOptions implementation to supply fresh token when reqested
      */
     public CommunicationTokenCredential(CommunicationTokenRefreshOptions tokenRefreshOptions) {
-        TokenRefresher tokenRefresher = tokenRefreshOptions.getTokenRefresher();
+        Supplier<Mono<String>> tokenRefresher = tokenRefreshOptions.getTokenRefresher();
         Objects.requireNonNull(tokenRefresher, "'tokenRefresher' cannot be null.");
         refresher = tokenRefresher;
-        if (tokenRefreshOptions.getToken() != null) {
-            setToken(tokenRefreshOptions.getToken());
+        if (tokenRefreshOptions.getInitialToken() != null) {
+            setToken(tokenRefreshOptions.getInitialToken());
             if (tokenRefreshOptions.isRefreshProactively()) {
                 OffsetDateTime nextFetchTime = accessToken.getExpiresAt().minusMinutes(DEFAULT_EXPIRING_OFFSET_MINUTES);
                 fetchingTask = new FetchingTask(this, nextFetchTime);
@@ -114,10 +115,10 @@ public final class CommunicationTokenCredential implements AutoCloseable {
     }
 
     private Mono<String> fetchFreshToken() {
-        Mono<String> tokenAsync = refresher.getTokenAsync();
+        Mono<String> tokenAsync = refresher.get();
         if (tokenAsync == null) {
             return FluxUtil.monoError(logger,
-                new RuntimeException("TokenRefresher returned null when getTokenAsync is called"));
+                new RuntimeException("get() function of the token refresher should not return null."));
         }
         return tokenAsync;
     }

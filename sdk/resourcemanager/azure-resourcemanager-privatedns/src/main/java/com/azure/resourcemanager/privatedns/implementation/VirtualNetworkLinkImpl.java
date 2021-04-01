@@ -36,6 +36,7 @@ class VirtualNetworkLinkImpl
     static VirtualNetworkLinkImpl newVirtualNetworkLink(String name, PrivateDnsZoneImpl parent) {
         VirtualNetworkLinkInner inner = new VirtualNetworkLinkInner();
         inner.withLocation("global");
+        inner.withRegistrationEnabled(false);
         return new VirtualNetworkLinkImpl(name, parent, inner);
     }
 

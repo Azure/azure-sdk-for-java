@@ -478,7 +478,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * have unique friendly names.
      * @param maxResults Specifies the maximum number of blobs to return, including all BlobPrefix elements. If the
      * request does not specify maxResults or specifies a value greater than 5,000, the server will return up to
-     * 5,000 items.
+     * 5,000 items. If iterating by page, the page size passed to byPage methods such as
+     *      * {@link PagedIterable#iterableByPage(int)} will be preferred over this value.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The list of files/directories.
      */

@@ -50,8 +50,8 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        File analyzeFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/"
-            + "forms/Form_1.jpg");
+        File analyzeFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/java/"
+            + "sample-forms/forms/Form_1.jpg");
         byte[] fileContent = Files.readAllBytes(analyzeFile.toPath());
 
         PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> labeledCustomFormPoller =

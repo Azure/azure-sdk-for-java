@@ -1,7 +1,26 @@
 # Release History
 
-## 4.3.0-beta.5 (Unreleased)
+## 4.3.0-beta.6 (Unreleased)
 
+
+## 4.3.0-beta.5 (2021-03-12)
+
+### Breaking Changes
+- Removed local support for encryption and decryption using AESGCM, as per guidance of Microsoft's cryptography board. Remote encryption and decryption using said algorithm is still supported.
+
+### Changed
+- Changed logging level in `onRequest` and `onSuccess` calls for service operations from `INFO` to `VERBOSE`.
+
+### Bug fixes
+- Fixed issue that caused a `NullPointerException` when attempting to use a `CryptographyClient` for symmetric key encryption operations after the first one.
+- Fixed issue where `JsonWebKey` byte array contents would get serialized/deserialized using Base64 instead of URL-safe Base64.
+- Fixed issue where properties of responses received when using a `CryptographyClient` for encryption/decryption were not populated on the `EncryptResult` and `DecryptResult` classes.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.14.0`
+- Upgraded `azure-core-http-netty` dependency to `1.9.0`
+- Upgraded `azure-core-http-okhttp` dependency to `1.6.0`
+- Upgraded `azure-identity` dependency to `1.2.4`
 
 ## 4.3.0-beta.4 (2021-02-11)
 

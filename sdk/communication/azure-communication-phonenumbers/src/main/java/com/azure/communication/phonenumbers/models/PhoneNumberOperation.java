@@ -30,12 +30,6 @@ public final class PhoneNumberOperation {
     private OffsetDateTime createdDateTime;
 
     /*
-     * The Communication Services error.
-     */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
-    private CommunicationError error;
-
-    /*
      * Id of operation.
      */
     @JsonProperty(value = "id", required = true, access = JsonProperty.Access.WRITE_ONLY)
@@ -52,6 +46,25 @@ public final class PhoneNumberOperation {
      */
     @JsonProperty(value = "lastActionDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastActionDateTime;
+
+    /**
+     * The PhoneNumberOperation model.
+     * @param status The status property: Status of operation.
+     * @param resourceLocation The resourceLocation property: URL for retrieving the result of the operation, if any.
+     * @param createdDateTime The createdDateTime property: The date that the operation was created.
+     * @param id The id property: Id of operation.
+     * @param operationType The operationType property: The type of operation, e.g. Search.
+     * @param lastActionDateTime The lastActionDateTime property: The most recent date that the operation was changed.
+     */
+    public PhoneNumberOperation(PhoneNumberOperationStatus status, String resourceLocation, OffsetDateTime createdDateTime, String id,
+        PhoneNumberOperationType operationType, OffsetDateTime lastActionDateTime) {
+        this.status = status;
+        this.resourceLocation = resourceLocation;
+        this.createdDateTime = createdDateTime;
+        this.id = id;
+        this.operationType = operationType;
+        this.lastActionDateTime = lastActionDateTime;
+    }
 
     /**
      * Get the status property: Status of operation.
@@ -78,15 +91,6 @@ public final class PhoneNumberOperation {
      */
     public OffsetDateTime getCreatedDateTime() {
         return this.createdDateTime;
-    }
-
-    /**
-     * Get the error property: The Communication Services error.
-     *
-     * @return the error value.
-     */
-    public CommunicationError getError() {
-        return this.error;
     }
 
     /**

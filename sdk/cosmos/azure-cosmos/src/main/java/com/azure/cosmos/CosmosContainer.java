@@ -5,12 +5,13 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
-import com.azure.cosmos.models.CosmosItemIdentity;
-import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
@@ -341,25 +342,6 @@ public class CosmosContainer {
     }
 
     /**
-     * Query items in the current container returning the results as {@link CosmosPagedIterable}.
-     *
-     * @param <T> the type parameter.
-     * @param querySpec the query spec.
-     * @param options the options.
-     * @param classType the class type.
-     * @param feedRange the feedrange
-     * @return the {@link CosmosPagedIterable}.
-     */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public <T> CosmosPagedIterable<T> queryItems(SqlQuerySpec querySpec,
-                                                 CosmosQueryRequestOptions options,
-                                                 Class<T> classType,
-                                                 FeedRange feedRange) {
-        return getCosmosPagedIterable(this.asyncContainer.queryItems(querySpec, options, classType, feedRange));
-    }
-
-
-    /**
      * Query for items in the change feed of the current container using the {@link CosmosChangeFeedRequestOptions}.
      * <p>
      * The next page can be retrieved by calling queryChangeFeed again with a new instance of
@@ -395,7 +377,6 @@ public class CosmosContainer {
      * @param classType   class type
      * @return a Mono with feed response of cosmos items
      */
-    @Beta(value = Beta.SinceVersion.V4_4_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> FeedResponse<T> readMany(
         List<CosmosItemIdentity> itemIdentityList,
         Class<T> classType) {
@@ -412,7 +393,6 @@ public class CosmosContainer {
      * @param classType   class type
      * @return a Mono with feed response of cosmos items
      */
-    @Beta(value = Beta.SinceVersion.V4_4_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> FeedResponse<T> readMany(
         List<CosmosItemIdentity> itemIdentityList,
         String sessionToken,
@@ -545,7 +525,7 @@ public class CosmosContainer {
         String itemId,
         PartitionKey partitionKey,
         CosmosPatchOperations cosmosPatchOperations,
-        CosmosItemRequestOptions options,
+        CosmosPatchItemRequestOptions options,
         Class<T> itemType) {
 
         return this.blockItemResponse(asyncContainer.patchItem(itemId, partitionKey, cosmosPatchOperations, options, itemType));
@@ -768,5 +748,38 @@ public class CosmosContainer {
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void enableGlobalThroughputControlGroup(ThroughputControlGroupConfig groupConfig, GlobalThroughputControlConfig globalControlConfig) {
         this.asyncContainer.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig);
+    }
+
+    /**
+     * Initializes the container by warming up the caches and connections for the current read region.
+     *
+     * <p><br>The execution of this method is expected to result in some RU charges to your account.
+     * The number of RU consumed by this request varies, depending on data consistency, size of the overall data in the container,
+     * item indexing, number of projections. For more information regarding RU considerations please visit
+     * <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/request-units#request-unit-considerations">https://docs.microsoft.com/en-us/azure/cosmos-db/request-units#request-unit-considerations</a>.
+     * </p>
+     *
+     * <p>
+     * <br>NOTE: This API ideally should be called only once during application initialization before any workload.
+     * <br>In case of any transient error, caller should consume the error and continue the regular workload.
+     * </p>
+     *
+     */
+    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public void openConnectionsAndInitCaches() {
+        blockVoidResponse(this.asyncContainer.openConnectionsAndInitCaches());
+    }
+
+    private void blockVoidResponse(Mono<Void> voidMono) {
+        try {
+            voidMono.block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
+            } else {
+                throw Exceptions.propagate(ex);
+            }
+        }
     }
 }

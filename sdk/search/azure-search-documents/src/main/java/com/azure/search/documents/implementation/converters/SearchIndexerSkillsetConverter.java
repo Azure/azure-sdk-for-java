@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.indexes.models.CognitiveServicesAccount;
 import com.azure.search.documents.indexes.models.SearchIndexerSkill;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 
@@ -30,9 +29,7 @@ public final class SearchIndexerSkillsetConverter {
         SearchIndexerSkillset searchIndexerSkillset = new SearchIndexerSkillset(obj.getName(), skills);
 
         if (obj.getCognitiveServicesAccount() != null) {
-            CognitiveServicesAccount cognitiveServicesAccount =
-                CognitiveServicesAccountConverter.map(obj.getCognitiveServicesAccount());
-            searchIndexerSkillset.setCognitiveServicesAccount(cognitiveServicesAccount);
+            searchIndexerSkillset.setCognitiveServicesAccount(obj.getCognitiveServicesAccount());
         }
 
         searchIndexerSkillset.setDescription(obj.getDescription());
@@ -63,9 +60,7 @@ public final class SearchIndexerSkillsetConverter {
                 .setSkills(skills);
 
         if (obj.getCognitiveServicesAccount() != null) {
-            com.azure.search.documents.indexes.implementation.models.CognitiveServicesAccount cognitiveServicesAccount =
-                CognitiveServicesAccountConverter.map(obj.getCognitiveServicesAccount());
-            searchIndexerSkillset.setCognitiveServicesAccount(cognitiveServicesAccount);
+            searchIndexerSkillset.setCognitiveServicesAccount(obj.getCognitiveServicesAccount());
         }
 
         searchIndexerSkillset.setDescription(obj.getDescription());
