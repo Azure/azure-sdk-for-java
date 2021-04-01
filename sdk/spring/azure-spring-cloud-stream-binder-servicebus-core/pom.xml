@@ -63,7 +63,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:azure-servicebus:[3.6.1]</include> <!-- {x-include-update;com.microsoft.azure:azure-servicebus;external_dependency} -->
+                <include>com.azure:azure-messaging-servicebus:[7.1.0]</include> <!-- {x-include-update;com.azure:azure-messaging-servicebus;dependency} -->
                 <include>org.springframework.cloud:spring-cloud-stream:[3.1.1]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-stream;external_dependency} -->
               </includes>
             </bannedDependencies>

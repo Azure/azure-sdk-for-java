@@ -59,7 +59,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.azure:azure-messaging-servicebus:[7.0.2]</include> <!-- {x-include-update;com.azure:azure-messaging-servicebus;dependency} -->
+                <include>com.azure:azure-messaging-servicebus:[7.1.0]</include> <!-- {x-include-update;com.azure:azure-messaging-servicebus;dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
