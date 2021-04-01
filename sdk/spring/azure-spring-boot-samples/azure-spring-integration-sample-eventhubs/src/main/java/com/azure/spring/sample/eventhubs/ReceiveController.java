@@ -9,6 +9,8 @@ import com.azure.spring.integration.core.api.CheckpointMode;
 import com.azure.spring.integration.core.api.reactor.Checkpointer;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import com.azure.spring.integration.eventhub.inbound.EventHubInboundChannelAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.integration.annotation.ServiceActivator;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ReceiveController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReceiveController.class);
     private static final String INPUT_CHANNEL = "input";
     private static final String EVENTHUB_NAME = "eventhub1";
     private static final String CONSUMER_GROUP = "cg1";
@@ -34,10 +37,10 @@ public class ReceiveController {
     @ServiceActivator(inputChannel = INPUT_CHANNEL)
     public void messageReceiver(byte[] payload, @Header(AzureHeaders.CHECKPOINTER) Checkpointer checkpointer) {
         String message = new String(payload);
-        System.out.println(String.format("New message received: '%s'", message));
+        LOGGER.info("New message received: '{}'", message);
         checkpointer.success()
-            .doOnSuccess(s -> System.out.println(String.format("Message '%s' successfully checkpointed", message)))
-            .doOnError(System.out::println)
+            .doOnSuccess(s -> LOGGER.info("Message '{}' successfully checkpointed", message))
+            .doOnError(e -> LOGGER.error("Error found", e))
             .subscribe();
     }
 
