@@ -201,8 +201,15 @@ function check-source-jar($artifactId, $groudId, $version)
 {
   $groudIdUrl = $groudId.Replace(".", "/")
   $MavenDownloadUrl = "$MavenDownloadSite/$groudIdUrl/$artifactId/$version"
-  $resp = Invoke-WebRequest $MavenDownloadUrl
-  return $resp -and $resp.Links.href.Contains("$artifactId-$version-sources.jar")
+  try 
+  {
+    $resp = Invoke-WebRequest $MavenDownloadUrl
+    return $resp -and $resp.Links.href.Contains("$artifactId-$version-sources.jar")
+  }
+  catch 
+  {
+    return $false
+  }
 }
 # a "package.json configures target packages for all the monikers in a Repository, it also has a slightly different
 # schema than the moniker-specific json config that is seen in python and js
