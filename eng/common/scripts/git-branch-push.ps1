@@ -70,8 +70,8 @@ if ($LASTEXITCODE -eq 0) {
 } 
 else {
   # Use to check whether there is remote branch to track 
-  Write-Host "git fetch $RemoteName/$PRBranchName"
-  git fetch $RemoteName/$PRBranchName
+  Write-Host "git fetch $RemoteName"
+  git fetch $RemoteName
   Write-Host "git show-branch remotes/$RemoteName/$PRBranchName"
   git show-branch remotes/$RemoteName/$PRBranchName
   if ($LASTEXITCODE -eq 0) {
