@@ -1,6 +1,6 @@
-# Azure Anomaly Detector client library for Java
+# Azure Document Translation client library for Java
 
-Microsoft Azure Cognitive Services Anomaly Detector API enables you to monitor and detect abnormalities in your time series data with machine learning.
+Microsoft Azure Cognitive Services Document Translation API enables you to translate documents in batch.
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 
@@ -10,25 +10,25 @@ Microsoft Azure Cognitive Services Anomaly Detector API enables you to monitor a
 
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
 - [Azure Subscription][azure_subscription]
-- An existing Cognitive Services or Anomaly Detector resource.
+- An existing Cognitive Services.
 
 For more information about creating the resource or how to get the location and sku information see [here][cognitive_resource_cli].
 
 ### Include the Package
 
-[//]: # ({x-version-update-start;com.azure:azure-ai-anomalydetector;current})
+[//]: # ({x-version-update-start;com.azure:azure-ai-translator;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
-  <artifactId>azure-ai-anomalydetector</artifactId>
-  <version>3.0.0-beta.1</version>
+  <artifactId>azure-ai-translator</artifactId>
+  <version>1.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 
 ### Authenticate the client
-In order to interact with the Anomaly Detector service, you'll need to create an instance of the [`AnomalyDetectorClient`][anomaly_detector_client_class] class.  You will need an **endpoint** and an **API key** to instantiate a client object.  
+In order to interact with the Document Translation service, you'll need to create an instance of the [`BatchDocumentTranslationClient`][batch_document_translation_client_class] class.  You will need an **endpoint** and an **API key** to instantiate a client object.  
 
 #### Get API Key
 
@@ -123,14 +123,14 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
-[samples]: src/samples/java/com/azure/ai/anomalydetector
-[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/anomalydetector/azure-ai-anomalydetector/src
-[samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/
+[samples]: src/samples/java/com/azure/ai/translator
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/translatortext/azure-ai-translator/src
+[samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/translatortext/azure-ai-translator/src/samples/
 [azure_subscription]: https://azure.microsoft.com/free/
-[api_reference_doc]: https://aka.ms/azsdk/net/docs/ref/anomalydetector
-[product_documentation]: https://docs.microsoft.com/azure/cognitive-services/anomaly-detector/
+[api_reference_doc]: https://aka.ms/azsdk/net/docs/ref/translator
+[product_documentation]: https://docs.microsoft.com/en-us/azure/cognitive-services/translator/
 [cognitive_resource_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli
-[anomaly_detector_client_class]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/anomalydetector/azure-ai-anomalydetector/src/main/java/com/azure/ai/anomalydetector/AnomalyDetectorClient.java
+[batch_document_translation_client_class]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/translatortext/azure-ai-translator/src/main/java/com/azure/ai/translator/BatchDocumentTranslationClient.java
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [azure_portal]: https://portal.azure.com
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
@@ -140,6 +140,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [aad_grant_access]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [package]: https://mvnrepository.com/artifact/com.azure/azure-ai-anomalydetector
-[samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/README.md
+[samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/translatortext/azure-ai-translator/src/samples/README.md
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fanomalydetector%2Fazure-ai-anomalydetector%2FREADME.png)

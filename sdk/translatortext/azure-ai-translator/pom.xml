@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-translator</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-translatortext;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-translator;current} -->
 
   <name>Microsoft Azure client library for Document Translation</name>
   <description>This package contains Microsoft Azure Document Translation client library.</description>
