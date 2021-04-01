@@ -88,11 +88,12 @@ public class TablesClientBuilderTest {
     public void emptyEndpointThrowsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, () -> new TableClientBuilder().endpoint(""));
     }
+
     @Test
-    public void nullCredentialThrowsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> new TableClientBuilder().credential((AzureSasCredential) null));
-        assertThrows(IllegalArgumentException.class, () -> new TableClientBuilder().credential((TablesSharedKeyCredential) null));
-        assertThrows(IllegalArgumentException.class, () -> new TableClientBuilder().credential((TokenCredential) null));
+    public void nullCredentialThrowsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> new TableClientBuilder().credential((AzureSasCredential) null));
+        assertThrows(NullPointerException.class, () -> new TableClientBuilder().credential((TablesSharedKeyCredential) null));
+        assertThrows(NullPointerException.class, () -> new TableClientBuilder().credential((TokenCredential) null));
     }
 
     @Test
