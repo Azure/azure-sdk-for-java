@@ -19,11 +19,11 @@ param (
 
 . (Join-Path $ScriptRepository common.ps1)
 
-$targets = ($Configs | ConvertFrom-Json).targets
+$docLoc = ($Configs | ConvertFrom-Json).path_to_config
 
 if ($UpdateDocCIFn -and (Test-Path "Function:$UpdateDocCIFn"))
 {
-  &$UpdateDocCIFn -ciRepo $DocRepoLocation -locationInDocRepo $targets
+  &$UpdateDocCIFn -ciRepo $DocRepoLocation -locationInDocRepo $docLoc
 }
 else
 {
