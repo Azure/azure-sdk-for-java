@@ -185,7 +185,13 @@
         <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
         <configuration>
           <analysisConfiguration>
+<!--temporary-->
             <revapi.ignore>
+              <item>
+                <code>java.method.parameterTypeParameterChanged</code>
+                <package>com.azure.resourcemanager.resources.fluentcore.model</package>
+              </item>
+
               <item>
                 <code>java.method.addedToInterface</code>
                 <package>com.azure.resourcemanager.resources.models</package>
