@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.messaging.webpubsub.models;
 
 import java.time.Duration;
@@ -13,7 +15,7 @@ import com.azure.messaging.webpubsub.WebPubSubServiceClient;
  * {@link WebPubSubAsyncServiceClient#getAuthenticationToken(GetAuthenticationTokenOptions)} and
  * {@link WebPubSubServiceClient#getAuthenticationToken(GetAuthenticationTokenOptions)} methods.
  */
-public class GetAuthenticationTokenOptions {
+public final class GetAuthenticationTokenOptions {
     private Duration expiresAfter;
     private Map<String, Object> claims;
     private String userId;

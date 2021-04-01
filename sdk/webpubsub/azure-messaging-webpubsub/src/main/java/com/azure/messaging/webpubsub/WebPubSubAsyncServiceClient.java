@@ -23,12 +23,14 @@ import java.nio.charset.StandardCharsets;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.messaging.webpubsub.models.WebPubSubContentType.*;
+import static com.azure.messaging.webpubsub.models.WebPubSubContentType.APPLICATION_JSON;
+import static com.azure.messaging.webpubsub.models.WebPubSubContentType.APPLICATION_OCTET_STREAM;
+import static com.azure.messaging.webpubsub.models.WebPubSubContentType.TEXT_PLAIN;
 
 /**
  * The asynchronous client for connecting to an Azure Web Pub Sub hub (for a synchronous API, refer to the
- * {@link WebPubSubServiceClient} class documentation). To create an instance of this class, refer to the code snippet below,
- * and for more information about configuration options, refer to the JavaDoc for {@link WebPubSubClientBuilder}.
+ * {@link WebPubSubServiceClient} class documentation). To create an instance of this class, refer to the code snippet
+ * below, and for more information about configuration options, refer to the JavaDoc for {@link WebPubSubClientBuilder}.
  *
  * <p>The Azure Web Pub Sub client instance must be connected to a
  * {@link WebPubSubClientBuilder#hub(String) specific hub} that is represented by a non-null and non-empty String.
@@ -40,8 +42,8 @@ import static com.azure.messaging.webpubsub.models.WebPubSubContentType.*;
  *     {@link #sendToConnection(String, String) connection},</li>
  *     <li>{@link #removeUserFromAllGroups(String) Removing a user} from all groups,</li>
  *     <li>{@link #closeConnection(String) Closing a connection} of a specific user</li>
- *     <li>To check the existence of a {@link #checkUserExists(String) user}, a {@link #checkConnectionExists(String) connection},
- *     or a {@link #checkGroupExists(String) group},</li>
+ *     <li>To check the existence of a {@link #checkUserExists(String) user}, a
+ *     {@link #checkConnectionExists(String) connection}, or a {@link #checkGroupExists(String) group},</li>
  * </ul>
  *
  * <p>It is possible to connect to a specific group within a hub by calling
@@ -138,7 +140,7 @@ public final class WebPubSubAsyncServiceClient {
      *
      * <p>To send a message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAll.String.String}
+     * codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll.String}
      *
      * @param message The message to send.
      * @return An empty {@link Mono}.
@@ -155,7 +157,7 @@ public final class WebPubSubAsyncServiceClient {
      *
      * <p>To send a message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAll.String.String}
+     * codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll.String.String}
      *
      * @param message The message to send.
      * @param contentType The content type of the message.
@@ -198,12 +200,12 @@ public final class WebPubSubAsyncServiceClient {
      *
      * <p>To send a message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAll.String.List}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll.String.List}
      *
      * <p>To send a message to all users within the same hub, with one or more connection IDs excluded, simply add the
      * excluded connection IDs to a List and pass that in as the second argument:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAll.String.List.2}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll.String.List.2}
      *
      * @param message The message to send.
      * @param contentType The content type of the message.
@@ -227,7 +229,8 @@ public final class WebPubSubAsyncServiceClient {
 
         switch (contentType) {
             case TEXT_PLAIN: {
-                return webPubSubApis.sendToAllWithResponseAsync(hub, message, excludedConnectionIds, configureTracing(context))
+                return webPubSubApis.sendToAllWithResponseAsync(
+                        hub, message, excludedConnectionIds, configureTracing(context))
                    .doOnSubscribe(ignoredValue -> logger.verbose("Broadcasting message"))
                    .doOnSuccess(response -> logger.verbose("Broadcasted message, response: {}", response.getValue()))
                    .doOnError(error -> logger.warning("Failed to broadcast message, response: {}", error));
@@ -235,7 +238,8 @@ public final class WebPubSubAsyncServiceClient {
             default:
             case APPLICATION_OCTET_STREAM:
             case APPLICATION_JSON: {
-                return sendToAllWithResponse(message.getBytes(StandardCharsets.UTF_8), contentType, excludedConnectionIds, context);
+                return sendToAllWithResponse(
+                    message.getBytes(StandardCharsets.UTF_8), contentType, excludedConnectionIds, context);
             }
         }
     }
@@ -247,7 +251,7 @@ public final class WebPubSubAsyncServiceClient {
      *
      * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAllBytes.byte.String}
+     * codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAllBytes.byte.String}
      *
      * @param message The message to send.
      * @return An empty {@link Mono}.
@@ -264,7 +268,7 @@ public final class WebPubSubAsyncServiceClient {
      *
      * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAllBytes.byte.String}
+     * codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAllBytes.byte.String}
      *
      * @param message The message to send.
      * @param contentType The content type of the message.
@@ -283,12 +287,12 @@ public final class WebPubSubAsyncServiceClient {
      *
      * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAllBytes.byte.List}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAllBytes.byte.List}
      *
      * <p>To send a binary message to all users within the same hub, with one or more connection IDs excluded, simply
      * add the excluded connection IDs to the end of the method call as var-args:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAllBytes.byte.List.2}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAllBytes.byte.List.2}
      *
      * @param message The message to send.
      * @param contentType The content type of the message.
@@ -364,7 +368,9 @@ public final class WebPubSubAsyncServiceClient {
      *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendToUserWithResponse(final String userId, final String message, final WebPubSubContentType contentType) {
+    public Mono<Response<Void>> sendToUserWithResponse(final String userId,
+                                                       final String message,
+                                                       final WebPubSubContentType contentType) {
         return withContext(context -> sendToUserWithResponse(userId, message, contentType, context));
     }
 
@@ -449,9 +455,11 @@ public final class WebPubSubAsyncServiceClient {
             case APPLICATION_OCTET_STREAM:
             case APPLICATION_JSON: {
                 final Flux<ByteBuffer> byteFlux = Flux.just(ByteBuffer.wrap(message));
-                return webPubSubApis.sendToUserWithResponseAsync(hub, userId, contentType, byteFlux, message.length, configureTracing(context))
+                return webPubSubApis.sendToUserWithResponseAsync(
+                        hub, userId, contentType, byteFlux, message.length, configureTracing(context))
                    .doOnSubscribe(ignoredValue -> logger.verbose("Sending binary data to user"))
-                   .doOnSuccess(response -> logger.verbose("Sent binary data to user, response: {}", response.getValue()))
+                   .doOnSuccess(response ->
+                        logger.verbose("Sent binary data to user, response: {}", response.getValue()))
                    .doOnError(error -> logger.warning("Failed to send binary data to user, response: {}", error));
             }
         }
@@ -588,7 +596,8 @@ public final class WebPubSubAsyncServiceClient {
                 return webPubSubApis.sendToConnectionWithResponseAsync(
                        hub, connectionId, contentType, byteFlux, message.length, configureTracing(context))
                     .doOnSubscribe(ignoredValue -> logger.verbose("Sending binary message to connection"))
-                    .doOnSuccess(response -> logger.verbose("Sent binary message to connection, response: {}", response.getValue()))
+                    .doOnSuccess(response ->
+                         logger.verbose("Sent binary message to connection, response: {}", response.getValue()))
                     .doOnError(error -> logger.warning("Failed to send binary message to connection, response: {}", error));
             }
         }
@@ -621,7 +630,8 @@ public final class WebPubSubAsyncServiceClient {
     Mono<Response<Void>> removeUserFromAllGroupsWithResponse(final String userId, final Context context) {
         return webPubSubApis.removeUserFromAllGroupsWithResponseAsync(hub, userId, configureTracing(context))
            .doOnSubscribe(ignoredValue -> logger.verbose("Removing user '{}' from all groups"))
-           .doOnSuccess(response -> logger.verbose("Removed user '{}' from all groups, response: {}", response.getValue()))
+           .doOnSuccess(response ->
+                logger.verbose("Removed user '{}' from all groups, response: {}", response.getValue()))
            .doOnError(error -> logger.warning("Failed to remove user '{}' from all groups, response: {}", error));
     }
 

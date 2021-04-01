@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.messaging.webpubsub.models;
 
 /**
@@ -5,7 +7,7 @@ package com.azure.messaging.webpubsub.models;
  * {@link com.azure.messaging.webpubsub.WebPubSubAsyncServiceClient} and
  * {@link com.azure.messaging.webpubsub.WebPubSubServiceClient}.
  */
-public class WebPubSubAuthenticationToken {
+public final class WebPubSubAuthenticationToken {
     private final String authToken;
     private final String url;
 

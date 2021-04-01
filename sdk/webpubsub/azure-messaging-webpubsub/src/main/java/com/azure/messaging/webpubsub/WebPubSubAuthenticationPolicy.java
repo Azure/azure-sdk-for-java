@@ -35,7 +35,7 @@ import static java.time.LocalDateTime.now;
  * @see WebPubSubClientBuilder
  */
 public final class WebPubSubAuthenticationPolicy implements HttpPipelinePolicy {
-    private static final ClientLogger logger = new ClientLogger(WebPubSubAuthenticationPolicy.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WebPubSubAuthenticationPolicy.class);
 
     private final AzureKeyCredential credential;
 
@@ -55,11 +55,13 @@ public final class WebPubSubAuthenticationPolicy implements HttpPipelinePolicy {
         this.credential = credential;
     }
 
-    // TODO (jogiles) JavaDoc
-    public AzureKeyCredential getCredential() {
+    AzureKeyCredential getCredential() {
         return credential;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Mono<HttpResponse> process(final HttpPipelineCallContext context, final HttpPipelineNextPolicy next) {
         final String audienceUrl = context.getHttpRequest().getUrl().toString();
@@ -106,7 +108,7 @@ public final class WebPubSubAuthenticationPolicy implements HttpPipelinePolicy {
 
             return signedJWT.serialize();
         } catch (final JOSEException e) {
-            logger.logThrowableAsError(e);
+            LOGGER.logThrowableAsError(e);
             return null;
         }
     }
