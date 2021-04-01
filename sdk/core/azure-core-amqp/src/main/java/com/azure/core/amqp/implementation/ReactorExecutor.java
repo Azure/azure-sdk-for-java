@@ -10,6 +10,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.engine.HandlerException;
 import org.apache.qpid.proton.reactor.Reactor;
+import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Scheduler;
 
 import java.io.Closeable;
@@ -18,7 +20,6 @@ import java.time.Duration;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -28,7 +29,7 @@ class ReactorExecutor implements Closeable {
     private final ClientLogger logger = new ClientLogger(ReactorExecutor.class);
     private final AtomicBoolean hasStarted = new AtomicBoolean();
     private final AtomicBoolean isDisposed = new AtomicBoolean();
-    private final Semaphore disposeSemaphore = new Semaphore(1);
+    private final Sinks.Empty<Void> isClosedMono = Sinks.empty();
 
     private final Object lock = new Object();
     private final Reactor reactor;
@@ -105,8 +106,8 @@ class ReactorExecutor implements Closeable {
             final String message = !CoreUtils.isNullOrEmpty(cause.getMessage())
                 ? cause.getMessage()
                 : !CoreUtils.isNullOrEmpty(handlerException.getMessage())
-                    ? handlerException.getMessage()
-                    : "Reactor encountered unrecoverable error";
+                ? handlerException.getMessage()
+                : "Reactor encountered unrecoverable error";
 
             final AmqpException exception;
             final AmqpErrorContext errorContext = new AmqpErrorContext(hostname);
@@ -127,6 +128,7 @@ class ReactorExecutor implements Closeable {
         } finally {
             if (!rescheduledReactor) {
                 if (hasStarted.getAndSet(false)) {
+                    logger.verbose("Scheduling reactor to complete pending tasks.");
                     scheduleCompletePendingTasks();
                 } else {
                     final String reason =
@@ -134,26 +136,28 @@ class ReactorExecutor implements Closeable {
                             + "process.";
 
                     logger.info(LOG_MESSAGE, connectionId, reason);
-                    close(false, reason);
+                    close(reason);
                 }
             }
         }
     }
 
-    private void scheduleCompletePendingTasks() {
-        try {
-            if (!disposeSemaphore.tryAcquire(timeout.toMillis(), TimeUnit.MILLISECONDS)) {
-                logger.info("Unable to acquire dispose reactor semaphore within timeout to schedule pending tasks.");
-            }
-        } catch (InterruptedException e) {
-            logger.warning("Could not acquire dispose semaphore to schedule pending tasks", e);
-        }
+    Mono<Void> isClosed() {
+        return isClosedMono.asMono();
+    }
 
+    /**
+     * Schedules the release of the current reactor after operation timeout has elapsed.
+     */
+    private void scheduleCompletePendingTasks() {
         this.scheduler.schedule(() -> {
             logger.info(LOG_MESSAGE, connectionId, "Processing all pending tasks and closing old reactor.");
             try {
+                if (reactor.process()) {
+                    logger.verbose("Had more tasks to process on reactor but it is shutting down.");
+                }
+
                 reactor.stop();
-                reactor.process();
             } catch (HandlerException e) {
                 logger.warning(LOG_MESSAGE, connectionId,
                     StringUtil.toStackTraceString(e, "scheduleCompletePendingTasks - exception occurred while "
@@ -166,35 +170,31 @@ class ReactorExecutor implements Closeable {
                     // session before we were able to schedule this work.
                 }
 
-                disposeSemaphore.release();
+                close("Finished processing pending tasks.");
             }
-        });
+        }, timeout.toMillis(), TimeUnit.MILLISECONDS);
     }
 
     @Override
     public void close() {
-        if (!isDisposed.getAndSet(true)) {
-            close(true, "ReactorExecutor.close() was called.");
-        }
-    }
-
-    private void close(boolean isUserInitialized, String reason) {
-        if (!hasStarted.getAndSet(false)) {
+        if (isDisposed.getAndSet(true)) {
             return;
         }
 
-        if (isUserInitialized) {
+        if (hasStarted.get()) {
             scheduleCompletePendingTasks();
-            // wait for the scheduled pending tasks to complete
-            try {
-                if (!disposeSemaphore.tryAcquire(timeout.toMillis(), TimeUnit.MILLISECONDS)) {
-                    logger.info("Unable to acquire dispose reactor semaphore within timeout.");
-                }
-            } catch (InterruptedException e) {
-                logger.warning("Could not acquire semaphore to finish close operation.", e);
-            }
         }
-        exceptionHandler.onConnectionShutdown(new AmqpShutdownSignal(false, isUserInitialized, reason));
+    }
+
+    private void close(String reason) {
+        logger.verbose("Completing close and disposing scheduler. {}", reason);
+
+        isClosedMono.emitEmpty((signalType, emitResult) -> {
+            logger.verbose("signalType[{}] emitResult[{}]: Unable to emit close event on reactor", signalType,
+                emitResult);
+            return false;
+        });
+        exceptionHandler.onConnectionShutdown(new AmqpShutdownSignal(false, false, reason));
         scheduler.dispose();
     }
 }

@@ -67,7 +67,6 @@ class ReactorSender implements AmqpSendLink {
 
     private final AtomicBoolean hasConnected = new AtomicBoolean();
     private final AtomicBoolean isDisposed = new AtomicBoolean();
-    private final AtomicBoolean hasAuthorized = new AtomicBoolean(true);
     private final AtomicInteger retryAttempts = new AtomicInteger();
 
     private final Object pendingSendLock = new Object();
@@ -102,12 +101,12 @@ class ReactorSender implements AmqpSendLink {
         this.retryOptions = retryOptions;
         this.retry = RetryUtil.getRetryPolicy(retryOptions);
         this.activeTimeoutMessage = String.format(
-            "ReactorSender connectionId[%s], linkName[%s]: Waiting for send and receive handler to be ACTIVE",
+            "ReactorSender connectionId[%s] linkName[%s]: Waiting for send and receive handler to be ACTIVE",
             handler.getConnectionId(), handler.getLinkName());
 
         this.endpointStates = this.handler.getEndpointStates()
             .map(state -> {
-                logger.verbose("connectionId[{}], path[{}], linkName[{}]: State {}", handler.getConnectionId(),
+                logger.verbose("connectionId[{}] entityPath[{}] linkName[{}]: State {}", handler.getConnectionId(),
                     entityPath, getLinkName(), state);
                 this.hasConnected.set(state == EndpointState.ACTIVE);
                 return AmqpEndpointStateUtil.getConnectionState(state);
@@ -118,7 +117,7 @@ class ReactorSender implements AmqpSendLink {
             this.handler.getDeliveredMessages().subscribe(this::processDeliveredMessage),
 
             this.handler.getLinkCredits().subscribe(credit -> {
-                logger.verbose("connectionId[{}], entityPath[{}], linkName[{}]: Credits on link: {}",
+                logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] credits[{}] Credits on link.",
                     handler.getConnectionId(), entityPath, getLinkName(), credit);
                 this.scheduleWorkOnDispatcher();
             })
@@ -127,15 +126,19 @@ class ReactorSender implements AmqpSendLink {
         if (tokenManager != null) {
             this.subscriptions.add(this.tokenManager.getAuthorizationResults().subscribe(
                 response -> {
-                    logger.verbose("connectionId[{}], entityPath[{}], linkName[{}]: Token refreshed: {}",
+                    logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Token refreshed: {}",
                         handler.getConnectionId(), entityPath, getLinkName(), response);
-                    hasAuthorized.set(true);
                 },
                 error -> {
-                    logger.info("connectionId[{}], entityPath[{}], linkName[{}]: tokenRenewalFailure[{}]",
+                    logger.info("connectionId[{}] entityPath[{}] linkName[{}] tokenRenewalFailure[{}]",
                         handler.getConnectionId(), entityPath, getLinkName(), error.getMessage());
-                    hasAuthorized.set(false);
-                }, () -> hasAuthorized.set(false)));
+                    dispose(new ErrorCondition(Symbol.getSymbol(AmqpErrorCondition.NOT_ALLOWED.getErrorCondition()),
+                        error.getMessage()));
+                }, () -> {
+                    logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Authorization completed. Disposing.",
+                        handler.getConnectionId(), entityPath, getLinkName());
+                    dispose();
+                }));
         }
     }
 
@@ -151,6 +154,12 @@ class ReactorSender implements AmqpSendLink {
 
     @Override
     public Mono<Void> send(Message message, DeliveryState deliveryState) {
+        if (isDisposed.get()) {
+            return Mono.error(new IllegalStateException(String.format(
+                "connectionId[%s] linkName[%s] Cannot publish message when disposed.", handler.getConnectionId(),
+                getLinkName())));
+        }
+
         return getLinkSize()
             .flatMap(maxMessageSize -> {
                 final int payloadSize = messageSerializer.getSize(message);
@@ -181,6 +190,12 @@ class ReactorSender implements AmqpSendLink {
 
     @Override
     public Mono<Void> send(List<Message> messageBatch, DeliveryState deliveryState) {
+        if (isDisposed.get()) {
+            return Mono.error(new IllegalStateException(String.format(
+                "connectionId[%s] linkName[%s] Cannot publish data batch when disposed.", handler.getConnectionId(),
+                getLinkName())));
+        }
+
         if (messageBatch.size() == 1) {
             return send(messageBatch.get(0), deliveryState);
         }

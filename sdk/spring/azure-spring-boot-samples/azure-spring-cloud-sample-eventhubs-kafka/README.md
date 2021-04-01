@@ -4,7 +4,7 @@
 
 This code sample demonstrates how to use the Spring Cloud Stream Kafka
 binder for Azure Event Hub. The sample app exposes a RESTful API to receive
-string message. Then message is sent through Azure Event Hub to a `sink`
+string message. Then message is sent through Azure Event Hub to a bean `consumer`
 which simply logs the message.
 
 ## Getting started
@@ -42,11 +42,13 @@ Running this sample will be charged by Azure. You can check the usage and bill a
           eventhub:
             namespace: [eventhub-namespace]
         stream:
+          function:
+            definition: consume;supply
           bindings:
-            input:
+            consume-in-0:
               destination: [eventhub-name]
               group: [consumer-group]
-            output:
+            supply-out-0:
               destination: [the-same-eventhub-name-as-above]
     ```
 

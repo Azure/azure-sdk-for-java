@@ -72,7 +72,6 @@ private case class ChangeFeedPartitionReader
         assert(node.get(LsnPropertyName) != null, "Change feed responses must have _lsn property.")
         assert(node.get(LsnPropertyName).asText("") != "", "Change feed responses must have non empty _lsn.")
         val nextLsn = SparkBridgeImplementationInternal.toLsn(node.get(LsnPropertyName).asText())
-        logWarning(s"nextLsn: $nextLsn, endLsn: $endLsn")
         nextLsn <= endLsn
     }
   }

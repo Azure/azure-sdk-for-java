@@ -369,7 +369,9 @@ public class DataLakeFileSystemClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.listPaths#ListPathsOptions-Duration}
      *
-     * @param options A {@link ListPathsOptions} which specifies what data should be returned by the service.
+     * @param options A {@link ListPathsOptions} which specifies what data should be returned by the service. If
+     * iterating by page, the page size passed to byPage methods such as
+     * {@link PagedIterable#iterableByPage(int)} will be preferred over the value set on these options.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The list of files/directories.
      */
