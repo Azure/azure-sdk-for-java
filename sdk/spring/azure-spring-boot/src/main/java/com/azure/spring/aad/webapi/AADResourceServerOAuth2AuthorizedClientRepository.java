@@ -51,11 +51,10 @@ public class AADResourceServerOAuth2AuthorizedClientRepository implements OAuth2
             LOGGER.error("Not found the ClientRegistration, registrationId={}", registrationId);
             return null;
         }
-        if (clientRegistration.getAuthorizationGrantType().getValue().equals(
-            AADAuthorizationGrantType.ON_BEHALF_OF.getValue())) {
-            return this.oAuth2AuthorizedClientService.loadAuthorizedClient(registrationId, authentication.getName());
-        } else if (clientRegistration.getAuthorizationGrantType().getValue().equals(
-            AADAuthorizationGrantType.CLIENT_CREDENTIALS.getValue())) {
+        if (AADAuthorizationGrantType.CLIENT_CREDENTIALS
+            .isSameGrantType(clientRegistration.getAuthorizationGrantType()) ||
+            AADAuthorizationGrantType.ON_BEHALF_OF
+                .isSameGrantType(clientRegistration.getAuthorizationGrantType())) {
             return this.oAuth2AuthorizedClientService.loadAuthorizedClient(registrationId, authentication.getName());
         }
         return null;

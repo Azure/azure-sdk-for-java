@@ -59,7 +59,9 @@ public class AADOBOOAuth2AuthorizedClientProvider implements OAuth2AuthorizedCli
     public OAuth2AuthorizedClient authorize(OAuth2AuthorizationContext context) {
         Assert.notNull(context, "context cannot be null");
         ClientRegistration clientRegistration = context.getClientRegistration();
-        if (!AADAuthorizationGrantType.ON_BEHALF_OF.getValue().equals(clientRegistration.getAuthorizationGrantType().getValue())) {
+
+        if (!AADAuthorizationGrantType.ON_BEHALF_OF
+            .isSameGrantType(clientRegistration.getAuthorizationGrantType())) {
             return null;
         }
 
@@ -70,7 +72,7 @@ public class AADOBOOAuth2AuthorizedClientProvider implements OAuth2AuthorizedCli
             return null;
         }
 
-        return loadOboAuthorizedClient(context.getClientRegistration(), context.getPrincipal());
+        return getOboAuthorizedClient(context.getClientRegistration(), context.getPrincipal());
     }
 
     private boolean hasTokenExpired(AbstractOAuth2Token token) {
@@ -79,8 +81,8 @@ public class AADOBOOAuth2AuthorizedClientProvider implements OAuth2AuthorizedCli
 
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    private <T extends OAuth2AuthorizedClient> T loadOboAuthorizedClient(ClientRegistration clientRegistration,
-                                                                         Authentication principal) {
+    private <T extends OAuth2AuthorizedClient> T getOboAuthorizedClient(ClientRegistration clientRegistration,
+                                                                        Authentication principal) {
 
         if (!(principal instanceof AbstractOAuth2TokenAuthenticationToken)) {
             throw new IllegalStateException("Unsupported token implementation " + principal.getClass());
