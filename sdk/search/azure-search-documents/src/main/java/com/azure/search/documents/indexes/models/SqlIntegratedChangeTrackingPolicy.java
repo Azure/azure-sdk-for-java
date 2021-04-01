@@ -19,4 +19,4 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy")
 @JsonFlatten
 @Immutable
-public final class SqlIntegratedChangeTrackingPolicy extends DataChangeDetectionPolicy { }
+public final class SqlIntegratedChangeTrackingPolicy extends DataChangeDetectionPolicy {}

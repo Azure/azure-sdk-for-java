@@ -20,4 +20,4 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.Azure.Search.ClassicSimilarity")
 @JsonFlatten
 @Immutable
-public final class ClassicSimilarityAlgorithm extends SimilarityAlgorithm { }
+public final class ClassicSimilarityAlgorithm extends SimilarityAlgorithm {}

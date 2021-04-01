@@ -36,6 +36,14 @@ public class KeyPhraseExtractionSkill extends SearchIndexerSkill {
     @JsonProperty(value = "maxKeyPhraseCount")
     private Integer maxKeyPhraseCount;
 
+    /*
+     * The version of the model to use when calling the Text Analytics service.
+     * It will default to the latest available when not specified. We recommend
+     * you do not specify this value unless absolutely necessary.
+     */
+    @JsonProperty(value = "modelVersion")
+    private String modelVersion;
+
     /**
      * Creates an instance of KeyPhraseExtractionSkill class.
      *
@@ -88,6 +96,30 @@ public class KeyPhraseExtractionSkill extends SearchIndexerSkill {
      */
     public KeyPhraseExtractionSkill setMaxKeyPhraseCount(Integer maxKeyPhraseCount) {
         this.maxKeyPhraseCount = maxKeyPhraseCount;
+        return this;
+    }
+
+    /**
+     * Get the modelVersion property: The version of the model to use when calling the Text Analytics service. It will
+     * default to the latest available when not specified. We recommend you do not specify this value unless absolutely
+     * necessary.
+     *
+     * @return the modelVersion value.
+     */
+    public String getModelVersion() {
+        return this.modelVersion;
+    }
+
+    /**
+     * Set the modelVersion property: The version of the model to use when calling the Text Analytics service. It will
+     * default to the latest available when not specified. We recommend you do not specify this value unless absolutely
+     * necessary.
+     *
+     * @param modelVersion the modelVersion value to set.
+     * @return the KeyPhraseExtractionSkill object itself.
+     */
+    public KeyPhraseExtractionSkill setModelVersion(String modelVersion) {
+        this.modelVersion = modelVersion;
         return this;
     }
 }

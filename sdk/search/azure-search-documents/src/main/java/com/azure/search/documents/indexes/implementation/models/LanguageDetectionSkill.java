@@ -6,7 +6,7 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
@@ -23,8 +23,23 @@ import java.util.List;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Skills.Text.LanguageDetectionSkill")
 @JsonFlatten
-@Immutable
+@Fluent
 public class LanguageDetectionSkill extends SearchIndexerSkill {
+    /*
+     * A country code to use as a hint to the language detection model if it
+     * cannot disambiguate the language.
+     */
+    @JsonProperty(value = "defaultCountryHint")
+    private String defaultCountryHint;
+
+    /*
+     * The version of the model to use when calling the Text Analytics service.
+     * It will default to the latest available when not specified. We recommend
+     * you do not specify this value unless absolutely necessary.
+     */
+    @JsonProperty(value = "modelVersion")
+    private String modelVersion;
+
     /**
      * Creates an instance of LanguageDetectionSkill class.
      *
@@ -36,5 +51,51 @@ public class LanguageDetectionSkill extends SearchIndexerSkill {
             @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
             @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
+    }
+
+    /**
+     * Get the defaultCountryHint property: A country code to use as a hint to the language detection model if it cannot
+     * disambiguate the language.
+     *
+     * @return the defaultCountryHint value.
+     */
+    public String getDefaultCountryHint() {
+        return this.defaultCountryHint;
+    }
+
+    /**
+     * Set the defaultCountryHint property: A country code to use as a hint to the language detection model if it cannot
+     * disambiguate the language.
+     *
+     * @param defaultCountryHint the defaultCountryHint value to set.
+     * @return the LanguageDetectionSkill object itself.
+     */
+    public LanguageDetectionSkill setDefaultCountryHint(String defaultCountryHint) {
+        this.defaultCountryHint = defaultCountryHint;
+        return this;
+    }
+
+    /**
+     * Get the modelVersion property: The version of the model to use when calling the Text Analytics service. It will
+     * default to the latest available when not specified. We recommend you do not specify this value unless absolutely
+     * necessary.
+     *
+     * @return the modelVersion value.
+     */
+    public String getModelVersion() {
+        return this.modelVersion;
+    }
+
+    /**
+     * Set the modelVersion property: The version of the model to use when calling the Text Analytics service. It will
+     * default to the latest available when not specified. We recommend you do not specify this value unless absolutely
+     * necessary.
+     *
+     * @param modelVersion the modelVersion value to set.
+     * @return the LanguageDetectionSkill object itself.
+     */
+    public LanguageDetectionSkill setModelVersion(String modelVersion) {
+        this.modelVersion = modelVersion;
+        return this;
     }
 }

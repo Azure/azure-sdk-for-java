@@ -29,4 +29,4 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @JsonFlatten
 @Immutable
-public abstract class DataChangeDetectionPolicy { }
+public abstract class DataChangeDetectionPolicy {}
