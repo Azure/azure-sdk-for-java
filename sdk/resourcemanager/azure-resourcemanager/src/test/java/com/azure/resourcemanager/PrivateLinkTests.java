@@ -10,10 +10,8 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.RunCommandResult;
@@ -24,11 +22,10 @@ import com.azure.resourcemanager.network.models.PrivateDnsZoneGroup;
 import com.azure.resourcemanager.network.models.PrivateEndpoint;
 import com.azure.resourcemanager.network.models.PrivateLinkSubResourceName;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.storage.fluent.models.PrivateEndpointConnectionInner;
-import com.azure.resourcemanager.storage.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
@@ -142,15 +139,10 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
         Assertions.assertEquals("request message", privateEndpoint.privateLinkServiceConnections().get(pecName).requestMessage());
 
         // approve the connection
-        List<PrivateEndpointConnectionInner> storageAccountConnections = azureResourceManager.storageAccounts().manager().serviceClient().getPrivateEndpointConnections().list(rgName, saName).stream().collect(Collectors.toList());
+        List<PrivateEndpointConnection> storageAccountConnections = storageAccount.listPrivateEndpointConnections().stream().collect(Collectors.toList());
         Assertions.assertEquals(1, storageAccountConnections.size());
-        PrivateEndpointConnectionInner storageAccountConnection = storageAccountConnections.iterator().next();
-        Response<PrivateEndpointConnectionInner> approvalResponse = azureResourceManager.storageAccounts().manager().serviceClient().getPrivateEndpointConnections()
-            .putWithResponse(rgName, saName, storageAccountConnection.name(),
-                storageAccountConnection.privateEndpoint(),
-                storageAccountConnection.privateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED),
-                Context.NONE);
-        Assertions.assertEquals(200, approvalResponse.getStatusCode());
+        PrivateEndpointConnection storageAccountConnection = storageAccountConnections.iterator().next();
+        storageAccount.approvePrivateEndpointConnection(storageAccountConnection.name());
 
         // check again
         privateEndpoint.refresh();

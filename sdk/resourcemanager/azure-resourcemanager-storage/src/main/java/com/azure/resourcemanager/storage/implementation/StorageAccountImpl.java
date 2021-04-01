@@ -8,12 +8,18 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpoint;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnection;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnectionProvisioningState;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.StorageAccountsClient;
+import com.azure.resourcemanager.storage.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.storage.models.AccessTier;
 import com.azure.resourcemanager.storage.models.AccountStatuses;
 import com.azure.resourcemanager.storage.models.AzureFilesIdentityBasedAuthentication;
@@ -272,6 +278,34 @@ class StorageAccountImpl
                 .collect(Collectors.toList())));
 
         return PagedConverter.convertListToPagedFlux(retList);
+    }
+
+    @Override
+    public PagedIterable<PrivateEndpointConnection> listPrivateEndpointConnections() {
+        return new PagedIterable<>(listPrivateEndpointConnectionsAsync());
+    }
+
+    @Override
+    public PagedFlux<PrivateEndpointConnection> listPrivateEndpointConnectionsAsync() {
+        return PagedConverter.mapPage(this.manager().serviceClient().getPrivateEndpointConnections()
+            .listAsync(this.resourceGroupName(), this.name()), PrivateEndpointConnectionImpl::new);
+    }
+
+
+    @Override
+    public void approvePrivateEndpointConnection(String privateEndpointConnectionName) {
+        approvePrivateEndpointConnectionAsync(privateEndpointConnectionName).block();
+    }
+
+    @Override
+    public Mono<Void> approvePrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
+        return this.manager().serviceClient().getPrivateEndpointConnections()
+            .putWithResponseAsync(this.resourceGroupName(), this.name(), privateEndpointConnectionName,
+                null,
+                new com.azure.resourcemanager.storage.models.PrivateLinkServiceConnectionState()
+                    .withStatus(
+                        com.azure.resourcemanager.storage.models.PrivateEndpointServiceConnectionStatus.APPROVED))
+            .then();
     }
 
     @Override
@@ -683,6 +717,57 @@ class StorageAccountImpl
         @Override
         public List<String> requiredDnsZoneNames() {
             return Collections.unmodifiableList(innerModel.requiredZoneNames());
+        }
+    }
+
+    private static final class PrivateEndpointConnectionImpl implements PrivateEndpointConnection {
+        private final PrivateEndpointConnectionInner innerModel;
+
+        public PrivateEndpointConnectionImpl(PrivateEndpointConnectionInner innerModel) {
+            this.innerModel = innerModel;
+        }
+
+        @Override
+        public String id() {
+            return innerModel.id();
+        }
+
+        @Override
+        public String name() {
+            return innerModel.name();
+        }
+
+        @Override
+        public String type() {
+            return innerModel.type();
+        }
+
+        @Override
+        public PrivateEndpoint privateEndpoint() {
+            return innerModel.privateEndpoint() == null
+                ? null
+                : new PrivateEndpoint(innerModel.privateEndpoint().id());
+        }
+
+        @Override
+        public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
+            return innerModel.privateLinkServiceConnectionState() == null
+                ? null
+                : new PrivateLinkServiceConnectionState(
+                    innerModel.privateLinkServiceConnectionState().status() == null
+                        ? null
+                        : PrivateEndpointServiceConnectionStatus
+                        .fromString(innerModel.privateLinkServiceConnectionState().status().toString()),
+                    innerModel.privateLinkServiceConnectionState().description(),
+                    innerModel.privateLinkServiceConnectionState().actionRequired()
+            );
+        }
+
+        @Override
+        public PrivateEndpointConnectionProvisioningState provisioningState() {
+            return innerModel.provisioningState() == null
+                ? null
+                : PrivateEndpointConnectionProvisioningState.fromString(innerModel.provisioningState().toString());
         }
     }
 }
