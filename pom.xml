@@ -623,6 +623,7 @@
         <module>sdk/tables</module>
         <module>sdk/template</module>
         <module>sdk/textanalytics</module>
+        <module>sdk/videoanalyzer</module>
       </modules>
     </profile>
   </profiles>

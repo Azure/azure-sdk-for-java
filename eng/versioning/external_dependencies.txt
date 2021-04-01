@@ -32,6 +32,7 @@ com.microsoft.azure:azure-media;0.9.8
 com.microsoft.azure:azure-servicebus;3.4.0
 com.microsoft.azure:azure-servicebus-jms;0.0.7
 com.microsoft.azure:qpid-proton-j-extensions;1.2.3
+com.microsoft.azure.sdk.iot:iot-service-client:jar:1.28.0
 com.microsoft.rest:client-runtime;1.7.4
 com.microsoft.rest.v2:client-runtime;2.1.1
 com.microsoft.sqlserver:mssql-jdbc;7.4.1.jre8

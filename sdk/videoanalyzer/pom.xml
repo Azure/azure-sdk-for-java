@@ -4,9 +4,9 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
-  <artifactId>azure-mediaservices-service</artifactId>
+  <artifactId>azure-videoanalyzer-service</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.0</version>  <!-- Need not change for every release-->
+  <version>1.0.0-beta.1</version>  <!-- Need not change for every release-->
 
   <profiles>
     <profile>
@@ -45,8 +45,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>azure-resourcemanager-mediaservices</module>
-        <module>microsoft-azure-media</module>
+        <module>azure-media-video-analyzer-edge</module>
       </modules>
     </profile>
   </profiles>
