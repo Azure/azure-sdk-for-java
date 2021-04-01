@@ -64,7 +64,7 @@ public class TestUtils {
     static final int USE_CASE_EMPTY_ENTITY = 18;
     static final int USE_CASE_CANCEL_MESSAGES = 19;
     static final int USE_CASE_AUTO_COMPLETE = 20;
-    static final int USE_CASE_PROCESSOR_MAX_AUTO_LOCK_RENEW = 21;
+    static final int USE_CASE_PROCESSOR_RECEIVE = 21;
 
     // An application property key to identify where in the stream this message was created.
     static final String MESSAGE_POSITION_ID = "message-position";

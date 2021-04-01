@@ -66,7 +66,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
     void receiveMessage(MessagingEntityType entityType, boolean isSessionEnabled) throws InterruptedException {
         // Arrange
 
-        final int entityIndex = TestUtils.USE_CASE_PROCESSOR_MAX_AUTO_LOCK_RENEW;
+        final int entityIndex = TestUtils.USE_CASE_PROCESSOR_RECEIVE;
         final Duration expectedMaxAutoLockRenew = Duration.ofSeconds(60);
 
         final String messageId = UUID.randomUUID().toString();
