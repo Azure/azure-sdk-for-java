@@ -11,6 +11,6 @@ azure:
       graph:
         scopes:
           - https://graph.microsoft.com/User.Read
-      custom:
+      webapiB:
         scopes:
-          - <Web-API-B-app-id-url>/File.Read
+          - <Web-API-B-app-id-url>/WebApiB.ExampleScope

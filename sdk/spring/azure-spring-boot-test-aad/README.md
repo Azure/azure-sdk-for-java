@@ -46,9 +46,9 @@ Here are the steps to start this case.
 
 | webapiA application requires environment variable name | Actual Value | 
 | ---: | :----: | 
-|   CONDITIONAL_ACCESS_POLICY_TEST_WEA_API_A_CLIENT_ID  | your webapiA application id |
+|   CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_A_CLIENT_ID  | your webapiA application id |
 |   CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_A_CLIENT_SECRET  | your webapiA application secret |
-|   CONDITIONAL_ACCESS_POLICY_TEST_WEA_API_B_CLIENT_ID  | your webapiB application id |
+|   CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_B_CLIENT_ID  | your webapiB application id |
 |   AAD_TENANT_ID_1  | your tenant id |
 
  - At last, Prepare the environment variables of `AADConditionalAccessIT` through the parameters of ***webapp*** application.
@@ -60,6 +60,8 @@ Here are the steps to start this case.
 |   AAD_SINGLE_TENANT_CLIENT_SECRET  | your webapp application secret |
 |   AAD_TENANT_ID_1  | your tenant id |
 |   AZURE_CLOUD_TYPE  | your azure subscription type |
+|   AAD_USER_NAME_1  | your aad user name |
+|   AAD_USER_PASSWORD_1  | your aad user password |
 
  - Start the `conditionalAccessTest()` method.
  - Then our Authenticator App in mobile phone will receive a message that requires your approval for this login request.(If you log in for the first time, you need to follow the instructions to set up the Authenticator App) After we agree, we can obtain a valid token.
