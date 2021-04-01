@@ -1,6 +1,6 @@
 ## 1.0.0-beta.4 (2021-04-06)
 
-- Regenerated with the latest Synapse Artifacts API
+- Update with Azure Data Factory(ADF) swagger changes/2019-06-01-preview
 - Update azure-core to 1.15.0
 
 ## 1.0.0-beta.3 (2021-03-09)
