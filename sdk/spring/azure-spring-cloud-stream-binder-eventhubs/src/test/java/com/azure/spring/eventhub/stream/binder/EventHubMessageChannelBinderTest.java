@@ -57,12 +57,12 @@ public class EventHubMessageChannelBinderTest {
         producerProperties.setPartitionKeyExpression(payloadExpression);
         DefaultMessageHandler messageHandler =
             (DefaultMessageHandler) this.binder.getBinder()
-                .createProducerMessageHandler(producerDestination,
-                    producerProperties, messageChannel);
+                                               .createProducerMessageHandler(producerDestination,
+                                                   producerProperties, messageChannel);
         Assertions.assertThat(messageHandler)
-            .extracting("partitionIdExpression")
-            .returns(PARTITION_HEADER,
-                exp -> ((SpelExpression) exp).getExpressionString());
+                  .extracting("partitionIdExpression")
+                  .returns(PARTITION_HEADER,
+                      exp -> ((SpelExpression) exp).getExpressionString());
         Assertions.assertThat(messageHandler).hasFieldOrPropertyWithValue("partitionKeyExpression", null);
     }
 
