@@ -31,9 +31,11 @@
         <scope>import</scope>
       </dependency>
       <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-core</artifactId>
-        <version>1.14.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+        <groupId>com.azure.spring</groupId>
+        <artifactId>azure-spring-boot-bom</artifactId>
+        <version>3.4.0-beta.1</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>

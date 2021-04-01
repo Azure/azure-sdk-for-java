@@ -9,6 +9,9 @@ parameters:
     - spring/azure-spring-boot-test-storage
     - spring/azure-spring-cloud-test-eventhubs
   Artifacts:
+    - name: azure-spring-boot-bom
+      groupId: com.azure.spring
+      safeName: azurespringbootbom
     - name: azure-spring-boot-test-application
       groupId: com.azure.spring
       safeName: azurespringboottestapplication

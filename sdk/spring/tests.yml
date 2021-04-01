@@ -10,6 +10,9 @@ stages:
         TestResourceDirectories:
           - spring/azure-spring-boot-test-aad
         Artifacts:
+          - name: azure-spring-boot-bom
+            groupId: com.azure.spring
+            safeName: azurespringbootbom
           - name: azure-spring-boot-test-aad
             groupId: com.azure.spring
             safeName: azurespringboottestaad
