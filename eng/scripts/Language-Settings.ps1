@@ -185,7 +185,7 @@ function Get-java-GithubIoDocIndex()
   # Update the main.js and docfx.json language content
   UpdateDocIndexFiles -appTitleLang "Java"
   # Fetch out all package metadata from csv file.
-  $metadata = Get-CSVMetadata -MetadataUri "C:\sdk\azure-sdk\_data\releases\latest\java-packages.csv"
+  $metadata = Get-CSVMetadata -MetadataUri $MetadataUri
   # Leave the track 2 packages if multiple packages fetched out.
   $clientPackages = $metadata | Where-Object { $_.GroupId -eq 'com.azure' }
   $nonClientPackages = $metadata | Where-Object { $_.GroupId -ne 'com.azure' -and !$clientPackages.Package.Contains($_.Package) }
@@ -219,7 +219,7 @@ function Update-java-CIConfig($ciRepo, $locationInDocRepo)
 { 
   Write-Host "Updating the package.json in Java"
   # Read release csv file, and filter out by New=true, Hide!=true
-  $metadata = Get-CSVMetadata -MetadataUri "https://raw.githubusercontent.com/sima-zhu/azure-sdk/set_bom_hide_true/_data/releases/latest/java-packages.csv" | Where-Object {$_.New -eq "true"}  | Where-Object {$_.Hide -ne "true"} 
+  $metadata = Get-CSVMetadata -MetadataUri $MetadataUri | Where-Object {$_.New -eq "true"}  | Where-Object {$_.Hide -ne "true"} 
   $preview =  @{
     language = "java"
     output_path = "preview/docs-ref-autogen"
