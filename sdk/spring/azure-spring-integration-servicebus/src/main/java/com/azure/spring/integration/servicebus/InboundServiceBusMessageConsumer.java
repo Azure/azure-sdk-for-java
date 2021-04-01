@@ -45,10 +45,9 @@ public class InboundServiceBusMessageConsumer implements Consumer<ServiceBusRece
     public void accept(ServiceBusReceivedMessageContext messageContext) {
         Map<String, Object> headers = new HashMap<>();
         headers.put(AzureHeaders.LOCK_TOKEN, messageContext.getMessage().getLockToken());
-
         Checkpointer checkpointer = new AzureCheckpointer(() ->
             CompletableFuture.runAsync(messageContext::complete)
-        , () -> CompletableFuture.runAsync(messageContext::abandon)); // TODO  may need to investigate whehter deadletter here.
+        , () -> CompletableFuture.runAsync(messageContext::abandon)); // TODO  may need to investigate whether deadletter here.
 
         if (checkpointConfig.getCheckpointMode() == CheckpointMode.MANUAL) {
             headers.put(AzureHeaders.CHECKPOINTER, checkpointer);
@@ -74,11 +73,11 @@ public class InboundServiceBusMessageConsumer implements Consumer<ServiceBusRece
     }
 
     private String buildCheckpointFailMessage(Message<?> message) {
-        return String.format(MSG_FAIL_CHECKPOINT, message, name); //TODO: the logic of getting queue name
+        return String.format(MSG_FAIL_CHECKPOINT, message, name);
     }
 
     private String buildCheckpointSuccessMessage(Message<?> message) {
-        return String.format(MSG_SUCCESS_CHECKPOINT, message, name, //  TODO: the logic of getting queue name
+        return String.format(MSG_SUCCESS_CHECKPOINT, message, name,
             checkpointConfig.getCheckpointMode());
     }
 }

@@ -4,6 +4,8 @@
 package com.azure.spring.integration.servicebus.factory;
 
 
+import com.azure.messaging.servicebus.ServiceBusSenderClient;
+
 /**
  * Factory to return functional creator of service bus sender
  *
@@ -11,9 +13,9 @@ package com.azure.spring.integration.servicebus.factory;
  */
 public interface ServiceBusSenderFactory {
     /**
-     * Return a function which accepts service bus topic or queue name, then returns {@link IMessageSender}
+     * Return a function which accepts service bus topic or queue name, then returns {@link ServiceBusSenderClient}
      * @param name sender name
      * @return message sender implement instance
      */
-    //IMessageSender getOrCreateSender(String name); // TODO may need to be replaced with a method that returns a ServiceBusSenderClient
+    ServiceBusSenderClient getOrCreateSender(String name);
 }

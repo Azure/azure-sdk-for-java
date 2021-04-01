@@ -4,6 +4,11 @@
 package com.azure.spring.integration.servicebus.factory;
 
 
+import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
+
+import java.util.function.Consumer;
+
 /**
  * Factory to return functional creator of service bus queue client
  *
@@ -11,9 +16,11 @@ package com.azure.spring.integration.servicebus.factory;
  */
 public interface ServiceBusQueueClientFactory extends ServiceBusSenderFactory {
     /**
-     * Return a function which accepts service bus queue name, then returns {@link IQueueClient}
-     * @param name name
-     * @return queue client
+     * Return a function which accepts service bus queue name, then returns {@link ServiceBusProcessorClient}
+     * @param name queue name
+     * @return ServiceBusProcessorClient queue processor client
      */
-  //  IQueueClient getOrCreateClient(String name); // TODO replaced with a new method that returns a processor client.
+    ServiceBusProcessorClient getOrCreateClient(String name, ServiceBusClientConfig clientConfig, Consumer processMessage, Consumer processError);
+
+
 }

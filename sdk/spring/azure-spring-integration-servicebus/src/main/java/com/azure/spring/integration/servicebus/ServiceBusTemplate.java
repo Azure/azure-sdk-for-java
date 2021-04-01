@@ -63,9 +63,8 @@ public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements Se
         if (StringUtils.hasText(partitionKey)) {
             serviceBusMessage.setPartitionKey(partitionKey);
         }
-
-       // return this.senderFactory.getOrCreateSender(destination).sendAsync(serviceBusMessage);
-       return null; // TODO: use the processor client to send service bus message
+        this.senderFactory.getOrCreateSender(destination).sendMessage(serviceBusMessage); // TODO is ok here?
+        return CompletableFuture.completedFuture(null); //TODO is ok here?
     }
 
 

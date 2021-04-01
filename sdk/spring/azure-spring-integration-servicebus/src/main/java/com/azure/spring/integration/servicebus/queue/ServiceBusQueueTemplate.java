@@ -87,6 +87,8 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
         if (lockToken != null) {
             Checkpointer ci = (Checkpointer) message.getHeaders().get(AzureHeaders.CHECKPOINTER);
             ci.failure();// TODO: if deadLetter and abandon invokes the same method failure(), in failure, need to distinguish deadLetter and abandon.
+            // TODO  Currently, Checkpointer only has two methods exposed: success() failure(), all parameterless.  We can use success to complete a message
+            // use failure to abandon a message, but we have no method to deadletter a message.
         } else {
             LOGGER.error("Failed to send message to dead letter queue");
             throw new ServiceBusRuntimeException("Failed to send message to dead letter queue");
@@ -123,32 +125,9 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
         InboundServiceBusMessageConsumer processMessage = new InboundServiceBusMessageConsumer(name, null, checkpointConfig, messageConverter, consumer, payloadType);
         Consumer<ServiceBusErrorContext> processError = errorContext -> {
            //TODO   is this consumer useful?
-
         };
-        ServiceBusProcessorClient processorClient;
-
-        if (this.clientConfig.isSessionsEnabled()) {
-            processorClient = new ServiceBusClientBuilder()
-                .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
-                .sessionProcessor()
-                .queueName(name)
-                .maxConcurrentSessions(3)
-                .processMessage(processMessage)
-                .processError(processError)
-                .buildProcessorClient();
-        } else {
-            processorClient = new ServiceBusClientBuilder()
-                .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
-                .processor()
-                .queueName(name)
-                .processMessage(processMessage)
-                .processError(processError)
-                .buildProcessorClient();
-
-        }  //TODO need remove this logic of instantiating processor client into DefaultServiceBusQueueClientFactory.
+        ServiceBusProcessorClient processorClient = this.senderFactory.getOrCreateClient(name, clientConfig, processMessage, processError);
         processorClient.start();
-
-
     }
 
 

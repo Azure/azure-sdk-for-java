@@ -4,6 +4,11 @@
 package com.azure.spring.integration.servicebus.factory;
 
 
+import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
+
+import java.util.function.Consumer;
+
 /**
  * Factory to return functional creator of service bus topic and subscription client
  *
@@ -11,10 +16,10 @@ package com.azure.spring.integration.servicebus.factory;
  */
 public interface ServiceBusTopicClientFactory extends ServiceBusSenderFactory {
     /**
-     * Return a function which accepts service bus topic and subscription name, then returns {@link ISubscriptionClient}
+     * Return a function which accepts service bus topic and subscription name, then returns {@link ServiceBusProcessorClient}
      * @param topic topic
      * @param subscription subscription
      * @return subscription client
      */
-    //ISubscriptionClient getOrCreateSubscriptionClient(String topic, String subscription);  // TODO replaced with a new method that returns a processor client
+    ServiceBusProcessorClient getOrCreateClient(String topic, String subscription, ServiceBusClientConfig clientConfig, Consumer processMessage, Consumer processError);
 }

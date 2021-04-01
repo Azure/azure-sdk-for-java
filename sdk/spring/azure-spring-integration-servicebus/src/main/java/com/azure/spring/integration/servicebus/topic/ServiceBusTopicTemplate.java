@@ -92,31 +92,10 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
 
         };
 
-
-        ServiceBusProcessorClient processorClient;
-
-        if (this.clientConfig.isSessionsEnabled()) {
-            processorClient = new ServiceBusClientBuilder()
-                .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
-                .sessionProcessor()
-                .topicName(name)
-                .subscriptionName(consumerGroup)
-                .maxConcurrentSessions(3)
-                .processMessage(processMessage)
-                .processError(processError)
-                .buildProcessorClient();
-        } else {
-            processorClient = new ServiceBusClientBuilder()
-                .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
-                .processor()
-                .topicName(name)
-                .subscriptionName(consumerGroup)
-                .processMessage(processMessage)
-                .processError(processError)
-                .buildProcessorClient();
-
-        }  //TODO need remove this logic of instantiating processor client into DefaultServiceBusTopicClientFactory.
+        ServiceBusProcessorClient processorClient = this.senderFactory.getOrCreateClient(name, consumerGroup, clientConfig, processMessage, processError);
         processorClient.start();
+
+
     }
 
     @Override
