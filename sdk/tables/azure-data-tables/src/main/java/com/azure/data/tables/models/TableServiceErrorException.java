@@ -1,13 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.data.tables.models;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
 /**
- * Exception thrown for an invalid response with TableServiceError information.
+ * Exception thrown for an invalid response with {@link TableServiceError} information.
  */
 public final class TableServiceErrorException extends HttpResponseException {
     /**

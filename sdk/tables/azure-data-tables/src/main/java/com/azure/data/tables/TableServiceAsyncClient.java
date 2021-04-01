@@ -20,6 +20,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.AzureTableImplBuilder;
 import com.azure.data.tables.implementation.ModelHelper;
+import com.azure.data.tables.implementation.TableUtils;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
@@ -37,7 +38,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.data.tables.implementation.Utils.toTableServiceErrorException;
+import static com.azure.data.tables.implementation.TableUtils.toTableServiceErrorException;
 
 /**
  * Provides an asynchronous service client for accessing the Azure Tables service.
@@ -162,12 +163,7 @@ public class TableServiceAsyncClient {
         try {
             return implementation.getTables().createWithResponseAsync(properties, null,
                 ResponseFormat.RETURN_NO_CONTENT, null, context)
-                .doOnError(throwable -> {
-                    if (throwable instanceof com.azure.data.tables.implementation.models.TableServiceErrorException) {
-                        throw toTableServiceErrorException(
-                            (com.azure.data.tables.implementation.models.TableServiceErrorException) throwable);
-                    }
-                })
+                .onErrorMap(TableUtils::mapThrowableToTableServiceErrorException)
                 .map(response -> new SimpleResponse<>(response, null));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -240,12 +236,7 @@ public class TableServiceAsyncClient {
 
         try {
             return implementation.getTables().deleteWithResponseAsync(tableName, null, context)
-                .doOnError(throwable -> {
-                    if (throwable instanceof com.azure.data.tables.implementation.models.TableServiceErrorException) {
-                        throw toTableServiceErrorException(
-                            (com.azure.data.tables.implementation.models.TableServiceErrorException) throwable);
-                    }
-                })
+                .onErrorMap(TableUtils::mapThrowableToTableServiceErrorException)
                 .map(response -> new SimpleResponse<>(response, null));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -308,12 +299,7 @@ public class TableServiceAsyncClient {
 
         try {
             return implementation.getTables().queryWithResponseAsync(null, nextTableName, queryOptions, context)
-                .doOnError(throwable -> {
-                    if (throwable instanceof com.azure.data.tables.implementation.models.TableServiceErrorException) {
-                        throw toTableServiceErrorException(
-                            (com.azure.data.tables.implementation.models.TableServiceErrorException) throwable);
-                    }
-                })
+                .onErrorMap(TableUtils::mapThrowableToTableServiceErrorException)
                 .flatMap(response -> {
                     TableQueryResponse tableQueryResponse = response.getValue();
 

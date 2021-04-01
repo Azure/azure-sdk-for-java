@@ -1,36 +1,37 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.data.tables.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-public class TableServiceError {
+/**
+ * A class that represents an error occurred in a Tables operation.
+ */
+public final class TableServiceError {
     /*
      * The service error code.
      */
-    private String code;
+    private String errorCode;
 
     /*
      * Language code of the error message.
      */
-    @JsonProperty(value = "lang")
-    private String lang;
+    private String languageCode;
 
     /*
      * The error message.
      */
-    @JsonProperty(value = "value")
-    private String message;
+    private String errorMessage;
 
     /**
      * Create an instance of {@link TableServiceError}.
      *
-     * @param code The service error code.
-     * @param lang Language code of the error message.
-     * @param message The error message.
+     * @param errorCode The service error code.
+     * @param languageCode Language code of the error message.
+     * @param errorMessage The error message.
      */
-    public TableServiceError(String code, String lang, String message) {
-        this.code = code;
-        this.lang = lang;
-        this.message = message;
+    public TableServiceError(String errorCode, String languageCode, String errorMessage) {
+        this.errorCode = errorCode;
+        this.languageCode = languageCode;
+        this.errorMessage = errorMessage;
     }
 
     /**
@@ -38,8 +39,8 @@ public class TableServiceError {
      *
      * @return The service error code.
      */
-    public String getCode() {
-        return this.code;
+    public String getErrorCode() {
+        return this.errorCode;
     }
 
     /**
@@ -47,8 +48,8 @@ public class TableServiceError {
      *
      * @return The language code of the error message.
      */
-    public String getLang() {
-        return this.lang;
+    public String getLanguageCode() {
+        return this.languageCode;
     }
 
     /**
@@ -56,7 +57,7 @@ public class TableServiceError {
      *
      * @return The error message.
      */
-    public String getMessage() {
-        return this.message;
+    public String getErrorMessage() {
+        return this.errorMessage;
     }
 }

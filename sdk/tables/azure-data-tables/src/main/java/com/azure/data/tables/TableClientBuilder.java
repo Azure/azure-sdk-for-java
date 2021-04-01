@@ -13,7 +13,6 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
-
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.TablesJacksonSerializer;
@@ -26,8 +25,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link TableClient} and
@@ -102,17 +99,17 @@ public class TableClientBuilder {
      * @throws IllegalArgumentException If {@code connectionString} isn't a valid connection string.
      */
     public TableClientBuilder connectionString(String connectionString) {
-        StorageConnectionString storageConnectionString
-            = StorageConnectionString.create(connectionString, logger);
+        StorageConnectionString storageConnectionString = StorageConnectionString.create(connectionString, logger);
         StorageEndpoint endpoint = storageConnectionString.getTableEndpoint();
 
         if (endpoint == null || endpoint.getPrimaryUri() == null) {
-            throw logger
-                .logExceptionAsError(new IllegalArgumentException(
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException(
                     "'connectionString' missing required settings to derive tables service endpoint."));
         }
 
         this.endpoint(endpoint.getPrimaryUri());
+
         StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
 
         if (authSettings.getType() == StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY) {
@@ -187,11 +184,16 @@ public class TableClientBuilder {
      *
      * @return The updated {@link TableClientBuilder}.
      *
-     * @throws IllegalArgumentException If {@code sasToken} is {@code null} or empty.
+     * @throws IllegalArgumentException If {@code sasToken} is empty.
+     * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
     public TableClientBuilder sasToken(String sasToken) {
-        if (isNullOrEmpty(sasToken)) {
-            throw new IllegalArgumentException("'sasToken' cannot be null or empty.");
+        if (sasToken == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'sasToken' cannot be null."));
+        }
+
+        if (sasToken.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'sasToken' cannot be null or empty."));
         }
 
         this.sasToken = sasToken;
@@ -208,11 +210,11 @@ public class TableClientBuilder {
      *
      * @return The updated {@link TableClientBuilder}.
      *
-     * @throws IllegalArgumentException If {@code credential} is {@code null}.
+     * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public TableClientBuilder credential(AzureSasCredential credential) {
         if (credential == null) {
-            throw new IllegalArgumentException("'credential' cannot be null.");
+            throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
         }
 
         this.azureSasCredential = credential;
@@ -227,11 +229,11 @@ public class TableClientBuilder {
      *
      * @return The updated {@link TableClientBuilder}.
      *
-     * @throws IllegalArgumentException If {@code credential} is {@code null}.
+     * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public TableClientBuilder credential(TablesSharedKeyCredential credential) {
         if (credential == null) {
-            throw new IllegalArgumentException("'credential' cannot be null.");
+            throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
         }
 
         this.tablesSharedKeyCredential = credential;
@@ -248,11 +250,11 @@ public class TableClientBuilder {
      *
      * @return The updated {@link TableClientBuilder}.
      *
-     * @throws IllegalArgumentException If {@code credential} is {@code null}.
+     * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public TableClientBuilder credential(TokenCredential credential) {
         if (credential == null) {
-            throw new IllegalArgumentException("'credential' cannot be null.");
+            throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
         }
 
         this.tokenCredential = credential;
@@ -288,11 +290,11 @@ public class TableClientBuilder {
      *
      * @return The updated {@link TableClientBuilder}.
      *
-     * @throws IllegalArgumentException If {@code logOptions} is {@code null}.
+     * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
     public TableClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         if (logOptions == null) {
-            throw new IllegalArgumentException("'logOptions' cannot be null.");
+            throw logger.logExceptionAsError(new NullPointerException("'logOptions' cannot be null."));
         }
 
         this.httpLogOptions = logOptions;
@@ -308,11 +310,11 @@ public class TableClientBuilder {
      *
      * @return The updated {@link TableClientBuilder}.
      *
-     * @throws IllegalArgumentException If {@code pipelinePolicy} is {@code null}.
+     * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
     public TableClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         if (pipelinePolicy == null) {
-            throw new IllegalArgumentException("'pipelinePolicy' cannot be null.");
+            throw logger.logExceptionAsError(new NullPointerException("'pipelinePolicy' cannot be null."));
         }
 
         if (pipelinePolicy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
@@ -350,11 +352,11 @@ public class TableClientBuilder {
      *
      * @return The updated {@link TableClientBuilder}.
      *
-     * @throws IllegalArgumentException If {@code retryOptions} is {@code null}.
+     * @throws NullPointerException If {@code retryOptions} is {@code null}.
      */
     public TableClientBuilder retryOptions(RequestRetryOptions retryOptions) {
         if (retryOptions == null) {
-            throw new IllegalArgumentException("'retryOptions' cannot be null.");
+            throw logger.logExceptionAsError(new NullPointerException("'retryOptions' cannot be null."));
         }
 
         this.retryOptions = retryOptions;
@@ -371,6 +373,7 @@ public class TableClientBuilder {
      */
     public TableClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+
         return this;
     }
 
@@ -384,8 +387,12 @@ public class TableClientBuilder {
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
      */
     public TableClientBuilder tableName(String tableName) {
-        if (isNullOrEmpty(tableName)) {
-            throw new IllegalArgumentException("'tableName' cannot be null or empty.");
+        if (tableName == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'tableName' cannot be null."));
+        }
+
+        if (tableName.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'tableName' cannot be null or empty."));
         }
 
         this.tableName = tableName;

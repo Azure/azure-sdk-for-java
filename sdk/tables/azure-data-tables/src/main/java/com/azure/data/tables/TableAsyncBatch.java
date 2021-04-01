@@ -34,7 +34,7 @@ import java.util.List;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.data.tables.implementation.Utils.toTableServiceError;
+import static com.azure.data.tables.implementation.TableUtils.toTableServiceError;
 
 /**
  * Provides a batch object for asynchronously executing a transaction containing one or more operations on entities
