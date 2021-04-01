@@ -77,6 +77,7 @@ class CompositeTest extends APISpec {
         resultArr == defaultData.array()
     }
 
+    // Bug: https://github.com/Azure/azure-sdk-for-java/issues/20325
     def "Files readAllBytes"() {
         setup:
         def fs = createFS(config)
