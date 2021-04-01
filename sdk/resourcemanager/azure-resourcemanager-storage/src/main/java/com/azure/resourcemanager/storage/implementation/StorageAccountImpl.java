@@ -3,8 +3,14 @@
 
 package com.azure.resourcemanager.storage.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.StorageAccountsClient;
@@ -32,8 +38,11 @@ import com.azure.resourcemanager.storage.models.StorageService;
 import com.azure.resourcemanager.storage.fluent.models.StorageAccountInner;
 
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import reactor.core.publisher.Mono;
 
 /** Implementation for {@link StorageAccount}. */
@@ -247,6 +256,22 @@ class StorageAccountImpl
             .getStorageAccounts()
             .regenerateKeyAsync(this.resourceGroupName(), this.name(), keyName)
             .map(storageAccountListKeysResultInner -> storageAccountListKeysResultInner.keys());
+    }
+
+    @Override
+    public PagedIterable<PrivateLinkResource> listPrivateLinkResources() {
+        return new PagedIterable<>(listPrivateLinkResourcesAsync());
+    }
+
+    @Override
+    public PagedFlux<PrivateLinkResource> listPrivateLinkResourcesAsync() {
+        Mono<Response<List<PrivateLinkResource>>> retList = this.manager().serviceClient().getPrivateLinkResources()
+            .listByStorageAccountWithResponseAsync(this.resourceGroupName(), this.name())
+            .map(response -> new SimpleResponse<>(response, response.getValue().value().stream()
+                .map(PrivateLinkResourceImpl::new)
+                .collect(Collectors.toList())));
+
+        return PagedConverter.convertListToPagedFlux(retList);
     }
 
     @Override
@@ -636,5 +661,28 @@ class StorageAccountImpl
     public StorageAccountImpl withHnsEnabled(boolean enabled) {
         this.createParameters.withIsHnsEnabled(enabled);
         return this;
+    }
+
+    private static final class PrivateLinkResourceImpl implements PrivateLinkResource {
+        private final com.azure.resourcemanager.storage.models.PrivateLinkResource innerModel;
+
+        private PrivateLinkResourceImpl(com.azure.resourcemanager.storage.models.PrivateLinkResource innerModel) {
+            this.innerModel = innerModel;
+        }
+
+        @Override
+        public String groupId() {
+            return innerModel.groupId();
+        }
+
+        @Override
+        public List<String> requiredMemberNames() {
+            return Collections.unmodifiableList(innerModel.requiredMembers());
+        }
+
+        @Override
+        public List<String> requiredDnsZoneNames() {
+            return Collections.unmodifiableList(innerModel.requiredZoneNames());
+        }
     }
 }

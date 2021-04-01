@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
@@ -23,6 +24,7 @@ import com.azure.resourcemanager.network.models.PrivateDnsZoneGroup;
 import com.azure.resourcemanager.network.models.PrivateEndpoint;
 import com.azure.resourcemanager.network.models.PrivateLinkSubResourceName;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.fluent.models.PrivateEndpointConnectionInner;
@@ -335,5 +337,19 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
 
         // delete private dns zone group
         privateEndpoint.privateDnsZoneGroups().deleteById(privateDnsZoneGroup.id());
+    }
+
+    @Test
+    public void testStoragePrivateLinkResources() {
+        StorageAccount storageAccount = azureResourceManager.storageAccounts().define(saName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .create();
+
+        PagedIterable<PrivateLinkResource> privateLinkResources = storageAccount.listPrivateLinkResources();
+        List<PrivateLinkResource> privateLinkResourceList = privateLinkResources.stream().collect(Collectors.toList());
+
+        Assertions.assertFalse(privateLinkResourceList.isEmpty());
+        Assertions.assertTrue(privateLinkResourceList.stream().anyMatch(r -> "blob".equals(r.groupId())));
     }
 }

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
@@ -20,7 +21,8 @@ import reactor.core.publisher.Mono;
 /** An immutable client-side representation of an Azure storage account. */
 @Fluent
 public interface StorageAccount
-    extends GroupableResource<StorageManager, StorageAccountInner>,
+    extends SupportsListingPrivateLinkResource,
+        GroupableResource<StorageManager, StorageAccountInner>,
         Refreshable<StorageAccount>,
         Updatable<StorageAccount.Update> {
 
