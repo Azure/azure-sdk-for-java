@@ -4,7 +4,7 @@ jobs:
       vmImage: windows-2019
     steps:
     - pwsh: |
-      git clone https://github.com/Azure/azure-docs-sdk-java $(Pipeline.Workspace)/repo
+        git clone https://github.com/Azure/azure-docs-sdk-java $(Pipeline.Workspace)/repo
       displayName: Clone Documentation Repository
       ignoreLASTEXITCODE: false
     - task: PowerShell@2
