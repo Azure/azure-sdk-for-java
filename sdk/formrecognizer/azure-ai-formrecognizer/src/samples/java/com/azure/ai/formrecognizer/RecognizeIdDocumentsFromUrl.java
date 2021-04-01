@@ -35,7 +35,8 @@ public class RecognizeIdDocumentsFromUrl {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        String idDocumentUrl = "<>";
+        String idDocumentUrl = "https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/"
+            + "azure-ai-formrecognizer/src/test/resources/sample_files/Test/license.jpg";
         SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> analyzeIDDocumentPoller
             = client.beginRecognizeIdDocumentsFromUrl(idDocumentUrl);
 

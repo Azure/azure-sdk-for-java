@@ -1,6 +1,6 @@
 # Release History
 
-## 3.1.0-beta.3 (Unreleased)
+## 3.1.0-beta.3 (2021-04-06)
 - Defaults to the latest supported API version, which currently is `2.1-preview.3`.
 - Added property `Pages` to `RecognizeReceiptsOptions`, `RecognizeInvoicesOptions`, `RecognizeBusinessCardsOptions`
   and `RecognizeCustomFormOptions` to specify the page numbers to analyze.
