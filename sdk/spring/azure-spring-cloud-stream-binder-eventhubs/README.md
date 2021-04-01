@@ -38,10 +38,12 @@ that's why you have to fill `spring.cloud.stream.eventhub.checkpoint-storage-acc
 
 #### Partitioning Support
 
-Event Hub provides similar concept of physical partition as Kafka. But unlike Kafka's auto rebalancing between 
-consumers and partitions, Event Hub provides a kind of preemptive mode. Storage account acts as lease to 
-determine which partition is owned by which consumer. When a new consumer starts, it will try to steal some partitions 
-from most heavy-loaded consumer to achieve workload balancing.
+Event Hub provides a similar concept of physical partition as Kafka. But unlike Kafka's auto rebalancing between consumers and partitions, Event Hub provides a kind of preemptive mode. The storage account acts as a lease to determine which partition is owned by which consumer. When a new consumer starts, it will try to steal some partitions
+from most heavy-loaded consumers to achieve the workload balancing.
+
+The default partition key uses the hash code value of byte[] type `Message.payload`.
+You can use the configuration of Producer `partition-key-extractor-name`, or `partition-key-expression` to specify
+how to obtain the partition key to calculate the partition ID.
 
 ## Examples 
 
@@ -63,59 +65,78 @@ Name | Description | Required | Default
 
  #### Event Hub Producer Properties ####
 
- It supports the following configurations with the format of `spring.cloud.stream.eventhub.bindings.<channelName>.producer`.
+It supports the following configurations with the format of `spring.cloud.stream.eventhub.bindings.<channelName>.producer`.
  
- **_sync_**
- 
- Whether the producer should act in a synchronous manner with respect to writing messages into a stream. If true, the 
- producer will wait for a response from Event Hub after a send operation.
+**_sync_**
 
- Default: `false`
+Whether the producer should act in a synchronous manner with respect to writing messages into a stream. If true, the 
+producer will wait for a response from Event Hub after a send operation.
 
- **_send-timeout_**
+Default: `false`
 
- Effective only if `sync` is set to true. The amount of time to wait for a response from Event Hub after a send operation, in milliseconds.
+**_send-timeout_**
 
- Default: `10000`
- 
- #### Event Hub Consumer Properties ####
+Effective only if `sync` is set to true. The amount of time to wait for a response from Event Hub after a send operation, in milliseconds.
 
-  It supports the following configurations with the format of `spring.cloud.stream.eventhub.bindings.<channelName>.consumer`.
+Default: `10000`
 
-  **_start-position_**
+**_partition-count_**
 
-  Whether the consumer receives messages from the beginning or end of event hub. if `EARLIEST`, from beginning. If 
-  `LATEST`, from end.
+Optional. Effective only if `partition-key-expression` or `partition-key-extractor-name` is set. The partition size of Event Hub.
 
-  Default: `LATEST`
+Default: 1
 
-  **_checkpoint-mode_**
+**_partition-key-extractor-name_**
 
-  The mode in which checkpoints are updated.
-  
-  `RECORD`, checkpoints occur after each record is successfully processed by user-defined message handler without any exception. If you use `StorageAccount` as checkpoint store, this might become botterneck. 
-  
-  `BATCH`, checkpoints occur after each batch of messages successfully processed by user-defined message handler without any exception. `default` mode. You may experience reprocessing at most one batch of messages when message processing fails. Be aware that batch size could be any value.
-  
-  `MANUAL`, checkpoints occur on demand by the user via the `Checkpointer`. You can do checkpoints after the message has been successfully processed. `Message.getHeaders.get(AzureHeaders.CHECKPOINTER)`callback can get you the `Checkpointer` you need. Please be aware all messages in the corresponding Event Hub partition before this message will be considered as successfully processed.
-  
-  `PARTITION_COUNT`, checkpoints occur after the count of messages defined by `checkpoint_count` successfully processed for each partition. You may experience reprocessing at most `checkpoint_count` of  when message processing fails.
-  
-  `Time`, checkpoints occur at fixed time inerval specified by `checkpoint_interval`. You may experience reprocessing of messages during this time interval when message processing fails.
+Optional. It is the name of a Bean, which implements interface `PartitionKeyExtractorStrategy`.
+`PartitionHandler#extractKey`, the partition handler will first use the `PartitionKeyExtractorStrategy#extractKey` method to apply the message to be sent to obtain the partition key value.
 
-  Default: `BATCH`
+Default: N/A
 
-  **_checkpoint-count_**
+**_partition-key-expression_**
 
-  Effectively only when `checkpoint-mode` is `PARTITION_COUNT`. Decides the amount of message for each partition to do one checkpoint.
+Optional. It is a SpEL expression that only applies to the message to be sent. When interface `PartitionKeyExtractorStrategy#extractKey` is not implemented, it will be called in the method `PartitionHandler#extractKey`.
 
-  Default: `10`
-  
-  **_checkpoint-interval_**
+Default: N/A
 
-  Effectively only when `checkpoint-mode` is `Time`. Decides The time interval to do one checkpoint.
+#### Event Hub Consumer Properties ####
 
-  Default: `5s`
+It supports the following configurations with the format of `spring.cloud.stream.eventhub.bindings.<channelName>.consumer`.
+
+**_start-position_**
+
+Whether the consumer receives messages from the beginning or end of event hub. if `EARLIEST`, from beginning. If 
+`LATEST`, from end.
+
+Default: `LATEST`
+
+**_checkpoint-mode_**
+
+The mode in which checkpoints are updated.
+
+`RECORD`, checkpoints occur after each record is successfully processed by user-defined message handler without any exception. If you use `StorageAccount` as checkpoint store, this might become botterneck. 
+
+`BATCH`, checkpoints occur after each batch of messages successfully processed by user-defined message handler without any exception. `default` mode. You may experience reprocessing at most one batch of messages when message processing fails. Be aware that batch size could be any value.
+
+`MANUAL`, checkpoints occur on demand by the user via the `Checkpointer`. You can do checkpoints after the message has been successfully processed. `Message.getHeaders.get(AzureHeaders.CHECKPOINTER)`callback can get you the `Checkpointer` you need. Please be aware all messages in the corresponding Event Hub partition before this message will be considered as successfully processed.
+
+`PARTITION_COUNT`, checkpoints occur after the count of messages defined by `checkpoint_count` successfully processed for each partition. You may experience reprocessing at most `checkpoint_count` of  when message processing fails.
+
+`Time`, checkpoints occur at fixed time inerval specified by `checkpoint_interval`. You may experience reprocessing of messages during this time interval when message processing fails.
+
+Default: `BATCH`
+
+**_checkpoint-count_**
+
+Effectively only when `checkpoint-mode` is `PARTITION_COUNT`. Decides the amount of message for each partition to do one checkpoint.
+
+Default: `10`
+
+**_checkpoint-interval_**
+
+Effectively only when `checkpoint-mode` is `Time`. Decides The time interval to do one checkpoint.
+
+Default: `5s`
 
 ### Error Channels
 **_consumer error channel_**
