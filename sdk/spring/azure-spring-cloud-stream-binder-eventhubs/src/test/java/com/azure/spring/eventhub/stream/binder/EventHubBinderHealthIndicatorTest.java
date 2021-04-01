@@ -59,7 +59,7 @@ public class EventHubBinderHealthIndicatorTest {
         EventHubProperties eventHubProperties = mock(EventHubProperties.class);
 
         when(binder.getEventHubsInUse()).thenReturn(eventHubsInUse);
-        when(producerAsyncClient.getEventHubProperties()).thenReturn(Mono.just(eventHubProperties));
+        doReturn(Mono.just(eventHubProperties)).when(producerAsyncClient).getEventHubProperties();
 
         final Health health = healthIndicator.health();
         assertThat(health.getStatus()).isEqualTo(Status.UP);
