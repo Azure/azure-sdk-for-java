@@ -8,9 +8,13 @@ import com.azure.storage.blob.perf.core.ContainerTest;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.UUID;
 
 public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
+    private final AtomicLong _count = new AtomicLong();
+    private final AtomicLong _iterations = new AtomicLong();
+
     public ListBlobsTest(PerfStressOptions options) {
         super(options);
     }
@@ -24,6 +28,12 @@ public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
     }
 
     @Override
+    public Mono<Void> cleanupAsync() {
+        System.out.printf("Counted %d blobs over %d iterations.%n", _count.get(), _iterations.get());
+        return super.cleanupAsync();
+    }
+
+    @Override
     public void run() {
         blobContainerClient.listBlobs().forEach(b -> {
         });
@@ -31,7 +41,10 @@ public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
+        _iterations.incrementAndGet();
+
         return blobContainerAsyncClient.listBlobs()
+            .doOnNext(blobItem -> _count.incrementAndGet())
             .then();
     }
 }
