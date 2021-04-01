@@ -69,6 +69,8 @@ if ($LASTEXITCODE -eq 0) {
   git checkout $PRBranchName 
 } 
 else {
+  # Use to check whether there is remote branch to track 
+  Write-Host "git show-branch remotes/$RemoteName/$PRBranchName"
   git show-branch remotes/$RemoteName/$PRBranchName
   if ($LASTEXITCODE -eq 0) {
     Write-Host "git checkout -b $PRBranchName -t $RemoteName/$PRBranchName."
