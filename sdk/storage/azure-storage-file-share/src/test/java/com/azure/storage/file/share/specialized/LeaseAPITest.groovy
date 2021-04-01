@@ -11,7 +11,6 @@ import com.azure.storage.file.share.models.LeaseStateType
 import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.options.ShareAcquireLeaseOptions
 import com.azure.storage.file.share.options.ShareBreakLeaseOptions
-import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -160,7 +159,6 @@ class LeaseAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires( { playbackMode() } )
     def "Acquire share lease"() {
         setup:
         def leaseResponse = createLeaseClient(shareClient, proposedID).acquireLeaseWithResponse(new ShareAcquireLeaseOptions().setDuration(leaseTime), null, null)
@@ -181,13 +179,11 @@ class LeaseAPITest extends APISpec {
         UUID.randomUUID().toString() | -1        || LeaseStateType.LEASED | LeaseDurationType.INFINITE
     }
 
-    @Requires( { playbackMode() } )
     def "Acquire share lease min"() {
         expect:
         createLeaseClient(shareClient).acquireLeaseWithResponse(null, null, null).getStatusCode() == 201
     }
 
-    @Requires( { playbackMode() } )
     def "Acquire share lease snapshot"() {
         setup:
         def shareSnapshot = shareClient.createSnapshot().getSnapshot()
@@ -201,7 +197,6 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(shareClient, resp.getValue()).releaseLeaseWithResponse(null, null)
     }
 
-    @Requires( { playbackMode() } )
     def "Acquire share lease snapshot fail"() {
         setup:
         def shareSnapshot = "2020-08-19T19:26:08.0000000Z"
@@ -215,7 +210,6 @@ class LeaseAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires( { playbackMode() } )
     def "Acquire share lease duration fail"() {
         setup:
         def leaseClient = createLeaseClient(shareClient)
@@ -233,7 +227,6 @@ class LeaseAPITest extends APISpec {
         70       | _
     }
 
-    @Requires( { playbackMode() } )
     def "Acquire share lease error"() {
         setup:
         shareClient = shareBuilderHelper(interceptorManager, generateShareName()).buildClient()
@@ -245,7 +238,6 @@ class LeaseAPITest extends APISpec {
         thrown(ShareStorageException)
     }
 
-    @Requires( { playbackMode() } )
     def "Renew share lease"() {
         setup:
         def leaseID = setupShareLeaseCondition(shareClient, receivedLeaseID)
@@ -259,7 +251,6 @@ class LeaseAPITest extends APISpec {
         validateBasicHeaders(renewLeaseResponse.getHeaders())
     }
 
-    @Requires( { playbackMode() } )
     def "Renew share lease min"() {
         setup:
         def leaseID = setupShareLeaseCondition(shareClient, receivedLeaseID)
@@ -268,7 +259,6 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(shareClient, leaseID).renewLeaseWithResponse(null, null).getStatusCode() == 200
     }
 
-    @Requires( { playbackMode() } )
     def "Renew share lease snapshot"() {
         setup:
         def shareSnapshot = shareClient.createSnapshot().getSnapshot()
@@ -283,7 +273,6 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(shareClient, resp.getValue()).releaseLeaseWithResponse(null, null)
     }
 
-    @Requires( { playbackMode() } )
     def "Renew share lease snapshot fail"() {
         setup:
         def shareSnapshot = "2020-08-19T19:26:08.0000000Z"
@@ -296,7 +285,6 @@ class LeaseAPITest extends APISpec {
         thrown(ShareStorageException)
     }
 
-    @Requires( { playbackMode() } )
     def "Renew share lease error"() {
         setup:
         shareClient = shareBuilderHelper(interceptorManager, generateShareName()).buildClient()
@@ -308,7 +296,6 @@ class LeaseAPITest extends APISpec {
         thrown(ShareStorageException)
     }
 
-    @Requires( { playbackMode() } )
     def "Release share lease"() {
         setup:
         def leaseID = setupShareLeaseCondition(shareClient, receivedLeaseID)
@@ -320,7 +307,6 @@ class LeaseAPITest extends APISpec {
         validateBasicHeaders(releaseLeaseResponse.getHeaders())
     }
 
-    @Requires( { playbackMode() } )
     def "Release share lease min"() {
         setup:
         def leaseID = setupShareLeaseCondition(shareClient, receivedLeaseID)
@@ -329,7 +315,6 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(shareClient, leaseID).releaseLeaseWithResponse(null, null).getStatusCode() == 200
     }
 
-    @Requires( { playbackMode() } )
     def "Release share lease snapshot"() {
         setup:
         def shareSnapshot = shareClient.createSnapshot().getSnapshot()
@@ -340,7 +325,6 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(shareClient, leaseID).releaseLeaseWithResponse(null, null).getStatusCode() == 200
     }
 
-    @Requires( { playbackMode() } )
     def "Release share lease snapshot fail"() {
         setup:
         def shareSnapshot = "2020-08-19T19:26:08.0000000Z"
@@ -353,7 +337,6 @@ class LeaseAPITest extends APISpec {
         thrown(ShareStorageException)
     }
 
-    @Requires( { playbackMode() } )
     def "Release share lease error"() {
         setup:
         shareClient = shareBuilderHelper(interceptorManager, generateShareName()).buildClient()
@@ -366,7 +349,6 @@ class LeaseAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires( { playbackMode() } )
     def "Break share lease"() {
         setup:
         def leaseClient = createLeaseClient(shareClient, getRandomUUID())
@@ -392,7 +374,6 @@ class LeaseAPITest extends APISpec {
 
     }
 
-    @Requires( { playbackMode() } )
     def "Break share lease min"() {
         setup:
         setupShareLeaseCondition(shareClient, receivedLeaseID)
@@ -401,7 +382,6 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(shareClient).breakLeaseWithResponse(new ShareBreakLeaseOptions(), null, null).getStatusCode() == 202
     }
 
-    @Requires( { playbackMode() } )
     def "Break share lease snapshot"() {
         setup:
         def shareSnapshot = shareClient.createSnapshot().getSnapshot()
@@ -416,7 +396,6 @@ class LeaseAPITest extends APISpec {
 
     }
 
-    @Requires( { playbackMode() } )
     def "Break share lease snapshot fail"() {
         setup:
         def shareSnapshot = "2020-08-19T19:26:08.0000000Z"
@@ -429,7 +408,6 @@ class LeaseAPITest extends APISpec {
         thrown(ShareStorageException)
     }
 
-    @Requires( { playbackMode() } )
     def "Break share lease error"() {
         setup:
         shareClient = shareBuilderHelper(interceptorManager, generateShareName()).buildClient()
@@ -441,7 +419,6 @@ class LeaseAPITest extends APISpec {
         thrown(ShareStorageException)
     }
 
-    @Requires( { playbackMode() } )
     def "Change share lease"() {
         setup:
         def leaseID = setupShareLeaseCondition(shareClient, receivedLeaseID)
@@ -454,7 +431,6 @@ class LeaseAPITest extends APISpec {
         validateBasicHeaders(changeLeaseResponse.getHeaders())
     }
 
-    @Requires( { playbackMode() } )
     def "Change share lease min"() {
         setup:
         def leaseID = setupShareLeaseCondition(shareClient, receivedLeaseID)
@@ -463,7 +439,6 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(shareClient, leaseID).changeLeaseWithResponse(getRandomUUID(), null, null).getStatusCode() == 200
     }
 
-    @Requires( { playbackMode() } )
     def "Change share lease snapshot"() {
         setup:
         def shareSnapshot = shareClient.createSnapshot().getSnapshot()
@@ -478,7 +453,6 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(shareClient, resp.getValue()).releaseLeaseWithResponse(null, null)
     }
 
-    @Requires( { playbackMode() } )
     def "Change share lease snapshot fail"() {
         setup:
         def shareSnapshot = "2020-08-19T19:26:08.0000000Z"
@@ -491,7 +465,6 @@ class LeaseAPITest extends APISpec {
         thrown(ShareStorageException)
     }
 
-    @Requires( { playbackMode() } )
     def "Change share lease error"() {
         setup:
         shareClient = shareBuilderHelper(interceptorManager, generateShareName()).buildClient()
