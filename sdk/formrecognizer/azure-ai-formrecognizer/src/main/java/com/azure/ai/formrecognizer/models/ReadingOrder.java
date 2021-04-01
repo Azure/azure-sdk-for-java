@@ -3,15 +3,27 @@
 
 package com.azure.ai.formrecognizer.models;
 
-/** Defines values for ReadingOrder. */
+/**
+ * Defines values for ReadingOrder.
+ */
 public enum ReadingOrder {
-    /** Enum value basic. */
+
+    /**
+     * Enum value basic.
+     * Set it to basic for the lines to be sorted top to bottom, left to right, although in certain cases
+     * proximity is treated with higher priority.
+     */
     BASIC("basic"),
 
-    /** Enum value natural. */
+    /**
+     * Enum value natural.
+     * Set it to "natural" value for the algorithm to use positional information to keep nearby lines together.
+     */
     NATURAL("natural");
 
-    /** The actual serialized value for a ReadingOrder instance. */
+    /**
+     * The actual serialized value for a ReadingOrder instance.
+     */
     private final String value;
 
     ReadingOrder(String value) {
