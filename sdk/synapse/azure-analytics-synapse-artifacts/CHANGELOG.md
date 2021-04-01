@@ -1,5 +1,7 @@
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.4 (2021-04-06)
 
+- Regenerated with the latest Synapse Artifacts API
+- Update azure-core to 1.15.0
 
 ## 1.0.0-beta.3 (2021-03-09)
 
