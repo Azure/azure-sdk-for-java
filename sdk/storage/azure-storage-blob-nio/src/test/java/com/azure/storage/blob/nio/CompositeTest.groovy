@@ -76,4 +76,20 @@ class CompositeTest extends APISpec {
         then:
         resultArr == defaultData.array()
     }
+
+    def "Files readAllBytes"() {
+        setup:
+        def fs = createFS(config)
+        def pathName = generateBlobName()
+        def path1 = fs.getPath("/foo/bar/" + pathName)
+        def path2 = fs.getPath("/foo/bar/" + pathName + ".backup")
+        Files.createFile(path1)
+        Files.createFile(path2)
+
+        when:
+        Files.readAllBytes(path1)
+
+        then:
+        notThrown(IOException)
+    }
 }
