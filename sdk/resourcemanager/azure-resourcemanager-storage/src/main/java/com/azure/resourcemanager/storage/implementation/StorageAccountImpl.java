@@ -723,8 +723,28 @@ class StorageAccountImpl
     private static final class PrivateEndpointConnectionImpl implements PrivateEndpointConnection {
         private final PrivateEndpointConnectionInner innerModel;
 
+        private final PrivateEndpoint privateEndpoint;
+        private final PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
+        private final PrivateEndpointConnectionProvisioningState provisioningState;
+
         public PrivateEndpointConnectionImpl(PrivateEndpointConnectionInner innerModel) {
             this.innerModel = innerModel;
+
+            this.privateEndpoint = innerModel.privateEndpoint() == null
+                ? null
+                : new PrivateEndpoint(innerModel.privateEndpoint().id());
+            this.privateLinkServiceConnectionState = innerModel.privateLinkServiceConnectionState() == null
+                ? null
+                : new PrivateLinkServiceConnectionState(
+                    innerModel.privateLinkServiceConnectionState().status() == null
+                        ? null
+                        : PrivateEndpointServiceConnectionStatus
+                        .fromString(innerModel.privateLinkServiceConnectionState().status().toString()),
+                    innerModel.privateLinkServiceConnectionState().description(),
+                    innerModel.privateLinkServiceConnectionState().actionRequired());
+            this.provisioningState = innerModel.provisioningState() == null
+                ? null
+                : PrivateEndpointConnectionProvisioningState.fromString(innerModel.provisioningState().toString());
         }
 
         @Override
@@ -744,30 +764,17 @@ class StorageAccountImpl
 
         @Override
         public PrivateEndpoint privateEndpoint() {
-            return innerModel.privateEndpoint() == null
-                ? null
-                : new PrivateEndpoint(innerModel.privateEndpoint().id());
+            return privateEndpoint;
         }
 
         @Override
         public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
-            return innerModel.privateLinkServiceConnectionState() == null
-                ? null
-                : new PrivateLinkServiceConnectionState(
-                    innerModel.privateLinkServiceConnectionState().status() == null
-                        ? null
-                        : PrivateEndpointServiceConnectionStatus
-                        .fromString(innerModel.privateLinkServiceConnectionState().status().toString()),
-                    innerModel.privateLinkServiceConnectionState().description(),
-                    innerModel.privateLinkServiceConnectionState().actionRequired()
-            );
+            return privateLinkServiceConnectionState;
         }
 
         @Override
         public PrivateEndpointConnectionProvisioningState provisioningState() {
-            return innerModel.provisioningState() == null
-                ? null
-                : PrivateEndpointConnectionProvisioningState.fromString(innerModel.provisioningState().toString());
+            return provisioningState;
         }
     }
 }
