@@ -4,7 +4,8 @@ jobs:
       vmImage: windows-2019
     steps:
     - pwsh: |
-        git clone https://github.com/Azure/azure-docs-sdk-java.git $(Pipeline.Workspace)/repo
+        Write-Host "git clone https://github.com/Azure/azure-docs-sdk-java.git $(Build.SourcesDirectory)/repo"
+        git clone https://github.com/Azure/azure-docs-sdk-java.git $(Build.SourcesDirectory)/repo
       displayName: Clone Documentation Repository
       ignoreLASTEXITCODE: false
     - task: PowerShell@2
@@ -13,7 +14,7 @@ jobs:
         targetType: filePath
         filePath: eng/scripts/update-docs-ci.ps1
         arguments: >
-          -DocRepoLocation $(Pipeline.Workspace)/repo
+          -DocRepoLocation $(Build.SourcesDirectory)/repo
           -Configs $(CIConfigs)
         pwsh: true
       env:
@@ -25,5 +26,5 @@ jobs:
         CommitMsg: "Update targeting packages based on release csv."
         TargetRepoName: 'a-test-branch'
         TargetRepoOwner: 'Azure'
-        WorkingDirectory: $(Pipeline.Workspace)/repo
-        ScriptDirectory: $(Pipeline.Workspace)/eng/common/scripts
+        WorkingDirectory: $(Build.SourcesDirectory)/repo
+        ScriptDirectory: $(Build.SourcesDirectory)/eng/common/scripts
