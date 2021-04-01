@@ -19,12 +19,14 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.FluxProcessor;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.Deque;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
@@ -42,6 +44,9 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
     private final AtomicReference<CoreSubscriber<? super Message>> downstream = new AtomicReference<>();
     private final AtomicInteger wip = new AtomicInteger();
+    private final AtomicLong totalMessagesSent = new AtomicLong();
+    private final AtomicLong totalMessagesRequested = new AtomicLong();
+    private final AtomicLong totalCreditsSent = new AtomicLong();
 
     private final int prefetch;
     private final Disposable parentConnection;
@@ -58,6 +63,10 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     private static final AtomicReferenceFieldUpdater<AmqpReceiveLinkProcessor, Subscription> UPSTREAM =
         AtomicReferenceFieldUpdater.newUpdater(AmqpReceiveLinkProcessor.class, Subscription.class,
             "upstream");
+
+    /**
+     * The number of requested messages.
+     */
     private volatile long requested;
     private static final AtomicLongFieldUpdater<AmqpReceiveLinkProcessor> REQUESTED =
         AtomicLongFieldUpdater.newUpdater(AmqpReceiveLinkProcessor.class, "requested");
@@ -159,12 +168,13 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             currentLinkSubscriptions = Disposables.composite(
                 next.getEndpointStates().filter(e -> e == AmqpEndpointState.ACTIVE).next()
                     .flatMap(state -> next.addCredits(prefetch))
+                    .doOnSuccess(s -> totalCreditsSent.addAndGet(prefetch))
                     .onErrorResume(IllegalStateException.class, error -> {
                         logger.info("linkName[{}] was already closed. Could not add credits.", linkName);
                         return Mono.empty();
                     })
                     .subscribe(),
-                next.getEndpointStates().subscribe(
+                next.getEndpointStates().subscribeOn(Schedulers.boundedElastic()).subscribe(
                     state -> {
                         // Connection was successfully opened, we can reset the retry interval.
                         if (state == AmqpEndpointState.ACTIVE) {
@@ -181,13 +191,14 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                                 LinkErrorContext errorContext = (LinkErrorContext) amqpException.getContext();
                                 if (currentLink != null
                                     && !currentLink.getLinkName().equals(errorContext.getTrackingId())) {
-                                    logger.info("EntityPath[{}]: Link lost signal received for a link "
-                                        + "that is not current. Ignoring the error. Current link {}, link lost {}",
-                                        entityPath, linkName, errorContext.getTrackingId());
+                                    logger.info("linkName[{}] entityPath[{}] trackingId[{}] Link lost signal received"
+                                            + " for a link that is not current. Ignoring the error.",
+                                        linkName, entityPath, errorContext.getTrackingId());
                                     return;
                                 }
                             }
                         }
+
                         currentLink = null;
                         logger.warning("linkName[{}] entityPath[{}]. Error occurred in link.", linkName, entityPath);
                         onError(error);
@@ -195,10 +206,14 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                     () -> {
                         if (parentConnection.isDisposed() || isTerminated()
                             || UPSTREAM.get(this) == Operators.cancelledSubscription()) {
-                            logger.info("Terminal state reached. Disposing of link processor.");
+                            logger.info("linkName[{}] entityPath[{}] Terminal state reached. Disposing of link "
+                                + "processor.", linkName, entityPath);
+
                             dispose();
                         } else {
-                            logger.info("Receive link endpoint states are closed. Requesting another.");
+                            logger.info("linkName[{}] entityPath[{}] Receive link endpoint states are closed. "
+                                + "Requesting another.", linkName, entityPath);
+
                             final AmqpReceiveLink existing = currentLink;
                             currentLink = null;
                             currentLinkName = null;
@@ -337,12 +352,20 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         Operators.addCap(REQUESTED, this, request);
 
         synchronized (creditsAdded) {
+            final long total = totalMessagesRequested.addAndGet(request);
             final AmqpReceiveLink link = currentLink;
-            if (link != null) {
-                final int credits = getCreditsToAdd();
+            final int credits = getCreditsToAdd();
+            logger.verbose("linkName[{}] credits[{}] totalRequest[{}] totalSent[{}] totalCredits[{}] "
+                    + "Link credits not yet added.",
+                currentLinkName, credits, total, totalMessagesSent.get(), totalCreditsSent.get());
 
-                logger.verbose("linkName[{}] credits[{}] Link credits not yet added.", currentLinkName, credits);
-                link.addCredits(credits).subscribe();
+            if (link != null) {
+                link.addCredits(credits)
+                    .onErrorResume(IllegalStateException.class, error -> {
+                        logger.info("linkName[{}] was already closed. Could not add credits.", link.getLinkName());
+                        return Mono.empty();
+                    })
+                    .doOnSuccess(s -> totalCreditsSent.addAndGet(credits)).subscribe();
             }
         }
 
@@ -427,7 +450,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             return;
         }
 
-        long numberRequested = requested;
+        long numberRequested = REQUESTED.get(this);
         boolean isEmpty = messageQueue.isEmpty();
         while (numberRequested != 0L && !isEmpty) {
             if (checkAndSetTerminated()) {
@@ -461,25 +484,17 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
                 numberEmitted++;
                 isEmpty = messageQueue.isEmpty();
+                totalMessagesSent.addAndGet(numberEmitted);
             }
 
-            if (requested != Long.MAX_VALUE) {
+            final long requestedMessages = REQUESTED.get(this);
+            if (requestedMessages != Long.MAX_VALUE) {
                 numberRequested = REQUESTED.addAndGet(this, -numberEmitted);
             }
-
-            if (numberEmitted > 0 && numberRequested != 0L) {
-                final int credits = Long.valueOf(numberEmitted).intValue();
-
-                synchronized (creditsAdded) {
-                    final AmqpReceiveLink link = currentLink;
-                    if (link != null) {
-                        logger.verbose("linkName[{}] creditsAdded[{}] Added from emitted credits.",
-                            link.getLinkName(), credits);
-                        link.addCredits(Long.valueOf(numberEmitted).intValue()).subscribe();
-                    }
-                }
-            }
         }
+
+        logger.verbose("linkName[{}] requested[{}] totalRequest[{}] totalSent[{}] totalCredits[{}]", currentLinkName,
+            REQUESTED.get(this), totalMessagesRequested.get(), totalMessagesSent.get(), totalCreditsSent.get());
     }
 
     private boolean checkAndSetTerminated() {
@@ -507,6 +522,11 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         synchronized (creditsAdded) {
             final CoreSubscriber<? super Message> subscriber = downstream.get();
             final long request = REQUESTED.get(this);
+
+            logger.verbose("linkName[{}] requested[{}] totalRequest[{}] totalSent[{}] totalCredits[{}]",
+                currentLinkName, request, totalMessagesRequested.get(), totalMessagesSent.get(),
+                totalCreditsSent.get());
+
             if (subscriber == null || request == 0) {
                 return 0;
             }
