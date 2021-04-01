@@ -205,7 +205,7 @@ function Update-java-CIConfig($ciRepo, $locationInDocRepo)
 { 
   Write-Host "Updating the package.json in Java"
   # Read release csv file, and filter out by New=true, Hide!=true
-  $metadata = Get-CSVMetadata -MetadataUri $MetadataUri | Where-Object {$_.New -eq "true"}  | Where-Object {$_.Hide -ne "true"} 
+  $metadata = Get-CSVMetadata -MetadataUri "C:\sdk\azure-sdk\_data\releases\latest\java-packages.csv" | Where-Object {$_.New -eq "true"}  | Where-Object {$_.Hide -ne "true"} 
   $preview =  @{
     language = "java"
     output_path = "preview/docs-ref-autogen"
