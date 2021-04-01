@@ -101,7 +101,6 @@ This starter allows you to securely manage and tightly control your certificates
     ![Copy secrets](resource/copy-secrets.png)
 
 Add these items in your `application.yml`:
-<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-server-side/src/main/resources/application.yml#L1-L12 -->
 ```yaml
 azure:
   keyvault:
@@ -146,7 +145,7 @@ If you are using managed identity instead of App registrations, add these items 
 azure:
   keyvault:
     uri: <the URI of the Azure Key Vault to use>
-    managed-identity: # client-id of the user-assigned managed identity to use. If empty, then system-assigned managed identity will be used.
+#    managed-identity: # client-id of the user-assigned managed identity to use. If empty, then system-assigned managed identity will be used.
 server:
   ssl:
     key-alias: <the name of the certificate in Azure Key Vault to use>
@@ -205,7 +204,7 @@ If you are using managed identity instead of App registration, add these items i
 azure:
   keyvault:
     uri: <the URI of the Azure Key Vault to use>
-    managed-identity:  # client-id of the user-assigned managed identity to use. If empty, then system-assigned managed identity will be used.
+#    managed-identity:  # client-id of the user-assigned managed identity to use. If empty, then system-assigned managed identity will be used.
 ```
 Make sure the managed identity can access target Key Vault.
 

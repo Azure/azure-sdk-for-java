@@ -131,11 +131,11 @@ class AuthClient extends DelegateRestClient {
      * @param identity the user-assigned identity (null if system-assigned).
      * @return the authorization token.
      */
-    private String getAccessTokenOnAppService(String resource, String identity) {
+    private String getAccessTokenOnAppService(String resource, String clientId) {
         LOGGER.entering("AuthClient", "getAccessTokenOnAppService", resource);
         LOGGER.info("Getting access token using managed identity based on MSI_SECRET");
-        if (identity != null) {
-            LOGGER.log(INFO, "Using managed identity with client ID: {0}", identity);
+        if (clientId != null) {
+            LOGGER.log(INFO, "Using managed identity with client ID: {0}", clientId);
         }
         String result = null;
 
@@ -143,8 +143,8 @@ class AuthClient extends DelegateRestClient {
         url.append(System.getenv("MSI_ENDPOINT"))
            .append("?api-version=2017-09-01")
            .append(RESOURCE_FRAGMENT).append(resource);
-        if (identity != null) {
-            url.append("&clientid=").append(identity);
+        if (clientId != null) {
+            url.append("&clientid=").append(clientId);
         }
 
         HashMap<String, String> headers = new HashMap<>();
