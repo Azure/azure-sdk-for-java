@@ -42,56 +42,42 @@ context-client-method-parameter: true
 models-subpackage: systemevents
 directive:
     - rename-model:
-        from: ACSChatEventBaseProperties
-        to: AcsChatEventBaseProperties
+        from: ResourceActionCancelData
+        to: ResourceActionCancelEventData
     - rename-model:
-        from: ACSChatMemberAddedToThreadWithUserEventData
-        to: AcsChatMemberAddedToThreadWithUserEventData
+        from: ResourceActionFailureData
+        to: ResourceActionFailureEventData
     - rename-model:
-        from: ACSChatMemberRemovedFromThreadWithUserEventData
-        to: AcsChatMemberRemovedFromThreadWithUserEventData
+        from: ResourceActionSuccessData
+        to: ResourceActionSuccessEventData
     - rename-model:
-        from: ACSChatMessageDeletedEventData
-        to: AcsChatMessageDeletedEventData
+        from: ResourceDeleteCancelData
+        to: ResourceDeleteCancelEventData
     - rename-model:
-        from: ACSChatMessageEditedEventData
-        to: AcsChatMessageEditedEventData
+        from: ResourceDeleteFailureData
+        to: ResourceDeleteFailureEventData
     - rename-model:
-        from: ACSChatMessageEventBaseProperties
-        to: AcsChatMessageEventBaseProperties
+        from: ResourceDeleteSuccessData
+        to: ResourceDeleteSuccessEventData
     - rename-model:
-        from: ACSChatMessageReceivedEventData
-        to: AcsChatMessageReceivedEventData
+        from: ResourceWriteCancelData
+        to: ResourceWriteCancelEventData
     - rename-model:
-        from: ACSChatThreadCreatedWithUserEventData
-        to: AcsChatThreadCreatedWithUserEventData
+        from: ResourceWriteFailureData
+        to: ResourceWriteFailureEventData
     - rename-model:
-        from: ACSChatThreadEventBaseProperties
-        to: AcsChatThreadEventBaseProperties
+        from: ResourceWriteSuccessData
+        to: ResourceWriteSuccessEventData
     - rename-model:
-        from: ACSChatThreadMemberProperties
-        to: AcsChatThreadMemberProperties
+        from: RedisImportRDBCompletedEventData
+        to: RedisImportRdbCompletedEventData
     - rename-model:
-        from: ACSChatThreadPropertiesUpdatedPerUserEventData
-        to: AcsChatThreadPropertiesUpdatedPerUserEventData
-    - rename-model:
-        from: ACSChatThreadWithUserDeletedEventData
-        to: AcsChatThreadWithUserDeletedEventData
+        from: RedisExportRDBCompletedEventData
+        to: RedisExportRdbCompletedEventData
 
-    - rename-model:
-        from: ACSSMSDeliveryAttemptProperties
-        to: AcsSmsDeliveryAttemptProperties
-    - rename-model:
-        from: ACSSMSDeliveryReportReceivedEventData
-        to: AcsSmsDeliveryReportReceivedEventData
-    - rename-model:
-        from: ACSSMSEventBaseProperties
-        to: AcsSmsEventBaseProperties
-    - rename-model:
-        from: ACSSMSReceivedEventData
-        to: AcsSmsReceivedEventData
 custom-types-subpackage: implementation.models
 custom-types: CloudEvent,EventGridEvent
+model-override-setter-from-superclass: true
 
 input-file:
 - $(api-spec-location)/specification/eventgrid/data-plane/Microsoft.Storage/stable/2018-01-01/Storage.json

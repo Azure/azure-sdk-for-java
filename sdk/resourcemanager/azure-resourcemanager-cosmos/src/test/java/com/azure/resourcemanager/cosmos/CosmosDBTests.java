@@ -15,11 +15,10 @@ import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
 import com.azure.resourcemanager.cosmos.models.DefaultConsistencyLevel;
 import com.azure.resourcemanager.cosmos.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.network.models.Network;
-import com.azure.resourcemanager.network.models.PrivateLinkServiceConnection;
-import com.azure.resourcemanager.network.models.PrivateLinkServiceConnectionState;
+import com.azure.resourcemanager.network.models.PrivateEndpoint;
+import com.azure.resourcemanager.network.models.PrivateLinkSubResourceName;
 import com.azure.resourcemanager.network.models.ServiceEndpointType;
 import com.azure.resourcemanager.network.NetworkManager;
-import com.azure.resourcemanager.network.fluent.models.PrivateEndpointInner;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
@@ -31,7 +30,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -119,15 +117,11 @@ public class CosmosDBTests extends ResourceManagerTestBase {
                 .withExistingResourceGroup(rgName)
                 .withAddressSpace("10.0.0.0/16")
                 .defineSubnet(subnetName)
-                .withAddressPrefix("10.0.0.0/24")
-                .withAccessFromService(ServiceEndpointType.MICROSOFT_AZURECOSMOSDB)
-                .attach()
+                    .withAddressPrefix("10.0.0.0/24")
+                    .withAccessFromService(ServiceEndpointType.MICROSOFT_AZURECOSMOSDB)
+                    .disableNetworkPoliciesOnPrivateEndpoint()
+                    .attach()
                 .create();
-
-        network.subnets().get(subnetName).innerModel().withPrivateEndpointNetworkPolicies("Disabled");
-        network.subnets().get(subnetName).innerModel().withPrivateLinkServiceNetworkPolicies("Disabled");
-
-        network.update().updateSubnet(subnetName).parent().apply();
 
         CosmosDBAccount cosmosDBAccount =
             cosmosManager
@@ -143,20 +137,17 @@ public class CosmosDBTests extends ResourceManagerTestBase {
         Assertions.assertTrue(cosmosDBAccount.keyBasedMetadataWriteAccessDisabled());
 
         // create network private endpoint.
-        PrivateLinkServiceConnection privateLinkServiceConnection =
-            new PrivateLinkServiceConnection()
-                .withName(plsConnectionName)
-                .withPrivateLinkServiceId(cosmosDBAccount.id())
-                .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState().withStatus("Approved"))
-                .withGroupIds(Arrays.asList("Sql"));
+        PrivateEndpoint privateEndpoint = networkManager.privateEndpoints().define(pedName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withSubnet(network.subnets().get(subnetName))
+            .definePrivateLinkServiceConnection(plsConnectionName)
+                .withResource(cosmosDBAccount)
+                .withSubResource(PrivateLinkSubResourceName.COSMOS_SQL)
+                .attach()
+            .create();
 
-        PrivateEndpointInner privateEndpoint =
-            new PrivateEndpointInner()
-                .withPrivateLinkServiceConnections(Arrays.asList(privateLinkServiceConnection))
-                .withSubnet(network.subnets().get(subnetName).innerModel());
-
-        privateEndpoint.withLocation(region.toString());
-        privateEndpoint = networkManager.serviceClient().getPrivateEndpoints().createOrUpdate(rgName, pedName, privateEndpoint);
+        Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(plsConnectionName).state().status());
 
         cosmosDBAccount
             .update()

@@ -6,6 +6,9 @@ module com.azure.core.experimental {
 
     exports com.azure.core.experimental.geojson;
     exports com.azure.core.experimental.serializer;
+    exports com.azure.core.experimental.implementation;
+    exports com.azure.core.experimental.http;
+    exports com.azure.core.experimental.http.policy;
 
     opens com.azure.core.experimental.geojson to com.fasterxml.jackson.databind;
 

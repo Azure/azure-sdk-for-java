@@ -137,7 +137,9 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
 
     @Override
     public void resolve(DeserializationContext cxt) throws JsonMappingException {
-        ((ResolvableDeserializer) this.defaultDeserializer).resolve(cxt);
+        if (this.defaultDeserializer instanceof ResolvableDeserializer) {
+            ((ResolvableDeserializer) this.defaultDeserializer).resolve(cxt);
+        }
     }
 
     /**

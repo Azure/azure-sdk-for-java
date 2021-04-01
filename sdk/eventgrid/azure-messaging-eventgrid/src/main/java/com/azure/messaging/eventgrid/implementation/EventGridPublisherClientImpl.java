@@ -26,7 +26,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.messaging.eventgrid.implementation.models.CloudEvent;
+import com.azure.core.models.CloudEvent;
 import com.azure.messaging.eventgrid.implementation.models.EventGridEvent;
 import java.util.List;
 import reactor.core.publisher.Mono;
@@ -72,22 +72,28 @@ public final class EventGridPublisherClientImpl {
         return this.serializerAdapter;
     }
 
-    /** Initializes an instance of EventGridPublisherClient client. */
-    EventGridPublisherClientImpl() {
+    /**
+     * Initializes an instance of EventGridPublisherClient client.
+     *
+     * @param apiVersion Api Version.
+     */
+    EventGridPublisherClientImpl(String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
-                JacksonAdapter.createDefaultSerializerAdapter());
+                JacksonAdapter.createDefaultSerializerAdapter(),
+                apiVersion);
     }
 
     /**
      * Initializes an instance of EventGridPublisherClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param apiVersion Api Version.
      */
-    EventGridPublisherClientImpl(HttpPipeline httpPipeline) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter());
+    EventGridPublisherClientImpl(HttpPipeline httpPipeline, String apiVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), apiVersion);
     }
 
     /**
@@ -95,11 +101,12 @@ public final class EventGridPublisherClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param apiVersion Api Version.
      */
-    EventGridPublisherClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter) {
+    EventGridPublisherClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
-        this.apiVersion = "2018-01-01";
+        this.apiVersion = apiVersion;
         this.service =
                 RestProxy.create(EventGridPublisherClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
@@ -108,10 +115,10 @@ public final class EventGridPublisherClientImpl {
      * The interface defining all the services for EventGridPublisherClient to be used by the proxy service to perform
      * REST calls.
      */
-    @Host("https://{topicHostname}")
+    @Host("{topicHostname}")
     @ServiceInterface(name = "EventGridPublisherCl")
     private interface EventGridPublisherClientService {
-        @Post("/api/events")
+        @Post("")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> publishEvents(
@@ -120,7 +127,7 @@ public final class EventGridPublisherClientImpl {
                 @BodyParam("application/json") List<EventGridEvent> events,
                 Context context);
 
-        @Post("/api/events")
+        @Post("")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> publishCloudEventEvents(
@@ -129,7 +136,7 @@ public final class EventGridPublisherClientImpl {
                 @BodyParam("application/cloudevents-batch+json; charset=utf-8") List<CloudEvent> events,
                 Context context);
 
-        @Post("/api/events")
+        @Post("")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> publishCustomEventEvents(
@@ -142,8 +149,8 @@ public final class EventGridPublisherClientImpl {
     /**
      * Publishes a batch of events to an Azure Event Grid topic.
      *
-     * @param topicHostname simple string.
-     * @param events Array of EventGridEvent.
+     * @param topicHostname The host name of the topic, e.g. topic1.westus2-1.eventgrid.azure.net.
+     * @param events An array of events to be published to Event Grid.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -158,8 +165,8 @@ public final class EventGridPublisherClientImpl {
     /**
      * Publishes a batch of events to an Azure Event Grid topic.
      *
-     * @param topicHostname simple string.
-     * @param events Array of EventGridEvent.
+     * @param topicHostname The host name of the topic, e.g. topic1.westus2-1.eventgrid.azure.net.
+     * @param events An array of events to be published to Event Grid.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -175,8 +182,8 @@ public final class EventGridPublisherClientImpl {
     /**
      * Publishes a batch of events to an Azure Event Grid topic.
      *
-     * @param topicHostname simple string.
-     * @param events Array of EventGridEvent.
+     * @param topicHostname The host name of the topic, e.g. topic1.westus2-1.eventgrid.azure.net.
+     * @param events An array of events to be published to Event Grid.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -190,8 +197,8 @@ public final class EventGridPublisherClientImpl {
     /**
      * Publishes a batch of events to an Azure Event Grid topic.
      *
-     * @param topicHostname simple string.
-     * @param events Array of EventGridEvent.
+     * @param topicHostname The host name of the topic, e.g. topic1.westus2-1.eventgrid.azure.net.
+     * @param events An array of events to be published to Event Grid.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -207,8 +214,8 @@ public final class EventGridPublisherClientImpl {
     /**
      * Publishes a batch of events to an Azure Event Grid topic.
      *
-     * @param topicHostname simple string.
-     * @param events Array of CloudEventEvent.
+     * @param topicHostname The host name of the topic, e.g. topic1.westus2-1.eventgrid.azure.net.
+     * @param events An array of events to be published to Event Grid.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -224,8 +231,8 @@ public final class EventGridPublisherClientImpl {
     /**
      * Publishes a batch of events to an Azure Event Grid topic.
      *
-     * @param topicHostname simple string.
-     * @param events Array of CloudEventEvent.
+     * @param topicHostname The host name of the topic, e.g. topic1.westus2-1.eventgrid.azure.net.
+     * @param events An array of events to be published to Event Grid.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -241,8 +248,8 @@ public final class EventGridPublisherClientImpl {
     /**
      * Publishes a batch of events to an Azure Event Grid topic.
      *
-     * @param topicHostname simple string.
-     * @param events Array of CloudEventEvent.
+     * @param topicHostname The host name of the topic, e.g. topic1.westus2-1.eventgrid.azure.net.
+     * @param events An array of events to be published to Event Grid.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -257,8 +264,8 @@ public final class EventGridPublisherClientImpl {
     /**
      * Publishes a batch of events to an Azure Event Grid topic.
      *
-     * @param topicHostname simple string.
-     * @param events Array of CloudEventEvent.
+     * @param topicHostname The host name of the topic, e.g. topic1.westus2-1.eventgrid.azure.net.
+     * @param events An array of events to be published to Event Grid.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -274,8 +281,8 @@ public final class EventGridPublisherClientImpl {
     /**
      * Publishes a batch of events to an Azure Event Grid topic.
      *
-     * @param topicHostname simple string.
-     * @param events Array of any.
+     * @param topicHostname The host name of the topic, e.g. topic1.westus2-1.eventgrid.azure.net.
+     * @param events An array of events to be published to Event Grid.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -290,8 +297,8 @@ public final class EventGridPublisherClientImpl {
     /**
      * Publishes a batch of events to an Azure Event Grid topic.
      *
-     * @param topicHostname simple string.
-     * @param events Array of any.
+     * @param topicHostname The host name of the topic, e.g. topic1.westus2-1.eventgrid.azure.net.
+     * @param events An array of events to be published to Event Grid.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -307,8 +314,8 @@ public final class EventGridPublisherClientImpl {
     /**
      * Publishes a batch of events to an Azure Event Grid topic.
      *
-     * @param topicHostname simple string.
-     * @param events Array of any.
+     * @param topicHostname The host name of the topic, e.g. topic1.westus2-1.eventgrid.azure.net.
+     * @param events An array of events to be published to Event Grid.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -323,8 +330,8 @@ public final class EventGridPublisherClientImpl {
     /**
      * Publishes a batch of events to an Azure Event Grid topic.
      *
-     * @param topicHostname simple string.
-     * @param events Array of any.
+     * @param topicHostname The host name of the topic, e.g. topic1.westus2-1.eventgrid.azure.net.
+     * @param events An array of events to be published to Event Grid.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.

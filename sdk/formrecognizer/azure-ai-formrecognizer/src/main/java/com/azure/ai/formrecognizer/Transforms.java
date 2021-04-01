@@ -54,6 +54,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.implementation.Utility.forEachWithIndex;
 import static com.azure.ai.formrecognizer.implementation.models.FieldValueType.ARRAY;
+import static com.azure.ai.formrecognizer.implementation.models.FieldValueType.OBJECT;
 
 /**
  * Helper class to convert service level models to SDK exposed models.
@@ -306,7 +307,13 @@ final class Transforms {
                 if (fieldValue != null) {
                     List<FormElement> formElementList = setReferenceElements(fieldValue.getElements(), readResults);
                     FieldData valueData;
-                    if ("ReceiptType".equals(key) || ARRAY == fieldValue.getType()) {
+                    // Bounding box, page and text are not returned by the service in two scenarios:
+                    //   - When this field is global and not associated with a specific page (e.g. ReceiptType).
+                    //   - When this field is a collection, such as a list or dictionary.
+                    //
+                    // In these scenarios we do not set a ValueData.
+                    if (fieldValue.getText() == null && fieldValue.getPage() == null
+                        && CoreUtils.isNullOrEmpty(fieldValue.getBoundingBox())) {
                         valueData = null;
                     } else {
                         valueData = new FieldData(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
@@ -396,6 +403,14 @@ final class Transforms {
                 }
                 value = new com.azure.ai.formrecognizer.models.FieldValue(selectionMarkState,
                     FieldValueType.SELECTION_MARK_STATE);
+                break;
+            case GENDER:
+                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueGender(),
+                    FieldValueType.GENDER);
+                break;
+            case COUNTRY:
+                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueCountry(),
+                    FieldValueType.COUNTRY);
                 break;
             default:
                 throw LOGGER.logExceptionAsError(new RuntimeException("FieldValue Type not supported"));

@@ -1,6 +1,37 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0 (2021-03-29)
+### Breaking Changes
+
+- Renamed `ChatThread` to `ChatThreadProperties`
+- Renamed `ChatThreadInfo` to `ChatThreadItem`
+- Renamed `repeatabilityRequestId` to `idempotencyToken`
+- SendMessage returns `SendChatMessageResult` instead of string ID
+- Renamed `CommunicationError` to `ChatError`
+- Renamed `CommunicationErrorResponse` to `ChatErrorResponse`
+- Moved `getChatThread` to `ChatThreadClient` and renamed to `getProperties`
+- Removed `AddChatParticipantsOptions`
+- Changed `addParticipants` to take `Iterable<ChatParticipant>` instead of `AddChatParticipantsOptions`
+- Added `context` parameter to the max overloads of `listParticipants`, `listReadReceipts`
+- `CreateChatThreadOptions` constructor now requires `topic`
+- Removed `setTopic` from `CreateChatThreadOptions`
+
+### Added
+
+- Added `ChatThreadClientBuilder` 
+
+## 1.0.0-beta.6 (2021-03-09)
+Updated `azure-communication-chat` version
+
+## 1.0.0-beta.5 (2021-03-02)
+### Breaking Changes
+
+- ChatMessage - `senderId` renamed to `senderCommunicationIdentifier`, changed type to `CommunicationIdentifier`.
+- ChatMessageReadReceipt - `senderId` renamed to `senderCommunicationIdentifier`, changed type to `CommunicationIdentifier`.
+- ChatParticipant - `user` renamed to `communicationIdentifier`, changed type to `CommunicationIdentifier`.
+- ChatThread - `createdBy` renamed to `createdByCommunicationIdentifier`, changed type to `CommunicationIdentifier`.
+- ChatMessageContent - `initiator` renamed to `initiatorCommunicationIdentifier`, changed type to `CommunicationIdentifier`.
+
 
 ## 1.0.0-beta.4 (2021-02-09)
 ### Breaking Changes

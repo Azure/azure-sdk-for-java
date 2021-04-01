@@ -8,8 +8,8 @@ Running this sample will be charged by Azure. You can check the usage and bill a
 
 ## Getting started
 
-### Environment checklist
-We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
+### Prerequisites
+- [Environment checklist][environment_checklist]
 
 ### Create Service Bus on Azure
 
@@ -27,6 +27,9 @@ We need to ensure that this [environment checklist][ready-to-run-checklist] is c
     # The idle timeout in milliseconds after which the connection will be failed if the peer sends no AMQP frames
     # Default is 1800000
     spring.jms.servicebus.idle-timeout=[idle-timeout]
+   
+    #Fill service bus pricing tier according to the one you created. Supported values are premium, standard and basic.
+    spring.jms.servicebus.pricing-tier=[pricing-tier]
     ```
 
 2. Specify your queue name. Update `QUEUE_NAME` in [QueueSendController] and [QueueReceiveController] .
@@ -62,7 +65,6 @@ Type | Reference Link
 ## Contributing
 
 <!-- LINKS -->
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [QueueSendController]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-queue/src/main/java/com/azure/spring/sample/jms/queue/QueueSendController.java
 [QueueReceiveController]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-queue/src/main/java/com/azure/spring/sample/jms/queue/QueueReceiveController.java

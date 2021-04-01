@@ -13,13 +13,12 @@ import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.ProxyOptions
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
-import com.azure.core.http.policy.HttpLogDetailLevel
-import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
+import com.azure.core.util.BinaryData
 import com.azure.core.util.Configuration
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.FluxUtil
@@ -87,6 +86,8 @@ class APISpec extends Specification {
             return new ByteArrayInputStream(defaultText.getBytes(StandardCharsets.UTF_8))
         }
     }
+
+    public static final BinaryData defaultBinaryData = BinaryData.fromString(defaultText)
 
     static int defaultDataSize = defaultData.remaining()
 
@@ -761,6 +762,46 @@ class APISpec extends Specification {
             @Override
             Flux<ByteBuffer> getBody() {
                 return Flux.empty()
+            }
+
+            @Override
+            Mono<byte[]> getBodyAsByteArray() {
+                return Mono.just(new byte[0])
+            }
+
+            @Override
+            Mono<String> getBodyAsString() {
+                return Mono.just("")
+            }
+
+            @Override
+            Mono<String> getBodyAsString(Charset charset) {
+                return Mono.just("")
+            }
+        }
+    }
+
+    def getStubDownloadResponse(HttpResponse response, int code, Flux<ByteBuffer> body, HttpHeaders headers) {
+        return new HttpResponse(response.getRequest()) {
+
+            @Override
+            int getStatusCode() {
+                return code
+            }
+
+            @Override
+            String getHeaderValue(String s) {
+                return headers.getValue(s)
+            }
+
+            @Override
+            HttpHeaders getHeaders() {
+                return headers
+            }
+
+            @Override
+            Flux<ByteBuffer> getBody() {
+                return body
             }
 
             @Override

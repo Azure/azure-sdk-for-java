@@ -6,7 +6,9 @@ package com.azure.communication.chat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.azure.core.exception.HttpResponseException;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -69,7 +71,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         secondAddedParticipant = communicationClient.createUser();
 
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
-        AccessToken response = communicationClient.issueToken(firstParticipant, scopes);
+        AccessToken response = communicationClient.getToken(firstParticipant, scopes);
 
         ChatClientBuilder chatBuilder = getChatClientBuilder(response.getToken(), httpClient);
         client = addLoggingPolicyForIdentityClientBuilder(chatBuilder, testName).buildClient();
@@ -101,8 +103,8 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         // Action & Assert
         chatThreadClient.updateTopic(newTopic);
 
-        ChatThread chatThread = client.getChatThread(threadId);
-        assertEquals(chatThread.getTopic(), newTopic);
+        ChatThreadProperties chatThreadProperties = chatThreadClient.getProperties();
+        assertEquals(chatThreadProperties.getTopic(), newTopic);
     }
 
     @ParameterizedTest
@@ -112,11 +114,11 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         setupTest(httpClient, "canUpdateThreadWithResponse");
         String newTopic = "Update Test";
 
-         // Action & Assert
+        // Action & Assert
         chatThreadClient.updateTopicWithResponse(newTopic, Context.NONE);
 
-        ChatThread chatThread = client.getChatThread(threadId);
-        assertEquals(chatThread.getTopic(), newTopic);
+        ChatThreadProperties chatThreadProperties = chatThreadClient.getProperties();
+        assertEquals(chatThreadProperties.getTopic(), newTopic);
     }
 
     @ParameterizedTest
@@ -127,11 +129,11 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         firstAddedParticipant = communicationClient.createUser();
         secondAddedParticipant = communicationClient.createUser();
 
-        AddChatParticipantsOptions options = ChatOptionsProvider.addParticipantsOptions(
+        Iterable<ChatParticipant> participants = ChatOptionsProvider.addParticipantsOptions(
             firstAddedParticipant.getId(), secondAddedParticipant.getId());
 
         // Action & Assert
-        chatThreadClient.addParticipants(options);
+        chatThreadClient.addParticipants(participants);
 
         PagedIterable<ChatParticipant> participantsResponse = chatThreadClient.listParticipants();
 
@@ -142,14 +144,15 @@ public class ChatThreadClientTest extends ChatClientTestBase {
             resp.getItems().forEach(item -> returnedparticipants.add(item));
         });
 
-        for (ChatParticipant participant: options.getParticipants()) {
-            assertTrue(checkParticipantsListContainsParticipantId(returnedparticipants, participant.getUser().getId()));
+        for (ChatParticipant participant : participants) {
+            assertTrue(checkParticipantsListContainsParticipantId(returnedparticipants,
+                ((CommunicationUserIdentifier) participant.getCommunicationIdentifier()).getId()));
         }
 
         assertTrue(returnedparticipants.size() == 4);
 
-        for (ChatParticipant participant: options.getParticipants()) {
-            chatThreadClient.removeParticipant(participant.getUser());
+        for (ChatParticipant participant : participants) {
+            chatThreadClient.removeParticipant(participant.getCommunicationIdentifier());
         }
     }
 
@@ -161,14 +164,14 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         firstAddedParticipant = communicationClient.createUser();
         secondAddedParticipant = communicationClient.createUser();
 
-        AddChatParticipantsOptions options = ChatOptionsProvider.addParticipantsOptions(
+        Iterable<ChatParticipant> participants = ChatOptionsProvider.addParticipantsOptions(
             firstAddedParticipant.getId(), secondAddedParticipant.getId());
 
         // Action & Assert
-        chatThreadClient.addParticipants(options);
+        chatThreadClient.addParticipants(participants);
 
         PagedIterable<ChatParticipant> participantsResponse = chatThreadClient.listParticipants(
-            new ListParticipantsOptions().setMaxPageSize(2));
+            new ListParticipantsOptions().setMaxPageSize(2), Context.NONE);
 
         // process the iterableByPage
         List<ChatParticipant> returnedParticipants = new ArrayList<ChatParticipant>();
@@ -177,14 +180,15 @@ public class ChatThreadClientTest extends ChatClientTestBase {
             resp.getItems().forEach(item -> returnedParticipants.add(item));
         });
 
-        for (ChatParticipant participant: options.getParticipants()) {
-            assertTrue(checkParticipantsListContainsParticipantId(returnedParticipants, participant.getUser().getId()));
+        for (ChatParticipant participant : participants) {
+            assertTrue(checkParticipantsListContainsParticipantId(returnedParticipants,
+                ((CommunicationUserIdentifier) participant.getCommunicationIdentifier()).getId()));
         }
 
         assertTrue(returnedParticipants.size() == 4);
 
-        for (ChatParticipant participant: options.getParticipants()) {
-            chatThreadClient.removeParticipant(participant.getUser());
+        for (ChatParticipant participant : participants) {
+            chatThreadClient.removeParticipant(participant.getCommunicationIdentifier());
         }
     }
 
@@ -195,7 +199,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         setupTest(httpClient, "canAddListAndRemoveParticipantsWithResponse");
 
         // Action & Assert
-        PagedIterable<ChatParticipant> membersResponse = chatThreadClient.listParticipants(Context.NONE);
+        PagedIterable<ChatParticipant> membersResponse = chatThreadClient.listParticipants();
 
         // process the iterableByPage
         List<ChatParticipant> returnedMembers = new ArrayList<ChatParticipant>();
@@ -215,11 +219,11 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         firstAddedParticipant = communicationClient.createUser();
         secondAddedParticipant = communicationClient.createUser();
 
-        AddChatParticipantsOptions options = ChatOptionsProvider.addParticipantsOptions(
+        Iterable<ChatParticipant> participants = ChatOptionsProvider.addParticipantsOptions(
             firstAddedParticipant.getId(), secondAddedParticipant.getId());
 
         // Action & Assert
-        chatThreadClient.addParticipantsWithResponse(options, Context.NONE);
+        chatThreadClient.addParticipantsWithResponse(participants, Context.NONE);
 
         PagedIterable<ChatParticipant> participantsResponse = chatThreadClient.listParticipants();
 
@@ -230,14 +234,15 @@ public class ChatThreadClientTest extends ChatClientTestBase {
             resp.getItems().forEach(item -> returnedParticipants.add(item));
         });
 
-        for (ChatParticipant participant: options.getParticipants()) {
-            assertTrue(checkParticipantsListContainsParticipantId(returnedParticipants, participant.getUser().getId()));
+        for (ChatParticipant participant : participants) {
+            assertTrue(checkParticipantsListContainsParticipantId(returnedParticipants,
+                ((CommunicationUserIdentifier) participant.getCommunicationIdentifier()).getId()));
         }
 
         assertTrue(returnedParticipants.size() == 4);
 
-        for (ChatParticipant participant: options.getParticipants()) {
-            chatThreadClient.removeParticipantWithResponse(participant.getUser(), Context.NONE);
+        for (ChatParticipant participant : participants) {
+            chatThreadClient.removeParticipantWithResponse(participant.getCommunicationIdentifier(), Context.NONE);
         }
     }
 
@@ -249,10 +254,12 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         CommunicationUserIdentifier participant = communicationClient.createUser();
 
         // Action & Assert
-        chatThreadClient.addParticipant(new ChatParticipant().setUser(participant));
+        chatThreadClient.addParticipant(new ChatParticipant().setCommunicationIdentifier(participant));
 
         PagedIterable<ChatParticipant> participantsResponse = chatThreadClient.listParticipants();
-        assertTrue(participantsResponse.stream().anyMatch(p -> p.getUser().getId().equals(participant.getId())));
+        assertTrue(participantsResponse
+            .stream()
+            .anyMatch(p -> ((CommunicationUserIdentifier) p.getCommunicationIdentifier()).getId().equals(participant.getId())));
     }
 
     @ParameterizedTest
@@ -263,10 +270,12 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         CommunicationUserIdentifier participant = communicationClient.createUser();
 
         // Action & Assert
-        chatThreadClient.addParticipantWithResponse(new ChatParticipant().setUser(participant), Context.NONE);
+        chatThreadClient.addParticipantWithResponse(new ChatParticipant().setCommunicationIdentifier(participant), Context.NONE);
 
         PagedIterable<ChatParticipant> participantsResponse = chatThreadClient.listParticipants();
-        assertTrue(participantsResponse.stream().anyMatch(p -> p.getUser().getId().equals(participant.getId())));
+        assertTrue(participantsResponse
+            .stream()
+            .anyMatch(p -> ((CommunicationUserIdentifier) p.getCommunicationIdentifier()).getId().equals(participant.getId())));
     }
 
     @ParameterizedTest
@@ -277,9 +286,9 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
 
         // Action & Assert
-        String response = chatThreadClient.sendMessage(messageRequest);
+        SendChatMessageResult response = chatThreadClient.sendMessage(messageRequest);
 
-        ChatMessage message = chatThreadClient.getMessage(response);
+        ChatMessage message = chatThreadClient.getMessage(response.getId());
         assertEquals(message.getContent().getMessage(), messageRequest.getContent());
         assertEquals(message.getSenderDisplayName(), messageRequest.getSenderDisplayName());
     }
@@ -292,9 +301,9 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
 
         // Action & Assert
-        String response = chatThreadClient.sendMessageWithResponse(messageRequest, Context.NONE).getValue();
+        SendChatMessageResult response = chatThreadClient.sendMessageWithResponse(messageRequest, Context.NONE).getValue();
 
-        ChatMessage message = chatThreadClient.getMessageWithResponse(response, Context.NONE).getValue();
+        ChatMessage message = chatThreadClient.getMessageWithResponse(response.getId(), Context.NONE).getValue();
         assertEquals(message.getContent().getMessage(), messageRequest.getContent());
         assertEquals(message.getSenderDisplayName(), messageRequest.getSenderDisplayName());
     }
@@ -306,10 +315,10 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         setupTest(httpClient, "canDeleteExistingMessage");
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
 
-        String response = chatThreadClient.sendMessage(messageRequest);
+        SendChatMessageResult response = chatThreadClient.sendMessage(messageRequest);
 
         // Action & Assert
-        chatThreadClient.deleteMessage(response);
+        chatThreadClient.deleteMessage(response.getId());
     }
 
     @ParameterizedTest
@@ -319,10 +328,10 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         setupTest(httpClient, "canDeleteExistingMessageWithResponse");
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
 
-        String response = chatThreadClient.sendMessage(messageRequest);
+        SendChatMessageResult response = chatThreadClient.sendMessage(messageRequest);
 
         // Action & Assert
-        chatThreadClient.deleteMessageWithResponse(response, Context.NONE);
+        chatThreadClient.deleteMessageWithResponse(response.getId(), Context.NONE);
     }
 
     @ParameterizedTest
@@ -333,12 +342,12 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
         UpdateChatMessageOptions updateMessageRequest = ChatOptionsProvider.updateMessageOptions();
 
-        String response = chatThreadClient.sendMessage(messageRequest);
+        SendChatMessageResult response = chatThreadClient.sendMessage(messageRequest);
 
         // Action & Assert
-        chatThreadClient.updateMessage(response, updateMessageRequest);
+        chatThreadClient.updateMessage(response.getId(), updateMessageRequest);
 
-        ChatMessage message = chatThreadClient.getMessage(response);
+        ChatMessage message = chatThreadClient.getMessage(response.getId());
         assertEquals(message.getContent().getMessage(), updateMessageRequest.getContent());
     }
 
@@ -350,12 +359,12 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
         UpdateChatMessageOptions updateMessageRequest = ChatOptionsProvider.updateMessageOptions();
 
-        String response = chatThreadClient.sendMessage(messageRequest);
+        SendChatMessageResult response = chatThreadClient.sendMessage(messageRequest);
 
         // Action & Assert
-        chatThreadClient.updateMessageWithResponse(response, updateMessageRequest, Context.NONE);
+        chatThreadClient.updateMessageWithResponse(response.getId(), updateMessageRequest, Context.NONE);
 
-        ChatMessage message = chatThreadClient.getMessage(response);
+        ChatMessage message = chatThreadClient.getMessage(response.getId());
         assertEquals(message.getContent().getMessage(), updateMessageRequest.getContent());
     }
 
@@ -445,10 +454,10 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         setupTest(httpClient, "canSendThenListReadReceipts");
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
 
-        String response = chatThreadClient.sendMessage(messageRequest);
+        SendChatMessageResult response = chatThreadClient.sendMessage(messageRequest);
 
         // Action & Assert
-        chatThreadClient.sendReadReceipt(response);
+        chatThreadClient.sendReadReceipt(response.getId());
 
         PagedIterable<ChatMessageReadReceipt> readReceiptsResponse = chatThreadClient.listReadReceipts();
 
@@ -460,7 +469,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         });
 
         assertTrue(returnedReadReceipts.size() > 0);
-        checkReadReceiptListContainsMessageId(returnedReadReceipts, response);
+        checkReadReceiptListContainsMessageId(returnedReadReceipts, response.getId());
     }
 
     @ParameterizedTest
@@ -473,13 +482,13 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         setupTest(httpClient, "canSendThenListReadReceiptsWithOptions");
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
 
-        String response = chatThreadClient.sendMessage(messageRequest);
+        SendChatMessageResult response = chatThreadClient.sendMessage(messageRequest);
 
         // Action & Assert
-        chatThreadClient.sendReadReceipt(response);
+        chatThreadClient.sendReadReceipt(response.getId());
 
         PagedIterable<ChatMessageReadReceipt> readReceiptsResponse = chatThreadClient.listReadReceipts(
-            new ListReadReceiptOptions().setMaxPageSize(1));
+            new ListReadReceiptOptions().setMaxPageSize(1), Context.NONE);
 
         // process the iterableByPage
         List<ChatMessageReadReceipt> returnedReadReceipts = new ArrayList<ChatMessageReadReceipt>();
@@ -489,7 +498,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         });
 
         assertTrue(returnedReadReceipts.size() > 0);
-        checkReadReceiptListContainsMessageId(returnedReadReceipts, response);
+        checkReadReceiptListContainsMessageId(returnedReadReceipts, response.getId());
     }
 
     @ParameterizedTest
@@ -502,10 +511,10 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         setupTest(httpClient, "canSendThenListReadReceiptsWithResponse");
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
 
-        String response = chatThreadClient.sendMessage(messageRequest);
+        SendChatMessageResult response = chatThreadClient.sendMessage(messageRequest);
 
         // Action & Assert
-        chatThreadClient.sendReadReceiptWithResponse(response, Context.NONE);
+        chatThreadClient.sendReadReceiptWithResponse(response.getId(), Context.NONE);
 
         PagedIterable<ChatMessageReadReceipt> readReceiptsResponse = chatThreadClient.listReadReceipts();
 
@@ -517,7 +526,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         });
 
         assertTrue(returnedReadReceipts.size() > 0);
-        checkReadReceiptListContainsMessageId(returnedReadReceipts, response);
+        checkReadReceiptListContainsMessageId(returnedReadReceipts, response.getId());
     }
 
     @ParameterizedTest
@@ -530,7 +539,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
             }
         };
         setupUnitTest(mockHttpClient);
-        PagedIterable<ChatMessageReadReceipt> readReceipts = chatThreadClient.listReadReceipts(Context.NONE);
+        PagedIterable<ChatMessageReadReceipt> readReceipts = chatThreadClient.listReadReceipts();
 
         // // process the iterableByPage
         List<ChatMessageReadReceipt> readReceiptList = new ArrayList<ChatMessageReadReceipt>();
@@ -575,10 +584,10 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         setupTest(httpClient, "canSendReadReceiptSync");
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
 
-        String id = chatThreadClient.sendMessage(messageRequest);
+        SendChatMessageResult response = chatThreadClient.sendMessage(messageRequest);
 
         // Action & Assert
-        chatThreadClient.sendReadReceipt(id);
+        chatThreadClient.sendReadReceipt(response.getId());
     }
 
     @ParameterizedTest
@@ -588,10 +597,55 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         setupTest(httpClient, "canSendReadReceiptWithResponseSync");
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
 
-        String id = chatThreadClient.sendMessage(messageRequest);
+        SendChatMessageResult response = chatThreadClient.sendMessage(messageRequest);
 
         // Action & Assert
-        Response<Void> sendResponse = chatThreadClient.sendReadReceiptWithResponse(id, Context.NONE);
+        Response<Void> sendResponse = chatThreadClient.sendReadReceiptWithResponse(response.getId(), Context.NONE);
         assertEquals(200, sendResponse.getStatusCode());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canGetChatThreadProperties(HttpClient httpClient) {
+        // Arrange
+        setupTest(httpClient, "canGetChatThreadPropertiesSync");
+
+        // Action & Assert
+        ChatThreadProperties chatThreadProperties = chatThreadClient.getProperties();
+        assertEquals(chatThreadClient.getChatThreadId(), chatThreadProperties.getId());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canGetChatThreadPropertiesWithResponse(HttpClient httpClient) {
+        // Arrange
+        setupTest(httpClient, "canGetChatThreadPropertiesWithResponseSync");
+
+        // Action & Assert
+        ChatThreadProperties chatThreadProperties = chatThreadClient.getPropertiesWithResponse(Context.NONE).getValue();
+        assertEquals(chatThreadClient.getChatThreadId(), chatThreadProperties.getId());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void cannotAddParticipantsWithResponseWithNullOptions(HttpClient httpClient) {
+        assertThrows(NullPointerException.class, () -> {
+            chatThreadClient.addParticipantsWithResponse(null, Context.NONE);
+        });
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void throwsExceptionOnBadRequest(HttpClient httpClient) {
+        HttpClient mockHttpClient = new NoOpHttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                return Mono.just(ChatResponseMocker.createErrorResponse(request, 400));
+            }
+        };
+        setupUnitTest(mockHttpClient);
+
+        assertThrows(HttpResponseException.class, () ->
+            chatThreadClient.sendMessage(new SendChatMessageOptions()));
     }
 }

@@ -5,6 +5,7 @@ package com.azure.spring.integration.servicebus.queue.support;
 
 import com.azure.spring.integration.servicebus.ServiceBusMessageHandler;
 import com.azure.spring.integration.servicebus.ServiceBusRuntimeException;
+import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.microsoft.azure.servicebus.IMessage;
@@ -30,7 +31,7 @@ public class ServiceBusQueueTestOperation extends ServiceBusQueueTemplate {
     private final Multimap<String, IMessageHandler> handlersByQueue = ArrayListMultimap.create();
 
     public ServiceBusQueueTestOperation(ServiceBusQueueClientFactory clientFactory) {
-        super(clientFactory);
+        super(clientFactory, new ServiceBusMessageConverter());
     }
 
     public static <E> Optional<E> getRandom(Collection<E> e) {
@@ -54,7 +55,7 @@ public class ServiceBusQueueTestOperation extends ServiceBusQueueTemplate {
     }
 
     @Override
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     protected void internalSubscribe(String name, Consumer<Message<?>> consumer, Class<?> payloadType) {
         IQueueClient queueClient = this.senderFactory.getOrCreateClient(name);
 

@@ -1,0 +1,32 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-search-shared-instance')//docs/search.post.search?api-version=2020-06-30",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "38b43741-1965-48a7-aa47-bd81e8fa0e2e",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "38b43741-1965-48a7-aa47-bd81e8fa0e2e",
+      "StatusCode" : "400",
+      "Date" : "Wed, 31 Mar 2021 21:16:48 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "38b43741-1965-48a7-aa47-bd81e8fa0e2e",
+      "elapsed-time" : "3",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "141",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Invalid expression: Syntax error at position 7 in 'This is not a valid filter.'.\\r\\nParameter name: $filter\"}}",
+      "Content-Language" : "en",
+      "x-ms-client-request-id" : "38b43741-1965-48a7-aa47-bd81e8fa0e2e",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=none"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

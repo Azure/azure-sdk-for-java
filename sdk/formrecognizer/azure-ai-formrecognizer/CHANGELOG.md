@@ -1,7 +1,15 @@
 # Release History
 
 ## 3.1.0-beta.3 (Unreleased)
+- Defaults to the latest supported API version, which currently is `2.1-preview.3`.
+- Added property `Pages` to `RecognizeReceiptsOptions`, `RecognizeInvoicesOptions`, `RecognizeBusinessCardsOptions`
+  and `RecognizeCustomFormOptions` to specify the page numbers to analyze.
+- Added support for `FormContentType` `image/bmp` when analyzing custom forms.
+- Added support for pre-built ID documents recognition.
 
+## 3.0.6 (2021-03-10)
+### Dependency updates
+- Update dependency version, `azure-core` to `1.14.0`, `azure-core-http-netty` to `1.9.0` and `azure-identity` to `1.2.4`.
 
 ## 3.1.0-beta.2 (2021-02-10)
 

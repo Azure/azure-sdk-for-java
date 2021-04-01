@@ -32,6 +32,8 @@ public final class CosmosChangeFeedRequestOptions {
     private ChangeFeedMode mode;
     private ChangeFeedStartFromInternal startFromInternal;
     private boolean isSplitHandlingDisabled;
+    private boolean quotaInfoEnabled;
+    private String throughputControlGroupName;
 
     private CosmosChangeFeedRequestOptions(
         FeedRangeInternal feedRange,
@@ -143,6 +145,30 @@ public final class CosmosChangeFeedRequestOptions {
         this.maxPrefetchPageCount = maxPrefetchPageCount;
 
         return this;
+    }
+
+    /**
+     * Gets the quotaInfoEnabled setting for change feed request in the Azure Cosmos DB database service.
+     * quotaInfoEnabled is used to enable/disable getting quota related stats
+     *
+     * @return true if quotaInfoEnabled is enabled
+     */
+    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
+        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public boolean isQuotaInfoEnabled() {
+        return quotaInfoEnabled;
+    }
+
+    /**
+     * Gets the quotaInfoEnabled setting for change feed request in the Azure Cosmos DB database service.
+     * quotaInfoEnabled is used to enable/disable getting quota related stats
+     *
+     * @param quotaInfoEnabled a boolean value indicating whether quotaInfoEnabled is enabled or not
+     */
+    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
+        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public void setQuotaInfoEnabled(boolean quotaInfoEnabled) {
+        this.quotaInfoEnabled = quotaInfoEnabled;
     }
 
     boolean isSplitHandlingDisabled() {
@@ -335,6 +361,7 @@ public final class CosmosChangeFeedRequestOptions {
                 CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(
                     pagedFluxOptions.getRequestContinuation());
             effectiveRequestOptions.setMaxPrefetchPageCount(this.getMaxPrefetchPageCount());
+            effectiveRequestOptions.setThroughputControlGroupName(this.getThroughputControlGroupName());
         }
 
         if (pagedFluxOptions.getMaxItemCount() != null) {
@@ -381,6 +408,28 @@ public final class CosmosChangeFeedRequestOptions {
         }
 
         this.mode = ChangeFeedMode.FULL_FIDELITY;
+        return this;
+    }
+
+    /**
+     * Get the throughput control group name.
+     *
+     * @return The throughput control group name.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public String getThroughputControlGroupName() {
+        return this.throughputControlGroupName;
+    }
+
+    /**
+     * Set the throughput control group name.
+     *
+     * @param throughputControlGroupName The throughput control group name.
+     * @return A {@link CosmosChangeFeedRequestOptions}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosChangeFeedRequestOptions setThroughputControlGroupName(String throughputControlGroupName) {
+        this.throughputControlGroupName = throughputControlGroupName;
         return this;
     }
 }

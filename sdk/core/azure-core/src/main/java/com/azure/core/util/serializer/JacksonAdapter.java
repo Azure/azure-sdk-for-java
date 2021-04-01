@@ -6,15 +6,12 @@ package com.azure.core.util.serializer;
 import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.TypeUtil;
-import com.azure.core.implementation.serializer.MalformedValueException;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.MapperFeature;
@@ -27,18 +24,18 @@ import com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
 import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
@@ -56,6 +53,52 @@ import java.util.regex.Pattern;
  */
 public class JacksonAdapter implements SerializerAdapter {
     private static final Pattern PATTERN = Pattern.compile("^\"*|\"*$");
+
+    private static final String MUTABLE_COERCION_CONFIG = "com.fasterxml.jackson.databind.cfg.MutableCoercionConfig";
+    private static final String COERCION_INPUT_SHAPE = "com.fasterxml.jackson.databind.cfg.CoercionInputShape";
+    private static final String COERCION_ACTION = "com.fasterxml.jackson.databind.cfg.CoercionAction";
+
+    private static final MethodHandle COERCION_CONFIG_DEFAULTS;
+    private static final MethodHandle SET_COERCION;
+    private static final Object COERCION_INPUT_SHAPE_EMPTY_STRING;
+    private static final Object COERCION_ACTION_AS_NULL;
+    private static final boolean USE_REFLECTION_TO_SET_COERCION;
+
+    static {
+        MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
+
+        MethodHandle coercionConfigDefaults = null;
+        MethodHandle setCoercion = null;
+        Object coercionInputShapeEmptyString = null;
+        Object coercionActionAsNull = null;
+        boolean useReflectionToSetCoercion = false;
+
+        try {
+            Class<?> mutableCoercionConfig = Class.forName(MUTABLE_COERCION_CONFIG);
+            Class<?> coercionInputShapeClass = Class.forName(COERCION_INPUT_SHAPE);
+            Class<?> coercionActionClass = Class.forName(COERCION_ACTION);
+
+            coercionConfigDefaults = publicLookup.findVirtual(ObjectMapper.class, "coercionConfigDefaults",
+                MethodType.methodType(mutableCoercionConfig));
+            setCoercion = publicLookup.findVirtual(mutableCoercionConfig, "setCoercion",
+                MethodType.methodType(mutableCoercionConfig, coercionInputShapeClass, coercionActionClass));
+            coercionInputShapeEmptyString = publicLookup.findStaticGetter(coercionInputShapeClass, "EmptyString",
+                coercionInputShapeClass).invoke();
+            coercionActionAsNull = publicLookup.findStaticGetter(coercionActionClass, "AsNull", coercionActionClass)
+                .invoke();
+            useReflectionToSetCoercion = true;
+        } catch (Throwable ex) {
+            new ClientLogger(JacksonAdapter.class)
+                .verbose("Failed to retrieve MethodHandles used to set coercion configurations. "
+                    + "Setting coercion configurations will be skipped.", ex);
+        }
+
+        COERCION_CONFIG_DEFAULTS = coercionConfigDefaults;
+        SET_COERCION = setCoercion;
+        COERCION_INPUT_SHAPE_EMPTY_STRING = coercionInputShapeEmptyString;
+        COERCION_ACTION_AS_NULL = coercionActionAsNull;
+        USE_REFLECTION_TO_SET_COERCION = useReflectionToSetCoercion;
+    }
 
     private final ClientLogger logger = new ClientLogger(JacksonAdapter.class);
 
@@ -100,6 +143,18 @@ public class JacksonAdapter implements SerializerAdapter {
              */
             .enable(FromXmlParser.Feature.EMPTY_ELEMENT_AS_NULL)
             .build();
+
+
+        if (USE_REFLECTION_TO_SET_COERCION) {
+            try {
+                Object object = COERCION_CONFIG_DEFAULTS.invoke(this.xmlMapper);
+                SET_COERCION.invoke(object, COERCION_INPUT_SHAPE_EMPTY_STRING, COERCION_ACTION_AS_NULL);
+            } catch (Throwable e) {
+                logger.verbose("Failed to set coercion actions.", e);
+            }
+        } else {
+            logger.verbose("Didn't set coercion defaults as it wasn't found on the classpath.");
+        }
 
         ObjectMapper flatteningMapper = initializeMapperBuilder(JsonMapper.builder())
             .addModule(FlatteningSerializer.getModule(simpleMapper()))
@@ -149,10 +204,24 @@ public class JacksonAdapter implements SerializerAdapter {
             return null;
         }
 
-        ByteArrayOutputStream stream = new AccessibleByteArrayOutputStream();
-        serialize(object, encoding, stream);
+        if (encoding == SerializerEncoding.XML) {
+            return xmlMapper.writeValueAsString(object);
+        } else {
+            return serializer().writeValueAsString(object);
+        }
+    }
 
-        return new String(stream.toByteArray(), 0, stream.size(), StandardCharsets.UTF_8);
+    @Override
+    public byte[] serializeToBytes(Object object, SerializerEncoding encoding) throws IOException {
+        if (object == null) {
+            return null;
+        }
+
+        if (encoding == SerializerEncoding.XML) {
+            return xmlMapper.writeValueAsBytes(object);
+        } else {
+            return serializer().writeValueAsBytes(object);
+        }
     }
 
     @Override
@@ -173,6 +242,7 @@ public class JacksonAdapter implements SerializerAdapter {
         if (object == null) {
             return null;
         }
+
         try {
             return PATTERN.matcher(serialize(object, SerializerEncoding.JSON)).replaceAll("");
         } catch (IOException ex) {
@@ -183,15 +253,7 @@ public class JacksonAdapter implements SerializerAdapter {
 
     @Override
     public String serializeList(List<?> list, CollectionFormat format) {
-        if (list == null) {
-            return null;
-        }
-        List<String> serialized = new ArrayList<>();
-        for (Object element : list) {
-            String raw = serializeRaw(element);
-            serialized.add(raw != null ? raw : "");
-        }
-        return String.join(format.getDelimiter(), serialized);
+        return serializeIterable(list, format);
     }
 
     @Override
@@ -200,7 +262,26 @@ public class JacksonAdapter implements SerializerAdapter {
             return null;
         }
 
-        return deserialize(new ByteArrayInputStream(value.getBytes(StandardCharsets.UTF_8)), type, encoding);
+        final JavaType javaType = createJavaType(type);
+        if (encoding == SerializerEncoding.XML) {
+            return xmlMapper.readValue(value, javaType);
+        } else {
+            return serializer().readValue(value, javaType);
+        }
+    }
+
+    @Override
+    public <T> T deserialize(byte[] bytes, Type type, SerializerEncoding encoding) throws IOException {
+        if (bytes == null || bytes.length == 0) {
+            return null;
+        }
+
+        final JavaType javaType = createJavaType(type);
+        if (encoding == SerializerEncoding.XML) {
+            return xmlMapper.readValue(bytes, javaType);
+        } else {
+            return serializer().readValue(bytes, javaType);
+        }
     }
 
     @Override
@@ -211,14 +292,10 @@ public class JacksonAdapter implements SerializerAdapter {
         }
 
         final JavaType javaType = createJavaType(type);
-        try {
-            if (encoding == SerializerEncoding.XML) {
-                return xmlMapper.readValue(inputStream, javaType);
-            } else {
-                return serializer().readValue(inputStream, javaType);
-            }
-        } catch (JsonParseException jpe) {
-            throw logger.logExceptionAsError(new MalformedValueException(jpe.getMessage(), jpe));
+        if (encoding == SerializerEncoding.XML) {
+            return xmlMapper.readValue(inputStream, javaType);
+        } else {
+            return serializer().readValue(inputStream, javaType);
         }
     }
 
@@ -324,6 +401,7 @@ public class JacksonAdapter implements SerializerAdapter {
             .addModule(DurationSerializer.getModule())
             .addModule(HttpHeadersSerializer.getModule())
             .addModule(UnixTimeSerializer.getModule())
+            .addModule(UnixTimeDeserializer.getModule())
             .visibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
             .visibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE)
             .visibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE)

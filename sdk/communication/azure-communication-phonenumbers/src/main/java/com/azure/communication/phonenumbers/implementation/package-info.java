@@ -4,6 +4,6 @@
 
 /**
  * Package containing the implementations and inner classes for PhoneNumberAdminClient. The phone numbers client uses
- * Azure Communication Services to acquire and manage phone numbers.
+ * Azure Communication Services to purchase and manage phone numbers.
  */
 package com.azure.communication.phonenumbers.implementation;

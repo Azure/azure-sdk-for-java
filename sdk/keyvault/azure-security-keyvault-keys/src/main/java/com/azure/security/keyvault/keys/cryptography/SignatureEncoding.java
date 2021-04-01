@@ -23,7 +23,7 @@ final class SignatureEncoding {
      * @return The raw format of the given ASN.1 DER encoded signature in the form R|S
      */
     static byte[] fromAsn1Der(byte[] asn1DerSignature, String algorithm) throws NoSuchAlgorithmException {
-        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm);
+        Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm);
 
         // verify the given algoritm could be resolved
         if (baseAlgorithm == null) {
@@ -61,7 +61,7 @@ final class SignatureEncoding {
      * @return The ASN.1 DER encoded signature of the given signature.
      */
     static byte[] toAsn1Der(byte[] signature, String algorithm) throws NoSuchAlgorithmException {
-        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm);
+        Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm);
 
         // verify the given algoritm could be resolved
         if (baseAlgorithm == null) {

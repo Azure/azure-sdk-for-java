@@ -2,7 +2,7 @@
 
 The phone numbers package provides capabilities for phone number management.
 
-Acquired phone numbers can come with many capabilities, depending on the country, number type and phone plan. Examples of capabilities are SMS inbound and outbound usage, calling inbound and outbound usage. Phone numbers can also be assigned to a bot via a webhook URL.
+Purchased phone numbers can come with many capabilities, depending on the country, number type and phone plan. Examples of capabilities are SMS inbound and outbound usage, calling inbound and outbound usage. Phone numbers can also be assigned to a bot via a webhook URL.
 
 [Source code][source] | [Package (Maven)][package] | [API reference documentation][api_documentation]
 | [Product documentation][product_docs]
@@ -22,7 +22,7 @@ Acquired phone numbers can come with many capabilities, depending on the country
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-phonenumbers</artifactId>
-  <version>1.0.0-beta.5</version>
+  <version>1.0.0-beta.7</version>
 </dependency>
 ```
 
@@ -50,18 +50,18 @@ Using the endpoint and access key from the communication resource to authenticat
 ```java
 // You can find your endpoint and access token from your resource in the Azure Portal
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
-String accessKey = "SECRET";
+AzureKeyCredential keyCredential = new AzureKeyCredential("SECRET");
 
 // Create an HttpClient builder of your choice and customize it
 HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
 
 PhoneNumbersClient phoneNumberClient = new PhoneNumbersClientBuilder()
     .endpoint(endpoint)
-    .accessKey(accessKey)
+    .credential(keyCredential)
     .httpClient(httpClient)
     .buildClient();
 ```
-Alternatively, you can provide the entire connection string using the connectionString() function of the PhoneNumberClientBuilder instead of providing the endpoint and access key. 
+Alternatively, you can provide the entire connection string using the connectionString() function of the PhoneNumberClientBuilder instead of providing the endpoint and access key.
 
 ### Phone Number Types overview
 
@@ -69,29 +69,29 @@ Phone numbers come in two types; Geographic and Toll-Free. Geographic phone plan
 
 ### Searching and Purchasing and Releasing numbers
 
-Phone numbers can be searched through the search creation API by providing an area code, quantity of phone numbers, application type, phone number type, and capabilities. The provided quantity of phone numbers will be reserved for ten minutes and can be purchased within this time. If the search is not purchased, the phone numbers will become available to others after ten minutes. If the search is purchased, then the phone numbers are acquired for the Azure resources.
+Phone numbers can be searched through the search creation API by providing an area code, quantity of phone numbers, application type, phone number type, and capabilities. The provided quantity of phone numbers will be reserved for ten minutes and can be purchased within this time. If the search is not purchased, the phone numbers will become available to others after ten minutes. If the search is purchased, then the phone numbers are purchased for the Azure resources.
 
 Phone numbers can also be released using the release API.
 
 ## Examples
 
-### Get Phone Number
-Gets the specified acquired phone number.
+### Get Purchased Phone Number
+Gets the specified purchased phone number.
 
 <!-- embedme ./src/samples/java/com/azure/communication/phonenumbers/ReadmeSamples.java#L74-L76 -->
 ```java
-AcquiredPhoneNumber phoneNumber = phoneNumberClient.getPhoneNumber("+18001234567");
+PurchasedPhoneNumber phoneNumber = phoneNumberClient.getPurchasedPhoneNumber("+18001234567");
 System.out.println("Phone Number Value: " + phoneNumber.getPhoneNumber());
 System.out.println("Phone Number Country Code: " + phoneNumber.getCountryCode());
 ```
 
-### Get All Phone Numbers
-Lists all the acquired phone numbers.
+### Get All Purchased Phone Numbers
+Lists all the purchased phone numbers.
 
 <!-- embedme ./src/samples/java/com/azure/communication/phonenumbers/ReadmeSamples.java#L86-L89 -->
 ```java
-PagedIterable<AcquiredPhoneNumber> phoneNumbers = createPhoneNumberClient().listPhoneNumbers(Context.NONE);
-AcquiredPhoneNumber phoneNumber = phoneNumbers.iterator().next();
+PagedIterable<PurchasedPhoneNumber> phoneNumbers = createPhoneNumberClient().listPurchasedPhoneNumbers(Context.NONE);
+PurchasedPhoneNumber phoneNumber = phoneNumbers.iterator().next();
 System.out.println("Phone Number Value: " + phoneNumber.getPhoneNumber());
 System.out.println("Phone Number Country Code: " + phoneNumber.getCountryCode());
 ```
@@ -103,20 +103,15 @@ The Phone Number Client supports a variety of long running operations that allow
 ### Search for Available Phone Numbers
 Search for available phone numbers by providing the area code, assignment type, phone number capabilities, phone number type, and quantity. The result of the search can then be used to purchase the numbers. Note that for the toll-free phone number type, providing the area code is optional.
 
-<!-- embedme ./src/samples/java/com/azure/communication/phonenumbers/ReadmeSamples.java#L98-L114-->
+<!-- embedme ./src/samples/java/com/azure/communication/phonenumbers/ReadmeSamples.java#L98-L109-->
 ```java
-PhoneNumberSearchRequest searchRequest = new PhoneNumberSearchRequest();
-searchRequest
-    .setAreaCode("800") // Area code is optional for toll free numbers
-    .setAssignmentType(PhoneNumberAssignmentType.PERSON)
-    .setCapabilities(new PhoneNumberCapabilities()
-        .setCalling(PhoneNumberCapabilityValue.INBOUND)
-        .setSms(PhoneNumberCapabilityValue.INBOUND_OUTBOUND))
-    .setPhoneNumberType(PhoneNumberType.GEOGRAPHIC)
-    .setQuantity(1); // Quantity is optional, default is 1
+PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities()
+    .setCalling(PhoneNumberCapabilityType.INBOUND)
+    .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
+PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setAreaCode("800").setQuantity(1);
 
 PhoneNumberSearchResult searchResult = phoneNumberClient
-    .beginSearchAvailablePhoneNumbers("US", searchRequest, Context.NONE)
+    .beginSearchAvailablePhoneNumbers("US", PhoneNumberType.TOLL_FREE, PhoneNumberAssignmentType.APPLICATION, capabilities, searchOptions, Context.NONE)
     .getFinalResult();
 
 System.out.println("Searched phone numbers: " + searchResult.getPhoneNumbers());
@@ -127,37 +122,37 @@ System.out.println("Phone number costs:" + searchResult.getCost().getAmount());
 ### Purchase Phone Numbers
 The result of searching for phone numbers is a `PhoneNumberSearchResult`. This can be used to get the numbers' details and purchase numbers by passing in the `searchId` to the purchase number API.
 
-<!-- embedme ./src/samples/java/com/azure/communication/phonenumbers/ReadmeSamples.java#L116-L118 -->
+<!-- embedme ./src/samples/java/com/azure/communication/phonenumbers/ReadmeSamples.java#L111-L113 -->
 ```java
-PollResponse<PhoneNumberOperation> purchaseResponse = 
+PollResponse<PhoneNumberOperation> purchaseResponse =
     phoneNumberClient.beginPurchasePhoneNumbers(searchResult.getSearchId(), Context.NONE).waitForCompletion();
 System.out.println("Purchase phone numbers is complete: " + purchaseResponse.getStatus());
 ```
 
 ### Release Phone Number
-Releases an acquired phone number.
+Releases a purchased phone number.
 
-<!-- embedme ./src/samples/java/com/azure/communication/phonenumbers/ReadmeSamples.java#L126-L128 -->
+<!-- embedme ./src/samples/java/com/azure/communication/phonenumbers/ReadmeSamples.java#L121-L123 -->
 ```java
-PollResponse<PhoneNumberOperation> releaseResponse = 
+PollResponse<PhoneNumberOperation> releaseResponse =
     phoneNumberClient.beginReleasePhoneNumber("+18001234567", Context.NONE).waitForCompletion();
 System.out.println("Release phone number is complete: " + releaseResponse.getStatus());
 ```
 
 ### Updating Phone Number Capabilities
-Updates Phone Number Capabilities for Calling and SMS to one of: 
+Updates Phone Number Capabilities for Calling and SMS to one of:
 - `PhoneNumberCapabilityValue.NONE`
 - `PhoneNumberCapabilityValue.INBOUND`
 - `PhoneNumberCapabilityValue.OUTBOUND`
 - `PhoneNumberCapabilityValue.INBOUND_OUTBOUND`
 
-<!-- embedme ./src/samples/java/com/azure/communication/phonenumbers/ReadmeSamples.java#L138-L145 -->
+<!-- embedme ./src/samples/java/com/azure/communication/phonenumbers/ReadmeSamples.java#L133-L140 -->
 ```java
-PhoneNumberCapabilitiesRequest capabilitiesRequest = new PhoneNumberCapabilitiesRequest();
-capabilitiesRequest
-    .setCalling(PhoneNumberCapabilityValue.INBOUND)
-    .setSms(PhoneNumberCapabilityValue.INBOUND_OUTBOUND);
-AcquiredPhoneNumber phoneNumber = phoneNumberClient.beginUpdatePhoneNumberCapabilities("+18001234567", capabilitiesRequest, Context.NONE).getFinalResult();
+PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
+capabilities
+    .setCalling(PhoneNumberCapabilityType.INBOUND)
+    .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
+PurchasedPhoneNumber phoneNumber = phoneNumberClient.beginUpdatePhoneNumberCapabilities("+18001234567", capabilities, Context.NONE).getFinalResult();
 
 System.out.println("Phone Number Calling capabilities: " + phoneNumber.getCapabilities().getCalling()); //Phone Number Calling capabilities: inbound
 System.out.println("Phone Number SMS capabilities: " + phoneNumber.getCapabilities().getSms()); //Phone Number SMS capabilities: inbound+outbound

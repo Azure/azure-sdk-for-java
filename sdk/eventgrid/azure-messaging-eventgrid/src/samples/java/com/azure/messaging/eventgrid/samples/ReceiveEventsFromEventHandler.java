@@ -4,7 +4,6 @@
 package com.azure.messaging.eventgrid.samples;
 
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.serializer.TypeReference;
 import com.azure.messaging.eventgrid.EventGridEvent;
 import com.azure.messaging.eventgrid.samples.models.User;
 import com.azure.storage.queue.QueueClient;
@@ -40,7 +39,7 @@ public class ReceiveEventsFromEventHandler {
         for (EventGridEvent event : events) {
             BinaryData eventData = event.getData();
             if (eventData != null) {
-                User user = eventData.toObject(TypeReference.createInstance(User.class));
+                User user = eventData.toObject(User.class);
                 System.out.printf("The received event data is: %s%n", user);
             }
         }
