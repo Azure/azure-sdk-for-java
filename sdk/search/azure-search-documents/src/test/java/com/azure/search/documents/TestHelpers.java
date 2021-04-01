@@ -6,8 +6,6 @@ package com.azure.search.documents;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.policy.ExponentialBackoff;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -29,7 +27,6 @@ import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
@@ -68,7 +65,8 @@ public final class TestHelpers {
     public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
     public static final String ISO8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     public static final TypeReference<List<Map<String, Object>>> LIST_TYPE_REFERENCE =
-        new TypeReference<List<Map<String, Object>>>() { };
+        new TypeReference<List<Map<String, Object>>>() {
+        };
 
     /**
      * Assert whether two objects are equal.
@@ -295,10 +293,6 @@ public final class TestHelpers {
             .getResourceAsStream(filename));
 
         return deserializeToType(inputStream, LIST_TYPE_REFERENCE);
-    }
-
-    public static List<Map<String, Object>> convertStreamToList(InputStream sourceStream) {
-        return deserializeToType(sourceStream, LIST_TYPE_REFERENCE);
     }
 
     public static Map<String, Object> convertStreamToMap(InputStream sourceStream) {

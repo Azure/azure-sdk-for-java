@@ -15,9 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ScoringParameterTests {
-    private static final String DASH = "-";
-    private static final String COMMA = ",";
-
     @Test
     public void testConstructorWithMap() {
         List<String> parameters = new ArrayList<>(Arrays.asList("hello", "tests"));
