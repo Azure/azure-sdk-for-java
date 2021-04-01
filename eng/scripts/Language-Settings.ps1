@@ -202,7 +202,7 @@ function check_source_jar($artifactId, $groudId, $version)
   $groudIdUrl = $groudId.Replace(".", "/")
   $MavenDownloadUrl = "$MavenDownloadSite/$groudIdUrl/$artifactId/$artifactId"
   $resp = Invoke-WebRequest $MavenDownloadUrl
-  
+  return true
 }
 # a "package.json configures target packages for all the monikers in a Repository, it also has a slightly different
 # schema than the moniker-specific json config that is seen in python and js
