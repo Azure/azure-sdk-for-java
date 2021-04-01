@@ -69,8 +69,15 @@ if ($LASTEXITCODE -eq 0) {
   git checkout $PRBranchName 
 } 
 else {
-  Write-Host "git checkout -b $PRBranchName -t $RemoteName/$PRBranchName."
-  git checkout -b $PRBranchName -t $RemoteName/$PRBranchName
+  git show-branch remotes/$RemoteName/$PRBranchName
+  if ($LASTEXITCODE -eq 0) {
+    Write-Host "git checkout -b $PRBranchName -t $RemoteName/$PRBranchName."
+    git checkout -b $PRBranchName -t $RemoteName/$PRBranchName
+  }
+  else {
+    Write-Host "git checkout -b $PRBranchName."
+    git checkout -b $PRBranchName
+  }
 }
 if ($LASTEXITCODE -ne 0)
 {

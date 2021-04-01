@@ -1,17 +1,8 @@
 jobs:
   - job: UpdateDocMsCIConfig
     pool:
-      vmImage: windows-2019
+      vmImage: 'ubuntu-18.04'
     steps:
-    - pwsh: |
-        if ($IsWindows) {
-          REG ADD HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem /f /v LongPathsEnabled /t REG_DWORD /d 1
-          git config --system core.longpaths true
-        }
-        else {
-          Write-Host "This script is not executing on Windows, skipping registry modification."
-        }
-      displayName: Enable Long Paths if Necessary
     - pwsh: |
         Write-Host "git clone https://github.com/Azure/azure-docs-sdk-java.git $(Build.SourcesDirectory)/repo"
         git clone https://github.com/Azure/azure-docs-sdk-java.git $(Build.SourcesDirectory)/repo
