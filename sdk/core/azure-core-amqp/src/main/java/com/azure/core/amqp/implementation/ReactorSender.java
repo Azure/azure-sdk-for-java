@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.OperationCancelledException;
@@ -130,9 +131,9 @@ class ReactorSender implements AmqpSendLink {
         this.subscriptions = Disposables.composite(
             this.endpointStates.subscribe(),
 
-            handler.getDeliveredMessages().subscribe(this::processDeliveredMessage),
+            this.handler.getDeliveredMessages().subscribe(this::processDeliveredMessage),
 
-            handler.getLinkCredits().subscribe(credit -> {
+            this.handler.getLinkCredits().subscribe(credit -> {
                 logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] credits[{}] Credits on link.",
                     handler.getConnectionId(), entityPath, getLinkName(), credit);
                 this.scheduleWorkOnDispatcher();
@@ -203,7 +204,7 @@ class ReactorSender implements AmqpSendLink {
                         String.format(Locale.US,
                             "Error sending. Size of the payload exceeded maximum message size: %s kb",
                             maxMessageSize / 1024);
-                    final Throwable error = new AmqpException(false, LINK_PAYLOAD_SIZE_EXCEEDED,
+                    final Throwable error = new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
                         errorMessage, exception, handler.getErrorContext(sender));
                     return Mono.error(error);
                 }
@@ -264,7 +265,7 @@ class ReactorSender implements AmqpSendLink {
                                 "Size of the payload exceeded maximum message size: %s kb",
                                 maxMessageSizeTemp / 1024);
                         final AmqpException error = new AmqpException(false,
-                            LINK_PAYLOAD_SIZE_EXCEEDED, message, exception,
+                            AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message, exception,
                             handler.getErrorContext(sender));
 
                         return Mono.error(error);
@@ -498,8 +499,8 @@ class ReactorSender implements AmqpSendLink {
                     "Entity(%s): send operation failed. Please see cause for more details", entityPath),
                     sendException, context)
                     : new OperationCancelledException(String.format(Locale.US,
-                    "Entity(%s): send operation failed while advancing delivery(tag: %s).",
-                    entityPath, deliveryTag), context);
+                        "Entity(%s): send operation failed while advancing delivery(tag: %s).",
+                        entityPath, deliveryTag), context);
 
                 workItem.error(exception);
             }
@@ -729,7 +730,7 @@ class ReactorSender implements AmqpSendLink {
             if (cause instanceof AmqpException) {
                 exception = (AmqpException) cause;
             } else {
-                exception = new AmqpException(true, TIMEOUT_ERROR,
+                exception = new AmqpException(true, AmqpErrorCondition.TIMEOUT_ERROR,
                     String.format(Locale.US, "Entity(%s): Send operation timed out", entityPath),
                     handler.getErrorContext(sender));
             }

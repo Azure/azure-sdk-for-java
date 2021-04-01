@@ -80,7 +80,7 @@ public class SessionHandler extends Handler {
                 getConnectionId(), entityName, session.getIncomingCapacity(), session.getOutgoingWindow());
         }
 
-        onNext(session.getRemoteState());
+        onNext(EndpointState.ACTIVE);
     }
 
     @Override

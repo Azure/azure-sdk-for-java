@@ -61,8 +61,7 @@ public final class RetryUtil {
      *     Otherwise, propagates a {@link TimeoutException}.
      */
     public static <T> Flux<T> withRetry(Flux<T> source, AmqpRetryOptions retryOptions, String timeoutMessage) {
-        return source
-            .timeout(Mono.delay(retryOptions.getTryTimeout()))
+        return source.timeout(retryOptions.getTryTimeout())
             .retryWhen(createRetry(retryOptions))
             .doOnError(error -> LOGGER.error(timeoutMessage, error));
     }
@@ -76,8 +75,7 @@ public final class RetryUtil {
      *     Otherwise, propagates a {@link TimeoutException}.
      */
     public static <T> Mono<T> withRetry(Mono<T> source, AmqpRetryOptions retryOptions, String timeoutMessage) {
-        return source
-            .timeout(Mono.delay(retryOptions.getTryTimeout()))
+        return source.timeout(retryOptions.getTryTimeout())
             .retryWhen(createRetry(retryOptions))
             .doOnError(error -> LOGGER.error(timeoutMessage, error));
     }
