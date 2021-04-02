@@ -6,6 +6,7 @@
   and `RecognizeCustomFormOptions` to specify the page numbers to analyze.
 - Added support for `FormContentType` `image/bmp` when analyzing custom forms.
 - Added support for pre-built ID documents recognition.
+- Added property `ReadingOrder` to `RecognizeContentOptions` to specify the order in which recognized text lines are returned.
 
 ## 3.0.6 (2021-03-10)
 ### Dependency updates
