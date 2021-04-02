@@ -230,7 +230,8 @@ class NetworkInterfaceImpl
     @Override
     public NetworkInterfaceImpl withExistingApplicationSecurityGroup(
         ApplicationSecurityGroup applicationSecurityGroup) {
-        // update application security group for all ip configurations, as nic requires 1 set for all ip configurations.
+        // update application security group for all ip configurations,
+        // as nic requires same set for all ip configurations.
         for (NicIpConfiguration ipConfiguration : this.nicIPConfigurations.values()) {
             ((NicIpConfigurationImpl) ipConfiguration).withExistingApplicationSecurityGroup(applicationSecurityGroup);
         }
@@ -248,14 +249,14 @@ class NetworkInterfaceImpl
     @Override
     public NicIpConfigurationImpl defineSecondaryIPConfiguration(String name) {
         NicIpConfigurationImpl nicIpConfiguration = prepareNewNicIPConfiguration(name);
-        // copy application security group from primary to secondary, as nic requires 1 set for all ip configurations.
-        if (this.primaryIPConfiguration().innerModel().applicationSecurityGroups() != null) {
-            for (ApplicationSecurityGroupInner inner
-                : this.primaryIPConfiguration().innerModel().applicationSecurityGroups()) {
-                if (nicIpConfiguration.innerModel().applicationSecurityGroups() == null) {
-                    nicIpConfiguration.innerModel().withApplicationSecurityGroups(new ArrayList<>());
-                }
-                nicIpConfiguration.innerModel().applicationSecurityGroups().add(inner);
+
+        // copy application security group from primary to secondary,
+        // as nic requires same set for all ip configurations.
+        List<ApplicationSecurityGroupInner> inners =
+            this.primaryIPConfiguration().innerModel().applicationSecurityGroups();
+        if (inners != null) {
+            for (ApplicationSecurityGroupInner inner : inners) {
+                nicIpConfiguration.withExistingApplicationSecurityGroup(inner);
             }
         }
         return nicIpConfiguration;

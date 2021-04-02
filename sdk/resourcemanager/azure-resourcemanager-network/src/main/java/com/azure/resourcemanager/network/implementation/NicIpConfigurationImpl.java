@@ -5,6 +5,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.models.ApplicationSecurityGroupInner;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddressPool;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
@@ -373,10 +374,15 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
     }
 
     NicIpConfigurationImpl withExistingApplicationSecurityGroup(ApplicationSecurityGroup applicationSecurityGroup) {
+        this.withExistingApplicationSecurityGroup(applicationSecurityGroup.innerModel());
+        return this;
+    }
+
+    NicIpConfigurationImpl withExistingApplicationSecurityGroup(ApplicationSecurityGroupInner inner) {
         if (this.innerModel().applicationSecurityGroups() == null) {
             this.innerModel().withApplicationSecurityGroups(new ArrayList<>());
         }
-        this.innerModel().applicationSecurityGroups().add(applicationSecurityGroup.innerModel());
+        this.innerModel().applicationSecurityGroups().add(inner);
         return this;
     }
 
