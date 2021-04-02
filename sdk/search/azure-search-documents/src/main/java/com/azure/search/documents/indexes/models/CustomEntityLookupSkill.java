@@ -4,18 +4,15 @@
 // Changes may cause incorrect behavior and will be lost if the code is
 // regenerated.
 
-package com.azure.search.documents.indexes.implementation.models;
+package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
-import com.azure.search.documents.indexes.models.CustomEntity;
-import com.azure.search.documents.indexes.models.CustomEntityLookupSkillLanguage;
-import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
-import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import java.util.List;
 
 /** A skill looks for text from a custom, user-defined list of words and phrases. */
@@ -23,7 +20,7 @@ import java.util.List;
 @JsonTypeName("#Microsoft.Skills.Text.CustomEntityLookupSkill")
 @JsonFlatten
 @Fluent
-public class CustomEntityLookupSkill extends SearchIndexerSkill {
+public final class CustomEntityLookupSkill extends SearchIndexerSkill {
     /*
      * A value indicating which language code to use. Default is en.
      */
@@ -74,8 +71,8 @@ public class CustomEntityLookupSkill extends SearchIndexerSkill {
      */
     @JsonCreator
     public CustomEntityLookupSkill(
-            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
-            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
+        @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
+        @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
 

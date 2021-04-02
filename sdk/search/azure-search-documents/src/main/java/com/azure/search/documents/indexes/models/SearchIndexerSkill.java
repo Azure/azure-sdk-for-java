@@ -4,22 +4,26 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import java.util.List;
 
-/**
- * Base type for skills.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type",
-    defaultImpl = SearchIndexerSkill.class)
+/** Base type for skills. */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "@odata\\.type",
+    defaultImpl = com.azure.search.documents.indexes.implementation.models.SearchIndexerSkill.class)
 @JsonTypeName("SearchIndexerSkill")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Util.ConditionalSkill", value = ConditionalSkill.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.KeyPhraseExtractionSkill",
+    @JsonSubTypes.Type(
+        name = "#Microsoft.Skills.Text.KeyPhraseExtractionSkill",
         value = KeyPhraseExtractionSkill.class),
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Vision.OcrSkill", value = OcrSkill.class),
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Vision.ImageAnalysisSkill", value = ImageAnalysisSkill.class),
@@ -29,9 +33,12 @@ import java.util.List;
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.EntityRecognitionSkill", value = EntityRecognitionSkill.class),
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.SentimentSkill", value = SentimentSkill.class),
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.SplitSkill", value = SplitSkill.class),
+    @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.CustomEntityLookupSkill", value = CustomEntityLookupSkill.class),
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.TranslationSkill", value = TextTranslationSkill.class),
+    @JsonSubTypes.Type(name = "#Microsoft.Skills.Util.DocumentExtractionSkill", value = DocumentExtractionSkill.class),
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Custom.WebApiSkill", value = WebApiSkill.class)
 })
+@JsonFlatten
 @Fluent
 public abstract class SearchIndexerSkill {
     /*
