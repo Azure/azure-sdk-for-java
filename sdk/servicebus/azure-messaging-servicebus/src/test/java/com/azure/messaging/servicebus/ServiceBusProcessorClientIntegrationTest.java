@@ -23,7 +23,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.messaging.servicebus.TestUtils.getSessionSubscriptionBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
