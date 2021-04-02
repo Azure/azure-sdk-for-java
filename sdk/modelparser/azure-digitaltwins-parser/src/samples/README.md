@@ -1,4 +1,4 @@
-# IoT Models Repository Samples
+# Azure DigitalTwins Model Parser Samples
 
 - TBD
 

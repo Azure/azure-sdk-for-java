@@ -11,20 +11,6 @@ import com.azure.core.annotation.ServiceClient;
  */
 @ServiceClient(builder = ParserClientBuilder.class)
 public final class ParserClient {
-    private final ParserAsyncClient parserAsyncClient;
-
     ParserClient(ParserAsyncClient parserAsyncClient) {
-        this.parserAsyncClient = parserAsyncClient;
-    }
-
-    /**
-     * Gets the Azure Models Repository service API version that this client is configured to use for all service requests.
-     * Unless configured while building this client through {@link ParserClientBuilder#serviceVersion(ParserServiceVersion)},
-     * this value will be equal to the latest service API version supported by this client.
-     *
-     * @return The Azure Models Repository service API version.
-     */
-    public ParserServiceVersion getServiceVersion() {
-        return this.parserAsyncClient.getServiceVersion();
     }
 }
