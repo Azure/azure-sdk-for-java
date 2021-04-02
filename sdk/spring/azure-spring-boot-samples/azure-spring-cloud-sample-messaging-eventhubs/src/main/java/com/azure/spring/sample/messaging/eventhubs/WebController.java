@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.sample.messaging;
+package com.azure.spring.sample.messaging.eventhubs;
 
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import com.azure.spring.messaging.annotation.AzureMessageListener;
