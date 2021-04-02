@@ -84,6 +84,7 @@ public class TableServiceClientBuilderTest {
     public void emptyEndpointThrowsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, () -> new TableServiceClientBuilder().endpoint(""));
     }
+
     @Test
     public void nullCredentialThrowsNullPointerException() {
         assertThrows(NullPointerException.class, () -> new TableServiceClientBuilder().credential((AzureSasCredential) null));

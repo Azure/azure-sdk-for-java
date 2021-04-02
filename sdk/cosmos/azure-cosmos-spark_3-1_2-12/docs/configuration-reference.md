@@ -46,6 +46,14 @@ When doing read operations, users can specify a custom schema or allow the conne
 | `spark.cosmos.read.inferSchemaIncludeSystemProperties`     | `false`    | When schema inference is enabled, whether the resulting schema will include all [Cosmos DB system properties](https://docs.microsoft.com/azure/cosmos-db/account-databases-containers-items#properties-of-an-item). |
 | `spark.cosmos.read.inferSchemaIncludeTimestamp`     | `false`    | When schema inference is enabled, whether the resulting schema will include the document Timestamp (`_ts`). Not required if `spark.cosmos.read.inferSchemaIncludeSystemProperties` is enabled, as it will already include all system properties. |
 
+#### Json conversion configuration
+
+When reading json documents, if a document contains an attribute that does not map to the schema type, the user can decide whether to use a `null` value (Relaxed) or an exception (Strict). 
+
+| Config Property Name      | Default | Description |
+| :---        |    :----   |         :--- | 
+| `spark.cosmos.read.schemaConversionMode`     | `Relaxed`    | The schema conversion behavior (Relaxed, Strict) |
+
 #### Partitioning Strategy Config
 
 | Config Property Name      | Default | Description |

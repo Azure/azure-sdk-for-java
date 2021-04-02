@@ -4,7 +4,10 @@
 package com.azure.core.experimental.geojson;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -15,14 +18,16 @@ import java.util.Objects;
  * An abstract geo object.
  */
 @JsonSubTypes({
-    @JsonSubTypes.Type(GeoPoint.class),
-    @JsonSubTypes.Type(GeoLineString.class),
-    @JsonSubTypes.Type(GeoPolygon.class),
-    @JsonSubTypes.Type(GeoPointCollection.class),
-    @JsonSubTypes.Type(GeoLineStringCollection.class),
-    @JsonSubTypes.Type(GeoPolygonCollection.class),
-    @JsonSubTypes.Type(GeoCollection.class)
+    @JsonSubTypes.Type(name = "Point", value = GeoPoint.class),
+    @JsonSubTypes.Type(name = "LineString", value = GeoLineString.class),
+    @JsonSubTypes.Type(name = "Polygon", value = GeoPolygon.class),
+    @JsonSubTypes.Type(name = "MultiPoint", value = GeoPointCollection.class),
+    @JsonSubTypes.Type(name = "MultiLineString", value = GeoLineStringCollection.class),
+    @JsonSubTypes.Type(name = "MultiPolygon", value = GeoPolygonCollection.class),
+    @JsonSubTypes.Type(name = "GeometryCollection", value = GeoCollection.class)
 })
+@JsonDeserialize(using = GeoJsonDeserializer.class)
+@JsonSerialize(using = GeoJsonSerializer.class)
 @Immutable
 public abstract class GeoObject {
     private final GeoBoundingBox boundingBox;
@@ -43,6 +48,7 @@ public abstract class GeoObject {
      *
      * @return The GeoJSON type for this object.
      */
+    @JsonProperty("type")
     public abstract GeoObjectType getType();
 
     /**
