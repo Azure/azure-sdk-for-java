@@ -21,10 +21,8 @@ public class WebPubSubServiceClientTests extends TestBase {
 
     private static final String DEFAULT_CONNECTION_STRING =
         "Endpoint=https://example.com;AccessKey=dummykey;Version=1.0;";
-    // private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-    //     .get("WEB_PUB_SUB_CS", DEFAULT_CONNECTION_STRING);
-
-    private static final String CONNECTION_STRING = "Endpoint=https://demo-2.webpubsubdev.azure.com;AccessKey=lInMymJB1m+98rVG1Wjvkvx5BpRJqGtbGa/oDM+wEwY=;Version=1.0;";
+    private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
+        .get("WEB_PUB_SUB_CS", DEFAULT_CONNECTION_STRING);
 
     private WebPubSubServiceClient client;
     private WebPubSubGroup groupClient;
