@@ -58,18 +58,18 @@ class CosmosConfigSpec extends UnitSpec {
   it should "parse read configuration" in {
     val userConfig = Map(
       "spark.cosmos.read.forceEventualConsistency" -> "false",
-      "spark.cosmos.read.jsonSchemaConversionMode" -> "Strict"
+      "spark.cosmos.read.schemaConversionMode" -> "Strict"
     )
 
     val config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
 
     config.forceEventualConsistency shouldBe false
-    config.jsonSchemaConversionMode shouldBe JsonSchemaConversionModes.Strict
+    config.schemaConversionMode shouldBe SchemaConversionModes.Strict
   }
 
   it should "throw on invalid read configuration" in {
     val userConfig = Map(
-      "spark.cosmos.read.jsonSchemaConversionMode" -> "not a valid value"
+      "spark.cosmos.read.schemaConversionMode" -> "not a valid value"
     )
 
     try {
@@ -86,7 +86,7 @@ class CosmosConfigSpec extends UnitSpec {
     val config = CosmosReadConfig.parseCosmosReadConfig(Map.empty[String, String])
 
     config.forceEventualConsistency shouldBe true
-    config.jsonSchemaConversionMode shouldBe JsonSchemaConversionModes.Relaxed
+    config.schemaConversionMode shouldBe SchemaConversionModes.Relaxed
   }
 
   it should "parse inference configuration" in {

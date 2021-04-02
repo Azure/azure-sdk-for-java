@@ -52,7 +52,7 @@ When reading json documents, if a document contains an attribute that does not m
 
 | Config Property Name      | Default | Description |
 | :---        |    :----   |         :--- | 
-| `spark.cosmos.read.jsonSchemaConversionMode`     | `Relaxed`    | The json schema conversion behavior (Relaxed, Strict) |
+| `spark.cosmos.read.schemaConversionMode`     | `Relaxed`    | The schema conversion behavior (Relaxed, Strict) |
 
 #### Partitioning Strategy Config
 

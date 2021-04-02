@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.LsnAttributeName
-import com.azure.cosmos.spark.JsonSchemaConversionModes.JsonSchemaConversionMode
+import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
 
 import java.sql.{Date, Timestamp}
 import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, NullNode, ObjectNode, TextNode}
@@ -43,15 +43,15 @@ private object CosmosRowConverter
 
     def fromObjectNodeToInternalRow(schema: StructType,
                                     objectNode: ObjectNode,
-                                    jsonSchemaConversionMode: JsonSchemaConversionMode): InternalRow = {
-        val row = fromObjectNodeToRow(schema, objectNode, jsonSchemaConversionMode)
+                                    schemaConversionMode: SchemaConversionMode): InternalRow = {
+        val row = fromObjectNodeToRow(schema, objectNode, schemaConversionMode)
         RowEncoder(schema).createSerializer().apply(row)
     }
 
     def fromObjectNodeToRow(schema: StructType,
                             objectNode: ObjectNode,
-                            jsonSchemaConversionMode: JsonSchemaConversionMode): Row = {
-        val values: Seq[Any] = convertStructToSparkDataType(schema, objectNode, jsonSchemaConversionMode)
+                            schemaConversionMode: SchemaConversionMode): Row = {
+        val values: Seq[Any] = convertStructToSparkDataType(schema, objectNode, schemaConversionMode)
         new GenericRowWithSchema(values.toArray, schema)
     }
 
@@ -267,7 +267,7 @@ private object CosmosRowConverter
 
     private def convertStructToSparkDataType(schema: StructType,
                                              objectNode: ObjectNode,
-                                             jsonSchemaConversionMode: JsonSchemaConversionMode) : Seq[Any] =
+                                             schemaConversionMode: SchemaConversionMode) : Seq[Any] =
         schema.fields.map {
             case StructField(CosmosTableSchemaInferrer.RawJsonBodyAttributeName, StringType, _, _) =>
                 objectNode.toString
@@ -280,25 +280,25 @@ private object CosmosRowConverter
             case StructField(CosmosTableSchemaInferrer.LsnAttributeName, LongType, _, _) =>
               parseLsn(objectNode)
             case StructField(name, dataType, _, _) =>
-                Option(objectNode.get(name)).map(convertToSparkDataType(dataType, _, jsonSchemaConversionMode)).orNull
+                Option(objectNode.get(name)).map(convertToSparkDataType(dataType, _, schemaConversionMode)).orNull
         }
 
     // scalastyle:off
     private def convertToSparkDataType(dataType: DataType,
                                        value: JsonNode,
-                                       jsonSchemaConversionMode: JsonSchemaConversionMode): Any =
+                                       schemaConversionMode: SchemaConversionMode): Any =
       (value, dataType) match {
         case (_ : NullNode, _) | (_, _ : NullType) => null
         case (jsonNode: ObjectNode, struct: StructType) =>
-            fromObjectNodeToRow(struct, jsonNode, jsonSchemaConversionMode)
+            fromObjectNodeToRow(struct, jsonNode, schemaConversionMode)
         case (jsonNode: ObjectNode, map: MapType) =>
             jsonNode.fields().asScala
                 .map(element => (
                     element.getKey,
-                    convertToSparkDataType(map.valueType, element.getValue, jsonSchemaConversionMode)))
+                    convertToSparkDataType(map.valueType, element.getValue, schemaConversionMode)))
         case (arrayNode: ArrayNode, array: ArrayType) =>
             arrayNode.elements().asScala
-              .map(convertToSparkDataType(array.elementType, _, jsonSchemaConversionMode)).toArray
+              .map(convertToSparkDataType(array.elementType, _, schemaConversionMode)).toArray
         case (binaryNode: BinaryNode, _: BinaryType) =>
             binaryNode.binaryValue()
         case (arrayNode: ArrayNode, _: BinaryType) =>
@@ -306,25 +306,25 @@ private object CosmosRowConverter
             objectMapper.convertValue(arrayNode, classOf[Array[Byte]])
         case (_, _: BooleanType) => value.asBoolean()
         case (_, _: StringType) => value.asText()
-        case (_, _: DateType) => handleConversionErrors(() => toDate(value), jsonSchemaConversionMode)
-        case (_, _: TimestampType) => handleConversionErrors(() => toTimestamp(value), jsonSchemaConversionMode)
+        case (_, _: DateType) => handleConversionErrors(() => toDate(value), schemaConversionMode)
+        case (_, _: TimestampType) => handleConversionErrors(() => toTimestamp(value), schemaConversionMode)
         case (isJsonNumber(), DoubleType) => value.asDouble()
         case (isJsonNumber(), DecimalType()) => value.decimalValue()
         case (isJsonNumber(), FloatType) => value.asDouble()
         case (isJsonNumber(), LongType) => value.asLong()
         case (isJsonNumber(), _) => value.asInt()
         case (textNode: TextNode, DoubleType) =>
-          handleConversionErrors(() => textNode.asText.toDouble, jsonSchemaConversionMode)
+          handleConversionErrors(() => textNode.asText.toDouble, schemaConversionMode)
         case (textNode: TextNode, DecimalType()) =>
-          handleConversionErrors(() => new java.math.BigDecimal(textNode.asText), jsonSchemaConversionMode)
+          handleConversionErrors(() => new java.math.BigDecimal(textNode.asText), schemaConversionMode)
         case (textNode: TextNode, FloatType) =>
-          handleConversionErrors(() => textNode.asText.toFloat, jsonSchemaConversionMode)
+          handleConversionErrors(() => textNode.asText.toFloat, schemaConversionMode)
         case (textNode: TextNode, LongType) =>
-          handleConversionErrors(() => textNode.asText.toLong, jsonSchemaConversionMode)
+          handleConversionErrors(() => textNode.asText.toLong, schemaConversionMode)
         case (textNode: TextNode, IntegerType) =>
-          handleConversionErrors(() => textNode.asText.toInt, jsonSchemaConversionMode)
+          handleConversionErrors(() => textNode.asText.toInt, schemaConversionMode)
         case _ =>
-          if (jsonSchemaConversionMode == JsonSchemaConversionModes.Relaxed) {
+          if (schemaConversionMode == SchemaConversionModes.Relaxed) {
             this.logError(s"Unsupported datatype conversion [Value: $value] of ${value.getClass}] to $dataType]")
             null
           }
@@ -337,11 +337,11 @@ private object CosmosRowConverter
     // scalastyle:on
 
     private def handleConversionErrors[A] = (conversion: () => A,
-                                             jsonSchemaConversionMode: JsonSchemaConversionMode) => {
+                                             schemaConversionMode: SchemaConversionMode) => {
       Try(conversion()) match {
         case Success(convertedValue) => convertedValue
         case Failure(error) =>
-          if (jsonSchemaConversionMode == JsonSchemaConversionModes.Relaxed){
+          if (schemaConversionMode == SchemaConversionModes.Relaxed){
             null
           }
           else {
