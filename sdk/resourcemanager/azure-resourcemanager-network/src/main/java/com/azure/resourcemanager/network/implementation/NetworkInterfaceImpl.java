@@ -6,6 +6,8 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.core.management.provider.IdentifierProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.models.ApplicationSecurityGroupInner;
+import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.Network;
@@ -226,8 +228,37 @@ class NetworkInterfaceImpl
     }
 
     @Override
+    public NetworkInterfaceImpl withExistingApplicationSecurityGroup(
+        ApplicationSecurityGroup applicationSecurityGroup) {
+        // update application security group for all ip configurations, as nic requires 1 set for all ip configurations.
+        for (NicIpConfiguration ipConfiguration : this.nicIPConfigurations.values()) {
+            ((NicIpConfigurationImpl) ipConfiguration).withExistingApplicationSecurityGroup(applicationSecurityGroup);
+        }
+        return this;
+    }
+
+    @Override
+    public NetworkInterfaceImpl withoutApplicationSecurityGroup(String applicationSecurityGroupName) {
+        for (NicIpConfiguration ipConfiguration : this.nicIPConfigurations.values()) {
+            ((NicIpConfigurationImpl) ipConfiguration).withoutApplicationSecurityGroup(applicationSecurityGroupName);
+        }
+        return this;
+    }
+
+    @Override
     public NicIpConfigurationImpl defineSecondaryIPConfiguration(String name) {
-        return prepareNewNicIPConfiguration(name);
+        NicIpConfigurationImpl nicIpConfiguration = prepareNewNicIPConfiguration(name);
+        // copy application security group from primary to secondary, as nic requires 1 set for all ip configurations.
+        if (this.primaryIPConfiguration().innerModel().applicationSecurityGroups() != null) {
+            for (ApplicationSecurityGroupInner inner
+                : this.primaryIPConfiguration().innerModel().applicationSecurityGroups()) {
+                if (nicIpConfiguration.innerModel().applicationSecurityGroups() == null) {
+                    nicIpConfiguration.innerModel().withApplicationSecurityGroups(new ArrayList<>());
+                }
+                nicIpConfiguration.innerModel().applicationSecurityGroups().add(inner);
+            }
+        }
+        return nicIpConfiguration;
     }
 
     @Override
