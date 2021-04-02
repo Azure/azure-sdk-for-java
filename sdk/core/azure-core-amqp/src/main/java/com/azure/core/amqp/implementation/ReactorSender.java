@@ -53,9 +53,7 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.azure.core.amqp.exception.AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED;
 import static com.azure.core.amqp.exception.AmqpErrorCondition.NOT_ALLOWED;
-import static com.azure.core.amqp.exception.AmqpErrorCondition.TIMEOUT_ERROR;
 import static com.azure.core.amqp.implementation.ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES;
 import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
 import static com.azure.core.amqp.implementation.ClientConstants.SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS;
@@ -499,8 +497,8 @@ class ReactorSender implements AmqpSendLink {
                     "Entity(%s): send operation failed. Please see cause for more details", entityPath),
                     sendException, context)
                     : new OperationCancelledException(String.format(Locale.US,
-                        "Entity(%s): send operation failed while advancing delivery(tag: %s).",
-                        entityPath, deliveryTag), context);
+                    "Entity(%s): send operation failed while advancing delivery(tag: %s).",
+                    entityPath, deliveryTag), context);
 
                 workItem.error(exception);
             }

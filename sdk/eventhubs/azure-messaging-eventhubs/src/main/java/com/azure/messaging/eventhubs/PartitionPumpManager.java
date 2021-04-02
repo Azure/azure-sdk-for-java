@@ -3,16 +3,6 @@
 
 package com.azure.messaging.eventhubs;
 
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
-import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
-import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
-import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
-import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
-import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_TRACING_SERVICE_NAME;
-
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -33,6 +23,10 @@ import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Signal;
+import reactor.core.scheduler.Schedulers;
+
 import java.time.Duration;
 import java.util.List;
 import java.util.Locale;
@@ -41,9 +35,16 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Signal;
-import reactor.core.scheduler.Schedulers;
+
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
+import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
+import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
+import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_TRACING_SERVICE_NAME;
 
 /**
  * The partition pump manager that keeps track of all the partition pumps started by this {@link EventProcessorClient}.
@@ -57,6 +58,7 @@ import reactor.core.scheduler.Schedulers;
  * </p>
  */
 class PartitionPumpManager {
+    private static final int PREFETCH = EventHubClientBuilder.DEFAULT_PREFETCH_COUNT;
 
     private final ClientLogger logger = new ClientLogger(PartitionPumpManager.class);
     private final CheckpointStore checkpointStore;
@@ -164,7 +166,7 @@ class PartitionPumpManager {
             InitializationContext initializationContext = new InitializationContext(partitionContext);
             partitionProcessor.initialize(initializationContext);
 
-            EventPosition startFromEventPosition = null;
+            EventPosition startFromEventPosition;
             // A checkpoint indicates the last known successfully processed event.
             // So, the event position to start a new partition processing should be exclusive of the
             // offset/sequence number in the checkpoint. If no checkpoint is available, start from
@@ -185,7 +187,7 @@ class PartitionPumpManager {
                 .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties);
 
             EventHubConsumerAsyncClient eventHubConsumer = eventHubClientBuilder.buildAsyncClient()
-                .createConsumer(claimedOwnership.getConsumerGroup(), EventHubClientBuilder.DEFAULT_PREFETCH_COUNT);
+                .createConsumer(claimedOwnership.getConsumerGroup(), PREFETCH);
 
             partitionPumps.put(claimedOwnership.getPartitionId(), eventHubConsumer);
             //@formatter:off
@@ -209,7 +211,7 @@ class PartitionPumpManager {
             }
             partitionEventFlux
                 .concatMap(Flux::collectList)
-                .publishOn(Schedulers.boundedElastic())
+                .publishOn(scheduler, false, PREFETCH)
                 .subscribe(partitionEventBatch -> {
                     processEvents(partitionContext, partitionProcessor,
                         eventHubConsumer, partitionEventBatch);
@@ -307,7 +309,7 @@ class PartitionPumpManager {
         return this.partitionPumps;
     }
 
-    private void handleError(PartitionOwnership claimedOwnership, EventHubConsumerAsyncClient eventHubConsumer,
+    private void handleError(PartitionOwnership claimedOwnership, PartitionPump partitionPump,
         PartitionProcessor partitionProcessor, Throwable throwable, PartitionContext partitionContext) {
         boolean shouldRethrow = true;
         if (!(throwable instanceof PartitionProcessorException)) {
