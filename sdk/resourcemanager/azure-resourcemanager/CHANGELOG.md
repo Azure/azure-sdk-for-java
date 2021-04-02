@@ -1,7 +1,15 @@
 # Release History
 
-## 2.2.0-beta.1 (Unreleased)
+## 2.4.0-beta.1 (Unreleased)
 
+
+## 2.3.0 (2021-03-30)
+
+- Added client-side validation for `getByResourceGroup`, `listByResourceGroup`, `deleteByResourceGroup` methods.
+
+## 2.2.0 (2021-02-24)
+
+- Improved performance of `PagedIterable`
 
 ## 2.1.0 (2020-11-24)
 

@@ -36,14 +36,12 @@ import org.reactivestreams.Subscription;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.publisher.BaseSubscriber;
-import reactor.core.publisher.DirectProcessor;
-import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
+import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -76,7 +74,7 @@ class EventHubConsumerAsyncClientTest {
     private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
     static final String PARTITION_ID_HEADER = "partition-id-sent";
 
-    private static final Duration TIMEOUT = Duration.ofSeconds(30);
+    private static final Duration TIMEOUT = Duration.ofSeconds(10);
     private static final String PAYLOAD = "hello";
     private static final byte[] PAYLOAD_BYTES = PAYLOAD.getBytes(UTF_8);
     private static final int PREFETCH = 5;
@@ -88,9 +86,8 @@ class EventHubConsumerAsyncClientTest {
     private final ClientLogger logger = new ClientLogger(EventHubConsumerAsyncClientTest.class);
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setMaxRetries(2);
     private final String messageTrackingUUID = UUID.randomUUID().toString();
-    private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
-    private final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
-    private final DirectProcessor<Message> messageProcessor = DirectProcessor.create();
+    private final TestPublisher<AmqpEndpointState> endpointProcessor = TestPublisher.createCold();
+    private final TestPublisher<Message> messageProcessor = TestPublisher.createCold();
     private final Scheduler testScheduler = Schedulers.newSingle("eh-test");
     private final Scheduler parallelScheduler = Schedulers.newParallel("eh-parallel");
 
@@ -106,6 +103,7 @@ class EventHubConsumerAsyncClientTest {
     private MessageSerializer messageSerializer = new EventHubMessageSerializer();
     private EventHubConsumerAsyncClient consumer;
     private EventHubConnectionProcessor connectionProcessor;
+    private AutoCloseable mockCloseable;
 
     @BeforeAll
     static void beforeAll() {
@@ -119,19 +117,21 @@ class EventHubConsumerAsyncClientTest {
 
     @BeforeEach
     void setup() {
-        MockitoAnnotations.initMocks(this);
+        mockCloseable = MockitoAnnotations.openMocks(this);
 
         // Forcing us to publish the messages we receive on the AMQP link on single. Similar to how it is done
         // in ReactorExecutor.
-        when(amqpReceiveLink.receive()).thenReturn(messageProcessor.publishOn(testScheduler));
-        when(amqpReceiveLink.getEndpointStates()).thenReturn(endpointProcessor);
+        when(amqpReceiveLink.receive()).thenReturn(messageProcessor.flux().publishOn(testScheduler));
+        when(amqpReceiveLink.getEndpointStates()).thenReturn(endpointProcessor.flux());
+        when(amqpReceiveLink.getLinkName()).thenReturn(PARTITION_ID);
 
         final ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(),
-            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER);
+            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER,
+            "test-product", "test-client-version");
 
-        when(connection.getEndpointStates()).thenReturn(endpointProcessor);
-        endpointSink.next(AmqpEndpointState.ACTIVE);
+        when(connection.getEndpointStates()).thenReturn(endpointProcessor.flux());
+        endpointProcessor.next(AmqpEndpointState.ACTIVE);
 
         when(connection.createReceiveLink(anyString(), argThat(name -> name.endsWith(PARTITION_ID)),
             any(EventPosition.class), any(ReceiveOptions.class))).thenReturn(Mono.just(amqpReceiveLink));
@@ -144,12 +144,16 @@ class EventHubConsumerAsyncClientTest {
     }
 
     @AfterEach
-    void teardown() {
+    void teardown() throws Exception {
         parallelScheduler.dispose();
         testScheduler.dispose();
         Mockito.framework().clearInlineMocks();
         Mockito.clearInvocations(amqpReceiveLink, connection, tokenCredential);
         consumer.close();
+
+        if (mockCloseable != null) {
+            mockCloseable.close();
+        }
     }
 
     /**
@@ -166,7 +170,7 @@ class EventHubConsumerAsyncClientTest {
 
         // Assert
         StepVerifier.create(runtimeConsumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).take(numberToReceive))
-            .then(() -> sendMessages(messageProcessor.sink(), numberOfEvents, PARTITION_ID))
+            .then(() -> sendMessages(messageProcessor, numberOfEvents, PARTITION_ID))
             .assertNext(event -> Assertions.assertNull(event.getLastEnqueuedEventProperties()))
             .assertNext(event -> Assertions.assertNull(event.getLastEnqueuedEventProperties()))
             .assertNext(event -> Assertions.assertNull(event.getLastEnqueuedEventProperties()))
@@ -190,7 +194,7 @@ class EventHubConsumerAsyncClientTest {
         // Assert
         StepVerifier.create(runtimeConsumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest(), receiveOptions)
             .take(1))
-            .then(() -> sendMessages(messageProcessor.sink(), numberOfEvents, PARTITION_ID))
+            .then(() -> sendMessages(messageProcessor, numberOfEvents, PARTITION_ID))
             .assertNext(event -> {
                 LastEnqueuedEventProperties properties = event.getLastEnqueuedEventProperties();
                 Assertions.assertNotNull(properties);
@@ -216,7 +220,7 @@ class EventHubConsumerAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).take(numberOfEvents))
-            .then(() -> sendMessages(messageProcessor.sink(), numberOfEvents, PARTITION_ID))
+            .then(() -> sendMessages(messageProcessor, numberOfEvents, PARTITION_ID))
             .expectNextCount(numberOfEvents)
             .verifyComplete();
 
@@ -246,7 +250,7 @@ class EventHubConsumerAsyncClientTest {
             countDownLatch.countDown();
         });
 
-        sendMessages(messageProcessor.sink(), numberOfEvents, PARTITION_ID);
+        sendMessages(messageProcessor, numberOfEvents, PARTITION_ID);
 
         // Assert
         Assertions.assertTrue(countDownLatch.await(30, TimeUnit.SECONDS));
@@ -274,22 +278,19 @@ class EventHubConsumerAsyncClientTest {
         EventHubConnectionProcessor eventHubConnection = Flux.<EventHubAmqpConnection>create(sink -> sink.next(connection1))
             .subscribeWith(new EventHubConnectionProcessor(HOSTNAME, EVENT_HUB_NAME, retryOptions));
 
-        when(connection1.getEndpointStates()).thenReturn(endpointProcessor);
-        endpointSink.next(AmqpEndpointState.ACTIVE);
+        when(connection1.getEndpointStates()).thenReturn(endpointProcessor.flux());
 
-        EmitterProcessor<Message> processor2 = EmitterProcessor.create();
-        FluxSink<Message> processor2sink = processor2.sink();
+        TestPublisher<Message> processor2 = TestPublisher.create();
         AmqpReceiveLink link2 = mock(AmqpReceiveLink.class);
 
-        EmitterProcessor<Message> processor3 = EmitterProcessor.create();
-        FluxSink<Message> processor3sink = processor3.sink();
+        TestPublisher<Message> processor3 = TestPublisher.create();
         AmqpReceiveLink link3 = mock(AmqpReceiveLink.class);
 
-        when(link2.receive()).thenReturn(processor2);
+        when(link2.receive()).thenReturn(processor2.flux());
         when(link2.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link2.getCredits()).thenReturn(numberOfEvents);
 
-        when(link3.receive()).thenReturn(processor3);
+        when(link3.receive()).thenReturn(processor3.flux());
         when(link3.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link3.getCredits()).thenReturn(numberOfEvents);
 
@@ -301,12 +302,12 @@ class EventHubConsumerAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(asyncClient.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).take(numberOfEvents))
-            .then(() -> sendMessages(processor2sink, numberOfEvents, PARTITION_ID))
+            .then(() -> sendMessages(processor2, numberOfEvents, PARTITION_ID))
             .expectNextCount(numberOfEvents)
             .verifyComplete();
 
         StepVerifier.create(asyncClient.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).take(numberOfEvents))
-            .then(() -> sendMessages(processor3sink, numberOfEvents, PARTITION_ID))
+            .then(() -> sendMessages(processor3, numberOfEvents, PARTITION_ID))
             .expectNextCount(numberOfEvents)
             .verifyComplete();
 
@@ -341,7 +342,7 @@ class EventHubConsumerAsyncClientTest {
                 .subscribe(event -> thirdCountDownEvent.countDown())
         );
 
-        sendMessages(messageProcessor.sink(), numberOfEvents, PARTITION_ID);
+        sendMessages(messageProcessor, numberOfEvents, PARTITION_ID);
         try {
             firstConsumerCountDown.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS);
             secondConsumerCountDown.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS);
@@ -390,7 +391,7 @@ class EventHubConsumerAsyncClientTest {
         });
 
         // Act
-        sendMessages(messageProcessor.sink(), numberOfEvents, PARTITION_ID);
+        sendMessages(messageProcessor, numberOfEvents, PARTITION_ID);
         countDownLatch.await(30, TimeUnit.SECONDS);
 
         // Assert
@@ -432,7 +433,7 @@ class EventHubConsumerAsyncClientTest {
         });
 
         // Act
-        sendMessages(messageProcessor.sink(), numberOfEvents, PARTITION_ID);
+        sendMessages(messageProcessor, numberOfEvents, PARTITION_ID);
         countDownLatch.await(30, TimeUnit.SECONDS);
 
         // Assert
@@ -449,7 +450,6 @@ class EventHubConsumerAsyncClientTest {
         final int backPressure = 8;
         final CountDownLatch semaphore = new CountDownLatch(8);
         final AtomicInteger counter = new AtomicInteger();
-        final FluxSink<Message> messageSink = messageProcessor.sink();
 
         when(amqpReceiveLink.getCredits()).thenReturn(PREFETCH);
 
@@ -473,7 +473,7 @@ class EventHubConsumerAsyncClientTest {
 
         try {
             // Act
-            sendMessages(messageSink, 11, PARTITION_ID);
+            sendMessages(messageProcessor, 11, PARTITION_ID);
 
             // Assert
             Assertions.assertTrue(semaphore.await(10, TimeUnit.SECONDS));
@@ -506,8 +506,7 @@ class EventHubConsumerAsyncClientTest {
         EventHubConnectionProcessor eventHubConnection = Flux.<EventHubAmqpConnection>create(sink -> sink.next(connection1))
             .subscribeWith(new EventHubConnectionProcessor(HOSTNAME, EVENT_HUB_NAME, retryOptions));
 
-        when(connection1.getEndpointStates()).thenReturn(endpointProcessor);
-        endpointSink.next(AmqpEndpointState.ACTIVE);
+        when(connection1.getEndpointStates()).thenReturn(endpointProcessor.flux());
 
         String id2 = "partition-2";
         String id3 = "partition-3";
@@ -522,19 +521,19 @@ class EventHubConsumerAsyncClientTest {
         EventHubConsumerAsyncClient asyncClient = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             eventHubConnection, messageSerializer, CONSUMER_GROUP, PREFETCH, parallelScheduler, false, onClientClosed);
 
-        EmitterProcessor<Message> processor2 = EmitterProcessor.create();
-        FluxSink<Message> processor2sink = processor2.sink();
+        TestPublisher<Message> processor2 = TestPublisher.createCold();
         AmqpReceiveLink link2 = mock(AmqpReceiveLink.class);
 
-        EmitterProcessor<Message> processor3 = EmitterProcessor.create();
-        FluxSink<Message> processor3sink = processor3.sink();
+        TestPublisher<Message> processor3 = TestPublisher.createCold();
         AmqpReceiveLink link3 = mock(AmqpReceiveLink.class);
 
-        when(link2.receive()).thenReturn(processor2);
+        when(link2.getLinkName()).thenReturn(id2);
+        when(link2.receive()).thenReturn(processor2.flux());
         when(link2.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link2.getCredits()).thenReturn(numberOfEvents);
 
-        when(link3.receive()).thenReturn(processor3);
+        when(link3.getLinkName()).thenReturn(id3);
+        when(link3.receive()).thenReturn(processor3.flux());
         when(link3.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link3.getCredits()).thenReturn(numberOfEvents);
 
@@ -554,12 +553,12 @@ class EventHubConsumerAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(asyncClient.receive(true).filter(e -> isMatchingEvent(e, messageTrackingUUID)))
-            .then(() -> sendMessages(processor2sink, 2, id2))
+            .then(() -> sendMessages(processor2, 2, id2))
             .assertNext(event -> assertPartition(id2, event))
             .assertNext(event -> assertPartition(id2, event))
-            .then(() -> sendMessages(processor3sink, 1, id3))
+            .then(() -> sendMessages(processor3, 1, id3))
             .assertNext(event -> assertPartition(id3, event))
-            .then(() -> sendMessages(processor2sink, 1, id2))
+            .then(() -> sendMessages(processor2, 1, id2))
             .assertNext(event -> assertPartition(id2, event))
             .thenCancel()
             .verify(TIMEOUT);
@@ -575,14 +574,12 @@ class EventHubConsumerAsyncClientTest {
         // Arrange
         int numberOfEvents = 10;
         when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents);
-        final FluxSink<Message> processor1sink = messageProcessor.sink();
 
         EventHubAmqpConnection connection1 = mock(EventHubAmqpConnection.class);
         EventHubConnectionProcessor eventHubConnection = Flux.<EventHubAmqpConnection>create(sink -> sink.next(connection1))
             .subscribeWith(new EventHubConnectionProcessor(HOSTNAME, EVENT_HUB_NAME, retryOptions));
 
-        when(connection1.getEndpointStates()).thenReturn(endpointProcessor);
-        endpointSink.next(AmqpEndpointState.ACTIVE);
+        when(connection1.getEndpointStates()).thenReturn(endpointProcessor.flux());
 
         String id2 = "partition-2";
         String id3 = "partition-3";
@@ -597,19 +594,17 @@ class EventHubConsumerAsyncClientTest {
         EventHubConsumerAsyncClient asyncClient = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             eventHubConnection, messageSerializer, CONSUMER_GROUP, PREFETCH, Schedulers.parallel(), false, onClientClosed);
 
-        EmitterProcessor<Message> processor2 = EmitterProcessor.create();
-        FluxSink<Message> processor2sink = processor2.sink();
+        TestPublisher<Message> processor2 = TestPublisher.create();
         AmqpReceiveLink link2 = mock(AmqpReceiveLink.class);
 
-        EmitterProcessor<Message> processor3 = EmitterProcessor.create();
-        FluxSink<Message> processor3sink = processor3.sink();
+        TestPublisher<Message> processor3 = TestPublisher.create();
         AmqpReceiveLink link3 = mock(AmqpReceiveLink.class);
 
-        when(link2.receive()).thenReturn(processor2);
+        when(link2.receive()).thenReturn(processor2.flux());
         when(link2.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link2.getCredits()).thenReturn(numberOfEvents);
 
-        when(link3.receive()).thenReturn(processor3);
+        when(link3.receive()).thenReturn(processor3.flux());
         when(link3.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link3.getCredits()).thenReturn(numberOfEvents);
 
@@ -629,14 +624,14 @@ class EventHubConsumerAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(asyncClient.receive(true).filter(e -> isMatchingEvent(e, messageTrackingUUID)))
-            .then(() -> sendMessages(processor2sink, 2, id2))
+            .then(() -> sendMessages(processor2, 2, id2))
             .assertNext(event -> assertPartition(id2, event))
             .assertNext(event -> assertPartition(id2, event))
-            .then(() -> sendMessages(processor3sink, 1, id3))
+            .then(() -> sendMessages(processor3, 1, id3))
             .assertNext(event -> assertPartition(id3, event))
             .then(() -> {
-                processor2sink.complete();
-                sendMessages(processor1sink, 1, PARTITION_ID);
+                processor2.complete();
+                sendMessages(messageProcessor, 1, PARTITION_ID);
             })
             .assertNext(event -> assertPartition(PARTITION_ID, event))
             .thenCancel()
@@ -697,12 +692,11 @@ class EventHubConsumerAsyncClientTest {
         Assertions.assertEquals(CONSUMER_GROUP, event.getPartitionContext().getConsumerGroup());
     }
 
-    private void sendMessages(FluxSink<Message> sink, int numberOfEvents, String partitionId) {
-        // When we start receiving, then send those 10 messages.
+    private void sendMessages(TestPublisher<Message> testPublisher, int numberOfEvents, String partitionId) {
         Map<String, String> map = Collections.singletonMap(PARTITION_ID_HEADER, partitionId);
 
         for (int i = 0; i < numberOfEvents; i++) {
-            sink.next(getMessage(PAYLOAD_BYTES, messageTrackingUUID, map));
+            testPublisher.next(getMessage(PAYLOAD_BYTES, messageTrackingUUID, map));
         }
     }
 }

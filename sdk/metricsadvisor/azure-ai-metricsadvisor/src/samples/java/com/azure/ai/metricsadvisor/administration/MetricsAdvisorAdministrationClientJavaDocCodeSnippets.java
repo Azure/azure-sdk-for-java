@@ -1202,7 +1202,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
 
         final AnomalyAlertConfiguration anomalyAlertConfiguration
             = metricsAdvisorAdminClient.createAnomalyAlertConfig(
-            new AnomalyAlertConfiguration("My AnomalyAlert config name")
+                new AnomalyAlertConfiguration("My AnomalyAlert config name")
                 .setDescription("alert config description")
                 .setMetricAlertConfigurations(Arrays.asList(
                     new MetricAnomalyAlertConfiguration(detectionConfigurationId1,
@@ -1239,7 +1239,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
 
         final Response<AnomalyAlertConfiguration> alertConfigurationResponse
             = metricsAdvisorAdminClient.createAnomalyAlertConfigWithResponse(
-            new AnomalyAlertConfiguration("My AnomalyAlert config name")
+                new AnomalyAlertConfiguration("My AnomalyAlert config name")
                 .setDescription("alert config description")
                 .setMetricAlertConfigurations(Arrays.asList(
                     new MetricAnomalyAlertConfiguration(detectionConfigurationId1,

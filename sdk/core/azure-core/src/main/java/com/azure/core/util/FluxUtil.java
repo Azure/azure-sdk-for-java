@@ -3,8 +3,10 @@
 
 package com.azure.core.util;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.ByteBufferCollector;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Subscriber;
@@ -14,8 +16,8 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
+import reactor.util.context.ContextView;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
@@ -25,6 +27,7 @@ import java.nio.channels.CompletionHandler;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.function.Function;
@@ -34,6 +37,8 @@ import java.util.stream.Collectors;
  * Utility type exposing methods to deal with {@link Flux}.
  */
 public final class FluxUtil {
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+
     /**
      * Checks if a type is Flux&lt;ByteBuffer&gt;.
      *
@@ -49,22 +54,68 @@ public final class FluxUtil {
     }
 
     /**
-     * Collects ByteBuffer emitted by a Flux into a byte array.
+     * Collects ByteBuffers emitted by a Flux into a byte array.
      *
      * @param stream A stream which emits ByteBuffer instances.
      * @return A Mono which emits the concatenation of all the ByteBuffer instances given by the source Flux.
+     * @throws IllegalStateException If the combined size of the emitted ByteBuffers is greater than {@link
+     * Integer#MAX_VALUE}.
      */
     public static Mono<byte[]> collectBytesInByteBufferStream(Flux<ByteBuffer> stream) {
-        return stream
-            .collect(ByteArrayOutputStream::new, FluxUtil::accept)
-            .map(ByteArrayOutputStream::toByteArray);
+        return stream.collect(ByteBufferCollector::new, ByteBufferCollector::write)
+            .map(ByteBufferCollector::toByteArray);
     }
 
-    private static void accept(ByteArrayOutputStream byteOutputStream, ByteBuffer byteBuffer) {
-        try {
-            byteOutputStream.write(byteBufferToArray(byteBuffer));
-        } catch (IOException e) {
-            throw new RuntimeException("Error occurred writing ByteBuffer to ByteArrayOutputStream.", e);
+    /**
+     * Collects ByteBuffers emitted by a Flux into a byte array.
+     * <p>
+     * Unlike {@link #collectBytesInByteBufferStream(Flux)}, this method accepts a second parameter {@code sizeHint}.
+     * This size hint allows for optimizations when creating the initial buffer to reduce the number of times it needs
+     * to be resized while concatenating emitted ByteBuffers.
+     *
+     * @param stream A stream which emits ByteBuffer instances.
+     * @param sizeHint A hint about the expected stream size.
+     * @return A Mono which emits the concatenation of all the ByteBuffer instances given by the source Flux.
+     * @throws IllegalArgumentException If {@code sizeHint} is equal to or less than {@code 0}.
+     * @throws IllegalStateException If the combined size of the emitted ByteBuffers is greater than {@link
+     * Integer#MAX_VALUE}.
+     */
+    public static Mono<byte[]> collectBytesInByteBufferStream(Flux<ByteBuffer> stream, int sizeHint) {
+        return stream.collect(() -> new ByteBufferCollector(sizeHint), ByteBufferCollector::write)
+            .map(ByteBufferCollector::toByteArray);
+    }
+
+    /**
+     * Collects ByteBuffers returned in a network response into a byte array.
+     * <p>
+     * The {@code headers} are inspected for containing an {@code Content-Length} which determines if a size hinted
+     * collection, {@link #collectBytesInByteBufferStream(Flux, int)}, or default collection, {@link
+     * #collectBytesInByteBufferStream(Flux)}, will be used.
+     *
+     * @param stream A network response ByteBuffer stream.
+     * @param headers The HTTP headers of the response.
+     * @return A Mono which emits the collected network response ByteBuffers.
+     * @throws NullPointerException If {@code headers} is null.
+     * @throws IllegalStateException If the size of the network response is greater than {@link Integer#MAX_VALUE}.
+     */
+    public static Mono<byte[]> collectBytesFromNetworkResponse(Flux<ByteBuffer> stream, HttpHeaders headers) {
+        Objects.requireNonNull(headers, "'headers' cannot be null.");
+
+        String contentLengthHeader = headers.getValue("Content-Length");
+
+        if (contentLengthHeader == null) {
+            return FluxUtil.collectBytesInByteBufferStream(stream);
+        } else {
+            try {
+                int contentLength = Integer.parseInt(contentLengthHeader);
+                if (contentLength > 0) {
+                    return FluxUtil.collectBytesInByteBufferStream(stream, contentLength);
+                } else {
+                    return Mono.just(EMPTY_BYTE_ARRAY);
+                }
+            } catch (NumberFormatException ex) {
+                return FluxUtil.collectBytesInByteBufferStream(stream);
+            }
         }
     }
 
@@ -151,7 +202,7 @@ public final class FluxUtil {
     }
 
     /**
-     * This method converts the incoming {@code subscriberContext} from {@link reactor.util.context.Context Reactor
+     * This method converts the incoming {@code deferContextual} from {@link reactor.util.context.Context Reactor
      * Context} to {@link Context Azure Context} and calls the given lambda function with this context and returns a
      * single entity of type {@code T}
      * <p>
@@ -170,7 +221,7 @@ public final class FluxUtil {
     }
 
     /**
-     * This method converts the incoming {@code subscriberContext} from {@link reactor.util.context.Context Reactor
+     * This method converts the incoming {@code deferContextual} from {@link reactor.util.context.Context Reactor
      * Context} to {@link Context Azure Context}, adds the specified context attributes and calls the given lambda
      * function with this context and returns a single entity of type {@code T}
      * <p>
@@ -185,22 +236,20 @@ public final class FluxUtil {
      */
     public static <T> Mono<T> withContext(Function<Context, Mono<T>> serviceCall,
         Map<String, String> contextAttributes) {
-        return Mono.subscriberContext()
-            .map(context -> {
-                final Context[] azureContext = new Context[] { Context.NONE };
+        return Mono.deferContextual(context -> {
+            final Context[] azureContext = new Context[]{Context.NONE};
 
-                if (!CoreUtils.isNullOrEmpty(contextAttributes)) {
-                    contextAttributes.forEach((key, value) -> azureContext[0] = azureContext[0].addData(key, value));
-                }
+            if (!CoreUtils.isNullOrEmpty(contextAttributes)) {
+                contextAttributes.forEach((key, value) -> azureContext[0] = azureContext[0].addData(key, value));
+            }
 
-                if (!context.isEmpty()) {
-                    context.stream().forEach(entry ->
-                        azureContext[0] = azureContext[0].addData(entry.getKey(), entry.getValue()));
-                }
+            if (!context.isEmpty()) {
+                context.stream().forEach(entry ->
+                    azureContext[0] = azureContext[0].addData(entry.getKey(), entry.getValue()));
+            }
 
-                return azureContext[0];
-            })
-            .flatMap(serviceCall);
+            return serviceCall.apply(azureContext[0]);
+        });
     }
 
     /**
@@ -251,7 +300,7 @@ public final class FluxUtil {
     }
 
     /**
-     * This method converts the incoming {@code subscriberContext} from {@link reactor.util.context.Context Reactor
+     * This method converts the incoming {@code deferContextual} from {@link reactor.util.context.Context Reactor
      * Context} to {@link Context Azure Context} and calls the given lambda function with this context and returns a
      * collection of type {@code T}
      * <p>
@@ -266,9 +315,7 @@ public final class FluxUtil {
      * @return The response from service call
      */
     public static <T> Flux<T> fluxContext(Function<Context, Flux<T>> serviceCall) {
-        return Mono.subscriberContext()
-            .map(FluxUtil::toAzureContext)
-            .flatMapMany(serviceCall);
+        return Flux.deferContextual(context -> serviceCall.apply(toAzureContext(context)));
     }
 
     /**
@@ -278,8 +325,8 @@ public final class FluxUtil {
      * @param context The reactor context
      * @return The azure context
      */
-    private static Context toAzureContext(reactor.util.context.Context context) {
-        final Context[] azureContext = new Context[] { Context.NONE };
+    private static Context toAzureContext(ContextView context) {
+        final Context[] azureContext = new Context[]{Context.NONE};
 
         if (!context.isEmpty()) {
             context.stream().forEach(entry ->

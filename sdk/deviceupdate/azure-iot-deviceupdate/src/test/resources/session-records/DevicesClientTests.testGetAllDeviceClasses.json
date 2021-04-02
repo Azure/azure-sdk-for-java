@@ -1,0 +1,18 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.prod.adu.microsoft.com/deviceupdate/blue/v2/management/deviceclasses",
+    "Headers" : { },
+    "Response" : {
+      "traceparent" : "00-e0917d8e4ee94f4ba6dd9a399a53bbce-82275f2014d69a43-00",
+      "retry-after" : "0",
+      "Content-Length" : "939",
+      "StatusCode" : "200",
+      "Body" : "{\r\n  \"value\": [\r\n    {\r\n      \"deviceClassId\": \"c97c9c774a1c541ecc88e8c65b6431fd8b7eafc3\",\r\n      \"manufacturer\": \"Microsoft-Corporation\",\r\n      \"model\": \"Virtual-Machine\",\r\n      \"bestCompatibleUpdateId\": {\r\n        \"provider\": \"Microsoft-Corporation\",\r\n        \"name\": \"Virtual-Machine\",\r\n        \"version\": \"111.0\"\r\n      }\r\n    },\r\n    {\r\n      \"deviceClassId\": \"86705631a06a6d4745a516778f7e2e261a72c5b8\",\r\n      \"manufacturer\": \"ADUTeam\",\r\n      \"model\": \"RefDevice\"\r\n    },\r\n    {\r\n      \"deviceClassId\": \"634a0b52a6e1fb54fe6b98e5b55534bb4800b77b\",\r\n      \"manufacturer\": \"ADUTeam\",\r\n      \"model\": \"E2ETestDevice\"\r\n    },\r\n    {\r\n      \"deviceClassId\": \"b83e3c87fbf98063c20c3269f1c9e58d255906dd\",\r\n      \"manufacturer\": \"Contoso\",\r\n      \"model\": \"Virtual-Machine\",\r\n      \"bestCompatibleUpdateId\": {\r\n        \"provider\": \"Contoso\",\r\n        \"name\": \"Virtual-Machine\",\r\n        \"version\": \"2021.302.1323.55\"\r\n      }\r\n    }\r\n  ]\r\n}",
+      "Date" : "Tue, 02 Mar 2021 21:29:02 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

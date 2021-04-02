@@ -1,15 +1,15 @@
 trigger: none
 
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: appconfiguration
       Artifacts:
-        - name: azure-data-appconfiguration
-          groupId: com.azure
-          safeName: azuredataappconfiguration
+        - name: azure-spring-cloud-test-appconfiguration-config
+          groupId: com.azure.spring
+          safeName: azurespringcloudtestappconfigurationconfig
+      TimeoutInMinutes: 90
       EnvVars:
-        AZURE_TEST_MODE: RECORD
         AZURE_APPCONFIG_CONNECTION_STRING: $(AZURE_APPCONFIG_CONNECTION_STRING)
         AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
         AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)

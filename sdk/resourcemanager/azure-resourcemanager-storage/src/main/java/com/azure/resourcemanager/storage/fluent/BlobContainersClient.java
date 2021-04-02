@@ -71,6 +71,22 @@ public interface BlobContainersClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response schema.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ListContainerItemInner> list(String resourceGroupName, String accountName);
+
+    /**
+     * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation
+     * token.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param maxpagesize Optional. Specified maximum number of containers that can be included in the list.
      * @param filter Optional. When specified, only container names starting with the filter will be listed.
      * @param include Optional, used to include the properties for soft deleted blob containers.
@@ -90,22 +106,6 @@ public interface BlobContainersClient {
         Context context);
 
     /**
-     * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation
-     * token.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response schema.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ListContainerItemInner> list(String resourceGroupName, String accountName);
-
-    /**
      * Creates a new container under the specified account as described by request body. The container resource includes
      * metadata and properties for that container. It does not include a list of the blobs contained by the container.
      *
@@ -116,7 +116,7 @@ public interface BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param blobContainer Properties of the blob container, including Id, resource name, resource type, Etag.
+     * @param blobContainer Properties of the blob container to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -137,7 +137,7 @@ public interface BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param blobContainer Properties of the blob container, including Id, resource name, resource type, Etag.
+     * @param blobContainer Properties of the blob container to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -158,7 +158,7 @@ public interface BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param blobContainer Properties of the blob container, including Id, resource name, resource type, Etag.
+     * @param blobContainer Properties of the blob container to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -179,7 +179,7 @@ public interface BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param blobContainer Properties of the blob container, including Id, resource name, resource type, Etag.
+     * @param blobContainer Properties of the blob container to create.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -205,7 +205,7 @@ public interface BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param blobContainer Properties of the blob container, including Id, resource name, resource type, Etag.
+     * @param blobContainer Properties to update for the blob container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -226,7 +226,7 @@ public interface BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param blobContainer Properties of the blob container, including Id, resource name, resource type, Etag.
+     * @param blobContainer Properties to update for the blob container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -247,7 +247,7 @@ public interface BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param blobContainer Properties of the blob container, including Id, resource name, resource type, Etag.
+     * @param blobContainer Properties to update for the blob container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -268,7 +268,7 @@ public interface BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param blobContainer Properties of the blob container, including Id, resource name, resource type, Etag.
+     * @param blobContainer Properties to update for the blob container.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -735,7 +735,7 @@ public interface BlobContainersClient {
      * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ImmutabilityPolicyInner> createOrUpdateImmutabilityPolicyWithResponse(
+    BlobContainersCreateOrUpdateImmutabilityPolicyResponse createOrUpdateImmutabilityPolicyWithResponse(
         String resourceGroupName,
         String accountName,
         String containerName,
@@ -845,7 +845,7 @@ public interface BlobContainersClient {
      * @return the existing immutability policy along with the corresponding ETag in response headers and body.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ImmutabilityPolicyInner> getImmutabilityPolicyWithResponse(
+    BlobContainersGetImmutabilityPolicyResponse getImmutabilityPolicyWithResponse(
         String resourceGroupName, String accountName, String containerName, String ifMatch, Context context);
 
     /**
@@ -942,7 +942,7 @@ public interface BlobContainersClient {
      * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ImmutabilityPolicyInner> deleteImmutabilityPolicyWithResponse(
+    BlobContainersDeleteImmutabilityPolicyResponse deleteImmutabilityPolicyWithResponse(
         String resourceGroupName, String accountName, String containerName, String ifMatch, Context context);
 
     /**
@@ -1035,7 +1035,7 @@ public interface BlobContainersClient {
      * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ImmutabilityPolicyInner> lockImmutabilityPolicyWithResponse(
+    BlobContainersLockImmutabilityPolicyResponse lockImmutabilityPolicyWithResponse(
         String resourceGroupName, String accountName, String containerName, String ifMatch, Context context);
 
     /**
@@ -1179,7 +1179,7 @@ public interface BlobContainersClient {
      * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ImmutabilityPolicyInner> extendImmutabilityPolicyWithResponse(
+    BlobContainersExtendImmutabilityPolicyResponse extendImmutabilityPolicyWithResponse(
         String resourceGroupName,
         String accountName,
         String containerName,
@@ -1199,7 +1199,7 @@ public interface BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param parameters Lease Container request schema.
+     * @param parameters Lease Container request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1220,7 +1220,7 @@ public interface BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param parameters Lease Container request schema.
+     * @param parameters Lease Container request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1279,7 +1279,7 @@ public interface BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param parameters Lease Container request schema.
+     * @param parameters Lease Container request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

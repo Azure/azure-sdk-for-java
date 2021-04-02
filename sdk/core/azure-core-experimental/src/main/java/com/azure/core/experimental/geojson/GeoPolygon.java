@@ -3,6 +3,8 @@
 
 package com.azure.core.experimental.geojson;
 
+import com.azure.core.annotation.Immutable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.Objects;
 /**
  * Represents a geometric polygon.
  */
+@Immutable
 public final class GeoPolygon extends GeoObject {
     private final List<GeoLinearRing> rings;
 
@@ -73,11 +76,20 @@ public final class GeoPolygon extends GeoObject {
     }
 
     /**
+     * Gets the outer ring of the polygon.
+     *
+     * @return Outer ring of the polygon.
+     */
+    public GeoLinearRing getOuterRing() {
+        return rings.get(0);
+    }
+
+    /**
      * Unmodifiable representation of the {@link GeoPosition geometric positions} representing this polygon.
      *
      * @return Unmodifiable representation of the {@link GeoPosition geometric positions} representing this polygon.
      */
-    public GeoArray<GeoArray<GeoPosition>> getCoordinates() {
+    GeoArray<GeoArray<GeoPosition>> getCoordinates() {
         return new GeoArray<>(this);
     }
 

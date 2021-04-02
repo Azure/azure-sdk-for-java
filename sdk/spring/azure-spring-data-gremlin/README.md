@@ -47,6 +47,9 @@ This repository only supports Spring Data 2.x. Version mapping between spring bo
 
 ## Getting started
 
+### Prerequisites
+- [Environment checklist][environment_checklist]
+
 ### Add the dependency
 `spring-data-gremlin` is published on Maven Central Repository.  
 If you are using Maven, add the following dependency.  
@@ -191,3 +194,5 @@ This project collects usage data and sends it to Microsoft to help improve our p
 ## Contributing
 ## Troubleshooting
 ## Next steps
+
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist

@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//prebuilt/businessCard/analyze?includeTextDetails=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3622fb62-cae1-49de-9dc6-9c3894f7bf5c",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-envoy-upstream-service-time" : "897",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "7a57e864-d975-40c7-954d-fca7e2cc4dfc",
+      "retry-after" : "0",
+      "Content-Length" : "144",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"InvalidImageURL\",\"innerError\":{\"requestId\":\"7a57e864-d975-40c7-954d-fca7e2cc4dfc\"},\"message\":\"Image URL is badly formatted.\"}}",
+      "Date" : "Fri, 26 Mar 2021 13:46:31 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -5,28 +5,33 @@ package com.azure.spring.data.cosmos.core;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.ConflictException;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.spring.data.cosmos.CosmosFactory;
+import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.PageTestUtils;
 import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.common.TestUtils;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
+import com.azure.spring.data.cosmos.core.generator.FindQuerySpecGenerator;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
+import com.azure.spring.data.cosmos.domain.AuditableEntity;
 import com.azure.spring.data.cosmos.domain.GenIdEntity;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
+import com.azure.spring.data.cosmos.repository.repository.AuditableRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.assertj.core.util.Lists;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +68,7 @@ import static com.azure.spring.data.cosmos.common.TestConstants.PAGE_SIZE_3;
 import static com.azure.spring.data.cosmos.common.TestConstants.UPDATED_FIRST_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -83,10 +89,12 @@ public class CosmosTemplateIT {
 
     private static final String WRONG_ETAG = "WRONG_ETAG";
 
+    @ClassRule
+    public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
+
     private static CosmosTemplate cosmosTemplate;
     private static CosmosEntityInformation<Person, String> personInfo;
     private static String containerName;
-    private static boolean initialized;
 
     private Person insertedPerson;
 
@@ -98,10 +106,12 @@ public class CosmosTemplateIT {
     private CosmosConfig cosmosConfig;
     @Autowired
     private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
+    @Autowired
+    private AuditableRepository auditableRepository;
 
     @Before
     public void setUp() throws ClassNotFoundException {
-        if (!initialized) {
+        if (cosmosTemplate == null) {
             CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
             final CosmosFactory cosmosFactory = new CosmosFactory(client, TestConstants.DB_NAME);
 
@@ -115,23 +125,13 @@ public class CosmosTemplateIT {
                 null);
 
             cosmosTemplate = new CosmosTemplate(cosmosFactory, cosmosConfig, cosmosConverter);
-            cosmosTemplate.createContainerIfNotExists(personInfo);
-            cosmosTemplate.createContainerIfNotExists(CosmosEntityInformation.getInstance(GenIdEntity.class));
-            initialized = true;
         }
+
+        collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, Person.class,
+                                                          GenIdEntity.class, AuditableEntity.class);
 
         insertedPerson = cosmosTemplate.insert(Person.class.getSimpleName(), TEST_PERSON,
             new PartitionKey(TEST_PERSON.getLastName()));
-    }
-
-    @After
-    public void cleanup() {
-        cosmosTemplate.deleteAll(Person.class.getSimpleName(), Person.class);
-    }
-
-    @AfterClass
-    public static void afterClassCleanup() {
-        cosmosTemplate.deleteContainer(personInfo.getContainerName());
     }
 
     private void insertPerson(Person person) {
@@ -139,10 +139,15 @@ public class CosmosTemplateIT {
             new PartitionKey(personInfo.getPartitionKeyFieldValue(person)));
     }
 
-    @Test(expected = CosmosAccessException.class)
-    public void testInsertDuplicateId() {
-        cosmosTemplate.insert(Person.class.getSimpleName(), TEST_PERSON,
-            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
+    @Test
+    public void testInsertDuplicateIdShouldFailWithConflictException() {
+        try {
+            cosmosTemplate.insert(Person.class.getSimpleName(), TEST_PERSON,
+                new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
+            fail();
+        } catch (CosmosAccessException ex) {
+            assertThat(ex.getCosmosException() instanceof ConflictException);
+        }
     }
 
     @Test(expected = CosmosAccessException.class)
@@ -382,7 +387,7 @@ public class CosmosTemplateIT {
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
 
-        final Page<Person> page2 = cosmosTemplate.findAll(page1.getPageable(), Person.class,
+        final Page<Person> page2 = cosmosTemplate.findAll(page1.nextPageable(), Person.class,
             containerName);
         assertThat(page2.getContent().size()).isEqualTo(1);
         PageTestUtils.validateLastPage(page2, PAGE_SIZE_1);
@@ -507,7 +512,7 @@ public class CosmosTemplateIT {
         assertThat(firstPageResults.get(1).getFirstName()).isEqualTo(FIRST_NAME);
         assertThat(firstPageResults.get(2).getFirstName()).isEqualTo(testPerson5.getFirstName());
 
-        final Page<Person> secondPage = cosmosTemplate.findAll(firstPage.getPageable(), Person.class,
+        final Page<Person> secondPage = cosmosTemplate.findAll(firstPage.nextPageable(), Person.class,
             containerName);
 
         assertThat(secondPage.getContent().size()).isEqualTo(2);
@@ -556,4 +561,31 @@ public class CosmosTemplateIT {
             containerName));
         assertThat(people).containsExactly(TEST_PERSON);
     }
+
+    @Test
+    public void testRunQueryWithSimpleReturnType() {
+        Criteria ageBetween = Criteria.getInstance(CriteriaType.BETWEEN, "age", Arrays.asList(AGE - 1, AGE + 1),
+                                                   Part.IgnoreCaseType.NEVER);
+        final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(new CosmosQuery(ageBetween));
+        List<Person> people = TestUtils.toList(cosmosTemplate.runQuery(sqlQuerySpec, Person.class, Person.class));
+        assertThat(people).containsExactly(TEST_PERSON);
+    }
+
+    @Test
+    public void testRunQueryWithReturnTypeContainingLocalDateTime() {
+        final AuditableEntity entity = new AuditableEntity();
+        entity.setId(UUID.randomUUID().toString());
+
+        auditableRepository.save(entity);
+
+        Criteria equals = Criteria.getInstance(CriteriaType.IS_EQUAL, "id", Collections.singletonList(entity.getId()), Part.IgnoreCaseType.NEVER);
+        final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(new CosmosQuery(equals));
+        List<AuditableEntity> results = TestUtils.toList(cosmosTemplate.runQuery(sqlQuerySpec, AuditableEntity.class, AuditableEntity.class));
+        assertEquals(results.size(), 1);
+        AuditableEntity foundEntity = results.get(0);
+        assertEquals(entity.getId(), foundEntity.getId());
+        assertNotNull(foundEntity.getCreatedDate());
+        assertNotNull(foundEntity.getLastModifiedByDate());
+    }
+
 }

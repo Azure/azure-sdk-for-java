@@ -1,7 +1,13 @@
 # Release History
 
-## 12.11.0-beta.1 (Unreleased)
+## 12.11.0-beta.3 (Unreleased)
 
+
+## 12.11.0-beta.2 (2021-03-29)
+- Update `azure-storage-blob` to version `12.11.0-beta.2`
+
+## 12.11.0-beta.1 (2021-02-10)
+- Updated azure-storage-common and azure-storage-blob dependencies to add support for the 2020-06-12 service version. 
 
 ## 12.10.0 (2021-01-14)
 - GA release

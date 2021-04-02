@@ -89,6 +89,10 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     @Test
     public abstract void addConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
+    @Test
+    public abstract void addConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
+
     void addConfigurationSettingRunner(Consumer<ConfigurationSetting> testRunner) {
         final Map<String, String> tags = new HashMap<>();
         tags.put("MyTag", "TagValue");
@@ -137,6 +141,10 @@ public abstract class ConfigurationClientTestBase extends TestBase {
 
     @Test
     public abstract void setConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
+    @Test
+    public abstract void setConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void setConfigurationSettingRunner(BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner) {
         String key = getKey();
@@ -189,6 +197,10 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     public abstract void getConfigurationSetting(HttpClient httpClient,
         ConfigurationServiceVersion serviceVersion);
 
+    @Test
+    public abstract void getConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
+
     void getConfigurationSettingRunner(Consumer<ConfigurationSetting> testRunner) {
         String key = getKey();
 
@@ -204,6 +216,10 @@ public abstract class ConfigurationClientTestBase extends TestBase {
 
     @Test
     public abstract void deleteConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
+    @Test
+    public abstract void deleteConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void deleteConfigurationSettingRunner(Consumer<ConfigurationSetting> testRunner) {
         String key = getKey();
@@ -249,7 +265,15 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         ConfigurationServiceVersion serviceVersion);
 
     @Test
+    public abstract void setReadOnlyWithConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
+
+    @Test
     public abstract void clearReadOnlyWithConfigurationSetting(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
+
+    @Test
+    public abstract void clearReadOnlyWithConfigurationSettingConvenience(HttpClient httpClient,
         ConfigurationServiceVersion serviceVersion);
 
     void lockUnlockRunner(Consumer<ConfigurationSetting> testRunner) {
@@ -264,6 +288,9 @@ public abstract class ConfigurationClientTestBase extends TestBase {
 
     @Test
     public abstract void listWithMultipleKeys(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
+    @Test
+    public abstract void listConfigurationSettingsWithNullSelector(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     void listWithMultipleKeysRunner(String key, String key2, BiFunction<ConfigurationSetting, ConfigurationSetting, Iterable<ConfigurationSetting>> testRunner) {
         final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("value");

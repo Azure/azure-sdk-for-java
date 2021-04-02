@@ -105,6 +105,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation for VirtualMachine and its create and update interfaces. */
 class VirtualMachineImpl
@@ -231,7 +232,7 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl update() {
         updateParameterSnapshotOnUpdate = this.deepCopyInnerToUpdateParameter();
-        return this;
+        return super.update();
     };
 
     @Override
@@ -372,12 +373,12 @@ class VirtualMachineImpl
 
     @Override
     public PagedIterable<VirtualMachineSize> availableSizes() {
-        return this
+        return PagedConverter.mapPage(this
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .listAvailableSizes(this.resourceGroupName(), this.name())
-            .mapPage(VirtualMachineSizeImpl::new);
+            .listAvailableSizes(this.resourceGroupName(), this.name()),
+            VirtualMachineSizeImpl::new);
     }
 
     @Override

@@ -21,6 +21,8 @@ import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.InitializationContext;
+
+import java.net.URL;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -174,6 +176,23 @@ public class EventProcessorClientBuilder {
     public EventProcessorClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
         TokenCredential credential) {
         eventHubClientBuilder.credential(fullyQualifiedNamespace, eventHubName, credential);
+        return this;
+    }
+
+    /**
+     * Sets a custom endpoint address when connecting to the Event Hubs service. This can be useful when your network
+     * does not allow connecting to the standard Azure Event Hubs endpoint address, but does allow connecting through
+     * an intermediary. For example: {@literal https://my.custom.endpoint.com:55300}.
+     * <p>
+     * If no port is specified, the default port for the {@link #transportType(AmqpTransportType) transport type} is
+     * used.
+     *
+     * @param customEndpointAddress The custom endpoint address.
+     * @return The updated {@link EventProcessorClientBuilder} object.
+     * @throws IllegalArgumentException if {@code customEndpointAddress} cannot be parsed into a valid {@link URL}.
+     */
+    public EventProcessorClientBuilder customEndpointAddress(String customEndpointAddress) {
+        eventHubClientBuilder.customEndpointAddress(customEndpointAddress);
         return this;
     }
 
@@ -501,7 +520,8 @@ public class EventProcessorClientBuilder {
             partitionOwnershipExpirationInterval = loadBalancingUpdateInterval.multipliedBy(
                 DEFAULT_OWNERSHIP_EXPIRATION_FACTOR);
         }
-        return new EventProcessorClient(eventHubClientBuilder, this.consumerGroup,
+
+        return new EventProcessorClient(eventHubClientBuilder, consumerGroup,
             getPartitionProcessorSupplier(), checkpointStore, trackLastEnqueuedEventProperties, tracerProvider,
             processError, initialPartitionEventPosition, maxBatchSize, maxWaitTime, processEventBatch != null,
             loadBalancingUpdateInterval, partitionOwnershipExpirationInterval, loadBalancingStrategy);

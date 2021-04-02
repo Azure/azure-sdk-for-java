@@ -262,6 +262,10 @@ public class StoreReader {
                     }
                 }
 
+                if (srr.isThroughputControlRequestRateTooLargeException) {
+                    resultCollector.add(srr);
+                }
+
                 hasGoneException.v = hasGoneException.v || (srr.isGoneException && !srr.isInvalidPartitionException);
 
                 if (resultCollector.size() >= replicaCountToRead) {
@@ -851,7 +855,7 @@ public class StoreReader {
 
     void startBackgroundAddressRefresh(RxDocumentServiceRequest request) {
         this.addressSelector.resolveAllUriAsync(request, true, true)
-                .publishOn(Schedulers.elastic())
+                .publishOn(Schedulers.boundedElastic())
                 .subscribe(
                         r -> {
                         },

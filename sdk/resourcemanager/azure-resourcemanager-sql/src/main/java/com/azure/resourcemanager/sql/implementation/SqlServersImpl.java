@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for SqlServers and its parent interfaces. */
 public class SqlServersImpl
@@ -216,12 +217,11 @@ public class SqlServersImpl
     public PagedFlux<SqlSubscriptionUsageMetric> listUsageByRegionAsync(final Region region) {
         Objects.requireNonNull(region);
         final SqlServers self = this;
-        return this
+        return PagedConverter.mapPage(this
             .manager()
             .serviceClient()
             .getSubscriptionUsages()
-            .listByLocationAsync(region.name())
-            .mapPage(
+            .listByLocationAsync(region.name()),
                 subscriptionUsageInner ->
                     new SqlSubscriptionUsageMetricImpl(region.name(), subscriptionUsageInner, self.manager()));
     }

@@ -1,7 +1,14 @@
 # Release History
 
-## 3.2.0-beta.1 (Unreleased)
+## 3.4.0-beta.1 (Unreleased)
 
+
+## 3.3.0 (2021-03-22)
+### New Features
+- Upgrade to `Spring Boot` [2.4.3](https://github.com/spring-projects/spring-boot/releases/tag/v2.4.3).
+- Upgrade to `Spring Security` [5.4.5](https://github.com/spring-projects/spring-security/releases/tag/5.4.5).
+
+## 3.2.0 (2021-03-03)
 
 ## 3.1.0 (2021-01-20)
 ### Breaking Changes

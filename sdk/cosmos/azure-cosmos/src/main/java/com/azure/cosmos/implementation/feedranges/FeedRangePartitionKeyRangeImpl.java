@@ -146,7 +146,7 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
             BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
 
         return this
-            .getEffectiveRange(routingMapProvider, metadataDiagnosticsCtx, collectionResolutionMono)
+            .getNormalizedEffectiveRange(routingMapProvider, metadataDiagnosticsCtx, collectionResolutionMono)
             .map(effectiveRange -> {
                 request.setEffectiveRange(effectiveRange);
 

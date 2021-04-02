@@ -8,8 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
+import com.azure.resourcemanager.cosmos.models.MongoDBDatabaseGetPropertiesOptions;
 import com.azure.resourcemanager.cosmos.models.MongoDBDatabaseGetPropertiesResource;
-import com.azure.resourcemanager.cosmos.models.OptionsResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -27,10 +27,10 @@ public class MongoDBDatabaseGetResultsInner extends ArmResourceProperties {
     private MongoDBDatabaseGetPropertiesResource resource;
 
     /*
-     * Cosmos DB options resource object
+     * The options property.
      */
-    @JsonProperty(value = "properties.options", access = JsonProperty.Access.WRITE_ONLY)
-    private OptionsResource options;
+    @JsonProperty(value = "properties.options")
+    private MongoDBDatabaseGetPropertiesOptions options;
 
     /**
      * Get the resource property: The resource property.
@@ -53,12 +53,23 @@ public class MongoDBDatabaseGetResultsInner extends ArmResourceProperties {
     }
 
     /**
-     * Get the options property: Cosmos DB options resource object.
+     * Get the options property: The options property.
      *
      * @return the options value.
      */
-    public OptionsResource options() {
+    public MongoDBDatabaseGetPropertiesOptions options() {
         return this.options;
+    }
+
+    /**
+     * Set the options property: The options property.
+     *
+     * @param options the options value to set.
+     * @return the MongoDBDatabaseGetResultsInner object itself.
+     */
+    public MongoDBDatabaseGetResultsInner withOptions(MongoDBDatabaseGetPropertiesOptions options) {
+        this.options = options;
+        return this;
     }
 
     /** {@inheritDoc} */

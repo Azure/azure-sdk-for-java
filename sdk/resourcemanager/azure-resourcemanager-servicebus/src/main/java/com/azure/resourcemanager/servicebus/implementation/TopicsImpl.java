@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 import com.azure.resourcemanager.servicebus.fluent.TopicsClient;
-import com.azure.resourcemanager.servicebus.fluent.models.TopicResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SBTopicInner;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.resourcemanager.servicebus.models.Topic;
 import com.azure.resourcemanager.servicebus.models.Topics;
@@ -22,7 +22,7 @@ class TopicsImpl
     extends ServiceBusChildResourcesImpl<
         Topic,
         TopicImpl,
-        TopicResourceInner,
+        SBTopicInner,
         TopicsClient,
         ServiceBusManager,
         ServiceBusNamespace>
@@ -53,18 +53,18 @@ class TopicsImpl
     }
 
     @Override
-    protected Mono<TopicResourceInner> getInnerByNameAsync(String name) {
+    protected Mono<SBTopicInner> getInnerByNameAsync(String name) {
         return this.innerModel().getAsync(this.resourceGroupName, this.namespaceName, name);
     }
 
     @Override
-    protected PagedFlux<TopicResourceInner> listInnerAsync() {
-        return this.innerModel().listAllAsync(this.resourceGroupName, this.namespaceName);
+    protected PagedFlux<SBTopicInner> listInnerAsync() {
+        return this.innerModel().listByNamespaceAsync(this.resourceGroupName, this.namespaceName);
     }
 
     @Override
-    protected PagedIterable<TopicResourceInner> listInner() {
-        return this.innerModel().listAll(this.resourceGroupName,
+    protected PagedIterable<SBTopicInner> listInner() {
+        return this.innerModel().listByNamespace(this.resourceGroupName,
                 this.namespaceName);
     }
 
@@ -74,12 +74,12 @@ class TopicsImpl
                 this.namespaceName,
                 name,
                 this.region,
-                new TopicResourceInner(),
+                new SBTopicInner(),
                 this.manager());
     }
 
     @Override
-    protected TopicImpl wrapModel(TopicResourceInner inner) {
+    protected TopicImpl wrapModel(SBTopicInner inner) {
         if (inner == null) {
             return null;
         }

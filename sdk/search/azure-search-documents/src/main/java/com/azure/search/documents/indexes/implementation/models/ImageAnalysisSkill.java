@@ -10,6 +10,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.search.documents.indexes.models.ImageAnalysisSkillLanguage;
 import com.azure.search.documents.indexes.models.ImageDetail;
+import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.VisualFeature;
 import com.fasterxml.jackson.annotation.JsonCreator;

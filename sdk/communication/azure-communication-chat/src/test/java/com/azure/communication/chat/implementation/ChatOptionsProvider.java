@@ -10,17 +10,14 @@ import java.util.*;
 public class ChatOptionsProvider {
 
     public static CreateChatThreadOptions createThreadOptions(String userId1, String userId2) {
-        List<ChatParticipant> participants = new ArrayList<ChatParticipant>();
-        participants.add(generateParticipant(
+        CreateChatThreadOptions options = new CreateChatThreadOptions("Test");
+
+        options.addParticipant(generateParticipant(
             userId1,
             "Tester 1"));
-        participants.add(generateParticipant(
+        options.addParticipant(generateParticipant(
             userId2,
             "Tester 2"));
-
-        CreateChatThreadOptions options = new CreateChatThreadOptions()
-            .setTopic("Test")
-            .setParticipants(participants);
 
         return options;
     }
@@ -32,7 +29,7 @@ public class ChatOptionsProvider {
         return options;
     }
 
-    public static AddChatParticipantsOptions addParticipantsOptions(String userId1, String userId2) {
+    public static Iterable<ChatParticipant> addParticipantsOptions(String userId1, String userId2) {
         List<ChatParticipant> participants = new ArrayList<ChatParticipant>();
         participants.add(generateParticipant(
             userId1,
@@ -41,9 +38,7 @@ public class ChatOptionsProvider {
             userId2,
             "Added Tester 2"));
 
-        AddChatParticipantsOptions options = new AddChatParticipantsOptions();
-        options.setParticipants(participants);
-        return options;
+        return participants;
     }
 
     public static SendChatMessageOptions sendMessageOptions() {
@@ -64,7 +59,7 @@ public class ChatOptionsProvider {
 
     private static ChatParticipant generateParticipant(String id, String displayName) {
         ChatParticipant chatParticipant = new ChatParticipant();
-        chatParticipant.setUser(new CommunicationUserIdentifier(id));
+        chatParticipant.setCommunicationIdentifier(new CommunicationUserIdentifier(id));
         chatParticipant.setDisplayName(displayName);
 
         return chatParticipant;

@@ -17,4 +17,7 @@ module com.azure.resourcemanager.servicebus {
     opens com.azure.resourcemanager.servicebus.models to
         com.azure.core,
         com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.servicebus.implementation to
+        com.azure.core,
+        com.fasterxml.jackson.databind;
 }

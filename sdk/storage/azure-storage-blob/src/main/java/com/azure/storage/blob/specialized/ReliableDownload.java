@@ -5,9 +5,10 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.HttpGetterInfo;
-import com.azure.storage.blob.implementation.models.BlobsDownloadResponse;
+import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.DownloadRetryOptions;
@@ -34,18 +35,20 @@ final class ReliableDownload {
     private final ClientLogger logger = new ClientLogger(ReliableDownload.class);
 
     private static final Duration TIMEOUT_VALUE = Duration.ofSeconds(60);
-    private final BlobsDownloadResponse rawResponse;
+    private final StreamResponse rawResponse;
+    private final BlobsDownloadHeaders deserializedHeaders;
     private final DownloadRetryOptions options;
     private final HttpGetterInfo info;
     private final Function<HttpGetterInfo, Mono<ReliableDownload>> getter;
 
-    ReliableDownload(BlobsDownloadResponse rawResponse, DownloadRetryOptions options, HttpGetterInfo info,
+    ReliableDownload(StreamResponse rawResponse, DownloadRetryOptions options, HttpGetterInfo info,
                      Function<HttpGetterInfo, Mono<ReliableDownload>> getter) {
         StorageImplUtils.assertNotNull("getter", getter);
         StorageImplUtils.assertNotNull("info", info);
-        StorageImplUtils.assertNotNull("info.eTag", info.getETag());
+        // Note: We do not check for eTag since it is possible for the service to not return the etag on large downloads.
 
         this.rawResponse = rawResponse;
+        this.deserializedHeaders = ModelHelper.transformBlobDownloadHeaders(rawResponse.getHeaders());
         this.options = (options == null) ? new DownloadRetryOptions() : options;
         this.info = info;
         this.getter = getter;
@@ -55,7 +58,7 @@ final class ReliableDownload {
          */
         if (this.info.getCount() == null) {
             long blobLength = BlobAsyncClientBase.getBlobLength(
-                ModelHelper.populateBlobDownloadHeaders(rawResponse.getDeserializedHeaders()));
+                ModelHelper.populateBlobDownloadHeaders(deserializedHeaders, ModelHelper.getErrorCode(rawResponse.getHeaders())));
             info.setCount(blobLength - info.getOffset());
         }
     }
@@ -73,7 +76,7 @@ final class ReliableDownload {
     }
 
     BlobDownloadHeaders getDeserializedHeaders() {
-        return ModelHelper.populateBlobDownloadHeaders(rawResponse.getDeserializedHeaders());
+        return ModelHelper.populateBlobDownloadHeaders(deserializedHeaders, ModelHelper.getErrorCode(rawResponse.getHeaders()));
     }
 
     Flux<ByteBuffer> getValue() {
