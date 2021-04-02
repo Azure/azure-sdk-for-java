@@ -10,9 +10,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-
 import java.util.List;
 
 /** A skill looks for text from a custom, user-defined list of words and phrases. */
@@ -71,8 +71,8 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
      */
     @JsonCreator
     public CustomEntityLookupSkill(
-        @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
-        @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
+            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
+            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
 
@@ -135,6 +135,7 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
      * @param inlineEntitiesDefinition the inlineEntitiesDefinition value to set.
      * @return the CustomEntityLookupSkill object itself.
      */
+    @JsonSetter
     public CustomEntityLookupSkill setInlineEntitiesDefinition(List<CustomEntity> inlineEntitiesDefinition) {
         this.inlineEntitiesDefinition = inlineEntitiesDefinition;
         return this;
@@ -203,6 +204,18 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
      */
     public CustomEntityLookupSkill setGlobalDefaultFuzzyEditDistance(Integer globalDefaultFuzzyEditDistance) {
         this.globalDefaultFuzzyEditDistance = globalDefaultFuzzyEditDistance;
+        return this;
+    }
+
+    /**
+     * Set the inlineEntitiesDefinition property: The inline CustomEntity definition.
+     *
+     * @param inlineEntitiesDefinition the inlineEntitiesDefinition value to set.
+     * @return the CustomEntityLookupSkill object itself.
+     */
+    public CustomEntityLookupSkill setInlineEntitiesDefinition(CustomEntity... inlineEntitiesDefinition) {
+        this.inlineEntitiesDefinition =
+                (inlineEntitiesDefinition == null) ? null : java.util.Arrays.asList(inlineEntitiesDefinition);
         return this;
     }
 }

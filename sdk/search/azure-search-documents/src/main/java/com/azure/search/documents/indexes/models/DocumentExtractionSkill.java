@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-
 import java.util.List;
 import java.util.Map;
 
@@ -49,8 +48,8 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
      */
     @JsonCreator
     public DocumentExtractionSkill(
-        @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
-        @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
+            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
+            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
 
