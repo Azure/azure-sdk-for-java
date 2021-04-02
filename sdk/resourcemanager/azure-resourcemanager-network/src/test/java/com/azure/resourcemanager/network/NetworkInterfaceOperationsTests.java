@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.network;
 
+import com.azure.resourcemanager.network.fluent.models.ApplicationSecurityGroupInner;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
@@ -371,11 +372,18 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             .withExistingApplicationSecurityGroup(asg1)
             .apply();
 
-        applicationSecurityGroups = nic.ipConfigurations().get("nicip2").listAssociatedApplicationSecurityGroups();
-        Assertions.assertEquals(2, applicationSecurityGroups.size());
+        Assertions.assertEquals(2, nic.ipConfigurations().get("nicip2").innerModel().applicationSecurityGroups().size());
         Assertions.assertEquals(
             new HashSet<>(Arrays.asList("asg1", "asg2")),
-            applicationSecurityGroups.stream().map(ApplicationSecurityGroup::name).collect(Collectors.toSet()));
+            nic.ipConfigurations().get("nicip2").innerModel().applicationSecurityGroups().stream().map(ApplicationSecurityGroupInner::name).collect(Collectors.toSet()));
+        if (!isPlaybackMode()) {
+            // avoid concurrent request in playback
+            applicationSecurityGroups = nic.ipConfigurations().get("nicip2").listAssociatedApplicationSecurityGroups();
+            Assertions.assertEquals(2, applicationSecurityGroups.size());
+            Assertions.assertEquals(
+                new HashSet<>(Arrays.asList("asg1", "asg2")),
+                applicationSecurityGroups.stream().map(ApplicationSecurityGroup::name).collect(Collectors.toSet()));
+        }
     }
 
     @Test
