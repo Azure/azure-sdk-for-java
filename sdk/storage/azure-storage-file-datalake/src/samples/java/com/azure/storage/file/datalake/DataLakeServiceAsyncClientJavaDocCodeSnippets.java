@@ -106,7 +106,7 @@ public class DataLakeServiceAsyncClientJavaDocCodeSnippets {
      * Code snippet for {@link DataLakeServiceAsyncClient#getProperties()}
      */
     public void getProperties() {
-        // BEGIN: com.azure.storage.file.datalake.DatalakeServiceAsyncClient.getProperties
+        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.getProperties
         client.getProperties().subscribe(response ->
             System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b%n",
                 response.getHourMetrics().isEnabled(),

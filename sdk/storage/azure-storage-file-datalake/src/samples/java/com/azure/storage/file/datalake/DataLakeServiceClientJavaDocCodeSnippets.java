@@ -124,7 +124,7 @@ public class DataLakeServiceClientJavaDocCodeSnippets {
             properties.getMinuteMetrics().isEnabled());
         // END: com.azure.storage.file.datalake.DataLakeServiceClient.getProperties
 
-        // BEGIN: com.azure.storage.file.datalake.DatalakeServiceClient.getPropertiesWithResponse#Duration-Context
+        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceClient.getPropertiesWithResponse#Duration-Context
         Context context = new Context("Key", "Value");
         properties = client.getPropertiesWithResponse(timeout, context).getValue();
 
