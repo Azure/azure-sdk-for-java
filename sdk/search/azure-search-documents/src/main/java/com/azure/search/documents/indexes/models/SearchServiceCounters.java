@@ -52,7 +52,7 @@ public final class SearchServiceCounters {
     /*
      * Total number of skillsets.
      */
-    @JsonProperty(value = "skillsetCount", required = true)
+    @JsonProperty(value = "skillsetCount")
     private ResourceCounter skillsetCounter;
 
     /**
@@ -64,7 +64,6 @@ public final class SearchServiceCounters {
      * @param dataSourceCounter the dataSourceCounter value to set.
      * @param storageSizeCounter the storageSizeCounter value to set.
      * @param synonymMapCounter the synonymMapCounter value to set.
-     * @param skillsetCounter the skillsetCounter value to set.
      */
     @JsonCreator
     public SearchServiceCounters(
@@ -73,15 +72,13 @@ public final class SearchServiceCounters {
             @JsonProperty(value = "indexersCount", required = true) ResourceCounter indexerCounter,
             @JsonProperty(value = "dataSourcesCount", required = true) ResourceCounter dataSourceCounter,
             @JsonProperty(value = "storageSize", required = true) ResourceCounter storageSizeCounter,
-            @JsonProperty(value = "synonymMaps", required = true) ResourceCounter synonymMapCounter,
-            @JsonProperty(value = "skillsetCount", required = true) ResourceCounter skillsetCounter) {
+            @JsonProperty(value = "synonymMaps", required = true) ResourceCounter synonymMapCounter) {
         this.documentCounter = documentCounter;
         this.indexCounter = indexCounter;
         this.indexerCounter = indexerCounter;
         this.dataSourceCounter = dataSourceCounter;
         this.storageSizeCounter = storageSizeCounter;
         this.synonymMapCounter = synonymMapCounter;
-        this.skillsetCounter = skillsetCounter;
     }
 
     /**
@@ -145,5 +142,16 @@ public final class SearchServiceCounters {
      */
     public ResourceCounter getSkillsetCounter() {
         return this.skillsetCounter;
+    }
+
+    /**
+     * Set the skillsetCounter property: Total number of skillsets.
+     *
+     * @param skillsetCounter the skillsetCounter value to set.
+     * @return the SearchServiceCounters object itself.
+     */
+    public SearchServiceCounters setSkillsetCounter(ResourceCounter skillsetCounter) {
+        this.skillsetCounter = skillsetCounter;
+        return this;
     }
 }

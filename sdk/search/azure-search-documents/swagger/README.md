@@ -183,3 +183,13 @@ directive:
     transform: >
       $["x-ms-enum"].name = "BlobIndexerPdfTextRotationAlgorithm";
 ```
+
+
+### Remove SearchServiceCounters's skillsetCount from being required
+``` yaml $(java)
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: >
+      $.ServiceCounters.required = $.ServiceCounters.required.splice(0,6);
+```
