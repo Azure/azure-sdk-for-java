@@ -99,14 +99,11 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
         }
 
         // Assert & Act
-        System.out.println("Starting the processor");
         processor.start();
 
-        System.out.println("Listening for messages .. ");
         if (countDownLatch.await(lockTimeoutDurationSeconds * 4, TimeUnit.SECONDS)) {
-            System.out.println("Message lock has been renewed. Now closing processor");
+            logger.info("Message lock has been renewed. Now closing processor");
         } else {
-            System.out.println("Message not arrived, closing processor.");
             Assertions.fail("Message not arrived, closing processor.");
         }
 
@@ -116,17 +113,17 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
     private void processMessage(ServiceBusReceivedMessageContext context, CountDownLatch countDownLatch, String expectedMessageId) {
         ServiceBusReceivedMessage message = context.getMessage();
         if (message.getMessageId().equals(expectedMessageId)) {
-            System.out.printf("Processing message. Session: %s, Sequence #: %s. Contents: %s%n", message.getMessageId(),
+            logger.info("Processing message. Session: {}, Sequence #: {}. Contents: {}", message.getMessageId(),
                 message.getSequenceNumber(), message.getBody());
             countDownLatch.countDown();
         } else {
-            System.out.printf("Received message, message id did not match. Session: %s, Sequence #: %s. Contents: %s%n", message.getMessageId(),
+            logger.info("Received message, message id did not match. Session: %s, Sequence #: %s. Contents: %s%n", message.getMessageId(),
                 message.getSequenceNumber(), message.getBody());
         }
     }
 
-    private static void processError(ServiceBusErrorContext context, CountDownLatch countdownLatch) {
-        System.out.printf("Error when receiving messages from namespace: '%s'. Entity: '%s'%n",
+    private void processError(ServiceBusErrorContext context, CountDownLatch countdownLatch) {
+        logger.info("Error when receiving messages from namespace: {}. Entity: {}}",
             context.getFullyQualifiedNamespace(), context.getEntityPath());
     }
 

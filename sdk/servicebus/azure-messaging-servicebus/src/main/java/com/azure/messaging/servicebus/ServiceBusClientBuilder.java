@@ -699,7 +699,6 @@ public final class ServiceBusClientBuilder {
          * @return The updated {@link ServiceBusSessionProcessorClientBuilder} object.
          * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
          */
-
         public ServiceBusSessionProcessorClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
             validateAndThrow(maxAutoLockRenewDuration);
             sessionReceiverClientBuilder.maxAutoLockRenewDuration(maxAutoLockRenewDuration);
@@ -1236,7 +1235,6 @@ public final class ServiceBusClientBuilder {
          * @return The updated {@link ServiceBusProcessorClientBuilder} object.
          * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
          */
-
         public ServiceBusProcessorClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
             validateAndThrow(maxAutoLockRenewDuration);
             serviceBusReceiverClientBuilder.maxAutoLockRenewDuration(maxAutoLockRenewDuration);
