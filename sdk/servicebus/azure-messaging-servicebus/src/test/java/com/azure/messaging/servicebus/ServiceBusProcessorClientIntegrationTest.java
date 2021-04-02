@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.logging.ClientLogger;
@@ -58,19 +59,22 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
 
     /**
      * Validate that processor receive the message and {@code MaxAutoLockRenewDuration} is set on the
-     * {@link ServiceBusReceiverAsyncClient}.
+     * {@link ServiceBusReceiverAsyncClient}. The message lock is released by the client and same message received
+     * again.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
     @ParameterizedTest
     void receiveMessage(MessagingEntityType entityType, boolean isSessionEnabled) throws InterruptedException {
         // Arrange
-
+        final int lockTimeoutDurationSeconds = 15;
         final int entityIndex = TestUtils.USE_CASE_PROCESSOR_RECEIVE;
-        final Duration expectedMaxAutoLockRenew = Duration.ofSeconds(60);
+        final Duration expectedMaxAutoLockRenew = Duration.ofSeconds(lockTimeoutDurationSeconds);
 
         final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
-        CountDownLatch countDownLatch = new CountDownLatch(1);
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled).setMessageId(messageId);
+        // The message should comeback after the client release the lock once because maxAutoLockRenewDuration is set
+        // by user.
+        CountDownLatch countDownLatch = new CountDownLatch(2);
 
         // send the message
         setSender(entityType, entityIndex, isSessionEnabled);
@@ -78,10 +82,11 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
 
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
-            processor = getSessionProcessorBuilder(false, entityType, entityIndex, false)
+            AmqpRetryOptions amqpRetryOptions = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(lockTimeoutDurationSeconds));
+            processor = getSessionProcessorBuilder(false, entityType, entityIndex, false, amqpRetryOptions)
                 .maxAutoLockRenewDuration(expectedMaxAutoLockRenew)
                 .disableAutoComplete()
-                .processMessage(context -> processMessage(context, countDownLatch))
+                .processMessage(context -> processMessage(context, countDownLatch, messageId))
                 .processError(context -> processError(context, countDownLatch))
                 .buildProcessorClient();
 
@@ -89,7 +94,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
             this.processor = getProcessorBuilder(false, entityType, entityIndex, false)
                 .maxAutoLockRenewDuration(expectedMaxAutoLockRenew)
                 .disableAutoComplete()
-                .processMessage(context -> processMessage(context, countDownLatch))
+                .processMessage(context -> processMessage(context, countDownLatch, messageId))
                 .processError(context -> processError(context, countDownLatch))
                 .buildProcessorClient();
         }
@@ -98,24 +103,27 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
         System.out.println("Starting the processor");
         processor.start();
 
-        System.out.println("Listening for 5 seconds...");
-        if (countDownLatch.await(5, TimeUnit.SECONDS)) {
-            System.out.println("Closing processor");
+        System.out.println("Listening for messages .. ");
+        if (countDownLatch.await(lockTimeoutDurationSeconds * 4, TimeUnit.SECONDS)) {
+            System.out.println("Message lock has been renewed. Now closing processor");
         } else {
             System.out.println("Message not arrived, closing processor.");
             Assertions.fail("Message not arrived, closing processor.");
         }
 
-        assertNotNull(processor.getReceiverOptions().getMaxLockRenewDuration());
-        assertEquals(expectedMaxAutoLockRenew, processor.getReceiverOptions().getMaxLockRenewDuration());
         processor.close();
     }
 
-    private void processMessage(ServiceBusReceivedMessageContext context, CountDownLatch countDownLatch) {
+    private void processMessage(ServiceBusReceivedMessageContext context, CountDownLatch countDownLatch, String expectedMessageId) {
         ServiceBusReceivedMessage message = context.getMessage();
-        System.out.printf("Processing message. Session: %s, Sequence #: %s. Contents: %s%n", message.getMessageId(),
-            message.getSequenceNumber(), message.getBody());
-        countDownLatch.countDown();
+        if (message.getMessageId().equals(expectedMessageId)) {
+            System.out.printf("Processing message. Session: %s, Sequence #: %s. Contents: %s%n", message.getMessageId(),
+                message.getSequenceNumber(), message.getBody());
+            countDownLatch.countDown();
+        } else {
+            System.out.printf("Received message, message id did not match. Session: %s, Sequence #: %s. Contents: %s%n", message.getMessageId(),
+                message.getSequenceNumber(), message.getBody());
+        }
     }
 
     private static void processError(ServiceBusErrorContext context, CountDownLatch countdownLatch) {
@@ -146,9 +154,10 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
     }
 
     protected ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder getSessionProcessorBuilder(boolean useCredentials,
-        MessagingEntityType entityType, int entityIndex, boolean sharedConnection) {
+        MessagingEntityType entityType, int entityIndex, boolean sharedConnection, AmqpRetryOptions amqpRetryOptions) {
 
         ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
+        builder.retryOptions(amqpRetryOptions);
 
         switch (entityType) {
             case QUEUE:

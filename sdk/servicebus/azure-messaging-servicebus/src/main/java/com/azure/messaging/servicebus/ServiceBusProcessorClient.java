@@ -108,18 +108,6 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     }
 
     /**
-     * @return receiver options set by user;
-     */
-    ReceiverOptions getReceiverOptions() {
-        ReceiverOptions receiverOptions = null;
-        final ServiceBusReceiverAsyncClient client = asyncClient.get();
-        if (client != null) {
-            receiverOptions = client.getReceiverOptions();
-        }
-        return receiverOptions;
-    }
-
-    /**
      * Starts the processor in the background. When this method is called, the processor will initiate a message
      * receiver that will invoke the message handler when new messages are available. This method is idempotent (ie.
      * calling {@code start()} again after the processor is already running is a no-op).
