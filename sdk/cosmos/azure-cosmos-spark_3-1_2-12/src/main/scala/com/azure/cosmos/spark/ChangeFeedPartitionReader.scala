@@ -78,7 +78,7 @@ private case class ChangeFeedPartitionReader
 
   override def get(): InternalRow = {
     val objectNode = this.iterator.next()
-    CosmosRowConverter.fromObjectNodeToInternalRow(readSchema, objectNode)
+    CosmosRowConverter.fromObjectNodeToInternalRow(readSchema, objectNode, readConfig.schemaConversionMode)
   }
 
   override def close(): Unit = {
