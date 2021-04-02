@@ -21,11 +21,11 @@ import reactor.core.publisher.Mono;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.messaging.webpubsub.implementation.WebPubSubUtils.getJsonBytes;
 import static com.azure.messaging.webpubsub.models.WebPubSubContentType.APPLICATION_JSON;
 import static com.azure.messaging.webpubsub.models.WebPubSubContentType.APPLICATION_OCTET_STREAM;
-import static com.azure.messaging.webpubsub.models.WebPubSubContentType.TEXT_PLAIN;
 
 /**
  * The asynchronous client for connecting to an Azure Web Pub Sub hub (for a synchronous API, refer to the
@@ -64,8 +64,7 @@ import static com.azure.messaging.webpubsub.models.WebPubSubContentType.TEXT_PLA
     serviceInterfaces = WebPubSubsImpl.WebPubSubsService.class
 )
 public final class WebPubSubAsyncServiceClient {
-    // TODO (jogiles) find the appropriate name
-    static final String TRACING_NAMESPACE_VALUE = "Microsoft.WebSubPubService";
+    static final String TRACING_NAMESPACE_VALUE = "Microsoft.SignalRService";
 
     private final ClientLogger logger = new ClientLogger(WebPubSubAsyncServiceClient.class);
 
@@ -168,30 +167,6 @@ public final class WebPubSubAsyncServiceClient {
         return sendToAllWithResponse(message, contentType, null).flatMap(FluxUtil::toMono);
     }
 
-//    /**
-//     * Broadcast a text message to all connections on this hub, excluding any connection IDs provided in the
-//     * {@code excludedConnectionIds} list.
-//     *
-//     * <p><strong>Code Samples</strong></p>
-//     *
-//     * <p>To send a message to all users within the same hub, with no exclusions, do the following:</p>
-//     *
-//     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAll.String.List}
-//     *
-//     * <p>To send a message to all users within the same hub, with one or more connection IDs excluded, simply add the
-//     * excluded connection IDs to a List and pass that in as the second argument:</p>
-//     *
-//     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAll.String.List.2}
-//     *
-//     * @param message The message to send.
-//     * @param excludedConnectionIds An optional list of connection IDs to not broadcast the message to.
-//     * @return An empty {@link Mono}.
-//     */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public Mono<Void> sendToAll(final String message, final List<String> excludedConnectionIds) {
-//        return sendToAllWithResponse(message, excludedConnectionIds).flatMap(FluxUtil::toMono);
-//    }
-
     /**
      * Broadcast a text message to all connections on this hub, excluding any connection IDs provided in the
      * {@code excludedConnectionIds} list.
@@ -225,20 +200,23 @@ public final class WebPubSubAsyncServiceClient {
                                                WebPubSubContentType contentType,
                                                final Iterable<String> excludedConnectionIds,
                                                final Context context) {
-        contentType = contentType == null ? APPLICATION_JSON : contentType;
-
-        switch (contentType) {
+        WebPubSubContentType contentTypeFinal = contentType == null ? APPLICATION_JSON : contentType;
+        switch (contentTypeFinal) {
             case TEXT_PLAIN:
                 return webPubSubApis.sendToAllWithResponseAsync(
                         hub, message, excludedConnectionIds, configureTracing(context))
                    .doOnSubscribe(ignoredValue -> logger.verbose("Broadcasting message"))
                    .doOnSuccess(response -> logger.verbose("Broadcasted message, response: {}", response.getValue()))
                    .doOnError(error -> logger.warning("Failed to broadcast message, response: {}", error));
-            default:
             case APPLICATION_OCTET_STREAM:
-            case APPLICATION_JSON:
                 return sendToAllWithResponse(
-                    message.getBytes(StandardCharsets.UTF_8), contentType, excludedConnectionIds, context);
+                    message.getBytes(StandardCharsets.UTF_8), contentTypeFinal, excludedConnectionIds, context);
+            default:
+            case APPLICATION_JSON:
+                return getJsonBytes(message)
+                    .flatMap(jsonBytes -> sendToAllWithResponse(jsonBytes, contentTypeFinal,
+                        excludedConnectionIds, context));
+
         }
     }
 
@@ -376,21 +354,23 @@ public final class WebPubSubAsyncServiceClient {
                                                 final String message,
                                                 WebPubSubContentType contentType,
                                                 Context context) {
-        contentType = contentType == null ? APPLICATION_JSON : contentType;
 
-        switch (contentType) {
+        WebPubSubContentType contentTypeFinal = contentType == null ? APPLICATION_JSON : contentType;
+        switch (contentTypeFinal) {
             case TEXT_PLAIN:
                 return webPubSubApis.sendToUserWithResponseAsync(hub, userId, message, configureTracing(context))
                    .doOnSubscribe(ignoredValue ->
-                          logger.verbose("Sending to user '{}'", userId, message))
+                       logger.verbose("Sending to user '{}'", userId, message))
                    .doOnSuccess(response ->
-                        logger.verbose("Sent to user '{}', response: {}", userId, response.getValue()))
+                       logger.verbose("Sent to user '{}', response: {}", userId, response.getValue()))
                    .doOnError(error ->
-                        logger.warning("Failed to send message to user '{}', response: {}", message, userId, error));
-            default:
+                       logger.warning("Failed to send message to user '{}', response: {}", message, userId, error));
             case APPLICATION_OCTET_STREAM:
+                return sendToUserWithResponse(userId, message.getBytes(StandardCharsets.UTF_8), contentTypeFinal, context);
+            default:
             case APPLICATION_JSON:
-                return sendToUserWithResponse(userId, message.getBytes(StandardCharsets.UTF_8), contentType, context);
+                return getJsonBytes(message)
+                    .flatMap(jsonBytes -> sendToUserWithResponse(userId, jsonBytes, contentTypeFinal, context));
         }
     }
 
@@ -507,9 +487,8 @@ public final class WebPubSubAsyncServiceClient {
                                                       final String message,
                                                       WebPubSubContentType contentType,
                                                       final Context context) {
-        contentType = contentType == null ? APPLICATION_OCTET_STREAM : contentType;
-
-        switch (contentType) {
+        WebPubSubContentType contentTypeFinal = contentType == null ? APPLICATION_JSON : contentType;
+        switch (contentTypeFinal) {
             case TEXT_PLAIN:
                 return webPubSubApis.sendToConnectionWithResponseAsync(
                         hub, connectionId, message, configureTracing(context))
@@ -518,11 +497,13 @@ public final class WebPubSubAsyncServiceClient {
                         logger.verbose("Sent to connection '{}', response: {}", connectionId, response.getValue()))
                     .doOnError(error ->
                         logger.warning("Failed to send message to connection '{}', response: {}", connectionId, error));
-            default:
             case APPLICATION_OCTET_STREAM:
-            case APPLICATION_JSON:
                 return sendToConnectionWithResponse(
-                    connectionId, message.getBytes(StandardCharsets.UTF_8), contentType, context);
+                    connectionId, message.getBytes(StandardCharsets.UTF_8), contentTypeFinal, context);
+            default:
+            case APPLICATION_JSON:
+                return getJsonBytes(message)
+                    .flatMap(jsonBytes -> sendToConnectionWithResponse(connectionId, jsonBytes, contentTypeFinal, context));
         }
     }
 

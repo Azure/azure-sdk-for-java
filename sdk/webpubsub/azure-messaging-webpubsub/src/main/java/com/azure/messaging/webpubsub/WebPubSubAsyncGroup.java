@@ -19,6 +19,7 @@ import java.nio.charset.StandardCharsets;
 
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.messaging.webpubsub.WebPubSubAsyncServiceClient.configureTracing;
+import static com.azure.messaging.webpubsub.implementation.WebPubSubUtils.getJsonBytes;
 import static com.azure.messaging.webpubsub.models.WebPubSubContentType.APPLICATION_JSON;
 import static com.azure.messaging.webpubsub.models.WebPubSubContentType.APPLICATION_OCTET_STREAM;
 
@@ -102,30 +103,6 @@ public final class WebPubSubAsyncGroup {
         return sendToAllWithResponse(message, contentType, null).flatMap(FluxUtil::toMono);
     }
 
-//    /**
-//     * Broadcast a text message to all connections in this group, excluding any connection IDs provided in the
-//     * {@code excludedConnectionIds} list.
-//     *
-//     * <p><strong>Code Samples</strong></p>
-//     *
-//     * <p>To send a message to all users within the same hub, with no exclusions, do the following:</p>
-//     *
-//     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroupasyncclient.sendToAll.String.List}
-//     *
-//     * <p>To send a message to all users within the same hub, with one or more connection IDs excluded, simply add the
-//     * excluded connection IDs to a List and pass that in as the second argument:</p>
-//     *
-//     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroupasyncclient.sendToAll.String.List.2}
-//     *
-//     * @param message The message to send.
-//     * @param excludedConnectionIds An optional list of connection IDs to not broadcast the message to.
-//     * @return An empty {@link Mono}.
-//     */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public Mono<Void> sendToAll(final String message, final List<String> excludedConnectionIds) {
-//        return sendToAllWithResponse(message, excludedConnectionIds).flatMap(FluxUtil::toMono);
-//    }
-
     /**
      * Broadcast a text message to all connections in this group, excluding any connection IDs provided in the
      * {@code excludedConnectionIds} list.
@@ -159,17 +136,23 @@ public final class WebPubSubAsyncGroup {
                                                WebPubSubContentType contentType,
                                                final Iterable<String> excludedConnectionIds,
                                                final Context context) {
-        contentType = contentType == null ? APPLICATION_JSON : contentType;
-        switch (contentType) {
+        WebPubSubContentType contentTypeFinal = contentType == null ? APPLICATION_JSON : contentType;
+        switch (contentTypeFinal) {
             case TEXT_PLAIN:
                 return webPubSubApis.sendToGroupWithResponseAsync(hub, group, message, excludedConnectionIds, configureTracing(context))
                    .doOnSubscribe(ignoredValue -> logger.verbose("Broadcasting message"))
                    .doOnSuccess(response -> logger.verbose("Broadcasted message, response: {}", response.getValue()))
                    .doOnError(error -> logger.warning("Failed to broadcast message, response: {}", error));
-            default:
             case APPLICATION_OCTET_STREAM:
+                return sendToAllWithResponse(message.getBytes(StandardCharsets.UTF_8), contentTypeFinal,
+                    excludedConnectionIds, context);
+            default:
             case APPLICATION_JSON:
-                return sendToAllWithResponse(message.getBytes(StandardCharsets.UTF_8), contentType, excludedConnectionIds, context);
+                return getJsonBytes(message)
+                    .flatMap(jsonBytes ->  sendToAllWithResponse(message, contentTypeFinal,excludedConnectionIds,
+                        context));
+
+
         }
     }
 
@@ -219,30 +202,6 @@ public final class WebPubSubAsyncGroup {
     public Mono<Void> sendToAll(final byte[] message, final WebPubSubContentType contentType) {
         return sendToAllWithResponse(message, contentType, null).flatMap(FluxUtil::toMono);
     }
-
-//    /**
-//     * Broadcast a binary message to all connections in this group, excluding any connection IDs provided in the
-//     * {@code excludedConnectionIds} list.
-//     *
-//     * <p><strong>Code Samples</strong></p>
-//     *
-//     * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
-//     *
-//     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroupasyncclient.sendToAllBytes.byte.List}
-//     *
-//     * <p>To send a binary message to all users within the same hub, with one or more connection IDs excluded, simply
-//     * add the excluded connection IDs to the end of the method call as var-args:</p>
-//     *
-//     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroupasyncclient.sendToAllBytes.byte.List.2}
-//     *
-//     * @param message The binary message to send.
-//     * @param excludedConnectionIds An optional list of connection IDs to not broadcast the message to.
-//     * @return An empty {@link Mono}.
-//     */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public Mono<Void> sendToAll(final byte[] message, final List<String> excludedConnectionIds) {
-//        return sendToAllWithResponse(message, excludedConnectionIds).flatMap(FluxUtil::toMono);
-//    }
 
     /**
      * Broadcast a binary message to all connections in this group, excluding any connection IDs provided in the

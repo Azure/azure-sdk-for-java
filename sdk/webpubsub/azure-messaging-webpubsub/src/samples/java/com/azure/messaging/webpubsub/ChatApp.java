@@ -1,11 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.webpubsub.client;
+package com.azure.messaging.webpubsub;
 
 import com.azure.core.util.Configuration;
-import com.azure.messaging.webpubsub.WebPubSubClientBuilder;
-import com.azure.messaging.webpubsub.WebPubSubServiceClient;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
