@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core</artifactId>
   <packaging>jar</packaging>
-  <version>1.15.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+  <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
 
   <name>Microsoft Azure Java Core Library</name>
   <description>This package contains core types for Azure Java clients.</description>
@@ -45,6 +45,8 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+    <jacoco.min.linecoverage>0.60</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.60</jacoco.min.branchcoverage>
   </properties>
 
   <developers>
@@ -252,6 +254,7 @@
                 --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
 
                 --add-opens com.azure.core/com.azure.core=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.credential=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.http=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.http.policy=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.http.rest=ALL-UNNAMED

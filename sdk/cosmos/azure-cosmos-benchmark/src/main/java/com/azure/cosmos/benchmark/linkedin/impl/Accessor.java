@@ -19,6 +19,11 @@ import com.azure.cosmos.benchmark.linkedin.impl.models.Result;
 public interface Accessor<K, V> {
 
     /**
+     * Accessor initialization operations
+     */
+    void initialize();
+
+    /**
      * Retrieves the entity from the data source, using the key and request options provided. The entire
      * key must be defined, and partial keys will NOT be accepted for GET. Use BatchGet for retrieving entities
      * based on partial primary keys.

@@ -36,13 +36,13 @@ Service Bus Topic. You can choose anyone of them.
           servicebus:
             connection-string: [servicebus-namespace-connection-string] 
         stream:
+          function:
+            definition: consume;supply
           bindings: 
             consume-in-0: 
               destination: [servicebus-queue-name]
             supply-out-0:
               destination: [servicebus-queue-name-same-as-above]
-          function:
-            definition: consume;supply;
           poller:
             fixed-delay: 1000
             initial-delay: 0
@@ -72,13 +72,13 @@ Service Bus Topic. You can choose anyone of them.
           servicebus:
             namespace: [servicebus-namespace]
         stream:
+          function:
+            definition: consume;supply
           bindings:
             consume-in-0:
               destination: [servicebus-queue-name]
             supply-out-0:
               destination: [servicebus-queue-name-same-as-above]
-          function:
-            definition: consume;supply;
           poller:
             fixed-delay: 1000
             initial-delay: 0
@@ -115,13 +115,13 @@ Please follow [create managed identity][create-managed-identity] to set up manag
           servicebus:
             namespace: [servicebus-namespace]
         stream:
+          function:
+            definition: consume;supply
           bindings:
             consume-in-0:
               destination: [servicebus-queue-name]
             supply-out-0:
               destination: [servicebus-queue-name-same-as-above]
-          function:
-            definition: consume;supply;
           poller:
             fixed-delay: 1000
             initial-delay: 0

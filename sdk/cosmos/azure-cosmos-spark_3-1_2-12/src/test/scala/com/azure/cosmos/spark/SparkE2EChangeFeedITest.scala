@@ -10,7 +10,8 @@ class SparkE2EChangeFeedITest
   extends IntegrationSpec
     with Spark
     with CosmosClient
-    with CosmosContainerWithRetention {
+    with CosmosContainerWithRetention
+    with CosmosLoggingTrait {
 
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
@@ -143,7 +144,7 @@ class SparkE2EChangeFeedITest
       "spark.cosmos.read.inferSchemaEnabled" -> "false"
     )
 
-    val testId = UUID.randomUUID().toString().replace("-", "")
+    val testId = UUID.randomUUID().toString.replace("-", "")
     val changeFeedDF = spark
       .readStream
       .format("cosmos.changeFeed")
@@ -177,7 +178,6 @@ class SparkE2EChangeFeedITest
 
     rowCount shouldEqual 2
   }
-
   //scalastyle:on magic.number
   //scalastyle:on multiple.string.literals
 }

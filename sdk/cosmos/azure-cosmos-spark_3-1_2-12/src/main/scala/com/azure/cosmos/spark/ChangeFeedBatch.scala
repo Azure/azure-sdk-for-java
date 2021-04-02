@@ -22,6 +22,7 @@ private class ChangeFeedBatch
 
   val batchId = UUID.randomUUID().toString()
   logTrace(s"Instantiated ${this.getClass.getSimpleName}")
+  val defaultParallelism = session.sparkContext.defaultParallelism
 
   override def planInputPartitions(): Array[InputPartition] = {
 
@@ -50,7 +51,7 @@ private class ChangeFeedBatch
       this.cosmosClientStateHandle,
       containerConfig,
       partitioningConfig,
-      this.session,
+      this.defaultParallelism,
       container
     )
 
