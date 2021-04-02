@@ -76,7 +76,7 @@ class CosmosConfigSpec extends UnitSpec {
       CosmosReadConfig.parseCosmosReadConfig(userConfig)
       fail("should have throw on invalid value")
     } catch {
-      case e: Exception => success
+      case e: Exception => succeed
     }
   }
 
