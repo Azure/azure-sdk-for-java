@@ -49,6 +49,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     private final AtomicLong totalCreditsSent = new AtomicLong();
 
     private final int prefetch;
+    private final String entityPath;
     private final Disposable parentConnection;
 
     private volatile Throwable lastError;
@@ -80,7 +81,8 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
      * @throws NullPointerException if {@code retryPolicy} is null.
      * @throws IllegalArgumentException if {@code prefetch} is less than 0.
      */
-    public AmqpReceiveLinkProcessor(int prefetch, AmqpRetryPolicy retryPolicy, Disposable parentConnection) {
+    public AmqpReceiveLinkProcessor(String entityPath, int prefetch, Disposable parentConnection) {
+        this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.parentConnection = Objects.requireNonNull(parentConnection, "'parentConnection' cannot be null.");
 
         if (prefetch < 0) {
@@ -149,7 +151,6 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         }
 
         final String linkName = next.getLinkName();
-        final String entityPath = next.getEntityPath();
 
         logger.info("linkName[{}] entityPath[{}]. Setting next AMQP receive link.", linkName, entityPath);
 
@@ -167,8 +168,18 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
             currentLinkSubscriptions = Disposables.composite(
                 next.getEndpointStates().filter(e -> e == AmqpEndpointState.ACTIVE).next()
-                    .flatMap(state -> next.addCredits(prefetch))
-                    .doOnSuccess(s -> totalCreditsSent.addAndGet(prefetch))
+                    .flatMap(state -> {
+                        // If there was already a subscriber downstream who made a request, see if that is more than
+                        // the prefetch. If it is, then add the difference. (ie. if they requested 500, but our
+                        // prefetch is 100, we'll add 500 credits rather than 100.
+                        final int creditsToAdd = getCreditsToAdd();
+                        final int total = Math.max(prefetch, creditsToAdd);
+
+                        logger.verbose("linkName[{}] prefetch[{}] creditsToAdd[{}] Adding initial credits.",
+                            entityPath, linkName, prefetch, creditsToAdd);
+
+                        return next.addCredits(total).doOnSuccess(s -> totalCreditsSent.addAndGet(total));
+                    })
                     .onErrorResume(IllegalStateException.class, error -> {
                         logger.info("linkName[{}] was already closed. Could not add credits.", linkName);
                         return Mono.empty();
@@ -253,9 +264,6 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         final boolean terminateSubscriber = isTerminated()
             || (currentLink == null && upstream == Operators.cancelledSubscription());
         if (isTerminated()) {
-            final AmqpReceiveLink link = currentLink;
-            final String entityPath = link != null ? link.getEntityPath() : "n/a";
-
             logger.info("linkName[{}] entityPath[{}]. AmqpReceiveLink is already terminated.",
                 currentLinkName, entityPath);
 
@@ -355,9 +363,10 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             final long total = totalMessagesRequested.addAndGet(request);
             final AmqpReceiveLink link = currentLink;
             final int credits = getCreditsToAdd();
-            logger.verbose("linkName[{}] credits[{}] totalRequest[{}] totalSent[{}] totalCredits[{}] "
+
+            logger.verbose("entityPath[{}] linkName[{}] credits[{}] totalRequest[{}] totalSent[{}] totalCredits[{}] "
                     + "Link credits not yet added.",
-                currentLinkName, credits, total, totalMessagesSent.get(), totalCreditsSent.get());
+                entityPath, currentLinkName, credits, total, totalMessagesSent.get(), totalCreditsSent.get());
 
             if (link != null) {
                 link.addCredits(credits)
@@ -366,6 +375,10 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                         return Mono.empty();
                     })
                     .doOnSuccess(s -> totalCreditsSent.addAndGet(credits)).subscribe();
+            } else {
+                logger.verbose("entityPath[{}] credits[{}] totalRequest[{}] totalSent[{}] totalCredits[{}] "
+                        + "There is no link to add credits to, yet.",
+                    entityPath, credits, total, totalMessagesSent.get(), totalCreditsSent.get());
             }
         }
 

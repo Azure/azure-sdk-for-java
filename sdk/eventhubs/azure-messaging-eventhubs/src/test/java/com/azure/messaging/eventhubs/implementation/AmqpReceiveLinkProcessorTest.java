@@ -85,7 +85,7 @@ class AmqpReceiveLinkProcessorTest {
 
         when(retryPolicy.getRetryOptions()).thenReturn(new AmqpRetryOptions());
 
-        linkProcessor = new AmqpReceiveLinkProcessor(PREFETCH, retryPolicy, parentConnection);
+        linkProcessor = new AmqpReceiveLinkProcessor("entity-path", PREFETCH, parentConnection);
 
         when(link1.getEndpointStates()).thenReturn(endpointProcessor);
         when(link1.receive()).thenReturn(messageProcessor);
@@ -99,10 +99,12 @@ class AmqpReceiveLinkProcessorTest {
 
     @Test
     void constructor() {
-        Assertions.assertThrows(NullPointerException.class, () -> new AmqpReceiveLinkProcessor(PREFETCH, retryPolicy,
-            null));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new AmqpReceiveLinkProcessor(-1, retryPolicy,
-            parentConnection));
+        Assertions.assertThrows(NullPointerException.class, () -> new AmqpReceiveLinkProcessor(
+            "entity-path", PREFETCH, null));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new AmqpReceiveLinkProcessor(
+            "ENTITY", -1, parentConnection));
+        Assertions.assertThrows(NullPointerException.class, () -> new AmqpReceiveLinkProcessor(
+            null, PREFETCH, parentConnection));
     }
 
     /**

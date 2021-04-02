@@ -365,9 +365,8 @@ public class EventHubConsumerAsyncClient implements Closeable {
             })
             .repeat();
 
-        final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionProcessor.getRetryOptions());
         final AmqpReceiveLinkProcessor linkMessageProcessor = receiveLinkMono.subscribeWith(
-            new AmqpReceiveLinkProcessor(prefetchCount, retryPolicy, connectionProcessor));
+            new AmqpReceiveLinkProcessor(entityPath, prefetchCount, connectionProcessor));
 
         return new EventHubPartitionAsyncConsumer(linkMessageProcessor, messageSerializer, getFullyQualifiedNamespace(),
             getEventHubName(), consumerGroup, partitionId, initialPosition,

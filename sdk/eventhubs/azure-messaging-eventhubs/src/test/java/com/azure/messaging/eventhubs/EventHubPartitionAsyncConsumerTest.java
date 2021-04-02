@@ -122,7 +122,8 @@ class EventHubPartitionAsyncConsumerTest {
     @ValueSource(strings = {"true", "false"})
     void receivesMessages(boolean trackLastEnqueuedProperties) {
         // Arrange
-        linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor(PREFETCH, retryPolicy, parentConnection));
+        linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor("foo-bar",
+            PREFETCH, parentConnection));
         consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
             CONSUMER_GROUP, PARTITION_ID, currentPosition, trackLastEnqueuedProperties, Schedulers.parallel(), 500);
 
@@ -170,7 +171,8 @@ class EventHubPartitionAsyncConsumerTest {
     @Test
     void receiveMultipleTimes() {
         // Arrange
-        linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor(PREFETCH, retryPolicy, parentConnection));
+        linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor("foo-bar",
+            PREFETCH, parentConnection));
         consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
             CONSUMER_GROUP, PARTITION_ID, currentPosition, false, Schedulers.parallel(), 500);
 
@@ -241,7 +243,7 @@ class EventHubPartitionAsyncConsumerTest {
     @Test
     void listensToShutdownSignals() throws InterruptedException {
         // Arrange
-        linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor(PREFETCH, retryPolicy, parentConnection));
+        linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor("path", PREFETCH, parentConnection));
         consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
             CONSUMER_GROUP, PARTITION_ID, currentPosition, false, Schedulers.parallel(), 500);
 
