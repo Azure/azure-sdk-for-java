@@ -30,6 +30,8 @@ class CosmosTableSchemaInferrerSpec extends UnitSpec {
     schema.fields(1).name shouldBe "otherProperty"
     schema.fields(0).dataType shouldBe StringType
     schema.fields(1).dataType shouldBe StringType
+    schema.fields(0).nullable shouldBe false
+    schema.fields(1).nullable shouldBe false
   }
 
   "null properties" should "be detected" in {
@@ -40,6 +42,7 @@ class CosmosTableSchemaInferrerSpec extends UnitSpec {
     val schema = CosmosTableSchemaInferrer.inferSchema(docs, includeSystemProperties = true, includeTimestamp = true)
     schema.fields should have size 1
     schema.fields(0).dataType shouldBe NullType
+    schema.fields(0).nullable shouldBe true
   }
 
   "boolean properties" should "be detected" in {
@@ -50,6 +53,7 @@ class CosmosTableSchemaInferrerSpec extends UnitSpec {
     val schema = CosmosTableSchemaInferrer.inferSchema(docs, includeSystemProperties = true, includeTimestamp = true)
     schema.fields should have size 1
     schema.fields(0).dataType shouldBe BooleanType
+    schema.fields(0).nullable shouldBe false
   }
 
   "binary properties" should "be detected" in {
@@ -60,6 +64,7 @@ class CosmosTableSchemaInferrerSpec extends UnitSpec {
     val schema = CosmosTableSchemaInferrer.inferSchema(docs, includeSystemProperties = true, includeTimestamp = true)
     schema.fields should have size 1
     schema.fields(0).dataType shouldBe BinaryType
+    schema.fields(0).nullable shouldBe false
   }
 
   "numeric properties" should "be detected" in {
@@ -91,6 +96,11 @@ class CosmosTableSchemaInferrerSpec extends UnitSpec {
     schema(colName3).dataType shouldBe LongType
     schema(colName4).dataType shouldBe DecimalType(DecimalType.MAX_PRECISION, DecimalType.MAX_SCALE)
     schema(colName5).dataType shouldBe IntegerType
+    schema(colName1).nullable shouldBe false
+    schema(colName2).nullable shouldBe false
+    schema(colName3).nullable shouldBe false
+    schema(colName4).nullable shouldBe false
+    schema(colName5).nullable shouldBe false
   }
 
   "array properties" should "be detected" in {
@@ -105,6 +115,7 @@ class CosmosTableSchemaInferrerSpec extends UnitSpec {
     val schema = CosmosTableSchemaInferrer.inferSchema(docs, includeSystemProperties = true, includeTimestamp = true)
     schema.fields should have size 1
     schema.fields(0).dataType shouldBe ArrayType(StringType)
+    schema.fields(0).nullable shouldBe false
   }
 
   "nested objectNode properties" should "be detected" in {
@@ -124,6 +135,8 @@ class CosmosTableSchemaInferrerSpec extends UnitSpec {
     schema.fields(0).dataType.asInstanceOf[StructType].fields should have size 1
     schema.fields(0).dataType.asInstanceOf[StructType].fields(0).dataType shouldBe StringType
     schema.fields(1).dataType shouldBe StringType
+    schema.fields(0).nullable shouldBe false
+    schema.fields(1).nullable shouldBe false
   }
 
   it should "map duplicate properties with different types to StringType" in {
@@ -138,6 +151,7 @@ class CosmosTableSchemaInferrerSpec extends UnitSpec {
     val schema = CosmosTableSchemaInferrer.inferSchema(docs, includeSystemProperties = true, includeTimestamp = true)
     schema.fields should have size 1
     schema.fields(0).dataType shouldBe StringType
+    schema.fields(0).nullable shouldBe false
   }
 
   it should "map duplicate properties with same type to original type" in {
@@ -152,6 +166,21 @@ class CosmosTableSchemaInferrerSpec extends UnitSpec {
     val schema = CosmosTableSchemaInferrer.inferSchema(docs, includeSystemProperties = true, includeTimestamp = true)
     schema.fields should have size 1
     schema.fields(0).dataType shouldBe IntegerType
+    schema.fields(0).nullable shouldBe false
+  }
+
+  it should "map duplicate properties when one is nullable" in {
+    val idVal1 = 20
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put("id", idVal1)
+    val objectNode2: ObjectNode = objectMapper.createObjectNode()
+    objectNode2.putNull("id")
+    val docs = List[ObjectNode](objectNode, objectNode2)
+
+    val schema = CosmosTableSchemaInferrer.inferSchema(docs, includeSystemProperties = true, includeTimestamp = true)
+    schema.fields should have size 1
+    schema.fields(0).dataType shouldBe StringType
+    schema.fields(0).nullable shouldBe true
   }
 
   it should "map unsupported properties to StringType" in {
@@ -165,6 +194,7 @@ class CosmosTableSchemaInferrerSpec extends UnitSpec {
     val schema = CosmosTableSchemaInferrer.inferSchema(docs, includeSystemProperties = true, includeTimestamp = true)
     schema.fields should have size 1
     schema.fields(0).dataType shouldBe StringType
+    schema.fields(0).nullable shouldBe false
   }
 
   it should "include timestamp" in {
@@ -188,6 +218,8 @@ class CosmosTableSchemaInferrerSpec extends UnitSpec {
     schema.fields should have size 2
     schema.fields(schema.fieldIndex("id")).dataType shouldBe IntegerType
     schema.fields(schema.fieldIndex(CosmosTableSchemaInferrer.TimestampAttributeName)).dataType shouldBe LongType
+    schema.fields(schema.fieldIndex("id")).nullable shouldBe false
+    schema.fields(schema.fieldIndex(CosmosTableSchemaInferrer.TimestampAttributeName)).nullable shouldBe false
   }
 
   it should "ignore system properties and timestamp" in {
@@ -210,6 +242,7 @@ class CosmosTableSchemaInferrerSpec extends UnitSpec {
     val schema = CosmosTableSchemaInferrer.inferSchema(docs, includeSystemProperties = false, includeTimestamp = false)
     schema.fields should have size 1
     schema.fields(0).dataType shouldBe IntegerType
+    schema.fields(0).nullable shouldBe false
   }
 
   it should "not ignore system properties and timestamp" in {
@@ -237,6 +270,12 @@ class CosmosTableSchemaInferrerSpec extends UnitSpec {
     schema.fields(schema.fieldIndex(CosmosTableSchemaInferrer.SelfAttributeName)).dataType shouldBe StringType
     schema.fields(schema.fieldIndex(CosmosTableSchemaInferrer.AttachmentsAttributeName)).dataType shouldBe StringType
     schema.fields(schema.fieldIndex(CosmosTableSchemaInferrer.TimestampAttributeName)).dataType shouldBe LongType
+    schema.fields(schema.fieldIndex("id")).nullable shouldBe false
+    schema.fields(schema.fieldIndex(CosmosTableSchemaInferrer.ETagAttributeName)).nullable shouldBe false
+    schema.fields(schema.fieldIndex(CosmosTableSchemaInferrer.ResourceIdAttributeName)).nullable shouldBe false
+    schema.fields(schema.fieldIndex(CosmosTableSchemaInferrer.SelfAttributeName)).nullable shouldBe false
+    schema.fields(schema.fieldIndex(CosmosTableSchemaInferrer.AttachmentsAttributeName)).nullable shouldBe false
+    schema.fields(schema.fieldIndex(CosmosTableSchemaInferrer.TimestampAttributeName)).nullable shouldBe false
   }
 
   private class MyPOJO(value: Int)
