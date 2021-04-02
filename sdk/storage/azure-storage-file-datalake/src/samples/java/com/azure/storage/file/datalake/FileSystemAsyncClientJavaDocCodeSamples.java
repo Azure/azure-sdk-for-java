@@ -279,13 +279,13 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
         String deletedPath = null;
         String deletionId = null;
 
-        // BEGIN: com.azure.storage.blob.specialized.DataLakeFileSystemAsyncClient.restorePath#String-String
+        // BEGIN: com.azure.storage.file.datalake.specialized.DataLakeFileSystemAsyncClient.restorePath#String-String
         client.restorePath(deletedPath, deletionId).doOnSuccess(response -> System.out.println("Completed undelete"));
-        // END: com.azure.storage.blob.specialized.DataLakeFileSystemAsyncClient.restorePath#String-String
+        // END: com.azure.storage.file.datalake.specialized.DataLakeFileSystemAsyncClient.restorePath#String-String
 
-        // BEGIN: com.azure.storage.blob.specialized.DataLakeFileSystemAsyncClient.restorePathWithResponse#String-String
+        // BEGIN: com.azure.storage.file.datalake.specialized.DataLakeFileSystemAsyncClient.restorePathWithResponse#String-String
         client.restorePathWithResponse(deletedPath, deletionId).doOnSuccess(response -> System.out.println("Completed undelete"));
-        // END: com.azure.storage.blob.specialized.DataLakeFileSystemAsyncClient.restorePathWithResponse#String-String
+        // END: com.azure.storage.file.datalake.specialized.DataLakeFileSystemAsyncClient.restorePathWithResponse#String-String
     }
 
     /**

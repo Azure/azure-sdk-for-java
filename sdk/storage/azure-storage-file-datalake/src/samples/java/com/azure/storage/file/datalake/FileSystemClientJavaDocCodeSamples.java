@@ -307,15 +307,15 @@ public class FileSystemClientJavaDocCodeSamples {
         String deletedPath = null;
         String deletionId = null;
 
-        // BEGIN: com.azure.storage.blob.specialized.DataLakeFileSystemClient.restorePath#String-String
+        // BEGIN: com.azure.storage.file.datalake.specialized.DataLakeFileSystemClient.restorePath#String-String
         client.restorePath(deletedPath, deletionId);
         System.out.println("Delete request completed");
-        // END: com.azure.storage.blob.specialized.DataLakeFileSystemClient.restorePath#String-String
+        // END: com.azure.storage.file.datalake.specialized.DataLakeFileSystemClient.restorePath#String-String
 
-        // BEGIN: com.azure.storage.blob.specialized.DataLakeFileSystemClient.restorePathWithResponse#String-String-Duration-Context
+        // BEGIN: com.azure.storage.file.datalake.specialized.DataLakeFileSystemClient.restorePathWithResponse#String-String-Duration-Context
         client.restorePathWithResponse(deletedPath, deletionId, timeout, new Context(key1, value1));
         System.out.println("Delete request completed");
-        // END: com.azure.storage.blob.specialized.DataLakeFileSystemClient.restorePathWithResponse#String-String-Duration-Context
+        // END: com.azure.storage.file.datalake.specialized.DataLakeFileSystemClient.restorePathWithResponse#String-String-Duration-Context
     }
 
     /**
