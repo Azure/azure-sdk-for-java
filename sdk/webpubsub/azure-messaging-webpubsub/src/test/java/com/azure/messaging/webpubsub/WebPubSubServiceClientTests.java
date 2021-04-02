@@ -3,7 +3,10 @@
 
 package com.azure.messaging.webpubsub;
 
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestBase;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.messaging.webpubsub.models.WebPubSubContentType;
@@ -14,10 +17,12 @@ import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class WebPubSubServiceClientTests {
+public class WebPubSubServiceClientTests extends TestBase {
 
-    private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration().get("WEB_PUB_SUB_CS");
-    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("WEB_PUB_SUBENDPOINT");
+    private static final String DEFAULT_CONNECTION_STRING =
+        "Endpoint=https://example.com;AccessKey=dummykey;Version=1.0;";
+    private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
+        .get("WEB_PUB_SUB_CS", DEFAULT_CONNECTION_STRING);
 
     private WebPubSubServiceClient client;
     private WebPubSubGroup groupClient;
@@ -27,23 +32,29 @@ public class WebPubSubServiceClientTests {
 
     @BeforeEach
     public void setup() {
-        this.client = new WebPubSubClientBuilder()
+        WebPubSubClientBuilder webPubSubClientBuilder = new WebPubSubClientBuilder()
             .connectionString(CONNECTION_STRING)
-            .hub("test")
-//            .endpoint(endpoint)
+            .httpClient(HttpClient.createDefault())
+            .hub("test");
+
+        if (getTestMode() == TestMode.PLAYBACK) {
+            webPubSubClientBuilder.httpClient(interceptorManager.getPlaybackClient());
+        } else if (getTestMode() == TestMode.RECORD) {
+            webPubSubClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        this.client = webPubSubClientBuilder
             .buildClient();
         this.groupClient = client.getGroup("test_group");
 
-        this.asyncClient = new WebPubSubClientBuilder()
-          .connectionString(CONNECTION_STRING)
-          .hub("test")
-          .buildAsyncClient();
+        this.asyncClient = webPubSubClientBuilder
+            .buildAsyncClient();
         this.asyncGroupClient = asyncClient.getAsyncGroup("test_async_group");
     }
 
     private void assertResponse(Response<?> response, int expectedCode) {
         assertNotNull(response);
-        assertEquals(202, response.getStatusCode());
+        assertEquals(expectedCode, response.getStatusCode());
     }
 
     /*****************************************************************************************************************

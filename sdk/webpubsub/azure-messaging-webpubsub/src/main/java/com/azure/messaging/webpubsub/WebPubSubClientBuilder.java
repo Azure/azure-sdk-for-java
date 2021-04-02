@@ -131,7 +131,7 @@ public final class WebPubSubClientBuilder {
      * @throws IllegalArgumentException if {@code endpoint} is {@code null}.
      */
     public WebPubSubClientBuilder endpoint(final String endpoint) {
-        Objects.requireNonNull(connectionString, "'endpoint' cannot be null.");
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
         this.endpoint = endpoint;
         return this;
     }
@@ -144,7 +144,7 @@ public final class WebPubSubClientBuilder {
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public WebPubSubClientBuilder credential(final AzureKeyCredential credential) {
-        Objects.requireNonNull(connectionString, "'credential' cannot be null.");
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.credential = credential;
         return this;
     }

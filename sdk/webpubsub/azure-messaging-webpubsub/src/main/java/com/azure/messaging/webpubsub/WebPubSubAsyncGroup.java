@@ -161,17 +161,15 @@ public final class WebPubSubAsyncGroup {
                                                final Context context) {
         contentType = contentType == null ? APPLICATION_JSON : contentType;
         switch (contentType) {
-            case TEXT_PLAIN: {
+            case TEXT_PLAIN:
                 return webPubSubApis.sendToGroupWithResponseAsync(hub, group, message, excludedConnectionIds, configureTracing(context))
                    .doOnSubscribe(ignoredValue -> logger.verbose("Broadcasting message"))
                    .doOnSuccess(response -> logger.verbose("Broadcasted message, response: {}", response.getValue()))
                    .doOnError(error -> logger.warning("Failed to broadcast message, response: {}", error));
-            }
             default:
             case APPLICATION_OCTET_STREAM:
-            case APPLICATION_JSON: {
+            case APPLICATION_JSON:
                 return sendToAllWithResponse(message.getBytes(StandardCharsets.UTF_8), contentType, excludedConnectionIds, context);
-            }
         }
     }
 
@@ -281,19 +279,17 @@ public final class WebPubSubAsyncGroup {
                                                final Context context) {
         contentType = contentType == null ? APPLICATION_OCTET_STREAM : contentType;
         switch (contentType) {
-            case TEXT_PLAIN: {
+            case TEXT_PLAIN:
                 return sendToAllWithResponse(new String(message), contentType, excludedConnectionIds, context);
-            }
             default:
             case APPLICATION_OCTET_STREAM:
-            case APPLICATION_JSON: {
+            case APPLICATION_JSON:
                 final Flux<ByteBuffer> byteFlux = Flux.just(ByteBuffer.wrap(message));
                 return webPubSubApis.sendToGroupWithResponseAsync(
                     hub, group, contentType, byteFlux, message.length, excludedConnectionIds, configureTracing(context))
                            .doOnSubscribe(ignoredValue -> logger.verbose("Broadcasting binary message"))
                            .doOnSuccess(response -> logger.verbose("Broadcasted binary message, response: {}", response.getValue()))
                            .doOnError(error -> logger.warning("Failed to broadcast binary message, response: {}", error));
-            }
         }
     }
 

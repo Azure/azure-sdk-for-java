@@ -323,6 +323,9 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="."
             files=".*[/\\]azure-quantum-jobs[/\\]src[/\\]main[/\\]java[/\\]"/>
 
+<suppress checks="."
+            files=".*[/\\]webpubsub[/\\]implementation[/\\]"/>
+
   <!-- Suppress ConfigurationCredentialsPolicy for HttpPipelinePolicyCheck.
    This suppression need to be deleted after AzConfig using AAD credential.
    Issue Link: https://github.com/Azure/azure-sdk-for-java/issues/5131 -->

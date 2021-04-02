@@ -228,19 +228,17 @@ public final class WebPubSubAsyncServiceClient {
         contentType = contentType == null ? APPLICATION_JSON : contentType;
 
         switch (contentType) {
-            case TEXT_PLAIN: {
+            case TEXT_PLAIN:
                 return webPubSubApis.sendToAllWithResponseAsync(
                         hub, message, excludedConnectionIds, configureTracing(context))
                    .doOnSubscribe(ignoredValue -> logger.verbose("Broadcasting message"))
                    .doOnSuccess(response -> logger.verbose("Broadcasted message, response: {}", response.getValue()))
                    .doOnError(error -> logger.warning("Failed to broadcast message, response: {}", error));
-            }
             default:
             case APPLICATION_OCTET_STREAM:
-            case APPLICATION_JSON: {
+            case APPLICATION_JSON:
                 return sendToAllWithResponse(
                     message.getBytes(StandardCharsets.UTF_8), contentType, excludedConnectionIds, context);
-            }
         }
     }
 
@@ -315,12 +313,11 @@ public final class WebPubSubAsyncServiceClient {
         contentType = contentType == null ? APPLICATION_OCTET_STREAM : contentType;
 
         switch (contentType) {
-            case TEXT_PLAIN: {
+            case TEXT_PLAIN:
                 return sendToAllWithResponse(new String(message), contentType, excludedConnectionIds, context);
-            }
             default:
             case APPLICATION_OCTET_STREAM:
-            case APPLICATION_JSON: {
+            case APPLICATION_JSON:
                 final Flux<ByteBuffer> byteFlux = Flux.just(ByteBuffer.wrap(message));
 
                 return webPubSubApis.sendToAllWithResponseAsync(
@@ -329,7 +326,6 @@ public final class WebPubSubAsyncServiceClient {
                        .doOnSuccess(response ->
                             logger.verbose("Broadcasted binary data, response: {}", response.getValue()))
                        .doOnError(error -> logger.warning("Failed to broadcast binary data, response: {}", error));
-            }
         }
     }
 
@@ -382,7 +378,7 @@ public final class WebPubSubAsyncServiceClient {
         contentType = contentType == null ? APPLICATION_JSON : contentType;
 
         switch (contentType) {
-            case TEXT_PLAIN: {
+            case TEXT_PLAIN:
                 return webPubSubApis.sendToUserWithResponseAsync(hub, userId, message, configureTracing(context))
                    .doOnSubscribe(ignoredValue ->
                           logger.verbose("Sending to user '{}'", userId, message))
@@ -390,12 +386,10 @@ public final class WebPubSubAsyncServiceClient {
                         logger.verbose("Sent to user '{}', response: {}", userId, response.getValue()))
                    .doOnError(error ->
                         logger.warning("Failed to send message to user '{}', response: {}", message, userId, error));
-            }
             default:
             case APPLICATION_OCTET_STREAM:
-            case APPLICATION_JSON: {
+            case APPLICATION_JSON:
                 return sendToUserWithResponse(userId, message.getBytes(StandardCharsets.UTF_8), contentType, context);
-            }
         }
     }
 
@@ -448,12 +442,11 @@ public final class WebPubSubAsyncServiceClient {
         contentType = contentType == null ? APPLICATION_OCTET_STREAM : contentType;
 
         switch (contentType) {
-            case TEXT_PLAIN: {
+            case TEXT_PLAIN:
                 return sendToUserWithResponse(userId, new String(message), contentType, context);
-            }
             default:
             case APPLICATION_OCTET_STREAM:
-            case APPLICATION_JSON: {
+            case APPLICATION_JSON:
                 final Flux<ByteBuffer> byteFlux = Flux.just(ByteBuffer.wrap(message));
                 return webPubSubApis.sendToUserWithResponseAsync(
                         hub, userId, contentType, byteFlux, message.length, configureTracing(context))
@@ -461,7 +454,6 @@ public final class WebPubSubAsyncServiceClient {
                    .doOnSuccess(response ->
                         logger.verbose("Sent binary data to user, response: {}", response.getValue()))
                    .doOnError(error -> logger.warning("Failed to send binary data to user, response: {}", error));
-            }
         }
     }
 
@@ -516,7 +508,7 @@ public final class WebPubSubAsyncServiceClient {
         contentType = contentType == null ? APPLICATION_OCTET_STREAM : contentType;
 
         switch (contentType) {
-            case TEXT_PLAIN: {
+            case TEXT_PLAIN:
                 return webPubSubApis.sendToConnectionWithResponseAsync(
                         hub, connectionId, message, configureTracing(context))
                     .doOnSubscribe(ignoredValue -> logger.verbose("Sending to connection '{}'", connectionId))
@@ -524,13 +516,11 @@ public final class WebPubSubAsyncServiceClient {
                         logger.verbose("Sent to connection '{}', response: {}", connectionId, response.getValue()))
                     .doOnError(error ->
                         logger.warning("Failed to send message to connection '{}', response: {}", connectionId, error));
-            }
             default:
             case APPLICATION_OCTET_STREAM:
-            case APPLICATION_JSON: {
+            case APPLICATION_JSON:
                 return sendToConnectionWithResponse(
                     connectionId, message.getBytes(StandardCharsets.UTF_8), contentType, context);
-            }
         }
     }
 
@@ -586,12 +576,11 @@ public final class WebPubSubAsyncServiceClient {
         contentType = contentType == null ? APPLICATION_OCTET_STREAM : contentType;
 
         switch (contentType) {
-            case TEXT_PLAIN: {
+            case TEXT_PLAIN:
                 return sendToConnectionWithResponse(connectionId, new String(message), contentType, context);
-            }
             default:
             case APPLICATION_OCTET_STREAM:
-            case APPLICATION_JSON: {
+            case APPLICATION_JSON:
                 final Flux<ByteBuffer> byteFlux = Flux.just(ByteBuffer.wrap(message));
                 return webPubSubApis.sendToConnectionWithResponseAsync(
                        hub, connectionId, contentType, byteFlux, message.length, configureTracing(context))
@@ -599,7 +588,6 @@ public final class WebPubSubAsyncServiceClient {
                     .doOnSuccess(response ->
                          logger.verbose("Sent binary message to connection, response: {}", response.getValue()))
                     .doOnError(error -> logger.warning("Failed to send binary message to connection, response: {}", error));
-            }
         }
     }
 
