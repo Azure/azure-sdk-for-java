@@ -332,7 +332,7 @@ public final class FormRecognizerAsyncClient {
                         finalRecognizeContentOptions.getPages(),
                         finalRecognizeContentOptions.getLanguage() == null
                             ? null : Language.fromString(finalRecognizeContentOptions.getLanguage().toString()),
-                        recognizeContentOptions.getReadingOrder() != null
+                        finalRecognizeContentOptions.getReadingOrder() != null
                             ? com.azure.ai.formrecognizer.implementation.models.ReadingOrder.fromString(
                                 recognizeContentOptions.getReadingOrder().toString())
                             : null,
@@ -425,7 +425,7 @@ public final class FormRecognizerAsyncClient {
                         finalRecognizeContentOptions.getPages(),
                         finalRecognizeContentOptions.getLanguage() == null
                             ? null : Language.fromString(finalRecognizeContentOptions.getLanguage().toString()),
-                        recognizeContentOptions.getReadingOrder() != null
+                        finalRecognizeContentOptions.getReadingOrder() != null
                             ? com.azure.ai.formrecognizer.implementation.models.ReadingOrder.fromString(
                             recognizeContentOptions.getReadingOrder().toString())
                             : null,
