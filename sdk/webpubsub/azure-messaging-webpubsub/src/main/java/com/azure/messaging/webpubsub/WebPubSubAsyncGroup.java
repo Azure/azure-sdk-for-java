@@ -280,7 +280,8 @@ public final class WebPubSubAsyncGroup {
         contentType = contentType == null ? APPLICATION_OCTET_STREAM : contentType;
         switch (contentType) {
             case TEXT_PLAIN:
-                return sendToAllWithResponse(new String(message), contentType, excludedConnectionIds, context);
+                return sendToAllWithResponse(new String(message, StandardCharsets.UTF_8), contentType,
+                    excludedConnectionIds, context);
             default:
             case APPLICATION_OCTET_STREAM:
             case APPLICATION_JSON:

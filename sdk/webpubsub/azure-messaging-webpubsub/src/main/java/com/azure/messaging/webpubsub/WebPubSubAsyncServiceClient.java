@@ -314,7 +314,8 @@ public final class WebPubSubAsyncServiceClient {
 
         switch (contentType) {
             case TEXT_PLAIN:
-                return sendToAllWithResponse(new String(message), contentType, excludedConnectionIds, context);
+                return sendToAllWithResponse(new String(message, StandardCharsets.UTF_8), contentType,
+                    excludedConnectionIds, context);
             default:
             case APPLICATION_OCTET_STREAM:
             case APPLICATION_JSON:
@@ -443,7 +444,8 @@ public final class WebPubSubAsyncServiceClient {
 
         switch (contentType) {
             case TEXT_PLAIN:
-                return sendToUserWithResponse(userId, new String(message), contentType, context);
+                return sendToUserWithResponse(userId, new String(message, StandardCharsets.UTF_8),
+                    contentType, context);
             default:
             case APPLICATION_OCTET_STREAM:
             case APPLICATION_JSON:
@@ -577,7 +579,8 @@ public final class WebPubSubAsyncServiceClient {
 
         switch (contentType) {
             case TEXT_PLAIN:
-                return sendToConnectionWithResponse(connectionId, new String(message), contentType, context);
+                return sendToConnectionWithResponse(connectionId, new String(message, StandardCharsets.UTF_8),
+                    contentType, context);
             default:
             case APPLICATION_OCTET_STREAM:
             case APPLICATION_JSON:

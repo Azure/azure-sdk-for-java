@@ -32,6 +32,12 @@
     <tag>HEAD</tag>
   </scm>
 
+  <properties>
+    <!-- Once full testing is added this should either be removed or increased -->
+    <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>

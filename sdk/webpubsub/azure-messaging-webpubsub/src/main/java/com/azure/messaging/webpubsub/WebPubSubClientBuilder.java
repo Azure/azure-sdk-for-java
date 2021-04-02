@@ -27,6 +27,7 @@ import com.azure.messaging.webpubsub.implementation.AzureWebPubSubServiceRestAPI
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -378,7 +379,7 @@ public final class WebPubSubClientBuilder {
                 continue;
             }
 
-            final String key = paramSplit[0].trim().toLowerCase();
+            final String key = paramSplit[0].trim().toLowerCase(Locale.ROOT);
 
             if (connectionStringParams.containsKey(key)) {
                 logger.logThrowableAsError(new IllegalArgumentException(
