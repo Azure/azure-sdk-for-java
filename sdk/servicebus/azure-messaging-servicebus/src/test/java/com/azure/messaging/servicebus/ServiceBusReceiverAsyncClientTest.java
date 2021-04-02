@@ -311,8 +311,11 @@ class ServiceBusReceiverAsyncClientTest {
                 false, "Some-Session", null), connectionProcessor,
             CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
 
+        ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1,
+            Duration.ofSeconds(30), true);
+
         MockedConstruction<FluxAutoLockRenew> mockedAutoLockRenew = Mockito.mockConstructionWithAnswer(FluxAutoLockRenew.class,
-            invocationOnMock -> new FluxAutoLockRenew(Flux.empty(), Duration.ofSeconds(30),
+            invocationOnMock -> new FluxAutoLockRenew(Flux.empty(), receiverOptions,
                 new LockContainer<>(Duration.ofSeconds(30)), (lock) -> Mono.empty()));
 
         ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);

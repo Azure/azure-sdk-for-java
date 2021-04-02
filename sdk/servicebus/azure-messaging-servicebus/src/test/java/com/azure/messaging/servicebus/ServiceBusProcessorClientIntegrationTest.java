@@ -16,10 +16,12 @@ import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
+import java.time.OffsetTime;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.messaging.servicebus.TestUtils.getSessionSubscriptionBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
@@ -65,11 +67,13 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
     @ParameterizedTest
     void receiveMessage(MessagingEntityType entityType, boolean isSessionEnabled) throws InterruptedException {
         // Arrange
+        // The message is locked for this duration at a time.
         final int lockTimeoutDurationSeconds = 15;
         final int entityIndex = TestUtils.USE_CASE_PROCESSOR_RECEIVE;
-        final Duration expectedMaxAutoLockRenew = Duration.ofSeconds(lockTimeoutDurationSeconds);
+        final Duration expectedMaxAutoLockRenew = Duration.ofSeconds(35);
 
         final String messageId = UUID.randomUUID().toString();
+        final AtomicReference<OffsetTime> lastMessageReceivedTime = new AtomicReference<>();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled).setMessageId(messageId);
         // The message should comeback after the client release the lock once because maxAutoLockRenewDuration is set
         // by user.
@@ -81,11 +85,12 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
 
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
-            AmqpRetryOptions amqpRetryOptions = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(lockTimeoutDurationSeconds));
+            AmqpRetryOptions amqpRetryOptions = new AmqpRetryOptions()
+                .setTryTimeout(Duration.ofSeconds(2 * lockTimeoutDurationSeconds));
             processor = getSessionProcessorBuilder(false, entityType, entityIndex, false, amqpRetryOptions)
                 .maxAutoLockRenewDuration(expectedMaxAutoLockRenew)
                 .disableAutoComplete()
-                .processMessage(context -> processMessage(context, countDownLatch, messageId))
+                .processMessage(context -> processMessage(context, countDownLatch, messageId, lastMessageReceivedTime, lockTimeoutDurationSeconds))
                 .processError(context -> processError(context, countDownLatch))
                 .buildProcessorClient();
 
@@ -93,7 +98,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
             this.processor = getProcessorBuilder(false, entityType, entityIndex, false)
                 .maxAutoLockRenewDuration(expectedMaxAutoLockRenew)
                 .disableAutoComplete()
-                .processMessage(context -> processMessage(context, countDownLatch, messageId))
+                .processMessage(context -> processMessage(context, countDownLatch, messageId, lastMessageReceivedTime, lockTimeoutDurationSeconds))
                 .processError(context -> processError(context, countDownLatch))
                 .buildProcessorClient();
         }
@@ -101,7 +106,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
         // Assert & Act
         processor.start();
 
-        if (countDownLatch.await(lockTimeoutDurationSeconds * 4, TimeUnit.SECONDS)) {
+        if (countDownLatch.await(lockTimeoutDurationSeconds * 6, TimeUnit.SECONDS)) {
             logger.info("Message lock has been renewed. Now closing processor");
         } else {
             Assertions.fail("Message not arrived, closing processor.");
@@ -110,12 +115,24 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
         processor.close();
     }
 
-    private void processMessage(ServiceBusReceivedMessageContext context, CountDownLatch countDownLatch, String expectedMessageId) {
+    private void processMessage(ServiceBusReceivedMessageContext context, CountDownLatch countDownLatch,
+        String expectedMessageId, AtomicReference<OffsetTime> lastMessageReceivedTime, int lockTimeoutDurationSeconds) {
         ServiceBusReceivedMessage message = context.getMessage();
         if (message.getMessageId().equals(expectedMessageId)) {
             logger.info("Processing message. Session: {}, Sequence #: {}. Contents: {}", message.getMessageId(),
                 message.getSequenceNumber(), message.getBody());
-            countDownLatch.countDown();
+            if (lastMessageReceivedTime.get() ==  null) {
+                lastMessageReceivedTime.set(OffsetTime.now());
+                countDownLatch.countDown();
+            } else {
+                long messageReceivedAfterSeconds = Duration.between(lastMessageReceivedTime.get(), OffsetTime.now()).getSeconds();
+                logger.info("Processing message again. Session: {}, Sequence #: {}. Contents: {}, message received after {} seconds.", message.getMessageId(),
+                    message.getSequenceNumber(), message.getBody(), messageReceivedAfterSeconds);
+                // Ensure that the lock is renewed and message is received again after atlest one lock renew
+                if (messageReceivedAfterSeconds >= 2 * lockTimeoutDurationSeconds) {
+                    countDownLatch.countDown();
+                }
+            }
         } else {
             logger.info("Received message, message id did not match. Session: %s, Sequence #: %s. Contents: %s%n", message.getMessageId(),
                 message.getSequenceNumber(), message.getBody());
