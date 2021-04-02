@@ -98,6 +98,7 @@
       <scope>test</scope>
     </dependency>
 
+    <!-- Optional: This dependency can be excluded if IntelliJ Credential is not being used for authentication via `IntelliJCredential` or `DefaultAzureCredential` -->
     <dependency>
       <groupId>org.linguafranca.pwdb</groupId>
       <artifactId>KeePassJava2</artifactId>
