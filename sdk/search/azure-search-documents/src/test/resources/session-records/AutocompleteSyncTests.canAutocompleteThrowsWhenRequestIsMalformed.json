@@ -1,28 +1,28 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-autocomplete-shared-instance')//docs/search.post.autocomplete?api-version=2020-06-30",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-autocomplete-shared-instance')//docs/search.post.autocomplete?api-version=2020-06-30-Preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d722d9d9-bda7-4f46-af43-2899db0d85bc",
+      "x-ms-client-request-id" : "01991a0d-fd08-4938-945d-990d07aa2007",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "d722d9d9-bda7-4f46-af43-2899db0d85bc",
+      "request-id" : "01991a0d-fd08-4938-945d-990d07aa2007",
       "StatusCode" : "400",
-      "Date" : "Wed, 31 Mar 2021 21:10:56 GMT",
+      "Date" : "Fri, 02 Apr 2021 22:28:31 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "d722d9d9-bda7-4f46-af43-2899db0d85bc",
+      "client-request-id" : "01991a0d-fd08-4938-945d-990d07aa2007",
       "elapsed-time" : "3",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "346",
       "Body" : "{\"error\":{\"code\":\"MissingRequiredParameter\",\"message\":\"Cannot find fields enabled for suggestions. Please provide a value for 'suggesterName' in the query.\\r\\nParameter name: suggestions\",\"details\":[{\"code\":\"MissingSuggesterName\",\"message\":\"Cannot find fields enabled for suggestions. Please provide a value for 'suggesterName' in the query.\"}]}}",
       "Content-Language" : "en",
-      "x-ms-client-request-id" : "d722d9d9-bda7-4f46-af43-2899db0d85bc",
+      "x-ms-client-request-id" : "01991a0d-fd08-4938-945d-990d07aa2007",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=none"
     },

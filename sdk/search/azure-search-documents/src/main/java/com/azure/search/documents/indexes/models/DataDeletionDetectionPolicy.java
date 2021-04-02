@@ -26,4 +26,4 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @JsonFlatten
 @Immutable
-public abstract class DataDeletionDetectionPolicy {}
+public abstract class DataDeletionDetectionPolicy { }

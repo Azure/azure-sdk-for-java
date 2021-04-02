@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-search-shared-instance')//docs/search.post.search?api-version=2020-06-30",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-search-shared-instance')//docs/search.post.search?api-version=2020-06-30-Preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f464e797-860b-40fb-96b1-ba50ff791d96",
+      "x-ms-client-request-id" : "dc2a4526-a879-46a9-b194-9b383b993e89",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "f464e797-860b-40fb-96b1-ba50ff791d96",
+      "request-id" : "dc2a4526-a879-46a9-b194-9b383b993e89",
       "StatusCode" : "200",
-      "Date" : "Wed, 31 Mar 2021 21:16:54 GMT",
+      "Date" : "Fri, 02 Apr 2021 22:34:33 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "f464e797-860b-40fb-96b1-ba50ff791d96",
-      "elapsed-time" : "10",
+      "client-request-id" : "dc2a4526-a879-46a9-b194-9b383b993e89",
+      "elapsed-time" : "22",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "70",
       "Body" : "{\"value\":[{\"@search.score\":1.0,\"HotelName\":\"Roach Motel\",\"Rating\":1}]}",
-      "x-ms-client-request-id" : "f464e797-860b-40fb-96b1-ba50ff791d96",
+      "x-ms-client-request-id" : "dc2a4526-a879-46a9-b194-9b383b993e89",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=none"
     },
