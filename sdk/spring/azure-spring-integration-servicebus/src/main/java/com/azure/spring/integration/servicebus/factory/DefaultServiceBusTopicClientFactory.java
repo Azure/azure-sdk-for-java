@@ -3,9 +3,7 @@
 
 package com.azure.spring.integration.servicebus.factory;
 
-import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.messaging.servicebus.ServiceBusSenderClient;
+import com.azure.messaging.servicebus.*;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.resourcemanager.servicebus.models.Topic;
@@ -13,6 +11,7 @@ import com.azure.spring.cloud.context.core.util.Memoizer;
 import com.azure.spring.cloud.context.core.util.Tuple;
 import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
 import com.azure.spring.integration.servicebus.ServiceBusRuntimeException;
+import org.springframework.messaging.Message;
 import org.springframework.util.StringUtils;
 
 import java.util.function.BiFunction;
@@ -25,7 +24,6 @@ import java.util.function.Function;
  *
  * @author Warren Zhu
  */
-//TODO: The logic of instantiating topic processor client needs to be put in this class
 public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSenderFactory
     implements ServiceBusTopicClientFactory {
 
@@ -90,7 +88,7 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
 
     }
     @Override
-    public ServiceBusProcessorClient getOrCreateClient(String name, String subscription, ServiceBusClientConfig clientConfig, Consumer processMessage, Consumer processError) {
+    public ServiceBusProcessorClient getOrCreateClient(String name, String subscription, ServiceBusClientConfig clientConfig, Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError) {
         this.clientConfig = clientConfig;
         this.processMessage = processMessage;
         this.processError = processError;

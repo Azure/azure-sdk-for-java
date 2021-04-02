@@ -4,7 +4,9 @@
 package com.azure.spring.integration.servicebus.factory;
 
 
+import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
 
 import java.util.function.Consumer;
@@ -20,7 +22,7 @@ public interface ServiceBusQueueClientFactory extends ServiceBusSenderFactory {
      * @param name queue name
      * @return ServiceBusProcessorClient queue processor client
      */
-    ServiceBusProcessorClient getOrCreateClient(String name, ServiceBusClientConfig clientConfig, Consumer processMessage, Consumer processError);
+    ServiceBusProcessorClient getOrCreateClient(String name, ServiceBusClientConfig clientConfig, Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError);
 
 
 }

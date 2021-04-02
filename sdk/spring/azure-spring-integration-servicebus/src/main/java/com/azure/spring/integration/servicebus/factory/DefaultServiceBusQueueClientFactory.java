@@ -4,9 +4,7 @@
 package com.azure.spring.integration.servicebus.factory;
 
 
-import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.messaging.servicebus.ServiceBusSenderClient;
+import com.azure.messaging.servicebus.*;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.spring.cloud.context.core.util.Memoizer;
 import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
@@ -19,13 +17,12 @@ import java.util.function.Function;
  *
  * @author Warren Zhu
  */
-//TODO: The logic of instantiating queue processor client needs to be put in this class
 public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSenderFactory
     implements ServiceBusQueueClientFactory {
 
     private ServiceBusClientConfig clientConfig;
-    private Consumer processMessage;
-    private Consumer processError;
+    private Consumer<ServiceBusReceivedMessageContext> processMessage;
+    private Consumer<ServiceBusErrorContext> processError;
 
     private final Function<String, ServiceBusProcessorClient> queueClientCreator = Memoizer.memoize(this::createQueueClient);
     private final Function<String, ServiceBusSenderClient> queueSenderCreator = Memoizer.memoize(this::createQueueSender);
@@ -81,7 +78,7 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
 
     }
     @Override
-    public ServiceBusProcessorClient getOrCreateClient(String name, ServiceBusClientConfig clientConfig, Consumer processMessage, Consumer processError) {
+    public ServiceBusProcessorClient getOrCreateClient(String name, ServiceBusClientConfig clientConfig, Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError) {
         this.clientConfig = clientConfig;
         this.processMessage = processMessage;
         this.processError = processError;
