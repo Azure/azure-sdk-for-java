@@ -2038,7 +2038,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     @Disabled
     public void recognizeIDDocumentWithBlankPdf(HttpClient httpClient,
                                                       FormRecognizerServiceVersion serviceVersion) {
-        // TODO: (service-bug) documentResult missing required fields
+        // TODO: (service-bug) Still a discrepancy between other prebuilt results and ID document testing
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
@@ -2083,9 +2083,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
     public void recognizeLicenseSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        // TODO: (enable once file uploaded on github)
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
@@ -2123,10 +2121,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
     public void recognizeIDDocumentFromUrlIncludeFieldElements(HttpClient httpClient,
                                                                  FormRecognizerServiceVersion serviceVersion) {
-        // TODO: (enable once file uploaded on github)
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
