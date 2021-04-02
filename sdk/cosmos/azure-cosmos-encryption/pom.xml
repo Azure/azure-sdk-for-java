@@ -236,7 +236,6 @@ Licensed under the MIT License.
           </properties>
         </configuration>
       </plugin>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
