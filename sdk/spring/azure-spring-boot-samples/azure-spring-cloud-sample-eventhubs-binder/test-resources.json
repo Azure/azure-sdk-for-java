@@ -15,7 +15,7 @@
   "variables": {
     "eventHubsNamespaceName": "[concat(parameters('baseName'),'-eventhub')]",
     "eventHubsNamespaceKeyName": "RootManageSharedAccessKey",
-    "storageAccountName": "[substring(toLower(concat(parameters('storageNamePrefix'), uniqueString(resourceGroup().id))), 0, 24)]",
+    "storageAccountName": "[substring(toLower(concat(parameters('storageNamePrefix'), uniqueString(resourceGroup().id), 'binder')), 0, 24)]",
     "location": "[resourceGroup().location]"
   },
   "resources": [
@@ -55,7 +55,7 @@
     {
       "type": "Microsoft.EventHub/namespaces/eventhubs",
       "apiVersion": "2017-04-01",
-      "name": "[concat(variables('eventHubsNamespaceName'), '/test-eventhub')]",
+      "name": "[concat(variables('eventHubsNamespaceName'), '/binder-test')]",
       "location": "[variables('location')]",
       "dependsOn": [
         "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
@@ -83,10 +83,10 @@
     {
       "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
       "apiVersion": "2017-04-01",
-      "name": "[concat(variables('eventHubsNamespaceName'), '/test-eventhub/$Default')]",
+      "name": "[concat(variables('eventHubsNamespaceName'), '/binder-test/$Default')]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventHubsNamespaceName'), 'test-eventhub')]",
+        "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventHubsNamespaceName'), 'binder-test')]",
         "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
       ],
       "properties": {}
@@ -165,7 +165,7 @@
     {
       "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
       "apiVersion": "2019-06-01",
-      "name": "[concat(variables('storageAccountName'), '/default/test-eventhub')]",
+      "name": "[concat(variables('storageAccountName'), '/default/binder-test')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountName'), 'default')]",
         "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
