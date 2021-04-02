@@ -9,6 +9,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
+
 /**
  * Utility class for common methods used in WebPubSub clients.
  */
@@ -31,7 +33,7 @@ public final class WebPubSubUtils {
             try {
                 // This code block is wrapped in a Mono.callable() because readTree() is a blocking call
                 JsonNode jsonNode = objectMapper.readTree(message);
-                return jsonNode.toString().getBytes();
+                return jsonNode.toString().getBytes(StandardCharsets.UTF_8);
             } catch (JsonProcessingException e) {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException("Error parsing json", e));
             }

@@ -151,8 +151,6 @@ public final class WebPubSubAsyncGroup {
                 return getJsonBytes(message)
                     .flatMap(jsonBytes -> sendToAllWithResponse(message, contentTypeFinal, excludedConnectionIds,
                         context));
-
-
         }
     }
 
