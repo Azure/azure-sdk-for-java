@@ -128,7 +128,7 @@ class AuthClient extends DelegateRestClient {
      * Get the access token on Azure App Service.
      *
      * @param resource the resource.
-     * @param identity the user-assigned identity (null if system-assigned).
+     * @param clientId the user-assigned managed identity (null if system-assigned).
      * @return the authorization token.
      */
     private String getAccessTokenOnAppService(String resource, String clientId) {
