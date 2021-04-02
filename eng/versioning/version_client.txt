@@ -38,6 +38,7 @@ com.azure:azure-sdk-parent;1.6.0;1.6.0
 com.azure:azure-client-sdk-parent;1.7.0;1.7.0
 com.azure:azure-ai-anomalydetector;3.0.0-beta.1;3.0.0-beta.2
 com.azure:azure-ai-formrecognizer;3.0.6;3.1.0-beta.3
+com.azure:azure-ai-formrecognizer-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-metricsadvisor;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-ai-textanalytics;5.0.4;5.1.0-beta.6
 com.azure:azure-ai-textanalytics-perf;1.0.0-beta.1;1.0.0-beta.1
@@ -230,6 +231,7 @@ com.azure.resourcemanager:azure-resourcemanager-delegatednetwork;1.0.0-beta.1;1.
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
 unreleased_com.azure:azure-core;1.15.0-beta.1
 unreleased_com.azure:azure-core-amqp;2.1.0-beta.1
+unreleased_com.azure:azure-core-experimental;1.0.0-beta.12
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid

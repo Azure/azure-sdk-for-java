@@ -22,6 +22,8 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <jacoco.min.linecoverage>0.70</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.60</jacoco.min.branchcoverage>
   </properties>
 
   <dependencies>
@@ -29,6 +31,11 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
       <version>1.15.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-experimental</artifactId>
+      <version>1.0.0-beta.12</version> <!-- {x-version-update;unreleased_com.azure:azure-core-experimental;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
