@@ -1,6 +1,7 @@
 # Release History
 
 ## 3.4.0-beta.1 (Unreleased)
+- Fix bug that user-name-attribute cannot be configured.(#20209)
 
 
 ## 3.3.0 (2021-03-22)

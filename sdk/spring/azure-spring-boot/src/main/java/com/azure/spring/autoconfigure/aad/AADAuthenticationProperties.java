@@ -45,6 +45,12 @@ public class AADAuthenticationProperties implements InitializingBean {
     private String clientSecret;
 
     /**
+     * the key used to access the user's &quot;name&quot; from DefaultOAuth2User#getAttributes()
+     * @see org.springframework.security.oauth2.core.user.DefaultOAuth2User#getAttributes()
+     */
+    private String userNameAttribute;
+
+    /**
      * @deprecated Now the redirect-url-template is not configurable.
      * <p>
      * Redirect URI always equal to "{baseUrl}/login/oauth2/code/".
@@ -174,6 +180,14 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     public void setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
+    }
+
+    public String getUserNameAttribute() {
+        return userNameAttribute;
+    }
+
+    public void setUserNameAttribute(String userNameAttribute) {
+        this.userNameAttribute = userNameAttribute;
     }
 
     @Deprecated
