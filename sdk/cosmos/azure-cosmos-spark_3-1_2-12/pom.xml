@@ -38,6 +38,7 @@
     </developer>
   </developers>
 
+
   <dependencies>
     <dependency>
       <groupId>org.scala-lang</groupId>
@@ -221,6 +222,17 @@
         <configuration>
           <rules>
             <bannedDependencies>
+
+
+  cosmos_org.apache.spark:spark-sql_2.12;3.1.1
+cosmos_org.apache.spark:spark-hive_2.12;3.1.1
+cosmos_org.scala-lang:scala-library;2.12.10
+cosmos_org.scala-lang.modules:scala-java8-compat_2.12;0.8.0
+cosmos_io.projectreactor:reactor-scala-extensions_2.12;0.8.0
+cosmos_commons-io:commons-io;2.4
+
+Error: <include> version update tag for org.apache.spark:spark-sql:[3.1.1] should be <!-- {x-include-update;org.apache.spark:spark-sql;current|dependency|external_dependency<select one>} -->
+
               <includes>
                 <include>org.javatuples:javatuples:[1.2]</include> <!-- {x-include-update;org.javatuples:javatuples;external_dependency} -->
                 <include>javax.annotation:javax.annotation-api:[1.3.2]</include> <!-- {x-include-update;javax.annotation:javax.annotation-api;external_dependency} -->

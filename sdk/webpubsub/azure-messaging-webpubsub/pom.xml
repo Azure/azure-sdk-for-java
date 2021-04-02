@@ -46,7 +46,7 @@
     <dependency>
       <groupId>com.nimbusds</groupId>
       <artifactId>nimbus-jose-jwt</artifactId>
-      <version>9.7</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;dependency} -->
+      <version>9.7</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
@@ -124,7 +124,7 @@
             <bannedDependencies>
               <includes>
                 <include>com.azure:*</include>
-                <include>com.nimbusds:nimbus-jose-jwt:[9.7]</include> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
+                <include>com.nimbusds:nimbus-jose-jwt:[9.7]</include> <!-- {x-include-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
