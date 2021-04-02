@@ -45,8 +45,7 @@ public class AADAuthenticationProperties implements InitializingBean {
     private String clientSecret;
 
     /**
-     * the key used to access the user's &quot;name&quot; from DefaultOAuth2User#getAttributes()
-     * @see org.springframework.security.oauth2.core.user.DefaultOAuth2User#getAttributes()
+     * Decide which claim to be principal's name..
      */
     private String userNameAttribute;
 
