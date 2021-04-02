@@ -310,7 +310,7 @@ public class DataLakeServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.DataLakeServiceAsyncClient.getProperties}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.getProperties}
      *
      * @return A reactive response containing the storage account properties.
      */
@@ -356,7 +356,7 @@ public class DataLakeServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.DataLakeServiceAsyncClient.setProperties#DataLakeServiceProperties}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.setProperties#DataLakeServiceProperties}
      *
      * @param properties Configures the service.
      * @return A {@link Mono} containing the storage account properties.
@@ -379,7 +379,7 @@ public class DataLakeServiceAsyncClient {
      * If CORS policies are set, CORS parameters that are not set default to the empty string.</p>
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.DataLakeServiceAsyncClient.setPropertiesWithResponse#DatalakeServiceProperties}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.setPropertiesWithResponse#DatalakeServiceProperties}
      *
      * @param properties Configures the service.
      * @return A {@link Mono} containing the storage account properties.
