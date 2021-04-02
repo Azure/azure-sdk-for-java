@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.network;
 
-import com.azure.resourcemanager.network.fluent.models.ApplicationSecurityGroupInner;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
