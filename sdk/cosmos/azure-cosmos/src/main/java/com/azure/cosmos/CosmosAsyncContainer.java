@@ -43,16 +43,24 @@ import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -66,6 +74,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Provides methods for interacting with child resources (Items, Scripts, Conflicts)
  */
 public class CosmosAsyncContainer {
+
+    private final static Logger logger = LoggerFactory.getLogger(CosmosAsyncContainer.class);
 
     private final CosmosAsyncDatabase database;
     private final String id;
@@ -87,6 +97,7 @@ public class CosmosAsyncContainer {
     private final String readAllConflictsSpanName;
     private final String queryConflictsSpanName;
     private final String batchSpanName;
+    private final AtomicBoolean isInitialized;
     private CosmosAsyncScripts scripts;
 
     CosmosAsyncContainer(String id, CosmosAsyncDatabase database) {
@@ -110,6 +121,7 @@ public class CosmosAsyncContainer {
         this.readAllConflictsSpanName = "readAllConflicts." + this.id;
         this.queryConflictsSpanName = "queryConflicts." + this.id;
         this.batchSpanName = "transactionalBatch." + this.id;
+        this.isInitialized = new AtomicBoolean(false);
     }
 
     /**
@@ -411,6 +423,47 @@ public class CosmosAsyncContainer {
      */
     public <T> CosmosPagedFlux<T> queryItems(String query, Class<T> classType) {
         return queryItemsInternal(new SqlQuerySpec(query), new CosmosQueryRequestOptions(), classType);
+    }
+
+    /**
+     * Initializes the container by warming up the caches and connections for the current read region.
+     *
+     * <p><br>The execution of this method is expected to result in some RU charges to your account.
+     * The number of RU consumed by this request varies, depending on data consistency, size of the overall data in the container,
+     * item indexing, number of projections. For more information regarding RU considerations please visit
+     * <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/request-units#request-unit-considerations">https://docs.microsoft.com/en-us/azure/cosmos-db/request-units#request-unit-considerations</a>.
+     * </p>
+     *
+     * <p>
+     * <br>NOTE: This API ideally should be called only once during application initialization before any workload.
+     * <br>In case of any transient error, caller should consume the error and continue the regular workload.
+     * </p>
+     *
+     * @return Mono of Void
+     */
+    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public Mono<Void> openConnectionsAndInitCaches() {
+        if(isInitialized.compareAndSet(false, true)) {
+            return this.getFeedRanges().flatMap(feedRanges -> {
+                List<Flux<FeedResponse<ObjectNode>>> fluxList = new ArrayList<>();
+                SqlQuerySpec querySpec = new SqlQuerySpec();
+                querySpec.setQueryText("select * from c where c.id = @id");
+                querySpec.setParameters(Collections.singletonList(new SqlParameter("@id",
+                    UUID.randomUUID().toString())));
+                for (FeedRange feedRange : feedRanges) {
+                    CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+                    options.setFeedRange(feedRange);
+                    CosmosPagedFlux<ObjectNode> cosmosPagedFlux = this.queryItems(querySpec, options,
+                        ObjectNode.class);
+                    fluxList.add(cosmosPagedFlux.byPage());
+                }
+                Mono<List<FeedResponse<ObjectNode>>> listMono = Flux.merge(fluxList).collectList();
+                return listMono.flatMap(objects -> Mono.empty());
+            });
+        } else {
+            logger.warn("openConnectionsAndInitCaches is already called once on Container {}, no operation will take place in this call", this.getId());
+            return Mono.empty();
+        }
     }
 
     /**

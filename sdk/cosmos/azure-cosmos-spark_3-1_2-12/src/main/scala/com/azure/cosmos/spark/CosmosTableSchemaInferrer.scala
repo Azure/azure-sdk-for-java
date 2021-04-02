@@ -50,8 +50,10 @@ private object CosmosTableSchemaInferrer
           case Some(mappedList) =>
             map ++ mappedList.map(mappedItem => {
               if (map.contains(mappedItem._1) && map(mappedItem._1).dataType != mappedItem._2.dataType) {
+                // if any of the 2 mappings is nullable, then the result is nullable
+                val isNullable = mappedItem._2.nullable || map(mappedItem._1).nullable
                 // If 2 documents contain the same property name but different type, we default to String
-                (mappedItem._1, StructField(mappedItem._1, StringType))
+                (mappedItem._1, StructField(mappedItem._1, StringType, nullable=isNullable))
               }
               else {
                 mappedItem
@@ -102,8 +104,10 @@ private object CosmosTableSchemaInferrer
       n.fields.asScala
         .filter(field => isAllowedPropertyToMap(field.getKey, includeSystemProperties, includeTimestamp))
         .map(field =>
-          field.getKey ->
-            StructField(field.getKey, inferDataTypeFromJsonNode(field.getValue)))
+            inferDataTypeFromJsonNode(field.getValue) match {
+              case nullType: NullType => field.getKey -> StructField(field.getKey, nullType, nullable=true)
+              case anyType: DataType => field.getKey -> StructField(field.getKey, anyType, nullable=false)
+            })
         .toSeq)
   }
 

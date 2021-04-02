@@ -25,9 +25,9 @@ import scala.collection.JavaConverters._
 
 private object ItemsTable {
   private[spark] val defaultSchemaForInferenceDisabled = StructType(Seq(
-    StructField(RawJsonBodyAttributeName, StringType),
-    StructField(IdAttributeName, StringType),
-    StructField(TimestampAttributeName, LongType)
+    StructField(RawJsonBodyAttributeName, StringType, nullable=false),
+    StructField(IdAttributeName, StringType, nullable=false),
+    StructField(TimestampAttributeName, LongType, nullable=false)
   ))
 }
 
@@ -71,7 +71,8 @@ private class ItemsTable(val sparkSession: SparkSession,
   override def capabilities(): util.Set[TableCapability] = Set(
     TableCapability.ACCEPT_ANY_SCHEMA,
     TableCapability.BATCH_WRITE,
-    TableCapability.BATCH_READ).asJava
+    TableCapability.BATCH_READ,
+    TableCapability.STREAMING_WRITE).asJava
 
   override def newScanBuilder(options: CaseInsensitiveStringMap): ScanBuilder = {
     // TODO moderakh how options and userConfig should be merged? is there any difference?

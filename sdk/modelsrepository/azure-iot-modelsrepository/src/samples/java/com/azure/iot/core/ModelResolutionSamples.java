@@ -28,8 +28,8 @@ public class ModelResolutionSamples {
         ModelsRepositoryClient syncClient = new ModelsRepositoryClientBuilder()
             .buildClient();
 
-        System.out.println("Initialized the async client pointing to the global endpoint" + asyncClient.getRepositoryUri());
-        System.out.println("Initialized the sync client pointing to the global endpoint" + syncClient.getRepositoryUri());
+        System.out.println("Initialized the async client pointing to the global endpoint" + asyncClient.getRepositoryEndpoint());
+        System.out.println("Initialized the sync client pointing to the global endpoint" + syncClient.getRepositoryEndpoint());
 
         // This form shows specifying a custom URI for the models repository with default client options.
         // The default client options will enable model dependency resolution.
@@ -41,8 +41,8 @@ public class ModelResolutionSamples {
             .repositoryEndpoint("https://contoso.com/models")
             .buildClient();
 
-        System.out.println("Initialized the async client pointing to the custom endpoint" + asyncClient.getRepositoryUri().toString());
-        System.out.println("Initialized the sync client pointing to the custom endpoint" + syncClient.getRepositoryUri().toString());
+        System.out.println("Initialized the async client pointing to the custom endpoint" + asyncClient.getRepositoryEndpoint().toString());
+        System.out.println("Initialized the sync client pointing to the custom endpoint" + syncClient.getRepositoryEndpoint().toString());
 
         // The client will also work with a local file-system URI. This example shows initialization
         // with a local URI and disabling model dependency resolution.
@@ -56,8 +56,8 @@ public class ModelResolutionSamples {
             .modelDependencyResolution(ModelDependencyResolution.DISABLED)
             .buildClient();
 
-        System.out.println("Initialized the async client pointing to the local file-system: " + asyncClient.getRepositoryUri());
-        System.out.println("Initialized the sync client pointing to the local file-system: " + syncClient.getRepositoryUri());
+        System.out.println("Initialized the async client pointing to the local file-system: " + asyncClient.getRepositoryEndpoint());
+        System.out.println("Initialized the sync client pointing to the local file-system: " + syncClient.getRepositoryEndpoint());
     }
 
     /**
