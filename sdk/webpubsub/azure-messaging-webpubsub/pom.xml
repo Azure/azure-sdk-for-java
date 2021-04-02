@@ -96,19 +96,19 @@
     <dependency>
       <groupId>javax.websocket</groupId>
       <artifactId>javax.websocket-api</artifactId>
-      <version>1.1</version>
+      <version>1.1</version>  <!-- {x-version-update;javax.websocket:javax.websocket-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.glassfish.tyrus.bundles</groupId>
       <artifactId>tyrus-standalone-client</artifactId>
-      <version>1.16</version>
+      <version>1.16</version>  <!-- {x-version-update;org.glassfish.tyrus.bundles:tyrus-standalone-client;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.glassfish.tyrus</groupId>
       <artifactId>tyrus-container-grizzly</artifactId>
-      <version>1.2.1</version>
+      <version>1.2.1</version>  <!-- {x-version-update;org.glassfish.tyrus:tyrus-container-grizzly;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
