@@ -95,6 +95,10 @@ public class TableServiceClientBuilder {
      * @throws IllegalArgumentException If {@code connectionString} isn't a valid connection string.
      */
     public TableServiceClientBuilder connectionString(String connectionString) {
+        if (connectionString == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'connectionString' cannot be null."));
+        }
+
         StorageConnectionString storageConnectionString = StorageConnectionString.create(connectionString, logger);
         StorageEndpoint endpoint = storageConnectionString.getTableEndpoint();
 
@@ -128,6 +132,10 @@ public class TableServiceClientBuilder {
      * @throws IllegalArgumentException If {@code endpoint} isn't a valid URL.
      */
     public TableServiceClientBuilder endpoint(String endpoint) {
+        if (endpoint == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'endpoint' cannot be null."));
+        }
+
         try {
             new URL(endpoint);
         } catch (MalformedURLException ex) {
