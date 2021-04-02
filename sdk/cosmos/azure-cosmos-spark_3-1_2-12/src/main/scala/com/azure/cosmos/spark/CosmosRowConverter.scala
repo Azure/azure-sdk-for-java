@@ -116,7 +116,7 @@ private object CosmosRowConverter
             case TimestampType if rowData.isInstanceOf[java.lang.Long] => objectMapper.convertValue(rowData.asInstanceOf[java.lang.Long], classOf[JsonNode])
             case TimestampType => objectMapper.convertValue(rowData.asInstanceOf[Timestamp].getTime, classOf[JsonNode])
             case arrayType: ArrayType => convertSparkArrayToArrayNode(arrayType.elementType, arrayType.containsNull, rowData.asInstanceOf[Seq[_]])
-            case _: StructType => rowTypeRouterToJsonArray(rowData)
+            case structType: StructType => rowTypeRouterToJsonArray(rowData, structType)
             case mapType: MapType =>
                 mapType.keyType match {
                     case StringType if rowData.isInstanceOf[Map[_, _]] =>
@@ -187,15 +187,16 @@ private object CosmosRowConverter
 
     private def convertSparkSubItemToJsonNode(elementType: DataType, containsNull: Boolean, data: Any): JsonNode = {
         elementType match {
-            case _: StructType => rowTypeRouterToJsonArray(data)
+            case subDocuments: StructType => rowTypeRouterToJsonArray(data, subDocuments)
             case subArray: ArrayType => convertSparkArrayToArrayNode(subArray.elementType, containsNull, data.asInstanceOf[Seq[_]])
             case _ => convertSparkDataTypeToJsonNode(elementType, data)
         }
     }
 
-    private def rowTypeRouterToJsonArray(element: Any) : ObjectNode = {
+    private def rowTypeRouterToJsonArray(element: Any, schema: StructType) : ObjectNode = {
         element match {
             case e: Row => fromRowToObjectNode(e)
+            case e: InternalRow => fromInternalRowToObjectNode(e, schema)
             case _ => throw new Exception(s"Cannot cast $element into a Json value. Struct $element has no matching Json value.")
         }
     }
