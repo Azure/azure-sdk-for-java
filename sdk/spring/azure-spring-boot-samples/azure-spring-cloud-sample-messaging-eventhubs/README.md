@@ -1,4 +1,4 @@
-# Spring Cloud Azure Messaging Sample shared library for Java
+# Spring Cloud Azure Messaging Event Hubs Sample shared library for Java
 
 ## Key concepts
 
