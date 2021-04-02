@@ -5,12 +5,25 @@ import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.common.Utility
-import com.azure.storage.file.datalake.models.*
+import com.azure.storage.file.datalake.models.DataLakeAccessPolicy
+import com.azure.storage.file.datalake.models.DataLakeRequestConditions
+import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier
+import com.azure.storage.file.datalake.models.DataLakeStorageException
+import com.azure.storage.file.datalake.models.LeaseStateType
+import com.azure.storage.file.datalake.models.LeaseStatusType
+import com.azure.storage.file.datalake.models.ListDeletedPathsOptions
+import com.azure.storage.file.datalake.models.ListPathsOptions
+import com.azure.storage.file.datalake.models.PathAccessControlEntry
+import com.azure.storage.file.datalake.models.PathDeletedItem
+import com.azure.storage.file.datalake.models.PathHttpHeaders
+import com.azure.storage.file.datalake.models.PathItem
+import com.azure.storage.file.datalake.models.PublicAccessType
 import spock.lang.Unroll
 
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit
+import java.util.stream.Collectors
 
 class FileSystemAPITest extends APISpec {
 
@@ -945,6 +958,137 @@ class FileSystemAPITest extends APISpec {
         !response.hasNext()
     }
     // TODO (gapra): Add more get paths tests (Github issue created)
+
+    def "List deleted paths"() {
+        setup:
+        enableSoftDelete()
+
+        def fc1 = fsc.getFileClient(generatePathName())
+        fc1.create(true)
+        fc1.delete()
+
+        when:
+        List<PathDeletedItem> deletedBlobs = fsc.listDeletedPaths().stream().collect(Collectors.toList())
+
+        then:
+        deletedBlobs.size() == 1
+        !deletedBlobs.get(0).isPrefix()
+        deletedBlobs.get(0).getName() == fc1.getFileName()
+        deletedBlobs.get(0).getDeletedOn() != null
+        deletedBlobs.get(0).getDeletionId() != null
+        deletedBlobs.get(0).getRemainingRetentionDays() != null
+
+        cleanup:
+        disableSoftDelete()
+    }
+
+    def "List deleted paths path"() {
+        setup:
+        enableSoftDelete()
+
+        def dir = fsc.getDirectoryClient(generatePathName())
+        dir.create()
+        def fc1 = dir.getFileClient(generatePathName()) // Create one file under the path
+        fc1.create(true)
+        fc1.delete()
+
+        def fc2 = fsc.getFileClient(generatePathName()) // Create another file not under the path
+        fc2.create()
+        fc2.delete()
+
+        when:
+        def deletedBlobs = fsc.listDeletedPaths(new ListDeletedPathsOptions().setPath(dir.getDirectoryName()), null)
+
+        then:
+        deletedBlobs.size() == 1
+        !deletedBlobs.first().isPrefix()
+        deletedBlobs.first().getName() == dir.getDirectoryName() + "/" + fc1.getFileName()
+
+        cleanup:
+        disableSoftDelete()
+    }
+
+    def "List deleted paths error"() {
+        setup:
+        enableSoftDelete()
+
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+
+        when:
+        fsc.listDeletedPaths().last()
+
+        then:
+        thrown(DataLakeStorageException)
+
+        cleanup:
+        disableSoftDelete()
+    }
+
+    def "Restore path"() {
+        setup:
+        enableSoftDelete()
+
+        def dir = fsc.getDirectoryClient(generatePathName())
+        dir.create()
+        dir.delete()
+
+        def deletionId = fsc.listDeletedPaths().first().getDeletionId()
+
+        when:
+        def returnedClient = fsc.restorePath(dir.getDirectoryName(), deletionId)
+
+        then:
+        dir.getProperties() != null
+        returnedClient.getPathUrl() == dir.getPathUrl()
+
+        cleanup:
+        disableSoftDelete()
+    }
+
+    @Unroll
+    def "Restore path special characters"() {
+        setup:
+        enableSoftDelete()
+
+        dirName = URLEncoder.encode(dirName)
+        def dir = fsc.getDirectoryClient(dirName)
+        dir.create()
+        dir.delete()
+
+        def deletionId = fsc.listDeletedPaths().first().getDeletionId()
+
+        when:
+        fsc.restorePath(URLEncoder.encode(dir.getDirectoryName()), deletionId)
+
+        then:
+        dir.getProperties() != null
+
+        cleanup:
+        disableSoftDelete()
+
+        where:
+        dirName                                                   | _
+        "!'();[]@&%=+\$,#äÄöÖüÜß;"                                | _
+        "%21%27%28%29%3B%5B%5D%40%26%25%3D%2B%24%2C%23äÄöÖüÜß%3B" | _
+        " my cool directory "                                     | _
+        "directory"                                               | _
+    }
+
+    def "Restore path error"() {
+        setup:
+        enableSoftDelete()
+
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+
+        when:
+        fsc.restorePath("foo", "bar")
+
+        then:
+        thrown(DataLakeStorageException)
+
+        cleanup:
+        disableSoftDelete()
+    }
 
     @Unroll
     def "Create URL special chars encoded"() {

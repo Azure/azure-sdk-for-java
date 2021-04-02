@@ -10,16 +10,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
-/** The PathsDeleteHeaders model. */
+/** The FileSystemsListBlobHierarchySegmentHeaders model. */
 @JacksonXmlRootElement(localName = "null")
 @Fluent
-public final class PathsDeleteHeaders {
-    /*
-     * The x-ms-deletion-id property.
-     */
-    @JsonProperty(value = "x-ms-deletion-id")
-    private String xMsDeletionId;
-
+public final class FileSystemsListBlobHierarchySegmentHeaders {
     /*
      * The x-ms-version property.
      */
@@ -33,10 +27,10 @@ public final class PathsDeleteHeaders {
     private String xMsRequestId;
 
     /*
-     * The x-ms-continuation property.
+     * The x-ms-client-request-id property.
      */
-    @JsonProperty(value = "x-ms-continuation")
-    private String xMsContinuation;
+    @JsonProperty(value = "x-ms-client-request-id")
+    private String xMsClientRequestId;
 
     /*
      * The Date property.
@@ -44,25 +38,11 @@ public final class PathsDeleteHeaders {
     @JsonProperty(value = "Date")
     private DateTimeRfc1123 dateProperty;
 
-    /**
-     * Get the xMsDeletionId property: The x-ms-deletion-id property.
-     *
-     * @return the xMsDeletionId value.
+    /*
+     * The Content-Type property.
      */
-    public String getXMsDeletionId() {
-        return this.xMsDeletionId;
-    }
-
-    /**
-     * Set the xMsDeletionId property: The x-ms-deletion-id property.
-     *
-     * @param xMsDeletionId the xMsDeletionId value to set.
-     * @return the PathsDeleteHeaders object itself.
-     */
-    public PathsDeleteHeaders setXMsDeletionId(String xMsDeletionId) {
-        this.xMsDeletionId = xMsDeletionId;
-        return this;
-    }
+    @JsonProperty(value = "Content-Type")
+    private String contentType;
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
@@ -77,9 +57,9 @@ public final class PathsDeleteHeaders {
      * Set the xMsVersion property: The x-ms-version property.
      *
      * @param xMsVersion the xMsVersion value to set.
-     * @return the PathsDeleteHeaders object itself.
+     * @return the FileSystemsListBlobHierarchySegmentHeaders object itself.
      */
-    public PathsDeleteHeaders setXMsVersion(String xMsVersion) {
+    public FileSystemsListBlobHierarchySegmentHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
     }
@@ -97,30 +77,30 @@ public final class PathsDeleteHeaders {
      * Set the xMsRequestId property: The x-ms-request-id property.
      *
      * @param xMsRequestId the xMsRequestId value to set.
-     * @return the PathsDeleteHeaders object itself.
+     * @return the FileSystemsListBlobHierarchySegmentHeaders object itself.
      */
-    public PathsDeleteHeaders setXMsRequestId(String xMsRequestId) {
+    public FileSystemsListBlobHierarchySegmentHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
     }
 
     /**
-     * Get the xMsContinuation property: The x-ms-continuation property.
+     * Get the xMsClientRequestId property: The x-ms-client-request-id property.
      *
-     * @return the xMsContinuation value.
+     * @return the xMsClientRequestId value.
      */
-    public String getXMsContinuation() {
-        return this.xMsContinuation;
+    public String getXMsClientRequestId() {
+        return this.xMsClientRequestId;
     }
 
     /**
-     * Set the xMsContinuation property: The x-ms-continuation property.
+     * Set the xMsClientRequestId property: The x-ms-client-request-id property.
      *
-     * @param xMsContinuation the xMsContinuation value to set.
-     * @return the PathsDeleteHeaders object itself.
+     * @param xMsClientRequestId the xMsClientRequestId value to set.
+     * @return the FileSystemsListBlobHierarchySegmentHeaders object itself.
      */
-    public PathsDeleteHeaders setXMsContinuation(String xMsContinuation) {
-        this.xMsContinuation = xMsContinuation;
+    public FileSystemsListBlobHierarchySegmentHeaders setXMsClientRequestId(String xMsClientRequestId) {
+        this.xMsClientRequestId = xMsClientRequestId;
         return this;
     }
 
@@ -140,14 +120,34 @@ public final class PathsDeleteHeaders {
      * Set the dateProperty property: The Date property.
      *
      * @param dateProperty the dateProperty value to set.
-     * @return the PathsDeleteHeaders object itself.
+     * @return the FileSystemsListBlobHierarchySegmentHeaders object itself.
      */
-    public PathsDeleteHeaders setDateProperty(OffsetDateTime dateProperty) {
+    public FileSystemsListBlobHierarchySegmentHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
             this.dateProperty = new DateTimeRfc1123(dateProperty);
         }
+        return this;
+    }
+
+    /**
+     * Get the contentType property: The Content-Type property.
+     *
+     * @return the contentType value.
+     */
+    public String getContentType() {
+        return this.contentType;
+    }
+
+    /**
+     * Set the contentType property: The Content-Type property.
+     *
+     * @param contentType the contentType value to set.
+     * @return the FileSystemsListBlobHierarchySegmentHeaders object itself.
+     */
+    public FileSystemsListBlobHierarchySegmentHeaders setContentType(String contentType) {
+        this.contentType = contentType;
         return this;
     }
 }

@@ -12,6 +12,7 @@ import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
 import com.azure.storage.file.datalake.models.FileSystemAccessPolicies;
 import com.azure.storage.file.datalake.models.FileSystemProperties;
+import com.azure.storage.file.datalake.models.ListDeletedPathsOptions;
 import com.azure.storage.file.datalake.models.ListPathsOptions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PublicAccessType;
@@ -300,6 +301,24 @@ public class FileSystemClientJavaDocCodeSamples {
     }
 
     /**
+     * Code snippet for {@link DataLakeFileSystemClient#restorePath(String, String)}
+     */
+    public void restorePathCodeSnippet() {
+        String deletedPath = null;
+        String deletionId = null;
+
+        // BEGIN: com.azure.storage.blob.specialized.DataLakeFileSystemClient.restorePath#String-String
+        client.restorePath(deletedPath, deletionId);
+        System.out.println("Delete request completed");
+        // END: com.azure.storage.blob.specialized.DataLakeFileSystemClient.restorePath#String-String
+
+        // BEGIN: com.azure.storage.blob.specialized.DataLakeFileSystemClient.restorePathWithResponse#String-String-Duration-Context
+        client.restorePathWithResponse(deletedPath, deletionId, timeout, new Context(key1, value1));
+        System.out.println("Delete request completed");
+        // END: com.azure.storage.blob.specialized.DataLakeFileSystemClient.restorePathWithResponse#String-String-Duration-Context
+    }
+
+    /**
      * Code snippets for {@link DataLakeFileSystemClient#listPaths()} and
      * {@link DataLakeFileSystemClient#listPaths(ListPathsOptions, Duration)}
      */
@@ -315,6 +334,24 @@ public class FileSystemClientJavaDocCodeSamples {
 
         client.listPaths(options, timeout).forEach(path -> System.out.printf("Name: %s%n", path.getName()));
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.listPaths#ListPathsOptions-Duration
+    }
+
+    /**
+     * Code snippets for {@link DataLakeFileSystemClient#listDeletedPaths()} and
+     * {@link DataLakeFileSystemClient#listDeletedPaths(ListDeletedPathsOptions, Duration)}
+     */
+    public void listDeletedPaths() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths
+        client.listDeletedPaths().forEach(path -> System.out.printf("Name: %s%n", path.getName()));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths#ListDeletedPathsOptions-Duration
+        ListDeletedPathsOptions options = new ListDeletedPathsOptions()
+            .setPath("pathPrefixToMatch")
+            .setMaxResults(10);
+
+        client.listDeletedPaths(options, timeout).forEach(path -> System.out.printf("Name: %s%n", path.getName()));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths#ListDeletedPathsOptions-Duration
     }
 
     /**

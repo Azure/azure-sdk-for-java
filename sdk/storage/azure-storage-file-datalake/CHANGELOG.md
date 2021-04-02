@@ -1,7 +1,9 @@
 # Release History
 
 ## 12.5.0-beta.3 (Unreleased)
-
+- Added support to undelete a file or directory
+- Added support to list deletedPaths
+- Added support to get/set service properties
 
 ## 12.5.0-beta.2 (2021-03-29)
 - Fixed a bug where files/directories in root directories could not be renamed.

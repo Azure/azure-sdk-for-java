@@ -26,6 +26,8 @@ import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
+import com.azure.storage.file.datalake.models.DataLakeRetentionPolicy
+import com.azure.storage.file.datalake.models.DataLakeServiceProperties
 import com.azure.storage.file.datalake.models.LeaseStateType
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions
 import com.azure.storage.file.datalake.models.PathAccessControlEntry
@@ -597,6 +599,20 @@ class APISpec extends Specification {
         } else {
             return leaseID
         }
+    }
+
+    def enableSoftDelete() {
+        primaryDataLakeServiceClient.setProperties(new DataLakeServiceProperties()
+            .setDeleteRetentionPolicy(new DataLakeRetentionPolicy().setEnabled(true).setDays(2)))
+
+        sleepIfRecord(30000)
+    }
+
+    def disableSoftDelete() {
+        primaryDataLakeServiceClient.setProperties(new DataLakeServiceProperties()
+            .setDeleteRetentionPolicy(new DataLakeRetentionPolicy().setEnabled(false)))
+
+        sleepIfRecord(30000)
     }
 
     /**

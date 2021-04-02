@@ -1,0 +1,86 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsgetpropserror0serviceapitestgetpropserrorecc49033fb477?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.3 azsdk-java-azure-storage-file-datalake/12.5.0-beta.3 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "fdd2ddae-6433-48cc-8dbf-c5d4f7dcd5fe"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D8F61C34D57E07",
+      "Last-Modified" : "Fri, 02 Apr 2021 21:13:47 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "9afc8534-101e-0035-4305-2821b4000000",
+      "x-ms-client-request-id" : "fdd2ddae-6433-48cc-8dbf-c5d4f7dcd5fe",
+      "Date" : "Fri, 02 Apr 2021 21:13:47 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net?restype=service&comp=properties",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.3 azsdk-java-azure-storage-file-datalake/12.5.0-beta.3 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d9f8eaa6-b64b-4d64-97bc-d91f89f74868"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "AuthenticationFailed",
+      "retry-after" : "0",
+      "Content-Length" : "466",
+      "StatusCode" : "403",
+      "x-ms-request-id" : "780ba01e-c01e-0054-1c05-28b389000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:780ba01e-c01e-0054-1c05-28b389000000\nTime:2021-04-02T21:13:48.6149491Z</Message><AuthenticationErrorDetail>Cannot find the claimed account when trying to GetProperties for the account seannsecanary.</AuthenticationErrorDetail></Error>",
+      "Date" : "Fri, 02 Apr 2021 21:13:48 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net?comp=list&prefix=jtfsgetpropserror",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.3 azsdk-java-azure-storage-file-datalake/12.5.0-beta.3 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ef22cffc-7230-4526-a289-9d34054ebef9"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Vary" : "Origin",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "9afc85a6-101e-0035-1205-2821b4000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://seannsecanary.blob.core.windows.net/\"><Prefix>jtfsgetpropserror</Prefix><Containers><Container><Name>jtfsgetpropserror0serviceapitestgetpropserrorecc49033fb477</Name><Properties><Last-Modified>Fri, 02 Apr 2021 21:13:47 GMT</Last-Modified><Etag>\"0x8D8F61C34D57E07\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><VersionLevelWormEnabled>false</VersionLevelWormEnabled></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "ef22cffc-7230-4526-a289-9d34054ebef9",
+      "Date" : "Fri, 02 Apr 2021 21:13:48 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsgetpropserror0serviceapitestgetpropserrorecc49033fb477?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.3 azsdk-java-azure-storage-file-datalake/12.5.0-beta.3 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cc5d80d7-dbbc-48ab-b7b9-94cf6222dec0"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "9afc85bd-101e-0035-2305-2821b4000000",
+      "x-ms-client-request-id" : "cc5d80d7-dbbc-48ab-b7b9-94cf6222dec0",
+      "Date" : "Fri, 02 Apr 2021 21:13:49 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtfsgetpropserror0serviceapitestgetpropserrorecc49033fb477" ]
+}
