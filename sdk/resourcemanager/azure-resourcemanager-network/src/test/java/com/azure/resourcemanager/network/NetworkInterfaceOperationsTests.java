@@ -10,6 +10,7 @@ import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.NetworkInterfaces;
 import com.azure.resourcemanager.network.models.Networks;
 import com.azure.resourcemanager.network.models.NicIpConfiguration;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.models.ResourceGroups;
 import com.azure.core.management.Region;
@@ -375,7 +376,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
         Assertions.assertEquals(2, nic.ipConfigurations().get("nicip2").innerModel().applicationSecurityGroups().size());
         Assertions.assertEquals(
             new HashSet<>(Arrays.asList("asg1", "asg2")),
-            nic.ipConfigurations().get("nicip2").innerModel().applicationSecurityGroups().stream().map(ApplicationSecurityGroupInner::name).collect(Collectors.toSet()));
+            nic.ipConfigurations().get("nicip2").innerModel().applicationSecurityGroups().stream().map(inner -> ResourceUtils.nameFromResourceId(inner.id())).collect(Collectors.toSet()));
         if (!isPlaybackMode()) {
             // avoid concurrent request in playback
             applicationSecurityGroups = nic.ipConfigurations().get("nicip2").listAssociatedApplicationSecurityGroups();
