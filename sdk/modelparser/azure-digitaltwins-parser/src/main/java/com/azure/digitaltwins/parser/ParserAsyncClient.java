@@ -5,7 +5,6 @@ package com.azure.digitaltwins.parser;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
 
 /**
  * This class provides a client for interacting with Azure DigitalTwins Model Parser
@@ -19,8 +18,6 @@ public final class ParserAsyncClient {
 
     ParserAsyncClient(
         ParserServiceVersion serviceVersion) {
-
-        JacksonAdapter jacksonAdapter = new JacksonAdapter();
         this.serviceVersion = serviceVersion;
     }
 
