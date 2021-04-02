@@ -149,7 +149,7 @@ public final class WebPubSubAsyncGroup {
             default:
             case APPLICATION_JSON:
                 return getJsonBytes(message)
-                    .flatMap(jsonBytes ->  sendToAllWithResponse(message, contentTypeFinal,excludedConnectionIds,
+                    .flatMap(jsonBytes -> sendToAllWithResponse(message, contentTypeFinal, excludedConnectionIds,
                         context));
 
 
