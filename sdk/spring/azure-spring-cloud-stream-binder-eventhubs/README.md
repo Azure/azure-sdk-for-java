@@ -41,10 +41,6 @@ that's why you have to fill `spring.cloud.stream.eventhub.checkpoint-storage-acc
 Event Hub provides a similar concept of physical partition as Kafka. But unlike Kafka's auto rebalancing between consumers and partitions, Event Hub provides a kind of preemptive mode. The storage account acts as a lease to determine which partition is owned by which consumer. When a new consumer starts, it will try to steal some partitions
 from most heavy-loaded consumers to achieve the workload balancing.
 
-The default partition key uses the hash code value of byte[] type `Message.payload`.
-You can use the configuration of Producer `partition-key-extractor-name`, or `partition-key-expression` to specify
-how to obtain the partition key to calculate the partition ID.
-
 ## Examples 
 
 Please use this `sample` as a reference for how to use this binder. 
@@ -57,13 +53,48 @@ The binder provides the following configuration options in `application.properti
 
 Name | Description | Required | Default 
 ---|---|---|---
- spring.cloud.azure.credential-file-path | Location of azure credential file | Yes |
  spring.cloud.azure.resource-group | Name of Azure resource group | Yes |
  spring.cloud.azure.region | Region name of the Azure resource group, e.g. westus | Yes | 
  spring.cloud.azure.eventhub.namespace | Event Hub Namespace. Auto creating if missing | Yes |
  spring.cloud.azure.eventhub.checkpoint-storage-account | StorageAccount name for checkpoint message successfully consumed | Yes
 
- #### Event Hub Producer Properties ####
+#### Common Producer Properties ####
+
+You can use the producer configurations of **Spring Cloud Stream**, 
+it uses the configuration with the format of `spring.cloud.stream.bindings.<channelName>.producer`.
+
+##### Partition configuration
+
+The partition key is the hash value of the message payload byte[] type by default.
+When using a special header to partition, we first get the partition ID from the header `azure_partition_id`, 
+and then get the partition key from the header `azure_partition_key`.
+
+It also supports to specify the following configuration items to 
+set the partition key to calculate the partition ID
+
+**_partition-count_**
+
+The number of target partitions for the data, if partitioning is enabled.
+
+Default: 1
+
+**_partition-key-extractor-name_**
+
+The name of the bean that implements `PartitionKeyExtractorStrategy`. 
+The partition handler will first use the `PartitionKeyExtractorStrategy#extractKey` method to obtain the partition key value.
+
+Default: null
+
+**_partition-key-expression_**
+
+A SpEL expression that determines how to partition outbound data. 
+When interface `PartitionKeyExtractorStrategy` is not implemented, it will be called in the method `PartitionHandler#extractKey`.
+
+Default: null
+
+For more information about setting partition for the producer properties, please refer to the [Producer Properties of Spring Cloud Stream][spring_cloud_stream_3.1.1_producer_properties].
+
+#### Event Hub Producer Properties ####
 
 It supports the following configurations with the format of `spring.cloud.stream.eventhub.bindings.<channelName>.producer`.
  
@@ -79,25 +110,6 @@ Default: `false`
 Effective only if `sync` is set to true. The amount of time to wait for a response from Event Hub after a send operation, in milliseconds.
 
 Default: `10000`
-
-**_partition-count_**
-
-Optional. Effective only if `partition-key-expression` or `partition-key-extractor-name` is set. The partition size of Event Hub.
-
-Default: 1
-
-**_partition-key-extractor-name_**
-
-Optional. It is the name of a Bean, which implements interface `PartitionKeyExtractorStrategy`.
-`PartitionHandler#extractKey`, the partition handler will first use the `PartitionKeyExtractorStrategy#extractKey` method to apply the message to be sent to obtain the partition key value.
-
-Default: N/A
-
-**_partition-key-expression_**
-
-Optional. It is a SpEL expression that only applies to the message to be sent. When interface `PartitionKeyExtractorStrategy#extractKey` is not implemented, it will be called in the method `PartitionHandler#extractKey`.
-
-Default: N/A
 
 #### Event Hub Consumer Properties ####
 
@@ -209,3 +221,4 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
 [azure_event_hub]: https://azure.microsoft.com/services/event-hubs/
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[spring_cloud_stream_3.1.1_producer_properties]: https://docs.spring.io/spring-cloud-stream/docs/3.1.1/reference/html/spring-cloud-stream.html#_producer_properties
