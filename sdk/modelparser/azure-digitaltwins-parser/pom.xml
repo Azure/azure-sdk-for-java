@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-digitaltwins-parser</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure-digitaltwins-parser;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-digitaltwins-parser;current} -->
 
   <name>Microsoft Azure client library for DigitalTwins Model Parser</name>
   <description>This package contains the Microsoft Azure DigitalTwins Model Parser client library.</description>
