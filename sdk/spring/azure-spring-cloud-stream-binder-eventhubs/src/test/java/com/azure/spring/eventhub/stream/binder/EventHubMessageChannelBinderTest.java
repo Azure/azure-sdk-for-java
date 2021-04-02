@@ -10,8 +10,9 @@ import com.azure.spring.integration.core.api.reactor.DefaultMessageHandler;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.support.EventHubTestOperation;
 import org.assertj.core.api.Assertions;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mock;
 import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
 import org.springframework.cloud.stream.provisioning.ProducerDestination;
@@ -21,6 +22,7 @@ import org.springframework.expression.spel.standard.SpelExpression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.messaging.MessageChannel;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class EventHubMessageChannelBinderTest {
 
     @Mock
@@ -42,7 +44,7 @@ public class EventHubMessageChannelBinderTest {
 
     private static final String PARTITION_HEADER = "headers['scst_partition']";
 
-    @Before
+    @BeforeAll
     public void setUp() {
         this.binder = new EventHubTestBinder(new EventHubTestOperation(clientFactory, () -> eventContext));
         this.producerProperties = new ExtendedProducerProperties<>(new EventHubProducerProperties());

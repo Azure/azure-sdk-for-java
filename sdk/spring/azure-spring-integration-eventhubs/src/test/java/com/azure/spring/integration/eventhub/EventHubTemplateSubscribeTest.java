@@ -9,10 +9,13 @@ import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import com.azure.spring.integration.eventhub.impl.EventHubProcessor;
 import com.azure.spring.integration.eventhub.impl.EventHubTemplate;
 import com.azure.spring.integration.test.support.SubscribeByGroupOperationTest;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.util.Optional;
 
@@ -20,7 +23,9 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+@ExtendWith(MockitoExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class EventHubTemplateSubscribeTest extends SubscribeByGroupOperationTest<EventHubOperation> {
 
     @Mock
@@ -29,7 +34,7 @@ public class EventHubTemplateSubscribeTest extends SubscribeByGroupOperationTest
     @Mock
     private EventProcessorClient eventProcessorClient;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         this.subscribeByGroupOperation = new EventHubTemplate(mockClientFactory);
         when(this.mockClientFactory.createEventProcessorClient(anyString(), anyString(), isA(EventHubProcessor.class)))

@@ -3,20 +3,25 @@
 
 package com.azure.spring.integration.storage.queue;
 
-import com.azure.storage.queue.QueueAsyncClient;
-import com.azure.storage.queue.models.SendMessageResult;
 import com.azure.spring.integration.storage.queue.factory.StorageQueueClientFactory;
 import com.azure.spring.integration.test.support.reactor.SendOperationTest;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import com.azure.storage.queue.QueueAsyncClient;
+import com.azure.storage.queue.models.SendMessageResult;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import reactor.core.publisher.Mono;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+@ExtendWith(MockitoExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class StorageQueueTemplateSendTest extends SendOperationTest<StorageQueueOperation> {
 
     @Mock
@@ -25,7 +30,7 @@ public class StorageQueueTemplateSendTest extends SendOperationTest<StorageQueue
     @Mock
     private QueueAsyncClient mockClient;
 
-    @Before
+    @BeforeEach
     public void setup() {
         when(this.mockClientFactory.getOrCreateQueueClient(eq(destination))).thenReturn(mockClient);
         when(this.mockClient.sendMessage(anyString())).thenReturn(Mono.just(new SendMessageResult()));

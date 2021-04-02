@@ -5,15 +5,16 @@ package com.azure.spring.integration.test.support.reactor;
 
 import com.google.common.collect.ImmutableMap;
 import com.azure.spring.integration.core.api.reactor.SendOperation;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.NestedRuntimeException;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import reactor.core.publisher.Mono;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 public abstract class SendOperationTest<O extends SendOperation> {
@@ -82,11 +83,13 @@ public abstract class SendOperationTest<O extends SendOperation> {
         verifySendCalled(1);
     }
 
-    @Test(expected = NestedRuntimeException.class)
+    @Test
     public void testSendCreateSenderFailure() {
         whenSendWithException();
 
-        this.sendOperation.sendAsync(destination, this.message, null).block();
+        Assertions.assertThrows(NestedRuntimeException.class,
+            () -> this.sendOperation.sendAsync(destination, this.message, null).block());
+
     }
 
     @Test

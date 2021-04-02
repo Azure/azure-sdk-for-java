@@ -8,9 +8,8 @@ import com.azure.spring.integration.core.AzureHeaders;
 import com.azure.spring.integration.core.api.PartitionSupplier;
 import com.azure.spring.integration.core.api.reactor.DefaultMessageHandler;
 import com.azure.spring.integration.core.api.reactor.SendOperation;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.expression.Expression;
 import org.springframework.integration.MessageTimeoutException;
 import org.springframework.messaging.Message;
@@ -25,7 +24,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.spy;
 
-@RunWith(MockitoJUnitRunner.class)
 public abstract class MessageHandlerTest<O extends SendOperation> {
 
     protected O sendOperation;
@@ -108,7 +106,7 @@ public abstract class MessageHandlerTest<O extends SendOperation> {
         verify(timeout, times(1)).getValue(eq(null), eq(this.message), eq(Long.class));
     }
 
-    @Test(expected = MessageTimeoutException.class)
+    @Test
     @SuppressWarnings("unchecked")
     public void testSendTimeout() {
         when(this.sendOperation.sendAsync(eq(this.destination), isA(Message.class), isA(PartitionSupplier.class)))
@@ -116,7 +114,7 @@ public abstract class MessageHandlerTest<O extends SendOperation> {
         this.handler.setSync(true);
         this.handler.setSendTimeout(1);
 
-        this.handler.handleMessage(this.message);
+        Assertions.assertThrows(MessageTimeoutException.class, () -> this.handler.handleMessage(this.message));
     }
 
     @Test

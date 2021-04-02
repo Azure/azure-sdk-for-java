@@ -8,19 +8,22 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.IterableStream;
-import com.azure.storage.queue.QueueAsyncClient;
-import com.azure.storage.queue.models.QueueMessageItem;
-import com.azure.storage.queue.models.QueueStorageException;
-import com.google.common.collect.Lists;
 import com.azure.spring.integration.core.AzureHeaders;
 import com.azure.spring.integration.core.api.CheckpointMode;
 import com.azure.spring.integration.core.api.reactor.Checkpointer;
 import com.azure.spring.integration.storage.queue.factory.StorageQueueClientFactory;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import com.azure.storage.queue.QueueAsyncClient;
+import com.azure.storage.queue.models.QueueMessageItem;
+import com.azure.storage.queue.models.QueueStorageException;
+import com.google.common.collect.Lists;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.messaging.Message;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -35,7 +38,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+@ExtendWith(MockitoExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class StorageQueueTemplateReceiveTest {
 
     private final String messageId = "1";
@@ -50,7 +55,7 @@ public class StorageQueueTemplateReceiveTest {
     private int visibilityTimeoutInSeconds = 30;
     private String destination = "queue";
 
-    @Before
+    @BeforeEach
     public void setup() {
         queueMessage = new QueueMessageItem();
         queueMessage.setMessageText(messageText);

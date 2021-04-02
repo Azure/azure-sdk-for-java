@@ -8,19 +8,26 @@ import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConver
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
 import com.microsoft.azure.servicebus.IMessage;
 import com.microsoft.azure.servicebus.ITopicClient;
-import org.junit.Before;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
+
+import java.util.concurrent.CompletableFuture;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ExtendWith(MockitoExtension.class)
 public class TopicTemplateSendTest extends ServiceBusTemplateSendTest<ServiceBusTopicClientFactory, ITopicClient> {
 
-    @Before
+    @BeforeEach
     @Override
     public void setUp() {
         this.mockClientFactory = mock(ServiceBusTopicClientFactory.class);
@@ -29,6 +36,11 @@ public class TopicTemplateSendTest extends ServiceBusTemplateSendTest<ServiceBus
         when(this.mockClient.sendAsync(isA(IMessage.class))).thenReturn(future);
 
         this.sendOperation = new ServiceBusTopicTemplate(mockClientFactory, new ServiceBusMessageConverter());
+    }
+
+    @AfterEach
+    public void cleanUp() {
+        this.future = new CompletableFuture<>();
     }
 
 }

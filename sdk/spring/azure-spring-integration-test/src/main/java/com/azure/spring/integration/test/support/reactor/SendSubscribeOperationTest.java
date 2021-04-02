@@ -9,8 +9,9 @@ import com.azure.spring.integration.core.api.CheckpointMode;
 import com.azure.spring.integration.core.api.reactor.Checkpointer;
 import com.azure.spring.integration.core.api.reactor.SendOperation;
 import com.azure.spring.integration.test.support.pojo.User;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 
@@ -22,10 +23,11 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class SendSubscribeOperationTest<T extends SendOperation> {
 
     protected T sendSubscribeOperation;
@@ -139,7 +141,7 @@ public abstract class SendSubscribeOperationTest<T extends SendOperation> {
         assertEquals(user, message.getPayload());
     }
 
-    @Before
+    @BeforeEach
     public abstract void setUp();
 
     protected abstract void verifyCheckpointSuccessCalled(int times);

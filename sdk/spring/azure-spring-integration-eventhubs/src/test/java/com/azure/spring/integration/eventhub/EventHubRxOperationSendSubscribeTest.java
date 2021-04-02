@@ -12,18 +12,23 @@ import com.azure.spring.integration.eventhub.api.EventHubRxOperation;
 import com.azure.spring.integration.eventhub.support.RxEventHubTestOperation;
 import com.azure.spring.integration.test.support.pojo.User;
 import com.azure.spring.integration.test.support.rx.RxSendSubscribeByGroupOperationTest;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+@ExtendWith(MockitoExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class EventHubRxOperationSendSubscribeTest extends RxSendSubscribeByGroupOperationTest<EventHubRxOperation> {
 
     @Mock
@@ -32,7 +37,7 @@ public class EventHubRxOperationSendSubscribeTest extends RxSendSubscribeByGroup
     @Mock
     PartitionContext partitionContext;
 
-    @Before
+    @BeforeEach
     @Override
     public void setUp() {
         when(this.eventContext.updateCheckpointAsync()).thenReturn(Mono.empty());

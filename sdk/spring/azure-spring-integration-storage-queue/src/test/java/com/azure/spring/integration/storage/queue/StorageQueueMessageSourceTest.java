@@ -5,21 +5,22 @@ package com.azure.spring.integration.storage.queue;
 
 import com.azure.spring.integration.storage.queue.inbound.StorageQueueMessageSource;
 import com.google.common.collect.ImmutableMap;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import reactor.core.publisher.Mono;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class StorageQueueMessageSourceTest {
 
     @Mock
@@ -30,7 +31,7 @@ public class StorageQueueMessageSourceTest {
     private String destination = "test-destination";
     private StorageQueueMessageSource messageSource;
 
-    @Before
+    @BeforeEach
     public void setup() {
         messageSource = new StorageQueueMessageSource(destination, mockOperation);
     }
@@ -41,11 +42,11 @@ public class StorageQueueMessageSourceTest {
         assertNull(messageSource.doReceive());
     }
 
-    @Test(expected = StorageQueueRuntimeException.class)
+    @Test
     public void testReceiveFailure() {
         when(this.mockOperation.receiveAsync(eq(destination))).thenReturn(Mono.error(
             new StorageQueueRuntimeException("Failed to receive message.")));
-        messageSource.doReceive();
+        assertThrows(StorageQueueRuntimeException.class, () -> messageSource.doReceive());
     }
 
     @Test

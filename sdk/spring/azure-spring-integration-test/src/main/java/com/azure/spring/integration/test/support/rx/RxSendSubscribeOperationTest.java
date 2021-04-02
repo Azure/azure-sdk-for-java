@@ -7,8 +7,9 @@ import com.azure.spring.integration.core.api.CheckpointConfig;
 import com.azure.spring.integration.core.api.CheckpointMode;
 import com.azure.spring.integration.core.api.RxSendOperation;
 import com.azure.spring.integration.test.support.pojo.User;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import rx.Observable;
@@ -20,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.IntStream;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class RxSendSubscribeOperationTest<T extends RxSendOperation> {
 
     protected T sendSubscribeOperation;
@@ -115,7 +117,7 @@ public abstract class RxSendSubscribeOperationTest<T extends RxSendOperation> {
         verifyCheckpointSuccessCalled(messages.length);
     }
 
-    @Before
+    @BeforeEach
     public abstract void setUp();
 
     protected abstract void verifyCheckpointSuccessCalled(int times);

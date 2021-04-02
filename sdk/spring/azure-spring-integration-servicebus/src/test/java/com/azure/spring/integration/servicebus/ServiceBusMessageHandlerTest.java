@@ -7,9 +7,11 @@ import com.azure.spring.integration.core.DefaultMessageHandler;
 import com.azure.spring.integration.core.api.PartitionSupplier;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueOperation;
 import com.azure.spring.integration.test.support.MessageHandlerTest;
-import org.junit.Before;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.messaging.Message;
 
 import static org.mockito.ArgumentMatchers.eq;
@@ -17,10 +19,11 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+@ExtendWith(MockitoExtension.class)
 public class ServiceBusMessageHandlerTest extends MessageHandlerTest<ServiceBusQueueOperation> {
 
-    @Before
+    @BeforeEach
     @Override
     @SuppressWarnings("unchecked")
     public void setUp() {
