@@ -1,0 +1,34 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+    branches:
+        include:
+            - master
+            - main
+            - feature/*
+            - hotfix/*
+            - release/*
+    paths:
+        include:
+            - sdk/modelparser/
+
+pr:
+    branches:
+        include:
+            - master
+            - main
+            - feature/*
+            - hotfix/*
+            - release/*
+    paths:
+        include:
+            - sdk/modelparser/
+
+extends:
+    template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+    parameters:
+        ServiceDirectory: modelparser
+        Artifacts:
+            -   name: azure-digitaltwins-parser
+                groupId: com.azure
+                safeName: azuredigitaltwinsparser

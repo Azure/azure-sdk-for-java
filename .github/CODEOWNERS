@@ -48,6 +48,9 @@
 # PRLabel: %Digital Twins
 /sdk/digitaltwins/                                  @drwill-ms @timtay-microsoft @abhipsaMisra @vinagesh @azabbasi @bikamani @barustum
 
+# PRLabel: %DigitalTwins Parser
+/sdk/modelparser                                    @drwill-ms @timtay-microsoft @abhipsaMisra @vinagesh @azabbasi @bikamani @barustum
+
 # PRLabel: %Models Repository
 /sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @vinagesh @azabbasi @bikamani @barustum @digimaun
 
