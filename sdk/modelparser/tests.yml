@@ -1,0 +1,11 @@
+trigger: none
+
+stages:
+    -   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+        parameters:
+            Artifacts:
+                -   name: azure-digitaltwins-parser
+                    groupId: com.azure
+                    safeName: azuredigitaltwinsparser
+            ServiceDirectory: modelparser
+            Clouds: 'Preview'
