@@ -158,7 +158,6 @@ Make sure the managed identity can access target Key Vault.
 
 #### Using a client ID and client secret
 Add these items in your `application.yml`:
-<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/resources/application.yml#L1-L7 -->
 ```yaml
 azure:
   keyvault:

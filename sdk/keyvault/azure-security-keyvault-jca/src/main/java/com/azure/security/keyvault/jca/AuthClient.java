@@ -134,9 +134,6 @@ class AuthClient extends DelegateRestClient {
     private String getAccessTokenOnAppService(String resource, String clientId) {
         LOGGER.entering("AuthClient", "getAccessTokenOnAppService", resource);
         LOGGER.info("Getting access token using managed identity based on MSI_SECRET");
-        if (clientId != null) {
-            LOGGER.log(INFO, "Using managed identity with client ID: {0}", clientId);
-        }
         String result = null;
 
         StringBuilder url = new StringBuilder();
@@ -145,6 +142,7 @@ class AuthClient extends DelegateRestClient {
            .append(RESOURCE_FRAGMENT).append(resource);
         if (clientId != null) {
             url.append("&clientid=").append(clientId);
+            LOGGER.log(INFO, "Using managed identity with client ID: {0}", clientId);
         }
 
         HashMap<String, String> headers = new HashMap<>();
