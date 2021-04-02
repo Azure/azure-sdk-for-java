@@ -82,10 +82,6 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      */
     public DeviceCodeCredential build() {
         String clientId = this.clientId != null ? this.clientId : IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID;
-        ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
-                put("clientId", clientId);
-                put("challengeConsumer", challengeConsumer);
-            }});
         return new DeviceCodeCredential(clientId, tenantId, challengeConsumer, automaticAuthentication,
                 identityClientOptions);
     }
