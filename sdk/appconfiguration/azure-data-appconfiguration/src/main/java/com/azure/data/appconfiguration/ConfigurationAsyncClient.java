@@ -62,7 +62,7 @@ public final class ConfigurationAsyncClient {
     private final String serviceEndpoint;
     private final ConfigurationService service;
     private final String apiVersion;
-    private SyncTokenPolicy syncTokenPolicy;
+    private final SyncTokenPolicy syncTokenPolicy;
 
     /**
      * Creates a ConfigurationAsyncClient that sends requests to the configuration service at {@code serviceEndpoint}.
@@ -848,6 +848,7 @@ public final class ConfigurationAsyncClient {
      * Adds an external synchronization token to ensure service requests receive up-to-date values.
      *
      * @param token an external synchronization token to ensure service requests receive up-to-date values.
+     * @throws NullPointerException if the given token is null.
      */
     public void updateSyncToken(String token) {
         Objects.requireNonNull(token, "'token' cannot be null.");

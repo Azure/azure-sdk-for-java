@@ -104,7 +104,7 @@ public final class ConfigurationClientBuilder {
     private HttpPipeline pipeline;
     private HttpPipelinePolicy retryPolicy;
     private Configuration configuration;
-    private SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
+    private SyncTokenPolicy syncTokenPolicy;
     private ConfigurationServiceVersion version;
 
     /**
@@ -164,6 +164,8 @@ public final class ConfigurationClientBuilder {
         }
         // endpoint cannot be null, which is required in request authentication
         Objects.requireNonNull(buildEndpoint, "'Endpoint' is required and can not be null.");
+
+        syncTokenPolicy = new SyncTokenPolicy();
 
         // if http pipeline is already defined
         if (pipeline != null) {

@@ -44,7 +44,8 @@ public class SyncTokenPolicyTest {
      */
     @Test
     public void parseSyncTokenString() {
-        final SyncToken syncToken = new SyncToken(constructSyncTokenString(ID, VALUE, SN_NAME, SEQUENCE_NUMBER));
+        final SyncToken syncToken =
+            SyncToken.createSyncToken(constructSyncTokenString(ID, VALUE, SN_NAME, SEQUENCE_NUMBER));
         syncTokenEquals(syncToken, ID, VALUE, SEQUENCE_NUMBER);
     }
 
@@ -53,7 +54,7 @@ public class SyncTokenPolicyTest {
      */
     @Test
     public void parseNullSyncTokenString() {
-        assertThrows(IllegalArgumentException.class, () -> new SyncToken(null));
+        assertThrows(IllegalArgumentException.class, () -> SyncToken.createSyncToken(null));
     }
 
     /**
@@ -61,7 +62,7 @@ public class SyncTokenPolicyTest {
      */
     @Test
     public void parseEmptySyncTokenString() {
-        assertThrows(IllegalArgumentException.class, () -> new SyncToken(""));
+        assertThrows(IllegalArgumentException.class, () -> SyncToken.createSyncToken(""));
     }
 
     /**
@@ -69,7 +70,8 @@ public class SyncTokenPolicyTest {
      */
     @Test
     public void parseMissingSectionSyncToken() {
-        assertThrows(IllegalArgumentException.class, () -> new SyncToken(constructSyncTokenString(ID, VALUE, SN_NAME, null)));
+        assertThrows(IllegalArgumentException.class,
+            () -> SyncToken.createSyncToken(constructSyncTokenString(ID, VALUE, SN_NAME, null)));
     }
 
     /**
@@ -77,7 +79,8 @@ public class SyncTokenPolicyTest {
      */
     @Test
     public void parseWrongIdentifierNameSyncToken() {
-        assertThrows(IllegalArgumentException.class, () -> new SyncToken(constructSyncTokenString(null, VALUE, SN_NAME, SEQUENCE_NUMBER)));
+        assertThrows(IllegalArgumentException.class,
+            () -> SyncToken.createSyncToken(constructSyncTokenString(null, VALUE, SN_NAME, SEQUENCE_NUMBER)));
     }
 
     /**
@@ -85,7 +88,8 @@ public class SyncTokenPolicyTest {
      */
     @Test
     public void parseMissingIdentifierValueSyncToken() {
-        assertThrows(IllegalArgumentException.class, () -> new SyncToken(constructSyncTokenString(ID, null, SN_NAME, SEQUENCE_NUMBER)));
+        assertThrows(IllegalArgumentException.class,
+            () -> SyncToken.createSyncToken(constructSyncTokenString(ID, null, SN_NAME, SEQUENCE_NUMBER)));
     }
 
     /**
@@ -93,7 +97,8 @@ public class SyncTokenPolicyTest {
      */
     @Test
     public void parseMissingSequenceNumberNameSyncToken() {
-        assertThrows(IllegalArgumentException.class, () -> new SyncToken(constructSyncTokenString(ID, VALUE, null, SEQUENCE_NUMBER)));
+        assertThrows(IllegalArgumentException.class,
+            () -> SyncToken.createSyncToken(constructSyncTokenString(ID, VALUE, null, SEQUENCE_NUMBER)));
     }
 
     /**
@@ -101,7 +106,8 @@ public class SyncTokenPolicyTest {
      */
     @Test
     public void parseMissingSequenceNumberSyncToken() {
-        assertThrows(IllegalArgumentException.class, () -> new SyncToken(constructSyncTokenString(ID, VALUE, SN_NAME, null)));
+        assertThrows(IllegalArgumentException.class,
+            () -> SyncToken.createSyncToken(constructSyncTokenString(ID, VALUE, SN_NAME, null)));
     }
 
     /**
@@ -109,7 +115,8 @@ public class SyncTokenPolicyTest {
      */
     @Test
     public void parseInvalidSequenceNumberSyncToken() {
-        assertThrows(IllegalArgumentException.class, () -> new SyncToken(constructSyncTokenString(ID, VALUE, SN_NAME, SEQUENCE_NUMBER) + "ABC"));
+        assertThrows(IllegalArgumentException.class,
+            () -> SyncToken.createSyncToken(constructSyncTokenString(ID, VALUE, SN_NAME, SEQUENCE_NUMBER) + "ABC"));
     }
 
     @Test
@@ -194,7 +201,7 @@ public class SyncTokenPolicyTest {
         pipeline.send(request).block();
     }
 
-    private void syncTokenEquals(SyncToken syncToken, String id, String value, Long sn) {
+    private void syncTokenEquals(SyncToken syncToken, String id, String value, long sn) {
         assertEquals(id, syncToken.getId());
         assertEquals(value, syncToken.getValue());
         assertEquals(sn, syncToken.getSequenceNumber());

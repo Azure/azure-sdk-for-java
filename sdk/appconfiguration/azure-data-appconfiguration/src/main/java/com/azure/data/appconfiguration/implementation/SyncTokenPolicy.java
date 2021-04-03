@@ -38,6 +38,7 @@ public final class SyncTokenPolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
 
+        // TODO: https://github.com/Azure/azure-sdk-for-java/issues/20355
         // Add all of sync-tokens to HTTP request header
         context.getHttpRequest().setHeader(SYNC_TOKEN, getSyncTokenHeader());
 
@@ -79,9 +80,9 @@ public final class SyncTokenPolicy implements HttpPipelinePolicy {
 
             final SyncToken syncToken;
             try {
-                syncToken = new SyncToken(syncTokenString);
+                syncToken = SyncToken.createSyncToken(syncTokenString);
             } catch (Exception ex){
-                logger.warning(SKIP_INVALID_TOKEN, syncTokenString);
+                logger.info(SKIP_INVALID_TOKEN, syncTokenString);
                 continue;
             }
 

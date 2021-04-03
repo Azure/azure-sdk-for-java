@@ -27,11 +27,11 @@ public final class SyncToken {
         "Expected sync-token valid format should be <id>=<value>;sn=<sn>. For multiple sync tokens, " +
             "<id>=<value>;sn=<sn>,<id>=<value>;sn=<sn>.";
 
-    private final ClientLogger logger = new ClientLogger(SyncToken.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SyncToken.class);
 
-    private final String id;
-    private final String value;
-    private final Long sequenceNumber;
+    private String id;
+    private String value;
+    private long sequenceNumber;
 
     /**
      * Create an instance of SyncToken class. Skip the sync token if the parsing failed.
@@ -42,14 +42,15 @@ public final class SyncToken {
      * Allows for better concurrency and client cache ability. The client may choose to use only token's last version,
      * since token versions are inclusive. Not required for requests.
      */
-    SyncToken(String syncToken) {
+    public static SyncToken createSyncToken(String syncToken) {
+        final SyncToken token = new SyncToken();
         if (CoreUtils.isNullOrEmpty(syncToken)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(CANNOT_EMPTY_OR_NULL));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(CANNOT_EMPTY_OR_NULL));
         }
 
         final String[] syncTokenParts = syncToken.split(SEMICOLON, 2);
         if (syncTokenParts.length != 2) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(VALID_FORMAT_ERROR_MESSAGE));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(VALID_FORMAT_ERROR_MESSAGE));
         }
 
         final String[] idParts = syncTokenParts[0].split(EQUAL, 2);
@@ -57,16 +58,17 @@ public final class SyncToken {
         if (idParts.length != 2 || snParts.length != 2
                 || idParts[0].isEmpty() || idParts[1].isEmpty()
                 || snParts[0].isEmpty() || snParts[1].isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(VALID_FORMAT_ERROR_MESSAGE));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(VALID_FORMAT_ERROR_MESSAGE));
         }
 
         try {
-            this.sequenceNumber = Long.parseLong(snParts[1]);
+            token.sequenceNumber = Long.parseLong(snParts[1]);
         } catch (NumberFormatException ex) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(SEQUENCE_NUMBER_CANNOT_PARSED));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(SEQUENCE_NUMBER_CANNOT_PARSED));
         }
-        this.id = idParts[0];
-        this.value = idParts[1];
+        token.id = idParts[0];
+        token.value = idParts[1];
+        return token;
     }
 
     /**
@@ -96,7 +98,7 @@ public final class SyncToken {
      *
      * @return Token sequence number
      */
-    public Long getSequenceNumber() {
+    public long getSequenceNumber() {
         return sequenceNumber;
     }
 }
