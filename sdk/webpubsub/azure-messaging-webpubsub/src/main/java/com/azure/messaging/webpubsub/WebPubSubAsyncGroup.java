@@ -19,7 +19,6 @@ import java.nio.charset.StandardCharsets;
 
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.messaging.webpubsub.WebPubSubAsyncServiceClient.configureTracing;
-import static com.azure.messaging.webpubsub.implementation.WebPubSubUtils.getJsonBytes;
 import static com.azure.messaging.webpubsub.models.WebPubSubContentType.APPLICATION_JSON;
 import static com.azure.messaging.webpubsub.models.WebPubSubContentType.APPLICATION_OCTET_STREAM;
 
@@ -136,21 +135,18 @@ public final class WebPubSubAsyncGroup {
                                                WebPubSubContentType contentType,
                                                final Iterable<String> excludedConnectionIds,
                                                final Context context) {
-        WebPubSubContentType contentTypeFinal = contentType == null ? APPLICATION_JSON : contentType;
-        switch (contentTypeFinal) {
+        contentType = contentType == null ? APPLICATION_JSON : contentType;
+        switch (contentType) {
             case TEXT_PLAIN:
                 return webPubSubApis.sendToGroupWithResponseAsync(hub, group, message, excludedConnectionIds, configureTracing(context))
                    .doOnSubscribe(ignoredValue -> logger.verbose("Broadcasting message"))
                    .doOnSuccess(response -> logger.verbose("Broadcasted message, response: {}", response.getValue()))
                    .doOnError(error -> logger.warning("Failed to broadcast message, response: {}", error));
-            case APPLICATION_OCTET_STREAM:
-                return sendToAllWithResponse(message.getBytes(StandardCharsets.UTF_8), contentTypeFinal,
-                    excludedConnectionIds, context);
             default:
             case APPLICATION_JSON:
-                return getJsonBytes(message)
-                    .flatMap(jsonBytes -> sendToAllWithResponse(message, contentTypeFinal, excludedConnectionIds,
-                        context));
+            case APPLICATION_OCTET_STREAM:
+                return sendToAllWithResponse(message.getBytes(StandardCharsets.UTF_8), contentType,
+                    excludedConnectionIds, context);
         }
     }
 
