@@ -196,6 +196,15 @@ public final class SearchField {
     private LexicalAnalyzerName indexAnalyzerName;
 
     /*
+     * The name of the normalizer to use for the field. This option can be used
+     * only with fields with filterable, sortable, or facetable enabled. Once
+     * the normalizer is chosen, it cannot be changed for the field. Must be
+     * null for complex fields.
+     */
+    @JsonProperty(value = "normalizer")
+    private LexicalNormalizerName normalizer;
+
+    /*
      * A list of the names of synonym maps to associate with this field. This
      * option can be used only with searchable fields. Currently only one
      * synonym map per field is supported. Assigning a synonym map to a field
@@ -656,6 +665,30 @@ public final class SearchField {
      */
     public SearchField setIndexAnalyzerName(LexicalAnalyzerName indexAnalyzerName) {
         this.indexAnalyzerName = indexAnalyzerName;
+        return this;
+    }
+
+    /**
+     * Get the normalizer property: The name of the normalizer to use for the field. This option can be used only with
+     * fields with filterable, sortable, or facetable enabled. Once the normalizer is chosen, it cannot be changed for
+     * the field. Must be null for complex fields.
+     *
+     * @return the normalizer value.
+     */
+    public LexicalNormalizerName getNormalizer() {
+        return this.normalizer;
+    }
+
+    /**
+     * Set the normalizer property: The name of the normalizer to use for the field. This option can be used only with
+     * fields with filterable, sortable, or facetable enabled. Once the normalizer is chosen, it cannot be changed for
+     * the field. Must be null for complex fields.
+     *
+     * @param normalizer the normalizer value to set.
+     * @return the SearchField object itself.
+     */
+    public SearchField setNormalizer(LexicalNormalizerName normalizer) {
+        this.normalizer = normalizer;
         return this;
     }
 

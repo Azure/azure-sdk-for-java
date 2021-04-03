@@ -47,6 +47,10 @@ public final class SearchIndexConverter {
             searchIndex.setCharFilters(obj.getCharFilters());
         }
 
+        if (obj.getNormalizers() != null) {
+            searchIndex.setNormalizers(obj.getNormalizers());
+        }
+
         if (obj.getTokenFilters() != null) {
             List<TokenFilter> tokenFilters =
                 obj.getTokenFilters().stream().map(TokenFilterConverter::map).collect(Collectors.toList());
@@ -76,8 +80,7 @@ public final class SearchIndexConverter {
             searchIndex.setCorsOptions(obj.getCorsOptions());
         }
 
-        String eTag = obj.getETag();
-        searchIndex.setETag(eTag);
+        searchIndex.setETag(obj.getETag());
 
         if (obj.getScoringProfiles() != null) {
             searchIndex.setScoringProfiles(obj.getScoringProfiles());
@@ -117,6 +120,10 @@ public final class SearchIndexConverter {
             searchIndex.setCharFilters(obj.getCharFilters());
         }
 
+        if (obj.getNormalizers() != null) {
+            searchIndex.setNormalizers(obj.getNormalizers());
+        }
+
         if (obj.getTokenFilters() != null) {
             List<com.azure.search.documents.indexes.implementation.models.TokenFilter> tokenFilters =
                 obj.getTokenFilters().stream().map(TokenFilterConverter::map).collect(Collectors.toList());
@@ -146,8 +153,7 @@ public final class SearchIndexConverter {
             searchIndex.setCorsOptions(obj.getCorsOptions());
         }
 
-        String eTag = obj.getETag();
-        searchIndex.setETag(eTag);
+        searchIndex.setETag(obj.getETag());
 
         if (obj.getScoringProfiles() != null) {
             searchIndex.setScoringProfiles(obj.getScoringProfiles());

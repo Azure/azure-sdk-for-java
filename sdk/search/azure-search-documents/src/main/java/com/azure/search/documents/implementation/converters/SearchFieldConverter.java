@@ -27,17 +27,13 @@ public final class SearchFieldConverter {
 
         SearchField searchField = new SearchField(obj.getName(), obj.getType());
 
-        Boolean filterable = obj.isFilterable();
-        searchField.setFilterable(filterable);
+        searchField.setFilterable(obj.isFilterable());
 
         Boolean hidden = obj.isRetrievable() == null ? null : !obj.isRetrievable();
         searchField.setHidden(hidden);
 
-        Boolean sortable = obj.isSortable();
-        searchField.setSortable(sortable);
-
-        Boolean searchable = obj.isSearchable();
-        searchField.setSearchable(searchable);
+        searchField.setSortable(obj.isSortable());
+        searchField.setSearchable(obj.isSearchable());
 
         if (obj.getAnalyzer() != null) {
             searchField.setAnalyzerName(obj.getAnalyzer());
@@ -52,8 +48,11 @@ public final class SearchFieldConverter {
             searchField.setIndexAnalyzerName(obj.getIndexAnalyzer());
         }
 
-        Boolean facetable = obj.isFacetable();
-        searchField.setFacetable(facetable);
+        searchField.setFacetable(obj.isFacetable());
+
+        if (obj.getNormalizer() != null) {
+            searchField.setNormalizer(obj.getNormalizer());
+        }
 
         if (obj.getSynonymMaps() != null) {
             List<String> synonymMaps = new ArrayList<>(obj.getSynonymMaps());
@@ -66,8 +65,8 @@ public final class SearchFieldConverter {
             searchField.setFields(fields);
         }
 
-        Boolean key = obj.isKey();
-        searchField.setKey(key);
+        searchField.setKey(obj.isKey());
+
         return searchField;
     }
 
@@ -82,17 +81,13 @@ public final class SearchFieldConverter {
         com.azure.search.documents.indexes.implementation.models.SearchField searchField =
             new com.azure.search.documents.indexes.implementation.models.SearchField(obj.getName(), obj.getType());
 
-        Boolean filterable = obj.isFilterable();
-        searchField.setFilterable(filterable);
+        searchField.setFilterable(obj.isFilterable());
 
         Boolean hidden = obj.isHidden() == null ? null : !obj.isHidden();
         searchField.setRetrievable(hidden);
 
-        Boolean sortable = obj.isSortable();
-        searchField.setSortable(sortable);
-
-        Boolean searchable = obj.isSearchable();
-        searchField.setSearchable(searchable);
+        searchField.setSortable(obj.isSortable());
+        searchField.setSearchable(obj.isSearchable());
 
         if (obj.getAnalyzerName() != null) {
             searchField.setAnalyzer(obj.getAnalyzerName());
@@ -106,8 +101,11 @@ public final class SearchFieldConverter {
             searchField.setIndexAnalyzer(obj.getIndexAnalyzerName());
         }
 
-        Boolean facetable = obj.isFacetable();
-        searchField.setFacetable(facetable);
+        searchField.setFacetable(obj.isFacetable());
+
+        if (obj.getNormalizer() != null) {
+            searchField.setNormalizer(obj.getNormalizer());
+        }
 
         if (obj.getSynonymMapNames() != null) {
             List<String> synonymMaps = new ArrayList<>(obj.getSynonymMapNames());
@@ -120,8 +118,7 @@ public final class SearchFieldConverter {
             searchField.setFields(fields);
         }
 
-        Boolean key = obj.isKey();
-        searchField.setKey(key);
+        searchField.setKey(obj.isKey());
 
         return searchField;
     }
