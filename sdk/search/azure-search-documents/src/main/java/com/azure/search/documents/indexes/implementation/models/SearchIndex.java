@@ -9,6 +9,7 @@ package com.azure.search.documents.indexes.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.search.documents.indexes.models.CharFilter;
 import com.azure.search.documents.indexes.models.CorsOptions;
+import com.azure.search.documents.indexes.models.LexicalNormalizer;
 import com.azure.search.documents.indexes.models.ScoringProfile;
 import com.azure.search.documents.indexes.models.SimilarityAlgorithm;
 import com.fasterxml.jackson.annotation.JsonProperty;

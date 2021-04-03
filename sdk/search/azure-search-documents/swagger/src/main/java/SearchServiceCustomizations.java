@@ -69,6 +69,8 @@ public class SearchServiceCustomizations extends Customization {
     private static final String DOCUMENT_EXTRACTION_SKILL = "DocumentExtractionSkill";
     private static final String WEB_API_SKILL = "WebApiSkill";
 
+    private static final String CUSTOM_NORMALIZER = "CustomNormalizer";
+
     @Override
     public void customize(LibraryCustomization libraryCustomization) {
         customizeModelsPackage(libraryCustomization.getPackage(MODELS));
@@ -119,6 +121,8 @@ public class SearchServiceCustomizations extends Customization {
         changeClassModifier(packageCustomization.getClass(TEXT_TRANSLATION_SKILL), PUBLIC_FINAL);
         changeClassModifier(packageCustomization.getClass(DOCUMENT_EXTRACTION_SKILL), PUBLIC_FINAL);
         changeClassModifier(packageCustomization.getClass(WEB_API_SKILL), PUBLIC_FINAL);
+
+
     }
 
     private void customizeSearchFieldDataType(ClassCustomization classCustomization) {
@@ -161,9 +165,6 @@ public class SearchServiceCustomizations extends Customization {
         );
     }
 
-    private void customizeImplementationModelsPackage(PackageCustomization packageCustomization) {
-    }
-
     private void customizeOcrSkill(ClassCustomization classCustomization) {
         changeClassModifier(classCustomization, PUBLIC_FINAL);
 
@@ -197,6 +198,15 @@ public class SearchServiceCustomizations extends Customization {
     private void customizeCustomEntityLookupSkill(ClassCustomization classCustomization) {
         changeClassModifier(classCustomization, PUBLIC_FINAL);
         addVarArgsOverload(classCustomization, "inlineEntitiesDefinition", "CustomEntity");
+    }
+
+    private void customizeCustomNormalizer(ClassCustomization classCustomization) {
+        changeClassModifier(classCustomization, PUBLIC_FINAL);
+        addVarArgsOverload(classCustomization, "tokenFilters", "TokenFilterName");
+        addVarArgsOverload(classCustomization, "charFilters", "CharFilterName");
+    }
+
+    private void customizeImplementationModelsPackage(PackageCustomization packageCustomization) {
     }
 
     private static void bulkChangeClassModifiers(PackageCustomization packageCustomization, int modifier,

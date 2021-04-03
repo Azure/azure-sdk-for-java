@@ -4,21 +4,27 @@
 // Changes may cause incorrect behavior and will be lost if the code is
 // regenerated.
 
-package com.azure.search.documents.indexes.implementation.models;
+package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Base type for normalizers. */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "@odata\\.type",
+        defaultImpl = LexicalNormalizer.class)
+@JsonTypeName("LexicalNormalizer")
+@JsonSubTypes({@JsonSubTypes.Type(name = "#Microsoft.Azure.Search.CustomNormalizer", value = CustomNormalizer.class)})
+@JsonFlatten
 @Fluent
 public class LexicalNormalizer {
-    /*
-     * Identifies the concrete type of the normalizer.
-     */
-    @JsonProperty(value = "@odata.type", required = true)
-    private String odataType;
-
     /*
      * The name of the normalizer. It must only contain letters, digits,
      * spaces, dashes or underscores, can only start and end with alphanumeric
@@ -32,24 +38,11 @@ public class LexicalNormalizer {
     /**
      * Creates an instance of LexicalNormalizer class.
      *
-     * @param odataType the odataType value to set.
      * @param name the name value to set.
      */
     @JsonCreator
-    public LexicalNormalizer(
-            @JsonProperty(value = "@odata.type", required = true) String odataType,
-            @JsonProperty(value = "name", required = true) String name) {
-        this.odataType = odataType;
+    public LexicalNormalizer(@JsonProperty(value = "name", required = true) String name) {
         this.name = name;
-    }
-
-    /**
-     * Get the odataType property: Identifies the concrete type of the normalizer.
-     *
-     * @return the odataType value.
-     */
-    public String getOdataType() {
-        return this.odataType;
     }
 
     /**

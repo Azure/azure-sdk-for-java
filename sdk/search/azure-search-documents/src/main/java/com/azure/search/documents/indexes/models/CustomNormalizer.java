@@ -4,13 +4,14 @@
 // Changes may cause incorrect behavior and will be lost if the code is
 // regenerated.
 
-package com.azure.search.documents.indexes.implementation.models;
+package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.search.documents.indexes.models.CharFilterName;
-import com.azure.search.documents.indexes.models.TokenFilterName;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
@@ -18,8 +19,11 @@ import java.util.List;
  * strict matching. This is a user-defined configuration consisting of at least one or more filters, which modify the
  * token that is stored.
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeName("#Microsoft.Azure.Search.CustomNormalizer")
+@JsonFlatten
 @Fluent
-public final class CustomNormalizer extends LexicalNormalizer {
+public class CustomNormalizer extends LexicalNormalizer {
     /*
      * A list of token filters used to filter out or modify the input token.
      * For example, you can specify a lowercase filter that converts all
@@ -40,14 +44,11 @@ public final class CustomNormalizer extends LexicalNormalizer {
     /**
      * Creates an instance of CustomNormalizer class.
      *
-     * @param odataType the odataType value to set.
      * @param name the name value to set.
      */
     @JsonCreator
-    public CustomNormalizer(
-            @JsonProperty(value = "@odata.type", required = true) String odataType,
-            @JsonProperty(value = "name", required = true) String name) {
-        super(odataType, name);
+    public CustomNormalizer(@JsonProperty(value = "name", required = true) String name) {
+        super(name);
     }
 
     /**
