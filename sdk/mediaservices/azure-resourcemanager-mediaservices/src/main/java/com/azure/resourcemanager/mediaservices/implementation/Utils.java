@@ -84,7 +84,7 @@ final class Utils {
         private final Function<PagedResponse<T>, PagedResponse<S>> pageMapper;
 
         private PagedIterableImpl(PagedIterable<T> pageIterable, Function<T, S> mapper) {
-            super(new PagedFlux<S>(Mono::empty));
+            super(new PagedFlux<S>(() -> Mono.empty()));
             this.pageIterable = pageIterable;
             this.mapper = mapper;
             this.pageMapper =
