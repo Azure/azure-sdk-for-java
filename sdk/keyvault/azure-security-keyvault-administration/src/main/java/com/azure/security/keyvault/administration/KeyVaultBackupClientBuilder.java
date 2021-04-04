@@ -290,7 +290,7 @@ public final class KeyVaultBackupClientBuilder {
      * @throws NullPointerException If {@code pipeline} is {@code null}.
      */
     public KeyVaultBackupClientBuilder pipeline(HttpPipeline pipeline) {
-        if (httpClient == null) {
+        if (pipeline == null) {
             throw logger.logExceptionAsError(new NullPointerException("'pipeline' cannot be null."));
         }
 
