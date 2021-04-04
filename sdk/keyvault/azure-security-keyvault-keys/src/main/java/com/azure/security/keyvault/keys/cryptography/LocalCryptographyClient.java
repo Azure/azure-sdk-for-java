@@ -92,14 +92,14 @@ public class LocalCryptographyClient {
      * a response has been received.</p>
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.encrypt#EncryptOptions}
      *
-     * @param encryptOptions The parameters to use in the encryption operation.
+     * @param encryptParameters The parameters to use in the encryption operation.
      * @return The {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text} contains the encrypted
      *     content.
      * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
      * @throws NullPointerException If {@code decryptOptions} is {@code null}.
      */
-    public EncryptResult encrypt(EncryptOptions encryptOptions) {
-        return client.encrypt(encryptOptions).block();
+    public EncryptResult encrypt(EncryptParameters encryptParameters) {
+        return client.encrypt(encryptParameters).block();
     }
 
     /**
@@ -156,13 +156,13 @@ public class LocalCryptographyClient {
      * details when a response has been received.</p>
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.decrypt#DecryptOptions}
      *
-     * @param decryptOptions The parameters to use in the decryption operation.
+     * @param decryptParameters The parameters to use in the decryption operation.
      * @return The decrypted blob.
      * @throws UnsupportedOperationException If the decrypt operation is not supported or configured on the key.
      * @throws NullPointerException If {@code decryptOptions} is {@code null}.
      */
-    public DecryptResult decrypt(DecryptOptions decryptOptions) {
-        return client.decrypt(decryptOptions).block();
+    public DecryptResult decrypt(DecryptParameters decryptParameters) {
+        return client.decrypt(decryptParameters).block();
     }
 
     /**

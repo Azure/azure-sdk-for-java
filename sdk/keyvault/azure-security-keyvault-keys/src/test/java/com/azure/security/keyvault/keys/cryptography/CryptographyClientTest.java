@@ -81,12 +81,12 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
                 byte[] plainText = new byte[100];
                 new Random(0x1234567L).nextBytes(plainText);
                 byte[] cipherText = cryptoClient.encrypt(algorithm, plainText).getCipherText();
-                byte[] decryptedText = serviceClient.decrypt(new DecryptOptions(algorithm, cipherText, null, null,
+                byte[] decryptedText = serviceClient.decrypt(new DecryptParameters(algorithm, cipherText, null, null,
                     null), Context.NONE).block().getPlainText();
 
                 assertArrayEquals(decryptedText, plainText);
 
-                cipherText = serviceClient.encrypt(new EncryptOptions(algorithm, plainText, null, null), Context.NONE)
+                cipherText = serviceClient.encrypt(new EncryptParameters(algorithm, plainText, null, null), Context.NONE)
                     .block().getCipherText();
                 decryptedText = cryptoClient.decrypt(algorithm, cipherText).getPlainText();
 

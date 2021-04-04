@@ -103,12 +103,12 @@ public abstract class LocalCryptographyClientTestBase extends TestBase {
         byte[] plaintext = "My16BitPlaintext".getBytes();
         byte[] iv = "My16BytesTestIv.".getBytes();
         LocalCryptographyClient localCryptographyClient = initializeCryptographyClient(getTestJsonWebKey(keySize));
-        EncryptOptions encryptOptions = new EncryptOptions(algorithm, plaintext, iv, null);
+        EncryptParameters encryptParameters = new EncryptParameters(algorithm, plaintext, iv, null);
         EncryptResult encryptResult =
-            localCryptographyClient.encrypt(encryptOptions);
-        DecryptOptions decryptOptions = new DecryptOptions(algorithm, encryptResult.getCipherText(), iv, null, null);
+            localCryptographyClient.encrypt(encryptParameters);
+        DecryptParameters decryptParameters = new DecryptParameters(algorithm, encryptResult.getCipherText(), iv, null, null);
         DecryptResult decryptResult =
-            localCryptographyClient.decrypt(decryptOptions);
+            localCryptographyClient.decrypt(decryptParameters);
 
         assertArrayEquals(plaintext, decryptResult.getPlainText());
     }

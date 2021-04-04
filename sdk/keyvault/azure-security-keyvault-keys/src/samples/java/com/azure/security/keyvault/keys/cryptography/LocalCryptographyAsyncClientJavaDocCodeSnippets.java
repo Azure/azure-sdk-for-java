@@ -62,9 +62,9 @@ public final class LocalCryptographyAsyncClientJavaDocCodeSnippets {
             (byte) 0x1a, (byte) 0xf3, (byte) 0x8c, (byte) 0x2d, (byte) 0xc2, (byte) 0xb9, (byte) 0x6f, (byte) 0xfd,
             (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04
         };
-        EncryptOptions encryptOptions = EncryptOptions.createAes128CbcOptions(plainTextBytes, iv);
+        EncryptParameters encryptParameters = EncryptParameters.createAes128CbcParameters(plainTextBytes, iv);
 
-        cryptographyAsyncClient.encrypt(encryptOptions)
+        cryptographyAsyncClient.encrypt(encryptParameters)
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
             .subscribe(encryptResult ->
                 System.out.printf("Received encrypted content of length %d with algorithm %s \n",
@@ -94,9 +94,9 @@ public final class LocalCryptographyAsyncClientJavaDocCodeSnippets {
             (byte) 0x1a, (byte) 0xf3, (byte) 0x8c, (byte) 0x2d, (byte) 0xc2, (byte) 0xb9, (byte) 0x6f, (byte) 0xfd,
             (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04
         };
-        DecryptOptions decryptOptions = DecryptOptions.createAes128CbcOptions(plainTextBytes, iv);
+        DecryptParameters decryptParameters = DecryptParameters.createAes128CbcParameters(plainTextBytes, iv);
 
-        cryptographyAsyncClient.decrypt(decryptOptions)
+        cryptographyAsyncClient.decrypt(decryptParameters)
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
             .subscribe(decryptResult ->
                 System.out.printf("Received decrypted content of length %d\n", decryptResult.getPlainText().length));

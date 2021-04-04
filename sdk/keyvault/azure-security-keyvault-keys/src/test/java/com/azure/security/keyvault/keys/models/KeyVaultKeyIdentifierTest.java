@@ -13,9 +13,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class KeyVaultKeyIdentifierTest {
     @Test
-    void parseWithoutVersion() throws MalformedURLException {
+    void parseWithoutVersion() {
         String keyId = "https://test-key-vault.vault.azure.net/keys/test-key";
-        KeyVaultKeyIdentifier keyVaultKeyIdentifier = KeyVaultKeyIdentifier.parse(keyId);
+        KeyVaultKeyIdentifier keyVaultKeyIdentifier = new KeyVaultKeyIdentifier(keyId);
 
         assertEquals(keyId, keyVaultKeyIdentifier.getKeyId());
         assertEquals("https://test-key-vault.vault.azure.net", keyVaultKeyIdentifier.getVaultUrl());
@@ -24,9 +24,9 @@ class KeyVaultKeyIdentifierTest {
     }
 
     @Test
-    void parseWithVersion() throws MalformedURLException {
+    void parseWithVersion() {
         String keyId = "https://test-key-vault.vault.azure.net/keys/test-key/version";
-        KeyVaultKeyIdentifier keyVaultkeyIdentifier = KeyVaultKeyIdentifier.parse(keyId);
+        KeyVaultKeyIdentifier keyVaultkeyIdentifier = new KeyVaultKeyIdentifier(keyId);
 
         assertEquals(keyId, keyVaultkeyIdentifier.getKeyId());
         assertEquals("https://test-key-vault.vault.azure.net", keyVaultkeyIdentifier.getVaultUrl());
@@ -35,9 +35,9 @@ class KeyVaultKeyIdentifierTest {
     }
 
     @Test
-    void parseForDeletedKey() throws MalformedURLException {
+    void parseForDeletedKey() {
         String keyId = "https://test-key-vault.vault.azure.net/deletedkeys/test-key";
-        KeyVaultKeyIdentifier keyVaultKeyIdentifier = KeyVaultKeyIdentifier.parse(keyId);
+        KeyVaultKeyIdentifier keyVaultKeyIdentifier = new KeyVaultKeyIdentifier(keyId);
 
         assertEquals(keyId, keyVaultKeyIdentifier.getKeyId());
         assertEquals("https://test-key-vault.vault.azure.net", keyVaultKeyIdentifier.getVaultUrl());
@@ -47,14 +47,14 @@ class KeyVaultKeyIdentifierTest {
     @Test
     void parseInvalidIdentifierForDeletedKey() {
         String keyId = "https://test-key-vault.vault.azure.net/deletedkeys/test-key/version";
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> KeyVaultKeyIdentifier.parse(keyId));
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> new KeyVaultKeyIdentifier(keyId));
 
         assertEquals("keyId is not a valid Key Vault Key identifier", exception.getMessage());
     }
 
     @Test
     void parseNullIdentifier() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> KeyVaultKeyIdentifier.parse(null));
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> new KeyVaultKeyIdentifier(null));
 
         assertEquals("keyId cannot be null", exception.getMessage());
     }
@@ -62,7 +62,7 @@ class KeyVaultKeyIdentifierTest {
     @Test
     void parseInvalidIdentifierWithWrongCollection() {
         String keyId = "https://test-key-vault.vault.azure.net/secrets/test-key";
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> KeyVaultKeyIdentifier.parse(keyId));
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> new KeyVaultKeyIdentifier(keyId));
 
         assertEquals("keyId is not a valid Key Vault Key identifier", exception.getMessage());
     }
@@ -70,7 +70,7 @@ class KeyVaultKeyIdentifierTest {
     @Test
     void parseInvalidIdentifierWithExtraSegment() {
         String keyId = "https://test-key-vault.vault.azure.net/keys/test-key/version/extra";
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> KeyVaultKeyIdentifier.parse(keyId));
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> new KeyVaultKeyIdentifier(keyId));
 
         assertEquals("keyId is not a valid Key Vault Key identifier", exception.getMessage());
     }

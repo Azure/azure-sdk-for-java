@@ -1870,14 +1870,14 @@
     <Method name="setContentBytes"/>
     <Bug pattern="EI_EXPOSE_REP2"/>
   </Match>
-  
+
    <!-- Returning a new copy of the object is not necessary -->
   <Match>
     <Class name="com.azure.cosmos.implementation.ClientEncryptionKey"/>
     <Method name="getWrappedDataEncryptionKey"/>
     <Bug pattern="EI_EXPOSE_REP"/>
   </Match>
-  
+
    <!-- Returning a new copy of the object is not necessary -->
   <Match>
     <Class name="com.azure.cosmos.implementation.ClientEncryptionKey"/>
@@ -2457,8 +2457,8 @@
   <!-- Conflicting APIs have already been GA'd with incorrect capitalization  -->
   <Match>
     <Or>
-      <Class name="com.azure.security.keyvault.keys.cryptography.DecryptOptions"/>
-      <Class name="com.azure.security.keyvault.keys.cryptography.EncryptOptions"/>
+      <Class name="com.azure.security.keyvault.keys.cryptography.DecryptParameters"/>
+      <Class name="com.azure.security.keyvault.keys.cryptography.EncryptParameters"/>
     </Or>
     <Bug pattern="NM_CONFUSING"/>
   </Match>

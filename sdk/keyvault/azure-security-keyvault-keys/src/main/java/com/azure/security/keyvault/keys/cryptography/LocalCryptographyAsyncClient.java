@@ -96,14 +96,14 @@ public class LocalCryptographyAsyncClient {
      * a response has been received.</p>
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.encrypt#EncryptOptions}
      *
-     * @param encryptOptions The parameters to use in the encryption operation.
+     * @param encryptParameters The parameters to use in the encryption operation.
      * @return A {@link Mono} containing a {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text}
      * contains the encrypted content.
      * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
      * @throws NullPointerException if {@code encryptOptions} is {@code null}.
      */
-    public Mono<EncryptResult> encrypt(EncryptOptions encryptOptions) {
-        return cryptographyAsyncClient.encrypt(encryptOptions);
+    public Mono<EncryptResult> encrypt(EncryptParameters encryptParameters) {
+        return cryptographyAsyncClient.encrypt(encryptParameters);
     }
 
     /**
@@ -160,13 +160,13 @@ public class LocalCryptographyAsyncClient {
      * details when a response has been received.</p>
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.decrypt#DecryptOptions}
      *
-     * @param decryptOptions The parameters to use in the decryption operation.
+     * @param decryptParameters The parameters to use in the decryption operation.
      * @return A {@link Mono} containing the decrypted blob.
      * @throws UnsupportedOperationException If the decrypt operation is not supported or configured on the key.
      * @throws NullPointerException If {@code decryptOptions} is {@code null}.
      */
-    public Mono<DecryptResult> decrypt(DecryptOptions decryptOptions) {
-        return cryptographyAsyncClient.decrypt(decryptOptions);
+    public Mono<DecryptResult> decrypt(DecryptParameters decryptParameters) {
+        return cryptographyAsyncClient.decrypt(decryptParameters);
     }
 
 

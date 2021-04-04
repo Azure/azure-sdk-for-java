@@ -50,7 +50,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    Mono<EncryptResult> encryptAsync(EncryptOptions encryptOptions, Context context, JsonWebKey jsonWebKey) {
+    Mono<EncryptResult> encryptAsync(EncryptParameters encryptParameters, Context context, JsonWebKey jsonWebKey) {
         this.key = getKey(jsonWebKey);
 
         if (key == null || key.length == 0) {
@@ -58,7 +58,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         }
 
         // Interpret the algorithm
-        EncryptionAlgorithm algorithm = encryptOptions.getAlgorithm();
+        EncryptionAlgorithm algorithm = encryptParameters.getAlgorithm();
         Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (!(baseAlgorithm instanceof SymmetricEncryptionAlgorithm)) {
@@ -69,8 +69,8 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         ICryptoTransform transform;
 
-        byte[] iv = encryptOptions.getIv();
-        byte[] additionalAuthenticatedData = encryptOptions.getAdditionalAuthenticatedData();
+        byte[] iv = encryptParameters.getIv();
+        byte[] additionalAuthenticatedData = encryptParameters.getAdditionalAuthenticatedData();
 
         if (iv == null) {
             if (isAes(algorithm)) {
@@ -91,7 +91,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         byte[] encrypted;
 
         try {
-            encrypted = transform.doFinal(encryptOptions.getPlainText());
+            encrypted = transform.doFinal(encryptParameters.getPlainText());
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -110,7 +110,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    Mono<DecryptResult> decryptAsync(DecryptOptions decryptOptions, Context context, JsonWebKey jsonWebKey) {
+    Mono<DecryptResult> decryptAsync(DecryptParameters decryptParameters, Context context, JsonWebKey jsonWebKey) {
         this.key = getKey(jsonWebKey);
 
         if (key == null || key.length == 0) {
@@ -118,7 +118,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         }
 
         // Interpret the algorithm
-        EncryptionAlgorithm algorithm = decryptOptions.getAlgorithm();
+        EncryptionAlgorithm algorithm = decryptParameters.getAlgorithm();
         Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (!(baseAlgorithm instanceof SymmetricEncryptionAlgorithm)) {
@@ -129,9 +129,9 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         ICryptoTransform transform;
 
-        byte[] iv = Objects.requireNonNull(decryptOptions.getIv(), "Initialization vector cannot be null in local decryption operations.");
-        byte[] additionalAuthenticatedData = decryptOptions.getAdditionalAuthenticatedData();
-        byte[] authenticationTag = decryptOptions.getAuthenticationTag();
+        byte[] iv = Objects.requireNonNull(decryptParameters.getIv(), "Initialization vector cannot be null in local decryption operations.");
+        byte[] additionalAuthenticatedData = decryptParameters.getAdditionalAuthenticatedData();
+        byte[] authenticationTag = decryptParameters.getAuthenticationTag();
 
         try {
             transform = symmetricEncryptionAlgorithm.createDecryptor(this.key, iv, additionalAuthenticatedData, authenticationTag);
@@ -143,7 +143,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         byte[] cipherText;
 
         if (isAes(algorithm)) {
-            cipherText = decryptOptions.getCipherText();
+            cipherText = decryptParameters.getCipherText();
         } else {
             throw logger.logExceptionAsError(
                 new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm));
