@@ -19,6 +19,16 @@
   <description>Sample project for Azure Key Vault Secrets Starter</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core</artifactId>
+        <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>

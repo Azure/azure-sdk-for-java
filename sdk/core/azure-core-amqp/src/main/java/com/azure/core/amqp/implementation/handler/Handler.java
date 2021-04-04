@@ -22,6 +22,9 @@ public abstract class Handler extends BaseHandler implements Closeable {
         .latestOrDefault(EndpointState.UNINITIALIZED);
     private final String connectionId;
     private final String hostname;
+    private final Object endpointLock = new Object();
+
+    private volatile EndpointState lastEndpoint = null;
 
     final ClientLogger logger;
 
@@ -33,7 +36,7 @@ public abstract class Handler extends BaseHandler implements Closeable {
      *     connection. Usually of the form {@literal "<your-namespace>.service.windows.net"} but can change if the
      *     messages are brokered through an intermediary.
      *
-     * @param logger
+     * @param logger Logger to use for messages.
      * @throws NullPointerException if {@code connectionId} or {@code hostname} is null.
      */
     Handler(final String connectionId, final String hostname, ClientLogger logger) {
@@ -68,18 +71,40 @@ public abstract class Handler extends BaseHandler implements Closeable {
      * @return The endpoint states of the handler.
      */
     public Flux<EndpointState> getEndpointStates() {
-        return endpointStates.asFlux().distinct();
+        return endpointStates.asFlux();
     }
 
+    /**
+     * Emits the next endpoint. If the previous endpoint was emitted, it is skipped.
+     *
+     * @param state The next endpoint state to emit.
+     */
     void onNext(EndpointState state) {
+        if (isTerminal.get()) {
+            return;
+        }
+
+        synchronized (endpointLock) {
+            if (lastEndpoint == state) {
+                return;
+            }
+
+            lastEndpoint = state;
+        }
+
         endpointStates.emitNext(state, (signalType, emitResult) -> {
-            logger.warning("connectionId[{}] signal[{}] result[{}] could not emit endpoint state.", connectionId,
+            logger.verbose("connectionId[{}] signal[{}] result[{}] could not emit endpoint state.", connectionId,
                 signalType, emitResult);
 
             return false;
         });
     }
 
+    /**
+     * Emits an error if the handler has not reached a terminal state already.
+     *
+     * @param error The error to emit.
+     */
     void onError(Throwable error) {
         if (isTerminal.getAndSet(true)) {
             return;
@@ -103,9 +128,18 @@ public abstract class Handler extends BaseHandler implements Closeable {
             return;
         }
 
+        final boolean shouldEmit;
+        synchronized (endpointLock) {
+            shouldEmit = lastEndpoint != EndpointState.CLOSED;
+            lastEndpoint = EndpointState.CLOSED;
+        }
+
+        if (shouldEmit) {
+            endpointStates.emitNext(EndpointState.CLOSED, Sinks.EmitFailureHandler.FAIL_FAST);
+        }
+
         endpointStates.emitComplete((signalType, emitResult) -> {
-            logger.warning("connectionId[{}] signal[{}] result[{}] Could not emit complete.", connectionId,
-                signalType, emitResult);
+            logger.verbose("connectionId[{}] result[{}] Could not emit complete.", connectionId, emitResult);
 
             return false;
         });
