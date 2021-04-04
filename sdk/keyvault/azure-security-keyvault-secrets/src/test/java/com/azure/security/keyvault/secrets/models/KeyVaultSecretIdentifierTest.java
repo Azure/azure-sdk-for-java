@@ -15,7 +15,7 @@ class KeyVaultSecretIdentifierTest {
     @Test
     void parseWithoutVersion() throws MalformedURLException {
         String secretId = "https://test-key-vault.vault.azure.net/secrets/test-secret";
-        KeyVaultSecretIdentifier keyVaultSecretIdentifier = KeyVaultSecretIdentifier.parse(secretId);
+        KeyVaultSecretIdentifier keyVaultSecretIdentifier = new KeyVaultSecretIdentifier(secretId);
 
         assertEquals(secretId, keyVaultSecretIdentifier.getSecretId());
         assertEquals("https://test-key-vault.vault.azure.net", keyVaultSecretIdentifier.getVaultUrl());
@@ -26,7 +26,7 @@ class KeyVaultSecretIdentifierTest {
     @Test
     void parseWithVersion() throws MalformedURLException {
         String secretId = "https://test-key-vault.vault.azure.net/secrets/test-secret/version";
-        KeyVaultSecretIdentifier keyVaultSecretIdentifier = KeyVaultSecretIdentifier.parse(secretId);
+        KeyVaultSecretIdentifier keyVaultSecretIdentifier = new KeyVaultSecretIdentifier(secretId);
 
         assertEquals(secretId, keyVaultSecretIdentifier.getSecretId());
         assertEquals("https://test-key-vault.vault.azure.net", keyVaultSecretIdentifier.getVaultUrl());
@@ -37,7 +37,7 @@ class KeyVaultSecretIdentifierTest {
     @Test
     void parseForDeletedSecret() throws MalformedURLException {
         String secretId = "https://test-key-vault.vault.azure.net/deletedsecrets/test-secret";
-        KeyVaultSecretIdentifier keyVaultSecretIdentifier = KeyVaultSecretIdentifier.parse(secretId);
+        KeyVaultSecretIdentifier keyVaultSecretIdentifier = new KeyVaultSecretIdentifier(secretId);
 
         assertEquals(secretId, keyVaultSecretIdentifier.getSecretId());
         assertEquals("https://test-key-vault.vault.azure.net", keyVaultSecretIdentifier.getVaultUrl());
@@ -47,14 +47,14 @@ class KeyVaultSecretIdentifierTest {
     @Test
     void parseInvalidIdentifierForDeletedSecret() {
         String secretId = "https://test-key-vault.vault.azure.net/deletedsecrets/test-secret/version";
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> KeyVaultSecretIdentifier.parse(secretId));
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> new KeyVaultSecretIdentifier(secretId));
 
         assertEquals("secretId is not a valid Key Vault Secret identifier", exception.getMessage());
     }
 
     @Test
     void parseNullIdentifier() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> KeyVaultSecretIdentifier.parse(null));
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> new KeyVaultSecretIdentifier(null));
 
         assertEquals("secretId cannot be null", exception.getMessage());
     }
@@ -63,7 +63,7 @@ class KeyVaultSecretIdentifierTest {
     void parseInvalidIdentifierWithWrongCollection() {
         String secretId = "https://test-key-vault.vault.azure.net/certificates/test-secret";
         Exception exception = assertThrows(IllegalArgumentException.class,
-            () -> KeyVaultSecretIdentifier.parse(secretId));
+            () -> new KeyVaultSecretIdentifier(secretId));
 
         assertEquals("secretId is not a valid Key Vault Secret identifier", exception.getMessage());
     }
@@ -72,7 +72,7 @@ class KeyVaultSecretIdentifierTest {
     void parseInvalidIdentifierWithExtraSegment() {
         String secretId = "https://test-key-vault.vault.azure.net/secrets/test-secret/version/extra";
         Exception exception = assertThrows(IllegalArgumentException.class,
-            () -> KeyVaultSecretIdentifier.parse(secretId));
+            () -> new KeyVaultSecretIdentifier(secretId));
 
         assertEquals("secretId is not a valid Key Vault Secret identifier", exception.getMessage());
     }
