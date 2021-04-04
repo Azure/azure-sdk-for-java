@@ -31,7 +31,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the
@@ -98,6 +97,7 @@ public final class KeyVaultBackupClientBuilder {
      * builder settings are ignored.
      *
      * @return A {@link KeyVaultBackupClient} with the options set from the builder.
+     *
      * @throws NullPointerException If {@code vaultUrl} is {@code null}.
      */
     public KeyVaultBackupClient buildClient() {
@@ -113,6 +113,7 @@ public final class KeyVaultBackupClientBuilder {
      * builder settings are ignored.
      *
      * @return A {@link KeyVaultBackupAsyncClient} with the options set from the builder.
+     *
      * @throws NullPointerException If {@code vaultUrl} is {@code null}.
      */
     public KeyVaultBackupAsyncClient buildAsyncClient() {
@@ -177,14 +178,21 @@ public final class KeyVaultBackupClientBuilder {
      * Sets the URL to the Key Vault on which the client operates. Appears as "DNS Name" in the Azure portal.
      *
      * @param vaultUrl The vault URL is used as destination on Azure to send requests to.
+     *
      * @return The updated {@link KeyVaultBackupClientBuilder} object.
+     *
      * @throws IllegalArgumentException If {@code vaultUrl} is null or it cannot be parsed into a valid URL.
+     * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public KeyVaultBackupClientBuilder vaultUrl(String vaultUrl) {
+        if (vaultUrl == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'vaultUrl' cannot be null."));
+        }
+
         try {
             this.vaultUrl = new URL(vaultUrl);
         } catch (MalformedURLException e) {
-            throw logger.logExceptionAsWarning(
+            throw logger.logExceptionAsError(
                 new IllegalArgumentException("The Azure Key Vault URL is malformed.", e));
         }
 
@@ -195,11 +203,15 @@ public final class KeyVaultBackupClientBuilder {
      * Sets the credential to use when authenticating HTTP requests.
      *
      * @param credential The credential to use for authenticating HTTP requests.
+     *
      * @return The updated {@link KeyVaultBackupClientBuilder} object.
+     *
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public KeyVaultBackupClientBuilder credential(TokenCredential credential) {
-        Objects.requireNonNull(credential);
+        if (credential == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
+        }
 
         this.credential = credential;
 
@@ -212,6 +224,7 @@ public final class KeyVaultBackupClientBuilder {
      * <p> If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
      *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
+     *
      * @return The updated {@link KeyVaultBackupClientBuilder} object.
      */
     public KeyVaultBackupClientBuilder httpLogOptions(HttpLogOptions logOptions) {
@@ -225,11 +238,15 @@ public final class KeyVaultBackupClientBuilder {
      * {@link KeyVaultBackupAsyncClient} required policies.
      *
      * @param policy The {@link HttpPipelinePolicy policy} to be added.
+     *
      * @return The updated {@link KeyVaultBackupClientBuilder} object.
+     *
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
     public KeyVaultBackupClientBuilder addPolicy(HttpPipelinePolicy policy) {
-        Objects.requireNonNull(policy, "'policy' cannot be null.");
+        if (policy == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
+        }
 
         if (policy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
             perCallPolicies.add(policy);
@@ -244,11 +261,15 @@ public final class KeyVaultBackupClientBuilder {
      * Sets the HTTP client to use for sending and receiving requests to and from the service.
      *
      * @param client The HTTP client to use for requests.
+     *
      * @return The updated {@link KeyVaultBackupClientBuilder} object.
+     *
      * @throws NullPointerException If {@code client} is {@code null}.
      */
     public KeyVaultBackupClientBuilder httpClient(HttpClient client) {
-        Objects.requireNonNull(client);
+        if (client == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'client' cannot be null."));
+        }
 
         this.httpClient = client;
 
@@ -263,10 +284,16 @@ public final class KeyVaultBackupClientBuilder {
      * {@link KeyVaultBackupAsyncClient}.
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
+     *
      * @return The updated {@link KeyVaultBackupClientBuilder} object.
+     *
+     * @throws NullPointerException If {@code pipeline} is {@code null}.
      */
     public KeyVaultBackupClientBuilder pipeline(HttpPipeline pipeline) {
-        Objects.requireNonNull(pipeline);
+        if (httpClient == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'pipeline' cannot be null."));
+        }
+
         this.pipeline = pipeline;
 
         return this;
@@ -279,6 +306,7 @@ public final class KeyVaultBackupClientBuilder {
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store used to get configuration details.
+     *
      * @return The updated {@link KeyVaultBackupClientBuilder} object.
      */
     public KeyVaultBackupClientBuilder configuration(Configuration configuration) {
@@ -293,11 +321,15 @@ public final class KeyVaultBackupClientBuilder {
      * The default retry policy will be used in the pipeline, if not provided.
      *
      * @param retryPolicy User's retry policy applied to each request.
+     *
      * @return The updated {@link KeyVaultBackupClientBuilder} object.
+     *
      * @throws NullPointerException If the specified {@code retryPolicy} is null.
      */
     public KeyVaultBackupClientBuilder retryPolicy(RetryPolicy retryPolicy) {
-        Objects.requireNonNull(retryPolicy, "The retry policy cannot be bull");
+        if (retryPolicy == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'retryPolicy' cannot be null."));
+        }
 
         this.retryPolicy = retryPolicy;
 
@@ -309,13 +341,16 @@ public final class KeyVaultBackupClientBuilder {
      * {@code applicationId} using {@link ClientOptions#setApplicationId(String)} to configure
      * the {@link UserAgentPolicy} for telemetry/monitoring purposes.
      *
-     * <p>More About <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>
+     * <p>More About <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core:
+     * Telemetry policy</a>
      *
      * @param clientOptions the {@link ClientOptions} to be set on the client.
+     *
      * @return The updated {@link KeyVaultBackupClientBuilder} object.
      */
     public KeyVaultBackupClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+
         return this;
     }
 
@@ -327,10 +362,12 @@ public final class KeyVaultBackupClientBuilder {
      * newer version the client library will have the result of potentially moving to a newer service version.
      *
      * @param serviceVersion {@link KeyVaultAdministrationServiceVersion} of the service API used when making requests.
+     *
      * @return The updated {@link KeyVaultBackupClientBuilder} object.
      */
     public KeyVaultBackupClientBuilder serviceVersion(KeyVaultAdministrationServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
+
         return this;
     }
 

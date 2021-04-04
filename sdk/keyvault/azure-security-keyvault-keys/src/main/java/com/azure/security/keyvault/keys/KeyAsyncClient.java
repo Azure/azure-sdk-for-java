@@ -76,6 +76,7 @@ public final class KeyAsyncClient {
     private final KeyService service;
     private final ClientLogger logger = new ClientLogger(KeyAsyncClient.class);
 
+    final HttpPipeline pipeline;
 
     /**
      * Creates a KeyAsyncClient that uses {@code pipeline} to service requests
@@ -89,6 +90,7 @@ public final class KeyAsyncClient {
             KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         this.vaultUrl = vaultUrl.toString();
         this.service = RestProxy.create(KeyService.class, pipeline);
+        this.pipeline = pipeline;
         apiVersion = version.getVersion();
     }
 
@@ -98,6 +100,15 @@ public final class KeyAsyncClient {
      */
     public String getVaultUrl() {
         return vaultUrl;
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    HttpPipeline getHttpPipeline() {
+        return this.pipeline;
     }
 
     Duration getDefaultPollingInterval() {
