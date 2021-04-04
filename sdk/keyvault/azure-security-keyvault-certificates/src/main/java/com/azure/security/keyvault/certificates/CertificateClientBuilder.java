@@ -10,6 +10,7 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -19,8 +20,8 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificateIdentifier;
@@ -67,7 +68,8 @@ public final class CertificateClientBuilder {
     private static final String AZURE_KEY_VAULT_CERTIFICATES_PROPERTIES = "azure-key-vault-certificates.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
-    private final List<HttpPipelinePolicy> policies;
+    private final List<HttpPipelinePolicy> perCallPolicies;
+    private final List<HttpPipelinePolicy> perRetryPolicies;
     private final Map<String, String> properties;
     private TokenCredential credential;
     private HttpPipeline pipeline;
@@ -85,7 +87,8 @@ public final class CertificateClientBuilder {
     public CertificateClientBuilder() {
         retryPolicy = new RetryPolicy();
         httpLogOptions = new HttpLogOptions();
-        policies = new ArrayList<>();
+        perCallPolicies = new ArrayList<>();
+        perRetryPolicies = new ArrayList<>();
         properties = CoreUtils.getProperties(AZURE_KEY_VAULT_CERTIFICATES_PROPERTIES);
     }
 
@@ -131,6 +134,7 @@ public final class CertificateClientBuilder {
             throw logger.logExceptionAsError(new IllegalStateException(
                 KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
         }
+
         CertificateServiceVersion serviceVersion = version != null ? version : CertificateServiceVersion.getLatest();
 
         if (pipeline != null) {
@@ -147,14 +151,21 @@ public final class CertificateClientBuilder {
 
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        String applicationId =
-            clientOptions == null ? httpLogOptions.getApplicationId() : clientOptions.getApplicationId();
 
-        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
+        policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(clientOptions, httpLogOptions), clientName,
+            clientVersion, buildConfiguration));
+
+        // Add per call additional policies.
+        policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
+
+        // Add retry policy.
         policies.add(retryPolicy);
+
         policies.add(new KeyVaultCredentialPolicy(credential));
-        policies.addAll(this.policies);
+
+        // Add per retry additional policies.
+        policies.addAll(perRetryPolicies);
 
         if (clientOptions != null) {
             List<HttpHeader> httpHeaderList = new ArrayList<>();
@@ -227,7 +238,13 @@ public final class CertificateClientBuilder {
      */
     public CertificateClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy, "'policy' cannot be null.");
-        policies.add(policy);
+
+        if (policy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
+            perCallPolicies.add(policy);
+        } else {
+            perRetryPolicies.add(policy);
+        }
+
         return this;
     }
 
