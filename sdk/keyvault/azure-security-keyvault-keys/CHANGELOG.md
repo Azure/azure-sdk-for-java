@@ -2,6 +2,14 @@
 
 ## 4.3.0-beta.6 (Unreleased)
 
+### New features
+- Added support for service version `7.2`.
+- Made all `JsonWebKey` properties settable.
+
+### Breaking Changes
+- Renamed `EncryptOptions` to `EncryptParameters`.
+- Renamed `DecryptOptions` to `DecryptParameters`.
+- Changed `KeyVaultKeyIdentifier` so it is instantiated via its constructor as opposed to via a `parse()` factory method.
 
 ## 4.3.0-beta.5 (2021-03-12)
 

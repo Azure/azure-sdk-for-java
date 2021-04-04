@@ -2,6 +2,11 @@
 
 ## 4.2.0-beta.5 (Unreleased)
 
+### New features
+- Added support for service version `7.2`.
+
+### Breaking Changes
+- Changed `KeyVaultCertificateIdentifier` so it is instantiated via its constructor as opposed to via a `parse()` factory method.
 
 ## 4.2.0-beta.4 (2021-03-12)
 
