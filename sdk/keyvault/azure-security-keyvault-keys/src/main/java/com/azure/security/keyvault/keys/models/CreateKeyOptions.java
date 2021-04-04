@@ -62,6 +62,7 @@ public class CreateKeyOptions {
 
     /**
      * Creates instance of KeyCreateOptions with {@code name} as key name and {@code keyType} as type of the key.
+     *
      * @param name The name of the key to create.
      * @param keyType The type of the key to create.
      */
@@ -73,27 +74,29 @@ public class CreateKeyOptions {
     /**
      * Get the key operations.
      *
-     * @return the key operations.
+     * @return The key operations.
      */
     public List<KeyOperation> getKeyOperations() {
         return this.keyOperations;
     }
 
     /**
-     * Set the key operations value.
+     * Set the key operations.
      *
-     * @param keyOperations The key operations value to set
-     * @return the KeyCreateOptions object itself.
+     * @param keyOperations The key operations to set.
+     *
+     * @return The KeyCreateOptions object itself.
      */
     public CreateKeyOptions setKeyOperations(KeyOperation... keyOperations) {
         this.keyOperations = Arrays.asList(keyOperations);
+
         return this;
     }
 
     /**
      * Get the key type.
      *
-     * @return the key type.
+     * @return The key type.
      */
     public KeyType getKeyType() {
         return this.keyType;
@@ -104,10 +107,20 @@ public class CreateKeyOptions {
     }
 
     /**
+     * Get the notBefore UTC time.
+     *
+     * @return The notBefore UTC time.
+     */
+    public OffsetDateTime getNotBefore() {
+        return notBefore;
+    }
+
+    /**
      * Set the {@link OffsetDateTime notBefore} UTC time.
      *
-     * @param notBefore The notBefore UTC time to set
-     * @return the KeyCreateOptions object itself.
+     * @param notBefore The notBefore UTC time to set.
+     *
+     * @return The KeyCreateOptions object itself.
      */
     public CreateKeyOptions setNotBefore(OffsetDateTime notBefore) {
         this.notBefore = notBefore;
@@ -115,19 +128,20 @@ public class CreateKeyOptions {
     }
 
     /**
-     * Get the notBefore UTC time.
+     * Get the Key Expiry time in UTC.
      *
-     * @return the notBefore UTC time.
+     * @return The expires UTC time.
      */
-    public OffsetDateTime getNotBefore() {
-        return notBefore;
+    public OffsetDateTime getExpiresOn() {
+        return this.expiresOn;
     }
 
     /**
      * Set the {@link OffsetDateTime expires} UTC time.
      *
      * @param expiresOn The expiry time to set for the key.
-     * @return the KeyCreateOptions object itself.
+     *
+     * @return The KeyCreateOptions object itself.
      */
     public CreateKeyOptions setExpiresOn(OffsetDateTime expiresOn) {
         this.expiresOn = expiresOn;
@@ -135,19 +149,20 @@ public class CreateKeyOptions {
     }
 
     /**
-     * Get the Key Expiry time in UTC.
+     * Get the tags associated with the key.
      *
-     * @return the expires UTC time.
+     * @return The value of the tags.
      */
-    public OffsetDateTime getExpiresOn() {
-        return this.expiresOn;
+    public Map<String, String> getTags() {
+        return this.tags;
     }
 
     /**
      * Set the tags to be associated with the key.
      *
-     * @param tags The tags to set
-     * @return the KeyCreateOptions object itself.
+     * @param tags The tags to set.
+     *
+     * @return The KeyCreateOptions object itself.
      */
     public CreateKeyOptions setTags(Map<String, String> tags) {
         this.tags = tags;
@@ -155,32 +170,24 @@ public class CreateKeyOptions {
     }
 
     /**
-     * Get the tags associated with the key.
+     * Get the enabled value.
      *
-     * @return the value of the tags.
+     * @return The enabled value.
      */
-    public Map<String, String> getTags() {
-        return this.tags;
+    public Boolean isEnabled() {
+        return this.enabled;
     }
 
     /**
-     * Set the enabled value.
+     * Set a value that indicates if the key is enabled.
      *
-     * @param enabled The enabled value to set
-     * @return the KeyCreateOptions object itself.
+     * @param enabled The enabled value to set.
+     *
+     * @return The KeyCreateOptions object itself.
      */
     public CreateKeyOptions setEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
-    }
-
-    /**
-     * Get the enabled value.
-     *
-     * @return the enabled value
-     */
-    public Boolean isEnabled() {
-        return this.enabled;
     }
 
     /**
@@ -196,6 +203,7 @@ public class CreateKeyOptions {
      * Set a value that indicates if the private key can be exported.
      *
      * @param exportable The exportable value to set.
+     *
      * @return The updated {@link CreateKeyOptions} object.
      */
     public CreateKeyOptions setExportable(Boolean exportable) {
@@ -216,6 +224,7 @@ public class CreateKeyOptions {
      * Set the policy rules under which the key can be exported.
      *
      * @param releasePolicy The release policy to set.
+     *
      * @return The updated {@link CreateKeyOptions} object.
      */
     public CreateKeyOptions setReleasePolicy(KeyReleasePolicy releasePolicy) {
@@ -226,7 +235,7 @@ public class CreateKeyOptions {
     /**
      * Get the key name.
      *
-     * @return the name of the key.
+     * @return The name of the key.
      */
     public String getName() {
         return this.name;
