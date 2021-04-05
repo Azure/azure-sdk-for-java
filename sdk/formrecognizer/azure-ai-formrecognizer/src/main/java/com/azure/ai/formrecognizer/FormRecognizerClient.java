@@ -26,7 +26,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.List;
 
-import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
+import static com.azure.core.util.FluxUtil.toFluxByteBuffer;
 
 /**
  * This class provides a synchronous client that contains all the operations that apply to Azure Form Recognizer.
@@ -157,7 +157,7 @@ public final class FormRecognizerClient {
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
         beginRecognizeCustomForms(String modelId, InputStream form, long length,
         RecognizeCustomFormsOptions recognizeCustomFormsOptions, Context context) {
-        Flux<ByteBuffer> buffer = toFluxByteBuffer(form);
+        Flux<ByteBuffer> buffer = toFluxByteBuffer(form).cache();
         return client.beginRecognizeCustomForms(modelId, buffer, length,
             recognizeCustomFormsOptions, context).getSyncPoller();
     }
@@ -263,7 +263,7 @@ public final class FormRecognizerClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<FormPage>> beginRecognizeContent(InputStream form,
         long length, RecognizeContentOptions recognizeContentOptions, Context context) {
-        Flux<ByteBuffer> buffer = toFluxByteBuffer(form);
+        Flux<ByteBuffer> buffer = toFluxByteBuffer(form).cache();
         return client.beginRecognizeContent(buffer, length, recognizeContentOptions, context).getSyncPoller();
     }
 
@@ -369,7 +369,7 @@ public final class FormRecognizerClient {
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
         beginRecognizeReceipts(InputStream receipt, long length,
         RecognizeReceiptsOptions recognizeReceiptsOptions, Context context) {
-        Flux<ByteBuffer> buffer = toFluxByteBuffer(receipt);
+        Flux<ByteBuffer> buffer = toFluxByteBuffer(receipt).cache();
         return client.beginRecognizeReceipts(buffer, length, recognizeReceiptsOptions, context).getSyncPoller();
     }
 
@@ -476,7 +476,7 @@ public final class FormRecognizerClient {
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCards(
         InputStream businessCard, long length, RecognizeBusinessCardsOptions recognizeBusinessCardsOptions,
         Context context) {
-        return client.beginRecognizeBusinessCards(toFluxByteBuffer(businessCard), length,
+        return client.beginRecognizeBusinessCards(toFluxByteBuffer(businessCard).cache(), length,
             recognizeBusinessCardsOptions, context).getSyncPoller();
     }
 
@@ -582,7 +582,7 @@ public final class FormRecognizerClient {
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
         beginRecognizeInvoices(InputStream invoice, long length,
         RecognizeInvoicesOptions recognizeInvoicesOptions, Context context) {
-        Flux<ByteBuffer> buffer = toFluxByteBuffer(invoice);
+        Flux<ByteBuffer> buffer = toFluxByteBuffer(invoice).cache();
         return client.beginRecognizeInvoices(buffer, length, recognizeInvoicesOptions, context).getSyncPoller();
     }
 
@@ -689,7 +689,7 @@ public final class FormRecognizerClient {
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdDocuments(
         InputStream iDDocument, long length, RecognizeIdDocumentOptions recognizeIdDocumentOptions,
         Context context) {
-        return client.beginRecognizeIdDocuments(toFluxByteBuffer(iDDocument), length,
+        return client.beginRecognizeIdDocuments(toFluxByteBuffer(iDDocument).cache(), length,
             recognizeIdDocumentOptions, context).getSyncPoller();
     }
 }

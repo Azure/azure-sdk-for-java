@@ -15,7 +15,7 @@ import java.nio.ByteBuffer;
 import java.nio.file.Files;
 
 import static com.azure.ai.formrecognizer.implementation.Utility.detectContentType;
-import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
+import static com.azure.core.util.FluxUtil.toFluxByteBuffer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

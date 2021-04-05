@@ -21,7 +21,7 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
+import static com.azure.core.util.FluxUtil.toFluxByteBuffer;
 
 /**
  * Async sample to analyze a form with selection mark from a document with a custom trained model. To learn how to train
@@ -50,8 +50,12 @@ public class RecognizeCustomFormsAsyncWithSelectionMarks {
         PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeFormPoller;
         // Selection mark will only be available when includeFieldElements is true.
         try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
-            recognizeFormPoller = client.beginRecognizeCustomForms(modelId, toFluxByteBuffer(targetStream),
-                sourceFile.length(), new RecognizeCustomFormsOptions().setFieldElementsIncluded(true));
+            recognizeFormPoller = client.beginRecognizeCustomForms(
+                modelId,
+                toFluxByteBuffer(targetStream).cache(),
+                sourceFile.length(),
+                new RecognizeCustomFormsOptions().setFieldElementsIncluded(true)
+            );
         }
 
         Mono<List<RecognizedForm>> recognizeFormResult =

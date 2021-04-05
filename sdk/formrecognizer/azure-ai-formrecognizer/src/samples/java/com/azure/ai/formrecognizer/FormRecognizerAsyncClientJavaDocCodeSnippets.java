@@ -30,7 +30,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
+import static com.azure.core.util.FluxUtil.toFluxByteBuffer;
 
 /**
  * Code snippet for {@link FormRecognizerAsyncClient}
@@ -128,7 +128,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         File form = new File("{local/file_path/fileName.jpg}");
         String modelId = "{custom_trained_model_id}";
         // Utility method to convert input stream to Byte buffer
-        Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(form.toPath())));
+        Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(form.toPath()))).cache();
 
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeCustomForms(modelId, buffer, form.length())
@@ -157,7 +157,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         String modelId = "{custom_trained_model_id}";
         boolean includeFieldElements = true;
         // Utility method to convert input stream to Byte buffer
-        Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(form.toPath())));
+        Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(form.toPath()))).cache();
 
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeCustomForms(modelId, buffer, form.length(),
@@ -234,7 +234,8 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long
         File form = new File("{local/file_path/fileName.jpg}");
         // Utility method to convert input stream to Byte buffer
-        Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(form.toPath())));
+        Flux<ByteBuffer> buffer
+            = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(form.toPath()))).cache();
 
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeContent(buffer, form.length())
@@ -262,7 +263,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-RecognizeContentOptions
         File form = new File("{local/file_path/fileName.jpg}");
         // Utility method to convert input stream to Byte buffer
-        Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(form.toPath())));
+        Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(form.toPath()))).cache();
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeContent(buffer, form.length(),
             new RecognizeContentOptions()
@@ -427,7 +428,8 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
     public void beginRecognizeReceipts() throws IOException {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long
         File receipt = new File("{file_source_url}");
-        Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(receipt.toPath())));
+        Flux<ByteBuffer> buffer
+            = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(receipt.toPath()))).cache();
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeReceipts(buffer, receipt.length())
             .flatMap(AsyncPollResponse::getFinalResult)
@@ -498,7 +500,8 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         File receipt = new File("{local/file_path/fileName.jpg}");
         boolean includeFieldElements = true;
         // Utility method to convert input stream to Byte buffer
-        Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(receipt.toPath())));
+        Flux<ByteBuffer> buffer
+            = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(receipt.toPath()))).cache();
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeReceipts(buffer, receipt.length(),
             new RecognizeReceiptsOptions()
@@ -696,7 +699,8 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
     public void beginRecognizeBusinessCards() throws IOException {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeBusinessCards#Flux-long
         File businessCard = new File("{local/file_path/fileName.jpg}");
-        Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(businessCard.toPath())));
+        Flux<ByteBuffer> buffer
+            = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(businessCard.toPath()))).cache();
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeBusinessCards(buffer, businessCard.length())
             .flatMap(AsyncPollResponse::getFinalResult)
@@ -763,7 +767,8 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         File businessCard = new File("{local/file_path/fileName.jpg}");
         boolean includeFieldElements = true;
         // Utility method to convert input stream to Byte buffer
-        Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(businessCard.toPath())));
+        Flux<ByteBuffer> buffer
+            = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(businessCard.toPath()))).cache();
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeBusinessCards(buffer, businessCard.length(),
             new RecognizeBusinessCardsOptions()
@@ -900,7 +905,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeInvoices#Flux-long
         File invoice = new File("local/file_path/invoice.jpg");
         Flux<ByteBuffer> buffer =
-            toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(invoice.toPath())));
+            toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(invoice.toPath()))).cache();
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeInvoices(buffer, invoice.length())
             .flatMap(AsyncPollResponse::getFinalResult)
@@ -940,7 +945,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         boolean includeFieldElements = true;
         // Utility method to convert input stream to Byte buffer
         Flux<ByteBuffer> buffer =
-            toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(invoice.toPath())));
+            toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(invoice.toPath()))).cache();
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeInvoices(buffer,
             invoice.length(),
@@ -1114,7 +1119,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdDocuments#Flux-long
         File license = new File("local/file_path/license.jpg");
         Flux<ByteBuffer> buffer =
-            toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(license.toPath())));
+            toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(license.toPath()))).cache();
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeIdDocuments(buffer, license.length())
             .flatMap(AsyncPollResponse::getFinalResult)
@@ -1186,7 +1191,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         boolean includeFieldElements = true;
         // Utility method to convert input stream to Byte buffer
         Flux<ByteBuffer> buffer =
-            toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(licenseDocument.toPath())));
+            toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(licenseDocument.toPath()))).cache();
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeIdDocuments(buffer,
             licenseDocument.length(),

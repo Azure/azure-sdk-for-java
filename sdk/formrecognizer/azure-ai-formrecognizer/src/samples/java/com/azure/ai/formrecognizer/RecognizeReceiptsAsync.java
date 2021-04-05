@@ -21,7 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
+import static com.azure.core.util.FluxUtil.toFluxByteBuffer;
+
 
 /**
  * Async sample for recognizing commonly found receipt fields from a local file input stream.
@@ -50,7 +51,8 @@ public class RecognizeReceiptsAsync {
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeReceiptPoller;
         try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
-            recognizeReceiptPoller = client.beginRecognizeReceipts(toFluxByteBuffer(targetStream), sourceFile.length());
+            recognizeReceiptPoller = client.beginRecognizeReceipts(toFluxByteBuffer(targetStream).cache(),
+                sourceFile.length());
         }
 
         Mono<List<RecognizedForm>> receiptPageResultsMono = recognizeReceiptPoller
