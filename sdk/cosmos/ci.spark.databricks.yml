@@ -18,8 +18,8 @@ stages:
       timeoutInMinutes: 40
       variables:
         - template: /eng/pipelines/templates/variables/globals.yml
-        - name: SparkDabricksCosmosEndpoint
-          value: $(spark-databricks-cosmos-endpoint)
+        - name: DatabricksClusterName
+          value: 'oltp-ci-2workers-ds3v2'
 
       pool:
         vmImage: 'ubuntu-18.04'
