@@ -38,6 +38,7 @@ import java.util.function.Supplier;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -519,7 +520,6 @@ class AmqpReceiveLinkProcessorTest {
                 }
             })
             .expectNextCount(backpressure)
-            .thenAwait(Duration.ofSeconds(1))
             .thenCancel()
             .verify();
 
@@ -527,7 +527,8 @@ class AmqpReceiveLinkProcessorTest {
         Assertions.assertFalse(processor.hasError());
         Assertions.assertNull(processor.getError());
 
-        verify(link1).addCredits(eq(PREFETCH));
+        // Once when the user initially makes a backpressure request and a second time when the link is active.
+        verify(link1, atLeastOnce()).addCredits(eq(backpressure));
         verify(link1).setEmptyCreditListener(any());
     }
 
