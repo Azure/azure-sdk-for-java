@@ -182,14 +182,8 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      * @param client The HTTP client to use for requests.
      *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
-     *
-     * @throws NullPointerException If {@code client} is {@code null}.
      */
     public KeyEncryptionKeyClientBuilder httpClient(HttpClient client) {
-        if (client == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'client' cannot be null."));
-        }
-
         builder.httpClient(client);
 
         return this;
@@ -204,14 +198,8 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
      *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
-     *
-     * @throws NullPointerException If the specified {@code pipeline} is null.
      */
     public KeyEncryptionKeyClientBuilder pipeline(HttpPipeline pipeline) {
-        if (pipeline == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'pipeline' cannot be null."));
-        }
-
         builder.pipeline(pipeline);
 
         return this;
@@ -259,14 +247,8 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      * @param retryPolicy User's retry policy applied to each request.
      *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
-     *
-     * @throws NullPointerException If the specified {@code retryPolicy} is null.
      */
     public KeyEncryptionKeyClientBuilder retryPolicy(RetryPolicy retryPolicy) {
-        if (retryPolicy == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'retryPolicy' cannot be null."));
-        }
-
         builder.retryPolicy(retryPolicy);
 
         return this;

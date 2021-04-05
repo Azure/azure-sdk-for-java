@@ -286,14 +286,8 @@ public final class CertificateClientBuilder {
      * @param client The HTTP client to use for requests.
      *
      * @return The updated {@link CertificateClientBuilder} object.
-     *
-     * @throws NullPointerException If {@code client} is {@code null}.
      */
     public CertificateClientBuilder httpClient(HttpClient client) {
-        if (client == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'client' cannot be null."));
-        }
-
         this.httpClient = client;
 
         return this;
@@ -311,10 +305,6 @@ public final class CertificateClientBuilder {
      * @return The updated {@link CertificateClientBuilder} object.
      */
     public CertificateClientBuilder pipeline(HttpPipeline pipeline) {
-        if (pipeline == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'pipeline' cannot be null."));
-        }
-
         this.pipeline = pipeline;
 
         return this;
@@ -361,14 +351,8 @@ public final class CertificateClientBuilder {
      * @param retryPolicy user's retry policy applied to each request.
      *
      * @return The updated {@link CertificateClientBuilder} object.
-     *
-     * @throws NullPointerException If the specified {@code retryPolicy} is null.
      */
     public CertificateClientBuilder retryPolicy(RetryPolicy retryPolicy) {
-        if (retryPolicy == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'retryPolicy' cannot be null."));
-        }
-
         this.retryPolicy = retryPolicy;
 
         return this;

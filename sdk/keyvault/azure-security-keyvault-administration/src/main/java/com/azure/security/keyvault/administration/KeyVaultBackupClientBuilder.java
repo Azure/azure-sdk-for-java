@@ -263,14 +263,8 @@ public final class KeyVaultBackupClientBuilder {
      * @param client The HTTP client to use for requests.
      *
      * @return The updated {@link KeyVaultBackupClientBuilder} object.
-     *
-     * @throws NullPointerException If {@code client} is {@code null}.
      */
     public KeyVaultBackupClientBuilder httpClient(HttpClient client) {
-        if (client == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'client' cannot be null."));
-        }
-
         this.httpClient = client;
 
         return this;
@@ -286,14 +280,8 @@ public final class KeyVaultBackupClientBuilder {
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
      *
      * @return The updated {@link KeyVaultBackupClientBuilder} object.
-     *
-     * @throws NullPointerException If {@code pipeline} is {@code null}.
      */
     public KeyVaultBackupClientBuilder pipeline(HttpPipeline pipeline) {
-        if (pipeline == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'pipeline' cannot be null."));
-        }
-
         this.pipeline = pipeline;
 
         return this;
@@ -323,14 +311,8 @@ public final class KeyVaultBackupClientBuilder {
      * @param retryPolicy User's retry policy applied to each request.
      *
      * @return The updated {@link KeyVaultBackupClientBuilder} object.
-     *
-     * @throws NullPointerException If the specified {@code retryPolicy} is null.
      */
     public KeyVaultBackupClientBuilder retryPolicy(RetryPolicy retryPolicy) {
-        if (retryPolicy == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'retryPolicy' cannot be null."));
-        }
-
         this.retryPolicy = retryPolicy;
 
         return this;

@@ -281,14 +281,8 @@ public final class SecretClientBuilder {
      * @param client The HTTP client to use for requests.
      *
      * @return The updated {@link SecretClientBuilder} object.
-     *
-     * @throws NullPointerException If {@code client} is {@code null}.
      */
     public SecretClientBuilder httpClient(HttpClient client) {
-        if (client == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'client' cannot be null."));
-        }
-
         this.httpClient = client;
 
         return this;
@@ -305,10 +299,6 @@ public final class SecretClientBuilder {
      * @return The updated {@link SecretClientBuilder} object.
      */
     public SecretClientBuilder pipeline(HttpPipeline pipeline) {
-        if (pipeline == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'pipeline' cannot be null."));
-        }
-
         this.pipeline = pipeline;
 
         return this;
@@ -355,14 +345,8 @@ public final class SecretClientBuilder {
      * @param retryPolicy user's retry policy applied to each request.
      *
      * @return The updated {@link SecretClientBuilder} object.
-     *
-     * @throws NullPointerException If the specified {@code retryPolicy} is null.
      */
     public SecretClientBuilder retryPolicy(RetryPolicy retryPolicy) {
-        if (retryPolicy == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'retryPolicy' cannot be null."));
-        }
-
         this.retryPolicy = retryPolicy;
 
         return this;
