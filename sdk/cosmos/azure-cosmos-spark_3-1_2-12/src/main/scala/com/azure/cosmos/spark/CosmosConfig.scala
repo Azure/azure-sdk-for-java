@@ -88,8 +88,7 @@ private object CosmosAccountConfig {
     helpMessage = "Cosmos DB Account Name")
 
 
-  val PreferredRegionRegex = "^[a-zA-Z0-9_]+$"r
-
+  private val PreferredRegionRegex = "^[a-z0-9]+$"r // this is for the final form after lower-casing and trimming the whitespaces
   private val PreferredRegionsList = CosmosConfigEntry[Array[String]](key = "spark.cosmos.preferredRegionsList",
     mandatory = false,
     parseFromStringFunction = preferredRegionsListAsString => {
