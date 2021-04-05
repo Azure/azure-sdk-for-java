@@ -143,8 +143,4 @@ public class CreateOctKeyOptions extends CreateKeyOptions {
     public Boolean isHardwareProtected() {
         return this.hardwareProtected;
     }
-
-    public static void main(String[] args) {
-        new CreateRsaKeyOptions("").getKeySize();
-    }
 }

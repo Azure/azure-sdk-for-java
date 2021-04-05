@@ -32,7 +32,7 @@ public class KeyVaultKey {
     final KeyProperties properties;
 
     KeyVaultKey() {
-        this. properties = new KeyProperties();
+        this.properties = new KeyProperties();
     }
 
     /**
