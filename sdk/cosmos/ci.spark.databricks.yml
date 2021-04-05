@@ -1,6 +1,7 @@
 stages:
   - stage:
     displayName: Spark Databricks integration
+    dependsOn: []
     jobs:
     - job:
       timeoutInMinutes: 40
