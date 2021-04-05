@@ -18,8 +18,8 @@ stages:
       timeoutInMinutes: 40
       variables:
         - template: /eng/pipelines/templates/variables/globals.yml
-        - name: DatabricksClusterName
-          value: 'oltp-ci-2workers-ds3v2'
+        - name: SparkDabricksCosmosEndpoint
+          value: $(spark-databricks-cosmos-endpoint)
 
       pool:
         vmImage: 'ubuntu-18.04'
@@ -49,14 +49,6 @@ stages:
         inputs:
           targetType: inline
           script: >-
-            echo $DATABRICKSENDPOINT
-        env:
-          DATABRICKSENDPOINT: ${{ parameters.DatabricksEndpoint }}
-      - task: Bash@3
-        displayName: Connect to Databricks workspace
-        inputs:
-          targetType: inline
-          script: >-
             databricks configure --token <<EOF
 
             $DATABRICKSENDPOINT
@@ -70,10 +62,10 @@ stages:
       - task: Bash@3
         displayName: Importing Jars
         inputs:
-          filePath: /sdk/cosmos/azure-cosmos-spark_3-1_2-12/test-databricks/databricks-jar-install.sh
+          filePath: $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3-1_2-12/test-databricks/databricks-jar-install.sh
           arguments: '$(DatabricksClusterName) $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3-1_2-12/target'
       - task: Bash@3
         displayName: Importing and executing notebooks
         inputs:
-          filePath: /sdk/cosmos/azure-cosmos-spark_3-1_2-12/test-databricks/databricks-notebooks-install.sh
+          filePath: $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3-1_2-12/test-databricks/databricks-notebooks-install.sh
           arguments: $(DatabricksClusterName) /sdk/cosmos/azure-cosmos-spark_3-1_2-12/test-databricks/notebooks ${{ parameters.CosmosEndpoint }} ${{ parameters.CosmosKey }}
