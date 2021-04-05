@@ -71,6 +71,8 @@ public class SearchServiceCustomizations extends Customization {
 
     private static final String CUSTOM_NORMALIZER = "CustomNormalizer";
 
+    private static final String SEARCH_FIELD = "SearchField";
+
     @Override
     public void customize(LibraryCustomization libraryCustomization) {
         customizeModelsPackage(libraryCustomization.getPackage(MODELS));
@@ -122,7 +124,9 @@ public class SearchServiceCustomizations extends Customization {
         changeClassModifier(packageCustomization.getClass(DOCUMENT_EXTRACTION_SKILL), PUBLIC_FINAL);
         changeClassModifier(packageCustomization.getClass(WEB_API_SKILL), PUBLIC_FINAL);
 
+        customizeCustomNormalizer(packageCustomization.getClass(CUSTOM_NORMALIZER));
 
+        customizeSearchField(packageCustomization.getClass(SEARCH_FIELD));
     }
 
     private void customizeSearchFieldDataType(ClassCustomization classCustomization) {
@@ -204,6 +208,20 @@ public class SearchServiceCustomizations extends Customization {
         changeClassModifier(classCustomization, PUBLIC_FINAL);
         addVarArgsOverload(classCustomization, "tokenFilters", "TokenFilterName");
         addVarArgsOverload(classCustomization, "charFilters", "CharFilterName");
+    }
+
+    private void customizeSearchField(ClassCustomization classCustomization) {
+        classCustomization.getMethod("setHidden")
+            .replaceBody(
+                "this.hidden = (hidden == null) ? null : !hidden;" +
+                    "return this;"
+            );
+
+        classCustomization.getMethod("isHidden")
+            .replaceBody("return (this.hidden == null) ? null : !this.hidden;");
+
+        addVarArgsOverload(classCustomization, "fields", "SearchField");
+        addVarArgsOverload(classCustomization, "synonymMapNames", "String");
     }
 
     private void customizeImplementationModelsPackage(PackageCustomization packageCustomization) {

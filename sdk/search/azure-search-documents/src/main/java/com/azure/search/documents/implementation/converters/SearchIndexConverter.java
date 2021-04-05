@@ -27,9 +27,7 @@ public final class SearchIndexConverter {
             return null;
         }
 
-        List<SearchField> fields = obj.getFields() == null ? null
-            : obj.getFields().stream().map(SearchFieldConverter::map).collect(Collectors.toList());
-        SearchIndex searchIndex = new SearchIndex(obj.getName(), fields);
+        SearchIndex searchIndex = new SearchIndex(obj.getName(), obj.getFields());
 
         if (obj.getTokenizers() != null) {
             List<LexicalTokenizer> tokenizers =
@@ -97,12 +95,10 @@ public final class SearchIndexConverter {
             return null;
         }
         Objects.requireNonNull(obj.getName(), "The SearchIndex name cannot be null");
-        List<com.azure.search.documents.indexes.implementation.models.SearchField> fields = obj.getFields() == null ?
-            null : obj.getFields().stream().map(SearchFieldConverter::map).collect(Collectors.toList());
         com.azure.search.documents.indexes.implementation.models.SearchIndex searchIndex =
             new com.azure.search.documents.indexes.implementation.models.SearchIndex()
                 .setName(obj.getName())
-                .setFields(fields);
+                .setFields(obj.getFields());
 
         if (obj.getTokenizers() != null) {
             List<com.azure.search.documents.indexes.implementation.models.LexicalTokenizer> tokenizers =
