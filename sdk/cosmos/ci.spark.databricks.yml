@@ -62,10 +62,10 @@ stages:
       - task: Bash@3
         displayName: Importing Jars
         inputs:
-          filePath: test-databricks/databricks-jar-install.sh
+          filePath: /sdk/cosmos/azure-cosmos-spark_3-1_2-12/test-databricks/databricks-jar-install.sh
           arguments: '$(DatabricksClusterName) $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3-1_2-12/target'
       - task: Bash@3
         displayName: Importing and executing notebooks
         inputs:
-          filePath: test-databricks/databricks-notebooks-install.sh
-          arguments: $(DatabricksClusterName) test-databricks/notebooks ${{ parameters.CosmosEndpoint }} ${{ parameters.CosmosKey }}
+          filePath: /sdk/cosmos/azure-cosmos-spark_3-1_2-12/test-databricks/databricks-notebooks-install.sh
+          arguments: $(DatabricksClusterName) /sdk/cosmos/azure-cosmos-spark_3-1_2-12/test-databricks/notebooks ${{ parameters.CosmosEndpoint }} ${{ parameters.CosmosKey }}
