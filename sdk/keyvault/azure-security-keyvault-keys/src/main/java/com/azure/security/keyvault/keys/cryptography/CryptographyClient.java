@@ -76,6 +76,8 @@ public class CryptographyClient {
      *
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.getKeyWithResponse#Context}
      *
+     * @param context Additional context that is passed through the {@link HttpPipeline} during the service call.
+     *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
      * requested {@link KeyVaultKey key}.
      *

@@ -193,8 +193,8 @@ public class CryptographyAsyncClient {
             return cryptographyServiceClient.getKey(context);
         } else {
             throw logger.logExceptionAsError(new UnsupportedOperationException(
-                "Operation not supported when an Azure Key Vault key identifier was not provided when creating this " +
-                    "client"));
+                "Operation not supported when an Azure Key Vault key identifier was not provided when creating this "
+                    + "client"));
         }
     }
 
