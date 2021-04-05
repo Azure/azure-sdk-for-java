@@ -245,6 +245,7 @@ public class ClientSideRequestStatistics {
         String usedMemory;
         String availableMemory;
         String systemCpuLoad;
+        int availableProcessors;
 
         public String getUsedMemory() {
             return usedMemory;
@@ -256,6 +257,10 @@ public class ClientSideRequestStatistics {
 
         public String getSystemCpuLoad() {
             return systemCpuLoad;
+        }
+
+        public int getAvailableProcessors() {
+            return availableProcessors;
         }
     }
 
@@ -302,11 +307,13 @@ public class ClientSideRequestStatistics {
 
             try {
                 SystemInformation systemInformation = new SystemInformation();
-                long totalMemory = Runtime.getRuntime().totalMemory() / 1024;
-                long freeMemory = Runtime.getRuntime().freeMemory() / 1024;
-                long maxMemory = Runtime.getRuntime().maxMemory() / 1024;
+                Runtime runtime = Runtime.getRuntime();
+                long totalMemory = runtime.totalMemory() / 1024;
+                long freeMemory = runtime.freeMemory() / 1024;
+                long maxMemory = runtime.maxMemory() / 1024;
                 systemInformation.usedMemory = totalMemory - freeMemory + " KB";
                 systemInformation.availableMemory = (maxMemory - (totalMemory - freeMemory)) + " KB";
+                systemInformation.availableProcessors = runtime.availableProcessors();
 
                 // TODO: other system related info also can be captured using a similar approach
                 systemInformation.systemCpuLoad = CpuMemoryMonitor.getCpuLoad().toString();

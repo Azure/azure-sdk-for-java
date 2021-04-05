@@ -9,7 +9,6 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.search.documents.implementation.converters.GetIndexStatisticsResultConverter;
 import com.azure.search.documents.implementation.converters.IndexDocumentsResultConverter;
 import com.azure.search.documents.implementation.converters.SearchIndexConverter;
 import com.azure.search.documents.implementation.converters.SearchIndexerConverter;
@@ -25,7 +24,6 @@ import com.azure.search.documents.indexes.implementation.models.ListSynonymMapsR
 import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.SearchIndex;
-import com.azure.search.documents.indexes.models.SearchIndexStatistics;
 import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
@@ -166,14 +164,6 @@ public class MappingUtils {
             null,
             null
         );
-    }
-
-    public static Response<SearchIndexStatistics> mappingGetIndexStatistics(
-        Response<com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult>
-            indexStatisticsResponse) {
-        return new SimpleResponse<>(indexStatisticsResponse.getRequest(), indexStatisticsResponse.getStatusCode(),
-            indexStatisticsResponse.getHeaders(),
-            GetIndexStatisticsResultConverter.map(indexStatisticsResponse.getValue()));
     }
 
     public static Response<com.azure.search.documents.models.IndexDocumentsResult> mappingIndexDocumentResultResponse(

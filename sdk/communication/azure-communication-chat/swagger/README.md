@@ -31,13 +31,13 @@ To update generated files for chat service, run the following command
 
 ### Code generation settings
 ``` yaml
-input-file: swagger.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0d832037c324f08da297bb292b5ad91c47f5fa23/specification/communication/data-plane/Microsoft.CommunicationServicesChat/stable/2021-03-07/communicationserviceschat.json
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.chat
 generate-client-as-impl: true
-custom-types: ChatMessagePriority,ChatThreadInfo,PostReadReceiptOptions,SendChatMessageOptions,UpdateChatMessageOptions,UpdateChatThreadOptions,Error,ErrorException,CreateChatThreadErrors,AddChatParticipantsErrors,AddChatParticipantsResult,ChatMessageContent,ChatMessageType,CommunicationError,CommunicationErrorException,CommunicationErrorResponse,CommunicationErrorResponseException
+custom-types: ChatMessagePriority,ChatThreadItem,PostReadReceiptOptions,SendChatMessageOptions,UpdateChatMessageOptions,UpdateChatThreadOptions,ChatMessageType,SendChatMessageResult
 custom-types-subpackage: models
 models-subpackage: implementation.models
 generate-client-interfaces: false

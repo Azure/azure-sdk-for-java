@@ -151,6 +151,12 @@ public class SnapshotInner extends Resource {
     @JsonProperty(value = "properties.diskAccessId")
     private String diskAccessId;
 
+    /*
+     * Indicates the OS on a snapshot supports hibernation.
+     */
+    @JsonProperty(value = "properties.supportsHibernation")
+    private Boolean supportsHibernation;
+
     /**
      * Get the managedBy property: Unused. Always Null.
      *
@@ -464,6 +470,26 @@ public class SnapshotInner extends Resource {
      */
     public SnapshotInner withDiskAccessId(String diskAccessId) {
         this.diskAccessId = diskAccessId;
+        return this;
+    }
+
+    /**
+     * Get the supportsHibernation property: Indicates the OS on a snapshot supports hibernation.
+     *
+     * @return the supportsHibernation value.
+     */
+    public Boolean supportsHibernation() {
+        return this.supportsHibernation;
+    }
+
+    /**
+     * Set the supportsHibernation property: Indicates the OS on a snapshot supports hibernation.
+     *
+     * @param supportsHibernation the supportsHibernation value to set.
+     * @return the SnapshotInner object itself.
+     */
+    public SnapshotInner withSupportsHibernation(Boolean supportsHibernation) {
+        this.supportsHibernation = supportsHibernation;
         return this;
     }
 

@@ -97,6 +97,11 @@ class ChangeFeedQueryImpl<T extends Resource> {
 
     private RxDocumentServiceRequest createDocumentServiceRequest() {
         Map<String, String> headers = new HashMap<>();
+
+        if (options.isQuotaInfoEnabled()) {
+            headers.put(HttpConstants.HttpHeaders.POPULATE_QUOTA_INFO, String.valueOf(true));
+        }
+
         return RxDocumentServiceRequest.create(clientContext,
             OperationType.ReadFeed,
             resourceType,

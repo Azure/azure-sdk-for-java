@@ -161,7 +161,7 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
                             managementPolicyName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -348,7 +348,7 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
                             properties,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -575,7 +575,7 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
                             this.client.getSubscriptionId(),
                             managementPolicyName,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

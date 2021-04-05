@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.loganalytics.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.fluent.models.DataExportInner;
 import com.azure.resourcemanager.loganalytics.models.DataExport;
 import com.azure.resourcemanager.loganalytics.models.Type;
@@ -15,7 +14,7 @@ import java.util.List;
 public final class DataExportImpl implements DataExport, DataExport.Definition, DataExport.Update {
     private DataExportInner innerObject;
 
-    private final LogAnalyticsManager serviceManager;
+    private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -70,7 +69,7 @@ public final class DataExportImpl implements DataExport, DataExport.Definition, 
         return this.innerObject;
     }
 
-    private LogAnalyticsManager manager() {
+    private com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager() {
         return this.serviceManager;
     }
 
@@ -108,7 +107,7 @@ public final class DataExportImpl implements DataExport, DataExport.Definition, 
         return this;
     }
 
-    DataExportImpl(String name, LogAnalyticsManager serviceManager) {
+    DataExportImpl(String name, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = new DataExportInner();
         this.serviceManager = serviceManager;
         this.dataExportName = name;
@@ -140,7 +139,8 @@ public final class DataExportImpl implements DataExport, DataExport.Definition, 
         return this;
     }
 
-    DataExportImpl(DataExportInner innerObject, LogAnalyticsManager serviceManager) {
+    DataExportImpl(
+        DataExportInner innerObject, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourcegroups");

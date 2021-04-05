@@ -5,7 +5,6 @@ package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.benchmark.Configuration.Operation.OperationTypeConverter;
 import com.beust.jcommander.IStringConverter;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
@@ -113,7 +112,7 @@ public class Configuration {
         + "\tReadAllItemsOfLogicalPartition - run a workload that uses readAllItems for a logical partition and prints throughput\n"
         + "\n\t* writes 10k documents initially, which are used in the reads"
         + "\tLinkedInCtlWorkload - ctl for LinkedIn workload.*\n",
-        converter = OperationTypeConverter.class)
+        converter = Operation.OperationTypeConverter.class)
     private Operation operation = Operation.WriteThroughput;
 
     @Parameter(names = "-concurrency", description = "Degree of Concurrency in Inserting Documents."
@@ -163,6 +162,29 @@ public class Configuration {
 
     @Parameter(names = "-bulkloadBatchSize", description = "Control the number of documents uploaded in each BulkExecutor load iteration (Only supported for the LinkedInCtlWorkload)")
     private int bulkloadBatchSize = 200000;
+
+    @Parameter(names = "-testScenario", description = "The test scenario (GET, QUERY) for the LinkedInCtlWorkload")
+    private String testScenario = "GET";
+
+    public enum Environment {
+        Daily,   // This is the CTL environment where we run the workload for a fixed number of hours
+        Staging; // This is the CTL environment where the worload runs as a long running job
+
+        static class EnvironmentConverter implements IStringConverter<Environment> {
+            @Override
+            public Environment convert(String value) {
+                if (value == null) {
+                    return Environment.Daily;
+                }
+
+                return Environment.valueOf(value);
+            }
+        }
+    }
+
+    @Parameter(names = "-environment", description = "The CTL Environment we are validating the workload",
+        converter = Environment.EnvironmentConverter.class)
+    private Environment environment = Environment.Daily;
 
     @Parameter(names = {"-h", "-help", "--help"}, description = "Help", help = true)
     private boolean help = false;
@@ -404,6 +426,14 @@ public class Configuration {
         return this.bulkloadBatchSize;
     }
 
+    public String getTestScenario() {
+        return this.testScenario;
+    }
+
+    public Environment getEnvironment() {
+        return this.environment;
+    }
+
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
@@ -431,7 +461,7 @@ public class Configuration {
         consistencyLevel = consistencyLevelConverter.convert(StringUtils
                                                                      .defaultString(Strings.emptyToNull(System.getenv().get("CONSISTENCY_LEVEL")), consistencyLevel.name()));
 
-        OperationTypeConverter operationTypeConverter = new OperationTypeConverter();
+        Operation.OperationTypeConverter operationTypeConverter = new Operation.OperationTypeConverter();
         operation = operationTypeConverter.convert(
                 StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("OPERATION")), operation.name()));
 

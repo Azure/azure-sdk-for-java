@@ -27,6 +27,12 @@
           "PROTOCOLS": "[\"Tcp\"]",
           "DESIRED_CONSISTENCIES": "[\"Session\"]",
           "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/\""
+      },
+      "Spark Integration Tests targeting Cosmos Emulator'": {
+          "ProfileFlag": "-PsparkE2E",
+          "PROTOCOLS": "[\"Tcp\"]",
+          "DESIRED_CONSISTENCIES": "[\"Session\"]",
+          "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop\""
       }
     }
   }

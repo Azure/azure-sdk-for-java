@@ -84,6 +84,7 @@ public class ReactorHandlerProviderTest {
     private ReactorHandlerProvider provider;
     private ProxySelector originalProxySelector;
     private ProxySelector proxySelector;
+    private AutoCloseable mocksCloseable;
 
     public static Stream<ProxyOptions> getProxyConfigurations() {
         return Stream.of(ProxyOptions.SYSTEM_DEFAULTS,
@@ -94,7 +95,7 @@ public class ReactorHandlerProviderTest {
 
     @BeforeEach
     public void setup() throws IOException {
-        MockitoAnnotations.initMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
 
         when(reactorProvider.createReactor(eq(CONNECTION_ID), anyInt())).thenReturn(reactor);
         when(reactorProvider.getReactor()).thenReturn(reactor);
@@ -108,9 +109,13 @@ public class ReactorHandlerProviderTest {
     }
 
     @AfterEach
-    public void teardown() {
+    public void teardown() throws Exception {
         Mockito.framework().clearInlineMocks();
         ProxySelector.setDefault(originalProxySelector);
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     @Test

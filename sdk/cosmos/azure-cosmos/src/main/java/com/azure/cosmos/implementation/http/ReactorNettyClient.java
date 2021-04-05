@@ -25,6 +25,10 @@ import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.transport.ProxyProvider;
 import reactor.util.context.Context;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
+import java.lang.invoke.WrongMethodTypeException;
 import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.Instant;
@@ -43,6 +47,21 @@ class ReactorNettyClient implements HttpClient {
 
     private static final Logger logger = LoggerFactory.getLogger(ReactorNettyClient.class.getSimpleName());
 
+    private static final MethodHandle HTTP_CLIENT_WARMUP;
+
+    static {
+        MethodHandle httpClientWarmup = null;
+        try {
+            httpClientWarmup = MethodHandles.publicLookup()
+                .findVirtual(reactor.netty.http.client.HttpClient.class, "warmup", MethodType.methodType(Mono.class));
+        } catch (IllegalAccessException | NoSuchMethodException ex) {
+            // Version of Reactor Netty doesn't have the warmup API on HttpClient.
+            // So warmup won't be performed and this error is ignored.
+        }
+
+        HTTP_CLIENT_WARMUP = httpClientWarmup;
+    }
+
     private HttpClientConfig httpClientConfig;
     private reactor.netty.http.client.HttpClient httpClient;
     private ConnectionProvider connectionProvider;
@@ -60,8 +79,7 @@ class ReactorNettyClient implements HttpClient {
             .observe(getConnectionObserver())
             .resolver(DefaultAddressResolverGroup.INSTANCE);
         reactorNettyClient.configureChannelPipelineHandlers();
-        //  This enables fast warm up of HttpClient
-        reactorNettyClient.httpClient.warmup().block();
+        attemptToWarmupHttpClient(reactorNettyClient);
         return reactorNettyClient;
     }
 
@@ -77,9 +95,28 @@ class ReactorNettyClient implements HttpClient {
             .observe(getConnectionObserver())
             .resolver(DefaultAddressResolverGroup.INSTANCE);
         reactorNettyClient.configureChannelPipelineHandlers();
-        //  This enables fast warm up of HttpClient
-        reactorNettyClient.httpClient.warmup().block();
+        attemptToWarmupHttpClient(reactorNettyClient);
         return reactorNettyClient;
+    }
+
+    /*
+     * This enables fast warm up of HttpClient
+     */
+    private static void attemptToWarmupHttpClient(ReactorNettyClient reactorNettyClient) {
+        // Warmup wasn't found, so don't attempt it.
+        if (HTTP_CLIENT_WARMUP == null) {
+            return;
+        }
+
+        try {
+            ((Mono<?>) HTTP_CLIENT_WARMUP.invoke(reactorNettyClient.httpClient)).block();
+        } catch (ClassCastException | WrongMethodTypeException throwable) {
+            // Invocation failed.
+            logger.debug("Invoking HttpClient.warmup failed.", throwable);
+        } catch (Throwable throwable) {
+            // Warmup failed.
+            throw new RuntimeException(throwable);
+        }
     }
 
     private void configureChannelPipelineHandlers() {

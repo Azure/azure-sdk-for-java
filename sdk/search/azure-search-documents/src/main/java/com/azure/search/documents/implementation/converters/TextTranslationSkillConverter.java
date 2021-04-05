@@ -3,11 +3,7 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.TextTranslationSkill;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.TextTranslationSkill} and
@@ -23,10 +19,7 @@ public final class TextTranslationSkillConverter {
             return null;
         }
 
-        List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null
-            : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-
-        TextTranslationSkill textTranslationSkill = new TextTranslationSkill(inputs, obj.getOutputs(),
+        TextTranslationSkill textTranslationSkill = new TextTranslationSkill(obj.getInputs(), obj.getOutputs(),
             obj.getDefaultToLanguageCode());
 
         String name = obj.getName();
@@ -57,13 +50,9 @@ public final class TextTranslationSkillConverter {
             return null;
         }
 
-        List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
-            obj.getOutputs() == null ? null
-                : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-
         com.azure.search.documents.indexes.implementation.models.TextTranslationSkill textTranslationSkill =
-            new com.azure.search.documents.indexes.implementation.models.TextTranslationSkill(inputs, obj.getOutputs(),
-                obj.getDefaultToLanguageCode());
+            new com.azure.search.documents.indexes.implementation.models.TextTranslationSkill(obj.getInputs(),
+                obj.getOutputs(), obj.getDefaultToLanguageCode());
 
         String name = obj.getName();
         textTranslationSkill.setName(name);

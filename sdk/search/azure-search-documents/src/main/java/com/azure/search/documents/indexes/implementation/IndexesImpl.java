@@ -28,11 +28,11 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.search.documents.indexes.implementation.models.AnalyzeRequest;
 import com.azure.search.documents.indexes.implementation.models.AnalyzeResult;
-import com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult;
 import com.azure.search.documents.indexes.implementation.models.ListIndexesResult;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
 import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
 import com.azure.search.documents.indexes.implementation.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SearchIndexStatistics;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
@@ -126,7 +126,7 @@ public final class IndexesImpl {
         @Get("/indexes('{indexName}')/search.stats")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<GetIndexStatisticsResult>> getStatistics(
+        Mono<Response<SearchIndexStatistics>> getStatistics(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("indexName") String indexName,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
@@ -333,7 +333,7 @@ public final class IndexesImpl {
      * @return statistics for a given index.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<GetIndexStatisticsResult>> getStatisticsWithResponseAsync(
+    public Mono<Response<SearchIndexStatistics>> getStatisticsWithResponseAsync(
             String indexName, RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;

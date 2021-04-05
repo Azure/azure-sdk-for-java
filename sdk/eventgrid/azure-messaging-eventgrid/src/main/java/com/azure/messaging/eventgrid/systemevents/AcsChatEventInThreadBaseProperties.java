@@ -11,10 +11,36 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public class AcsChatEventInThreadBaseProperties {
     /*
+     * The transaction id will be used as co-relation vector
+     */
+    @JsonProperty(value = "transactionId")
+    private String transactionId;
+
+    /*
      * The chat thread id
      */
     @JsonProperty(value = "threadId")
     private String threadId;
+
+    /**
+     * Get the transactionId property: The transaction id will be used as co-relation vector.
+     *
+     * @return the transactionId value.
+     */
+    public String getTransactionId() {
+        return this.transactionId;
+    }
+
+    /**
+     * Set the transactionId property: The transaction id will be used as co-relation vector.
+     *
+     * @param transactionId the transactionId value to set.
+     * @return the AcsChatEventInThreadBaseProperties object itself.
+     */
+    public AcsChatEventInThreadBaseProperties setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+        return this;
+    }
 
     /**
      * Get the threadId property: The chat thread id.

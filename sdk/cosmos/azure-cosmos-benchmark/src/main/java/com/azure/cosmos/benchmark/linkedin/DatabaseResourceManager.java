@@ -8,7 +8,6 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.benchmark.Configuration;
 import com.azure.cosmos.benchmark.linkedin.data.EntityConfiguration;
-import com.azure.cosmos.models.ThroughputProperties;
 import com.google.common.base.Preconditions;
 import java.time.Duration;
 import org.slf4j.Logger;
@@ -47,9 +46,7 @@ public class DatabaseResourceManager implements ResourceManager {
     public void createResources() throws CosmosException {
         try {
             LOGGER.info("Creating database {} for the ctl workload if one doesn't exist", _configuration.getDatabaseId());
-            final ThroughputProperties throughputProperties =
-                ThroughputProperties.createManualThroughput(_configuration.getThroughput());
-            _client.createDatabaseIfNotExists(_configuration.getDatabaseId(), throughputProperties)
+            _client.createDatabaseIfNotExists(_configuration.getDatabaseId())
                 .block(RESOURCE_CRUD_WAIT_TIME);
         } catch (CosmosException e) {
             LOGGER.error("Exception while creating database {}", _configuration.getDatabaseId(), e);
@@ -65,7 +62,7 @@ public class DatabaseResourceManager implements ResourceManager {
 
     @Override
     public void deleteResources() {
-        // Followed by the main database used for testing
+        // Delete the database used for testing
         final CosmosAsyncDatabase database = _client.getDatabase(_configuration.getDatabaseId());
         try {
             LOGGER.info("Deleting the main database {} used in this test. Collection", _configuration.getDatabaseId());

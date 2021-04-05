@@ -31,7 +31,7 @@ parameters:
 stages:
   - stage: Build
     jobs:
-      - template: ../jobs/archetype-sdk-pom-only.yml
+      - template: /eng/pipelines/templates/jobs/build-validate-pom.yml
         parameters:
           ServiceDirectory: ${{parameters.ServiceDirectory}}
           SDKType: ${{parameters.SDKType}}
