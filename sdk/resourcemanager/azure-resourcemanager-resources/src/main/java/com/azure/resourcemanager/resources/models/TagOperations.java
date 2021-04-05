@@ -20,34 +20,34 @@ public interface TagOperations extends HasManager<ResourceManager> {
      *
      * @param resource the Azure resource to have its tags updated
      * @param tags the tags
-     * @return the updated tags
+     * @return the resource with updated tags
      */
-    Map<String, String> updateTags(Resource resource, Map<String, String> tags);
+    TagResource updateTags(Resource resource, Map<String, String> tags);
 
     /**
      * Updates the tags of the Azure resource.
      *
      * @param resourceId the ID of the Azure resource to have its tags updated
      * @param tags the tags
-     * @return the updated tags
+     * @return the resource with updated tags
      */
-    Map<String, String> updateTags(String resourceId, Map<String, String> tags);
+    TagResource updateTags(String resourceId, Map<String, String> tags);
 
     /**
      * Updates the tags of the Azure resource.
      *
      * @param resource the Azure resource to have its tags updated
      * @param tags the tags
-     * @return the updated tags
+     * @return the resource with updated tags
      */
-    Mono<Map<String, String>> updateTagsAsync(Resource resource, Map<String, String> tags);
+    Mono<TagResource> updateTagsAsync(Resource resource, Map<String, String> tags);
 
     /**
      * Updates the tags of the Azure resource.
      *
      * @param resourceId the ID of the Azure resource to have its tags updated
      * @param tags the tags
-     * @return the updated tags
+     * @return the resource with updated tags
      */
-    Mono<Map<String, String>> updateTagsAsync(String resourceId, Map<String, String> tags);
+    Mono<TagResource> updateTagsAsync(String resourceId, Map<String, String> tags);
 }

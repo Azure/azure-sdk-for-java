@@ -13,7 +13,7 @@ import java.util.Objects;
 /**
  * Metadata that a key wrapping provider can use to wrap/unwrap data encryption keys.
  */
-@Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+@Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class EncryptionKeyWrapMetadata {
 
     /**
@@ -27,14 +27,20 @@ public final class EncryptionKeyWrapMetadata {
      *
      * @param source Existing instance from which to initialize.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public EncryptionKeyWrapMetadata(EncryptionKeyWrapMetadata source) {
         this.type = source.type;
         this.algorithm = source.algorithm;
         this.value = source.value;
     }
 
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    /**
+     * Creates a new instance of key wrap metadata based on an existing instance.
+     *
+     * @param name Name of the metadata.
+     * @param value Value of the metadata.
+     */
+    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public EncryptionKeyWrapMetadata(String name, String value) {
         this("custom", name, value, null);
     }
@@ -75,7 +81,7 @@ public final class EncryptionKeyWrapMetadata {
      * credential information.
      * @return value of metadata
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getValue() {
         return value;
     }
@@ -87,16 +93,22 @@ public final class EncryptionKeyWrapMetadata {
      * credential information.
      * @return name of metadata.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getName() {
         return name;
     }
 
+    /**
+     * Returns whether the properties of the passed in key wrap metadata matches with those in the current instance.
+     *
+     * @param obj Key wrap metadata to be compared with current instance.
+     * @return True if the properties of the key wrap metadata passed in matches with those in the current instance, else false.
+     */
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        EncryptionKeyWrapMetadata that = (EncryptionKeyWrapMetadata) o;
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        EncryptionKeyWrapMetadata that = (EncryptionKeyWrapMetadata) obj;
         return Objects.equals(type, that.type) &&
             Objects.equals(algorithm, that.algorithm) &&
             Objects.equals(value, that.value);

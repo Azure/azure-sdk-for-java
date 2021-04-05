@@ -164,7 +164,7 @@ public class AADWebAppConfiguration {
     private ClientRegistration.Builder createClientBuilder(String id) {
         ClientRegistration.Builder result = ClientRegistration.withRegistrationId(id);
         result.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE);
-        result.redirectUriTemplate("{baseUrl}/login/oauth2/code/");
+        result.redirectUri("{baseUrl}/login/oauth2/code/");
 
         result.clientId(properties.getClientId());
         result.clientSecret(properties.getClientSecret());

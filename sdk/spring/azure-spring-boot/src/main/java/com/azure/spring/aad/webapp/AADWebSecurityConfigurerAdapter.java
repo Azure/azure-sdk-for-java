@@ -19,8 +19,6 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.util.StringUtils;
 
-import java.net.URI;
-
 /**
  * Abstract configuration class, used to make AzureClientRegistrationRepository and AuthzCodeGrantRequestEntityConverter
  * take effect.
@@ -60,8 +58,7 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
             new OidcClientInitiatedLogoutSuccessHandler(this.repo);
         String uri = this.properties.getPostLogoutRedirectUri();
         if (StringUtils.hasText(uri)) {
-            // TODO (jack) Remove deprecated method after we do not need to support spring-boot-2.2.x
-            oidcLogoutSuccessHandler.setPostLogoutRedirectUri(URI.create(uri));
+            oidcLogoutSuccessHandler.setPostLogoutRedirectUri(uri);
         }
         return oidcLogoutSuccessHandler;
     }

@@ -74,21 +74,6 @@ public final class DtmiConventions {
         }
     }
 
-    /**
-     * Converts a string to {@link URI}
-     *
-     * @param uri String format of the path
-     * @return {@link URI} representation of the path/uri.
-     * @throws IllegalArgumentException If the {@code uri} is invalid.
-     */
-    public static URI convertToUri(String uri) throws IllegalArgumentException {
-        try {
-            return new URI(uri);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid uri format", e);
-        }
-    }
-
     static String dtmiToPath(String dtmi) {
         if (!isValidDtmi(dtmi)) {
             throw new IllegalArgumentException(String.format(StatusStrings.INVALID_DTMI_FORMAT_S, dtmi));
