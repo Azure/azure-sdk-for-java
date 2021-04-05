@@ -49,8 +49,8 @@ stages:
         inputs:
           targetType: inline
           env:
-            DATABRICKSENDPOINT: $(parameters.DatabricksEndpoint)
-            DATABRICKSTOKEN: $(parameters.DatabricksToken)
+            DATABRICKSENDPOINT: ${{parameters.DatabricksEndpoint}}
+            DATABRICKSTOKEN: ${{parameters.DatabricksToken}}
           script: >-
             databricks configure --token <<EOF
 
