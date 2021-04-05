@@ -234,7 +234,8 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                     }
                     return Mono.empty();
                 })
-                .doOnTerminate(() -> {
+                // Use doFinally to cover all termination scenarios of the Flux.
+                .doFinally(signalType -> {
                     lock.lock();
                     try {
                         complete = true;
