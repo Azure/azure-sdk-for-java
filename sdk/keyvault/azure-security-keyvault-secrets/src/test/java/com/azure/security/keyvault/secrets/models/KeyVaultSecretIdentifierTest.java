@@ -5,15 +5,13 @@ package com.azure.security.keyvault.secrets.models;
 
 import org.junit.jupiter.api.Test;
 
-import java.net.MalformedURLException;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class KeyVaultSecretIdentifierTest {
     @Test
-    void parseWithoutVersion() throws MalformedURLException {
+    void parseWithoutVersion() {
         String secretId = "https://test-key-vault.vault.azure.net/secrets/test-secret";
         KeyVaultSecretIdentifier keyVaultSecretIdentifier = new KeyVaultSecretIdentifier(secretId);
 
@@ -24,7 +22,7 @@ class KeyVaultSecretIdentifierTest {
     }
 
     @Test
-    void parseWithVersion() throws MalformedURLException {
+    void parseWithVersion() {
         String secretId = "https://test-key-vault.vault.azure.net/secrets/test-secret/version";
         KeyVaultSecretIdentifier keyVaultSecretIdentifier = new KeyVaultSecretIdentifier(secretId);
 
@@ -35,7 +33,7 @@ class KeyVaultSecretIdentifierTest {
     }
 
     @Test
-    void parseForDeletedSecret() throws MalformedURLException {
+    void parseForDeletedSecret() {
         String secretId = "https://test-key-vault.vault.azure.net/deletedsecrets/test-secret";
         KeyVaultSecretIdentifier keyVaultSecretIdentifier = new KeyVaultSecretIdentifier(secretId);
 

@@ -58,7 +58,7 @@ public final class LocalCryptographyClientJavaDocCodeSnippets {
             encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString());
         // END: com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.encrypt#EncryptionAlgorithm-byte
 
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.encrypt#EncryptOptions
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.encrypt#EncryptParameters
         byte[] plainTextBytes = new byte[100];
         new Random(0x1234567L).nextBytes(plainTextBytes);
         byte[] iv = {
@@ -70,7 +70,7 @@ public final class LocalCryptographyClientJavaDocCodeSnippets {
 
         System.out.printf("Received encrypted content of length %d with algorithm %s \n",
             encryptedResult.getCipherText().length, encryptedResult.getAlgorithm().toString());
-        // END: com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.encrypt#EncryptOptions
+        // END: com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.encrypt#EncryptParameters
     }
 
     /**
@@ -87,7 +87,7 @@ public final class LocalCryptographyClientJavaDocCodeSnippets {
         System.out.printf("Received decrypted content of length %d\n", decryptResult.getPlainText().length);
         // END: com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.decrypt#EncryptionAlgorithm-byte
 
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.decrypt#DecryptOptions
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.decrypt#DecryptParameters
         byte[] encryptedBytes = new byte[100];
         byte[] iv = {
             (byte) 0x1a, (byte) 0xf3, (byte) 0x8c, (byte) 0x2d, (byte) 0xc2, (byte) 0xb9, (byte) 0x6f, (byte) 0xfd,
@@ -97,7 +97,7 @@ public final class LocalCryptographyClientJavaDocCodeSnippets {
         DecryptResult decryptedResult = cryptographyClient.decrypt(decryptParameters);
 
         System.out.printf("Received decrypted content of length %d\n", decryptedResult.getPlainText().length);
-        // END: com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.decrypt#DecryptOptions
+        // END: com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.decrypt#DecryptParameters
     }
 
     /**

@@ -55,7 +55,7 @@ public final class LocalCryptographyAsyncClientJavaDocCodeSnippets {
                     encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString()));
         // END: com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte
 
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.encrypt#EncryptOptions
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.encrypt#EncryptParameters
         byte[] plainTextBytes = new byte[100];
         new Random(0x1234567L).nextBytes(plainTextBytes);
         byte[] iv = {
@@ -69,7 +69,7 @@ public final class LocalCryptographyAsyncClientJavaDocCodeSnippets {
             .subscribe(encryptResult ->
                 System.out.printf("Received encrypted content of length %d with algorithm %s \n",
                     encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString()));
-        // END: com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.encrypt#EncryptOptions
+        // END: com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.encrypt#EncryptParameters
     }
 
     /**
@@ -87,7 +87,7 @@ public final class LocalCryptographyAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Received decrypted content of length %d\n", decryptResult.getPlainText().length));
         // END: com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte
 
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.decrypt#DecryptOptions
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.decrypt#DecryptParameters
         byte[] plainTextBytes = new byte[100];
         new Random(0x1234567L).nextBytes(plainTextBytes);
         byte[] iv = {
@@ -100,7 +100,7 @@ public final class LocalCryptographyAsyncClientJavaDocCodeSnippets {
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
             .subscribe(decryptResult ->
                 System.out.printf("Received decrypted content of length %d\n", decryptResult.getPlainText().length));
-        // END: com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.decrypt#DecryptOptions
+        // END: com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.decrypt#DecryptParameters
     }
 
     /**

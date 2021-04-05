@@ -123,7 +123,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
                     encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString()));
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte
 
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptOptions
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptParameters
         byte[] plainTextBytes = new byte[100];
 
         new Random(0x1234567L).nextBytes(plainTextBytes);
@@ -139,7 +139,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
             .subscribe(encryptResult ->
                 System.out.printf("Received encrypted content of length %d with algorithm %s \n",
                     encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString()));
-        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptOptions
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptParameters
     }
 
     /**
@@ -160,7 +160,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Received decrypted content of length %d\n", decryptResult.getPlainText().length));
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte
 
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#DecryptOptions
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#DecryptParameters
         byte[] cipherTextBytes = new byte[100];
 
         new Random(0x1234567L).nextBytes(cipherTextBytes);
@@ -175,7 +175,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
             .subscribe(decryptResult ->
                 System.out.printf("Received decrypted content of length %d\n", decryptResult.getPlainText().length));
-        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#DecryptOptions
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#DecryptParameters
     }
 
     /**

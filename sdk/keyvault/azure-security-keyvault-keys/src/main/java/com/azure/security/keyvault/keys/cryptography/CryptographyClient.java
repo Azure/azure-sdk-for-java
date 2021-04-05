@@ -172,7 +172,7 @@ public class CryptographyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
      * a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptOptions-Context}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptParameters-Context}
      *
      * @param encryptParameters The parameters to use in the encryption operation.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -180,7 +180,7 @@ public class CryptographyClient {
      * content.
      * @throws ResourceNotFoundException If the key cannot be found for encryption.
      * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code encryptOptions} is {@code null}.
+     * @throws NullPointerException If {@code encryptParameters} is {@code null}.
      */
     public EncryptResult encrypt(EncryptParameters encryptParameters, Context context) {
         return client.encrypt(encryptParameters, context).block();
@@ -279,14 +279,14 @@ public class CryptographyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content
      * details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#DecryptOptions-Context}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#DecryptParameters-Context}
      *
      * @param decryptParameters The parameters to use in the decryption operation.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The decrypted blob.
      * @throws ResourceNotFoundException If the key cannot be found for encryption.
      * @throws UnsupportedOperationException If the decrypt operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code decryptOptions} is {@code null}.
+     * @throws NullPointerException If {@code decryptParameters} is {@code null}.
      */
     public DecryptResult decrypt(DecryptParameters decryptParameters, Context context) {
         return client.decrypt(decryptParameters, context).block();

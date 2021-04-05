@@ -90,13 +90,13 @@ public class LocalCryptographyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
      * a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.encrypt#EncryptOptions}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.encrypt#EncryptParameters}
      *
      * @param encryptParameters The parameters to use in the encryption operation.
      * @return The {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text} contains the encrypted
      *     content.
      * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code decryptOptions} is {@code null}.
+     * @throws NullPointerException If {@code encryptParameters} is {@code null}.
      */
     public EncryptResult encrypt(EncryptParameters encryptParameters) {
         return client.encrypt(encryptParameters).block();
@@ -154,12 +154,12 @@ public class LocalCryptographyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content
      * details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.decrypt#DecryptOptions}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.decrypt#DecryptParameters}
      *
      * @param decryptParameters The parameters to use in the decryption operation.
      * @return The decrypted blob.
      * @throws UnsupportedOperationException If the decrypt operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code decryptOptions} is {@code null}.
+     * @throws NullPointerException If {@code decryptParameters} is {@code null}.
      */
     public DecryptResult decrypt(DecryptParameters decryptParameters) {
         return client.decrypt(decryptParameters).block();

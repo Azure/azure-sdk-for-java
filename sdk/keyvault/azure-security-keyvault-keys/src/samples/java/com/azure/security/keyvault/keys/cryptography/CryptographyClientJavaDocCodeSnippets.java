@@ -99,7 +99,7 @@ public final class CryptographyClientJavaDocCodeSnippets {
             encryptionResult.getCipherText().length, encryptionResult.getAlgorithm().toString());
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte-Context
 
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptOptions-Context
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptParameters-Context
         byte[] myPlainText = new byte[100];
 
         new Random(0x1234567L).nextBytes(myPlainText);
@@ -113,7 +113,7 @@ public final class CryptographyClientJavaDocCodeSnippets {
 
         System.out.printf("Received encrypted content of length %d with algorithm %s \n",
             encryptedResult.getCipherText().length, encryptedResult.getAlgorithm().toString());
-        // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptOptions-Context
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptParameters-Context
     }
 
     /**
@@ -145,7 +145,7 @@ public final class CryptographyClientJavaDocCodeSnippets {
         System.out.printf("Received decrypted content of length %d\n", decryptionResult.getPlainText().length);
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte-Context
 
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#DecryptOptions-Context
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#DecryptParameters-Context
         byte[] myCipherText = new byte[100];
 
         new Random(0x1234567L).nextBytes(myCipherText);
@@ -158,7 +158,7 @@ public final class CryptographyClientJavaDocCodeSnippets {
         DecryptResult decryptedResult = cryptographyClient.decrypt(decryptParameters, new Context(key1, value1));
 
         System.out.printf("Received decrypted content of length %d\n", decryptedResult.getPlainText().length);
-        // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#DecryptOptions-Context
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#DecryptParameters-Context
     }
 
     /**

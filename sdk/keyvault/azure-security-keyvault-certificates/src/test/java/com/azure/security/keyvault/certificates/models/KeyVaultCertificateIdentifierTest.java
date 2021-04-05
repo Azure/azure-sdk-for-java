@@ -5,8 +5,6 @@ package com.azure.security.keyvault.certificates.models;
 
 import org.junit.jupiter.api.Test;
 
-import java.net.MalformedURLException;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
