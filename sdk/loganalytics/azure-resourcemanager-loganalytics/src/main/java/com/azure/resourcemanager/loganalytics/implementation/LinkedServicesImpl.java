@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.fluent.LinkedServicesClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.LinkedServiceInner;
 import com.azure.resourcemanager.loganalytics.models.LinkedService;
@@ -21,9 +20,10 @@ public final class LinkedServicesImpl implements LinkedServices {
 
     private final LinkedServicesClient innerClient;
 
-    private final LogAnalyticsManager serviceManager;
+    private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    public LinkedServicesImpl(LinkedServicesClient innerClient, LogAnalyticsManager serviceManager) {
+    public LinkedServicesImpl(
+        LinkedServicesClient innerClient, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -75,14 +75,14 @@ public final class LinkedServicesImpl implements LinkedServices {
     public PagedIterable<LinkedService> listByWorkspace(String resourceGroupName, String workspaceName) {
         PagedIterable<LinkedServiceInner> inner =
             this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
-        return inner.mapPage(inner1 -> new LinkedServiceImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new LinkedServiceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LinkedService> listByWorkspace(
         String resourceGroupName, String workspaceName, Context context) {
         PagedIterable<LinkedServiceInner> inner =
             this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
-        return inner.mapPage(inner1 -> new LinkedServiceImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new LinkedServiceImpl(inner1, this.manager()));
     }
 
     public LinkedService getById(String id) {
@@ -197,7 +197,7 @@ public final class LinkedServicesImpl implements LinkedServices {
         return this.innerClient;
     }
 
-    private LogAnalyticsManager manager() {
+    private com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager() {
         return this.serviceManager;
     }
 

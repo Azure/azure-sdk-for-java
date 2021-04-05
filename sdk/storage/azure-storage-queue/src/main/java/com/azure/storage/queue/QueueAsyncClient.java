@@ -11,6 +11,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -18,13 +19,20 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
-import com.azure.storage.queue.implementation.models.MessageIdUpdateHeaders;
+import com.azure.storage.queue.implementation.models.MessageIdsUpdateHeaders;
 import com.azure.storage.queue.implementation.models.MessageIdsUpdateResponse;
-import com.azure.storage.queue.implementation.models.QueueGetPropertiesHeaders;
+import com.azure.storage.queue.implementation.models.MessagesDequeueHeaders;
+import com.azure.storage.queue.implementation.models.MessagesDequeueResponse;
+import com.azure.storage.queue.implementation.models.MessagesPeekHeaders;
+import com.azure.storage.queue.implementation.models.MessagesPeekResponse;
+import com.azure.storage.queue.implementation.models.PeekedMessageItemInternal;
 import com.azure.storage.queue.implementation.models.QueueMessage;
+import com.azure.storage.queue.implementation.models.QueueMessageItemInternal;
+import com.azure.storage.queue.implementation.models.QueuesGetPropertiesHeaders;
 import com.azure.storage.queue.implementation.models.QueuesGetPropertiesResponse;
 import com.azure.storage.queue.implementation.util.QueueSasImplUtil;
 import com.azure.storage.queue.models.PeekedMessageItem;
+import com.azure.storage.queue.models.QueueMessageDecodingError;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
@@ -32,14 +40,19 @@ import com.azure.storage.queue.models.QueueStorageException;
 import com.azure.storage.queue.models.SendMessageResult;
 import com.azure.storage.queue.models.UpdateMessageResult;
 import com.azure.storage.queue.sas.QueueServiceSasSignatureValues;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Spliterators;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -74,6 +87,9 @@ public final class QueueAsyncClient {
     private final String queueName;
     private final String accountName;
     private final QueueServiceVersion serviceVersion;
+    private final QueueMessageEncoding messageEncoding;
+    private final Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler;
+    private final Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler;
 
     /**
      * Creates a QueueAsyncClient that sends requests to the storage queue service at {@link #getQueueUrl() endpoint}.
@@ -83,12 +99,17 @@ public final class QueueAsyncClient {
      * @param queueName Name of the queue
      */
     QueueAsyncClient(AzureQueueStorageImpl client, String queueName, String accountName,
-        QueueServiceVersion serviceVersion) {
+        QueueServiceVersion serviceVersion, QueueMessageEncoding messageEncoding,
+        Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler,
+        Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler) {
         Objects.requireNonNull(queueName, "'queueName' cannot be null.");
         this.queueName = queueName;
         this.client = client;
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
+        this.messageEncoding = messageEncoding;
+        this.processMessageDecodingErrorAsyncHandler = processMessageDecodingErrorAsyncHandler;
+        this.processMessageDecodingErrorHandler = processMessageDecodingErrorHandler;
     }
 
     /**
@@ -105,6 +126,15 @@ public final class QueueAsyncClient {
      */
     public QueueServiceVersion getServiceVersion() {
         return serviceVersion;
+    }
+
+    /**
+     * Gets the message encoding the client is using.
+     *
+     * @return the message encoding the client is using.
+     */
+    public QueueMessageEncoding getMessageEncoding() {
+        return messageEncoding;
     }
 
     /**
@@ -169,7 +199,7 @@ public final class QueueAsyncClient {
 
     Mono<Response<Void>> createWithResponse(Map<String, String> metadata, Context context) {
         context = context == null ? Context.NONE : context;
-        return client.queues().createWithRestResponseAsync(queueName, null, metadata, null,
+        return client.getQueues().createWithResponseAsync(queueName, null, metadata, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -224,7 +254,7 @@ public final class QueueAsyncClient {
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return client.queues().deleteWithRestResponseAsync(queueName,
+        return client.getQueues().deleteWithResponseAsync(queueName, null, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -281,7 +311,7 @@ public final class QueueAsyncClient {
 
     Mono<Response<QueueProperties>> getPropertiesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return client.queues().getPropertiesWithRestResponseAsync(queueName,
+        return client.getQueues().getPropertiesWithResponseAsync(queueName, null, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::getQueuePropertiesResponse);
     }
@@ -350,8 +380,8 @@ public final class QueueAsyncClient {
 
     Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata, Context context) {
         context = context == null ? Context.NONE : context;
-        return client.queues()
-            .setMetadataWithRestResponseAsync(queueName, null, metadata, null,
+        return client.getQueues()
+            .setMetadataWithResponseAsync(queueName, null, metadata, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -375,8 +405,8 @@ public final class QueueAsyncClient {
     public PagedFlux<QueueSignedIdentifier> getAccessPolicy() {
         try {
             Function<String, Mono<PagedResponse<QueueSignedIdentifier>>> retriever =
-                marker -> this.client.queues()
-                    .getAccessPolicyWithRestResponseAsync(queueName, Context.NONE)
+                marker -> this.client.getQueues()
+                    .getAccessPolicyWithResponseAsync(queueName, null, null, Context.NONE)
                     .map(response -> new PagedResponseBase<>(response.getRequest(),
                         response.getStatusCode(),
                         response.getHeaders(),
@@ -466,8 +496,8 @@ public final class QueueAsyncClient {
             permissions != null ? permissions.spliterator() : Spliterators.emptySpliterator(), false)
             .collect(Collectors.toList());
 
-        return client.queues()
-            .setAccessPolicyWithRestResponseAsync(queueName, permissionsList, null, null,
+        return client.getQueues()
+            .setAccessPolicyWithResponseAsync(queueName, null, null, permissionsList,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -522,7 +552,7 @@ public final class QueueAsyncClient {
 
     Mono<Response<Void>> clearMessagesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return client.messages().clearWithRestResponseAsync(queueName,
+        return client.getMessages().clearWithResponseAsync(queueName, null, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -555,6 +585,29 @@ public final class QueueAsyncClient {
     }
 
     /**
+     * Enqueues a message that has a time-to-live of 7 days and is instantly visible.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Enqueue a message of "Hello, Azure"</p>
+     *
+     * {@codesnippet com.azure.storage.queue.queueAsyncClient.sendMessage#BinaryData}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-message">Azure Docs</a>.</p>
+     *
+     * @param message Message content
+     * @return A {@link SendMessageResult} value that contains the {@link SendMessageResult#getMessageId() messageId}
+     * and {@link SendMessageResult#getPopReceipt() popReceipt} that are used to interact with the message
+     * and other metadata about the enqueued message.
+     * @throws QueueStorageException If the queue doesn't exist
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SendMessageResult> sendMessage(BinaryData message) {
+        return sendMessageWithResponse(message, null, null).flatMap(FluxUtil::toMono);
+    }
+
+    /**
      * Enqueues a message with a given time-to-live and a timeout period where the message is invisible in the queue.
      *
      * <p><strong>Code Samples</strong></p>
@@ -575,7 +628,8 @@ public final class QueueAsyncClient {
      * unset the value will default to 0 and the message will be instantly visible. The timeout must be between 0
      * seconds and 7 days.
      * @param timeToLive Optional. How long the message will stay alive in the queue. If unset the value will default to
-     * 7 days, if -1 is passed the message will not expire. The time to live must be -1 or any positive number.
+     * 7 days, if {@code Duration.ofSeconds(-1)} is passed the message will not expire.
+     * The time to live must be {@code Duration.ofSeconds(-1)} or any positive number of seconds.
      * @return A {@link SendMessageResult} value that contains the {@link SendMessageResult#getMessageId() messageId}
      * and {@link SendMessageResult#getPopReceipt() popReceipt} that are used to interact with the message
      * and other metadata about the enqueued message.
@@ -586,24 +640,80 @@ public final class QueueAsyncClient {
     public Mono<Response<SendMessageResult>> sendMessageWithResponse(String messageText, Duration visibilityTimeout,
                                                                    Duration timeToLive) {
         try {
-            return withContext(context -> sendMessageWithResponse(messageText, visibilityTimeout, timeToLive, context));
+            return withContext(context ->
+                sendMessageWithResponse(BinaryData.fromString(messageText), visibilityTimeout, timeToLive, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<SendMessageResult>> sendMessageWithResponse(String messageText, Duration visibilityTimeout,
+    /**
+     * Enqueues a message with a given time-to-live and a timeout period where the message is invisible in the queue.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Add a message of "Hello, Azure" that has a timeout of 5 seconds</p>
+     *
+     * {@codesnippet com.azure.storage.queue.queueAsyncClient.sendMessageWithResponse#BinaryData-duration-duration}
+     *
+     * <p>Add a message of "Goodbye, Azure" that has a time to live of 5 seconds</p>
+     *
+     * {@codesnippet com.azure.storage.queue.QueueAsyncClient.sendMessageWithResponse-liveTime#BinaryData-Duration-Duration}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-message">Azure Docs</a>.</p>
+     *
+     * @param message Message content.
+     * @param visibilityTimeout Optional. The timeout period for how long the message is invisible in the queue. If
+     * unset the value will default to 0 and the message will be instantly visible. The timeout must be between 0
+     * seconds and 7 days.
+     * @param timeToLive Optional. How long the message will stay alive in the queue. If unset the value will default to
+     * 7 days, if {@code Duration.ofSeconds(-1)} is passed the message will not expire.
+     * The time to live must be {@code Duration.ofSeconds(-1)} or any positive number of seconds.
+     * @return A {@link SendMessageResult} value that contains the {@link SendMessageResult#getMessageId() messageId}
+     * and {@link SendMessageResult#getPopReceipt() popReceipt} that are used to interact with the message
+     * and other metadata about the enqueued message.
+     * @throws QueueStorageException If the queue doesn't exist or the {@code visibilityTimeout} or {@code timeToLive}
+     * are outside of the allowed limits.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SendMessageResult>> sendMessageWithResponse(BinaryData message, Duration visibilityTimeout,
+                                                                     Duration timeToLive) {
+        try {
+            return withContext(context -> sendMessageWithResponse(message, visibilityTimeout, timeToLive, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<SendMessageResult>> sendMessageWithResponse(BinaryData message, Duration visibilityTimeout,
                                                               Duration timeToLive, Context context) {
         Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
         Integer timeToLiveInSeconds = (timeToLive == null) ? null : (int) timeToLive.getSeconds();
-        QueueMessage message = new QueueMessage().setMessageText(messageText);
         context = context == null ? Context.NONE : context;
+        Context finalContext = context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE);
+        return encodeMessage(message)
+            .flatMap(messageText -> {
+                QueueMessage queueMessage = new QueueMessage().setMessageText(messageText);
+                return client.getMessages()
+                    .enqueueWithResponseAsync(queueName, queueMessage, visibilityTimeoutInSeconds, timeToLiveInSeconds,
+                        null, null, finalContext)
+                    .map(response -> new SimpleResponse<>(response, response.getValue().get(0)));
+            });
 
-        return client.messages()
-            .enqueueWithRestResponseAsync(queueName, message, visibilityTimeoutInSeconds, timeToLiveInSeconds,
-                null, null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(response -> new SimpleResponse<>(response, response.getValue().get(0)));
+    }
+
+    private Mono<String> encodeMessage(BinaryData message) {
+        Objects.requireNonNull(message, "'message' cannot be null.");
+        switch (messageEncoding) {
+            case NONE:
+                return Mono.just(message.toString());
+            case BASE64:
+                return Mono.just(Base64.getEncoder().encodeToString(message.toBytes()));
+            default:
+                return FluxUtil.monoError(
+                    logger, new IllegalArgumentException("Unsupported message encoding=" + messageEncoding));
+        }
     }
 
     /**
@@ -701,17 +811,92 @@ public final class QueueAsyncClient {
         Duration timeout, Context context) {
         Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
         Function<String, Mono<PagedResponse<QueueMessageItem>>> retriever =
-            marker -> StorageImplUtils.applyOptionalTimeout(this.client.messages()
-                .dequeueWithRestResponseAsync(queueName, maxMessages, visibilityTimeoutInSeconds,
+            marker -> StorageImplUtils.applyOptionalTimeout(this.client.getMessages()
+                .dequeueWithResponseAsync(queueName, maxMessages, visibilityTimeoutInSeconds,
                     null, null, context), timeout)
-                .map(response -> new PagedResponseBase<>(response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    response.getValue(),
-                    null,
-                    response.getDeserializedHeaders()));
+                .flatMap(this::transformMessagesDequeueResponse);
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
+    }
+
+    private Mono<PagedResponseBase<MessagesDequeueHeaders, QueueMessageItem>> transformMessagesDequeueResponse(
+        MessagesDequeueResponse response) {
+        List<QueueMessageItemInternal> queueMessageInternalItems = response.getValue();
+        if (queueMessageInternalItems == null) {
+            queueMessageInternalItems = Collections.emptyList();
+        }
+        return Flux.fromIterable(queueMessageInternalItems)
+            .flatMapSequential(queueMessageItemInternal ->
+                transformQueueMessageItemInternal(queueMessageItemInternal, messageEncoding)
+                .onErrorResume(IllegalArgumentException.class, e -> {
+                    if (processMessageDecodingErrorAsyncHandler != null) {
+                        return transformQueueMessageItemInternal(
+                            queueMessageItemInternal, QueueMessageEncoding.NONE)
+                            .flatMap(messageItem -> processMessageDecodingErrorAsyncHandler.apply(
+                                new QueueMessageDecodingError(
+                                    this, new QueueClient(this),
+                                    messageItem, null, e)))
+                            .then(Mono.empty());
+                    } else if (processMessageDecodingErrorHandler != null) {
+                        return transformQueueMessageItemInternal(
+                            queueMessageItemInternal, QueueMessageEncoding.NONE)
+                            .flatMap(messageItem -> {
+                                try {
+                                    processMessageDecodingErrorHandler.accept(
+                                        new QueueMessageDecodingError(
+                                            this, new QueueClient(this),
+                                            messageItem, null, e));
+                                    return Mono.<QueueMessageItem>empty();
+                                } catch (RuntimeException re) {
+                                    return FluxUtil.<QueueMessageItem>monoError(logger, re);
+                                }
+                            })
+                            .subscribeOn(Schedulers.boundedElastic());
+                    } else {
+                        return FluxUtil.monoError(logger, e);
+                    }
+                }))
+            .collectList()
+            .map(queueMessageItems -> new PagedResponseBase<>(response.getRequest(),
+                response.getStatusCode(),
+                response.getHeaders(),
+                queueMessageItems,
+                null,
+                response.getDeserializedHeaders()));
+    }
+
+    private Mono<QueueMessageItem> transformQueueMessageItemInternal(
+        QueueMessageItemInternal queueMessageItemInternal, QueueMessageEncoding messageEncoding) {
+        QueueMessageItem queueMessageItem = new QueueMessageItem()
+            .setMessageId(queueMessageItemInternal.getMessageId())
+            .setDequeueCount(queueMessageItemInternal.getDequeueCount())
+            .setExpirationTime(queueMessageItemInternal.getExpirationTime())
+            .setInsertionTime(queueMessageItemInternal.getInsertionTime())
+            .setPopReceipt(queueMessageItemInternal.getPopReceipt())
+            .setTimeNextVisible(queueMessageItemInternal.getTimeNextVisible());
+        return decodeMessageBody(queueMessageItemInternal.getMessageText(), messageEncoding)
+            .map(queueMessageItem::setBody)
+            .switchIfEmpty(Mono.just(queueMessageItem));
+    }
+
+    private Mono<BinaryData> decodeMessageBody(String messageText, QueueMessageEncoding messageEncoding) {
+        if (messageText == null) {
+            return Mono.empty();
+        }
+
+        switch (messageEncoding) {
+            case NONE:
+                return Mono.just(BinaryData.fromString(messageText));
+            case BASE64:
+                try {
+                    return Mono.just(BinaryData.fromBytes(Base64.getDecoder().decode(messageText)));
+                } catch (IllegalArgumentException e) {
+                    return FluxUtil.monoError(logger, e);
+                }
+            default:
+                return FluxUtil.monoError(
+                    logger, new IllegalArgumentException("Unsupported message encoding=" + messageEncoding));
+        }
     }
 
     /**
@@ -774,16 +959,69 @@ public final class QueueAsyncClient {
     PagedFlux<PeekedMessageItem> peekMessagesWithOptionalTimeout(Integer maxMessages, Duration timeout,
         Context context) {
         Function<String, Mono<PagedResponse<PeekedMessageItem>>> retriever =
-            marker -> StorageImplUtils.applyOptionalTimeout(this.client.messages()
-                .peekWithRestResponseAsync(queueName, maxMessages, null, null, context), timeout)
-                .map(response -> new PagedResponseBase<>(response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    response.getValue(),
-                    null,
-                    response.getDeserializedHeaders()));
+            marker -> StorageImplUtils.applyOptionalTimeout(this.client.getMessages()
+                .peekWithResponseAsync(queueName, maxMessages, null, null, context), timeout)
+                .flatMap(this::transformMessagesPeekResponse);
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
+    }
+
+    private Mono<PagedResponseBase<MessagesPeekHeaders, PeekedMessageItem>> transformMessagesPeekResponse(
+        MessagesPeekResponse response) {
+        List<PeekedMessageItemInternal> peekedMessageInternalItems = response.getValue();
+        if (peekedMessageInternalItems == null) {
+            peekedMessageInternalItems = Collections.emptyList();
+        }
+        return Flux.fromIterable(peekedMessageInternalItems)
+            .flatMapSequential(peekedMessageItemInternal ->
+                transformPeekedMessageItemInternal(peekedMessageItemInternal, messageEncoding)
+                    .onErrorResume(IllegalArgumentException.class, e -> {
+                        if (processMessageDecodingErrorAsyncHandler != null) {
+                            return transformPeekedMessageItemInternal(
+                                peekedMessageItemInternal, QueueMessageEncoding.NONE)
+                                .flatMap(messageItem -> processMessageDecodingErrorAsyncHandler.apply(
+                                    new QueueMessageDecodingError(
+                                        this,  new QueueClient(this),
+                                        null, messageItem, e)))
+                                .then(Mono.empty());
+                        } else if (processMessageDecodingErrorHandler != null) {
+                            return transformPeekedMessageItemInternal(
+                                peekedMessageItemInternal, QueueMessageEncoding.NONE)
+                                .flatMap(messageItem -> {
+                                    try {
+                                        processMessageDecodingErrorHandler.accept(
+                                            new QueueMessageDecodingError(
+                                                this,  new QueueClient(this),
+                                                null, messageItem, e));
+                                        return Mono.<PeekedMessageItem>empty();
+                                    } catch (RuntimeException re) {
+                                        return FluxUtil.<PeekedMessageItem>monoError(logger, re);
+                                    }
+                                })
+                                .subscribeOn(Schedulers.boundedElastic());
+                        } else {
+                            return FluxUtil.monoError(logger, e);
+                        }
+                    }))
+            .collectList()
+            .map(peekedMessageItems -> new PagedResponseBase<>(response.getRequest(),
+                response.getStatusCode(),
+                response.getHeaders(),
+                peekedMessageItems,
+                null,
+                response.getDeserializedHeaders()));
+    }
+
+    private Mono<PeekedMessageItem> transformPeekedMessageItemInternal(
+        PeekedMessageItemInternal peekedMessageItemInternal, QueueMessageEncoding messageEncoding) {
+        PeekedMessageItem peekedMessageItem = new PeekedMessageItem()
+            .setMessageId(peekedMessageItemInternal.getMessageId())
+            .setDequeueCount(peekedMessageItemInternal.getDequeueCount())
+            .setExpirationTime(peekedMessageItemInternal.getExpirationTime())
+            .setInsertionTime(peekedMessageItemInternal.getInsertionTime());
+        return decodeMessageBody(peekedMessageItemInternal.getMessageText(), messageEncoding)
+            .map(peekedMessageItem::setBody)
+            .switchIfEmpty(Mono.just(peekedMessageItem));
     }
 
     /**
@@ -859,8 +1097,8 @@ public final class QueueAsyncClient {
         QueueMessage message = messageText == null ? null : new QueueMessage().setMessageText(messageText);
         context = context == null ? Context.NONE : context;
         visibilityTimeout = visibilityTimeout == null ? Duration.ZERO : visibilityTimeout;
-        return client.messageIds().updateWithRestResponseAsync(queueName, messageId, popReceipt,
-                (int) visibilityTimeout.getSeconds(), message, null, null,
+        return client.getMessageIds().updateWithResponseAsync(queueName, messageId, popReceipt,
+                (int) visibilityTimeout.getSeconds(), null, null, message,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::getUpdatedMessageResponse);
     }
@@ -922,7 +1160,7 @@ public final class QueueAsyncClient {
 
     Mono<Response<Void>> deleteMessageWithResponse(String messageId, String popReceipt, Context context) {
         context = context == null ? Context.NONE : context;
-        return client.messageIds().deleteWithRestResponseAsync(queueName, messageId, popReceipt,
+        return client.getMessageIds().deleteWithResponseAsync(queueName, messageId, popReceipt, null, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -992,9 +1230,9 @@ public final class QueueAsyncClient {
      * @return Mapped response
      */
     private Response<QueueProperties> getQueuePropertiesResponse(QueuesGetPropertiesResponse response) {
-        QueueGetPropertiesHeaders propertiesHeaders = response.getDeserializedHeaders();
-        QueueProperties properties = new QueueProperties(propertiesHeaders.getMetadata(),
-            propertiesHeaders.getApproximateMessagesCount());
+        QueuesGetPropertiesHeaders propertiesHeaders = response.getDeserializedHeaders();
+        QueueProperties properties = new QueueProperties(propertiesHeaders.getXMsMeta(),
+            propertiesHeaders.getXMsApproximateMessagesCount());
         return new SimpleResponse<>(response, properties);
     }
 
@@ -1004,9 +1242,9 @@ public final class QueueAsyncClient {
      * @return Mapped response
      */
     private Response<UpdateMessageResult> getUpdatedMessageResponse(MessageIdsUpdateResponse response) {
-        MessageIdUpdateHeaders headers = response.getDeserializedHeaders();
-        UpdateMessageResult updateMessageResult = new UpdateMessageResult(headers.getPopReceipt(),
-            headers.getTimeNextVisible());
+        MessageIdsUpdateHeaders headers = response.getDeserializedHeaders();
+        UpdateMessageResult updateMessageResult = new UpdateMessageResult(headers.getXMsPopreceipt(),
+            headers.getXMsTimeNextVisible());
         return new SimpleResponse<>(response, updateMessageResult);
     }
 }

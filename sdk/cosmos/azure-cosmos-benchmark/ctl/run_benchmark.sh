@@ -85,8 +85,8 @@ jar_file=./azure-cosmos-benchmark-jar-with-dependencies.jar
 
 jvm_opt=""
 #jvm_opt='-Dazure.cosmos.rntbd.threadcount=16 -Dazure.cosmos.directTcp.defaultOptions={"maxRequestsPerChannel":10}'
-additional_benchmark_options="" 
-additional_benchmark_options="-documentDataFieldSize 10 -documentDataFieldCount 10" 
+additional_benchmark_options=""
+additional_benchmark_options="-documentDataFieldSize 10 -documentDataFieldCount 10"
 additional_benchmark_options="$additional_benchmark_options -maxConnectionPoolSize $gateway_connection_poolsize"
 
 if [ -z "$ctl_graphite_endpoint" ]

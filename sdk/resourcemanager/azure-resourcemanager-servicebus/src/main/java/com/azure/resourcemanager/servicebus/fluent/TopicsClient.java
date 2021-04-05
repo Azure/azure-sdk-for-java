@@ -10,242 +10,17 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.servicebus.fluent.models.ResourceListKeysInner;
-import com.azure.resourcemanager.servicebus.fluent.models.SharedAccessAuthorizationRuleResourceInner;
-import com.azure.resourcemanager.servicebus.fluent.models.TopicResourceInner;
-import com.azure.resourcemanager.servicebus.models.Policykey;
-import com.azure.resourcemanager.servicebus.models.SharedAccessAuthorizationRuleCreateOrUpdateParameters;
-import com.azure.resourcemanager.servicebus.models.TopicCreateOrUpdateParameters;
+import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SBTopicInner;
+import com.azure.resourcemanager.servicebus.fluent.models.AccessKeysInner;
+import com.azure.resourcemanager.servicebus.models.AccessRights;
+import com.azure.resourcemanager.servicebus.models.RegenerateAccessKeyParameters;
+import java.util.List;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in TopicsClient. */
 public interface TopicsClient {
     /**
-     * Gets all the topics in a namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the topics in a namespace.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<TopicResourceInner> listAllAsync(String resourceGroupName, String namespaceName);
-
-    /**
-     * Gets all the topics in a namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the topics in a namespace.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TopicResourceInner> listAll(String resourceGroupName, String namespaceName);
-
-    /**
-     * Gets all the topics in a namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the topics in a namespace.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TopicResourceInner> listAll(String resourceGroupName, String namespaceName, Context context);
-
-    /**
-     * Creates a topic in the specified namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param parameters Parameters supplied to the Create Or Update Topic operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of topic resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<TopicResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String namespaceName, String topicName, TopicCreateOrUpdateParameters parameters);
-
-    /**
-     * Creates a topic in the specified namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param parameters Parameters supplied to the Create Or Update Topic operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of topic resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<TopicResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String namespaceName, String topicName, TopicCreateOrUpdateParameters parameters);
-
-    /**
-     * Creates a topic in the specified namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param parameters Parameters supplied to the Create Or Update Topic operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of topic resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    TopicResourceInner createOrUpdate(
-        String resourceGroupName, String namespaceName, String topicName, TopicCreateOrUpdateParameters parameters);
-
-    /**
-     * Creates a topic in the specified namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param parameters Parameters supplied to the Create Or Update Topic operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of topic resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TopicResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        TopicCreateOrUpdateParameters parameters,
-        Context context);
-
-    /**
-     * Deletes a topic from the specified namespace and resource group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String namespaceName, String topicName);
-
-    /**
-     * Deletes a topic from the specified namespace and resource group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(String resourceGroupName, String namespaceName, String topicName);
-
-    /**
-     * Deletes a topic from the specified namespace and resource group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String namespaceName, String topicName);
-
-    /**
-     * Deletes a topic from the specified namespace and resource group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String namespaceName, String topicName, Context context);
-
-    /**
-     * Returns a description for the specified topic.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of topic resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<TopicResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String namespaceName, String topicName);
-
-    /**
-     * Returns a description for the specified topic.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of topic resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<TopicResourceInner> getAsync(String resourceGroupName, String namespaceName, String topicName);
-
-    /**
-     * Returns a description for the specified topic.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of topic resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    TopicResourceInner get(String resourceGroupName, String namespaceName, String topicName);
-
-    /**
-     * Returns a description for the specified topic.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of topic resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TopicResourceInner> getWithResponse(
-        String resourceGroupName, String namespaceName, String topicName, Context context);
-
-    /**
      * Gets authorization rules for a topic.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
@@ -257,7 +32,7 @@ public interface TopicsClient {
      * @return authorization rules for a topic.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SharedAccessAuthorizationRuleResourceInner> listAuthorizationRulesAsync(
+    PagedFlux<SBAuthorizationRuleInner> listAuthorizationRulesAsync(
         String resourceGroupName, String namespaceName, String topicName);
 
     /**
@@ -272,7 +47,7 @@ public interface TopicsClient {
      * @return authorization rules for a topic.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SharedAccessAuthorizationRuleResourceInner> listAuthorizationRules(
+    PagedIterable<SBAuthorizationRuleInner> listAuthorizationRules(
         String resourceGroupName, String namespaceName, String topicName);
 
     /**
@@ -288,7 +63,7 @@ public interface TopicsClient {
      * @return authorization rules for a topic.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SharedAccessAuthorizationRuleResourceInner> listAuthorizationRules(
+    PagedIterable<SBAuthorizationRuleInner> listAuthorizationRules(
         String resourceGroupName, String namespaceName, String topicName, Context context);
 
     /**
@@ -298,19 +73,19 @@ public interface TopicsClient {
      * @param namespaceName The namespace name.
      * @param topicName The topic name.
      * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to the Create Or Update Authorization Rules operation.
+     * @param rights The rights associated with the rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of a namespace authorization rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SharedAccessAuthorizationRuleResourceInner>> createOrUpdateAuthorizationRuleWithResponseAsync(
+    Mono<Response<SBAuthorizationRuleInner>> createOrUpdateAuthorizationRuleWithResponseAsync(
         String resourceGroupName,
         String namespaceName,
         String topicName,
         String authorizationRuleName,
-        SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters);
+        List<AccessRights> rights);
 
     /**
      * Creates an authorization rule for the specified topic.
@@ -319,19 +94,19 @@ public interface TopicsClient {
      * @param namespaceName The namespace name.
      * @param topicName The topic name.
      * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to the Create Or Update Authorization Rules operation.
+     * @param rights The rights associated with the rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of a namespace authorization rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SharedAccessAuthorizationRuleResourceInner> createOrUpdateAuthorizationRuleAsync(
+    Mono<SBAuthorizationRuleInner> createOrUpdateAuthorizationRuleAsync(
         String resourceGroupName,
         String namespaceName,
         String topicName,
         String authorizationRuleName,
-        SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters);
+        List<AccessRights> rights);
 
     /**
      * Creates an authorization rule for the specified topic.
@@ -340,19 +115,14 @@ public interface TopicsClient {
      * @param namespaceName The namespace name.
      * @param topicName The topic name.
      * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to the Create Or Update Authorization Rules operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of a namespace authorization rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SharedAccessAuthorizationRuleResourceInner createOrUpdateAuthorizationRule(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String authorizationRuleName,
-        SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters);
+    Mono<SBAuthorizationRuleInner> createOrUpdateAuthorizationRuleAsync(
+        String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName);
 
     /**
      * Creates an authorization rule for the specified topic.
@@ -361,7 +131,23 @@ public interface TopicsClient {
      * @param namespaceName The namespace name.
      * @param topicName The topic name.
      * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to the Create Or Update Authorization Rules operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of a namespace authorization rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SBAuthorizationRuleInner createOrUpdateAuthorizationRule(
+        String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName);
+
+    /**
+     * Creates an authorization rule for the specified topic.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param topicName The topic name.
+     * @param authorizationRuleName The authorization rule name.
+     * @param rights The rights associated with the rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -369,12 +155,12 @@ public interface TopicsClient {
      * @return description of a namespace authorization rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SharedAccessAuthorizationRuleResourceInner> createOrUpdateAuthorizationRuleWithResponse(
+    Response<SBAuthorizationRuleInner> createOrUpdateAuthorizationRuleWithResponse(
         String resourceGroupName,
         String namespaceName,
         String topicName,
         String authorizationRuleName,
-        SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters,
+        List<AccessRights> rights,
         Context context);
 
     /**
@@ -390,7 +176,7 @@ public interface TopicsClient {
      * @return description of a namespace authorization rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SharedAccessAuthorizationRuleResourceInner>> postAuthorizationRuleWithResponseAsync(
+    Mono<Response<SBAuthorizationRuleInner>> getAuthorizationRuleWithResponseAsync(
         String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName);
 
     /**
@@ -406,7 +192,7 @@ public interface TopicsClient {
      * @return description of a namespace authorization rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SharedAccessAuthorizationRuleResourceInner> postAuthorizationRuleAsync(
+    Mono<SBAuthorizationRuleInner> getAuthorizationRuleAsync(
         String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName);
 
     /**
@@ -422,76 +208,7 @@ public interface TopicsClient {
      * @return description of a namespace authorization rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SharedAccessAuthorizationRuleResourceInner postAuthorizationRule(
-        String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName);
-
-    /**
-     * Returns the specified authorization rule.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SharedAccessAuthorizationRuleResourceInner> postAuthorizationRuleWithResponse(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String authorizationRuleName,
-        Context context);
-
-    /**
-     * Returns the specified authorization rule.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SharedAccessAuthorizationRuleResourceInner>> getAuthorizationRuleWithResponseAsync(
-        String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName);
-
-    /**
-     * Returns the specified authorization rule.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SharedAccessAuthorizationRuleResourceInner> getAuthorizationRuleAsync(
-        String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName);
-
-    /**
-     * Returns the specified authorization rule.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SharedAccessAuthorizationRuleResourceInner getAuthorizationRule(
+    SBAuthorizationRuleInner getAuthorizationRule(
         String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName);
 
     /**
@@ -508,7 +225,7 @@ public interface TopicsClient {
      * @return description of a namespace authorization rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SharedAccessAuthorizationRuleResourceInner> getAuthorizationRuleWithResponse(
+    Response<SBAuthorizationRuleInner> getAuthorizationRuleWithResponse(
         String resourceGroupName,
         String namespaceName,
         String topicName,
@@ -596,7 +313,7 @@ public interface TopicsClient {
      * @return the primary and secondary connection strings for the topic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ResourceListKeysInner>> listKeysWithResponseAsync(
+    Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(
         String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName);
 
     /**
@@ -612,7 +329,7 @@ public interface TopicsClient {
      * @return the primary and secondary connection strings for the topic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ResourceListKeysInner> listKeysAsync(
+    Mono<AccessKeysInner> listKeysAsync(
         String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName);
 
     /**
@@ -628,8 +345,7 @@ public interface TopicsClient {
      * @return the primary and secondary connection strings for the topic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ResourceListKeysInner listKeys(
-        String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName);
+    AccessKeysInner listKeys(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName);
 
     /**
      * Gets the primary and secondary connection strings for the topic.
@@ -645,7 +361,7 @@ public interface TopicsClient {
      * @return the primary and secondary connection strings for the topic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ResourceListKeysInner> listKeysWithResponse(
+    Response<AccessKeysInner> listKeysWithResponse(
         String resourceGroupName,
         String namespaceName,
         String topicName,
@@ -659,19 +375,19 @@ public interface TopicsClient {
      * @param namespaceName The namespace name.
      * @param topicName The topic name.
      * @param authorizationRuleName The authorization rule name.
-     * @param policykey Key that needs to be regenerated.
+     * @param parameters Parameters supplied to regenerate the authorization rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ResourceListKeysInner>> regenerateKeysWithResponseAsync(
+    Mono<Response<AccessKeysInner>> regenerateKeysWithResponseAsync(
         String resourceGroupName,
         String namespaceName,
         String topicName,
         String authorizationRuleName,
-        Policykey policykey);
+        RegenerateAccessKeyParameters parameters);
 
     /**
      * Regenerates primary or secondary connection strings for the topic.
@@ -680,19 +396,19 @@ public interface TopicsClient {
      * @param namespaceName The namespace name.
      * @param topicName The topic name.
      * @param authorizationRuleName The authorization rule name.
-     * @param policykey Key that needs to be regenerated.
+     * @param parameters Parameters supplied to regenerate the authorization rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ResourceListKeysInner> regenerateKeysAsync(
+    Mono<AccessKeysInner> regenerateKeysAsync(
         String resourceGroupName,
         String namespaceName,
         String topicName,
         String authorizationRuleName,
-        Policykey policykey);
+        RegenerateAccessKeyParameters parameters);
 
     /**
      * Regenerates primary or secondary connection strings for the topic.
@@ -701,14 +417,19 @@ public interface TopicsClient {
      * @param namespaceName The namespace name.
      * @param topicName The topic name.
      * @param authorizationRuleName The authorization rule name.
+     * @param parameters Parameters supplied to regenerate the authorization rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ResourceListKeysInner> regenerateKeysAsync(
-        String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName);
+    AccessKeysInner regenerateKeys(
+        String resourceGroupName,
+        String namespaceName,
+        String topicName,
+        String authorizationRuleName,
+        RegenerateAccessKeyParameters parameters);
 
     /**
      * Regenerates primary or secondary connection strings for the topic.
@@ -717,23 +438,7 @@ public interface TopicsClient {
      * @param namespaceName The namespace name.
      * @param topicName The topic name.
      * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ResourceListKeysInner regenerateKeys(
-        String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName);
-
-    /**
-     * Regenerates primary or secondary connection strings for the topic.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param policykey Key that needs to be regenerated.
+     * @param parameters Parameters supplied to regenerate the authorization rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -741,11 +446,254 @@ public interface TopicsClient {
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ResourceListKeysInner> regenerateKeysWithResponse(
+    Response<AccessKeysInner> regenerateKeysWithResponse(
         String resourceGroupName,
         String namespaceName,
         String topicName,
         String authorizationRuleName,
-        Policykey policykey,
+        RegenerateAccessKeyParameters parameters,
         Context context);
+
+    /**
+     * Gets all the topics in a namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains
+     *     a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting
+     *     point to use for subsequent calls.
+     * @param top May be used to limit the number of results to the most recent N usageDetails.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the topics in a namespace.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SBTopicInner> listByNamespaceAsync(
+        String resourceGroupName, String namespaceName, Integer skip, Integer top);
+
+    /**
+     * Gets all the topics in a namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the topics in a namespace.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SBTopicInner> listByNamespaceAsync(String resourceGroupName, String namespaceName);
+
+    /**
+     * Gets all the topics in a namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the topics in a namespace.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SBTopicInner> listByNamespace(String resourceGroupName, String namespaceName);
+
+    /**
+     * Gets all the topics in a namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains
+     *     a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting
+     *     point to use for subsequent calls.
+     * @param top May be used to limit the number of results to the most recent N usageDetails.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the topics in a namespace.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SBTopicInner> listByNamespace(
+        String resourceGroupName, String namespaceName, Integer skip, Integer top, Context context);
+
+    /**
+     * Creates a topic in the specified namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param topicName The topic name.
+     * @param parameters Parameters supplied to create a topic resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of topic resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<SBTopicInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String namespaceName, String topicName, SBTopicInner parameters);
+
+    /**
+     * Creates a topic in the specified namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param topicName The topic name.
+     * @param parameters Parameters supplied to create a topic resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of topic resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SBTopicInner> createOrUpdateAsync(
+        String resourceGroupName, String namespaceName, String topicName, SBTopicInner parameters);
+
+    /**
+     * Creates a topic in the specified namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param topicName The topic name.
+     * @param parameters Parameters supplied to create a topic resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of topic resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SBTopicInner createOrUpdate(
+        String resourceGroupName, String namespaceName, String topicName, SBTopicInner parameters);
+
+    /**
+     * Creates a topic in the specified namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param topicName The topic name.
+     * @param parameters Parameters supplied to create a topic resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of topic resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SBTopicInner> createOrUpdateWithResponse(
+        String resourceGroupName, String namespaceName, String topicName, SBTopicInner parameters, Context context);
+
+    /**
+     * Deletes a topic from the specified namespace and resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param topicName The topic name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String namespaceName, String topicName);
+
+    /**
+     * Deletes a topic from the specified namespace and resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param topicName The topic name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteAsync(String resourceGroupName, String namespaceName, String topicName);
+
+    /**
+     * Deletes a topic from the specified namespace and resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param topicName The topic name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String namespaceName, String topicName);
+
+    /**
+     * Deletes a topic from the specified namespace and resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param topicName The topic name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(
+        String resourceGroupName, String namespaceName, String topicName, Context context);
+
+    /**
+     * Returns a description for the specified topic.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param topicName The topic name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of topic resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<SBTopicInner>> getWithResponseAsync(String resourceGroupName, String namespaceName, String topicName);
+
+    /**
+     * Returns a description for the specified topic.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param topicName The topic name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of topic resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SBTopicInner> getAsync(String resourceGroupName, String namespaceName, String topicName);
+
+    /**
+     * Returns a description for the specified topic.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param topicName The topic name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of topic resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SBTopicInner get(String resourceGroupName, String namespaceName, String topicName);
+
+    /**
+     * Returns a description for the specified topic.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param topicName The topic name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of topic resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SBTopicInner> getWithResponse(
+        String resourceGroupName, String namespaceName, String topicName, Context context);
 }

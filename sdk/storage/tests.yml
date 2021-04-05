@@ -1,7 +1,7 @@
 trigger: none
 
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: storage
       Artifacts:
@@ -38,8 +38,12 @@ stages:
       TimeoutInMinutes: 240
       Location: canadacentral
       Clouds: 'Preview'
+      MatrixConfigs:
+        - Name: Storage_live_test
+          Path: sdk/storage/platform-matrix.json
+          Selection: sparse
+          GenerateVMJobs: true
       EnvVars:
-        AZURE_TEST_MODE: LIVE
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
         AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
         AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)

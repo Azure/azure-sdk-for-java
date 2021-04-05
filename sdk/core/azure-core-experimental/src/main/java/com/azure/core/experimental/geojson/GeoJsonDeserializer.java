@@ -16,23 +16,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Deserializes a JSON object into a {@link GeoObject}.
  */
 final class GeoJsonDeserializer extends JsonDeserializer<GeoObject> {
     private static final ClientLogger LOGGER = new ClientLogger(GeoJsonDeserializer.class);
-
-    /*
-     * GeoJSON types.
-     */
-    static final String POINT_TYPE = "Point";
-    static final String LINE_STRING_TYPE = "LineString";
-    static final String MULTI_POINT_TYPE = "MultiPoint";
-    static final String POLYGON_TYPE = "Polygon";
-    static final String MULTI_LINE_STRING_TYPE = "MultiLineString";
-    static final String MULTI_POLYGON_TYPE = "MultiPolygon";
-    static final String GEOMETRY_COLLECTION_TYPE = "GeometryCollection";
 
     /*
      * Required GeoJSON properties.
@@ -52,10 +42,10 @@ final class GeoJsonDeserializer extends JsonDeserializer<GeoObject> {
         MODULE = new SimpleModule()
             .addDeserializer(GeoObject.class, new GeoJsonDeserializer())
             .addDeserializer(GeoPoint.class, geoSubclassDeserializer(GeoPoint.class))
-            .addDeserializer(GeoLine.class, geoSubclassDeserializer(GeoLine.class))
+            .addDeserializer(GeoLineString.class, geoSubclassDeserializer(GeoLineString.class))
             .addDeserializer(GeoPolygon.class, geoSubclassDeserializer(GeoPolygon.class))
             .addDeserializer(GeoPointCollection.class, geoSubclassDeserializer(GeoPointCollection.class))
-            .addDeserializer(GeoLineCollection.class, geoSubclassDeserializer(GeoLineCollection.class))
+            .addDeserializer(GeoLineStringCollection.class, geoSubclassDeserializer(GeoLineStringCollection.class))
             .addDeserializer(GeoPolygonCollection.class, geoSubclassDeserializer(GeoPolygonCollection.class))
             .addDeserializer(GeoCollection.class, geoSubclassDeserializer(GeoCollection.class));
     }
@@ -68,7 +58,7 @@ final class GeoJsonDeserializer extends JsonDeserializer<GeoObject> {
     private static GeoObject read(JsonNode node) {
         String type = getRequiredProperty(node, TYPE_PROPERTY).asText();
 
-        if (GEOMETRY_COLLECTION_TYPE.equalsIgnoreCase(type)) {
+        if (GeoObjectType.GEOMETRY_COLLECTION.getJsonType().equalsIgnoreCase(type)) {
             List<GeoObject> geometries = new ArrayList<>();
             for (JsonNode geoNode : getRequiredProperty(node, GEOMETRIES_PROPERTY)) {
                 geometries.add(read(geoNode));
@@ -83,32 +73,30 @@ final class GeoJsonDeserializer extends JsonDeserializer<GeoObject> {
         GeoBoundingBox boundingBox = readBoundingBox(node);
         Map<String, Object> properties = readProperties(node);
 
-        switch (type) {
-            case POINT_TYPE:
-                return new GeoPoint(readCoordinate(coordinates), boundingBox, properties);
-            case LINE_STRING_TYPE:
-                return new GeoLine(readCoordinates(coordinates), boundingBox, properties);
-            case POLYGON_TYPE:
-                List<GeoLinearRing> rings = new ArrayList<>();
-                coordinates.forEach(ring -> rings.add(new GeoLinearRing(readCoordinates(ring))));
+        if (Objects.equals(type, GeoObjectType.POINT.getJsonType())) {
+            return new GeoPoint(readCoordinate(coordinates), boundingBox, properties);
+        } else if (Objects.equals(type, GeoObjectType.LINE_STRING.getJsonType())) {
+            return new GeoLineString(readCoordinates(coordinates), boundingBox, properties);
+        } else if (Objects.equals(type, GeoObjectType.POLYGON.getJsonType())) {
+            List<GeoLinearRing> rings = new ArrayList<>();
+            coordinates.forEach(ring -> rings.add(new GeoLinearRing(readCoordinates(ring))));
 
-                return new GeoPolygon(rings, boundingBox, properties);
-            case MULTI_POINT_TYPE:
-                List<GeoPoint> points = new ArrayList<>();
-                readCoordinates(coordinates).forEach(position -> points.add(new GeoPoint(position)));
+            return new GeoPolygon(rings, boundingBox, properties);
+        } else if (Objects.equals(type, GeoObjectType.MULTI_POINT.getJsonType())) {
+            List<GeoPoint> points = new ArrayList<>();
+            readCoordinates(coordinates).forEach(position -> points.add(new GeoPoint(position)));
 
-                return new GeoPointCollection(points, boundingBox, properties);
-            case MULTI_LINE_STRING_TYPE:
-                List<GeoLine> lines = new ArrayList<>();
-                coordinates.forEach(line -> lines.add(new GeoLine(readCoordinates(line))));
+            return new GeoPointCollection(points, boundingBox, properties);
+        } else if (Objects.equals(type, GeoObjectType.MULTI_LINE_STRING.getJsonType())) {
+            List<GeoLineString> lines = new ArrayList<>();
+            coordinates.forEach(line -> lines.add(new GeoLineString(readCoordinates(line))));
 
-                return new GeoLineCollection(lines, boundingBox, properties);
-            case MULTI_POLYGON_TYPE:
-                return readMultiPolygon(coordinates, boundingBox, properties);
-            default:
-                throw LOGGER.logExceptionAsError(new IllegalStateException(
-                    String.format("Unsupported geo type %s.", type)));
+            return new GeoLineStringCollection(lines, boundingBox, properties);
+        } else if (Objects.equals(type, GeoObjectType.MULTI_POLYGON.getJsonType())) {
+            return readMultiPolygon(coordinates, boundingBox, properties);
         }
+
+        throw LOGGER.logExceptionAsError(new IllegalStateException(String.format("Unsupported geo type %s.", type)));
     }
 
     private static GeoPolygonCollection readMultiPolygon(JsonNode node, GeoBoundingBox boundingBox,

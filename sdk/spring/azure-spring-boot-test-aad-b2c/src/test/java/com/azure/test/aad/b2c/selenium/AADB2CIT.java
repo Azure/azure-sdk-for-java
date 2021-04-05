@@ -79,17 +79,21 @@ public class AADB2CIT {
 
         private final AADB2COidcLoginConfigurer configurer;
 
+        private final String profileEdit;
+
         public DumbApp(AADB2COidcLoginConfigurer configurer) {
+            this.profileEdit = AAD_B2C_PROFILE_EDIT;
             this.configurer = configurer;
         }
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
+            // @formatter:off
             http.authorizeRequests()
-                .anyRequest()
-                .authenticated()
-                .and()
+                    .anyRequest().authenticated()
+                    .and()
                 .apply(configurer);
+            // @formatter:on
         }
 
         @GetMapping(value = "/")
@@ -104,6 +108,7 @@ public class AADB2CIT {
                 model.addAttribute("grant_type", user.getAuthorities());
                 model.addAllAttributes(user.getAttributes());
             }
+            model.addAttribute("aadb2c_profileedit", profileEdit);
         }
     }
 }

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 import com.azure.resourcemanager.servicebus.fluent.NamespacesClient;
-import com.azure.resourcemanager.servicebus.fluent.models.SharedAccessAuthorizationRuleResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
 import com.azure.resourcemanager.servicebus.models.NamespaceAuthorizationRule;
 import com.azure.resourcemanager.servicebus.models.NamespaceAuthorizationRules;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
@@ -22,7 +22,7 @@ class NamespaceAuthorizationRulesImpl
     extends ServiceBusChildResourcesImpl<
         NamespaceAuthorizationRule,
         NamespaceAuthorizationRuleImpl,
-        SharedAccessAuthorizationRuleResourceInner,
+        SBAuthorizationRuleInner,
         NamespacesClient,
         ServiceBusManager,
         ServiceBusNamespace>
@@ -54,17 +54,17 @@ class NamespaceAuthorizationRulesImpl
     }
 
     @Override
-    protected Mono<SharedAccessAuthorizationRuleResourceInner> getInnerByNameAsync(String name) {
+    protected Mono<SBAuthorizationRuleInner> getInnerByNameAsync(String name) {
         return this.innerModel().getAuthorizationRuleAsync(this.resourceGroupName, this.namespaceName, name);
     }
 
     @Override
-    protected PagedFlux<SharedAccessAuthorizationRuleResourceInner> listInnerAsync() {
+    protected PagedFlux<SBAuthorizationRuleInner> listInnerAsync() {
         return this.innerModel().listAuthorizationRulesAsync(this.resourceGroupName, this.namespaceName);
     }
 
     @Override
-    protected PagedIterable<SharedAccessAuthorizationRuleResourceInner> listInner() {
+    protected PagedIterable<SBAuthorizationRuleInner> listInner() {
         return this.innerModel().listAuthorizationRules(this.resourceGroupName,
                 this.namespaceName);
     }
@@ -74,21 +74,19 @@ class NamespaceAuthorizationRulesImpl
         return new NamespaceAuthorizationRuleImpl(this.resourceGroupName,
                 this.namespaceName,
                 name,
-                this.region,
-                new SharedAccessAuthorizationRuleResourceInner(),
+                new SBAuthorizationRuleInner(),
                 this.manager());
     }
 
 
     @Override
-    protected NamespaceAuthorizationRuleImpl wrapModel(SharedAccessAuthorizationRuleResourceInner inner) {
+    protected NamespaceAuthorizationRuleImpl wrapModel(SBAuthorizationRuleInner inner) {
         if (inner == null) {
             return null;
         }
         return new NamespaceAuthorizationRuleImpl(this.resourceGroupName,
                 this.namespaceName,
                 inner.name(),
-                this.region,
                 inner,
                 this.manager());
     }

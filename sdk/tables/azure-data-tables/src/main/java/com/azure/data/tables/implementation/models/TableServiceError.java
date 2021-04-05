@@ -7,7 +7,7 @@ package com.azure.data.tables.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TableServiceError model. */
+/** Table Service error. */
 @Fluent
 public final class TableServiceError {
     /*

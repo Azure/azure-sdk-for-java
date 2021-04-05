@@ -3,10 +3,10 @@
 
 package com.azure.communication.chat;
 
-import com.azure.communication.chat.models.AddChatParticipantsOptions;
-import com.azure.communication.chat.models.ChatMessage;
 
-import com.azure.communication.chat.models.ChatThread;
+import com.azure.communication.chat.models.ChatMessage;
+import com.azure.communication.chat.models.SendChatMessageResult;
+import com.azure.communication.chat.models.ChatThreadProperties;
 import com.azure.communication.chat.models.ChatParticipant;
 import com.azure.communication.chat.models.ChatMessageReadReceipt;
 import com.azure.communication.chat.models.CreateChatThreadOptions;
@@ -15,10 +15,7 @@ import com.azure.communication.chat.models.SendChatMessageOptions;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.CommunicationTokenCredential;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,11 +37,6 @@ public class ReadmeSamples {
     public ChatClient createChatClient() {
         String endpoint = "https://<RESOURCE_NAME>.communcationservices.azure.com";
 
-        // Create an HttpClient builder of your choice and customize it
-        // Use com.azure.core.http.netty.NettyAsyncHttpClientBuilder if that suits your needs
-        NettyAsyncHttpClientBuilder httpClientBuilder = new NettyAsyncHttpClientBuilder();
-        HttpClient httpClient = httpClientBuilder.build();
-
         // Your user access token retrieved from your trusted service
         String token = "SECRET";
         CommunicationTokenCredential credential = new CommunicationTokenCredential(token);
@@ -52,8 +44,7 @@ public class ReadmeSamples {
         // Initialize the chat client
         final ChatClientBuilder builder = new ChatClientBuilder();
         builder.endpoint(endpoint)
-            .credential(credential)
-            .httpClient(httpClient);
+            .credential(credential);
         ChatClient chatClient = builder.buildClient();
 
         return chatClient;
@@ -71,20 +62,20 @@ public class ReadmeSamples {
         List<ChatParticipant> participants = new ArrayList<ChatParticipant>();
 
         ChatParticipant firstParticipant = new ChatParticipant()
-            .setUser(user1)
+            .setCommunicationIdentifier(user1)
             .setDisplayName("Participant Display Name 1");
 
         ChatParticipant secondParticipant = new ChatParticipant()
-            .setUser(user2)
+            .setCommunicationIdentifier(user2)
             .setDisplayName("Participant Display Name 2");
 
         participants.add(firstParticipant);
         participants.add(secondParticipant);
 
-        CreateChatThreadOptions createChatThreadOptions = new CreateChatThreadOptions()
-            .setTopic("Topic")
+        CreateChatThreadOptions createChatThreadOptions = new CreateChatThreadOptions("Topic")
             .setParticipants(participants);
         CreateChatThreadResult result = chatClient.createChatThread(createChatThreadOptions);
+
         String chatThreadId = result.getChatThread().getId();
     }
 
@@ -94,8 +85,8 @@ public class ReadmeSamples {
     public void getChatThread() {
         ChatClient chatClient = createChatClient();
 
-        String chatThreadId = "Id";
-        ChatThread chatThread = chatClient.getChatThread(chatThreadId);
+        ChatThreadClient chatThreadClient = chatClient.getChatThreadClient("Id");
+        ChatThreadProperties chatThreadProperties = chatThreadClient.getProperties();
     }
 
     /**
@@ -144,8 +135,7 @@ public class ReadmeSamples {
             .setContent("Message content")
             .setSenderDisplayName("Sender Display Name");
 
-
-        String chatMessageId = chatThreadClient.sendMessage(sendChatMessageOptions);
+        SendChatMessageResult sendResult = chatThreadClient.sendMessage(sendChatMessageOptions);
     }
 
     /**
@@ -208,7 +198,7 @@ public class ReadmeSamples {
             System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
                 resp.getRequest().getUrl(), resp.getStatusCode());
             resp.getItems().forEach(chatParticipant -> {
-                System.out.printf("Participant id is %s.", chatParticipant.getUser().getId());
+                System.out.printf("Participant id is %s.", ((CommunicationUserIdentifier) chatParticipant.getCommunicationIdentifier()).getId());
             });
         });
     }
@@ -217,6 +207,7 @@ public class ReadmeSamples {
      * Sample code adding chat participants using the sync chat thread client.
      */
     public void addChatParticipants() {
+
         ChatThreadClient chatThreadClient = getChatThreadClient();
 
         CommunicationUserIdentifier user1 = new CommunicationUserIdentifier("Id 1");
@@ -225,19 +216,17 @@ public class ReadmeSamples {
         List<ChatParticipant> participants = new ArrayList<ChatParticipant>();
 
         ChatParticipant firstParticipant = new ChatParticipant()
-            .setUser(user1)
+            .setCommunicationIdentifier(user1)
             .setDisplayName("Display Name 1");
 
         ChatParticipant secondParticipant = new ChatParticipant()
-            .setUser(user2)
+            .setCommunicationIdentifier(user2)
             .setDisplayName("Display Name 2");
 
         participants.add(firstParticipant);
         participants.add(secondParticipant);
 
-        AddChatParticipantsOptions addChatParticipantsOptions = new AddChatParticipantsOptions()
-            .setParticipants(participants);
-        chatThreadClient.addParticipants(addChatParticipantsOptions);
+        chatThreadClient.addParticipants(participants);
     }
 
     /**

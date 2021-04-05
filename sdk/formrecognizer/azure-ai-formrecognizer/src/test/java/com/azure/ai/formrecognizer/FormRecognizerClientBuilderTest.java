@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -14,6 +15,7 @@ import com.azure.core.util.Configuration;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.Duration;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -27,6 +29,7 @@ import static com.azure.ai.formrecognizer.TestUtils.FORM_JPG;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.URL_TEST_FILE_FORMAT;
 import static com.azure.ai.formrecognizer.TestUtils.VALID_HTTP_LOCALHOST;
+import static com.azure.ai.formrecognizer.TestUtils.setSyncPollerPollInterval;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -62,7 +65,8 @@ public class FormRecognizerClientBuilderTest extends TestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void clientBuilderWithRotateToValidKey(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         clientBuilderWithRotateToValidKeyRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
-            assertNotNull(clientBuilder.buildClient().beginRecognizeContentFromUrl(input).getFinalResult()));
+            assertNotNull(setSyncPollerPollInterval(clientBuilder.buildClient()
+                .beginRecognizeContentFromUrl(input), interceptorManager).getFinalResult()));
     }
 
     /**
@@ -72,7 +76,8 @@ public class FormRecognizerClientBuilderTest extends TestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void clientBuilderWithNullServiceVersion(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         clientBuilderWithNullServiceVersionRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
-            assertNotNull(clientBuilder.buildClient().beginRecognizeContentFromUrl(input).getFinalResult()));
+            assertNotNull(setSyncPollerPollInterval(clientBuilder.buildClient()
+                .beginRecognizeContentFromUrl(input), interceptorManager).getFinalResult()));
     }
 
     /**
@@ -82,7 +87,8 @@ public class FormRecognizerClientBuilderTest extends TestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void clientBuilderWithDefaultPipeline(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
-            assertNotNull(clientBuilder.buildClient().beginRecognizeContentFromUrl(input).getFinalResult()));
+            assertNotNull(setSyncPollerPollInterval(clientBuilder.buildClient()
+                .beginRecognizeContentFromUrl(input), interceptorManager).getFinalResult()));
     }
 
     /**
@@ -93,8 +99,10 @@ public class FormRecognizerClientBuilderTest extends TestBase {
     public void clientBuilderWithInvalidEndpoint(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, clientBuilder -> (input) -> {
             assertThrows(RuntimeException.class,
-                () -> clientBuilder.endpoint(INVALID_ENDPOINT).buildClient()
-                        .beginRecognizeContentFromUrl(input).getFinalResult());
+                () -> clientBuilder.endpoint(INVALID_ENDPOINT)
+                    .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
+                    .buildClient()
+                    .beginRecognizeContentFromUrl(input).getFinalResult());
         });
     }
 
@@ -106,8 +114,10 @@ public class FormRecognizerClientBuilderTest extends TestBase {
     public void clientBuilderWithHttpEndpoint(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, clientBuilder -> (input) -> {
             Exception exception = assertThrows(RuntimeException.class,
-                () -> clientBuilder.endpoint(VALID_HTTP_LOCALHOST).buildClient()
-                        .beginRecognizeContentFromUrl(input).getFinalResult());
+                () -> clientBuilder.endpoint(VALID_HTTP_LOCALHOST)
+                    .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
+                    .buildClient()
+                    .beginRecognizeContentFromUrl(input).getFinalResult());
             assertEquals(HTTPS_EXCEPTION_MESSAGE, exception.getMessage());
         });
     }

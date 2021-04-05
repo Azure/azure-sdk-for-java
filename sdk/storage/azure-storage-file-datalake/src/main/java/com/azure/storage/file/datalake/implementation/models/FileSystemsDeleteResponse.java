@@ -8,10 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the delete operation.
- */
-public final class FileSystemsDeleteResponse extends ResponseBase<FileSystemDeleteHeaders, Void> {
+/** Contains all response data for the delete operation. */
+public final class FileSystemsDeleteResponse extends ResponseBase<FileSystemsDeleteHeaders, Void> {
     /**
      * Creates an instance of FileSystemsDeleteResponse.
      *
@@ -21,7 +19,8 @@ public final class FileSystemsDeleteResponse extends ResponseBase<FileSystemDele
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public FileSystemsDeleteResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, FileSystemDeleteHeaders headers) {
+    public FileSystemsDeleteResponse(
+            HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, FileSystemsDeleteHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

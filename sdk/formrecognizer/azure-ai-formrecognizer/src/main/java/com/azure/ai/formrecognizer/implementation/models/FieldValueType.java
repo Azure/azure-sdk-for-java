@@ -34,7 +34,13 @@ public enum FieldValueType {
     OBJECT("object"),
 
     /** Enum value selectionMark. */
-    SELECTION_MARK("selectionMark");
+    SELECTION_MARK("selectionMark"),
+
+    /** Enum value gender. */
+    GENDER("gender"),
+
+    /** Enum value country. */
+    COUNTRY("country");
 
     /** The actual serialized value for a FieldValueType instance. */
     private final String value;

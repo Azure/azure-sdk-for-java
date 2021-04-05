@@ -654,7 +654,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             : getOrCreateConsumer().receive().map(ServiceBusMessageContext::new);
 
         final Flux<ServiceBusMessageContext> withAutoLockRenewal;
-        if (receiverOptions.isAutoLockRenewEnabled()) {
+        if (!receiverOptions.isSessionReceiver() && receiverOptions.isAutoLockRenewEnabled()) {
             withAutoLockRenewal = new FluxAutoLockRenew(messageFlux, receiverOptions.getMaxLockRenewDuration(),
                 renewalContainer, this::renewMessageLock);
         } else {
@@ -1189,8 +1189,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionProcessor.getRetryOptions());
         final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLink.subscribeWith(
-            new ServiceBusReceiveLinkProcessor(receiverOptions.getPrefetchCount(), retryPolicy,
-                receiverOptions.getReceiveMode()));
+            new ServiceBusReceiveLinkProcessor(receiverOptions.getPrefetchCount(), retryPolicy));
 
         final ServiceBusAsyncConsumer newConsumer = new ServiceBusAsyncConsumer(linkName, linkMessageProcessor,
             messageSerializer, receiverOptions);

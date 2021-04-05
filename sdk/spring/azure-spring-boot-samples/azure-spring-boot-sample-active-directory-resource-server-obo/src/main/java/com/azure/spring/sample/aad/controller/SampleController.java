@@ -28,7 +28,7 @@ public class SampleController {
 
     private static final String GRAPH_ME_ENDPOINT = "https://graph.microsoft.com/v1.0/me";
 
-    private static final String CUSTOM_LOCAL_FILE_ENDPOINT = "http://localhost:8080/file";
+    private static final String CUSTOM_LOCAL_FILE_ENDPOINT = "http://localhost:8082/webapiB";
 
     @Autowired
     private WebClient webClient;
@@ -64,14 +64,14 @@ public class SampleController {
 
     /**
      * Call custom resources, combine all the response and return.
-     * @param custom authorized client for Custom
+     * @param webapiBClient authorized client for Custom
      * @return Response Graph and Custom data.
      */
-    @PreAuthorize("hasAuthority('SCOPE_Obo.File.Read')")
-    @GetMapping("call-custom")
+    @PreAuthorize("hasAuthority('SCOPE_Obo.WebApiA.ExampleScope')")
+    @GetMapping("webapiA/webapiB")
     public String callCustom(
-        @RegisteredOAuth2AuthorizedClient("custom") OAuth2AuthorizedClient custom) {
-        return callCustomLocalFileEndpoint(custom);
+        @RegisteredOAuth2AuthorizedClient("webapiB") OAuth2AuthorizedClient webapiBClient) {
+        return callWebApiBEndpoint(webapiBClient);
     }
 
     /**
@@ -97,22 +97,22 @@ public class SampleController {
 
     /**
      * Call custom local file endpoint
-     * @param custom Authorized Client
+     * @param webapiBClient Authorized Client
      * @return Response string data.
      */
-    private String callCustomLocalFileEndpoint(OAuth2AuthorizedClient custom) {
-        if (null != custom) {
+    private String callWebApiBEndpoint(OAuth2AuthorizedClient webapiBClient) {
+        if (null != webapiBClient) {
             String body = webClient
                 .get()
                 .uri(CUSTOM_LOCAL_FILE_ENDPOINT)
-                .attributes(oauth2AuthorizedClient(custom))
+                .attributes(oauth2AuthorizedClient(webapiBClient))
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
-            LOGGER.info("Response from Custom: {}", body);
-            return "Custom response " + (null != body ? "success." : "failed.");
+            LOGGER.info("Response from webapiB: {}", body);
+            return "webapiB response " + (null != body ? "success." : "failed.");
         } else {
-            return "Custom response failed.";
+            return "webapiB response failed.";
         }
     }
 }

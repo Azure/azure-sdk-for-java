@@ -4,8 +4,15 @@
 package com.azure.monitor.opentelemetry.exporter;
 
 
-import io.opentelemetry.sdk.common.CompletableResultCode;
+import com.azure.data.appconfiguration.ConfigurationClient;
+import com.azure.data.appconfiguration.ConfigurationClientBuilder;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.Tracer;
+import io.opentelemetry.context.Scope;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.data.SpanData;
+import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -23,21 +30,46 @@ public class ReadmeSamples {
      * Sample for creating Azure Monitor Exporter.
      */
     public void createExporter() {
-        AzureMonitorExporter azureMonitorExporter = new AzureMonitorExporterBuilder()
+        AzureMonitorTraceExporter azureMonitorTraceExporter = new AzureMonitorExporterBuilder()
             .connectionString("{connection-string}")
-            .buildExporter();
+            .buildTraceExporter();
     }
 
     /**
-     * Sample for exporting span data to Azure Monitor.
+     * Sample for setting up exporter to export traces to Azure Monitor
      */
-    public void exportSpanData() {
-        AzureMonitorExporter azureMonitorExporter = new AzureMonitorExporterBuilder()
-            .connectionString("{connection-string}")
-            .buildExporter();
+    public void setupExporter() {
 
-        CompletableResultCode resultCode = azureMonitorExporter.export(getSpanDataCollection());
-        System.out.println(resultCode.isSuccess());
+        // Create Azure Monitor exporter and configure OpenTelemetry tracer to use this exporter
+        // This should be done just once when application starts up
+        AzureMonitorTraceExporter exporter = new AzureMonitorExporterBuilder()
+            .connectionString("{connection-string}")
+            .buildTraceExporter();
+
+        SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
+            .addSpanProcessor(SimpleSpanProcessor.create(exporter))
+            .build();
+
+        OpenTelemetrySdk openTelemetrySdk = OpenTelemetrySdk.builder()
+            .setTracerProvider(tracerProvider)
+            .buildAndRegisterGlobal();
+
+        Tracer tracer = openTelemetrySdk.getTracer("Sample");
+
+        // Make service calls by adding new parent spans
+        ConfigurationClient client = new ConfigurationClientBuilder()
+            .connectionString("{app-config-connection-string}")
+            .buildClient();
+
+        Span span = tracer.spanBuilder("user-parent-span").startSpan();
+        final Scope scope = span.makeCurrent();
+        try {
+            // Thread bound (sync) calls will automatically pick up the parent span and you don't need to pass it explicitly.
+            client.setConfigurationSetting("hello", "text", "World");
+        } finally {
+            span.end();
+            scope.close();
+        }
     }
 
     /**

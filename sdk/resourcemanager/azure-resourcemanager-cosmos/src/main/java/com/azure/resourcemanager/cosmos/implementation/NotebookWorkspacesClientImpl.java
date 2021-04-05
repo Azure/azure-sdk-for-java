@@ -36,7 +36,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cosmos.fluent.NotebookWorkspacesClient;
 import com.azure.resourcemanager.cosmos.fluent.models.NotebookWorkspaceConnectionInfoResultInner;
 import com.azure.resourcemanager.cosmos.fluent.models.NotebookWorkspaceInner;
-import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
+import com.azure.resourcemanager.cosmos.models.NotebookWorkspaceCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.NotebookWorkspaceListResult;
 import com.azure.resourcemanager.cosmos.models.NotebookWorkspaceName;
 import java.nio.ByteBuffer;
@@ -115,7 +115,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             @QueryParam("api-version") String apiVersion,
             @PathParam("accountName") String accountName,
             @PathParam("notebookWorkspaceName") NotebookWorkspaceName notebookWorkspaceName,
-            @BodyParam("application/json") ArmProxyResource notebookCreateUpdateParameters,
+            @BodyParam("application/json") NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -216,7 +216,6 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -226,7 +225,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accountName,
                             accept,
                             context))
@@ -234,7 +233,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -270,7 +269,6 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -278,7 +276,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accountName,
                 accept,
                 context)
@@ -389,7 +387,6 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter notebookWorkspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -399,12 +396,12 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accountName,
                             notebookWorkspaceName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -445,7 +442,6 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter notebookWorkspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -453,7 +449,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accountName,
                 notebookWorkspaceName,
                 accept,
@@ -526,8 +522,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The resource model definition for a ARM proxy resource. It will have
-     *     everything other than required location and tags.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -538,7 +533,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters) {
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -570,7 +565,6 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         } else {
             notebookCreateUpdateParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -580,13 +574,13 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accountName,
                             notebookWorkspaceName,
                             notebookCreateUpdateParameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -595,8 +589,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The resource model definition for a ARM proxy resource. It will have
-     *     everything other than required location and tags.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -608,7 +601,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -641,7 +634,6 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         } else {
             notebookCreateUpdateParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -649,7 +641,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accountName,
                 notebookWorkspaceName,
                 notebookCreateUpdateParameters,
@@ -663,8 +655,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The resource model definition for a ARM proxy resource. It will have
-     *     everything other than required location and tags.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -675,7 +666,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters) {
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
                 resourceGroupName, accountName, notebookWorkspaceName, notebookCreateUpdateParameters);
@@ -695,8 +686,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The resource model definition for a ARM proxy resource. It will have
-     *     everything other than required location and tags.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -708,7 +698,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters,
         Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -730,8 +720,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The resource model definition for a ARM proxy resource. It will have
-     *     everything other than required location and tags.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -742,7 +731,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters) {
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
         return beginCreateOrUpdateAsync(
                 resourceGroupName, accountName, notebookWorkspaceName, notebookCreateUpdateParameters)
             .getSyncPoller();
@@ -754,8 +743,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The resource model definition for a ARM proxy resource. It will have
-     *     everything other than required location and tags.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -767,7 +755,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters,
         Context context) {
         return beginCreateOrUpdateAsync(
                 resourceGroupName, accountName, notebookWorkspaceName, notebookCreateUpdateParameters, context)
@@ -780,8 +768,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The resource model definition for a ARM proxy resource. It will have
-     *     everything other than required location and tags.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -792,7 +779,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters) {
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
         return beginCreateOrUpdateAsync(
                 resourceGroupName, accountName, notebookWorkspaceName, notebookCreateUpdateParameters)
             .last()
@@ -805,8 +792,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The resource model definition for a ARM proxy resource. It will have
-     *     everything other than required location and tags.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -818,7 +804,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters,
         Context context) {
         return beginCreateOrUpdateAsync(
                 resourceGroupName, accountName, notebookWorkspaceName, notebookCreateUpdateParameters, context)
@@ -832,8 +818,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The resource model definition for a ARM proxy resource. It will have
-     *     everything other than required location and tags.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -844,7 +829,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters) {
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
         return createOrUpdateAsync(
                 resourceGroupName, accountName, notebookWorkspaceName, notebookCreateUpdateParameters)
             .block();
@@ -856,8 +841,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The resource model definition for a ARM proxy resource. It will have
-     *     everything other than required location and tags.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -869,7 +853,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters,
         Context context) {
         return createOrUpdateAsync(
                 resourceGroupName, accountName, notebookWorkspaceName, notebookCreateUpdateParameters, context)
@@ -913,7 +897,6 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter notebookWorkspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -923,12 +906,12 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accountName,
                             notebookWorkspaceName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -969,7 +952,6 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter notebookWorkspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -977,7 +959,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accountName,
                 notebookWorkspaceName,
                 accept,
@@ -1171,7 +1153,6 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter notebookWorkspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1181,12 +1162,12 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accountName,
                             notebookWorkspaceName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1227,7 +1208,6 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter notebookWorkspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1235,7 +1215,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accountName,
                 notebookWorkspaceName,
                 accept,
@@ -1340,7 +1320,6 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter notebookWorkspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1350,12 +1329,12 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accountName,
                             notebookWorkspaceName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1396,7 +1375,6 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter notebookWorkspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1404,7 +1382,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accountName,
                 notebookWorkspaceName,
                 accept,
@@ -1600,7 +1578,6 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter notebookWorkspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1610,12 +1587,12 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accountName,
                             notebookWorkspaceName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1656,7 +1633,6 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter notebookWorkspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1664,7 +1640,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accountName,
                 notebookWorkspaceName,
                 accept,

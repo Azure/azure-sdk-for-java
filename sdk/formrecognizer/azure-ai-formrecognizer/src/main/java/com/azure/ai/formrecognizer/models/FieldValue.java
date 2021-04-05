@@ -11,8 +11,10 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 
+import static com.azure.ai.formrecognizer.models.FieldValueType.COUNTRY;
 import static com.azure.ai.formrecognizer.models.FieldValueType.DATE;
 import static com.azure.ai.formrecognizer.models.FieldValueType.FLOAT;
+import static com.azure.ai.formrecognizer.models.FieldValueType.GENDER;
 import static com.azure.ai.formrecognizer.models.FieldValueType.LIST;
 import static com.azure.ai.formrecognizer.models.FieldValueType.LONG;
 import static com.azure.ai.formrecognizer.models.FieldValueType.MAP;
@@ -37,6 +39,8 @@ public final class FieldValue {
     private SelectionMarkState selectionMarkState;
     private String formFieldString;
     private String formFieldPhoneNumber;
+    private String formFieldCountry;
+    private FieldValueGender formFieldGender;
 
     /**
      * Constructs a FieldValue object
@@ -74,6 +78,12 @@ public final class FieldValue {
                 break;
             case SELECTION_MARK_STATE:
                 selectionMarkState = (SelectionMarkState) value;
+                break;
+            case COUNTRY:
+                formFieldCountry = (String) value;
+                break;
+            case GENDER:
+                formFieldGender =  FieldValueGender.fromString(value.toString());
                 break;
             default:
                 throw logger.logExceptionAsError(new IllegalStateException("Unexpected type value: " + valueType));
@@ -215,5 +225,35 @@ public final class FieldValue {
                 "Cannot get field as a %s from field value of type %s", SELECTION_MARK_STATE, this.getValueType()))));
         }
         return this.selectionMarkState;
+    }
+
+    /**
+     * Gets the value of the field as a Country field.
+     *
+     * @return the value of the field as Country.
+     * @throws UnsupportedOperationException if {@link FieldValue#getValueType()} is not
+     * {@link FieldValueType#COUNTRY}.
+     */
+    public String asCountry() {
+        if (COUNTRY != this.getValueType()) {
+            throw logger.logExceptionAsError((new UnsupportedOperationException(String.format(
+                "Cannot get field as a %s from field value of type %s", COUNTRY, this.getValueType()))));
+        }
+        return this.formFieldCountry;
+    }
+
+    /**
+     * Gets the value of the field as a gender value.
+     *
+     * @return the value of the field as a gender value.
+     * @throws UnsupportedOperationException if {@link FieldValue#getValueType()} is not
+     * {@link FieldValueType#GENDER}.
+     */
+    public FieldValueGender asGender() {
+        if (GENDER != this.getValueType()) {
+            throw logger.logExceptionAsError((new UnsupportedOperationException(String.format(
+                "Cannot get field as a %s from field value of type %s", GENDER, this.getValueType()))));
+        }
+        return this.formFieldGender;
     }
 }
