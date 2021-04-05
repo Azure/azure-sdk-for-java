@@ -1,3 +1,14 @@
+parameters:
+  - name: CosmosEndpoint
+    type: string
+  - name: CosmosKey
+    type: string
+  - name: DatabricksEndpoint
+    type: string
+  - name: DatabricksToken
+    type: string
+
+
 stages:
   - stage:
     displayName: Spark Databricks integration
@@ -40,9 +51,9 @@ stages:
           script: >-
             databricks configure --token <<EOF
 
-            $DATABRICKSENDPOINT
+            ${{ parameters.DatabricksEndpoint }}
 
-            $DATABRICKSTOKEN
+            ${{ parameters.DatabricksToken }}
 
             EOF
       - task: Bash@3
@@ -54,4 +65,4 @@ stages:
         displayName: Importing and executing notebooks
         inputs:
           filePath: test-databricks/databricks-notebooks-install.sh
-          arguments: $(DatabricksClusterName) test-databricks/notebooks $COSMOSENDPOINT $COSMOSKEY
+          arguments: $(DatabricksClusterName) test-databricks/notebooks ${{ parameters.CosmosEndpoint }} ${{ parameters.CosmosKey }}
