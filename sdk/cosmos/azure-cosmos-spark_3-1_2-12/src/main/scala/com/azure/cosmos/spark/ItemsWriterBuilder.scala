@@ -4,6 +4,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import org.apache.spark.broadcast.Broadcast
+import org.apache.spark.sql.connector.write.streaming.StreamingWrite
 import org.apache.spark.sql.connector.write.{BatchWrite, WriteBuilder}
 import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.util.CaseInsensitiveStringMap
@@ -23,6 +24,12 @@ private class ItemsWriterBuilder
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
   override def buildForBatch(): BatchWrite =
+    new ItemsBatchWriter(
+      userConfig.asCaseSensitiveMap().asScala.toMap,
+      inputSchema,
+      cosmosClientStateHandle)
+
+  override def buildForStreaming(): StreamingWrite =
     new ItemsBatchWriter(
       userConfig.asCaseSensitiveMap().asScala.toMap,
       inputSchema,

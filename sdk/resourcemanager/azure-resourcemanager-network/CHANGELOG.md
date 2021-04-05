@@ -1,5 +1,9 @@
 # Release History
 
+## 2.4.0-beta.1 (Unreleased)
+
+- Supported configure `ApplicationSecurityGroup` for `NetworkInterface`
+
 ## 2.3.0 (2021-03-30)
 
 - Supported `PrivateEndpoint` and `PrivateDnsZone`

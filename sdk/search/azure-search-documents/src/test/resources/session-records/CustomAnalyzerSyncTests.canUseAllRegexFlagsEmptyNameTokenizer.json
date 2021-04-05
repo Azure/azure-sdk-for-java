@@ -1,0 +1,32 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2020-06-30",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "31912942-ddd7-4a00-9e7c-e6fe11d9ae00",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "31912942-ddd7-4a00-9e7c-e6fe11d9ae00",
+      "StatusCode" : "400",
+      "Date" : "Wed, 31 Mar 2021 21:18:10 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "31912942-ddd7-4a00-9e7c-e6fe11d9ae00",
+      "elapsed-time" : "35",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "125",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"The request is invalid. Details: index.tokenizers[0].name : The name field is required.\\r\\n\"}}",
+      "Content-Language" : "en",
+      "x-ms-client-request-id" : "31912942-ddd7-4a00-9e7c-e6fe11d9ae00",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "hotelscanuseallregexflagsemptynametokenizer8ea39222e1765b" ]
+}
