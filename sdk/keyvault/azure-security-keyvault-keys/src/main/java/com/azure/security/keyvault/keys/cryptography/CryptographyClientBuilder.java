@@ -39,24 +39,26 @@ import java.util.Map;
  * {@link CryptographyAsyncClient} are {@link JsonWebKey jsonWebKey} or {@link String Azure Key Vault key identifier}
  * and {@link TokenCredential credential}.</p>
  *
- * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.instantiation}
+ * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.instantiation}
+ * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withJsonWebKey.instantiation}
  *
  * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and a custom
  * {@link HttpClient http client} can be optionally configured in the {@link CryptographyClientBuilder}.</p>
  *
- * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.withhttpclient.instantiation}
+ * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withHttpClient.instantiation}
  *
  * <p>Alternatively, a custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies
  * can be specified. It provides finer control over the construction of {@link CryptographyAsyncClient} and
  * {@link CryptographyClient}</p>
  *
- * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.pipeline.instantiation}
+ * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withPipeline.instantiation}
  *
  * <p>The minimal configuration options required by {@link CryptographyClientBuilder cryptographyClientBuilder} to
  * build {@link CryptographyClient} are {@link JsonWebKey jsonWebKey} or
  * {@link String Azure Key Vault key identifier} and {@link TokenCredential credential}.</p>
  *
- * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.instantiation}
+ * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.instantiation}
+ * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.withJsonWebKey.instantiation}
  *
  * @see CryptographyAsyncClient
  * @see CryptographyClient
