@@ -98,6 +98,11 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
         return this.retryContext;
     }
 
+    @Override
+    public IRetryPolicy getNextRetryPolicy() {
+        return null;
+    }
+
     private static Duration getEffectiveBackoff(Duration backoff, Duration remainingTime) {
         if (backoff.compareTo(remainingTime) > 0) {
             return remainingTime;

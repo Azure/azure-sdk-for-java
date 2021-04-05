@@ -23,4 +23,9 @@ public abstract class DocumentClientRetryPolicy implements IRetryPolicy {
 
     // TODO: I need to investigate what's the right contract here and/or if/how this is useful
     public abstract void onBeforeSendRequest(RxDocumentServiceRequest request);
+
+    @Override
+    public IRetryPolicy getNextRetryPolicy() {
+        return null;
+    }
 }

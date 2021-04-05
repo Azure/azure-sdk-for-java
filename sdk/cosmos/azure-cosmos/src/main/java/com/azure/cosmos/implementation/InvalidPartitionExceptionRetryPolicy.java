@@ -48,7 +48,11 @@ public class InvalidPartitionExceptionRetryPolicy extends DocumentClientRetryPol
 
     @Override
     public RetryContext getRetryContext() {
-        return this.nextPolicy.getRetryContext();
+        if (this.nextPolicy != null) {
+            return this.nextPolicy.getRetryContext();
+        } else {
+            return null;
+        }
     }
 
     @Override

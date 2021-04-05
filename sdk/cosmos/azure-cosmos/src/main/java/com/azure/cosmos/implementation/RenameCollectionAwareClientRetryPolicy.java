@@ -37,7 +37,11 @@ public class RenameCollectionAwareClientRetryPolicy extends DocumentClientRetryP
 
     @Override
     public RetryContext getRetryContext() {
-        return this.retryPolicy.getRetryContext();
+        if (this.retryPolicy != null) {
+            return this.retryPolicy.getRetryContext();
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -90,5 +94,10 @@ public class RenameCollectionAwareClientRetryPolicy extends DocumentClientRetryP
             }
             return Mono.just(shouldRetryResult);
         });
+    }
+
+    @Override
+    public IRetryPolicy getNextRetryPolicy() {
+        return  this.retryPolicy;
     }
 }

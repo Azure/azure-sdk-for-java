@@ -77,6 +77,11 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
         return this.retryContext;
     }
 
+    @Override
+    public IRetryPolicy getNextRetryPolicy() {
+        return null;
+    }
+
     private Duration getElapsedTime() {
         Instant endSnapshot = this.end != null ? this.end : Instant.now();
 
@@ -234,6 +239,11 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             return this.retryContext;
         }
 
+        @Override
+        public IRetryPolicy getNextRetryPolicy() {
+            return null;
+        }
+
         private Pair<Mono<ShouldRetryResult>, Boolean> handleException(Exception exception) {
             if (exception instanceof GoneException) {
                 return handleGoneException((GoneException)exception);
@@ -356,6 +366,11 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
         @Override
         public RetryContext getRetryContext() {
             return this.retryContext;
+        }
+
+        @Override
+        public IRetryPolicy getNextRetryPolicy() {
+            return null;
         }
     }
 }

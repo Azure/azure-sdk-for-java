@@ -66,4 +66,9 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
     public RetryContext getRetryContext() {
         return this.retryContext;
     }
+
+    @Override
+    public IRetryPolicy getNextRetryPolicy() {
+        return null;
+    }
 }

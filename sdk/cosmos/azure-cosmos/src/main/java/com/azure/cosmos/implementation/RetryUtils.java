@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.time.StopWatch;
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
@@ -28,16 +27,18 @@ public class RetryUtils {
             if (e == null) {
                 return Flux.error(t);
             }
-            policy.getRetryContext().captureStartTimeIfNotSet();
+            RetryContext retryContext = policy.getRetryContext();
+            if (retryContext != null) {
+                retryContext.captureStartTimeIfNotSet();
+            }
             Flux<ShouldRetryResult> shouldRetryResultFlux = policy.shouldRetry(e).flux();
             return shouldRetryResultFlux.flatMap(s -> {
                 CosmosException clientException = Utils.as(e, CosmosException.class);
-                if(clientException != null) {
-                    policy.getRetryContext().addStatusAndSubStatusCode(null, clientException.getStatusCode(), clientException.getSubStatusCode());
-                }
+                addStatusSubStatusCodeOnRetryContext(policy, retryContext, clientException);
 
                 if (s.backOffTime != null) {
-                    policy.getRetryContext().incrementRetry();
+                    incrementRetryCounter(policy, retryContext);
+
                     return Mono.delay(Duration.ofMillis(s.backOffTime.toMillis()), CosmosSchedulers.COSMOS_PARALLEL).flux();
                 } else if (s.exception != null) {
                     return Flux.error(s.exception);
@@ -67,20 +68,30 @@ public class RetryUtils {
                                                                             AddressSelector addressSelector) {
         return throwable -> {
             RetryContext retryContext = retryPolicy.getRetryContext();
-            if(retryContext != null && retryContext.getRetryCount() > 0) {
-                retryContext.updateEndTime();
+            if (retryContext != null) {
+                retryContext.captureStartTimeIfNotSet();
+                if (retryContext.getRetryCount() > 0) {
+                    retryContext.updateEndTime();
+                }
             }
 
             Exception e = Utils.as(throwable, Exception.class);
             if (e == null) {
                 return Mono.error(throwable);
             }
-            retryContext.captureStartTimeIfNotSet();
+
             Mono<ShouldRetryResult> shouldRetryResultFlux = retryPolicy.shouldRetry(e);
-            RetryContext finalRetryContext = retryContext;
             return shouldRetryResultFlux.flatMap(shouldRetryResult -> {
+                if (retryContext != null) {
+                    CosmosException clientException = Utils.as(e, CosmosException.class);
+                    addStatusSubStatusCodeOnRetryContext(retryPolicy, retryContext, clientException);
+                    retryContext.updateEndTime();
+                }
+
                 if (!shouldRetryResult.shouldRetry) {
-                    finalRetryContext.updateEndTime();
+                    if (retryContext != null) {
+                        retryContext.updateEndTime();
+                    }
 
                     final Throwable errorToReturn = shouldRetryResult.exception != null ? shouldRetryResult.exception : e;
                     final Mono<T> failure = Mono.error(errorToReturn);
@@ -96,15 +107,7 @@ public class RetryUtils {
                     return failure;
                 }
 
-                CosmosException clientException = Utils.as(e, CosmosException.class);
-                if(clientException != null) {
-                    finalRetryContext.addStatusAndSubStatusCode(null, clientException.getStatusCode(), clientException.getSubStatusCode());
-                }
-                finalRetryContext.incrementRetry();
-                if(finalRetryContext != null && finalRetryContext.getRetryCount() > 0) {
-                    finalRetryContext.updateEndTime();
-                }
-
+                incrementRetryCounter(retryPolicy, retryContext);
                 if (inBackoffAlternateCallbackMethod != null
                         && shouldRetryResult.backOffTime.compareTo(minBackoffForInBackoffCallback) > 0) {
                     StopWatch stopwatch = new StopWatch();
@@ -193,6 +196,32 @@ public class RetryUtils {
     private static void startStopWatch(StopWatch stopwatch) {
         synchronized (stopwatch) {
             stopwatch.start();
+        }
+    }
+
+    private static void incrementRetryCounter(IRetryPolicy retryPolicy, RetryContext retryContext) {
+        if (retryPolicy.getNextRetryPolicy() == null) {
+            retryContext.incrementRetry();
+            retryContext.retryCounterIncremented = true;
+        } else if (!retryContext.retryCounterIncremented) {
+            retryContext.incrementRetry();
+        } else {
+            retryContext.retryCounterIncremented = false;
+        }
+    }
+
+    private static void addStatusSubStatusCodeOnRetryContext(IRetryPolicy retryPolicy, RetryContext retryContext, CosmosException clientException) {
+        if(retryContext != null && clientException != null) {
+            if (retryPolicy.getNextRetryPolicy() == null) {
+                retryContext.addStatusAndSubStatusCode(null, clientException.getStatusCode(),
+                    clientException.getSubStatusCode());
+                retryContext.isCurrentExceptionCapturedInLastRetry = true;
+            } else if (!retryContext.isCurrentExceptionCapturedInLastRetry) {
+                retryContext.addStatusAndSubStatusCode(null, clientException.getStatusCode(),
+                    clientException.getSubStatusCode());
+            } else {
+                retryContext.isCurrentExceptionCapturedInLastRetry = false;
+            }
         }
     }
 }

@@ -15,9 +15,13 @@ public class RetryContext {
     public volatile Instant retryStartTime;
     @JsonIgnore
     public volatile Instant retryEndTime;
+    @JsonIgnore
+    public volatile boolean isCurrentExceptionCapturedInLastRetry;
+    @JsonIgnore
+    public volatile boolean retryCounterIncremented;
 
-    public volatile int retryCount;
-    public volatile List<int[]> statusAndSubStatusCodes;
+    private volatile List<int[]> statusAndSubStatusCodes;
+    private volatile int retryCount;
 
     public void addStatusAndSubStatusCode(Integer index, int statusCode, int subStatusCode) {
         if (statusAndSubStatusCodes == null) {
@@ -39,7 +43,7 @@ public class RetryContext {
         return this.retryCount;
     }
 
-    public void incrementRetry() {
+    public void incrementRetry(){
         this.retryCount++;
     }
 

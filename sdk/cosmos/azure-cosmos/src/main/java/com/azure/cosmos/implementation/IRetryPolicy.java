@@ -14,7 +14,7 @@ import java.util.List;
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
-public interface IRetryPolicy  {
+public interface IRetryPolicy {
     // this capture all the retry logic
     // TODO: design decision should this return a single or an observable?
 
@@ -27,4 +27,6 @@ public interface IRetryPolicy  {
     Mono<ShouldRetryResult> shouldRetry(Exception e);
 
     RetryContext getRetryContext();
+
+    IRetryPolicy getNextRetryPolicy();
 }

@@ -18,6 +18,7 @@ public class RetryPolicy implements IRetryPolicyFactory {
     private final boolean enableEndpointDiscovery;
     private final ThrottlingRetryOptions throttlingRetryOptions;
     private CosmosDiagnostics cosmosDiagnostics;
+    private ClientRetryPolicy clientRetryPolicy;
 
     public RetryPolicy(DiagnosticsClientContext diagnosticsClientContext, GlobalEndpointManager globalEndpointManager
         , ConnectionPolicy connectionPolicy) {
@@ -29,9 +30,11 @@ public class RetryPolicy implements IRetryPolicyFactory {
 
     @Override
     public DocumentClientRetryPolicy getRequestPolicy() {
-        ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(this.diagnosticsClientContext,
-            this.globalEndpointManager, this.enableEndpointDiscovery, this.throttlingRetryOptions);
-        this.cosmosDiagnostics = clientRetryPolicy.getCosmosDiagnostics();
+        if (clientRetryPolicy == null) {
+            clientRetryPolicy = new ClientRetryPolicy(this.diagnosticsClientContext,
+                this.globalEndpointManager, this.enableEndpointDiscovery, this.throttlingRetryOptions);
+            this.cosmosDiagnostics = clientRetryPolicy.getCosmosDiagnostics();
+        }
         return clientRetryPolicy;
     }
 
