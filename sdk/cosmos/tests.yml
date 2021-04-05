@@ -53,7 +53,7 @@ stages:
   - ${{ if or(eq(variables['Build.Reason'], 'Manual'), eq(variables['Build.Reason'], 'PullRequest')) }}:
     - template: /sdk/cosmos/ci.spark.databricks.yml
       parameters:
-        CosmosEndpoint: $(SparkDatabricksCosmosEndpoint)
-        CosmosKey: $(SparkDatabricksCosmosKey)
-        DatabricksEndpoint: $(SparkDatabricksEndpoint)
-        DatabricksToken: $(SparkDatabricksToken)
+        CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
+        CosmosKey: $(spark-databricks-cosmos-key)
+        DatabricksEndpoint: $(spark-databricks-endpoint)
+        DatabricksToken: $(spark-databricks-token)
