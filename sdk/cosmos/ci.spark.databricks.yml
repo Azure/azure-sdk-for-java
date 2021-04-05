@@ -49,6 +49,14 @@ stages:
         inputs:
           targetType: inline
           script: >-
+            echo $DATABRICKSENDPOINT
+        env:
+          DATABRICKSENDPOINT: ${{ parameters.DatabricksEndpoint }}
+      - task: Bash@3
+        displayName: Connect to Databricks workspace
+        inputs:
+          targetType: inline
+          script: >-
             databricks configure --token <<EOF
 
             $DATABRICKSENDPOINT
