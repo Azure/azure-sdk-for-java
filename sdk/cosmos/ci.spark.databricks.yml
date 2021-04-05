@@ -1,7 +1,8 @@
 stages:
   - stage:
+    displayName: Spark Databricks integration
     jobs:
-    - job: Spark_CosmosDB_Databricks
+    - job:
       timeoutInMinutes: 40
       variables:
         - template: /eng/pipelines/templates/variables/globals.yml
