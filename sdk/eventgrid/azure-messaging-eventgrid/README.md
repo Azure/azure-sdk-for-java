@@ -125,10 +125,10 @@ EventGridPublisherAsyncClient<EventGridEvent> eventGridEventAsyncClient = new Ev
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/samples/ReadmeSamples.java#L94-L98 -->
 ```java
 // For custom event
-EventGridPublisherClient<BinaryData> customEventAsyncClient = new EventGridPublisherClientBuilder()
+EventGridPublisherAsyncClient<BinaryData> customEventAsyncClient = new EventGridPublisherClientBuilder()
     .endpoint("<endpont of your event grid topic/domain that accepts custom event schema>")
     .credential(new AzureKeyCredential("<key for the endpoint>"))
-    .buildCustomEventPublisherClient();
+    .buildCustomEventPublisherAsyncClient();
 ```
 
 ##### Using endpoint and SAS token to create the client
