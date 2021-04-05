@@ -28,5 +28,6 @@ module com.azure.spring.data.cosmos {
     exports com.azure.spring.data.cosmos.repository.support;
 
     opens com.azure.spring.data.cosmos.config to spring.core;
+    opens com.azure.spring.data.cosmos.core.mapping to spring.core;
     opens com.azure.spring.data.cosmos.repository.support to spring.beans;
 }

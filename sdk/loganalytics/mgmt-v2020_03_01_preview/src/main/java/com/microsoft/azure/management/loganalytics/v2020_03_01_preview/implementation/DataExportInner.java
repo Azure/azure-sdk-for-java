@@ -28,7 +28,7 @@ public class DataExportInner extends ProxyResource {
     /**
      * An array of tables to export, for example: [“Heartbeat, SecurityEvent”].
      */
-    @JsonProperty(value = "properties.tableNames")
+    @JsonProperty(value = "properties.tableNames", required = true)
     private List<String> tableNames;
 
     /**

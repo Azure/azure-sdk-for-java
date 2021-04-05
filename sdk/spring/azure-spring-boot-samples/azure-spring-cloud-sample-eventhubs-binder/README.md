@@ -2,25 +2,26 @@
 
 ## Key concepts
 
-This code sample demonstrates how to use the Spring Cloud Stream Binder
-for Azure Event Hub. The sample app exposes a RESTful API to receive string
-message. Then message is sent through Azure Event Hub to a `sink` which
-simply logs the message.
+This code sample demonstrates how to use the Spring Cloud Stream Binder for Azure Event Hub.The sample app has two operating modes.
+One way is to expose a Restful API to receive string message, another way is to automatically provide string messages.
+These messages are published to an event hub. The sample will also consume messages from the same event hub.
 
 ## Getting started
 
 Running this sample will be charged by Azure. You can check the usage and bill at 
 [this link][azure-account].
 
-### Environment checklist
-
-We need to ensure that this [environment checklist][ready-to-run-checklist] is 
-completed before the run.
+### Prerequisites
+- [Environment checklist][environment_checklist]
 
 ### Create Azure resources
 
 We have several ways to config the Spring Cloud Stream Binder for Azure
 Event Hub. You can choose anyone of them.
+
+>[!Important]
+>
+>  When using the Restful API to send messages, the **Active profiles** must contain `manual`.
 
 
 #### Method 1: Connection string based usage
@@ -45,11 +46,13 @@ Event Hub. You can choose anyone of them.
             checkpoint-access-key: [checkpoint-access-key]
             checkpoint-container: [checkpoint-container]
         stream:
+          function:
+            definition: consume;supply
           bindings:
-            input:
+            consume-in-0:
               destination: [eventhub-name]
               group: [consumer-group]
-            output:
+            supply-out-0:
               destination: [the-same-eventhub-name-as-above]
     ```
 
@@ -63,6 +66,15 @@ Event Hub. You can choose anyone of them.
     can create your own Consumer Group or use the default "$Default" Consumer Group.
 
 1.  Create [Azure Storage][create-azure-storage] for checkpoint use.
+
+1.  Add Role Assignment for Event Hub, Storage Account and Resource group. See
+    [Service principal for Azure resources with Event Hubs][role-assignment]
+    to add role assignment for Event Hub, Storage Account, Resource group is similar.
+
+    - Resource group: assign `Contributor` role for service principal.
+    - Event Hub: assign `Contributor` role for service principal.
+    - Storage Account: assign `Storage Account Key Operator Service Role` 
+      role for service principal.
     
 1.  Update [application-sp.yaml][application-sp.yaml].
     ```yaml
@@ -78,13 +90,16 @@ Event Hub. You can choose anyone of them.
             checkpoint-storage-account: [checkpoint-storage-account]
             checkpoint-container: [checkpoint-container]
         stream:
+          function:
+            definition: consume;supply
           bindings:
-            input:
+            consume-in-0:
               destination: [eventhub-name]
               group: [consumer-group]
-            output:
+            supply-out-0:
               destination: [the-same-eventhub-name-as-above]
     ```
+    > We should specify `spring.profiles.active=sp` to run the Spring Boot application. 
         
 #### Method 3: MSI credential based usage
 
@@ -126,11 +141,13 @@ Please follow [create managed identity][create-managed-identity] to set up manag
             checkpoint-storage-account: [checkpoint-storage-account]
             checkpoint-container: [checkpoint-container]
         stream:
+          function:
+            definition: consume;supply
           bindings:
-            input:
+            consume-in-0:
               destination: [eventhub-name]
               group: [consumer-group]
-            output:
+            supply-out-0:
               destination: [the-same-eventhub-name-as-above]
     ```
     > We should specify `spring.profiles.active=mi` to run the Spring Boot application. 
@@ -198,7 +215,7 @@ spring:
 [create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-sp-using-azure-cli.md
 [create-managed-identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-managed-identity.md
 [deploy-spring-boot-application-to-app-service]: https://docs.microsoft.com/java/azure/spring-framework/deploy-spring-boot-java-app-with-maven-plugin?toc=%2Fazure%2Fapp-service%2Fcontainers%2Ftoc.json&view=azure-java-stable
-[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [role-assignment]: https://docs.microsoft.com/azure/role-based-access-control/role-assignments-portal
 [application-mi.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder/src/main/resources/application-mi.yaml
 [application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder/src/main/resources/application.yaml

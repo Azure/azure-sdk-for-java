@@ -1,5 +1,16 @@
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0-beta.3 (Unreleased)
 
+
+## 1.0.0-beta.2 (2021-02-09)
+
+- Support specifying the service API version. (AutoRest update)
+- Send missing "Accept" request headers
+
+**Breaking changes:**
+- `getMsg()` renamed to `getMessage()` on `SparkStatementCancellationResult`
+- `setMsg()` renamed to `setMessage()` on `SparkStatementCancellationResult`
+- `PYSPARK` renamed to `PY_SPARK` on `SparkStatementLanguageType`
+- `DOTNETSPARK` renamed to `DOT_NET_SPARK` on `SparkStatementLanguageType`
 
 ## 1.0.0-beta.1 (2020-12-08)
 

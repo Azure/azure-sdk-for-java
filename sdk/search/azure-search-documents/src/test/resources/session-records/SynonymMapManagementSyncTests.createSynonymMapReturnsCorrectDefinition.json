@@ -1,0 +1,54 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/synonymmaps?api-version=2020-06-30",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0b268bab-e468-4508-b0bd-530a345422d6",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "0b268bab-e468-4508-b0bd-530a345422d6",
+      "StatusCode" : "201",
+      "Date" : "Wed, 31 Mar 2021 21:27:20 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D8F48BC4A51812\"",
+      "client-request-id" : "0b268bab-e468-4508-b0bd-530a345422d6",
+      "elapsed-time" : "52",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "225",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-test.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D8F48BC4A51812\\\"\",\"name\":\"test-synonym5920598231ba\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
+      "x-ms-client-request-id" : "0b268bab-e468-4508-b0bd-530a345422d6",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://alzimmer-test.search.windows.net/synonymmaps('test-synonym5920598231ba')?api-version=2020-06-30"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.search.windows.net/synonymmaps('test-synonym5920598231ba')?api-version=2020-06-30",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2125d443-8d18-4d73-bd73-e6053455cac2"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "2125d443-8d18-4d73-bd73-e6053455cac2",
+      "elapsed-time" : "53",
+      "Pragma" : "no-cache",
+      "Expires" : "-1",
+      "retry-after" : "0",
+      "request-id" : "2125d443-8d18-4d73-bd73-e6053455cac2",
+      "StatusCode" : "204",
+      "x-ms-client-request-id" : "2125d443-8d18-4d73-bd73-e6053455cac2",
+      "Date" : "Wed, 31 Mar 2021 21:27:20 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "test-synonym5920598231ba" ]
+}

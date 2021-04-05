@@ -17,10 +17,10 @@ import java.time.OffsetDateTime;
  * representation of the SAS which can then be applied to a new client using the .sasToken(String) method on the
  * desired client builder.
  *
- * @see <a href=https://docs.microsoft.com/en-ca/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
+ * @see <a href=https://docs.microsoft.com/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
  * @see <a href=https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas>Constructing a Service
  * SAS</a>
- * @see <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas>Constructing a
+ * @see <a href=https://docs.microsoft.com/rest/api/storageservices/create-user-delegation-sas>Constructing a
  * User Delegation SAS</a>
  */
 public final class DataLakeServiceSasSignatureValues {
@@ -223,7 +223,7 @@ public final class DataLakeServiceSasSignatureValues {
 
     /**
      * @return the name of the access policy on the file system this SAS references if any. Please see
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
      */
     public String getIdentifier() {
@@ -232,7 +232,7 @@ public final class DataLakeServiceSasSignatureValues {
 
     /**
      * Sets the name of the access policy on the file system this SAS references if any. Please see
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
      *
      * @param identifier Name of the access policy

@@ -14,6 +14,7 @@ import reactor.core.publisher.Mono;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Represents a private endpoint connection collection. */
 class PrivateEndpointConnectionsImpl
@@ -67,10 +68,9 @@ class PrivateEndpointConnectionsImpl
 
     public PagedFlux<PrivateEndpointConnectionImpl> listAsync() {
         final PrivateEndpointConnectionsImpl self = this;
-        return this
+        return PagedConverter.mapPage(this
             .client
-            .listByDatabaseAccountAsync(this.getParent().resourceGroupName(), this.getParent().name())
-            .mapPage(
+            .listByDatabaseAccountAsync(this.getParent().resourceGroupName(), this.getParent().name()),
                 inner -> {
                     PrivateEndpointConnectionImpl childResource =
                         new PrivateEndpointConnectionImpl(inner.name(), self.getParent(), inner, client);

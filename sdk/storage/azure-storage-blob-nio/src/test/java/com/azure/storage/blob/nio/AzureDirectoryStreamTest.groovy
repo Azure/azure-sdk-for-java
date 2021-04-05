@@ -5,6 +5,7 @@ package com.azure.storage.blob.nio
 
 import spock.lang.Unroll
 
+import java.nio.file.ClosedFileSystemException
 import java.nio.file.DirectoryIteratorException
 import java.nio.file.Path
 
@@ -197,8 +198,7 @@ class AzureDirectoryStreamTest extends APISpec {
         stream.iterator().hasNext()
 
         then:
-        def e = thrown(DirectoryIteratorException)
-        e.getCause().getClass() == IOException.class
+        def e = thrown(ClosedFileSystemException)
     }
 
     def "Filter"() {

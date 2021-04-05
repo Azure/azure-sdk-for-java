@@ -5,28 +5,41 @@ package com.azure.messaging.servicebus;
 
 import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
+import org.junit.jupiter.api.Test;
 
 /**
  * Code snippets demonstrating various {@link ServiceBusReceiverClient} scenarios.
  */
 public class ServiceBusReceiverClientJavaDocCodeSample {
+    // The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
+    // The connectionString/queueName must be set by the application. The 'connectionString' format is shown below.
+    // 1. "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
+    // 2. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+    // 3. "queueName" will be the name of the Service Bus queue instance you created
+    //    inside the Service Bus namespace.
+    String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+    String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
+    String sessionQueueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_SESSION_QUEUE_NAME");
+
     ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
-        .connectionString("Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
-            + "SharedAccessKey={key}")
+        .connectionString(connectionString)
         .receiver()
-        .queueName("<< QUEUE NAME >>")
+        .queueName(queueName)
         .buildClient();
 
     /**
      * Code snippet for creating an ServiceBusReceiverClient
      */
+    @Test
     public void instantiate() {
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverclient.instantiation
+        // The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
+        // The connectionString/queueName must be set by the application. The 'connectionString' format is shown below.
+        // "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
         ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
-            .connectionString(
-                "Endpoint={servicebus-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}")
+            .connectionString(connectionString)
             .receiver()
-            .queueName("<< QUEUE NAME >>")
+            .queueName(queueName)
             .buildClient();
 
         // Use the receiver and finally close it.
@@ -39,6 +52,8 @@ public class ServiceBusReceiverClientJavaDocCodeSample {
      */
     public void sessionReceiverSingleInstantiation() {
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#nextsession
+        // The connectionString/sessionQueueName must be set by the application. The 'connectionString' format is shown below.
+        // "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
         ServiceBusSessionReceiverClient sessionReceiver = new ServiceBusClientBuilder()
             .connectionString(
                 "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}")
@@ -56,13 +71,15 @@ public class ServiceBusReceiverClientJavaDocCodeSample {
     /**
      * Demonstrates how to create a session receiver for a single know session id.
      */
+    @Test
     public void sessionReceiverSessionIdInstantiation() {
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#sessionId
+        // The connectionString/sessionQueueName must be set by the application. The 'connectionString' format is shown below.
+        // "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
         ServiceBusSessionReceiverClient sessionReceiver = new ServiceBusClientBuilder()
-            .connectionString(
-                "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}")
+            .connectionString(connectionString)
             .sessionReceiver()
-            .queueName("<< QUEUE NAME >>")
+            .queueName(sessionQueueName)
             .buildClient();
         ServiceBusReceiverClient receiver = sessionReceiver.acceptSession("<< my-session-id >>");
 

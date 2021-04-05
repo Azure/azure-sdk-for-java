@@ -7,9 +7,10 @@ import com.azure.core.util.CoreUtils;
 /**
  * Communication identifier for Communication Services Phone Numbers
  */
-public class PhoneNumberIdentifier extends CommunicationIdentifier {
+public final class PhoneNumberIdentifier extends CommunicationIdentifier {
 
     private final String phoneNumber;
+    private String rawId;
 
     /**
      * Creates a PhoneNumberIdentifier object
@@ -30,5 +31,48 @@ public class PhoneNumberIdentifier extends CommunicationIdentifier {
      */
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    /**
+     * Get full id of the identifier. This id is optional.
+     * @return full id of the identifier
+     */
+    public String getRawId() {
+        return rawId;
+    }
+
+    /**
+     * Set full id of the identifier
+     * @param rawId full id of the identifier
+     * @return PhoneNumberIdentifier object itself
+     */
+    public PhoneNumberIdentifier setRawId(String rawId) {
+        this.rawId = rawId;
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        }
+
+        if (!(that instanceof PhoneNumberIdentifier)) {
+            return false;
+        }
+
+        PhoneNumberIdentifier phoneId = (PhoneNumberIdentifier) that;
+        if (!phoneNumber.equals(phoneId.phoneNumber)) {
+            return false;
+        }
+
+        return getRawId() == null
+            || phoneId.getRawId() == null
+            || getRawId().equals(phoneId.getRawId());
+    }
+
+    @Override
+    public int hashCode() {
+        return phoneNumber.hashCode();
     }
 }

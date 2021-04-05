@@ -60,6 +60,22 @@ public final class ManagedPrivateEndpointsClientBuilder {
     }
 
     /*
+     * Api Version
+     */
+    private String apiVersion;
+
+    /**
+     * Sets Api Version.
+     *
+     * @param apiVersion the apiVersion value.
+     * @return the ManagedPrivateEndpointsClientBuilder.
+     */
+    public ManagedPrivateEndpointsClientBuilder apiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
+        return this;
+    }
+
+    /*
      * The HTTP pipeline to send requests through
      */
     private HttpPipeline pipeline;
@@ -195,6 +211,9 @@ public final class ManagedPrivateEndpointsClientBuilder {
      * @return an instance of ManagedPrivateEndpointsClientImpl.
      */
     private ManagedPrivateEndpointsClientImpl buildInnerClient() {
+        if (apiVersion == null) {
+            this.apiVersion = "2019-06-01-preview";
+        }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
@@ -202,7 +221,7 @@ public final class ManagedPrivateEndpointsClientBuilder {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
         ManagedPrivateEndpointsClientImpl client =
-                new ManagedPrivateEndpointsClientImpl(pipeline, serializerAdapter, endpoint);
+                new ManagedPrivateEndpointsClientImpl(pipeline, serializerAdapter, endpoint, apiVersion);
         return client;
     }
 

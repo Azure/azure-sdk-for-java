@@ -18,11 +18,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -42,6 +44,18 @@ public class TodoListController {
         final Map<String, Object> model = new HashMap<>();
         model.put("id", UUID.randomUUID().toString());
         model.put("content", "home");
+        return model;
+    }
+
+
+    @RequestMapping({"/"})
+    public ModelAndView index() {
+        ModelAndView model = new ModelAndView("index");
+        model.addObject("aad_clientId", aadAuthenticationProperties.getClientId());
+        model.addObject("aad_tenantId", aadAuthenticationProperties.getTenantId());
+        model.addObject("aad_redirectUri", Optional
+                                                       .ofNullable(aadAuthenticationProperties.getRedirectUriTemplate())
+                                                       .orElse("http://localhost:8080/") );
         return model;
     }
 

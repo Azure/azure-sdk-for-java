@@ -72,13 +72,13 @@ public class ExecuteSsisPackageActivity extends ExecutionActivity {
      * The project level connection managers to execute the SSIS package.
      */
     @JsonProperty(value = "typeProperties.projectConnectionManagers")
-    private Map<String, Object> projectConnectionManagers;
+    private Map<String, Map<String, SsisExecutionParameter>> projectConnectionManagers;
 
     /*
      * The package level connection managers to execute the SSIS package.
      */
     @JsonProperty(value = "typeProperties.packageConnectionManagers")
-    private Map<String, Object> packageConnectionManagers;
+    private Map<String, Map<String, SsisExecutionParameter>> packageConnectionManagers;
 
     /*
      * The property overrides to execute the SSIS package.
@@ -263,7 +263,7 @@ public class ExecuteSsisPackageActivity extends ExecutionActivity {
      *
      * @return the projectConnectionManagers value.
      */
-    public Map<String, Object> getProjectConnectionManagers() {
+    public Map<String, Map<String, SsisExecutionParameter>> getProjectConnectionManagers() {
         return this.projectConnectionManagers;
     }
 
@@ -273,7 +273,8 @@ public class ExecuteSsisPackageActivity extends ExecutionActivity {
      * @param projectConnectionManagers the projectConnectionManagers value to set.
      * @return the ExecuteSsisPackageActivity object itself.
      */
-    public ExecuteSsisPackageActivity setProjectConnectionManagers(Map<String, Object> projectConnectionManagers) {
+    public ExecuteSsisPackageActivity setProjectConnectionManagers(
+            Map<String, Map<String, SsisExecutionParameter>> projectConnectionManagers) {
         this.projectConnectionManagers = projectConnectionManagers;
         return this;
     }
@@ -283,7 +284,7 @@ public class ExecuteSsisPackageActivity extends ExecutionActivity {
      *
      * @return the packageConnectionManagers value.
      */
-    public Map<String, Object> getPackageConnectionManagers() {
+    public Map<String, Map<String, SsisExecutionParameter>> getPackageConnectionManagers() {
         return this.packageConnectionManagers;
     }
 
@@ -293,7 +294,8 @@ public class ExecuteSsisPackageActivity extends ExecutionActivity {
      * @param packageConnectionManagers the packageConnectionManagers value to set.
      * @return the ExecuteSsisPackageActivity object itself.
      */
-    public ExecuteSsisPackageActivity setPackageConnectionManagers(Map<String, Object> packageConnectionManagers) {
+    public ExecuteSsisPackageActivity setPackageConnectionManagers(
+            Map<String, Map<String, SsisExecutionParameter>> packageConnectionManagers) {
         this.packageConnectionManagers = packageConnectionManagers;
         return this;
     }

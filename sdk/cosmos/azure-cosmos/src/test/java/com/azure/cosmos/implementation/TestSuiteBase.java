@@ -499,12 +499,13 @@ public class TestSuiteBase extends DocumentClientTest {
 
     public static void deleteDocumentIfExists(AsyncDocumentClient client, String databaseId, String collectionId, String docId) {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        options.setPartitionKey(new PartitionKey(docId));
+        PartitionKey pk = new PartitionKey(docId);
+        options.setPartitionKey(pk);
         List<Document> res = client
                 .queryDocuments(TestUtils.getCollectionNameLink(databaseId, collectionId), String.format("SELECT * FROM root r where r.id = '%s'", docId), options)
                 .single().block().getResults();
         if (!res.isEmpty()) {
-            deleteDocument(client, TestUtils.getDocumentNameLink(databaseId, collectionId, docId));
+            deleteDocument(client, TestUtils.getDocumentNameLink(databaseId, collectionId, docId), pk);
         }
     }
 
@@ -521,8 +522,10 @@ public class TestSuiteBase extends DocumentClientTest {
         }
     }
 
-    public static void deleteDocument(AsyncDocumentClient client, String documentLink) {
-        client.deleteDocument(documentLink, null).block();
+    public static void deleteDocument(AsyncDocumentClient client, String documentLink, PartitionKey pk) {
+        RequestOptions options = new RequestOptions();
+        options.setPartitionKey(pk);
+        client.deleteDocument(documentLink, options).block();
     }
 
     public static void deleteUserIfExists(AsyncDocumentClient client, String databaseId, String userId) {

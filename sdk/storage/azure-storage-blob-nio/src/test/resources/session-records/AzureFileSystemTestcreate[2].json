@@ -1,306 +1,292 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreate1azurefilesystemtestcreate82c57604d298ebf738?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreate1azurefilesystemtestcreate362894484150f7dd9f?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "97d66f27-4af2-491a-9789-043598bfed4d"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cf747355-4221-4563-93b4-a39f580f3b92"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "Access-Control-Allow-Origin" : "*",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Date" : "Tue, 04 Aug 2020 23:40:15 GMT",
-      "Access-Control-Expose-Headers" : "x-ms-client-request-id",
       "x-ms-error-code" : "ContainerNotFound",
+      "retry-after" : "0",
       "Content-Length" : "225",
-      "x-ms-request-id" : "1a015695-301e-00b6-74b8-6a3e8e000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:1a015695-301e-00b6-74b8-6a3e8e000000\nTime:2020-08-04T23:40:15.9862204Z</Message></Error>",
-      "x-ms-client-request-id" : "97d66f27-4af2-491a-9789-043598bfed4d",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "75fcc7e0-301e-009b-72e3-fb3724000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:75fcc7e0-301e-009b-72e3-fb3724000000\nTime:2021-02-05T17:20:08.6366150Z</Message></Error>",
+      "Date" : "Fri, 05 Feb 2021 17:20:08 GMT",
+      "x-ms-client-request-id" : "cf747355-4221-4563-93b4-a39f580f3b92",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreate1azurefilesystemtestcreate82c57604d298ebf738?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreate1azurefilesystemtestcreate362894484150f7dd9f?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "175510cc-06f4-45f3-93cd-4e75b31e721f"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c946b689-b0c6-4a46-8e30-8aa5402c626f"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D838CFBD6B2422",
-      "Last-Modified" : "Tue, 04 Aug 2020 23:40:16 GMT",
+      "ETag" : "0x8D8C9FA49A56125",
+      "Last-Modified" : "Fri, 05 Feb 2021 17:20:08 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "accb7aa2-201e-010c-22b8-6a98d2000000",
-      "Date" : "Tue, 04 Aug 2020 23:40:15 GMT",
-      "x-ms-client-request-id" : "175510cc-06f4-45f3-93cd-4e75b31e721f"
+      "x-ms-request-id" : "75fcc7e4-301e-009b-75e3-fb3724000000",
+      "Date" : "Fri, 05 Feb 2021 17:20:08 GMT",
+      "x-ms-client-request-id" : "c946b689-b0c6-4a46-8e30-8aa5402c626f"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreate2azurefilesystemtestcreate82c9828836978f8937?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreate2azurefilesystemtestcreate36219380e50dfd808e?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "5f43f262-f2f4-45d9-9649-aafd65f565f1"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "eceda7b9-fb6e-47ac-93a6-a323187358a5"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "Access-Control-Allow-Origin" : "*",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Date" : "Tue, 04 Aug 2020 23:40:15 GMT",
-      "Access-Control-Expose-Headers" : "x-ms-client-request-id",
       "x-ms-error-code" : "ContainerNotFound",
+      "retry-after" : "0",
       "Content-Length" : "225",
-      "x-ms-request-id" : "1a0156b9-301e-00b6-0cb8-6a3e8e000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:1a0156b9-301e-00b6-0cb8-6a3e8e000000\nTime:2020-08-04T23:40:16.0652954Z</Message></Error>",
-      "x-ms-client-request-id" : "5f43f262-f2f4-45d9-9649-aafd65f565f1",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "75fcc7ed-301e-009b-7ae3-fb3724000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:75fcc7ed-301e-009b-7ae3-fb3724000000\nTime:2021-02-05T17:20:08.8498176Z</Message></Error>",
+      "Date" : "Fri, 05 Feb 2021 17:20:08 GMT",
+      "x-ms-client-request-id" : "eceda7b9-fb6e-47ac-93a6-a323187358a5",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreate2azurefilesystemtestcreate82c9828836978f8937?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreate2azurefilesystemtestcreate36219380e50dfd808e?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "18f7d654-6e56-4c14-baa5-4bc7c458f94d"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "66df3431-3e2c-420a-aee0-781116a7f806"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D838CFBD7734F6",
-      "Last-Modified" : "Tue, 04 Aug 2020 23:40:16 GMT",
+      "ETag" : "0x8D8C9FA49C2B447",
+      "Last-Modified" : "Fri, 05 Feb 2021 17:20:08 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "accb7adc-201e-010c-55b8-6a98d2000000",
-      "Date" : "Tue, 04 Aug 2020 23:40:15 GMT",
-      "x-ms-client-request-id" : "18f7d654-6e56-4c14-baa5-4bc7c458f94d"
+      "x-ms-request-id" : "75fcc7f4-301e-009b-7ee3-fb3724000000",
+      "Date" : "Fri, 05 Feb 2021 17:20:08 GMT",
+      "x-ms-client-request-id" : "66df3431-3e2c-420a-aee0-781116a7f806"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreate3azurefilesystemtestcreate82c466911b73a0e7c0?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreate3azurefilesystemtestcreate3621017705e59522b2?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "fdd25975-9fa7-44f9-a4dc-0a607270e408"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2c8dbeb7-340e-40ba-9e00-9123a18dc1c8"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "Access-Control-Allow-Origin" : "*",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Date" : "Tue, 04 Aug 2020 23:40:15 GMT",
-      "Access-Control-Expose-Headers" : "x-ms-client-request-id",
       "x-ms-error-code" : "ContainerNotFound",
+      "retry-after" : "0",
       "Content-Length" : "225",
-      "x-ms-request-id" : "1a0156d6-301e-00b6-21b8-6a3e8e000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:1a0156d6-301e-00b6-21b8-6a3e8e000000\nTime:2020-08-04T23:40:16.1463729Z</Message></Error>",
-      "x-ms-client-request-id" : "fdd25975-9fa7-44f9-a4dc-0a607270e408",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "75fcc7f6-301e-009b-7fe3-fb3724000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:75fcc7f6-301e-009b-7fe3-fb3724000000\nTime:2021-02-05T17:20:09.0420012Z</Message></Error>",
+      "Date" : "Fri, 05 Feb 2021 17:20:08 GMT",
+      "x-ms-client-request-id" : "2c8dbeb7-340e-40ba-9e00-9123a18dc1c8",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreate3azurefilesystemtestcreate82c466911b73a0e7c0?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreate3azurefilesystemtestcreate3621017705e59522b2?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "1852f2cf-25cb-4904-b7fe-03051b27bf4d"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "089ea75d-bad5-4f4b-9120-9a0d54c6379c"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D838CFBD83BB13",
-      "Last-Modified" : "Tue, 04 Aug 2020 23:40:16 GMT",
+      "ETag" : "0x8D8C9FA49E07CBF",
+      "Last-Modified" : "Fri, 05 Feb 2021 17:20:09 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "accb7b1e-201e-010c-10b8-6a98d2000000",
-      "Date" : "Tue, 04 Aug 2020 23:40:15 GMT",
-      "x-ms-client-request-id" : "1852f2cf-25cb-4904-b7fe-03051b27bf4d"
+      "x-ms-request-id" : "75fcc7fe-301e-009b-03e3-fb3724000000",
+      "Date" : "Fri, 05 Feb 2021 17:20:09 GMT",
+      "x-ms-client-request-id" : "089ea75d-bad5-4f4b-9120-9a0d54c6379c"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreate1azurefilesystemtestcreate82c57604d298ebf738?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreate1azurefilesystemtestcreate362894484150f7dd9f?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "4d5c3088-a5fa-4bdb-b948-2130d520a1b2"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "242af339-f00d-402b-80a5-212b693d7f36"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2020-06-12",
       "x-ms-lease-status" : "unlocked",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "Access-Control-Allow-Origin" : "*",
       "x-ms-lease-state" : "available",
       "x-ms-deny-encryption-scope-override" : "false",
-      "Last-Modified" : "Tue, 04 Aug 2020 23:40:16 GMT",
+      "Last-Modified" : "Fri, 05 Feb 2021 17:20:08 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Tue, 04 Aug 2020 23:40:15 GMT",
+      "Date" : "Fri, 05 Feb 2021 17:20:09 GMT",
       "x-ms-has-legal-hold" : "false",
-      "Access-Control-Expose-Headers" : "x-ms-client-request-id",
       "x-ms-default-encryption-scope" : "$account-encryption-key",
-      "ETag" : "0x8D838CFBD6B2422",
+      "ETag" : "0x8D8C9FA49A56125",
       "x-ms-has-immutability-policy" : "false",
       "Content-Length" : "0",
-      "x-ms-request-id" : "1a0156ef-301e-00b6-35b8-6a3e8e000000",
-      "x-ms-client-request-id" : "4d5c3088-a5fa-4bdb-b948-2130d520a1b2"
+      "x-ms-request-id" : "75fcc80d-301e-009b-0be3-fb3724000000",
+      "x-ms-client-request-id" : "242af339-f00d-402b-80a5-212b693d7f36"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreate2azurefilesystemtestcreate82c9828836978f8937?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreate2azurefilesystemtestcreate36219380e50dfd808e?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "3ffbd276-923b-43c0-8368-550b6abfcb91"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c2d4416e-f80b-4c6c-9f9f-eddcd22034ab"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2020-06-12",
       "x-ms-lease-status" : "unlocked",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "Access-Control-Allow-Origin" : "*",
       "x-ms-lease-state" : "available",
       "x-ms-deny-encryption-scope-override" : "false",
-      "Last-Modified" : "Tue, 04 Aug 2020 23:40:16 GMT",
+      "Last-Modified" : "Fri, 05 Feb 2021 17:20:08 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Tue, 04 Aug 2020 23:40:15 GMT",
+      "Date" : "Fri, 05 Feb 2021 17:20:09 GMT",
       "x-ms-has-legal-hold" : "false",
-      "Access-Control-Expose-Headers" : "x-ms-client-request-id",
       "x-ms-default-encryption-scope" : "$account-encryption-key",
-      "ETag" : "0x8D838CFBD7734F6",
+      "ETag" : "0x8D8C9FA49C2B447",
       "x-ms-has-immutability-policy" : "false",
       "Content-Length" : "0",
-      "x-ms-request-id" : "accb7b51-201e-010c-3cb8-6a98d2000000",
-      "x-ms-client-request-id" : "3ffbd276-923b-43c0-8368-550b6abfcb91"
+      "x-ms-request-id" : "75fcc816-301e-009b-10e3-fb3724000000",
+      "x-ms-client-request-id" : "c2d4416e-f80b-4c6c-9f9f-eddcd22034ab"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreate3azurefilesystemtestcreate82c466911b73a0e7c0?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreate3azurefilesystemtestcreate3621017705e59522b2?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "873297d2-9fe7-462a-9a0b-8c90e1088dfe"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "52afc0c1-83b0-450f-ba6f-054b719e758d"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2020-06-12",
       "x-ms-lease-status" : "unlocked",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "Access-Control-Allow-Origin" : "*",
       "x-ms-lease-state" : "available",
       "x-ms-deny-encryption-scope-override" : "false",
-      "Last-Modified" : "Tue, 04 Aug 2020 23:40:16 GMT",
+      "Last-Modified" : "Fri, 05 Feb 2021 17:20:09 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Tue, 04 Aug 2020 23:40:15 GMT",
+      "Date" : "Fri, 05 Feb 2021 17:20:09 GMT",
       "x-ms-has-legal-hold" : "false",
-      "Access-Control-Expose-Headers" : "x-ms-client-request-id",
       "x-ms-default-encryption-scope" : "$account-encryption-key",
-      "ETag" : "0x8D838CFBD83BB13",
+      "ETag" : "0x8D8C9FA49E07CBF",
       "x-ms-has-immutability-policy" : "false",
       "Content-Length" : "0",
-      "x-ms-request-id" : "1a015706-301e-00b6-49b8-6a3e8e000000",
-      "x-ms-client-request-id" : "873297d2-9fe7-462a-9a0b-8c90e1088dfe"
+      "x-ms-request-id" : "75fcc81b-301e-009b-15e3-fb3724000000",
+      "x-ms-client-request-id" : "52afc0c1-83b0-450f-ba6f-054b719e758d"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net?prefix=jtccreate&comp=list",
+    "Uri" : "https://REDACTED.blob.core.windows.net?comp=list&prefix=jtccreate",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "ccb31c31-b14c-46be-bdbf-6678411492fa"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f91c10f3-c1ba-4d21-8eab-276cff345ea0"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "Access-Control-Expose-Headers" : "x-ms-client-request-id",
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "Access-Control-Allow-Origin" : "*",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "accb7b98-201e-010c-77b8-6a98d2000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtccreate</Prefix><Containers><Container><Name>jtccreate1azurefilesystemtestcreate82c57604d298ebf738</Name><Properties><Last-Modified>Tue, 04 Aug 2020 23:40:16 GMT</Last-Modified><Etag>\"0x8D838CFBD6B2422\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container><Container><Name>jtccreate2azurefilesystemtestcreate82c9828836978f8937</Name><Properties><Last-Modified>Tue, 04 Aug 2020 23:40:16 GMT</Last-Modified><Etag>\"0x8D838CFBD7734F6\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container><Container><Name>jtccreate3azurefilesystemtestcreate82c466911b73a0e7c0</Name><Properties><Last-Modified>Tue, 04 Aug 2020 23:40:16 GMT</Last-Modified><Etag>\"0x8D838CFBD83BB13\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Tue, 04 Aug 2020 23:40:15 GMT",
-      "x-ms-client-request-id" : "ccb31c31-b14c-46be-bdbf-6678411492fa",
+      "x-ms-request-id" : "75fcc820-301e-009b-19e3-fb3724000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://seancanary.blob.core.windows.net/\"><Prefix>jtccreate</Prefix><Containers><Container><Name>jtccreate1azurefilesystemtestcreate362894484150f7dd9f</Name><Properties><Last-Modified>Fri, 05 Feb 2021 17:20:08 GMT</Last-Modified><Etag>\"0x8D8C9FA49A56125\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container><Container><Name>jtccreate2azurefilesystemtestcreate36219380e50dfd808e</Name><Properties><Last-Modified>Fri, 05 Feb 2021 17:20:08 GMT</Last-Modified><Etag>\"0x8D8C9FA49C2B447\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container><Container><Name>jtccreate3azurefilesystemtestcreate3621017705e59522b2</Name><Properties><Last-Modified>Fri, 05 Feb 2021 17:20:09 GMT</Last-Modified><Etag>\"0x8D8C9FA49E07CBF\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Fri, 05 Feb 2021 17:20:09 GMT",
+      "x-ms-client-request-id" : "f91c10f3-c1ba-4d21-8eab-276cff345ea0",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreate1azurefilesystemtestcreate82c57604d298ebf738?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreate1azurefilesystemtestcreate362894484150f7dd9f?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9a711264-ca42-4f30-afd1-d6e91532c906"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "77b29800-1180-4694-9ba4-6fd7c16c1a0f"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "1a015712-301e-00b6-54b8-6a3e8e000000",
-      "Date" : "Tue, 04 Aug 2020 23:40:15 GMT",
-      "x-ms-client-request-id" : "9a711264-ca42-4f30-afd1-d6e91532c906"
+      "x-ms-request-id" : "75fcc824-301e-009b-1be3-fb3724000000",
+      "Date" : "Fri, 05 Feb 2021 17:20:09 GMT",
+      "x-ms-client-request-id" : "77b29800-1180-4694-9ba4-6fd7c16c1a0f"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreate2azurefilesystemtestcreate82c9828836978f8937?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreate2azurefilesystemtestcreate36219380e50dfd808e?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "218bce14-fdad-4db8-8bf6-67bd0a1472f8"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a669f69c-6e63-49a4-a838-538c3090d389"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "accb7bc6-201e-010c-24b8-6a98d2000000",
-      "Date" : "Tue, 04 Aug 2020 23:40:15 GMT",
-      "x-ms-client-request-id" : "218bce14-fdad-4db8-8bf6-67bd0a1472f8"
+      "x-ms-request-id" : "75fcc82c-301e-009b-21e3-fb3724000000",
+      "Date" : "Fri, 05 Feb 2021 17:20:09 GMT",
+      "x-ms-client-request-id" : "a669f69c-6e63-49a4-a838-538c3090d389"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreate3azurefilesystemtestcreate82c466911b73a0e7c0?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreate3azurefilesystemtestcreate3621017705e59522b2?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e529a40d-b514-404b-a45d-c70c1533f2ed"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "34c96d70-b977-43b9-b16f-aa754613d508"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "1a01572a-301e-00b6-6bb8-6a3e8e000000",
-      "Date" : "Tue, 04 Aug 2020 23:40:15 GMT",
-      "x-ms-client-request-id" : "e529a40d-b514-404b-a45d-c70c1533f2ed"
+      "x-ms-request-id" : "75fcc830-301e-009b-24e3-fb3724000000",
+      "Date" : "Fri, 05 Feb 2021 17:20:09 GMT",
+      "x-ms-client-request-id" : "34c96d70-b977-43b9-b16f-aa754613d508"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtccreate0azurefilesystemtestcreate82c762020d07629091", "jtccreate1azurefilesystemtestcreate82c57604d298ebf738", "jtccreate2azurefilesystemtestcreate82c9828836978f8937", "jtccreate3azurefilesystemtestcreate82c466911b73a0e7c0" ]
+  "variables" : [ "jtccreate0azurefilesystemtestcreate3628155523a97ecf32", "jtccreate1azurefilesystemtestcreate362894484150f7dd9f", "jtccreate2azurefilesystemtestcreate36219380e50dfd808e", "jtccreate3azurefilesystemtestcreate3621017705e59522b2" ]
 }

@@ -16,35 +16,21 @@ import com.azure.cosmos.benchmark.BenchmarkHelper;
 import com.azure.cosmos.benchmark.BenchmarkRequestSubscriber;
 import com.azure.cosmos.benchmark.Configuration;
 import com.azure.cosmos.benchmark.PojoizedJson;
+import com.azure.cosmos.benchmark.ScheduledReporterFactory;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
-import com.codahale.metrics.ConsoleReporter;
-import com.codahale.metrics.CsvReporter;
 import com.codahale.metrics.Meter;
-import com.codahale.metrics.MetricFilter;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.ScheduledReporter;
 import com.codahale.metrics.Timer;
-import com.codahale.metrics.graphite.Graphite;
-import com.codahale.metrics.graphite.GraphiteReporter;
 import com.codahale.metrics.jvm.CachedThreadStatesGaugeSet;
 import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
 import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
 import io.micrometer.core.instrument.MeterRegistry;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.mpierce.metrics.reservoir.hdrhistogram.HdrHistogramResetOnSnapshotReservoir;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import reactor.core.publisher.BaseSubscriber;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
-
-import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +40,15 @@ import java.util.UUID;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.mpierce.metrics.reservoir.hdrhistogram.HdrHistogramResetOnSnapshotReservoir;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import reactor.core.publisher.BaseSubscriber;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+
 
 public class AsyncCtlWorkload {
     private final String PERCENT_PARSING_ERROR = "Unable to parse user provided readWriteQueryPct ";
@@ -124,7 +119,7 @@ public class AsyncCtlWorkload {
             metricsRegistry.register("memory", new MemoryUsageGaugeSet());
         }
 
-        initializeReporter(cfg);
+        reporter = ScheduledReporterFactory.create(cfg, metricsRegistry);
 
         MeterRegistry registry = configuration.getAzureMonitorMeterRegistry();
 
@@ -344,30 +339,6 @@ public class AsyncCtlWorkload {
                     throw e;
                 }
             }
-        }
-    }
-
-    private void initializeReporter(Configuration configuration) {
-        if (configuration.getGraphiteEndpoint() != null) {
-            final Graphite graphite = new Graphite(new InetSocketAddress(
-                configuration.getGraphiteEndpoint(),
-                configuration.getGraphiteEndpointPort()));
-            reporter = GraphiteReporter.forRegistry(metricsRegistry)
-                .prefixedWith(configuration.getOperationType().name())
-                .convertDurationsTo(TimeUnit.MILLISECONDS)
-                .convertRatesTo(TimeUnit.SECONDS)
-                .filter(MetricFilter.ALL)
-                .build(graphite);
-        } else if (configuration.getReportingDirectory() != null) {
-            reporter = CsvReporter.forRegistry(metricsRegistry)
-                .convertDurationsTo(TimeUnit.MILLISECONDS)
-                .convertRatesTo(TimeUnit.SECONDS)
-                .build(configuration.getReportingDirectory());
-        } else {
-            reporter = ConsoleReporter.forRegistry(metricsRegistry)
-                .convertDurationsTo(TimeUnit.MILLISECONDS)
-                .convertRatesTo(TimeUnit.SECONDS)
-                .build();
         }
     }
 }

@@ -5,27 +5,34 @@ package com.azure.core.http.netty;
 
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.ChallengeHolder;
-import com.azure.core.http.netty.implementation.DeferredHttpProxyProvider;
+import com.azure.core.http.netty.implementation.HttpProxyExceptionHandler;
+import com.azure.core.http.netty.implementation.HttpProxyHandler;
 import com.azure.core.http.netty.implementation.ReadTimeoutHandler;
 import com.azure.core.http.netty.implementation.ResponseTimeoutHandler;
 import com.azure.core.http.netty.implementation.WriteTimeoutHandler;
 import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.resolver.AddressResolverGroup;
+import io.netty.resolver.NoopAddressResolverGroup;
 import reactor.netty.Connection;
 import reactor.netty.NettyPipeline;
-import reactor.netty.channel.BootstrapHandlers;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
-import reactor.netty.tcp.ProxyProvider;
+import reactor.netty.transport.AddressUtils;
+import reactor.netty.transport.ProxyProvider;
 
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Pattern;
 
 /**
  * Builder class responsible for creating instances of {@link com.azure.core.http.HttpClient} backed by Reactor Netty.
@@ -63,8 +70,8 @@ public class NettyAsyncHttpClientBuilder {
     }
 
     /**
-     * Creates a new builder instance, where a builder is capable of generating multiple instances of {@link
-     * HttpClient} based on the provided Reactor Netty HttpClient.
+     * Creates a new builder instance, where a builder is capable of generating multiple instances of {@link HttpClient}
+     * based on the provided Reactor Netty HttpClient.
      *
      * {@codesnippet com.azure.core.http.netty.from-existing-http-client}
      *
@@ -105,7 +112,7 @@ public class NettyAsyncHttpClientBuilder {
             : configuration;
 
         ProxyOptions buildProxyOptions = (proxyOptions == null && buildConfiguration != Configuration.NONE)
-            ? ProxyOptions.fromConfiguration(buildConfiguration)
+            ? ProxyOptions.fromConfiguration(buildConfiguration, true)
             : proxyOptions;
 
         /*
@@ -118,35 +125,48 @@ public class NettyAsyncHttpClientBuilder {
             : null;
         AtomicReference<ChallengeHolder> proxyChallengeHolder = useCustomProxyHandler ? new AtomicReference<>() : null;
 
-        nettyHttpClient = nettyHttpClient.tcpConfiguration(tcpClient -> {
-            if (eventLoopGroup != null) {
-                tcpClient = tcpClient.runOn(eventLoopGroup);
-            }
+        if (eventLoopGroup != null) {
+            nettyHttpClient = nettyHttpClient.runOn(eventLoopGroup);
+        }
 
-            // Proxy configurations are present, setup a proxy in Netty.
-            if (buildProxyOptions != null) {
-                // Determine if custom handling will be used, otherwise use Netty's built-in handlers.
-                if (handler != null) {
-                    /*
-                     * Configure the request Channel to be initialized with a ProxyHandler. The ProxyHandler is the
-                     * first operation in the pipeline as it needs to handle sending a CONNECT request to the proxy
-                     * before any request data is sent.
-                     */
-                    tcpClient = tcpClient.bootstrap(bootstrap -> BootstrapHandlers.updateConfiguration(bootstrap,
-                        NettyPipeline.ProxyHandler, new DeferredHttpProxyProvider(handler, proxyChallengeHolder,
-                            buildProxyOptions)));
-                } else {
-                    tcpClient = tcpClient.proxy(proxy ->
-                        proxy.type(toReactorNettyProxyType(buildProxyOptions.getType(), logger))
-                            .address(buildProxyOptions.getAddress())
-                            .username(buildProxyOptions.getUsername())
-                            .password(ignored -> buildProxyOptions.getPassword())
-                            .nonProxyHosts(buildProxyOptions.getNonProxyHosts()));
+        // Proxy configurations are present, setup a proxy in Netty.
+        if (buildProxyOptions != null) {
+            // Determine if custom handling will be used, otherwise use Netty's built-in handlers.
+            if (handler != null) {
+                /*
+                 * Configure the request Channel to be initialized with a ProxyHandler. The ProxyHandler is the
+                 * first operation in the pipeline as it needs to handle sending a CONNECT request to the proxy
+                 * before any request data is sent.
+                 *
+                 * And in addition to adding the ProxyHandler update the Bootstrap resolver for proxy support.
+                 */
+                Pattern nonProxyHostsPattern = CoreUtils.isNullOrEmpty(buildProxyOptions.getNonProxyHosts())
+                    ? null
+                    : Pattern.compile(buildProxyOptions.getNonProxyHosts(), Pattern.CASE_INSENSITIVE);
+
+                nettyHttpClient = nettyHttpClient.doOnChannelInit((connectionObserver, channel, socketAddress) -> {
+                    if (shouldApplyProxy(socketAddress, nonProxyHostsPattern)) {
+                        channel.pipeline()
+                            .addFirst(NettyPipeline.ProxyHandler, new HttpProxyHandler(
+                                AddressUtils.replaceWithResolved(buildProxyOptions.getAddress()),
+                                handler, proxyChallengeHolder))
+                            .addLast("azure.proxy.exceptionHandler", new HttpProxyExceptionHandler());
+                    }
+                });
+
+                AddressResolverGroup<?> resolver = nettyHttpClient.configuration().resolver();
+                if (resolver == null) {
+                    nettyHttpClient.resolver(NoopAddressResolverGroup.INSTANCE);
                 }
+            } else {
+                nettyHttpClient = nettyHttpClient.proxy(proxy ->
+                    proxy.type(toReactorNettyProxyType(buildProxyOptions.getType(), logger))
+                        .address(buildProxyOptions.getAddress())
+                        .username(buildProxyOptions.getUsername())
+                        .password(ignored -> buildProxyOptions.getPassword())
+                        .nonProxyHosts(buildProxyOptions.getNonProxyHosts()));
             }
-
-            return tcpClient;
-        });
+        }
 
         return new NettyAsyncHttpClient(nettyHttpClient, disableBufferCopy);
     }
@@ -337,6 +357,20 @@ public class NettyAsyncHttpClientBuilder {
         }
     }
 
+    private static boolean shouldApplyProxy(SocketAddress socketAddress, Pattern nonProxyHostsPattern) {
+        if (nonProxyHostsPattern == null) {
+            return true;
+        }
+
+        if (!(socketAddress instanceof InetSocketAddress)) {
+            return true;
+        }
+
+        InetSocketAddress inetSocketAddress = (InetSocketAddress) socketAddress;
+
+        return !nonProxyHostsPattern.matcher(inetSocketAddress.getHostString()).matches();
+    }
+
     /*
      * Adds the write timeout handler once the request is ready to begin sending.
      */
@@ -381,7 +415,7 @@ public class NettyAsyncHttpClientBuilder {
     static long getTimeoutMillis(Duration timeout) {
         // Timeout is null, use the 60 second default.
         if (timeout == null) {
-            return TimeUnit.SECONDS.toMillis(60);
+            return DEFAULT_TIMEOUT;
         }
 
         // Timeout is less than or equal to zero, return no timeout.

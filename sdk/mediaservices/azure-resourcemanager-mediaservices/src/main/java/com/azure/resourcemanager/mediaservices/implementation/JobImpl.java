@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mediaservices.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.models.JobInner;
@@ -12,6 +13,7 @@ import com.azure.resourcemanager.mediaservices.models.JobInput;
 import com.azure.resourcemanager.mediaservices.models.JobOutput;
 import com.azure.resourcemanager.mediaservices.models.JobState;
 import com.azure.resourcemanager.mediaservices.models.Priority;
+import com.azure.resourcemanager.mediaservices.models.SystemData;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -32,6 +34,10 @@ public final class JobImpl implements Job, Job.Definition, Job.Update {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public OffsetDateTime created() {
@@ -186,6 +192,16 @@ public final class JobImpl implements Job, Job.Definition, Job.Update {
                 .getWithResponse(resourceGroupName, accountName, transformName, jobName, context)
                 .getValue();
         return this;
+    }
+
+    public void cancelJob() {
+        serviceManager.jobs().cancelJob(resourceGroupName, accountName, transformName, jobName);
+    }
+
+    public Response<Void> cancelJobWithResponse(Context context) {
+        return serviceManager
+            .jobs()
+            .cancelJobWithResponse(resourceGroupName, accountName, transformName, jobName, context);
     }
 
     public JobImpl withDescription(String description) {

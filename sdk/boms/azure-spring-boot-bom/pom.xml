@@ -5,7 +5,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-bom</artifactId>
-  <version>3.0.0</version>
+  <version>3.3.0</version>
   <packaging>pom</packaging>
 
   <name>Azure Spring Boot BOM</name>
@@ -38,6 +38,14 @@
     <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <azure.spring.boot.integration.version>${project.version}</azure.spring.boot.integration.version>
+    <azure.core.version>1.14.1</azure.core.version>
+    <azure.identity.version>1.2.4</azure.identity.version>
+    <azure.keyvault.secret.version>4.2.6</azure.keyvault.secret.version>
+    <azure.msal.version>1.9.1</azure.msal.version>
+    <azure.servicebus.jms.version>0.0.7</azure.servicebus.jms.version>
+    <azure.spring.data.cosmos.version>3.5.0</azure.spring.data.cosmos.version>
+    <azure.storage.blob.version>12.10.1</azure.storage.blob.version>
+    <azure.storage.fileshare.version>12.8.0</azure.storage.fileshare.version>
   </properties>
 
   <issueManagement>
@@ -88,6 +96,55 @@
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-storage</artifactId>
         <version>${azure.spring.boot.integration.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-spring-data-cosmos</artifactId>
+        <version>${azure.spring.data.cosmos.version}</version>
+      </dependency>
+
+      <!-- Azure libraries-->
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core</artifactId>
+        <version>${azure.core.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-identity</artifactId>
+        <version>${azure.identity.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>msal4j</artifactId>
+        <version>${azure.msal.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-servicebus-jms</artifactId>
+        <version>${azure.servicebus.jms.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-security-keyvault-secrets</artifactId>
+        <version>${azure.keyvault.secret.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-storage-blob</artifactId>
+        <version>${azure.storage.blob.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-storage-file-share</artifactId>
+        <version>${azure.storage.fileshare.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

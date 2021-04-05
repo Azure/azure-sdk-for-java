@@ -5,7 +5,7 @@ package com.azure.core.credential;
 
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.MonoProcessor;
+import reactor.core.publisher.Sinks;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -21,7 +21,7 @@ public class SimpleTokenCache {
     private static final Duration REFRESH_DELAY = Duration.ofSeconds(30);
     // the offset before token expiry to attempt proactive token refresh
     private static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
-    private final AtomicReference<MonoProcessor<AccessToken>> wip;
+    private final AtomicReference<Sinks.One<AccessToken>> wip;
     private volatile AccessToken cache;
     private volatile OffsetDateTime nextTokenRefresh = OffsetDateTime.now();
     private final Supplier<Mono<AccessToken>> tokenSupplier;
@@ -47,8 +47,8 @@ public class SimpleTokenCache {
     public Mono<AccessToken> getToken() {
         return Mono.defer(() -> {
             try {
-                if (wip.compareAndSet(null, MonoProcessor.create())) {
-                    final MonoProcessor<AccessToken> monoProcessor = wip.get();
+                if (wip.compareAndSet(null, Sinks.one())) {
+                    final Sinks.One<AccessToken> sinksOne = wip.get();
                     OffsetDateTime now = OffsetDateTime.now();
                     Mono<AccessToken> tokenRefresh;
                     Mono<AccessToken> fallback;
@@ -88,8 +88,7 @@ public class SimpleTokenCache {
                             if (signal.isOnNext() && accessToken != null) { // SUCCESS
                                 logger.info(refreshLog(cache, now, "Acquired a new access token"));
                                 cache = accessToken;
-                                monoProcessor.onNext(accessToken);
-                                monoProcessor.onComplete();
+                                sinksOne.tryEmitValue(accessToken);
                                 nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
                                 return Mono.just(accessToken);
                             } else if (signal.isOnError() && error != null) { // ERROR
@@ -97,24 +96,24 @@ public class SimpleTokenCache {
                                 nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
                                 return fallback.switchIfEmpty(Mono.error(error));
                             } else { // NO REFRESH
-                                monoProcessor.onComplete();
+                                sinksOne.tryEmitEmpty();
                                 return fallback;
                             }
                         })
-                        .doOnError(monoProcessor::onError)
+                        .doOnError(sinksOne::tryEmitError)
                         .doOnTerminate(() -> wip.set(null));
                 } else if (cache != null && !cache.isExpired()) {
                     // another thread might be refreshing the token proactively, but the current token is still valid
                     return Mono.just(cache);
                 } else {
                     // another thread is definitely refreshing the expired token
-                    MonoProcessor<AccessToken> monoProcessor = wip.get();
-                    if (monoProcessor == null) {
+                    Sinks.One<AccessToken> sinksOne = wip.get();
+                    if (sinksOne == null) {
                         // the refreshing thread has finished
                         return Mono.just(cache);
                     } else {
                         // wait for refreshing thread to finish but defer to updated cache in case just missed onNext()
-                        return monoProcessor.switchIfEmpty(Mono.defer(() -> Mono.just(cache)));
+                        return sinksOne.asMono().switchIfEmpty(Mono.defer(() -> Mono.just(cache)));
                     }
                 }
             } catch (Throwable t) {

@@ -128,23 +128,21 @@ class AuthClient extends DelegateRestClient {
      * Get the access token on Azure App Service.
      *
      * @param resource the resource.
-     * @param identity the user-assigned identity (null if system-assigned).
+     * @param clientId the user-assigned managed identity (null if system-assigned).
      * @return the authorization token.
      */
-    private String getAccessTokenOnAppService(String resource, String identity) {
+    private String getAccessTokenOnAppService(String resource, String clientId) {
         LOGGER.entering("AuthClient", "getAccessTokenOnAppService", resource);
         LOGGER.info("Getting access token using managed identity based on MSI_SECRET");
-        if (identity != null) {
-            LOGGER.log(INFO, "Using managed identity with object ID: {0}", identity);
-        }
         String result = null;
 
         StringBuilder url = new StringBuilder();
         url.append(System.getenv("MSI_ENDPOINT"))
            .append("?api-version=2017-09-01")
            .append(RESOURCE_FRAGMENT).append(resource);
-        if (identity != null) {
-            url.append("&objectid=").append(identity);
+        if (clientId != null) {
+            url.append("&clientid=").append(clientId);
+            LOGGER.log(INFO, "Using managed identity with client ID: {0}", clientId);
         }
 
         HashMap<String, String> headers = new HashMap<>();

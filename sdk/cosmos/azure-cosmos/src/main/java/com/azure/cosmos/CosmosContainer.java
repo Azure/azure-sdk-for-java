@@ -3,12 +3,15 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.models.CosmosItemIdentity;
-import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
@@ -26,7 +29,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Provides synchronous methods for reading, deleting, and replacing existing Containers
@@ -339,6 +342,34 @@ public class CosmosContainer {
     }
 
     /**
+     * Query for items in the change feed of the current container using the {@link CosmosChangeFeedRequestOptions}.
+     * <p>
+     * The next page can be retrieved by calling queryChangeFeed again with a new instance of
+     * {@link CosmosChangeFeedRequestOptions} created from the continuation token of the previously returned
+     * {@link FeedResponse} instance.
+     *
+     * @param <T> the type parameter.
+     * @param options the change feed request options.
+     * @param classType the class type.
+     * @return a {@link CosmosPagedFlux} containing one feed response page
+     */
+    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
+        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public <T> CosmosPagedIterable<T> queryChangeFeed(
+        CosmosChangeFeedRequestOptions options,
+        Class<T> classType) {
+
+        checkNotNull(options, "Argument 'options' must not be null.");
+        checkNotNull(classType, "Argument 'classType' must not be null.");
+
+        options.setMaxPrefetchPageCount(1);
+
+        return getCosmosPagedIterable(
+            this.asyncContainer
+                .queryChangeFeed(options, classType));
+    }
+
+    /**
      * Reads many documents.
      *
      * @param <T> the type parameter
@@ -346,7 +377,6 @@ public class CosmosContainer {
      * @param classType   class type
      * @return a Mono with feed response of cosmos items
      */
-    @Beta(value = Beta.SinceVersion.V4_4_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> FeedResponse<T> readMany(
         List<CosmosItemIdentity> itemIdentityList,
         Class<T> classType) {
@@ -363,7 +393,6 @@ public class CosmosContainer {
      * @param classType   class type
      * @return a Mono with feed response of cosmos items
      */
-    @Beta(value = Beta.SinceVersion.V4_4_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> FeedResponse<T> readMany(
         List<CosmosItemIdentity> itemIdentityList,
         String sessionToken,
@@ -496,7 +525,7 @@ public class CosmosContainer {
         String itemId,
         PartitionKey partitionKey,
         CosmosPatchOperations cosmosPatchOperations,
-        CosmosItemRequestOptions options,
+        CosmosPatchItemRequestOptions options,
         Class<T> itemType) {
 
         return this.blockItemResponse(asyncContainer.patchItem(itemId, partitionKey, cosmosPatchOperations, options, itemType));
@@ -691,6 +720,65 @@ public class CosmosContainer {
                 throw (CosmosException) throwable;
             } else {
                 throw ex;
+            }
+        }
+    }
+
+    /**
+     * Enable the throughput control group with local control mode.
+     *
+     * {@codesnippet com.azure.cosmos.throughputControl.localControl}
+     *
+     * @param groupConfig A {@link GlobalThroughputControlConfig}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public void enableLocalThroughputControlGroup(ThroughputControlGroupConfig groupConfig) {
+        this.asyncContainer.enableLocalThroughputControlGroup(groupConfig);
+    }
+
+    /**
+     * Enable the throughput control group with global control mode.
+     * The defined throughput limit will be shared across different clients.
+     *
+     * {@codesnippet com.azure.cosmos.throughputControl.globalControl}
+     *
+     * @param groupConfig The throughput control group configuration, see {@link GlobalThroughputControlGroup}.
+     * @param globalControlConfig The global throughput control configuration, see {@link GlobalThroughputControlConfig}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public void enableGlobalThroughputControlGroup(ThroughputControlGroupConfig groupConfig, GlobalThroughputControlConfig globalControlConfig) {
+        this.asyncContainer.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig);
+    }
+
+    /**
+     * Initializes the container by warming up the caches and connections for the current read region.
+     *
+     * <p><br>The execution of this method is expected to result in some RU charges to your account.
+     * The number of RU consumed by this request varies, depending on data consistency, size of the overall data in the container,
+     * item indexing, number of projections. For more information regarding RU considerations please visit
+     * <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/request-units#request-unit-considerations">https://docs.microsoft.com/en-us/azure/cosmos-db/request-units#request-unit-considerations</a>.
+     * </p>
+     *
+     * <p>
+     * <br>NOTE: This API ideally should be called only once during application initialization before any workload.
+     * <br>In case of any transient error, caller should consume the error and continue the regular workload.
+     * </p>
+     *
+     */
+    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public void openConnectionsAndInitCaches() {
+        blockVoidResponse(this.asyncContainer.openConnectionsAndInitCaches());
+    }
+
+    private void blockVoidResponse(Mono<Void> voidMono) {
+        try {
+            voidMono.block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
+            } else {
+                throw Exceptions.propagate(ex);
             }
         }
     }

@@ -28,7 +28,6 @@ public class TriggerReference {
 
     /**
      * Creates an instance of TriggerReference class.
-     * @param referenceName reference trigger name.
      */
     public TriggerReference() {
         type = "TriggerReference";

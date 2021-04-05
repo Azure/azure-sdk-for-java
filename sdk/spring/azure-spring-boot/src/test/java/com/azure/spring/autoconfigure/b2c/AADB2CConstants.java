@@ -4,7 +4,6 @@ package com.azure.spring.autoconfigure.b2c;
 
 
 import static com.azure.spring.autoconfigure.b2c.AADB2CProperties.PREFIX;
-import static com.azure.spring.autoconfigure.b2c.AADB2CProperties.USER_FLOW_SIGN_UP_OR_SIGN_IN;
 
 public class AADB2CConstants {
     public static final String AUTHENTICATE_ADDITIONAL_PARAMETERS_LOGIN_HINT = ".authenticate-additional-parameters"
@@ -20,19 +19,29 @@ public class AADB2CConstants {
 
     public static final String TEST_LOGIN_HINT = "fake-login-hint";
 
-    public static final String TEST_TENANT = "fake-tenant";
+    public static final String TEST_BASE_URI = "https://faketenant.b2clogin.com/faketenant.onmicrosoft.com/";
 
     public static final String TEST_CLIENT_ID = "fake-client-id";
 
+    public static final String TEST_TENANT_ID = "fake-tenant-id";
+
     public static final String TEST_CLIENT_SECRET = "fake-client-secret";
 
-    public static final String TEST_REPLY_URL = "http://localhost:8080/index";
-
+    public static final String TEST_KEY_SIGN_UP_OR_IN = "sign-in-or-up";
     public static final String TEST_SIGN_UP_OR_IN_NAME = "fake-sign-in-or-up";
+
+    public static final Object TEST_KEY_SIGN_IN = "sign-in";
+    public static final Object TEST_SIGN_IN_NAME = "fake-sign-in";
+
+    public static final Object TEST_KEY_SIGN_UP = "sign-up";
+    public static final Object TEST_SIGN_UP_NAME = "fake-sign-up";
+
+    public static final String TEST_KEY_PROFILE_EDIT = "profile-edit";
+    public static final String TEST_PROFILE_EDIT_NAME = "profile_edit";
 
     public static final String TEST_LOGOUT_SUCCESS_URL = "https://fake-logout-success-url";
 
-    public static final String TENANT = String.format("%s.%s", PREFIX, "tenant");
+    public static final String BASE_URI = String.format("%s.%s", PREFIX, "base-uri");
 
     public static final String TEST_ATTRIBUTE_NAME = String.format("%s.%s", PREFIX, "name");
 
@@ -40,13 +49,15 @@ public class AADB2CConstants {
 
     public static final String CLIENT_ID = String.format("%s.%s", PREFIX, "client-id");
 
-    public static final String CLIENT_SECRET = String.format("%s.%s", PREFIX, "client-secret");
+    public static final String TENANT_ID = String.format("%s.%s", PREFIX, "tenant-id");
 
-    public static final String REPLY_URL = String.format("%s.%s", PREFIX, "reply-url");
+    public static final String CLIENT_SECRET = String.format("%s.%s", PREFIX, "client-secret");
 
     public static final String LOGOUT_SUCCESS_URL = String.format("%s.%s", PREFIX, "logout-success-url");
 
-    public static final String SIGN_UP_OR_SIGN_IN = String.format("%s.%s", PREFIX, USER_FLOW_SIGN_UP_OR_SIGN_IN);
+    public static final String LOGIN_FLOW = String.format("%s.%s", PREFIX, "login-flow");
+
+    public static final String USER_FLOWS = String.format("%s.%s", PREFIX, "user-flows");
 
     public static final Object CONFIG_PROMPT = String.format("%s.%s", PREFIX,
         AUTHENTICATE_ADDITIONAL_PARAMETERS_PROMPT);

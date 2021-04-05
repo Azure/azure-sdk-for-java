@@ -159,6 +159,19 @@ public class AttestationManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The PrivateEndpointConnectionsInner object to access its operations.
+     */
+    private PrivateEndpointConnectionsInner privateEndpointConnections;
+
+    /**
+     * Gets the PrivateEndpointConnectionsInner object to access its operations.
+     * @return the PrivateEndpointConnectionsInner object.
+     */
+    public PrivateEndpointConnectionsInner privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
      * Initializes an instance of AttestationManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -195,6 +208,7 @@ public class AttestationManagementClientImpl extends AzureServiceClient {
         this.generateClientRequestId = true;
         this.operations = new OperationsInner(restClient().retrofit(), this);
         this.attestationProviders = new AttestationProvidersInner(restClient().retrofit(), this);
+        this.privateEndpointConnections = new PrivateEndpointConnectionsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 

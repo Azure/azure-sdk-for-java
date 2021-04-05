@@ -1,8 +1,18 @@
 # Release History
 
-## 12.11.0-beta.1 (Unreleased)
+## 12.11.0-beta.3 (Unreleased)
+
+
+## 12.11.0-beta.2 (2021-03-29)
+- Update `azure-core` to version `1.14.1`
+
+## 12.11.0-beta.1 (2021-02-10)
+- Added support to log retries 
 - Removed a deep copy in PayloadSizeGate
 - Fixed a bug that would throw if uploading using a stream that returned a number > 0 from available() after the stream had ended
+
+## 12.10.1 (2021-03-19)
+- Removed a deep copy in PayloadSizeGate
 
 ## 12.10.0 (2021-01-14)
 - GA release

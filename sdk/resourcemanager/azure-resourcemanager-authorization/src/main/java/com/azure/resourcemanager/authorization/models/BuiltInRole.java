@@ -147,6 +147,38 @@ public final class BuiltInRole extends ExpandableStringEnum<BuiltInRole> {
     /** A role that can manage websites, but not the web plans to which they are connected. */
     public static final BuiltInRole WEBSITE_CONTRIBUTOR = BuiltInRole.fromString("Website Contributor");
 
+    // Storage data related roles
+    /** Storage Account Key Operators are allowed to list and regenerate keys on Storage Accounts. */
+    public static final BuiltInRole STORAGE_ACCOUNT_KEY_OPERATOR_SERVICE_ROLE =
+        BuiltInRole.fromString("Storage Account Key Operator Service Role");
+    /** Allows for read, write and delete access to Azure Storage blob containers and data. */
+    public static final BuiltInRole STORAGE_BLOB_DATA_CONTRIBUTOR =
+        BuiltInRole.fromString("Storage Blob Data Contributor");
+    /** Allows for full access to Azure Storage blob containers and data, including assigning POSIX access control. */
+    public static final BuiltInRole STORAGE_BLOB_DATA_OWNER =
+        BuiltInRole.fromString("Storage Blob Data Owner");
+    /** Allows for read access to Azure Storage blob containers and data. */
+    public static final BuiltInRole STORAGE_BLOB_DATA_READER =
+        BuiltInRole.fromString("Storage Blob Data Reader");
+    /** Allows for read, write, and delete access to Azure Storage queues and queue messages. */
+    public static final BuiltInRole STORAGE_QUEUE_DATA_CONTRIBUTOR =
+        BuiltInRole.fromString("Storage Queue Data Contributor");
+    /** Allows for peek, receive, and delete access to Azure Storage queue messages. */
+    public static final BuiltInRole STORAGE_QUEUE_DATA_MESSAGE_PROCESSOR =
+        BuiltInRole.fromString("Storage Queue Data Message Processor");
+    /** Allows for sending of Azure Storage queue messages. */
+    public static final BuiltInRole STORAGE_QUEUE_DATA_MESSAGE_SENDER =
+        BuiltInRole.fromString("Storage Queue Data Message Sender");
+    /** Allows for read access to Azure Storage queues and queue messages. */
+    public static final BuiltInRole STORAGE_QUEUE_DATA_READER =
+        BuiltInRole.fromString("Storage Queue Data Reader");
+    /** Allows for read access to Azure File Share over SMB. */
+    public static final BuiltInRole STORAGE_FILE_DATA_SMB_SHARE_READER =
+        BuiltInRole.fromString("Storage File Data SMB Share Reader");
+    /** Allows for read, write, and delete access in Azure Storage file shares over SMB. */
+    public static final BuiltInRole STORAGE_FILE_DATA_SMB_SHARE_CONTRIBUTOR =
+        BuiltInRole.fromString("Storage File Data SMB Share Contributor");
+
     /**
      * Finds or creates a role instance based on the specified name.
      *

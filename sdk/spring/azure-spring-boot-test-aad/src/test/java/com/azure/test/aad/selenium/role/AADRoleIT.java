@@ -3,10 +3,7 @@
 
 package com.azure.test.aad.selenium.role;
 
-import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
-
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
-import java.security.Principal;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,6 +17,13 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
+import java.util.Map;
+
+import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE;
+import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE;
+import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
+
 public class AADRoleIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADRoleIT.class);
@@ -27,12 +31,17 @@ public class AADRoleIT {
 
     @Test
     public void roleTest() {
-        aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, createDefaultProperties());
+        Map<String, String> properties = createDefaultProperties();
+        properties.put("azure.activedirectory.client-id", AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE);
+        properties.put("azure.activedirectory.client-secret", AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE);
+        aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties);
         aadSeleniumITHelper.logIn();
         String httpResponse = aadSeleniumITHelper.httpGet("api/home");
         Assert.assertTrue(httpResponse.contains("home"));
         httpResponse = aadSeleniumITHelper.httpGet("api/group1");
         Assert.assertTrue(httpResponse.contains("group1"));
+        httpResponse = aadSeleniumITHelper.httpGet("api/user");
+        Assert.assertTrue(httpResponse.contains("user"));
         httpResponse = aadSeleniumITHelper.httpGet("api/group_fdsaliieammQiovlikIOWssIEURsafjFelasdfe");
         Assert.assertNotEquals(httpResponse, "group_fdsaliieammQiovlikIOWssIEURsafjFelasdfe");
     }
@@ -57,6 +66,12 @@ public class AADRoleIT {
         @GetMapping(value = "/api/group1")
         public ResponseEntity<String> group1() {
             return ResponseEntity.ok("group1");
+        }
+
+        @PreAuthorize("hasAuthority('APPROLE_User')")
+        @GetMapping(value = "/api/user")
+        public ResponseEntity<String> user() {
+            return ResponseEntity.ok("user");
         }
 
         @PreAuthorize("hasRole('ROLE_fdsaliieammQiovlikIOWssIEURsafjFelasdfe')")

@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation for AvailabilitySet and its create and update interfaces. */
 class AvailabilitySetImpl
@@ -97,11 +98,11 @@ class AvailabilitySetImpl
 
     @Override
     public PagedIterable<VirtualMachineSize> listVirtualMachineSizes() {
-        return manager()
+        return PagedConverter.mapPage(manager()
             .serviceClient()
             .getAvailabilitySets()
-            .listAvailableSizes(resourceGroupName(), name())
-            .mapPage(virtualMachineSizeInner -> new VirtualMachineSizeImpl(virtualMachineSizeInner));
+            .listAvailableSizes(resourceGroupName(), name()),
+            virtualMachineSizeInner -> new VirtualMachineSizeImpl(virtualMachineSizeInner));
     }
 
     @Override

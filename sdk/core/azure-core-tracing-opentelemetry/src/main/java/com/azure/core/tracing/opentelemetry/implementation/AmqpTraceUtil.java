@@ -3,7 +3,8 @@
 
 package com.azure.core.tracing.opentelemetry.implementation;
 
-import io.opentelemetry.trace.Status;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.StatusCode;
 
 public final class AmqpTraceUtil {
 
@@ -12,24 +13,24 @@ public final class AmqpTraceUtil {
     /**
      * Parses an OpenTelemetry Status from AMQP Error Condition.
      *
+     * @param span the span to set the status for.
      * @param statusMessage AMQP description for this error condition.
-     * @param error the error occurred during response transmission (optional).
-     * @return the corresponding OpenTelemetry {@link Status}.
+     * @param throwable the error occurred during response transmission (optional).
+     * @return the corresponding OpenTelemetry {@link Span}.
      */
-    public static Status parseStatusMessage(String statusMessage, Throwable error) {
-        if (error != null) {
-            final String message = error.getMessage();
-
-            return message != null
-                ? Status.UNKNOWN.withDescription(message)
-                : Status.UNKNOWN.withDescription(error.getClass().getSimpleName());
-
+    public static Span parseStatusMessage(Span span, String statusMessage, Throwable throwable) {
+        if (throwable != null) {
+            span.recordException(throwable);
+            return span.setStatus(StatusCode.ERROR);
         }
         if (statusMessage != null && "success".equalsIgnoreCase(statusMessage)) {
             // No error.
-            return Status.OK;
+            return span.setStatus(StatusCode.OK);
+        }
+        if (statusMessage == null) {
+            return span.setStatus(StatusCode.UNSET);
         }
         // return status with custom error condition message
-        return Status.UNKNOWN.withDescription(statusMessage);
+        return span.setStatus(StatusCode.UNSET, statusMessage);
     }
 }

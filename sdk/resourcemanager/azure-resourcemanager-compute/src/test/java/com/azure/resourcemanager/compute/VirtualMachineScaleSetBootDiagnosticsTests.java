@@ -34,7 +34,7 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(rgName);
+        resourceManager.resourceGroups().beginDeleteByName(rgName);
     }
 
     @Test

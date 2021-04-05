@@ -5,8 +5,8 @@ This sample illustrates how to use `azure-spring-boot-starter-active-directory-b
 
 ## Getting started
 
-### Environment checklist
-We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
+### Prerequisites
+- [Environment checklist][environment_checklist]
 
 ### Create your Azure Active Directory B2C tenant
 
@@ -15,7 +15,7 @@ Follow the guide of [AAD B2C tenant creation](https://docs.microsoft.com/azure/a
 ### Register your Azure Active Directory B2C application
 
 Follow the guide of [AAD B2C application registry](https://docs.microsoft.com/azure/active-directory-b2c/tutorial-register-applications).
-Please make sure that your b2c application `reply URL` contains `http://localhost:8080/login/oauth2/code`.
+Please ensure that your b2c application's `Redirect URL` is configured to `http://localhost:8080/login/oauth2/code/`.
 
 ### Create user flows
 
@@ -24,39 +24,38 @@ Follow the guide of [AAD B2C user flows creation](https://docs.microsoft.com/azu
 ## Examples
 ### Configure the sample
 
-#### Application.yml
+#### application.yml
 
-1. Fill in `${your-tenant-name}` from **Azure AD B2C** portal `Overviews` domain name (format may looks like
-`${your-tenant-name}.onmicrosoft.com`).
+1. Fill in `${your-tenant-authorization-server-base-uri}` from **Azure AD B2C** portal `App registrations` blade, select **Endpoints**, copy the base endpoint uri(Global cloud format may looks like
+`https://{your-tenant-name}.b2clogin.com/{your-tenant-name}.onmicrosoft.com`, China Cloud looks like `https://{your-tenant-name}.b2clogin.cn/{your-tenant-name}.partner.onmschina.cn`). 
+
+    **NOTE**: The `azure.activedirectory.b2c.tenant` has been deprecated. Please use `azure.activedirectory.b2c.base-uri` instead.
+
 2. Select one registered instance under `Applications` from portal, and then:
     1. Fill in `${your-client-id}` from `Application ID`.
     2. Fill in `${your-client-secret}` from one of `Keys`.
-3. Select `User flows`, and then:
-    1. Fill in the `${your-sign-up-or-in-user-flow}` with the name of `sign-in-or-up` user flow.
-    2. Fill in the `${your-profile-edit-user-flow}` with the name of `profile-edit` user flow.
-    3. Fill in the `${your-password-reset-user-flow}` with the name of `password-reset` user flow.
-4. Replace `${your-reply-url}` to `http://localhost:8080/login/oauth2/code`.
+3. Add your user flows defined on the Azure Portal under the `user-flows` configuration, which is a map, you can give each user flow a key and the value will be the name of user flow defined in AAD B2C. 
+   By default, we use the key `sign-up-or-sign-in` for a **login** user flow and `password-reset` for the **Password reset** type user flow, you can choose to override them.
+4. Fill in `${your-login-user-flow-key}` with the key of your login user flow, we will use the value `sign-up-or-sign-in` to look up the user-flows map if this property is not provided.   
 5. Replace `${your-logout-success-url}` to `http://localhost:8080/login`.
 
 ```yaml
 azure:
   activedirectory:
     b2c:
-      tenant: ${your-tenant-name} # ❗not tenant id
+      base-uri: ${your-tenant-authorization-server-base-uri}
       client-id: ${your-client-id}
       client-secret: ${your-client-secret}
-      reply-url: ${your-reply-url} # should be absolute url.
+      login-flow: ${your-login-user-flow-key}               # default to sign-up-or-sign-in, will look up the user-flows map with provided key.
       logout-success-url: ${your-logout-success-url}
-      user-name-attribute-name: ${your-user-name-claim}
       user-flows:
+        password-reset: ${your-profile-edit-user-flow}
+        profile-edit: ${your-password-reset-user-flow}
         sign-up-or-sign-in: ${your-sign-up-or-in-user-flow}
-        profile-edit: ${your-profile-edit-user-flow}      # optional
-        password-reset: ${your-password-reset-user-flow}  # optional
+      user-name-attribute-name: ${your-user-name-claim}
 ```
 
-#### Templates greeting.html and home.html
-1. Fill in the `${your-profile-edit-user-flow}` and `${your-password-reset-user-flow}` from the portal `User flows`.
-Please make sure that these two placeholders should be the same as `application.yml` respectively.
+**NOTE**: If both `tenant` and `baseUri` are configured at the same time, only `baseUri` takes effect.
 
 ### Run with Maven
 ```
@@ -68,13 +67,10 @@ mvn spring-boot:run
 
 1. Access `http://localhost:8080/` as index page.
 2. Sign up/in.
-3. Access greeting button.
-4. Logout.
-5. Sign in.
-6. Profile edit.
-7. Password reset.
-8. Logout
-9. Sign in.
+3. Profile edit.
+4. Password reset.
+5. Log out.
+6. Sign in.
 
 ## Troubleshooting
 - `Missing attribute 'name' in attributes `
@@ -103,5 +99,4 @@ And also available for Amazon, Azure AD, FaceBook, Github, Linkedin and Twitter.
 ## Next steps
 ## Contributing
 <!-- LINKS -->
-
-[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist

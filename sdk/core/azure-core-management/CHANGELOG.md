@@ -1,7 +1,27 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
 
+
+## 1.2.1 (2021-04-02)
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.14.0` to `1.15.0`.
+
+## 1.2.0 (2021-03-08)
+
+### New Features
+
+- Added `SystemData`.
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.13.0` to `1.14.0`.
+
+## 1.1.1 (2021-02-05)
+
+- Fixed long-running operation, PUT method, response 200 and Azure-AsyncOperation.
 
 ## 1.1.0 (2021-01-11)
 

@@ -3,13 +3,13 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.implementation.AppearanceHelper;
+import com.azure.ai.formrecognizer.implementation.TextAppearanceHelper;
 import com.azure.ai.formrecognizer.implementation.FormLineHelper;
 import com.azure.ai.formrecognizer.implementation.FormPageHelper;
 import com.azure.ai.formrecognizer.implementation.FormSelectionMarkHelper;
 import com.azure.ai.formrecognizer.implementation.FormTableHelper;
 import com.azure.ai.formrecognizer.implementation.RecognizedFormHelper;
-import com.azure.ai.formrecognizer.implementation.StyleHelper;
+import com.azure.ai.formrecognizer.implementation.TextStyleHelper;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.implementation.models.DocumentResult;
 import com.azure.ai.formrecognizer.implementation.models.FieldValue;
@@ -20,7 +20,7 @@ import com.azure.ai.formrecognizer.implementation.models.ReadResult;
 import com.azure.ai.formrecognizer.implementation.models.SelectionMarkState;
 import com.azure.ai.formrecognizer.implementation.models.TextLine;
 import com.azure.ai.formrecognizer.implementation.models.TextWord;
-import com.azure.ai.formrecognizer.models.Appearance;
+import com.azure.ai.formrecognizer.models.TextAppearance;
 import com.azure.ai.formrecognizer.models.FieldBoundingBox;
 import com.azure.ai.formrecognizer.models.FieldData;
 import com.azure.ai.formrecognizer.models.FieldValueType;
@@ -36,8 +36,8 @@ import com.azure.ai.formrecognizer.models.FormWord;
 import com.azure.ai.formrecognizer.models.LengthUnit;
 import com.azure.ai.formrecognizer.models.Point;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
-import com.azure.ai.formrecognizer.models.Style;
 import com.azure.ai.formrecognizer.models.TextStyle;
+import com.azure.ai.formrecognizer.models.TextStyleName;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -54,6 +54,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.implementation.Utility.forEachWithIndex;
 import static com.azure.ai.formrecognizer.implementation.models.FieldValueType.ARRAY;
+import static com.azure.ai.formrecognizer.implementation.models.FieldValueType.OBJECT;
 
 /**
  * Helper class to convert service level models to SDK exposed models.
@@ -112,25 +113,27 @@ final class Transforms {
             }
         } else {
             extractedFormList = new ArrayList<>();
-            forEachWithIndex(pageResults, ((index, pageResultItem) -> {
-                StringBuilder formType = new StringBuilder("form-");
-                int pageNumber = pageResultItem.getPage();
-                Integer clusterId = pageResultItem.getClusterId();
-                if (clusterId != null) {
-                    formType.append(clusterId);
-                }
-                Map<String, FormField> extractedFieldMap = getUnlabeledFieldMap(includeFieldElements, readResults,
-                    pageResultItem, pageNumber);
+            if (!CoreUtils.isNullOrEmpty(pageResults)) {
+                forEachWithIndex(pageResults, ((index, pageResultItem) -> {
+                    StringBuilder formType = new StringBuilder("form-");
+                    int pageNumber = pageResultItem.getPage();
+                    Integer clusterId = pageResultItem.getClusterId();
+                    if (clusterId != null) {
+                        formType.append(clusterId);
+                    }
+                    Map<String, FormField> extractedFieldMap = getUnlabeledFieldMap(includeFieldElements, readResults,
+                        pageResultItem, pageNumber);
 
-                final RecognizedForm recognizedForm = new RecognizedForm(
-                    extractedFieldMap,
-                    formType.toString(),
-                    new FormPageRange(pageNumber, pageNumber),
-                    Collections.singletonList(formPages.get(index)));
+                    final RecognizedForm recognizedForm = new RecognizedForm(
+                        extractedFieldMap,
+                        formType.toString(),
+                        new FormPageRange(pageNumber, pageNumber),
+                        Collections.singletonList(formPages.get(index)));
 
-                RecognizedFormHelper.setModelId(recognizedForm, modelId);
-                extractedFormList.add(recognizedForm);
-            }));
+                    RecognizedFormHelper.setModelId(recognizedForm, modelId);
+                    extractedFormList.add(recognizedForm);
+                }));
+            }
         }
         return extractedFormList;
     }
@@ -236,8 +239,8 @@ final class Transforms {
                                     ? DEFAULT_TABLE_SPAN : dataTableCell.getColumnSpan(),
                                 dataTableCell.getText(), toBoundingBox(dataTableCell.getBoundingBox()),
                                 dataTableCell.getConfidence(),
-                                dataTableCell.isHeader() == null ? false : dataTableCell.isHeader(),
-                                dataTableCell.isFooter() == null ? false : dataTableCell.isFooter(),
+                                dataTableCell.isHeader() != null && dataTableCell.isHeader(),
+                                dataTableCell.isFooter() != null && dataTableCell.isFooter(),
                                 pageNumber, setReferenceElements(dataTableCell.getElements(), readResults)))
                             .collect(Collectors.toList()), pageNumber);
 
@@ -264,7 +267,7 @@ final class Transforms {
                     readResultItem.getPage(),
                     toWords(textLine.getWords(), readResultItem.getPage()));
 
-                FormLineHelper.setAppearance(formLine, getAppearance(textLine));
+                FormLineHelper.setAppearance(formLine, getTextAppearance(textLine));
                 return formLine;
             })
             .collect(Collectors.toList());
@@ -275,19 +278,19 @@ final class Transforms {
      * @param textLine The service side text line object.
      * @return the custom type Appearance model.
      */
-    private static Appearance getAppearance(TextLine textLine) {
-        Style style = new Style();
+    private static TextAppearance getTextAppearance(TextLine textLine) {
+        TextStyle textStyle = new TextStyle();
         if (textLine.getAppearance() != null && textLine.getAppearance().getStyle() != null) {
             if (textLine.getAppearance().getStyle().getName() != null) {
-                StyleHelper.setName(style,
-                    TextStyle.fromString(textLine.getAppearance().getStyle().getName().toString()));
+                TextStyleHelper.setName(textStyle,
+                    TextStyleName.fromString(textLine.getAppearance().getStyle().getName().toString()));
             }
-            StyleHelper.setConfidence(style, textLine.getAppearance().getStyle().getConfidence());
+            TextStyleHelper.setConfidence(textStyle, textLine.getAppearance().getStyle().getConfidence());
         }
 
-        Appearance appearance = new Appearance();
-        AppearanceHelper.setStyle(appearance, style);
-        return appearance;
+        TextAppearance textAppearance = new TextAppearance();
+        TextAppearanceHelper.setStyle(textAppearance, textStyle);
+        return textAppearance;
     }
 
     /**
@@ -306,7 +309,13 @@ final class Transforms {
                 if (fieldValue != null) {
                     List<FormElement> formElementList = setReferenceElements(fieldValue.getElements(), readResults);
                     FieldData valueData;
-                    if ("ReceiptType".equals(key) || ARRAY == fieldValue.getType()) {
+                    // Bounding box, page and text are not returned by the service in two scenarios:
+                    //   - When this field is global and not associated with a specific page (e.g. ReceiptType).
+                    //   - When this field is a collection, such as a list or dictionary.
+                    //
+                    // In these scenarios we do not set a ValueData.
+                    if (fieldValue.getText() == null && fieldValue.getPage() == null
+                        && CoreUtils.isNullOrEmpty(fieldValue.getBoundingBox())) {
                         valueData = null;
                     } else {
                         valueData = new FieldData(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
@@ -386,7 +395,7 @@ final class Transforms {
                 } else if (FieldValueSelectionMark.UNSELECTED.equals(fieldValueSelectionMarkState)) {
                     selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.UNSELECTED;
                 } else {
-                    // TODO: (ServiceBug)
+                    // TODO: (ServiceBug) https://github.com/Azure/azure-sdk-for-java/issues/18967
                     // Currently, the fieldValue's valueSelectionMark is null which is incorrect.
                     // Use the fieldValue's text as the temperately solution.
                     selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.fromString(
@@ -396,6 +405,14 @@ final class Transforms {
                 }
                 value = new com.azure.ai.formrecognizer.models.FieldValue(selectionMarkState,
                     FieldValueType.SELECTION_MARK_STATE);
+                break;
+            case GENDER:
+                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueGender(),
+                    FieldValueType.GENDER);
+                break;
+            case COUNTRY:
+                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueCountry(),
+                    FieldValueType.COUNTRY);
                 break;
             default:
                 throw LOGGER.logExceptionAsError(new RuntimeException("FieldValue Type not supported"));
@@ -565,7 +582,7 @@ final class Transforms {
                 TextLine textLine = readResults.get(readResultIndex).getLines().get(lineIndex);
                 FormLine lineElement = new FormLine(textLine.getText(), toBoundingBox(textLine.getBoundingBox()),
                     readResultIndex + 1, toWords(textLine.getWords(), readResultIndex + 1));
-                FormLineHelper.setAppearance(lineElement, getAppearance(textLine));
+                FormLineHelper.setAppearance(lineElement, getTextAppearance(textLine));
                 formElementList.add(lineElement);
             }
         });

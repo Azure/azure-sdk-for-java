@@ -3,30 +3,35 @@
 
 package com.azure.cosmos.implementation.feedranges;
 
+import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.Integers;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
-import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
-import com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.time.Duration;
+import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Queue;
 
+import static com.azure.cosmos.BridgeInternal.setProperty;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -36,19 +41,9 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(FeedRangeCompositeContinuationImpl.class);
-    private final static ShouldRetryResult NO_RETRY = ShouldRetryResult.noRetry();
-    private final static ShouldRetryResult RETRY = ShouldRetryResult.retryAfter(Duration.ZERO);
     private final Queue<CompositeContinuationToken> compositeContinuationTokens;
     private CompositeContinuationToken currentToken;
     private String initialNoResultsRange;
-
-    public FeedRangeCompositeContinuationImpl(
-        String containerRid,
-        FeedRangeInternal feedRange,
-        List<Range<String>> ranges) {
-
-        this(containerRid, feedRange, ranges, null);
-    }
 
     public FeedRangeCompositeContinuationImpl(
         String containerRid,
@@ -74,6 +69,61 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         }
 
         this.currentToken = this.getCompositeContinuationTokens().peek();
+    }
+
+    public FeedRangeCompositeContinuationImpl(
+        String containerRid,
+        FeedRangeInternal feedRange,
+        List<CompositeContinuationToken> continuationTokens) {
+
+        this(containerRid, feedRange);
+
+        checkNotNull(continuationTokens, "'continuationTokens' must not be null");
+
+        if (continuationTokens.size() == 0) {
+            throw new IllegalArgumentException("'continuationTokens' must not be empty");
+        }
+
+        for (CompositeContinuationToken continuationToken : continuationTokens) {
+            this.compositeContinuationTokens.add(
+                // add a copy
+                FeedRangeCompositeContinuationImpl.createCompositeContinuationTokenForRange(
+                    continuationToken.getRange().getMin(),
+                    continuationToken.getRange().getMax(),
+                    continuationToken.getToken())
+            );
+        }
+
+        this.currentToken = this.getCompositeContinuationTokens().peek();
+    }
+
+    public void populatePropertyBag() {
+        super.populatePropertyBag();
+
+        setProperty(
+            this,
+            Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_VERSION,
+            FeedRangeContinuationVersions.V1);
+
+        setProperty(
+            this,
+            Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_RESOURCE_ID,
+            this.getContainerRid());
+
+        if (this.compositeContinuationTokens.size() > 0) {
+            for (CompositeContinuationToken token : this.compositeContinuationTokens) {
+                ModelBridgeInternal.populatePropertyBag(token);
+            }
+
+            setProperty(
+                this,
+                Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_CONTINUATION,
+                this.compositeContinuationTokens);
+        }
+
+        if (this.feedRange != null) {
+            this.feedRange.setProperties(this, true);
+        }
     }
 
     private FeedRangeCompositeContinuationImpl(String containerRid, FeedRangeInternal feedRange) {
@@ -104,13 +154,26 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     }
 
     @Override
-    public String getContinuation() {
+    public CompositeContinuationToken getCurrentContinuationToken() {
         CompositeContinuationToken tokenSnapshot = this.currentToken;
         if (tokenSnapshot == null) {
             return null;
         }
 
-        return tokenSnapshot.getToken();
+        return tokenSnapshot;
+    }
+
+    @Override
+    public CompositeContinuationToken[] getCurrentContinuationTokens() {
+        CompositeContinuationToken[] snapshot = new CompositeContinuationToken[this.compositeContinuationTokens.size()];
+        this.compositeContinuationTokens.toArray(snapshot);
+
+        return snapshot;
+    }
+
+    @Override
+    public int getContinuationTokenCount() {
+        return this.compositeContinuationTokens.size();
     }
 
     @Override
@@ -142,78 +205,66 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     }
 
     @Override
-    public ShouldRetryResult handleChangeFeedNotModified(final RxDocumentServiceResponse response) {
+    public <T extends Resource> ShouldRetryResult handleChangeFeedNotModified(final FeedResponse<T> response) {
         checkNotNull(response, "Argument 'response' must not be null");
-        final int statusCode = response.getStatusCode();
-        if (statusCode >= HttpConstants.StatusCodes.MINIMUM_SUCCESS_STATUSCODE
-            && statusCode <= HttpConstants.StatusCodes.MAXIMUM_SUCCESS_STATUSCODE) {
 
+        if (!ModelBridgeInternal.<T>noChanges(response)) {
             this.initialNoResultsRange = null;
-            return NO_RETRY;
-        }
-
-        if (statusCode == HttpConstants.StatusCodes.NOT_MODIFIED && this.compositeContinuationTokens.size() > 1) {
-
-            final String eTag = response.getResponseHeaders().get(HttpConstants.HttpHeaders.E_TAG);
+        } else if (this.compositeContinuationTokens.size() > 1) {
+            final String eTag = this.currentToken.getToken();
             if (this.initialNoResultsRange == null) {
 
                 this.initialNoResultsRange = this.currentToken.getRange().getMin();
                 this.replaceContinuation(eTag);
-                return RETRY;
+                this.moveToNextToken();
+                return ShouldRetryResult.RETRY_NOW;
             }
 
             if (!this.initialNoResultsRange.equalsIgnoreCase(this.currentToken.getRange().getMin())) {
                 this.replaceContinuation(eTag);
-                return RETRY;
+                this.moveToNextToken();
+                return ShouldRetryResult.RETRY_NOW;
             }
         }
 
-        return NO_RETRY;
+        return ShouldRetryResult.NO_RETRY;
     }
 
     @Override
     public Mono<ShouldRetryResult> handleSplit(final RxDocumentClientImpl client,
-                                               final RxDocumentServiceResponse response) {
+                                               final GoneException goneException) {
 
         checkNotNull(client, "Argument 'client' must not be null");
-        checkNotNull(response, "Argument 'response' must not be null");
+        checkNotNull(goneException, "Argument 'goeException' must not be null");
 
-        Integer nSubStatus = 0;
-        final String valueSubStatus =
-            response.getResponseHeaders().get(HttpConstants.HttpHeaders.SUB_STATUS);
-        if (!Strings.isNullOrEmpty(valueSubStatus)) {
-            nSubStatus = Integers.tryParse(valueSubStatus);
-        }
+        Integer nSubStatus = goneException.getSubStatusCode();
 
         final boolean partitionSplit =
-            response.getStatusCode() == HttpConstants.StatusCodes.GONE && nSubStatus != null
-                && (nSubStatus == HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE
+            goneException.getStatusCode() == HttpConstants.StatusCodes.GONE &&
+                nSubStatus != null &&
+                (nSubStatus == HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE
                 || nSubStatus == HttpConstants.SubStatusCodes.COMPLETING_SPLIT);
 
         if (!partitionSplit) {
-            return Mono.just(NO_RETRY);
+            return Mono.just(ShouldRetryResult.NO_RETRY);
         }
 
         final RxPartitionKeyRangeCache partitionKeyRangeCache = client.getPartitionKeyRangeCache();
+        Range<String> effectiveTokenRange = this.currentToken.getRange();
         final Mono<Utils.ValueHolder<List<PartitionKeyRange>>> resolvedRangesTask =
             this.tryGetOverlappingRanges(
-                partitionKeyRangeCache, this.currentToken.getRange().getMin(),
-                this.currentToken.getRange().getMax(),
+                partitionKeyRangeCache,
+                effectiveTokenRange.getMin(),
+                effectiveTokenRange.getMax(),
                 true);
 
         return resolvedRangesTask.flatMap(resolvedRanges -> {
             if (resolvedRanges.v != null && resolvedRanges.v.size() > 0) {
-                this.createChildRanges(resolvedRanges.v);
+                this.createChildRanges(resolvedRanges.v, effectiveTokenRange);
             }
 
-            return Mono.just(RETRY);
+            return Mono.just(ShouldRetryResult.RETRY_NOW);
         });
-    }
-
-    @Override
-    public void accept(final FeedRangeContinuationVisitor visitor) {
-        checkNotNull(visitor, "Argument 'visitor' must not be null");
-        visitor.visit(this);
     }
 
     /**
@@ -243,7 +294,7 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     public static FeedRangeContinuation parse(final String jsonString) throws IOException {
         checkNotNull(jsonString, "Argument 'jsonString' must not be null");
         final ObjectMapper mapper = Utils.getSimpleObjectMapper();
-        return mapper.readValue(jsonString, FeedRangeCompositeContinuationImpl.class);
+        return mapper.readValue(jsonString, FeedRangeContinuation.class);
     }
 
     @Override
@@ -257,11 +308,42 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         }
     }
 
-    private void createChildRanges(final List<PartitionKeyRange> keyRanges) {
+    private static String getMinString(String left, String right) {
+        checkNotNull(left, "Argument 'left' must not be null.");
+        checkNotNull(right, "Argument 'right' must not be null.");
+
+        if (left.compareTo(right) < 0) {
+            return left;
+        }
+
+        return right;
+    }
+
+    private static String getMaxString(String left, String right) {
+        checkNotNull(left, "Argument 'left' must not be null.");
+        checkNotNull(right, "Argument 'right' must not be null.");
+
+        if (left.compareTo(right) > 0) {
+            return left;
+        }
+
+        return right;
+    }
+
+    private void createChildRanges(
+        final List<PartitionKeyRange> keyRanges,
+        final Range<String> effectiveTokenRange) {
+
+        keyRanges.sort(PartitionKeyRangeMinInclusiveComparator.SingletonInstance);
+
         final PartitionKeyRange firstRange = keyRanges.get(0);
         this.currentToken
-            .setRange(new Range<>(firstRange.getMinInclusive(),
-                firstRange.getMaxExclusive(), true, false));
+            .setRange(
+                new Range<>(
+                    getMaxString(effectiveTokenRange.getMin(), firstRange.getMinInclusive()),
+                    getMinString(effectiveTokenRange.getMax(), firstRange.getMaxExclusive()),
+                    true,
+                    false));
 
         final CompositeContinuationToken continuationAsComposite =
             tryParseAsCompositeContinuationToken(
@@ -275,9 +357,17 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
             final int size = keyRanges.size();
             for (int i = 1; i < size; i++) {
                 final PartitionKeyRange keyRange = keyRanges.get(i);
-                continuationAsComposite.setRange(keyRange.toRange());
+                Range<String> newRange = new Range<>(
+                    getMaxString(effectiveTokenRange.getMin(), keyRange.getMinInclusive()),
+                    getMinString(effectiveTokenRange.getMax(), keyRange.getMaxExclusive()),
+                    true,
+                    false
+                );
+
+                continuationAsComposite.setRange(newRange);
                 this.compositeContinuationTokens.add(createCompositeContinuationTokenForRange(
-                    keyRange.getMinInclusive(), keyRange.getMaxExclusive(),
+                    newRange.getMin(),
+                    newRange.getMax(),
                     continuationAsComposite.toJson()));
             }
         } else {
@@ -285,8 +375,16 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
             final int size = keyRanges.size();
             for (int i = 1; i < size; i++) {
                 final PartitionKeyRange keyRange = keyRanges.get(i);
+                Range<String> newRange = new Range<>(
+                    getMaxString(effectiveTokenRange.getMin(), keyRange.getMinInclusive()),
+                    getMinString(effectiveTokenRange.getMax(), keyRange.getMaxExclusive()),
+                    true,
+                    false
+                );
+
                 this.compositeContinuationTokens.add(createCompositeContinuationTokenForRange(
-                    keyRange.getMinInclusive(), keyRange.getMaxExclusive(),
+                    newRange.getMin(),
+                    newRange.getMax(),
                     this.currentToken.getToken()));
             }
         }
@@ -303,14 +401,7 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
 
     private void moveToNextToken() {
         final CompositeContinuationToken recentToken = this.compositeContinuationTokens.poll();
-        if (recentToken.getToken() != null) {
-            // Normal ReadFeed can signal termination by CT null, not NotModified
-            // Change Feed never lands here, as it always provides a CT
-            // Consider current range done, if this FeedToken contains multiple ranges due
-            // to splits,
-            // all of them need to be considered done
-            this.compositeContinuationTokens.add(recentToken);
-        }
+        this.compositeContinuationTokens.add(recentToken);
 
         if (this.compositeContinuationTokens.size() > 0) {
             this.currentToken = this.compositeContinuationTokens.peek();
@@ -333,6 +424,10 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         try {
             final ObjectMapper mapper = Utils.getSimpleObjectMapper();
 
+            if (providedContinuation == null) {
+                return null;
+            }
+
             if (providedContinuation.trim().startsWith("[")) {
                 final List<CompositeContinuationToken> compositeContinuationTokens = Arrays
                     .asList(mapper.readValue(providedContinuation,
@@ -350,10 +445,47 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
             return null;
         } catch (final IOException ioError) {
             LOGGER.debug(
-                "Failed to parse as composite continuation token JSON ",
+                "Failed to parse as composite continuation token JSON {}",
                 providedContinuation,
                 ioError);
             return null;
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof FeedRangeCompositeContinuationImpl)) {
+            return false;
+        }
+
+        FeedRangeCompositeContinuationImpl other = (FeedRangeCompositeContinuationImpl)o;
+        return Objects.equals(this.feedRange, other.feedRange) &&
+            Objects.equals(this.getContainerRid(), other.getContainerRid()) &&
+            Objects.equals(this.initialNoResultsRange, other.initialNoResultsRange) &&
+            Objects.equals(this.currentToken, other.currentToken) &&
+            Objects.equals(this.compositeContinuationTokens, other.compositeContinuationTokens);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+            this.feedRange,
+            this.getContainerRid(),
+            this.initialNoResultsRange,
+            this.currentToken,
+            this.compositeContinuationTokens);
+    }
+
+    static class PartitionKeyRangeMinInclusiveComparator implements Comparator<PartitionKeyRange>, Serializable {
+        private static final long serialVersionUID = 1L;
+        final static Comparator<PartitionKeyRange> SingletonInstance = new PartitionKeyRangeMinInclusiveComparator();
+
+        private PartitionKeyRangeMinInclusiveComparator() {
+        }
+
+        @Override
+        public int compare(PartitionKeyRange o1, PartitionKeyRange o2) {
+            return o1.getMinInclusive().compareTo(o2.getMinInclusive());
         }
     }
 }

@@ -1,132 +1,132 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gaprahns.blob.core.windows.net/jtfsgetaccesscontrolac039183869debaa05354d258?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsgetaccesscontrolac02719491eb55eacc9d47aea?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "96686a84-7d6c-42dc-afbe-174f5f0d05bf"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "813a58b8-92a1-433e-bf5f-9d61186280c9"
     },
     "Response" : {
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D75EEAB19C98BC",
-      "Last-Modified" : "Fri, 01 Nov 2019 16:43:59 GMT",
+      "eTag" : "0x8D8D9E3645097C1",
+      "Last-Modified" : "Thu, 25 Feb 2021 23:16:33 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "3a658d36-a01e-0034-1ad3-90e1d2000000",
-      "Date" : "Fri, 01 Nov 2019 16:43:58 GMT",
-      "x-ms-client-request-id" : "96686a84-7d6c-42dc-afbe-174f5f0d05bf"
+      "x-ms-request-id" : "37316834-601e-0075-5acc-0bb638000000",
+      "x-ms-client-request-id" : "813a58b8-92a1-433e-bf5f-9d61186280c9",
+      "Date" : "Thu, 25 Feb 2021 23:16:32 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gaprahns.dfs.core.windows.net/jtfsgetaccesscontrolac039183869debaa05354d258/javapathgetaccesscontrolac102261810beb0462734d7?resource=directory",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsgetaccesscontrolac02719491eb55eacc9d47aea/javapathgetaccesscontrolac136475d0dff136693c454?resource=directory",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-preview.5 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "bf83e9c5-910f-42d3-aad4-4f0736c33150"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.2 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "fc8ff2d6-26d1-474a-a999-385aba042228"
     },
     "Response" : {
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D75EEAB1A6CE9C",
-      "Last-Modified" : "Fri, 01 Nov 2019 16:43:59 GMT",
+      "eTag" : "0x8D8D9E3645BFE8F",
+      "Last-Modified" : "Thu, 25 Feb 2021 23:16:33 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "aa8e00a0-801f-00ab-1dd3-909968000000",
-      "Date" : "Fri, 01 Nov 2019 16:43:58 GMT",
-      "x-ms-client-request-id" : "bf83e9c5-910f-42d3-aad4-4f0736c33150"
+      "x-ms-request-id" : "786dab63-601f-0075-2ccc-0bb638000000",
+      "x-ms-client-request-id" : "fc8ff2d6-26d1-474a-a999-385aba042228",
+      "Date" : "Thu, 25 Feb 2021 23:16:32 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gaprahns.blob.core.windows.net/jtfsgetaccesscontrolac039183869debaa05354d258/javapathgetaccesscontrolac102261810beb0462734d7?comp=lease",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsgetaccesscontrolac02719491eb55eacc9d47aea/javapathgetaccesscontrolac136475d0dff136693c454?comp=lease",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "a0dd63db-1848-4e96-a974-27fa612f5923"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.2 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6186d2df-6a81-45fd-af78-2e68abedfbc5"
     },
     "Response" : {
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D75EEAB1A6CE9C",
-      "x-ms-lease-id" : "cc78fa0c-1a72-43a1-9355-be8c39983ea3",
-      "Last-Modified" : "Fri, 01 Nov 2019 16:43:59 GMT",
+      "x-ms-lease-id" : "e1b9217c-6c54-43e3-a5a3-aeaad9cc125c",
+      "eTag" : "0x8D8D9E3645BFE8F",
+      "Last-Modified" : "Thu, 25 Feb 2021 23:16:33 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "dc6ff113-e01e-007c-19d3-90d34f000000",
-      "Date" : "Fri, 01 Nov 2019 16:43:59 GMT",
-      "x-ms-client-request-id" : "a0dd63db-1848-4e96-a974-27fa612f5923"
+      "x-ms-request-id" : "37316855-601e-0075-74cc-0bb638000000",
+      "x-ms-client-request-id" : "6186d2df-6a81-45fd-af78-2e68abedfbc5",
+      "Date" : "Thu, 25 Feb 2021 23:16:32 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://gaprahns.dfs.core.windows.net/jtfsgetaccesscontrolac039183869debaa05354d258/javapathgetaccesscontrolac102261810beb0462734d7?action=getAccessControl&upn=false",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsgetaccesscontrolac02719491eb55eacc9d47aea/javapathgetaccesscontrolac136475d0dff136693c454?action=getAccessControl&upn=false",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-preview.5 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "d1c2de65-155d-4c8f-a347-f645f98b00f8"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.2 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f84ce1e0-2603-4139-8925-29cde7c3e240"
     },
     "Response" : {
       "x-ms-group" : "$superuser",
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-acl" : "user::rwx,group::r-x,other::---",
-      "Last-Modified" : "Fri, 01 Nov 2019 16:43:59 GMT",
+      "Last-Modified" : "Thu, 25 Feb 2021 23:16:33 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 01 Nov 2019 16:43:58 GMT",
-      "ETag" : "0x8D75EEAB1A6CE9C",
+      "Date" : "Thu, 25 Feb 2021 23:16:33 GMT",
+      "eTag" : "0x8D8D9E3645BFE8F",
       "x-ms-permissions" : "rwxr-x---",
-      "x-ms-request-id" : "aa8e00a3-801f-00ab-20d3-909968000000",
+      "x-ms-request-id" : "786dab64-601f-0075-2dcc-0bb638000000",
       "x-ms-owner" : "$superuser",
-      "x-ms-client-request-id" : "d1c2de65-155d-4c8f-a347-f645f98b00f8"
+      "x-ms-client-request-id" : "f84ce1e0-2603-4139-8925-29cde7c3e240"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://gaprahns.blob.core.windows.net?prefix=jtfsgetaccesscontrolac&comp=list",
+    "Uri" : "https://REDACTED.blob.core.windows.net?comp=list&prefix=jtfsgetaccesscontrolac",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "445b0d6e-e689-4038-a0e5-0ae06d5a8b2f"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4315d549-252a-465c-aaad-ce706af41d88"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "3a658da6-a01e-0034-7dd3-90e1d2000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gaprahns.blob.core.windows.net/\"><Prefix>jtfsgetaccesscontrolac</Prefix><Containers><Container><Name>jtfsgetaccesscontrolac039183869debaa05354d258</Name><Properties><Last-Modified>Fri, 01 Nov 2019 16:43:59 GMT</Last-Modified><Etag>\"0x8D75EEAB19C98BC\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Fri, 01 Nov 2019 16:43:59 GMT",
-      "x-ms-client-request-id" : "445b0d6e-e689-4038-a0e5-0ae06d5a8b2f",
+      "x-ms-request-id" : "3731686e-601e-0075-0acc-0bb638000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gapracontainerrestorehns.blob.core.windows.net/\"><Prefix>jtfsgetaccesscontrolac</Prefix><Containers><Container><Name>jtfsgetaccesscontrolac02719491eb55eacc9d47aea</Name><Properties><Last-Modified>Thu, 25 Feb 2021 23:16:33 GMT</Last-Modified><Etag>\"0x8D8D9E3645097C1\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "4315d549-252a-465c-aaad-ce706af41d88",
+      "Date" : "Thu, 25 Feb 2021 23:16:33 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://gaprahns.blob.core.windows.net/jtfsgetaccesscontrolac039183869debaa05354d258?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsgetaccesscontrolac02719491eb55eacc9d47aea?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "99be5063-68bc-4da9-a6eb-29fdceeedcbf"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "168f1b4d-ac5c-4229-8629-74d698f8d234"
     },
     "Response" : {
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "dc6ff14c-e01e-007c-4bd3-90d34f000000",
-      "Date" : "Fri, 01 Nov 2019 16:43:59 GMT",
-      "x-ms-client-request-id" : "99be5063-68bc-4da9-a6eb-29fdceeedcbf"
+      "x-ms-request-id" : "37316881-601e-0075-1bcc-0bb638000000",
+      "x-ms-client-request-id" : "168f1b4d-ac5c-4229-8629-74d698f8d234",
+      "Date" : "Thu, 25 Feb 2021 23:16:33 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtfsgetaccesscontrolac039183869debaa05354d258", "javapathgetaccesscontrolac102261810beb0462734d7" ]
+  "variables" : [ "jtfsgetaccesscontrolac02719491eb55eacc9d47aea", "javapathgetaccesscontrolac136475d0dff136693c454" ]
 }

@@ -1,126 +1,126 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gaprahns.blob.core.windows.net/jtfsdeletesubdirac0directoryapitestdeletesubdirac5246029798a?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsdeletesubdirac0directoryapitestdeletesubdirac97112874aab?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "86e45f6b-1937-4df8-a9f9-868785c0f5b8"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "27e4ba5c-095c-44f3-a446-2970ef4d532a"
     },
     "Response" : {
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D75EEACC1AE83D",
-      "Last-Modified" : "Fri, 01 Nov 2019 16:44:43 GMT",
+      "eTag" : "0x8D8D9E384CC5813",
+      "Last-Modified" : "Thu, 25 Feb 2021 23:17:28 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "3a65f337-a01e-0034-7bd3-90e1d2000000",
-      "Date" : "Fri, 01 Nov 2019 16:44:43 GMT",
-      "x-ms-client-request-id" : "86e45f6b-1937-4df8-a9f9-868785c0f5b8"
+      "x-ms-request-id" : "3731a615-601e-0075-0ecc-0bb638000000",
+      "x-ms-client-request-id" : "27e4ba5c-095c-44f3-a446-2970ef4d532a",
+      "Date" : "Thu, 25 Feb 2021 23:17:27 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gaprahns.dfs.core.windows.net/jtfsdeletesubdirac0directoryapitestdeletesubdirac5246029798a/javapathdeletesubdirac1directoryapitestdeletesubdirac524265410?resource=directory",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsdeletesubdirac0directoryapitestdeletesubdirac97112874aab/javapathdeletesubdirac1directoryapitestdeletesubdirac971096158?resource=directory",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-preview.5 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "814d14bd-e00f-4199-9b85-3e1c6b569e0c"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.2 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4ee3c79b-2b56-4fab-a043-1ede2cf4dca1"
     },
     "Response" : {
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D75EEACC309687",
-      "Last-Modified" : "Fri, 01 Nov 2019 16:44:43 GMT",
+      "eTag" : "0x8D8D9E384D70267",
+      "Last-Modified" : "Thu, 25 Feb 2021 23:17:28 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "aa8e01e2-801f-00ab-57d3-909968000000",
-      "Date" : "Fri, 01 Nov 2019 16:44:43 GMT",
-      "x-ms-client-request-id" : "814d14bd-e00f-4199-9b85-3e1c6b569e0c"
+      "x-ms-request-id" : "786dadd3-601f-0075-6dcc-0bb638000000",
+      "x-ms-client-request-id" : "4ee3c79b-2b56-4fab-a043-1ede2cf4dca1",
+      "Date" : "Thu, 25 Feb 2021 23:17:27 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gaprahns.dfs.core.windows.net/jtfsdeletesubdirac0directoryapitestdeletesubdirac5246029798a/javapathdeletesubdirac1directoryapitestdeletesubdirac524265410/javapathdeletesubdirac2directoryapitestdeletesubdirac52482625b?resource=directory",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsdeletesubdirac0directoryapitestdeletesubdirac97112874aab/javapathdeletesubdirac1directoryapitestdeletesubdirac971096158%2Fjavapathdeletesubdirac2directoryapitestdeletesubdirac971588364?resource=directory",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-preview.5 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "efa00d05-2886-4883-9910-c3bb55bd96f4"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.2 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cdf058b6-0f4e-42ce-8516-daa7e4f6c263"
     },
     "Response" : {
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D75EEACC388A90",
-      "Last-Modified" : "Fri, 01 Nov 2019 16:44:43 GMT",
+      "eTag" : "0x8D8D9E384E05FAF",
+      "Last-Modified" : "Thu, 25 Feb 2021 23:17:28 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "aa8e01e3-801f-00ab-58d3-909968000000",
-      "Date" : "Fri, 01 Nov 2019 16:44:43 GMT",
-      "x-ms-client-request-id" : "efa00d05-2886-4883-9910-c3bb55bd96f4"
+      "x-ms-request-id" : "786dadd4-601f-0075-6ecc-0bb638000000",
+      "x-ms-client-request-id" : "cdf058b6-0f4e-42ce-8516-daa7e4f6c263",
+      "Date" : "Thu, 25 Feb 2021 23:17:27 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://gaprahns.dfs.core.windows.net/jtfsdeletesubdirac0directoryapitestdeletesubdirac5246029798a/javapathdeletesubdirac1directoryapitestdeletesubdirac524265410/javapathdeletesubdirac2directoryapitestdeletesubdirac52482625b?recursive=false",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsdeletesubdirac0directoryapitestdeletesubdirac97112874aab/javapathdeletesubdirac1directoryapitestdeletesubdirac971096158%2Fjavapathdeletesubdirac2directoryapitestdeletesubdirac971588364?recursive=false",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.0.0-preview.5 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "7b795db5-0330-4b15-9f1b-880c4a084618"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.2 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ca64958f-f67f-4a7d-84e6-b0d70e6d76e3"
     },
     "Response" : {
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "aa8e01e4-801f-00ab-59d3-909968000000",
-      "Date" : "Fri, 01 Nov 2019 16:44:43 GMT",
-      "x-ms-client-request-id" : "7b795db5-0330-4b15-9f1b-880c4a084618"
+      "x-ms-request-id" : "786dadd5-601f-0075-6fcc-0bb638000000",
+      "x-ms-client-request-id" : "ca64958f-f67f-4a7d-84e6-b0d70e6d76e3",
+      "Date" : "Thu, 25 Feb 2021 23:17:27 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://gaprahns.blob.core.windows.net?prefix=jtfsdeletesubdirac&comp=list",
+    "Uri" : "https://REDACTED.blob.core.windows.net?comp=list&prefix=jtfsdeletesubdirac",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "ed722e7b-1016-4cb2-bec4-a95b49320fc8"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "093bc028-9bc3-453e-a49a-66903d695923"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "dc703088-e01e-007c-4ed3-90d34f000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gaprahns.blob.core.windows.net/\"><Prefix>jtfsdeletesubdirac</Prefix><Containers><Container><Name>jtfsdeletesubdirac0directoryapitestdeletesubdirac5246029798a</Name><Properties><Last-Modified>Fri, 01 Nov 2019 16:44:43 GMT</Last-Modified><Etag>\"0x8D75EEACC1AE83D\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Fri, 01 Nov 2019 16:44:43 GMT",
-      "x-ms-client-request-id" : "ed722e7b-1016-4cb2-bec4-a95b49320fc8",
+      "x-ms-request-id" : "3731a651-601e-0075-41cc-0bb638000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gapracontainerrestorehns.blob.core.windows.net/\"><Prefix>jtfsdeletesubdirac</Prefix><Containers><Container><Name>jtfsdeletesubdirac0directoryapitestdeletesubdirac97112874aab</Name><Properties><Last-Modified>Thu, 25 Feb 2021 23:17:28 GMT</Last-Modified><Etag>\"0x8D8D9E384CC5813\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "093bc028-9bc3-453e-a49a-66903d695923",
+      "Date" : "Thu, 25 Feb 2021 23:17:27 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://gaprahns.blob.core.windows.net/jtfsdeletesubdirac0directoryapitestdeletesubdirac5246029798a?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsdeletesubdirac0directoryapitestdeletesubdirac97112874aab?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "dc97292f-46e3-4517-be34-6ecbdb3d0ffd"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8aae3ba2-11da-458c-98ad-64cd50fa06c3"
     },
     "Response" : {
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "3a65f3c3-a01e-0034-80d3-90e1d2000000",
-      "Date" : "Fri, 01 Nov 2019 16:44:43 GMT",
-      "x-ms-client-request-id" : "dc97292f-46e3-4517-be34-6ecbdb3d0ffd"
+      "x-ms-request-id" : "3731a65e-601e-0075-4dcc-0bb638000000",
+      "x-ms-client-request-id" : "8aae3ba2-11da-458c-98ad-64cd50fa06c3",
+      "Date" : "Thu, 25 Feb 2021 23:17:27 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtfsdeletesubdirac0directoryapitestdeletesubdirac5246029798a", "javapathdeletesubdirac1directoryapitestdeletesubdirac524265410", "javapathdeletesubdirac2directoryapitestdeletesubdirac52482625b" ]
+  "variables" : [ "jtfsdeletesubdirac0directoryapitestdeletesubdirac97112874aab", "javapathdeletesubdirac1directoryapitestdeletesubdirac971096158", "javapathdeletesubdirac2directoryapitestdeletesubdirac971588364" ]
 }

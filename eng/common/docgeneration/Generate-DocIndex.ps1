@@ -65,18 +65,12 @@ function Get-TocMapping {
     $orderServiceMapping = @{}
 
     foreach ($artifact in $artifacts) {
-        $packageInfo = $metadata | ? {$_.Package -eq $artifact}
-        
-        if ($packageInfo -and $packageInfo[0].Hide -eq 'true') {
-            LogDebug "The artifact $artifact set 'Hide' to 'true'."
-            continue
-        }
+        $packageInfo = $metadata | ? { $_.Package -eq $artifact -and $_.Hide -ne "true" }
         $serviceName = ""
         $displayName = ""
         if (!$packageInfo) {
-            LogWarning "There is no artifact $artifact. Please check csv of Azure/azure-sdk/_data/release/latest repo if this is intended. "
-            # If no service name retrieved, print out warning message, and put it into Other page.
-            $serviceName = "Other"
+            LogDebug "There is no service name for artifact $artifact or it is marked as hidden. Please check csv of Azure/azure-sdk/_data/release/latest repo if this is intended. "
+            continue
         }
         elseif (!$packageInfo[0].ServiceName) {
             LogWarning "There is no service name for artifact $artifact. Please check csv of Azure/azure-sdk/_data/release/latest repo if this is intended. "
@@ -165,7 +159,7 @@ function UpdateDocIndexFiles {
     $docfxContent = Get-Content -Path $DocfxJsonPath -Raw
     $docfxContent = $docfxContent -replace "`"_appTitle`": `"`"", "`"_appTitle`": `"Azure SDK for $appTitleLang`""
     $docfxContent = $docfxContent -replace "`"_appFooter`": `"`"", "`"_appFooter`": `"Azure SDK for $appTitleLang`""
-    Set-Content -Path $DocfxJsonPath -Value $docfxContent
+    Set-Content -Path $DocfxJsonPath -Value $docfxContent -NoNewline
     # Update main.js var lang
     $mainJsContent = Get-Content -Path $MainJsPath -Raw
     $mainJsContent = $mainJsContent -replace "var SELECTED_LANGUAGE = ''", "var SELECTED_LANGUAGE = '$lang'"

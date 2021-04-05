@@ -3,6 +3,9 @@
 
 package com.azure.storage.file.datalake;
 
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
@@ -19,7 +22,6 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
-import com.azure.storage.file.datalake.implementation.models.Path;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
@@ -28,9 +30,12 @@ import com.azure.storage.file.datalake.models.PathItem;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
@@ -49,9 +54,10 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <p>
  * Please refer to the
  *
- * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json">Azure
+ * <a href="https://docs.microsoft.com/azure/storage/blobs/data-lake-storage-introduction">Azure
  * Docs</a> for more information.
  */
+@ServiceClient(builder = DataLakePathClientBuilder.class, isAsync = true)
 public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(DataLakeDirectoryAsyncClient.class);
@@ -74,9 +80,9 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     }
 
     DataLakeDirectoryAsyncClient(DataLakePathAsyncClient dataLakePathAsyncClient) {
-        super(dataLakePathAsyncClient.getHttpPipeline(), dataLakePathAsyncClient.getPathUrl(),
+        super(dataLakePathAsyncClient.getHttpPipeline(), dataLakePathAsyncClient.getAccountUrl(),
             dataLakePathAsyncClient.getServiceVersion(), dataLakePathAsyncClient.getAccountName(),
-            dataLakePathAsyncClient.getFileSystemName(), dataLakePathAsyncClient.pathName,
+            dataLakePathAsyncClient.getFileSystemName(), Utility.urlEncode(dataLakePathAsyncClient.pathName),
             PathResourceType.DIRECTORY, dataLakePathAsyncClient.getBlockBlobAsyncClient());
     }
 
@@ -115,11 +121,12 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.delete}
      *
      * <p>For more information see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a></p>
      *
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> delete() {
         try {
             return deleteWithResponse(false, null).flatMap(FluxUtil::toMono);
@@ -136,7 +143,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteWithResponse#boolean-DataLakeRequestConditions}
      *
      * <p>For more information see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a></p>
      *
      * @param recursive Whether or not to delete all paths beneath the directory.
@@ -144,6 +151,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponse(boolean recursive, DataLakeRequestConditions requestConditions) {
         // TODO (rickle-msft): Update for continuation token if we support HNS off
         try {
@@ -171,16 +179,17 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
 
         BlockBlobAsyncClient blockBlobAsyncClient = prepareBuilderAppendPath(fileName).buildBlockBlobAsyncClient();
 
-        return new DataLakeFileAsyncClient(getHttpPipeline(),
-            StorageImplUtils.appendToUrlPath(getPathUrl(), Utility.urlEncode(Utility.urlDecode(fileName))).toString(),
-            getServiceVersion(), getAccountName(), getFileSystemName(), Utility.urlEncode(getObjectPath() + "/"
+        String pathPrefix = getObjectPath().isEmpty() ? "" : getObjectPath() + "/";
+
+        return new DataLakeFileAsyncClient(getHttpPipeline(), getAccountUrl(),
+            getServiceVersion(), getAccountName(), getFileSystemName(), Utility.urlEncode(pathPrefix
             + Utility.urlDecode(fileName)), blockBlobAsyncClient);
     }
 
     /**
      * Creates a new file within a directory. By default this method will not overwrite an existing file.
      * For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -190,13 +199,14 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * @param fileName Name of the file to create.
      * @return A {@link Mono} containing a {@link DataLakeFileAsyncClient} used to interact with the file created.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataLakeFileAsyncClient> createFile(String fileName) {
         return createFile(fileName, false);
     }
 
     /**
      * Creates a new file within a directory. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -207,6 +217,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * @param overwrite Whether or not to overwrite, should the file exist.
      * @return A {@link Mono} containing a {@link DataLakeFileAsyncClient} used to interact with the file created.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataLakeFileAsyncClient> createFile(String fileName, boolean overwrite) {
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
         if (!overwrite) {
@@ -223,7 +234,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     /**
      * Creates a new file within a directory. If a file with the same name already exists, the file will be
      * overwritten. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -240,6 +251,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakeFileAsyncClient} used to interact with the file created.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataLakeFileAsyncClient>> createFileWithResponse(String fileName, String permissions,
         String umask, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
@@ -255,7 +267,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
 
     /**
      * Deletes the specified file in the file system. If the file doesn't exist the operation fails.
-     * For more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -265,6 +277,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * @param fileName Name of the file to delete.
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteFile(String fileName) {
         try {
             return deleteFileWithResponse(fileName, null).flatMap(FluxUtil::toMono);
@@ -275,7 +288,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
 
     /**
      * Deletes the specified file in the directory. If the file doesn't exist the operation fails.
-     * For more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -286,6 +299,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteFileWithResponse(String fileName, DataLakeRequestConditions requestConditions) {
         try {
             return getFileAsyncClient(fileName).deleteWithResponse(requestConditions);
@@ -313,16 +327,17 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         BlockBlobAsyncClient blockBlobAsyncClient = prepareBuilderAppendPath(subdirectoryName)
             .buildBlockBlobAsyncClient();
 
-        return new DataLakeDirectoryAsyncClient(getHttpPipeline(),
-            StorageImplUtils.appendToUrlPath(getPathUrl(), Utility.urlEncode(Utility.urlDecode(subdirectoryName)))
-                .toString(), getServiceVersion(), getAccountName(), getFileSystemName(),
-            Utility.urlEncode(getObjectPath() + "/" + Utility.urlDecode(subdirectoryName)), blockBlobAsyncClient);
+        String pathPrefix = getObjectPath().isEmpty() ? "" : getObjectPath() + "/";
+
+        return new DataLakeDirectoryAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
+            getAccountName(), getFileSystemName(),
+            Utility.urlEncode(pathPrefix + Utility.urlDecode(subdirectoryName)), blockBlobAsyncClient);
     }
 
     /**
      * Creates a new sub-directory within a directory. By default this method will not overwrite an existing
      * sub-directory. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -332,13 +347,14 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * @return A {@link Mono} containing a {@link DataLakeDirectoryAsyncClient} used to interact with the directory
      * created.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataLakeDirectoryAsyncClient> createSubdirectory(String subdirectoryName) {
         return createSubdirectory(subdirectoryName, false);
     }
 
     /**
      * Creates a new sub-directory within a directory. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -349,6 +365,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * @return A {@link Mono} containing a {@link DataLakeDirectoryAsyncClient} used to interact with the directory
      * created.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataLakeDirectoryAsyncClient> createSubdirectory(String subdirectoryName, boolean overwrite) {
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
         if (!overwrite) {
@@ -365,7 +382,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     /**
      * Creates a new sub-directory within a directory. If a sub-directory with the same name already exists, the
      * sub-directory will be overwritten. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -382,6 +399,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakeDirectoryAsyncClient} used to interact with the sub-directory created.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataLakeDirectoryAsyncClient>> createSubdirectoryWithResponse(String subdirectoryName,
         String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
@@ -398,7 +416,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     /**
      * Deletes the specified sub-directory in the directory. If the sub-directory doesn't exist or is not empty the
      * operation fails.
-     * For more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -408,6 +426,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * @param subdirectoryName Name of the sub-directory to delete.
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSubdirectory(String subdirectoryName) {
         try {
             return deleteSubdirectoryWithResponse(subdirectoryName, false, null).flatMap(FluxUtil::toMono);
@@ -419,7 +438,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     /**
      * Deletes the specified sub-directory in the directory. If the sub-directory doesn't exist or is not empty the
      * operation fails.
-     * For more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -431,6 +450,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSubdirectoryWithResponse(String directoryName, boolean recursive,
         DataLakeRequestConditions requestConditions) {
         try {
@@ -443,7 +463,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     /**
      * Moves the directory to another location within the file system.
      * For more information see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -458,6 +478,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * @return A {@link Mono} containing a {@link DataLakeDirectoryAsyncClient} used to interact with the new directory
      * created.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataLakeDirectoryAsyncClient> rename(String destinationFileSystem, String destinationPath) {
         try {
             return renameWithResponse(destinationFileSystem, destinationPath, null, null).flatMap(FluxUtil::toMono);
@@ -469,7 +490,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     /**
      * Moves the directory to another location within the file system.
      * For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -485,6 +506,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakeDirectoryAsyncClient} used to interact with the directory created.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataLakeDirectoryAsyncClient>> renameWithResponse(String destinationFileSystem,
         String destinationPath, DataLakeRequestConditions sourceRequestConditions,
         DataLakeRequestConditions destinationRequestConditions) {
@@ -499,7 +521,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
 
     /**
      * Returns a reactive Publisher emitting all the files/directories in this directory lazily as needed. For more
-     * information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/filesystem/list">Azure Docs</a>.
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/filesystem/list">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -507,13 +529,14 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * @return A reactive response emitting the list of files/directories.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PathItem> listPaths() {
         return this.listPaths(false, false, null);
     }
 
     /**
      * Returns a reactive Publisher emitting all the files/directories in this directory lazily as needed. For more
-     * information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/filesystem/list">Azure Docs</a>.
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/filesystem/list">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -530,6 +553,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * 5,000 items.
      * @return A reactive response emitting the list of files/directories.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PathItem> listPaths(boolean recursive, boolean userPrincipleNameReturned, Integer maxResults) {
         try {
             return listPathsWithOptionalTimeout(recursive, userPrincipleNameReturned, maxResults, null);
@@ -540,26 +564,35 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
 
     PagedFlux<PathItem> listPathsWithOptionalTimeout(boolean recursive, boolean userPrincipleNameReturned,
         Integer maxResults, Duration timeout) {
-        Function<String, Mono<PagedResponse<Path>>> func =
-            marker -> listPathsSegment(marker, recursive, userPrincipleNameReturned, maxResults, timeout)
-                .map(response -> new PagedResponseBase<>(
-                    response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    response.getValue().getPaths(),
-                    response.getDeserializedHeaders().getContinuation(),
-                    response.getDeserializedHeaders()));
+        BiFunction<String, Integer, Mono<PagedResponse<PathItem>>> func =
+            (marker, pageSize) -> listPathsSegment(marker, recursive, userPrincipleNameReturned,
+                pageSize == null ? maxResults : pageSize, timeout)
+                .map(response -> {
+                    List<PathItem> value = response.getValue() == null
+                        ? Collections.emptyList()
+                        : response.getValue().getPaths().stream()
+                        .map(Transforms::toPathItem)
+                        .collect(Collectors.toList());
 
-        return new PagedFlux<>(() -> func.apply(null), func).mapPage(Transforms::toPathItem);
+                    return new PagedResponseBase<>(
+                        response.getRequest(),
+                        response.getStatusCode(),
+                        response.getHeaders(),
+                        value,
+                        response.getDeserializedHeaders().getXMsContinuation(),
+                        response.getDeserializedHeaders());
+                });
+
+        return new PagedFlux<>(pageSize -> func.apply(null, pageSize), func);
     }
 
     private Mono<FileSystemsListPathsResponse> listPathsSegment(String marker, boolean recursive,
         boolean userPrincipleNameReturned, Integer maxResults, Duration timeout) {
 
         return StorageImplUtils.applyOptionalTimeout(
-            this.fileSystemDataLakeStorage.fileSystems().listPathsWithRestResponseAsync(
-                recursive, marker, getDirectoryPath(), maxResults, userPrincipleNameReturned, null,
-                null, Context.NONE), timeout);
+            this.fileSystemDataLakeStorage.getFileSystems().listPathsWithResponseAsync(
+                recursive, null, null, marker, getDirectoryPath(), maxResults, userPrincipleNameReturned,
+                Context.NONE), timeout);
     }
 
     /**
