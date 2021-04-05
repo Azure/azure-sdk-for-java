@@ -464,20 +464,6 @@ private object CosmosChangeFeedConfig {
     helpMessage = "ChangeFeed Start from settings (Now, Beginning  or a certain point in " +
       "time (UTC) for example 2020-02-10T14:15:03) - the default value is 'Beginning'.")
 
-  private def validateStartFromMode(startFrom: String): ChangeFeedStartFromMode = {
-    Option(startFrom).fold(DefaultStartFromMode)(sf => {
-      val trimmed = sf.trim
-
-      if (trimmed.equalsIgnoreCase(ChangeFeedStartFromModes.Beginning.toString)) {
-        ChangeFeedStartFromModes.Beginning
-      } else if (trimmed.equalsIgnoreCase(ChangeFeedStartFromModes.Now.toString)) {
-        ChangeFeedStartFromModes.Now
-      } else {
-        ChangeFeedStartFromModes.PointInTime
-      }
-    })
-  }
-
   private val startFromPointInTime = CosmosConfigEntry[Instant](
     key = "spark.cosmos.changeFeed.startFrom",
     keySuffix = Option.apply("(for point in time)"),
@@ -500,6 +486,20 @@ private object CosmosChangeFeedConfig {
     mandatory = false,
     parseFromStringFunction = maxItemCount => maxItemCount.toInt,
     helpMessage = "Approximate maximum number of items read from change feed for each trigger")
+
+  private def validateStartFromMode(startFrom: String): ChangeFeedStartFromMode = {
+    Option(startFrom).fold(DefaultStartFromMode)(sf => {
+      val trimmed = sf.trim
+
+      if (trimmed.equalsIgnoreCase(ChangeFeedStartFromModes.Beginning.toString)) {
+        ChangeFeedStartFromModes.Beginning
+      } else if (trimmed.equalsIgnoreCase(ChangeFeedStartFromModes.Now.toString)) {
+        ChangeFeedStartFromModes.Now
+      } else {
+        ChangeFeedStartFromModes.PointInTime
+      }
+    })
+  }
 
   def parseCosmosChangeFeedConfig(cfg: Map[String, String]): CosmosChangeFeedConfig = {
     val changeFeedModeParsed = CosmosConfigEntry.parse(cfg, changeFeedMode)
