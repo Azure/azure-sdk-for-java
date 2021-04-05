@@ -2,6 +2,22 @@
 
 ## 4.3.0-beta.6 (Unreleased)
 
+### Breaking Changes
+- Removed the following classes:
+  - `LocalCryptographyAsyncClient`
+  - `LocalCryptographyClient`
+  - `LocalCryptographyClientBuilder`
+  - `LocalKeyEncryptionKeyClient`
+  - `LocalKeyEncryptionKeyAsyncClient`
+  - `LocalKeyEncryptionKeyClientBuilder`
+    
+### New Features
+- Added support for building local-only cryptography clients by providing a `JsonWebKey` for local operations: 
+  - `CryptograhpyClientBuilder.jsonWebKey(JsonWebKey)`
+- Added support for building local-only key encryption key clients by providing a `JsonWebKey` for local operations:
+  - `KeyEncryptionKeyClientBuilder.buildKeyEncryptionKey(JsonWebKey)`
+  - `KeyEncryptionKeyClientBuilder.buildAsyncKeyEncryptionKey(JsonWebKey)`
+- `CryptograhpyClientBuilder.keyIdentifier(String)` now throws a `NullPointerException` if a `null` value is provided as an argument.
 
 ## 4.3.0-beta.5 (2021-03-12)
 
