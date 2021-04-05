@@ -4,17 +4,18 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.cryptography.KeyEncryptionKey;
+import com.azure.core.http.HttpPipeline;
 
 /**
- * A key client which is used to asynchronously encrypt, or wrap, another key.
+ * A key client which is used to synchronously wrap or unwrap another key.
  */
 public final class KeyEncryptionKeyClient implements KeyEncryptionKey {
     private final KeyEncryptionKeyAsyncClient client;
 
     /**
-     * Creates a KeyEncryptionKeyClient that uses {@code pipeline} to service requests
+     * Creates a {@link KeyEncryptionKeyClient} that uses a given {@link HttpPipeline pipeline} to service requests.
      *
-     * @param client The {@link KeyEncryptionKeyClient} that the client routes its request through.
+     * @param client The {@link KeyEncryptionKeyAsyncClient} that the client routes its request through.
      */
     KeyEncryptionKeyClient(KeyEncryptionKeyAsyncClient client) {
         this.client = client;
