@@ -16,10 +16,6 @@ stages:
     jobs:
     - job:
       timeoutInMinutes: 40
-      variables:
-        - template: /eng/pipelines/templates/variables/globals.yml
-        - name: DatabricksClusterName
-          value: 'oltp-ci-2workers-ds3v2'
 
       pool:
         vmImage: 'ubuntu-18.04'
@@ -63,7 +59,7 @@ stages:
         displayName: Importing Jars
         inputs:
           filePath: $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3-1_2-12/test-databricks/databricks-jar-install.sh
-          arguments: '$(DatabricksClusterName) $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3-1_2-12/target'
+          arguments: 'oltp-ci-2workers-ds3v2 $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3-1_2-12/target'
       - task: Bash@3
         displayName: Importing and executing notebooks
         inputs:
