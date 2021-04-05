@@ -51,4 +51,5 @@ stages:
         options: '$(ProfileFlag) -Dgpg.skip -Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -pl $(ProjectList)'
 
   - ${{ if or(eq(variables['Build.Reason'], 'Manual'), eq(variables['Build.Reason'], 'PullRequest')) }}:
+    jobs:
     - template: /sdk/cosmos/ci.spark.databricks.yml
