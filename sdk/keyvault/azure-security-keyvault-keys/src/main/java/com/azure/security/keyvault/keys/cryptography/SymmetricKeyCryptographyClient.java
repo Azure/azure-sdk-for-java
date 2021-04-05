@@ -51,6 +51,11 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     Mono<EncryptResult> encryptAsync(EncryptOptions encryptOptions, Context context, JsonWebKey jsonWebKey) {
+        if (isGcm(encryptOptions.getAlgorithm())) {
+            return Mono.error(
+                new UnsupportedOperationException("AES-GCM is not supported for local cryptography operations."));
+        }
+
         this.key = getKey(jsonWebKey);
 
         if (key == null || key.length == 0) {
@@ -111,6 +116,11 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     Mono<DecryptResult> decryptAsync(DecryptOptions decryptOptions, Context context, JsonWebKey jsonWebKey) {
+        if (isGcm(decryptOptions.getAlgorithm())) {
+            return Mono.error(
+                new UnsupportedOperationException("AES-GCM is not supported for local cryptography operations."));
+        }
+
         this.key = getKey(jsonWebKey);
 
         if (key == null || key.length == 0) {
@@ -160,13 +170,13 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     Mono<SignResult> signAsync(SignatureAlgorithm algorithm, byte[] digest, Context context, JsonWebKey key) {
-        return Mono.error(new UnsupportedOperationException("Sign operation not supported for OCT/Symmetric key"));
+        return Mono.error(new UnsupportedOperationException("Sign operation not supported for OCT/Symmetric key."));
     }
 
     @Override
     Mono<VerifyResult> verifyAsync(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context,
                                    JsonWebKey key) {
-        return Mono.error(new UnsupportedOperationException("Verify operation not supported for OCT/Symmetric key"));
+        return Mono.error(new UnsupportedOperationException("Verify operation not supported for OCT/Symmetric key."));
     }
 
     @Override
@@ -269,5 +279,11 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
             || encryptionAlgorithm == EncryptionAlgorithm.A128CBCPAD
             || encryptionAlgorithm == EncryptionAlgorithm.A192CBCPAD
             || encryptionAlgorithm == EncryptionAlgorithm.A256CBCPAD);
+    }
+
+    private boolean isGcm(EncryptionAlgorithm encryptionAlgorithm) {
+        return (encryptionAlgorithm == EncryptionAlgorithm.A128GCM
+            || encryptionAlgorithm == EncryptionAlgorithm.A192GCM
+            || encryptionAlgorithm == EncryptionAlgorithm.A256GCM);
     }
 }
