@@ -140,19 +140,4 @@ public class LocalCryptographyClientTest extends LocalCryptographyClientTestBase
     public void encryptDecryptLocalAes256CbcPad() throws NoSuchAlgorithmException {
         encryptDecryptAesCbc(256, EncryptionAlgorithm.A256CBCPAD);
     }
-
-    @Test
-    public void encryptDecryptLocalAes128Gcm() throws NoSuchAlgorithmException {
-        encryptDecryptAesGcm(128, EncryptionAlgorithm.A128GCM);
-    }
-
-    @Test
-    public void encryptDecryptLocalAes192Gcm() throws NoSuchAlgorithmException {
-        encryptDecryptAesGcm(192, EncryptionAlgorithm.A192GCM);
-    }
-
-    @Test
-    public void encryptDecryptLocalAes256Gcm() throws NoSuchAlgorithmException {
-        encryptDecryptAesGcm(256, EncryptionAlgorithm.A256GCM);
-    }
 }

@@ -4,6 +4,9 @@
 package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
+import com.azure.ai.textanalytics.models.HealthcareEntityRelationRole;
+import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
+import com.azure.core.util.IterableStream;
 
 /**
  * The helper class to set the non-public properties of an {@link HealthcareEntityRelation} instance.
@@ -17,34 +20,28 @@ public final class HealthcareEntityRelationPropertiesHelper {
      * Type defining the methods to set the non-public properties of an {@link HealthcareEntityRelation} instance.
      */
     public interface HealthcareEntityRelationAccessor {
-        void setRelationType(HealthcareEntityRelation healthcareEntityRelation, String relationType);
-        void setBidirectional(HealthcareEntityRelation healthcareEntityRelation, boolean bidirectional);
-        void setSourceLink(HealthcareEntityRelation healthcareEntityRelation, String sourceLink);
-        void setTargetLink(HealthcareEntityRelation healthcareEntityRelation, String targetLink);
+        void setRelationType(HealthcareEntityRelation healthcareEntityRelation,
+            HealthcareEntityRelationType relationType);
+        void setRoles(HealthcareEntityRelation healthcareEntityRelation,
+            IterableStream<HealthcareEntityRelationRole> roles);
     }
 
     /**
      * The method called from {@link HealthcareEntityRelation} to set it's accessor.
      *
-     * @param healthcareEntityRelationAccessor The accessor.
+     * @param entityRelationAccessor The accessor.
      */
-    public static void setAccessor(final HealthcareEntityRelationAccessor healthcareEntityRelationAccessor) {
-        accessor = healthcareEntityRelationAccessor;
+    public static void setAccessor(final HealthcareEntityRelationAccessor entityRelationAccessor) {
+        accessor = entityRelationAccessor;
     }
 
-    public static void setRelationType(HealthcareEntityRelation healthcareEntityRelation, String relationType) {
+    public static void setRelationType(HealthcareEntityRelation healthcareEntityRelation,
+        HealthcareEntityRelationType relationType) {
         accessor.setRelationType(healthcareEntityRelation, relationType);
     }
 
-    public static void setBidirectional(HealthcareEntityRelation healthcareEntityRelation, boolean bidirectional) {
-        accessor.setBidirectional(healthcareEntityRelation, bidirectional);
-    }
-
-    public static void setSourceLink(HealthcareEntityRelation healthcareEntityRelation, String sourceLink) {
-        accessor.setSourceLink(healthcareEntityRelation, sourceLink);
-    }
-
-    public static void setTargetLink(HealthcareEntityRelation healthcareEntityRelation, String targetLink) {
-        accessor.setTargetLink(healthcareEntityRelation, targetLink);
+    public static void setRoles(HealthcareEntityRelation healthcareEntityRelation,
+        IterableStream<HealthcareEntityRelationRole> roles) {
+        accessor.setRoles(healthcareEntityRelation, roles);
     }
 }

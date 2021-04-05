@@ -23,6 +23,7 @@ import javax.net.ssl.SSLException;
 public final class HttpProxyExceptionHandler extends ChannelDuplexHandler {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        Throwable causeToFire = cause;
         if (cause instanceof SSLException) {
             SSLException sslException = (SSLException) cause;
             if (sslException.getCause() instanceof ProxyConnectException) {
@@ -30,15 +31,10 @@ public final class HttpProxyExceptionHandler extends ChannelDuplexHandler {
                  * The exception was an SSLException that was caused by a failure to connect to the proxy, extract the
                  * inner ProxyConnectException and bubble that up instead.
                  */
-                ctx.fireExceptionCaught(sslException.getCause());
-                return;
+                causeToFire = sslException.getCause();
             }
         }
 
-        /*
-         * The cause either wasn't an SSLException or its inner exception wasn't a ProxyConnectException, continue
-         * bubbling up this exception.
-         */
-        ctx.fireExceptionCaught(cause);
+        ctx.fireExceptionCaught(causeToFire);
     }
 }

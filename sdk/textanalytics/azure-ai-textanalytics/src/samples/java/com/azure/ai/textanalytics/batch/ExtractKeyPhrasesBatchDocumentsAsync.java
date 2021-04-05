@@ -39,7 +39,6 @@ public class ExtractKeyPhrasesBatchDocumentsAsync {
             new TextDocumentInput("B", "The pitot tube is used to measure airspeed.").setLanguage("en")
         );
 
-        // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
 
         // Extracting key phrases for each document in a batch of documents

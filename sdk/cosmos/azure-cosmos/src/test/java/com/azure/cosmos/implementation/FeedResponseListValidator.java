@@ -16,6 +16,7 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -351,6 +352,9 @@ public interface FeedResponseListValidator<T> {
                 || response instanceof CosmosUserDefinedFunctionProperties
                 || response instanceof CosmosUserProperties) {
                 return ModelBridgeInternal.getResource(response);
+            }
+            if (response instanceof ObjectNode) {
+                return new Document((ObjectNode)response);
             }
             return null;
         }

@@ -4,12 +4,11 @@
 package com.azure.core.util;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.JsonSerializerProvider;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.ObjectSerializer;
-import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.TypeReference;
-import static com.azure.core.util.FluxUtil.monoError;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -19,82 +18,91 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.ReadOnlyBufferException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * This class is an abstraction over many different ways that binary data can be represented. The {@link BinaryData}
- * can be created from {@link InputStream}, {@link Flux} of {@link ByteBuffer}, {@link String}, {@link Object}, or byte
- * array.
- * <p><strong>Immutable data</strong></p>
- * {@link BinaryData} is constructed by copying the given data. Once {@link BinaryData} is instantiated, it can not be
- * changed. It provides various convenient APIs to get data out of {@link BinaryData}, they all start with the 'to'
- * prefix, for example {@link BinaryData#toBytes()}.
+ * This class is an abstraction for the many ways binary data can be represented.
  * <p>
- * Code samples are presented below.
+ * {@link BinaryData} can be created from an {@link InputStream}, a {@link Flux} of {@link ByteBuffer}, a {@link
+ * String}, an {@link Object}, or a byte array.
  *
- * <p><strong>Create an instance from Bytes</strong></p>
- * {@codesnippet com.azure.core.util.BinaryData.from#bytes}
+ * <p><strong>Immutable data</strong></p>
  *
- * <p><strong>Create an instance from String</strong></p>
- * {@codesnippet com.azure.core.util.BinaryData.from#String}
+ * {@link BinaryData} copies data on construction making it immutable. Various APIs are provided to get data out of
+ * {@link BinaryData}, they all start with the {@code 'to'} prefix, for example {@link BinaryData#toBytes()}.
  *
- * <p><strong>Create an instance from InputStream</strong></p>
- * {@codesnippet com.azure.core.util.BinaryData.from#Stream}
+ * <p><strong>Create an instance from a byte array</strong></p>
  *
- * <p><strong>Create an instance from Object</strong></p>
- * {@codesnippet com.azure.core.util.BinaryData.fromObject}
+ * {@codesnippet com.azure.core.util.BinaryData.fromBytes#byte}
+ *
+ * <p><strong>Create an instance from a String</strong></p>
+ *
+ * {@codesnippet com.azure.core.util.BinaryData.fromString#String}
+ *
+ * <p><strong>Create an instance from an InputStream</strong></p>
+ *
+ * {@codesnippet com.azure.core.util.BinaryData.fromStream#InputStream}
+ *
+ * <p><strong>Create an instance from an Object</strong></p>
+ *
+ * {@codesnippet com.azure.core.util.BinaryData.fromObject#Object}
  *
  * @see ObjectSerializer
  * @see JsonSerializer
  * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
  */
-public final class  BinaryData {
+public final class BinaryData {
     private static final ClientLogger LOGGER = new ClientLogger(BinaryData.class);
     private static final BinaryData EMPTY_DATA = new BinaryData(new byte[0]);
+    private static final int STREAM_READ_SIZE = 1024;
 
-    private static final Object LOCK = new Object();
+    private static final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
 
     private final byte[] data;
 
-    private static volatile JsonSerializer defaultJsonSerializer;
+    private String dataAsStringCache;
+
 
     /**
-     * Create an instance of {@link BinaryData} from the given data.
+     * Create an instance of {@link BinaryData} from the given byte array.
      *
-     * @param data to represent as bytes.
+     * @param data The byte array that {@link BinaryData} will represent.
      */
     BinaryData(byte[] data) {
         this.data = data;
     }
 
     /**
-     * Creates a {@link BinaryData} instance with given {@link InputStream} as source of data. The {@link InputStream}
-     * is not closed by this function.
+     * Creates an instance of {@link BinaryData} from the given {@link InputStream}.
+     * <p>
+     * If {@code inputStream} is null or empty an empty {@link BinaryData} is returned.
+     * <p>
+     * <b>NOTE:</b> The {@link InputStream} is not closed by this function.
      *
-     * <p><strong>Create an instance from InputStream</strong></p>
-     * {@codesnippet com.azure.core.util.BinaryData.from#Stream}
+     * <p><strong>Create an instance from an InputStream</strong></p>
      *
-     * @param inputStream The {@link InputStream} to use as data backing the instance of {@link BinaryData}.
-     * @throws UncheckedIOException If any error in reading from {@link InputStream}.
-     * @throws NullPointerException If {@code inputStream} is null.
-     * @return {@link BinaryData} representing the binary data.
+     * {@codesnippet com.azure.core.util.BinaryData.fromStream#InputStream}
+     *
+     * @param inputStream The {@link InputStream} that {@link BinaryData} will represent.
+     * @return A {@link BinaryData} representing the {@link InputStream}.
+     * @throws UncheckedIOException If any error happens while reading the {@link InputStream}.
      */
     public static BinaryData fromStream(InputStream inputStream) {
         if (Objects.isNull(inputStream)) {
             return EMPTY_DATA;
         }
 
-        final int bufferSize = 1024;
         try {
             ByteArrayOutputStream dataOutputBuffer = new ByteArrayOutputStream();
             int nRead;
-            byte[] data = new byte[bufferSize];
+            byte[] data = new byte[STREAM_READ_SIZE];
             while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
                 dataOutputBuffer.write(data, 0, nRead);
             }
-            dataOutputBuffer.flush();
 
             return new BinaryData(dataOutputBuffer.toByteArray());
 
@@ -104,27 +112,38 @@ public final class  BinaryData {
     }
 
     /**
-     * Asynchronously creates a {@link BinaryData} instance with the given {@link InputStream} as source of data. The
-     * {@link InputStream} is not closed by this function. If the {@link InputStream} is {@code null}, an empty
-     * {@link BinaryData} will be returned.
+     * Creates an instance of {@link BinaryData} from the given {@link InputStream}.
+     * <p>
+     * If {@code inputStream} is null or empty an empty {@link BinaryData} is returned.
+     * <p>
+     * <b>NOTE:</b> The {@link InputStream} is not closed by this function.
      *
-     * @param inputStream The {@link InputStream} to use as data backing the instance of {@link BinaryData}.
-     * @return {@link Mono} of {@link BinaryData} representing the binary data.
+     * <p><strong>Create an instance from an InputStream</strong></p>
+     *
+     * {@codesnippet com.azure.core.util.BinaryData.fromStreamAsync#InputStream}
+     *
+     * @param inputStream The {@link InputStream} that {@link BinaryData} will represent.
+     * @return A {@link Mono} of {@link BinaryData} representing the {@link InputStream}.
+     * @throws UncheckedIOException If any error happens while reading the {@link InputStream}.
      */
     public static Mono<BinaryData> fromStreamAsync(InputStream inputStream) {
         return Mono.fromCallable(() -> fromStream(inputStream));
     }
 
     /**
-     * Creates a {@link BinaryData} instance with given {@link Flux} of {@link ByteBuffer} as source of data. It will
-     * collect all the bytes from {@link ByteBuffer} into {@link BinaryData}. If the {@link Flux} is {@code null}, an
-     * empty {@link BinaryData} will be returned.
+     * Creates an instance of {@link BinaryData} from the given {@link Flux} of {@link ByteBuffer}.
+     * <p>
+     * If the {@code data} is null an empty {@link BinaryData} will be returned.
+     * <p>
+     * <b>Note:</b> This will collect all bytes from the {@link ByteBuffer ByteBuffers} resulting in {@link
+     * ByteBuffer#hasRemaining() hasRemaining} to return false.
      *
-     * <p><strong>Create an instance from String</strong></p>
-     * {@codesnippet com.azure.core.util.BinaryData.from#Flux}
+     * <p><strong>Create an instance from a Flux of ByteBuffer</strong></p>
      *
-     * @param data The byte buffer stream to use as data backing the instance of {@link BinaryData}.
-     * @return {@link Mono} of {@link BinaryData} representing binary data.
+     * {@codesnippet com.azure.core.util.BinaryData.fromFlux#Flux}
+     *
+     * @param data The {@link Flux} of {@link ByteBuffer} that {@link BinaryData} will represent.
+     * @return A {@link Mono} of {@link BinaryData} representing the {@link Flux} of {@link ByteBuffer}.
      */
     public static Mono<BinaryData> fromFlux(Flux<ByteBuffer> data) {
         if (Objects.isNull(data)) {
@@ -136,14 +155,22 @@ public final class  BinaryData {
     }
 
     /**
-     * Creates a {@link BinaryData} instance with given data. The {@link String} is converted into bytes using UTF_8
-     * character set. If the String is {@code null}, an empty {@link BinaryData} will be returned.
+     * Creates an instance of {@link BinaryData} from the given {@link String}.
+     * <p>
+     * The {@link String} is converted into bytes using {@link String#getBytes(Charset)} passing {@link
+     * StandardCharsets#UTF_8}.
+     * <p>
+     * If the {@code data} is null or a zero length string an empty {@link BinaryData} will be returned.
      *
-     * @param data The string to use as data backing the instance of {@link BinaryData}.
-     * @return {@link BinaryData} representing binary data.
+     * <p><strong>Create an instance from a String</strong></p>
+     *
+     * {@codesnippet com.azure.core.util.BinaryData.fromString#String}
+     *
+     * @param data The {@link String} that {@link BinaryData} will represent.
+     * @return A {@link BinaryData} representing the {@link String}.
      */
     public static BinaryData fromString(String data) {
-        if (Objects.isNull(data) || data.length() == 0) {
+        if (CoreUtils.isNullOrEmpty(data)) {
             return EMPTY_DATA;
         }
 
@@ -151,11 +178,16 @@ public final class  BinaryData {
     }
 
     /**
-     * Creates a {@link BinaryData} instance with given byte array data. If the byte array is {@code null}, an empty
-     * {@link BinaryData} will be returned.
+     * Creates an instance of {@link BinaryData} from the given byte array.
+     * <p>
+     * If the byte array is null or zero length an empty {@link BinaryData} will be returned.
      *
-     * @param data The byte array to use as data backing the instance of {@link BinaryData}.
-     * @return {@link BinaryData} representing the binary data.
+     * <p><strong>Create an instance from a byte array</strong></p>
+     *
+     * {@codesnippet com.azure.core.util.BinaryData.fromBytes#byte}
+     *
+     * @param data The byte array that {@link BinaryData} will represent.
+     * @return A {@link BinaryData} representing the byte array.
      */
     public static BinaryData fromBytes(byte[] data) {
         if (Objects.isNull(data) || data.length == 0) {
@@ -166,64 +198,70 @@ public final class  BinaryData {
     }
 
     /**
-     * Serialize the given {@link Object} into {@link BinaryData} using json serializer which is available on classpath.
-     * The serializer on classpath must implement {@link JsonSerializer} interface. If the given Object is {@code null},
-     * an empty {@link BinaryData} will be returned.
-     * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.core.util.BinaryData.fromObject}
-
-     * @param data The object to use as data backing the instance of {@link BinaryData}.
-     * @throws IllegalStateException If a {@link JsonSerializer} cannot be found on the classpath.
-     * @return {@link BinaryData} representing the JSON serialized object.
+     * Creates an instance of {@link BinaryData} by serializing the {@link Object} using the default {@link
+     * JsonSerializer}.
+     * <p>
+     * If {@code data} is null an empty {@link BinaryData} will be returned.
+     * <p>
+     * <b>Note:</b> This method first looks for a {@link JsonSerializerProvider} implementation on the classpath. If no
+     * implementation is found, a default Jackson-based implementation will be used to serialize the object.
      *
+     * <p><strong>Creating an instance from an Object</strong></p>
+     *
+     * {@codesnippet com.azure.core.util.BinaryData.fromObject#Object}
+     *
+     * @param data The object that will be JSON serialized that {@link BinaryData} will represent.
+     * @return A {@link BinaryData} representing the JSON serialized object.
      * @see JsonSerializer
-     * @see <a href="ObjectSerializer" target="_blank">More about serialization</a>
      */
     public static BinaryData fromObject(Object data) {
-        if (Objects.isNull(data)) {
-            return EMPTY_DATA;
-        }
-        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        getDefaultSerializer().serialize(outputStream, data);
-
-        return new BinaryData(outputStream.toByteArray());
+        return fromObject(data, SERIALIZER);
     }
 
     /**
-     * Serialize the given {@link Object} into {@link BinaryData} using json serializer which is available on classpath.
-     * The serializer on classpath must implement {@link JsonSerializer} interface. If the given Object is {@code null},
-     * an empty {@link BinaryData} will be returned.
-     * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.core.util.BinaryData.fromObjectAsync}
-
-     * @param data The object to use as data backing the instance of {@link BinaryData}.
-     * @throws IllegalStateException If a {@link JsonSerializer} cannot be found on the classpath.
-     * @return {@link BinaryData} representing the JSON serialized object.
+     * Creates an instance of {@link BinaryData} by serializing the {@link Object} using the default {@link
+     * JsonSerializer}.
+     * <p>
+     * If {@code data} is null an empty {@link BinaryData} will be returned.
+     * <p>
+     * <b>Note:</b> This method first looks for a {@link JsonSerializerProvider} implementation on the classpath. If no
+     * implementation is found, a default Jackson-based implementation will be used to serialize the object.
      *
+     * <p><strong>Creating an instance from an Object</strong></p>
+     *
+     * {@codesnippet com.azure.core.util.BinaryData.fromObjectAsync#Object}
+     *
+     * @param data The object that will be JSON serialized that {@link BinaryData} will represent.
+     * @return A {@link Mono} of {@link BinaryData} representing the JSON serialized object.
      * @see JsonSerializer
-     * @see <a href="ObjectSerializer" target="_blank">More about serialization</a>
      */
     public static Mono<BinaryData> fromObjectAsync(Object data) {
-        return Mono.fromCallable(() -> fromObject(data));
+        return fromObjectAsync(data, SERIALIZER);
     }
 
     /**
-     * Serialize the given {@link Object} into {@link BinaryData} using the provided {@link ObjectSerializer}.
-     * If the Object is {@code null}, an empty {@link BinaryData} will be returned.
-     * <p>You can provide your custom implementation of {@link ObjectSerializer} interface or use one provided in Azure
-     * SDK by adding them as dependency.
+     * Creates an instance of {@link BinaryData} by serializing the {@link Object} using the passed {@link
+     * ObjectSerializer}.
+     * <p>
+     * If {@code data} is null an empty {@link BinaryData} will be returned.
+     * <p>
+     * The passed {@link ObjectSerializer} can either be one of the implementations offered by the Azure SDKs or your
+     * own implementation.
+     *
+     * <p><strong>Azure SDK implementations</strong></p>
      * <ul>
-     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson" target="_blank">Jackson serializer</a></li>
-     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson" target="_blank">Gson serializer</a>.</li>
+     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson" target="_blank">Jackson JSON serializer</a></li>
+     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson" target="_blank">GSON JSON serializer</a></li>
      * </ul>
      *
-     * <p><strong>Create an instance from Object</strong></p>
+     * <p><strong>Create an instance from an Object</strong></p>
+     *
      * {@codesnippet com.azure.core.util.BinaryData.fromObject#Object-ObjectSerializer}
      *
-     * @param data The object to use as data backing the instance of {@link BinaryData}.
-     * @param serializer to use for serializing the object.
-     * @throws NullPointerException If {@code serializer} is null.
-     * @return {@link BinaryData} representing binary data.
+     * @param data The object that will be serialized that {@link BinaryData} will represent.
+     * @param serializer The {@link ObjectSerializer} used to serialize object.
+     * @return A {@link BinaryData} representing the serialized object.
+     * @throws NullPointerException If {@code serializer} is null and {@code data} is not null.
      * @see ObjectSerializer
      * @see JsonSerializer
      * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
@@ -235,190 +273,339 @@ public final class  BinaryData {
 
         Objects.requireNonNull(serializer, "'serializer' cannot be null.");
 
-        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        serializer.serialize(outputStream, data);
-        return new BinaryData(outputStream.toByteArray());
+        return new BinaryData(serializer.serializeToBytes(data));
     }
 
     /**
-     * Serialize the given {@link Object} into {@link Mono} {@link BinaryData} using the provided
-     * {@link ObjectSerializer}. If the Object is {@code null}, an empty {@link BinaryData} will be returned.
+     * Creates an instance of {@link BinaryData} by serializing the {@link Object} using the passed {@link
+     * ObjectSerializer}.
+     * <p>
+     * If {@code data} is null an empty {@link BinaryData} will be returned.
+     * <p>
+     * The passed {@link ObjectSerializer} can either be one of the implementations offered by the Azure SDKs or your
+     * own implementation.
      *
-     * <p>You can provide your custom implementation of {@link ObjectSerializer} interface or use one provided in zure
-     * SDK by adding them as dependency.
+     * <p><strong>Azure SDK implementations</strong></p>
      * <ul>
-     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson" target="_blank">Jackson serializer</a></li>
-     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson" target="_blank">Gson serializer</a>.</li>
+     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson" target="_blank">Jackson JSON serializer</a></li>
+     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson" target="_blank">GSON JSON serializer</a></li>
      * </ul>
      *
-     * @param data The object to use as data backing the instance of {@link BinaryData}.
-     * @param serializer to use for serializing the object.
-     * @throws NullPointerException If {@code serializer} is null.
-     * @return {@link Mono} of {@link BinaryData} representing the binary data.
+     * <p><strong>Create an instance from an Object</strong></p>
+     *
+     * {@codesnippet com.azure.core.util.BinaryData.fromObjectAsync#Object-ObjectSerializer}
+     *
+     * @param data The object that will be serialized that {@link BinaryData} will represent.
+     * @param serializer The {@link ObjectSerializer} used to serialize object.
+     * @return A {@link Mono} of {@link BinaryData} representing the serialized object.
+     * @throws NullPointerException If {@code serializer} is null and {@code data} is not null.
      * @see ObjectSerializer
+     * @see JsonSerializer
      * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
      */
     public static Mono<BinaryData> fromObjectAsync(Object data, ObjectSerializer serializer) {
-        if (Objects.isNull(serializer)) {
-            return monoError(LOGGER, new NullPointerException("'serializer' cannot be null."));
-        }
         return Mono.fromCallable(() -> fromObject(data, serializer));
     }
 
     /**
-     * Provides byte array representation of this {@link BinaryData} object.
+     * Returns a byte array representation of this {@link BinaryData}.
      *
-     * @return byte array representation of the the data.
+     * @return A byte array representing this {@link BinaryData}.
      */
     public byte[] toBytes() {
         return Arrays.copyOf(this.data, this.data.length);
     }
 
     /**
-     * Provides {@link String} representation of this {@link BinaryData} object. The bytes are converted into
-     * {@link String} using the UTF-8 character set.
+     * Returns a {@link String} representation of this {@link BinaryData} by converting its data using the UTF-8
+     * character set.
      *
-     * @return {@link String} representation of the data.
+     * @return A {@link String} representing this {@link BinaryData}.
      */
     public String toString() {
-        return new String(this.data, StandardCharsets.UTF_8);
+        if (this.dataAsStringCache == null) {
+            this.dataAsStringCache = new String(this.data, StandardCharsets.UTF_8);
+        }
+
+        return this.dataAsStringCache;
     }
 
     /**
-     * Deserialize the bytes into the {@link Object} of given type by applying the provided {@link ObjectSerializer} on
-     * the data. The type, represented by {@link TypeReference}, can either be a regular class or a generic class that
-     * retains the type information.
+     * Returns an {@link Object} representation of this {@link BinaryData} by deserializing its data using the default
+     * {@link JsonSerializer}.
+     * <p>
+     * The type, represented by {@link Class}, should be a non-generic class, for generic classes use {@link
+     * #toObject(TypeReference)}.
+     * <p>
+     * <b>Note:</b> This method first looks for a {@link JsonSerializerProvider} implementation on the classpath. If no
+     * implementation is found, a default Jackson-based implementation will be used to deserialize the object.
      *
-     * <p>You can provide your custom implementation of {@link ObjectSerializer} interface or use one provided in zure
-     * SDK by adding them as dependency.
+     * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
+     *
+     * {@codesnippet com.azure.core.util.BinaryData.toObject#Class}
+     *
+     * @param clazz The {@link Class} representing the Object's type.
+     * @param <T> Type of the deserialized Object.
+     * @return An {@link Object} representing the JSON deserialized {@link BinaryData}.
+     * @throws NullPointerException If {@code clazz} is null.
+     * @see JsonSerializer
+     */
+    public <T> T toObject(Class<T> clazz) {
+        return toObject(TypeReference.createInstance(clazz), SERIALIZER);
+    }
+
+    /**
+     * Returns an {@link Object} representation of this {@link BinaryData} by deserializing its data using the default
+     * {@link JsonSerializer}.
+     * <p>
+     * The type, represented by {@link TypeReference}, can either be a generic or non-generic type. If the type is
+     * generic create a sub-type of {@link TypeReference}, if the type is non-generic use {@link
+     * TypeReference#createInstance(Class)}.
+     * <p>
+     * <b>Note:</b> This method first looks for a {@link JsonSerializerProvider} implementation on the classpath. If no
+     * implementation is found, a default Jackson-based implementation will be used to deserialize the object.
+     *
+     * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
+     *
+     * {@codesnippet com.azure.core.util.BinaryData.toObject#TypeReference}
+     *
+     * <p><strong>Get a generic Object from the BinaryData</strong></p>
+     *
+     * {@codesnippet com.azure.core.util.BinaryData.toObject#TypeReference-generic}
+     *
+     * @param typeReference The {@link TypeReference} representing the Object's type.
+     * @param <T> Type of the deserialized Object.
+     * @return An {@link Object} representing the JSON deserialized {@link BinaryData}.
+     * @throws NullPointerException If {@code typeReference} is null.
+     * @see JsonSerializer
+     */
+    public <T> T toObject(TypeReference<T> typeReference) {
+        return toObject(typeReference, SERIALIZER);
+    }
+
+    /**
+     * Returns an {@link Object} representation of this {@link BinaryData} by deserializing its data using the passed
+     * {@link ObjectSerializer}.
+     * <p>
+     * The type, represented by {@link Class}, should be a non-generic class, for generic classes use {@link
+     * #toObject(TypeReference, ObjectSerializer)}.
+     * <p>
+     * The passed {@link ObjectSerializer} can either be one of the implementations offered by the Azure SDKs or your
+     * own implementation.
+     *
+     * <p><strong>Azure SDK implementations</strong></p>
      * <ul>
-     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson" target="_blank">Jackson serializer</a></li>
-     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson" target="_blank">Gson serializer</a>.</li>
+     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson" target="_blank">Jackson JSON serializer</a></li>
+     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson" target="_blank">GSON JSON serializer</a></li>
      * </ul>
      *
-     * <p><strong>Code sample to demonstrate serializing and deserializing a regular class</strong></p>
+     * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
+     *
+     * {@codesnippet com.azure.core.util.BinaryData.toObject#Class-ObjectSerializer}
+     *
+     * @param clazz The {@link Class} representing the Object's type.
+     * @param serializer The {@link ObjectSerializer} used to deserialize object.
+     * @param <T> Type of the deserialized Object.
+     * @return An {@link Object} representing the deserialized {@link BinaryData}.
+     * @throws NullPointerException If {@code clazz} or {@code serializer} is null.
+     * @see ObjectSerializer
+     * @see JsonSerializer
+     * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
+     */
+    public <T> T toObject(Class<T> clazz, ObjectSerializer serializer) {
+        return toObject(TypeReference.createInstance(clazz), serializer);
+    }
+
+    /**
+     * Returns an {@link Object} representation of this {@link BinaryData} by deserializing its data using the passed
+     * {@link ObjectSerializer}.
+     * <p>
+     * The type, represented by {@link TypeReference}, can either be a generic or non-generic type. If the type is
+     * generic create a sub-type of {@link TypeReference}, if the type is non-generic use {@link
+     * TypeReference#createInstance(Class)}.
+     * <p>
+     * The passed {@link ObjectSerializer} can either be one of the implementations offered by the Azure SDKs or your
+     * own implementation.
+     *
+     * <p><strong>Azure SDK implementations</strong></p>
+     * <ul>
+     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson" target="_blank">Jackson JSON serializer</a></li>
+     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson" target="_blank">GSON JSON serializer</a></li>
+     * </ul>
+     *
+     * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
+     *
      * {@codesnippet com.azure.core.util.BinaryData.toObject#TypeReference-ObjectSerializer}
      *
-     * <p><strong>Code sample to demonstrate serializing and deserializing generic types</strong></p>
+     * <p><strong>Get a generic Object from the BinaryData</strong></p>
+     *
      * {@codesnippet com.azure.core.util.BinaryData.toObject#TypeReference-ObjectSerializer-generic}
      *
-     * @param typeReference representing the {@link TypeReference type} of the Object.
-     * @param serializer to use deserialize data into type.
-     * @param <T> Generic type that the data is deserialized into.
-     * @throws NullPointerException If {@code serializer} or {@code typeReference} is null.
-     * @return The {@link Object} of given type after deserializing the bytes.
+     * @param typeReference The {@link TypeReference} representing the Object's type.
+     * @param serializer The {@link ObjectSerializer} used to deserialize object.
+     * @param <T> Type of the deserialized Object.
+     * @return An {@link Object} representing the deserialized {@link BinaryData}.
+     * @throws NullPointerException If {@code typeReference} or {@code serializer} is null.
+     * @see ObjectSerializer
+     * @see JsonSerializer
+     * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
      */
     public <T> T toObject(TypeReference<T> typeReference, ObjectSerializer serializer) {
         Objects.requireNonNull(typeReference, "'typeReference' cannot be null.");
         Objects.requireNonNull(serializer, "'serializer' cannot be null.");
 
-        InputStream jsonStream = new ByteArrayInputStream(this.data);
-        return serializer.deserialize(jsonStream, typeReference);
+        return serializer.deserializeFromBytes(this.data, typeReference);
     }
 
     /**
-     * Return a {@link Mono} by deserializing the bytes into the {@link Object} of given type after applying the
-     * provided {@link ObjectSerializer} on the {@link BinaryData}. The type, represented by {@link TypeReference},
-     * can either be a regular class or a generic class that retains the type information.
+     * Returns an {@link Object} representation of this {@link BinaryData} by deserializing its data using the default
+     * {@link JsonSerializer}.
+     * <p>
+     * The type, represented by {@link Class}, should be a non-generic class, for generic classes use {@link
+     * #toObject(TypeReference)}.
+     * <p>
+     * <b>Note:</b> This method first looks for a {@link JsonSerializerProvider} implementation on the classpath. If no
+     * implementation is found, a default Jackson-based implementation will be used to deserialize the object.
      *
-     * <p>You can provide your custom implementation of {@link ObjectSerializer} interface or use one provided in zure
-     * SDK by adding them as dependency.
+     * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
+     *
+     * {@codesnippet com.azure.core.util.BinaryData.toObjectAsync#Class}
+     *
+     * @param clazz The {@link Class} representing the Object's type.
+     * @param <T> Type of the deserialized Object.
+     * @return A {@link Mono} of {@link Object} representing the JSON deserialized {@link BinaryData}.
+     * @throws NullPointerException If {@code clazz} is null.
+     * @see JsonSerializer
+     */
+    public <T> Mono<T> toObjectAsync(Class<T> clazz) {
+        return toObjectAsync(TypeReference.createInstance(clazz), SERIALIZER);
+    }
+
+    /**
+     * Returns an {@link Object} representation of this {@link BinaryData} by deserializing its data using the default
+     * {@link JsonSerializer}.
+     * <p>
+     * The type, represented by {@link TypeReference}, can either be a generic or non-generic type. If the type is
+     * generic create a sub-type of {@link TypeReference}, if the type is non-generic use {@link
+     * TypeReference#createInstance(Class)}.
+     * <p>
+     * <b>Note:</b> This method first looks for a {@link JsonSerializerProvider} implementation on the classpath. If no
+     * implementation is found, a default Jackson-based implementation will be used to deserialize the object.
+     *
+     * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
+     *
+     * {@codesnippet com.azure.core.util.BinaryData.toObjectAsync#TypeReference}
+     *
+     * <p><strong>Get a generic Object from the BinaryData</strong></p>
+     *
+     * {@codesnippet com.azure.core.util.BinaryData.toObjectAsync#TypeReference-generic}
+     *
+     * @param typeReference The {@link TypeReference} representing the Object's type.
+     * @param <T> Type of the deserialized Object.
+     * @return A {@link Mono} of {@link Object} representing the JSON deserialized {@link BinaryData}.
+     * @throws NullPointerException If {@code typeReference} is null.
+     * @see JsonSerializer
+     */
+    public <T> Mono<T> toObjectAsync(TypeReference<T> typeReference) {
+        return toObjectAsync(typeReference, SERIALIZER);
+    }
+
+    /**
+     * Returns an {@link Object} representation of this {@link BinaryData} by deserializing its data using the passed
+     * {@link ObjectSerializer}.
+     * <p>
+     * The type, represented by {@link Class}, should be a non-generic class, for generic classes use {@link
+     * #toObject(TypeReference, ObjectSerializer)}.
+     * <p>
+     * The passed {@link ObjectSerializer} can either be one of the implementations offered by the Azure SDKs or your
+     * own implementation.
+     *
+     * <p><strong>Azure SDK implementations</strong></p>
      * <ul>
-     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson" target="_blank">Jackson serializer</a></li>
-     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson" target="_blank">Gson serializer</a>.</li>
+     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson" target="_blank">Jackson JSON serializer</a></li>
+     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson" target="_blank">GSON JSON serializer</a></li>
      * </ul>
      *
-     * <p><strong>Code sample to demonstrate serializing and deserializing a regular class</strong></p>
+     * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
+     *
+     * {@codesnippet com.azure.core.util.BinaryData.toObjectAsync#Class-ObjectSerializer}
+     *
+     * @param clazz The {@link Class} representing the Object's type.
+     * @param serializer The {@link ObjectSerializer} used to deserialize object.
+     * @param <T> Type of the deserialized Object.
+     * @return A {@link Mono} of {@link Object} representing the deserialized {@link BinaryData}.
+     * @throws NullPointerException If {@code clazz} or {@code serializer} is null.
+     * @see ObjectSerializer
+     * @see JsonSerializer
+     * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
+     */
+    public <T> Mono<T> toObjectAsync(Class<T> clazz, ObjectSerializer serializer) {
+        return toObjectAsync(TypeReference.createInstance(clazz), serializer);
+    }
+
+    /**
+     * Returns an {@link Object} representation of this {@link BinaryData} by deserializing its data using the passed
+     * {@link ObjectSerializer}.
+     * <p>
+     * The type, represented by {@link TypeReference}, can either be a generic or non-generic type. If the type is
+     * generic create a sub-type of {@link TypeReference}, if the type is non-generic use {@link
+     * TypeReference#createInstance(Class)}.
+     * <p>
+     * The passed {@link ObjectSerializer} can either be one of the implementations offered by the Azure SDKs or your
+     * own implementation.
+     *
+     * <p><strong>Azure SDK implementations</strong></p>
+     * <ul>
+     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson" target="_blank">Jackson JSON serializer</a></li>
+     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson" target="_blank">GSON JSON serializer</a></li>
+     * </ul>
+     *
+     * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
+     *
      * {@codesnippet com.azure.core.util.BinaryData.toObjectAsync#TypeReference-ObjectSerializer}
      *
-     * <p><strong>Code sample to demonstrate serializing and deserializing generic types</strong></p>
+     * <p><strong>Get a generic Object from the BinaryData</strong></p>
+     *
      * {@codesnippet com.azure.core.util.BinaryData.toObjectAsync#TypeReference-ObjectSerializer-generic}
      *
-     * @param typeReference representing the {@link TypeReference type} of the Object.
-     * @param serializer to use deserialize data into type.
-     * @param <T> Generic type that the data is deserialized into.
+     * @param typeReference The {@link TypeReference} representing the Object's type.
+     * @param serializer The {@link ObjectSerializer} used to deserialize object.
+     * @param <T> Type of the deserialized Object.
+     * @return A {@link Mono} of {@link Object} representing the deserialized {@link BinaryData}.
      * @throws NullPointerException If {@code typeReference} or {@code serializer} is null.
-     * @return The {@link Object} of given type after deserializing the bytes.
+     * @see ObjectSerializer
+     * @see JsonSerializer
+     * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
      */
     public <T> Mono<T> toObjectAsync(TypeReference<T> typeReference, ObjectSerializer serializer) {
-
-        if (Objects.isNull(typeReference)) {
-            return monoError(LOGGER, new NullPointerException("'typeReference' cannot be null."));
-        } else if (Objects.isNull(serializer)) {
-            return monoError(LOGGER, new NullPointerException("'serializer' cannot be null."));
-        }
         return Mono.fromCallable(() -> toObject(typeReference, serializer));
     }
 
     /**
-     * Deserialize the bytes into the {@link Object} of given type by using json serializer which is available in
-     * classpath. The type, represented by {@link TypeReference}, can either be a regular class or a generic class that
-     * retains the type information. This method assumes the data to be in JSON format and will use a default
-     * implementation of {@link JsonSerializer}.
+     * Returns an {@link InputStream} representation of this {@link BinaryData}.
      *
-     * <p><strong>Code sample to demonstrate serializing and deserializing a regular class</strong></p>
-     * {@codesnippet com.azure.core.util.BinaryData.toObject#TypeReference}
+     * <p><strong>Get an InputStream from the BinaryData</strong></p>
      *
-     * <p><strong>Code sample to demonstrate serializing and deserializing generic types</strong></p>
-     * {@codesnippet com.azure.core.util.BinaryData.toObject#TypeReference-generic}
+     * {@codesnippet com.azure.core.util.BinaryData.toStream}
      *
-     * @param typeReference representing the {@link TypeReference type} of the Object.
-     * @param <T> Generic type that the data is deserialized into.
-     * @throws NullPointerException If {@code typeReference} is null.
-     * @return The {@link Object} of given type after deserializing the bytes.
-     */
-    public <T> T toObject(TypeReference<T> typeReference) {
-        Objects.requireNonNull(typeReference, "'typeReference' cannot be null.");
-
-        InputStream jsonStream = new ByteArrayInputStream(this.data);
-        return getDefaultSerializer().deserialize(jsonStream, typeReference);
-    }
-
-    /**
-     * Return a {@link Mono} by deserializing the bytes into the {@link Object} of given type after applying the Json
-     * serializer found on classpath. The type, represented by {@link TypeReference}, can either be a regular class
-     * or a generic class that retains the type information. This method assumes the data to be in JSON format and will
-     * use a default implementation of {@link JsonSerializer}.
-     *
-     * <p><strong>Code sample to demonstrate serializing and deserializing a regular class</strong></p>
-     * {@codesnippet com.azure.core.util.BinaryData.toObjectAsync#TypeReference}
-     *
-     * <p><strong>Code sample to demonstrate serializing and deserializing generic types</strong></p>
-     * {@codesnippet com.azure.core.util.BinaryData.toObjectAsync#TypeReference-generic}
-     *
-     * @param typeReference representing the {@link TypeReference type} of the Object.
-     * @param <T> Generic type that the data is deserialized into.
-     * @throws NullPointerException If {@code typeReference} is null.
-     * @return The {@link Object} of given type after deserializing the bytes.
-     */
-    public <T> Mono<T> toObjectAsync(TypeReference<T> typeReference) {
-        if (Objects.isNull(typeReference)) {
-            return monoError(LOGGER, new NullPointerException("'typeReference' cannot be null."));
-        }
-        return Mono.fromCallable(() -> toObject(typeReference));
-    }
-
-    /**
-     * Provides {@link InputStream} for the data represented by this {@link BinaryData} object.
-     *
-     * <p><strong>Get InputStream from BinaryData</strong></p>
-     * {@codesnippet com.azure.core.util.BinaryData.to#Stream}
-     *
-     * @return {@link InputStream} representing the binary data.
+     * @return An {@link InputStream} representing the {@link BinaryData}.
      */
     public InputStream toStream() {
         return new ByteArrayInputStream(this.data);
     }
 
-    /* This will ensure lazy instantiation to avoid hard dependency on Json Serializer. */
-    private static JsonSerializer getDefaultSerializer() {
-        if (defaultJsonSerializer ==  null) {
-            synchronized (LOCK) {
-                if (defaultJsonSerializer == null) {
-                    defaultJsonSerializer = JsonSerializerProviders.createInstance();
-                }
-            }
-        }
-        return defaultJsonSerializer;
+    /**
+     * Returns a read-only {@link ByteBuffer} representation of this {@link BinaryData}.
+     * <p>
+     * Attempting to mutate the returned {@link ByteBuffer} will throw a {@link ReadOnlyBufferException}.
+     *
+     * <p><strong>Get a read-only ByteBuffer from the BinaryData</strong></p>
+     *
+     * {@codesnippet com.azure.util.BinaryData.toByteBuffer}
+     *
+     * @return A read-only {@link ByteBuffer} representing the {@link BinaryData}.
+     */
+    public ByteBuffer toByteBuffer() {
+        return ByteBuffer.wrap(this.data).asReadOnlyBuffer();
     }
 }

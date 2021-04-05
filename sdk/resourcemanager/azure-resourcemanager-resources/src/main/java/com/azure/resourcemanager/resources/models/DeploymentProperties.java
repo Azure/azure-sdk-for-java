@@ -72,6 +72,14 @@ public class DeploymentProperties {
     @JsonProperty(value = "onErrorDeployment")
     private OnErrorDeployment onErrorDeployment;
 
+    /*
+     * Specifies whether template expressions are evaluated within the scope of
+     * the parent template or nested template. Only applicable to nested
+     * templates. If not specified, default value is outer.
+     */
+    @JsonProperty(value = "expressionEvaluationOptions")
+    private ExpressionEvaluationOptions expressionEvaluationOptions;
+
     /**
      * Get the template property: The template content. You use this element when you want to pass the template syntax
      * directly in the request rather than link to an existing template. It can be a JObject or well-formed JSON string.
@@ -235,6 +243,31 @@ public class DeploymentProperties {
     }
 
     /**
+     * Get the expressionEvaluationOptions property: Specifies whether template expressions are evaluated within the
+     * scope of the parent template or nested template. Only applicable to nested templates. If not specified, default
+     * value is outer.
+     *
+     * @return the expressionEvaluationOptions value.
+     */
+    public ExpressionEvaluationOptions expressionEvaluationOptions() {
+        return this.expressionEvaluationOptions;
+    }
+
+    /**
+     * Set the expressionEvaluationOptions property: Specifies whether template expressions are evaluated within the
+     * scope of the parent template or nested template. Only applicable to nested templates. If not specified, default
+     * value is outer.
+     *
+     * @param expressionEvaluationOptions the expressionEvaluationOptions value to set.
+     * @return the DeploymentProperties object itself.
+     */
+    public DeploymentProperties withExpressionEvaluationOptions(
+        ExpressionEvaluationOptions expressionEvaluationOptions) {
+        this.expressionEvaluationOptions = expressionEvaluationOptions;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -256,6 +289,9 @@ public class DeploymentProperties {
         }
         if (onErrorDeployment() != null) {
             onErrorDeployment().validate();
+        }
+        if (expressionEvaluationOptions() != null) {
+            expressionEvaluationOptions().validate();
         }
     }
 }

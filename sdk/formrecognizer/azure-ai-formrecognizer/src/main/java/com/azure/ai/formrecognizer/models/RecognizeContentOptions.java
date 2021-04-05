@@ -17,8 +17,9 @@ import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_IN
 public final class RecognizeContentOptions {
     private FormContentType contentType;
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;
-    private String language;
+    private FormRecognizerLanguage language;
     private List<String> pages;
+    private ReadingOrder readingOrder;
 
     /**
      * Get the type of the form. Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
@@ -73,7 +74,7 @@ public final class RecognizeContentOptions {
      *
      * @return the language code for the text in the document.
      */
-    public String getLanguage() {
+    public FormRecognizerLanguage getLanguage() {
         return language;
     }
 
@@ -87,16 +88,16 @@ public final class RecognizeContentOptions {
      * @param language the language code value to set.
      * @return the updated {@code RecognizeContentOptions} value.
      */
-    public RecognizeContentOptions setLanguage(String language) {
+    public RecognizeContentOptions setLanguage(FormRecognizerLanguage language) {
         this.language = language;
         return this;
     }
 
     /**
-     * Get the custom page numbers for multi-page documents(PDF/TIFF), input the number of the
-     * pages you want to get OCR result.
-     * <p>For a range of pages, use a hyphen. Separate each page or
-     * range with a comma, ex - ["1-3"].</p>
+     * Get the custom page numbers for multi-page documents(PDF/TIFF). Input the number of the
+     * pages you want to get the recognized result for.
+     * <p>For a range of pages, use a hyphen, ex - ["1-3"]. Separate each page or a page
+     * range with a comma, ex - ["1-3", 4].</p>
      *
      * @return the list of custom page numbers for a multi page document.
      */
@@ -105,16 +106,38 @@ public final class RecognizeContentOptions {
     }
 
     /**
-     * Set the custom page numbers for multi-page documents(PDF/TIFF), input the number of the
-     * pages you want to get OCR result.
-     * <p>For a range of pages, use a hyphen. Separate each page or
-     * range with a comma, ex - ["1-3"].</p>
+     * Set the custom page numbers for multi-page documents(PDF/TIFF). Input the number of the
+     * pages you want to get the recognized result for.
+     * <p>For a range of pages, use a hyphen, ex - ["1-3"]. Separate each page or a page
+     * range with a comma, ex - ["1-3", 4].</p>
      *
      * @param pages the custom page numbers value to set.
      * @return the updated {@code RecognizeContentOptions} value.
      */
     public RecognizeContentOptions setPages(List<String> pages) {
         this.pages = pages;
+        return this;
+    }
+
+    /**
+     * Get the order in which recognized text lines are returned.
+     *
+     * @return the order in which the recognized lines are returned.
+     */
+    public ReadingOrder getReadingOrder() {
+        return readingOrder;
+    }
+
+    /**
+     * Specifies the order in which recognized text lines are returned. As the sorting order
+     * depends on the detected text, it may change across images and OCR version updates. Thus,
+     * business logic should be built upon the actual line location instead of order.
+     *
+     * @param readingOrder the order specifies in which text lines are returned
+     * @return the updated {@code RecognizeContentOptions} value.
+     */
+    public RecognizeContentOptions setReadingOrder(ReadingOrder readingOrder) {
+        this.readingOrder = readingOrder;
         return this;
     }
 }

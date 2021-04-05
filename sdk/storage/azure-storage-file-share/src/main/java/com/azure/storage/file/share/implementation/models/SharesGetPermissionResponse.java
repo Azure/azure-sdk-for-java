@@ -8,10 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the getPermission operation.
- */
-public final class SharesGetPermissionResponse extends ResponseBase<ShareGetPermissionHeaders, SharePermission> {
+/** Contains all response data for the getPermission operation. */
+public final class SharesGetPermissionResponse extends ResponseBase<SharesGetPermissionHeaders, SharePermission> {
     /**
      * Creates an instance of SharesGetPermissionResponse.
      *
@@ -21,13 +19,16 @@ public final class SharesGetPermissionResponse extends ResponseBase<ShareGetPerm
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public SharesGetPermissionResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, SharePermission value, ShareGetPermissionHeaders headers) {
+    public SharesGetPermissionResponse(
+            HttpRequest request,
+            int statusCode,
+            HttpHeaders rawHeaders,
+            SharePermission value,
+            SharesGetPermissionHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /**
-     * @return the deserialized response body.
-     */
+    /** @return the deserialized response body. */
     @Override
     public SharePermission getValue() {
         return super.getValue();

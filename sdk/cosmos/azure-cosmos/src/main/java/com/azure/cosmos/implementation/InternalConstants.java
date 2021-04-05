@@ -19,6 +19,7 @@ class InternalConstants {
         static final String USERS = "Users";
         static final String USER_DEFINED_FUNCTIONS = "UserDefinedFunctions";
         static final String ADDRESSES = "Addresss";
+        static final String CLIENT_ENCRYPTION_KEYS = "ClientEncryptionKeys";
     }
 
     static class StreamApi {

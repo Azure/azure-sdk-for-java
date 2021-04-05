@@ -204,4 +204,8 @@ public final class NioBlobInputStream extends InputStream {
         AzurePath.ensureFileSystemOpen(path);
         return this.blobInputStream.skip(n);
     }
+
+    BlobInputStream getBlobInputStream() {
+        return blobInputStream;
+    }
 }

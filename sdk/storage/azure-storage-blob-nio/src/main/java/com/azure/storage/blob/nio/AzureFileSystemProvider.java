@@ -31,6 +31,7 @@ import java.nio.file.FileStore;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystemAlreadyExistsException;
 import java.nio.file.FileSystemNotFoundException;
+import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.NotDirectoryException;
@@ -46,9 +47,12 @@ import java.nio.file.spi.FileSystemProvider;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -77,8 +81,8 @@ import java.util.function.Supplier;
  * {@link FileSystemProvider}.
  * <p>
  * The scheme for this provider is {@code "azb"}, and the format of the URI to identify an {@code AzureFileSystem} is
- * {@code "azb://?account=<accountName>"}. The name of the Storage account is used to uniquely identify the file
- * system.
+ * {@code "azb://?endpoint=<endpoing>"}. The endpoint of the Storage account is used to uniquely identify the
+ * filesystem.
  * <p>
  * An {@link AzureFileSystem} is backed by an account. An {@link AzureFileStore} is backed by a container. Any number of
  * containers may be specified as file stores upon creation of the file system. When a file system is created,
@@ -92,8 +96,8 @@ import java.util.function.Supplier;
  * types. Any entries not listed here will be ignored. Note that {@link AzureFileSystem} has public constants defined
  * for each of the keys for convenience.
  * <ul>
- *     <li>{@code AzureStorageAccountKey:}{@link String}</li>
- *     <li>{@code AzureStorageSasToken:}{@link String}</li>
+ *     <li>{@code AzureStorageSharedKeyCredential:}{@link com.azure.storage.common.StorageSharedKeyCredential}</li>
+ *     <li>{@code AzureStorageSasTokenCredential:}{@link com.azure.core.credential.AzureSasCredential}</li>
  *     <li>{@code AzureStorageHttpLogDetailLevel:}{@link com.azure.core.http.policy.HttpLogDetailLevel}</li>
  *     <li>{@code AzureStorageMaxTries:}{@link Integer}</li>
  *     <li>{@code AzureStorageTryTimeout:}{@link Integer}</li>
@@ -106,15 +110,13 @@ import java.util.function.Supplier;
  *     <li>{@code AzureStoragePutBlobThreshold:}{@link Long}</li>
  *     <li>{@code AzureStorageMaxConcurrencyPerRequest:}{@link Integer}</li>
  *     <li>{@code AzureStorageDownloadResumeRetries:}{@link Integer}</li>
- *     <li>{@code AzureStorageUseHttps:}{@link Boolean}</li>
  *     <li>{@code AzureStorageFileStores:}{@link String}</li>
  * </ul>
  * <p>
  * Either an account key or a sas token must be specified. If both are provided, the account key will be preferred. If
  * a sas token is specified, the customer must take care that it has appropriate permissions to perform the actions
- * demanded of the file system in a given workflow, including the initial connection check specified above. Furthermore,
- * it must have an expiry time that lasts at least until the file system is closed as there is no token refresh offered
- * at this time. The same token will be applied to all containers.
+ * demanded of the file system in a given workflow, including the initial connection check specified above. The same
+ * token will be applied to all operations.
  * <p>
  * An iterable of file stores must also be provided; each entry should simply be the name of a container. The first
  * container listed will be considered the default file store and the root directory of which will be the file system's
@@ -156,8 +158,19 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     public static final String CACHE_CONTROL = "Cache-Control";
 
-    private static final String ACCOUNT_QUERY_KEY = "account";
+    private static final String ENDPOINT_QUERY_KEY = "endpoint";
     private static final int COPY_TIMEOUT_SECONDS = 30;
+    private static final Set<OpenOption> OUTPUT_STREAM_DEFAULT_OPTIONS =
+        Collections.unmodifiableSet(new HashSet<>(Arrays.asList(StandardOpenOption.CREATE,
+            StandardOpenOption.WRITE,
+            StandardOpenOption.TRUNCATE_EXISTING)));
+    private static final Set<OpenOption> OUTPUT_STREAM_SUPPORTED_OPTIONS =
+        Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+            StandardOpenOption.CREATE_NEW,
+            StandardOpenOption.CREATE,
+            StandardOpenOption.WRITE,
+            // Though we don't actually truncate, the same result is achieved by overwriting the destination.
+            StandardOpenOption.TRUNCATE_EXISTING)));
 
     private final ConcurrentMap<String, FileSystem> openFileSystems;
 
@@ -183,7 +196,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     /**
      * Constructs a new FileSystem object identified by a URI.
      * <p>
-     * The format of a {@code URI} identifying a file system is {@code "azb://?account=<accountName>"}.
+     * The format of a {@code URI} identifying a file system is {@code "azb://?endpoint=<endpoint>"}.
      * <p>
      * Once closed, a file system with the same identifier may be reopened.
      *
@@ -198,14 +211,14 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     @Override
     public FileSystem newFileSystem(URI uri, Map<String, ?> config) throws IOException {
-        String accountName = extractAccountName(uri);
+        String endpoint = extractAccountEndpoint(uri);
 
-        if (this.openFileSystems.containsKey(accountName)) {
-            throw LoggingUtility.logError(this.logger, new FileSystemAlreadyExistsException("Name: " + accountName));
+        if (this.openFileSystems.containsKey(endpoint)) {
+            throw LoggingUtility.logError(this.logger, new FileSystemAlreadyExistsException("Name: " + endpoint));
         }
 
-        AzureFileSystem afs = new AzureFileSystem(this, accountName, config);
-        this.openFileSystems.put(accountName, afs);
+        AzureFileSystem afs = new AzureFileSystem(this, endpoint, config);
+        this.openFileSystems.put(endpoint, afs);
 
         return afs;
     }
@@ -213,7 +226,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     /**
      * Returns an existing FileSystem created by this provider.
      * <p>
-     * The format of a {@code URI} identifying an file system is {@code "azb://?account=&lt;accountName&gt;"}.
+     * The format of a {@code URI} identifying an file system is {@code "azb://?endpoint=&lt;endpoint&gt;"}.
      * <p>
      * Trying to retrieve a closed file system will throw a {@link FileSystemNotFoundException}. Once closed, a
      * file system with the same identifier may be reopened.
@@ -226,11 +239,11 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     @Override
     public FileSystem getFileSystem(URI uri) {
-        String accountName = extractAccountName(uri);
-        if (!this.openFileSystems.containsKey(accountName)) {
-            throw LoggingUtility.logError(this.logger, new FileSystemNotFoundException("Name: " + accountName));
+        String endpoint = extractAccountEndpoint(uri);
+        if (!this.openFileSystems.containsKey(endpoint)) {
+            throw LoggingUtility.logError(this.logger, new FileSystemNotFoundException("Name: " + endpoint));
         }
-        return this.openFileSystems.get(accountName);
+        return this.openFileSystems.get(endpoint);
     }
 
     /**
@@ -252,12 +265,20 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
-     * Unsupported. Use {@link #newInputStream(Path, OpenOption...)} or {@link #newOutputStream(Path, OpenOption...)}
-     * instead.
+     * Opens or creates a file, returning a seekable byte channel to access the file.
+     * <p>
+     * This method is primarily offered to support some jdk convenience methods such as
+     * {@link Files#createFile(Path, FileAttribute[])} which requires opening a channel and closing it. A channel may
+     * only be opened in read mode OR write mode. It may not be opened in read/write mode. Seeking is supported for
+     * reads, but not for writes. Modifications to existing files is not permitted--only creating new files or
+     * overwriting existing files.
+     * <p>
+     * This type is not threadsafe to prevent having to hold locks across network calls.
+     * <p>
      *
-     * @param path the Path
-     * @param set open options
-     * @param fileAttributes attributes
+     * @param path the path of the file to open
+     * @param set options specifying how the file should be opened
+     * @param fileAttributes an optional list of file attributes to set atomically when creating the directory
      * @return a new seekable byte channel
      * @throws UnsupportedOperationException Operation is not supported.
      * @throws IllegalArgumentException if the set contains an invalid combination of options
@@ -269,7 +290,17 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     @Override
     public SeekableByteChannel newByteChannel(Path path, Set<? extends OpenOption> set,
             FileAttribute<?>... fileAttributes) throws IOException {
-        throw LoggingUtility.logError(logger, new UnsupportedOperationException());
+        if (Objects.isNull(set)) {
+            set = Collections.emptySet();
+        }
+
+        if (set.contains(StandardOpenOption.WRITE)) {
+            return new AzureSeekableByteChannel(
+                (NioBlobOutputStream) this.newOutputStreamInternal(path, set, fileAttributes), path);
+        } else {
+            return new AzureSeekableByteChannel(
+                (NioBlobInputStream) this.newInputStream(path, set.toArray(new OpenOption[0])), path);
+        }
     }
 
     /**
@@ -349,24 +380,19 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     @Override
     public OutputStream newOutputStream(Path path, OpenOption... options) throws IOException {
+        return newOutputStreamInternal(path, new HashSet<>(Arrays.asList(options)));
+    }
+
+    OutputStream newOutputStreamInternal(Path path, Set<? extends OpenOption> optionsSet,
+        FileAttribute<?>... fileAttributes) throws IOException {
         // If options are empty, add Create, Write, TruncateExisting as defaults per nio docs.
-        if (options == null || options.length == 0) {
-            options = new OpenOption[] {
-                StandardOpenOption.CREATE,
-                StandardOpenOption.WRITE,
-                StandardOpenOption.TRUNCATE_EXISTING };
+        if (optionsSet == null || optionsSet.size() == 0) {
+            optionsSet = OUTPUT_STREAM_DEFAULT_OPTIONS;
         }
-        List<OpenOption> optionsList = Arrays.asList(options);
 
         // Check for unsupported options.
-        List<OpenOption> supportedOptions = Arrays.asList(
-            StandardOpenOption.CREATE_NEW,
-            StandardOpenOption.CREATE,
-            StandardOpenOption.WRITE,
-            // Though we don't actually truncate, the same result is achieved by overwriting the destination.
-            StandardOpenOption.TRUNCATE_EXISTING);
-        for (OpenOption option : optionsList) {
-            if (!supportedOptions.contains(option)) {
+        for (OpenOption option : optionsSet) {
+            if (!OUTPUT_STREAM_SUPPORTED_OPTIONS.contains(option)) {
                 throw LoggingUtility.logError(logger, new UnsupportedOperationException("Unsupported option: "
                     + option.toString()));
             }
@@ -376,9 +402,9 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         Write must be specified. Either create_new or truncate must be specified. This is to ensure that no edits or
         appends are allowed.
          */
-        if (!optionsList.contains(StandardOpenOption.WRITE)
-            || !(optionsList.contains(StandardOpenOption.TRUNCATE_EXISTING)
-            || optionsList.contains(StandardOpenOption.CREATE_NEW))) {
+        if (!optionsSet.contains(StandardOpenOption.WRITE)
+            || !(optionsSet.contains(StandardOpenOption.TRUNCATE_EXISTING)
+            || optionsSet.contains(StandardOpenOption.CREATE_NEW))) {
             throw LoggingUtility.logError(logger,
                 new IllegalArgumentException("Write and either CreateNew or TruncateExisting must be specified to open "
                     + "an OutputStream"));
@@ -396,14 +422,14 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
         // Writing to an empty location requires a create option.
         if (status.equals(DirectoryStatus.DOES_NOT_EXIST)
-            && !(optionsList.contains(StandardOpenOption.CREATE)
-            || optionsList.contains(StandardOpenOption.CREATE_NEW))) {
+            && !(optionsSet.contains(StandardOpenOption.CREATE)
+            || optionsSet.contains(StandardOpenOption.CREATE_NEW))) {
             throw LoggingUtility.logError(logger, new IOException("Writing to an empty location requires a create "
                 + "option. Path: " + path.toString()));
         }
 
         // Cannot write to an existing file if create new was specified.
-        if (status.equals(DirectoryStatus.NOT_A_DIRECTORY) && optionsList.contains(StandardOpenOption.CREATE_NEW)) {
+        if (status.equals(DirectoryStatus.NOT_A_DIRECTORY) && optionsSet.contains(StandardOpenOption.CREATE_NEW)) {
             throw LoggingUtility.logError(logger, new IOException("A file already exists at this location and "
                 + "CREATE_NEW was specified. Path: " + path.toString()));
         }
@@ -417,12 +443,17 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
         // Add an extra etag check for create new
         BlobRequestConditions rq = null;
-        if (optionsList.contains(StandardOpenOption.CREATE_NEW)) {
+        if (optionsSet.contains(StandardOpenOption.CREATE_NEW)) {
             rq = new BlobRequestConditions().setIfNoneMatch("*");
         }
 
-        return new NioBlobOutputStream(resource.getBlobClient().getBlockBlobClient().getBlobOutputStream(pto, null,
-            null, null, rq), resource.getPath());
+        // For parsing properties and metadata
+        if (fileAttributes == null) {
+            fileAttributes = new FileAttribute<?>[0];
+        }
+        resource.setFileAttributes(Arrays.asList(fileAttributes));
+
+        return new NioBlobOutputStream(resource.getBlobOutputStream(pto, rq), resource.getPath());
     }
 
     /**
@@ -992,7 +1023,6 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
             // If "*" is specified, add all of the attributes from the specified set.
             if (attributeName.equals("*")) {
-                Set<String> attributesToAdd;
                 if (viewType.equals(AzureBasicFileAttributeView.NAME)) {
                     for (String attr : AzureBasicFileAttributes.ATTRIBUTE_STRINGS) {
                         results.put(attr, attributeSuppliers.get(attr).get());
@@ -1101,29 +1131,29 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         this.openFileSystems.remove(fileSystemName);
     }
 
-    private String extractAccountName(URI uri) {
+    private String extractAccountEndpoint(URI uri) {
         if (!uri.getScheme().equals(this.getScheme())) {
             throw LoggingUtility.logError(this.logger, new IllegalArgumentException(
                 "URI scheme does not match this provider"));
         }
         if (CoreUtils.isNullOrEmpty(uri.getQuery())) {
             throw LoggingUtility.logError(this.logger, new IllegalArgumentException("URI does not contain a query "
-                + "component. FileSystems require a URI of the format \"azb://?account=<account_name>\"."));
+                + "component. FileSystems require a URI of the format \"azb://?endpoint=<account_endpoint>\"."));
         }
 
-        String accountName = Flux.fromArray(uri.getQuery().split("&"))
-                .filter(s -> s.startsWith(ACCOUNT_QUERY_KEY + "="))
+        String endpoint = Flux.fromArray(uri.getQuery().split("&"))
+                .filter(s -> s.startsWith(ENDPOINT_QUERY_KEY + "="))
                 .switchIfEmpty(Mono.error(LoggingUtility.logError(this.logger, new IllegalArgumentException(
-                        "URI does not contain an \"" + ACCOUNT_QUERY_KEY + "=\" parameter. FileSystems require a URI "
-                            + "of the format \"azb://?account=<account_name>\""))))
-                .map(s -> s.substring(ACCOUNT_QUERY_KEY.length() + 1))
+                        "URI does not contain an \"" + ENDPOINT_QUERY_KEY + "=\" parameter. FileSystems require a URI "
+                            + "of the format \"azb://?endpoint=<endpoint>\""))))
+                .map(s -> s.substring(ENDPOINT_QUERY_KEY.length() + 1)) // Trim the query key and =
                 .blockLast();
 
-        if (CoreUtils.isNullOrEmpty(accountName)) {
-            throw LoggingUtility.logError(logger, new IllegalArgumentException("No account name provided in URI"
+        if (CoreUtils.isNullOrEmpty(endpoint)) {
+            throw LoggingUtility.logError(logger, new IllegalArgumentException("No account endpoint provided in URI"
                 + " query."));
         }
 
-        return accountName;
+        return endpoint;
     }
 }

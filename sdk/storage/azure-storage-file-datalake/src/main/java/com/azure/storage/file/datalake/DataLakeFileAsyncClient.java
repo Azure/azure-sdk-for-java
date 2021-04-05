@@ -116,9 +116,9 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     }
 
     DataLakeFileAsyncClient(DataLakePathAsyncClient pathAsyncClient) {
-        super(pathAsyncClient.getHttpPipeline(), pathAsyncClient.getPathUrl(), pathAsyncClient.getServiceVersion(),
-            pathAsyncClient.getAccountName(), pathAsyncClient.getFileSystemName(), pathAsyncClient.pathName,
-            PathResourceType.FILE, pathAsyncClient.getBlockBlobAsyncClient());
+        super(pathAsyncClient.getHttpPipeline(), pathAsyncClient.getAccountUrl(), pathAsyncClient.getServiceVersion(),
+            pathAsyncClient.getAccountName(), pathAsyncClient.getFileSystemName(),
+            Utility.urlEncode(pathAsyncClient.pathName), PathResourceType.FILE, pathAsyncClient.getBlockBlobAsyncClient());
     }
 
     /**
@@ -362,6 +362,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
          Write to the pool and upload the output.
          */
         return chunkedSource.concatMap(pool::write)
+            .limitRate(parallelTransferOptions.getMaxConcurrency()) // This guarantees that concatMap will only buffer maxConcurrency * chunkSize data
             .concatWith(Flux.defer(pool::flush))
             /* Map the data to a tuple 3, of buffer, buffer length, buffer offset */
             .map(bufferAggregator -> Tuples.of(bufferAggregator, bufferAggregator.length(), 0L))
@@ -639,7 +640,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
         PathHttpHeaders headers = new PathHttpHeaders().setTransactionalContentHash(contentMd5);
 
-        return this.dataLakeStorage.paths().appendDataWithRestResponseAsync(data, fileOffset, null, length, null, null,
+        return this.dataLakeStorage.getPaths().appendDataWithResponseAsync(data, fileOffset, null, length, null, null,
             headers, leaseAccessConditions, context).map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -745,7 +746,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
         context = context == null ? Context.NONE : context;
 
-        return this.dataLakeStorage.paths().flushDataWithRestResponseAsync(null, position, retainUncommittedData, close,
+        return this.dataLakeStorage.getPaths().flushDataWithResponseAsync(null, position, retainUncommittedData, close,
             (long) 0, null, httpHeaders, lac, mac,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
@@ -1041,7 +1042,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         } else {
             pathExpiryOptions = PathExpiryOptions.NEVER_EXPIRE;
         }
-        return this.blobDataLakeStorage.paths().setExpiryWithRestResponseAsync(
+        return this.blobDataLakeStorage.getPaths().setExpiryWithResponseAsync(
             pathExpiryOptions, null,
             null, expiresOn,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))

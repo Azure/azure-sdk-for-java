@@ -14,6 +14,8 @@ import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Header;
+import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
@@ -24,7 +26,8 @@ import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Handler;
 import org.apache.qpid.proton.engine.Record;
 import org.apache.qpid.proton.engine.Session;
-import org.apache.qpid.proton.engine.SslDomain.VerifyMode;
+import org.apache.qpid.proton.engine.SslDomain;
+import org.apache.qpid.proton.engine.SslPeerDetails;
 import org.apache.qpid.proton.engine.Transport;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
@@ -43,6 +46,7 @@ import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
@@ -61,13 +65,16 @@ class ReactorConnectionTest {
     private static final ConnectionStringProperties CREDENTIAL_INFO = new ConnectionStringProperties("Endpoint=sb"
         + "://test-event-hub.servicebus.windows.net/;SharedAccessKeyName=dummySharedKeyName;"
         + "SharedAccessKey=dummySharedKeyValue;EntityPath=eventhub1;");
-    private static final String HOSTNAME = CREDENTIAL_INFO.getEndpoint().getHost();
-    private static final Scheduler SCHEDULER = Schedulers.elastic();
+    private static final String FULLY_QUALIFIED_NAMESPACE = CREDENTIAL_INFO.getEndpoint().getHost();
+    private static final Scheduler SCHEDULER = Schedulers.boundedElastic();
     private static final String PRODUCT = "test";
     private static final String CLIENT_VERSION = "1.0.0-test";
-    private static final VerifyMode VERIFY_MODE = VerifyMode.VERIFY_PEER_NAME;
+    private static final SslDomain.VerifyMode VERIFY_MODE = SslDomain.VerifyMode.VERIFY_PEER_NAME;
 
-    private final ClientOptions clientOptions = new ClientOptions();
+    private static final ClientOptions CLIENT_OPTIONS = new ClientOptions().setHeaders(
+        Arrays.asList(new Header("name", PRODUCT), new Header("version", CLIENT_VERSION)));
+
+    private final SslPeerDetails peerDetails = Proton.sslPeerDetails(FULLY_QUALIFIED_NAMESPACE, 3128);
 
     private ReactorConnection connection;
     private ConnectionHandler connectionHandler;
@@ -78,7 +85,7 @@ class ReactorConnectionTest {
     @Mock
     private Selectable selectable;
     @Mock
-    private TokenCredential tokenProvider;
+    private TokenCredential tokenCredential;
     @Mock
     private Connection connectionProtonJ;
     @Mock
@@ -93,6 +100,7 @@ class ReactorConnectionTest {
     private ReactorProvider reactorProvider;
     @Mock
     private ReactorHandlerProvider reactorHandlerProvider;
+    private AutoCloseable mocksCloseable;
 
     @BeforeAll
     static void beforeAll() {
@@ -106,18 +114,19 @@ class ReactorConnectionTest {
 
     @BeforeEach
     void setup() throws IOException {
-        MockitoAnnotations.initMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
 
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setMaxRetries(0).setTryTimeout(TEST_DURATION);
         final ConnectionOptions connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
-            tokenProvider, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, retryOptions,
-            ProxyOptions.SYSTEM_DEFAULTS, SCHEDULER, clientOptions, VERIFY_MODE);
+            tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, retryOptions,
+            ProxyOptions.SYSTEM_DEFAULTS, SCHEDULER, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION);
 
-        connectionHandler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION,
-            VERIFY_MODE, clientOptions);
+        connectionHandler = new ConnectionHandler(CONNECTION_ID, connectionOptions,
+            peerDetails);
 
         when(reactor.selectable()).thenReturn(selectable);
-        when(reactor.connectionToHost(HOSTNAME, connectionHandler.getProtocolPort(), connectionHandler))
+        when(reactor.connectionToHost(FULLY_QUALIFIED_NAMESPACE, connectionHandler.getProtocolPort(),
+            connectionHandler))
             .thenReturn(connectionProtonJ);
         when(reactor.process()).thenReturn(true);
 
@@ -126,26 +135,28 @@ class ReactorConnectionTest {
         when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
         when(reactorProvider.createReactor(CONNECTION_ID, connectionHandler.getMaxFrameSize())).thenReturn(reactor);
 
-        when(reactorHandlerProvider.createConnectionHandler(CONNECTION_ID, HOSTNAME,
-            connectionOptions.getTransportType(), connectionOptions.getProxyOptions(), PRODUCT, CLIENT_VERSION,
-            VERIFY_MODE, connectionOptions.getClientOptions()))
+        when(reactorHandlerProvider.createConnectionHandler(CONNECTION_ID, connectionOptions))
             .thenReturn(connectionHandler);
 
-        sessionHandler = new SessionHandler(CONNECTION_ID, HOSTNAME, SESSION_NAME, reactorDispatcher, TEST_DURATION);
+        sessionHandler = new SessionHandler(CONNECTION_ID, FULLY_QUALIFIED_NAMESPACE, SESSION_NAME, reactorDispatcher,
+            TEST_DURATION);
         when(reactorHandlerProvider.createSessionHandler(anyString(), anyString(), anyString(), any(Duration.class)))
             .thenReturn(sessionHandler);
 
         connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider,
-            tokenManager, messageSerializer, PRODUCT, CLIENT_VERSION, SenderSettleMode.SETTLED,
-            ReceiverSettleMode.FIRST);
+            tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
     }
 
     @AfterEach
-    void teardown() {
+    void teardown() throws Exception {
         connection.dispose();
         // Tear down any inline mocks to avoid memory leaks.
         // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
         Mockito.framework().clearInlineMocks();
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     /**
@@ -159,7 +170,7 @@ class ReactorConnectionTest {
         // Assert
         Assertions.assertNotNull(connection);
         Assertions.assertEquals(CONNECTION_ID, connection.getId());
-        Assertions.assertEquals(HOSTNAME, connection.getFullyQualifiedNamespace());
+        Assertions.assertEquals(FULLY_QUALIFIED_NAMESPACE, connection.getFullyQualifiedNamespace());
 
         Assertions.assertEquals(connectionHandler.getMaxFrameSize(), connection.getMaxFrameSize());
 
@@ -276,7 +287,7 @@ class ReactorConnectionTest {
         // Arrange
         final Event event = mock(Event.class);
         when(event.getConnection()).thenReturn(connectionProtonJ);
-        when(connectionProtonJ.getHostname()).thenReturn(HOSTNAME);
+        when(connectionProtonJ.getHostname()).thenReturn(FULLY_QUALIFIED_NAMESPACE);
         when(connectionProtonJ.getRemoteContainer()).thenReturn("remote-container");
         when(connectionProtonJ.getRemoteState()).thenReturn(EndpointState.ACTIVE);
 
@@ -286,8 +297,8 @@ class ReactorConnectionTest {
             .then(() -> connectionHandler.onConnectionRemoteOpen(event))
             .expectNext(AmqpEndpointState.ACTIVE)
             // getConnectionStates is distinct. We don't expect to see another event with the same status.
-            .then(() -> connectionHandler.onConnectionRemoteOpen(event))
             .then(() -> {
+                connectionHandler.onConnectionRemoteOpen(event);
                 connection.dispose();
             })
             .verifyComplete();
@@ -306,9 +317,8 @@ class ReactorConnectionTest {
 
         // Act and Assert
         StepVerifier.create(this.connection.getClaimsBasedSecurityNode())
-            .assertNext(node -> {
-                Assertions.assertTrue(node instanceof ClaimsBasedSecurityChannel);
-            }).verifyComplete();
+            .assertNext(node -> Assertions.assertTrue(node instanceof ClaimsBasedSecurityChannel))
+            .verifyComplete();
     }
 
     /**
@@ -323,32 +333,30 @@ class ReactorConnectionTest {
             .setDelay(Duration.ofMillis(200))
             .setMode(AmqpRetryMode.FIXED)
             .setTryTimeout(timeout);
-        final ConnectionOptions parameters = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
-            tokenProvider, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, retryOptions,
-            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), clientOptions, VERIFY_MODE);
+        final ConnectionOptions connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
+            tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, retryOptions,
+            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION);
 
-        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION,
-            VERIFY_MODE, clientOptions);
+        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails);
         final ReactorHandlerProvider provider = mock(ReactorHandlerProvider.class);
 
-        when(provider.createConnectionHandler(CONNECTION_ID, HOSTNAME, parameters.getTransportType(),
-            parameters.getProxyOptions(), PRODUCT, CLIENT_VERSION, VERIFY_MODE, clientOptions))
+        when(provider.createConnectionHandler(CONNECTION_ID, connectionOptions))
             .thenReturn(handler);
-        when(provider.createSessionHandler(CONNECTION_ID, HOSTNAME, SESSION_NAME, timeout)).thenReturn(sessionHandler);
+        when(provider.createSessionHandler(CONNECTION_ID, FULLY_QUALIFIED_NAMESPACE, SESSION_NAME, timeout))
+            .thenReturn(sessionHandler);
 
-        when(reactor.connectionToHost(HOSTNAME, handler.getProtocolPort(), handler)).thenReturn(connectionProtonJ);
+        when(reactor.connectionToHost(FULLY_QUALIFIED_NAMESPACE, handler.getProtocolPort(), handler))
+            .thenReturn(connectionProtonJ);
 
         // Act and Assert
-        final ReactorConnection connectionBad = new ReactorConnection(CONNECTION_ID, parameters, reactorProvider,
-            provider, tokenManager, messageSerializer, PRODUCT, CLIENT_VERSION, SenderSettleMode.SETTLED,
+        final ReactorConnection connectionBad = new ReactorConnection(CONNECTION_ID, connectionOptions,
+            reactorProvider, provider, tokenManager, messageSerializer, SenderSettleMode.SETTLED,
             ReceiverSettleMode.FIRST);
 
         try {
             StepVerifier.create(connectionBad.getClaimsBasedSecurityNode())
-                .expectErrorSatisfies(error -> {
-                    Assertions.assertTrue(error instanceof TimeoutException
-                        || error.getCause() instanceof TimeoutException);
-                })
+                .expectErrorSatisfies(error -> Assertions.assertTrue(error instanceof TimeoutException
+                    || error.getCause() instanceof TimeoutException))
                 .verify();
         } finally {
             connectionBad.dispose();
@@ -370,7 +378,7 @@ class ReactorConnectionTest {
         when(event.getTransport()).thenReturn(transport);
         when(event.getConnection()).thenReturn(connectionProtonJ);
         when(transport.getCondition()).thenReturn(errorCondition);
-        when(connectionProtonJ.getHostname()).thenReturn(HOSTNAME);
+        when(connectionProtonJ.getHostname()).thenReturn(FULLY_QUALIFIED_NAMESPACE);
         when(connectionProtonJ.getRemoteContainer()).thenReturn("remote-container");
         when(connectionProtonJ.getRemoteState()).thenReturn(EndpointState.ACTIVE);
 
@@ -394,5 +402,40 @@ class ReactorConnectionTest {
             .verify();
 
         verify(transport, times(1)).unbind();
+    }
+
+    /**
+     * Verifies that if we use the custom endpoint, it will return the correct properties.
+     */
+    @Test
+    void setsPropertiesUsingCustomEndpoint() throws IOException {
+        final String connectionId = "new-connection-id";
+        final String hostname = "custom-endpoint.com";
+        final int port = 10002;
+        final ConnectionOptions connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
+            tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP,
+            new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, SCHEDULER, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT,
+            CLIENT_VERSION, hostname, port);
+
+        final ConnectionHandler connectionHandler = new ConnectionHandler(connectionId, connectionOptions,
+            peerDetails);
+
+        when(reactor.connectionToHost(hostname, port, connectionHandler)).thenReturn(connectionProtonJ);
+
+        final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(reactor);
+        when(reactorProvider.getReactor()).thenReturn(reactor);
+        when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
+        when(reactorProvider.createReactor(connectionId, connectionHandler.getMaxFrameSize())).thenReturn(reactor);
+
+        when(reactorHandlerProvider.createConnectionHandler(CONNECTION_ID, connectionOptions))
+            .thenReturn(connectionHandler);
+
+        final SessionHandler sessionHandler = new SessionHandler(connectionId, FULLY_QUALIFIED_NAMESPACE, SESSION_NAME,
+            reactorDispatcher, TEST_DURATION);
+        when(reactorHandlerProvider.createSessionHandler(anyString(), anyString(), anyString(), any(Duration.class)))
+            .thenReturn(sessionHandler);
+
+        connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider,
+            tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
     }
 }

@@ -4,6 +4,7 @@
 package com.azure.spring.integration.servicebus.queue;
 
 import com.azure.spring.integration.servicebus.ServiceBusTemplateSendTest;
+import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
 import com.microsoft.azure.servicebus.IMessage;
 import com.microsoft.azure.servicebus.IQueueClient;
@@ -24,9 +25,10 @@ public class QueueTemplateSendTest extends ServiceBusTemplateSendTest<ServiceBus
     public void setUp() {
         this.mockClientFactory = mock(ServiceBusQueueClientFactory.class);
         this.mockClient = mock(IQueueClient.class);
+
         when(this.mockClientFactory.getOrCreateSender(anyString())).thenReturn(this.mockClient);
         when(this.mockClient.sendAsync(isA(IMessage.class))).thenReturn(future);
 
-        this.sendOperation = new ServiceBusQueueTemplate(mockClientFactory);
+        this.sendOperation = new ServiceBusQueueTemplate(mockClientFactory, new ServiceBusMessageConverter());
     }
 }

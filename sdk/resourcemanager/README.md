@@ -38,7 +38,7 @@ For your convenience, we have provided a multi-service package that includes som
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager</artifactId>
-  <version>2.1.0</version>
+  <version>2.3.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -70,7 +70,7 @@ The services available via `azure-resourcemanager` are listed as below:
 - SQL
 - Storage
 - Traffic Manager
-- Search (preview)
+- Search
 </details>
 
 In the case where you are interested in certain service above or the service not included in the multi-service package, you can choose to use the single-service package for each service. Those packages follow the same naming patterns and design principals. For example, the package for Media Services has the following artifact information.
@@ -80,7 +80,7 @@ In the case where you are interested in certain service above or the service not
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-mediaservices</artifactId>
-  <version>1.0.0-beta.1</version>
+  <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -100,7 +100,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-identity</artifactId>
-  <version>1.2.0</version>
+  <version>1.2.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -112,7 +112,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-netty</artifactId>
-  <version>1.6.3</version>
+  <version>1.9.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -157,7 +157,7 @@ The key concepts of Azure Management Libraries includes:
 - Fluent interface to manage Azure resources.
 - Dependency across Azure resources.
 - Batch Azure resource provisioning.
-- Integration with Azure role-based access control.
+- Integration with [Azure role-based access control][rbac].
 - Asynchronous operations with [Reactor][reactor]. (Preview)
 - Configurable client, e.g. configuring HTTP client, retries, logging, etc.
 - [API design][design]
@@ -273,7 +273,7 @@ azure.storageAccounts().define("<storage-account-name>")
     .flatMap(storageAccount -> azure.storageBlobContainers()
         .defineContainer("container")
         .withExistingBlobService(rgName, storageAccount.name())
-        .withPublicAccess(PublicAccess.BLOB)
+        .withPublicAccess(PublicAccess.NONE)
         .createAsync()
     )
     //...
@@ -312,7 +312,7 @@ For example, here is sample maven dependency for Compute package.
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-compute</artifactId>
-  <version>2.1.0</version>
+  <version>2.3.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -355,6 +355,80 @@ AzureResourceManager azure = AzureResourceManager
     .withDefaultSubscription();
 ```
 
+### Dependency management
+
+[Azure Core][azure_core] (`azure-core`) is the shared library for  all packages under `com.azure`.
+It guarantees backward compatibility.
+
+However, if one accidentally uses an older version of it via transitive dependencies, it might cause problem in runtime.
+This case could happen when one module depends on multiple Azure Java SDKs with different versions, which in turn depends on different versions of `azure-core`.
+
+Maven dependency plugin would help to diagnostic this problem.
+Here is an artificial example.
+
+```shell
+mvn dependency:tree -Dincludes=com.azure:azure-core
+
+[INFO] com.microsoft.azure:azure-sdk-test:jar:1.0-SNAPSHOT
+[INFO] \- com.azure:azure-identity:jar:1.2.2:compile
+[INFO]    \- com.azure:azure-core:jar:1.12.0:compile
+```
+
+We can see the `azure-core` resolved as 1.12.0.
+
+```shell
+mvn dependency:tree -Dverbose=true -Dincludes=com.azure:azure-core
+
+[INFO] com.microsoft.azure:azure-sdk-test:jar:1.0-SNAPSHOT
+[INFO] +- com.azure:azure-identity:jar:1.2.2:compile
+[INFO] |  +- com.azure:azure-core:jar:1.12.0:compile
+[INFO] |  \- com.azure:azure-core-http-netty:jar:1.7.1:compile
+[INFO] |     \- (com.azure:azure-core:jar:1.12.0:compile - omitted for duplicate)
+[INFO] +- com.azure.resourcemanager:azure-resourcemanager:jar:2.2.0:compile
+[INFO] |  +- com.azure.resourcemanager:azure-resourcemanager-resources:jar:2.2.0:compile
+[INFO] |  |  +- (com.azure:azure-core:jar:1.13.0:compile - omitted for conflict with 1.12.0)
+[INFO] |  |  \- com.azure:azure-core-management:jar:1.1.1:compile
+[INFO] |  |     \- (com.azure:azure-core:jar:1.13.0:compile - omitted for conflict with 1.12.0)
+[INFO] |  \- com.azure.resourcemanager:azure-resourcemanager-keyvault:jar:2.2.0:compile
+[INFO] |     +- com.azure:azure-security-keyvault-keys:jar:4.2.5:compile
+[INFO] |     |  \- (com.azure:azure-core:jar:1.13.0:compile - omitted for conflict with 1.12.0)
+[INFO] |     \- com.azure:azure-security-keyvault-secrets:jar:4.2.5:compile
+[INFO] |        \- (com.azure:azure-core:jar:1.13.0:compile - omitted for conflict with 1.12.0)
+[INFO] \- com.azure:azure-storage-blob:jar:12.10.2:compile
+[INFO]    +- (com.azure:azure-core:jar:1.12.0:compile - omitted for duplicate)
+[INFO]    \- com.azure:azure-storage-common:jar:12.10.1:compile
+[INFO]       \- (com.azure:azure-core:jar:1.12.0:compile - omitted for duplicate)
+```
+
+From the module, we can see there is multiple SDKs depends on different versions of `azure-core`, and the latest would be 1.13.0.
+
+If we run the module, we will encounter this error in runtime.
+
+```
+java.lang.NoSuchMethodError: 'com.azure.core.http.HttpHeaders com.azure.core.http.HttpHeaders.set(java.lang.String, java.lang.String)'
+```
+
+The cause is that this method was not available in 1.12.0 `azure-core`, and now being used by some SDK that depends on 1.13.0 `azure-core`.
+
+In this example, apparently the problem is that we used an old version of `azure-identity`. After upgrade it to 1.2.3, problem solved.
+
+Better, one can explicitly put `azure-core` as the first dependency, and keep it up-to-date.
+
+Alternatively, maven dependency management will also help to control the version in transitive dependencies.
+Here is a sample dependency management section in maven POM.
+
+```xml
+<dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>${azure-core.version}</version>
+    </dependency>
+  </dependencies>
+</dependencyManagement>
+```
+
 ### ARM throttling
 
 Azure Resource Manager applies throttling on the number of requests sent from client within certain span of time.
@@ -388,3 +462,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [design_preview]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/DESIGN_PREVIEW.md
 [throttling]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/THROTTLING.md
 [reactor]: https://projectreactor.io/
+[rbac]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/RBAC.md

@@ -108,6 +108,23 @@ public final class DataDisk {
     @JsonProperty(value = "diskMBpsReadWrite", access = JsonProperty.Access.WRITE_ONLY)
     private Long diskMBpsReadWrite;
 
+    /*
+     * Specifies the detach behavior to be used while detaching a disk or which
+     * is already in the process of detachment from the virtual machine.
+     * Supported values: **ForceDetach**. <br><br> detachOption:
+     * **ForceDetach** is applicable only for managed data disks. If a previous
+     * detachment attempt of the data disk did not complete due to an
+     * unexpected failure from the virtual machine and the disk is still not
+     * released then use force-detach as a last resort option to detach the
+     * disk forcibly from the VM. All writes might not have been flushed when
+     * using this detach behavior. <br><br> This feature is still in preview
+     * mode and is not supported for VirtualMachineScaleSet. To force-detach a
+     * data disk update toBeDetached to 'true' along with setting detachOption:
+     * 'ForceDetach'.
+     */
+    @JsonProperty(value = "detachOption")
+    private DiskDetachOptionTypes detachOption;
+
     /**
      * Get the lun property: Specifies the logical unit number of the data disk. This value is used to identify data
      * disks within the VM and therefore must be unique for each data disk attached to a VM.
@@ -354,6 +371,40 @@ public final class DataDisk {
      */
     public Long diskMBpsReadWrite() {
         return this.diskMBpsReadWrite;
+    }
+
+    /**
+     * Get the detachOption property: Specifies the detach behavior to be used while detaching a disk or which is
+     * already in the process of detachment from the virtual machine. Supported values: **ForceDetach**.
+     * &lt;br&gt;&lt;br&gt; detachOption: **ForceDetach** is applicable only for managed data disks. If a previous
+     * detachment attempt of the data disk did not complete due to an unexpected failure from the virtual machine and
+     * the disk is still not released then use force-detach as a last resort option to detach the disk forcibly from the
+     * VM. All writes might not have been flushed when using this detach behavior. &lt;br&gt;&lt;br&gt; This feature is
+     * still in preview mode and is not supported for VirtualMachineScaleSet. To force-detach a data disk update
+     * toBeDetached to 'true' along with setting detachOption: 'ForceDetach'.
+     *
+     * @return the detachOption value.
+     */
+    public DiskDetachOptionTypes detachOption() {
+        return this.detachOption;
+    }
+
+    /**
+     * Set the detachOption property: Specifies the detach behavior to be used while detaching a disk or which is
+     * already in the process of detachment from the virtual machine. Supported values: **ForceDetach**.
+     * &lt;br&gt;&lt;br&gt; detachOption: **ForceDetach** is applicable only for managed data disks. If a previous
+     * detachment attempt of the data disk did not complete due to an unexpected failure from the virtual machine and
+     * the disk is still not released then use force-detach as a last resort option to detach the disk forcibly from the
+     * VM. All writes might not have been flushed when using this detach behavior. &lt;br&gt;&lt;br&gt; This feature is
+     * still in preview mode and is not supported for VirtualMachineScaleSet. To force-detach a data disk update
+     * toBeDetached to 'true' along with setting detachOption: 'ForceDetach'.
+     *
+     * @param detachOption the detachOption value to set.
+     * @return the DataDisk object itself.
+     */
+    public DataDisk withDetachOption(DiskDetachOptionTypes detachOption) {
+        this.detachOption = detachOption;
+        return this;
     }
 
     /**

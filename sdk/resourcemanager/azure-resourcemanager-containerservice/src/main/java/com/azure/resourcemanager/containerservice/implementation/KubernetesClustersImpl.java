@@ -4,6 +4,7 @@ package com.azure.resourcemanager.containerservice.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.containerservice.ContainerServiceManager;
 import com.azure.resourcemanager.containerservice.fluent.ManagedClustersClient;
 import com.azure.resourcemanager.containerservice.fluent.models.CredentialResultsInner;
@@ -21,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation for KubernetesClusters. */
 public class KubernetesClustersImpl
@@ -39,16 +41,20 @@ public class KubernetesClustersImpl
 
     @Override
     public PagedFlux<KubernetesCluster> listAsync() {
-        return this.inner().listAsync().mapPage(inner -> new KubernetesClusterImpl(inner.name(), inner, manager()));
+        return PagedConverter.mapPage(this.inner().listAsync(), inner -> new KubernetesClusterImpl(inner.name(), inner, manager()));
     }
 
     @Override
     public PagedIterable<KubernetesCluster> listByResourceGroup(String resourceGroupName) {
-        return wrapList(this.inner().listByResourceGroup(resourceGroupName));
+        return new PagedIterable<>(this.listByResourceGroupAsync(resourceGroupName));
     }
 
     @Override
     public PagedFlux<KubernetesCluster> listByResourceGroupAsync(String resourceGroupName) {
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return new PagedFlux<>(() -> Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+        }
         return wrapPageAsync(this.inner().listByResourceGroupAsync(resourceGroupName));
     }
 

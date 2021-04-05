@@ -19,6 +19,9 @@ public class ServiceBusStressOptions extends PerfStressOptions {
     @Parameter(names = { "-ms", "--messageSend" }, description = "Messages to send")
     private int messagesToSend = 10;
 
+    @Parameter(names = { "-msb", "--messageSizeBytes" }, description = "Size(in bytes) of one Message")
+    private int messagesSizeBytesToSend = 10;
+
     /**
      * Get the configured messagesToSend option for performance test.
      * @return The size.
@@ -33,5 +36,13 @@ public class ServiceBusStressOptions extends PerfStressOptions {
      */
     public int getMessagesToReceive() {
         return messagesToReceive;
+    }
+
+    /**
+     * Get the configured messagesSizeBytesToSend option for performance test.
+     * @return The size.
+     */
+    public int getMessagesSizeBytesToSend() {
+        return messagesSizeBytesToSend;
     }
 }

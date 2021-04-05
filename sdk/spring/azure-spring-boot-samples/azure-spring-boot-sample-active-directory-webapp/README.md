@@ -4,52 +4,84 @@
 This sample illustrates how to use `azure-spring-boot-starter-active-directory` package to work with OAuth 2.0 and OpenID Connect protocols on Auzre. This sample will use Microsoft Graph API to retrieve user infomation.
 
 ## Getting started
-### Environment checklist
-We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
+### Prerequisites
+- [Environment checklist][environment_checklist]
 
 ### Configure web app
 1. Search for and select your tenant in **Azure Active Directory**.
-2. Under Manage In the same tenant, select **App registrations** -> **New registration**.![Protal manage](docs/image-protal-manage.png "Protal manage")
-3. The registered application name is filled into `webapp`, select **Accounts in this organizational directory only**, click the **register** button.![Register a web app](docs/image-register-a-web-app.png "Register a web app")
-4. Under **webapp** application, select **Certificates & secrets** -> **new client secret**, expires select **Never**, click the **add** button.(Remember to save the secrets here and use them later.)![Creat secrets](docs/image-creat-secrets-app.png "Creat secrets")
-5. Under **webapp** application, select **Authentication** -> **Add a platform**, select **web** platform, redirect urls set to `http://localhost:8080/login/oauth2/code/azure`, check the **Access Tokens** and **ID Tokens** checkboxes, click **configure** button.![Add a platfform](docs/image-add-a-platfform.png "Add a platfform")
-6. Under **webapp** application, select **Authentication** -> **Add URI**, you need to add redirect URIs of `http://localhost:8080/login/oauth2/code/arm`. ![App add url](docs/image-app-add-url.png "App add url")
-7. Under **webapp** application, select **API permissions** -> **Add a permission**, select **Microsoft Graph**. Next, search `Directory.AccessAsUser.All` via **select Permissions**, check the check box, click **add permissions** button.(`User.Read` is created automatically, we need to keep it.)![Api permission](docs/image-api-permissions.png "Api permission")
-8. Similarly, add the following permissions: 
-   - **user_impersonation** in **Azure Service Management**,
-   - **ActivityFeed.Read**, **ActivityFeed.ReadDlp**, **ServiceHealth.Read** in **Office 365 Management APIs**.![Add permissions](docs/image-add-permissions.png "Add permissions")
-9. click **Grant admin consent for...**.![Grant permission](docs/image-grant-permission.png "Grant permission")
-11. Manually remove the admin consent for **user_impersonation**.(Easy to see incremental authorization.)![Final](docs/image-final.png "Final")
+1. Under Manage In the same tenant, select **App registrations** -> **New registration**.![Portal manage](docs/image-portal-manage.png "Portal manage")
+1. The registered application name is filled into `webapp`, select **Accounts in this organizational directory only**, click the **register** button.![Register a web app](docs/image-register-a-web-app.png "Register a web app")
+1. Under **webapp** application, select **Certificates & secrets** -> **new client secret**, click the **add** button.(Remember to save the secrets here and use them later.)![Create secrets](docs/image-create-app-secrets.png "Create secrets")![Create secrets](docs/image-secret-value.png "Create Secrets")
+1. Under **webapp** application, select **Authentication** -> **Add a platform**, select **web** platform, redirect urls set to `http://localhost:8080/login/oauth2/code/`, click **configure** button.![Add a platform](docs/image-add-a-platform.png "Add a platform")
+1. Under **webapp** application, select **API permissions** -> **Add a permission**, select **Microsoft Graph**. Next, search `Directory.Read.All` via **select Permissions**, check the check box, click **add permissions** button.(`User.Read` is created automatically, we need to keep it.)![Request Api permission](docs/image-request-api-permissions.png "Request Api permission")
+1. Similarly, add permission **user_impersonation** in **Azure Service Management**,
+   ![Added permissions](docs/image-permissions.png "Added permissions")
 
 See [Register app], [Grant scoped permission] for more information about web app.
 
 ### Configure groups for sign in user
 In order to try the authorization action with this sample with minimum effort, [configure the user and groups in Azure Active Directory], configure the user with `group1`.
 
+## Advanced features
+
+### Support access control by id token in web application 
+If you want to use `id_token` for authorization, we can use `appRoles` feature of AAD to generate id_token's `roles` claim and then create `GrantedAuthority` from `roles` to implement access control. 
+Note the `roles` claim generated from `appRoles` is decorated with prefix `APPROLE_`.
+
+Follow the guide to 
+[add app roles in your application](https://docs.microsoft.com/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps).
+1. In this example you need to create following `appRoles` in your application's manifest:
+    ```
+      "appRoles": [
+        {
+          "allowedMemberTypes": [
+            "User"
+          ],
+          "displayName": "Admin",
+          "id": "2fa848d0-8054-4e11-8c73-7af5f1171001",
+          "isEnabled": true,
+          "description": "Full admin access",
+          "value": "Admin"
+         }
+      ]
+    ```
+1. After you've created the roles go to your Enterprise Application in Azure Portal, select "Users and groups" and assign the new roles to your Users (assignment of roles to groups is not available in the free tier of AAD).
+
+### Support access other resources server
+This is an optional configuration. This guide is for accessing [Resource Server Obo].
+If you want to use **webapp** to access other resource server (for example, access [Resource Server Obo] or [Resource Server] or custom resource server), you can refer to this guide.
+
+1. First you need to complete [config for resource server obo] and make sure to expose the scope of `Obo.WebApiA.ExampleScope`.
+1. Select **API permissions** > **Add a permission** > **My APIs**, select ***Web API A*** application name. ![Select MyAPIs](docs/image-select-myapis.png)
+1. **Delegated permissions** is selected by default， Select **Obo.WebApiA.ExampleScope** permission, select **Add permission** to complete the process.![Add Permissions](docs/image-add-permissions.png)
+1. Grant admin consent for ***Web API A*** permissions.![API Permissions](docs/image-add-grant-admin-consent.png)
+1. Enable webapiA client in `application.yml`.
+
 ## Examples
 ### Configure application.yml
 ```yaml
+# WebapiA is an optional client, we can access obo resource servers or the other custom server.
+
 azure:
-   activedirectory:
-      authorization-clients:
-         arm:
-            on-demand: true
-            scopes: https://management.core.windows.net/user_impersonation
-         graph:
-            scopes:
-               - https://graph.microsoft.com/User.Read
-               - https://graph.microsoft.com/Directory.AccessAsUser.All
-         office:
-            scopes:
-               - https://manage.office.com/ActivityFeed.Read
-               - https://manage.office.com/ActivityFeed.ReadDlp
-               - https://manage.office.com/ServiceHealth.Read
-      client-id: <client-id>
-      client-secret: <client-secret>
-      tenant-id: <tenant-id>
-      user-group:
-         allowed-groups: group1, group2
-      post-logout-redirect-uri: http://localhost:8080
+  activedirectory:
+    client-id: <client-id>
+    client-secret: <client-secret>
+    tenant-id: <tenant-id>
+    user-group:
+      allowed-groups: group1, group2
+    post-logout-redirect-uri: http://localhost:8080
+    authorization-clients:
+      arm:
+        on-demand: true
+        scopes: https://management.core.windows.net/user_impersonation
+      graph:
+        scopes:
+          - https://graph.microsoft.com/User.Read
+          - https://graph.microsoft.com/Directory.Read.All
+#      webapiA:
+#        scopes:
+#          - <Web-API-A-app-id-url>/Obo.WebApiA.ExampleScope
+      
 # It's suggested the logged in user should at least belong to one of the above groups
 # If not, the logged in user will not be able to access any authorization controller rest APIs
 ```
@@ -68,6 +100,7 @@ mvn spring-boot:run
 5. Access `Graph Client` link: access token for `Microsoft Graph` will be acquired, and the content of customized **OAuth2AuthorizedClient** instance for `Microsoft Graph` resource will be displayed.
 6. Access `Office Client` link: access token for `Office 365 Management APIs` will be acquired, the content of customized **OAuth2AuthorizedClient** instance for `Office 365 Management APIs` resource will be displayed.
 7. Access `Arm Client` link: page will be redirected to Consent page for on-demand authorization of `user_impersonation` permission in `Azure Service Management` resource. Clicking on `Consent`, access token for `Azure Service Management` will be acquired, the content of customized **OAuth2AuthorizedClient** instance for `Azure Service Management` resource will be displayed.
+8. Access `Obo Client` link: access token for `webapiA` will be acquired, the success or failure of accessing `webapiA` will be displayed.
 
 ## Troubleshooting
 ### If registered application is multi-tenanted, how to run this sample?
@@ -85,8 +118,11 @@ In Azure portal, app registration manifest page, configure `oauth2AllowImplicitF
 ## Contributing
 
 <!-- LINKS -->
-[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [Register app]: https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app
 [Grant scoped permission]: https://docs.microsoft.com/azure/active-directory/develop/quickstart-configure-app-access-web-apis
 [configure the user and groups in Azure Active Directory]: https://docs.microsoft.com/azure/active-directory/active-directory-groups-create-azure-portal
 [this issue]: https://github.com/MicrosoftDocs/azure-docs/issues/8121#issuecomment-387090099
+[Resource Server]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server
+[Resource Server Obo]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo
+[config for resource server obo]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo#configure-your-middle-tier-web-api-a

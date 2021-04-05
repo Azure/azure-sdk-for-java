@@ -233,7 +233,6 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -244,14 +243,14 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .<PagedResponse<TableGetResultsInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -287,7 +286,6 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -296,7 +294,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context)
             .map(
@@ -405,7 +403,6 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -417,10 +414,10 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                             resourceGroupName,
                             accountName,
                             tableName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -460,7 +457,6 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -470,7 +466,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                 resourceGroupName,
                 accountName,
                 tableName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -539,7 +535,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -581,7 +577,6 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         } else {
             createUpdateTableParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -593,11 +588,11 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                             resourceGroupName,
                             accountName,
                             tableName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             createUpdateTableParameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -606,7 +601,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -650,7 +645,6 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         } else {
             createUpdateTableParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -660,7 +654,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                 resourceGroupName,
                 accountName,
                 tableName,
-                apiVersion,
+                this.client.getApiVersion(),
                 createUpdateTableParameters,
                 accept,
                 context);
@@ -672,7 +666,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -702,7 +696,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -732,7 +726,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -754,7 +748,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -779,7 +773,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -802,7 +796,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -828,7 +822,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -849,7 +843,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -903,7 +897,6 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -914,9 +907,9 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                             resourceGroupName,
                             accountName,
                             tableName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -956,7 +949,6 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         context = this.client.mergeContext(context);
         return service
             .deleteTable(
@@ -965,7 +957,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                 resourceGroupName,
                 accountName,
                 tableName,
-                apiVersion,
+                this.client.getApiVersion(),
                 context);
     }
 
@@ -1153,7 +1145,6 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1165,10 +1156,10 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                             resourceGroupName,
                             accountName,
                             tableName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1209,7 +1200,6 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1219,7 +1209,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                 resourceGroupName,
                 accountName,
                 tableName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -1293,7 +1283,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1335,7 +1325,6 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         } else {
             updateThroughputParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1347,11 +1336,11 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                             resourceGroupName,
                             accountName,
                             tableName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             updateThroughputParameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1360,7 +1349,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1404,7 +1393,6 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         } else {
             updateThroughputParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1414,7 +1402,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                 resourceGroupName,
                 accountName,
                 tableName,
-                apiVersion,
+                this.client.getApiVersion(),
                 updateThroughputParameters,
                 accept,
                 context);
@@ -1426,7 +1414,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1458,7 +1446,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1493,7 +1481,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1516,7 +1504,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1542,7 +1530,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1565,7 +1553,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1591,7 +1579,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1613,7 +1601,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current Table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1668,7 +1656,6 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1680,10 +1667,10 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                             resourceGroupName,
                             accountName,
                             tableName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1723,7 +1710,6 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1733,7 +1719,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                 resourceGroupName,
                 accountName,
                 tableName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -1938,7 +1924,6 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1950,10 +1935,10 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                             resourceGroupName,
                             accountName,
                             tableName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1993,7 +1978,6 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2003,7 +1987,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                 resourceGroupName,
                 accountName,
                 tableName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }

@@ -43,9 +43,7 @@ public class IterableStreamJavaDocCodeSnippets {
             if (resp.getStatusCode() == HttpURLConnection.HTTP_OK) {
                 System.out.printf("Response headers are %s. Url %s%n", resp.getDeserializedHeaders(),
                     resp.getRequest().getUrl());
-                resp.getItems().forEach(value -> {
-                    System.out.printf("Response value is %d%n", value);
-                });
+                resp.getElements().forEach(value -> System.out.printf("Response value is %d%n", value));
             }
         });
         // END: com.azure.core.util.iterableStream.stream
@@ -72,9 +70,7 @@ public class IterableStreamJavaDocCodeSnippets {
             if (resp.getStatusCode() == HttpURLConnection.HTTP_OK) {
                 System.out.printf("Response headers are %s. Url %s%n", resp.getDeserializedHeaders(),
                     resp.getRequest().getUrl());
-                resp.getItems().forEach(value -> {
-                    System.out.printf("Response value is %d%n", value);
-                });
+                resp.getElements().forEach(value -> System.out.printf("Response value is %d%n", value));
             }
         }
         // END: com.azure.core.util.iterableStream.iterator.while
@@ -102,9 +98,7 @@ public class IterableStreamJavaDocCodeSnippets {
             .forEach(resp -> {
                 System.out.printf("Response headers are %s. Url %s%n", resp.getDeserializedHeaders(),
                     resp.getRequest().getUrl());
-                resp.getItems().forEach(value -> {
-                    System.out.printf("Response value is %d%n", value);
-                });
+                resp.getElements().forEach(value -> System.out.printf("Response value is %d%n", value));
             });
         // END: com.azure.core.util.iterableStream.stream.filter
     }

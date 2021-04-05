@@ -3,11 +3,7 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.ShaperSkill;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.ShaperSkill} and {@link ShaperSkill}.
@@ -21,10 +17,7 @@ public final class ShaperSkillConverter {
             return null;
         }
 
-        List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null
-            : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-
-        ShaperSkill shaperSkill = new ShaperSkill(inputs, obj.getOutputs());
+        ShaperSkill shaperSkill = new ShaperSkill(obj.getInputs(), obj.getOutputs());
 
         String name = obj.getName();
         shaperSkill.setName(name);
@@ -45,12 +38,8 @@ public final class ShaperSkillConverter {
             return null;
         }
 
-        List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
-            obj.getOutputs() == null ? null
-                : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
         com.azure.search.documents.indexes.implementation.models.ShaperSkill shaperSkill =
-            new com.azure.search.documents.indexes.implementation.models.ShaperSkill(inputs, obj.getOutputs());
-
+            new com.azure.search.documents.indexes.implementation.models.ShaperSkill(obj.getInputs(), obj.getOutputs());
 
         String name = obj.getName();
         shaperSkill.setName(name);

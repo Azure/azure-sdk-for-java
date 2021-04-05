@@ -198,12 +198,15 @@ public final class Constants {
         public static final String LOGGING_HANDLER_NAME = "logging-handler";
 
         // encryption
-        public static final String WrappedDataEncryptionKey = "wrappedDataEncryptionKey";
-        public static final String  EncryptionAlgorithmId = "encryptionAlgorithmId";
-        public static final String  KeyWrapMetadata = "keyWrapMetadata";
+        public static final String ENCRYPTION_ALGORITHM_ID = "encryptionAlgorithmId";
+        public static final String KEY_WRAP_METADATA = "keyWrapMetadata";
+        public static final String WRAPPED_DATA_ENCRYPTION_KEY = "wrappedDataEncryptionKey";
+        public static final String CLIENT_ENCRYPTION_POLICY = "clientEncryptionPolicy";
         public static final String  KeyWrapMetadataType = "type";
         public static final String  KeyWrapMetadataValue = "value";
         public static final String  EncryptedInfo = "_ei";
+        public final static  String RANDOMIZED = "Randomized";
+        public final static  String DETERMINISTIC = "Deterministic";
 
         // Feed Ranges
         public static final String RANGE = "Range";
