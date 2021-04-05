@@ -1,53 +1,55 @@
-jobs:
-- job: Spark_CosmosDB_Databricks
-  timeoutInMinutes: 40
-  variables:
-    - template: /eng/pipelines/templates/variables/globals.yml
-    - name: DatabricksClusterName
-      value: 'oltp-ci-2workers-ds3v2'
+stages:
+  - stage:
+    jobs:
+    - job: Spark_CosmosDB_Databricks
+      timeoutInMinutes: 40
+      variables:
+        - template: /eng/pipelines/templates/variables/globals.yml
+        - name: DatabricksClusterName
+          value: 'oltp-ci-2workers-ds3v2'
 
-  pool:
-    vmImage: 'ubuntu-18.04'
+      pool:
+        vmImage: 'ubuntu-18.04'
 
-  steps:
-  - task: Maven@3
-    displayName: Building spark package
-    inputs:
-      mavenPOMFile: pom.xml
-      goals: 'package'
-      options: '$(DefaultOptions) -Ppackage-assembly -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl com.azure:azure-cosmos,com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: $(JavaBuildVersion)
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: false
-  - task: UsePythonVersion@0
-    displayName: Use Python 3.8
-    inputs:
-      versionSpec: 3.8
-  - task: Bash@3
-    displayName: Install Databricks CLI
-    inputs:
-      targetType: inline
-      script: python -m pip install --upgrade pip setuptools wheel databricks-cli
-  - task: Bash@3
-    displayName: Connect to Databricks workspace
-    inputs:
-      targetType: inline
-      script: >-
-        databricks configure --token <<EOF
+      steps:
+      - task: Maven@3
+        displayName: Building spark package
+        inputs:
+          mavenPOMFile: pom.xml
+          goals: 'package'
+          options: '$(DefaultOptions) -Ppackage-assembly -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl com.azure:azure-cosmos,com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaBuildVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+      - task: UsePythonVersion@0
+        displayName: Use Python 3.8
+        inputs:
+          versionSpec: 3.8
+      - task: Bash@3
+        displayName: Install Databricks CLI
+        inputs:
+          targetType: inline
+          script: python -m pip install --upgrade pip setuptools wheel databricks-cli
+      - task: Bash@3
+        displayName: Connect to Databricks workspace
+        inputs:
+          targetType: inline
+          script: >-
+            databricks configure --token <<EOF
 
-        $DATABRICKSENDPOINT
+            $DATABRICKSENDPOINT
 
-        $DATABRICKSTOKEN
+            $DATABRICKSTOKEN
 
-        EOF
-  - task: Bash@3
-    displayName: Importing Jars
-    inputs:
-      filePath: databricks/databricks-jar-install.sh
-      arguments: '$(DatabricksClusterName) $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3-1_2-12/target'
-  - task: Bash@3
-    displayName: Importing and executing notebooks
-    inputs:
-      filePath: databricks/databricks-notebooks-install.sh
-      arguments: $(DatabricksClusterName) databricks/notebooks $COSMOSENDPOINT $COSMOSKEY
+            EOF
+      - task: Bash@3
+        displayName: Importing Jars
+        inputs:
+          filePath: databricks/databricks-jar-install.sh
+          arguments: '$(DatabricksClusterName) $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3-1_2-12/target'
+      - task: Bash@3
+        displayName: Importing and executing notebooks
+        inputs:
+          filePath: databricks/databricks-notebooks-install.sh
+          arguments: $(DatabricksClusterName) databricks/notebooks $COSMOSENDPOINT $COSMOSKEY
