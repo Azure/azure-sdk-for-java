@@ -5,9 +5,7 @@ package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.implementation.util.IdentityConstants;
-import com.azure.identity.implementation.util.ValidationUtil;
 
-import java.util.HashMap;
 import java.util.function.Consumer;
 
 /**
