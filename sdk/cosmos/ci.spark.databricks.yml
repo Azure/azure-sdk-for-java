@@ -51,9 +51,9 @@ stages:
           script: >-
             databricks configure --token <<EOF
 
-            ${{parameters.DatabricksEndpoint}}
+            ${{ parameters.DatabricksEndpoint }}
 
-            ${{parameters.DatabricksToken}}
+            ${{ parameters.DatabricksToken }}
 
             EOF
       - task: Bash@3
