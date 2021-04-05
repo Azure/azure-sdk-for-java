@@ -1,0 +1,60 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.azconfig.io/kv/.appconfig.featureflag%2Fkey34304233460?label=e2d1e5c4230602&api-version=1.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-data-appconfiguration/1.2.0-beta.1 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8c511d52-2ff6-49a8-b2ab-aa3bfb3935ac",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Server" : "openresty/1.17.8.2",
+      "Access-Control-Allow-Origin" : "*",
+      "Connection" : "keep-alive",
+      "Last-Modified" : "Mon, 05 Apr 2021 21:31:00 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Mon, 05 Apr 2021 21:30:59 GMT",
+      "x-ms-correlation-request-id" : "f6403e19-c08e-47cd-9c3e-2faee92862f7",
+      "Access-Control-Expose-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-useragent, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, retry-after-ms, x-ms-request-id, x-ms-client-session-id, x-ms-effective-locale, WWW-Authenticate",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "ETag" : "\"Q4Fx0LgLI8GqzOZd1l3nvRnkuOf\"",
+      "Access-Control-Allow-Credentials" : "true",
+      "Sync-Token" : "zAJw6V16=MjoyMCMyMTQ3MTIw;sn=2147120",
+      "x-ms-request-id" : "f6403e19-c08e-47cd-9c3e-2faee92862f7",
+      "Body" : "{\"etag\":\"Q4Fx0LgLI8GqzOZd1l3nvRnkuOf\",\"key\":\".appconfig.featureflag/key34304233460\",\"label\":\"e2d1e5c4230602\",\"content_type\":null,\"value\":\"{\\\"id\\\":\\\"key34304233460\\\",\\\"description\\\":null,\\\"display_name\\\":\\\"Feature Flag X\\\",\\\"enabled\\\":false,\\\"conditions\\\":{\\\"client_filters\\\":[{\\\"name\\\":\\\"Microsoft.Percentage\\\",\\\"parameters\\\":{\\\"Value\\\":\\\"30\\\"}}]}}\",\"tags\":{},\"locked\":false,\"last_modified\":\"2021-04-05T21:31:00+00:00\"}",
+      "x-ms-client-request-id" : "8c511d52-2ff6-49a8-b2ab-aa3bfb3935ac",
+      "Content-Type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.azconfig.io/kv?key=key34304%2A&api-version=1.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-data-appconfiguration/1.2.0-beta.1 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5e180c42-aeea-49c2-86bd-37820ce3420c",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Server" : "openresty/1.17.8.2",
+      "Access-Control-Allow-Origin" : "*",
+      "Connection" : "keep-alive",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Mon, 05 Apr 2021 21:30:59 GMT",
+      "x-ms-correlation-request-id" : "1df1dc85-dd65-4cf8-8c79-12bf460884c3",
+      "Access-Control-Expose-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-useragent, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, retry-after-ms, x-ms-request-id, x-ms-client-session-id, x-ms-effective-locale, WWW-Authenticate",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Access-Control-Allow-Credentials" : "true",
+      "Sync-Token" : "zAJw6V16=MjoyMCMyMTQ3MTIw;sn=2147120",
+      "x-ms-request-id" : "1df1dc85-dd65-4cf8-8c79-12bf460884c3",
+      "Body" : "{\"items\":[]}",
+      "x-ms-client-request-id" : "5e180c42-aeea-49c2-86bd-37820ce3420c",
+      "Content-Type" : "application/vnd.microsoft.appconfig.kvset+json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "key34304", "e2d1e5c4", "key34304233460", "e2d1e5c4230602" ]
+}

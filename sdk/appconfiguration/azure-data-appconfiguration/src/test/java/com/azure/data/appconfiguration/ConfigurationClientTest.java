@@ -17,6 +17,8 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import org.junit.jupiter.api.Assertions;
@@ -99,6 +101,25 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             client.addConfigurationSetting(expected)));
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void addFeatureFlagConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
+        addFeatureFlagConfigurationSettingRunner((expected) -> assertFeatureFlagConfigurationSettingEquals(expected,
+            (FeatureFlagConfigurationSetting) client.addConfigurationSetting(expected)));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void addSecretReferenceConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
+        addSecretReferenceConfigurationSettingRunner(
+            (expected) -> assertSecretReferenceConfigurationSettingEquals(expected,
+                (SecretReferenceConfigurationSetting) client.addConfigurationSetting(expected)));
+    }
+
     /**
      * Tests that we cannot add a configuration setting when the key is an empty string.
      */
@@ -167,6 +188,26 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         client = getConfigurationClient(httpClient, serviceVersion);
         setConfigurationSettingRunner(
             (expected, update) -> assertConfigurationEquals(expected, client.setConfigurationSetting(expected)));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void setFeatureFlagConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
+        setFeatureFlagConfigurationSettingRunner(
+            (expected, update) -> assertFeatureFlagConfigurationSettingEquals(expected,
+                (FeatureFlagConfigurationSetting) client.setConfigurationSetting(expected)));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void setSecretReferenceConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
+        setSecretReferenceConfigurationSettingRunner(
+            (expected, update) -> assertSecretReferenceConfigurationSettingEquals(expected,
+                (SecretReferenceConfigurationSetting) client.setConfigurationSetting(expected)));
     }
 
     /**
@@ -248,6 +289,30 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         });
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void getFeatureFlagConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
+        getFeatureFlagConfigurationSettingRunner((expected) -> {
+            client.addConfigurationSetting(expected);
+            assertFeatureFlagConfigurationSettingEquals(expected,
+                (FeatureFlagConfigurationSetting) client.getConfigurationSetting(expected));
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void getSecretReferenceConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
+        getSecretReferenceConfigurationSettingRunner((expected) -> {
+            client.addConfigurationSetting(expected);
+            assertSecretReferenceConfigurationSettingEquals(expected,
+                (SecretReferenceConfigurationSetting) client.getConfigurationSetting(expected));
+        });
+    }
+
     /**
      * Tests that attempting to retrieve a non-existent configuration doesn't work, this will result in a 404.
      */
@@ -293,6 +358,40 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             assertConfigurationEquals(expected, client.getConfigurationSetting(expected.getKey(), expected.getLabel()));
 
             assertConfigurationEquals(expected, client.deleteConfigurationSetting(expected));
+            assertRestException(() -> client.getConfigurationSetting(expected.getKey(), expected.getLabel()),
+                ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void deleteFeatureFlagConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
+        deleteFeatureFlagConfigurationSettingRunner((expected) -> {
+            client.addConfigurationSetting(expected);
+            assertFeatureFlagConfigurationSettingEquals(expected,
+                (FeatureFlagConfigurationSetting) client.getConfigurationSetting(expected));
+
+            assertFeatureFlagConfigurationSettingEquals(expected,
+                (FeatureFlagConfigurationSetting) client.deleteConfigurationSetting(expected));
+            assertRestException(() -> client.getConfigurationSetting(expected.getKey(), expected.getLabel()),
+                ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void deleteSecretReferenceConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
+        deleteSecretReferenceConfigurationSettingRunner((expected) -> {
+            client.addConfigurationSetting(expected);
+            assertSecretReferenceConfigurationSettingEquals(expected,
+                (SecretReferenceConfigurationSetting) client.getConfigurationSetting(expected));
+
+            assertSecretReferenceConfigurationSettingEquals(expected,
+                (SecretReferenceConfigurationSetting) client.deleteConfigurationSetting(expected));
             assertRestException(() -> client.getConfigurationSetting(expected.getKey(), expected.getLabel()),
                 ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
         });
@@ -428,6 +527,38 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         });
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void setReadOnlyWithFeatureFlagConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
+        lockUnlockFeatureFlagRunner((expected) -> {
+            // lock setting
+            client.addConfigurationSetting(expected);
+            client.setReadOnly(expected, true);
+
+            // unsuccessfully delete
+            assertRestException(() -> client.deleteConfigurationSetting(expected),
+                HttpResponseException.class, 409);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void setReadOnlyWithSecretReferenceConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
+        lockUnlockSecretReferenceRunner((expected) -> {
+            // lock setting
+            client.addConfigurationSetting(expected);
+            client.setReadOnly(expected, true);
+
+            // unsuccessfully delete
+            assertRestException(() -> client.deleteConfigurationSetting(expected),
+                HttpResponseException.class, 409);
+        });
+    }
+
     /**
      * Tests assert that the setting can be deleted after unlock the setting.
      */
@@ -461,6 +592,50 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         lockUnlockRunner((expected) -> {
+
+            // lock setting
+            client.addConfigurationSetting(expected);
+            client.setReadOnly(expected, true);
+
+            // unsuccessfully deleted
+            assertRestException(() -> client.deleteConfigurationSetting(expected), HttpResponseException.class, 409);
+
+            // unlock setting and delete
+            client.setReadOnly(expected, false);
+
+            // successfully deleted
+            assertConfigurationEquals(expected, client.deleteConfigurationSetting(expected));
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void clearReadOnlyWithFeatureFlagConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
+        lockUnlockFeatureFlagRunner((expected) -> {
+
+            // lock setting
+            client.addConfigurationSetting(expected);
+            client.setReadOnly(expected, true);
+
+            // unsuccessfully deleted
+            assertRestException(() -> client.deleteConfigurationSetting(expected), HttpResponseException.class, 409);
+
+            // unlock setting and delete
+            client.setReadOnly(expected, false);
+
+            // successfully deleted
+            assertConfigurationEquals(expected, client.deleteConfigurationSetting(expected));
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void clearReadOnlyWithSecretReferenceConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
+        lockUnlockSecretReferenceRunner((expected) -> {
 
             // lock setting
             client.addConfigurationSetting(expected);

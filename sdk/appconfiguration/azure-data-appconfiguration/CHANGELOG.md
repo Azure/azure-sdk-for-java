@@ -1,6 +1,9 @@
 # Release History
 ## 1.2.0-beta.1 (Unreleased)
-
+### New Features
+- New `SecretReferenceConfigurationSetting` and `FeatureFlagConfigurationSetting`
+  types to represent configuration settings that references KeyVault Secret reference and 
+  feature flag respectively.
 
 ## 1.1.10 (2021-03-09)
 ### Dependency updates

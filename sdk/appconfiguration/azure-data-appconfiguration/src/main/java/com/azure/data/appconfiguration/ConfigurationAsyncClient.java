@@ -17,10 +17,15 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import org.reactivestreams.Publisher;
@@ -70,7 +75,12 @@ public final class ConfigurationAsyncClient {
      * @param version {@link ConfigurationServiceVersion} of the service to be used when making requests.
      */
     ConfigurationAsyncClient(String serviceEndpoint, HttpPipeline pipeline, ConfigurationServiceVersion version) {
-        this.service = RestProxy.create(ConfigurationService.class, pipeline);
+        final JacksonAdapter jacksonAdapter = new JacksonAdapter();
+        jacksonAdapter.serializer().registerModule(ConfigurationSettingJsonSerializer.getModule());
+        // TODO: investigate why Deserializer is not needed.
+//        jacksonAdapter.serializer().registerModule(ConfigurationSettingJsonDeserializer.getModule());
+        this.service = RestProxy.create(ConfigurationService.class, pipeline, jacksonAdapter);
+
         this.serviceEndpoint = serviceEndpoint;
         this.apiVersion = version.getVersion();
     }
@@ -164,7 +174,7 @@ public final class ConfigurationAsyncClient {
         // This service method call is similar to setConfigurationSetting except we're passing If-Not-Match = "*".
         // If the service finds any existing configuration settings, then its e-tag will match and the service will
         // return an error.
-        return service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, setting, null,
+        final Mono<Response<ConfigurationSetting>> responseMono = service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, setting, null,
             getETagValue(ETAG_ANY), context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
             .onErrorResume(HttpResponseException.class,
                 (Function<Throwable, Mono<Response<ConfigurationSetting>>>) throwable -> {
@@ -181,6 +191,7 @@ public final class ConfigurationAsyncClient {
             .doOnSuccess(response -> logger.info("Added ConfigurationSetting - {}", response.getValue()))
             .onErrorMap(ConfigurationAsyncClient::addConfigurationSettingExceptionMapper)
             .doOnError(error -> logger.warning("Failed to add ConfigurationSetting - {}", setting, error));
+        return handleResponseCastType(responseMono, setting);
     }
 
     /**
@@ -291,11 +302,13 @@ public final class ConfigurationAsyncClient {
         // Otherwise, the service throws an exception because the current configuration value was updated and we have an
         // old value locally.
         // If no ETag value was passed in, then the value is always added or updated.
-        return service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, setting, ifMatchETag,
-            null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
-            .doOnSubscribe(ignoredValue -> logger.info("Setting ConfigurationSetting - {}", setting))
-            .doOnSuccess(response -> logger.info("Set ConfigurationSetting - {}", response.getValue()))
-            .doOnError(error -> logger.warning("Failed to set ConfigurationSetting - {}", setting, error));
+        final Mono<Response<ConfigurationSetting>> responseMono =
+            service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, setting, ifMatchETag,
+                null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+                .doOnSubscribe(ignoredValue -> logger.info("Setting ConfigurationSetting - {}", setting))
+                .doOnSuccess(response -> logger.info("Set ConfigurationSetting - {}", response.getValue()))
+                .doOnError(error -> logger.warning("Failed to set ConfigurationSetting - {}", setting, error));
+        return handleResponseCastType(responseMono, setting);
     }
 
     /**
@@ -420,7 +433,7 @@ public final class ConfigurationAsyncClient {
         context = context == null ? Context.NONE : context;
 
         final String ifNoneMatchETag = onlyIfChanged ? getETagValue(setting.getETag()) : null;
-        return service.getKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, null,
+        final Mono<Response<ConfigurationSetting>> responseMono = service.getKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, null,
             acceptDateTime == null ? null : acceptDateTime.toString(), null, ifNoneMatchETag,
             context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
             .onErrorResume(HttpResponseException.class,
@@ -439,6 +452,8 @@ public final class ConfigurationAsyncClient {
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Retrieved ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to get ConfigurationSetting - {}", setting, error));
+
+        return handleResponseCastType(responseMono, setting);
     }
 
     /**
@@ -545,11 +560,12 @@ public final class ConfigurationAsyncClient {
         context = context == null ? Context.NONE : context;
 
         final String ifMatchETag = ifUnchanged ? getETagValue(setting.getETag()) : null;
-        return service.delete(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, ifMatchETag,
+        final Mono<Response<ConfigurationSetting>> responseMono = service.delete(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, ifMatchETag,
             null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("Deleting ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Deleted ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to delete ConfigurationSetting - {}", setting, error));
+        return handleResponseCastType(responseMono, setting);
     }
 
     /**
@@ -652,16 +668,16 @@ public final class ConfigurationAsyncClient {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
         context = context == null ? Context.NONE : context;
-
+        Mono<Response<ConfigurationSetting>> responseMono = null;
         if (isReadOnly) {
-            return service.lockKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, null,
+            responseMono = service.lockKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, null,
                 null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
                 .doOnSubscribe(ignoredValue -> logger.verbose("Setting read only ConfigurationSetting - {}", setting))
                 .doOnSuccess(response -> logger.info("Set read only ConfigurationSetting - {}", response.getValue()))
                 .doOnError(error -> logger.warning("Failed to set read only ConfigurationSetting - {}", setting,
                     error));
         } else {
-            return service.unlockKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion,
+            responseMono = service.unlockKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion,
                 null, null, context)
                 .doOnSubscribe(ignoredValue -> logger.verbose("Clearing read only ConfigurationSetting - {}", setting))
                 .doOnSuccess(
@@ -669,6 +685,7 @@ public final class ConfigurationAsyncClient {
                 .doOnError(
                     error -> logger.warning("Failed to clear read only ConfigurationSetting - {}", setting, error));
         }
+        return handleResponseCastType(responseMono, setting);
     }
 
     /**
@@ -881,5 +898,37 @@ public final class ConfigurationAsyncClient {
 
         ResourceNotFoundException notFoundException = (ResourceNotFoundException) throwable;
         return new ResourceModifiedException(notFoundException.getMessage(), notFoundException.getResponse());
+    }
+
+    private Mono<Response<ConfigurationSetting>> handleResponseCastType(
+        Mono<Response<ConfigurationSetting>> responseMono, ConfigurationSetting setting) {
+        return responseMono.map(response -> {
+            final ConfigurationSetting responseValue = response.getValue();
+
+            if (responseValue == null) {
+                return response;
+            }
+            final String settingKey = responseValue.getKey();
+
+            if (setting instanceof FeatureFlagConfigurationSetting) {
+                FeatureFlagConfigurationSetting featureFlagConfigurationSetting = (FeatureFlagConfigurationSetting) setting;
+                final FeatureFlagConfigurationSetting featureSetting = new FeatureFlagConfigurationSetting(
+                    settingKey.substring(FeatureFlagConfigurationSetting.KEY_PREFIX.length()),
+                    featureFlagConfigurationSetting.isEnabled());
+                featureSetting.setContentType(responseValue.getContentType());
+                featureSetting.setETag(responseValue.getETag());
+                featureSetting.setTags(responseValue.getTags());
+                featureSetting.setLabel(responseValue.getLabel());
+                featureSetting.setValue(responseValue.getValue());
+                featureSetting.setClientFilters(featureFlagConfigurationSetting.getClientFilters());
+                featureSetting.setDescription(featureFlagConfigurationSetting.getDescription());
+                featureSetting.setDisplayName(featureFlagConfigurationSetting.getDisplayName());
+                return new SimpleResponse<>(response, featureSetting);
+            } else if (setting instanceof SecretReferenceConfigurationSetting) {
+                return new SimpleResponse<>(response, setting);
+            } else {
+                return response;
+            }
+        });
     }
 }
