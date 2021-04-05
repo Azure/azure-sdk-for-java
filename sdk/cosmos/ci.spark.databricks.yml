@@ -51,11 +51,14 @@ stages:
           script: >-
             databricks configure --token <<EOF
 
-            ${{ parameters.DatabricksEndpoint }}
+            $DATABRICKSENDPOINT
 
-            ${{ parameters.DatabricksToken }}
+            $DATABRICKSTOKEN
 
             EOF
+        env:
+            DATABRICKSENDPOINT: ${{ parameters.DatabricksEndpoint }}
+            DATABRICKSTOKEN: ${{ parameters.DatabricksToken }}
       - task: Bash@3
         displayName: Importing Jars
         inputs:
