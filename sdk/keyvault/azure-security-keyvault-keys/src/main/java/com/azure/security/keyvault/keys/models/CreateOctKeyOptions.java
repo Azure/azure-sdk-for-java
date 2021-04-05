@@ -5,19 +5,49 @@ package com.azure.security.keyvault.keys.models;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
+/**
+ * Represents the configurable options to create an AES key.
+ */
 public class CreateOctKeyOptions extends CreateKeyOptions {
+    /**
+     * The AES key size.
+     */
+    private Integer keySize;
+
     /**
      * The hardware protected indicator for the key.
      */
     private boolean hardwareProtected;
 
     /**
-     * Creates a CreateOctKeyOptions with {@code name} as name of the Rsa key.
+     * Creates a {@link CreateOctKeyOptions} with {@code name} as name of the AES key.
      *
      * @param name The name of the key.
      */
     public CreateOctKeyOptions(String name) {
         super(name, KeyType.OCT);
+    }
+
+    /**
+     * Get the key size in bits.
+     *
+     * @return The key size in bits.
+     */
+    public Integer getKeySize() {
+        return this.keySize;
+    }
+
+    /**
+     * Set the key size in bits.
+     *
+     * @param keySize The key size to set.
+     *
+     * @return The updated {@link CreateOctKeyOptions} object.
+     */
+    public CreateOctKeyOptions setKeySize(Integer keySize) {
+        this.keySize = keySize;
+
+        return this;
     }
 
     /**
@@ -90,26 +120,31 @@ public class CreateOctKeyOptions extends CreateKeyOptions {
     }
 
     /**
-     * Set whether the key being created is of hsm type or not.
+     * Set whether the key being created is of HSM type or not.
      *
-     * @param hardwareProtected The hsm value to set.
+     * @param hardwareProtected The HSM value to set.
      *
      * @return The updated {@link CreateOctKeyOptions} object.
      */
     public CreateOctKeyOptions setHardwareProtected(Boolean hardwareProtected) {
         this.hardwareProtected = hardwareProtected;
         KeyType keyType = hardwareProtected ? KeyType.OCT_HSM : KeyType.OCT;
+
         setKeyType(keyType);
 
         return this;
     }
 
     /**
-     * Get the hsm value of the key being created.
+     * Get the HSM value of the key being created.
      *
-     * @return the hsm value.
+     * @return the HSM value.
      */
     public Boolean isHardwareProtected() {
         return this.hardwareProtected;
+    }
+
+    public static void main(String[] args) {
+        new CreateRsaKeyOptions("").getKeySize();
     }
 }

@@ -26,6 +26,11 @@ public class CreateKeyOptions {
     private KeyType keyType;
 
     /**
+     * The key size in bits.
+     */
+    private Integer keySize;
+
+    /**
      * The key operations.
      */
     private List<KeyOperation> keyOperations;
@@ -51,17 +56,8 @@ public class CreateKeyOptions {
     private Boolean enabled;
 
     /**
-     * Indicates if the private key can be exported.
-     */
-    private Boolean exportable;
-
-    /**
-     * The policy rules under which the key can be exported.
-     */
-    private KeyReleasePolicy releasePolicy;
-
-    /**
-     * Creates instance of KeyCreateOptions with {@code name} as key name and {@code keyType} as type of the key.
+     * Creates instance of {@link CreateKeyOptions} with {@code name} as key name and {@code keyType} as type of the
+     * key.
      *
      * @param name The name of the key to create.
      * @param keyType The type of the key to create.
@@ -69,6 +65,28 @@ public class CreateKeyOptions {
     public CreateKeyOptions(String name, KeyType keyType) {
         this.name = name;
         this.keyType = keyType;
+    }
+
+    /**
+     * Get the key size in bits.
+     *
+     * @return The key size in bits.
+     */
+    public Integer getKeySize() {
+        return this.keySize;
+    }
+
+    /**
+     * Set the key size in bits.
+     *
+     * @param keySize The key size to set.
+     *
+     * @return The updated {@link CreateKeyOptions} object.
+     */
+    public CreateKeyOptions setKeySize(Integer keySize) {
+        this.keySize = keySize;
+
+        return this;
     }
 
     /**
@@ -85,7 +103,7 @@ public class CreateKeyOptions {
      *
      * @param keyOperations The key operations to set.
      *
-     * @return The KeyCreateOptions object itself.
+     * @return The updated {@link CreateKeyOptions} object.
      */
     public CreateKeyOptions setKeyOperations(KeyOperation... keyOperations) {
         this.keyOperations = Arrays.asList(keyOperations);
@@ -107,51 +125,53 @@ public class CreateKeyOptions {
     }
 
     /**
-     * Get the notBefore UTC time.
+     * Get the {@link OffsetDateTime key's notBefore time} in UTC.
      *
-     * @return The notBefore UTC time.
+     * @return The {@link OffsetDateTime key's notBefore time} in UTC.
      */
     public OffsetDateTime getNotBefore() {
         return notBefore;
     }
 
     /**
-     * Set the {@link OffsetDateTime notBefore} UTC time.
+     * Set the {@link OffsetDateTime key's notBefore time} in UTC.
      *
-     * @param notBefore The notBefore UTC time to set.
+     * @param notBefore The {@link OffsetDateTime key's notBefore time} in UTC.
      *
-     * @return The KeyCreateOptions object itself.
+     * @return The updated {@link CreateKeyOptions} object.
      */
     public CreateKeyOptions setNotBefore(OffsetDateTime notBefore) {
         this.notBefore = notBefore;
+
         return this;
     }
 
     /**
-     * Get the Key Expiry time in UTC.
+     * Get the {@link OffsetDateTime key expiration time} in UTC.
      *
-     * @return The expires UTC time.
+     * @return The {@link OffsetDateTime key expiration time} in UTC.
      */
     public OffsetDateTime getExpiresOn() {
         return this.expiresOn;
     }
 
     /**
-     * Set the {@link OffsetDateTime expires} UTC time.
+     * Set the {@link OffsetDateTime key expiration time} in UTC.
      *
-     * @param expiresOn The expiry time to set for the key.
+     * @param expiresOn The {@link OffsetDateTime key expiration time} in UTC.
      *
-     * @return The KeyCreateOptions object itself.
+     * @return The updated {@link CreateKeyOptions} object.
      */
     public CreateKeyOptions setExpiresOn(OffsetDateTime expiresOn) {
         this.expiresOn = expiresOn;
+
         return this;
     }
 
     /**
      * Get the tags associated with the key.
      *
-     * @return The value of the tags.
+     * @return The tag names and values.
      */
     public Map<String, String> getTags() {
         return this.tags;
@@ -162,10 +182,11 @@ public class CreateKeyOptions {
      *
      * @param tags The tags to set.
      *
-     * @return The KeyCreateOptions object itself.
+     * @return The updated {@link CreateKeyOptions} object.
      */
     public CreateKeyOptions setTags(Map<String, String> tags) {
         this.tags = tags;
+
         return this;
     }
 
@@ -183,52 +204,11 @@ public class CreateKeyOptions {
      *
      * @param enabled The enabled value to set.
      *
-     * @return The KeyCreateOptions object itself.
+     * @return The updated {@link CreateKeyOptions} object.
      */
     public CreateKeyOptions setEnabled(Boolean enabled) {
         this.enabled = enabled;
-        return this;
-    }
 
-    /**
-     * Indicates if the private key can be exported.
-     *
-     * @return The exportable value.
-     */
-    public Boolean isExportable() {
-        return this.exportable;
-    }
-
-    /**
-     * Set a value that indicates if the private key can be exported.
-     *
-     * @param exportable The exportable value to set.
-     *
-     * @return The updated {@link CreateKeyOptions} object.
-     */
-    public CreateKeyOptions setExportable(Boolean exportable) {
-        this.exportable = exportable;
-        return this;
-    }
-
-    /**
-     * Get the policy rules under which the key can be exported.
-     *
-     * @return The release policy.
-     */
-    public KeyReleasePolicy getReleasePolicy() {
-        return releasePolicy;
-    }
-
-    /**
-     * Set the policy rules under which the key can be exported.
-     *
-     * @param releasePolicy The release policy to set.
-     *
-     * @return The updated {@link CreateKeyOptions} object.
-     */
-    public CreateKeyOptions setReleasePolicy(KeyReleasePolicy releasePolicy) {
-        this.releasePolicy = releasePolicy;
         return this;
     }
 

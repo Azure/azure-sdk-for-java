@@ -14,11 +14,6 @@ import java.util.Map;
 @Fluent
 public class CreateRsaKeyOptions extends CreateKeyOptions {
     /**
-     * The RSA key size.
-     */
-    private Integer keySize;
-
-    /**
      * The hardware protected indicator for the key.
      */
     private boolean hardwareProtected;
@@ -29,21 +24,12 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
     private int publicExponent;
 
     /**
-     * Creates a RsaKeyCreateOptions with {@code name} as name of the RSA key.
+     * Creates a {@link CreateRsaKeyOptions} with {@code name} as name of the RSA key.
      *
      * @param name The name of the key.
      */
     public CreateRsaKeyOptions(String name) {
         super(name, KeyType.RSA);
-    }
-
-    /**
-     * Get the key size.
-     *
-     * @return The key size.
-     */
-    public Integer getKeySize() {
-        return this.keySize;
     }
 
     /**
@@ -54,7 +40,7 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
      * @return The updated {@link CreateRsaKeyOptions} object.
      */
     public CreateRsaKeyOptions setKeySize(Integer keySize) {
-        this.keySize = keySize;
+        super.setKeySize(keySize);
 
         return this;
     }
@@ -129,50 +115,25 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
     }
 
     /**
-     * Set a value that indicates if the private key can be exported.
+     * Set whether the key being created is of HSM type or not.
      *
-     * @param exportable The exportable value to set.
-     *
-     * @return The updated {@link CreateKeyOptions} object.
-     */
-    public CreateKeyOptions setExportable(Boolean exportable) {
-        super.setExportable(exportable);
-
-        return this;
-    }
-
-    /**
-     * Set the policy rules under which the key can be exported.
-     *
-     * @param releasePolicy The release policy to set.
-     *
-     * @return The updated {@link CreateKeyOptions} object.
-     */
-    public CreateKeyOptions setReleasePolicy(KeyReleasePolicy releasePolicy) {
-        super.setReleasePolicy(releasePolicy);
-
-        return this;
-    }
-
-    /**
-     * Set whether the key being created is of hsm type or not.
-     *
-     * @param hardwareProtected The hsm value to set.
+     * @param hardwareProtected The HSM value to set.
      *
      * @return The updated {@link CreateRsaKeyOptions} object.
      */
     public CreateRsaKeyOptions setHardwareProtected(Boolean hardwareProtected) {
         this.hardwareProtected = hardwareProtected;
         KeyType keyType = hardwareProtected ? KeyType.RSA_HSM : KeyType.RSA;
+
         setKeyType(keyType);
 
         return this;
     }
 
     /**
-     * Get the hsm value of the key being created.
+     * Get the HSM value of the key being created.
      *
-     * @return The hsm value.
+     * @return The HSM value.
      */
     public Boolean isHardwareProtected() {
         return this.hardwareProtected;

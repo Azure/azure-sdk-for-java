@@ -24,7 +24,7 @@ public class CreateEcKeyOptions extends CreateKeyOptions {
     private boolean hardwareProtected;
 
     /**
-     * Creates a EcKeyCreateOptions with {@code name} as name of the EC key.
+     * Creates a {@link CreateEcKeyOptions} with {@code name} as name of the EC key.
      *
      * @param name The name of the EC key.
      */
@@ -35,21 +35,35 @@ public class CreateEcKeyOptions extends CreateKeyOptions {
     /**
      * Get the curve.
      *
-     * @return The curve.
+     * @return The curve name.
      */
     public KeyCurveName getCurveName() {
         return this.curveName;
     }
 
     /**
-     * Set the curve.
+     * Set the curve name.
      *
-     * @param curveName The curve to set.
+     * @param curveName The curve name to set.
      *
      * @return The {@link CreateEcKeyOptions} object.
      */
     public CreateEcKeyOptions setCurveName(KeyCurveName curveName) {
         this.curveName = curveName;
+
+        return this;
+    }
+
+    /**
+     * Set the key size.
+     *
+     * @param keySize The key size to set.
+     *
+     * @return The updated {@link CreateEcKeyOptions} object.
+     */
+    public CreateEcKeyOptions setKeySize(Integer keySize) {
+        super.setKeySize(keySize);
+
         return this;
     }
 
@@ -76,6 +90,7 @@ public class CreateEcKeyOptions extends CreateKeyOptions {
     @Override
     public CreateEcKeyOptions setNotBefore(OffsetDateTime notBefore) {
         super.setNotBefore(notBefore);
+
         return this;
     }
 
@@ -89,6 +104,7 @@ public class CreateEcKeyOptions extends CreateKeyOptions {
     @Override
     public CreateEcKeyOptions setExpiresOn(OffsetDateTime expiresOn) {
         super.setExpiresOn(expiresOn);
+
         return this;
     }
 
@@ -102,6 +118,7 @@ public class CreateEcKeyOptions extends CreateKeyOptions {
     @Override
     public CreateEcKeyOptions setTags(Map<String, String> tags) {
         super.setTags(tags);
+
         return this;
     }
 
@@ -120,50 +137,25 @@ public class CreateEcKeyOptions extends CreateKeyOptions {
     }
 
     /**
-     * Set a value that indicates if the private key can be exported.
+     * Set whether the key being created is of HSM type or not.
      *
-     * @param exportable The exportable value to set.
-     *
-     * @return The updated {@link CreateKeyOptions} object.
-     */
-    public CreateKeyOptions setExportable(Boolean exportable) {
-        super.setExportable(exportable);
-
-        return this;
-    }
-
-    /**
-     * Set the policy rules under which the key can be exported.
-     *
-     * @param releasePolicy The release policy to set.
-     *
-     * @return The updated {@link CreateKeyOptions} object.
-     */
-    public CreateKeyOptions setReleasePolicy(KeyReleasePolicy releasePolicy) {
-        super.setReleasePolicy(releasePolicy);
-
-        return this;
-    }
-
-    /**
-     * Set whether the key being created is of hsm type or not.
-     *
-     * @param hardwareProtected The hsm value to set.
+     * @param hardwareProtected The HSM value to set.
      *
      * @return The {@link CreateEcKeyOptions} object.
      */
     public CreateEcKeyOptions setHardwareProtected(Boolean hardwareProtected) {
         this.hardwareProtected = hardwareProtected;
         KeyType keyType = hardwareProtected ? KeyType.EC_HSM : KeyType.EC;
+
         setKeyType(keyType);
 
         return this;
     }
 
     /**
-     * Get the hsm value of the key being created.
+     * Get the HSM value of the key being created.
      *
-     * @return The hsm value.
+     * @return The HSM value.
      */
     public Boolean isHardwareProtected() {
         return this.hardwareProtected;
