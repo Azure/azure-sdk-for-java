@@ -10,6 +10,10 @@ import java.time.Duration
 import java.util.ConcurrentModificationException
 import scala.collection.concurrent.TrieMap
 
+// scalastyle:off underscore.import
+import scala.collection.JavaConverters._
+// scalastyle:on underscore.import
+
 private[spark] object CosmosClientCache {
   private[this] val cache = new TrieMap[CosmosClientConfiguration, CosmosAsyncClient]
 
@@ -54,6 +58,8 @@ private[spark] object CosmosClientCache {
         if (cosmosClientConfiguration.useGatewayMode){
           builder = builder.gatewayMode()
         }
+
+        builder.preferredRegions(cosmosClientConfiguration.preferredRegionsList.toList.asJava)
 
         cosmosClientStateHandle match {
           case Some(handle) =>
