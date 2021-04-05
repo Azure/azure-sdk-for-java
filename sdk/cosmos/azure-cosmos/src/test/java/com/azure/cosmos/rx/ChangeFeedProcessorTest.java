@@ -605,6 +605,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
             int leaseCount = changeFeedProcessor.getCurrentState() .map(List::size).block();
             assertThat(leaseCount > 1).as("Found %d leases", leaseCount).isTrue();
 
+            assertThat(receivedDocuments.size()).isEqualTo(createdDocuments.size());
             for (InternalObjectNode item : createdDocuments) {
                 assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
             }

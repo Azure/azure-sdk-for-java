@@ -73,6 +73,12 @@ public class DiskRestorePointInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties.encryption", access = JsonProperty.Access.WRITE_ONLY)
     private Encryption encryption;
 
+    /*
+     * Indicates the OS on a disk supports hibernation.
+     */
+    @JsonProperty(value = "properties.supportsHibernation")
+    private Boolean supportsHibernation;
+
     /**
      * Get the timeCreated property: The timestamp of restorePoint creation.
      *
@@ -166,6 +172,26 @@ public class DiskRestorePointInner extends ProxyOnlyResource {
      */
     public Encryption encryption() {
         return this.encryption;
+    }
+
+    /**
+     * Get the supportsHibernation property: Indicates the OS on a disk supports hibernation.
+     *
+     * @return the supportsHibernation value.
+     */
+    public Boolean supportsHibernation() {
+        return this.supportsHibernation;
+    }
+
+    /**
+     * Set the supportsHibernation property: Indicates the OS on a disk supports hibernation.
+     *
+     * @param supportsHibernation the supportsHibernation value to set.
+     * @return the DiskRestorePointInner object itself.
+     */
+    public DiskRestorePointInner withSupportsHibernation(Boolean supportsHibernation) {
+        this.supportsHibernation = supportsHibernation;
+        return this;
     }
 
     /**

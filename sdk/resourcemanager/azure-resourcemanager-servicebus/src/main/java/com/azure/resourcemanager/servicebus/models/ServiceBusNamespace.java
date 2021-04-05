@@ -10,8 +10,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import com.azure.resourcemanager.servicebus.fluent.models.NamespaceResourceInner;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
+import com.azure.resourcemanager.servicebus.fluent.models.SBNamespaceInner;
 
 import java.time.OffsetDateTime;
 
@@ -20,7 +20,7 @@ import java.time.OffsetDateTime;
  */
 @Fluent
 public interface ServiceBusNamespace extends
-    GroupableResource<ServiceBusManager, NamespaceResourceInner>,
+    GroupableResource<ServiceBusManager, SBNamespaceInner>,
     Refreshable<ServiceBusNamespace>,
     Updatable<ServiceBusNamespace.Update> {
     /**

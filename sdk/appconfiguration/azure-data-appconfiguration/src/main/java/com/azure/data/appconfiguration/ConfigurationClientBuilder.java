@@ -6,6 +6,7 @@ package com.azure.data.appconfiguration;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -22,6 +23,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -37,6 +39,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import static com.azure.core.util.CoreUtils.getApplicationId;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link
@@ -89,6 +93,7 @@ public final class ConfigurationClientBuilder {
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
 
+    private ClientOptions clientOptions;
     private ConfigurationClientCredentials credential;
     private TokenCredential tokenCredential;
 
@@ -105,6 +110,7 @@ public final class ConfigurationClientBuilder {
      * ConfigurationAsyncClient ConfigurationAsyncClients}.
      */
     public ConfigurationClientBuilder() {
+        httpLogOptions = new HttpLogOptions();
     }
 
     /**
@@ -164,10 +170,8 @@ public final class ConfigurationClientBuilder {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-
-        HttpLogOptions buildLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
-        policies.add(new UserAgentPolicy(buildLogOptions.getApplicationId(), CLIENT_NAME, CLIENT_VERSION,
-            buildConfiguration));
+        policies.add(new UserAgentPolicy(
+            getApplicationId(clientOptions, httpLogOptions), CLIENT_NAME, CLIENT_VERSION, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
         policies.add(ADD_HEADERS_POLICY);
@@ -193,14 +197,22 @@ public final class ConfigurationClientBuilder {
         }
 
         policies.addAll(perRetryPolicies);
+
+        if (clientOptions != null) {
+            List<HttpHeader> httpHeaderList = new ArrayList<>();
+            clientOptions.getHeaders().forEach(
+                header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+        }
+
         HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(buildLogOptions));
+        policies.add(new HttpLoggingPolicy(httpLogOptions));
 
         // customized pipeline
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .build();
+                                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                                    .httpClient(httpClient)
+                                    .build();
 
         return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion);
     }
@@ -219,6 +231,22 @@ public final class ConfigurationClientBuilder {
             throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
         }
         this.endpoint = endpoint;
+        return this;
+    }
+
+    /**
+     * Sets the {@link ClientOptions} which enables various options to be set on the client. For example setting an
+     * {@code applicationId} using {@link ClientOptions#setApplicationId(String)} to configure
+     * the {@link UserAgentPolicy} for telemetry/monitoring purposes.
+     *
+     * <p>More About <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>
+     *
+     * @param clientOptions {@link ClientOptions}.
+     *
+     * @return the updated ConfigurationClientBuilder object
+     */
+    public ConfigurationClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
         return this;
     }
 
@@ -358,8 +386,25 @@ public final class ConfigurationClientBuilder {
      *
      * @param retryPolicy The {@link HttpPipelinePolicy} that will be used to retry requests.
      * @return The updated ConfigurationClientBuilder object.
+     * @deprecated Use {@link #retryPolicy(RetryPolicy)} instead. This method is deprecated since version 1.2.0-beta.1.
      */
+    @Deprecated
     public ConfigurationClientBuilder retryPolicy(HttpPipelinePolicy retryPolicy) {
+        this.retryPolicy = retryPolicy;
+        return this;
+    }
+
+    /**
+     * Sets the {@link RetryPolicy} that is used when each request is sent.
+     * <p>
+     * A default retry policy will be used to build {@link ConfigurationAsyncClient} or
+     * {@link ConfigurationClient} if this is not set.
+     *
+     * @param retryPolicy user's retry policy applied to each request.
+     *
+     * @return The updated ConfigurationClientBuilder object.
+     */
+    public ConfigurationClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }

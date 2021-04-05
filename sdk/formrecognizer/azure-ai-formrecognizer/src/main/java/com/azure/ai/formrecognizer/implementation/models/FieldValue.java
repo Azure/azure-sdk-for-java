@@ -74,6 +74,18 @@ public final class FieldValue {
     private FieldValueSelectionMark valueSelectionMark;
 
     /*
+     * Gender value: M, F, or X.
+     */
+    @JsonProperty(value = "valueGender")
+    private FieldValueGender valueGender;
+
+    /*
+     * 3-letter country code (ISO 3166-1 alpha-3).
+     */
+    @JsonProperty(value = "valueCountry")
+    private String valueCountry;
+
+    /*
      * Text content of the extracted field.
      */
     @JsonProperty(value = "text")
@@ -301,6 +313,46 @@ public final class FieldValue {
      */
     public FieldValue setValueSelectionMark(FieldValueSelectionMark valueSelectionMark) {
         this.valueSelectionMark = valueSelectionMark;
+        return this;
+    }
+
+    /**
+     * Get the valueGender property: Gender value: M, F, or X.
+     *
+     * @return the valueGender value.
+     */
+    public FieldValueGender getValueGender() {
+        return this.valueGender;
+    }
+
+    /**
+     * Set the valueGender property: Gender value: M, F, or X.
+     *
+     * @param valueGender the valueGender value to set.
+     * @return the FieldValue object itself.
+     */
+    public FieldValue setValueGender(FieldValueGender valueGender) {
+        this.valueGender = valueGender;
+        return this;
+    }
+
+    /**
+     * Get the valueCountry property: 3-letter country code (ISO 3166-1 alpha-3).
+     *
+     * @return the valueCountry value.
+     */
+    public String getValueCountry() {
+        return this.valueCountry;
+    }
+
+    /**
+     * Set the valueCountry property: 3-letter country code (ISO 3166-1 alpha-3).
+     *
+     * @param valueCountry the valueCountry value to set.
+     * @return the FieldValue object itself.
+     */
+    public FieldValue setValueCountry(String valueCountry) {
+        this.valueCountry = valueCountry;
         return this;
     }
 

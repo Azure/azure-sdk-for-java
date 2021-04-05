@@ -23,7 +23,9 @@ public final class KeyForDiskEncryptionSet {
     private SourceVault sourceVault;
 
     /*
-     * Fully versioned Key Url pointing to a key in KeyVault
+     * Fully versioned Key Url pointing to a key in KeyVault. Version segment
+     * of the Url is required regardless of rotationToLatestKeyVersionEnabled
+     * value.
      */
     @JsonProperty(value = "keyUrl", required = true)
     private String keyUrl;
@@ -51,7 +53,8 @@ public final class KeyForDiskEncryptionSet {
     }
 
     /**
-     * Get the keyUrl property: Fully versioned Key Url pointing to a key in KeyVault.
+     * Get the keyUrl property: Fully versioned Key Url pointing to a key in KeyVault. Version segment of the Url is
+     * required regardless of rotationToLatestKeyVersionEnabled value.
      *
      * @return the keyUrl value.
      */
@@ -60,7 +63,8 @@ public final class KeyForDiskEncryptionSet {
     }
 
     /**
-     * Set the keyUrl property: Fully versioned Key Url pointing to a key in KeyVault.
+     * Set the keyUrl property: Fully versioned Key Url pointing to a key in KeyVault. Version segment of the Url is
+     * required regardless of rotationToLatestKeyVersionEnabled value.
      *
      * @param keyUrl the keyUrl value to set.
      * @return the KeyForDiskEncryptionSet object itself.
