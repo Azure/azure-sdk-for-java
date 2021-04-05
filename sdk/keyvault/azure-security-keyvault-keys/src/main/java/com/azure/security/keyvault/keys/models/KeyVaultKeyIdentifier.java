@@ -29,7 +29,7 @@ public final class KeyVaultKeyIdentifier {
      * </ul>
      *
      * @param keyId The key identifier to extract information from.
-     * @return a new instance of {@link KeyVaultKeyIdentifier}.
+     *
      * @throws IllegalArgumentException if the given identifier is {@code null} or an invalid Key Vault Key identifier.
      */
     public KeyVaultKeyIdentifier(String keyId) {

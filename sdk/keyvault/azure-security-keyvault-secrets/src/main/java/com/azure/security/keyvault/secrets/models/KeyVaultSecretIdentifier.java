@@ -30,8 +30,6 @@ public final class KeyVaultSecretIdentifier {
      *
      * @param secretId The secret identifier to extract information from.
      *
-     * @return a new instance of {@link KeyVaultSecretIdentifier}.
-     *
      * @throws IllegalArgumentException if the given identifier is {@code null} or an invalid Key Vault Secret
      * identifier.
      */
