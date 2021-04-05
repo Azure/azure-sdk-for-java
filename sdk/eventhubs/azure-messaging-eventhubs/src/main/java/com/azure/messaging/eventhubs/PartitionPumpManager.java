@@ -25,6 +25,7 @@ import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Signal;
+import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
@@ -62,7 +63,7 @@ class PartitionPumpManager {
 
     private final ClientLogger logger = new ClientLogger(PartitionPumpManager.class);
     private final CheckpointStore checkpointStore;
-    private final Map<String, EventHubConsumerAsyncClient> partitionPumps = new ConcurrentHashMap<>();
+    private final Map<String, PartitionPump> partitionPumps = new ConcurrentHashMap<>();
     private final Supplier<PartitionProcessor> partitionProcessorFactory;
     private final EventHubClientBuilder eventHubClientBuilder;
     private final TracerProvider tracerProvider;
@@ -130,7 +131,8 @@ class PartitionPumpManager {
     void verifyPartitionConnection(PartitionOwnership ownership) {
         String partitionId = ownership.getPartitionId();
         if (partitionPumps.containsKey(partitionId)) {
-            EventHubConsumerAsyncClient consumerClient = partitionPumps.get(partitionId);
+            PartitionPump partitionPump = partitionPumps.get(partitionId);
+            EventHubConsumerAsyncClient consumerClient = partitionPump.getClient();
             if (consumerClient.isConnectionClosed()) {
                 logger.info("Connection closed for {}, partition {}. Removing the consumer.",
                     ownership.getEventHubName(), partitionId);
@@ -186,10 +188,14 @@ class PartitionPumpManager {
             ReceiveOptions receiveOptions = new ReceiveOptions().setOwnerLevel(0L)
                 .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties);
 
+            Scheduler scheduler = Schedulers.newBoundedElastic(Runtime.getRuntime().availableProcessors(),
+                10000, "partition-pump-" + claimedOwnership.getPartitionId());
             EventHubConsumerAsyncClient eventHubConsumer = eventHubClientBuilder.buildAsyncClient()
                 .createConsumer(claimedOwnership.getConsumerGroup(), PREFETCH);
+            PartitionPump partitionPump = new PartitionPump(claimedOwnership.getPartitionId(), eventHubConsumer,
+                scheduler);
 
-            partitionPumps.put(claimedOwnership.getPartitionId(), eventHubConsumer);
+            partitionPumps.put(claimedOwnership.getPartitionId(), partitionPump);
             //@formatter:off
             Flux<Flux<PartitionEvent>> partitionEventFlux;
             Flux<PartitionEvent> receiver = eventHubConsumer
@@ -217,11 +223,11 @@ class PartitionPumpManager {
                         eventHubConsumer, partitionEventBatch);
                 },
                     /* EventHubConsumer receive() returned an error */
-                    ex -> handleError(claimedOwnership, eventHubConsumer, partitionProcessor, ex, partitionContext),
+                    ex -> handleError(claimedOwnership, partitionPump, partitionProcessor, ex, partitionContext),
                     () -> {
                         partitionProcessor.close(new CloseContext(partitionContext,
                             CloseReason.EVENT_PROCESSOR_SHUTDOWN));
-                        cleanup(claimedOwnership, eventHubConsumer);
+                        cleanup(claimedOwnership, partitionPump);
                     });
             //@formatter:on
         } catch (Exception ex) {
@@ -305,7 +311,7 @@ class PartitionPumpManager {
         }
     }
 
-    Map<String, EventHubConsumerAsyncClient> getPartitionPumps() {
+    Map<String, PartitionPump> getPartitionPumps() {
         return this.partitionPumps;
     }
 
@@ -322,18 +328,18 @@ class PartitionPumpManager {
         // Any exception while receiving events will result in the processor losing ownership
         CloseReason closeReason = CloseReason.LOST_PARTITION_OWNERSHIP;
         partitionProcessor.close(new CloseContext(partitionContext, closeReason));
-        cleanup(claimedOwnership, eventHubConsumer);
+        cleanup(claimedOwnership, partitionPump);
         if (shouldRethrow) {
             PartitionProcessorException exception = (PartitionProcessorException) throwable;
             throw logger.logExceptionAsError(exception);
         }
     }
 
-    private void cleanup(PartitionOwnership claimedOwnership, EventHubConsumerAsyncClient eventHubConsumer) {
+    private void cleanup(PartitionOwnership claimedOwnership, PartitionPump partitionPump) {
         try {
             // close the consumer
             logger.info("Closing consumer for partition id {}", claimedOwnership.getPartitionId());
-            eventHubConsumer.close();
+            partitionPump.close();
         } finally {
             // finally, remove the partition from partitionPumps map
             logger.info("Removing partition id {} from list of processing partitions",

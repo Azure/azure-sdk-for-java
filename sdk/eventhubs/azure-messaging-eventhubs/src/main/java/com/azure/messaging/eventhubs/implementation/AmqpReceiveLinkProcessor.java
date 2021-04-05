@@ -225,9 +225,15 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                             currentLink = null;
                             currentLinkName = null;
 
-                            if (existing != null) {
-                                existing.dispose();
+                            try {
+                                if (existing != null) {
+                                    existing.dispose();
+                                }
+                            } catch (Exception e) {
+                                logger.info("linkName[{}] entityPath[{}] Error disposing of link",
+                                    existing.getLinkName(), entityPath, e);
                             }
+
                             requestUpstream();
                         }
                     }),
