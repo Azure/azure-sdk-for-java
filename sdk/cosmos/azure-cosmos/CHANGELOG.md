@@ -5,6 +5,7 @@
 * General Availability for `readMany()` API in `CosmosAsyncContainer` and `CosmosContainer`.
 * General Availability for `handle()` API in `CosmosPagedFlux` and `CosmosPagedIterable`.
 * Upgraded Jackson to patch version 2.12.2.
+* Exposed `getDocumentUsage` and `getDocumentCountUsage()` APIs in `FeedResponse` to retrieve document count metadata.
 
 #### Key Bug Fixes
 * Allowed `CosmosPagedFlux#handle()` and `CosmosPagedIterable#handle()` API for chaining.
