@@ -1,5 +1,9 @@
 # Release History
 
+## 1.0.0-beta.4 (2021-04-07)
+### Breaking Changes
+- This package has been deprecated. Please use [azure-communication-identity](identity) and [azure-communication-phonenumbers](phone_numbers) instead.
+
 ## 1.0.0-beta.3 (2020-11-16)
 ### Added
 - Support directly passing connection string to the CommunicationIdentityClientBuilder.
@@ -9,7 +13,7 @@
     - beginReleasePhoneNumber
 
 ### Breaking Changes
-- Removed credential(CommunicationClientCredential credential) and replaced with 
+- Removed credential(CommunicationClientCredential credential) and replaced with
 accessKey(String accessKey) within CommunicationIdentityClientBuilder.
 - `PhoneNumberSearch` renamed to `PhoneNumberReservation`.
 - `SearchStatus` renamed to `ReservationStatus`.
@@ -44,3 +48,5 @@ This is a Public Preview version, so breaking changes are possible in subsequent
 <!-- LINKS -->
 [read_me]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-administration/README.md
 [documentation]: https://docs.microsoft.com/azure/communication-services/quickstarts/access-tokens?pivots=programming-language-java
+[identity]: https://search.maven.org/artifact/com.azure/azure-communication-identity
+[phone_numbers]: https://search.maven.org/artifact/com.azure/azure-communication-phonenumbers

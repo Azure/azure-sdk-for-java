@@ -1,8 +1,7 @@
 # Azure Communication Administration client library for Java
+This package has been deprecated. Please use [azure-communication-identity](identity) and [azure-communication-phonenumbers](phone_numbers) instead.
 
-The administration package is used for managing users and tokens for Azure Communication Services. This package also provides capabilities for Phone Number Administration.
-
-Acquired phone numbers can come with many capabilities, depending on the country, number type and phone plan. Examples of capabilities are SMS inbound and outbound usage, PSTN inbound and outbound usage. Phone numbers can also be assigned to a bot via a webhook URL.
+The requested features were implemented in the new libraries. See change log for more details.
 
 [Source code][source] | [Package (Maven)][package] | [API reference documentation][api_documentation]
 | [Product documentation][product_docs]
@@ -22,16 +21,16 @@ Acquired phone numbers can come with many capabilities, depending on the country
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-administration</artifactId>
-  <version>1.0.0-beta.3</version>
+  <version>1.0.0-beta.4</version>
 </dependency>
 ```
 
 ## Key concepts
 
-To use the Admnistration SDK, a resource access key is required for authentication. 
+To use the Admnistration SDK, a resource access key is required for authentication.
 
 Administration uses HMAC authentication with the resource access key.
-The access key must be provided to the CommunicationIdentityClientBuilder 
+The access key must be provided to the CommunicationIdentityClientBuilder
 or the PhoneNumberClientBuilder via the accessKey() function. Endpoint and httpClient must also be set
 via the endpoint() and httpClient() functions respectively.
 
@@ -53,7 +52,7 @@ CommunicationIdentityClient communicationIdentityClient = new CommunicationIdent
     .buildClient();
 ```
 
-Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key. 
+Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key.
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L62-L68 -->
 ```java
 // Your can find your connection string from your resource in the Azure Portal
@@ -81,7 +80,7 @@ PhoneNumberClient phoneNumberClient = new PhoneNumberClientBuilder()
     .httpClient(httpClient)
     .buildClient();
 ```
-Alternatively, you can provide the entire connection string using the connectionString() function of the PhoneNumberClientBuilder instead of providing the endpoint and access key. 
+Alternatively, you can provide the entire connection string using the connectionString() function of the PhoneNumberClientBuilder instead of providing the endpoint and access key.
 
 ### Phone plans overview
 
@@ -332,6 +331,8 @@ Check out other client libraries for Azure communication service
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
+[identity]: https://search.maven.org/artifact/com.azure/azure-communication-identity
+[phone_numbers]: https://search.maven.org/artifact/com.azure/azure-communication-phonenumbers
 [product_docs]: https://docs.microsoft.com/azure/communication-services/
 [package]: https://search.maven.org/artifact/com.azure/azure-communication-administration
 [api_documentation]: https://aka.ms/java-docs
