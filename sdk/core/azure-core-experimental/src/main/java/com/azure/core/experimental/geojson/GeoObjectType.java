@@ -10,35 +10,45 @@ public enum GeoObjectType {
     /**
      * GeoJSON point.
      */
-    POINT,
+    POINT("Point"),
 
     /**
      * GeoJSON multi-point.
      */
-    MULTI_POINT,
+    MULTI_POINT("MultiPoint"),
 
     /**
      * GeoJSON polygon.
      */
-    POLYGON,
+    POLYGON("Polygon"),
 
     /**
      * GeoJSON multi-polygon.
      */
-    MULTI_POLYGON,
+    MULTI_POLYGON("MultiPolygon"),
 
     /**
      * GeoJSON line string.
      */
-    LINE_STRING,
+    LINE_STRING("LineString"),
 
     /**
      * GeoJSON multi-line string.
      */
-    MULTI_LINE_STRING,
+    MULTI_LINE_STRING("MultiLineString"),
 
     /**
      * GeoJSON geometry collection.
      */
-    GEOMETRY_COLLECTION
+    GEOMETRY_COLLECTION("GeometryCollection");
+
+    private final String jsonType;
+
+    GeoObjectType(String jsonType) {
+        this.jsonType = jsonType;
+    }
+
+    String getJsonType() {
+        return jsonType;
+    }
 }

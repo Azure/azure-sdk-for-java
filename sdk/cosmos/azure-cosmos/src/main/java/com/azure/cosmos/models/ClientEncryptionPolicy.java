@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Client encryption policy.
  */
-@Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+@Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class ClientEncryptionPolicy {
 
     private JsonSerializable jsonSerializable;
@@ -35,7 +35,7 @@ public final class ClientEncryptionPolicy {
      *
      * @param paths list of path of the item that need encryption along with path-specific settings.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ClientEncryptionPolicy(List<ClientEncryptionIncludedPath> paths) {
         this.validateIncludedPaths(paths);
         this.includedPaths = paths;
