@@ -48,10 +48,11 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     private static final String LABEL_PREFIX = "label";
     private static final int PREFIX_LENGTH = 8;
     private static final int RESOURCE_LENGTH = 16;
-    static String connectionString;
     private static final String FEATURE_FLAG_CONTENT_TYPE = "application/vnd.microsoft.appconfig.ff+json;charset=utf-8";
     private static final String SECRET_REFERENCE_CONTENT_TYPE =
         "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8";
+
+    static String connectionString;
 
     private final ClientLogger logger = new ClientLogger(ConfigurationClientTestBase.class);
 
@@ -119,23 +120,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         ConfigurationServiceVersion serviceVersion);
 
     void addFeatureFlagConfigurationSettingRunner(Consumer<FeatureFlagConfigurationSetting> testRunner) {
-        final String key = getKey();
-
-        List<FeatureFlagFilter> filters = new ArrayList<>();
-
-        filters.add(new FeatureFlagFilter("Microsoft.Percentage")
-                        .setParameters(new HashMap<>() {{
-                            put("Value", "30");
-                        }}));
-
-        final FeatureFlagConfigurationSetting featureSetting =
-            new FeatureFlagConfigurationSetting(key, false)
-                .setDisplayName("Feature Flag X")
-                .setClientFilters(filters)
-                .setContentType(FEATURE_FLAG_CONTENT_TYPE)
-                .setValue(getFeatureFlagConfigurationSettingValue(key));
-
-        testRunner.accept(featureSetting.setLabel(getLabel()));
+        testRunner.accept(getFeatureFlagConfigurationSetting(getKey(), "Feature Flag X"));
     }
 
     @Test
@@ -143,17 +128,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         ConfigurationServiceVersion serviceVersion);
 
     void addSecretReferenceConfigurationSettingRunner(Consumer<SecretReferenceConfigurationSetting> testRunner) {
-        final Map<String, String> tags = new HashMap<>();
-        tags.put("MyTag", "TagValue");
-        tags.put("AnotherTag", "AnotherTagValue");
-
-        final SecretReferenceConfigurationSetting newConfiguration =
-            new SecretReferenceConfigurationSetting(getKey(), "https://localhost")
-                .setKey(getKey())
-                .setTags(tags)
-                .setLabel(getLabel());
-
-        testRunner.accept(newConfiguration);
+        testRunner.accept(new SecretReferenceConfigurationSetting(getKey(), "https://localhost"));
     }
 
     @Test
@@ -212,32 +187,8 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     void setFeatureFlagConfigurationSettingRunner(
         BiConsumer<FeatureFlagConfigurationSetting, FeatureFlagConfigurationSetting> testRunner) {
         String key = getKey();
-        String label = getLabel();
-
-        final Map<String, String> tags = new HashMap<>();
-        tags.put("MyTag", "TagValue");
-        tags.put("AnotherTag", "AnotherTagValue");
-
-        List<FeatureFlagFilter> filters = new ArrayList<>();
-
-        filters.add(new FeatureFlagFilter("Microsoft.Percentage")
-                        .setParameters(new HashMap<>() {{
-                            put("Value", "30");
-                        }}));
-
-        final FeatureFlagConfigurationSetting featureSetting =
-            new FeatureFlagConfigurationSetting(key, false)
-                .setDisplayName("Feature Flag X")
-                .setClientFilters(filters)
-                .setValue(getFeatureFlagConfigurationSettingValue(key));
-
-        final FeatureFlagConfigurationSetting updatedFeatureSetting =
-            new FeatureFlagConfigurationSetting(key, false)
-                .setDisplayName("new Feature Flag X")
-                .setClientFilters(filters)
-                .setValue(getFeatureFlagConfigurationSettingValue(key));
-
-        testRunner.accept(featureSetting.setLabel(label), updatedFeatureSetting.setLabel(label));
+        testRunner.accept(getFeatureFlagConfigurationSetting(key, "Feature Flag X"),
+            getFeatureFlagConfigurationSetting(key, "new Feature Flag X"));
     }
 
     @Test
@@ -247,23 +198,8 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     void setSecretReferenceConfigurationSettingRunner(
         BiConsumer<SecretReferenceConfigurationSetting, SecretReferenceConfigurationSetting> testRunner) {
         String key = getKey();
-        String label = getLabel();
-
-        final Map<String, String> tags = new HashMap<>();
-        tags.put("MyTag", "TagValue");
-        tags.put("AnotherTag", "AnotherTagValue");
-
-        final SecretReferenceConfigurationSetting newConfiguration =
-            new SecretReferenceConfigurationSetting(getKey(), "https://localhost")
-                .setKey(getKey())
-                .setTags(tags)
-                .setLabel(getLabel());
-        final SecretReferenceConfigurationSetting updatedSetting =
-            new SecretReferenceConfigurationSetting(getKey(), "https://localhost/100")
-                .setKey(getKey())
-                .setTags(tags)
-                .setLabel(getLabel());
-        testRunner.accept(newConfiguration.setLabel(label), updatedSetting.setLabel(label));
+        testRunner.accept(new SecretReferenceConfigurationSetting(key, "https://localhost"),
+            new SecretReferenceConfigurationSetting(key, "https://localhost/100"));
     }
 
     @Test
@@ -324,20 +260,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         ConfigurationServiceVersion serviceVersion);
 
     void getFeatureFlagConfigurationSettingRunner(Consumer<FeatureFlagConfigurationSetting> testRunner) {
-        String key = getKey();
-        List<FeatureFlagFilter> filters = new ArrayList<>();
-        filters.add(new FeatureFlagFilter("Microsoft.Percentage")
-                        .setParameters(new HashMap<>() {{
-                            put("Value", "30");
-                        }}));
-
-        final FeatureFlagConfigurationSetting featureSetting =
-            new FeatureFlagConfigurationSetting(key, false)
-                .setDisplayName("Feature Flag X")
-                .setClientFilters(filters)
-                .setValue(getFeatureFlagConfigurationSettingValue(key));
-
-        testRunner.accept(featureSetting.setLabel("myLabel"));
+        testRunner.accept(getFeatureFlagConfigurationSetting(getKey(), "Feature Flag X"));
     }
 
     @Test
@@ -345,11 +268,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         ConfigurationServiceVersion serviceVersion);
 
     void getSecretReferenceConfigurationSettingRunner(Consumer<SecretReferenceConfigurationSetting> testRunner) {
-        final SecretReferenceConfigurationSetting newConfiguration =
-            new SecretReferenceConfigurationSetting(getKey(), "https://localhost")
-                .setKey(getKey())
-                .setLabel(getLabel());
-        testRunner.accept(newConfiguration);
+        testRunner.accept(new SecretReferenceConfigurationSetting(getKey(), "https://localhost"));
     }
 
     @Test
@@ -378,22 +297,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         ConfigurationServiceVersion serviceVersion);
 
     void deleteFeatureFlagConfigurationSettingRunner(Consumer<FeatureFlagConfigurationSetting> testRunner) {
-        String key = getKey();
-        String label = getLabel();
-
-        List<FeatureFlagFilter> filters = new ArrayList<>();
-        filters.add(new FeatureFlagFilter("Microsoft.Percentage")
-                        .setParameters(new HashMap<>() {{
-                            put("Value", "30");
-                        }}));
-
-        final FeatureFlagConfigurationSetting featureSetting =
-            new FeatureFlagConfigurationSetting(key, false)
-                .setDisplayName("Feature Flag X")
-                .setClientFilters(filters)
-                .setValue(getFeatureFlagConfigurationSettingValue(key));
-
-        testRunner.accept(featureSetting.setLabel(label));
+        testRunner.accept(getFeatureFlagConfigurationSetting(getKey(), "Feature Flag X"));
     }
 
     @Test
@@ -401,14 +305,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         ConfigurationServiceVersion serviceVersion);
 
     void deleteSecretReferenceConfigurationSettingRunner(Consumer<SecretReferenceConfigurationSetting> testRunner) {
-        String key = getKey();
-        String label = getLabel();
-
-        final SecretReferenceConfigurationSetting newConfiguration =
-            new SecretReferenceConfigurationSetting(key, "https://localhost")
-                .setKey(getKey())
-                .setLabel(getLabel());
-        testRunner.accept(newConfiguration.setLabel(label));
+        testRunner.accept(new SecretReferenceConfigurationSetting(getKey(), "https://localhost"));
     }
 
     @Test
@@ -472,20 +369,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         ConfigurationServiceVersion serviceVersion);
 
     void lockUnlockFeatureFlagRunner(Consumer<FeatureFlagConfigurationSetting> testRunner) {
-        String key = getKey();
-
-        List<FeatureFlagFilter> filters = new ArrayList<>();
-        filters.add(new FeatureFlagFilter("Microsoft.Percentage")
-                        .setParameters(new HashMap<>() {{
-                            put("Value", "30");
-                        }}));
-
-        final FeatureFlagConfigurationSetting lockConfiguration =
-            new FeatureFlagConfigurationSetting(key, false)
-                .setDisplayName("Feature Flag X")
-                .setClientFilters(filters)
-                .setValue(getFeatureFlagConfigurationSettingValue(key));
-        testRunner.accept(lockConfiguration);
+        testRunner.accept(getFeatureFlagConfigurationSetting(getKey(), "Feature Flag X"));
     }
 
     @Test
@@ -497,14 +381,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         ConfigurationServiceVersion serviceVersion);
 
     void lockUnlockSecretReferenceRunner(Consumer<SecretReferenceConfigurationSetting> testRunner) {
-        String key = getKey();
-
-        final SecretReferenceConfigurationSetting newConfiguration =
-            new SecretReferenceConfigurationSetting(key, "https://localhost")
-                .setKey(getKey())
-                .setLabel(getLabel());
-
-        testRunner.accept(newConfiguration);
+        testRunner.accept(new SecretReferenceConfigurationSetting(getKey(), "https://localhost"));
     }
 
     @Test
@@ -924,5 +801,19 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         return "{\"id\":\"" + key + "\",\"description\":null,\"display_name\":\"Feature Flag X\""
                    + ",\"enabled\":false,\"conditions\":{\"client_filters\":[{\"name\":"
                    + "\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]}}";
+    }
+
+    private FeatureFlagConfigurationSetting getFeatureFlagConfigurationSetting(String key, String displayName) {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("Value", "30");
+        final List<FeatureFlagFilter> filters = new ArrayList<>();
+        filters.add(new FeatureFlagFilter("Microsoft.Percentage")
+                        .setParameters(parameters));
+
+        return new FeatureFlagConfigurationSetting(key, false)
+                .setDisplayName(displayName)
+                .setClientFilters(filters)
+                .setContentType(FEATURE_FLAG_CONTENT_TYPE)
+                .setValue(getFeatureFlagConfigurationSettingValue(key));
     }
 }

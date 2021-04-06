@@ -12,7 +12,7 @@ import java.util.Map;
  */
 @Fluent
 public final class SecretReferenceConfigurationSetting extends ConfigurationSetting {
-    private String secretId;
+    private final String secretId;
 
     /**
      * The constructor for a secret reference configuration setting.

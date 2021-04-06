@@ -9,7 +9,7 @@ import java.util.Map;
  * Filters in {@link FeatureFlagConfigurationSetting} that can be returned from GET queries.
  */
 public final class FeatureFlagFilter {
-    private String name;
+    private final String name;
     private Map<String, Object> parameters;
 
     /**

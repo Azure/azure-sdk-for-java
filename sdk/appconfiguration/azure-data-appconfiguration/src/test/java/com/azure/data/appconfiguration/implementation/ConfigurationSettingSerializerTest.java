@@ -18,6 +18,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -31,19 +32,10 @@ public class ConfigurationSettingSerializerTest {
     public void configurationSettingJsonSerializerTest() throws IOException {
         final ConfigurationSettingJsonSerializer configurationSettingJsonSerializer =
             new ConfigurationSettingJsonSerializer();
-
+        final String key = ".appconfig.featureflag/hello";
         final String featureID = "hello";
-        List<FeatureFlagFilter> filters = new ArrayList<>();
-        filters.add(new FeatureFlagFilter("Microsoft.Percentage")
-                        .setParameters(new HashMap<>() {{
-                            put("Value", "30");
-                        }}));
         final FeatureFlagConfigurationSetting featureSetting =
-            new FeatureFlagConfigurationSetting(featureID, false)
-                .setDisplayName("Feature Flag X")
-                .setClientFilters(filters)
-                .setValue("val1");
-
+            getFeatureFlagConfigurationSetting(featureID, "Feature Flag X");
         final StringWriter jsonWriter = new StringWriter();
         final JsonGenerator jsonGenerator = new JsonFactory().createGenerator(jsonWriter);
         final SerializerProvider serializerProvider = objectMapper.getSerializerProvider();
@@ -52,9 +44,9 @@ public class ConfigurationSettingSerializerTest {
 
         final ObjectNode objectNode = (ObjectNode) objectMapper.readTree(jsonWriter.toString());
 
-        assertEquals(objectNode.get("key").asText(), ".appconfig.featureflag/hello");
+        assertEquals(objectNode.get("key").asText(), key);
         assertEquals(objectNode.get("value").asText(),
-            "{\"id\":\"hello\",\"description\":null,\"display_name\":\"Feature Flag X\",\"enabled\""
+            "{\"id\":\"" + featureID + "\",\"description\":null,\"display_name\":\"Feature Flag X\",\"enabled\""
                 + ":false,\"conditions\":{\"client_filters\":[{\"name\":\"Microsoft.Percentage\",\"parameters\""
                 + ":{\"Value\":\"30\"}}]}}");
     }
@@ -63,9 +55,9 @@ public class ConfigurationSettingSerializerTest {
     public void secretReferenceConfigurationSettingJsonSerializerTest() throws IOException {
         final ConfigurationSettingJsonSerializer configurationSettingJsonSerializer =
             new ConfigurationSettingJsonSerializer();
-
-        SecretReferenceConfigurationSetting setting = new SecretReferenceConfigurationSetting("hello",
-            "https://localhost/");
+        final String uriValue = "https://localhost/";
+        final String key = "hello";
+        final SecretReferenceConfigurationSetting setting = new SecretReferenceConfigurationSetting(key, uriValue);
         final StringWriter jsonWriter = new StringWriter();
         final JsonGenerator jsonGenerator = new JsonFactory().createGenerator(jsonWriter);
         final SerializerProvider serializerProvider = objectMapper.getSerializerProvider();
@@ -74,7 +66,18 @@ public class ConfigurationSettingSerializerTest {
 
         final ObjectNode objectNode = (ObjectNode) objectMapper.readTree(jsonWriter.toString());
 
-        assertEquals("hello", objectNode.get("key").asText());
-        assertEquals("{\"uri\":\"https://localhost/\"}", objectNode.get("value").asText());
+        assertEquals(key, objectNode.get("key").asText());
+        assertEquals("{\"uri\":\"" + uriValue + "\"}", objectNode.get("value").asText());
+    }
+
+    private FeatureFlagConfigurationSetting getFeatureFlagConfigurationSetting(String key, String displayName) {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("Value", "30");
+        final List<FeatureFlagFilter> filters = new ArrayList<>();
+        filters.add(new FeatureFlagFilter("Microsoft.Percentage")
+                        .setParameters(parameters));
+        return new FeatureFlagConfigurationSetting(key, false)
+                   .setDisplayName(displayName)
+                   .setClientFilters(filters);
     }
 }

@@ -11,8 +11,8 @@ import java.util.Map;
  * {@link FeatureFlagConfigurationSetting} model.
  */
 public final class FeatureFlagConfigurationSetting extends ConfigurationSetting {
-    private String featureId;
-    private boolean isEnabled;
+    private final String featureId;
+    private final boolean isEnabled;
     private String description;
     private String displayName;
     private List<FeatureFlagFilter> clientFilters;
