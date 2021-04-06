@@ -492,9 +492,6 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                 numberRequested = REQUESTED.addAndGet(this, -numberEmitted);
             }
         }
-
-        logger.verbose("linkName[{}] requested[{}] Requested messages remaining.",
-            currentLinkName, REQUESTED.get(this));
     }
 
     private boolean checkAndSetTerminated() {
