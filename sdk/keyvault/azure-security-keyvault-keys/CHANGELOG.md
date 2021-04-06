@@ -5,6 +5,7 @@
 ### New features
 - Added support for service version `7.2`.
 - Made all `JsonWebKey` properties settable.
+- Added support to specify whether or not a pipeline policy should be added per call or per retry.
 
 ### Breaking Changes
 - Renamed `EncryptOptions` to `EncryptParameters`.

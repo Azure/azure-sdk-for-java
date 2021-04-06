@@ -4,6 +4,7 @@
 
 ### New features
 - Added support for service version `7.2`.
+- Added support to specify whether or not a pipeline policy should be added per call or per retry.
 
 ### Breaking Changes
 - Changed `KeyVaultCertificateIdentifier` so it is instantiated via its constructor as opposed to via a `parse()` factory method.
