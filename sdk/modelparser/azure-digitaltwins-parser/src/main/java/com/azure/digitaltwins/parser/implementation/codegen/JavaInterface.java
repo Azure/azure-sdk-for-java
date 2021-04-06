@@ -33,6 +33,14 @@ public class JavaInterface extends JavaDeclaration implements JavaFile {
         this.setTypeName(typeName);
     }
 
+    /**
+     * Add a java method to the interface.
+     *
+     * @param access Access level of method.
+     * @param type   Type of method.
+     * @param name   Name of method.
+     * @return The {@link JavaMethod} object added.
+     */
     public JavaMethod method(Access access, String type, String name) {
         JavaMethod javaMethod = new JavaMethod(false, access, Novelty.NORMAL, type, name, Multiplicity.INSTANCE, Mutability.MUTABLE);
         this.methods.add(javaMethod);

@@ -111,11 +111,17 @@ public class JavaProperty extends JavaStatement {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getSortingText() {
         return "";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void generateCode(CodeWriter codeWriter) throws IOException {
         this.field.generateCode(codeWriter);
@@ -126,6 +132,14 @@ public class JavaProperty extends JavaStatement {
         }
     }
 
+    /**
+     * Creates a method name using a prefix and a property name.
+     * The first character of the property name will be converted to upper case and the prefix will be added to the beginning.
+     *
+     * @param propertyName Property name.
+     * @param prefix       Method prefix.
+     * @return Correct method name.
+     */
     private static String getMethodName(String propertyName, String prefix) {
         return prefix + propertyName.substring(0, 1).toUpperCase(Locale.getDefault()) + propertyName.substring(1);
     }
