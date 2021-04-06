@@ -11,6 +11,7 @@ import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.ReactorOptions;
 
 import java.io.IOException;
+import java.nio.channels.Pipe;
 
 public class ReactorProvider {
     private final ClientLogger logger = new ClientLogger(ReactorProvider.class);
@@ -57,7 +58,8 @@ public class ReactorProvider {
             final Reactor reactor = Proton.reactor(reactorOptions, globalHandler, reactorHandler);
             reactor.setGlobalHandler(globalHandler);
 
-            final ReactorDispatcher dispatcher = new ReactorDispatcher(connectionId, reactor);
+            final Pipe ioSignal = Pipe.open();
+            final ReactorDispatcher dispatcher = new ReactorDispatcher(connectionId, reactor, ioSignal);
 
             this.reactor = reactor;
             this.reactorDispatcher = dispatcher;

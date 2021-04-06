@@ -46,6 +46,7 @@ import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.nio.channels.Pipe;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -141,7 +142,8 @@ class ReactorConnectionTest {
             connectionHandler))
             .thenReturn(connectionProtonJ);
 
-        final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(CONNECTION_ID, reactor);
+        final Pipe pipe = Pipe.open();
+        final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(CONNECTION_ID, reactor, pipe);
         when(reactorProvider.getReactor()).thenReturn(reactor);
         when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
         when(reactorProvider.createReactor(CONNECTION_ID, connectionHandler.getMaxFrameSize())).thenReturn(reactor);
@@ -644,7 +646,8 @@ class ReactorConnectionTest {
 
         when(reactor.connectionToHost(hostname, port, connectionHandler)).thenReturn(connectionProtonJ);
 
-        final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(CONNECTION_ID, reactor);
+        final Pipe pipe = Pipe.open();
+        final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(CONNECTION_ID, reactor, pipe);
         when(reactorProvider.getReactor()).thenReturn(reactor);
         when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
         when(reactorProvider.createReactor(connectionId, connectionHandler.getMaxFrameSize())).thenReturn(reactor);

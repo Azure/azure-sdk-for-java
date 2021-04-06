@@ -52,19 +52,15 @@ public final class ReactorDispatcher {
     private final AtomicBoolean isClosed = new AtomicBoolean();
     private final Sinks.One<AmqpShutdownSignal> shutdownSignal = Sinks.one();
 
-    public ReactorDispatcher(final String connectionId, final Reactor reactor) throws IOException {
+    public ReactorDispatcher(final String connectionId, final Reactor reactor, final Pipe ioSignal) {
         this.connectionId = connectionId;
         this.reactor = reactor;
-        this.ioSignal = Pipe.open();
+        this.ioSignal = ioSignal;
         this.workQueue = new ConcurrentLinkedQueue<>();
         this.onClose = new CloseHandler();
         this.workScheduler = new WorkScheduler();
 
-        initializeSelectable();
-    }
-
-    private void initializeSelectable() {
-        Selectable schedulerSelectable = this.reactor.selectable();
+        final Selectable schedulerSelectable = this.reactor.selectable();
 
         schedulerSelectable.setChannel(this.ioSignal.source());
         schedulerSelectable.onReadable(this.workScheduler);
