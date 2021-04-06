@@ -99,7 +99,8 @@ public class AADWebAppConfiguration {
     private Set<String> authorizationCodeScopes() {
         Set<String> result = accessTokenScopes();
         for (AuthorizationClientProperties authProperties : properties.getAuthorizationClients().values()) {
-            if (!authProperties.isOnDemand() && !authProperties.isClientCredential()) {
+            if (!authProperties.isOnDemand() &&
+                !AADAuthorizationGrantType.CLIENT_CREDENTIALS.equals(authProperties.getAuthorizationGrantType())) {
                 result.addAll(authProperties.getScopes());
             }
         }
@@ -151,7 +152,11 @@ public class AADWebAppConfiguration {
     private ClientRegistration createClientBuilder(String id, AuthorizationClientProperties authz) {
         ClientRegistration.Builder result = createClientBuilder(id , authz.getAuthorizationGrantType());
         List<String> scopes = authz.getScopes();
-        if (!authz.isOnDemand() && !authz.isClientCredential()) {
+        if (AADAuthorizationGrantType.ON_BEHALF_OF.equals(authz.getAuthorizationGrantType())) {
+            throw new IllegalStateException("Web Application do not support on behalf of");
+        }
+        if (!authz.isOnDemand() &&
+            AADAuthorizationGrantType.AUTHORIZATION_CODE.equals(authz.getAuthorizationGrantType())) {
             if (!scopes.contains("openid")) {
                 scopes.add("openid");
             }
@@ -165,9 +170,9 @@ public class AADWebAppConfiguration {
 
     private ClientRegistration.Builder createClientBuilder(String id , AADAuthorizationGrantType aadAuthorizationGrantType) {
         ClientRegistration.Builder result = ClientRegistration.withRegistrationId(id);
-        if(aadAuthorizationGrantType != null){
+        if(aadAuthorizationGrantType != null) {
             result.authorizationGrantType(new AuthorizationGrantType(aadAuthorizationGrantType.getValue()));
-        }else{
+        } else {
             result.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE);
         }
         result.redirectUri("{baseUrl}/login/oauth2/code/");
