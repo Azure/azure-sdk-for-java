@@ -14,10 +14,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.springframework.integration.support.MessageBuilder;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 
+import javax.validation.constraints.Null;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,6 +39,11 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import  com.azure.messaging.servicebus.TestBuilder;
 public class ServiceBusMessageConverterTest extends AzureMessageConverterTest<ServiceBusReceivedMessage, ServiceBusMessage> {
     @Override
     protected ServiceBusMessage getInstance() {
@@ -63,61 +73,33 @@ public class ServiceBusMessageConverterTest extends AzureMessageConverterTest<Se
             message.getHeaders().get(headerProperties, String.class));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void shouldRaiseIllegalIfPayloadNull() {
-        //ServiceBusReceivedMessage message = new ServiceBusReceivedMessage((BinaryData) null);  //TODO  constructor now is invisible
-        //getConverter().toMessage(message, byte[].class);
+        ServiceBusReceivedMessage message = new TestBuilder(null).build();
+        getConverter().toMessage(message, byte[].class);
     }
 
     @Test
     public void shouldConvertIMessageBinaryIntoAMessage() {
-        //TODO
-        /*IMessage message = new Message(this.payload.getBytes());
-
+        ServiceBusReceivedMessage message = new TestBuilder(BinaryData.fromString(this.payload)).build();
        org.springframework.messaging.Message<byte[]> convertedPayload =
             getConverter().toMessage(message, byte[].class);
 
        assertNotNull(convertedPayload);
-        assertArrayEquals(convertedPayload.getPayload(), payload.getBytes());*/
+        assertArrayEquals(convertedPayload.getPayload(), payload.getBytes());
     }
 
-    @Test
-    public void shouldConvertIMessageValueIntoAMessage() {
-        //TODO
-       /* IMessage message = new Message(MessageBody.fromValueData(this.payload));
 
-        org.springframework.messaging.Message<byte[]> convertedPayload =
-           getConverter().toMessage(message, byte[].class);
 
-        assertNotNull(convertedPayload);
-        assertArrayEquals(convertedPayload.getPayload(), payload.getBytes());*/
-    }
 
-    @Test
-    public void shouldConvertIMessageSequenceIntoAMessage() throws JsonProcessingException {
-        //TODO
-      /*  List<Object> internalSequence = singletonList(payload);
-        List<List<Object>> sequences = singletonList(internalSequence);
-
-        IMessage message = new Message(MessageBody.fromSequenceData(sequences));
-
-        org.springframework.messaging.Message<byte[]> convertedPayload =
-            getConverter().toMessage(message, byte[].class);
-
-        assertNotNull(convertedPayload);
-        assertArrayEquals(
-            convertedPayload.getPayload(),
-            new ObjectMapper().writeValueAsBytes(internalSequence));*/
-    }
 
     @Test
     public void shouldConvertSpringMessageHeaderIntoIMessage() {
-        //TODO
-     /*   org.springframework.messaging.Message<String> springMessage =
+        org.springframework.messaging.Message<String> springMessage =
             MessageBuilder.withPayload(payload).setHeader("x-delay", 5000).build();
-        IMessage servicebusMessage = getConverter().fromMessage(springMessage, IMessage.class);
+         ServiceBusMessage servicebusMessage = getConverter().fromMessage(springMessage, ServiceBusMessage.class);
         assertNotNull(servicebusMessage);
-        assertNotNull(servicebusMessage.getScheduledEnqueueTimeUtc());*/
+        assertNotNull(servicebusMessage.getScheduledEnqueueTime());
 
     }
 
@@ -125,9 +107,8 @@ public class ServiceBusMessageConverterTest extends AzureMessageConverterTest<Se
     String springReplyChannel = "SpringReplyChannel";
     @Test
     public void springMessageHeaderTest() {
-        //TODO
-      /*  org.springframework.messaging.Message<String> springMessage;
-        IMessage serviceBusMessage;
+        org.springframework.messaging.Message<String> springMessage;
+        ServiceBusMessage serviceBusMessage;
         org.springframework.messaging.Message<String> convertedSpringMessage;
 
         springMessage = MessageBuilder.withPayload(payload)
@@ -136,20 +117,21 @@ public class ServiceBusMessageConverterTest extends AzureMessageConverterTest<Se
                                       .setHeader(MessageHeaders.CONTENT_TYPE, springMessageContent)
                                       .setHeader(MessageHeaders.REPLY_CHANNEL, springReplyChannel)
                                       .build();
-        serviceBusMessage = getConverter().fromMessage(springMessage, IMessage.class);
+        serviceBusMessage = getConverter().fromMessage(springMessage, ServiceBusMessage.class);
         assertEquals(springMessageContent, serviceBusMessage.getContentType());
         assertEquals(springReplyChannel, serviceBusMessage.getReplyTo());
 
-        convertedSpringMessage = getConverter().toMessage(serviceBusMessage, String.class);
+        ServiceBusReceivedMessage serviceBusReceivedMessage = new TestBuilder(BinaryData.fromString(this.payload)).setContentType(springMessageContent)
+            .setReplyTo(springReplyChannel).build();
+        convertedSpringMessage = getConverter().toMessage(serviceBusReceivedMessage, String.class);
         assertEquals(springMessageContent, convertedSpringMessage.getHeaders().get(MessageHeaders.CONTENT_TYPE));
-        assertEquals(springReplyChannel, convertedSpringMessage.getHeaders().get(MessageHeaders.REPLY_CHANNEL));*/
+        assertEquals(springReplyChannel, convertedSpringMessage.getHeaders().get(MessageHeaders.REPLY_CHANNEL));
     }
 
     String azureMessageRawId = UUID.randomUUID().toString();
     @Test
     public void azureMessageHeaderTest() {
-        //TODO
-       /* org.springframework.messaging.Message<String> springMessage;
+        org.springframework.messaging.Message<String> springMessage;
         ServiceBusMessage serviceBusMessage;
         org.springframework.messaging.Message<String> convertedSpringMessage;
 
@@ -159,13 +141,14 @@ public class ServiceBusMessageConverterTest extends AzureMessageConverterTest<Se
         serviceBusMessage = getConverter().fromMessage(springMessage, ServiceBusMessage.class);
         assertEquals(azureMessageRawId, serviceBusMessage.getMessageId());
 
-        convertedSpringMessage = getConverter().toMessage(serviceBusMessage, String.class);
-        assertEquals(azureMessageRawId, convertedSpringMessage.getHeaders().get(AzureHeaders.RAW_ID));*/
+        ServiceBusReceivedMessage serviceBusReceivedMessage = new TestBuilder(BinaryData.fromString(this.payload)).setMessageID(azureMessageRawId).build();
+        convertedSpringMessage = getConverter().toMessage(serviceBusReceivedMessage, String.class);
+        assertEquals(azureMessageRawId, convertedSpringMessage.getHeaders().get(AzureHeaders.RAW_ID));
     }
 
     String serviceBusMessageId = UUID.randomUUID().toString();
     Duration serviceBusTimeToLive = Duration.ofSeconds(1234);
-    Instant serviceBusScheduledEnqueueTimeUtc = Instant.now();
+    OffsetDateTime serviceBusScheduledEnqueueTime = OffsetDateTime.ofInstant( Instant.now(), ZoneId.systemDefault());
     String serviceBusSessionId = UUID.randomUUID().toString();
     String serviceBusCorrelationId = UUID.randomUUID().toString();
     String serviceBusTo = UUID.randomUUID().toString();
@@ -176,7 +159,7 @@ public class ServiceBusMessageConverterTest extends AzureMessageConverterTest<Se
     @Test
     public void serviceBusMessageHeaderTest() {
         org.springframework.messaging.Message<String> springMessage;
-        ServiceBusReceivedMessage serviceBusMessage = null; //TODO
+        ServiceBusMessage serviceBusMessage;
         org.springframework.messaging.Message<String> convertedSpringMessage;
 
         springMessage = MessageBuilder.withPayload(payload)
@@ -185,36 +168,44 @@ public class ServiceBusMessageConverterTest extends AzureMessageConverterTest<Se
                                       .setHeader(AzureHeaders.RAW_ID, azureMessageRawId)
                                       .setHeader(MESSAGE_ID, serviceBusMessageId)
                                       .setHeader(TIME_TO_LIVE, serviceBusTimeToLive)
-                                      .setHeader(SCHEDULED_ENQUEUE_TIME, serviceBusScheduledEnqueueTimeUtc)
+                                      .setHeader(SCHEDULED_ENQUEUE_TIME, serviceBusScheduledEnqueueTime)
                                       .setHeader(SESSION_ID, serviceBusSessionId)
                                       .setHeader(CORRELATION_ID, serviceBusCorrelationId)
                                       .setHeader(TO, serviceBusTo)
                                       .setHeader(REPLY_TO_SESSION_ID, serviceBusReplyToSessionId)
                                       .setHeader(PARTITION_KEY, serviceBusPartitionKey)
                                       .build();
-      //  serviceBusMessage = getConverter().fromMessage(springMessage, ServiceBusMessage.class); //TODO
+        serviceBusMessage = getConverter().fromMessage(springMessage, ServiceBusMessage.class);
         assertEquals(springMessageContent, serviceBusMessage.getContentType());
         assertEquals(springReplyChannel, serviceBusMessage.getReplyTo());
         assertEquals(azureMessageRawId, serviceBusMessage.getApplicationProperties().get(AzureHeaders.RAW_ID));
         assertEquals(serviceBusMessageId, serviceBusMessage.getMessageId());
         assertEquals(serviceBusTimeToLive, serviceBusMessage.getTimeToLive());
-    //    assertEquals(serviceBusScheduledEnqueueTimeUtc, serviceBusMessage.getScheduledEnqueueTimeUtc());
+        assertEquals(serviceBusScheduledEnqueueTime, serviceBusMessage.getScheduledEnqueueTime());
         assertEquals(serviceBusSessionId, serviceBusMessage.getSessionId());
         assertEquals(serviceBusCorrelationId, serviceBusMessage.getCorrelationId());
         assertEquals(serviceBusTo, serviceBusMessage.getTo());
-       // assertEquals(serviceBusLabel, serviceBusMessage.getLabel());  //TODO
 
         assertEquals(serviceBusReplyToSessionId, serviceBusMessage.getReplyToSessionId());
         assertEquals(serviceBusPartitionKey, serviceBusMessage.getPartitionKey());
-       // assertEquals(serviceBusViaPartitionKey, serviceBusMessage.getViaPartitionKey()); //TODO
+        assertEquals(serviceBusViaPartitionKey, serviceBusMessage.getPartitionKey());
 
-        convertedSpringMessage = getConverter().toMessage(serviceBusMessage, String.class);
+        ServiceBusReceivedMessage serviceBusReceivedMessage = new TestBuilder(BinaryData.fromString(this.payload)).setContentType(springMessageContent)
+            .setReplyTo(springReplyChannel).setMessageID(serviceBusMessageId).setTimeToLive(serviceBusTimeToLive)
+            .setScheduledEnqueueTime(serviceBusScheduledEnqueueTime)
+            .setSessionId(serviceBusSessionId)
+            .setCorrelationId(serviceBusCorrelationId)
+            .setTo(serviceBusTo)
+            .setReplyToSessionId(serviceBusReplyToSessionId)
+            .setPartitionKey(serviceBusPartitionKey)
+            .build();
+        convertedSpringMessage = getConverter().toMessage(serviceBusReceivedMessage, String.class);
         assertEquals(springMessageContent, convertedSpringMessage.getHeaders().get(MessageHeaders.CONTENT_TYPE));
         assertEquals(springReplyChannel, convertedSpringMessage.getHeaders().get(MessageHeaders.REPLY_CHANNEL));
         assertEquals(azureMessageRawId, convertedSpringMessage.getHeaders().get(AzureHeaders.RAW_ID));
         assertEquals(serviceBusMessageId, convertedSpringMessage.getHeaders().get(MESSAGE_ID));
         assertEquals(serviceBusTimeToLive.toString(), convertedSpringMessage.getHeaders().get(TIME_TO_LIVE));
-        assertEquals(serviceBusScheduledEnqueueTimeUtc.toString(),
+        assertEquals(serviceBusScheduledEnqueueTime.toString(),
             convertedSpringMessage.getHeaders().get(SCHEDULED_ENQUEUE_TIME));
         assertEquals(serviceBusSessionId, convertedSpringMessage.getHeaders().get(SESSION_ID));
         assertEquals(serviceBusCorrelationId, convertedSpringMessage.getHeaders().get(CORRELATION_ID));

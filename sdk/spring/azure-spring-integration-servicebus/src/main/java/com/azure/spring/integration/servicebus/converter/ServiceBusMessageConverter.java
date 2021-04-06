@@ -14,6 +14,8 @@ import org.springframework.util.StringUtils;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -78,15 +80,15 @@ public class ServiceBusMessageConverter extends AbstractAzureMessageConverter<Se
         getStringHeader(headers, AzureHeaders.RAW_ID).ifPresent(message::setMessageId);
         Optional.ofNullable(headers.get(AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE, Integer.class))
                 .map(Duration::ofMillis)
-                .map(Instant.now()::plus);
-               // .ifPresent(message::setScheduledEnqueueTimeUtc);  TODO there is no setScheduledEnqueueTimeUtc
+                .map(Instant.now()::plus)
+                .map((ins) -> OffsetDateTime.ofInstant(ins, ZoneId.systemDefault())).ifPresent(message::setScheduledEnqueueTime);
 
         // ServiceBusMessageHeaders, service bus headers have highest priority.
         getStringHeader(headers, MESSAGE_ID).ifPresent(message::setMessageId);
         Optional.ofNullable((Duration) headers.get(TIME_TO_LIVE))
                 .ifPresent(message::setTimeToLive);
-       // Optional.ofNullable((Instant) headers.get(SCHEDULED_ENQUEUE_TIME))
-      //          .ifPresent(message::setScheduledEnqueueTimeUtc);  TODO  there is no  setScheduledEnqueueTimeUtc
+        Optional.ofNullable((Instant) headers.get(SCHEDULED_ENQUEUE_TIME))
+                .map((ins) -> OffsetDateTime.ofInstant(ins, ZoneId.systemDefault())).ifPresent(message::setScheduledEnqueueTime);
         getStringHeader(headers, SESSION_ID).ifPresent(message::setSessionId);
         getStringHeader(headers, CORRELATION_ID).ifPresent(message::setCorrelationId);
         getStringHeader(headers, TO).ifPresent(message::setTo);
@@ -121,7 +123,7 @@ public class ServiceBusMessageConverter extends AbstractAzureMessageConverter<Se
         setValueIfHasText(headers, PARTITION_KEY, message.getPartitionKey());
         setValueIfHasText(headers, TO, message.getTo());
         setValueIfPresent(headers, TIME_TO_LIVE, message.getTimeToLive());
-        //setValueIfPresent(headers, SCHEDULED_ENQUEUE_TIME, message.getScheduledEnqueueTimeUtc());  //TODO there is no  setScheduledEnqueueTimeUtc
+        setValueIfPresent(headers, SCHEDULED_ENQUEUE_TIME, message.getScheduledEnqueueTime());
         setValueIfHasText(headers, REPLY_TO_SESSION_ID, message.getReplyToSessionId());
         setValueIfHasText(headers, SESSION_ID, message.getSessionId());
 
