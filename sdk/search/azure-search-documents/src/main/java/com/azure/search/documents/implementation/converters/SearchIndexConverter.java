@@ -27,9 +27,7 @@ public final class SearchIndexConverter {
             return null;
         }
 
-        List<SearchField> fields = obj.getFields() == null ? null
-            : obj.getFields().stream().map(SearchFieldConverter::map).collect(Collectors.toList());
-        SearchIndex searchIndex = new SearchIndex(obj.getName(), fields);
+        SearchIndex searchIndex = new SearchIndex(obj.getName(), obj.getFields());
 
         if (obj.getTokenizers() != null) {
             List<LexicalTokenizer> tokenizers =
@@ -45,6 +43,10 @@ public final class SearchIndexConverter {
 
         if (obj.getCharFilters() != null) {
             searchIndex.setCharFilters(obj.getCharFilters());
+        }
+
+        if (obj.getNormalizers() != null) {
+            searchIndex.setNormalizers(obj.getNormalizers());
         }
 
         if (obj.getTokenFilters() != null) {
@@ -76,8 +78,7 @@ public final class SearchIndexConverter {
             searchIndex.setCorsOptions(obj.getCorsOptions());
         }
 
-        String eTag = obj.getETag();
-        searchIndex.setETag(eTag);
+        searchIndex.setETag(obj.getETag());
 
         if (obj.getScoringProfiles() != null) {
             searchIndex.setScoringProfiles(obj.getScoringProfiles());
@@ -94,12 +95,10 @@ public final class SearchIndexConverter {
             return null;
         }
         Objects.requireNonNull(obj.getName(), "The SearchIndex name cannot be null");
-        List<com.azure.search.documents.indexes.implementation.models.SearchField> fields = obj.getFields() == null ?
-            null : obj.getFields().stream().map(SearchFieldConverter::map).collect(Collectors.toList());
         com.azure.search.documents.indexes.implementation.models.SearchIndex searchIndex =
             new com.azure.search.documents.indexes.implementation.models.SearchIndex()
                 .setName(obj.getName())
-                .setFields(fields);
+                .setFields(obj.getFields());
 
         if (obj.getTokenizers() != null) {
             List<com.azure.search.documents.indexes.implementation.models.LexicalTokenizer> tokenizers =
@@ -115,6 +114,10 @@ public final class SearchIndexConverter {
 
         if (obj.getCharFilters() != null) {
             searchIndex.setCharFilters(obj.getCharFilters());
+        }
+
+        if (obj.getNormalizers() != null) {
+            searchIndex.setNormalizers(obj.getNormalizers());
         }
 
         if (obj.getTokenFilters() != null) {
@@ -146,8 +149,7 @@ public final class SearchIndexConverter {
             searchIndex.setCorsOptions(obj.getCorsOptions());
         }
 
-        String eTag = obj.getETag();
-        searchIndex.setETag(eTag);
+        searchIndex.setETag(obj.getETag());
 
         if (obj.getScoringProfiles() != null) {
             searchIndex.setScoringProfiles(obj.getScoringProfiles());

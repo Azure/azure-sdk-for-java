@@ -1132,6 +1132,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 return client.deleteConfigurationSettingWithResponse(configurationSetting, false);
             }).blockLast();
     }
+
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void addHeadersFromContextPolicyTest(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {

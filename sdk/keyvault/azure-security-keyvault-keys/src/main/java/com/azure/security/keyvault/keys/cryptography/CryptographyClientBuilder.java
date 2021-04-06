@@ -10,6 +10,7 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -65,9 +66,6 @@ import java.util.Map;
  */
 @ServiceClientBuilder(serviceClients = CryptographyClient.class)
 public final class CryptographyClientBuilder {
-    final List<HttpPipelinePolicy> policies;
-    final Map<String, String> properties;
-
     private final ClientLogger logger = new ClientLogger(CryptographyClientBuilder.class);
 
     // This is properties file's name.
@@ -75,25 +73,30 @@ public final class CryptographyClientBuilder {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
-    private JsonWebKey jsonWebKey;
-    private TokenCredential credential;
-    private HttpPipeline pipeline;
-    private String keyId;
-    private HttpClient httpClient;
-    private HttpLogOptions httpLogOptions;
-    private RetryPolicy retryPolicy;
+    private final List<HttpPipelinePolicy> perCallPolicies;
+    private final List<HttpPipelinePolicy> perRetryPolicies;
+    private final Map<String, String> properties;
+
+    private ClientOptions clientOptions;
     private Configuration configuration;
     private CryptographyServiceVersion version;
-    private ClientOptions clientOptions;
+    private HttpClient httpClient;
+    private HttpLogOptions httpLogOptions;
+    private HttpPipeline pipeline;
+    private JsonWebKey jsonWebKey;
+    private RetryPolicy retryPolicy;
+    private String keyId;
+    private TokenCredential credential;
 
     /**
      * The constructor with defaults.
      */
     public CryptographyClientBuilder() {
-        retryPolicy = new RetryPolicy();
         httpLogOptions = new HttpLogOptions();
-        policies = new ArrayList<>();
+        perCallPolicies = new ArrayList<>();
+        perRetryPolicies = new ArrayList<>();
         properties = CoreUtils.getProperties(AZURE_KEY_VAULT_KEYS);
+        retryPolicy = new RetryPolicy();
     }
 
     /**
@@ -175,14 +178,21 @@ public final class CryptographyClientBuilder {
 
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        String applicationId =
-            clientOptions == null ? httpLogOptions.getApplicationId() : clientOptions.getApplicationId();
 
-        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
+        policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(clientOptions, httpLogOptions), clientName,
+            clientVersion, buildConfiguration));
+
+        // Add per call additional policies.
+        policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
+
+        // Add retry policy.
         policies.add(retryPolicy);
+
         policies.add(new KeyVaultCredentialPolicy(credential));
-        policies.addAll(this.policies);
+
+        // Add per retry additional policies.
+        policies.addAll(perRetryPolicies);
 
         if (clientOptions != null) {
             List<HttpHeader> httpHeaderList = new ArrayList<>();
@@ -300,7 +310,11 @@ public final class CryptographyClientBuilder {
             throw logger.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
         }
 
-        policies.add(policy);
+        if (policy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
+            perCallPolicies.add(policy);
+        } else {
+            perRetryPolicies.add(policy);
+        }
 
         return this;
     }
@@ -311,14 +325,8 @@ public final class CryptographyClientBuilder {
      * @param client The HTTP client to use for requests.
      *
      * @return The updated {@link CryptographyClientBuilder} object.
-     *
-     * @throws NullPointerException If {@code client} is {@code null}.
      */
     public CryptographyClientBuilder httpClient(HttpClient client) {
-        if (client == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'client' cannot be null."));
-        }
-
         this.httpClient = client;
 
         return this;
@@ -333,14 +341,8 @@ public final class CryptographyClientBuilder {
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
      *
      * @return The updated {@link CryptographyClientBuilder} object.
-     *
-     * @throws NullPointerException If the specified {@code pipeline} is null.
      */
     public CryptographyClientBuilder pipeline(HttpPipeline pipeline) {
-        if (pipeline == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'pipeline' cannot be null."));
-        }
-
         this.pipeline = pipeline;
 
         return this;
@@ -387,14 +389,8 @@ public final class CryptographyClientBuilder {
      * @param retryPolicy User's {@link RetryPolicy} applied to each request.
      *
      * @return The updated {@link CryptographyClientBuilder} object.
-     *
-     * @throws NullPointerException If the specified {@code retryPolicy} is null.
      */
     public CryptographyClientBuilder retryPolicy(RetryPolicy retryPolicy) {
-        if (retryPolicy == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'retryPolicy' cannot be null."));
-        }
-
         this.retryPolicy = retryPolicy;
 
         return this;

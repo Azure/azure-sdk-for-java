@@ -107,6 +107,21 @@ public class WebPubSubServiceClientTests extends TestBase {
     }
 
     @Test
+    public void testSendToConnectionJson() {
+        assertResponse(client.sendToConnectionWithResponse("test_connection", "{\"data\": true}", null, Context.NONE),
+            202);
+    }
+
+    @Test
+    public void testSendToAllJson() {
+        assertResponse(client.sendToAllWithResponse("{\"boolvalue\": true}", null, null, Context.NONE), 202);
+        assertResponse(client.sendToAllWithResponse("{\"stringvalue\": \"testingwebpubsub\"}", null, null,
+            Context.NONE), 202);
+        assertResponse(client.sendToAllWithResponse("{\"intvalue\": 25}", null, null, Context.NONE), 202);
+        assertResponse(client.sendToAllWithResponse("{\"floatvalue\": 55.4}", null, null, Context.NONE), 202);
+    }
+
+    @Test
     public void testRemoveNonExistentUserFromHub() {
         // TODO (jogiles) can we determine if this user exists anywhere in the current hub?
         Response<Void> removeUserResponse =

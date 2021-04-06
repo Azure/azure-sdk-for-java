@@ -6,14 +6,14 @@ package com.azure.security.keyvault.keys.cryptography;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
-import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
-import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
-import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
-import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignResult;
+import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
+import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import reactor.core.publisher.Mono;
 
@@ -50,8 +50,8 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    Mono<EncryptResult> encryptAsync(EncryptOptions encryptOptions, Context context, JsonWebKey jsonWebKey) {
-        if (isGcm(encryptOptions.getAlgorithm())) {
+    Mono<EncryptResult> encryptAsync(EncryptParameters encryptParameters, Context context, JsonWebKey jsonWebKey) {
+        if (isGcm(encryptParameters.getAlgorithm())) {
             return Mono.error(
                 new UnsupportedOperationException("AES-GCM is not supported for local cryptography operations."));
         }
@@ -63,7 +63,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         }
 
         // Interpret the algorithm
-        EncryptionAlgorithm algorithm = encryptOptions.getAlgorithm();
+        EncryptionAlgorithm algorithm = encryptParameters.getAlgorithm();
         Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (!(baseAlgorithm instanceof SymmetricEncryptionAlgorithm)) {
@@ -74,8 +74,8 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         ICryptoTransform transform;
 
-        byte[] iv = encryptOptions.getIv();
-        byte[] additionalAuthenticatedData = encryptOptions.getAdditionalAuthenticatedData();
+        byte[] iv = encryptParameters.getIv();
+        byte[] additionalAuthenticatedData = encryptParameters.getAdditionalAuthenticatedData();
 
         if (iv == null) {
             if (isAes(algorithm)) {
@@ -96,27 +96,27 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         byte[] encrypted;
 
         try {
-            encrypted = transform.doFinal(encryptOptions.getPlainText());
+            encrypted = transform.doFinal(encryptParameters.getPlainText());
         } catch (Exception e) {
             return Mono.error(e);
         }
 
-        byte[] cipherText;
+        byte[] ciphertext;
 
         if (isAes(algorithm)) {
-            cipherText = encrypted;
+            ciphertext = encrypted;
         } else {
             throw logger.logExceptionAsError(
                 new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm));
         }
 
-        return Mono.just(new EncryptResult(cipherText, algorithm, jsonWebKey.getId(), iv, additionalAuthenticatedData,
+        return Mono.just(new EncryptResult(ciphertext, algorithm, jsonWebKey.getId(), iv, additionalAuthenticatedData,
             null));
     }
 
     @Override
-    Mono<DecryptResult> decryptAsync(DecryptOptions decryptOptions, Context context, JsonWebKey jsonWebKey) {
-        if (isGcm(decryptOptions.getAlgorithm())) {
+    Mono<DecryptResult> decryptAsync(DecryptParameters decryptParameters, Context context, JsonWebKey jsonWebKey) {
+        if (isGcm(decryptParameters.getAlgorithm())) {
             return Mono.error(
                 new UnsupportedOperationException("AES-GCM is not supported for local cryptography operations."));
         }
@@ -128,7 +128,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         }
 
         // Interpret the algorithm
-        EncryptionAlgorithm algorithm = decryptOptions.getAlgorithm();
+        EncryptionAlgorithm algorithm = decryptParameters.getAlgorithm();
         Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (!(baseAlgorithm instanceof SymmetricEncryptionAlgorithm)) {
@@ -139,28 +139,30 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         ICryptoTransform transform;
 
-        byte[] iv = Objects.requireNonNull(decryptOptions.getIv(), "Initialization vector cannot be null in local decryption operations.");
-        byte[] additionalAuthenticatedData = decryptOptions.getAdditionalAuthenticatedData();
-        byte[] authenticationTag = decryptOptions.getAuthenticationTag();
+        byte[] iv = Objects.requireNonNull(decryptParameters.getIv(),
+            "Initialization vector cannot be null in local decryption operations.");
+        byte[] additionalAuthenticatedData = decryptParameters.getAdditionalAuthenticatedData();
+        byte[] authenticationTag = decryptParameters.getAuthenticationTag();
 
         try {
-            transform = symmetricEncryptionAlgorithm.createDecryptor(this.key, iv, additionalAuthenticatedData, authenticationTag);
+            transform = symmetricEncryptionAlgorithm.createDecryptor(this.key, iv, additionalAuthenticatedData,
+                authenticationTag);
         } catch (Exception e) {
             return Mono.error(e);
         }
 
         byte[] decrypted;
-        byte[] cipherText;
+        byte[] ciphertext;
 
         if (isAes(algorithm)) {
-            cipherText = decryptOptions.getCipherText();
+            ciphertext = decryptParameters.getCipherText();
         } else {
             throw logger.logExceptionAsError(
                 new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm));
         }
 
         try {
-            decrypted = transform.doFinal(cipherText);
+            decrypted = transform.doFinal(ciphertext);
         } catch (Exception e) {
             return Mono.error(e);
         }

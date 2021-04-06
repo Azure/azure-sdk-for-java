@@ -179,12 +179,13 @@ public abstract class CryptographyClientTestBase extends TestBase {
         byte[] plaintext = "My16BitPlaintext".getBytes();
         byte[] iv = "My16BytesTestIv.".getBytes();
         CryptographyClient cryptographyClient = initializeCryptographyClient(getTestJsonWebKey(keySize));
-        EncryptOptions encryptOptions = new EncryptOptions(algorithm, plaintext, iv, null);
+        EncryptParameters encryptParameters = new EncryptParameters(algorithm, plaintext, iv, null);
         EncryptResult encryptResult =
-            cryptographyClient.encrypt(encryptOptions, Context.NONE);
-        DecryptOptions decryptOptions = new DecryptOptions(algorithm, encryptResult.getCipherText(), iv, null, null);
+            cryptographyClient.encrypt(encryptParameters, Context.NONE);
+        DecryptParameters decryptParameters =
+            new DecryptParameters(algorithm, encryptResult.getCipherText(), iv, null, null);
         DecryptResult decryptResult =
-            cryptographyClient.decrypt(decryptOptions, Context.NONE);
+            cryptographyClient.decrypt(decryptParameters, Context.NONE);
 
         assertArrayEquals(plaintext, decryptResult.getPlainText());
     }

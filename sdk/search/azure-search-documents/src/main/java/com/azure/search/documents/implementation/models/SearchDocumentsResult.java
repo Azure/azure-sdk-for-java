@@ -42,6 +42,13 @@ public final class SearchDocumentsResult {
     private Map<String, List<FacetResult>> facets;
 
     /*
+     * The answers query results for the search operation; null if the answers
+     * query parameter was not specified or set to 'none'.
+     */
+    @JsonProperty(value = "@search.answers", access = JsonProperty.Access.WRITE_ONLY)
+    private Map<String, List<AnswerResult>> answers;
+
+    /*
      * Continuation JSON payload returned when Azure Cognitive Search can't
      * return all the requested results in a single Search response. You can
      * use this JSON along with @odata.nextLink to formulate another POST
@@ -108,6 +115,16 @@ public final class SearchDocumentsResult {
      */
     public Map<String, List<FacetResult>> getFacets() {
         return this.facets;
+    }
+
+    /**
+     * Get the answers property: The answers query results for the search operation; null if the answers query parameter
+     * was not specified or set to 'none'.
+     *
+     * @return the answers value.
+     */
+    public Map<String, List<AnswerResult>> getAnswers() {
+        return this.answers;
     }
 
     /**

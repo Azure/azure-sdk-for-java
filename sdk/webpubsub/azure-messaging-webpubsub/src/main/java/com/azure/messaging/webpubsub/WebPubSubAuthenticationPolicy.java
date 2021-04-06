@@ -64,14 +64,14 @@ public final class WebPubSubAuthenticationPolicy implements HttpPipelinePolicy {
      */
     @Override
     public Mono<HttpResponse> process(final HttpPipelineCallContext context, final HttpPipelineNextPolicy next) {
-        final String audienceUrl = context.getHttpRequest().getUrl().toString();
-        final String token = getAuthenticationToken(audienceUrl, null, credential);
+        return Mono.fromRunnable(() -> {
+            final String audienceUrl = context.getHttpRequest().getUrl().toString();
+            final String token = getAuthenticationToken(audienceUrl, null, credential);
 
-        if (token != null) {
-            context.getHttpRequest().setHeader("Authorization", "Bearer " + token);
-        }
-
-        return next.process();
+            if (token != null) {
+                context.getHttpRequest().setHeader("Authorization", "Bearer " + token);
+            }
+        }).then(next.process());
     }
 
     static String getAuthenticationToken(final String audienceUrl,

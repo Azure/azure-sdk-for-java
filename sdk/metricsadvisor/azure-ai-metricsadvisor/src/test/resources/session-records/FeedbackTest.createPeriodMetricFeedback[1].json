@@ -1,0 +1,46 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//feedback/metric",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.4 (1.8.0_221; Mac OS X; 10.16)",
+      "x-ms-client-request-id" : "b4b00c5f-05f4-44eb-8127-214e57c1ca83",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "6ba43025-7723-454d-b9d2-6e36a10665e8",
+      "x-envoy-upstream-service-time" : "185",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "6ba43025-7723-454d-b9d2-6e36a10665e8",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "Date" : "Tue, 30 Mar 2021 15:56:39 GMT",
+      "Location" : "https://js-metrics-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/7de0d1c4-b079-4283-9ef8-67a66cb72b34"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//feedback/metric/7de0d1c4-b079-4283-9ef8-67a66cb72b34",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.4 (1.8.0_221; Mac OS X; 10.16)",
+      "x-ms-client-request-id" : "8d1fb43b-49b9-4256-ad48-48d1d2826ceb"
+    },
+    "Response" : {
+      "x-request-id" : "82a5866e-3f7b-4a67-b874-7c8ee573626e",
+      "x-envoy-upstream-service-time" : "5138",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "82a5866e-3f7b-4a67-b874-7c8ee573626e",
+      "retry-after" : "0",
+      "Content-Length" : "360",
+      "StatusCode" : "200",
+      "Body" : "{\"feedbackId\":\"7de0d1c4-b079-4283-9ef8-67a66cb72b34\",\"createdTime\":\"2021-03-30T15:56:39.792Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimensionFilter\":{\"dimension\":{\"city\":\"Miami\",\"category\":\"Health & Personal Care\"}},\"feedbackType\":\"Period\",\"value\":{\"periodType\":\"AutoDetect\",\"periodValue\":3}}",
+      "Date" : "Tue, 30 Mar 2021 15:56:45 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
