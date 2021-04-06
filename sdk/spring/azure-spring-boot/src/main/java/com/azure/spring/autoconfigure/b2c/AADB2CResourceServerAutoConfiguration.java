@@ -14,6 +14,7 @@ import com.nimbusds.jwt.proc.JWTProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
@@ -35,6 +36,7 @@ import java.util.List;
 @Configuration
 @ConditionalOnProperty(prefix = AADB2CProperties.PREFIX, value = { "tenant-id" })
 @ConditionalOnClass(BearerTokenAuthenticationToken.class)
+@EnableConfigurationProperties(AADB2CProperties.class)
 public class AADB2CResourceServerAutoConfiguration {
 
     private final AADB2CProperties properties;

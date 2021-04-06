@@ -11,10 +11,8 @@ These messages are published to an event hub. The sample will also consume messa
 Running this sample will be charged by Azure. You can check the usage and bill at 
 [this link][azure-account].
 
-### Environment checklist
-
-We need to ensure that this [environment checklist][ready-to-run-checklist] is 
-completed before the run.
+### Prerequisites
+- [Environment checklist][environment_checklist]
 
 ### Create Azure resources
 
@@ -48,6 +46,8 @@ Event Hub. You can choose anyone of them.
             checkpoint-access-key: [checkpoint-access-key]
             checkpoint-container: [checkpoint-container]
         stream:
+          function:
+            definition: consume;supply
           bindings:
             consume-in-0:
               destination: [eventhub-name]
@@ -90,6 +90,8 @@ Event Hub. You can choose anyone of them.
             checkpoint-storage-account: [checkpoint-storage-account]
             checkpoint-container: [checkpoint-container]
         stream:
+          function:
+            definition: consume;supply
           bindings:
             consume-in-0:
               destination: [eventhub-name]
@@ -139,6 +141,8 @@ Please follow [create managed identity][create-managed-identity] to set up manag
             checkpoint-storage-account: [checkpoint-storage-account]
             checkpoint-container: [checkpoint-container]
         stream:
+          function:
+            definition: consume;supply
           bindings:
             consume-in-0:
               destination: [eventhub-name]
@@ -211,7 +215,7 @@ spring:
 [create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-sp-using-azure-cli.md
 [create-managed-identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-managed-identity.md
 [deploy-spring-boot-application-to-app-service]: https://docs.microsoft.com/java/azure/spring-framework/deploy-spring-boot-java-app-with-maven-plugin?toc=%2Fazure%2Fapp-service%2Fcontainers%2Ftoc.json&view=azure-java-stable
-[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [role-assignment]: https://docs.microsoft.com/azure/role-based-access-control/role-assignments-portal
 [application-mi.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder/src/main/resources/application-mi.yaml
 [application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder/src/main/resources/application.yaml

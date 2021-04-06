@@ -112,6 +112,13 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
 
     /** {@inheritDoc} */
     @Override
+    public AcsChatThreadPropertiesUpdatedEventData setTransactionId(String transactionId) {
+        super.setTransactionId(transactionId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public AcsChatThreadPropertiesUpdatedEventData setThreadId(String threadId) {
         super.setThreadId(threadId);
         return this;

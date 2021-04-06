@@ -3,6 +3,10 @@
 [Source code][src]
 
 ## Getting started
+
+### Prerequisites
+- [Environment checklist][environment_checklist]
+
 ## Key concepts
 ## Examples
 ## Troubleshooting
@@ -20,3 +24,4 @@ You can participate community driven [![Gitter](https://badges.gitter.im/Microso
 
 <!-- LINKS -->
 [src]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-identity-spring/src
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist

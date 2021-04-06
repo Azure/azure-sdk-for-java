@@ -87,6 +87,8 @@ public final class CertificateAsyncClient {
     private final CertificateService service;
     private final ClientLogger logger = new ClientLogger(CertificateAsyncClient.class);
 
+    private final HttpPipeline pipeline;
+
     /**
      * Creates a CertificateAsyncClient that uses {@code pipeline} to service requests
      *
@@ -98,6 +100,7 @@ public final class CertificateAsyncClient {
         Objects.requireNonNull(vaultUrl, KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         this.vaultUrl = vaultUrl.toString();
         this.service = RestProxy.create(CertificateService.class, pipeline);
+        this.pipeline = pipeline;
         apiVersion = version.getVersion();
     }
 
@@ -107,6 +110,15 @@ public final class CertificateAsyncClient {
      */
     public String getVaultUrl() {
         return vaultUrl;
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    HttpPipeline getHttpPipeline() {
+        return this.pipeline;
     }
 
     Duration getDefaultPollingInterval() {

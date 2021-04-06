@@ -89,7 +89,7 @@ public class KeyVaultOperation {
                         LOG.error("Error of terminating Timer", runtimeException);
                     }
                 }
-                timer = new Timer();
+                timer = new Timer(true);
                 final TimerTask task = new TimerTask() {
                     @Override
                     public void run() {

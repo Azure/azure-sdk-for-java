@@ -192,6 +192,26 @@ class FileServiceAPITests extends APISpec {
         new ListSharesOptions().setIncludeMetadata(true).setIncludeSnapshots(true).setIncludeDeleted(true) | 5      | true            | true            | true
     }
 
+    def "List shares max results by page"() {
+        given:
+        LinkedList<ShareItem> testShares = new LinkedList<>()
+        def options = new ListSharesOptions().setPrefix(shareName)
+        for (int i = 0; i < 4; i++) {
+            ShareItem share = new ShareItem().setName(shareName + i)
+            def shareClient = primaryFileServiceClient.getShareClient(share.getName())
+            shareClient.create()
+            testShares.add(share)
+        }
+
+        when:
+        def shares = primaryFileServiceClient.listShares(options, null, null).iterableByPage(2).iterator()
+
+        then:
+        for (def page : shares) {
+            assert page.value.size() <= 2
+        }
+    }
+
     def "List shares get access tier"() {
         setup:
         def shareName = generateShareName()

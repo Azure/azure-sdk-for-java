@@ -25,6 +25,9 @@ public final class DataSourceType extends ExpandableStringEnum<DataSourceType> {
     /** Static value AzureDataLakeStorageGen2 for DataSourceType. */
     public static final DataSourceType AZURE_DATA_LAKE_STORAGE_GEN2 = fromString("AzureDataLakeStorageGen2");
 
+    /** Static value AzureEventHubs for DataSourceType. */
+    public static final DataSourceType AZURE_EVENT_HUBS = fromString("AzureEventHubs");
+
     /** Static value AzureTable for DataSourceType. */
     public static final DataSourceType AZURE_TABLE = fromString("AzureTable");
 

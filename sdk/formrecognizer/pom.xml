@@ -55,6 +55,7 @@
       </activation>
       <modules>
         <module>azure-ai-formrecognizer</module>
+        <module>azure-ai-formrecognizer-perf</module>
       </modules>
     </profile>
   </profiles>

@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.*;
@@ -50,7 +49,7 @@ public class EventGridPublisherImplTests extends TestBase {
     // Event Grid access key for a topic accepting custom schema events
     private static final String CUSTOM_KEY = "AZURE_EVENTGRID_CUSTOM_KEY";
 
-    private static final String DUMMY_ENDPOINT = "https://www.dummyEndpoint.com";
+    private static final String DUMMY_ENDPOINT = "https://www.dummyEndpoint.com/api/events";
 
     private static final String DUMMY_KEY = "dummyKey";
 
@@ -98,9 +97,7 @@ public class EventGridPublisherImplTests extends TestBase {
                 .setEventTime(OffsetDateTime.now())
         );
 
-        String hostname = new URL(getEndpoint(EVENTGRID_ENDPOINT)).getHost();
-
-        StepVerifier.create(egClient.publishEventsWithResponseAsync(hostname, events))
+        StepVerifier.create(egClient.publishEventsWithResponseAsync(getEndpoint(EVENTGRID_ENDPOINT), events))
             .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
             .verifyComplete();
     }
@@ -127,9 +124,7 @@ public class EventGridPublisherImplTests extends TestBase {
                 .setTime(OffsetDateTime.now())
         );
 
-        String hostname = new URL(getEndpoint(CLOUD_ENDPOINT)).getHost();
-
-        StepVerifier.create(egClient.publishCloudEventEventsWithResponseAsync(hostname, events))
+        StepVerifier.create(egClient.publishCloudEventEventsWithResponseAsync(getEndpoint(CLOUD_ENDPOINT), events))
             .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
             .verifyComplete();
     }
@@ -155,9 +150,7 @@ public class EventGridPublisherImplTests extends TestBase {
             });
         }
 
-        String hostname = new URL(getEndpoint(CUSTOM_ENDPOINT)).getHost();
-
-        StepVerifier.create(egClient.publishCustomEventEventsWithResponseAsync(hostname, events))
+        StepVerifier.create(egClient.publishCustomEventEventsWithResponseAsync(getEndpoint(CUSTOM_ENDPOINT), events))
             .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
             .verifyComplete();
     }

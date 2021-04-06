@@ -1,7 +1,28 @@
 # Release History
 
-## 1.0.0-beta.12 (Unreleased)
+## 1.0.0-beta.13 (Unreleased)
 
+
+## 1.0.0-beta.12 (2021-04-02)
+
+### New Features
+
+- Added positional coordinate getter to `GeoBoundingBox`.
+- Overloaded `toString` for `GeoBoundingBox` and `GeoPosition`.
+- Added `getOuterRing` to `GeoPolygon`.
+- Added `DynamicRequest` and `DynamicResponse` to enable making REST API calls without a service client.
+
+### Breaking Changes
+
+- Removed `GeoArray` from public API.
+- Changed `GeoBoundingBox` constructor to use `double` instead of `Double` when including altitude values.
+- Renamed `GeoLine` to `GeoLineString` and `GeoLineCollection` to `GeoLineStringCollection`.
+- Changed `getCoordinates` of `GeoLineString` and `GeoLinearRing` to return `List` instead of `GeoArray`.
+- Removed `getCoordinates` from `GeoLineStringCollection`, `GeoPointCollection`, `GeoPolygon`, and `GeoPolygonCollection`.
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.14.0` to `1.15.0`.
 
 ## 1.0.0-beta.11 (2021-03-08)
 
