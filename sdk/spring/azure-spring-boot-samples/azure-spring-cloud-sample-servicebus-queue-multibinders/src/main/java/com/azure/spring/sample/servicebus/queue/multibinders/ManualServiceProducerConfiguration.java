@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.messaging.Message;
-import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Sinks;
 
 import java.util.function.Supplier;
 
@@ -21,26 +21,26 @@ public class ManualServiceProducerConfiguration {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusQueueMultiBindersApplication.class);
 
     @Bean
-    public EmitterProcessor<Message<String>> emitterProcessor1() {
-        return EmitterProcessor.create();
+    public Sinks.Many<Message<String>> many1() {
+        return Sinks.many().unicast().onBackpressureBuffer();
     }
 
     @Bean
-    public EmitterProcessor<Message<String>> emitterProcessor2() {
-        return EmitterProcessor.create();
+    public Sinks.Many<Message<String>> many2() {
+        return Sinks.many().unicast().onBackpressureBuffer();
     }
 
     @Bean
-    public Supplier<Flux<Message<String>>> supply1(EmitterProcessor<Message<String>> emitterProcessor1) {
-        return () -> Flux.from(emitterProcessor1)
-                         .doOnNext(m -> LOGGER.info("Manually sending message1 {}", m))
-                         .doOnError(t -> LOGGER.error("Error encountered", t));
+    public Supplier<Flux<Message<String>>> supply1(Sinks.Many<Message<String>> many1) {
+        return () -> many1.asFlux()
+                          .doOnNext(m -> LOGGER.info("Manually sending message1 {}", m))
+                          .doOnError(t -> LOGGER.error("Error encountered", t));
     }
 
     @Bean
-    public Supplier<Flux<Message<String>>> supply2(EmitterProcessor<Message<String>> emitterProcessor2) {
-        return () -> Flux.from(emitterProcessor2)
-                         .doOnNext(m -> LOGGER.info("Manually sending message2 {}", m))
-                         .doOnError(t -> LOGGER.error("Error encountered", t));
+    public Supplier<Flux<Message<String>>> supply2(Sinks.Many<Message<String>> many2) {
+        return () -> many2.asFlux()
+                          .doOnNext(m -> LOGGER.info("Manually sending message2 {}", m))
+                          .doOnError(t -> LOGGER.error("Error encountered", t));
     }
 }
