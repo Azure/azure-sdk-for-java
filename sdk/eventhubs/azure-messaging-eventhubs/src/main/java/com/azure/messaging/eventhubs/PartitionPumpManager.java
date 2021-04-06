@@ -60,7 +60,11 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_TR
  */
 class PartitionPumpManager {
     private static final int PREFETCH = EventHubClientBuilder.DEFAULT_PREFETCH_COUNT;
+    private static final int MAXIMUM_QUEUE_SIZE = 10000;
 
+    //TODO (conniey): Add a configurable scheduler size, at the moment we are creating a new elastic scheduler
+    // for each partition pump that will have at most number of processors * 4.
+    private final int schedulerSize = Runtime.getRuntime().availableProcessors() * 4;
     private final ClientLogger logger = new ClientLogger(PartitionPumpManager.class);
     private final CheckpointStore checkpointStore;
     private final Map<String, PartitionPump> partitionPumps = new ConcurrentHashMap<>();
@@ -188,8 +192,8 @@ class PartitionPumpManager {
             ReceiveOptions receiveOptions = new ReceiveOptions().setOwnerLevel(0L)
                 .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties);
 
-            Scheduler scheduler = Schedulers.newBoundedElastic(Runtime.getRuntime().availableProcessors(),
-                10000, "partition-pump-" + claimedOwnership.getPartitionId());
+            Scheduler scheduler = Schedulers.newBoundedElastic(schedulerSize,
+                MAXIMUM_QUEUE_SIZE, "partition-pump-" + claimedOwnership.getPartitionId());
             EventHubConsumerAsyncClient eventHubConsumer = eventHubClientBuilder.buildAsyncClient()
                 .createConsumer(claimedOwnership.getConsumerGroup(), PREFETCH);
             PartitionPump partitionPump = new PartitionPump(claimedOwnership.getPartitionId(), eventHubConsumer,
