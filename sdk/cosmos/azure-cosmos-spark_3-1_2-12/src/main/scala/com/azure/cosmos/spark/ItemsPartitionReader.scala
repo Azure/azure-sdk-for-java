@@ -27,9 +27,8 @@ private case class ItemsPartitionReader
   extends PartitionReader[InternalRow] with CosmosLoggingTrait {
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
-  logDebug(s"Reading from $feedRange")
-
   private val containerTargetConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
+  logInfo(s"Reading from feed range $feedRange of container ${containerTargetConfig.database}.${containerTargetConfig.container}")
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
   private val client = CosmosClientCache(CosmosClientConfiguration(config, readConfig.forceEventualConsistency), Some(cosmosClientStateHandle))
 
