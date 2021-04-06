@@ -68,6 +68,11 @@ public abstract class AADClientRegistrationRepository implements ClientRegistrat
             clientRegistration.getClientName());
     }
 
+    public boolean isClientCredentials(String clientId){
+        return AADAuthorizationGrantType.CLIENT_CREDENTIALS.getValue().equals(
+            allClients.get(clientId).getAuthorizationGrantType().getValue());
+    }
+
     public static boolean isDefaultClient(String clientId) {
         return AZURE_CLIENT_REGISTRATION_ID.equals(clientId);
     }

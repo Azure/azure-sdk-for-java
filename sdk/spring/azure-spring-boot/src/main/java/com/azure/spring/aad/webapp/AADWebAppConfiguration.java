@@ -3,6 +3,7 @@
 
 package com.azure.spring.aad.webapp;
 
+import com.azure.spring.aad.AADAuthorizationGrantType;
 import com.azure.spring.aad.AADAuthorizationServerEndpoints;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +73,8 @@ public class AADWebAppConfiguration {
     }
 
     private AzureClientRegistration createDefaultClient() {
-        ClientRegistration.Builder builder = createClientBuilder(AZURE_CLIENT_REGISTRATION_ID);
+        ClientRegistration.Builder builder = createClientBuilder(AZURE_CLIENT_REGISTRATION_ID,
+            AADAuthorizationGrantType.AUTHORIZATION_CODE);
         Set<String> authorizationCodeScopes = authorizationCodeScopes();
         builder.scope(authorizationCodeScopes);
         ClientRegistration client = builder.build();
@@ -97,7 +99,7 @@ public class AADWebAppConfiguration {
     private Set<String> authorizationCodeScopes() {
         Set<String> result = accessTokenScopes();
         for (AuthorizationClientProperties authProperties : properties.getAuthorizationClients().values()) {
-            if (!authProperties.isOnDemand()) {
+            if (!authProperties.isOnDemand() && !authProperties.isClientCredential()) {
                 result.addAll(authProperties.getScopes());
             }
         }
@@ -147,9 +149,9 @@ public class AADWebAppConfiguration {
     }
 
     private ClientRegistration createClientBuilder(String id, AuthorizationClientProperties authz) {
-        ClientRegistration.Builder result = createClientBuilder(id);
+        ClientRegistration.Builder result = createClientBuilder(id , authz.getAuthorizationGrantType());
         List<String> scopes = authz.getScopes();
-        if (authz.isOnDemand()) {
+        if (!authz.isOnDemand() && !authz.isClientCredential()) {
             if (!scopes.contains("openid")) {
                 scopes.add("openid");
             }
@@ -161,9 +163,13 @@ public class AADWebAppConfiguration {
         return result.build();
     }
 
-    private ClientRegistration.Builder createClientBuilder(String id) {
+    private ClientRegistration.Builder createClientBuilder(String id , AADAuthorizationGrantType aadAuthorizationGrantType) {
         ClientRegistration.Builder result = ClientRegistration.withRegistrationId(id);
-        result.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE);
+        if(aadAuthorizationGrantType != null){
+            result.authorizationGrantType(new AuthorizationGrantType(aadAuthorizationGrantType.getValue()));
+        }else{
+            result.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE);
+        }
         result.redirectUri("{baseUrl}/login/oauth2/code/");
 
         result.clientId(properties.getClientId());
