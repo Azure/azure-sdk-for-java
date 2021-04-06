@@ -47,35 +47,17 @@ class KeyVaultCertificateIdentifierTest {
     @Test
     void parseInvalidIdentifierForDeletedCertificate() {
         String certificateId = "https://test-key-vault.vault.azure.net/deletedcertificates/test-certificate/version";
-        Exception exception = assertThrows(IllegalArgumentException.class,
-            () -> new KeyVaultCertificateIdentifier(certificateId));
-
-        assertEquals("certificateId is not a valid Key Vault Certificate identifier", exception.getMessage());
+        assertThrows(IllegalArgumentException.class, () -> new KeyVaultCertificateIdentifier(certificateId));
     }
 
     @Test
     void parseNullIdentifier() {
-        Exception exception = assertThrows(IllegalArgumentException.class,
-            () -> new KeyVaultCertificateIdentifier(null));
-
-        assertEquals("certificateId cannot be null", exception.getMessage());
-    }
-
-    @Test
-    void parseInvalidIdentifierWithWrongCollection() {
-        String certificateId = "https://test-key-vault.vault.azure.net/keys/test-certificate";
-        Exception exception = assertThrows(IllegalArgumentException.class,
-            () -> new KeyVaultCertificateIdentifier(certificateId));
-
-        assertEquals("certificateId is not a valid Key Vault Certificate identifier", exception.getMessage());
+        assertThrows(NullPointerException.class, () -> new KeyVaultCertificateIdentifier(null));
     }
 
     @Test
     void parseInvalidIdentifierWithExtraSegment() {
         String certificateId = "https://test-key-vault.vault.azure.net/keys/test-certificate/version/extra-segment";
-        Exception exception = assertThrows(IllegalArgumentException.class,
-            () -> new KeyVaultCertificateIdentifier(certificateId));
-
-        assertEquals("certificateId is not a valid Key Vault Certificate identifier", exception.getMessage());
+        assertThrows(IllegalArgumentException.class, () -> new KeyVaultCertificateIdentifier(certificateId));
     }
 }

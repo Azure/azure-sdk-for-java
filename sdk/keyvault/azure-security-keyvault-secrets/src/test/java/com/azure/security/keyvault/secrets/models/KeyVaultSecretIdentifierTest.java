@@ -45,33 +45,17 @@ class KeyVaultSecretIdentifierTest {
     @Test
     void parseInvalidIdentifierForDeletedSecret() {
         String secretId = "https://test-key-vault.vault.azure.net/deletedsecrets/test-secret/version";
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> new KeyVaultSecretIdentifier(secretId));
-
-        assertEquals("secretId is not a valid Key Vault Secret identifier", exception.getMessage());
+        assertThrows(IllegalArgumentException.class, () -> new KeyVaultSecretIdentifier(secretId));
     }
 
     @Test
     void parseNullIdentifier() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> new KeyVaultSecretIdentifier(null));
-
-        assertEquals("secretId cannot be null", exception.getMessage());
-    }
-
-    @Test
-    void parseInvalidIdentifierWithWrongCollection() {
-        String secretId = "https://test-key-vault.vault.azure.net/certificates/test-secret";
-        Exception exception = assertThrows(IllegalArgumentException.class,
-            () -> new KeyVaultSecretIdentifier(secretId));
-
-        assertEquals("secretId is not a valid Key Vault Secret identifier", exception.getMessage());
+        assertThrows(NullPointerException.class, () -> new KeyVaultSecretIdentifier(null));
     }
 
     @Test
     void parseInvalidIdentifierWithExtraSegment() {
         String secretId = "https://test-key-vault.vault.azure.net/secrets/test-secret/version/extra";
-        Exception exception = assertThrows(IllegalArgumentException.class,
-            () -> new KeyVaultSecretIdentifier(secretId));
-
-        assertEquals("secretId is not a valid Key Vault Secret identifier", exception.getMessage());
+        assertThrows(IllegalArgumentException.class, () -> new KeyVaultSecretIdentifier(secretId));
     }
 }

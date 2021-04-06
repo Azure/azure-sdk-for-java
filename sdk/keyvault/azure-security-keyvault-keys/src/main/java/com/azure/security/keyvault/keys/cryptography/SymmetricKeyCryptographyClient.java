@@ -96,16 +96,16 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
             return Mono.error(e);
         }
 
-        byte[] cipherText;
+        byte[] ciphertext;
 
         if (isAes(algorithm)) {
-            cipherText = encrypted;
+            ciphertext = encrypted;
         } else {
             throw logger.logExceptionAsError(
                 new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm));
         }
 
-        return Mono.just(new EncryptResult(cipherText, algorithm, jsonWebKey.getId(), iv, additionalAuthenticatedData,
+        return Mono.just(new EncryptResult(ciphertext, algorithm, jsonWebKey.getId(), iv, additionalAuthenticatedData,
             null));
     }
 
@@ -129,28 +129,30 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         ICryptoTransform transform;
 
-        byte[] iv = Objects.requireNonNull(decryptParameters.getIv(), "Initialization vector cannot be null in local decryption operations.");
+        byte[] iv = Objects.requireNonNull(decryptParameters.getIv(),
+            "Initialization vector cannot be null in local decryption operations.");
         byte[] additionalAuthenticatedData = decryptParameters.getAdditionalAuthenticatedData();
         byte[] authenticationTag = decryptParameters.getAuthenticationTag();
 
         try {
-            transform = symmetricEncryptionAlgorithm.createDecryptor(this.key, iv, additionalAuthenticatedData, authenticationTag);
+            transform = symmetricEncryptionAlgorithm.createDecryptor(this.key, iv, additionalAuthenticatedData,
+                authenticationTag);
         } catch (Exception e) {
             return Mono.error(e);
         }
 
         byte[] decrypted;
-        byte[] cipherText;
+        byte[] ciphertext;
 
         if (isAes(algorithm)) {
-            cipherText = decryptParameters.getCipherText();
+            ciphertext = decryptParameters.getCipherText();
         } else {
             throw logger.logExceptionAsError(
                 new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm));
         }
 
         try {
-            decrypted = transform.doFinal(cipherText);
+            decrypted = transform.doFinal(ciphertext);
         } catch (Exception e) {
             return Mono.error(e);
         }

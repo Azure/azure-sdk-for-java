@@ -126,7 +126,7 @@ class CryptographyServiceClient {
     }
 
     Mono<EncryptResult> encrypt(EncryptParameters encryptParameters, Context context) {
-        Objects.requireNonNull(encryptParameters, "'encryptOptions' cannot be null.");
+        Objects.requireNonNull(encryptParameters, "'encryptParameters' cannot be null.");
 
         EncryptionAlgorithm algorithm = encryptParameters.getAlgorithm();
         KeyOperationParameters parameters = new KeyOperationParameters()
@@ -151,7 +151,7 @@ class CryptographyServiceClient {
     }
 
     Mono<DecryptResult> decrypt(DecryptParameters decryptParameters, Context context) {
-        Objects.requireNonNull(decryptParameters, "'decryptOptions' cannot be null.");
+        Objects.requireNonNull(decryptParameters, "'decryptParameters' cannot be null.");
 
         EncryptionAlgorithm algorithm = decryptParameters.getAlgorithm();
         KeyOperationParameters parameters = new KeyOperationParameters()

@@ -42,6 +42,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     RsaKeyCryptographyClient(JsonWebKey key, CryptographyServiceClient serviceClient) {
         super(serviceClient);
+
         keyPair = key.toRsa(key.hasPrivateKey());
     }
 
@@ -49,14 +50,15 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
         if (keyPair == null) {
             keyPair = key.toRsa(key.hasPrivateKey());
         }
+
         return keyPair;
     }
 
     @Override
     Mono<EncryptResult> encryptAsync(EncryptParameters encryptParameters, Context context, JsonWebKey jsonWebKey) {
-        Objects.requireNonNull(encryptParameters, "'encryptOptions' cannot be null.");
-        Objects.requireNonNull(encryptParameters.getAlgorithm(), "Encryption algorithm cannot be null.");
-        Objects.requireNonNull(encryptParameters.getPlainText(), "Plain text content to be encrypted cannot be null.");
+        Objects.requireNonNull(encryptParameters, "'encryptParameters' cannot be null.");
+        Objects.requireNonNull(encryptParameters.getAlgorithm(), "encryptParameters.getAlgorithm() cannot be null.");
+        Objects.requireNonNull(encryptParameters.getPlainText(), "encryptParameters.getPlainText() cannot be null.");
 
         keyPair = getKeyPair(jsonWebKey);
 
@@ -68,6 +70,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
             if (serviceCryptoAvailable()) {
                 return serviceClient.encrypt(encryptParameters, context);
             }
+
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
@@ -77,6 +80,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
             if (serviceCryptoAvailable()) {
                 return serviceClient.encrypt(encryptParameters, context);
             }
+
             return Mono.error(new IllegalArgumentException(
                 "Public portion of the key not available to perform encrypt operation"));
         }
@@ -87,6 +91,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         try {
             transform = algo.createEncryptor(keyPair);
+
             return Mono.just(new EncryptResult(transform.doFinal(encryptParameters.getPlainText()), algorithm,
                 jsonWebKey.getId()));
         } catch (InvalidKeyException
@@ -94,6 +99,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
             | NoSuchPaddingException
             | IllegalBlockSizeException
             | BadPaddingException e) {
+
             return Mono.error(e);
         }
     }
@@ -101,8 +107,8 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
     @Override
     Mono<DecryptResult> decryptAsync(DecryptParameters decryptParameters, Context context, JsonWebKey jsonWebKey) {
         Objects.requireNonNull(decryptParameters, "'decryptOptions' cannot be null.");
-        Objects.requireNonNull(decryptParameters.getAlgorithm(), "Encryption algorithm cannot be null.");
-        Objects.requireNonNull(decryptParameters.getCipherText(), "Cipher text content to be decrypted cannot be null.");
+        Objects.requireNonNull(decryptParameters.getAlgorithm(), "decryptParameters.getAlgorithm() cannot be null.");
+        Objects.requireNonNull(decryptParameters.getCipherText(), "decryptParameters.getCipherText() cannot be null.");
 
         keyPair = getKeyPair(jsonWebKey);
 
@@ -114,6 +120,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
             if (serviceCryptoAvailable()) {
                 return serviceClient.decrypt(decryptParameters, context);
             }
+
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
@@ -123,6 +130,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
             if (serviceCryptoAvailable()) {
                 return serviceClient.decrypt(decryptParameters, context);
             }
+
             return Mono.error(new IllegalArgumentException(
                 "Private portion of the key not available to perform decrypt operation"));
         }
@@ -133,6 +141,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         try {
             transform = algo.createDecryptor(keyPair);
+
             return Mono.just(new DecryptResult(transform.doFinal(decryptParameters.getCipherText()), algorithm,
                 jsonWebKey.getId()));
         } catch (InvalidKeyException
@@ -140,6 +149,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
             | NoSuchPaddingException
             | IllegalBlockSizeException
             | BadPaddingException e) {
+
             return Mono.error(e);
         }
     }
@@ -149,8 +159,8 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
         if (serviceCryptoAvailable()) {
             return serviceClient.sign(algorithm, digest, context);
         } else {
-            return FluxUtil.monoError(logger, new UnsupportedOperationException("Sign operation on Local RSA key"
-                                                                    + " is not supported currently."));
+            return FluxUtil.monoError(logger,
+                new UnsupportedOperationException("Sign operation on Local RSA key is not supported currently."));
         }
     }
 
@@ -160,8 +170,8 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
         if (serviceCryptoAvailable()) {
             return serviceClient.verify(algorithm, digest, signature, context);
         } else {
-            return FluxUtil.monoError(logger, new UnsupportedOperationException("Verify operation on Local RSA key is not"
-                                                                    + " supported currently."));
+            return FluxUtil.monoError(logger,
+                new UnsupportedOperationException("Verify operation on Local RSA key is not supported currently."));
         }
     }
 

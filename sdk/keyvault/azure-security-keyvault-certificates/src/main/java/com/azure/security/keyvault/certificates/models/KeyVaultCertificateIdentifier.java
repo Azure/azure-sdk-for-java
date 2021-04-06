@@ -30,12 +30,12 @@ public final class KeyVaultCertificateIdentifier {
      *
      * @param certificateId The certificate identifier to extract information from.
      *
-     * @throws IllegalArgumentException if the given identifier is {@code null} or an invalid Key Vault Certificate
-     * identifier.
+     * @throws IllegalArgumentException If {@code certificateId} is an invalid Key Vault Certificate identifier.
+     * @throws NullPointerException If {@code certificateId} is {@code null}.
      */
     public KeyVaultCertificateIdentifier(String certificateId) {
         if (certificateId == null) {
-            throw new IllegalArgumentException("certificateId cannot be null");
+            throw new NullPointerException("'certificateId' cannot be null");
         }
 
         try {
@@ -45,8 +45,8 @@ public final class KeyVaultCertificateIdentifier {
 
             if ((pathSegments.length != 3 && pathSegments.length != 4) // More or less segments in the URI than expected.
                 || !"https".equals(url.getProtocol()) // Invalid protocol.
-                || (!"certificates".equals(pathSegments[1]) && !"deletedcertificates".equals(pathSegments[1])) // Invalid collection.
                 || ("deletedcertificates".equals(pathSegments[1]) && pathSegments.length == 4)) { // Deleted items do not include a version.
+
                 throw new IllegalArgumentException("certificateId is not a valid Key Vault Certificate identifier");
             }
 

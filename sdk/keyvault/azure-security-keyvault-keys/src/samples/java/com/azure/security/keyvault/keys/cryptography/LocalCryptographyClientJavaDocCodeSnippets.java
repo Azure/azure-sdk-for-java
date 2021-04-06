@@ -51,21 +51,21 @@ public final class LocalCryptographyClientJavaDocCodeSnippets {
         LocalCryptographyClient cryptographyClient = createClient();
 
         // BEGIN: com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.encrypt#EncryptionAlgorithm-byte
-        byte[] plainText = new byte[100];
-        new Random(0x1234567L).nextBytes(plainText);
-        EncryptResult encryptResult = cryptographyClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText);
+        byte[] plaintext = new byte[100];
+        new Random(0x1234567L).nextBytes(plaintext);
+        EncryptResult encryptResult = cryptographyClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plaintext);
         System.out.printf("Received encrypted content of length %d with algorithm %s \n",
             encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString());
         // END: com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.encrypt#EncryptionAlgorithm-byte
 
         // BEGIN: com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.encrypt#EncryptParameters
-        byte[] plainTextBytes = new byte[100];
-        new Random(0x1234567L).nextBytes(plainTextBytes);
+        byte[] plaintextBytes = new byte[100];
+        new Random(0x1234567L).nextBytes(plaintextBytes);
         byte[] iv = {
             (byte) 0x1a, (byte) 0xf3, (byte) 0x8c, (byte) 0x2d, (byte) 0xc2, (byte) 0xb9, (byte) 0x6f, (byte) 0xfd,
             (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04
         };
-        EncryptParameters encryptParameters = EncryptParameters.createAes128CbcParameters(plainTextBytes, iv);
+        EncryptParameters encryptParameters = EncryptParameters.createA128CbcParameters(plaintextBytes, iv);
         EncryptResult encryptedResult = cryptographyClient.encrypt(encryptParameters);
 
         System.out.printf("Received encrypted content of length %d with algorithm %s \n",
@@ -93,7 +93,7 @@ public final class LocalCryptographyClientJavaDocCodeSnippets {
             (byte) 0x1a, (byte) 0xf3, (byte) 0x8c, (byte) 0x2d, (byte) 0xc2, (byte) 0xb9, (byte) 0x6f, (byte) 0xfd,
             (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04
         };
-        DecryptParameters decryptParameters = DecryptParameters.createAes128CbcParameters(encryptedBytes, iv);
+        DecryptParameters decryptParameters = DecryptParameters.createA128CbcParameters(encryptedBytes, iv);
         DecryptResult decryptedResult = cryptographyClient.decrypt(decryptParameters);
 
         System.out.printf("Received decrypted content of length %d\n", decryptedResult.getPlainText().length);

@@ -30,12 +30,12 @@ public final class KeyVaultSecretIdentifier {
      *
      * @param secretId The secret identifier to extract information from.
      *
-     * @throws IllegalArgumentException if the given identifier is {@code null} or an invalid Key Vault Secret
-     * identifier.
+     * @throws IllegalArgumentException If {@code secretId} is an invalid Key Vault Secret identifier.
+     * @throws NullPointerException If {@code secretId} is {@code null}.
      */
     public KeyVaultSecretIdentifier(String secretId) {
         if (secretId == null) {
-            throw new IllegalArgumentException("secretId cannot be null");
+            throw new NullPointerException("'secretId' cannot be null.");
         }
 
         try {
@@ -45,9 +45,9 @@ public final class KeyVaultSecretIdentifier {
 
             if ((pathSegments.length != 3 && pathSegments.length != 4) // More or less segments in the URI than expected.
                 || !"https".equals(url.getProtocol()) // Invalid protocol.
-                || (!"secrets".equals(pathSegments[1]) && !"deletedsecrets".equals(pathSegments[1])) // Invalid collection.
                 || ("deletedsecrets".equals(pathSegments[1]) && pathSegments.length == 4)) { // Deleted items do not include a version.
-                throw new IllegalArgumentException("secretId is not a valid Key Vault Secret identifier");
+
+                throw new IllegalArgumentException("'secretId' is not a valid Key Vault Secret identifier.");
             }
 
             this.secretId = secretId;
@@ -55,7 +55,7 @@ public final class KeyVaultSecretIdentifier {
             this.name = pathSegments[2];
             this.version = pathSegments.length == 4 ? pathSegments[3] : null;
         } catch (MalformedURLException e) {
-            throw new IllegalArgumentException("Could not parse secretId", e);
+            throw new IllegalArgumentException("'secretId' is not a valid Key Vault Secret identifier.", e);
         }
     }
 
