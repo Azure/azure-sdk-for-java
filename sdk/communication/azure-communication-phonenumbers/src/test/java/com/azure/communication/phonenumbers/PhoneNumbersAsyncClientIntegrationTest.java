@@ -19,6 +19,7 @@ import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -32,6 +33,10 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    // This test should run if phonenumbers is selected as param
+    @EnabledIfEnvironmentVariable(
+        named = "SERVICES_NAME",
+        matches = "^.*phonenumbers.*$")
     public void getPurchasedPhoneNumber(HttpClient httpClient) {
         String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
         StepVerifier.create(
@@ -46,6 +51,10 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    // This test should never run because we do not have param
+    @EnabledIfEnvironmentVariable(
+        named = "SERVICES_NAME",
+        matches = "^.*shouldNotRun.*$")
     public void getPurchasedPhoneNumberWithAAD(HttpClient httpClient) {
         String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
         StepVerifier.create(
