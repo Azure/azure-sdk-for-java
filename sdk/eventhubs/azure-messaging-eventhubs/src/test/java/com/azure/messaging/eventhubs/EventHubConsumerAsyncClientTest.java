@@ -246,7 +246,7 @@ class EventHubConsumerAsyncClientTest {
             .take(numberOfEvents);
 
         // Act
-        eventsFlux.subscribe(event -> {
+        eventsFlux.publishOn(Schedulers.boundedElastic()).subscribe(event -> {
             logger.info("Current count: {}", countDownLatch.getCount());
             saveAction(event.getData()).block(Duration.ofSeconds(2));
             countDownLatch.countDown();
@@ -290,10 +290,12 @@ class EventHubConsumerAsyncClientTest {
         when(link2.receive()).thenReturn(processor2.flux());
         when(link2.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link2.getCredits()).thenReturn(numberOfEvents);
+        when(link2.addCredits(anyInt())).thenReturn(Mono.empty());
 
         when(link3.receive()).thenReturn(processor3.flux());
         when(link3.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link3.getCredits()).thenReturn(numberOfEvents);
+        when(link3.addCredits(anyInt())).thenReturn(Mono.empty());
 
         when(connection1.createReceiveLink(any(), argThat(arg -> arg.endsWith(PARTITION_ID)), any(EventPosition.class),
             any(ReceiveOptions.class))).thenReturn(Mono.just(link2), Mono.just(link3));
@@ -532,11 +534,13 @@ class EventHubConsumerAsyncClientTest {
         when(link2.receive()).thenReturn(processor2.flux());
         when(link2.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link2.getCredits()).thenReturn(numberOfEvents);
+        when(link2.addCredits(anyInt())).thenReturn(Mono.empty());
 
         when(link3.getLinkName()).thenReturn(id3);
         when(link3.receive()).thenReturn(processor3.flux());
         when(link3.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link3.getCredits()).thenReturn(numberOfEvents);
+        when(link3.addCredits(anyInt())).thenReturn(Mono.empty());
 
         when(connection1.createReceiveLink(any(), anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenAnswer(mock -> {
@@ -604,10 +608,12 @@ class EventHubConsumerAsyncClientTest {
         when(link2.receive()).thenReturn(processor2.flux());
         when(link2.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link2.getCredits()).thenReturn(numberOfEvents);
+        when(link2.addCredits(anyInt())).thenReturn(Mono.empty());
 
         when(link3.receive()).thenReturn(processor3.flux());
         when(link3.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link3.getCredits()).thenReturn(numberOfEvents);
+        when(link3.addCredits(anyInt())).thenReturn(Mono.empty());
 
         when(connection1.createReceiveLink(any(), anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenAnswer(mock -> {
