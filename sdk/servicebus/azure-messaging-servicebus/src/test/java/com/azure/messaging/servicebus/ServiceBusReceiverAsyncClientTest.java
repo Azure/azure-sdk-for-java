@@ -78,6 +78,7 @@ import java.util.stream.Stream;
 import static com.azure.messaging.servicebus.TestUtils.getMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -158,6 +159,7 @@ class ServiceBusReceiverAsyncClientTest {
         // in ReactorExecutor.
         when(amqpReceiveLink.receive()).thenReturn(messageProcessor.publishOn(Schedulers.single()));
         when(amqpReceiveLink.getEndpointStates()).thenReturn(endpointProcessor);
+        when(amqpReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
 
         when(sessionReceiveLink.receive()).thenReturn(messageProcessor.publishOn(Schedulers.single()));
         when(sessionReceiveLink.getEndpointStates()).thenReturn(endpointProcessor);

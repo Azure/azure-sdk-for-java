@@ -97,6 +97,7 @@ class ServiceBusReceiveLinkProcessorTest {
 
         when(link1.getEndpointStates()).thenReturn(endpointProcessor.flux());
         when(link1.receive()).thenReturn(messagePublisher.flux());
+        when(link1.addCredits(anyInt())).thenReturn(Mono.empty());
     }
 
     @AfterEach
@@ -235,12 +236,14 @@ class ServiceBusReceiveLinkProcessorTest {
 
         when(link2.getEndpointStates()).thenReturn(connection2EndpointProcessor.flux());
         when(link2.receive()).thenReturn(Flux.create(sink -> sink.next(message2)));
+        when(link2.addCredits(anyInt())).thenReturn(Mono.empty());
 
         when(link3.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link3.receive()).thenReturn(Flux.create(sink -> {
             sink.next(message3);
             sink.next(message4);
         }));
+        when(link3.addCredits(anyInt())).thenReturn(Mono.empty());
 
         when(link1.getCredits()).thenReturn(1);
         when(link2.getCredits()).thenReturn(1);
@@ -286,6 +289,7 @@ class ServiceBusReceiveLinkProcessorTest {
             e.next(AmqpEndpointState.ACTIVE);
         })));
         when(link2.receive()).thenReturn(Flux.just(message2));
+        when(link2.addCredits(anyInt())).thenReturn(Mono.empty());
 
         final AmqpException amqpException = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-error",
             new AmqpErrorContext("test-namespace"));
@@ -326,6 +330,7 @@ class ServiceBusReceiveLinkProcessorTest {
 
         when(link2.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link2.receive()).thenReturn(Flux.just(message2, message3));
+        when(link2.addCredits(anyInt())).thenReturn(Mono.empty());
 
         final AmqpException amqpException = new AmqpException(false, AmqpErrorCondition.ARGUMENT_ERROR,
             "Non-retryable-error",
@@ -413,9 +418,11 @@ class ServiceBusReceiveLinkProcessorTest {
 
         when(link2.getEndpointStates()).thenReturn(link2StateProcessor);
         when(link2.receive()).thenReturn(Flux.never());
+        when(link2.addCredits(anyInt())).thenReturn(Mono.empty());
 
         when(link3.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link3.receive()).thenReturn(Flux.never());
+        when(link3.addCredits(anyInt())).thenReturn(Mono.empty());
 
         // Simulates two busy signals, but our retry policy says to try only once.
         final AmqpException amqpException = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-error",
@@ -461,6 +468,7 @@ class ServiceBusReceiveLinkProcessorTest {
         final TestPublisher<AmqpEndpointState> endpointStates2 = TestPublisher.create();
         when(link2.getEndpointStates()).thenReturn(endpointStates2.flux());
         when(link2.receive()).thenReturn(Flux.never());
+        when(link2.addCredits(anyInt())).thenReturn(Mono.empty());
 
         // Act & Assert
         StepVerifier.create(processor)
