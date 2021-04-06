@@ -3,7 +3,6 @@
 
 package com.azure.data.appconfiguration.implementation;
 
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
