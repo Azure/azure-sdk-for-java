@@ -225,15 +225,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                             currentLink = null;
                             currentLinkName = null;
 
-                            try {
-                                if (existing != null) {
-                                    existing.dispose();
-                                }
-                            } catch (Exception e) {
-                                logger.info("linkName[{}] entityPath[{}] Error disposing of link",
-                                    existing.getLinkName(), entityPath, e);
-                            }
-
+                            disposeReceiver(existing);
                             requestUpstream();
                         }
                     }),
@@ -243,9 +235,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                 }));
         }
 
-        if (oldChannel != null) {
-            oldChannel.dispose();
-        }
+        disposeReceiver(oldChannel);
 
         if (oldSubscription != null) {
             oldSubscription.dispose();
@@ -424,9 +414,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     }
 
     private void onDispose() {
-        if (currentLink != null) {
-            currentLink.dispose();
-        }
+        disposeReceiver(currentLink);
 
         currentLink = null;
         currentLinkName = null;
@@ -521,9 +509,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             subscriber.onComplete();
         }
 
-        if (currentLink != null) {
-            currentLink.dispose();
-        }
+        disposeReceiver(currentLink);
 
         messageQueue.clear();
         return true;
@@ -547,6 +533,19 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                 currentLinkName, request, credits);
 
             return credits;
+        }
+    }
+
+    private void disposeReceiver(AmqpReceiveLink link) {
+        if (link == null) {
+            return;
+        }
+
+        try {
+            link.dispose();
+        } catch (Exception error) {
+            logger.warning("linkName[{}] entityPath[{}] Unable to dispose of link.", link.getLinkName(),
+                link.getEntityPath());
         }
     }
 }
