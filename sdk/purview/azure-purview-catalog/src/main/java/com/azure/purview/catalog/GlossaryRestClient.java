@@ -2091,14 +2091,6 @@ public final class GlossaryRestClient {
     /**
      * Import Glossary Terms from local csv file.
      *
-     * <p><strong>Optional Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -2130,6 +2122,7 @@ public final class GlossaryRestClient {
                 .setUrl("https://{accountName}.catalog.purview.azure.com/api/glossary/{glossaryGuid}/terms/import")
                 .setPathParam("accountName", accountName)
                 .setPathParam("glossaryGuid", glossaryGuid)
+                .addQueryParam("api-version", apiVersion)
                 .addHeader("Content-Length", String.valueOf(contentLength))
                 .addHeader("Accept", "application/json")
                 .addHeader("Content-Type", "multipart/form-data")
@@ -2145,7 +2138,6 @@ public final class GlossaryRestClient {
      *     <caption>Optional Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
      *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -2179,6 +2171,7 @@ public final class GlossaryRestClient {
                 .setUrl("https://{accountName}.catalog.purview.azure.com/api/glossary/name/{glossaryName}/terms/import")
                 .setPathParam("accountName", accountName)
                 .setPathParam("glossaryName", glossaryName)
+                .addQueryParam("api-version", apiVersion)
                 .addHeader("Content-Length", String.valueOf(contentLength))
                 .addHeader("Accept", "application/json")
                 .addHeader("Content-Type", "multipart/form-data")
@@ -2187,14 +2180,6 @@ public final class GlossaryRestClient {
 
     /**
      * Get the status of import csv operation.
-     *
-     * <p><strong>Optional Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -2220,6 +2205,7 @@ public final class GlossaryRestClient {
                 .setUrl("https://{accountName}.catalog.purview.azure.com/api/glossary/terms/import/{operationGuid}")
                 .setPathParam("accountName", accountName)
                 .setPathParam("operationGuid", operationGuid)
+                .addQueryParam("api-version", apiVersion)
                 .addHeader("Accept", "application/json")
                 .addHeader("Content-Type", "application/json")
                 .setHttpMethod(HttpMethod.GET);
@@ -2227,14 +2213,6 @@ public final class GlossaryRestClient {
 
     /**
      * Export Glossary Terms as csv file.
-     *
-     * <p><strong>Optional Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -2253,6 +2231,7 @@ public final class GlossaryRestClient {
                 .setUrl("https://{accountName}.catalog.purview.azure.com/api/glossary/{glossaryGuid}/terms/export")
                 .setPathParam("accountName", accountName)
                 .setPathParam("glossaryGuid", glossaryGuid)
+                .addQueryParam("api-version", apiVersion)
                 .addHeader("Accept", "application/octet-stream")
                 .addHeader("Content-Type", "application/json")
                 .setHttpMethod(HttpMethod.POST);
@@ -2268,7 +2247,6 @@ public final class GlossaryRestClient {
      *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
      *     <tr><td>limit</td><td>Integer</td><td>The page size - by default there is no paging.</td></tr>
      *     <tr><td>offset</td><td>Integer</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -2399,6 +2377,7 @@ public final class GlossaryRestClient {
                 .setUrl("https://{accountName}.catalog.purview.azure.com/api/glossary/name/{glossaryName}/terms")
                 .setPathParam("accountName", accountName)
                 .setPathParam("glossaryName", glossaryName)
+                .addQueryParam("api-version", apiVersion)
                 .addHeader("Accept", "application/json")
                 .addHeader("Content-Type", "application/json")
                 .setHttpMethod(HttpMethod.GET);

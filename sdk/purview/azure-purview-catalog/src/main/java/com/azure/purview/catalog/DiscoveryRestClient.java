@@ -42,14 +42,6 @@ public final class DiscoveryRestClient {
     /**
      * Gets data using search.
      *
-     * <p><strong>Optional Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -167,6 +159,7 @@ public final class DiscoveryRestClient {
         return new DynamicRequest(objectSerializer, pipeline)
                 .setUrl("https://{accountName}.catalog.purview.azure.com/api/search/query")
                 .setPathParam("accountName", accountName)
+                .addQueryParam("api-version", apiVersion)
                 .addHeader("Accept", "application/json")
                 .addHeader("Content-Type", "application/json")
                 .setHttpMethod(HttpMethod.POST);
@@ -174,14 +167,6 @@ public final class DiscoveryRestClient {
 
     /**
      * Get search suggestions by query criteria.
-     *
-     * <p><strong>Optional Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -242,6 +227,7 @@ public final class DiscoveryRestClient {
         return new DynamicRequest(objectSerializer, pipeline)
                 .setUrl("https://{accountName}.catalog.purview.azure.com/api/search/suggest")
                 .setPathParam("accountName", accountName)
+                .addQueryParam("api-version", apiVersion)
                 .addHeader("Accept", "application/json")
                 .addHeader("Content-Type", "application/json")
                 .setHttpMethod(HttpMethod.POST);
@@ -249,14 +235,6 @@ public final class DiscoveryRestClient {
 
     /**
      * Get auto complete options.
-     *
-     * <p><strong>Optional Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -288,6 +266,7 @@ public final class DiscoveryRestClient {
         return new DynamicRequest(objectSerializer, pipeline)
                 .setUrl("https://{accountName}.catalog.purview.azure.com/api/search/autocomplete")
                 .setPathParam("accountName", accountName)
+                .addQueryParam("api-version", apiVersion)
                 .addHeader("Accept", "application/json")
                 .addHeader("Content-Type", "application/json")
                 .setHttpMethod(HttpMethod.POST);

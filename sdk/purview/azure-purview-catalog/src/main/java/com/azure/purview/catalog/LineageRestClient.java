@@ -157,7 +157,6 @@ public final class LineageRestClient {
      *     <tr><td>getDerivedLineage</td><td>Boolean</td><td>True to include derived lineage in the response</td></tr>
      *     <tr><td>offset</td><td>Integer</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>limit</td><td>Integer</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -249,6 +248,7 @@ public final class LineageRestClient {
                 .setPathParam("accountName", accountName)
                 .setPathParam("guid", guid)
                 .addQueryParam("direction", direction)
+                .addQueryParam("api-version", apiVersion)
                 .addHeader("Accept", "application/json")
                 .addHeader("Content-Type", "application/json")
                 .setHttpMethod(HttpMethod.GET);

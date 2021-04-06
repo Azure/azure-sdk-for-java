@@ -1116,50 +1116,7 @@ public final class TypesRestClient {
     }
 
     /**
-     * Get type statistics.
-     *
-     * <p><strong>Optional Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     typeStatistics: {
-     *         String: {
-     *             count: Integer
-     *         }
-     *     }
-     * }
-     * }</pre>
-     *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getTypeStatistics() {
-        return new DynamicRequest(objectSerializer, pipeline)
-                .setUrl("https://{accountName}.catalog.purview.azure.com/api/types/statistics")
-                .setPathParam("accountName", accountName)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
-    }
-
-    /**
      * Get the term template definition for the given GUID.
-     *
-     * <p><strong>Optional Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1177,6 +1134,7 @@ public final class TypesRestClient {
                 .setUrl("https://{accountName}.catalog.purview.azure.com/api/types/termtemplatedef/guid/{guid}")
                 .setPathParam("accountName", accountName)
                 .setPathParam("guid", guid)
+                .addQueryParam("api-version", apiVersion)
                 .addHeader("Accept", "application/json")
                 .addHeader("Content-Type", "application/json")
                 .setHttpMethod(HttpMethod.GET);
@@ -1184,14 +1142,6 @@ public final class TypesRestClient {
 
     /**
      * Get the term template definition by its name (unique).
-     *
-     * <p><strong>Optional Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1209,6 +1159,7 @@ public final class TypesRestClient {
                 .setUrl("https://{accountName}.catalog.purview.azure.com/api/types/termtemplatedef/name/{name}")
                 .setPathParam("accountName", accountName)
                 .setPathParam("name", name)
+                .addQueryParam("api-version", apiVersion)
                 .addHeader("Accept", "application/json")
                 .addHeader("Content-Type", "application/json")
                 .setHttpMethod(HttpMethod.GET);
