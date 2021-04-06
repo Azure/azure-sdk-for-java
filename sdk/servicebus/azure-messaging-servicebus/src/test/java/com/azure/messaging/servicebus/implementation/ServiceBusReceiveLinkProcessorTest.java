@@ -594,15 +594,11 @@ class ServiceBusReceiveLinkProcessorTest {
         final Integer creditValue = value.get();
 
         assertEquals(0, creditValue);
-<<<<<<< HEAD
-        verify(link1, times(3)).addCredits(eq(PREFETCH));
-=======
 
         // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
         final boolean awaited = countDownLatch.await(5, TimeUnit.SECONDS);
         Assertions.assertTrue(awaited);
 
->>>>>>> feature/servicebus-support-amqp-data-types-17614
     }
 
     /**
