@@ -55,7 +55,7 @@ az cognitiveservices account create \
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-textanalytics</artifactId>
-    <version>5.0.4</version>
+    <version>5.0.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
