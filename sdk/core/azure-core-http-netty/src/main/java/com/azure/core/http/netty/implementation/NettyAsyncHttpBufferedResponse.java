@@ -4,6 +4,7 @@
 package com.azure.core.http.netty.implementation;
 
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.util.CoreUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -41,5 +42,10 @@ public final class NettyAsyncHttpBufferedResponse extends NettyAsyncHttpResponse
     @Override
     public Mono<String> getBodyAsString(Charset charset) {
         return Mono.defer(() -> Mono.just(new String(body, charset)));
+    }
+
+    @Override
+    public HttpResponse buffer() {
+        return this; // This response is already buffered.
     }
 }

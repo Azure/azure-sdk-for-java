@@ -77,6 +77,11 @@ public final class KeyVaultBackupAsyncClient {
      */
     private final String serviceVersion;
 
+    /**
+     * The {@link HttpPipeline} powering this client.
+     */
+    private final HttpPipeline pipeline;
+
     static Duration getDefaultPollingInterval() {
         return DEFAULT_POLLING_INTERVAL;
     }
@@ -90,6 +95,7 @@ public final class KeyVaultBackupAsyncClient {
 
         this.vaultUrl = vaultUrl.toString();
         this.serviceVersion = serviceVersion.getVersion();
+        this.pipeline = httpPipeline;
 
         clientImpl = new KeyVaultBackupClientImplBuilder()
             .pipeline(httpPipeline)
@@ -103,6 +109,15 @@ public final class KeyVaultBackupAsyncClient {
      */
     public String getVaultUrl() {
         return this.vaultUrl;
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    HttpPipeline getHttpPipeline() {
+        return this.pipeline;
     }
 
     /**
@@ -159,8 +174,8 @@ public final class KeyVaultBackupAsyncClient {
         try {
             return clientImpl.fullBackupWithResponseAsync(vaultUrl, sasTokenParameter,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.info("Backing up at URL - {}", blobStorageUrl))
-                .doOnSuccess(response -> logger.info("Backed up at URL - {}",
+                .doOnRequest(ignored -> logger.verbose("Backing up at URL - {}", blobStorageUrl))
+                .doOnSuccess(response -> logger.verbose("Backed up at URL - {}",
                     response.getValue().getAzureStorageBlobContainerUri()))
                 .doOnError(error -> logger.warning("Failed to backup at URL - {}", blobStorageUrl, error))
                 .map(backupOperationResponse ->
@@ -327,8 +342,8 @@ public final class KeyVaultBackupAsyncClient {
         try {
             return clientImpl.fullRestoreOperationWithResponseAsync(vaultUrl, restoreOperationParameters,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.info("Restoring from location - {}", backupFolderUrl))
-                .doOnSuccess(response -> logger.info("Restored from location - {}", backupFolderUrl))
+                .doOnRequest(ignored -> logger.verbose("Restoring from location - {}", backupFolderUrl))
+                .doOnSuccess(response -> logger.verbose("Restored from location - {}", backupFolderUrl))
                 .doOnError(error ->
                     logger.warning("Failed to restore from location - {}", backupFolderUrl, error))
                 .map(restoreOperationResponse ->
@@ -481,9 +496,9 @@ public final class KeyVaultBackupAsyncClient {
                 selectiveKeyRestoreOperationParameters, context.addData(AZ_TRACING_NAMESPACE_KEY,
                     KEYVAULT_TRACING_NAMESPACE_VALUE))
                 .doOnRequest(ignored ->
-                    logger.info("Restoring key \"{}\" from location - {}", keyName, backupFolderUrl))
+                    logger.verbose("Restoring key \"{}\" from location - {}", keyName, backupFolderUrl))
                 .doOnSuccess(response ->
-                    logger.info("Restored key \"{}\" from location - {}", keyName, backupFolderUrl))
+                    logger.verbose("Restored key \"{}\" from location - {}", keyName, backupFolderUrl))
                 .doOnError(error ->
                     logger.warning("Failed to restore key \"{}\" from location - {}", keyName, backupFolderUrl, error))
                 .map(restoreOperationResponse ->

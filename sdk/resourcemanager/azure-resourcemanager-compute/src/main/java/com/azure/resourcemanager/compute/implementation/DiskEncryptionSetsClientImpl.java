@@ -217,7 +217,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -252,7 +253,7 @@ public final class DiskEncryptionSetsClientImpl
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2020-06-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -267,7 +268,7 @@ public final class DiskEncryptionSetsClientImpl
                             diskEncryptionSet,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -277,7 +278,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -316,7 +318,7 @@ public final class DiskEncryptionSetsClientImpl
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2020-06-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -338,7 +340,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -366,7 +369,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -399,7 +403,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -418,7 +423,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -442,7 +448,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -463,7 +470,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -488,7 +496,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -507,7 +516,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -530,7 +540,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set update resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -565,7 +576,7 @@ public final class DiskEncryptionSetsClientImpl
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2020-06-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -580,7 +591,7 @@ public final class DiskEncryptionSetsClientImpl
                             diskEncryptionSet,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -590,7 +601,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set update resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -629,7 +641,7 @@ public final class DiskEncryptionSetsClientImpl
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2020-06-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -651,7 +663,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set update resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -679,7 +692,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set update resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -712,7 +726,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set update resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -731,7 +746,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set update resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -754,7 +770,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set update resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -775,7 +792,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set update resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -800,7 +818,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set update resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -819,7 +838,8 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
      *     maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set update resource.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -870,7 +890,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -884,7 +904,7 @@ public final class DiskEncryptionSetsClientImpl
                             apiVersion,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -923,7 +943,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1034,7 +1054,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1048,7 +1068,7 @@ public final class DiskEncryptionSetsClientImpl
                             apiVersion,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1087,7 +1107,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1280,7 +1300,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1302,7 +1322,7 @@ public final class DiskEncryptionSetsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1334,7 +1354,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1439,7 +1459,7 @@ public final class DiskEncryptionSetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1455,7 +1475,7 @@ public final class DiskEncryptionSetsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1481,7 +1501,7 @@ public final class DiskEncryptionSetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1585,7 +1605,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1608,7 +1628,7 @@ public final class DiskEncryptionSetsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1647,7 +1667,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1779,7 +1799,7 @@ public final class DiskEncryptionSetsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1851,7 +1871,7 @@ public final class DiskEncryptionSetsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1923,7 +1943,7 @@ public final class DiskEncryptionSetsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

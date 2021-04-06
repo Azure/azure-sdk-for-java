@@ -77,6 +77,7 @@ import com.azure.resourcemanager.network.models.NetworkSecurityGroups;
 import com.azure.resourcemanager.network.models.NetworkUsages;
 import com.azure.resourcemanager.network.models.NetworkWatchers;
 import com.azure.resourcemanager.network.models.Networks;
+import com.azure.resourcemanager.network.models.PrivateEndpoints;
 import com.azure.resourcemanager.network.models.PublicIpAddresses;
 import com.azure.resourcemanager.network.models.PublicIpPrefixes;
 import com.azure.resourcemanager.network.models.RouteFilters;
@@ -102,6 +103,7 @@ import com.azure.resourcemanager.resources.models.Providers;
 import com.azure.resourcemanager.resources.models.ResourceGroups;
 import com.azure.resourcemanager.resources.models.Subscription;
 import com.azure.resourcemanager.resources.models.Subscriptions;
+import com.azure.resourcemanager.resources.models.TagOperations;
 import com.azure.resourcemanager.resources.models.Tenants;
 import com.azure.resourcemanager.search.SearchServiceManager;
 import com.azure.resourcemanager.search.models.SearchServices;
@@ -838,5 +840,15 @@ public final class AzureResourceManager {
     /** @return the private DNS zone management API entry point */
     public PrivateDnsZones privateDnsZones() {
         return this.privateDnsZoneManager.privateZones();
+    }
+
+    /** @return entry point to private endpoints management */
+    public PrivateEndpoints privateEndpoints() {
+        return this.networkManager.privateEndpoints();
+    }
+
+    /** @return entry point to tag management management */
+    public TagOperations tagOperations() {
+        return this.resourceManager.tagOperations();
     }
 }

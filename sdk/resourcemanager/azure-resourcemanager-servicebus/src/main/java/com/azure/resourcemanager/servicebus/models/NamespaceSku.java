@@ -11,21 +11,21 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 public final class NamespaceSku {
     /** Static value NamespaceSku for BASIC. */
     public static final NamespaceSku BASIC = new NamespaceSku(
-        new Sku().withName(SkuName.BASIC).withTier(SkuTier.BASIC));
+        new SBSku().withName(SkuName.BASIC).withTier(SkuTier.BASIC));
     /** Static value NamespaceSku for STANDARD. */
     public static final NamespaceSku STANDARD = new NamespaceSku(
-        new Sku().withName(SkuName.STANDARD).withTier(SkuTier.STANDARD));
+        new SBSku().withName(SkuName.STANDARD).withTier(SkuTier.STANDARD));
     /** Static value NamespaceSku for PREMIUM_CAPACITY1. */
     public static final NamespaceSku PREMIUM_CAPACITY1 = new NamespaceSku(
-        new Sku().withCapacity(1).withName(SkuName.PREMIUM).withTier(SkuTier.PREMIUM));
+        new SBSku().withCapacity(1).withName(SkuName.PREMIUM).withTier(SkuTier.PREMIUM));
     /** Static value NamespaceSku for PREMIUM_CAPACITY2. */
     public static final NamespaceSku PREMIUM_CAPACITY2 = new NamespaceSku(
-        new Sku().withCapacity(2).withName(SkuName.PREMIUM).withTier(SkuTier.PREMIUM));
+        new SBSku().withCapacity(2).withName(SkuName.PREMIUM).withTier(SkuTier.PREMIUM));
     /** Static value NamespaceSku for PREMIUM_CAPACITY4. */
     public static final NamespaceSku PREMIUM_CAPACITY4 = new NamespaceSku(
-        new Sku().withCapacity(4).withName(SkuName.PREMIUM).withTier(SkuTier.PREMIUM));
+        new SBSku().withCapacity(4).withName(SkuName.PREMIUM).withTier(SkuTier.PREMIUM));
 
-    private final Sku sku;
+    private final SBSku sku;
 
     /**
      * Creates Service Bus namespace sku.
@@ -34,7 +34,7 @@ public final class NamespaceSku {
      * @param tier sku tier
      */
     public NamespaceSku(String name, String tier) {
-        this(new Sku()
+        this(new SBSku()
                 .withCapacity(null)
                 .withName(SkuName.fromString(name))
                 .withTier(SkuTier.fromString(tier)));
@@ -48,7 +48,7 @@ public final class NamespaceSku {
      * @param capacity factor of resources allocated to host Service Bus
      */
     public NamespaceSku(String name, String tier, int capacity) {
-        this(new Sku()
+        this(new SBSku()
                 .withCapacity(capacity)
                 .withName(SkuName.fromString(name))
                 .withTier(SkuTier.fromString(tier)));
@@ -59,7 +59,7 @@ public final class NamespaceSku {
      *
      * @param sku inner sku model instance
      */
-    public NamespaceSku(Sku sku) {
+    public NamespaceSku(SBSku sku) {
         this.sku = sku;
     }
 

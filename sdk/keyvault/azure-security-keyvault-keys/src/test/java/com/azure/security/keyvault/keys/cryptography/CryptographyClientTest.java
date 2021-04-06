@@ -78,19 +78,19 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
 
             for (EncryptionAlgorithm algorithm : algorithms) {
                 // Test variables
-                byte[] plainText = new byte[100];
-                new Random(0x1234567L).nextBytes(plainText);
-                byte[] cipherText = cryptoClient.encrypt(algorithm, plainText).getCipherText();
-                byte[] decryptedText = serviceClient.decrypt(new DecryptOptions(algorithm, cipherText, null, null,
+                byte[] plaintext = new byte[100];
+                new Random(0x1234567L).nextBytes(plaintext);
+                byte[] ciphertext = cryptoClient.encrypt(algorithm, plaintext).getCipherText();
+                byte[] decryptedText = serviceClient.decrypt(new DecryptParameters(algorithm, ciphertext, null, null,
                     null), Context.NONE).block().getPlainText();
 
-                assertArrayEquals(decryptedText, plainText);
+                assertArrayEquals(decryptedText, plaintext);
 
-                cipherText = serviceClient.encrypt(new EncryptOptions(algorithm, plainText, null, null), Context.NONE)
+                ciphertext = serviceClient.encrypt(new EncryptParameters(algorithm, plaintext, null, null), Context.NONE)
                     .block().getCipherText();
-                decryptedText = cryptoClient.decrypt(algorithm, cipherText).getPlainText();
+                decryptedText = cryptoClient.decrypt(algorithm, ciphertext).getPlainText();
 
-                assertArrayEquals(decryptedText, plainText);
+                assertArrayEquals(decryptedText, plaintext);
             }
         });
     }
@@ -110,19 +110,19 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
 
             for (KeyWrapAlgorithm algorithm : algorithms) {
                 // Test variables
-                byte[] plainText = new byte[100];
-                new Random(0x1234567L).nextBytes(plainText);
-                byte[] encryptedKey = cryptoClient.wrapKey(algorithm, plainText).getEncryptedKey();
+                byte[] plaintext = new byte[100];
+                new Random(0x1234567L).nextBytes(plaintext);
+                byte[] encryptedKey = cryptoClient.wrapKey(algorithm, plaintext).getEncryptedKey();
                 byte[] decryptedKey =
                     serviceClient.unwrapKey(algorithm, encryptedKey, Context.NONE).block().getKey();
 
-                assertArrayEquals(decryptedKey, plainText);
+                assertArrayEquals(decryptedKey, plaintext);
 
                 encryptedKey =
-                    serviceClient.wrapKey(algorithm, plainText, Context.NONE).block().getEncryptedKey();
+                    serviceClient.wrapKey(algorithm, plaintext, Context.NONE).block().getEncryptedKey();
                 decryptedKey = cryptoClient.unwrapKey(algorithm, encryptedKey).getKey();
 
-                assertArrayEquals(decryptedKey, plainText);
+                assertArrayEquals(decryptedKey, plaintext);
             }
 
         });
@@ -144,15 +144,15 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
 
             for (SignatureAlgorithm algorithm : algorithms) {
                 // Test variables
-                byte[] plainText = new byte[100];
-                new Random(0x1234567L).nextBytes(plainText);
-                byte[] signature = cryptoClient.signData(algorithm, plainText).getSignature();
-                Boolean verifyStatus = serviceClient.verifyData(algorithm, plainText, signature, Context.NONE).block().isValid();
+                byte[] plaintext = new byte[100];
+                new Random(0x1234567L).nextBytes(plaintext);
+                byte[] signature = cryptoClient.signData(algorithm, plaintext).getSignature();
+                Boolean verifyStatus = serviceClient.verifyData(algorithm, plaintext, signature, Context.NONE).block().isValid();
 
                 assertTrue(verifyStatus);
 
-                signature = serviceClient.signData(algorithm, plainText, Context.NONE).block().getSignature();
-                verifyStatus = cryptoClient.verifyData(algorithm, plainText, signature).isValid();
+                signature = serviceClient.signData(algorithm, plaintext, Context.NONE).block().getSignature();
+                verifyStatus = cryptoClient.verifyData(algorithm, plaintext, signature).isValid();
 
                 assertTrue(verifyStatus);
             }
@@ -190,16 +190,16 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
             CryptographyClient cryptoClient = initializeCryptographyClient(imported.getId(), httpClient, serviceVersion);
             CryptographyServiceClient serviceClient = cryptoClient.getServiceClient();
 
-            byte[] plainText = new byte[100];
-            new Random(0x1234567L).nextBytes(plainText);
+            byte[] plaintext = new byte[100];
+            new Random(0x1234567L).nextBytes(plaintext);
 
-            byte[] signature = cryptoClient.signData(curveToSignature.get(crv), plainText).getSignature();
+            byte[] signature = cryptoClient.signData(curveToSignature.get(crv), plaintext).getSignature();
 
-            Boolean verifyStatus = serviceClient.verifyData(curveToSignature.get(crv), plainText, signature, Context.NONE).block().isValid();
+            Boolean verifyStatus = serviceClient.verifyData(curveToSignature.get(crv), plaintext, signature, Context.NONE).block().isValid();
             assertTrue(verifyStatus);
 
-            signature = serviceClient.signData(curveToSignature.get(crv), plainText, Context.NONE).block().getSignature();
-            verifyStatus = cryptoClient.verifyData(curveToSignature.get(crv), plainText, signature).isValid();
+            signature = serviceClient.signData(curveToSignature.get(crv), plaintext, Context.NONE).block().getSignature();
+            verifyStatus = cryptoClient.verifyData(curveToSignature.get(crv), plaintext, signature).isValid();
             if (!interceptorManager.isPlaybackMode()) {
                 assertTrue(verifyStatus);
             }

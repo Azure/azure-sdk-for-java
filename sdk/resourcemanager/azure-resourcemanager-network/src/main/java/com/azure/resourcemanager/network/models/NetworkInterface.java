@@ -219,6 +219,17 @@ public interface NetworkInterface
             WithCreate withExistingNetworkSecurityGroup(NetworkSecurityGroup networkSecurityGroup);
         }
 
+        /** The stage of the network interface definition allowing to associate a application security group. */
+        interface WithApplicationSecurityGroup {
+            /**
+             * Associates an existing application security group with the network interface.
+             *
+             * @param applicationSecurityGroup an existing application security group
+             * @return the next stage of the definition
+             */
+            WithCreate withExistingApplicationSecurityGroup(ApplicationSecurityGroup applicationSecurityGroup);
+        }
+
         /** The stage of the network interface definition allowing to associate a secondary IP configurations. */
         interface WithSecondaryIPConfiguration {
             /**
@@ -256,7 +267,8 @@ public interface NetworkInterface
                 WithNetworkSecurityGroup,
                 WithSecondaryIPConfiguration,
                 WithAcceleratedNetworking,
-                WithLoadBalancer {
+                WithLoadBalancer,
+                WithApplicationSecurityGroup {
             /**
              * Enables IP forwarding in the network interface.
              *
@@ -413,6 +425,25 @@ public interface NetworkInterface
             Update withoutNetworkSecurityGroup();
         }
 
+        /** The stage of the network interface update allowing to associate a application security group. */
+        interface WithApplicationSecurityGroup {
+            /**
+             * Associates an existing application security group with the network interface.
+             *
+             * @param applicationSecurityGroup an existing application security group
+             * @return the next stage of the update
+             */
+            Update withExistingApplicationSecurityGroup(ApplicationSecurityGroup applicationSecurityGroup);
+
+            /**
+             * Removes the application security group from the network interface.
+             *
+             * @param applicationSecurityGroupName the name of the application security group
+             * @return the next stage of the update
+             */
+            Update withoutApplicationSecurityGroup(String applicationSecurityGroupName);
+        }
+
         /** The stage of the network interface update allowing to enable or disable IP forwarding. */
         interface WithIPForwarding {
             /**
@@ -559,6 +590,7 @@ public interface NetworkInterface
             UpdateStages.WithDnsServer,
             UpdateStages.WithIPConfiguration,
             UpdateStages.WithLoadBalancer,
-            UpdateStages.WithAcceleratedNetworking {
+            UpdateStages.WithAcceleratedNetworking,
+            UpdateStages.WithApplicationSecurityGroup {
     }
 }

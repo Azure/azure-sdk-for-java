@@ -22,8 +22,7 @@ import java.security.SecureRandom;
 import java.util.Objects;
 
 class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
-    private static final int CBC_BLOCK_SIZE = 16;
-    private static final int GCM_NONCE_SIZE = 12;
+    static final int AES_BLOCK_SIZE = 16;
 
     private final ClientLogger logger = new ClientLogger(SymmetricKeyCryptographyClient.class);
 
@@ -51,7 +50,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    Mono<EncryptResult> encryptAsync(EncryptOptions encryptOptions, Context context, JsonWebKey jsonWebKey) {
+    Mono<EncryptResult> encryptAsync(EncryptParameters encryptParameters, Context context, JsonWebKey jsonWebKey) {
         this.key = getKey(jsonWebKey);
 
         if (key == null || key.length == 0) {
@@ -59,8 +58,8 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         }
 
         // Interpret the algorithm
-        EncryptionAlgorithm algorithm = encryptOptions.getAlgorithm();
-        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
+        EncryptionAlgorithm algorithm = encryptParameters.getAlgorithm();
+        Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (!(baseAlgorithm instanceof SymmetricEncryptionAlgorithm)) {
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
@@ -70,26 +69,21 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         ICryptoTransform transform;
 
-        byte[] iv = encryptOptions.getIv();
-        byte[] additionalAuthenticatedData = encryptOptions.getAdditionalAuthenticatedData();
-        byte[] authenticationTag = generateRandomByteArray(GCM_NONCE_SIZE);
+        byte[] iv = encryptParameters.getIv();
+        byte[] additionalAuthenticatedData = encryptParameters.getAdditionalAuthenticatedData();
 
         if (iv == null) {
-            if (algorithm == EncryptionAlgorithm.A128GCM || algorithm == EncryptionAlgorithm.A192GCM
-                || algorithm == EncryptionAlgorithm.A256GCM) {
-
-                iv = generateRandomByteArray(GCM_NONCE_SIZE);
-            } else if (algorithm == EncryptionAlgorithm.A128CBC || algorithm == EncryptionAlgorithm.A192CBC
-                || algorithm == EncryptionAlgorithm.A256CBC || algorithm == EncryptionAlgorithm.A128CBCPAD
-                || algorithm == EncryptionAlgorithm.A192CBCPAD || algorithm == EncryptionAlgorithm.A256CBCPAD) {
-
-                iv = generateRandomByteArray(CBC_BLOCK_SIZE);
+            if (isAes(algorithm)) {
+                iv = generateRandomByteArray(AES_BLOCK_SIZE);
+            } else {
+                throw logger.logExceptionAsError(
+                    new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm));
             }
         }
 
         try {
             transform = symmetricEncryptionAlgorithm.createEncryptor(this.key, iv, additionalAuthenticatedData,
-                authenticationTag);
+                null);
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -97,17 +91,26 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         byte[] encrypted;
 
         try {
-            encrypted = transform.doFinal(encryptOptions.getPlainText());
+            encrypted = transform.doFinal(encryptParameters.getPlainText());
         } catch (Exception e) {
             return Mono.error(e);
         }
 
-        return Mono.just(new EncryptResult(encrypted, algorithm, jsonWebKey.getId(), iv, additionalAuthenticatedData,
-            authenticationTag));
+        byte[] ciphertext;
+
+        if (isAes(algorithm)) {
+            ciphertext = encrypted;
+        } else {
+            throw logger.logExceptionAsError(
+                new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm));
+        }
+
+        return Mono.just(new EncryptResult(ciphertext, algorithm, jsonWebKey.getId(), iv, additionalAuthenticatedData,
+            null));
     }
 
     @Override
-    Mono<DecryptResult> decryptAsync(DecryptOptions decryptOptions, Context context, JsonWebKey jsonWebKey) {
+    Mono<DecryptResult> decryptAsync(DecryptParameters decryptParameters, Context context, JsonWebKey jsonWebKey) {
         this.key = getKey(jsonWebKey);
 
         if (key == null || key.length == 0) {
@@ -115,8 +118,8 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         }
 
         // Interpret the algorithm
-        EncryptionAlgorithm algorithm = decryptOptions.getAlgorithm();
-        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
+        EncryptionAlgorithm algorithm = decryptParameters.getAlgorithm();
+        Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (!(baseAlgorithm instanceof SymmetricEncryptionAlgorithm)) {
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
@@ -126,20 +129,30 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         ICryptoTransform transform;
 
-        byte[] iv = Objects.requireNonNull(decryptOptions.getIv(), "Initialization vector cannot be null in local decryption operations.");
-        byte[] additionalAuthenticatedData = decryptOptions.getAdditionalAuthenticatedData();
-        byte[] authenticationTag = decryptOptions.getAuthenticationTag();
+        byte[] iv = Objects.requireNonNull(decryptParameters.getIv(),
+            "Initialization vector cannot be null in local decryption operations.");
+        byte[] additionalAuthenticatedData = decryptParameters.getAdditionalAuthenticatedData();
+        byte[] authenticationTag = decryptParameters.getAuthenticationTag();
 
         try {
-            transform = symmetricEncryptionAlgorithm.createDecryptor(this.key, iv, additionalAuthenticatedData, authenticationTag);
+            transform = symmetricEncryptionAlgorithm.createDecryptor(this.key, iv, additionalAuthenticatedData,
+                authenticationTag);
         } catch (Exception e) {
             return Mono.error(e);
         }
 
         byte[] decrypted;
+        byte[] ciphertext;
+
+        if (isAes(algorithm)) {
+            ciphertext = decryptParameters.getCipherText();
+        } else {
+            throw logger.logExceptionAsError(
+                new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm));
+        }
 
         try {
-            decrypted = transform.doFinal(decryptOptions.getCipherText());
+            decrypted = transform.doFinal(ciphertext);
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -167,7 +180,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         }
 
         // Interpret the algorithm
-        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
+        Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (!(baseAlgorithm instanceof LocalKeyWrapAlgorithm)) {
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
@@ -198,7 +211,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
     Mono<UnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context, JsonWebKey jsonWebKey) {
         this.key = getKey(jsonWebKey);
 
-        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
+        Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (!(baseAlgorithm instanceof LocalKeyWrapAlgorithm)) {
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
@@ -249,5 +262,14 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         }
 
         return iv;
+    }
+
+    private boolean isAes(EncryptionAlgorithm encryptionAlgorithm) {
+        return (encryptionAlgorithm == EncryptionAlgorithm.A128CBC
+            || encryptionAlgorithm == EncryptionAlgorithm.A192CBC
+            || encryptionAlgorithm == EncryptionAlgorithm.A256CBC
+            || encryptionAlgorithm == EncryptionAlgorithm.A128CBCPAD
+            || encryptionAlgorithm == EncryptionAlgorithm.A192CBCPAD
+            || encryptionAlgorithm == EncryptionAlgorithm.A256CBCPAD);
     }
 }

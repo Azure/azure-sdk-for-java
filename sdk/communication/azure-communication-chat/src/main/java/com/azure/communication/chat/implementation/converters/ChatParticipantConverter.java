@@ -3,7 +3,6 @@
 
 package com.azure.communication.chat.implementation.converters;
 
-import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.chat.models.ChatParticipant;
 
 /**
@@ -20,7 +19,7 @@ public final class ChatParticipantConverter {
         }
 
         ChatParticipant chatParticipant = new ChatParticipant()
-            .setUser(new CommunicationUserIdentifier(obj.getId()))
+            .setCommunicationIdentifier(CommunicationIdentifierConverter.convert(obj.getCommunicationIdentifier()))
             .setDisplayName(obj.getDisplayName())
             .setShareHistoryTime(obj.getShareHistoryTime());
 
@@ -37,7 +36,7 @@ public final class ChatParticipantConverter {
 
         com.azure.communication.chat.implementation.models.ChatParticipant chatParticipant
             = new com.azure.communication.chat.implementation.models.ChatParticipant()
-                .setId(obj.getUser().getId())
+                .setCommunicationIdentifier(CommunicationIdentifierConverter.convert(obj.getCommunicationIdentifier()))
                 .setDisplayName(obj.getDisplayName())
                 .setShareHistoryTime(obj.getShareHistoryTime());
 

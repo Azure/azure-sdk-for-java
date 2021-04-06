@@ -12,20 +12,18 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The result of a Filter Blobs API call.
- */
+/** The result of a Filter Blobs API call. */
 @JacksonXmlRootElement(localName = "EnumerationResults")
 @Fluent
 public final class FilterBlobSegment {
     /*
-     * The serviceEndpoint property.
+     * The ServiceEndpoint property.
      */
     @JacksonXmlProperty(localName = "ServiceEndpoint", isAttribute = true)
     private String serviceEndpoint;
 
     /*
-     * The where property.
+     * The Where property.
      */
     @JsonProperty(value = "Where", required = true)
     private String where;
@@ -41,19 +39,19 @@ public final class FilterBlobSegment {
     }
 
     /*
-     * The blobs property.
+     * The Blobs property.
      */
     @JsonProperty(value = "Blobs", required = true)
     private BlobsWrapper blobs;
 
     /*
-     * The nextMarker property.
+     * The NextMarker property.
      */
     @JsonProperty(value = "NextMarker")
     private String nextMarker;
 
     /**
-     * Get the serviceEndpoint property: The serviceEndpoint property.
+     * Get the serviceEndpoint property: The ServiceEndpoint property.
      *
      * @return the serviceEndpoint value.
      */
@@ -62,7 +60,7 @@ public final class FilterBlobSegment {
     }
 
     /**
-     * Set the serviceEndpoint property: The serviceEndpoint property.
+     * Set the serviceEndpoint property: The ServiceEndpoint property.
      *
      * @param serviceEndpoint the serviceEndpoint value to set.
      * @return the FilterBlobSegment object itself.
@@ -73,7 +71,7 @@ public final class FilterBlobSegment {
     }
 
     /**
-     * Get the where property: The where property.
+     * Get the where property: The Where property.
      *
      * @return the where value.
      */
@@ -82,7 +80,7 @@ public final class FilterBlobSegment {
     }
 
     /**
-     * Set the where property: The where property.
+     * Set the where property: The Where property.
      *
      * @param where the where value to set.
      * @return the FilterBlobSegment object itself.
@@ -93,7 +91,7 @@ public final class FilterBlobSegment {
     }
 
     /**
-     * Get the blobs property: The blobs property.
+     * Get the blobs property: The Blobs property.
      *
      * @return the blobs value.
      */
@@ -105,7 +103,7 @@ public final class FilterBlobSegment {
     }
 
     /**
-     * Set the blobs property: The blobs property.
+     * Set the blobs property: The Blobs property.
      *
      * @param blobs the blobs value to set.
      * @return the FilterBlobSegment object itself.
@@ -116,7 +114,7 @@ public final class FilterBlobSegment {
     }
 
     /**
-     * Get the nextMarker property: The nextMarker property.
+     * Get the nextMarker property: The NextMarker property.
      *
      * @return the nextMarker value.
      */
@@ -125,7 +123,7 @@ public final class FilterBlobSegment {
     }
 
     /**
-     * Set the nextMarker property: The nextMarker property.
+     * Set the nextMarker property: The NextMarker property.
      *
      * @param nextMarker the nextMarker value to set.
      * @return the FilterBlobSegment object itself.

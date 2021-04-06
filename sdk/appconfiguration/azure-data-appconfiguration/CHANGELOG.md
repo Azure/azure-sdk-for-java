@@ -1,6 +1,12 @@
 # Release History
 ## 1.2.0-beta.1 (Unreleased)
+### New Features
+- Added updateSyncToken() to be able to provide external synchronization tokens to both
+  `ConfigurationAsyncClient` and `ConfigurationClient` clients.
 
+## 1.1.10 (2021-03-09)
+### Dependency updates
+- Update dependency version, `azure-core` to 1.14.0 and `azure-core-http-netty` to 1.9.0.
 
 ## 1.1.9 (2021-02-10)
 ### Dependency updates

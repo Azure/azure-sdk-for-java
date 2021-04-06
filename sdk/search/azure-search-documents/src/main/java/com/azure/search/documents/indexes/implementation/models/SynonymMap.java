@@ -53,11 +53,6 @@ public final class SynonymMap {
     @JsonProperty(value = "@odata.etag")
     private String eTag;
 
-    /** Creates an instance of SynonymMap class. */
-    public SynonymMap() {
-        format = "solr";
-    }
-
     /**
      * Get the name property: The name of the synonym map.
      *

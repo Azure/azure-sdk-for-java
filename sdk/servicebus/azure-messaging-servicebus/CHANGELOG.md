@@ -1,7 +1,23 @@
 # Release History
 
-## 7.1.0-beta.1 (Unreleased)
+## 7.2.0-beta.2 (Unreleased)
+### Bug Fixes
+- Fix issue [19923](https://github.com/Azure/azure-sdk-for-java/issues/19923) for session receiver only: Fix a silent 
+error 'java.lang.ArithmeticException: long overflow' by not starting 'LockRenewOperation' for each received message.
 
+## 7.2.0-beta.1 (2021-03-18)
+### New Features
+- Added support for distributed transactions across entities via API 'ServiceBusClientBuilder.enableCrossEntityTransactions()'.
+
+## 7.1.0 (2021-03-10)
+### Bug Fixes
+- Continue to receive messages regardless of user not settling the received message in PEEK_LOCK mode [#19247](https://github.com/Azure/azure-sdk-for-java/issues/19247).
+- Update to end the trace span regardless of the scope instance type for process operation tracing spans.
+- Removed logs that leaked secrets when connection string is invalid. [#19249](https://github.com/Azure/azure-sdk-for-java/issues/19249)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.14.0`.
+- Upgraded `azure-core-amqp` dependency to `2.0.3`.
 
 ## 7.0.2 (2021-02-10)
 ### Dependency Updates

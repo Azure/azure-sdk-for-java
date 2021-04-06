@@ -3,6 +3,7 @@
 package com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation;
 
 import com.azure.core.management.Resource;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
@@ -62,7 +63,11 @@ public abstract class GroupableResourcesImpl<
     }
 
     @Override
-    public final Mono<T> getByIdAsync(String id) {
+    public Mono<T> getByIdAsync(String id) {
+        if (CoreUtils.isNullOrEmpty(id)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'id' is required and cannot be null."));
+        }
         ResourceId resourceId = ResourceId.fromString(id);
 
         return getByResourceGroupAsync(resourceId.resourceGroupName(), resourceId.name());
@@ -74,13 +79,25 @@ public abstract class GroupableResourcesImpl<
     }
 
     @Override
-    public Mono<Void> deleteByResourceGroupAsync(String groupName, String name) {
-        return this.deleteInnerAsync(groupName, name)
+    public Mono<Void> deleteByResourceGroupAsync(String resourceGroupName, String name) {
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null."));
+        }
+        if (CoreUtils.isNullOrEmpty(name)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
+        }
+        return this.deleteInnerAsync(resourceGroupName, name)
             .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler());
     }
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
+        if (CoreUtils.isNullOrEmpty(id)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'id' is required and cannot be null."));
+        }
         return deleteByResourceGroupAsync(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 
@@ -91,6 +108,14 @@ public abstract class GroupableResourcesImpl<
 
     @Override
     public Mono<T> getByResourceGroupAsync(String resourceGroupName, String name) {
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null."));
+        }
+        if (CoreUtils.isNullOrEmpty(name)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
+        }
         return this.getInnerAsync(resourceGroupName, name)
                 .map(this::wrapModel);
     }

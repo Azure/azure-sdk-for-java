@@ -25,6 +25,7 @@
 <h1>Azure Active Directory OAuth 2.0 Login with Spring Security</h1>
 <div>
     You are successfully logged in <span style="font-weight:bold" th:text="${userName}"></span>
+    (<span style="font-weight:bold" th:text="${preferredUsername}"></span>)
     via the OAuth 2.0 Client <span style="font-weight:bold" th:text="${clientName}"></span>
 </div>
 <div>&nbsp;</div>
@@ -32,9 +33,10 @@
 <div>
     <a href="/group1" >Group1 Message</a> |
     <a href="/group2" >Group2 Message</a> |
+    <a href="/Admin" >Admin Message</a> |
     <a href="/graph" >Graph Client</a> |
-    <a href="/office" >Office Client</a> |
     <a href="/arm" >Arm Client</a> |
+    <a href="/webapp/webapiA/webapiB" >Obo Client</a> |
 </div>
 </body>
 </html>

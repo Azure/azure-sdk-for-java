@@ -12,9 +12,12 @@ import java.util.regex.Pattern;
 
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
@@ -37,13 +40,13 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
 
     protected static final String PHONE_NUMBER =
         Configuration.getGlobalConfiguration().get("COMMUNICATION_PHONE_NUMBER", "+11234567891");
-    
+
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT =
         new StringJoiner("\":\"|\"", "\"", "\":\"")
             .add("id")
             .add("phoneNumber");
 
-    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN = 
+    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN =
         Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()), Pattern.CASE_INSENSITIVE);
 
     protected PhoneNumbersClientBuilder getClientBuilder(HttpClient httpClient) {
@@ -55,7 +58,7 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
         builder
             .httpClient(httpClient)
             .endpoint(ENV_ENDPOINT)
-            .accessKey(ENV_ACCESS_KEY);
+            .credential(new AzureKeyCredential(ENV_ACCESS_KEY));
 
         if (getTestMode() == TestMode.RECORD) {
             List<Function<String, String>> redactors = new ArrayList<>();
@@ -107,8 +110,21 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
     }
 
     protected PhoneNumbersClientBuilder addLoggingPolicy(PhoneNumbersClientBuilder builder, String testName) {
-        return builder.addPolicy(new CommunicationLoggerPolicy(testName));
+        return builder.addPolicy((context, next) -> logHeaders(testName, next));
     }
+
+    private Mono<HttpResponse> logHeaders(String testName, HttpPipelineNextPolicy next) {
+        return next.process()
+            .flatMap(httpResponse -> {
+                final HttpResponse bufferedResponse = httpResponse.buffer();
+
+                // Should sanitize printed reponse url
+                System.out.println("MS-CV header for " + testName + " request "
+                    + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
+                return Mono.just(bufferedResponse);
+            });
+    }
+
     static class FakeCredentials implements TokenCredential {
         @Override
         public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {

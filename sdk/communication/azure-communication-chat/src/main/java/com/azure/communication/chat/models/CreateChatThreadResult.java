@@ -6,6 +6,8 @@ package com.azure.communication.chat.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 /** The CreateChatThreadResult model. */
 @Fluent
 public final class CreateChatThreadResult {
@@ -13,51 +15,41 @@ public final class CreateChatThreadResult {
      * The thread property.
      */
     @JsonProperty(value = "chatThread")
-    private ChatThread chatThread;
+    private ChatThreadProperties chatThreadProperties;
 
     /*
-     * The errors property.
+     * The participants that failed to be added to the chat thread.
      */
-    @JsonProperty(value = "errors")
-    private CreateChatThreadErrors errors;
+    @JsonProperty(value = "invalidParticipants", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ChatError> invalidParticipants;
+
+    /**
+     * Constructs a new instance of CreateChatThreadResult
+     * @param chatThreadProperties The chat thread that was created.
+     * @param invalidParticipants List of errors that occurred when attempting to create the chat thread.
+     */
+    public CreateChatThreadResult(ChatThreadProperties chatThreadProperties, List<ChatError> invalidParticipants) {
+        this.chatThreadProperties = chatThreadProperties;
+        this.invalidParticipants = invalidParticipants;
+    }
 
     /**
      * Get the chatThread property: The chatThread property.
      *
      * @return the chatThread value.
      */
-    public ChatThread getChatThread() {
-        return this.chatThread;
+    public ChatThreadProperties getChatThread() {
+        return this.chatThreadProperties;
     }
 
     /**
-     * Set the chatThread property: The chatThread property.
+     * Get the invalidParticipants property: The participants that failed to be added to the chat thread.
+     * The 'target' property of each ChatError will reference the failed participant.
      *
-     * @param chatThread the thread value to set.
-     * @return the CreateChatThreadResult object itself.
+     * @return the invalidParticipants value.
      */
-    public CreateChatThreadResult setChatThread(ChatThread chatThread) {
-        this.chatThread = chatThread;
-        return this;
+    public List<ChatError> getInvalidParticipants() {
+        return this.invalidParticipants;
     }
 
-    /**
-     * Get the errors property: The errors property.
-     *
-     * @return the errors value.
-     */
-    public CreateChatThreadErrors getErrors() {
-        return this.errors;
-    }
-
-    /**
-     * Set the errors property: The errors property.
-     *
-     * @param errors the errors value to set.
-     * @return the CreateChatThreadResult object itself.
-     */
-    public CreateChatThreadResult setErrors(CreateChatThreadErrors errors) {
-        this.errors = errors;
-        return this;
-    }
 }

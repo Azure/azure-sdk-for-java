@@ -5,15 +5,13 @@
 package com.azure.storage.queue.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
-/**
- * The object returned in the QueueMessageList array when calling Peek Messages
- * on a Queue.
- */
+/** The object returned in the QueueMessageList array when calling Peek Messages on a Queue. */
 @JacksonXmlRootElement(localName = "QueueMessage")
 @Fluent
 public final class PeekedMessageItem {
@@ -44,8 +42,7 @@ public final class PeekedMessageItem {
     /*
      * The content of the Message.
      */
-    @JsonProperty(value = "MessageText", required = true)
-    private String messageText;
+    private BinaryData body;
 
     /**
      * Get the messageId property: The Id of the Message.
@@ -68,8 +65,7 @@ public final class PeekedMessageItem {
     }
 
     /**
-     * Get the insertionTime property: The time the Message was inserted into
-     * the Queue.
+     * Get the insertionTime property: The time the Message was inserted into the Queue.
      *
      * @return the insertionTime value.
      */
@@ -81,8 +77,7 @@ public final class PeekedMessageItem {
     }
 
     /**
-     * Set the insertionTime property: The time the Message was inserted into
-     * the Queue.
+     * Set the insertionTime property: The time the Message was inserted into the Queue.
      *
      * @param insertionTime the insertionTime value to set.
      * @return the PeekedMessageItem object itself.
@@ -97,8 +92,7 @@ public final class PeekedMessageItem {
     }
 
     /**
-     * Get the expirationTime property: The time that the Message will expire
-     * and be automatically deleted.
+     * Get the expirationTime property: The time that the Message will expire and be automatically deleted.
      *
      * @return the expirationTime value.
      */
@@ -110,8 +104,7 @@ public final class PeekedMessageItem {
     }
 
     /**
-     * Set the expirationTime property: The time that the Message will expire
-     * and be automatically deleted.
+     * Set the expirationTime property: The time that the Message will expire and be automatically deleted.
      *
      * @param expirationTime the expirationTime value to set.
      * @return the PeekedMessageItem object itself.
@@ -126,8 +119,7 @@ public final class PeekedMessageItem {
     }
 
     /**
-     * Get the dequeueCount property: The number of times the message has been
-     * dequeued.
+     * Get the dequeueCount property: The number of times the message has been dequeued.
      *
      * @return the dequeueCount value.
      */
@@ -136,8 +128,7 @@ public final class PeekedMessageItem {
     }
 
     /**
-     * Set the dequeueCount property: The number of times the message has been
-     * dequeued.
+     * Set the dequeueCount property: The number of times the message has been dequeued.
      *
      * @param dequeueCount the dequeueCount value to set.
      * @return the PeekedMessageItem object itself.
@@ -151,9 +142,11 @@ public final class PeekedMessageItem {
      * Get the messageText property: The content of the Message.
      *
      * @return the messageText value.
+     * @deprecated use {@link #getBody()} instead.
      */
+    @Deprecated
     public String getMessageText() {
-        return this.messageText;
+        return this.body == null ? null : this.body.toString();
     }
 
     /**
@@ -161,9 +154,32 @@ public final class PeekedMessageItem {
      *
      * @param messageText the messageText value to set.
      * @return the PeekedMessageItem object itself.
+     * @deprecated use {@link #setBody(BinaryData)} instead.
      */
+    @Deprecated
     public PeekedMessageItem setMessageText(String messageText) {
-        this.messageText = messageText;
+        this.body = messageText == null ? null : BinaryData.fromString(messageText);
+        return this;
+    }
+
+
+    /**
+     * Get the body property: The content of the Message.
+     *
+     * @return the body value.
+     */
+    public BinaryData getBody() {
+        return this.body;
+    }
+
+    /**
+     * Set the body property: The content of the Message.
+     *
+     * @param body the body value to set.
+     * @return the PeekedMessageItem object itself.
+     */
+    public PeekedMessageItem setBody(BinaryData body) {
+        this.body = body;
         return this;
     }
 }

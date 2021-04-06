@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -67,7 +68,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
     @Host("{$host}")
     @ServiceInterface(name = "StorageManagementCli")
     private interface ObjectReplicationPoliciesOperationsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/objectReplicationPolicies")
@@ -79,9 +80,10 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/objectReplicationPolicies/{objectReplicationPolicyId}")
@@ -94,9 +96,10 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("objectReplicationPolicyId") String objectReplicationPolicyId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/objectReplicationPolicies/{objectReplicationPolicyId}")
@@ -110,9 +113,10 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("objectReplicationPolicyId") String objectReplicationPolicyId,
             @BodyParam("application/json") ObjectReplicationPolicyInner properties,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/objectReplicationPolicies/{objectReplicationPolicyId}")
@@ -125,6 +129,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("objectReplicationPolicyId") String objectReplicationPolicyId,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -162,6 +167,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -172,12 +178,13 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
                             accountName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<ObjectReplicationPolicyInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -215,6 +222,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -223,6 +231,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
                 accountName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context)
             .map(
                 res ->
@@ -343,6 +352,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
                     new IllegalArgumentException(
                         "Parameter objectReplicationPolicyId is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -354,8 +364,9 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             objectReplicationPolicyId,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -400,6 +411,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
                     new IllegalArgumentException(
                         "Parameter objectReplicationPolicyId is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -409,6 +421,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 objectReplicationPolicyId,
+                accept,
                 context);
     }
 
@@ -486,8 +499,8 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
-     * @param properties The replication policy between two storage accounts. Multiple rules can be defined in one
-     *     policy.
+     * @param properties The object replication policy set to a storage account. A unique policy ID will be created if
+     *     absent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -529,6 +542,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
         } else {
             properties.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -541,8 +555,9 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
                             this.client.getSubscriptionId(),
                             objectReplicationPolicyId,
                             properties,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -553,8 +568,8 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
-     * @param properties The replication policy between two storage accounts. Multiple rules can be defined in one
-     *     policy.
+     * @param properties The object replication policy set to a storage account. A unique policy ID will be created if
+     *     absent.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -598,6 +613,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
         } else {
             properties.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -608,6 +624,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
                 this.client.getSubscriptionId(),
                 objectReplicationPolicyId,
                 properties,
+                accept,
                 context);
     }
 
@@ -619,8 +636,8 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
-     * @param properties The replication policy between two storage accounts. Multiple rules can be defined in one
-     *     policy.
+     * @param properties The object replication policy set to a storage account. A unique policy ID will be created if
+     *     absent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -651,8 +668,8 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
-     * @param properties The replication policy between two storage accounts. Multiple rules can be defined in one
-     *     policy.
+     * @param properties The object replication policy set to a storage account. A unique policy ID will be created if
+     *     absent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -675,8 +692,8 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
-     * @param properties The replication policy between two storage accounts. Multiple rules can be defined in one
-     *     policy.
+     * @param properties The object replication policy set to a storage account. A unique policy ID will be created if
+     *     absent.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -736,6 +753,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
                     new IllegalArgumentException(
                         "Parameter objectReplicationPolicyId is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -747,8 +765,9 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             objectReplicationPolicyId,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -793,6 +812,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
                     new IllegalArgumentException(
                         "Parameter objectReplicationPolicyId is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -802,6 +822,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 objectReplicationPolicyId,
+                accept,
                 context);
     }
 

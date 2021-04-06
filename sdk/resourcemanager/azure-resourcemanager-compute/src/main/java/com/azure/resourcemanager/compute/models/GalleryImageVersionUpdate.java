@@ -18,10 +18,10 @@ public class GalleryImageVersionUpdate extends UpdateResourceDefinition {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageVersionUpdate.class);
 
     /*
-     * Describes the basic gallery artifact publishing profile.
+     * The publishing profile of a gallery Image Version.
      */
     @JsonProperty(value = "properties.publishingProfile")
-    private GalleryArtifactPublishingProfileBase publishingProfile;
+    private GalleryImageVersionPublishingProfile publishingProfile;
 
     /*
      * The provisioning state, which only appears in the response.
@@ -42,21 +42,21 @@ public class GalleryImageVersionUpdate extends UpdateResourceDefinition {
     private ReplicationStatus replicationStatus;
 
     /**
-     * Get the publishingProfile property: Describes the basic gallery artifact publishing profile.
+     * Get the publishingProfile property: The publishing profile of a gallery Image Version.
      *
      * @return the publishingProfile value.
      */
-    public GalleryArtifactPublishingProfileBase publishingProfile() {
+    public GalleryImageVersionPublishingProfile publishingProfile() {
         return this.publishingProfile;
     }
 
     /**
-     * Set the publishingProfile property: Describes the basic gallery artifact publishing profile.
+     * Set the publishingProfile property: The publishing profile of a gallery Image Version.
      *
      * @param publishingProfile the publishingProfile value to set.
      * @return the GalleryImageVersionUpdate object itself.
      */
-    public GalleryImageVersionUpdate withPublishingProfile(GalleryArtifactPublishingProfileBase publishingProfile) {
+    public GalleryImageVersionUpdate withPublishingProfile(GalleryImageVersionPublishingProfile publishingProfile) {
         this.publishingProfile = publishingProfile;
         return this;
     }

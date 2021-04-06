@@ -180,7 +180,7 @@ public class OkHttpAsyncHttpClientTests {
                     // kill the socket with HTTP response body incomplete
                     socket.close();
                     return 1;
-                }).subscribeOn(Schedulers.elastic()).subscribe();
+                }).subscribeOn(Schedulers.boundedElastic()).subscribe();
                 //
                 latch.await();
                 HttpClient client = new OkHttpAsyncHttpClientBuilder().build();
@@ -209,7 +209,7 @@ public class OkHttpAsyncHttpClientTests {
 
         Mono<Long> numBytesMono = Flux.range(1, numRequests)
             .parallel(10)
-            .runOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
+            .runOn(Schedulers.boundedElastic())
             .flatMap(n -> Mono.fromCallable(() -> getResponse(client, "/long")).flatMapMany(response -> {
                 MessageDigest md = md5Digest();
                 return response.getBody()
@@ -225,8 +225,7 @@ public class OkHttpAsyncHttpClientTests {
             // Thread.currentThread().getName()))
             .map(nbb -> (long) nbb.bb.limit())
             .reduce(Long::sum)
-            .subscribeOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
-            .publishOn(reactor.core.scheduler.Schedulers.newElastic("io", 30));
+            .subscribeOn(Schedulers.boundedElastic());
 
         StepVerifier.create(numBytesMono)
 //              .awaitDone(timeoutSeconds, TimeUnit.SECONDS)
