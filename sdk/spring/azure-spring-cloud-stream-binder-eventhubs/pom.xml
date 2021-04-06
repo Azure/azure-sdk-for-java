@@ -82,6 +82,12 @@
       <version>5.7.1</version> <!-- {x-version-update;org.junit.vintage:junit-vintage-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>1.14.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
