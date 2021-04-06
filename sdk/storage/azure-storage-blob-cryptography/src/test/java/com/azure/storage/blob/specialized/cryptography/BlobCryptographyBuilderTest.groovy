@@ -1,13 +1,8 @@
 package com.azure.storage.blob.specialized.cryptography
 
-import com.azure.core.http.HttpPipelineCallContext
-import com.azure.core.http.HttpPipelineNextPolicy
-import com.azure.core.http.HttpPipelinePosition
-import com.azure.core.http.HttpResponse
-import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.CustomerProvidedKey
-import reactor.core.publisher.Mono
 
 class BlobCryptographyBuilderTest extends APISpec {
 
@@ -42,8 +37,8 @@ class BlobCryptographyBuilderTest extends APISpec {
 
     def "Pipeline integrity"() {
         expect:
-        // Http pipeline of encrypted client additionally includes decryption policy
-        beac.getHttpPipeline().getPolicyCount() == bc.getHttpPipeline().getPolicyCount() + 1
+        // Http pipeline of encrypted client additionally includes decryption policy and blob user agent modification policy
+        beac.getHttpPipeline().getPolicyCount() == bc.getHttpPipeline().getPolicyCount() + 2
 
         beac.getBlobUrl() == bc.getBlobUrl()
 
@@ -74,9 +69,10 @@ class BlobCryptographyBuilderTest extends APISpec {
             .buildEncryptedBlobClient()
 
         then:
-        // Checks that there is one less policy in a regular client and that the extra policy is a decryption policy
-        regularClient.getHttpPipeline().getPolicyCount() == encryptedClient.getHttpPipeline().getPolicyCount() - 1
+        // Checks that there is one less policy in a regular client and that the extra policy is a decryption policy and a blob user agent modification policy
+        regularClient.getHttpPipeline().getPolicyCount() == encryptedClient.getHttpPipeline().getPolicyCount() - 2
         encryptedClient.getHttpPipeline().getPolicy(0) instanceof BlobDecryptionPolicy
+        encryptedClient.getHttpPipeline().getPolicy(2) instanceof BlobUserAgentModificationPolicy
     }
 
     def "Customer provided key"() {

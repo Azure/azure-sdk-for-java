@@ -39,8 +39,8 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
                                      AzureKeyCredential credential,
                                      boolean contentResponseOnWriteEnabled) {
         super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential, null, false,
-              false, contentResponseOnWriteEnabled);
-        init();
+              false, contentResponseOnWriteEnabled, null);
+        init(null, null);
     }
 
     RxGatewayStoreModel createRxGatewayProxy(

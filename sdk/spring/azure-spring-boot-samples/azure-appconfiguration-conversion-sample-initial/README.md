@@ -5,16 +5,8 @@ This sample shows how to convert a Spring Cloud Application with Cosmos DB to be
 ## Key concepts
 ## Getting started
 
-### Environment checklist
-We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
-
-### Prerequisite
-
-* An Azure subscription; if you don't already have an Azure subscription, you can activate your [MSDN subscriber benefits](https://azure.microsoft.com/pricing/member-offers/msdn-benefits-details/) or sign up for a [free Azure account](https://azure.microsoft.com/free/).
-
-* A [Java Development Kit (JDK)][jdk_link], version 8.
-
-* [Apache Maven](https://maven.apache.org/), version 3.0 or later.
+### Prerequisites
+- [Environment checklist][environment_checklist]
 
 ### Quick Start
 
@@ -133,7 +125,7 @@ In this section, you clone a containerized Spring Boot application and test it l
     ```console
     {
     "clientId": "7da18cae-779c-41fc-992e-0527854c6583",
-    "clientSecret": "b421b443-1669-4cd7-b5b1-394d5c945002",
+    "clientSecret": "[generated client secret]",
     "subscriptionId": "443e30da-feca-47c4-b68f-1636b75e16b3",
     "tenantId": "35ad10f1-7799-4766-9acf-f2d946161b77",
     "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
@@ -297,5 +289,4 @@ In this section, you clone a containerized Spring Boot application and test it l
 ## Contributing
 
 <!-- LINKS -->
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist

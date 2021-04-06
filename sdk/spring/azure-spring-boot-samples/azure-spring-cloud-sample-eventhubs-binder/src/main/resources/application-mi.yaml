@@ -17,6 +17,8 @@ spring:
         checkpoint-storage-account: [checkpoint-storage-account]
         checkpoint-container: [checkpoint-container]
     stream:
+      function:
+        definition: consume;supply
       bindings:
         consume-in-0:
           destination: [eventhub-name]
@@ -32,8 +34,6 @@ spring:
       default:
         producer:
           errorChannelEnabled: true
-      function:
-        definition: consume;supply;
       poller:
         initial-delay: 0
         fixed-delay: 1000

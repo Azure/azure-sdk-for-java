@@ -52,6 +52,15 @@ public class AzureSqlDWLinkedService extends LinkedService {
     private Object tenant;
 
     /*
+     * Indicates the azure cloud type of the service principle auth. Allowed
+     * values are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany.
+     * Default value is the data factory regions’ cloud type. Type: string (or
+     * Expression with resultType string).
+     */
+    @JsonProperty(value = "typeProperties.azureCloudType")
+    private Object azureCloudType;
+
+    /*
      * The encrypted credential used for authentication. Credentials are
      * encrypted using the integration runtime credential manager. Type: string
      * (or Expression with resultType string).
@@ -164,6 +173,30 @@ public class AzureSqlDWLinkedService extends LinkedService {
      */
     public AzureSqlDWLinkedService setTenant(Object tenant) {
         this.tenant = tenant;
+        return this;
+    }
+
+    /**
+     * Get the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
+     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
+     * Type: string (or Expression with resultType string).
+     *
+     * @return the azureCloudType value.
+     */
+    public Object getAzureCloudType() {
+        return this.azureCloudType;
+    }
+
+    /**
+     * Set the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
+     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
+     * Type: string (or Expression with resultType string).
+     *
+     * @param azureCloudType the azureCloudType value to set.
+     * @return the AzureSqlDWLinkedService object itself.
+     */
+    public AzureSqlDWLinkedService setAzureCloudType(Object azureCloudType) {
+        this.azureCloudType = azureCloudType;
         return this;
     }
 

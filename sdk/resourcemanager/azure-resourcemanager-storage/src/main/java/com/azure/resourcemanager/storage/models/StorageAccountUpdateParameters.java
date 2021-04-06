@@ -65,6 +65,18 @@ public class StorageAccountUpdateParameters {
     private Encryption encryption;
 
     /*
+     * SasPolicy assigned to the storage account.
+     */
+    @JsonProperty(value = "properties.sasPolicy")
+    private SasPolicy sasPolicy;
+
+    /*
+     * KeyPolicy assigned to the storage account.
+     */
+    @JsonProperty(value = "properties.keyPolicy")
+    private KeyPolicy keyPolicy;
+
+    /*
      * Required for storage accounts where kind = BlobStorage. The access tier
      * used for billing.
      */
@@ -258,6 +270,46 @@ public class StorageAccountUpdateParameters {
      */
     public StorageAccountUpdateParameters withEncryption(Encryption encryption) {
         this.encryption = encryption;
+        return this;
+    }
+
+    /**
+     * Get the sasPolicy property: SasPolicy assigned to the storage account.
+     *
+     * @return the sasPolicy value.
+     */
+    public SasPolicy sasPolicy() {
+        return this.sasPolicy;
+    }
+
+    /**
+     * Set the sasPolicy property: SasPolicy assigned to the storage account.
+     *
+     * @param sasPolicy the sasPolicy value to set.
+     * @return the StorageAccountUpdateParameters object itself.
+     */
+    public StorageAccountUpdateParameters withSasPolicy(SasPolicy sasPolicy) {
+        this.sasPolicy = sasPolicy;
+        return this;
+    }
+
+    /**
+     * Get the keyPolicy property: KeyPolicy assigned to the storage account.
+     *
+     * @return the keyPolicy value.
+     */
+    public KeyPolicy keyPolicy() {
+        return this.keyPolicy;
+    }
+
+    /**
+     * Set the keyPolicy property: KeyPolicy assigned to the storage account.
+     *
+     * @param keyPolicy the keyPolicy value to set.
+     * @return the StorageAccountUpdateParameters object itself.
+     */
+    public StorageAccountUpdateParameters withKeyPolicy(KeyPolicy keyPolicy) {
+        this.keyPolicy = keyPolicy;
         return this;
     }
 
@@ -475,6 +527,12 @@ public class StorageAccountUpdateParameters {
         }
         if (encryption() != null) {
             encryption().validate();
+        }
+        if (sasPolicy() != null) {
+            sasPolicy().validate();
+        }
+        if (keyPolicy() != null) {
+            keyPolicy().validate();
         }
         if (azureFilesIdentityBasedAuthentication() != null) {
             azureFilesIdentityBasedAuthentication().validate();

@@ -1,5 +1,11 @@
 # Release History
 
+## 1.0.0 (2021-03-29)
+### Breaking Changes
+- Updated `CommunicationCloudEnvironment(String environmentValue)` constructor to `CommunicationCloudEnvironment()`.
+- Updated `public CommunicationCloudEnvironment fromString(String environmentValue)` to `public static CommunicationCloudEnvironment fromString(String environmentValue)`.
+- Renamed `TokenRefresher.getTokenAsync()` to `TokenRefresher.getToken()`.
+
 ## 1.0.0-beta.6 (2021-03-09)
 ### Breaking Changes
 - Renamed `CommunicationTokenRefreshOptions.getRefreshProactively()` to `CommunicationTokenRefreshOptions.isRefreshProactively()`

@@ -9,6 +9,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.util.CoreUtils;
+import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,7 +19,6 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import reactor.core.publisher.Mono;
 
 final class Utils {
     static String getValueFromIdByName(String id, String name) {
@@ -84,7 +85,7 @@ final class Utils {
         private final Function<PagedResponse<T>, PagedResponse<S>> pageMapper;
 
         private PagedIterableImpl(PagedIterable<T> pageIterable, Function<T, S> mapper) {
-            super(new PagedFlux<S>(Mono::empty));
+            super(new PagedFlux<S>(() -> Mono.empty()));
             this.pageIterable = pageIterable;
             this.mapper = mapper;
             this.pageMapper =

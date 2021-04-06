@@ -1,18 +1,15 @@
 # Release History
 
-## 5.6.0-beta.1 (Unreleased)
+## 5.7.0-beta.1 (Unreleased)
+
+
+## 5.6.0 (2021-03-10)
 ### Bug Fixes
 - Update to end the trace span regardless of the scope instance type for process operation tracing spans.
 
-## 5.5.0 (2020-02-15)
-### New features
-- Use `BinaryData` in `EventData`.
-- Expose `customEndpointAddress` to support connecting to an intermediary before Azure Event
-  Hubs in both `EventHubsClientBuilder` and `EventProcessorClientBuilder`
-
 ### Dependency Updates
-- Update `azure-core` dependency to `1.13.0`.
-- Update `azure-core-amqp` dependency to `2.0.2`.
+- Update `azure-core` dependency to `1.14.0`.
+- Update `azure-core-amqp` dependency to `2.0.3`.
 
 ## 5.4.0 (2021-01-14)
 ### New features
@@ -85,6 +82,16 @@ the partition consumer to rebuild the connection later.
 
 ## 5.0.3 (2020-04-08)
 - Fix bug where producers and consumers would be unable to get partition information after a reconnect.
+
+## 5.5.0 (2020-02-15)
+### New features
+- Use `BinaryData` in `EventData`.
+- Expose `customEndpointAddress` to support connecting to an intermediary before Azure Event
+  Hubs in both `EventHubsClientBuilder` and `EventProcessorClientBuilder`
+
+### Dependency Updates
+- Update `azure-core` dependency to `1.13.0`.
+- Update `azure-core-amqp` dependency to `2.0.2`.
 
 ## 5.0.2 (2020-02-13)
 - Fix bug where producers and consumers would not be able to block in their consuming code.

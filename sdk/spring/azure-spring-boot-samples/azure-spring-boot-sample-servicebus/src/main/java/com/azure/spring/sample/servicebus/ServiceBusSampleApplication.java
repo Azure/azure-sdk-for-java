@@ -7,6 +7,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -18,6 +20,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 @SpringBootApplication
 public class ServiceBusSampleApplication implements CommandLineRunner {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusSampleApplication.class);
 
     @Autowired
     private ServiceBusSenderAsyncClient queueSender;
@@ -49,9 +52,9 @@ public class ServiceBusSampleApplication implements CommandLineRunner {
         final String messageBody = "queue message";
 
         queueSender.sendMessage(new ServiceBusMessage(BinaryData.fromBytes(messageBody.getBytes(UTF_8)))).subscribe(
-            v -> System.out.println("Sent message: " + messageBody),
-            e -> System.err.println("Error occurred while sending message: " + e),
-            () -> System.out.println("Send message to queue complete.")
+            v -> LOGGER.info("Sent message: {}", messageBody),
+            e -> LOGGER.error("Error occurred while sending message", e),
+            () -> LOGGER.info("Send message to queue complete.")
         );
 
         TimeUnit.SECONDS.sleep(5);
@@ -61,7 +64,7 @@ public class ServiceBusSampleApplication implements CommandLineRunner {
 
     private void receiveQueueMessage() throws InterruptedException {
         queueReceiver.receiveMessages().subscribe(message ->
-            System.out.println("Received Message: " + message.getBody().toString()));
+            LOGGER.info("Received Message: {}", message.getBody().toString()));
 
         TimeUnit.SECONDS.sleep(5);
 
@@ -72,9 +75,9 @@ public class ServiceBusSampleApplication implements CommandLineRunner {
         final String messageBody = "topic message";
 
         topicSender.sendMessage(new ServiceBusMessage(BinaryData.fromBytes(messageBody.getBytes(UTF_8)))).subscribe(
-            v -> System.out.println("Sent message: " + messageBody),
-            e -> System.err.println("Error occurred while sending message: " + e),
-            () -> System.out.println("Send message to topic complete.")
+            v -> LOGGER.info("Sent message: {}", messageBody),
+            e -> LOGGER.error("Error occurred while sending message", e),
+            () -> LOGGER.info("Send message to topic complete.")
         );
 
         TimeUnit.SECONDS.sleep(10);
@@ -84,7 +87,7 @@ public class ServiceBusSampleApplication implements CommandLineRunner {
 
     private void receiveSubscriptionMessage() throws InterruptedException {
         topicSubscriber.receiveMessages().subscribe(message ->
-            System.out.println("Received Message: " + message.getBody().toString()));
+            LOGGER.info("Received Message: {}", message.getBody().toString()));
 
         TimeUnit.SECONDS.sleep(10);
 

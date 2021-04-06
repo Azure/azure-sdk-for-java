@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Trigger resource type. */
 @Fluent
-public final class TriggerResource extends AzureEntityResource {
+public final class TriggerResource extends SubResource {
     /*
      * Properties of the trigger.
      */

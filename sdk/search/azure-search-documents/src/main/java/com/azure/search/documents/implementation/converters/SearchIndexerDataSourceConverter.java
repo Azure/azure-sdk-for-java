@@ -5,8 +5,6 @@ package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.implementation.models.DataSourceCredentials;
 import com.azure.search.documents.indexes.implementation.models.SearchIndexerDataSource;
-import com.azure.search.documents.indexes.models.DataChangeDetectionPolicy;
-import com.azure.search.documents.indexes.models.DataDeletionDetectionPolicy;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 
 import java.util.Objects;
@@ -32,17 +30,13 @@ public final class SearchIndexerDataSourceConverter {
 
 
         if (obj.getDataChangeDetectionPolicy() != null) {
-            DataChangeDetectionPolicy dataChangeDetectionPolicy =
-                DataChangeDetectionPolicyConverter.map(obj.getDataChangeDetectionPolicy());
-            searchIndexerDataSourceConnection.setDataChangeDetectionPolicy(dataChangeDetectionPolicy);
+            searchIndexerDataSourceConnection.setDataChangeDetectionPolicy(obj.getDataChangeDetectionPolicy());
         }
 
         searchIndexerDataSourceConnection.setDescription(obj.getDescription());
 
         if (obj.getDataDeletionDetectionPolicy() != null) {
-            DataDeletionDetectionPolicy dataDeletionDetectionPolicy =
-                DataDeletionDetectionPolicyConverter.map(obj.getDataDeletionDetectionPolicy());
-            searchIndexerDataSourceConnection.setDataDeletionDetectionPolicy(dataDeletionDetectionPolicy);
+            searchIndexerDataSourceConnection.setDataDeletionDetectionPolicy(obj.getDataDeletionDetectionPolicy());
         }
 
         searchIndexerDataSourceConnection.setETag(obj.getETag());
@@ -74,17 +68,13 @@ public final class SearchIndexerDataSourceConverter {
             .setContainer(obj.getContainer());
 
         if (obj.getDataChangeDetectionPolicy() != null) {
-            com.azure.search.documents.indexes.implementation.models.DataChangeDetectionPolicy
-                dataChangeDetectionPolicy = DataChangeDetectionPolicyConverter.map(obj.getDataChangeDetectionPolicy());
-            searchIndexerDataSource.setDataChangeDetectionPolicy(dataChangeDetectionPolicy);
+            searchIndexerDataSource.setDataChangeDetectionPolicy(obj.getDataChangeDetectionPolicy());
         }
 
         searchIndexerDataSource.setDescription(obj.getDescription());
 
         if (obj.getDataDeletionDetectionPolicy() != null) {
-            com.azure.search.documents.indexes.implementation.models.DataDeletionDetectionPolicy dataDeletionDetectionPolicy
-                = DataDeletionDetectionPolicyConverter.map(obj.getDataDeletionDetectionPolicy());
-            searchIndexerDataSource.setDataDeletionDetectionPolicy(dataDeletionDetectionPolicy);
+            searchIndexerDataSource.setDataDeletionDetectionPolicy(obj.getDataDeletionDetectionPolicy());
         }
 
         searchIndexerDataSource.setETag(obj.getETag());
