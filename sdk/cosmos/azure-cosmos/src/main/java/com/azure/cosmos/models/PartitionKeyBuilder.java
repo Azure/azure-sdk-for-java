@@ -18,8 +18,7 @@ public class PartitionKeyBuilder {
     /**
      * Constructor. CREATE a new instance of the PartitionKeyBuilder object.
      */
-    public PartitionKeyBuilder()
-    {
+    public PartitionKeyBuilder() {
         this.partitionKeyValues = new ArrayList<Object>();
     }
 
