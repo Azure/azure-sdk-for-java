@@ -27,10 +27,19 @@ import reactor.test.StepVerifier
 import spock.lang.Specification
 import spock.lang.Unroll
 
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+
 class BuilderHelperTest extends Specification {
     static def credentials = new StorageSharedKeyCredential("accountName", "accountKey")
     static def endpoint = "https://account.blob.windows.core.net/"
     static def requestRetryOptions = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1000, 4000, null)
+    private static final Map<String, String> PROPERTIES =
+        CoreUtils.getProperties("azure-storage-file-datalake.properties");
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
+    private static String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+    private static String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
 
     static HttpRequest request(String url) {
         return new HttpRequest(HttpMethod.HEAD, new URL(url), new HttpHeaders().put("Content-Length", "0"),
@@ -391,6 +400,61 @@ class BuilderHelperTest extends Specification {
         thrown(IllegalStateException.class)
     }
 
+    def "Service client BlobUserAgentModificationPolicy"() {
+        when:
+        def serviceClient = new DataLakeServiceClientBuilder()
+            .endpoint(endpoint)
+            .credential(credentials)
+            .httpClient(new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName + "/" + clientVersion + " " + "(.)*"))
+            .buildClient()
+
+        then:
+        StepVerifier.create(serviceClient.blobServiceClient.getHttpPipeline().send(request(serviceClient.getAccountUrl())))
+            .assertNext({ it.getStatusCode() == 200 })
+            .verifyComplete()
+    }
+
+    def "File system client BlobUserAgentModificationPolicy"() {
+        when:
+        def fileSystemClient = new DataLakeFileSystemClientBuilder()
+            .endpoint(endpoint)
+            .fileSystemName("fileSystem")
+            .credential(credentials)
+            .httpClient(new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName + "/" + clientVersion + " " + "(.)*"))
+            .buildClient()
+
+        then:
+        StepVerifier.create(fileSystemClient.blobContainerClient.getHttpPipeline().send(request(fileSystemClient.getFileSystemUrl())))
+            .assertNext({ it.getStatusCode() == 200 })
+            .verifyComplete()
+    }
+
+    def "Path client BlobUserAgentModificationPolicy"() {
+        setup:
+        def pathClientBuilder = new DataLakePathClientBuilder()
+            .endpoint(endpoint)
+            .fileSystemName("fileSystem")
+            .pathName("path")
+            .credential(credentials)
+            .httpClient(new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName + "/" + clientVersion + " " + "(.)*"))
+
+        when:
+        def directoryClient = pathClientBuilder.buildDirectoryClient()
+
+        then:
+        StepVerifier.create(directoryClient.blockBlobClient.getHttpPipeline().send(request(directoryClient.getDirectoryUrl())))
+            .assertNext({ it.getStatusCode() == 200 })
+            .verifyComplete()
+
+        when:
+        def fileClient = pathClientBuilder.buildFileClient()
+
+        then:
+        StepVerifier.create(fileClient.blockBlobClient.getHttpPipeline().send(request(fileClient.getFileUrl())))
+            .assertNext({ it.getStatusCode() == 200 })
+            .verifyComplete()
+    }
+
     private static final class FreshDateTestClient implements HttpClient {
         private DateTimeRfc1123 firstDate
 
@@ -459,6 +523,25 @@ class BuilderHelperTest extends Specification {
                 }
 
             })
+            return Mono.just(new MockHttpResponse(request, 200))
+        }
+    }
+
+    private static final class UAStringTestClient implements HttpClient {
+
+        private final Pattern pattern
+
+        UAStringTestClient(String regex) {
+            this.pattern = Pattern.compile(regex);
+        }
+
+        @Override
+        Mono<HttpResponse> send(HttpRequest request) {
+            if (CoreUtils.isNullOrEmpty(request.getHeaders().getValue("User-Agent"))) {
+                throw new RuntimeException("Failed to set 'User-Agent' header.")
+            }
+            Matcher matcher = pattern.matcher(request.getHeaders().getValue("User-Agent"));
+            assert matcher.matches()
             return Mono.just(new MockHttpResponse(request, 200))
         }
     }

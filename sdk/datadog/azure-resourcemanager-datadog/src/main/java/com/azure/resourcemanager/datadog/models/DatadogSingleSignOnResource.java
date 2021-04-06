@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.datadog.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.datadog.fluent.models.DatadogSingleSignOnResourceInner;
 
@@ -38,6 +39,13 @@ public interface DatadogSingleSignOnResource {
     DatadogSingleSignOnProperties properties();
 
     /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the inner com.azure.resourcemanager.datadog.fluent.models.DatadogSingleSignOnResourceInner object.
      *
      * @return the inner object.
@@ -58,7 +66,7 @@ public interface DatadogSingleSignOnResource {
             /**
              * Specifies resourceGroupName, monitorName.
              *
-             * @param resourceGroupName The name of the resource group to which the Datadog resource belongs.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param monitorName Monitor resource name.
              * @return the next definition stage.
              */

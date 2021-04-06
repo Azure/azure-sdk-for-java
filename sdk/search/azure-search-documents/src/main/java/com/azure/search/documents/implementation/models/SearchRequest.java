@@ -152,6 +152,26 @@ public final class SearchRequest {
     private SearchMode searchMode;
 
     /*
+     * A value that specifies the language of the search query.
+     */
+    @JsonProperty(value = "queryLanguage")
+    private QueryLanguage queryLanguage;
+
+    /*
+     * A value that specified the type of the speller to use to spell-correct
+     * individual search query terms.
+     */
+    @JsonProperty(value = "speller")
+    private Speller speller;
+
+    /*
+     * A value that specifies whether answers should be returned as part of the
+     * search response.
+     */
+    @JsonProperty(value = "answers")
+    private Answers answers;
+
+    /*
      * The comma-separated list of fields to retrieve. If unspecified, all
      * fields marked as retrievable in the schema are included.
      */
@@ -548,6 +568,70 @@ public final class SearchRequest {
      */
     public SearchRequest setSearchMode(SearchMode searchMode) {
         this.searchMode = searchMode;
+        return this;
+    }
+
+    /**
+     * Get the queryLanguage property: A value that specifies the language of the search query.
+     *
+     * @return the queryLanguage value.
+     */
+    public QueryLanguage getQueryLanguage() {
+        return this.queryLanguage;
+    }
+
+    /**
+     * Set the queryLanguage property: A value that specifies the language of the search query.
+     *
+     * @param queryLanguage the queryLanguage value to set.
+     * @return the SearchRequest object itself.
+     */
+    public SearchRequest setQueryLanguage(QueryLanguage queryLanguage) {
+        this.queryLanguage = queryLanguage;
+        return this;
+    }
+
+    /**
+     * Get the speller property: A value that specified the type of the speller to use to spell-correct individual
+     * search query terms.
+     *
+     * @return the speller value.
+     */
+    public Speller getSpeller() {
+        return this.speller;
+    }
+
+    /**
+     * Set the speller property: A value that specified the type of the speller to use to spell-correct individual
+     * search query terms.
+     *
+     * @param speller the speller value to set.
+     * @return the SearchRequest object itself.
+     */
+    public SearchRequest setSpeller(Speller speller) {
+        this.speller = speller;
+        return this;
+    }
+
+    /**
+     * Get the answers property: A value that specifies whether answers should be returned as part of the search
+     * response.
+     *
+     * @return the answers value.
+     */
+    public Answers getAnswers() {
+        return this.answers;
+    }
+
+    /**
+     * Set the answers property: A value that specifies whether answers should be returned as part of the search
+     * response.
+     *
+     * @param answers the answers value to set.
+     * @return the SearchRequest object itself.
+     */
+    public SearchRequest setAnswers(Answers answers) {
+        this.answers = answers;
         return this;
     }
 

@@ -13,7 +13,7 @@ public final class SqlSourceParameter {
     /*
      * Database connection string
      */
-    @JsonProperty(value = "connectionString", required = true)
+    @JsonProperty(value = "connectionString")
     private String connectionString;
 
     /*

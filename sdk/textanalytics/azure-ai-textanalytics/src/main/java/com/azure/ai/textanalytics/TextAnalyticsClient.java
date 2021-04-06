@@ -973,8 +973,6 @@ public final class TextAnalyticsClient {
      * English as default.
      * @param options The additional configurable {@link AnalyzeHealthcareEntitiesOptions options} that may be passed
      * when analyzing healthcare entities.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     *
      * @return A {@link SyncPoller} that polls the analyze healthcare operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a {@link PagedIterable} of
      * {@link AnalyzeHealthcareEntitiesResultCollection}.
@@ -986,13 +984,13 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedIterable<AnalyzeHealthcareEntitiesResultCollection>>
         beginAnalyzeHealthcareEntities(Iterable<String> documents, String language,
-            AnalyzeHealthcareEntitiesOptions options, Context context) {
+            AnalyzeHealthcareEntitiesOptions options) {
         return beginAnalyzeHealthcareEntities(
             mapByIndex(documents, (index, value) -> {
                 final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
                 textDocumentInput.setLanguage(language);
                 return textDocumentInput;
-            }), options, context);
+            }), options, Context.NONE);
     }
 
     /**

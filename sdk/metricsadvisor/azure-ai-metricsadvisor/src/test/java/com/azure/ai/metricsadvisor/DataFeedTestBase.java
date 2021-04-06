@@ -207,8 +207,9 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                     (AzureAppInsightsDataFeedSource) expectedDataFeed.getSource();
                 final AzureAppInsightsDataFeedSource actualAzureAppInsightsDataFeedSource =
                     (AzureAppInsightsDataFeedSource) actualDataFeed.getSource();
-                assertNotNull(actualAzureAppInsightsDataFeedSource.getApiKey());
-                assertNotNull(actualAzureAppInsightsDataFeedSource.getApplicationId());
+                // ApiKey and applicationId are no longer returned from the service.
+                // assertNotNull(actualAzureAppInsightsDataFeedSource.getApiKey());
+                // assertNotNull(actualAzureAppInsightsDataFeedSource.getApplicationId());
                 assertEquals(expAzureAppInsightsDataFeedSource.getQuery(),
                     actualAzureAppInsightsDataFeedSource.getQuery());
                 assertEquals(expAzureAppInsightsDataFeedSource.getAzureCloud(),
@@ -220,7 +221,8 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                 final AzureBlobDataFeedSource actualBlobDataFeedSource =
                     (AzureBlobDataFeedSource) actualDataFeed.getSource();
                 assertEquals(expBlobDataFeedSource.getBlobTemplate(), actualBlobDataFeedSource.getBlobTemplate());
-                assertNotNull(actualBlobDataFeedSource.getConnectionString());
+                // connection string is no longer returned from the service.
+                // assertNotNull(actualBlobDataFeedSource.getConnectionString());
                 assertEquals(expBlobDataFeedSource.getContainer(), actualBlobDataFeedSource.getContainer());
                 break;
             case AZURE_DATA_EXPLORER:
@@ -288,7 +290,8 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                     (SQLServerDataFeedSource) expectedDataFeed.getSource();
                 final SQLServerDataFeedSource actualSqlServerDataFeedSource =
                     (SQLServerDataFeedSource) actualDataFeed.getSource();
-                assertNotNull(actualSqlServerDataFeedSource.getConnectionString());
+                // connection string is no longer returned from the service.
+                // assertNotNull(actualSqlServerDataFeedSource.getConnectionString());
                 assertEquals(expSqlServerDataFeedSource.getQuery(), actualSqlServerDataFeedSource.getQuery());
                 break;
             case AZURE_COSMOS_DB:
@@ -306,7 +309,8 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                     (ElasticsearchDataFeedSource) expectedDataFeed.getSource();
                 final ElasticsearchDataFeedSource actualDataFeedSource =
                     (ElasticsearchDataFeedSource) actualDataFeed.getSource();
-                assertNotNull(actualDataFeedSource.getAuthHeader());
+                // Auth header is no longer returned from the service.
+                // assertNotNull(actualDataFeedSource.getAuthHeader());
                 assertNotNull(actualDataFeedSource.getHost());
                 assertEquals(expElasticsearchDataFeedSource.getPort(), actualDataFeedSource.getPort());
                 assertEquals(expElasticsearchDataFeedSource.getQuery(), actualDataFeedSource.getQuery());

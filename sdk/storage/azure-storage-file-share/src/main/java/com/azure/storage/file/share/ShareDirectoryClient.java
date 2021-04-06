@@ -427,7 +427,8 @@ public class ShareDirectoryClient {
      * with.
      * @param maxResultsPerPage Optional maximum number of files and/or directories to return per page.
      * If the request does not specify maxResultsPerPage or specifies a value greater than 5,000,
-     * the server will return up to 5,000 items.
+     * the server will return up to 5,000 items. If iterating by page, the page size passed to byPage methods such as
+     * {@link PagedIterable#iterableByPage(int)} will be preferred over this value.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.

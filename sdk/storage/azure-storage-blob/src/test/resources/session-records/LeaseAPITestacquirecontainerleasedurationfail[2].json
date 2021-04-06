@@ -1,88 +1,88 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtcacquirecontainerleasedurationfail08996211674b7bc9?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcacquirecontainerleasedurationfail0209970d6a72be80?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-10-10",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "c409ab3c-be6d-4d09-a751-87f6cfdf52c5"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e77b7d6e-c4ee-4baf-8302-9f576fe47398"
     },
     "Response" : {
-      "x-ms-version" : "2019-10-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D7E10B32D22869",
-      "Last-Modified" : "Wed, 15 Apr 2020 07:04:10 GMT",
+      "ETag" : "0x8D8C6782B08698E",
+      "Last-Modified" : "Mon, 01 Feb 2021 06:11:09 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "cc6ae7c6-901e-0077-35f4-12b537000000",
-      "Date" : "Wed, 15 Apr 2020 07:04:10 GMT",
-      "x-ms-client-request-id" : "c409ab3c-be6d-4d09-a751-87f6cfdf52c5"
+      "x-ms-request-id" : "b3c755e1-d01e-006d-1161-f8041a000000",
+      "Date" : "Mon, 01 Feb 2021 06:11:08 GMT",
+      "x-ms-client-request-id" : "e77b7d6e-c4ee-4baf-8302-9f576fe47398"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtcacquirecontainerleasedurationfail08996211674b7bc9?comp=lease&restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcacquirecontainerleasedurationfail0209970d6a72be80?comp=lease&restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-10-10",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "0610e11f-2dca-441b-b401-693286085d29"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1f383a7f-db9c-43db-b9fd-bfb845694a4c"
     },
     "Response" : {
-      "x-ms-version" : "2019-10-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "InvalidHeaderValue",
       "retry-after" : "0",
       "Content-Length" : "327",
       "StatusCode" : "400",
-      "x-ms-request-id" : "cc6ae7d0-901e-0077-3df4-12b537000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:cc6ae7d0-901e-0077-3df4-12b537000000\nTime:2020-04-15T07:04:11.0218545Z</Message><HeaderName>x-ms-lease-duration</HeaderName><HeaderValue>70</HeaderValue></Error>",
-      "Date" : "Wed, 15 Apr 2020 07:04:10 GMT",
-      "x-ms-client-request-id" : "0610e11f-2dca-441b-b401-693286085d29",
+      "x-ms-request-id" : "b3c756a3-d01e-006d-4061-f8041a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:b3c756a3-d01e-006d-4061-f8041a000000\nTime:2021-02-01T06:11:09.5113262Z</Message><HeaderName>x-ms-lease-duration</HeaderName><HeaderValue>70</HeaderValue></Error>",
+      "Date" : "Mon, 01 Feb 2021 06:11:08 GMT",
+      "x-ms-client-request-id" : "1f383a7f-db9c-43db-b9fd-bfb845694a4c",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net?prefix=jtcacquirecontainerleasedurationfail&comp=list",
+    "Uri" : "https://REDACTED.blob.core.windows.net?comp=list&prefix=jtcacquirecontainerleasedurationfail",
     "Headers" : {
-      "x-ms-version" : "2019-10-10",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "3f9bd367-e302-4600-a53f-cc468004563f"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "fdebb0ba-9b36-413a-9023-2a580de11e1c"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2019-10-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "Vary" : "Origin",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "cc6ae7df-901e-0077-49f4-12b537000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcacquirecontainerleasedurationfail</Prefix><Containers><Container><Name>jtcacquirecontainerleasedurationfail08996211674b7bc9</Name><Properties><Last-Modified>Wed, 15 Apr 2020 07:04:10 GMT</Last-Modified><Etag>\"0x8D7E10B32D22869\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Wed, 15 Apr 2020 07:04:10 GMT",
-      "x-ms-client-request-id" : "3f9bd367-e302-4600-a53f-cc468004563f",
+      "x-ms-request-id" : "b3c7576b-d01e-006d-7961-f8041a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gapraeurope.blob.core.windows.net/\"><Prefix>jtcacquirecontainerleasedurationfail</Prefix><Containers><Container><Name>jtcacquirecontainerleasedurationfail0209970d6a72be80</Name><Properties><Last-Modified>Mon, 01 Feb 2021 06:11:09 GMT</Last-Modified><Etag>\"0x8D8C6782B08698E\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Mon, 01 Feb 2021 06:11:09 GMT",
+      "x-ms-client-request-id" : "fdebb0ba-9b36-413a-9023-2a580de11e1c",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtcacquirecontainerleasedurationfail08996211674b7bc9?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcacquirecontainerleasedurationfail0209970d6a72be80?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-10-10",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "35686c16-24d2-4eb0-8977-e1160072442e"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7200c929-4d73-405d-84b1-cdf6ee43824d"
     },
     "Response" : {
-      "x-ms-version" : "2019-10-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "cc6ae7f3-901e-0077-5af4-12b537000000",
-      "Date" : "Wed, 15 Apr 2020 07:04:10 GMT",
-      "x-ms-client-request-id" : "35686c16-24d2-4eb0-8977-e1160072442e"
+      "x-ms-request-id" : "b3c75807-d01e-006d-0561-f8041a000000",
+      "Date" : "Mon, 01 Feb 2021 06:11:09 GMT",
+      "x-ms-client-request-id" : "7200c929-4d73-405d-84b1-cdf6ee43824d"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtcacquirecontainerleasedurationfail08996211674b7bc9" ]
+  "variables" : [ "jtcacquirecontainerleasedurationfail0209970d6a72be80" ]
 }

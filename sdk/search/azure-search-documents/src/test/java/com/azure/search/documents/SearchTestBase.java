@@ -65,12 +65,20 @@ public abstract class SearchTestBase extends TestBase {
     protected static final String API_KEY = Configuration.getGlobalConfiguration()
         .get("SEARCH_SERVICE_API_KEY", "apiKey");
 
+    private static final String STORAGE_CONNECTION_STRING = Configuration.getGlobalConfiguration()
+        .get("SEARCH_STORAGE_CONNECTION_STRING", "connectionString");
+    private static final String BLOB_CONTAINER_NAME = Configuration.getGlobalConfiguration()
+        .get("SEARCH_STORAGE_CONTAINER_NAME", "container");
+
     protected static final TestMode TEST_MODE = initializeTestMode();
 
     private static final String FAKE_DESCRIPTION = "Some data source";
 
     static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
     static final String HOTELS_DATA_JSON_WITHOUT_FR_DESCRIPTION = "HotelsDataArrayWithoutFr.json";
+
+    static final RetryPolicy SERVICE_THROTTLE_SAFE_RETRY_POLICY =
+        new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30)));
 
     protected String createHotelIndex() {
         try {
@@ -116,7 +124,7 @@ public abstract class SearchTestBase extends TestBase {
 
         //builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
 
-        builder.retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))));
+        builder.retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
         if (!interceptorManager.isLiveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -137,7 +145,7 @@ public abstract class SearchTestBase extends TestBase {
         }
         addPolicies(builder, policies);
         //builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
-        builder.retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))));
+        builder.retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
         if (!interceptorManager.isLiveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -177,7 +185,7 @@ public abstract class SearchTestBase extends TestBase {
             return builder.httpClient(interceptorManager.getPlaybackClient());
         }
         //builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
-        builder.retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))));
+        builder.retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
         if (!interceptorManager.isLiveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -368,14 +376,10 @@ public abstract class SearchTestBase extends TestBase {
     }
 
     protected SearchIndexerDataSourceConnection createBlobDataSource() {
-        String storageConnectionString = Configuration.getGlobalConfiguration()
-            .get("SEARCH_STORAGE_CONNECTION_STRING", "connectionString");
-        String blobContainerName = Configuration.getGlobalConfiguration()
-            .get("SEARCH_STORAGE_CONTAINER_NAME", "container");
-
         // create the new data source object for this storage account and container
-        return SearchIndexerDataSources.createFromAzureBlobStorage(testResourceNamer.randomName(BLOB_DATASOURCE_NAME, 32),
-            storageConnectionString, blobContainerName, "/", "real live blob",
+        return SearchIndexerDataSources.createFromAzureBlobStorage(
+            testResourceNamer.randomName(BLOB_DATASOURCE_NAME, 32), STORAGE_CONNECTION_STRING, BLOB_CONTAINER_NAME, "/",
+            "real live blob",
             new SoftDeleteColumnDeletionDetectionPolicy()
                 .setSoftDeleteColumnName("fieldName")
                 .setSoftDeleteMarkerValue("someValue"));

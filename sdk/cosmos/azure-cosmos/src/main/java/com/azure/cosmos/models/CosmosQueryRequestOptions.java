@@ -381,7 +381,7 @@ public class CosmosQueryRequestOptions {
      * Gets the {@link FeedRange}
      * @return the {@link FeedRange}
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText =Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FeedRange getFeedRange() {
         return feedRange;
     }
@@ -391,7 +391,7 @@ public class CosmosQueryRequestOptions {
      * @param feedRange the {@link FeedRange}
      * @return the CosmosQueryRequestOptions.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText =Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosQueryRequestOptions setFeedRange(FeedRange feedRange) {
         this.feedRange = feedRange;
         return this;

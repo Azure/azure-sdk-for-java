@@ -7,7 +7,6 @@ import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
@@ -31,6 +30,7 @@ import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -46,6 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -93,8 +94,8 @@ class ServiceBusReceiveLinkProcessorTest {
     void setup() {
         MockitoAnnotations.initMocks(this);
 
-        linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy, ServiceBusReceiveMode.PEEK_LOCK);
-        linkProcessorNoPrefetch = new ServiceBusReceiveLinkProcessor(0, retryPolicy, ServiceBusReceiveMode.PEEK_LOCK);
+        linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy);
+        linkProcessorNoPrefetch = new ServiceBusReceiveLinkProcessor(0, retryPolicy);
 
         when(link1.getEndpointStates()).thenReturn(endpointProcessor.flux());
         when(link1.receive()).thenReturn(messagePublisher.flux());
@@ -107,12 +108,8 @@ class ServiceBusReceiveLinkProcessorTest {
 
     @Test
     void constructor() {
-        assertThrows(NullPointerException.class, () -> new ServiceBusReceiveLinkProcessor(PREFETCH, null,
-            ServiceBusReceiveMode.PEEK_LOCK));
-        assertThrows(IllegalArgumentException.class, () -> new ServiceBusReceiveLinkProcessor(-1, retryPolicy,
-            ServiceBusReceiveMode.PEEK_LOCK));
-        assertThrows(NullPointerException.class, () -> new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy,
-            null));
+        assertThrows(NullPointerException.class, () -> new ServiceBusReceiveLinkProcessor(PREFETCH, null));
+        assertThrows(IllegalArgumentException.class, () -> new ServiceBusReceiveLinkProcessor(-1, retryPolicy));
     }
 
     /**
@@ -121,10 +118,16 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void createNewLink() throws InterruptedException {
         // Arrange
+        final CountDownLatch countDownLatch = new CountDownLatch(2);
         ServiceBusReceiveLinkProcessor processor = Flux.<ServiceBusReceiveLink>create(sink -> sink.next(link1))
             .subscribeWith(linkProcessor);
 
         when(link1.getCredits()).thenReturn(1);
+
+        doAnswer((invocation) -> {
+            countDownLatch.countDown();
+            return null;
+        }).when(link1).addCredits(eq(PREFETCH - 1));
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -140,8 +143,12 @@ class ServiceBusReceiveLinkProcessorTest {
         assertFalse(processor.hasError());
         assertNull(processor.getError());
 
+        // dispose the processor
+        processor.dispose();
+
         // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
-        verify(link1, times(3)).addCredits(eq(PREFETCH - 1));
+        final boolean awaited = countDownLatch.await(5, TimeUnit.SECONDS);
+        Assertions.assertTrue(awaited);
     }
 
     /**
@@ -550,11 +557,17 @@ class ServiceBusReceiveLinkProcessorTest {
     }
 
     @Test
-    void receivesFromFirstLink() {
+    void receivesFromFirstLink() throws InterruptedException {
         // Arrange
+        final CountDownLatch countDownLatch = new CountDownLatch(2);
         ServiceBusReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
 
         when(link1.getCredits()).thenReturn(0);
+
+        doAnswer((i) -> {
+            countDownLatch.countDown();
+            return null;
+        }).when(link1).addCredits(eq(PREFETCH));
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -571,17 +584,25 @@ class ServiceBusReceiveLinkProcessorTest {
         assertFalse(processor.hasError());
         assertNull(processor.getError());
 
-        // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
-        verify(link1, times(3)).addCredits(eq(PREFETCH));
-        verify(link1).setEmptyCreditListener(creditSupplierCaptor.capture());  // Add 0.
+        // dispose the processor
+        processor.dispose();
 
+        verify(link1).setEmptyCreditListener(creditSupplierCaptor.capture());  // Add 0.
         Supplier<Integer> value = creditSupplierCaptor.getValue();
         assertNotNull(value);
 
         final Integer creditValue = value.get();
 
         assertEquals(0, creditValue);
+<<<<<<< HEAD
         verify(link1, times(3)).addCredits(eq(PREFETCH));
+=======
+
+        // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
+        final boolean awaited = countDownLatch.await(5, TimeUnit.SECONDS);
+        Assertions.assertTrue(awaited);
+
+>>>>>>> feature/servicebus-support-amqp-data-types-17614
     }
 
     /**

@@ -5,6 +5,7 @@ package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,7 +52,6 @@ public class HandlerTest {
         StepVerifier.create(handler.getEndpointStates())
             .expectNext(EndpointState.UNINITIALIZED)
             .then(() -> handler.onError(exception))
-            .expectNext(EndpointState.CLOSED)
             .expectErrorMatches(e -> e.equals(exception))
             .verify();
     }
@@ -70,12 +70,11 @@ public class HandlerTest {
                 handler.onError(exception);
                 handler.onError(exception2);
             })
-            .expectNext(EndpointState.CLOSED)
             .expectErrorMatches(e -> e.equals(exception))
             .verify();
 
         StepVerifier.create(handler.getEndpointStates())
-            .expectNext(EndpointState.CLOSED)
+            .expectNext(EndpointState.UNINITIALIZED)
             .expectErrorMatches(e -> e.equals(exception))
             .verify();
     }
@@ -101,7 +100,8 @@ public class HandlerTest {
 
     private static class TestHandler extends Handler {
         TestHandler() {
-            super("test-connection-id", "test-hostname");
+            super("test-connection-id", "test-hostname",
+                new ClientLogger(TestHandler.class));
         }
     }
 }

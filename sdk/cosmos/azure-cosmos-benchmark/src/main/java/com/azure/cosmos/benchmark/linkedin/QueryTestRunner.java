@@ -13,8 +13,6 @@ import com.azure.cosmos.benchmark.linkedin.impl.models.QueryOptions;
 import com.azure.cosmos.models.SqlParameter;
 import com.codahale.metrics.MetricRegistry;
 import com.google.common.collect.ImmutableList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -26,16 +24,14 @@ import org.slf4j.LoggerFactory;
  */
 public class QueryTestRunner extends TestRunner {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(QueryTestRunner.class);
-    private static final String PARTITIONING_KEY_BINDING_PARAMETER = "@" + Constants.PARTITION_KEY;
-    private static final String QUERY = String.format("SELECT * FROM c WHERE c.%s = %s",
-        Constants.PARTITION_KEY, PARTITIONING_KEY_BINDING_PARAMETER);
+    private final QueryGenerator _queryGenerator;
 
     QueryTestRunner(final Configuration configuration,
         final CosmosAsyncClient client,
         final MetricRegistry metricsRegistry,
         final EntityConfiguration entityConfiguration) {
         super(configuration, client, metricsRegistry, entityConfiguration);
+        _queryGenerator = new QueryGenerator();
     }
 
     /**
@@ -43,13 +39,23 @@ public class QueryTestRunner extends TestRunner {
      */
     @Override
     public void testOperation(final Key key) throws AccessorException {
-        final SqlParameter sqlParameter = new SqlParameter(PARTITIONING_KEY_BINDING_PARAMETER,
-            key.getPartitioningKey());
-        final QueryOptions queryOptions = new QueryOptions.Builder()
-            .setDocumentDBQuery(QUERY)
-            .setSqlParameterList(ImmutableList.of(sqlParameter))
-            .setPartitioningKey(key.getPartitioningKey())
-            .build();
+        final QueryOptions queryOptions = _queryGenerator.generateQuery(key);
         _accessor.query(queryOptions);
+    }
+
+    public static class QueryGenerator {
+        private static final String PARTITIONING_KEY_BINDING_PARAMETER = "@" + Constants.PARTITION_KEY;
+        private static final String QUERY = String.format("SELECT * FROM c WHERE c.%s = %s",
+            Constants.PARTITION_KEY, PARTITIONING_KEY_BINDING_PARAMETER);
+
+        public QueryOptions generateQuery(final Key key) {
+            final SqlParameter sqlParameter = new SqlParameter(PARTITIONING_KEY_BINDING_PARAMETER,
+                key.getPartitioningKey());
+            return new QueryOptions.Builder()
+                .setDocumentDBQuery(QUERY)
+                .setSqlParameterList(ImmutableList.of(sqlParameter))
+                .setPartitioningKey(key.getPartitioningKey())
+                .build();
+        }
     }
 }

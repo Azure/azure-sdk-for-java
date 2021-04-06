@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * delimited text configuration.
- */
+/** delimited text configuration. */
 @JacksonXmlRootElement(localName = "DelimitedTextConfiguration")
 @Fluent
 public final class DelimitedTextConfiguration {
