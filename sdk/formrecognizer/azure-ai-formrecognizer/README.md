@@ -16,14 +16,13 @@ from form documents. It includes the following main functionalities:
 - [Cognitive Services or Form Recognizer account][form_recognizer_account] to use this package.
 
 ### Include the Package
-**Note:** This version targets Azure Form Recognizer service API version v2.0.
 
 [//]: # ({x-version-update-start;com.azure:azure-ai-formrecognizer;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>3.0.6</version>
+    <version>3.0.7</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

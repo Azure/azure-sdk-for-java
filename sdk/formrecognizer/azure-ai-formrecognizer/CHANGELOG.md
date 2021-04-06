@@ -1,5 +1,9 @@
 # Release History
 
+## 3.0.7 (2021-04-06)
+### Dependency updates
+- Update dependency version, `azure-core` to `1.15.0`, `azure-core-http-netty` to `1.9.1` and `azure-identity` to `1.2.5`.
+
 ## 3.0.6 (2021-03-10)
 ### Dependency updates
 - Update dependency version, `azure-core` to `1.14.0`, `azure-core-http-netty` to `1.9.0` and `azure-identity` to `1.2.4`.
