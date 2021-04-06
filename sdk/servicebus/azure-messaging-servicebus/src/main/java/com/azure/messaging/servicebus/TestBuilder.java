@@ -6,6 +6,9 @@ import java.security.Provider;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
+/**
+ * ServiceBusReceivedMessage constructor is invisible outside its package, hence this TestBuilder helps construct instances for test module use.
+ */
 public class TestBuilder {
     private ServiceBusReceivedMessage inboundMessage;
     public TestBuilder(BinaryData body){
