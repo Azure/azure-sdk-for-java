@@ -1,17 +1,6 @@
 # Azure Identity client library for Java
 The Azure Identity library provides Azure Active Directory token authentication support across the Azure SDK. It provides a set of TokenCredential implementations which can be used to construct Azure SDK clients which support AAD token authentication.
 
- This library currently supports:
-  - [Service principal authentication](https://docs.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals)
-  - [Managed identity authentication](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview)
-  - [Device code authentication](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-device-code)
-  - Interactive browser authentication, based on [OAuth2 authentication code](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow)
-  - [Username + password authentication](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth-ropc)
-  - IntelliJ authentication, with the login information saved in Azure Toolkit for IntelliJ
-  - Visual Studio Code authentication, with the login information saved in Azure plugin for Visual Studio Code
-  - Azure CLI authentication, with the login information saved in Azure CLI
-  - Shared Token Cache credential, which shares login information with Visual Studio, Azure CLI, and more
-
   [Source code][source] | [API reference documentation][javadoc] | [Azure Active Directory documentation][aad_doc]
 
 ## Getting started
@@ -24,7 +13,7 @@ Maven dependency for Azure Secret Client library. Add it to your project's pom f
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.2.3</version>
+    <version>1.2.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -55,8 +44,12 @@ The Azure Identity library focuses on OAuth authentication with Azure Active dir
 See [Credential Classes](#credential-classes) for a complete list of available credential classes.
 
 ### DefaultAzureCredential
-The `DefaultAzureCredential` is appropriate for most scenarios where the application is intended to ultimately be run in the Azure Cloud. This is because the `DefaultAzureCredential` combines credentials commonly used to authenticate when deployed, with credentials used to authenticate in a development environment. The `DefaultAzureCredential` will attempt to authenticate via the following mechanisms in order.
+The `DefaultAzureCredential` is appropriate for most scenarios where the application is intended to ultimately be run in the Azure Cloud. This is because the `DefaultAzureCredential` combines credentials commonly used to authenticate when deployed, with credentials used to authenticate in a development environment.
 
+> Note: `DefaultAzureCredential` is intended to simplify getting started with the SDK by handling common scenarios with reasonable default behaviors. Developers who want more control or whose scenario isn't served by the default settings should use other credential types.
+
+ The `DefaultAzureCredential` will attempt to authenticate via the following mechanisms in order.
+ 
 ![DefaultAzureCredential authentication flow](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/identity/azure-identity/images/defaultazurecredential.png)
 
  - Environment - The `DefaultAzureCredential` will read account information specified via [environment variables](#environment-variables) and use it to authenticate.
@@ -137,6 +130,54 @@ public void createDefaultAzureCredentialForIntelliJ() {
 }
 ```
 
+## Managed Identity Support
+The [Managed identity authentication](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview) is supported via either the `DefaultAzureCredential` or the `ManagedIdentityCredential` directly for the following Azure Services:
+* [Azure Virtual Machines](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/how-to-use-vm-token)
+* [Azure App Service](https://docs.microsoft.com/azure/app-service/overview-managed-identity?tabs=dotnet)
+* [Azure Kubernetes Service](https://docs.microsoft.com/azure/aks/use-managed-identity)
+* [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/msi-authorization)
+* [Azure Arc](https://docs.microsoft.com/azure/azure-arc/servers/managed-identity-authentication)
+* [Azure Service Fabric](https://docs.microsoft.com/azure/service-fabric/concepts-managed-identity)
+
+### Examples
+####  Authenticating in Azure with Managed Identity
+This examples demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using the `ManagedIdentityCredential` in a virtual machine, app service, function app, cloud shell, or AKS environment on Azure, with system assigned, or user assigned managed identity enabled.
+
+see more about how to configure your Azure resource for managed identity in [Enable managed identity for Azure resources](https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#enable-managed-identity-for-azure-resources)
+
+```java
+/**
+ * Authenticate with a User Assigned Managed identity.
+ */
+public void createManagedIdentityCredential() {
+    ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
+        .clientId("<USER ASSIGNED MANAGED IDENTITY CLIENT ID>") // only required for user assigned
+        .build();
+
+    // Azure SDK client builders accept the credential as a parameter
+    SecretClient client = new SecretClientBuilder()
+        .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+        .credential(managedIdentityCredential)
+        .buildClient();
+}
+```
+
+```java
+/**
+ * Authenticate with a System Assigned Managed identity.
+ */
+public void createManagedIdentityCredential() {
+    ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
+        .build();
+
+    // Azure SDK client builders accept the credential as a parameter
+    SecretClient client = new SecretClientBuilder()
+        .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+        .credential(managedIdentityCredential)
+        .buildClient();
+}
+```
+
 ## Credential classes
 
 ### Authenticating Azure Hosted Applications
@@ -187,6 +228,7 @@ public void createDefaultAzureCredentialForIntelliJ() {
       <th>usage</th>
       <th>configuration</th>
       <th>example</th>
+      <th>reference</th>
     </tr>
   </thead>
   <tbody>
@@ -195,12 +237,14 @@ public void createDefaultAzureCredentialForIntelliJ() {
       <td>authenticates a service principal using a secret</td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#creating-a-service-principal-with-the-azure-cli">configuration</a></td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-service-principal-with-a-client-secret">example</a></td>
+      <td><a href="https://docs.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals">Service principal authentication</a></td>
     </tr>
     <tr>
       <td><code>ClientCertificateCredential</code></td>
       <td>authenticates a service principal using a certificate</td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#creating-a-service-principal-with-the-azure-cli">configuration</a></td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-service-principal-with-a-client-certificate">example</a></td>
+      <td><a href="https://docs.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals">Service principal authentication</a></td>
     </tr>
   </tbody>
 </table>
@@ -214,6 +258,7 @@ public void createDefaultAzureCredentialForIntelliJ() {
       <th>usage</th>
       <th>configuration</th>
       <th>example</th>
+      <th>reference</th>
     </tr>
   </thead>
   <tbody>
@@ -222,24 +267,28 @@ public void createDefaultAzureCredentialForIntelliJ() {
       <td>interactively authenticates a user on devices with limited UI</td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#enable-applications-for-device-code-flow">configuration</a></td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-device-code-flow">example</a></td>
+      <td><a href="https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-device-code">Device code authentication</a></td>
     </tr>
     <tr>
       <td><code>InteractiveBrowserCredential</code></td>
       <td>interactively authenticates a user with the default system browser</td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#enable-applications-for-interactive-browser-oauth-2-flow">configuration</a></td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-interactively-in-the-browser">example</a></td>
+      <td><a href="https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow">OAuth2 authentication code</a></td>
     </tr>
     <tr>
       <td><code>UsernamePasswordCredential</code></td>
       <td>authenticates a user with a username and password without multi-factored auth</td>
       <td></td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-username-and-password">example</a></td>
+      <td><a href="https://docs.microsoft.com/azure/active-directory/develop/v2-oauth-ropc">Username + password authentication</a></td>
     </tr>
     <tr>
       <td><code>AuthorizationCodeCredential</code></td>
       <td>authenticate a user with a previously obtained authorization code as part of an Oauth 2 flow</td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#enable-applications-for-oauth-2-auth-code-flow">configuration</a></td>
       <td></td>
+      <td><a href="https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow">OAuth2 authentication code</a></td>
     </tr>
   </tbody>
 </table>
@@ -253,6 +302,7 @@ public void createDefaultAzureCredentialForIntelliJ() {
       <th>usage</th>
       <th>configuration</th>
       <th>example</th>
+      <th>reference</th>
     </tr>
   </thead>
   <tbody>
@@ -261,18 +311,21 @@ public void createDefaultAzureCredentialForIntelliJ() {
       <td>authenticate in a development environment with the enabled user or service principal in Azure CLI</td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#sign-in-azure-cli-for-azureclicredential">configuration</a></td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-azure-cli">example</a></td>
+      <td><a href="https://docs.microsoft.com/cli/azure/authenticate-azure-cli">Azure CLI authentication</a></td>
     </tr>
     <tr>
       <td><code>IntelliJCredential</code></td>
       <td>authenticate in a development environment with the account in Azure Toolkit for IntelliJ</td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#sign-in-azure-toolkit-for-intellij-for-intellijcredential">configuration</a></td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-intellij-idea">example</a></td>
+      <td><a href="https://docs.microsoft.com/azure/developer/java/toolkit-for-intellij/sign-in-instructions">IntelliJ authentication</a></td>
     </tr>
     <tr>
       <td><code>VisualStudioCodeCredential</code></td>
       <td>authenticate in a development environment with the account in Visual Studio Azure Account extension</td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#sign-in-visual-studio-code-azure-account-extension-for-visualstudiocodecredential">configuration</a></td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-visual-studio-code">example</a></td>
+      <td><a href="https://code.visualstudio.com/docs/azure/extensions">VS Code Azure extension</a></td>
     </tr>
   </tbody>
 </table>
@@ -373,12 +426,10 @@ their resolution. The logs produced will capture the flow of an application befo
 locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
 ## Next steps
-Currently the following client libraries support authenticating with `TokenCredential` and the Azure Identity library.  You can learn more about their use, and find additional documentation on use of these client libraries along samples with can be found in the links below.
 
-- [azure-eventhubs][eventhubs_client_library]
-- [azure-security-keyvault-keys][keys_client_library]
-- [azure-security-keyvault-secrets][secrets_client_library]
-- [microsoft-graph-sdk][https://github.com/microsoftgraph/msgraph-sdk-java]
+The java client libraries listed [here](https://azure.github.io/azure-sdk/releases/latest/java.html) support authenticating with `TokenCredential` and the Azure Identity library.  You can learn more about their use, and find additional documentation on use of these client libraries along samples with can be found in the links mentioned [here](https://azure.github.io/azure-sdk/releases/latest/java.html).
+
+The [microsoft-graph-sdk][https://github.com/microsoftgraph/msgraph-sdk-java] also supports authenticating with `TokenCredential` and the Azure Identity library.
 
 ## Contributing
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.

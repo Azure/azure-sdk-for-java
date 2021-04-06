@@ -23,6 +23,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer;
+import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
@@ -66,6 +67,7 @@ public final class ConfigurationAsyncClient {
     private final String serviceEndpoint;
     private final ConfigurationService service;
     private final String apiVersion;
+    private final SyncTokenPolicy syncTokenPolicy;
 
     /**
      * Creates a ConfigurationAsyncClient that sends requests to the configuration service at {@code serviceEndpoint}.
@@ -73,16 +75,19 @@ public final class ConfigurationAsyncClient {
      * @param serviceEndpoint The URL string for the App Configuration service.
      * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
      * @param version {@link ConfigurationServiceVersion} of the service to be used when making requests.
+     * @param syncTokenPolicy {@link SyncTokenPolicy} to be used to update the external synchronization token to ensure
+     *  service requests receive up-to-date values.
      */
-    ConfigurationAsyncClient(String serviceEndpoint, HttpPipeline pipeline, ConfigurationServiceVersion version) {
+    ConfigurationAsyncClient(String serviceEndpoint, HttpPipeline pipeline, ConfigurationServiceVersion version,
+        SyncTokenPolicy syncTokenPolicy) {
         final JacksonAdapter jacksonAdapter = new JacksonAdapter();
         jacksonAdapter.serializer().registerModule(ConfigurationSettingJsonSerializer.getModule());
         // TODO: investigate why Deserializer is not needed.
 //        jacksonAdapter.serializer().registerModule(ConfigurationSettingJsonDeserializer.getModule());
         this.service = RestProxy.create(ConfigurationService.class, pipeline, jacksonAdapter);
-
         this.serviceEndpoint = serviceEndpoint;
         this.apiVersion = version.getVersion();
+        this.syncTokenPolicy = syncTokenPolicy;
     }
 
     /**
@@ -853,6 +858,17 @@ public final class ConfigurationAsyncClient {
                 error));
 
         return result.flatMapMany(r -> extractAndFetchConfigurationSettings(r, context));
+    }
+
+    /**
+     * Adds an external synchronization token to ensure service requests receive up-to-date values.
+     *
+     * @param token an external synchronization token to ensure service requests receive up-to-date values.
+     * @throws NullPointerException if the given token is null.
+     */
+    public void updateSyncToken(String token) {
+        Objects.requireNonNull(token, "'token' cannot be null.");
+        syncTokenPolicy.updateSyncToken(token);
     }
 
     private Publisher<ConfigurationSetting> extractAndFetchConfigurationSettings(

@@ -165,7 +165,8 @@
         <module>azure-spring-boot-samples/feature-management-web-sample</module>
         <module>azure-spring-boot-samples/feature-management-sample</module>
         <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-operation</module>
-        <module>azure-spring-boot-samples/azure-spring-cloud-sample-messaging</module>
+        <module>azure-spring-boot-samples/azure-spring-cloud-sample-messaging-eventhubs</module>
+        <module>azure-spring-boot-samples/azure-spring-cloud-sample-messaging-servicebus</module>
         <module>azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-operation</module>
         <module>azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-queue-binder</module>
         <module>azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-queue-multibinders</module>

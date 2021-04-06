@@ -1,6 +1,8 @@
 # Release History
 ## 1.2.0-beta.1 (Unreleased)
 ### New Features
+- Added updateSyncToken() to be able to provide external synchronization tokens to both
+  `ConfigurationAsyncClient` and `ConfigurationClient` clients.
 - New `SecretReferenceConfigurationSetting` and `FeatureFlagConfigurationSetting`
   types to represent configuration settings that references KeyVault Secret reference and 
   feature flag respectively.
