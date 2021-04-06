@@ -102,16 +102,16 @@ public class CryptographyClient {
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte-Context}
      *
      * @param algorithm The algorithm to be used for encryption.
-     * @param plainText The content to be encrypted.
+     * @param plaintext The content to be encrypted.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text} contains the encrypted
      * content.
      * @throws ResourceNotFoundException If the key cannot be found for encryption.
      * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code algorithm} or {@code plainText} are {@code null}.
+     * @throws NullPointerException If {@code algorithm} or {@code plaintext} are {@code null}.
      */
-    public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plainText, Context context) {
-        return encrypt(new EncryptOptions(algorithm, plainText, null, null), context);
+    public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
+        return encrypt(new EncryptParameters(algorithm, plaintext, null, null), context);
     }
 
     /**
@@ -139,15 +139,15 @@ public class CryptographyClient {
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte}
      *
      * @param algorithm The algorithm to be used for encryption.
-     * @param plainText The content to be encrypted.
+     * @param plaintext The content to be encrypted.
      * @return The {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text} contains the encrypted
      * content.
      * @throws ResourceNotFoundException If the key cannot be found for encryption.
      * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code algorithm} or {@code plainText} are {@code null}.
+     * @throws NullPointerException If {@code algorithm} or {@code plaintext} are {@code null}.
      */
-    public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plainText) {
-        return encrypt(algorithm, plainText, Context.NONE);
+    public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext) {
+        return encrypt(algorithm, plaintext, Context.NONE);
     }
 
     /**
@@ -172,18 +172,18 @@ public class CryptographyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
      * a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptOptions-Context}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptParameters-Context}
      *
-     * @param encryptOptions The parameters to use in the encryption operation.
+     * @param encryptParameters The parameters to use in the encryption operation.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text} contains the encrypted
      * content.
      * @throws ResourceNotFoundException If the key cannot be found for encryption.
      * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code encryptOptions} is {@code null}.
+     * @throws NullPointerException If {@code encryptParameters} is {@code null}.
      */
-    public EncryptResult encrypt(EncryptOptions encryptOptions, Context context) {
-        return client.encrypt(encryptOptions, context).block();
+    public EncryptResult encrypt(EncryptParameters encryptParameters, Context context) {
+        return client.encrypt(encryptParameters, context).block();
     }
 
     /**
@@ -211,15 +211,15 @@ public class CryptographyClient {
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte-Context}
      *
      * @param algorithm The algorithm to be used for decryption.
-     * @param cipherText The content to be decrypted.
+     * @param ciphertext The content to be decrypted.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The decrypted blob.
      * @throws ResourceNotFoundException If the key cannot be found for encryption.
      * @throws UnsupportedOperationException If the decrypt operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code algorithm} or {@code cipherText} are {@code null}.
+     * @throws NullPointerException If {@code algorithm} or {@code ciphertext} are {@code null}.
      */
-    public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, Context context) {
-        return decrypt(new DecryptOptions(algorithm, cipherText, null, null, null), context);
+    public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext, Context context) {
+        return decrypt(new DecryptParameters(algorithm, ciphertext, null, null, null), context);
     }
 
     /**
@@ -247,14 +247,14 @@ public class CryptographyClient {
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte}
      *
      * @param algorithm The algorithm to be used for decryption.
-     * @param cipherText The content to be decrypted.
+     * @param ciphertext The content to be decrypted.
      * @return The decrypted blob.
      * @throws ResourceNotFoundException If the key cannot be found for encryption.
      * @throws UnsupportedOperationException If the decrypt operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code algorithm} or {@code cipherText} are {@code null}.
+     * @throws NullPointerException If {@code algorithm} or {@code ciphertext} are {@code null}.
      */
-    public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] cipherText) {
-        return decrypt(new DecryptOptions(algorithm, cipherText, null, null, null), Context.NONE);
+    public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext) {
+        return decrypt(new DecryptParameters(algorithm, ciphertext, null, null, null), Context.NONE);
     }
 
     /**
@@ -279,17 +279,17 @@ public class CryptographyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content
      * details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#DecryptOptions-Context}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#DecryptParameters-Context}
      *
-     * @param decryptOptions The parameters to use in the decryption operation.
+     * @param decryptParameters The parameters to use in the decryption operation.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The decrypted blob.
      * @throws ResourceNotFoundException If the key cannot be found for encryption.
      * @throws UnsupportedOperationException If the decrypt operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code decryptOptions} is {@code null}.
+     * @throws NullPointerException If {@code decryptParameters} is {@code null}.
      */
-    public DecryptResult decrypt(DecryptOptions decryptOptions, Context context) {
-        return client.decrypt(decryptOptions, context).block();
+    public DecryptResult decrypt(DecryptParameters decryptParameters, Context context) {
+        return client.decrypt(decryptParameters, context).block();
     }
 
     /**

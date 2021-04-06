@@ -192,10 +192,10 @@ public final class KeyClientBuilder {
     }
 
     /**
-     * Sets the vault url to send HTTP requests to.
+     * Sets the vault endpoint URL to send HTTP requests to.
      *
      * @param vaultUrl The vault url is used as destination on Azure to send requests to. If you have a key identifier,
-     * use {@link KeyVaultKeyIdentifier#parse(String)} to parse it and obtain the {@code vaultUrl} and other
+     * create a new {@link KeyVaultKeyIdentifier} to parse it and obtain the {@code vaultUrl} and other
      * information.
      *
      * @return The updated {@link KeyClientBuilder} object.
