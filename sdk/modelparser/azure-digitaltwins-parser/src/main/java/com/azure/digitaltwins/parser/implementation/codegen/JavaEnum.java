@@ -31,7 +31,7 @@ public class JavaEnum extends JavaDeclaration implements JavaFile {
 
         this.enumValues = new ArrayList<>();
         this.isSorted = isSorted;
-        this.setTypeName(typeName);
+        this.typeName = typeName;
     }
 
     /**
@@ -60,14 +60,6 @@ public class JavaEnum extends JavaDeclaration implements JavaFile {
     @Override
     public String getTypeName() {
         return this.typeName;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
     }
 
     /**

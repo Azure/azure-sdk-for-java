@@ -16,11 +16,6 @@ public interface JavaFile {
     String getTypeName();
 
     /**
-     * Sets the type name of the declaration.
-     */
-    void setTypeName(String typeName);
-
-    /**
      * Generate code for the file.
      *
      * @param codeWriter A {@link CodeWriter} object for generating the file code.

@@ -29,7 +29,7 @@ public class JavaProperty extends JavaStatement {
      * @param propertyName Name of the property.
      * @param propertyType Type of the property.
      */
-    public JavaProperty(String propertyName, String propertyType) {
+    public JavaProperty(Access access, String propertyName, String propertyType) {
         // propertyName should start with a lowercase character.
         if (!Character.isLowerCase(propertyName.charAt(0))) {
             logger.logThrowableAsError(new StyleException("Property name '" + propertyName + "' should start with a lowercase character"));
@@ -45,14 +45,24 @@ public class JavaProperty extends JavaStatement {
     }
 
     /**
+     * Gets the property name.
+     *
+     * @return The property name.
+     */
+    public String getName() {
+        return this.propertyName;
+    }
+
+    /**
      * Adds a getter method for the private field.
      *
+     * @param access      Access level of the getter method.
      * @param description Getter method description.
      * @return The {@link JavaProperty} object itself.
      */
-    public JavaProperty getter(String description) {
+    public JavaProperty getter(Access access, String description) {
         String getterMethodName = getMethodName(this.propertyName, "get");
-        JavaMethod setterMethod = new JavaMethod(true, Access.PUBLIC, Novelty.NORMAL, propertyType, getterMethodName, Multiplicity.INSTANCE, Mutability.MUTABLE);
+        JavaMethod setterMethod = new JavaMethod(true, access, Novelty.NORMAL, propertyType, getterMethodName, Multiplicity.INSTANCE, Mutability.MUTABLE);
 
         if (description != null) {
             if (!description.endsWith(".")) {
@@ -77,12 +87,13 @@ public class JavaProperty extends JavaStatement {
     /**
      * Adds a setter method for the private field.
      *
+     * @param access      Access level of the getter method.
      * @param description Setter method description.
      * @return The {@link JavaProperty} object itself.
      */
-    public JavaProperty setter(String description) {
+    public JavaProperty setter(Access access, String description) {
         String setterMethodName = getMethodName(this.propertyName, "set");
-        JavaMethod setterMethod = new JavaMethod(true, Access.PUBLIC, Novelty.NORMAL, "void", setterMethodName, Multiplicity.INSTANCE, Mutability.MUTABLE);
+        JavaMethod setterMethod = new JavaMethod(true, access, Novelty.NORMAL, "void", setterMethodName, Multiplicity.INSTANCE, Mutability.MUTABLE);
 
         if (description != null) {
             if (!description.endsWith(".")) {

@@ -21,16 +21,17 @@ public class JavaInterface extends JavaDeclaration implements JavaFile {
     /**
      * Initializes a new instance of the {@link JavaInterface} class.
      *
-     * @param access   Access level of interface.
-     * @param typeName The name of the interface being declared.
-     * @param extend   Interfaces implemented by this interface.
+     * @param access    Access level of interface.
+     * @param typeName  The name of the interface being declared.
+     * @param extend    Interfaces extended by this interface.
+     * @param implement Interfaces implemented by this interface.
      */
     public JavaInterface(Access access, String typeName, String extend, String implement) {
         super(access, Novelty.NORMAL, "interface", typeName, Multiplicity.INSTANCE, Mutability.MUTABLE);
         this.extend = extend;
         this.implement = implement;
         this.methods = new ArrayList<>();
-        this.setTypeName(typeName);
+        this.typeName = typeName;
     }
 
     /**
@@ -53,14 +54,6 @@ public class JavaInterface extends JavaDeclaration implements JavaFile {
     @Override
     public String getTypeName() {
         return this.typeName;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
     }
 
     /**
