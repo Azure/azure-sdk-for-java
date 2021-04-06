@@ -3,6 +3,7 @@
 
 package com.azure.digitaltwins.parser.implementation.codegen;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.io.IOException;
@@ -95,11 +96,11 @@ public class JavaMethod extends JavaDeclaration {
             logger.logThrowableAsError(new StyleException("Documentation text of method '" + this.getName() + "' must end with a period -- SA1629."));
         }
 
-        TypeParameter tp = new TypeParameter();
-        tp.name = name;
-        tp.description = description;
+        this.typeParameters.add(
+            new TypeParameter()
+                .name(name)
+                .description(description));
 
-        this.typeParameters.add(tp);
         return this;
     }
 
@@ -116,12 +117,12 @@ public class JavaMethod extends JavaDeclaration {
             logger.logThrowableAsError(new StyleException("Documentation text of method '" + this.getName() + "' must end with a period -- SA1629."));
         }
 
-        Parameter param = new Parameter();
-        param.type = type;
-        param.name = name;
-        param.description = description;
+        this.parameters.add(
+            new Parameter()
+                .type(type)
+                .name(name)
+                .description(description));
 
-        this.parameters.add(param);
         return this;
     }
 
@@ -204,6 +205,7 @@ public class JavaMethod extends JavaDeclaration {
         }
     }
 
+    @Fluent
     static class TypeParameter {
         private String name;
         private String description;
@@ -212,20 +214,22 @@ public class JavaMethod extends JavaDeclaration {
             return this.name;
         }
 
-        public void setName(String value) {
+        public TypeParameter name(String value) {
             this.name = value;
+            return this;
         }
 
         public String getDescription() {
             return this.description;
         }
 
-        public void setDescription(String value) {
+        public TypeParameter description(String value) {
             this.description = value;
+            return this;
         }
-
     }
 
+    @Fluent
     static class Parameter {
         private String type;
         private String name;
@@ -235,24 +239,27 @@ public class JavaMethod extends JavaDeclaration {
             return this.type;
         }
 
-        public void setType(String value) {
+        public Parameter type(String value) {
             this.type = value;
+            return this;
         }
 
         public String getName() {
             return this.name;
         }
 
-        public void setName(String value) {
+        public Parameter name(String value) {
             this.name = value;
+            return this;
         }
 
         public String getDescription() {
             return this.description;
         }
 
-        public void setDescription(String value) {
+        public Parameter description(String value) {
             this.description = value;
+            return this;
         }
     }
 }
