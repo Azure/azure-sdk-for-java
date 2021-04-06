@@ -3,6 +3,8 @@
 
 package com.azure.digitaltwins.parser.implementation.codegen;
 
+import java.io.IOException;
+
 /**
  * Interface for top-level declarations in java code files.
  */
@@ -14,9 +16,14 @@ public interface JavaFile {
     String getTypeName();
 
     /**
+     * Sets the type name of the declaration.
+     */
+    void setTypeName(String typeName);
+
+    /**
      * Generate code for the file.
      *
      * @param codeWriter A {@link CodeWriter} object for generating the file code.
      */
-    void generateCode(CodeWriter codeWriter);
+    void generateCode(CodeWriter codeWriter) throws IOException;
 }
