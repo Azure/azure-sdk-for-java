@@ -65,12 +65,14 @@ it uses the configuration with the format of `spring.cloud.stream.bindings.<chan
 
 ##### Partition configuration
 
-The partition key is the hash value of the message payload byte[] type by default.
-When using a special header to partition, we first get the partition ID from the header `azure_partition_id`, 
-and then get the partition key from the header `azure_partition_key`.
+The system will obtain the parameter `PartitionSupply` to send the message, 
+the following is the process of obtaining the priority of the partition ID and key:
 
-It also supports to specify the following configuration items to 
-set the partition key to calculate the partition ID
+**Create PartitionSupply parameter process**:
+
+![Create PartitionSupply parameter process](resource/create-partition-supply-process.png)
+
+The following are configuration items related to the producer:
 
 **_partition-count_**
 
