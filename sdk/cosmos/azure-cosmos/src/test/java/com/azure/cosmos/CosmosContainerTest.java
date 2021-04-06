@@ -13,19 +13,7 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.models.ClientEncryptionIncludedPath;
-import com.azure.cosmos.models.ClientEncryptionPolicy;
-import com.azure.cosmos.models.ChangeFeedPolicy;
-import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.CosmosContainerRequestOptions;
-import com.azure.cosmos.models.CosmosContainerResponse;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedRange;
-import com.azure.cosmos.models.IndexingMode;
-import com.azure.cosmos.models.IndexingPolicy;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.models.*;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import org.testng.annotations.AfterClass;
@@ -694,7 +682,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         paths.add("/zipcode");
         partitionKeyDefinition.setPaths(paths);
 
-        CosmosContainerProperties containerProperties = getContainerDefinition(collectionName, partitionKeyDefinition);
+        CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName, partitionKeyDefinition);
 
         //MultiHash collection create
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);

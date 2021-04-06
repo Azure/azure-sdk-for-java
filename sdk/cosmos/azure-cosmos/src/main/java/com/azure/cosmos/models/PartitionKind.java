@@ -3,6 +3,9 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.util.Beta;
+import com.azure.cosmos.util.Beta.SinceVersion;
+
 /**
  * Specifies the partition scheme for an multiple-partitioned container in the Azure Cosmos DB database service.
  */

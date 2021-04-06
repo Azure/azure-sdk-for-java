@@ -1,11 +1,17 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.util.Beta;
+import com.azure.cosmos.util.Beta.SinceVersion;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Beta(value = SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public class PartitionKeyBuilder {
     private final List<Object> partitionKeyValues;
 
@@ -17,38 +23,32 @@ public class PartitionKeyBuilder {
         this.partitionKeyValues = new ArrayList<Object>();
     }
 
-    public PartitionKeyBuilder Add(String value)
-    {
+    public PartitionKeyBuilder add(String value) {
         this.partitionKeyValues.add(value);
         return this;
     }
 
-    public PartitionKeyBuilder Add(double value)
-    {
+    public PartitionKeyBuilder add(double value) {
         this.partitionKeyValues.add(value);
         return this;
     }
 
-    public PartitionKeyBuilder Add(boolean value)
-    {
+    public PartitionKeyBuilder add(boolean value) {
         this.partitionKeyValues.add(value);
         return this;
     }
 
-    public PartitionKeyBuilder AddNullValue()
-    {
+    public PartitionKeyBuilder addNullValue() {
         this.partitionKeyValues.add(null);
         return this;
     }
 
-    public PartitionKeyBuilder AddNoneValue()
-    {
+    public PartitionKeyBuilder addNoneValue() {
         this.partitionKeyValues.add(PartitionKey.NONE);
         return this;
     }
 
-    public PartitionKey Build()
-    {
+    public PartitionKey build() {
         // Why these checks?
         // These changes are being added for SDK to support multiple paths in a partition key.
         //
@@ -59,13 +59,11 @@ public class PartitionKeyBuilder {
         //
         // For collections with multiple path keys, absence of a partition key values is
         // always treated as a PartitionKey.Undefined.
-        if(this.partitionKeyValues.size() == 0)
-        {
+        if(this.partitionKeyValues.size() == 0) {
             throw new IllegalArgumentException("No partition key value has been specified");
         }
 
-        if(this.partitionKeyValues.size() == 1 && PartitionKey.NONE.equals(this.partitionKeyValues.get(0)))
-        {
+        if(this.partitionKeyValues.size() == 1 && PartitionKey.NONE.equals(this.partitionKeyValues.get(0))) {
             return PartitionKey.NONE;
         }
 
@@ -73,12 +71,10 @@ public class PartitionKeyBuilder {
         Object[] valueArray = new Object[this.partitionKeyValues.size()];
         for(int i = 0; i < this.partitionKeyValues.size(); i++) {
             Object val = this.partitionKeyValues.get(i);
-            if(PartitionKey.NONE.equals(val))
-            {
+            if(PartitionKey.NONE.equals(val)) {
                 valueArray[i] = Undefined.value();
             }
-            else
-            {
+            else {
                 valueArray[i] = val;
             }
         }

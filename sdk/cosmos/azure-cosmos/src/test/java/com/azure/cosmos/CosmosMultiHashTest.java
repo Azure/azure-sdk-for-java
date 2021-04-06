@@ -6,13 +6,15 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.models.*;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.PartitionKind;
+import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
 import com.azure.cosmos.rx.TestSuiteBase;
-import com.azure.cosmos.util.CosmosPagedIterable;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -55,7 +57,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         paths.add("/zipcode");
         partitionKeyDefinition.setPaths(paths);
 
-        CosmosContainerProperties containerProperties = getContainerDefinition(collectionName, partitionKeyDefinition);
+        CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName, partitionKeyDefinition);
 
         //MultiHash collection create
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
@@ -87,7 +89,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         PartitionKey partitionKey = new PartitionKey(pkValue);
 
         String documentId = UUID.randomUUID().toString();
-        ObjectNode properties = getDocumentDefinition(documentId, pkIds);
+        ObjectNode properties =  getItem(documentId, pkIds);
         createdMultiHashContainer.createItem(properties);
 
         CosmosItemResponse<ObjectNode> readResponse1 = createdMultiHashContainer.readItem(
