@@ -99,8 +99,7 @@ public class JavaMethod extends JavaDeclaration {
         this.typeParameters.add(tp);
         return this;
     }
-
-
+    
     /**
      * Add a parameter to the method.
      *
