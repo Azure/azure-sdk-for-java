@@ -111,10 +111,10 @@ Please refer to `azure-storage-blob` for common use cases of the `BlobClient`
 
 The following sections provide several code snippets covering some of the most common Azure Storage Blob cryptography creation tasks, including:
 
-- [Create an `EncryptedBlobClient` from a `BlobClient`](#create-blobclient)
-- [Create an `EncryptedBlobClient`](#create)
-- [Use a `LocalKeyEncryptionKey`](#localkeyencryptionkey)
-- [Use a `KeyVaultKey`](#keyvaultkey)
+- [Create an `EncryptedBlobClient` from a `BlobClient`](#create-an-encryptedblobclient-from-a-blobclient)
+- [Create an `EncryptedBlobClient`](#create-an-encryptedblobclient)
+- [Use a `LocalKeyEncryptionKey`](#use-a-local-keyencryptionkey)
+- [Use a `KeyVaultKey`](#use-a-keyvaultkey)
 
 ### Create an `EncryptedBlobClient` from a `BlobClient`
 
@@ -142,14 +142,14 @@ EncryptedBlobClient client = new EncryptedBlobClientBuilder()
     .buildEncryptedBlobClient();
 ```
 
-### Use a `LocalKeyEncryptionKey`
+### Use a local `KeyEncryptionKey`
 
 <!-- embedme ./src/samples/java/com/azure/storage/blob/specialized/cryptography/ReadmeSamples.java#L59-L68 -->
 ```java
 JsonWebKey localKey = JsonWebKey.fromAes(new SecretKeySpec(keyBytes, secretKeyAlgorithm),
     Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY))
     .setId("my-id");
-AsyncKeyEncryptionKey akek = new LocalKeyEncryptionKeyClientBuilder()
+    AsyncKeyEncryptionKey akek = new KeyEncryptionKeyClientBuilder()
     .buildAsyncKeyEncryptionKey(localKey).block();
 
 EncryptedBlobClient client = new EncryptedBlobClientBuilder()
