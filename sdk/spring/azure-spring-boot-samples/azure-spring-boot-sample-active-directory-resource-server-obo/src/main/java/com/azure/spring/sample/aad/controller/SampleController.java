@@ -31,6 +31,8 @@ public class SampleController {
 
     private static final String CUSTOM_LOCAL_FILE_ENDPOINT = "http://localhost:8082/webapiB";
 
+    private static final String CUSTOM_LOCAL_READ_ENDPOINT = "http://localhost:8083/webapiC";
+
     @Autowired
     private WebClient webClient;
 
@@ -134,7 +136,7 @@ public class SampleController {
     public String callClientCredential() {
         String body = webClient
             .get()
-            .uri("http://localhost:8083/webapiC")
+            .uri(CUSTOM_LOCAL_READ_ENDPOINT)
             .attributes(clientRegistrationId("webapiC"))
             .retrieve()
             .bodyToMono(String.class)

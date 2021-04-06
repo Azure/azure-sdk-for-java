@@ -254,7 +254,7 @@ To use **aad-starter** in this scenario, we need these steps:
 
     Using `@RegisteredOAuth2AuthorizedClient` to access related resource server:
 
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L59-L63 --> 
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L64-L68 --> 
     ```java
     @PreAuthorize("hasAuthority('SCOPE_Obo.Graph.Read')")
     @GetMapping("call-graph")
@@ -395,14 +395,14 @@ Here are some examples about how to use these properties:
     ```
 
 * Step 2: Write Java code:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L125-L137 -->
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L134-L146 -->
     ```java
     @PreAuthorize("hasAuthority('SCOPE_Obo.WebApiA.ClientCredentialExampleScope')")
     @GetMapping("webapiA/webapiC")
     public String callClientCredential() {
         String body = webClient
                     .get()
-                    .uri("http://localhost:8083/webapiC")
+                    .uri(CUSTOM_LOCAL_READ_ENDPOINT)
                     .attributes(clientRegistrationId("webapiC"))
                     .retrieve()
                     .bodyToMono(String.class)
@@ -515,7 +515,7 @@ In [Resource server visiting other resource server] scenario(For better descript
       
 * Step 5: Write your Java code:  	
     - webapp :
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/WebapiController.java#L34-L38 -->    
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/WebApiController.java#L34-L38 -->    
     ```java
     @GetMapping("/webapp/webapiA/webapiB")
     @ResponseBody
@@ -524,7 +524,7 @@ In [Resource server visiting other resource server] scenario(For better descript
     }
     ```
     - webapiA:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L70-L75 -->    
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L76-L81 -->    
     ```java
     @GetMapping("/webapiA/webapiB")
     @PreAuthorize("hasAuthority('SCOPE_File.Read')")
@@ -533,7 +533,7 @@ In [Resource server visiting other resource server] scenario(For better descript
     }
     ```
     - webapiB:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/HomeController.java#L16-L21 -->      
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/src/main/java/com/azure/spring/sample/aad/controller/HomeController.java#L16-L21 -->      
     ```java
     @GetMapping("/webapiB")
     @PreAuthorize("hasAuthority('SCOPE_File.Read')")
