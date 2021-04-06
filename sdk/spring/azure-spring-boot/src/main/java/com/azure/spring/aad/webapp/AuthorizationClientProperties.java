@@ -26,10 +26,6 @@ public class AuthorizationClientProperties {
         this.authorizationGrantType = authorizationGrantType;
     }
 
-    public boolean isClientCredential(){
-        return AADAuthorizationGrantType.CLIENT_CREDENTIALS.equals(authorizationGrantType);
-    }
-
     public void setScopes(List<String> scopes) {
         this.scopes = scopes;
     }

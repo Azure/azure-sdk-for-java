@@ -68,7 +68,7 @@ public abstract class AADClientRegistrationRepository implements ClientRegistrat
             clientRegistration.getClientName());
     }
 
-    public boolean isClientCredentials(String clientId){
+    public boolean isClientCredentials(String clientId) {
         return AADAuthorizationGrantType.CLIENT_CREDENTIALS.getValue().equals(
             allClients.get(clientId).getAuthorizationGrantType().getValue());
     }
