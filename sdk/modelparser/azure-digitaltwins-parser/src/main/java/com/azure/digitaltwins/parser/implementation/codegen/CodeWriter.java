@@ -6,6 +6,7 @@ package com.azure.digitaltwins.parser.implementation.codegen;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Class for writing lines of generated code to a file.
@@ -26,7 +27,7 @@ public class CodeWriter {
      */
     public CodeWriter(String filePath) throws IOException {
         FileOutputStream fileStream = new FileOutputStream(filePath);
-        this.fileWriter = new OutputStreamWriter(fileStream, "UTF-8");
+        this.fileWriter = new OutputStreamWriter(fileStream, StandardCharsets.UTF_8);
         this.indentedFileWriter = new IndentedFileWriter(fileWriter, INDENTATION);
     }
 

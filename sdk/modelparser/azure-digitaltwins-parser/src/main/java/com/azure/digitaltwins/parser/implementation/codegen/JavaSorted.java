@@ -9,14 +9,14 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Generator for a series of java code lines whose code-generation order is determined by a lexicoraphical sort rather than the order in which they are added.
+ * Generator for a series of java code lines whose code-generation order is determined by a lexicographical sort rather than the order in which they are added.
  * A {@link JavaSorted} object is appropriate for blocks of code for which :
  * (a) Lines are added in arbitrary order, perhaps by multiple sources.
  * (b) The order of the lines is not important for correctness.
  * (c) A consistent order aids readability and eases diffing across generated versions.
  */
 public class JavaSorted extends JavaStatement {
-    private List<JavaStatement> javaStatements;
+    private final List<JavaStatement> javaStatements;
 
     public JavaSorted() {
         this.javaStatements = new ArrayList<>();

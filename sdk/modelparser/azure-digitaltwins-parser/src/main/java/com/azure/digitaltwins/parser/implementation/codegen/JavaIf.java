@@ -7,7 +7,7 @@ package com.azure.digitaltwins.parser.implementation.codegen;
  *
  */
 public class JavaIf extends JavaScope {
-    private StatementAdder parent;
+    private final StatementAdder parent;
 
     /**
      * Initializes a new instance of the {@link JavaIf} class.

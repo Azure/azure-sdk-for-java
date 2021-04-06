@@ -12,8 +12,8 @@ import java.util.List;
  */
 public class JavaScope extends JavaStatement implements StatementAdder {
 
-    private String headText;
-    private List<JavaStatement> javaStatementList;
+    private final String headText;
+    private final List<JavaStatement> javaStatementList;
 
     /**
      * Boolean value indicating whether the blank line preceding the scope should be suppressed.
@@ -180,7 +180,7 @@ public class JavaScope extends JavaStatement implements StatementAdder {
      *
      * @return The {@link JavaScope} object itself.
      */
-    public JavaScope addbreak() {
+    public JavaScope addBreak() {
         this.javaStatementList.add(new JavaBreak());
         return this;
     }
