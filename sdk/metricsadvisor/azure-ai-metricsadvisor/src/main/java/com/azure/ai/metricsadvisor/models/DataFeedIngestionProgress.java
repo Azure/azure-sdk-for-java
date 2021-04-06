@@ -12,21 +12,21 @@ import java.time.OffsetDateTime;
 @Immutable
 public final class DataFeedIngestionProgress {
     /*
-     * the timestamp of lastest success ingestion job.
+     * the timestamp of latest success ingestion job.
      * null indicates not available
      */
     @JsonProperty(value = "latestSuccessTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime latestSuccessTimestamp;
 
     /*
-     * the timestamp of lastest ingestion job with status update.
+     * the timestamp of latest ingestion job with status update.
      * null indicates not available
      */
     @JsonProperty(value = "latestActiveTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime latestActiveTimestamp;
 
     /**
-     * Get the latestSuccessTimestamp property: the timestamp of lastest success ingestion job. null indicates not
+     * Get the latestSuccessTimestamp property: the timestamp of latest success ingestion job. null indicates not
      * available.
      *
      * @return the latestSuccessTimestamp value.
@@ -36,7 +36,7 @@ public final class DataFeedIngestionProgress {
     }
 
     /**
-     * Get the latestActiveTimestamp property: the timestamp of lastest ingestion job with status update. null indicates
+     * Get the latestActiveTimestamp property: the timestamp of latest ingestion job with status update. null indicates
      * not available.
      *
      * @return the latestActiveTimestamp value.
