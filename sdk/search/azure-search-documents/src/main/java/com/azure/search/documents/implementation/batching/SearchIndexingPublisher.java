@@ -45,6 +45,8 @@ import java.util.stream.Collectors;
  */
 public final class SearchIndexingPublisher<T> {
     private static final double JITTER_FACTOR = 0.05;
+    private static final String BATCH_SIZE_SCALED_DOWN =
+        "Scaling down batch size due to 413 (Payload too large) response.{}Scaled down from {} to {}";
 
     private final ClientLogger logger = new ClientLogger(SearchIndexingPublisher.class);
 
@@ -139,6 +141,8 @@ public final class SearchIndexingPublisher<T> {
                 }
                 this.actions.add(action);
             });
+
+        logger.verbose("Actions added, new pending queue size: {}.", this.actions.size());
 
         if (autoFlush && batchAvailableForProcessing()) {
             rescheduleFlush.run();
@@ -236,6 +240,8 @@ public final class SearchIndexingPublisher<T> {
         List<com.azure.search.documents.implementation.models.IndexAction> actions,
         List<TryTrackingIndexAction<T>> batchActions,
         Context context) {
+        logger.verbose("Sending a batch of size {}.", batchActions.size());
+
         if (onActionSentConsumer != null) {
             batchActions.forEach(action -> onActionSentConsumer.accept(new OnActionSentOptions<>(action.getAction())));
         }
@@ -264,8 +270,6 @@ public final class SearchIndexingPublisher<T> {
                  */
                 int statusCode = exception.getResponse().getStatusCode();
                 if (statusCode == HttpURLConnection.HTTP_ENTITY_TOO_LARGE) {
-                    logger.verbose("Scaling down batch size due to 413 (Payload too large) response.");
-
                     /*
                      * Pass both the sent batch size and the configured batch size. This covers that case where the
                      * sent batch size was smaller than the configured batch size and a 413 was trigger.
@@ -277,7 +281,7 @@ public final class SearchIndexingPublisher<T> {
                     int previousBatchSize = Math.min(batchActionCount, actions.size());
                     this.batchActionCount = Math.max(1, scaleDownFunction.apply(previousBatchSize));
 
-                    logger.verbose("Scaled down from {} to {}.", previousBatchSize, batchActionCount);
+                    logger.verbose(BATCH_SIZE_SCALED_DOWN, System.lineSeparator(), previousBatchSize, batchActionCount);
 
                     int actionCount = actions.size();
                     if (actionCount == 1) {
