@@ -61,6 +61,7 @@ import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.BUSINESS_CARD;
+import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.ID;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.INVOICE;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.RECEIPT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
@@ -97,6 +98,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final String MULTIPAGE_BUSINESS_CARD_PDF = "business-card-multipage.pdf";
     static final String INVOICE_PDF = "Invoice_1.pdf";
     static final String MULTIPAGE_VENDOR_INVOICE_PDF = "multipage_vendor_invoice.pdf";
+    static final String LICENSE_CARD_JPG = "license.jpg";
 
     // Error code
     static final String BAD_ARGUMENT_CODE = "BadArgument";
@@ -104,7 +106,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final String INVALID_MODEL_ID_ERROR_CODE = "1001";
     static final String MODEL_ID_NOT_FOUND_ERROR_CODE = "1022";
     static final String URL_BADLY_FORMATTED_ERROR_CODE = "2001";
-    static final String UNABLE_TO_READ_FILE_ERROR_CODE = "2005";
 
     // Error Message
     static final String HTTPS_EXCEPTION_MESSAGE =
@@ -128,8 +129,13 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final List<String> INVOICE_FIELDS = Arrays.asList("CustomerAddressRecipient", "InvoiceId", "VendorName",
         "VendorAddress", "CustomerAddress", "CustomerName", "InvoiceTotal", "DueDate", "InvoiceDate");
 
+    // ID Document fields
+    static final List<String> ID_DOCUMENT_FIELDS = Arrays.asList("Country", "DateOfBirth", "DateOfExpiration",
+        "DocumentNumber", "FirstName", "LastName", "Nationality", "Sex", "MachineReadableZone", "DocumentType",
+        "Address", "Region");
+
     enum PrebuiltType {
-        RECEIPT, BUSINESS_CARD, INVOICE
+        RECEIPT, BUSINESS_CARD, INVOICE, ID
     }
 
     Duration durationTestMode;
@@ -721,6 +727,17 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
                     validateFieldValueTransforms(expectedInvoiceFields.get(invoiceField),
                         actualRecognizedInvoiceFields.get(invoiceField),
+                        rawReadResults,
+                        includeFieldElements);
+                });
+            } else if (ID.equals(prebuiltType)) {
+                assertTrue(actualForm.getFormType().startsWith("prebuilt:idDocument"));
+                ID_DOCUMENT_FIELDS.forEach(idDocumentField -> {
+                    final Map<String, FormField> actualRecognizedDocumentFields = actualForm.getFields();
+                    Map<String, FieldValue> expectedIDDocumentFields = rawDocumentResult.getFields();
+
+                    validateFieldValueTransforms(expectedIDDocumentFields.get(idDocumentField),
+                        actualRecognizedDocumentFields.get(idDocumentField),
                         rawReadResults,
                         includeFieldElements);
                 });

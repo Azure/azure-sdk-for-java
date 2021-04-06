@@ -2,6 +2,8 @@
 
 ## 4.2.0-beta.5 (Unreleased)
 
+### New features
+- Added support to specify whether or not a pipeline policy should be added per call or per retry.
 
 ## 4.2.0-beta.4 (2021-03-12)
 

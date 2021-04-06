@@ -25,9 +25,9 @@ import scala.collection.JavaConverters._
 
 private object ItemsTable {
   private[spark] val defaultSchemaForInferenceDisabled = StructType(Seq(
-    StructField(RawJsonBodyAttributeName, StringType),
-    StructField(IdAttributeName, StringType),
-    StructField(TimestampAttributeName, LongType)
+    StructField(RawJsonBodyAttributeName, StringType, nullable=false),
+    StructField(IdAttributeName, StringType, nullable=false),
+    StructField(TimestampAttributeName, LongType, nullable=false)
   ))
 }
 

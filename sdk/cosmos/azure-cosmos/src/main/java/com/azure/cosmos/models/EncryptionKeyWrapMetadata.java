@@ -13,7 +13,7 @@ import java.util.Objects;
 /**
  * Metadata that a key wrapping provider can use to wrap/unwrap data encryption keys.
  */
-@Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+@Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class EncryptionKeyWrapMetadata {
 
     /**
@@ -27,7 +27,7 @@ public final class EncryptionKeyWrapMetadata {
      *
      * @param source Existing instance from which to initialize.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public EncryptionKeyWrapMetadata(EncryptionKeyWrapMetadata source) {
         this.type = source.type;
         this.algorithm = source.algorithm;
@@ -40,7 +40,7 @@ public final class EncryptionKeyWrapMetadata {
      * @param name Name of the metadata.
      * @param value Value of the metadata.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public EncryptionKeyWrapMetadata(String name, String value) {
         this("custom", name, value, null);
     }
@@ -81,7 +81,7 @@ public final class EncryptionKeyWrapMetadata {
      * credential information.
      * @return value of metadata
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getValue() {
         return value;
     }
@@ -93,7 +93,7 @@ public final class EncryptionKeyWrapMetadata {
      * credential information.
      * @return name of metadata.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getName() {
         return name;
     }
