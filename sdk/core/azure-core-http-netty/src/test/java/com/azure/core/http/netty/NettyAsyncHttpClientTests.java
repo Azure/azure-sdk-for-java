@@ -14,6 +14,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.MockProxyServer;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
+import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -405,18 +406,25 @@ public class NettyAsyncHttpClientTests {
         try (MockProxyServer mockProxyServer = new MockProxyServer("1", "1")) {
             AtomicInteger responseHandleCount = new AtomicInteger();
 
+            RetryPolicy retryPolicy = new RetryPolicy(new FixedDelay(3, Duration.ofSeconds(5)));
+            ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress())
+                .setCredentials("1", "1");
+
+            // Create an HttpPipeline where any exception has a retry delay of 5 seconds.
             HttpPipeline httpPipeline = new HttpPipelineBuilder()
-                .policies(new RetryPolicy(),
-                    (context, next) -> next.process().doOnNext(ignored -> responseHandleCount.incrementAndGet()))
-                .httpClient(new NettyAsyncHttpClientBuilder()
-                    .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress())
-                        .setCredentials("1", "1"))
-                    .build())
+                .policies(retryPolicy, (context, next) -> next.process()
+                    .doOnNext(ignored -> responseHandleCount.incrementAndGet()))
+                .httpClient(new NettyAsyncHttpClientBuilder().proxy(proxyOptions).build())
                 .build();
 
-            StepVerifier.create(httpPipeline.send(new HttpRequest(HttpMethod.GET, url(server, PROXY_TO_ADDRESS))))
+            // Run a reactive request verifier where it is expected to complete in 2 seconds.
+            // This will strongly validate that we are not bubbling any ProxyConnect exceptions back to the retry
+            // policy as that has a retry delay of 5 seconds.
+            StepVerifier.create(httpPipeline.send(new HttpRequest(HttpMethod.GET, url(server, PROXY_TO_ADDRESS)),
+                new Context("azure-eagerly-read-response", true)))
                 .assertNext(response -> assertEquals(418, response.getStatusCode()))
-                .verifyComplete();
+                .expectComplete()
+                .verify(Duration.ofSeconds(2));
 
             assertEquals(1, responseHandleCount.get());
         }

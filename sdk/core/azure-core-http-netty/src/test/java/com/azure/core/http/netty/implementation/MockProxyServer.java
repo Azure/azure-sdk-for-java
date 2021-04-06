@@ -7,6 +7,7 @@ import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.CoreUtils;
 import io.netty.handler.codec.http.HttpHeaders;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.netty.ConnectionObserver;
 import reactor.netty.DisposableServer;
 import reactor.netty.http.client.HttpClient;
@@ -107,7 +108,7 @@ public final class MockProxyServer implements Closeable {
         return expectedAuthenticationValue.equals(proxyAuthenticationHeader);
     }
 
-    private Flux<Void> forwardProxiedRequest(HttpServerRequest serverRequest,
+    private Mono<Void> forwardProxiedRequest(HttpServerRequest serverRequest,
         HttpServerResponse serverResponse) {
         String uri = serverRequest.requestHeaders().get("host") + serverRequest.uri();
         return FORWARDING_CLIENT.request(serverRequest.method())
@@ -116,9 +117,10 @@ public final class MockProxyServer implements Closeable {
                 request.headers(serverRequest.requestHeaders());
                 return outbound.send(serverRequest.receive());
             })
-            .response((response, body) -> serverResponse.status(response.status())
+            .responseSingle((response, body) -> serverResponse.status(response.status())
                 .headers(response.responseHeaders())
                 .sendHeaders()
-                .send(body));
+                .send(body)
+                .then());
     }
 }
