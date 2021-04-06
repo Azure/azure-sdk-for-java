@@ -121,7 +121,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
         if (Strings.isNullOrEmpty(keyId)) {
             throw logger.logExceptionAsError(new IllegalStateException(
                 "An Azure Key Vault key identifier cannot be null and is required to build the key encryption key "
-                    + "async client."));
+                    + "client."));
         }
 
         CryptographyServiceVersion serviceVersion = builder.getServiceVersion() != null ? builder.getServiceVersion() : CryptographyServiceVersion.getLatest();
@@ -132,8 +132,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
 
         if (builder.getCredential() == null) {
             throw logger.logExceptionAsError(new IllegalStateException(
-                "Azure Key Vault credentials cannot be null and are required to build a key encryption key async "
-                    + "client."));
+                "Azure Key Vault credentials cannot be null and are required to build a key encryption key client."));
         }
 
         HttpPipeline pipeline = builder.setupPipeline();

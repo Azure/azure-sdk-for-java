@@ -112,7 +112,7 @@ public class CryptographyAsyncClient {
         }
 
         this.key = jsonWebKey;
-        this.keyId = null;
+        this.keyId = jsonWebKey.getId();
         this.service = null;
         this.cryptographyServiceClient = null;
 
@@ -130,7 +130,7 @@ public class CryptographyAsyncClient {
             this.localKeyCryptographyClient = new EcKeyCryptographyClient(this.key, this.cryptographyServiceClient);
         } else if (key.getKeyType().equals(OCT) || key.getKeyType().equals(OCT_HSM)) {
             this.localKeyCryptographyClient =
-                new SymmetricKeyCryptographyClient(this.key, this.cryptographyServiceClient);
+                new AesKeyCryptographyClient(this.key, this.cryptographyServiceClient);
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The JSON Web Key type: %s is not supported.", this.key.getKeyType().toString())));

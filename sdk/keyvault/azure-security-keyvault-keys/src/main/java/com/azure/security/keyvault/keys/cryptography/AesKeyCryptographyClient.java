@@ -21,23 +21,23 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Objects;
 
-class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
+class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
     static final int AES_BLOCK_SIZE = 16;
 
-    private final ClientLogger logger = new ClientLogger(SymmetricKeyCryptographyClient.class);
+    private final ClientLogger logger = new ClientLogger(AesKeyCryptographyClient.class);
 
     private byte[] key;
 
     /**
-     * Creates a {@link SymmetricKeyCryptographyClient} to perform local cryptography operations.
+     * Creates a {@link AesKeyCryptographyClient} to perform local cryptography operations.
      *
      * @param serviceClient The client to route the requests through.
      */
-    SymmetricKeyCryptographyClient(CryptographyServiceClient serviceClient) {
+    AesKeyCryptographyClient(CryptographyServiceClient serviceClient) {
         super(serviceClient);
     }
 
-    SymmetricKeyCryptographyClient(JsonWebKey key, CryptographyServiceClient serviceClient) {
+    AesKeyCryptographyClient(JsonWebKey key, CryptographyServiceClient serviceClient) {
         super(serviceClient);
         this.key = key.toAes().getEncoded();
     }

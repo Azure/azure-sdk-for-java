@@ -161,9 +161,6 @@ public final class CryptographyClientBuilder {
             HttpPipeline pipeline = setupPipeline();
 
             return new CryptographyAsyncClient(keyId, pipeline, serviceVersion);
-        } else if (!Strings.isNullOrEmpty(keyId)) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                "An Azure Key Vault key identifier must not be provided in conjunction with a JSON Web Key."));
         } else {
             return new CryptographyAsyncClient(jsonWebKey);
         }
