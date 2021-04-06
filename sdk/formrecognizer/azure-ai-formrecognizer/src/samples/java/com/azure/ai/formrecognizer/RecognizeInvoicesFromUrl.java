@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Sample for recognizing commonly found invoice fields from a file source URL of an invoice document.
