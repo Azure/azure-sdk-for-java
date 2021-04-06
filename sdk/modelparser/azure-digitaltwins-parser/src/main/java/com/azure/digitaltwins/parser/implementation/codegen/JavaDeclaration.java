@@ -172,7 +172,7 @@ public class JavaDeclaration {
     public void addAttributes(String text) {
         this.attributes.add(text);
     }
-    
+
     /**
      * Generate code for the declaration.
      *
