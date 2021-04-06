@@ -380,6 +380,37 @@ Here are some examples about how to use these properties:
     After the scopes have been consented, AAD server will remember that this user has already granted 
     the permission to the web application. So incremental consent will not happen anymore after user 
     consented.
+  
+#### Property example 4: [Client credential flow] in resource server visiting resource servers.
+
+* Step 1: Add property in application.yml
+    ```yaml
+    azure:
+      activedirectory:
+        authorization-clients:
+          webapiC:                          # When authorization-grant-type is null, on behalf of flow is used by default
+            authorization-grant-type: client_credentials
+            scopes:
+                - <Web-API-C-app-id-url>/.default
+    ```
+
+* Step 2: Write Java code:
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L125-L137 -->
+    ```java
+    @PreAuthorize("hasAuthority('SCOPE_Obo.WebApiA.ClientCredentialExampleScope')")
+    @GetMapping("webapiA/webapiC")
+    public String callClientCredential() {
+        String body = webClient
+                    .get()
+                    .uri("http://localhost:8083/webapiC")
+                    .attributes(clientRegistrationId("webapiC"))
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+        LOGGER.info("Response from Client Credential: {}", body);
+        return "client Credential response " + (null != body ? "success." : "failed.");
+    }
+    ```
 
 ### Advanced features
 

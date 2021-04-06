@@ -19,6 +19,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.clientRegistrationId;
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
 
 @RestController
@@ -38,6 +39,7 @@ public class SampleController {
 
     /**
      * Call the graph resource, return user information
+     *
      * @return Response with graph data
      */
     @PreAuthorize("hasAuthority('SCOPE_Obo.Graph.Read')")
@@ -53,6 +55,7 @@ public class SampleController {
 
     /**
      * Call the graph resource with annotation, return user information
+     *
      * @param graph authorized client for Graph
      * @return Response with graph data
      */
@@ -64,6 +67,7 @@ public class SampleController {
 
     /**
      * Call custom resources, combine all the response and return.
+     *
      * @param webapiBClient authorized client for Custom
      * @return Response Graph and Custom data.
      */
@@ -76,6 +80,7 @@ public class SampleController {
 
     /**
      * Call microsoft graph me endpoint
+     *
      * @param graph Authorized Client
      * @return Response string data.
      */
@@ -97,6 +102,7 @@ public class SampleController {
 
     /**
      * Call custom local file endpoint
+     *
      * @param webapiBClient Authorized Client
      * @return Response string data.
      */
@@ -114,5 +120,26 @@ public class SampleController {
         } else {
             return "webapiB response failed.";
         }
+    }
+
+    /**
+     * Access to protected data through client credential flow. The access token is obtained by webclient, or
+     * <p>@RegisteredOAuth2AuthorizedClient("webapiC")</p>. In the end, these two approaches will be executed to
+     * DefaultOAuth2AuthorizedClientManager#authorize method, get the access token.
+     *
+     * @return Respond to protected data.
+     */
+    @PreAuthorize("hasAuthority('SCOPE_Obo.WebApiA.ExampleScope')")
+    @GetMapping("webapiA/webapiC")
+    public String callClientCredential() {
+        String body = webClient
+            .get()
+            .uri("http://localhost:8083/webapiC")
+            .attributes(clientRegistrationId("webapiC"))
+            .retrieve()
+            .bodyToMono(String.class)
+            .block();
+        LOGGER.info("Response from Client Credential: {}", body);
+        return "client Credential response " + (null != body ? "success." : "failed.");
     }
 }
