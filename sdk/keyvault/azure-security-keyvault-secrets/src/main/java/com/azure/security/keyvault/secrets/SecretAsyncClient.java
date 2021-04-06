@@ -68,8 +68,7 @@ public final class SecretAsyncClient {
     private final String vaultUrl;
     private final SecretService service;
     private final ClientLogger logger = new ClientLogger(SecretAsyncClient.class);
-
-    final HttpPipeline pipeline;
+    private final HttpPipeline pipeline;
 
     /**
      * Creates a SecretAsyncClient that uses {@code pipeline} to service requests

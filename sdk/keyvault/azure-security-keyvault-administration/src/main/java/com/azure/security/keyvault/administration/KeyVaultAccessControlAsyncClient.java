@@ -79,7 +79,7 @@ public final class KeyVaultAccessControlAsyncClient {
     /**
      * The {@link HttpPipeline} powering this client.
      */
-    final HttpPipeline pipeline;
+    private final HttpPipeline pipeline;
 
     /**
      * Package private constructor to be used by {@link KeyVaultAccessControlClientBuilder}.

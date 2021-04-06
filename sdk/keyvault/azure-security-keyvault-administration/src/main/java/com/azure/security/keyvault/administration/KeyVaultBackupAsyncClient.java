@@ -80,7 +80,7 @@ public final class KeyVaultBackupAsyncClient {
     /**
      * The {@link HttpPipeline} powering this client.
      */
-    final HttpPipeline pipeline;
+    private final HttpPipeline pipeline;
 
     static Duration getDefaultPollingInterval() {
         return DEFAULT_POLLING_INTERVAL;

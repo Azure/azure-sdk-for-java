@@ -87,7 +87,7 @@ public final class CertificateAsyncClient {
     private final CertificateService service;
     private final ClientLogger logger = new ClientLogger(CertificateAsyncClient.class);
 
-    final HttpPipeline pipeline;
+    private final HttpPipeline pipeline;
 
     /**
      * Creates a CertificateAsyncClient that uses {@code pipeline} to service requests

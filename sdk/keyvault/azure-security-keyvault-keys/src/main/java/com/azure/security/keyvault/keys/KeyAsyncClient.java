@@ -75,8 +75,7 @@ public final class KeyAsyncClient {
     private final String vaultUrl;
     private final KeyService service;
     private final ClientLogger logger = new ClientLogger(KeyAsyncClient.class);
-
-    final HttpPipeline pipeline;
+    private final HttpPipeline pipeline;
 
     /**
      * Creates a KeyAsyncClient that uses {@code pipeline} to service requests

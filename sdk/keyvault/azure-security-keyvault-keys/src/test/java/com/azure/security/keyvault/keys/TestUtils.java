@@ -24,7 +24,7 @@ public final class TestUtils {
     private TestUtils() {
     }
 
-    static class PerCallPolicy implements HttpPipelinePolicy {
+    public static class PerCallPolicy implements HttpPipelinePolicy {
         @Override
         public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
             context.getHttpRequest().setHeader("Custom-Header", "Some Value");
@@ -37,7 +37,7 @@ public final class TestUtils {
         }
     }
 
-    static class PerRetryPolicy implements HttpPipelinePolicy {
+    public static class PerRetryPolicy implements HttpPipelinePolicy {
         @Override
         public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
             context.getHttpRequest().setHeader("Custom-Header", "Some Value");
@@ -45,7 +45,7 @@ public final class TestUtils {
         }
     }
 
-    static class TestCredential implements TokenCredential {
+    public static class TestCredential implements TokenCredential {
         @Override
         public Mono<AccessToken> getToken(TokenRequestContext request) {
             return Mono.just(new AccessToken("TestAccessToken", OffsetDateTime.now().plusHours(1)));

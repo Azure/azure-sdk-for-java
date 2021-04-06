@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.certificates;
+package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
@@ -10,6 +10,8 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
+import com.azure.security.keyvault.keys.KeyClientBuilder;
+import com.azure.security.keyvault.keys.TestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -21,78 +23,76 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CertificateClientBuilderTest {
-    private String vaultUrl;
-    private String certificateName;
-    private CertificateServiceVersion serviceVersion;
+public class CryptographyClientBuilderTest {
+    private String keyIdentifier;
+    private CryptographyServiceVersion serviceVersion;
 
     @BeforeEach
     public void setUp() {
-        vaultUrl = "https://key-vault-url.vault.azure.net/";
-        certificateName = "TestCertificate";
-        serviceVersion = CertificateServiceVersion.V7_1;
+        keyIdentifier = "https://key-vault-url.vault.azure.net/keys/TestKey/someVersion";
+        serviceVersion = CryptographyServiceVersion.V7_1;
     }
 
     @Test
     public void buildSyncClientTest() {
-        CertificateClient certificateClient = new CertificateClientBuilder()
-            .vaultUrl(vaultUrl)
+        CryptographyClient cryptographyClient = new CryptographyClientBuilder()
+            .keyIdentifier(keyIdentifier)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
             .buildClient();
 
-        assertNotNull(certificateClient);
-        assertEquals(CertificateClient.class.getSimpleName(), certificateClient.getClass().getSimpleName());
+        assertNotNull(cryptographyClient);
+        assertEquals(CryptographyClient.class.getSimpleName(), cryptographyClient.getClass().getSimpleName());
     }
 
     @Test
     public void buildSyncClientUsingDefaultApiVersionTest() {
-        CertificateClient certificateClient = new CertificateClientBuilder()
-            .vaultUrl(vaultUrl)
+        CryptographyClient cryptographyClient = new CryptographyClientBuilder()
+            .keyIdentifier(keyIdentifier)
             .credential(new TestUtils.TestCredential())
             .buildClient();
 
-        assertNotNull(certificateClient);
-        assertEquals(CertificateClient.class.getSimpleName(), certificateClient.getClass().getSimpleName());
+        assertNotNull(cryptographyClient);
+        assertEquals(CryptographyClient.class.getSimpleName(), cryptographyClient.getClass().getSimpleName());
     }
 
     @Test
     public void buildAsyncClientTest() {
-        CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder()
-            .vaultUrl(vaultUrl)
+        CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
+            .keyIdentifier(keyIdentifier)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
             .buildAsyncClient();
 
-        assertNotNull(certificateAsyncClient);
-        assertEquals(CertificateAsyncClient.class.getSimpleName(), certificateAsyncClient.getClass().getSimpleName());
+        assertNotNull(cryptographyAsyncClient);
+        assertEquals(CryptographyAsyncClient.class.getSimpleName(), cryptographyAsyncClient.getClass().getSimpleName());
     }
 
     @Test
     public void buildAsyncClientUsingDefaultApiVersionTest() {
-        CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder()
-            .vaultUrl(vaultUrl)
+        CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
+            .keyIdentifier(keyIdentifier)
             .credential(new TestUtils.TestCredential())
             .buildAsyncClient();
 
-        assertNotNull(certificateAsyncClient);
-        assertEquals(CertificateAsyncClient.class.getSimpleName(), certificateAsyncClient.getClass().getSimpleName());
+        assertNotNull(cryptographyAsyncClient);
+        assertEquals(CryptographyAsyncClient.class.getSimpleName(), cryptographyAsyncClient.getClass().getSimpleName());
     }
 
     @Test
     public void emptyVaultUrlThrowsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> new CertificateClientBuilder().vaultUrl(""));
+        assertThrows(IllegalArgumentException.class, () -> new KeyClientBuilder().vaultUrl(""));
     }
 
     @Test
     public void nullCredentialThrowsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new CertificateClientBuilder().credential(null));
+        assertThrows(NullPointerException.class, () -> new KeyClientBuilder().credential(null));
     }
 
     @Test
     public void clientOptionsIsPreferredOverLogOptions() {
-        CertificateClient certificateClient = new CertificateClientBuilder()
-            .vaultUrl(vaultUrl)
+        CryptographyClient cryptographyClient = new CryptographyClientBuilder()
+            .keyIdentifier(keyIdentifier)
             .credential(new TestUtils.TestCredential())
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
             .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
@@ -102,13 +102,13 @@ public class CertificateClientBuilderTest {
             })
             .buildClient();
 
-        assertThrows(RuntimeException.class, () -> certificateClient.getCertificate(certificateName));
+        assertThrows(RuntimeException.class, cryptographyClient::getKey);
     }
 
     @Test
     public void applicationIdFallsBackToLogOptions() {
-        CertificateClient certificateClient = new CertificateClientBuilder()
-            .vaultUrl(vaultUrl)
+        CryptographyClient cryptographyClient = new CryptographyClientBuilder()
+            .keyIdentifier(keyIdentifier)
             .credential(new TestUtils.TestCredential())
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
             .httpClient(httpRequest -> {
@@ -117,13 +117,13 @@ public class CertificateClientBuilderTest {
             })
             .buildClient();
 
-        assertThrows(RuntimeException.class, () -> certificateClient.getCertificate(certificateName));
+        assertThrows(RuntimeException.class, cryptographyClient::getKey);
     }
 
     @Test
     public void clientOptionHeadersAreAddedLast() {
-        CertificateClient certificateClient = new CertificateClientBuilder()
-            .vaultUrl(vaultUrl)
+        CryptographyClient cryptographyClient = new CryptographyClientBuilder()
+            .keyIdentifier(keyIdentifier)
             .credential(new TestUtils.TestCredential())
             .clientOptions(new ClientOptions()
                 .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
@@ -133,21 +133,21 @@ public class CertificateClientBuilderTest {
             })
             .buildClient();
 
-        assertThrows(RuntimeException.class, () -> certificateClient.getCertificate(certificateName));
+        assertThrows(RuntimeException.class, cryptographyClient::getKey);
     }
 
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
     // and auth would fail because we changed a signed header.
     @Test
     public void addPerCallPolicy() {
-        CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder()
-            .vaultUrl(vaultUrl)
+        CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
+            .keyIdentifier(keyIdentifier)
             .credential(new TestUtils.TestCredential())
             .addPolicy(new TestUtils.PerCallPolicy())
             .addPolicy(new TestUtils.PerRetryPolicy())
             .buildAsyncClient();
 
-        HttpPipeline pipeline = certificateAsyncClient.getHttpPipeline();
+        HttpPipeline pipeline = cryptographyAsyncClient.getHttpPipeline();
 
         int retryPolicyPosition = -1, perCallPolicyPosition = -1, perRetryPolicyPosition = -1;
 

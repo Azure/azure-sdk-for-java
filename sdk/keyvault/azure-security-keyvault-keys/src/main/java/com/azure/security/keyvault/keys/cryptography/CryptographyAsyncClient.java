@@ -67,6 +67,7 @@ public class CryptographyAsyncClient {
     private final ClientLogger logger = new ClientLogger(CryptographyAsyncClient.class);
     private String keyCollection;
     private final String keyId;
+    private final HttpPipeline pipeline;
 
     /**
      * Creates a CryptographyAsyncClient that uses {@code pipeline} to service requests
@@ -88,6 +89,7 @@ public class CryptographyAsyncClient {
         }
         this.key = jsonWebKey;
         this.keyId = key.getId();
+        this.pipeline = pipeline;
         service = pipeline != null ? RestProxy.create(CryptographyService.class, pipeline) : null;
         if (!Strings.isNullOrEmpty(key.getId()) && version != null && service != null) {
             unpackAndValidateId(key.getId());
@@ -108,6 +110,7 @@ public class CryptographyAsyncClient {
     CryptographyAsyncClient(String keyId, HttpPipeline pipeline, CryptographyServiceVersion version) {
         unpackAndValidateId(keyId);
         this.keyId = keyId;
+        this.pipeline = pipeline;
         service = RestProxy.create(CryptographyService.class, pipeline);
         cryptographyServiceClient = new CryptographyServiceClient(keyId, service, version);
         this.key = null;
@@ -127,6 +130,15 @@ public class CryptographyAsyncClient {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The Json Web Key Type: %s is not supported.", key.getKeyType().toString())));
         }
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    HttpPipeline getHttpPipeline() {
+        return this.pipeline;
     }
 
     Mono<String> getKeyId() {
