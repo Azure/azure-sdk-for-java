@@ -23,25 +23,18 @@ public class JavaProperty extends JavaStatement {
     private JavaField field;
     private List<JavaMethod> listOfMethods;
 
-    private boolean hasGetter;
-    private boolean hasSetter;
-
     /**
      * Initializes a new instance of the {@link JavaProperty} class.
      *
      * @param propertyName Name of the property.
      * @param propertyType Type of the property.
-     * @param hasGetter    Whether or not the property has a getter.
-     * @param hasSetter    Whether or not the property has a setter.
      */
-    public JavaProperty(String propertyName, String propertyType, boolean hasGetter, boolean hasSetter) {
+    public JavaProperty(String propertyName, String propertyType) {
         // propertyName should start with a lowercase character.
         if (!Character.isLowerCase(propertyName.charAt(0))) {
             logger.logThrowableAsError(new StyleException("Property name '" + propertyName + "' should start with a lowercase character"));
         }
 
-        this.hasGetter = hasGetter;
-        this.hasSetter = hasSetter;
         this.propertyName = propertyName;
         this.propertyType = propertyType;
 
