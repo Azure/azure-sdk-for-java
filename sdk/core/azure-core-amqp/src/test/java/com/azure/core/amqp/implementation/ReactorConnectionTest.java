@@ -141,7 +141,7 @@ class ReactorConnectionTest {
             connectionHandler))
             .thenReturn(connectionProtonJ);
 
-        final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(reactor);
+        final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(CONNECTION_ID, reactor);
         when(reactorProvider.getReactor()).thenReturn(reactor);
         when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
         when(reactorProvider.createReactor(CONNECTION_ID, connectionHandler.getMaxFrameSize())).thenReturn(reactor);
@@ -644,7 +644,7 @@ class ReactorConnectionTest {
 
         when(reactor.connectionToHost(hostname, port, connectionHandler)).thenReturn(connectionProtonJ);
 
-        final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(reactor);
+        final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(CONNECTION_ID, reactor);
         when(reactorProvider.getReactor()).thenReturn(reactor);
         when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
         when(reactorProvider.createReactor(connectionId, connectionHandler.getMaxFrameSize())).thenReturn(reactor);

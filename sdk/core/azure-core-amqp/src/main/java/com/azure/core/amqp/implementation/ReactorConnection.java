@@ -461,7 +461,11 @@ public class ReactorConnection implements AmqpConnection {
             final Reactor reactor = reactorProvider.createReactor(connectionId, handler.getMaxFrameSize());
             connection = reactor.connectionToHost(handler.getHostname(), handler.getProtocolPort(), handler);
 
-            ReactorExceptionHandler reactorExceptionHandler = new ReactorExceptionHandler();
+            final ReactorExceptionHandler reactorExceptionHandler = new ReactorExceptionHandler();
+
+            reactorProvider.getReactorDispatcher().getShutdownSignal()
+                .subscribe(signal -> reactorExceptionHandler.onConnectionShutdown(signal),
+                    error -> reactorExceptionHandler.onConnectionError(error));
 
             // Use a new single-threaded scheduler for this connection as QPID's Reactor is not thread-safe.
             // Using Schedulers.single() will use the same thread for all connections in this process which
