@@ -9,6 +9,7 @@ import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.implementation.ByteBufferOutputStream;
 import com.azure.cosmos.implementation.Bytes;
 import com.azure.cosmos.implementation.RMResources;
+import com.azure.cosmos.util.Beta;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -34,6 +35,8 @@ public class PartitionKeyInternalHelper {
     public static final Int128 MaxHashV2Value = new Int128(new byte[] {
         (byte) 0x3F, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,
         (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF});
+
+    private static final Integer HashV2EPKLength = 32;
 
     static byte[] uIntToBytes(UInt128 unit) {
         ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES * 2);
@@ -93,12 +96,10 @@ public class PartitionKeyInternalHelper {
     }
 
     static String getEffectivePartitionKeyForMultiHashPartitioning(PartitionKeyInternal partitionKeyInternal) {
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder(partitionKeyInternal.components.size() * HashV2EPKLength);
         for (int i = 0; i < partitionKeyInternal.components.size(); i++) {
             try(ByteBufferOutputStream byteArrayBuffer = new ByteBufferOutputStream())  {
-
                 partitionKeyInternal.components.get(i).writeForHashingV2(byteArrayBuffer);
-
 
                 ByteBuffer byteBuffer = byteArrayBuffer.asByteBuffer();
                 UInt128 hashAsUnit128 = MurmurHash3_128.hash128(byteBuffer.array(), byteBuffer.limit());
@@ -115,6 +116,7 @@ public class PartitionKeyInternalHelper {
                 throw new IllegalArgumentException(e);
             }
         }
+
         return stringBuilder.toString();
     }
 

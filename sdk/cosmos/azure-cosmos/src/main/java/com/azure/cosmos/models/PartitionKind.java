@@ -19,6 +19,7 @@ public enum PartitionKind {
     /**
      * The Partition of a item is calculated based on the hash value of multiple PartitionKeys.
      */
+
     MULTI_HASH("MultiHash");
 
     PartitionKind(String overWireValue) {
