@@ -35,7 +35,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 /**
  * Handles receiving events from Event Hubs service and translating them to proton-j messages.
  */
-public class ReactorReceiver implements AmqpReceiveLink {
+public class ReactorReceiver implements AmqpReceiveLink, AsyncAutoCloseable {
     private final String entityPath;
     private final Receiver receiver;
     private final ReceiveLinkHandler handler;
@@ -127,8 +127,9 @@ public class ReactorReceiver implements AmqpReceiveLink {
                 .onErrorResume(error -> {
                     // When we encounter an error refreshing authorization results, close the receive link.
                     final Mono<Void> operation =
-                        dispose("connectionId[%s] linkName[%s] Token renewal failure. Disposing receive "
-                                + " link.",
+                        closeAsync(String.format(
+                            "connectionId[%s] linkName[%s] Token renewal failure. Disposing receive link.",
+                            amqpConnection.getId(), getLinkName()),
                             new ErrorCondition(Symbol.getSymbol(AmqpErrorCondition.NOT_ALLOWED.getErrorCondition()),
                                 error.getMessage()));
 
@@ -141,14 +142,14 @@ public class ReactorReceiver implements AmqpReceiveLink {
                         logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Authorization completed.",
                             handler.getConnectionId(), entityPath, getLinkName());
 
-                        dispose("Authorization completed. Disposing.", null).subscribe();
+                        closeAsync("Authorization completed. Disposing.", null).subscribe();
                     }),
 
             amqpConnection.getShutdownSignals().flatMap(signal -> {
                 logger.verbose("connectionId[{}] linkName[{}] Shutdown signal received.", handler.getConnectionId(),
                     getLinkName());
 
-                return dispose("Connection shutdown.", null);
+                return closeAsync("Connection shutdown.", null);
             }).subscribe());
         //@formatter:on
     }
@@ -215,8 +216,17 @@ public class ReactorReceiver implements AmqpReceiveLink {
 
     @Override
     public void dispose() {
-        dispose("Dispose invoked", null)
-            .block(retryOptions.getTryTimeout());
+        close();
+    }
+
+    @Override
+    public void close() {
+        closeAsync().block(retryOptions.getTryTimeout());
+    }
+
+    @Override
+    public Mono<Void> closeAsync() {
+        return closeAsync("User invoked close operation.", null);
     }
 
     protected Message decodeDelivery(Delivery delivery) {
@@ -238,7 +248,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
      * @param message Message to log.
      * @param errorCondition Error condition associated with close operation.
      */
-    Mono<Void> dispose(String message, ErrorCondition errorCondition) {
+    Mono<Void> closeAsync(String message, ErrorCondition errorCondition) {
         if (isDisposed.getAndSet(true)) {
             return isClosedMono.asMono().publishOn(Schedulers.boundedElastic());
         }
@@ -265,7 +275,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
                 logger.warning("Could not schedule disposing of receiver on ReactorDispatcher.", e);
                 closeReceiver.run();
             }
-        }).publishOn(Schedulers.boundedElastic()).then(isClosedMono.asMono());
+        }).then(isClosedMono.asMono()).publishOn(Schedulers.boundedElastic());
     }
 
     /**

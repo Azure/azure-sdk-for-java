@@ -698,10 +698,10 @@ public class ReactorSession implements AmqpSession {
 
             if (link instanceof ReactorReceiver) {
                 final ReactorReceiver reactorReceiver = (ReactorReceiver) link;
-                reactorReceiver.dispose(errorMessage, errorCondition).subscribe();
+                reactorReceiver.closeAsync(errorMessage, errorCondition).subscribe();
             } else if (link instanceof ReactorSender) {
                 final ReactorSender reactorSender = (ReactorSender) link;
-                reactorSender.dispose(errorMessage, errorCondition).subscribe();
+                reactorSender.closeAsync(errorMessage, errorCondition).subscribe();
             } else {
                 link.dispose();
             }

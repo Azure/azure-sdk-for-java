@@ -446,7 +446,7 @@ class ReactorReceiverTest {
     }
 
     /**
-     * Tests {@link ReactorReceiver#dispose(String, ErrorCondition)}.
+     * Tests {@link ReactorReceiver#closeAsync(String, ErrorCondition)}.
      */
     @Test
     void disposeCompletes() throws IOException {
@@ -473,12 +473,12 @@ class ReactorReceiverTest {
         }).when(reactorDispatcher).invoke(any(Runnable.class));
 
         // Act
-        StepVerifier.create(reactorReceiver.dispose(message, condition))
+        StepVerifier.create(reactorReceiver.closeAsync(message, condition))
             .expectComplete()
             .verify();
 
         // Expect the same outcome.
-        StepVerifier.create(reactorReceiver.dispose("something", null))
+        StepVerifier.create(reactorReceiver.closeAsync("something", null))
             .expectComplete()
             .verify();
 
@@ -539,6 +539,8 @@ class ReactorReceiverTest {
         // Arrange
         final AmqpException error = new AmqpException(false, AmqpErrorCondition.ILLEGAL_STATE, "not-allowed",
             new AmqpErrorContext("foo-bar"));
+
+        when(receiver.getLocalState()).thenReturn(EndpointState.ACTIVE, EndpointState.CLOSED);
 
         doAnswer(invocationOnMock -> {
             final Runnable work = invocationOnMock.getArgument(0);

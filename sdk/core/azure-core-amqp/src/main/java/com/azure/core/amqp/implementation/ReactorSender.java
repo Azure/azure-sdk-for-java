@@ -62,7 +62,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * Handles scheduling and transmitting events through proton-j to Event Hubs service.
  */
-class ReactorSender implements AmqpSendLink {
+class ReactorSender implements AmqpSendLink, AsyncAutoCloseable {
     private final String entityPath;
     private final Sender sender;
     private final SendLinkHandler handler;
@@ -142,7 +142,7 @@ class ReactorSender implements AmqpSendLink {
                     getLinkName());
 
                 hasConnected.set(false);
-                return dispose("Connection shutdown.", null);
+                return closeAsync("Connection shutdown.", null);
             }).subscribe()
         );
 
@@ -150,8 +150,8 @@ class ReactorSender implements AmqpSendLink {
             this.subscriptions.add(tokenManager.getAuthorizationResults().onErrorResume(error -> {
                 // When we encounter an error refreshing authorization results, close the send link.
                 final Mono<Void> operation =
-                    dispose("connectionId[%s] linkName[%s] Token renewal failure. Disposing send "
-                            + " link.",
+                    closeAsync(String.format("connectionId[%s] linkName[%s] Token renewal failure. Disposing send "
+                            + "link.", amqpConnection.getId(), getLinkName()),
                         new ErrorCondition(Symbol.getSymbol(NOT_ALLOWED.getErrorCondition()),
                             error.getMessage()));
 
@@ -164,7 +164,7 @@ class ReactorSender implements AmqpSendLink {
                     logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Authorization completed. Disposing.",
                         handler.getConnectionId(), entityPath, getLinkName());
 
-                    dispose("Authorization completed. Disposing.", null).subscribe();
+                    closeAsync("Authorization completed. Disposing.", null).subscribe();
                 }));
         }
     }
@@ -330,13 +330,21 @@ class ReactorSender implements AmqpSendLink {
     }
 
     /**
-     * Blocking call that disposes of the sender. See {@link #dispose(String, ErrorCondition)}.
+     * Blocking call that disposes of the sender. See {@link #closeAsync(String, ErrorCondition)}.
      */
     @Override
     public void dispose() {
-        dispose("Dispose called", null)
-            .publishOn(Schedulers.boundedElastic())
-            .block(retryOptions.getTryTimeout());
+        close();
+    }
+
+    @Override
+    public void close() {
+        closeAsync().block(retryOptions.getTryTimeout());
+    }
+
+    @Override
+    public Mono<Void> closeAsync() {
+        return closeAsync("User invoked close operation.", null);
     }
 
     /**
@@ -347,7 +355,7 @@ class ReactorSender implements AmqpSendLink {
      *
      * @return A mono that completes when the send link has closed.
      */
-    Mono<Void> dispose(String message, ErrorCondition errorCondition) {
+    Mono<Void> closeAsync(String message, ErrorCondition errorCondition) {
         if (isDisposed.getAndSet(true)) {
             return isClosedMono.asMono();
         }
@@ -373,7 +381,8 @@ class ReactorSender implements AmqpSendLink {
                     + " manually.", handler.getConnectionId(), entityPath, getLinkName(), e);
                 closeWork.run();
             }
-        }).then(isClosedMono.asMono());
+        }).then(isClosedMono.asMono())
+            .publishOn(Schedulers.boundedElastic());
     }
 
     /**

@@ -485,12 +485,12 @@ public class ReactorSenderTest {
         }).when(reactorDispatcher).invoke(any(Runnable.class));
 
         // Act
-        StepVerifier.create(reactorSender.dispose(message, condition))
+        StepVerifier.create(reactorSender.closeAsync(message, condition))
             .expectComplete()
             .verify();
 
         // Expect the same outcome.
-        StepVerifier.create(reactorSender.dispose("something", null))
+        StepVerifier.create(reactorSender.closeAsync("something", null))
             .expectComplete()
             .verify();
 
