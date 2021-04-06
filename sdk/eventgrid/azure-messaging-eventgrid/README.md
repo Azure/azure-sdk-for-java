@@ -165,6 +165,13 @@ String sasToken = EventGridPublisherClient
     .generateSas("<your event grid endpoint>", new AzureKeyCredential("<key for the endpoint>"), expiration);
 ```
 
+### Use `BinaryData`
+This SDK uses `com.azure.util.BinaryData` to represent the data payload of events.
+`BinaryData` supports serializing and deserializing objects through `com.azure.core.util.BinaryData.fromObject(Object object)` and `toObject()` methods,
+which use a default Jackson Json serializer, or `fromObject(Object object, ObjectSerializer customSerializer)` and `toObject(Class<T> clazz, ObjectSerializer serializer)` methods,
+which accept your customized Json serializer.
+Refer to [BinaryData](https://docs.microsoft.com/java/api/com.azure.core.util.binarydata?view=azure-java-stable) documentation for details.
+
 ## Key concepts
 For information about general Event Grid concepts: [Concepts in Azure Event Grid](https://docs.microsoft.com/azure/event-grid/concepts).
 

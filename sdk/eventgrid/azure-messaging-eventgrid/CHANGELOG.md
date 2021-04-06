@@ -1,6 +1,6 @@
 # Release History
 
-## 4.2.0 (2020-04-06)
+## 4.2.0 (2020-04-07)
 
 ### Dependency Updates
 - Update `azure-core` dependency to `1.15.0`.
