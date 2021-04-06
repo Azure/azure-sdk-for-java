@@ -31,6 +31,9 @@ import static com.azure.cosmos.BridgeInternal.setProperty;
  * are application resources, they can be authorized using either the master key or resource keys.
  */
 public final class DocumentCollection extends Resource {
+    private static final String COLLECTIONS_ROOT_PROPERTY_NAME = "col";
+    private static final String ALT_LINK_PROPERTY_NAME = "altLink";
+
     private IndexingPolicy indexingPolicy;
     private UniqueKeyPolicy uniqueKeyPolicy;
     private PartitionKeyDefinition partitionKeyDefinition;
@@ -431,15 +434,15 @@ public final class DocumentCollection extends Resource {
         private void writeObject(ObjectOutputStream objectOutputStream) throws IOException {
             documentCollection.populatePropertyBag();
             ObjectNode docCollectionNode = OBJECT_MAPPER.createObjectNode();
-            docCollectionNode.set("col", documentCollection.getPropertyBag());
-            docCollectionNode.set("altLink", TextNode.valueOf(documentCollection.getAltLink()));
+            docCollectionNode.set(COLLECTIONS_ROOT_PROPERTY_NAME, documentCollection.getPropertyBag());
+            docCollectionNode.set(ALT_LINK_PROPERTY_NAME, TextNode.valueOf(documentCollection.getAltLink()));
             objectOutputStream.writeObject(docCollectionNode);
         }
 
         private void readObject(ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
             ObjectNode objectNode = (ObjectNode) objectInputStream.readObject();
-            ObjectNode collectionNode = (ObjectNode)objectNode.get("col");
-            String altLink = objectNode.get("altLink").asText();
+            ObjectNode collectionNode = (ObjectNode)objectNode.get(COLLECTIONS_ROOT_PROPERTY_NAME);
+            String altLink = objectNode.get(ALT_LINK_PROPERTY_NAME).asText();
             this.documentCollection = new DocumentCollection(collectionNode);
             this.documentCollection.setAltLink(altLink);
         }
