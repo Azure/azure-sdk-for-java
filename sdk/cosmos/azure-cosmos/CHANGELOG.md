@@ -9,7 +9,7 @@
 #### Key Bug Fixes
 * Allowed `CosmosPagedFlux#handle()` and `CosmosPagedIterable#handle()` API for chaining.
 * Removed `AfterBurner` module usage from `CosmosException` causing the warning logs.
-* Fixed issue of duplicate processing of items with Change Feed Processor.
+* Fixed issue of duplicate processing of items on the same Change Feed Processor instance.
 * Return `RequestTimeoutException` on client side timeout for write operations.
 
 ### 4.13.1 (2021-03-22)
