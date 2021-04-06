@@ -51,7 +51,7 @@ public class ReadmeSamples {
     }
 
     /**
-     * Sample code for creating a chat thread using the sync chat client.
+     * Sample code for creating a chat threaaccess_keyd using the sync chat client.
      */
     public void createChatThread() {
         ChatClient chatClient = createChatClient();
