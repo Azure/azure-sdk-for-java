@@ -1,7 +1,16 @@
 ## Release History
 
-## 4.14.0-beta.1 (Unreleased)
+### 4.14.0 (2021-04-06)
+#### New Features
+* General Availability for `readMany()` API in `CosmosAsyncContainer` and `CosmosContainer`.
+* General Availability for `handle()` API in `CosmosPagedFlux` and `CosmosPagedIterable`.
+* Upgraded Jackson to patch version 2.12.2.
 
+#### Key Bug Fixes
+* Allowed `CosmosPagedFlux#handle()` and `CosmosPagedIterable#handle()` API for chaining.
+* Removed `AfterBurner` module usage from `CosmosException` causing the warning logs.
+* Fixed issue of duplicate processing of items with Change Feed Processor.
+* Return `RequestTimeoutException` on client side timeout for write operations.
 
 ### 4.13.1 (2021-03-22)
 #### Key Bug Fixes
