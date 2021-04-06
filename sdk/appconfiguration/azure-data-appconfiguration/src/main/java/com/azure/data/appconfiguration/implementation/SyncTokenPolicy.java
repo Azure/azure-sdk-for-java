@@ -24,7 +24,7 @@ public final class SyncTokenPolicy implements HttpPipelinePolicy {
     private static final String COMMA = ",";
     private static final String EQUAL = "=";
     private static final String SYNC_TOKEN = "Sync-Token";
-    private final String SKIP_INVALID_TOKEN = "Skipping invalid sync token '{}'.";
+    private static final String SKIP_INVALID_TOKEN = "Skipping invalid sync token '{}'.";
     private final Map<String, SyncToken> syncTokenMap = new ConcurrentHashMap<>(); // key is sync-token id
     private final ClientLogger logger = new ClientLogger(SyncTokenPolicy.class);
 
@@ -81,7 +81,7 @@ public final class SyncTokenPolicy implements HttpPipelinePolicy {
             final SyncToken syncToken;
             try {
                 syncToken = SyncToken.createSyncToken(syncTokenString);
-            } catch (Exception ex){
+            } catch (Exception ex) {
                 logger.info(SKIP_INVALID_TOKEN, syncTokenString);
                 continue;
             }

@@ -17,15 +17,14 @@ import com.azure.core.util.logging.ClientLogger;
  *
  * @see <a href="https://github.com/Azure/AppConfiguration/blob/master/docs/REST/consistency.md">Real-time Consistency</a>
  */
-@Immutable
 public final class SyncToken {
     private static final String CANNOT_EMPTY_OR_NULL = "sync-token cannot be null or empty.";
     private static final String EQUAL = "=";
     private static final String SEMICOLON = ";";
     private static final String SEQUENCE_NUMBER_CANNOT_PARSED = "Sequence number cannot be parsed to long.";
     private static final String VALID_FORMAT_ERROR_MESSAGE =
-        "Expected sync-token valid format should be <id>=<value>;sn=<sn>. For multiple sync tokens, " +
-            "<id>=<value>;sn=<sn>,<id>=<value>;sn=<sn>.";
+        "Expected sync-token valid format should be <id>=<value>;sn=<sn>. For multiple sync tokens, "
+            + "<id>=<value>;sn=<sn>,<id>=<value>;sn=<sn>.";
 
     private static final ClientLogger LOGGER = new ClientLogger(SyncToken.class);
 

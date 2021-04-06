@@ -132,6 +132,7 @@ public class SyncTokenPolicyTest {
                 assertEquals(SYNC_TOKEN_VALUE, headerValue);
             } else {
                 // do nothing
+                assertTrue(true);
             }
             // Sequence number, sn is not used in the request header. It is included in the response header.
             return next.process();
