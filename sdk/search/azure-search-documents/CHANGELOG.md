@@ -1,14 +1,35 @@
 # Release History
 
-## 11.4.0-beta.1 (Unreleased)
+## 11.4.0-beta.1 (2021-04-06)
 
+### New Features
+
+- Clients now default to using service version `2020-06-30-Preview`.
+- Added support for `Edm.GeographyPoint` in `FieldBuilder` when property has type `GeoPoint`.
+- Added support for geography based filtering in `SearchFilter` when `GeoPosition`, `GeoPoint`, `GeoLineString`, or
+  `GeoPolygon` are used as formatting arguments.
+- Added support for Normalizers in `SearchField` and `SearchIndex` with `CustomNormalizer` and `LexicalNormalizer`.
+- Added new skills `CustomEntityLookupSkill` and `DocumentExtractionSkill` and new skill versions for 
+  `KeyPhraseExtractionSkill` and `LanguageDetectionSkill`.
+- Added support for the ADLS Gen 2 Indexer data source type.
+- Added skillset counts to `SearchServiceCounters`.  
+- Added additional log messages to `SearchIndexingBufferedSender` and `SearchIndexingBufferedAsyncSender`.
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.14.0` to `1.15.0`.
+- Updated Jackson from `2.12.1` to `2.12.2`.
+
+### Breaking Changes
+
+- Updated Jackson annotations to include `required = true` when service must receive or return the property.
 
 ## 11.3.0 (2021-03-10)
 
 ### Dependency Updates
 
 - Updated `azure-core` from `1.13.0` to `1.14.0`.
-- Updated Jackson from `2.11.3` ro `2.12.1`.
+- Updated Jackson from `2.11.3` to `2.12.1`.
 - Updated Reactor from `3.3.12.RELEASE` to `3.4.3`.
 - Updated Reactor Netty from `0.9.15.RELEASE` to `1.0.4`.
 
