@@ -105,8 +105,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
             if (configStore.isEnabled() && loadNewPropertySources) {
                 addPropertySource(composite, configStore, applicationName, profiles, storeContextsMap,
                     !configStoreIterator.hasNext());
-            } else if (!configStore.isEnabled()
-                && (startup.get() || StateHolder.getLoadState(configStore.getEndpoint()))) {
+            } else if (!configStore.isEnabled() && loadNewPropertySources) {
                 LOGGER.info("Not loading configurations from {} as it is not enabled.", configStore.getEndpoint());
             } else {
                 LOGGER.warn("Not loading configurations from {} as it failed on startup.", configStore.getEndpoint());
