@@ -2,10 +2,8 @@
 
 CLUSTER_NAME=$1
 JARPATH=$2
-JARFILE=$3
 [[ -z "$CLUSTER_NAME" ]] && exit 1
-[[ -z "$JARFILE" ]] && exit 1
-[[ -z "$JARFILE" ]] && exit 1
+[[ -z "$JARPATH" ]] && exit 1
 
 echo "Looking for cluster '$CLUSTER_NAME'"
 
@@ -25,10 +23,25 @@ do
 	databricks libraries uninstall --cluster-id $CLUSTER_ID --jar $library
 done
 
-bash sdk/cosmos/azure-cosmos-spark_3-1_2-12/databricks/databricks-cluster-restart.sh $CLUSTER_ID
+bash sdk/cosmos/azure-cosmos-spark_3-1_2-12/test-databricks/databricks-cluster-restart.sh $CLUSTER_ID
 
 echo "Deleting files in dbfs:/tmp/libraries"
 dbfs rm --recursive dbfs:/tmp/libraries
+
+for file in $JARPATH/*.jar
+do
+	filename=${file##*/}
+	if [[ "$filename" != *"original"* && "$filename" != *"sources"* && "$filename" != *"javadoc"* ]]
+	then
+		JARFILE=$filename
+	fi
+done
+
+if [[ -z "$JARFILE" ]]
+then
+	echo "Cannot find a Jar file name azure-cosmos-spark_3-1_2-12"
+	exit 1
+fi
 
 echo "Copying files to DBFS $JARPATH/$JARFILE"
 dbfs cp $JARPATH/$JARFILE dbfs:/tmp/libraries/$JARFILE --overwrite
@@ -37,4 +50,4 @@ dbfs ls dbfs:/tmp/libraries/
 echo "Installing $JARFILE in $CLUSTER_ID"
 databricks libraries install --cluster-id $CLUSTER_ID --jar dbfs:/tmp/libraries/$JARFILE
 
-bash sdk/cosmos/azure-cosmos-spark_3-1_2-12/databricks/databricks-cluster-restart.sh $CLUSTER_ID
+bash sdk/cosmos/azure-cosmos-spark_3-1_2-12/test-databricks/databricks-cluster-restart.sh $CLUSTER_ID
