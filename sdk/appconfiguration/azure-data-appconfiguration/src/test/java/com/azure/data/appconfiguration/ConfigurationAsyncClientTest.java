@@ -775,7 +775,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             // read-only setting
             StepVerifier.create(client.setReadOnly(expected, true))
                 .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(expected,
-                    (FeatureFlagConfigurationSetting)response))
+                    (FeatureFlagConfigurationSetting) response))
                 .verifyComplete();
 
             // unsuccessfully delete
@@ -810,7 +810,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             // read-only setting
             StepVerifier.create(client.setReadOnly(expected, true))
                 .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(expected,
-                    (SecretReferenceConfigurationSetting)response))
+                    (SecretReferenceConfigurationSetting) response))
                 .verifyComplete();
 
             // unsuccessfully delete
