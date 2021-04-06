@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class JavaLine extends JavaStatement {
 
-    private String text;
+    private final String text;
 
     /**
      * Initializes a new instance of the {@link JavaLine} class.

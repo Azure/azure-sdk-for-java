@@ -16,7 +16,7 @@ import java.util.List;
  * (c) A consistent order aids readability and eases diffing across generated versions.
  */
 public class JavaSorted extends JavaStatement {
-    private List<JavaStatement> javaStatements;
+    private final List<JavaStatement> javaStatements;
 
     public JavaSorted() {
         this.javaStatements = new ArrayList<>();

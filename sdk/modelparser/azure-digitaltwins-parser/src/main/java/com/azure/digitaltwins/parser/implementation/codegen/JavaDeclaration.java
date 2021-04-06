@@ -4,22 +4,26 @@
 
 package com.azure.digitaltwins.parser.implementation.codegen;
 
+import com.azure.core.util.logging.ClientLogger;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JavaDeclaration implements Comparable<JavaDeclaration> {
-    private Access access;
-    private Novelty novelty;
-    private Multiplicity multiplicity;
-    private Mutability mutability;
+public class JavaDeclaration {
+    private final ClientLogger logger = new ClientLogger(JavaDeclaration.class);
 
-    private String type;
-    private String name;
+    private final Access access;
+    private final Novelty novelty;
+    private final Multiplicity multiplicity;
+    private final Mutability mutability;
+
+    private final String type;
+    private final String name;
     private boolean inheritDoc;
-    private List<String> summaryLines;
-    private List<String> remarksLines;
-    private List<String> attributes;
+    private final List<String> summaryLines;
+    private final List<String> remarksLines;
+    private final List<String> attributes;
 
     /**
      * Initializes a new instance of the {@link JavaDeclaration} class.
@@ -97,6 +101,9 @@ public class JavaDeclaration implements Comparable<JavaDeclaration> {
         StringBuilder decoratedName = new StringBuilder();
 
         switch (access) {
+            case IMPLICIT:
+            case PACKAGE_PRIVATE:
+                break;
             case PUBLIC:
                 decoratedName.append("public ");
                 break;
@@ -105,20 +112,17 @@ public class JavaDeclaration implements Comparable<JavaDeclaration> {
                 break;
             case PRIVATE:
                 decoratedName.append("private ");
-            default:
                 break;
+            default:
+                logger.logThrowableAsError(new IllegalStateException("Unexpected value: " + access));
         }
 
         if (multiplicity == Multiplicity.STATIC) {
             decoratedName.append("static ");
         }
 
-        switch (this.novelty) {
-            case ABSTRACT:
-                decoratedName.append("abstract ");
-                break;
-            default:
-                break;
+        if (this.novelty == Novelty.ABSTRACT) {
+            decoratedName.append("abstract ");
         }
 
         if (this.mutability == Mutability.FINAL) {
@@ -126,7 +130,7 @@ public class JavaDeclaration implements Comparable<JavaDeclaration> {
         }
 
         if (this.type != null) {
-            decoratedName.append(this.type + " ");
+            decoratedName.append(this.type).append(" ");
         }
 
         decoratedName.append(this.name);
@@ -139,9 +143,9 @@ public class JavaDeclaration implements Comparable<JavaDeclaration> {
      *
      * @param text Text for the summary.
      */
-    public void addSummary(String text) throws StyleException {
+    public void addSummary(String text) {
         if (!text.endsWith(".")) {
-            throw new StyleException("Summary text of declaration '" + this.name + "' must end with a period -- SA1629.");
+            logger.logThrowableAsError(new StyleException("Summary text of declaration '" + this.name + "' must end with a period -- SA1629."));
         }
 
         this.summaryLines.add(text);
@@ -152,58 +156,23 @@ public class JavaDeclaration implements Comparable<JavaDeclaration> {
      *
      * @param text Text for the remarks.
      */
-    public void addRemarks(String text) throws StyleException {
+    public void addRemarks(String text) {
         if (!text.endsWith(".")) {
-            throw new StyleException("Remarks text of declaration '" + this.name + "' must end with a period -- SA1629.");
+            logger.logThrowableAsError(new StyleException("Remarks text of declaration '" + this.name + "' must end with a period -- SA1629."));
         }
 
-        this.summaryLines.add(text);
+        this.remarksLines.add(text);
     }
 
     /**
      * Add an attribute to the declaration.
      *
-     * @param text
+     * @param text Attribute text.
      */
     public void addAttributes(String text) {
         this.attributes.add(text);
     }
-
-    @Override
-    public int compareTo(JavaDeclaration other) {
-        int accessComparison = EffectiveAccess(this.access).compareTo(EffectiveAccess(other.access));
-
-        if (accessComparison != 0) {
-            return accessComparison;
-        }
-
-        if (this.multiplicity != other.multiplicity) {
-            return this.multiplicity.compareTo(other.multiplicity);
-        }
-
-        if (this.mutability != other.mutability) {
-            return this.mutability.compareTo(other.mutability);
-        }
-
-        if (this.type != null && other.type != null) {
-            int typeComparison = this.type.compareTo(other.type);
-            if (typeComparison != 0) {
-                return typeComparison;
-            }
-        }
-
-        int nameComparison = this.name.compareTo(other.name);
-        return nameComparison;
-    }
-
-    private static Access EffectiveAccess(Access access) {
-        if (access == Access.IMPLICIT) {
-            return Access.PUBLIC;
-        } else {
-            return access;
-        }
-    }
-
+    
     /**
      * Generate code for the declaration.
      *

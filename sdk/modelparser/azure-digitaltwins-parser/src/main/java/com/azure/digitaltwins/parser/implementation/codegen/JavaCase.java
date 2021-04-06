@@ -6,7 +6,7 @@ package com.azure.digitaltwins.parser.implementation.codegen;
 import java.io.IOException;
 
 public class JavaCase extends JavaStatement {
-    private String value;
+    private final String value;
 
     public JavaCase(String value) {
         this.value = value;

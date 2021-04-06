@@ -16,7 +16,7 @@ For the best development experience, developers should use the official Microsof
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
-  <artifactId>azure-digitaltinws-parser</artifactId>
+  <artifactId>azure-digitaltwins-parser</artifactId>
   <version>1.0.0-beta.1</version>
 </dependency>
 ```

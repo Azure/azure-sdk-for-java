@@ -8,7 +8,7 @@ package com.azure.digitaltwins.parser.implementation.codegen;
  */
 public class JavaElseIf extends JavaScope {
 
-    private StatementAdder parent;
+    private final StatementAdder parent;
 
     /**
      * Initializes a new instance of the {@link JavaElseIf} class.

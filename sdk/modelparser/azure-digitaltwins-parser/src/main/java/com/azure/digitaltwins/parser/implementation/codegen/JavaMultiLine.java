@@ -12,8 +12,8 @@ import java.util.List;
  */
 public class JavaMultiLine extends JavaStatement {
 
-    private String headText;
-    private List<JavaStatement> javaStatements;
+    private final String headText;
+    private final List<JavaStatement> javaStatements;
 
     public JavaMultiLine(String headText) {
         this.headText = headText;

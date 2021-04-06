@@ -7,9 +7,9 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 class IndentedFileWriter {
-    private OutputStreamWriter fileWriter;
+    private final OutputStreamWriter fileWriter;
     private int indent;
-    private String indentation;
+    private final String indentation;
 
     IndentedFileWriter(OutputStreamWriter fileWriter, String indentation) {
         this.indent = 0;
@@ -18,11 +18,11 @@ class IndentedFileWriter {
     }
 
     void writeLineWithIndent(String input) throws IOException {
-        fileWriter.append(calculateIndentation() + input + "\n");
+        fileWriter.append(calculateIndentation()).append(input).append("\n");
     }
 
     void writeWithIndent(String input) throws IOException {
-        fileWriter.append(calculateIndentation() + input);
+        fileWriter.append(calculateIndentation()).append(input);
     }
 
     void writeWithNoIndent(String input) throws IOException {
@@ -39,12 +39,11 @@ class IndentedFileWriter {
         }
     }
 
-    String calculateIndentation() {
+    private String calculateIndentation() {
         StringBuilder output = new StringBuilder();
         for (int i = 0; i < indent; i++) {
             output.append(indentation);
         }
-
         return output.toString();
     }
 }

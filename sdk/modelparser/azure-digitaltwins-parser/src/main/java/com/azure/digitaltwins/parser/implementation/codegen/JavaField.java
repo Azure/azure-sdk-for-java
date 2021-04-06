@@ -23,13 +23,6 @@ public class JavaField extends JavaDeclaration {
     public JavaField(Access access, String type, String name, String value, Multiplicity multiplicity, Mutability mutability) {
         super(access, Novelty.NORMAL, type, name, multiplicity, mutability);
 
-        if (multiplicity == null) {
-            multiplicity = Multiplicity.INSTANCE;
-        }
-        if (mutability == null) {
-            mutability = Mutability.MUTABLE;
-        }
-
         this.value = value;
     }
 

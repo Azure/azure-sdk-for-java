@@ -3,6 +3,8 @@
 
 package com.azure.digitaltwins.parser.implementation.codegen;
 
+import com.azure.core.util.logging.ClientLogger;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,11 +14,12 @@ import java.util.stream.Collectors;
  * Generator for java method.
  */
 public class JavaMethod extends JavaDeclaration {
+    private final ClientLogger logger = new ClientLogger(JavaMethod.class);
 
-    private List<TypeParameter> typeParameters;
-    private List<Parameter> parameters;
+    private final List<TypeParameter> typeParameters;
+    private final List<Parameter> parameters;
     private String returnDescription;
-    private List<String> preambleTexts;
+    private final List<String> preambleTexts;
     private JavaScope body;
 
     /**
@@ -83,13 +86,13 @@ public class JavaMethod extends JavaDeclaration {
      * @param description Optional text description of type parameter.
      * @return The {@link JavaMethod} object itself.
      */
-    public JavaMethod typeParam(String name, String description) throws StyleException {
+    public JavaMethod typeParam(String name, String description) {
         if (name.charAt(0) != 'T') {
-            throw new StyleException("Type parameter name `" + name + "' of method '" + this.getName() + "' must begin with a 'T' -- SA1314");
+            logger.logThrowableAsError(new StyleException("Type parameter name `" + name + "' of method '" + this.getName() + "' must begin with a 'T' -- SA1314"));
         }
 
         if (description != null && !description.endsWith(".")) {
-            throw new StyleException("Documentation text of method '" + this.getName() + "' must end with a period -- SA1629.");
+            logger.logThrowableAsError(new StyleException("Documentation text of method '" + this.getName() + "' must end with a period -- SA1629."));
         }
 
         TypeParameter tp = new TypeParameter();
@@ -99,7 +102,7 @@ public class JavaMethod extends JavaDeclaration {
         this.typeParameters.add(tp);
         return this;
     }
-    
+
     /**
      * Add a parameter to the method.
      *
@@ -107,11 +110,10 @@ public class JavaMethod extends JavaDeclaration {
      * @param name        Name of parameter.
      * @param description Optional text description of parameter.
      * @return The {@link JavaMethod} object itself.
-     * @throws StyleException
      */
-    public JavaMethod param(String type, String name, String description) throws StyleException {
+    public JavaMethod param(String type, String name, String description) {
         if (description != null && !description.endsWith(".")) {
-            throw new StyleException("Documentation text of method '" + this.getName() + "' must end with a period -- SA1629.");
+            logger.logThrowableAsError(new StyleException("Documentation text of method '" + this.getName() + "' must end with a period -- SA1629."));
         }
 
         Parameter param = new Parameter();
@@ -129,13 +131,13 @@ public class JavaMethod extends JavaDeclaration {
      * @param returnDescription Description of the return value.
      * @return The {@link JavaMethod} object itself.
      */
-    public JavaMethod returns(String returnDescription) throws StyleException {
+    public JavaMethod returns(String returnDescription) {
         if (this.getType().equals("void")) {
-            throw new StyleException("Void return value of method '" + this.getName() + "' must not be documented. -- SA1617");
+            logger.logThrowableAsError(new StyleException("Void return value of method '" + this.getName() + "' must not be documented. -- SA1617"));
         }
 
         if (!returnDescription.endsWith(".")) {
-            throw new StyleException("Documentation text of method '" + this.getName() + "' must end with a period. -- SA1629");
+            logger.logThrowableAsError(new StyleException("Documentation text of method '" + this.getName() + "' must end with a period. -- SA1629"));
         }
 
         this.returnDescription = returnDescription;
@@ -174,10 +176,10 @@ public class JavaMethod extends JavaDeclaration {
         String typeParams = "";
 
         if (!this.typeParameters.isEmpty()) {
-            typeParams = "<" + String.join(", ", this.typeParameters.stream().map(tp -> tp.name).collect(Collectors.toList())) + ">";
+            typeParams = "<" + this.typeParameters.stream().map(TypeParameter::getName).collect(Collectors.joining(", ")) + ">";
         }
 
-        String paramList = String.join(", ", this.parameters.stream().map(p -> p.type + " " + p.name).collect(Collectors.toList()));
+        String paramList = this.parameters.stream().map(p -> p.getType() + " " + p.getName()).collect(Collectors.joining(", "));
         String terminator = "";
 
         if (this.body == null) {
@@ -202,14 +204,55 @@ public class JavaMethod extends JavaDeclaration {
         }
     }
 
-    private class TypeParameter {
-        public String name;
-        public String description;
+    static class TypeParameter {
+        private String name;
+        private String description;
+
+        public String getName() {
+            return this.name;
+        }
+
+        public void setName(String value) {
+            this.name = value;
+        }
+
+        public String getDescription() {
+            return this.description;
+        }
+
+        public void setDescription(String value) {
+            this.description = value;
+        }
+
     }
 
-    private class Parameter {
-        public String type;
-        public String name;
-        public String description;
+    static class Parameter {
+        private String type;
+        private String name;
+        private String description;
+
+        public String getType() {
+            return this.type;
+        }
+
+        public void setType(String value) {
+            this.type = value;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public void setName(String value) {
+            this.name = value;
+        }
+
+        public String getDescription() {
+            return this.description;
+        }
+
+        public void setDescription(String value) {
+            this.description = value;
+        }
     }
 }
