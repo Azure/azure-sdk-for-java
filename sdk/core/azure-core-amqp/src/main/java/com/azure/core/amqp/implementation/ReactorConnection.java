@@ -42,10 +42,6 @@ public class ReactorConnection implements AmqpConnection {
     private static final String CBS_SESSION_NAME = "cbs-session";
     private static final String CBS_ADDRESS = "$cbs";
     private static final String CBS_LINK_NAME = "cbs";
-    /**
-     * Taken from {@link AmqpRetryPolicy} where MAX_SERVER_BUSY_TIME
-     */
-    private static final Duration MAX_BUSY_SERVER_TIME = Duration.ofSeconds(3);
 
     private final ClientLogger logger = new ClientLogger(ReactorConnection.class);
     private final ConcurrentMap<String, SessionSubscription> sessionMap = new ConcurrentHashMap<>();
@@ -473,8 +469,8 @@ public class ReactorConnection implements AmqpConnection {
             // This could be a long timeout depending on the user's operation timeout. It's probable that the
             // connection's long disposed.
             final Duration timeoutDivided = connectionOptions.getRetry().getTryTimeout().dividedBy(2);
-            final Duration pendingTasksDuration = MAX_BUSY_SERVER_TIME.compareTo(timeoutDivided) < 0
-                ? MAX_BUSY_SERVER_TIME
+            final Duration pendingTasksDuration = ClientConstants.SERVER_BUSY_WAIT_TIME.compareTo(timeoutDivided) < 0
+                ? ClientConstants.SERVER_BUSY_WAIT_TIME
                 : timeoutDivided;
             final Scheduler scheduler = Schedulers.newSingle("reactor-executor");
             executor = new ReactorExecutor(reactor, scheduler, connectionId,

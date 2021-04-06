@@ -550,7 +550,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             }
         } catch (Exception error) {
             logger.warning("linkName[{}] entityPath[{}] Unable to dispose of link.", link.getLinkName(),
-                link.getEntityPath());
+                link.getEntityPath(), error);
         }
     }
 }

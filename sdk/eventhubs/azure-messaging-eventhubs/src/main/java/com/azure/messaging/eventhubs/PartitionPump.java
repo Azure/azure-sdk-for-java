@@ -39,9 +39,10 @@ class PartitionPump implements AutoCloseable {
     public void close() {
         try {
             client.close();
+        } catch (Exception error) {
+            logger.info("partitionId[{}] Exception occurred disposing of consumer client.", partitionId, error);
+        } finally {
             scheduler.dispose();
-        } catch (Exception e) {
-            logger.info("partitionId[{}] Exception occurred disposing of consumer client.", partitionId);
         }
     }
 }
