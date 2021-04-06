@@ -142,6 +142,8 @@ public class RecognizeInvoicesAsync {
                             .filter(invoiceItem -> FieldValueType.MAP == invoiceItem.getValue().getValueType())
                             .map(formField -> formField.getValue().asMap())
                             .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
+                                // See a full list of fields found on an invoice here:
+                                // https://aka.ms/formrecognizer/invoicefields
                                 if ("Description".equals(key)) {
                                     if (FieldValueType.STRING == formField.getValue().getValueType()) {
                                         String name = formField.getValue().asString();
@@ -154,13 +156,6 @@ public class RecognizeInvoicesAsync {
                                         Float quantity = formField.getValue().asFloat();
                                         System.out.printf("Quantity: %f, confidence: %.2f%n",
                                             quantity, formField.getConfidence());
-                                    }
-                                }
-                                if ("Unit".equals(key)) {
-                                    if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
-                                        Float unit = formField.getValue().asFloat();
-                                        System.out.printf("Unit: %f, confidence: %.2f%n",
-                                            unit, formField.getConfidence());
                                     }
                                 }
                                 if ("UnitPrice".equals(key)) {
