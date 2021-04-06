@@ -1,11 +1,20 @@
 # Release History
 
+## 11.3.1 (2021-04-06)
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.14.0` to `1.15.0`.
+- Updated `azure-core-http-netty` from `1.9.0` to `1.9.1`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.0` to `1.2.2`.
+- Updated Jackson from `2.12.1` to `2.12.2`.
+
 ## 11.3.0 (2021-03-10)
 
 ### Dependency Updates
 
 - Updated `azure-core` from `1.13.0` to `1.14.0`.
-- Updated Jackson from `2.11.3` ro `2.12.1`.
+- Updated Jackson from `2.11.3` to `2.12.1`.
 - Updated Reactor from `3.3.12.RELEASE` to `3.4.3`.
 - Updated Reactor Netty from `0.9.15.RELEASE` to `1.0.4`.
 
