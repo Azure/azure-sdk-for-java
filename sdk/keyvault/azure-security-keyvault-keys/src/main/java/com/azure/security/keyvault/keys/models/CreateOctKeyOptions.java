@@ -2,12 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.keys.models;
 
+import com.azure.core.annotation.Fluent;
+
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
  * Represents the configurable options to create an AES key.
  */
+@Fluent
 public class CreateOctKeyOptions extends CreateKeyOptions {
     /**
      * The AES key size.
@@ -26,28 +29,6 @@ public class CreateOctKeyOptions extends CreateKeyOptions {
      */
     public CreateOctKeyOptions(String name) {
         super(name, KeyType.OCT);
-    }
-
-    /**
-     * Get the key size in bits.
-     *
-     * @return The key size in bits.
-     */
-    public Integer getKeySize() {
-        return this.keySize;
-    }
-
-    /**
-     * Set the key size in bits.
-     *
-     * @param keySize The key size to set.
-     *
-     * @return The updated {@link CreateOctKeyOptions} object.
-     */
-    public CreateOctKeyOptions setKeySize(Integer keySize) {
-        this.keySize = keySize;
-
-        return this;
     }
 
     /**
@@ -117,6 +98,28 @@ public class CreateOctKeyOptions extends CreateKeyOptions {
         super.setEnabled(enabled);
 
         return this;
+    }
+
+    /**
+     * Set the key size in bits.
+     *
+     * @param keySize The key size to set.
+     *
+     * @return The updated {@link CreateOctKeyOptions} object.
+     */
+    public CreateOctKeyOptions setKeySize(Integer keySize) {
+        this.keySize = keySize;
+
+        return this;
+    }
+
+    /**
+     * Get the key size in bits.
+     *
+     * @return The key size in bits.
+     */
+    public Integer getKeySize() {
+        return this.keySize;
     }
 
     /**

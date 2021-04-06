@@ -55,19 +55,6 @@ public class CreateEcKeyOptions extends CreateKeyOptions {
     }
 
     /**
-     * Set the key size.
-     *
-     * @param keySize The key size to set.
-     *
-     * @return The updated {@link CreateEcKeyOptions} object.
-     */
-    public CreateEcKeyOptions setKeySize(Integer keySize) {
-        super.setKeySize(keySize);
-
-        return this;
-    }
-
-    /**
      * Set the key operations.
      *
      * @param keyOperations The key operations to set.

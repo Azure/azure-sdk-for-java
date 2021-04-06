@@ -14,6 +14,11 @@ import java.util.Map;
 @Fluent
 public class CreateRsaKeyOptions extends CreateKeyOptions {
     /**
+     * The AES key size.
+     */
+    private Integer keySize;
+
+    /**
      * The hardware protected indicator for the key.
      */
     private boolean hardwareProtected;
@@ -30,19 +35,6 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
      */
     public CreateRsaKeyOptions(String name) {
         super(name, KeyType.RSA);
-    }
-
-    /**
-     * Set the key size.
-     *
-     * @param keySize The key size to set.
-     *
-     * @return The updated {@link CreateRsaKeyOptions} object.
-     */
-    public CreateRsaKeyOptions setKeySize(Integer keySize) {
-        super.setKeySize(keySize);
-
-        return this;
     }
 
     /**
@@ -112,6 +104,28 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
         super.setEnabled(enabled);
 
         return this;
+    }
+
+    /**
+     * Set the key size.
+     *
+     * @param keySize The key size to set.
+     *
+     * @return The updated {@link CreateRsaKeyOptions} object.
+     */
+    public CreateRsaKeyOptions setKeySize(Integer keySize) {
+        this.keySize = keySize;
+
+        return this;
+    }
+
+    /**
+     * Get the key size in bits.
+     *
+     * @return The key size in bits.
+     */
+    public Integer getKeySize() {
+        return this.keySize;
     }
 
     /**

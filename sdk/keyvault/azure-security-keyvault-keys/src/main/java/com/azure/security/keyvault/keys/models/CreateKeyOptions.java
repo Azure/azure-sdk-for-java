@@ -26,11 +26,6 @@ public class CreateKeyOptions {
     private KeyType keyType;
 
     /**
-     * The key size in bits.
-     */
-    private Integer keySize;
-
-    /**
      * The key operations.
      */
     private List<KeyOperation> keyOperations;
@@ -65,28 +60,6 @@ public class CreateKeyOptions {
     public CreateKeyOptions(String name, KeyType keyType) {
         this.name = name;
         this.keyType = keyType;
-    }
-
-    /**
-     * Get the key size in bits.
-     *
-     * @return The key size in bits.
-     */
-    public Integer getKeySize() {
-        return this.keySize;
-    }
-
-    /**
-     * Set the key size in bits.
-     *
-     * @param keySize The key size to set.
-     *
-     * @return The updated {@link CreateKeyOptions} object.
-     */
-    public CreateKeyOptions setKeySize(Integer keySize) {
-        this.keySize = keySize;
-
-        return this;
     }
 
     /**
