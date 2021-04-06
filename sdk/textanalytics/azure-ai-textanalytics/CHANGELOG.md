@@ -1,7 +1,11 @@
 # Release History
-## 5.1.0-beta.6 (Unreleased)
+## 5.1.0-beta.6 (2021-04-06)
 ### Breaking changes
 - Removed the input parameter `Context` from non-max-overload healthcare synchronous API, `beginAnalyzeHealthcareEntities()`.
+
+## 5.0.5 (2021-04-06)
+### Dependency updates
+- Update dependency version, `azure-core` to 1.15.0 and `azure-core-http-netty` to 1.9.1.
 
 ## 5.1.0-beta.5 (2021-03-10)
 - We are now targeting the service's v3.1-preview.4 API as the default instead of v3.1-preview.3.
