@@ -1,0 +1,248 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+
+package com.azure.digitaltwins.parser.implementation.codegen;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class JavaDeclaration implements Comparable<JavaDeclaration> {
+    private Access access;
+    private Novelty novelty;
+    private Multiplicity multiplicity;
+    private Mutability mutability;
+
+    private String type;
+    private String name;
+    private boolean inheritDoc;
+    private List<String> summaryLines;
+    private List<String> remarksLines;
+    private List<String> attributes;
+
+    /**
+     * Initializes a new instance of the {@link JavaDeclaration} class.
+     *
+     * @param access       Access level of declaration.
+     * @param novelty      Novelty of the declaration.
+     * @param type         Type of declaration.
+     * @param name         Name of the declaration.
+     * @param multiplicity Static or Instance.
+     * @param mutability   Mutability of the declaration.
+     */
+    public JavaDeclaration(
+        Access access,
+        Novelty novelty,
+        String type,
+        String name,
+        Multiplicity multiplicity,
+        Mutability mutability) {
+
+        if (multiplicity == null) {
+            multiplicity = Multiplicity.INSTANCE;
+        }
+        if (mutability == null) {
+            mutability = Mutability.MUTABLE;
+        }
+
+        this.access = access;
+        this.novelty = novelty;
+        this.type = type;
+        this.name = name;
+        this.multiplicity = multiplicity;
+        this.mutability = mutability;
+        this.inheritDoc = false;
+        this.summaryLines = new ArrayList<>();
+        this.remarksLines = new ArrayList<>();
+        this.attributes = new ArrayList<>();
+    }
+
+    /**
+     * @return Get declaration name.
+     */
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * @return Get declaration type.
+     */
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * If set to true, inherit documentation from comments of the base class.
+     *
+     * @param value Whether or not documentation will be inherited.
+     */
+    public void setInheritDoc(boolean value) {
+        this.inheritDoc = value;
+    }
+
+    /**
+     * @return True if documentation is inherited from the base class, False otherwise.
+     */
+    public boolean getInheritDoc() {
+        return this.inheritDoc;
+    }
+
+    /**
+     * Gets the value of the name decorated with appropriate keywords.
+     *
+     * @return The value of the name decorated with appropriate keywords.
+     */
+    public String getDecoratedName() {
+        StringBuilder decoratedName = new StringBuilder();
+
+        switch (access) {
+            case PUBLIC:
+                decoratedName.append("public ");
+                break;
+            case PROTECTED:
+                decoratedName.append("protected ");
+                break;
+            case PRIVATE:
+                decoratedName.append("private ");
+            default:
+                break;
+        }
+
+        if (multiplicity == Multiplicity.STATIC) {
+            decoratedName.append("static ");
+        }
+
+        switch (this.novelty) {
+            case ABSTRACT:
+                decoratedName.append("abstract ");
+                break;
+            default:
+                break;
+        }
+
+        if (this.mutability == Mutability.FINAL) {
+            decoratedName.append("final ");
+        }
+
+        if (this.type != null) {
+            decoratedName.append(this.type + " ");
+        }
+
+        decoratedName.append(this.name);
+
+        return decoratedName.toString();
+    }
+
+    /**
+     * Add a line of summary text describing the declaration.
+     *
+     * @param text Text for the summary.
+     */
+    public void addSummary(String text) throws StyleException {
+        if (!text.endsWith(".")) {
+            throw new StyleException("Summary text of declaration '" + this.name + "' must end with a period -- SA1629.");
+        }
+
+        this.summaryLines.add(text);
+    }
+
+    /**
+     * Add a line of remarks text for the declaration.
+     *
+     * @param text Text for the remarks.
+     */
+    public void addRemarks(String text) throws StyleException {
+        if (!text.endsWith(".")) {
+            throw new StyleException("Remarks text of declaration '" + this.name + "' must end with a period -- SA1629.");
+        }
+
+        this.summaryLines.add(text);
+    }
+
+    /**
+     * Add an attribute to the declaration.
+     *
+     * @param text
+     */
+    public void addAttributes(String text) {
+        this.attributes.add(text);
+    }
+
+    @Override
+    public int compareTo(JavaDeclaration other) {
+        int accessComparison = EffectiveAccess(this.access).compareTo(EffectiveAccess(other.access));
+
+        if (accessComparison != 0) {
+            return accessComparison;
+        }
+
+        if (this.multiplicity != other.multiplicity) {
+            return this.multiplicity.compareTo(other.multiplicity);
+        }
+
+        if (this.mutability != other.mutability) {
+            return this.mutability.compareTo(other.mutability);
+        }
+
+        if (this.type != null && other.type != null) {
+            int typeComparison = this.type.compareTo(other.type);
+            if (typeComparison != 0) {
+                return typeComparison;
+            }
+        }
+
+        int nameComparison = this.name.compareTo(other.name);
+        return nameComparison;
+    }
+
+    private static Access EffectiveAccess(Access access) {
+        if (access == Access.IMPLICIT) {
+            return Access.PUBLIC;
+        } else {
+            return access;
+        }
+    }
+
+    /**
+     * Generate code for the declaration.
+     *
+     * @param codeWriter A {@link CodeWriter} object for generating the declaration code.
+     */
+    public void generateCode(CodeWriter codeWriter) throws IOException {
+    }
+
+    /**
+     * Write the summary comments for the declaration.
+     *
+     * @param codeWriter A {@link CodeWriter} object for writing the declaration comments.
+     * @throws IOException
+     */
+    protected void writeSummaryAndRemarks(CodeWriter codeWriter) throws IOException {
+        codeWriter.blank();
+
+        if (this.inheritDoc) {
+            codeWriter.writeLine("/** {@inheritDoc} */");
+        } else if (!summaryLines.isEmpty()) {
+            codeWriter.writeLine("/**");
+
+            for (String summaryLine : summaryLines) {
+                codeWriter.writeLine("* " + summaryLine);
+            }
+
+            codeWriter.writeLine("* <p>");
+            for (String remarksLine : remarksLines) {
+                codeWriter.writeLine("* " + remarksLine);
+            }
+
+            codeWriter.writeLine("* </p>");
+            codeWriter.writeLine("*/");
+        }
+    }
+
+    protected void writeAttributes(CodeWriter codeWriter) throws IOException {
+        for (String attribute : this.attributes) {
+            codeWriter.writeLine("@" + attribute);
+        }
+    }
+}
