@@ -10,6 +10,7 @@ import com.azure.analytics.synapse.accesscontrol.models.ErrorContractException;
 import com.azure.analytics.synapse.accesscontrol.models.RequiredAction;
 import com.azure.analytics.synapse.accesscontrol.models.RoleAssignmentDetails;
 import com.azure.analytics.synapse.accesscontrol.models.RoleAssignmentDetailsList;
+import com.azure.analytics.synapse.accesscontrol.models.RoleAssignmentsListRoleAssignmentsResponse;
 import com.azure.analytics.synapse.accesscontrol.models.SubjectInfo;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -112,7 +113,7 @@ public final class RoleAssignmentsClient {
      * @return role Assignment response details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RoleAssignmentDetailsList> listRoleAssignmentsWithResponse(
+    public RoleAssignmentsListRoleAssignmentsResponse listRoleAssignmentsWithResponse(
             String roleId, String principalId, String scope, String continuationToken, Context context) {
         return this.serviceClient.listRoleAssignmentsWithResponse(
                 roleId, principalId, scope, continuationToken, context);

@@ -145,7 +145,8 @@
         <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp</module>
         <module>azure-spring-boot-samples/azure-spring-boot-sample-cosmos</module>
         <module>azure-spring-boot-samples/azure-spring-boot-sample-data-gremlin</module>
-        <module>azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates</module>
+        <module>azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-server-side</module>
+        <module>azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side</module>
         <module>azure-spring-boot-samples/azure-spring-boot-sample-keyvault-secrets</module>
         <module>azure-spring-boot-samples/azure-spring-boot-sample-mediaservices</module>
         <module>azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-queue</module>
@@ -164,7 +165,8 @@
         <module>azure-spring-boot-samples/feature-management-web-sample</module>
         <module>azure-spring-boot-samples/feature-management-sample</module>
         <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-operation</module>
-        <module>azure-spring-boot-samples/azure-spring-cloud-sample-messaging</module>
+        <module>azure-spring-boot-samples/azure-spring-cloud-sample-messaging-eventhubs</module>
+        <module>azure-spring-boot-samples/azure-spring-cloud-sample-messaging-servicebus</module>
         <module>azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-operation</module>
         <module>azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-queue-binder</module>
         <module>azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-queue-multibinders</module>

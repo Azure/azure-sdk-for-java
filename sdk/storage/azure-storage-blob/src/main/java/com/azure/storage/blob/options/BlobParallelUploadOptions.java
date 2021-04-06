@@ -75,7 +75,7 @@ public class BlobParallelUploadOptions {
      */
     public BlobParallelUploadOptions(BinaryData data) {
         StorageImplUtils.assertNotNull("data", data);
-        this.dataFlux = Flux.just(ByteBuffer.wrap(data.toBytes()));
+        this.dataFlux = Flux.just(data.toByteBuffer());
         this.dataStream = null;
         this.length = -1;
     }
