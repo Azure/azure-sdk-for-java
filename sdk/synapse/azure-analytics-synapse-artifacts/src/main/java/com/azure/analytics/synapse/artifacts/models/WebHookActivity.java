@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("WebHook")
 @JsonFlatten
 @Fluent
-public class WebHookActivity extends Activity {
+public class WebHookActivity extends ControlActivity {
     /*
      * Rest API method for target endpoint.
      */
@@ -61,11 +61,10 @@ public class WebHookActivity extends Activity {
     private WebActivityAuthentication authentication;
 
     /*
-     * When set to true,
-     * statusCode, output and error in callback request body will be
-     * consumed by activity. The activity can be marked as failed
-     * by setting statusCode >= 400 in callback request. Default is false.
-     * Type: boolean (or Expression with resultType boolean).
+     * When set to true, statusCode, output and error in callback request body
+     * will be consumed by activity. The activity can be marked as failed by
+     * setting statusCode >= 400 in callback request. Default is false. Type:
+     * boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "typeProperties.reportStatusOnCallBack")
     private Object reportStatusOnCallBack;
@@ -203,10 +202,9 @@ public class WebHookActivity extends Activity {
     }
 
     /**
-     * Get the reportStatusOnCallBack property: When set to true,
-     * statusCode, output and error in callback request body will be consumed by activity. The activity can be marked as
-     * failed by setting statusCode &gt;= 400 in callback request. Default is false. Type: boolean (or Expression with
-     * resultType boolean).
+     * Get the reportStatusOnCallBack property: When set to true, statusCode, output and error in callback request body
+     * will be consumed by activity. The activity can be marked as failed by setting statusCode &gt;= 400 in callback
+     * request. Default is false. Type: boolean (or Expression with resultType boolean).
      *
      * @return the reportStatusOnCallBack value.
      */
@@ -215,10 +213,9 @@ public class WebHookActivity extends Activity {
     }
 
     /**
-     * Set the reportStatusOnCallBack property: When set to true,
-     * statusCode, output and error in callback request body will be consumed by activity. The activity can be marked as
-     * failed by setting statusCode &gt;= 400 in callback request. Default is false. Type: boolean (or Expression with
-     * resultType boolean).
+     * Set the reportStatusOnCallBack property: When set to true, statusCode, output and error in callback request body
+     * will be consumed by activity. The activity can be marked as failed by setting statusCode &gt;= 400 in callback
+     * request. Default is false. Type: boolean (or Expression with resultType boolean).
      *
      * @param reportStatusOnCallBack the reportStatusOnCallBack value to set.
      * @return the WebHookActivity object itself.

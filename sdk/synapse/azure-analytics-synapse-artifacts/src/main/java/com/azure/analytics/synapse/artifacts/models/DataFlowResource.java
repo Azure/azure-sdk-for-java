@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Data flow resource type. */
 @Fluent
-public final class DataFlowResource extends AzureEntityResource {
+public final class DataFlowResource extends SubResource {
     /*
      * Data flow properties.
      */
