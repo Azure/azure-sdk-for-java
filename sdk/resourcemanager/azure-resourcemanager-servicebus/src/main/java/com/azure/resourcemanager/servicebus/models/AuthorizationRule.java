@@ -6,7 +6,7 @@ package com.azure.resourcemanager.servicebus.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
-import com.azure.resourcemanager.servicebus.fluent.models.SharedAccessAuthorizationRuleResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 import reactor.core.publisher.Mono;
 
@@ -19,7 +19,7 @@ import java.util.List;
  */
 @Fluent
 public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>> extends
-    IndependentChildResource<ServiceBusManager, SharedAccessAuthorizationRuleResourceInner>,
+    IndependentChildResource<ServiceBusManager, SBAuthorizationRuleInner>,
     Refreshable<RuleT> {
 
     /**
@@ -41,19 +41,36 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>> exten
     /**
      * Regenerates primary or secondary keys.
      *
-     * @param policykey the key to regenerate
+     * @param regenerateAccessKeyParameters the parameters for the key to regenerate
      * @return a representation of the deferred computation of this call,
      * returning the primary, secondary keys and the connection strings
      */
-    Mono<AuthorizationKeys> regenerateKeyAsync(Policykey policykey);
+    Mono<AuthorizationKeys> regenerateKeyAsync(RegenerateAccessKeyParameters regenerateAccessKeyParameters);
 
     /**
      * Regenerates primary or secondary keys.
      *
-     * @param policykey the key to regenerate
+     * @param regenerateAccessKeyParameters the parameters for the key to regenerate
      * @return primary, secondary keys and connection strings
      */
-    AuthorizationKeys regenerateKey(Policykey policykey);
+    AuthorizationKeys regenerateKey(RegenerateAccessKeyParameters regenerateAccessKeyParameters);
+
+    /**
+     * Regenerates primary or secondary keys.
+     *
+     * @param keyType the type for the key to regenerate
+     * @return primary, secondary keys and connection strings
+     */
+    AuthorizationKeys regenerateKey(KeyType keyType);
+
+    /**
+     * Regenerates primary or secondary keys.
+     *
+     * @param keyType the type for the key to regenerate
+     * @return a representation of the deferred computation of this call,
+     * returning the primary, secondary keys and the connection strings
+     */
+    Mono<AuthorizationKeys> regenerateKeyAsync(KeyType keyType);
 
     /**
      * Grouping of commons authorization rule definition stages shared between different Service Bus

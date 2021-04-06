@@ -6,7 +6,6 @@ package com.azure.resourcemanager.netapp.implementation;
 
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.fluent.models.SnapshotPolicyInner;
 import com.azure.resourcemanager.netapp.models.DailySchedule;
 import com.azure.resourcemanager.netapp.models.HourlySchedule;
@@ -20,7 +19,7 @@ import java.util.Map;
 public final class SnapshotPolicyImpl implements SnapshotPolicy, SnapshotPolicy.Definition, SnapshotPolicy.Update {
     private SnapshotPolicyInner innerObject;
 
-    private final NetAppFilesManager serviceManager;
+    private final com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -83,7 +82,7 @@ public final class SnapshotPolicyImpl implements SnapshotPolicy, SnapshotPolicy.
         return this.innerObject;
     }
 
-    private NetAppFilesManager manager() {
+    private com.azure.resourcemanager.netapp.NetAppFilesManager manager() {
         return this.serviceManager;
     }
 
@@ -121,7 +120,7 @@ public final class SnapshotPolicyImpl implements SnapshotPolicy, SnapshotPolicy.
         return this;
     }
 
-    SnapshotPolicyImpl(String name, NetAppFilesManager serviceManager) {
+    SnapshotPolicyImpl(String name, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = new SnapshotPolicyInner();
         this.serviceManager = serviceManager;
         this.snapshotPolicyName = name;
@@ -150,7 +149,8 @@ public final class SnapshotPolicyImpl implements SnapshotPolicy, SnapshotPolicy.
         return this;
     }
 
-    SnapshotPolicyImpl(SnapshotPolicyInner innerObject, NetAppFilesManager serviceManager) {
+    SnapshotPolicyImpl(
+        SnapshotPolicyInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

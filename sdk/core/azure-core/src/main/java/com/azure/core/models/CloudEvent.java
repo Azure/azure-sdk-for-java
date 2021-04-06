@@ -4,7 +4,6 @@
 package com.azure.core.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.implementation.serializer.JacksonSerializer;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
@@ -23,7 +22,6 @@ import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
@@ -67,38 +65,28 @@ import java.util.UUID;
 public final class CloudEvent {
     private static final String SPEC_VERSION = "1.0";
 
-    private static final JsonSerializer SERIALIZER;
-    static {
-        JsonSerializer tmp;
-        try {
-            tmp = JsonSerializerProviders.createInstance();
-        } catch (IllegalStateException e) {
-            tmp = new JacksonSerializer();
-        }
-        SERIALIZER = tmp;
-    }
+    private static final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
 
     // May get SERIALIZER's object mapper in the future.
     private static final ObjectMapper BINARY_DATA_OBJECT_MAPPER = new ObjectMapper();
-    private static final Map<String, Object> EMPTY_ATTRIBUTES_MAP = Collections.unmodifiableMap(
-        new HashMap<String, Object>());
+    private static final Map<String, Object> EMPTY_ATTRIBUTES_MAP = Collections.emptyMap();
 
     private static final TypeReference<List<CloudEvent>> DESERIALIZER_TYPE_REFERENCE =
         new TypeReference<List<CloudEvent>>() {
         };
     private static final ClientLogger LOGGER = new ClientLogger(CloudEvent.class);
-    private static final Set<String> RESERVED_ATTRIBUTE_NAMES = new HashSet<>(Arrays.asList(
-        "specversion",
-        "id",
-        "source",
-        "type",
-        "datacontenttype",
-        "dataschema",
-        "subject",
-        "time",
-        "data",
-        "data_base64"
-    ));
+    private static final Set<String> RESERVED_ATTRIBUTE_NAMES = new HashSet<String>() {{
+            add("specversion");
+            add("id");
+            add("source");
+            add("type");
+            add("datacontenttype");
+            add("dataschema");
+            add("subject");
+            add("time");
+            add("data");
+            add("data_base64");
+        }};
 
     /*
      * An identifier for the event. The combination of id and source must be

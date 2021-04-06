@@ -107,75 +107,75 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
 
     /**
      * Generates code samples for using {@link CryptographyAsyncClient#encrypt(EncryptionAlgorithm, byte[])} and
-     * {@link CryptographyAsyncClient#encrypt(EncryptOptions)}.
+     * {@link CryptographyAsyncClient#encrypt(EncryptParameters)}.
      */
     public void encrypt() {
         CryptographyAsyncClient cryptographyAsyncClient = createAsyncClient();
 
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte
-        byte[] plainText = new byte[100];
-        new Random(0x1234567L).nextBytes(plainText);
+        byte[] plaintext = new byte[100];
+        new Random(0x1234567L).nextBytes(plaintext);
 
-        cryptographyAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText)
+        cryptographyAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plaintext)
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
             .subscribe(encryptResult ->
                 System.out.printf("Received encrypted content of length %d with algorithm %s \n",
                     encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString()));
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte
 
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptOptions
-        byte[] plainTextBytes = new byte[100];
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptParameters
+        byte[] plaintextBytes = new byte[100];
 
-        new Random(0x1234567L).nextBytes(plainTextBytes);
+        new Random(0x1234567L).nextBytes(plaintextBytes);
 
         byte[] iv = {
             (byte) 0x1a, (byte) 0xf3, (byte) 0x8c, (byte) 0x2d, (byte) 0xc2, (byte) 0xb9, (byte) 0x6f, (byte) 0xfd,
             (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04
         };
-        EncryptOptions encryptOptions = EncryptOptions.createAes128CbcOptions(plainTextBytes, iv);
+        EncryptParameters encryptParameters = EncryptParameters.createA128CbcParameters(plaintextBytes, iv);
 
-        cryptographyAsyncClient.encrypt(encryptOptions)
+        cryptographyAsyncClient.encrypt(encryptParameters)
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
             .subscribe(encryptResult ->
                 System.out.printf("Received encrypted content of length %d with algorithm %s \n",
                     encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString()));
-        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptOptions
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptParameters
     }
 
     /**
      * Generates code samples for using {@link CryptographyAsyncClient#decrypt(EncryptionAlgorithm, byte[])} and
-     * {@link CryptographyAsyncClient#decrypt(DecryptOptions)}.
+     * {@link CryptographyAsyncClient#decrypt(DecryptParameters)}.
      */
     public void decrypt() {
         CryptographyAsyncClient cryptographyAsyncClient = createAsyncClient();
 
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte
-        byte[] cipherText = new byte[100];
+        byte[] ciphertext = new byte[100];
 
-        new Random(0x1234567L).nextBytes(cipherText);
+        new Random(0x1234567L).nextBytes(ciphertext);
 
-        cryptographyAsyncClient.decrypt(EncryptionAlgorithm.RSA_OAEP, cipherText)
+        cryptographyAsyncClient.decrypt(EncryptionAlgorithm.RSA_OAEP, ciphertext)
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
             .subscribe(decryptResult ->
                 System.out.printf("Received decrypted content of length %d\n", decryptResult.getPlainText().length));
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte
 
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#DecryptOptions
-        byte[] cipherTextBytes = new byte[100];
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#DecryptParameters
+        byte[] ciphertextBytes = new byte[100];
 
-        new Random(0x1234567L).nextBytes(cipherTextBytes);
+        new Random(0x1234567L).nextBytes(ciphertextBytes);
 
         byte[] iv = {
             (byte) 0x1a, (byte) 0xf3, (byte) 0x8c, (byte) 0x2d, (byte) 0xc2, (byte) 0xb9, (byte) 0x6f, (byte) 0xfd,
             (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04
         };
-        DecryptOptions decryptOptions = DecryptOptions.createAes128CbcOptions(cipherTextBytes, iv);
+        DecryptParameters decryptParameters = DecryptParameters.createA128CbcParameters(ciphertextBytes, iv);
 
-        cryptographyAsyncClient.decrypt(decryptOptions)
+        cryptographyAsyncClient.decrypt(decryptParameters)
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
             .subscribe(decryptResult ->
                 System.out.printf("Received decrypted content of length %d\n", decryptResult.getPlainText().length));
-        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#DecryptOptions
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#DecryptParameters
     }
 
     /**

@@ -4,7 +4,7 @@
 
 This code sample demonstrates how to use the Spring Cloud Stream Kafka
 binder for Azure Event Hub. The sample app exposes a RESTful API to receive
-string message. Then message is sent through Azure Event Hub to a `sink`
+string message. Then message is sent through Azure Event Hub to a bean `consumer`
 which simply logs the message.
 
 ## Getting started
@@ -14,10 +14,8 @@ Running this sample will be charged by Azure. You can check the usage and bill a
 [this link][azure-account].
 
 
-### Environment checklist
-
-We need to ensure that this [environment checklist][ready-to-run-checklist] is
-completed before the run.
+### Prerequisites
+- [Environment checklist][environment_checklist]
 
 
 ### Create Azure resources
@@ -44,11 +42,13 @@ completed before the run.
           eventhub:
             namespace: [eventhub-namespace]
         stream:
+          function:
+            definition: consume;supply
           bindings:
-            input:
+            consume-in-0:
               destination: [eventhub-name]
               group: [consumer-group]
-            output:
+            supply-out-0:
               destination: [the-same-eventhub-name-as-above]
     ```
 
@@ -77,5 +77,5 @@ completed before the run.
 [azure-portal]: https://ms.portal.azure.com/
 [create-event-hubs]: https://docs.microsoft.com/azure/event-hubs/
 [create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-sp-using-azure-cli.md
-[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-kafka/src/main/resources/application.yaml

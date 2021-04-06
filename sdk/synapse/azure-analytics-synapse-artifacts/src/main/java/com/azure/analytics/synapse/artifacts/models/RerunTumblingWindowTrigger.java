@@ -23,7 +23,7 @@ public class RerunTumblingWindowTrigger extends Trigger {
     /*
      * The parent trigger reference.
      */
-    @JsonProperty(value = "typeProperties.parentTrigger")
+    @JsonProperty(value = "typeProperties.parentTrigger", required = true)
     private Object parentTrigger;
 
     /*
@@ -44,8 +44,8 @@ public class RerunTumblingWindowTrigger extends Trigger {
      * The max number of parallel time windows (ready for execution) for which
      * a rerun is triggered.
      */
-    @JsonProperty(value = "typeProperties.maxConcurrency", required = true)
-    private int maxConcurrency;
+    @JsonProperty(value = "typeProperties.rerunConcurrency", required = true)
+    private int rerunConcurrency;
 
     /**
      * Get the parentTrigger property: The parent trigger reference.
@@ -112,24 +112,24 @@ public class RerunTumblingWindowTrigger extends Trigger {
     }
 
     /**
-     * Get the maxConcurrency property: The max number of parallel time windows (ready for execution) for which a rerun
-     * is triggered.
+     * Get the rerunConcurrency property: The max number of parallel time windows (ready for execution) for which a
+     * rerun is triggered.
      *
-     * @return the maxConcurrency value.
+     * @return the rerunConcurrency value.
      */
-    public int getMaxConcurrency() {
-        return this.maxConcurrency;
+    public int getRerunConcurrency() {
+        return this.rerunConcurrency;
     }
 
     /**
-     * Set the maxConcurrency property: The max number of parallel time windows (ready for execution) for which a rerun
-     * is triggered.
+     * Set the rerunConcurrency property: The max number of parallel time windows (ready for execution) for which a
+     * rerun is triggered.
      *
-     * @param maxConcurrency the maxConcurrency value to set.
+     * @param rerunConcurrency the rerunConcurrency value to set.
      * @return the RerunTumblingWindowTrigger object itself.
      */
-    public RerunTumblingWindowTrigger setMaxConcurrency(int maxConcurrency) {
-        this.maxConcurrency = maxConcurrency;
+    public RerunTumblingWindowTrigger setRerunConcurrency(int rerunConcurrency) {
+        this.rerunConcurrency = rerunConcurrency;
         return this;
     }
 }

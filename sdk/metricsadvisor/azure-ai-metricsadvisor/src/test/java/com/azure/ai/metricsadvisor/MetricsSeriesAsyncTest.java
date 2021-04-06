@@ -101,7 +101,8 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void listMetricSeriesDefinitions(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
-        StepVerifier.create(client.listMetricSeriesDefinitions(METRIC_ID, TIME_SERIES_START_TIME, null))
+        StepVerifier.create(client.listMetricSeriesDefinitions(METRIC_ID, TIME_SERIES_START_TIME, null)
+            .take(LISTING_SERIES_DEFINITIONS_LIMIT))
             .thenConsumeWhile(metricSeriesDefinition -> metricSeriesDefinition.getMetricId() != null
                 && metricSeriesDefinition.getSeriesKey() != null)
             .verifyComplete();

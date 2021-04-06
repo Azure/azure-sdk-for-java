@@ -4,9 +4,6 @@
 
 - Demo for training
 
-## 1.2.1-beta.3 (Unreleased)
-
-
 ## 1.2.1-beta.2 (2020-09-04)
 - Test release tag replacement 
 
@@ -54,9 +51,6 @@
 
 ## 1.0.4-beta.16 (2020-05-20)
 - Test Java Release Pipeline (empty sources, only readme in javadoc)
-
-## 1.0.4-beta.15 (Unreleased)
-- Test Java Release Pipeline - artifact not released to maven
 
 ## 1.0.4-beta.14 (2020-05-18)
 - Test Java Release Pipeline

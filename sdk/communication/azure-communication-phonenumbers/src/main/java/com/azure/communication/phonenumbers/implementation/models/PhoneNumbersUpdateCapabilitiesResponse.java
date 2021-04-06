@@ -4,14 +4,14 @@
 
 package com.azure.communication.phonenumbers.implementation.models;
 
-import com.azure.communication.phonenumbers.models.AcquiredPhoneNumber;
+import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
 /** Contains all response data for the updateCapabilities operation. */
 public final class PhoneNumbersUpdateCapabilitiesResponse
-        extends ResponseBase<PhoneNumbersUpdateCapabilitiesHeaders, AcquiredPhoneNumber> {
+        extends ResponseBase<PhoneNumbersUpdateCapabilitiesHeaders, PurchasedPhoneNumber> {
     /**
      * Creates an instance of PhoneNumbersUpdateCapabilitiesResponse.
      *
@@ -25,14 +25,14 @@ public final class PhoneNumbersUpdateCapabilitiesResponse
             HttpRequest request,
             int statusCode,
             HttpHeaders rawHeaders,
-            AcquiredPhoneNumber value,
+            PurchasedPhoneNumber value,
             PhoneNumbersUpdateCapabilitiesHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
     /** @return the deserialized response body. */
     @Override
-    public AcquiredPhoneNumber getValue() {
+    public PurchasedPhoneNumber getValue() {
         return super.getValue();
     }
 }

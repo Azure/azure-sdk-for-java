@@ -3,15 +3,14 @@
 
 package com.azure.communication.phonenumbers;
 
-import com.azure.communication.phonenumbers.models.AcquiredPhoneNumber;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
-import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
+import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
@@ -66,26 +65,26 @@ public class ReadmeSamples {
     }
 
     /**
-     * Sample code for getting an acquired phone number.
+     * Sample code for getting an purchased phone number.
      *
-     * @return the acquired phone number.
+     * @return the purchased phone number.
      */
-    public AcquiredPhoneNumber getPhoneNumber() {
+    public PurchasedPhoneNumber getPurchasedPhoneNumber() {
         PhoneNumbersClient phoneNumberClient = createPhoneNumberClient();
-        AcquiredPhoneNumber phoneNumber = phoneNumberClient.getPhoneNumber("+18001234567");
+        PurchasedPhoneNumber phoneNumber = phoneNumberClient.getPurchasedPhoneNumber("+18001234567");
         System.out.println("Phone Number Value: " + phoneNumber.getPhoneNumber());
         System.out.println("Phone Number Country Code: " + phoneNumber.getCountryCode());
         return phoneNumber;
     }
 
     /**
-     * Sample code for listing all acquired phone numbers.
+     * Sample code for listing all purchased phone numbers.
      *
-     * @return all acquired phone number.
+     * @return all purchased phone number.
      */
-    public PagedIterable<AcquiredPhoneNumber> listPhoneNumbers() {
-        PagedIterable<AcquiredPhoneNumber> phoneNumbers = createPhoneNumberClient().listPhoneNumbers(Context.NONE);
-        AcquiredPhoneNumber phoneNumber = phoneNumbers.iterator().next();
+    public PagedIterable<PurchasedPhoneNumber> listPhoneNumbers() {
+        PagedIterable<PurchasedPhoneNumber> phoneNumbers = createPhoneNumberClient().listPurchasedPhoneNumbers(Context.NONE);
+        PurchasedPhoneNumber phoneNumber = phoneNumbers.iterator().next();
         System.out.println("Phone Number Value: " + phoneNumber.getPhoneNumber());
         System.out.println("Phone Number Country Code: " + phoneNumber.getCountryCode());
         return phoneNumbers;
@@ -102,7 +101,7 @@ public class ReadmeSamples {
         PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setAreaCode("800").setQuantity(1);
 
         PhoneNumberSearchResult searchResult = phoneNumberClient
-            .beginSearchAvailablePhoneNumbers("US", PhoneNumberType.TOLL_FREE, PhoneNumberAssignmentType.PERSON, capabilities, searchOptions, Context.NONE)
+            .beginSearchAvailablePhoneNumbers("US", PhoneNumberType.TOLL_FREE, PhoneNumberAssignmentType.APPLICATION, capabilities, searchOptions, Context.NONE)
             .getFinalResult();
 
         System.out.println("Searched phone numbers: " + searchResult.getPhoneNumbers());
@@ -129,13 +128,13 @@ public class ReadmeSamples {
      *
      * @return the updated acquired phone number
      */
-    public AcquiredPhoneNumber updatePhoneNumberCapabilities() {
+    public PurchasedPhoneNumber updatePhoneNumberCapabilities() {
         PhoneNumbersClient phoneNumberClient = createPhoneNumberClient();
-        PhoneNumberCapabilitiesRequest capabilitiesRequest = new PhoneNumberCapabilitiesRequest();
-        capabilitiesRequest
+        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
+        capabilities
             .setCalling(PhoneNumberCapabilityType.INBOUND)
             .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
-        AcquiredPhoneNumber phoneNumber = phoneNumberClient.beginUpdatePhoneNumberCapabilities("+18001234567", capabilitiesRequest, Context.NONE).getFinalResult();
+        PurchasedPhoneNumber phoneNumber = phoneNumberClient.beginUpdatePhoneNumberCapabilities("+18001234567", capabilities, Context.NONE).getFinalResult();
 
         System.out.println("Phone Number Calling capabilities: " + phoneNumber.getCapabilities().getCalling()); //Phone Number Calling capabilities: inbound
         System.out.println("Phone Number SMS capabilities: " + phoneNumber.getCapabilities().getSms()); //Phone Number SMS capabilities: inbound+outbound

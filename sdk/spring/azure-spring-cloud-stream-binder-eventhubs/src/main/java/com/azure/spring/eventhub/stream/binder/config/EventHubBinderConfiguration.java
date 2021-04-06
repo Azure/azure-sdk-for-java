@@ -40,6 +40,7 @@ import javax.annotation.PostConstruct;
     AzureEnvironmentAutoConfiguration.class,
     AzureContextAutoConfiguration.class,
     AzureEventHubAutoConfiguration.class,
+    EventHubBinderHealthIndicatorConfiguration.class
 })
 @EnableConfigurationProperties({ AzureEventHubProperties.class, EventHubExtendedBindingProperties.class })
 public class EventHubBinderConfiguration {

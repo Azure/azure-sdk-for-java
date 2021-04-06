@@ -71,6 +71,9 @@ public class NettyAsyncHttpClientBuilderTests {
     private static String defaultUrl;
     private static String prebuiltClientUrl;
 
+    private static final Exception EXPECTED_EXCEPTION = new IOException("This is a local test so we "
+        + "cannot connect to remote hosts eagerly. This is exception is expected.");
+
     @BeforeAll
     public static void setupWireMock() {
         server = new WireMockServer(WireMockConfiguration.options().dynamicPort().disableRequestJournal());
@@ -152,7 +155,7 @@ public class NettyAsyncHttpClientBuilderTests {
             .build();
 
         StepVerifier.create(nettyClient.send(new HttpRequest(HttpMethod.GET, requestUrl)))
-            .verifyErrorMatches(throwable -> throwable == TestProxyValidator.EXPECTED_EXCEPTION);
+            .verifyErrorMatches(throwable -> throwable == EXPECTED_EXCEPTION);
     }
 
     private static Stream<Arguments> buildWithProxySupplier() {
@@ -184,11 +187,11 @@ public class NettyAsyncHttpClientBuilderTests {
          */
         String rawNonProxyHosts = String.join("|", "localhost", "127.0.0.1", "*.microsoft.com", "*.linkedin.com");
 
-        String[] requestUrlsWithoutProxying = new String[] {
+        String[] requestUrlsWithoutProxying = new String[]{
             "http://localhost", "http://127.0.0.1", "http://azure.microsoft.com", "http://careers.linkedin.com"
         };
 
-        String[] requestUrlsWithProxying = new String[] {
+        String[] requestUrlsWithProxying = new String[]{
             "http://portal.azure.com", "http://linkedin.com", "http://8.8.8.8"
         };
 
@@ -248,7 +251,7 @@ public class NettyAsyncHttpClientBuilderTests {
             .build();
 
         StepVerifier.create(nettyClient.send(new HttpRequest(HttpMethod.GET, requestUrl)))
-            .verifyErrorMatches(throwable -> throwable == TestProxyValidator.EXPECTED_EXCEPTION);
+            .verifyErrorMatches(throwable -> throwable == EXPECTED_EXCEPTION);
     }
 
     private static Stream<Arguments> buildWithConfigurationProxySupplier() {
@@ -286,11 +289,11 @@ public class NettyAsyncHttpClientBuilderTests {
         String rawJavaNonProxyHosts = String.join("|", "localhost", "127.0.0.1", "*.microsoft.com", "*.linkedin.com");
         String rawEnvNonProxyHosts = String.join(",", "localhost", "127.0.0.1", "*.microsoft.com", "*.linkedin.com");
 
-        String[] requestUrlsWithoutProxying = new String[] {
+        String[] requestUrlsWithoutProxying = new String[]{
             "http://localhost", "http://127.0.0.1", "http://azure.microsoft.com", "http://careers.linkedin.com"
         };
 
-        String[] requestUrlsWithProxying = new String[] {
+        String[] requestUrlsWithProxying = new String[]{
             "http://portal.azure.com", "http://linkedin.com", "http://8.8.8.8"
         };
 
@@ -351,9 +354,6 @@ public class NettyAsyncHttpClientBuilderTests {
     }
 
     private static final class TestProxyValidator extends ChannelDuplexHandler {
-        private static final Throwable EXPECTED_EXCEPTION = new IOException("This is a local test so we "
-            + "cannot connect to remote hosts eagerly. This is exception is expected.");
-
         private final boolean shouldHaveProxy;
         private final ProxyOptions.Type proxyType;
         private final boolean usesAzureHttpProxyHandler;

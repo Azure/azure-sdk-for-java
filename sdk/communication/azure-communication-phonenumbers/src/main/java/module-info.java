@@ -4,7 +4,6 @@
 module com.azure.communication.phonenumbers {
 
     requires transitive com.azure.communication.common;
-    requires transitive com.azure.core;
 
     // public API surface area
     exports com.azure.communication.phonenumbers;
@@ -14,5 +13,5 @@ module com.azure.communication.phonenumbers {
         to com.fasterxml.jackson.databind, com.azure.core;
     opens com.azure.communication.phonenumbers.models
         to com.fasterxml.jackson.databind;
-        
+
 }

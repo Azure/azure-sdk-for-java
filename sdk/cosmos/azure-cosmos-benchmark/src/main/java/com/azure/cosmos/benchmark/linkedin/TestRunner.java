@@ -77,8 +77,13 @@ public abstract class TestRunner {
         _semaphore = new Semaphore(configuration.getConcurrency());
     }
 
+    public void init() {
+        LOGGER.info("Initializing the TestRunner");
+        _accessor.initialize();
+    }
+
     public void run() {
-        LOGGER.info("Executing Tests for the Scenario");
+        LOGGER.info("Executing Tests for the configured Scenario");
         KeyGenerator keyGenerator = getNewKeyGenerator();
         final long runStartTime = System.currentTimeMillis();
         long i = 0;
@@ -146,7 +151,7 @@ public abstract class TestRunner {
         return new CosmosDBDataAccessor<>(dataLocator,
             keyExtractor,
             new ResponseHandler<>(documentTransformer, keyExtractor),
-            new MetricsFactory(metricsRegistry, clock),
+            new MetricsFactory(metricsRegistry, clock, configuration.getEnvironment()),
             clock,
             new OperationsLogger(Duration.ofSeconds(10)));
     }

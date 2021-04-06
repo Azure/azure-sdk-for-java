@@ -49,3 +49,11 @@ stages:
       TestStepMavenInputs:
         goals: clean verify
         options: '$(ProfileFlag) -Dgpg.skip -Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -pl $(ProjectList)'
+
+  - ${{ if or(eq(variables['Build.Reason'], 'Manual'), eq(variables['Build.Reason'], 'PullRequest')) }}:
+    - template: /sdk/cosmos/ci.spark.databricks.yml
+      parameters:
+        CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
+        CosmosKey: $(spark-databricks-cosmos-key)
+        DatabricksEndpoint: $(spark-databricks-endpoint)
+        DatabricksToken: $(spark-databricks-token)

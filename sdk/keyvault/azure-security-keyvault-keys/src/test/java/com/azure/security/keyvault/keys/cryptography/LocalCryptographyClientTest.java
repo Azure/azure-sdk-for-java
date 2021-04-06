@@ -44,12 +44,12 @@ public class LocalCryptographyClientTest extends LocalCryptographyClientTestBase
 
             for (EncryptionAlgorithm algorithm : algorithms) {
                 // Test variables
-                byte[] plainText = new byte[100];
-                new Random(0x1234567L).nextBytes(plainText);
-                byte[] cipherText = cryptoClient.encrypt(algorithm, plainText).getCipherText();
-                byte[] decryptedText = cryptoClient.decrypt(algorithm, cipherText).getPlainText();
+                byte[] plaintext = new byte[100];
+                new Random(0x1234567L).nextBytes(plaintext);
+                byte[] ciphertext = cryptoClient.encrypt(algorithm, plaintext).getCipherText();
+                byte[] decryptedText = cryptoClient.decrypt(algorithm, ciphertext).getPlainText();
 
-                assertArrayEquals(decryptedText, plainText);
+                assertArrayEquals(decryptedText, plaintext);
             }
         });
     }
@@ -64,12 +64,12 @@ public class LocalCryptographyClientTest extends LocalCryptographyClientTestBase
 
             for (KeyWrapAlgorithm algorithm : algorithms) {
                 // Test variables
-                byte[] plainText = new byte[100];
-                new Random(0x1234567L).nextBytes(plainText);
-                byte[] encryptedKey = cryptoClient.wrapKey(algorithm, plainText).getEncryptedKey();
+                byte[] plaintext = new byte[100];
+                new Random(0x1234567L).nextBytes(plaintext);
+                byte[] encryptedKey = cryptoClient.wrapKey(algorithm, plaintext).getEncryptedKey();
                 byte[] decryptedKey = cryptoClient.unwrapKey(algorithm, encryptedKey).getKey();
 
-                assertArrayEquals(decryptedKey, plainText);
+                assertArrayEquals(decryptedKey, plaintext);
             }
 
         });
@@ -101,12 +101,12 @@ public class LocalCryptographyClientTest extends LocalCryptographyClientTestBase
             JsonWebKey key = JsonWebKey.fromEc(keyPair, provider, Arrays.asList(KeyOperation.SIGN, KeyOperation.VERIFY));
             LocalCryptographyClient cryptoClient = initializeCryptographyClient(key);
 
-            byte[] plainText = new byte[100];
-            new Random(0x1234567L).nextBytes(plainText);
+            byte[] plaintext = new byte[100];
+            new Random(0x1234567L).nextBytes(plaintext);
 
-            byte[] signature = cryptoClient.signData(curveToSignature.get(crv), plainText).getSignature();
+            byte[] signature = cryptoClient.signData(curveToSignature.get(crv), plaintext).getSignature();
 
-            Boolean verifyStatus = cryptoClient.verifyData(curveToSignature.get(crv), plainText, signature).isValid();
+            Boolean verifyStatus = cryptoClient.verifyData(curveToSignature.get(crv), plaintext, signature).isValid();
             assertTrue(verifyStatus);
         }
     }

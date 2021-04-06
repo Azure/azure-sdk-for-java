@@ -10,7 +10,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
 
 /**
  * Client for sending SMS messages with Azure Communication SMS Services.
@@ -18,7 +17,6 @@ import com.azure.core.util.logging.ClientLogger;
 @ServiceClient(builder = SmsClientBuilder.class)
 public final class SmsClient {
     private final SmsAsyncClient smsAsyncClient;
-    private final ClientLogger logger = new ClientLogger(SmsClient.class);
 
     SmsClient(SmsAsyncClient smsAsyncClient) {
         this.smsAsyncClient = smsAsyncClient;
@@ -45,12 +43,11 @@ public final class SmsClient {
      * @param message message to send to recipient.
      * @param options set options on the SMS request, like enable delivery report, which sends a report
      * for this message to the Azure Resource Event Grid.
-     * @param context A {@link Context} representing the request context
-     * @return Send Sms request.
+     * @return The Sms send result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SmsSendResult send(String from, String to, String message, SmsSendOptions options, Context context) {
-        return smsAsyncClient.send(from, to, message, options, context).block();
+    public SmsSendResult send(String from, String to, String message, SmsSendOptions options) {
+        return smsAsyncClient.send(from, to, message, options).block();
     }
 
     /**
