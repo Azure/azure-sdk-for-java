@@ -46,6 +46,7 @@ import reactor.core.scheduler.Scheduler;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.nio.channels.Pipe;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Map;
@@ -129,7 +130,7 @@ public class EventHubReactorConnectionTest {
         when(reactor.process()).thenReturn(true);
         when(reactor.attachments()).thenReturn(record);
 
-        final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(reactor);
+        final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(CONNECTION_ID, reactor, Pipe.open());
         when(reactorProvider.getReactor()).thenReturn(reactor);
         when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
         when(reactorProvider.createReactor(connectionHandler.getConnectionId(), connectionHandler.getMaxFrameSize()))
