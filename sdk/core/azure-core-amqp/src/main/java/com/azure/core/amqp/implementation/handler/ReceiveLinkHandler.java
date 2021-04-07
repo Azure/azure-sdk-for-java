@@ -3,7 +3,9 @@
 
 package com.azure.core.amqp.implementation.handler;
 
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.util.logging.ClientLogger;
+import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Modified;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Delivery;
@@ -13,6 +15,7 @@ import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Receiver;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
+import reactor.util.concurrent.Queues;
 
 import java.util.Collections;
 import java.util.Set;
@@ -23,7 +26,7 @@ public class ReceiveLinkHandler extends LinkHandler {
     private final String linkName;
     private final AtomicBoolean isFirstResponse = new AtomicBoolean(true);
     private final AtomicBoolean isTerminated = new AtomicBoolean();
-    private final Sinks.Many<Delivery> deliveries = Sinks.many().multicast().directBestEffort();
+    private final Sinks.Many<Delivery> deliveries = Sinks.many().multicast().onBackpressureBuffer();
     private final Set<Delivery> queuedDeliveries = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private final String entityPath;
 
@@ -136,8 +139,16 @@ public class ReceiveLinkHandler extends LinkHandler {
                         logger.warning("connectionId[{}], entityPath[{}], linkName[{}], emitResult[{}] "
                                 + "Could not emit delivery. {}",
                             getConnectionId(), entityPath, linkName, emitResult, delivery);
+                        if (emitResult == Sinks.EmitResult.FAIL_OVERFLOW
+                            && link.getLocalState() != EndpointState.CLOSED) {
+                            link.setCondition(new ErrorCondition(Symbol.getSymbol("delivery-buffer-overflow"),
+                                "Deliveries are not processed fast enough. Closing local link."));
+                            link.close();
 
-                        return false;
+                            return true;
+                        } else {
+                            return false;
+                        }
                     });
                 }
             }
