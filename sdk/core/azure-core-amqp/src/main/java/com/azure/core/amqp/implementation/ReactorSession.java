@@ -486,8 +486,6 @@ public class ReactorSession implements AmqpSession {
         //@formatter:off
         final Disposable subscription = reactorSender.getEndpointStates().subscribe(state -> {
         }, error -> {
-            logger.info("linkName[{}]: Error occurred. Removing and disposing send link.",
-                linkName, error);
             removeLink(openSendLinks, linkName);
         }, () -> {
             logger.info("linkName[{}]: Complete. Removing and disposing send link.", linkName);
@@ -544,10 +542,6 @@ public class ReactorSession implements AmqpSession {
 
         final Disposable subscription = reactorReceiver.getEndpointStates().subscribe(state -> {
         }, error -> {
-            logger.info(
-                "linkName[{}] entityPath[{}]: Error occurred. Removing receive link.",
-                linkName, entityPath, error);
-
             removeLink(openReceiveLinks, linkName);
         }, () -> {
             logger.info("linkName[{}] entityPath[{}]: Complete. Removing receive link.",

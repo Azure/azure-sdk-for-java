@@ -208,7 +208,6 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                         }
 
                         currentLink = null;
-                        logger.warning("linkName[{}] entityPath[{}]. Error occurred in link.", linkName, entityPath);
                         onError(error);
                     },
                     () -> {
@@ -526,9 +525,6 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             } else {
                 credits = Long.valueOf(request).intValue();
             }
-
-            logger.verbose("linkName[{}] requested[{}] credits[{}] Calculating credits to add.",
-                currentLinkName, request, credits);
 
             return credits;
         }
