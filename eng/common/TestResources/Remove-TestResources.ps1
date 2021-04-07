@@ -125,10 +125,13 @@ $context = Get-AzContext
 # Make sure $BaseName is set.
 Log "BaseName is '$BaseName'"
 if (!$BaseName) {
-
+    Log "ResourceGroupName is '$ResourceGroupName'"
     $UserName =  if ($env:USER) { $env:USER } else { "${env:USERNAME}" }
+    Log "UserName is '$UserName'"
     # Remove spaces, etc. that may be in $UserName
     $UserName = $UserName -replace '\W'
+    Log "UserName is is '$UserName'"
+    Log "ServiceDirectory is '$ServiceDirectory'"
 
     $BaseName = "$UserName$ServiceDirectory"
     Log "BaseName was not set. Using default base name '$BaseName'"
@@ -136,8 +139,8 @@ if (!$BaseName) {
 
 if (!$ResourceGroupName) {
     # Format the resource group name like in New-TestResources.ps1.
-    $ResourceGroupName = "rg-$BaseName"
     Log "BaseName is is '$BaseName'"
+    $ResourceGroupName = "rg-$BaseName"
 }
 
 # If no subscription was specified, try to select the Azure SDK Developer Playground subscription.
