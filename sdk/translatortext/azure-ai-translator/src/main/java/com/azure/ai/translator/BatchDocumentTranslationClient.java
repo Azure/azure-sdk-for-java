@@ -11,7 +11,6 @@ import com.azure.core.experimental.http.DynamicRequest;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.serializer.ObjectSerializer;
-import java.util.UUID;
 
 /** Initializes a new instance of the BatchDocumentTranslationClient type. */
 @ServiceClient(builder = BatchDocumentTranslationClientBuilder.class)
@@ -241,12 +240,12 @@ public final class BatchDocumentTranslationClient {
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getDocumentStatus(UUID id, UUID documentId) {
+    public DynamicRequest getDocumentStatus(String id, String documentId) {
         return new DynamicRequest(objectSerializer, pipeline)
                 .setUrl("{endpoint}/translator/text/batch/v1.0-preview.1/batches/{id}/documents/{documentId}")
                 .setPathParam("endpoint", endpoint)
-                .setPathParam("id", String.valueOf(id))
-                .setPathParam("documentId", String.valueOf(documentId))
+                .setPathParam("id", id)
+                .setPathParam("documentId", documentId)
                 .addHeader("Accept", "application/json")
                 .addHeader("Content-Type", "application/json")
                 .setHttpMethod(HttpMethod.GET);
@@ -291,11 +290,11 @@ public final class BatchDocumentTranslationClient {
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getOperationStatus(UUID id) {
+    public DynamicRequest getOperationStatus(String id) {
         return new DynamicRequest(objectSerializer, pipeline)
                 .setUrl("{endpoint}/translator/text/batch/v1.0-preview.1/batches/{id}")
                 .setPathParam("endpoint", endpoint)
-                .setPathParam("id", String.valueOf(id))
+                .setPathParam("id", id)
                 .addHeader("Accept", "application/json")
                 .addHeader("Content-Type", "application/json")
                 .setHttpMethod(HttpMethod.GET);
@@ -342,11 +341,11 @@ public final class BatchDocumentTranslationClient {
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest cancelOperation(UUID id) {
+    public DynamicRequest cancelOperation(String id) {
         return new DynamicRequest(objectSerializer, pipeline)
                 .setUrl("{endpoint}/translator/text/batch/v1.0-preview.1/batches/{id}")
                 .setPathParam("endpoint", endpoint)
-                .setPathParam("id", String.valueOf(id))
+                .setPathParam("id", id)
                 .addHeader("Accept", "application/json")
                 .addHeader("Content-Type", "application/json")
                 .setHttpMethod(HttpMethod.DELETE);
@@ -443,11 +442,11 @@ public final class BatchDocumentTranslationClient {
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getOperationDocumentsStatus(UUID id) {
+    public DynamicRequest getOperationDocumentsStatus(String id) {
         return new DynamicRequest(objectSerializer, pipeline)
                 .setUrl("{endpoint}/translator/text/batch/v1.0-preview.1/batches/{id}/documents")
                 .setPathParam("endpoint", endpoint)
-                .setPathParam("id", String.valueOf(id))
+                .setPathParam("id", id)
                 .addHeader("Accept", "application/json")
                 .addHeader("Content-Type", "application/json")
                 .setHttpMethod(HttpMethod.GET);
