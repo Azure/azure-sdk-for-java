@@ -20,9 +20,8 @@ public class GeneratedCodeCompareBase {
     public void compareGeneratedCodeWithExpected(String subDirectoryName, String typeName) throws IOException {
         String expectedFileContents = FileHelpers.getFileContentsByFileName(subDirectoryName, typeName + EXPECTED_CODE_FILE_EXTENSION);
         String generatedFileContents = FileHelpers.getFileContentsByFileName(subDirectoryName, typeName + GENERATED_CODE_FILE_EXTENSION);
-        Assertions.assertEquals(
-            expectedFileContents,
-            generatedFileContents,
+        Assertions.assertTrue(
+            expectedFileContents.startsWith(generatedFileContents),
             String.format(
                 "Expected \n%s\n%s%s\nwith %s characters, but found \n%s\n%s%s\nwith %s characters.",
                 DASH_SEPARATOR,
