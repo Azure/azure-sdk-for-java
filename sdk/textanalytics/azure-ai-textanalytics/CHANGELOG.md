@@ -1,4 +1,7 @@
 # Release History
+## 5.1.0-beta.7 (Unreleased)
+
+
 ## 5.1.0-beta.6 (2021-04-06)
 ### Breaking changes
 - Removed the input parameter `Context` from non-max-overload healthcare synchronous API, `beginAnalyzeHealthcareEntities()`.
