@@ -340,11 +340,16 @@ try {
     }
 
     $ResourceGroupName = if ($ResourceGroupName) {
+        Write-Host "1.ResourceGroupName': $ResourceGroupName"
+        Write-Host "1.BaseName': $BaseName"
         $ResourceGroupName
     } elseif ($CI) {
         # Format the resource group name based on resource group naming recommendations and limitations.
         "rg-{0}-$BaseName" -f ($serviceName -replace '[\\\/:]', '-').Substring(0, [Math]::Min($serviceName.Length, 90 - $BaseName.Length - 4)).Trim('-')
+        Write-Host "2.serviceName': $serviceName"
+        Write-Host "2.BaseName': $BaseName"
     } else {
+        Write-Host "3.BaseName': $BaseName"
         "rg-$BaseName"
     }
 
