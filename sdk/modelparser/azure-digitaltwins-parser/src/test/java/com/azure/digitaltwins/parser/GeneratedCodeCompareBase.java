@@ -8,14 +8,13 @@ import org.junit.jupiter.api.Assertions;
 
 import java.io.IOException;
 
-public class GeneratedCodeComparerBase {
-    private final static String DASH_SEPARATOR = "------------------------------------------------------------------------------------------------------------------------";
-    private final static String GENERATED_CODE_FILE_EXTENSION = ".temp.generated";
-    private final static String EXPECTED_CODE_FILE_EXTENSION = ".expected";
+public class GeneratedCodeCompareBase {
+    private static final String DASH_SEPARATOR = "------------------------------------------------------------------------------------------------------------------------";
+    private static final String EXPECTED_CODE_FILE_EXTENSION = ".expected";
+    private static final String GENERATED_CODE_FILE_EXTENSION = ".temp.generated";
 
     public CodeWriter getCodeWriter(String subDirectoryName, String typeName) throws IOException {
-        CodeWriter codeWriter = new CodeWriter(FileHelpers.getTestResourceFilePath(subDirectoryName, typeName + GENERATED_CODE_FILE_EXTENSION));
-        return codeWriter;
+        return new CodeWriter(FileHelpers.getTestResourceFilePath(subDirectoryName, typeName + GENERATED_CODE_FILE_EXTENSION));
     }
 
     public void compareGeneratedCodeWithExpected(String subDirectoryName, String typeName) throws IOException {

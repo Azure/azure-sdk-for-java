@@ -17,7 +17,7 @@ import java.io.IOException;
  * - Each test generates a file with ".temp.generated" extension. generated files will be deleted after the test pass.
  * - In case of test failure, the generated file will remain in the directory for further inspection.
  */
-public class ClassCodeGeneratorTests extends GeneratedCodeComparerBase {
+public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
 
     private static final String TEST_SUB_DIRECTORY = "ClassTestResources";
 
@@ -26,7 +26,7 @@ public class ClassCodeGeneratorTests extends GeneratedCodeComparerBase {
      * Find the expected output in "src/test/resources/ClassTestResources/EmptyPublicClass.expected"
      * Find the expected output in "src/test/resources/ClassTestResources/EmptyPublicClass.temp.expected"
      *
-     * @throws IOException
+     * @throws IOException IOException.
      */
     @Test
     public void emptyPublicClass() throws IOException {
@@ -54,7 +54,7 @@ public class ClassCodeGeneratorTests extends GeneratedCodeComparerBase {
      * Find the expected output in "src/test/resources/ClassTestResources/EmptyPackagePrivateClass.expected"
      * Find the generated file in "src/test/resources/ClassTestResources/EmptyPackagePrivateClass.temp.generated"
      *
-     * @throws IOException
+     * @throws IOException IOException.
      */
     @Test
     public void emptyPackagePrivateClass() throws IOException {
@@ -82,7 +82,7 @@ public class ClassCodeGeneratorTests extends GeneratedCodeComparerBase {
      * Find the expected output in "src/test/resources/ClassTestResources/EmptyPublicAbstractClass.expected"
      * Find the generated file in "src/test/resources/ClassTestResources/EmptyPublicAbstractClass.temp.generated"
      *
-     * @throws IOException
+     * @throws IOException IOException.
      */
     @Test
     public void emptyPublicAbstractClass() throws IOException {
@@ -110,7 +110,7 @@ public class ClassCodeGeneratorTests extends GeneratedCodeComparerBase {
      * Find the expected output in "src/test/resources/ClassTestResources/EmptyPublicStaticClass.expected"
      * Find the generated file in "src/test/resources/ClassTestResources/EmptyPublicStaticClass.temp.generated"
      *
-     * @throws IOException
+     * @throws IOException IOException.
      */
     @Test
     public void emptyPublicStaticClass() throws IOException {
@@ -138,7 +138,7 @@ public class ClassCodeGeneratorTests extends GeneratedCodeComparerBase {
      * Find the expected output in "src/test/resources/ClassTestResources/EmptyPublicExtendsClass.expected"
      * Find the generated file in "src/test/resources/ClassTestResources/EmptyPublicExtendsClass.temp.generated"
      *
-     * @throws IOException
+     * @throws IOException IOException.
      */
     @Test
     public void emptyPublicExtendsClass() throws IOException {
