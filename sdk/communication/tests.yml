@@ -9,14 +9,14 @@ parameters:
       - azure-communication-phonenumbers
       - azure-communication-sms
       - azure-communication-identity
-  - MatrixReplace:
-    - Pool=.*/Azure Pipelines
-    - OSVmImage=MMSUbuntu18.04/ubuntu-18.04
-    - OSVmImage=MMS2019/windows-2019
 
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
+      MatrixReplace:
+        - Pool=.*/Azure Pipelines
+        - OSVmImage=MMSUbuntu18.04/ubuntu-18.04
+        - OSVmImage=MMS2019/windows-2019
       Artifacts:
         - name: azure-communication-chat
           groupId: com.azure

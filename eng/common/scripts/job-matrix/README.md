@@ -354,6 +354,10 @@ In the matrix job output that azure pipelines consumes, the format is a dictiona
     "framework": "net461",
     "operatingSystem": "macOS-10.15"
   },
+  "net50_ubuntu1804": {
+    "framework": "net50",
+    "operatingSystem": "ubuntu-18.04"
+  },
   "netcoreapp21_windows2019": {
     "framework": "netcoreapp2.1",
     "operatingSystem": "windows-2019"
