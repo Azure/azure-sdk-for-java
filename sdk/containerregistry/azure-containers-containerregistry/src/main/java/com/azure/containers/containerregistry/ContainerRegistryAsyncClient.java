@@ -35,10 +35,11 @@ public final class ContainerRegistryAsyncClient {
     private final HttpPipeline httpPipeline;
     private final String endpoint;
     private final SerializerAdapter serializerAdapter;
+    private final String apiVersion;
 
     private final ClientLogger logger = new ClientLogger(ContainerRegistryAsyncClient.class);
 
-    ContainerRegistryAsyncClient(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
+    ContainerRegistryAsyncClient(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String version) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
@@ -47,6 +48,7 @@ public final class ContainerRegistryAsyncClient {
             .pipeline(httpPipeline)
             .serializerAdapter(serializerAdapter).buildClient();
         this.registriesImplClient = this.registryImplClient.getContainerRegistries();
+        this.apiVersion = version;
     }
 
     /**
@@ -156,6 +158,6 @@ public final class ContainerRegistryAsyncClient {
      * @return repository client.
      */
     public ContainerRepositoryAsyncClient getRepositoryClient(String repository) {
-        return new ContainerRepositoryAsyncClient(repository, httpPipeline, serializerAdapter, endpoint);
+        return new ContainerRepositoryAsyncClient(repository, httpPipeline, serializerAdapter, endpoint, apiVersion);
     }
 }

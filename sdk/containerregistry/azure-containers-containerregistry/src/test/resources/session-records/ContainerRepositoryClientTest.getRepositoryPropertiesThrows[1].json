@@ -4,20 +4,20 @@
     "Uri" : "https://REDACTED.azurecr.io/oauth2/exchange",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "fbd4fe17-8793-4bcb-aa9b-c3b1b89c135b",
+      "x-ms-client-request-id" : "9c163f94-ff34-4f43-8033-3d83989b907e",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "eaa7d7df-221d-4b03-b2e4-62526b5b26d5",
+      "X-Ms-Correlation-Request-Id" : "a639d494-07f3-4a4d-98a7-b86254b1fb76",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "164.766667",
+      "x-ms-ratelimit-remaining-calls-per-second" : "166.583333",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"refresh_token\":\"REDACTED\"}",
-      "Date" : "Mon, 05 Apr 2021 19:20:10 GMT",
+      "Date" : "Wed, 07 Apr 2021 22:40:11 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -26,20 +26,20 @@
     "Uri" : "https://REDACTED.azurecr.io/oauth2/token",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "67de3ebd-fdc1-4a56-89f7-eea56a1f6fea",
+      "x-ms-client-request-id" : "c23fd113-7ac5-47fb-8d1e-1058fbdbecc5",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "dffde9fd-8f30-4d15-8ece-a22d54c67e1d",
+      "X-Ms-Correlation-Request-Id" : "130f7e2a-7552-4dad-b663-c67d386a79ee",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "165.583333",
+      "x-ms-ratelimit-remaining-calls-per-second" : "166.566667",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"access_token\":\"REDACTED\"}",
-      "Date" : "Mon, 05 Apr 2021 19:20:10 GMT",
+      "Date" : "Wed, 07 Apr 2021 22:40:11 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -48,20 +48,20 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/unknownrepo",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "5e0644cc-5868-4bc0-bf45-f24b7a97a188"
+      "x-ms-client-request-id" : "9eda43f1-1683-4106-b090-58d61908aa83"
     },
     "Response" : {
+      "content-length" : "89",
       "Server" : "openresty",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Date" : "Mon, 05 Apr 2021 19:20:10 GMT",
+      "Date" : "Wed, 07 Apr 2021 22:40:11 GMT",
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "95777053-86f7-4739-b063-0996628e0289",
+      "X-Ms-Correlation-Request-Id" : "5b611283-c143-4afd-af6d-121646d781ba",
       "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
-      "Content-Length" : "89",
       "Body" : "{\"errors\":[{\"code\":\"NAME_UNKNOWN\",\"message\":\"repository \\\"unknownrepo\\\" is not found\"}]}\n",
       "Content-Type" : "application/json; charset=utf-8"
     },
@@ -71,20 +71,20 @@
     "Uri" : "https://REDACTED.azurecr.io/oauth2/token",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "12187c3f-1f20-41bb-a73a-4889907d520e",
+      "x-ms-client-request-id" : "5bb2a719-82a6-43ac-9c44-5c321cb220b4",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "5e86f6bd-72e0-4287-9af0-c752ddb38f29",
+      "X-Ms-Correlation-Request-Id" : "715ff796-c1c8-444a-ab1b-0c3913ac1934",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "164.733333",
+      "x-ms-ratelimit-remaining-calls-per-second" : "166.616667",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"access_token\":\"REDACTED\"}",
-      "Date" : "Mon, 05 Apr 2021 19:20:10 GMT",
+      "Date" : "Wed, 07 Apr 2021 22:40:11 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -93,20 +93,20 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/unknownrepo",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "3805c499-e0e1-42ab-a92a-73680586c20c"
+      "x-ms-client-request-id" : "4a0626d9-bad6-46e7-8a37-b36837014f91"
     },
     "Response" : {
+      "content-length" : "89",
       "Server" : "openresty",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Date" : "Mon, 05 Apr 2021 19:20:10 GMT",
+      "Date" : "Wed, 07 Apr 2021 22:40:12 GMT",
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "95777053-86f7-4739-b063-0996628e0289",
+      "X-Ms-Correlation-Request-Id" : "a5e9d59e-8b1c-484d-b078-3ac9e63f75e7",
       "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
-      "Content-Length" : "89",
       "Body" : "{\"errors\":[{\"code\":\"NAME_UNKNOWN\",\"message\":\"repository \\\"unknownrepo\\\" is not found\"}]}\n",
       "Content-Type" : "application/json; charset=utf-8"
     },

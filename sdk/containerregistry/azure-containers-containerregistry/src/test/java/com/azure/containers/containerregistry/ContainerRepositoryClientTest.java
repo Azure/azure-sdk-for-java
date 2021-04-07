@@ -4,7 +4,6 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.models.ContentProperties;
 import com.azure.containers.containerregistry.models.ListRegistryArtifactOptions;
 import com.azure.containers.containerregistry.models.ListTagsOptions;
 import com.azure.containers.containerregistry.models.RegistryArtifactOrderBy;
@@ -17,8 +16,6 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -27,20 +24,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.azure.containers.containerregistry.TestUtils.AMD64_ARCHITECTURE;
-import static com.azure.containers.containerregistry.TestUtils.ARM64_ARCHITECTURE;
 import static com.azure.containers.containerregistry.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static com.azure.containers.containerregistry.TestUtils.HELLOWORLD_REPOSITORY_MANIFEST_REFERENCES_COUNT;
 import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.LATEST_TAG_NAME;
-import static com.azure.containers.containerregistry.TestUtils.LINUX_OPERATING_SYSTEM;
+import static com.azure.containers.containerregistry.TestUtils.LIBRARY_BUSYBOX_NAME;
 import static com.azure.containers.containerregistry.TestUtils.PAGESIZE_2;
-import static com.azure.containers.containerregistry.TestUtils.V1_TAG_NAME;
-import static com.azure.containers.containerregistry.TestUtils.WINDOWS_OPERATING_SYSTEM;
 import static com.azure.containers.containerregistry.TestUtils.isSorted;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -49,6 +39,10 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
 
     private ContainerRepositoryClient getContainerRepositoryClient(HttpClient httpClient) {
         return getContainerRepositoryBuilder(HELLO_WORLD_REPOSITORY_NAME, httpClient).buildClient();
+    }
+
+    private ContainerRepositoryClient getContainerRepositoryWritableClient(HttpClient httpClient) {
+        return getContainerRepositoryBuilder(LIBRARY_BUSYBOX_NAME, httpClient).buildClient();
     }
 
     private ContainerRepositoryClient getContainerRepositoryClientUnknownRepo(HttpClient httpClient) {
@@ -60,14 +54,8 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
     @MethodSource("getHttpClients")
     public void getRepositoryProperties(HttpClient httpClient) {
         ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
-
         RepositoryProperties properties = client.getProperties();
-        assertNotNull(properties);
-        assertEquals(HELLO_WORLD_REPOSITORY_NAME, properties.getName());
-        assertNotNull(properties.getCreatedOn());
-        assertNotNull(properties.getLastUpdatedOn());
-        assertNotNull(properties.getTagCount());
-        assertNotNull(properties.getRegistryArtifactCount());
+        validateProperties(properties);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -76,17 +64,7 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
         ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
 
         Response<RepositoryProperties> response = client.getPropertiesWithResponse(Context.NONE);
-        assertNotNull(response);
-        assertNotNull(response.getStatusCode());
-        assertNotNull(response.getRequest());
-
-        RepositoryProperties properties = response.getValue();
-        assertNotNull(properties);
-        assertEquals(HELLO_WORLD_REPOSITORY_NAME, properties.getName());
-        assertNotNull(properties.getCreatedOn());
-        assertNotNull(properties.getLastUpdatedOn());
-        assertNotNull(properties.getTagCount());
-        assertNotNull(properties.getRegistryArtifactCount());
+        validateResponse(response);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -99,107 +77,11 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    @Execution(ExecutionMode.SAME_THREAD)
-    public void setRepositoryProperties(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
-
-        ContentProperties originalProps = null;
-        try {
-            RepositoryProperties props = client.getProperties();
-            assertNotNull(props);
-            originalProps = props.getWriteableProperties();
-
-            client.setProperties(
-                new ContentProperties()
-                    .setCanWrite(true)
-                    .setCanRead(true)
-                    .setCanList(true)
-                    .setCanDelete(false));
-
-            testDelay();
-
-            RepositoryProperties newProps = client.getProperties();
-            assertNotNull(newProps);
-
-            ContentProperties properties = newProps.getWriteableProperties();
-            assertEquals(false, properties.hasCanDelete());
-            assertEquals(true, properties.hasCanList());
-            assertEquals(true, properties.hasCanRead());
-            assertEquals(true, properties.hasCanWrite());
-        } finally {
-            if (originalProps != null) {
-                client.setProperties(originalProps);
-            }
-        }
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    @Execution(ExecutionMode.SAME_THREAD)
-    public void setRepositoryPropertiesWithResponse(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
-
-        ContentProperties originalProps = null;
-        try {
-            RepositoryProperties props = client.getProperties();
-            assertNotNull(props);
-            originalProps = props.getWriteableProperties();
-
-            client.setPropertiesWithResponse(
-                new ContentProperties()
-                    .setCanWrite(true)
-                    .setCanRead(true)
-                    .setCanList(true)
-                    .setCanDelete(false),
-                Context.NONE);
-
-            testDelay();
-
-            RepositoryProperties newProps = client.getProperties();
-            assertNotNull(newProps);
-
-            ContentProperties properties = newProps.getWriteableProperties();
-            assertEquals(false, properties.hasCanDelete());
-            assertEquals(true, properties.hasCanList());
-            assertEquals(true, properties.hasCanRead());
-            assertEquals(true, properties.hasCanWrite());
-        } finally {
-            if (originalProps != null) {
-                client.setProperties(originalProps);
-            }
-        }
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
     public void setRepositoryPropertiesThrows(HttpClient httpClient) {
         ContainerRepositoryClient client = getContainerRepositoryClientUnknownRepo(httpClient);
 
-        assertThrows(ResourceNotFoundException.class, () ->  client.setProperties(
-            new ContentProperties()
-                .setCanWrite(true)
-                .setCanRead(true)
-                .setCanList(true)
-                .setCanDelete(false)));
-
-        assertThrows(ResourceNotFoundException.class, () ->  client.setPropertiesWithResponse(
-            new ContentProperties()
-                .setCanList(false)
-                .setCanDelete(false)
-                .setCanRead(false)
-                .setCanWrite(false),
-            Context.NONE));
-    }
-
-    void validateImageProperties(RegistryArtifactProperties props, String expectedDigest) {
-        assertNotNull(props);
-        assertTrue(props.getRegistryArtifacts().size() >= HELLOWORLD_REPOSITORY_MANIFEST_REFERENCES_COUNT);
-        assertTrue(props.getRegistryArtifacts().stream().anyMatch(a -> ARM64_ARCHITECTURE.equals(a.getCpuArchitecture())
-            && LINUX_OPERATING_SYSTEM.equals(a.getOperatingSystem())));
-        assertTrue(props.getRegistryArtifacts().stream().anyMatch(a -> AMD64_ARCHITECTURE.equals(a.getCpuArchitecture())
-            && WINDOWS_OPERATING_SYSTEM.equals(a.getOperatingSystem())));
-        assertNotNull(expectedDigest);
-        assertEquals(expectedDigest, props.getDigest());
+        assertThrows(ResourceNotFoundException.class, () ->  client.setProperties(writeableProperties));
+        assertThrows(ResourceNotFoundException.class, () ->  client.setPropertiesWithResponse(writeableProperties, Context.NONE));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -207,13 +89,19 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
     public void getMultiArchitectureImageProperties(HttpClient httpClient) {
         ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
 
+        // 1. Getting manifest properties from a tag works.
         RegistryArtifactProperties props = client.getRegistryArtifactProperties(LATEST_TAG_NAME);
-        assertNotNull(props);
-        validateImageProperties(props, props.getDigest());
+        validateArtifactProperties(props, true, false);
 
-        String exDigest = props.getDigest();
-        props = client.getRegistryArtifactProperties(exDigest);
-        validateImageProperties(props, exDigest);
+        String digest = props.getDigest();
+        props = client.getRegistryArtifactProperties(digest);
+        validateArtifactProperties(props, true, false);
+
+        //2. Try to get the child manifest.
+        List<RegistryArtifactProperties> repositories = client.listRegistryArtifacts().stream().collect(Collectors.toList());
+        String childDigest = getChildArtifactDigest(repositories);
+        props = client.getRegistryArtifactProperties(childDigest);
+        validateArtifactProperties(props, false, true);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -221,22 +109,19 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
     public void getMultiArchitectureImagePropertiesWithResponse(HttpClient httpClient) {
         ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
 
+        // 1. Getting manifest properties from a tag works.
         Response<RegistryArtifactProperties> response = client.getRegistryArtifactPropertiesWithResponse(LATEST_TAG_NAME, Context.NONE);
-        assertNotNull(response);
-        assertNotNull(response.getStatusCode());
-        assertNotNull(response.getHeaders());
-        assertNotNull(response.getRequest());
+        validateArtifactProperties(response, true, false);
 
-        RegistryArtifactProperties props = response.getValue();
-        validateImageProperties(props, props.getDigest());
+        String digest = response.getValue().getDigest();
+        response = client.getRegistryArtifactPropertiesWithResponse(digest, Context.NONE);
+        validateArtifactProperties(response, true, false);
 
-        String exDigest = props.getDigest();
-        response = client.getRegistryArtifactPropertiesWithResponse(exDigest, Context.NONE);
-        assertNotNull(response);
-        assertNotNull(response.getStatusCode());
-        assertNotNull(response.getHeaders());
-        assertNotNull(response.getRequest());
-        validateImageProperties(props, exDigest);
+        //2. Try to get the child manifest.
+        List<RegistryArtifactProperties> repositories = client.listRegistryArtifacts().stream().collect(Collectors.toList());
+        String childDigest = getChildArtifactDigest(repositories);
+        response = client.getRegistryArtifactPropertiesWithResponse(childDigest, Context.NONE);
+        validateArtifactProperties(response, false, true);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -250,135 +135,37 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    @Execution(ExecutionMode.SAME_THREAD)
-    public void setManifestProperties(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
-
-        RegistryArtifactProperties orProps = null;
-        String digest = null;
-
-        try {
-            TagProperties tagProps = client.getTagProperties(LATEST_TAG_NAME);
-            digest = tagProps.getDigest();
-            assertNotNull(digest);
-            orProps = client.getRegistryArtifactProperties(digest);
-            assertNotNull(orProps);
-
-            client.setManifestProperties(
-                digest,
-                new ContentProperties()
-                    .setCanWrite(true)
-                    .setCanRead(true)
-                    .setCanList(true)
-                    .setCanDelete(false));
-
-            testDelay();
-
-            RegistryArtifactProperties acProps = client.getRegistryArtifactProperties(digest);
-            assertNotNull(acProps);
-            ContentProperties manifestProperties = acProps.getWriteableProperties();
-            assertNotNull(manifestProperties);
-            assertFalse(manifestProperties.hasCanDelete());
-            assertTrue(manifestProperties.hasCanRead());
-            assertTrue(manifestProperties.hasCanWrite());
-            assertTrue(manifestProperties.hasCanList());
-        } finally {
-            if (orProps != null) {
-                client.setManifestProperties(digest, orProps.getWriteableProperties());
-            }
-        }
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    @Execution(ExecutionMode.SAME_THREAD)
-    public void setManifestPropertiesWithResponse(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
-
-        RegistryArtifactProperties orProps = null;
-        String digest = null;
-
-        try {
-            TagProperties tagProps = client.getTagProperties(LATEST_TAG_NAME);
-            digest = tagProps.getDigest();
-            assertNotNull(digest);
-            orProps = client.getRegistryArtifactProperties(digest);
-            assertNotNull(orProps);
-
-            client.setManifestPropertiesWithResponse(
-                digest,
-                new ContentProperties()
-                    .setCanWrite(true)
-                    .setCanRead(true)
-                    .setCanList(true)
-                    .setCanDelete(false),
-                Context.NONE);
-
-            testDelay();
-
-            RegistryArtifactProperties acProps = client.getRegistryArtifactProperties(digest);
-            assertNotNull(acProps);
-            ContentProperties manifestProperties = acProps.getWriteableProperties();
-            assertNotNull(manifestProperties);
-            assertFalse(manifestProperties.hasCanDelete());
-            assertTrue(manifestProperties.hasCanRead());
-            assertTrue(manifestProperties.hasCanWrite());
-            assertTrue(manifestProperties.hasCanList());
-        } finally {
-            if (orProps != null) {
-                client.setManifestProperties(digest, orProps.getWriteableProperties());
-            }
-        }
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
     public void deleteRegistryArtifactThrows(HttpClient httpClient) {
         ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
         assertThrows(NullPointerException.class, () -> client.deleteRegistryArtifact(null));
 
-        TagProperties tagProps = client.getTagProperties(LATEST_TAG_NAME);
+        String digest = "some:digest";
         assertThrows(NullPointerException.class, () -> client.deleteRegistryArtifactWithResponse(null, Context.NONE));
-        assertThrows(NullPointerException.class, () -> client.deleteRegistryArtifactWithResponse(tagProps.getDigest(), null));
+        assertThrows(NullPointerException.class, () -> client.deleteRegistryArtifactWithResponse(digest, null));
 
         assertThrows(HttpResponseException.class, () -> client.deleteRegistryArtifact("unknownDigest"));
         assertThrows(HttpResponseException.class, () -> client.deleteRegistryArtifactWithResponse("someValue", Context.NONE));
     }
 
-//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-//    @MethodSource("getHttpClients")
-//    public void deleteRegistryArtifact(HttpClient httpClient) {
-//        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
-//
-//        TagProperties tagProperties = client.getTagProperties(TAG_TO_DELETE);
-//
-//        Mono<RegistryArtifactProperties> testDeleteRepositoryMono = client.getTagProperties(TAG_TO_DELETE)
-//            .flatMap(res -> {
-//                return client.deleteRegistryArtifact(res.getDigest());
-//            }).delayUntil(res -> {
-//                    if (getTestMode() != TestMode.PLAYBACK) {
-//                        Mono.delay(DEFAULT_MONO_DELAY);
-//                    }
-//
-//                    return Mono.just(res);
-//                }
-//            ).flatMap(res -> client.getRegistryArtifactProperties(TAG_TO_DELETE));
-//
-//        StepVerifier.create(testDeleteRepositoryMono)
-//            .expectErrorMatches(res -> {
-//                return res instanceof ResourceNotFoundException;
-//            }).verify();
-//    }
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getHttpClients")
+    public void setManifestPropertiesThrows(HttpClient httpClient) {
+        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
+        assertThrows(NullPointerException.class, () -> client.setManifestProperties(null, writeableProperties));
+        assertThrows(NullPointerException.class, () -> client.setManifestProperties("unknownTag", null));
+        assertThrows(ResourceNotFoundException.class, () -> client.setManifestProperties("unknownTag", writeableProperties));
+    }
+
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void listArtifacts(HttpClient httpClient) {
         ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
 
+        RepositoryProperties registryProps = client.getProperties();
+
         List<RegistryArtifactProperties> artifacts = client.listRegistryArtifacts().stream().collect(Collectors.toList());
-        artifacts.forEach(props -> {
-            assertNotNull(props.getDigest());
-        });
+        validateListArtifacts(artifacts);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -388,9 +175,7 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
 
         ArrayList<RegistryArtifactProperties> artifacts = new ArrayList<>();
         client.listRegistryArtifacts().iterableByPage(PAGESIZE_2).forEach(res -> res.getValue().forEach(repo -> artifacts.add(repo)));
-        artifacts.forEach(props -> {
-            assertNotNull(props.getDigest());
-        });
+        validateListArtifacts(artifacts);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -413,6 +198,8 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
             res.getValue().forEach(repo -> artifacts.add(repo));
         });
 
+        validateListArtifacts(artifacts);
+
         // Validate that the datetime is in ascending order.
         List<OffsetDateTime> lastUpdatedOn = artifacts.stream().map(artifact -> artifact.getLastUpdatedOn()).collect(Collectors.toList());
         assertTrue(isSorted(lastUpdatedOn));
@@ -429,6 +216,8 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
             assertEquals(PAGESIZE_2, res.getValue().size());
             res.getValue().forEach(repo -> artifacts.add(repo));
         });
+
+        validateListArtifacts(artifacts);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -437,12 +226,7 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
         ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
 
         List<TagProperties> tags = client.listTags().stream().collect(Collectors.toList());
-        tags.forEach(props -> {
-            assertEquals(HELLO_WORLD_REPOSITORY_NAME, props.getRepository());
-        });
-
-        tags.stream().anyMatch(tag -> V1_TAG_NAME.equals(tag.getName()));
-        tags.stream().anyMatch(tag -> LATEST_TAG_NAME.equals(tag.getName()));
+        validateListTags(tags);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -452,12 +236,7 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
 
         ArrayList<TagProperties> tags = new ArrayList<>();
         client.listTags().iterableByPage(PAGESIZE_2).forEach(res -> res.getValue().forEach(repo -> tags.add(repo)));
-        tags.forEach(props -> {
-            assertEquals(HELLO_WORLD_REPOSITORY_NAME, props.getRepository());
-        });
-
-        tags.stream().anyMatch(tag -> V1_TAG_NAME.equals(tag.getName()));
-        tags.stream().anyMatch(tag -> LATEST_TAG_NAME.equals(tag.getName()));
+        validateListTags(tags);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -480,6 +259,8 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
             res.getValue().forEach(repo -> tags.add(repo));
         });
 
+        validateListTags(tags);
+
         // Validate that the datetime is in ascending order.
         List<OffsetDateTime> lastUpdatedOn = tags.stream().map(tag -> tag.getLastUpdatedOn()).collect(Collectors.toList());
         assertTrue(isSorted(lastUpdatedOn));
@@ -497,8 +278,7 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
             res.getValue().forEach(repo -> tags.add(repo));
         });
 
-        tags.stream().anyMatch(tag -> V1_TAG_NAME.equals(tag.getName()));
-        tags.stream().anyMatch(tag -> LATEST_TAG_NAME.equals(tag.getName()));
+        validateListTags(tags);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -507,9 +287,7 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
         ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
 
         TagProperties tagProps = client.getTagProperties(LATEST_TAG_NAME);
-        assertNotNull(tagProps);
-        assertEquals(HELLO_WORLD_REPOSITORY_NAME, tagProps.getRepository());
-        assertEquals(LATEST_TAG_NAME, tagProps.getName());
+        validateTagProperties(tagProps, LATEST_TAG_NAME);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -518,15 +296,7 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
         ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
 
         Response<TagProperties> response = client.getTagPropertiesWithResponse(LATEST_TAG_NAME, Context.NONE);
-        assertNotNull(response);
-        assertNotNull(response.getStatusCode());
-        assertNotNull(response.getHeaders());
-        assertNotNull(response.getRequest());
-        assertNotNull(response.getValue());
-
-        TagProperties props = response.getValue();
-        assertEquals(HELLO_WORLD_REPOSITORY_NAME, props.getRepository());
-        assertEquals(LATEST_TAG_NAME, props.getName());
+        validateTagProperties(response, LATEST_TAG_NAME);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -543,113 +313,17 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    @Execution(ExecutionMode.SAME_THREAD)
-    public void setTagProperties(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
-
-        ContentProperties orProps = null;
-        try {
-
-            TagProperties props = client.getTagProperties(LATEST_TAG_NAME);
-            assertNotNull(props);
-            orProps = props.getWriteableProperties();
-
-            client.setTagProperties(
-                LATEST_TAG_NAME,
-                new ContentProperties()
-                    .setCanWrite(true)
-                    .setCanRead(true)
-                    .setCanList(true)
-                    .setCanDelete(false));
-
-            testDelay();
-
-            TagProperties acProps = client.getTagProperties(LATEST_TAG_NAME);
-            ContentProperties properties = acProps.getWriteableProperties();
-            assertNotNull(properties);
-            assertFalse(properties.hasCanDelete());
-            assertTrue(properties.hasCanRead());
-            assertTrue(properties.hasCanWrite());
-            assertTrue(properties.hasCanList());
-
-        } finally {
-            if (orProps != null) {
-                client.setTagProperties(LATEST_TAG_NAME, orProps);
-            }
-        }
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    @Execution(ExecutionMode.SAME_THREAD)
-    public void setTagPropertiesWithResponse(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
-
-        ContentProperties orProps = null;
-        try {
-
-            TagProperties props = client.getTagProperties(LATEST_TAG_NAME);
-            assertNotNull(props);
-            orProps = props.getWriteableProperties();
-
-            client.setTagPropertiesWithResponse(
-                LATEST_TAG_NAME,
-                new ContentProperties()
-                    .setCanWrite(true)
-                    .setCanRead(true)
-                    .setCanList(true)
-                    .setCanDelete(false),
-                Context.NONE);
-            testDelay();
-
-            TagProperties acProps = client.getTagProperties(LATEST_TAG_NAME);
-
-            ContentProperties properties = acProps.getWriteableProperties();
-            assertNotNull(properties);
-            assertFalse(properties.hasCanDelete());
-            assertTrue(properties.hasCanRead());
-            assertTrue(properties.hasCanWrite());
-            assertTrue(properties.hasCanList());
-
-        } finally {
-            if (orProps != null) {
-                client.setTagProperties(LATEST_TAG_NAME, orProps);
-            }
-        }
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
     public void setTagPropertiesThrows(HttpClient httpClient) {
         ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
 
-        assertThrows(NullPointerException.class, () -> client.setTagProperties(null,  new ContentProperties()
-            .setCanWrite(false)
-            .setCanRead(false)
-            .setCanList(false)
-            .setCanDelete(false)));
+        assertThrows(NullPointerException.class, () -> client.setTagProperties(null, writeableProperties));
 
-        assertThrows(NullPointerException.class, () -> client.setTagPropertiesWithResponse(null,  new ContentProperties()
-            .setCanWrite(false)
-            .setCanRead(false)
-            .setCanList(false)
-            .setCanDelete(false),
-            Context.NONE));
+        assertThrows(NullPointerException.class, () -> client.setTagPropertiesWithResponse(null, writeableProperties, Context.NONE));
 
         assertThrows(NullPointerException.class, () -> client.setTagProperties(LATEST_TAG_NAME,  null));
         assertThrows(NullPointerException.class, () -> client.setTagPropertiesWithResponse(LATEST_TAG_NAME,  null, Context.NONE));
 
-        assertThrows(ResourceNotFoundException.class, () -> client.setTagProperties("unknown",  new ContentProperties()
-            .setCanWrite(false)
-            .setCanRead(false)
-            .setCanList(false)
-            .setCanDelete(false)));
-
-        assertThrows(ResourceNotFoundException.class, () -> client.setTagPropertiesWithResponse("unknown",  new ContentProperties()
-                .setCanWrite(false)
-                .setCanRead(false)
-                .setCanList(false)
-                .setCanDelete(false),
-            Context.NONE));
+        assertThrows(ResourceNotFoundException.class, () -> client.setTagProperties("unknown", writeableProperties));
+        assertThrows(ResourceNotFoundException.class, () -> client.setTagPropertiesWithResponse("unknown", writeableProperties, Context.NONE));
     }
 }

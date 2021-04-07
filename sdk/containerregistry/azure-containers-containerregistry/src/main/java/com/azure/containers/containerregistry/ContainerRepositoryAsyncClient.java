@@ -44,10 +44,11 @@ public final class ContainerRepositoryAsyncClient {
     private final ContainerRegistriesImpl registriesImplClient;
     private final String repositoryName;
     private final String endpoint;
+    private final String apiVersion;
 
     private final ClientLogger logger = new ClientLogger(ContainerRepositoryAsyncClient.class);
 
-    ContainerRepositoryAsyncClient(String repositoryName, HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
+    ContainerRepositoryAsyncClient(String repositoryName, HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
         if (repositoryName == null) {
             throw logger.logExceptionAsError(new NullPointerException("'repositoryName' can't be null"));
         }
@@ -61,6 +62,7 @@ public final class ContainerRepositoryAsyncClient {
         this.repositoryName = repositoryName;
         this.registriesImplClient = registryImpl.getContainerRegistries();
         this.serviceClient = registryImpl.getContainerRegistryRepositories();
+        this.apiVersion = apiVersion;
     }
 
     /**

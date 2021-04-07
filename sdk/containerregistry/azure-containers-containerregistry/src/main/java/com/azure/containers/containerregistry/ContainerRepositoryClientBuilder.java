@@ -4,6 +4,7 @@
 package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryCredentialsPolicy;
+import com.azure.containers.containerregistry.models.ContainerRegistryServiceVersion;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -42,7 +43,7 @@ import java.util.Objects;
         ContainerRepositoryClient.class,
         ContainerRepositoryAsyncClient.class
     })
-public class ContainerRepositoryClientBuilder {
+public final class ContainerRepositoryClientBuilder {
     private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure-containers-containerregistry.properties");
 
@@ -62,6 +63,7 @@ public class ContainerRepositoryClientBuilder {
     private SerializerAdapter serializerAdapter;
     private RetryPolicy retryPolicy;
     private String repository;
+    private ContainerRegistryServiceVersion version;
 
     /**
      * Sets Registry login URL.
@@ -79,7 +81,6 @@ public class ContainerRepositoryClientBuilder {
         this.endpoint = endpoint;
         return this;
     }
-
 
     /**
      * Sets repository name.
@@ -117,6 +118,17 @@ public class ContainerRepositoryClientBuilder {
         }
 
         this.httpPipeline = httpPipeline;
+        return this;
+    }
+
+    /**
+     * Sets the service version that will be targeted by the client.
+     *
+     * @param version the service version to target.
+     * @return the ContainerRegistryBuilder.
+     */
+    public ContainerRepositoryClientBuilder serviceVersion(ContainerRegistryServiceVersion version) {
+        this.version = version;
         return this;
     }
 
@@ -206,11 +218,16 @@ public class ContainerRepositoryClientBuilder {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
 
+        // Service version
+        ContainerRegistryServiceVersion serviceVersion = (version != null)
+            ? version
+            : ContainerRegistryServiceVersion.getLatest();
+
         if (httpPipeline == null) {
             this.httpPipeline = createHttpPipeline();
         }
 
-        ContainerRepositoryAsyncClient client = new ContainerRepositoryAsyncClient(repository, httpPipeline, serializerAdapter, endpoint);
+        ContainerRepositoryAsyncClient client = new ContainerRepositoryAsyncClient(repository, httpPipeline, serializerAdapter, endpoint, serviceVersion.getVersion());
         return client;
     }
 

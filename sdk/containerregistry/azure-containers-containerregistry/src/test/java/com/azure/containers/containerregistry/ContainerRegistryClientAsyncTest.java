@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static com.azure.containers.containerregistry.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.PAGESIZE_2;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -81,20 +82,6 @@ public class ContainerRegistryClientAsyncTest extends ContainerRegistryClientsTe
             .verify();
     }
 
-
-//    // What is the prescribed way of running delete test scenarios.
-//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-//    @MethodSource("getHttpClients")
-//    public void deleteRepositories(HttpClient httpClient) {
-//        client = getContainerRegistryAsyncClient(httpClient);
-//        StepVerifier.create(client.deleteRepository(TestUtils.BUSYBOX_REPOSITORY_NAME))
-//            .assertNext(res -> {
-//                assertFalse(res.getDeletedRegistryArtifactDigests().isEmpty());
-//                assertTrue(res.getDeletedTags().stream().filter(tag -> TestUtils.LATEST_TAG_NAME.equals(tag)).findAny().isPresent());
-//            })
-//            .verifyComplete();
-//    }
-
     // What is the prescribed way of running delete test scenarios.
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
@@ -110,5 +97,17 @@ public class ContainerRegistryClientAsyncTest extends ContainerRegistryClientsTe
             .expectErrorMatches(exception -> {
                 return exception instanceof NullPointerException;
             }).verify();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getHttpClients")
+    public void getContainerRepositoryClient(HttpClient httpClient) {
+        client = getContainerRegistryAsyncClient(httpClient);
+
+        ContainerRepositoryAsyncClient repositoryAsyncClient = client.getRepositoryClient(HELLO_WORLD_REPOSITORY_NAME);
+        assertNotNull(repositoryAsyncClient);
+        StepVerifier.create(repositoryAsyncClient.getProperties())
+            .assertNext(res -> validateProperties(res))
+            .verifyComplete();
     }
 }

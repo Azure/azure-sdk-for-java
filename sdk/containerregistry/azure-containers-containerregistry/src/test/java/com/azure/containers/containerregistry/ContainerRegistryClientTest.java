@@ -4,6 +4,7 @@
 
 package com.azure.containers.containerregistry;
 
+import com.azure.containers.containerregistry.models.RepositoryProperties;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Context;
@@ -16,7 +17,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.azure.containers.containerregistry.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.PAGESIZE_2;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBase {
@@ -63,28 +66,14 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
         assertThrows(ResourceNotFoundException.class, () -> client.deleteRepositoryWithResponse("missingRepo", Context.NONE));
     }
 
-//    // What is the prescribed way of running delete test scenarios.
-//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-//    @MethodSource("getHttpClients")
-//    public void deleteRepositories(HttpClient httpClient) {
-//        client = getContainerRegistryClient(httpClient);
-//
-//        DeleteRepositoryResult deletedRepo = client.deleteRepository(TestUtils.BUSYBOX_REPOSITORY_NAME);
-//        assertTrue(deletedRepo.getDeletedTags().stream().anyMatch(tag -> TestUtils.LATEST_TAG_NAME.equals(tag)));
-//        assertFalse(deletedRepo.getDeletedRegistryArtifactDigests().isEmpty());
-//    }
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getHttpClients")
+    public void getContainerRepositoryClient(HttpClient httpClient) {
+        client = getContainerRegistryClient(httpClient);
 
-    // What is the prescribed way of running delete test scenarios.
-//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-//    @MethodSource("getHttpClients")
-//    public void deleteRepositoriesWithResponse(HttpClient httpClient) {
-//        client = getContainerRegistryClient(httpClient);
-//
-//        Response<DeleteRepositoryResult> deletedRepoRes = client.deleteRepositoryWithResponse(TestUtils.BUSYBOX_REPOSITORY_NAME, Context.NONE);
-//        assertNotNull(deletedRepoRes.getHeaders());
-//        assertNotNull(deletedRepoRes.getRequest());
-//        assertNotNull(deletedRepoRes.getStatusCode());
-//        assertTrue(deletedRepoRes.getValue().getDeletedTags().stream().anyMatch(tag -> TestUtils.LATEST_TAG_NAME.equals(tag)));
-//        assertFalse(deletedRepoRes.getValue().getDeletedRegistryArtifactDigests().isEmpty());
-//    }
+        ContainerRepositoryClient repositoryClient = client.getRepositoryClient(HELLO_WORLD_REPOSITORY_NAME);
+        assertNotNull(repositoryClient);
+        RepositoryProperties props = repositoryClient.getProperties();
+        validateProperties(props);
+    }
 }

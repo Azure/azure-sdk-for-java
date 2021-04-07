@@ -4,20 +4,20 @@
     "Uri" : "https://REDACTED.azurecr.io/oauth2/exchange",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "1da4e331-5f5d-4c42-a040-2d13d24e4a37",
+      "x-ms-client-request-id" : "e9f5bf09-6ef3-4174-b2f2-e949d14fb528",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "08c01d21-2a15-4766-9352-5361402b182b",
+      "X-Ms-Correlation-Request-Id" : "5f225353-4be6-4b33-99bf-b8ddaf2c295b",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "165.066667",
+      "x-ms-ratelimit-remaining-calls-per-second" : "166.483333",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"refresh_token\":\"REDACTED\"}",
-      "Date" : "Mon, 05 Apr 2021 19:20:11 GMT",
+      "Date" : "Wed, 07 Apr 2021 22:40:12 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -26,20 +26,20 @@
     "Uri" : "https://REDACTED.azurecr.io/oauth2/token",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "7f18c5be-cf19-4aa0-9e44-352feb779edf",
+      "x-ms-client-request-id" : "885450d6-9c62-49f8-828f-d49252f4f674",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "3e8eb834-265f-4f39-aada-84c5329b7438",
+      "X-Ms-Correlation-Request-Id" : "5df10a35-cd7b-4aa6-a6d0-6408f4a259f7",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "165.05",
+      "x-ms-ratelimit-remaining-calls-per-second" : "166.4",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"access_token\":\"REDACTED\"}",
-      "Date" : "Mon, 05 Apr 2021 19:20:11 GMT",
+      "Date" : "Wed, 07 Apr 2021 22:40:12 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -48,20 +48,20 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-world/_tags/unknown",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "23eebb43-71c2-4f3f-a4e2-665e7deb9326"
+      "x-ms-client-request-id" : "8a34bcfe-71ba-4053-a7b5-e3a0a9684ad1"
     },
     "Response" : {
+      "content-length" : "81",
       "Server" : "openresty",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Date" : "Mon, 05 Apr 2021 19:20:11 GMT",
+      "Date" : "Wed, 07 Apr 2021 22:40:12 GMT",
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "3aa063f2-2bbb-4b99-b8e0-1cb4622cfe2a",
+      "X-Ms-Correlation-Request-Id" : "82e24d86-c760-4d41-8877-7a70e44da057",
       "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
-      "Content-Length" : "81",
       "Body" : "{\"errors\":[{\"code\":\"TAG_UNKNOWN\",\"message\":\"the specified tag does not exist\"}]}\n",
       "Content-Type" : "application/json; charset=utf-8"
     },
@@ -71,20 +71,20 @@
     "Uri" : "https://REDACTED.azurecr.io/oauth2/token",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "86287272-a605-44aa-8464-8093232e97eb",
+      "x-ms-client-request-id" : "88ce3410-06d8-4ed2-a6a1-9f99d9a41ce8",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "0498537e-1267-479b-b18d-2f29b3152fd2",
+      "X-Ms-Correlation-Request-Id" : "1577b6f2-7100-45b9-8033-95351b8c2d94",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "165.016667",
+      "x-ms-ratelimit-remaining-calls-per-second" : "166.366667",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"access_token\":\"REDACTED\"}",
-      "Date" : "Mon, 05 Apr 2021 19:20:11 GMT",
+      "Date" : "Wed, 07 Apr 2021 22:40:12 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -93,20 +93,20 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-world/_tags/unknown",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "5a4d0e9a-5cca-47ea-99da-839781e9ae35"
+      "x-ms-client-request-id" : "bed59e41-31dd-429d-bf38-d0f78638f72d"
     },
     "Response" : {
+      "content-length" : "81",
       "Server" : "openresty",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Date" : "Mon, 05 Apr 2021 19:20:11 GMT",
+      "Date" : "Wed, 07 Apr 2021 22:40:12 GMT",
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "09bb9bdf-a71b-4533-b3c5-5e1dbdc623fb",
+      "X-Ms-Correlation-Request-Id" : "a4b5fa8e-ccce-4143-bae6-c9c509999961",
       "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
-      "Content-Length" : "81",
       "Body" : "{\"errors\":[{\"code\":\"TAG_UNKNOWN\",\"message\":\"the specified tag does not exist\"}]}\n",
       "Content-Type" : "application/json; charset=utf-8"
     },

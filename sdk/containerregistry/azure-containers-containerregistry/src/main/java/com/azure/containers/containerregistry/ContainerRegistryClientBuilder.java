@@ -5,6 +5,7 @@
 package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryCredentialsPolicy;
+import com.azure.containers.containerregistry.models.ContainerRegistryServiceVersion;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -64,6 +65,7 @@ public final class ContainerRegistryClientBuilder {
     private HttpLogOptions httpLogOptions;
     private SerializerAdapter serializerAdapter;
     private RetryPolicy retryPolicy;
+    private ContainerRegistryServiceVersion version;
 
     /**
      * Sets Registry login URL.
@@ -167,6 +169,18 @@ public final class ContainerRegistryClientBuilder {
         return this;
     }
 
+
+    /**
+     * Sets the service version that will be targeted by the client.
+     *
+     * @param version the service version to target.
+     * @return the ContainerRegistryBuilder.
+     */
+    public ContainerRegistryClientBuilder serviceVersion(ContainerRegistryServiceVersion version) {
+        this.version = version;
+        return this;
+    }
+
     /**
      * Adds a custom Http httpPipeline policy.
      *
@@ -206,7 +220,6 @@ public final class ContainerRegistryClientBuilder {
 
         policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
-
 
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
         policies.add(new CookiePolicy());
@@ -252,7 +265,12 @@ public final class ContainerRegistryClientBuilder {
             this.httpPipeline = createHttpPipeline();
         }
 
-        ContainerRegistryAsyncClient client = new ContainerRegistryAsyncClient(httpPipeline, serializerAdapter, endpoint);
+        // Service version
+        ContainerRegistryServiceVersion serviceVersion = (version != null)
+            ? version
+            : ContainerRegistryServiceVersion.getLatest();
+
+        ContainerRegistryAsyncClient client = new ContainerRegistryAsyncClient(httpPipeline, serializerAdapter, endpoint, serviceVersion.getVersion());
         return client;
     }
 
