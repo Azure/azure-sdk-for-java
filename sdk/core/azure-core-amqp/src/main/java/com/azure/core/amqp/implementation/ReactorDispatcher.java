@@ -111,8 +111,16 @@ public final class ReactorDispatcher {
                 oneByteBuffer = ByteBuffer.allocate(1);
             }
         } catch (ClosedChannelException ignorePipeClosedDuringReactorShutdown) {
-            logger.info("connectionId[{}] signalWorkQueue failed with an error.",
-                connectionId, ignorePipeClosedDuringReactorShutdown);
+            if (!isClosed.get()) {
+                logger.warning("connectionId[{}] signalWorkQueue failed before reactor closed.",
+                    connectionId, ignorePipeClosedDuringReactorShutdown);
+                shutdownSignal.emitError(new RuntimeException(String.format(
+                    "connectionId[%s] IOSignal sink was interrupted.", connectionId),
+                    ignorePipeClosedDuringReactorShutdown), Sinks.EmitFailureHandler.FAIL_FAST);
+            } else {
+                logger.info("connectionId[{}] signalWorkQueue failed with an error after closed.",
+                    connectionId, ignorePipeClosedDuringReactorShutdown);
+            }
         }
     }
 
@@ -168,6 +176,8 @@ public final class ReactorDispatcher {
             if (isClosed.getAndSet(true)) {
                 return;
             }
+
+            logger.info("connectionId[{}] Reactor selectable is being disposed.", connectionId);
 
             shutdownSignal.emitValue(new AmqpShutdownSignal(false, false,
                 String.format("connectionId[%s] Reactor selectable is disposed.", connectionId)),
