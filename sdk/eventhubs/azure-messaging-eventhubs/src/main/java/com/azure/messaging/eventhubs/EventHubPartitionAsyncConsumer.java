@@ -13,7 +13,6 @@ import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
-import reactor.core.scheduler.Scheduler;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -43,7 +42,7 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
     EventHubPartitionAsyncConsumer(AmqpReceiveLinkProcessor amqpReceiveLinkProcessor,
         MessageSerializer messageSerializer, String fullyQualifiedNamespace, String eventHubName, String consumerGroup,
         String partitionId, AtomicReference<Supplier<EventPosition>> currentEventPosition,
-        boolean trackLastEnqueuedEventProperties, Scheduler scheduler) {
+        boolean trackLastEnqueuedEventProperties) {
         this.initialPosition = Objects.requireNonNull(currentEventPosition.get().get(),
             "'currentEventPosition.get().get()' cannot be null.");
         this.amqpReceiveLinkProcessor = amqpReceiveLinkProcessor;
@@ -53,8 +52,6 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
         this.consumerGroup = consumerGroup;
         this.partitionId = partitionId;
         this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
-
-        Objects.requireNonNull(scheduler, "'scheduler' cannot be null.");
 
         if (trackLastEnqueuedEventProperties) {
             lastEnqueuedEventProperties.set(new LastEnqueuedEventProperties(null, null, null, null));

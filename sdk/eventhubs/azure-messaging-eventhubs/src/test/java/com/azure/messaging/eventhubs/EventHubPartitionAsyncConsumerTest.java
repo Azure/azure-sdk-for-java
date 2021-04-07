@@ -33,7 +33,6 @@ import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -130,7 +129,7 @@ class EventHubPartitionAsyncConsumerTest {
         linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor("foo-bar",
             PREFETCH, parentConnection));
         consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
-            CONSUMER_GROUP, PARTITION_ID, currentPosition, trackLastEnqueuedProperties, Schedulers.parallel());
+            CONSUMER_GROUP, PARTITION_ID, currentPosition, trackLastEnqueuedProperties);
 
         final EventData event1 = new EventData("Foo");
         final EventData event2 = new EventData("Bar");
@@ -179,7 +178,7 @@ class EventHubPartitionAsyncConsumerTest {
         linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor("foo-bar",
             PREFETCH, parentConnection));
         consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
-            CONSUMER_GROUP, PARTITION_ID, currentPosition, false, Schedulers.parallel());
+            CONSUMER_GROUP, PARTITION_ID, currentPosition, false);
 
         final Message message3 = mock(Message.class);
         final String secondOffset = "54";
@@ -239,7 +238,7 @@ class EventHubPartitionAsyncConsumerTest {
         // Arrange
         linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor("path", PREFETCH, parentConnection));
         consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
-            CONSUMER_GROUP, PARTITION_ID, currentPosition, false, Schedulers.parallel());
+            CONSUMER_GROUP, PARTITION_ID, currentPosition, false);
 
         final Message message3 = mock(Message.class);
         final String secondOffset = "54";
