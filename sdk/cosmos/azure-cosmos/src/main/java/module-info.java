@@ -21,7 +21,6 @@ module com.azure.cosmos {
     requires reactor.netty.core;
     requires reactor.netty.http;
     requires com.codahale.metrics;
-    requires com.fasterxml.jackson.module.afterburner;
     requires java.management;
     requires jdk.management;
     requires micrometer.core;
@@ -36,7 +35,7 @@ module com.azure.cosmos {
 
     // exporting some packages specifically for Jackson
     opens com.azure.cosmos to com.fasterxml.jackson.databind, com.azure.spring.data.cosmos;
-    opens com.azure.cosmos.implementation to com.fasterxml.jackson.databind, java.logging, com.fasterxml.jackson.module.afterburner;
+    opens com.azure.cosmos.implementation to com.fasterxml.jackson.databind, java.logging;
     opens com.azure.cosmos.implementation.caches to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.changefeed to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.changefeed.implementation to com.fasterxml.jackson.databind;
