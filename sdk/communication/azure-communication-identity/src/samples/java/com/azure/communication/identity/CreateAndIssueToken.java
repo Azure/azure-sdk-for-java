@@ -28,6 +28,5 @@ public class CreateAndIssueToken {
         AccessToken userToken = communicationIdentityClient.getToken(user, scopes);
         System.out.println("User token value: " + userToken.getToken());
         System.out.println("Expires at: " + userToken.getExpiresAt());
-
     }
 }
