@@ -84,10 +84,11 @@ public class AADOBOOAuth2AuthorizedClientProvider implements OAuth2AuthorizedCli
         if (this.clockSkew == null) {
             return true;
         }
-        Instant expiresAt = token.getExpiresAt().minus(this.clockSkew);
+        Instant expiresAt = token.getExpiresAt();
         if (expiresAt == null) {
             return true;
         }
+        expiresAt = expiresAt.minus(this.clockSkew);
         return this.clock.instant().isAfter(expiresAt);
     }
 
