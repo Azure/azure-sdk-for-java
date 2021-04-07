@@ -666,7 +666,6 @@ public final class ConfigurationAsyncClient {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
         context = context == null ? Context.NONE : context;
-        Mono<Response<ConfigurationSetting>> responseMono = null;
         if (isReadOnly) {
             return service.lockKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, null,
                 null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
@@ -747,16 +746,12 @@ public final class ConfigurationAsyncClient {
             final String keyFilter = selector.getKeyFilter();
             final String labelFilter = selector.getLabelFilter();
 
-            final Mono<PagedResponse<ConfigurationSetting>> pagedResponseMono =
-                service.listKeyValues(serviceEndpoint, keyFilter, labelFilter, apiVersion, fields,
-                    selector.getAcceptDateTime(),
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
-                    .doOnSubscribe(ignoredValue -> logger.info("Listing ConfigurationSettings - {}", selector))
-                    .doOnSuccess(response -> logger.info("Listed ConfigurationSettings - {}", selector))
-                    .doOnError(error -> logger.warning("Failed to list ConfigurationSetting - {}", selector, error));
-
-
-            return pagedResponseMono;
+            return service.listKeyValues(serviceEndpoint, keyFilter, labelFilter, apiVersion, fields,
+                selector.getAcceptDateTime(),
+                context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+                .doOnSubscribe(ignoredValue -> logger.info("Listing ConfigurationSettings - {}", selector))
+                .doOnSuccess(response -> logger.info("Listed ConfigurationSettings - {}", selector))
+                .doOnError(error -> logger.warning("Failed to list ConfigurationSetting - {}", selector, error));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
