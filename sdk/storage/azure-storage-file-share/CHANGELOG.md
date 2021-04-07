@@ -1,7 +1,8 @@
 # Release History
 
 ## 12.9.0-beta.3 (Unreleased)
-
+- Added support for the 2020-08-04 service version.
+- Added back ability to create a ShareLeaseClient for a Share or Share Snapshot.
 
 ## 12.9.0-beta.2 (2021-03-29)
 - Updated azure-storage-common and azure-core dependencies.
