@@ -1,5 +1,7 @@
 ## Release History
 
+## 4.15.0-beta.1 (Unreleased)
+
 ### 4.14.0 (2021-04-06)
 #### New Features
 * General Availability for `readMany()` API in `CosmosAsyncContainer` and `CosmosContainer`.
