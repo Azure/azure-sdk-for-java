@@ -2431,14 +2431,6 @@
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
   </Match>
 
-  <!-- Conflicting APIs have already been GA'd with incorrect capitalization  -->
-  <Match>
-    <Or>
-      <Class name="com.azure.security.keyvault.keys.cryptography.DecryptOptions"/>
-      <Class name="com.azure.security.keyvault.keys.cryptography.EncryptOptions"/>
-    </Or>
-    <Bug pattern="NM_CONFUSING"/>
-  </Match>
   <!-- Returning a new copy of the object is not necessary for queuing system use cases.
   Client do not change content of message once message is created. Array copy would degrade the performance.
   https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-amqp/src/main/java/com/azure/core/amqp/models/AmqpMessageBody.java#L115 -->

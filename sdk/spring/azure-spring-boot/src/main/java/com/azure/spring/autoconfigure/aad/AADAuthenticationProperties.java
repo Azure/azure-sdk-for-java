@@ -45,6 +45,11 @@ public class AADAuthenticationProperties implements InitializingBean {
     private String clientSecret;
 
     /**
+     * Decide which claim to be principal's name..
+     */
+    private String userNameAttribute;
+
+    /**
      * @deprecated Now the redirect-url-template is not configurable.
      * <p>
      * Redirect URI always equal to "{baseUrl}/login/oauth2/code/".
@@ -174,6 +179,14 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     public void setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
+    }
+
+    public String getUserNameAttribute() {
+        return userNameAttribute;
+    }
+
+    public void setUserNameAttribute(String userNameAttribute) {
+        this.userNameAttribute = userNameAttribute;
     }
 
     @Deprecated

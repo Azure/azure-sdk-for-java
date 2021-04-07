@@ -33,7 +33,7 @@ public class KeyVaultAccessControlClientBuilderTest {
         vaultUrl = "https://key-vault-url.vault.azure.net/";
         roleDefinitionId = "RoleDefinitionId";
         principalId = "PrincipalId";
-        serviceVersion = KeyVaultAdministrationServiceVersion.V7_2_PREVIEW;
+        serviceVersion = KeyVaultAdministrationServiceVersion.V7_2;
     }
 
     @Test

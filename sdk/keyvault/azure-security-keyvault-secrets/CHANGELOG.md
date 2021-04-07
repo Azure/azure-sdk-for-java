@@ -3,7 +3,11 @@
 ## 4.3.0-beta.5 (Unreleased)
 
 ### New features
+- Added support for service version `7.2`.
 - Added support to specify whether or not a pipeline policy should be added per call or per retry.
+
+### Breaking Changes
+- Changed `KeyVaultSecretIdentifier` so it is instantiated via its constructor as opposed to via a `parse()` factory method.
 
 ## 4.3.0-beta.4 (2021-03-12)
 

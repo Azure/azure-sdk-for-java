@@ -70,8 +70,18 @@ public class FeedbackTest extends FeedbackTestBase {
                 .map(metricFeedback -> client.addFeedback(METRIC_ID, metricFeedback))
                 .collect(Collectors.toList());
 
+            final MetricFeedback firstFeedback = expectedMetricFeedbackList.get(0);
+            final OffsetDateTime firstFeedbackCreatedTime = firstFeedback.getCreatedTime();
+
             // Act & Assert
-            client.listFeedback(METRIC_ID).forEach(actualMetricFeedbackList::add);
+            client.listFeedback(METRIC_ID,
+                new ListMetricFeedbackOptions()
+                    .setFilter(new ListMetricFeedbackFilter()
+                        .setTimeMode(FeedbackQueryTimeMode.FEEDBACK_CREATED_TIME)
+                        .setStartTime(firstFeedbackCreatedTime.minusDays(1))
+                        .setEndTime(firstFeedbackCreatedTime.plusDays(1))),
+                Context.NONE)
+                .forEach(actualMetricFeedbackList::add);
 
             final List<String> expectedMetricFeedbackIdList = expectedMetricFeedbackList.stream()
                 .map(MetricFeedback::getId)
@@ -172,7 +182,8 @@ public class FeedbackTest extends FeedbackTestBase {
         client.listFeedback(METRIC_ID,
             new ListMetricFeedbackOptions().setFilter(new ListMetricFeedbackFilter().setFeedbackType(ANOMALY)),
             Context.NONE)
-            .stream().iterator()
+            .stream()
+            .limit(LISTING_FILTER_BY_FEEDBACK_TYPE_LIMIT).iterator()
             .forEachRemaining(metricFeedback -> assertEquals(ANOMALY, metricFeedback.getFeedbackType()));
     }
 
