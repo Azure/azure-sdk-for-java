@@ -3,12 +3,14 @@
 
 package com.azure.spring.test.eventhubs.stream.binder;
 
+import org.junit.Rule;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.system.OutputCaptureRule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
@@ -17,6 +19,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -29,6 +32,14 @@ public class EventHubBinderSyncModeIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBinderManualModeIT.class);
     private static String message = UUID.randomUUID().toString();
 
+    @Autowired
+    private Sinks.Many<Message<String>> many;
+
+    @Rule
+    public OutputCaptureRule capture = new OutputCaptureRule();
+
+    private static final AtomicInteger count = new AtomicInteger(0);
+
     @EnableAutoConfiguration
     public static class TestConfig {
 
@@ -40,7 +51,10 @@ public class EventHubBinderSyncModeIT {
         @Bean
         public Supplier<Flux<Message<String>>> supply(Sinks.Many<Message<String>> many) {
             return () -> many.asFlux()
-                             .doOnNext(m -> LOGGER.info("Manually sending message {}", m))
+                             .doOnNext(m -> {
+                                 count.addAndGet(1);
+                                 LOGGER.info("Manually sending message {}", m.getPayload());
+                             })
                              .doOnError(t -> LOGGER.error("Error encountered", t));
         }
 
@@ -48,16 +62,16 @@ public class EventHubBinderSyncModeIT {
         public Consumer<Message<String>> consume() {
             return message -> {
                 LOGGER.info("New message received: '{}'", message.getPayload());
-                assertThat(message.equals(EventHubBinderSyncModeIT.message)).isTrue();
+                assertThat(message.getPayload().equals(EventHubBinderSyncModeIT.message)).isTrue();
             };
         }
     }
 
-    @Autowired
-    private Sinks.Many<Message<String>> many;
-
     @Test
-    public void testSendAndReceiveMessage() {
+    public void testSendAndReceiveMessage() throws InterruptedException {
         many.emitNext(new GenericMessage<>(message), Sinks.EmitFailureHandler.FAIL_FAST);
+//        assertReceivedLog(capture, String.format("New message received: '%s'", message));
+        Thread.sleep(6000);
+        assertThat(count.get() == 1).isTrue();
     }
 }

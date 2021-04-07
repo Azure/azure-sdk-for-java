@@ -1,6 +1,4 @@
 spring:
-  main:
-    banner-mode: off
   cloud:
     azure:
       eventhub:

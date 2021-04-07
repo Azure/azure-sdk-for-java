@@ -17,6 +17,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -29,6 +30,10 @@ public class EventHubBinderBatchModeIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBinderBatchModeIT.class);
 
     private static String message = UUID.randomUUID().toString();
+    private static final AtomicInteger count = new AtomicInteger(0);
+
+    @Autowired
+    private Sinks.Many<Message<String>> many;
 
     @EnableAutoConfiguration
     public static class TestConfig {
@@ -41,7 +46,10 @@ public class EventHubBinderBatchModeIT {
         @Bean
         public Supplier<Flux<Message<String>>> supply(Sinks.Many<Message<String>> many) {
             return () -> many.asFlux()
-                             .doOnNext(m -> LOGGER.info("Manually sending message {}", m))
+                             .doOnNext(m -> {
+                                 count.addAndGet(1);
+                                 LOGGER.info("Manually sending message {}", m.getPayload());
+                             })
                              .doOnError(t -> LOGGER.error("Error encountered", t));
         }
 
@@ -54,11 +62,10 @@ public class EventHubBinderBatchModeIT {
         }
     }
 
-    @Autowired
-    private Sinks.Many<Message<String>> many;
-
     @Test
-    public void testSendAndReceiveMessage() {
+    public void testSendAndReceiveMessage() throws InterruptedException {
         many.emitNext(new GenericMessage<>(message), Sinks.EmitFailureHandler.FAIL_FAST);
+        Thread.sleep(6000);
+        assertThat(count.get() == 1).isTrue();
     }
 }
