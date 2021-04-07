@@ -6,7 +6,6 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,7 +19,6 @@ public class CreateAndIssueToken {
             .endpoint(endpoint)
             .credential(keyCredential)
             .buildClient();
-        System.out.println(" builden Cilent ");
         CommunicationUserIdentifier user = communicationIdentityClient.createUser();
         System.out.println("User id: " + user.getId());
 
@@ -30,7 +28,6 @@ public class CreateAndIssueToken {
         AccessToken userToken = communicationIdentityClient.getToken(user, scopes);
         System.out.println("User token value: " + userToken.getToken());
         System.out.println("Expires at: " + userToken.getExpiresAt());
-
 
     }
 }

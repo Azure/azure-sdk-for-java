@@ -10,8 +10,6 @@ import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollResponse;
 
@@ -19,20 +17,18 @@ public class FindAndPurchasePhoneNumber {
     public static void main(String[] args) {
         String endpoint = System.getenv("AZURE_COMMUNICATION_ENDPOINT");
         String accessKey = System.getenv("AZURE_COMMUNICATION_KEY");
+        String areaCode = System.getenv("AZURE_COMMUNICATION_AREA_CODE");
         AzureKeyCredential keyCredential = new AzureKeyCredential(accessKey);
-
-        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
 
         PhoneNumbersClient phoneNumberClient = new PhoneNumbersClientBuilder()
             .endpoint(endpoint)
             .credential(keyCredential)
-            .httpClient(httpClient)
             .buildClient();
 
         PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities()
             .setCalling(PhoneNumberCapabilityType.INBOUND)
             .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
-        PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setAreaCode("833").setQuantity(1);
+        PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setAreaCode(areaCode).setQuantity(1);
 
         PhoneNumberSearchResult searchResult = phoneNumberClient
             .beginSearchAvailablePhoneNumbers("US", PhoneNumberType.TOLL_FREE, PhoneNumberAssignmentType.APPLICATION, capabilities, searchOptions, Context.NONE)
@@ -46,5 +42,4 @@ public class FindAndPurchasePhoneNumber {
             phoneNumberClient.beginPurchasePhoneNumbers(searchResult.getSearchId(), Context.NONE).waitForCompletion();
         System.out.println("Purchase phone numbers is complete: " + purchaseResponse.getStatus());
     }
-
 }

@@ -66,6 +66,5 @@ public class CreateChatThread {
                 System.out.printf("Participant id is %s.", ((CommunicationUserIdentifier) chatParticipant.getCommunicationIdentifier()).getId());
             });
         });
-
     }
 }

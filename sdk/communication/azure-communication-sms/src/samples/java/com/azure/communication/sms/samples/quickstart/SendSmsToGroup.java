@@ -15,7 +15,7 @@ public class SendSmsToGroup {
     public static void main(String[] args) {
         String endpoint = System.getenv("AZURE_COMMUNICATION_ENDPOINT");
         String accessKey = System.getenv("AZURE_COMMUNICATION_KEY");
-        String phone_number = System.getenv("COMMUNICATION_PHONE_NUMBER");
+        String phoneNumber = System.getenv("COMMUNICATION_PHONE_NUMBER");
         AzureKeyCredential keyCredential = new AzureKeyCredential(accessKey);
         SmsClient smsClient = new SmsClientBuilder()
             .endpoint(endpoint)
@@ -28,8 +28,8 @@ public class SendSmsToGroup {
 
 
         Iterable<SmsSendResult> sendResults = smsClient.sendWithResponse(
-            phone_number,
-            Arrays.asList(phone_number),
+            phoneNumber,
+            Arrays.asList(phoneNumber),
             "Weekly Promotion",
             options /* Optional */,
             Context.NONE).getValue();
