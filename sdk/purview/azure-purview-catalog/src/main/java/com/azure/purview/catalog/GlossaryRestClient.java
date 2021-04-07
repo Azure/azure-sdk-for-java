@@ -57,6 +57,36 @@ public final class GlossaryRestClient {
      * <pre>{@code
      * [
      *     {
+     *         guid: String
+     *         classifications: [
+     *             {
+     *                 attributes: {
+     *                     String: Object
+     *                 }
+     *                 typeName: String
+     *                 lastModifiedTS: String
+     *                 entityGuid: String
+     *                 entityStatus: String(ACTIVE/DELETED)
+     *                 propagate: Boolean
+     *                 removePropagationsOnEntityDelete: Boolean
+     *                 validityPeriods: [
+     *                     {
+     *                         endTime: String
+     *                         startTime: String
+     *                         timeZone: String
+     *                     }
+     *                 ]
+     *                 source: String
+     *                 sourceDetails: {
+     *                     String: Object
+     *                 }
+     *             }
+     *         ]
+     *         longDescription: String
+     *         name: String
+     *         qualifiedName: String
+     *         shortDescription: String
+     *         lastModifiedTS: String
      *         categories: [
      *             {
      *                 categoryGuid: String
@@ -103,6 +133,36 @@ public final class GlossaryRestClient {
      *
      * <pre>{@code
      * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             propagate: Boolean
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
      *     categories: [
      *         {
      *             categoryGuid: String
@@ -155,6 +215,36 @@ public final class GlossaryRestClient {
      * <pre>{@code
      * [
      *     {
+     *         guid: String
+     *         classifications: [
+     *             {
+     *                 attributes: {
+     *                     String: Object
+     *                 }
+     *                 typeName: String
+     *                 lastModifiedTS: String
+     *                 entityGuid: String
+     *                 entityStatus: String(ACTIVE/DELETED)
+     *                 propagate: Boolean
+     *                 removePropagationsOnEntityDelete: Boolean
+     *                 validityPeriods: [
+     *                     {
+     *                         endTime: String
+     *                         startTime: String
+     *                         timeZone: String
+     *                     }
+     *                 ]
+     *                 source: String
+     *                 sourceDetails: {
+     *                     String: Object
+     *                 }
+     *             }
+     *         ]
+     *         longDescription: String
+     *         name: String
+     *         qualifiedName: String
+     *         shortDescription: String
+     *         lastModifiedTS: String
      *         anchor: {
      *             displayText: String
      *             glossaryGuid: String
@@ -213,6 +303,36 @@ public final class GlossaryRestClient {
      *
      * <pre>{@code
      * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             propagate: Boolean
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
      *     anchor: {
      *         displayText: String
      *         glossaryGuid: String
@@ -268,6 +388,36 @@ public final class GlossaryRestClient {
      *
      * <pre>{@code
      * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             propagate: Boolean
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
      *     anchor: {
      *         displayText: String
      *         glossaryGuid: String
@@ -319,6 +469,36 @@ public final class GlossaryRestClient {
      *
      * <pre>{@code
      * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             propagate: Boolean
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
      *     anchor: {
      *         displayText: String
      *         glossaryGuid: String
@@ -401,6 +581,36 @@ public final class GlossaryRestClient {
      *
      * <pre>{@code
      * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             propagate: Boolean
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
      *     anchor: {
      *         displayText: String
      *         glossaryGuid: String
@@ -543,6 +753,36 @@ public final class GlossaryRestClient {
      *
      * <pre>{@code
      * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             propagate: Boolean
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
      *     abbreviation: String
      *     templateName: [
      *         Object
@@ -590,6 +830,11 @@ public final class GlossaryRestClient {
      *     }
      *     assignedEntities: [
      *         {
+     *             guid: String
+     *             typeName: String
+     *             uniqueAttributes: {
+     *                 String: Object
+     *             }
      *             displayText: String
      *             entityStatus: String(ACTIVE/DELETED)
      *             relationshipType: String
@@ -681,6 +926,36 @@ public final class GlossaryRestClient {
      *
      * <pre>{@code
      * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             propagate: Boolean
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
      *     abbreviation: String
      *     templateName: [
      *         Object
@@ -728,6 +1003,11 @@ public final class GlossaryRestClient {
      *     }
      *     assignedEntities: [
      *         {
+     *             guid: String
+     *             typeName: String
+     *             uniqueAttributes: {
+     *                 String: Object
+     *             }
      *             displayText: String
      *             entityStatus: String(ACTIVE/DELETED)
      *             relationshipType: String
@@ -815,6 +1095,36 @@ public final class GlossaryRestClient {
      *
      * <pre>{@code
      * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             propagate: Boolean
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
      *     abbreviation: String
      *     templateName: [
      *         Object
@@ -862,6 +1172,11 @@ public final class GlossaryRestClient {
      *     }
      *     assignedEntities: [
      *         {
+     *             guid: String
+     *             typeName: String
+     *             uniqueAttributes: {
+     *                 String: Object
+     *             }
      *             displayText: String
      *             entityStatus: String(ACTIVE/DELETED)
      *             relationshipType: String
@@ -980,6 +1295,36 @@ public final class GlossaryRestClient {
      *
      * <pre>{@code
      * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             propagate: Boolean
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
      *     abbreviation: String
      *     templateName: [
      *         Object
@@ -1027,6 +1372,11 @@ public final class GlossaryRestClient {
      *     }
      *     assignedEntities: [
      *         {
+     *             guid: String
+     *             typeName: String
+     *             uniqueAttributes: {
+     *                 String: Object
+     *             }
      *             displayText: String
      *             entityStatus: String(ACTIVE/DELETED)
      *             relationshipType: String
@@ -1115,6 +1465,36 @@ public final class GlossaryRestClient {
      * <pre>{@code
      * [
      *     {
+     *         guid: String
+     *         classifications: [
+     *             {
+     *                 attributes: {
+     *                     String: Object
+     *                 }
+     *                 typeName: String
+     *                 lastModifiedTS: String
+     *                 entityGuid: String
+     *                 entityStatus: String(ACTIVE/DELETED)
+     *                 propagate: Boolean
+     *                 removePropagationsOnEntityDelete: Boolean
+     *                 validityPeriods: [
+     *                     {
+     *                         endTime: String
+     *                         startTime: String
+     *                         timeZone: String
+     *                     }
+     *                 ]
+     *                 source: String
+     *                 sourceDetails: {
+     *                     String: Object
+     *                 }
+     *             }
+     *         ]
+     *         longDescription: String
+     *         name: String
+     *         qualifiedName: String
+     *         shortDescription: String
+     *         lastModifiedTS: String
      *         abbreviation: String
      *         templateName: [
      *             Object
@@ -1162,6 +1542,11 @@ public final class GlossaryRestClient {
      *         }
      *         assignedEntities: [
      *             {
+     *                 guid: String
+     *                 typeName: String
+     *                 uniqueAttributes: {
+     *                     String: Object
+     *                 }
      *                 displayText: String
      *                 entityStatus: String(ACTIVE/DELETED)
      *                 relationshipType: String
@@ -1267,6 +1652,11 @@ public final class GlossaryRestClient {
      * <pre>{@code
      * [
      *     {
+     *         guid: String
+     *         typeName: String
+     *         uniqueAttributes: {
+     *             String: Object
+     *         }
      *         displayText: String
      *         entityStatus: String(ACTIVE/DELETED)
      *         relationshipType: String
@@ -1306,6 +1696,11 @@ public final class GlossaryRestClient {
      * <pre>{@code
      * [
      *     {
+     *         guid: String
+     *         typeName: String
+     *         uniqueAttributes: {
+     *             String: Object
+     *         }
      *         displayText: String
      *         entityStatus: String(ACTIVE/DELETED)
      *         relationshipType: String
@@ -1345,6 +1740,11 @@ public final class GlossaryRestClient {
      * <pre>{@code
      * [
      *     {
+     *         guid: String
+     *         typeName: String
+     *         uniqueAttributes: {
+     *             String: Object
+     *         }
      *         displayText: String
      *         entityStatus: String(ACTIVE/DELETED)
      *         relationshipType: String
@@ -1384,6 +1784,11 @@ public final class GlossaryRestClient {
      * <pre>{@code
      * [
      *     {
+     *         guid: String
+     *         typeName: String
+     *         uniqueAttributes: {
+     *             String: Object
+     *         }
      *         displayText: String
      *         entityStatus: String(ACTIVE/DELETED)
      *         relationshipType: String
@@ -1470,6 +1875,36 @@ public final class GlossaryRestClient {
      *
      * <pre>{@code
      * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             propagate: Boolean
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
      *     categories: [
      *         {
      *             categoryGuid: String
@@ -1517,6 +1952,36 @@ public final class GlossaryRestClient {
      *
      * <pre>{@code
      * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             propagate: Boolean
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
      *     categories: [
      *         {
      *             categoryGuid: String
@@ -1598,6 +2063,36 @@ public final class GlossaryRestClient {
      * <pre>{@code
      * [
      *     {
+     *         guid: String
+     *         classifications: [
+     *             {
+     *                 attributes: {
+     *                     String: Object
+     *                 }
+     *                 typeName: String
+     *                 lastModifiedTS: String
+     *                 entityGuid: String
+     *                 entityStatus: String(ACTIVE/DELETED)
+     *                 propagate: Boolean
+     *                 removePropagationsOnEntityDelete: Boolean
+     *                 validityPeriods: [
+     *                     {
+     *                         endTime: String
+     *                         startTime: String
+     *                         timeZone: String
+     *                     }
+     *                 ]
+     *                 source: String
+     *                 sourceDetails: {
+     *                     String: Object
+     *                 }
+     *             }
+     *         ]
+     *         longDescription: String
+     *         name: String
+     *         qualifiedName: String
+     *         shortDescription: String
+     *         lastModifiedTS: String
      *         anchor: {
      *             displayText: String
      *             glossaryGuid: String
@@ -1693,39 +2188,95 @@ public final class GlossaryRestClient {
      *
      * <pre>{@code
      * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             propagate: Boolean
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
+     *     categories: [
+     *         {
+     *             categoryGuid: String
+     *             description: String
+     *             displayText: String
+     *             parentCategoryGuid: String
+     *             relationGuid: String
+     *         }
+     *     ]
+     *     language: String
+     *     terms: [
+     *         {
+     *             description: String
+     *             displayText: String
+     *             expression: String
+     *             relationGuid: String
+     *             source: String
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *             steward: String
+     *             termGuid: String
+     *         }
+     *     ]
+     *     usage: String
      *     categoryInfo: {
      *         String: {
+     *             guid: String
+     *             classifications: [
+     *                 JsonAtlasClassification
+     *             ]
+     *             longDescription: String
+     *             name: String
+     *             qualifiedName: String
+     *             shortDescription: String
+     *             lastModifiedTS: String
      *             anchor: {
      *                 displayText: String
      *                 glossaryGuid: String
      *                 relationGuid: String
      *             }
      *             childrenCategories: [
-     *                 {
-     *                     categoryGuid: String
-     *                     description: String
-     *                     displayText: String
-     *                     parentCategoryGuid: String
-     *                     relationGuid: String
-     *                 }
+     *                 JsonAtlasRelatedCategoryHeader
      *             ]
      *             parentCategory: JsonAtlasRelatedCategoryHeader
      *             terms: [
-     *                 {
-     *                     description: String
-     *                     displayText: String
-     *                     expression: String
-     *                     relationGuid: String
-     *                     source: String
-     *                     status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                     steward: String
-     *                     termGuid: String
-     *                 }
+     *                 JsonAtlasRelatedTermHeader
      *             ]
      *         }
      *     }
      *     termInfo: {
      *         String: {
+     *             guid: String
+     *             classifications: [
+     *                 JsonAtlasClassification
+     *             ]
+     *             longDescription: String
+     *             name: String
+     *             qualifiedName: String
+     *             shortDescription: String
+     *             lastModifiedTS: String
      *             abbreviation: String
      *             templateName: [
      *                 Object
@@ -1760,6 +2311,11 @@ public final class GlossaryRestClient {
      *             }
      *             assignedEntities: [
      *                 {
+     *                     guid: String
+     *                     typeName: String
+     *                     uniqueAttributes: {
+     *                         String: Object
+     *                     }
      *                     displayText: String
      *                     entityStatus: String(ACTIVE/DELETED)
      *                     relationshipType: String
@@ -1857,6 +2413,36 @@ public final class GlossaryRestClient {
      *
      * <pre>{@code
      * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             propagate: Boolean
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
      *     categories: [
      *         {
      *             categoryGuid: String
@@ -1915,6 +2501,36 @@ public final class GlossaryRestClient {
      * <pre>{@code
      * [
      *     {
+     *         guid: String
+     *         classifications: [
+     *             {
+     *                 attributes: {
+     *                     String: Object
+     *                 }
+     *                 typeName: String
+     *                 lastModifiedTS: String
+     *                 entityGuid: String
+     *                 entityStatus: String(ACTIVE/DELETED)
+     *                 propagate: Boolean
+     *                 removePropagationsOnEntityDelete: Boolean
+     *                 validityPeriods: [
+     *                     {
+     *                         endTime: String
+     *                         startTime: String
+     *                         timeZone: String
+     *                     }
+     *                 ]
+     *                 source: String
+     *                 sourceDetails: {
+     *                     String: Object
+     *                 }
+     *             }
+     *         ]
+     *         longDescription: String
+     *         name: String
+     *         qualifiedName: String
+     *         shortDescription: String
+     *         lastModifiedTS: String
      *         abbreviation: String
      *         templateName: [
      *             Object
@@ -1962,6 +2578,11 @@ public final class GlossaryRestClient {
      *         }
      *         assignedEntities: [
      *             {
+     *                 guid: String
+     *                 typeName: String
+     *                 uniqueAttributes: {
+     *                     String: Object
+     *                 }
      *                 displayText: String
      *                 entityStatus: String(ACTIVE/DELETED)
      *                 relationshipType: String
@@ -2254,6 +2875,36 @@ public final class GlossaryRestClient {
      * <pre>{@code
      * [
      *     {
+     *         guid: String
+     *         classifications: [
+     *             {
+     *                 attributes: {
+     *                     String: Object
+     *                 }
+     *                 typeName: String
+     *                 lastModifiedTS: String
+     *                 entityGuid: String
+     *                 entityStatus: String(ACTIVE/DELETED)
+     *                 propagate: Boolean
+     *                 removePropagationsOnEntityDelete: Boolean
+     *                 validityPeriods: [
+     *                     {
+     *                         endTime: String
+     *                         startTime: String
+     *                         timeZone: String
+     *                     }
+     *                 ]
+     *                 source: String
+     *                 sourceDetails: {
+     *                     String: Object
+     *                 }
+     *             }
+     *         ]
+     *         longDescription: String
+     *         name: String
+     *         qualifiedName: String
+     *         shortDescription: String
+     *         lastModifiedTS: String
      *         abbreviation: String
      *         templateName: [
      *             Object
@@ -2301,6 +2952,11 @@ public final class GlossaryRestClient {
      *         }
      *         assignedEntities: [
      *             {
+     *                 guid: String
+     *                 typeName: String
+     *                 uniqueAttributes: {
+     *                     String: Object
+     *                 }
      *                 displayText: String
      *                 entityStatus: String(ACTIVE/DELETED)
      *                 relationshipType: String

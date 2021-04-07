@@ -46,8 +46,18 @@ public final class RelationshipRestClient {
      *
      * <pre>{@code
      * {
+     *     attributes: {
+     *         String: Object
+     *     }
+     *     typeName: String
+     *     lastModifiedTS: String
      *     blockedPropagatedClassifications: [
      *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
      *             entityGuid: String
      *             entityStatus: String(ACTIVE/DELETED)
      *             propagate: Boolean
@@ -115,8 +125,18 @@ public final class RelationshipRestClient {
      *
      * <pre>{@code
      * {
+     *     attributes: {
+     *         String: Object
+     *     }
+     *     typeName: String
+     *     lastModifiedTS: String
      *     blockedPropagatedClassifications: [
      *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
      *             entityGuid: String
      *             entityStatus: String(ACTIVE/DELETED)
      *             propagate: Boolean
@@ -194,11 +214,21 @@ public final class RelationshipRestClient {
      * {
      *     referredEntities: {
      *         String: {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
      *             classificationNames: [
      *                 String
      *             ]
      *             classifications: [
      *                 {
+     *                     attributes: {
+     *                         String: Object
+     *                     }
+     *                     typeName: String
+     *                     lastModifiedTS: String
      *                     entityGuid: String
      *                     entityStatus: String(ACTIVE/DELETED)
      *                     propagate: Boolean
@@ -239,6 +269,11 @@ public final class RelationshipRestClient {
      *         }
      *     }
      *     relationship: {
+     *         attributes: {
+     *             String: Object
+     *         }
+     *         typeName: String
+     *         lastModifiedTS: String
      *         blockedPropagatedClassifications: [
      *             JsonAtlasClassification
      *         ]

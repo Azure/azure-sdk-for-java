@@ -47,66 +47,79 @@ public final class EntityRestClient {
      *
      * <pre>{@code
      * {
-     *     entity: {
-     *         classifications: [
-     *             {
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 propagate: Boolean
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
-     *                     }
-     *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
-     *                 }
+     *     referredEntities: {
+     *         String: {
+     *             attributes: {
+     *                 String: Object
      *             }
-     *         ]
-     *         createTime: Float
-     *         createdBy: String
-     *         guid: String
-     *         homeId: String
-     *         meanings: [
-     *             {
-     *                 confidence: Integer
-     *                 createdBy: String
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
-     *             }
-     *         ]
-     *         provenanceType: Float
-     *         proxy: Boolean
-     *         relationshipAttributes: {
-     *             String: Object
-     *         }
-     *         status: String(ACTIVE/DELETED)
-     *         updateTime: Float
-     *         updatedBy: String
-     *         version: Float
-     *         source: String
-     *         sourceDetails: {
-     *             String: Object
-     *         }
-     *         contacts: {
-     *             String: [
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             classifications: [
      *                 {
-     *                     id: String
-     *                     info: String
+     *                     attributes: {
+     *                         String: Object
+     *                     }
+     *                     typeName: String
+     *                     lastModifiedTS: String
+     *                     entityGuid: String
+     *                     entityStatus: String(ACTIVE/DELETED)
+     *                     propagate: Boolean
+     *                     removePropagationsOnEntityDelete: Boolean
+     *                     validityPeriods: [
+     *                         {
+     *                             endTime: String
+     *                             startTime: String
+     *                             timeZone: String
+     *                         }
+     *                     ]
+     *                     source: String
+     *                     sourceDetails: {
+     *                         String: Object
+     *                     }
      *                 }
      *             ]
+     *             createTime: Float
+     *             createdBy: String
+     *             guid: String
+     *             homeId: String
+     *             meanings: [
+     *                 {
+     *                     confidence: Integer
+     *                     createdBy: String
+     *                     description: String
+     *                     displayText: String
+     *                     expression: String
+     *                     relationGuid: String
+     *                     source: String
+     *                     status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
+     *                     steward: String
+     *                     termGuid: String
+     *                 }
+     *             ]
+     *             provenanceType: Float
+     *             proxy: Boolean
+     *             relationshipAttributes: {
+     *                 String: Object
+     *             }
+     *             status: String(ACTIVE/DELETED)
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *             contacts: {
+     *                 String: [
+     *                     {
+     *                         id: String
+     *                         info: String
+     *                     }
+     *                 ]
+     *             }
      *         }
      *     }
+     *     entity: JsonAtlasEntity
      * }
      * }</pre>
      *
@@ -120,6 +133,11 @@ public final class EntityRestClient {
      *     mutatedEntities: {
      *         String: [
      *             {
+     *                 attributes: {
+     *                     String: Object
+     *                 }
+     *                 typeName: String
+     *                 lastModifiedTS: String
      *                 classificationNames: [
      *                     String
      *                 ]
@@ -173,10 +191,20 @@ public final class EntityRestClient {
      *
      * <pre>{@code
      * {
-     *     entities: [
-     *         {
+     *     referredEntities: {
+     *         String: {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
      *             classifications: [
      *                 {
+     *                     attributes: {
+     *                         String: Object
+     *                     }
+     *                     typeName: String
+     *                     lastModifiedTS: String
      *                     entityGuid: String
      *                     entityStatus: String(ACTIVE/DELETED)
      *                     propagate: Boolean
@@ -234,6 +262,9 @@ public final class EntityRestClient {
      *                 ]
      *             }
      *         }
+     *     }
+     *     entities: [
+     *         JsonAtlasEntity
      *     ]
      * }
      * }</pre>
@@ -261,10 +292,20 @@ public final class EntityRestClient {
      *
      * <pre>{@code
      * {
-     *     entities: [
-     *         {
+     *     referredEntities: {
+     *         String: {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
      *             classifications: [
      *                 {
+     *                     attributes: {
+     *                         String: Object
+     *                     }
+     *                     typeName: String
+     *                     lastModifiedTS: String
      *                     entityGuid: String
      *                     entityStatus: String(ACTIVE/DELETED)
      *                     propagate: Boolean
@@ -322,6 +363,9 @@ public final class EntityRestClient {
      *                 ]
      *             }
      *         }
+     *     }
+     *     entities: [
+     *         JsonAtlasEntity
      *     ]
      * }
      * }</pre>
@@ -336,6 +380,11 @@ public final class EntityRestClient {
      *     mutatedEntities: {
      *         String: [
      *             {
+     *                 attributes: {
+     *                     String: Object
+     *                 }
+     *                 typeName: String
+     *                 lastModifiedTS: String
      *                 classificationNames: [
      *                     String
      *                 ]
@@ -385,11 +434,21 @@ public final class EntityRestClient {
      *     mutatedEntities: {
      *         String: [
      *             {
+     *                 attributes: {
+     *                     String: Object
+     *                 }
+     *                 typeName: String
+     *                 lastModifiedTS: String
      *                 classificationNames: [
      *                     String
      *                 ]
      *                 classifications: [
      *                     {
+     *                         attributes: {
+     *                             String: Object
+     *                         }
+     *                         typeName: String
+     *                         lastModifiedTS: String
      *                         entityGuid: String
      *                         entityStatus: String(ACTIVE/DELETED)
      *                         propagate: Boolean
@@ -458,6 +517,11 @@ public final class EntityRestClient {
      * <pre>{@code
      * {
      *     classification: {
+     *         attributes: {
+     *             String: Object
+     *         }
+     *         typeName: String
+     *         lastModifiedTS: String
      *         entityGuid: String
      *         entityStatus: String(ACTIVE/DELETED)
      *         propagate: Boolean
@@ -508,66 +572,79 @@ public final class EntityRestClient {
      *
      * <pre>{@code
      * {
-     *     entity: {
-     *         classifications: [
-     *             {
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 propagate: Boolean
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
-     *                     }
-     *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
-     *                 }
+     *     referredEntities: {
+     *         String: {
+     *             attributes: {
+     *                 String: Object
      *             }
-     *         ]
-     *         createTime: Float
-     *         createdBy: String
-     *         guid: String
-     *         homeId: String
-     *         meanings: [
-     *             {
-     *                 confidence: Integer
-     *                 createdBy: String
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
-     *             }
-     *         ]
-     *         provenanceType: Float
-     *         proxy: Boolean
-     *         relationshipAttributes: {
-     *             String: Object
-     *         }
-     *         status: String(ACTIVE/DELETED)
-     *         updateTime: Float
-     *         updatedBy: String
-     *         version: Float
-     *         source: String
-     *         sourceDetails: {
-     *             String: Object
-     *         }
-     *         contacts: {
-     *             String: [
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             classifications: [
      *                 {
-     *                     id: String
-     *                     info: String
+     *                     attributes: {
+     *                         String: Object
+     *                     }
+     *                     typeName: String
+     *                     lastModifiedTS: String
+     *                     entityGuid: String
+     *                     entityStatus: String(ACTIVE/DELETED)
+     *                     propagate: Boolean
+     *                     removePropagationsOnEntityDelete: Boolean
+     *                     validityPeriods: [
+     *                         {
+     *                             endTime: String
+     *                             startTime: String
+     *                             timeZone: String
+     *                         }
+     *                     ]
+     *                     source: String
+     *                     sourceDetails: {
+     *                         String: Object
+     *                     }
      *                 }
      *             ]
+     *             createTime: Float
+     *             createdBy: String
+     *             guid: String
+     *             homeId: String
+     *             meanings: [
+     *                 {
+     *                     confidence: Integer
+     *                     createdBy: String
+     *                     description: String
+     *                     displayText: String
+     *                     expression: String
+     *                     relationGuid: String
+     *                     source: String
+     *                     status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
+     *                     steward: String
+     *                     termGuid: String
+     *                 }
+     *             ]
+     *             provenanceType: Float
+     *             proxy: Boolean
+     *             relationshipAttributes: {
+     *                 String: Object
+     *             }
+     *             status: String(ACTIVE/DELETED)
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *             contacts: {
+     *                 String: [
+     *                     {
+     *                         id: String
+     *                         info: String
+     *                     }
+     *                 ]
+     *             }
      *         }
      *     }
+     *     entity: JsonAtlasEntity
      * }
      * }</pre>
      *
@@ -606,11 +683,21 @@ public final class EntityRestClient {
      *     mutatedEntities: {
      *         String: [
      *             {
+     *                 attributes: {
+     *                     String: Object
+     *                 }
+     *                 typeName: String
+     *                 lastModifiedTS: String
      *                 classificationNames: [
      *                     String
      *                 ]
      *                 classifications: [
      *                     {
+     *                         attributes: {
+     *                             String: Object
+     *                         }
+     *                         typeName: String
+     *                         lastModifiedTS: String
      *                         entityGuid: String
      *                         entityStatus: String(ACTIVE/DELETED)
      *                         propagate: Boolean
@@ -686,11 +773,21 @@ public final class EntityRestClient {
      *     mutatedEntities: {
      *         String: [
      *             {
+     *                 attributes: {
+     *                     String: Object
+     *                 }
+     *                 typeName: String
+     *                 lastModifiedTS: String
      *                 classificationNames: [
      *                     String
      *                 ]
      *                 classifications: [
      *                     {
+     *                         attributes: {
+     *                             String: Object
+     *                         }
+     *                         typeName: String
+     *                         lastModifiedTS: String
      *                         entityGuid: String
      *                         entityStatus: String(ACTIVE/DELETED)
      *                         propagate: Boolean
@@ -758,6 +855,11 @@ public final class EntityRestClient {
      *
      * <pre>{@code
      * {
+     *     attributes: {
+     *         String: Object
+     *     }
+     *     typeName: String
+     *     lastModifiedTS: String
      *     entityGuid: String
      *     entityStatus: String(ACTIVE/DELETED)
      *     propagate: Boolean
@@ -820,6 +922,14 @@ public final class EntityRestClient {
      *
      * <pre>{@code
      * {
+     *     list: [
+     *         Object
+     *     ]
+     *     pageSize: Integer
+     *     sortBy: String
+     *     sortType: String(NONE/ASC/DESC)
+     *     startIndex: Long
+     *     totalCount: Long
      * }
      * }</pre>
      *
@@ -846,6 +956,11 @@ public final class EntityRestClient {
      * <pre>{@code
      * [
      *     {
+     *         attributes: {
+     *             String: Object
+     *         }
+     *         typeName: String
+     *         lastModifiedTS: String
      *         entityGuid: String
      *         entityStatus: String(ACTIVE/DELETED)
      *         propagate: Boolean
@@ -888,6 +1003,11 @@ public final class EntityRestClient {
      * <pre>{@code
      * [
      *     {
+     *         attributes: {
+     *             String: Object
+     *         }
+     *         typeName: String
+     *         lastModifiedTS: String
      *         entityGuid: String
      *         entityStatus: String(ACTIVE/DELETED)
      *         propagate: Boolean
@@ -943,66 +1063,79 @@ public final class EntityRestClient {
      *
      * <pre>{@code
      * {
-     *     entity: {
-     *         classifications: [
-     *             {
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 propagate: Boolean
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
-     *                     }
-     *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
-     *                 }
+     *     referredEntities: {
+     *         String: {
+     *             attributes: {
+     *                 String: Object
      *             }
-     *         ]
-     *         createTime: Float
-     *         createdBy: String
-     *         guid: String
-     *         homeId: String
-     *         meanings: [
-     *             {
-     *                 confidence: Integer
-     *                 createdBy: String
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
-     *             }
-     *         ]
-     *         provenanceType: Float
-     *         proxy: Boolean
-     *         relationshipAttributes: {
-     *             String: Object
-     *         }
-     *         status: String(ACTIVE/DELETED)
-     *         updateTime: Float
-     *         updatedBy: String
-     *         version: Float
-     *         source: String
-     *         sourceDetails: {
-     *             String: Object
-     *         }
-     *         contacts: {
-     *             String: [
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             classifications: [
      *                 {
-     *                     id: String
-     *                     info: String
+     *                     attributes: {
+     *                         String: Object
+     *                     }
+     *                     typeName: String
+     *                     lastModifiedTS: String
+     *                     entityGuid: String
+     *                     entityStatus: String(ACTIVE/DELETED)
+     *                     propagate: Boolean
+     *                     removePropagationsOnEntityDelete: Boolean
+     *                     validityPeriods: [
+     *                         {
+     *                             endTime: String
+     *                             startTime: String
+     *                             timeZone: String
+     *                         }
+     *                     ]
+     *                     source: String
+     *                     sourceDetails: {
+     *                         String: Object
+     *                     }
      *                 }
      *             ]
+     *             createTime: Float
+     *             createdBy: String
+     *             guid: String
+     *             homeId: String
+     *             meanings: [
+     *                 {
+     *                     confidence: Integer
+     *                     createdBy: String
+     *                     description: String
+     *                     displayText: String
+     *                     expression: String
+     *                     relationGuid: String
+     *                     source: String
+     *                     status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
+     *                     steward: String
+     *                     termGuid: String
+     *                 }
+     *             ]
+     *             provenanceType: Float
+     *             proxy: Boolean
+     *             relationshipAttributes: {
+     *                 String: Object
+     *             }
+     *             status: String(ACTIVE/DELETED)
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *             contacts: {
+     *                 String: [
+     *                     {
+     *                         id: String
+     *                         info: String
+     *                     }
+     *                 ]
+     *             }
      *         }
      *     }
+     *     entity: JsonAtlasEntity
      * }
      * }</pre>
      *
@@ -1041,66 +1174,79 @@ public final class EntityRestClient {
      *
      * <pre>{@code
      * {
-     *     entity: {
-     *         classifications: [
-     *             {
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 propagate: Boolean
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
-     *                     }
-     *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
-     *                 }
+     *     referredEntities: {
+     *         String: {
+     *             attributes: {
+     *                 String: Object
      *             }
-     *         ]
-     *         createTime: Float
-     *         createdBy: String
-     *         guid: String
-     *         homeId: String
-     *         meanings: [
-     *             {
-     *                 confidence: Integer
-     *                 createdBy: String
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
-     *             }
-     *         ]
-     *         provenanceType: Float
-     *         proxy: Boolean
-     *         relationshipAttributes: {
-     *             String: Object
-     *         }
-     *         status: String(ACTIVE/DELETED)
-     *         updateTime: Float
-     *         updatedBy: String
-     *         version: Float
-     *         source: String
-     *         sourceDetails: {
-     *             String: Object
-     *         }
-     *         contacts: {
-     *             String: [
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             classifications: [
      *                 {
-     *                     id: String
-     *                     info: String
+     *                     attributes: {
+     *                         String: Object
+     *                     }
+     *                     typeName: String
+     *                     lastModifiedTS: String
+     *                     entityGuid: String
+     *                     entityStatus: String(ACTIVE/DELETED)
+     *                     propagate: Boolean
+     *                     removePropagationsOnEntityDelete: Boolean
+     *                     validityPeriods: [
+     *                         {
+     *                             endTime: String
+     *                             startTime: String
+     *                             timeZone: String
+     *                         }
+     *                     ]
+     *                     source: String
+     *                     sourceDetails: {
+     *                         String: Object
+     *                     }
      *                 }
      *             ]
+     *             createTime: Float
+     *             createdBy: String
+     *             guid: String
+     *             homeId: String
+     *             meanings: [
+     *                 {
+     *                     confidence: Integer
+     *                     createdBy: String
+     *                     description: String
+     *                     displayText: String
+     *                     expression: String
+     *                     relationGuid: String
+     *                     source: String
+     *                     status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
+     *                     steward: String
+     *                     termGuid: String
+     *                 }
+     *             ]
+     *             provenanceType: Float
+     *             proxy: Boolean
+     *             relationshipAttributes: {
+     *                 String: Object
+     *             }
+     *             status: String(ACTIVE/DELETED)
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *             contacts: {
+     *                 String: [
+     *                     {
+     *                         id: String
+     *                         info: String
+     *                     }
+     *                 ]
+     *             }
      *         }
      *     }
+     *     entity: JsonAtlasEntity
      * }
      * }</pre>
      *
@@ -1114,6 +1260,11 @@ public final class EntityRestClient {
      *     mutatedEntities: {
      *         String: [
      *             {
+     *                 attributes: {
+     *                     String: Object
+     *                 }
+     *                 typeName: String
+     *                 lastModifiedTS: String
      *                 classificationNames: [
      *                     String
      *                 ]
@@ -1177,11 +1328,21 @@ public final class EntityRestClient {
      *     mutatedEntities: {
      *         String: [
      *             {
+     *                 attributes: {
+     *                     String: Object
+     *                 }
+     *                 typeName: String
+     *                 lastModifiedTS: String
      *                 classificationNames: [
      *                     String
      *                 ]
      *                 classifications: [
      *                     {
+     *                         attributes: {
+     *                             String: Object
+     *                         }
+     *                         typeName: String
+     *                         lastModifiedTS: String
      *                         entityGuid: String
      *                         entityStatus: String(ACTIVE/DELETED)
      *                         propagate: Boolean
@@ -1287,6 +1448,11 @@ public final class EntityRestClient {
      * <pre>{@code
      * [
      *     {
+     *         attributes: {
+     *             String: Object
+     *         }
+     *         typeName: String
+     *         lastModifiedTS: String
      *         entityGuid: String
      *         entityStatus: String(ACTIVE/DELETED)
      *         propagate: Boolean
@@ -1337,6 +1503,11 @@ public final class EntityRestClient {
      * <pre>{@code
      * [
      *     {
+     *         attributes: {
+     *             String: Object
+     *         }
+     *         typeName: String
+     *         lastModifiedTS: String
      *         entityGuid: String
      *         entityStatus: String(ACTIVE/DELETED)
      *         propagate: Boolean
@@ -1380,11 +1551,21 @@ public final class EntityRestClient {
      * {
      *     guidHeaderMap: {
      *         String: {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
      *             classificationNames: [
      *                 String
      *             ]
      *             classifications: [
      *                 {
+     *                     attributes: {
+     *                         String: Object
+     *                     }
+     *                     typeName: String
+     *                     lastModifiedTS: String
      *                     entityGuid: String
      *                     entityStatus: String(ACTIVE/DELETED)
      *                     propagate: Boolean
@@ -1476,10 +1657,20 @@ public final class EntityRestClient {
      *
      * <pre>{@code
      * {
-     *     entities: [
-     *         {
+     *     referredEntities: {
+     *         String: {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
      *             classifications: [
      *                 {
+     *                     attributes: {
+     *                         String: Object
+     *                     }
+     *                     typeName: String
+     *                     lastModifiedTS: String
      *                     entityGuid: String
      *                     entityStatus: String(ACTIVE/DELETED)
      *                     propagate: Boolean
@@ -1537,6 +1728,9 @@ public final class EntityRestClient {
      *                 ]
      *             }
      *         }
+     *     }
+     *     entities: [
+     *         JsonAtlasEntity
      *     ]
      * }
      * }</pre>
@@ -1563,11 +1757,21 @@ public final class EntityRestClient {
      *
      * <pre>{@code
      * {
+     *     attributes: {
+     *         String: Object
+     *     }
+     *     typeName: String
+     *     lastModifiedTS: String
      *     classificationNames: [
      *         String
      *     ]
      *     classifications: [
      *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
      *             entityGuid: String
      *             entityStatus: String(ACTIVE/DELETED)
      *             propagate: Boolean

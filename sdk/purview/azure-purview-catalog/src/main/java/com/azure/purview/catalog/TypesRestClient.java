@@ -45,6 +45,86 @@ public final class TypesRestClient {
      *
      * <pre>{@code
      * {
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *     createTime: Float
+     *     createdBy: String
+     *     dateFormatter: {
+     *         availableLocales: [
+     *             String
+     *         ]
+     *         calendar: Float
+     *         dateInstance: JsonDateFormat
+     *         dateTimeInstance: JsonDateFormat
+     *         instance: JsonDateFormat
+     *         lenient: Boolean
+     *         numberFormat: {
+     *             availableLocales: [
+     *                 String
+     *             ]
+     *             currency: String
+     *             currencyInstance: JsonNumberFormat
+     *             groupingUsed: Boolean
+     *             instance: JsonNumberFormat
+     *             integerInstance: JsonNumberFormat
+     *             maximumFractionDigits: Integer
+     *             maximumIntegerDigits: Integer
+     *             minimumFractionDigits: Integer
+     *             minimumIntegerDigits: Integer
+     *             numberInstance: JsonNumberFormat
+     *             parseIntegerOnly: Boolean
+     *             percentInstance: JsonNumberFormat
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *         }
+     *         timeInstance: JsonDateFormat
+     *         timeZone: {
+     *             dstSavings: Integer
+     *             id: String
+     *             availableIds: [
+     *                 String
+     *             ]
+     *             defaultProperty: JsonTimeZone
+     *             displayName: String
+     *             rawOffset: Integer
+     *         }
+     *     }
+     *     description: String
+     *     guid: String
+     *     name: String
+     *     options: {
+     *         String: String
+     *     }
+     *     serviceType: String
+     *     typeVersion: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     *     lastModifiedTS: String
+     *     attributeDefs: [
+     *         {
+     *             cardinality: String(SINGLE/LIST/SET)
+     *             constraints: [
+     *                 {
+     *                     params: {
+     *                         String: Object
+     *                     }
+     *                     type: String
+     *                 }
+     *             ]
+     *             defaultValue: String
+     *             description: String
+     *             includeInNotification: Boolean
+     *             isIndexable: Boolean
+     *             isOptional: Boolean
+     *             isUnique: Boolean
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             typeName: String
+     *             valuesMaxCount: Integer
+     *             valuesMinCount: Integer
+     *         }
+     *     ]
      *     entityTypes: [
      *         String
      *     ]
@@ -79,6 +159,86 @@ public final class TypesRestClient {
      *
      * <pre>{@code
      * {
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *     createTime: Float
+     *     createdBy: String
+     *     dateFormatter: {
+     *         availableLocales: [
+     *             String
+     *         ]
+     *         calendar: Float
+     *         dateInstance: JsonDateFormat
+     *         dateTimeInstance: JsonDateFormat
+     *         instance: JsonDateFormat
+     *         lenient: Boolean
+     *         numberFormat: {
+     *             availableLocales: [
+     *                 String
+     *             ]
+     *             currency: String
+     *             currencyInstance: JsonNumberFormat
+     *             groupingUsed: Boolean
+     *             instance: JsonNumberFormat
+     *             integerInstance: JsonNumberFormat
+     *             maximumFractionDigits: Integer
+     *             maximumIntegerDigits: Integer
+     *             minimumFractionDigits: Integer
+     *             minimumIntegerDigits: Integer
+     *             numberInstance: JsonNumberFormat
+     *             parseIntegerOnly: Boolean
+     *             percentInstance: JsonNumberFormat
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *         }
+     *         timeInstance: JsonDateFormat
+     *         timeZone: {
+     *             dstSavings: Integer
+     *             id: String
+     *             availableIds: [
+     *                 String
+     *             ]
+     *             defaultProperty: JsonTimeZone
+     *             displayName: String
+     *             rawOffset: Integer
+     *         }
+     *     }
+     *     description: String
+     *     guid: String
+     *     name: String
+     *     options: {
+     *         String: String
+     *     }
+     *     serviceType: String
+     *     typeVersion: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     *     lastModifiedTS: String
+     *     attributeDefs: [
+     *         {
+     *             cardinality: String(SINGLE/LIST/SET)
+     *             constraints: [
+     *                 {
+     *                     params: {
+     *                         String: Object
+     *                     }
+     *                     type: String
+     *                 }
+     *             ]
+     *             defaultValue: String
+     *             description: String
+     *             includeInNotification: Boolean
+     *             isIndexable: Boolean
+     *             isOptional: Boolean
+     *             isUnique: Boolean
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             typeName: String
+     *             valuesMaxCount: Integer
+     *             valuesMinCount: Integer
+     *         }
+     *     ]
      *     entityTypes: [
      *         String
      *     ]
@@ -113,6 +273,86 @@ public final class TypesRestClient {
      *
      * <pre>{@code
      * {
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *     createTime: Float
+     *     createdBy: String
+     *     dateFormatter: {
+     *         availableLocales: [
+     *             String
+     *         ]
+     *         calendar: Float
+     *         dateInstance: JsonDateFormat
+     *         dateTimeInstance: JsonDateFormat
+     *         instance: JsonDateFormat
+     *         lenient: Boolean
+     *         numberFormat: {
+     *             availableLocales: [
+     *                 String
+     *             ]
+     *             currency: String
+     *             currencyInstance: JsonNumberFormat
+     *             groupingUsed: Boolean
+     *             instance: JsonNumberFormat
+     *             integerInstance: JsonNumberFormat
+     *             maximumFractionDigits: Integer
+     *             maximumIntegerDigits: Integer
+     *             minimumFractionDigits: Integer
+     *             minimumIntegerDigits: Integer
+     *             numberInstance: JsonNumberFormat
+     *             parseIntegerOnly: Boolean
+     *             percentInstance: JsonNumberFormat
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *         }
+     *         timeInstance: JsonDateFormat
+     *         timeZone: {
+     *             dstSavings: Integer
+     *             id: String
+     *             availableIds: [
+     *                 String
+     *             ]
+     *             defaultProperty: JsonTimeZone
+     *             displayName: String
+     *             rawOffset: Integer
+     *         }
+     *     }
+     *     description: String
+     *     guid: String
+     *     name: String
+     *     options: {
+     *         String: String
+     *     }
+     *     serviceType: String
+     *     typeVersion: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     *     lastModifiedTS: String
+     *     attributeDefs: [
+     *         {
+     *             cardinality: String(SINGLE/LIST/SET)
+     *             constraints: [
+     *                 {
+     *                     params: {
+     *                         String: Object
+     *                     }
+     *                     type: String
+     *                 }
+     *             ]
+     *             defaultValue: String
+     *             description: String
+     *             includeInNotification: Boolean
+     *             isIndexable: Boolean
+     *             isOptional: Boolean
+     *             isUnique: Boolean
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             typeName: String
+     *             valuesMaxCount: Integer
+     *             valuesMinCount: Integer
+     *         }
+     *     ]
      *     subTypes: [
      *         String
      *     ]
@@ -121,6 +361,23 @@ public final class TypesRestClient {
      *     ]
      *     relationshipAttributeDefs: [
      *         {
+     *             cardinality: String(SINGLE/LIST/SET)
+     *             constraints: [
+     *                 JsonAtlasConstraintDef
+     *             ]
+     *             defaultValue: String
+     *             description: String
+     *             includeInNotification: Boolean
+     *             isIndexable: Boolean
+     *             isOptional: Boolean
+     *             isUnique: Boolean
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             typeName: String
+     *             valuesMaxCount: Integer
+     *             valuesMinCount: Integer
      *             isLegacyAttribute: Boolean
      *             relationshipTypeName: String
      *         }
@@ -149,6 +406,86 @@ public final class TypesRestClient {
      *
      * <pre>{@code
      * {
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *     createTime: Float
+     *     createdBy: String
+     *     dateFormatter: {
+     *         availableLocales: [
+     *             String
+     *         ]
+     *         calendar: Float
+     *         dateInstance: JsonDateFormat
+     *         dateTimeInstance: JsonDateFormat
+     *         instance: JsonDateFormat
+     *         lenient: Boolean
+     *         numberFormat: {
+     *             availableLocales: [
+     *                 String
+     *             ]
+     *             currency: String
+     *             currencyInstance: JsonNumberFormat
+     *             groupingUsed: Boolean
+     *             instance: JsonNumberFormat
+     *             integerInstance: JsonNumberFormat
+     *             maximumFractionDigits: Integer
+     *             maximumIntegerDigits: Integer
+     *             minimumFractionDigits: Integer
+     *             minimumIntegerDigits: Integer
+     *             numberInstance: JsonNumberFormat
+     *             parseIntegerOnly: Boolean
+     *             percentInstance: JsonNumberFormat
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *         }
+     *         timeInstance: JsonDateFormat
+     *         timeZone: {
+     *             dstSavings: Integer
+     *             id: String
+     *             availableIds: [
+     *                 String
+     *             ]
+     *             defaultProperty: JsonTimeZone
+     *             displayName: String
+     *             rawOffset: Integer
+     *         }
+     *     }
+     *     description: String
+     *     guid: String
+     *     name: String
+     *     options: {
+     *         String: String
+     *     }
+     *     serviceType: String
+     *     typeVersion: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     *     lastModifiedTS: String
+     *     attributeDefs: [
+     *         {
+     *             cardinality: String(SINGLE/LIST/SET)
+     *             constraints: [
+     *                 {
+     *                     params: {
+     *                         String: Object
+     *                     }
+     *                     type: String
+     *                 }
+     *             ]
+     *             defaultValue: String
+     *             description: String
+     *             includeInNotification: Boolean
+     *             isIndexable: Boolean
+     *             isOptional: Boolean
+     *             isUnique: Boolean
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             typeName: String
+     *             valuesMaxCount: Integer
+     *             valuesMinCount: Integer
+     *         }
+     *     ]
      *     subTypes: [
      *         String
      *     ]
@@ -157,6 +494,23 @@ public final class TypesRestClient {
      *     ]
      *     relationshipAttributeDefs: [
      *         {
+     *             cardinality: String(SINGLE/LIST/SET)
+     *             constraints: [
+     *                 JsonAtlasConstraintDef
+     *             ]
+     *             defaultValue: String
+     *             description: String
+     *             includeInNotification: Boolean
+     *             isIndexable: Boolean
+     *             isOptional: Boolean
+     *             isUnique: Boolean
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             typeName: String
+     *             valuesMaxCount: Integer
+     *             valuesMinCount: Integer
      *             isLegacyAttribute: Boolean
      *             relationshipTypeName: String
      *         }
@@ -185,6 +539,60 @@ public final class TypesRestClient {
      *
      * <pre>{@code
      * {
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *     createTime: Float
+     *     createdBy: String
+     *     dateFormatter: {
+     *         availableLocales: [
+     *             String
+     *         ]
+     *         calendar: Float
+     *         dateInstance: JsonDateFormat
+     *         dateTimeInstance: JsonDateFormat
+     *         instance: JsonDateFormat
+     *         lenient: Boolean
+     *         numberFormat: {
+     *             availableLocales: [
+     *                 String
+     *             ]
+     *             currency: String
+     *             currencyInstance: JsonNumberFormat
+     *             groupingUsed: Boolean
+     *             instance: JsonNumberFormat
+     *             integerInstance: JsonNumberFormat
+     *             maximumFractionDigits: Integer
+     *             maximumIntegerDigits: Integer
+     *             minimumFractionDigits: Integer
+     *             minimumIntegerDigits: Integer
+     *             numberInstance: JsonNumberFormat
+     *             parseIntegerOnly: Boolean
+     *             percentInstance: JsonNumberFormat
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *         }
+     *         timeInstance: JsonDateFormat
+     *         timeZone: {
+     *             dstSavings: Integer
+     *             id: String
+     *             availableIds: [
+     *                 String
+     *             ]
+     *             defaultProperty: JsonTimeZone
+     *             displayName: String
+     *             rawOffset: Integer
+     *         }
+     *     }
+     *     description: String
+     *     guid: String
+     *     name: String
+     *     options: {
+     *         String: String
+     *     }
+     *     serviceType: String
+     *     typeVersion: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     *     lastModifiedTS: String
      *     defaultValue: String
      *     elementDefs: [
      *         {
@@ -217,6 +625,60 @@ public final class TypesRestClient {
      *
      * <pre>{@code
      * {
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *     createTime: Float
+     *     createdBy: String
+     *     dateFormatter: {
+     *         availableLocales: [
+     *             String
+     *         ]
+     *         calendar: Float
+     *         dateInstance: JsonDateFormat
+     *         dateTimeInstance: JsonDateFormat
+     *         instance: JsonDateFormat
+     *         lenient: Boolean
+     *         numberFormat: {
+     *             availableLocales: [
+     *                 String
+     *             ]
+     *             currency: String
+     *             currencyInstance: JsonNumberFormat
+     *             groupingUsed: Boolean
+     *             instance: JsonNumberFormat
+     *             integerInstance: JsonNumberFormat
+     *             maximumFractionDigits: Integer
+     *             maximumIntegerDigits: Integer
+     *             minimumFractionDigits: Integer
+     *             minimumIntegerDigits: Integer
+     *             numberInstance: JsonNumberFormat
+     *             parseIntegerOnly: Boolean
+     *             percentInstance: JsonNumberFormat
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *         }
+     *         timeInstance: JsonDateFormat
+     *         timeZone: {
+     *             dstSavings: Integer
+     *             id: String
+     *             availableIds: [
+     *                 String
+     *             ]
+     *             defaultProperty: JsonTimeZone
+     *             displayName: String
+     *             rawOffset: Integer
+     *         }
+     *     }
+     *     description: String
+     *     guid: String
+     *     name: String
+     *     options: {
+     *         String: String
+     *     }
+     *     serviceType: String
+     *     typeVersion: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     *     lastModifiedTS: String
      *     defaultValue: String
      *     elementDefs: [
      *         {
@@ -249,6 +711,86 @@ public final class TypesRestClient {
      *
      * <pre>{@code
      * {
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *     createTime: Float
+     *     createdBy: String
+     *     dateFormatter: {
+     *         availableLocales: [
+     *             String
+     *         ]
+     *         calendar: Float
+     *         dateInstance: JsonDateFormat
+     *         dateTimeInstance: JsonDateFormat
+     *         instance: JsonDateFormat
+     *         lenient: Boolean
+     *         numberFormat: {
+     *             availableLocales: [
+     *                 String
+     *             ]
+     *             currency: String
+     *             currencyInstance: JsonNumberFormat
+     *             groupingUsed: Boolean
+     *             instance: JsonNumberFormat
+     *             integerInstance: JsonNumberFormat
+     *             maximumFractionDigits: Integer
+     *             maximumIntegerDigits: Integer
+     *             minimumFractionDigits: Integer
+     *             minimumIntegerDigits: Integer
+     *             numberInstance: JsonNumberFormat
+     *             parseIntegerOnly: Boolean
+     *             percentInstance: JsonNumberFormat
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *         }
+     *         timeInstance: JsonDateFormat
+     *         timeZone: {
+     *             dstSavings: Integer
+     *             id: String
+     *             availableIds: [
+     *                 String
+     *             ]
+     *             defaultProperty: JsonTimeZone
+     *             displayName: String
+     *             rawOffset: Integer
+     *         }
+     *     }
+     *     description: String
+     *     guid: String
+     *     name: String
+     *     options: {
+     *         String: String
+     *     }
+     *     serviceType: String
+     *     typeVersion: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     *     lastModifiedTS: String
+     *     attributeDefs: [
+     *         {
+     *             cardinality: String(SINGLE/LIST/SET)
+     *             constraints: [
+     *                 {
+     *                     params: {
+     *                         String: Object
+     *                     }
+     *                     type: String
+     *                 }
+     *             ]
+     *             defaultValue: String
+     *             description: String
+     *             includeInNotification: Boolean
+     *             isIndexable: Boolean
+     *             isOptional: Boolean
+     *             isUnique: Boolean
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             typeName: String
+     *             valuesMaxCount: Integer
+     *             valuesMinCount: Integer
+     *         }
+     *     ]
      *     endDef1: {
      *         cardinality: String(SINGLE/LIST/SET)
      *         description: String
@@ -286,6 +828,86 @@ public final class TypesRestClient {
      *
      * <pre>{@code
      * {
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *     createTime: Float
+     *     createdBy: String
+     *     dateFormatter: {
+     *         availableLocales: [
+     *             String
+     *         ]
+     *         calendar: Float
+     *         dateInstance: JsonDateFormat
+     *         dateTimeInstance: JsonDateFormat
+     *         instance: JsonDateFormat
+     *         lenient: Boolean
+     *         numberFormat: {
+     *             availableLocales: [
+     *                 String
+     *             ]
+     *             currency: String
+     *             currencyInstance: JsonNumberFormat
+     *             groupingUsed: Boolean
+     *             instance: JsonNumberFormat
+     *             integerInstance: JsonNumberFormat
+     *             maximumFractionDigits: Integer
+     *             maximumIntegerDigits: Integer
+     *             minimumFractionDigits: Integer
+     *             minimumIntegerDigits: Integer
+     *             numberInstance: JsonNumberFormat
+     *             parseIntegerOnly: Boolean
+     *             percentInstance: JsonNumberFormat
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *         }
+     *         timeInstance: JsonDateFormat
+     *         timeZone: {
+     *             dstSavings: Integer
+     *             id: String
+     *             availableIds: [
+     *                 String
+     *             ]
+     *             defaultProperty: JsonTimeZone
+     *             displayName: String
+     *             rawOffset: Integer
+     *         }
+     *     }
+     *     description: String
+     *     guid: String
+     *     name: String
+     *     options: {
+     *         String: String
+     *     }
+     *     serviceType: String
+     *     typeVersion: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     *     lastModifiedTS: String
+     *     attributeDefs: [
+     *         {
+     *             cardinality: String(SINGLE/LIST/SET)
+     *             constraints: [
+     *                 {
+     *                     params: {
+     *                         String: Object
+     *                     }
+     *                     type: String
+     *                 }
+     *             ]
+     *             defaultValue: String
+     *             description: String
+     *             includeInNotification: Boolean
+     *             isIndexable: Boolean
+     *             isOptional: Boolean
+     *             isUnique: Boolean
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             typeName: String
+     *             valuesMaxCount: Integer
+     *             valuesMinCount: Integer
+     *         }
+     *     ]
      *     endDef1: {
      *         cardinality: String(SINGLE/LIST/SET)
      *         description: String
@@ -323,6 +945,60 @@ public final class TypesRestClient {
      *
      * <pre>{@code
      * {
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *     createTime: Float
+     *     createdBy: String
+     *     dateFormatter: {
+     *         availableLocales: [
+     *             String
+     *         ]
+     *         calendar: Float
+     *         dateInstance: JsonDateFormat
+     *         dateTimeInstance: JsonDateFormat
+     *         instance: JsonDateFormat
+     *         lenient: Boolean
+     *         numberFormat: {
+     *             availableLocales: [
+     *                 String
+     *             ]
+     *             currency: String
+     *             currencyInstance: JsonNumberFormat
+     *             groupingUsed: Boolean
+     *             instance: JsonNumberFormat
+     *             integerInstance: JsonNumberFormat
+     *             maximumFractionDigits: Integer
+     *             maximumIntegerDigits: Integer
+     *             minimumFractionDigits: Integer
+     *             minimumIntegerDigits: Integer
+     *             numberInstance: JsonNumberFormat
+     *             parseIntegerOnly: Boolean
+     *             percentInstance: JsonNumberFormat
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *         }
+     *         timeInstance: JsonDateFormat
+     *         timeZone: {
+     *             dstSavings: Integer
+     *             id: String
+     *             availableIds: [
+     *                 String
+     *             ]
+     *             defaultProperty: JsonTimeZone
+     *             displayName: String
+     *             rawOffset: Integer
+     *         }
+     *     }
+     *     description: String
+     *     guid: String
+     *     name: String
+     *     options: {
+     *         String: String
+     *     }
+     *     serviceType: String
+     *     typeVersion: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     *     lastModifiedTS: String
      *     attributeDefs: [
      *         {
      *             cardinality: String(SINGLE/LIST/SET)
@@ -373,6 +1049,60 @@ public final class TypesRestClient {
      *
      * <pre>{@code
      * {
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *     createTime: Float
+     *     createdBy: String
+     *     dateFormatter: {
+     *         availableLocales: [
+     *             String
+     *         ]
+     *         calendar: Float
+     *         dateInstance: JsonDateFormat
+     *         dateTimeInstance: JsonDateFormat
+     *         instance: JsonDateFormat
+     *         lenient: Boolean
+     *         numberFormat: {
+     *             availableLocales: [
+     *                 String
+     *             ]
+     *             currency: String
+     *             currencyInstance: JsonNumberFormat
+     *             groupingUsed: Boolean
+     *             instance: JsonNumberFormat
+     *             integerInstance: JsonNumberFormat
+     *             maximumFractionDigits: Integer
+     *             maximumIntegerDigits: Integer
+     *             minimumFractionDigits: Integer
+     *             minimumIntegerDigits: Integer
+     *             numberInstance: JsonNumberFormat
+     *             parseIntegerOnly: Boolean
+     *             percentInstance: JsonNumberFormat
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *         }
+     *         timeInstance: JsonDateFormat
+     *         timeZone: {
+     *             dstSavings: Integer
+     *             id: String
+     *             availableIds: [
+     *                 String
+     *             ]
+     *             defaultProperty: JsonTimeZone
+     *             displayName: String
+     *             rawOffset: Integer
+     *         }
+     *     }
+     *     description: String
+     *     guid: String
+     *     name: String
+     *     options: {
+     *         String: String
+     *     }
+     *     serviceType: String
+     *     typeVersion: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     *     lastModifiedTS: String
      *     attributeDefs: [
      *         {
      *             cardinality: String(SINGLE/LIST/SET)
@@ -423,6 +1153,60 @@ public final class TypesRestClient {
      *
      * <pre>{@code
      * {
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *     createTime: Float
+     *     createdBy: String
+     *     dateFormatter: {
+     *         availableLocales: [
+     *             String
+     *         ]
+     *         calendar: Float
+     *         dateInstance: JsonDateFormat
+     *         dateTimeInstance: JsonDateFormat
+     *         instance: JsonDateFormat
+     *         lenient: Boolean
+     *         numberFormat: {
+     *             availableLocales: [
+     *                 String
+     *             ]
+     *             currency: String
+     *             currencyInstance: JsonNumberFormat
+     *             groupingUsed: Boolean
+     *             instance: JsonNumberFormat
+     *             integerInstance: JsonNumberFormat
+     *             maximumFractionDigits: Integer
+     *             maximumIntegerDigits: Integer
+     *             minimumFractionDigits: Integer
+     *             minimumIntegerDigits: Integer
+     *             numberInstance: JsonNumberFormat
+     *             parseIntegerOnly: Boolean
+     *             percentInstance: JsonNumberFormat
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *         }
+     *         timeInstance: JsonDateFormat
+     *         timeZone: {
+     *             dstSavings: Integer
+     *             id: String
+     *             availableIds: [
+     *                 String
+     *             ]
+     *             defaultProperty: JsonTimeZone
+     *             displayName: String
+     *             rawOffset: Integer
+     *         }
+     *     }
+     *     description: String
+     *     guid: String
+     *     name: String
+     *     options: {
+     *         String: String
+     *     }
+     *     serviceType: String
+     *     typeVersion: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     *     lastModifiedTS: String
      *     entityTypes: [
      *         String
      *     ]
@@ -434,6 +1218,28 @@ public final class TypesRestClient {
      *     ]
      *     relationshipAttributeDefs: [
      *         {
+     *             cardinality: String(SINGLE/LIST/SET)
+     *             constraints: [
+     *                 {
+     *                     params: {
+     *                         String: Object
+     *                     }
+     *                     type: String
+     *                 }
+     *             ]
+     *             defaultValue: String
+     *             description: String
+     *             includeInNotification: Boolean
+     *             isIndexable: Boolean
+     *             isOptional: Boolean
+     *             isUnique: Boolean
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             typeName: String
+     *             valuesMaxCount: Integer
+     *             valuesMinCount: Integer
      *             isLegacyAttribute: Boolean
      *             relationshipTypeName: String
      *         }
@@ -462,12 +1268,7 @@ public final class TypesRestClient {
      *         {
      *             cardinality: String(SINGLE/LIST/SET)
      *             constraints: [
-     *                 {
-     *                     params: {
-     *                         String: Object
-     *                     }
-     *                     type: String
-     *                 }
+     *                 JsonAtlasConstraintDef
      *             ]
      *             defaultValue: String
      *             description: String
@@ -508,6 +1309,60 @@ public final class TypesRestClient {
      *
      * <pre>{@code
      * {
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *     createTime: Float
+     *     createdBy: String
+     *     dateFormatter: {
+     *         availableLocales: [
+     *             String
+     *         ]
+     *         calendar: Float
+     *         dateInstance: JsonDateFormat
+     *         dateTimeInstance: JsonDateFormat
+     *         instance: JsonDateFormat
+     *         lenient: Boolean
+     *         numberFormat: {
+     *             availableLocales: [
+     *                 String
+     *             ]
+     *             currency: String
+     *             currencyInstance: JsonNumberFormat
+     *             groupingUsed: Boolean
+     *             instance: JsonNumberFormat
+     *             integerInstance: JsonNumberFormat
+     *             maximumFractionDigits: Integer
+     *             maximumIntegerDigits: Integer
+     *             minimumFractionDigits: Integer
+     *             minimumIntegerDigits: Integer
+     *             numberInstance: JsonNumberFormat
+     *             parseIntegerOnly: Boolean
+     *             percentInstance: JsonNumberFormat
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *         }
+     *         timeInstance: JsonDateFormat
+     *         timeZone: {
+     *             dstSavings: Integer
+     *             id: String
+     *             availableIds: [
+     *                 String
+     *             ]
+     *             defaultProperty: JsonTimeZone
+     *             displayName: String
+     *             rawOffset: Integer
+     *         }
+     *     }
+     *     description: String
+     *     guid: String
+     *     name: String
+     *     options: {
+     *         String: String
+     *     }
+     *     serviceType: String
+     *     typeVersion: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     *     lastModifiedTS: String
      *     entityTypes: [
      *         String
      *     ]
@@ -519,6 +1374,28 @@ public final class TypesRestClient {
      *     ]
      *     relationshipAttributeDefs: [
      *         {
+     *             cardinality: String(SINGLE/LIST/SET)
+     *             constraints: [
+     *                 {
+     *                     params: {
+     *                         String: Object
+     *                     }
+     *                     type: String
+     *                 }
+     *             ]
+     *             defaultValue: String
+     *             description: String
+     *             includeInNotification: Boolean
+     *             isIndexable: Boolean
+     *             isOptional: Boolean
+     *             isUnique: Boolean
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             typeName: String
+     *             valuesMaxCount: Integer
+     *             valuesMinCount: Integer
      *             isLegacyAttribute: Boolean
      *             relationshipTypeName: String
      *         }
@@ -547,12 +1424,7 @@ public final class TypesRestClient {
      *         {
      *             cardinality: String(SINGLE/LIST/SET)
      *             constraints: [
-     *                 {
-     *                     params: {
-     *                         String: Object
-     *                     }
-     *                     type: String
-     *                 }
+     *                 JsonAtlasConstraintDef
      *             ]
      *             defaultValue: String
      *             description: String
@@ -622,63 +1494,60 @@ public final class TypesRestClient {
      * {
      *     classificationDefs: [
      *         {
-     *             entityTypes: [
-     *                 String
-     *             ]
-     *             subTypes: [
-     *                 String
-     *             ]
-     *             superTypes: [
-     *                 String
-     *             ]
-     *         }
-     *     ]
-     *     entityDefs: [
-     *         {
-     *             subTypes: [
-     *                 String
-     *             ]
-     *             superTypes: [
-     *                 String
-     *             ]
-     *             relationshipAttributeDefs: [
-     *                 {
-     *                     isLegacyAttribute: Boolean
-     *                     relationshipTypeName: String
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: {
+     *                 availableLocales: [
+     *                     String
+     *                 ]
+     *                 calendar: Float
+     *                 dateInstance: JsonDateFormat
+     *                 dateTimeInstance: JsonDateFormat
+     *                 instance: JsonDateFormat
+     *                 lenient: Boolean
+     *                 numberFormat: {
+     *                     availableLocales: [
+     *                         String
+     *                     ]
+     *                     currency: String
+     *                     currencyInstance: JsonNumberFormat
+     *                     groupingUsed: Boolean
+     *                     instance: JsonNumberFormat
+     *                     integerInstance: JsonNumberFormat
+     *                     maximumFractionDigits: Integer
+     *                     maximumIntegerDigits: Integer
+     *                     minimumFractionDigits: Integer
+     *                     minimumIntegerDigits: Integer
+     *                     numberInstance: JsonNumberFormat
+     *                     parseIntegerOnly: Boolean
+     *                     percentInstance: JsonNumberFormat
+     *                     roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
      *                 }
-     *             ]
-     *         }
-     *     ]
-     *     enumDefs: [
-     *         {
-     *             defaultValue: String
-     *             elementDefs: [
-     *                 {
-     *                     description: String
-     *                     ordinal: Float
-     *                     value: String
+     *                 timeInstance: JsonDateFormat
+     *                 timeZone: {
+     *                     dstSavings: Integer
+     *                     id: String
+     *                     availableIds: [
+     *                         String
+     *                     ]
+     *                     defaultProperty: JsonTimeZone
+     *                     displayName: String
+     *                     rawOffset: Integer
      *                 }
-     *             ]
-     *         }
-     *     ]
-     *     relationshipDefs: [
-     *         {
-     *             endDef1: {
-     *                 cardinality: String(SINGLE/LIST/SET)
-     *                 description: String
-     *                 isContainer: Boolean
-     *                 isLegacyAttribute: Boolean
-     *                 name: String
-     *                 type: String
      *             }
-     *             endDef2: JsonAtlasRelationshipEndDef
-     *             propagateTags: String(NONE/ONE_TO_TWO/TWO_TO_ONE/BOTH)
-     *             relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION)
-     *             relationshipLabel: String
-     *         }
-     *     ]
-     *     structDefs: [
-     *         {
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
      *             attributeDefs: [
      *                 {
      *                     cardinality: String(SINGLE/LIST/SET)
@@ -705,10 +1574,176 @@ public final class TypesRestClient {
      *                     valuesMinCount: Integer
      *                 }
      *             ]
+     *             entityTypes: [
+     *                 String
+     *             ]
+     *             subTypes: [
+     *                 String
+     *             ]
+     *             superTypes: [
+     *                 String
+     *             ]
+     *         }
+     *     ]
+     *     entityDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: JsonDateFormat
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 JsonAtlasAttributeDef
+     *             ]
+     *             subTypes: [
+     *                 String
+     *             ]
+     *             superTypes: [
+     *                 String
+     *             ]
+     *             relationshipAttributeDefs: [
+     *                 {
+     *                     cardinality: String(SINGLE/LIST/SET)
+     *                     constraints: [
+     *                         JsonAtlasConstraintDef
+     *                     ]
+     *                     defaultValue: String
+     *                     description: String
+     *                     includeInNotification: Boolean
+     *                     isIndexable: Boolean
+     *                     isOptional: Boolean
+     *                     isUnique: Boolean
+     *                     name: String
+     *                     options: {
+     *                         String: String
+     *                     }
+     *                     typeName: String
+     *                     valuesMaxCount: Integer
+     *                     valuesMinCount: Integer
+     *                     isLegacyAttribute: Boolean
+     *                     relationshipTypeName: String
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     enumDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: JsonDateFormat
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             defaultValue: String
+     *             elementDefs: [
+     *                 {
+     *                     description: String
+     *                     ordinal: Float
+     *                     value: String
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     relationshipDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: JsonDateFormat
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 JsonAtlasAttributeDef
+     *             ]
+     *             endDef1: {
+     *                 cardinality: String(SINGLE/LIST/SET)
+     *                 description: String
+     *                 isContainer: Boolean
+     *                 isLegacyAttribute: Boolean
+     *                 name: String
+     *                 type: String
+     *             }
+     *             endDef2: JsonAtlasRelationshipEndDef
+     *             propagateTags: String(NONE/ONE_TO_TWO/TWO_TO_ONE/BOTH)
+     *             relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION)
+     *             relationshipLabel: String
+     *         }
+     *     ]
+     *     structDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: JsonDateFormat
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 JsonAtlasAttributeDef
+     *             ]
      *         }
      *     ]
      *     termTemplateDefs: [
      *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: JsonDateFormat
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 JsonAtlasAttributeDef
+     *             ]
      *         }
      *     ]
      * }
@@ -736,63 +1771,60 @@ public final class TypesRestClient {
      * {
      *     classificationDefs: [
      *         {
-     *             entityTypes: [
-     *                 String
-     *             ]
-     *             subTypes: [
-     *                 String
-     *             ]
-     *             superTypes: [
-     *                 String
-     *             ]
-     *         }
-     *     ]
-     *     entityDefs: [
-     *         {
-     *             subTypes: [
-     *                 String
-     *             ]
-     *             superTypes: [
-     *                 String
-     *             ]
-     *             relationshipAttributeDefs: [
-     *                 {
-     *                     isLegacyAttribute: Boolean
-     *                     relationshipTypeName: String
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: {
+     *                 availableLocales: [
+     *                     String
+     *                 ]
+     *                 calendar: Float
+     *                 dateInstance: JsonDateFormat
+     *                 dateTimeInstance: JsonDateFormat
+     *                 instance: JsonDateFormat
+     *                 lenient: Boolean
+     *                 numberFormat: {
+     *                     availableLocales: [
+     *                         String
+     *                     ]
+     *                     currency: String
+     *                     currencyInstance: JsonNumberFormat
+     *                     groupingUsed: Boolean
+     *                     instance: JsonNumberFormat
+     *                     integerInstance: JsonNumberFormat
+     *                     maximumFractionDigits: Integer
+     *                     maximumIntegerDigits: Integer
+     *                     minimumFractionDigits: Integer
+     *                     minimumIntegerDigits: Integer
+     *                     numberInstance: JsonNumberFormat
+     *                     parseIntegerOnly: Boolean
+     *                     percentInstance: JsonNumberFormat
+     *                     roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
      *                 }
-     *             ]
-     *         }
-     *     ]
-     *     enumDefs: [
-     *         {
-     *             defaultValue: String
-     *             elementDefs: [
-     *                 {
-     *                     description: String
-     *                     ordinal: Float
-     *                     value: String
+     *                 timeInstance: JsonDateFormat
+     *                 timeZone: {
+     *                     dstSavings: Integer
+     *                     id: String
+     *                     availableIds: [
+     *                         String
+     *                     ]
+     *                     defaultProperty: JsonTimeZone
+     *                     displayName: String
+     *                     rawOffset: Integer
      *                 }
-     *             ]
-     *         }
-     *     ]
-     *     relationshipDefs: [
-     *         {
-     *             endDef1: {
-     *                 cardinality: String(SINGLE/LIST/SET)
-     *                 description: String
-     *                 isContainer: Boolean
-     *                 isLegacyAttribute: Boolean
-     *                 name: String
-     *                 type: String
      *             }
-     *             endDef2: JsonAtlasRelationshipEndDef
-     *             propagateTags: String(NONE/ONE_TO_TWO/TWO_TO_ONE/BOTH)
-     *             relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION)
-     *             relationshipLabel: String
-     *         }
-     *     ]
-     *     structDefs: [
-     *         {
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
      *             attributeDefs: [
      *                 {
      *                     cardinality: String(SINGLE/LIST/SET)
@@ -819,10 +1851,176 @@ public final class TypesRestClient {
      *                     valuesMinCount: Integer
      *                 }
      *             ]
+     *             entityTypes: [
+     *                 String
+     *             ]
+     *             subTypes: [
+     *                 String
+     *             ]
+     *             superTypes: [
+     *                 String
+     *             ]
+     *         }
+     *     ]
+     *     entityDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: JsonDateFormat
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 JsonAtlasAttributeDef
+     *             ]
+     *             subTypes: [
+     *                 String
+     *             ]
+     *             superTypes: [
+     *                 String
+     *             ]
+     *             relationshipAttributeDefs: [
+     *                 {
+     *                     cardinality: String(SINGLE/LIST/SET)
+     *                     constraints: [
+     *                         JsonAtlasConstraintDef
+     *                     ]
+     *                     defaultValue: String
+     *                     description: String
+     *                     includeInNotification: Boolean
+     *                     isIndexable: Boolean
+     *                     isOptional: Boolean
+     *                     isUnique: Boolean
+     *                     name: String
+     *                     options: {
+     *                         String: String
+     *                     }
+     *                     typeName: String
+     *                     valuesMaxCount: Integer
+     *                     valuesMinCount: Integer
+     *                     isLegacyAttribute: Boolean
+     *                     relationshipTypeName: String
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     enumDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: JsonDateFormat
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             defaultValue: String
+     *             elementDefs: [
+     *                 {
+     *                     description: String
+     *                     ordinal: Float
+     *                     value: String
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     relationshipDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: JsonDateFormat
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 JsonAtlasAttributeDef
+     *             ]
+     *             endDef1: {
+     *                 cardinality: String(SINGLE/LIST/SET)
+     *                 description: String
+     *                 isContainer: Boolean
+     *                 isLegacyAttribute: Boolean
+     *                 name: String
+     *                 type: String
+     *             }
+     *             endDef2: JsonAtlasRelationshipEndDef
+     *             propagateTags: String(NONE/ONE_TO_TWO/TWO_TO_ONE/BOTH)
+     *             relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION)
+     *             relationshipLabel: String
+     *         }
+     *     ]
+     *     structDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: JsonDateFormat
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 JsonAtlasAttributeDef
+     *             ]
      *         }
      *     ]
      *     termTemplateDefs: [
      *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: JsonDateFormat
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 JsonAtlasAttributeDef
+     *             ]
      *         }
      *     ]
      * }
@@ -855,63 +2053,60 @@ public final class TypesRestClient {
      * {
      *     classificationDefs: [
      *         {
-     *             entityTypes: [
-     *                 String
-     *             ]
-     *             subTypes: [
-     *                 String
-     *             ]
-     *             superTypes: [
-     *                 String
-     *             ]
-     *         }
-     *     ]
-     *     entityDefs: [
-     *         {
-     *             subTypes: [
-     *                 String
-     *             ]
-     *             superTypes: [
-     *                 String
-     *             ]
-     *             relationshipAttributeDefs: [
-     *                 {
-     *                     isLegacyAttribute: Boolean
-     *                     relationshipTypeName: String
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: {
+     *                 availableLocales: [
+     *                     String
+     *                 ]
+     *                 calendar: Float
+     *                 dateInstance: JsonDateFormat
+     *                 dateTimeInstance: JsonDateFormat
+     *                 instance: JsonDateFormat
+     *                 lenient: Boolean
+     *                 numberFormat: {
+     *                     availableLocales: [
+     *                         String
+     *                     ]
+     *                     currency: String
+     *                     currencyInstance: JsonNumberFormat
+     *                     groupingUsed: Boolean
+     *                     instance: JsonNumberFormat
+     *                     integerInstance: JsonNumberFormat
+     *                     maximumFractionDigits: Integer
+     *                     maximumIntegerDigits: Integer
+     *                     minimumFractionDigits: Integer
+     *                     minimumIntegerDigits: Integer
+     *                     numberInstance: JsonNumberFormat
+     *                     parseIntegerOnly: Boolean
+     *                     percentInstance: JsonNumberFormat
+     *                     roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
      *                 }
-     *             ]
-     *         }
-     *     ]
-     *     enumDefs: [
-     *         {
-     *             defaultValue: String
-     *             elementDefs: [
-     *                 {
-     *                     description: String
-     *                     ordinal: Float
-     *                     value: String
+     *                 timeInstance: JsonDateFormat
+     *                 timeZone: {
+     *                     dstSavings: Integer
+     *                     id: String
+     *                     availableIds: [
+     *                         String
+     *                     ]
+     *                     defaultProperty: JsonTimeZone
+     *                     displayName: String
+     *                     rawOffset: Integer
      *                 }
-     *             ]
-     *         }
-     *     ]
-     *     relationshipDefs: [
-     *         {
-     *             endDef1: {
-     *                 cardinality: String(SINGLE/LIST/SET)
-     *                 description: String
-     *                 isContainer: Boolean
-     *                 isLegacyAttribute: Boolean
-     *                 name: String
-     *                 type: String
      *             }
-     *             endDef2: JsonAtlasRelationshipEndDef
-     *             propagateTags: String(NONE/ONE_TO_TWO/TWO_TO_ONE/BOTH)
-     *             relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION)
-     *             relationshipLabel: String
-     *         }
-     *     ]
-     *     structDefs: [
-     *         {
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
      *             attributeDefs: [
      *                 {
      *                     cardinality: String(SINGLE/LIST/SET)
@@ -938,10 +2133,176 @@ public final class TypesRestClient {
      *                     valuesMinCount: Integer
      *                 }
      *             ]
+     *             entityTypes: [
+     *                 String
+     *             ]
+     *             subTypes: [
+     *                 String
+     *             ]
+     *             superTypes: [
+     *                 String
+     *             ]
+     *         }
+     *     ]
+     *     entityDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: JsonDateFormat
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 JsonAtlasAttributeDef
+     *             ]
+     *             subTypes: [
+     *                 String
+     *             ]
+     *             superTypes: [
+     *                 String
+     *             ]
+     *             relationshipAttributeDefs: [
+     *                 {
+     *                     cardinality: String(SINGLE/LIST/SET)
+     *                     constraints: [
+     *                         JsonAtlasConstraintDef
+     *                     ]
+     *                     defaultValue: String
+     *                     description: String
+     *                     includeInNotification: Boolean
+     *                     isIndexable: Boolean
+     *                     isOptional: Boolean
+     *                     isUnique: Boolean
+     *                     name: String
+     *                     options: {
+     *                         String: String
+     *                     }
+     *                     typeName: String
+     *                     valuesMaxCount: Integer
+     *                     valuesMinCount: Integer
+     *                     isLegacyAttribute: Boolean
+     *                     relationshipTypeName: String
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     enumDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: JsonDateFormat
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             defaultValue: String
+     *             elementDefs: [
+     *                 {
+     *                     description: String
+     *                     ordinal: Float
+     *                     value: String
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     relationshipDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: JsonDateFormat
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 JsonAtlasAttributeDef
+     *             ]
+     *             endDef1: {
+     *                 cardinality: String(SINGLE/LIST/SET)
+     *                 description: String
+     *                 isContainer: Boolean
+     *                 isLegacyAttribute: Boolean
+     *                 name: String
+     *                 type: String
+     *             }
+     *             endDef2: JsonAtlasRelationshipEndDef
+     *             propagateTags: String(NONE/ONE_TO_TWO/TWO_TO_ONE/BOTH)
+     *             relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION)
+     *             relationshipLabel: String
+     *         }
+     *     ]
+     *     structDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: JsonDateFormat
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 JsonAtlasAttributeDef
+     *             ]
      *         }
      *     ]
      *     termTemplateDefs: [
      *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: JsonDateFormat
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 JsonAtlasAttributeDef
+     *             ]
      *         }
      *     ]
      * }
@@ -974,63 +2335,60 @@ public final class TypesRestClient {
      * {
      *     classificationDefs: [
      *         {
-     *             entityTypes: [
-     *                 String
-     *             ]
-     *             subTypes: [
-     *                 String
-     *             ]
-     *             superTypes: [
-     *                 String
-     *             ]
-     *         }
-     *     ]
-     *     entityDefs: [
-     *         {
-     *             subTypes: [
-     *                 String
-     *             ]
-     *             superTypes: [
-     *                 String
-     *             ]
-     *             relationshipAttributeDefs: [
-     *                 {
-     *                     isLegacyAttribute: Boolean
-     *                     relationshipTypeName: String
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: {
+     *                 availableLocales: [
+     *                     String
+     *                 ]
+     *                 calendar: Float
+     *                 dateInstance: JsonDateFormat
+     *                 dateTimeInstance: JsonDateFormat
+     *                 instance: JsonDateFormat
+     *                 lenient: Boolean
+     *                 numberFormat: {
+     *                     availableLocales: [
+     *                         String
+     *                     ]
+     *                     currency: String
+     *                     currencyInstance: JsonNumberFormat
+     *                     groupingUsed: Boolean
+     *                     instance: JsonNumberFormat
+     *                     integerInstance: JsonNumberFormat
+     *                     maximumFractionDigits: Integer
+     *                     maximumIntegerDigits: Integer
+     *                     minimumFractionDigits: Integer
+     *                     minimumIntegerDigits: Integer
+     *                     numberInstance: JsonNumberFormat
+     *                     parseIntegerOnly: Boolean
+     *                     percentInstance: JsonNumberFormat
+     *                     roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
      *                 }
-     *             ]
-     *         }
-     *     ]
-     *     enumDefs: [
-     *         {
-     *             defaultValue: String
-     *             elementDefs: [
-     *                 {
-     *                     description: String
-     *                     ordinal: Float
-     *                     value: String
+     *                 timeInstance: JsonDateFormat
+     *                 timeZone: {
+     *                     dstSavings: Integer
+     *                     id: String
+     *                     availableIds: [
+     *                         String
+     *                     ]
+     *                     defaultProperty: JsonTimeZone
+     *                     displayName: String
+     *                     rawOffset: Integer
      *                 }
-     *             ]
-     *         }
-     *     ]
-     *     relationshipDefs: [
-     *         {
-     *             endDef1: {
-     *                 cardinality: String(SINGLE/LIST/SET)
-     *                 description: String
-     *                 isContainer: Boolean
-     *                 isLegacyAttribute: Boolean
-     *                 name: String
-     *                 type: String
      *             }
-     *             endDef2: JsonAtlasRelationshipEndDef
-     *             propagateTags: String(NONE/ONE_TO_TWO/TWO_TO_ONE/BOTH)
-     *             relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION)
-     *             relationshipLabel: String
-     *         }
-     *     ]
-     *     structDefs: [
-     *         {
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
      *             attributeDefs: [
      *                 {
      *                     cardinality: String(SINGLE/LIST/SET)
@@ -1057,10 +2415,176 @@ public final class TypesRestClient {
      *                     valuesMinCount: Integer
      *                 }
      *             ]
+     *             entityTypes: [
+     *                 String
+     *             ]
+     *             subTypes: [
+     *                 String
+     *             ]
+     *             superTypes: [
+     *                 String
+     *             ]
+     *         }
+     *     ]
+     *     entityDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: JsonDateFormat
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 JsonAtlasAttributeDef
+     *             ]
+     *             subTypes: [
+     *                 String
+     *             ]
+     *             superTypes: [
+     *                 String
+     *             ]
+     *             relationshipAttributeDefs: [
+     *                 {
+     *                     cardinality: String(SINGLE/LIST/SET)
+     *                     constraints: [
+     *                         JsonAtlasConstraintDef
+     *                     ]
+     *                     defaultValue: String
+     *                     description: String
+     *                     includeInNotification: Boolean
+     *                     isIndexable: Boolean
+     *                     isOptional: Boolean
+     *                     isUnique: Boolean
+     *                     name: String
+     *                     options: {
+     *                         String: String
+     *                     }
+     *                     typeName: String
+     *                     valuesMaxCount: Integer
+     *                     valuesMinCount: Integer
+     *                     isLegacyAttribute: Boolean
+     *                     relationshipTypeName: String
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     enumDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: JsonDateFormat
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             defaultValue: String
+     *             elementDefs: [
+     *                 {
+     *                     description: String
+     *                     ordinal: Float
+     *                     value: String
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     relationshipDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: JsonDateFormat
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 JsonAtlasAttributeDef
+     *             ]
+     *             endDef1: {
+     *                 cardinality: String(SINGLE/LIST/SET)
+     *                 description: String
+     *                 isContainer: Boolean
+     *                 isLegacyAttribute: Boolean
+     *                 name: String
+     *                 type: String
+     *             }
+     *             endDef2: JsonAtlasRelationshipEndDef
+     *             propagateTags: String(NONE/ONE_TO_TWO/TWO_TO_ONE/BOTH)
+     *             relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION)
+     *             relationshipLabel: String
+     *         }
+     *     ]
+     *     structDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: JsonDateFormat
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 JsonAtlasAttributeDef
+     *             ]
      *         }
      *     ]
      *     termTemplateDefs: [
      *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: JsonDateFormat
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 JsonAtlasAttributeDef
+     *             ]
      *         }
      *     ]
      * }
@@ -1122,6 +2646,86 @@ public final class TypesRestClient {
      *
      * <pre>{@code
      * {
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *     createTime: Float
+     *     createdBy: String
+     *     dateFormatter: {
+     *         availableLocales: [
+     *             String
+     *         ]
+     *         calendar: Float
+     *         dateInstance: JsonDateFormat
+     *         dateTimeInstance: JsonDateFormat
+     *         instance: JsonDateFormat
+     *         lenient: Boolean
+     *         numberFormat: {
+     *             availableLocales: [
+     *                 String
+     *             ]
+     *             currency: String
+     *             currencyInstance: JsonNumberFormat
+     *             groupingUsed: Boolean
+     *             instance: JsonNumberFormat
+     *             integerInstance: JsonNumberFormat
+     *             maximumFractionDigits: Integer
+     *             maximumIntegerDigits: Integer
+     *             minimumFractionDigits: Integer
+     *             minimumIntegerDigits: Integer
+     *             numberInstance: JsonNumberFormat
+     *             parseIntegerOnly: Boolean
+     *             percentInstance: JsonNumberFormat
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *         }
+     *         timeInstance: JsonDateFormat
+     *         timeZone: {
+     *             dstSavings: Integer
+     *             id: String
+     *             availableIds: [
+     *                 String
+     *             ]
+     *             defaultProperty: JsonTimeZone
+     *             displayName: String
+     *             rawOffset: Integer
+     *         }
+     *     }
+     *     description: String
+     *     guid: String
+     *     name: String
+     *     options: {
+     *         String: String
+     *     }
+     *     serviceType: String
+     *     typeVersion: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     *     lastModifiedTS: String
+     *     attributeDefs: [
+     *         {
+     *             cardinality: String(SINGLE/LIST/SET)
+     *             constraints: [
+     *                 {
+     *                     params: {
+     *                         String: Object
+     *                     }
+     *                     type: String
+     *                 }
+     *             ]
+     *             defaultValue: String
+     *             description: String
+     *             includeInNotification: Boolean
+     *             isIndexable: Boolean
+     *             isOptional: Boolean
+     *             isUnique: Boolean
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             typeName: String
+     *             valuesMaxCount: Integer
+     *             valuesMinCount: Integer
+     *         }
+     *     ]
      * }
      * }</pre>
      *
@@ -1147,6 +2751,86 @@ public final class TypesRestClient {
      *
      * <pre>{@code
      * {
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *     createTime: Float
+     *     createdBy: String
+     *     dateFormatter: {
+     *         availableLocales: [
+     *             String
+     *         ]
+     *         calendar: Float
+     *         dateInstance: JsonDateFormat
+     *         dateTimeInstance: JsonDateFormat
+     *         instance: JsonDateFormat
+     *         lenient: Boolean
+     *         numberFormat: {
+     *             availableLocales: [
+     *                 String
+     *             ]
+     *             currency: String
+     *             currencyInstance: JsonNumberFormat
+     *             groupingUsed: Boolean
+     *             instance: JsonNumberFormat
+     *             integerInstance: JsonNumberFormat
+     *             maximumFractionDigits: Integer
+     *             maximumIntegerDigits: Integer
+     *             minimumFractionDigits: Integer
+     *             minimumIntegerDigits: Integer
+     *             numberInstance: JsonNumberFormat
+     *             parseIntegerOnly: Boolean
+     *             percentInstance: JsonNumberFormat
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *         }
+     *         timeInstance: JsonDateFormat
+     *         timeZone: {
+     *             dstSavings: Integer
+     *             id: String
+     *             availableIds: [
+     *                 String
+     *             ]
+     *             defaultProperty: JsonTimeZone
+     *             displayName: String
+     *             rawOffset: Integer
+     *         }
+     *     }
+     *     description: String
+     *     guid: String
+     *     name: String
+     *     options: {
+     *         String: String
+     *     }
+     *     serviceType: String
+     *     typeVersion: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     *     lastModifiedTS: String
+     *     attributeDefs: [
+     *         {
+     *             cardinality: String(SINGLE/LIST/SET)
+     *             constraints: [
+     *                 {
+     *                     params: {
+     *                         String: Object
+     *                     }
+     *                     type: String
+     *                 }
+     *             ]
+     *             defaultValue: String
+     *             description: String
+     *             includeInNotification: Boolean
+     *             isIndexable: Boolean
+     *             isOptional: Boolean
+     *             isUnique: Boolean
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             typeName: String
+     *             valuesMaxCount: Integer
+     *             valuesMinCount: Integer
+     *         }
+     *     ]
      * }
      * }</pre>
      *

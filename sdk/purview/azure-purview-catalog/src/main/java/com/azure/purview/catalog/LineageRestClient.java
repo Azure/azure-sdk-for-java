@@ -59,11 +59,21 @@ public final class LineageRestClient {
      *     baseEntityGuid: String
      *     guidEntityMap: {
      *         String: {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
      *             classificationNames: [
      *                 String
      *             ]
      *             classifications: [
      *                 {
+     *                     attributes: {
+     *                         String: Object
+     *                     }
+     *                     typeName: String
+     *                     lastModifiedTS: String
      *                     entityGuid: String
      *                     entityStatus: String(ACTIVE/DELETED)
      *                     propagate: Boolean
@@ -166,11 +176,21 @@ public final class LineageRestClient {
      *     baseEntityGuid: String
      *     guidEntityMap: {
      *         String: {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
      *             classificationNames: [
      *                 String
      *             ]
      *             classifications: [
      *                 {
+     *                     attributes: {
+     *                         String: Object
+     *                     }
+     *                     typeName: String
+     *                     lastModifiedTS: String
      *                     entityGuid: String
      *                     entityStatus: String(ACTIVE/DELETED)
      *                     propagate: Boolean
