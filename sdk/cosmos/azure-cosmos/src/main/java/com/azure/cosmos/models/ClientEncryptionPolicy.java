@@ -76,11 +76,11 @@ public final class ClientEncryptionPolicy {
         return this.includedPaths;
     }
 
-    int getPolicyFormatVersion() {
+    private int getPolicyFormatVersion() {
         return policyFormatVersion;
     }
 
-    void setPolicyFormatVersion(int policyFormatVersion) {
+    private void setPolicyFormatVersion(int policyFormatVersion) {
         this.policyFormatVersion = policyFormatVersion;
     }
 

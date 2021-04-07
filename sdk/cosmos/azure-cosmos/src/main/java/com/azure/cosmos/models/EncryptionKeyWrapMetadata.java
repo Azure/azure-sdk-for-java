@@ -60,15 +60,15 @@ public final class EncryptionKeyWrapMetadata {
 
     @JsonProperty("type")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    String type;
+    private String type;
 
     @JsonProperty("algorithm")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    String algorithm;
+    private String algorithm;
 
     @JsonProperty("value")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    String value;
+    private String value;
 
     @JsonProperty("name")
     @JsonInclude(JsonInclude.Include.NON_NULL)
