@@ -68,7 +68,7 @@ public class ConfigurationSettingJsonDeserializerTest {
         }
     }
 
-    private static Stream<Arguments> deserializeSupplier() {
+    public static Stream<Arguments> deserializeSupplier() {
         final String key = "hello";
         return Stream.of(
             Arguments.of(deserializerFeatureFlagConfigurationSettingSupplier(
@@ -80,17 +80,17 @@ public class ConfigurationSettingJsonDeserializerTest {
         );
     }
 
-    private static Object[] deserializerFeatureFlagConfigurationSettingSupplier(
+    public static Object[] deserializerFeatureFlagConfigurationSettingSupplier(
         FeatureFlagConfigurationSetting featureSetting) {
         return new Object[]{FEATURE_FLAG_JSON, FeatureFlagConfigurationSetting.class, featureSetting};
     }
 
-    private static Object[] deserializerSecretReferenceConfigurationSettingSupplier(
+    public static Object[] deserializerSecretReferenceConfigurationSettingSupplier(
         SecretReferenceConfigurationSetting secretReferenceSetting) {
         return new Object[]{SECRET_REFERENCE_JSON, SecretReferenceConfigurationSetting.class, secretReferenceSetting};
     }
 
-    private static Object[] deserializerConfigurationSettingSupplier(ConfigurationSetting setting) {
+    public static Object[] deserializerConfigurationSettingSupplier(ConfigurationSetting setting) {
         return new Object[]{CONFIGURATION_SETTING_JSON, ConfigurationSetting.class, setting};
     }
 
