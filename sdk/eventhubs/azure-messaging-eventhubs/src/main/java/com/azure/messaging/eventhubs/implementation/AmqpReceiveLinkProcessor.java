@@ -17,6 +17,7 @@ import reactor.core.CoreSubscriber;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.Exceptions;
+import reactor.core.publisher.BufferOverflowStrategy;
 import reactor.core.publisher.FluxProcessor;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
@@ -48,6 +49,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     private final int prefetch;
     private final String entityPath;
     private final Disposable parentConnection;
+    private final int maxQueueSize;
 
     private volatile Throwable lastError;
     private volatile boolean isCancelled;
@@ -87,6 +89,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         }
 
         this.prefetch = prefetch;
+        this.maxQueueSize = prefetch * 2;
     }
 
     /**
@@ -229,10 +232,12 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                             requestUpstream();
                         }
                     }),
-                next.receive().subscribe(message -> {
-                    messageQueue.add(message);
-                    drain();
-                }));
+                next.receive()
+                    .onBackpressureBuffer(maxQueueSize, BufferOverflowStrategy.ERROR)
+                    .subscribe(message -> {
+                        messageQueue.add(message);
+                        drain();
+                    }));
         }
 
         disposeReceiver(oldChannel);

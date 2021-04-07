@@ -70,7 +70,6 @@ public class EventHubConsumerAsyncClient implements Closeable {
     private final MessageSerializer messageSerializer;
     private final String consumerGroup;
     private final int prefetchCount;
-    private final Scheduler scheduler;
     private final boolean isSharedConnection;
     private final Runnable onClientClosed;
     /**
@@ -82,14 +81,13 @@ public class EventHubConsumerAsyncClient implements Closeable {
 
     EventHubConsumerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
         EventHubConnectionProcessor connectionProcessor, MessageSerializer messageSerializer, String consumerGroup,
-        int prefetchCount, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClosed) {
+        int prefetchCount, boolean isSharedConnection, Runnable onClientClosed) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
         this.connectionProcessor = connectionProcessor;
         this.messageSerializer = messageSerializer;
         this.consumerGroup = consumerGroup;
         this.prefetchCount = prefetchCount;
-        this.scheduler = scheduler;
         this.isSharedConnection = isSharedConnection;
         this.onClientClosed = onClientClosed;
     }

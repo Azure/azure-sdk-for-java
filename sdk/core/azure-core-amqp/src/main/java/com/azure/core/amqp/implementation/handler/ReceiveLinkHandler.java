@@ -23,7 +23,7 @@ public class ReceiveLinkHandler extends LinkHandler {
     private final String linkName;
     private final AtomicBoolean isFirstResponse = new AtomicBoolean(true);
     private final AtomicBoolean isTerminated = new AtomicBoolean();
-    private final Sinks.Many<Delivery> deliveries = Sinks.many().multicast().onBackpressureBuffer();
+    private final Sinks.Many<Delivery> deliveries = Sinks.many().multicast().directBestEffort();
     private final Set<Delivery> queuedDeliveries = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private final String entityPath;
 
@@ -137,7 +137,7 @@ public class ReceiveLinkHandler extends LinkHandler {
                                 + "Could not emit delivery. {}",
                             getConnectionId(), entityPath, linkName, emitResult, delivery);
 
-                        return emitResult == Sinks.EmitResult.FAIL_OVERFLOW;
+                        return false;
                     });
                 }
             }
