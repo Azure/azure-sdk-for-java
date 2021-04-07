@@ -78,6 +78,9 @@ public class AADOBOOAuth2AuthorizedClientProvider implements OAuth2AuthorizedCli
     }
 
     private boolean hasTokenExpired(AbstractOAuth2Token token) {
+        if (token == null || token.getExpiresAt() == null) {
+            return true;
+        }
         return this.clock.instant().isAfter(token.getExpiresAt().minus(this.clockSkew));
     }
 
