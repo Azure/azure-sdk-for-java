@@ -37,6 +37,7 @@ public class CodeWriter {
      * @throws IOException
      */
     public void close() throws IOException {
+        this.indentedFileWriter.close();
         this.fileWriter.flush();
         this.fileWriter.close();
     }
@@ -95,30 +96,47 @@ public class CodeWriter {
      * @param text Code text to write.
      */
     public void writeLine(String text) throws IOException {
-        writeLine(text, false, false);
+        writeLine(text, false, false, false);
+    }
+
+    /**
+     * Writes a line of code.
+     *
+     * @param text              Code text to write.
+     * @param suppressLineBreak True if the line should not end with a line break.
+     */
+    public void writeLine(String text, boolean suppressLineBreak) throws IOException {
+        writeLine(text, suppressLineBreak, false, false);
     }
 
     /**
      * Writes a line of code
      *
-     * @param text          Code text to write.
-     * @param suppressBlank True if there should be no blank line preceding the text.
+     * @param text              Code text to write.
+     * @param suppressLineBreak True if the line should not end with a line break.
+     * @param suppressBlank     True if there should be no blank line preceding the text.
      */
-    public void writeLine(String text, boolean suppressBlank) throws IOException {
-        writeLine(text, suppressBlank, false);
+    public void writeLine(String text, boolean suppressLineBreak, boolean suppressBlank) throws IOException {
+        writeLine(text, suppressLineBreak, suppressBlank, false);
     }
 
     /**
      * Writes a line of code
      *
-     * @param text          Code text to write.
-     * @param suppressBlank True if there should be no blank line preceding the text.
-     * @param outdent       True if the line should be out-dented one level.
+     * @param text              Code text to write.
+     * @param suppressLineBreak True if the text should not be followed by a new line.
+     * @param suppressBlank     True if there should be no blank line preceding the text.
+     * @param outdent           True if the line should be out-dented one level.
      */
-    public void writeLine(String text, boolean suppressBlank, boolean outdent) throws IOException {
+    public void writeLine(String text, boolean suppressLineBreak, boolean suppressBlank, boolean outdent) throws IOException {
         if (nextTextNeedsBlank) {
             if (!suppressBlank) {
-                indentedFileWriter.writeLineWithIndent("");
+                if (suppressLineBreak) {
+                    indentedFileWriter.writeWithIndent("");
+                } else {
+                    indentedFileWriter.writeLineWithIndent("");
+                }
+
             }
 
             nextTextNeedsBlank = false;
@@ -128,7 +146,11 @@ public class CodeWriter {
             decreaseIndent();
         }
 
-        this.indentedFileWriter.writeLineWithIndent(text);
+        if (suppressLineBreak) {
+            indentedFileWriter.writeWithIndent(text + " ");
+        } else {
+            indentedFileWriter.writeLineWithIndent(text);
+        }
 
         if (outdent) {
             increaseIndent();

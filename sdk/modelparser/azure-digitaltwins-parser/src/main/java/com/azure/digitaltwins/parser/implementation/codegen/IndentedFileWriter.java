@@ -18,7 +18,7 @@ class IndentedFileWriter {
     }
 
     void writeLineWithIndent(String input) throws IOException {
-        fileWriter.append(calculateIndentation()).append(input).append("\n");
+        fileWriter.append(calculateIndentation()).append(input).append("\r\n");
     }
 
     void writeWithIndent(String input) throws IOException {
@@ -45,5 +45,9 @@ class IndentedFileWriter {
             output.append(indentation);
         }
         return output.toString();
+    }
+
+    public void close() throws IOException {
+        fileWriter.append("\r\n");
     }
 }
