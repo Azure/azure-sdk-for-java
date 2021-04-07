@@ -13,33 +13,33 @@ import okhttp3.ResponseBody;
 import retrofit2.Response;
 
 /**
- * Exception thrown for an invalid response with ComputerVisionError
+ * Exception thrown for an invalid response with ComputerVisionErrorResponse
  * information.
  */
-public class ComputerVisionErrorException extends RestException {
+public class ComputerVisionErrorResponseException extends RestException {
     /**
-     * Initializes a new instance of the ComputerVisionErrorException class.
+     * Initializes a new instance of the ComputerVisionErrorResponseException class.
      *
      * @param message the exception message or the response content if a message is not available
      * @param response the HTTP response
      */
-    public ComputerVisionErrorException(final String message, final Response<ResponseBody> response) {
+    public ComputerVisionErrorResponseException(final String message, final Response<ResponseBody> response) {
         super(message, response);
     }
 
     /**
-     * Initializes a new instance of the ComputerVisionErrorException class.
+     * Initializes a new instance of the ComputerVisionErrorResponseException class.
      *
      * @param message the exception message or the response content if a message is not available
      * @param response the HTTP response
      * @param body the deserialized response body
      */
-    public ComputerVisionErrorException(final String message, final Response<ResponseBody> response, final ComputerVisionError body) {
+    public ComputerVisionErrorResponseException(final String message, final Response<ResponseBody> response, final ComputerVisionErrorResponse body) {
         super(message, response, body);
     }
 
     @Override
-    public ComputerVisionError body() {
-        return (ComputerVisionError) super.body();
+    public ComputerVisionErrorResponse body() {
+        return (ComputerVisionErrorResponse) super.body();
     }
 }

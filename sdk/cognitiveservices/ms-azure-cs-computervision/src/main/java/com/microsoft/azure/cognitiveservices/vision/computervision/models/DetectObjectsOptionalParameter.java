@@ -10,18 +10,9 @@ package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
 
 /**
- * The AnalyzeImageByDomainInStreamOptionalParameter model.
+ * The DetectObjectsOptionalParameter model.
  */
-public class AnalyzeImageByDomainInStreamOptionalParameter {
-    /**
-     * The desired language for output generation. If this parameter is not
-     * specified, the default value is &amp;quot;en&amp;quot;.Supported
-     * languages:en - English, Default. es - Spanish, ja - Japanese, pt -
-     * Portuguese, zh - Simplified Chinese. Possible values include: 'en',
-     * 'es', 'ja', 'pt', 'zh'.
-     */
-    private String language;
-
+public class DetectObjectsOptionalParameter {
     /**
      * Optional parameter to specify the version of the AI model. Accepted
      * values are: "latest", "2021-04-01". Defaults to "latest".
@@ -32,26 +23,6 @@ public class AnalyzeImageByDomainInStreamOptionalParameter {
      * Gets or sets the preferred language for the response.
      */
     private String thisclientacceptLanguage;
-
-    /**
-     * Get the language value.
-     *
-     * @return the language value
-     */
-    public String language() {
-        return this.language;
-    }
-
-    /**
-     * Set the language value.
-     *
-     * @param language the language value to set
-     * @return the AnalyzeImageByDomainInStreamOptionalParameter object itself.
-     */
-    public AnalyzeImageByDomainInStreamOptionalParameter withLanguage(String language) {
-        this.language = language;
-        return this;
-    }
 
     /**
      * Get the modelVersion value.
@@ -66,9 +37,9 @@ public class AnalyzeImageByDomainInStreamOptionalParameter {
      * Set the modelVersion value.
      *
      * @param modelVersion the modelVersion value to set
-     * @return the AnalyzeImageByDomainInStreamOptionalParameter object itself.
+     * @return the DetectObjectsOptionalParameter object itself.
      */
-    public AnalyzeImageByDomainInStreamOptionalParameter withModelVersion(String modelVersion) {
+    public DetectObjectsOptionalParameter withModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
         return this;
     }
@@ -86,9 +57,9 @@ public class AnalyzeImageByDomainInStreamOptionalParameter {
      * Set the thisclientacceptLanguage value.
      *
      * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
-     * @return the AnalyzeImageByDomainInStreamOptionalParameter object itself.
+     * @return the DetectObjectsOptionalParameter object itself.
      */
-    public AnalyzeImageByDomainInStreamOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+    public DetectObjectsOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
         this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }
