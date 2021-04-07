@@ -3,15 +3,13 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
+import com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfigurationLogicType;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfigurationPatch;
 import com.azure.ai.metricsadvisor.implementation.models.DimensionGroupConfiguration;
-import com.azure.ai.metricsadvisor.implementation.models.DimensionGroupConfigurationConditionOperator;
 import com.azure.ai.metricsadvisor.implementation.models.DimensionGroupIdentity;
 import com.azure.ai.metricsadvisor.implementation.models.SeriesConfiguration;
-import com.azure.ai.metricsadvisor.implementation.models.SeriesConfigurationConditionOperator;
 import com.azure.ai.metricsadvisor.implementation.models.SeriesIdentity;
 import com.azure.ai.metricsadvisor.implementation.models.WholeMetricConfiguration;
-import com.azure.ai.metricsadvisor.implementation.models.WholeMetricConfigurationConditionOperator;
 import com.azure.ai.metricsadvisor.models.DetectionConditionsOperator;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.models.MetricWholeSeriesDetectionCondition;
@@ -233,7 +231,7 @@ public final class DetectionConfigurationTransforms {
         DetectionConditionsOperator crossConditionOperator = wholeSeriesCondition.getCrossConditionsOperator();
         if (crossConditionOperator != null) {
             innerWholeSeriesCondition.setConditionOperator(
-                WholeMetricConfigurationConditionOperator.fromString(crossConditionOperator.toString()));
+                AnomalyDetectionConfigurationLogicType.fromString(crossConditionOperator.toString()));
         } else if (isCreate && hasMultipleNestedConditions(wholeSeriesCondition)) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("detectionConfiguration.wholeSeriesCondition.crossConditionsOperator"
@@ -265,7 +263,7 @@ public final class DetectionConfigurationTransforms {
         DetectionConditionsOperator groupConditionOperator = seriesGroupCondition.getCrossConditionsOperator();
         if (groupConditionOperator != null) {
             innerConfiguration.setConditionOperator(
-                DimensionGroupConfigurationConditionOperator.fromString(groupConditionOperator.toString()));
+                AnomalyDetectionConfigurationLogicType.fromString(groupConditionOperator.toString()));
         } else if (isCreate && hasMultipleNestedConditions(seriesGroupCondition)) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException(
@@ -296,7 +294,7 @@ public final class DetectionConfigurationTransforms {
         DetectionConditionsOperator seriesConditionOperator = seriesCondition.getCrossConditionsOperator();
         if (seriesConditionOperator != null) {
             innerConfiguration.setConditionOperator(
-                SeriesConfigurationConditionOperator.fromString(seriesConditionOperator.toString()));
+                AnomalyDetectionConfigurationLogicType.fromString(seriesConditionOperator.toString()));
         } else if (isCreate && hasMultipleNestedConditions(seriesCondition)) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException(

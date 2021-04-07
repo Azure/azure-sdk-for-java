@@ -77,9 +77,10 @@
       <modules>
         <module>azure-analytics-synapse-accesscontrol</module>
         <module>azure-analytics-synapse-artifacts</module>
-        <module>azure-analytics-synapse-spark</module>
         <module>azure-analytics-synapse-managedprivateendpoints/</module>
         <module>azure-analytics-synapse-monitoring</module>
+        <module>azure-analytics-synapse-spark</module>
+        <module>azure-resourcemanager-synapse</module>
       </modules>
     </profile>
   </profiles>

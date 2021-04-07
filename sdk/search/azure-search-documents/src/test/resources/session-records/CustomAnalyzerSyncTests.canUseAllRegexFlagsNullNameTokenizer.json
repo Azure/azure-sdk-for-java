@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2020-06-30",
+    "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2020-06-30-Preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a573fbef-6ccd-4fab-b504-ed33927825a3",
+      "x-ms-client-request-id" : "c9ce839d-197a-4919-b7fd-7fdcc20a17e5",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "a573fbef-6ccd-4fab-b504-ed33927825a3",
+      "request-id" : "c9ce839d-197a-4919-b7fd-7fdcc20a17e5",
       "StatusCode" : "400",
-      "Date" : "Wed, 31 Mar 2021 21:17:48 GMT",
+      "Date" : "Fri, 02 Apr 2021 22:35:27 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "a573fbef-6ccd-4fab-b504-ed33927825a3",
-      "elapsed-time" : "17",
+      "client-request-id" : "c9ce839d-197a-4919-b7fd-7fdcc20a17e5",
+      "elapsed-time" : "6",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "125",
       "Body" : "{\"error\":{\"code\":\"\",\"message\":\"The request is invalid. Details: index.tokenizers[0].name : The name field is required.\\r\\n\"}}",
       "Content-Language" : "en",
-      "x-ms-client-request-id" : "a573fbef-6ccd-4fab-b504-ed33927825a3",
+      "x-ms-client-request-id" : "c9ce839d-197a-4919-b7fd-7fdcc20a17e5",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "hotelscanuseallregexflagsnullnametokenizer8673553894f67b7" ]
+  "variables" : [ "hotelscanuseallregexflagsnullnametokenizer7ea23755a150fb6" ]
 }

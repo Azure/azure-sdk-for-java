@@ -77,6 +77,11 @@ public final class KeyVaultBackupAsyncClient {
      */
     private final String serviceVersion;
 
+    /**
+     * The {@link HttpPipeline} powering this client.
+     */
+    private final HttpPipeline pipeline;
+
     static Duration getDefaultPollingInterval() {
         return DEFAULT_POLLING_INTERVAL;
     }
@@ -90,6 +95,7 @@ public final class KeyVaultBackupAsyncClient {
 
         this.vaultUrl = vaultUrl.toString();
         this.serviceVersion = serviceVersion.getVersion();
+        this.pipeline = httpPipeline;
 
         clientImpl = new KeyVaultBackupClientImplBuilder()
             .pipeline(httpPipeline)
@@ -103,6 +109,15 @@ public final class KeyVaultBackupAsyncClient {
      */
     public String getVaultUrl() {
         return this.vaultUrl;
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    HttpPipeline getHttpPipeline() {
+        return this.pipeline;
     }
 
     /**
