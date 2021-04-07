@@ -27,9 +27,6 @@ parameters:
   default: []
 - name: Pool
   type: string
-  default: azsdk-pool-mms-ubuntu-1804-general
-- name: Pool
-  type: string
   default: Azure Pipelines
 - name: OsVmImage
   type: string
