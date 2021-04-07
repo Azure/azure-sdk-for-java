@@ -28,22 +28,16 @@ public final class QueryFilter {
     private List<QueryFilter> or;
 
     /*
-     * The logical "NOT" expression.
-     */
-    @JsonProperty(value = "not")
-    private QueryFilter not;
-
-    /*
      * Has comparison expression for a dimension
      */
-    @JsonProperty(value = "dimension")
-    private QueryComparisonExpression dimension;
+    @JsonProperty(value = "dimensions")
+    private QueryComparisonExpression dimensions;
 
     /*
      * Has comparison expression for a tag
      */
-    @JsonProperty(value = "tag")
-    private QueryComparisonExpression tag;
+    @JsonProperty(value = "tags")
+    private QueryComparisonExpression tags;
 
     /**
      * Get the and property: The logical "AND" expression. Must have at least 2 items.
@@ -86,62 +80,42 @@ public final class QueryFilter {
     }
 
     /**
-     * Get the not property: The logical "NOT" expression.
+     * Get the dimensions property: Has comparison expression for a dimension.
      *
-     * @return the not value.
+     * @return the dimensions value.
      */
-    public QueryFilter not() {
-        return this.not;
+    public QueryComparisonExpression dimensions() {
+        return this.dimensions;
     }
 
     /**
-     * Set the not property: The logical "NOT" expression.
+     * Set the dimensions property: Has comparison expression for a dimension.
      *
-     * @param not the not value to set.
+     * @param dimensions the dimensions value to set.
      * @return the QueryFilter object itself.
      */
-    public QueryFilter withNot(QueryFilter not) {
-        this.not = not;
+    public QueryFilter withDimensions(QueryComparisonExpression dimensions) {
+        this.dimensions = dimensions;
         return this;
     }
 
     /**
-     * Get the dimension property: Has comparison expression for a dimension.
+     * Get the tags property: Has comparison expression for a tag.
      *
-     * @return the dimension value.
+     * @return the tags value.
      */
-    public QueryComparisonExpression dimension() {
-        return this.dimension;
+    public QueryComparisonExpression tags() {
+        return this.tags;
     }
 
     /**
-     * Set the dimension property: Has comparison expression for a dimension.
+     * Set the tags property: Has comparison expression for a tag.
      *
-     * @param dimension the dimension value to set.
+     * @param tags the tags value to set.
      * @return the QueryFilter object itself.
      */
-    public QueryFilter withDimension(QueryComparisonExpression dimension) {
-        this.dimension = dimension;
-        return this;
-    }
-
-    /**
-     * Get the tag property: Has comparison expression for a tag.
-     *
-     * @return the tag value.
-     */
-    public QueryComparisonExpression tag() {
-        return this.tag;
-    }
-
-    /**
-     * Set the tag property: Has comparison expression for a tag.
-     *
-     * @param tag the tag value to set.
-     * @return the QueryFilter object itself.
-     */
-    public QueryFilter withTag(QueryComparisonExpression tag) {
-        this.tag = tag;
+    public QueryFilter withTags(QueryComparisonExpression tags) {
+        this.tags = tags;
         return this;
     }
 
@@ -157,14 +131,11 @@ public final class QueryFilter {
         if (or() != null) {
             or().forEach(e -> e.validate());
         }
-        if (not() != null) {
-            not().validate();
+        if (dimensions() != null) {
+            dimensions().validate();
         }
-        if (dimension() != null) {
-            dimension().validate();
-        }
-        if (tag() != null) {
-            tag().validate();
+        if (tags() != null) {
+            tags().validate();
         }
     }
 }

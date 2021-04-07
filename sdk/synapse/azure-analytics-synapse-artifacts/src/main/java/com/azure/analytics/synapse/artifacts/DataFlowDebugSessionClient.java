@@ -13,6 +13,8 @@ import com.azure.analytics.synapse.artifacts.models.DataFlowDebugCommandRequest;
 import com.azure.analytics.synapse.artifacts.models.DataFlowDebugCommandResponse;
 import com.azure.analytics.synapse.artifacts.models.DataFlowDebugPackage;
 import com.azure.analytics.synapse.artifacts.models.DataFlowDebugSessionInfo;
+import com.azure.analytics.synapse.artifacts.models.DataFlowDebugSessionsCreateDataFlowDebugSessionResponse;
+import com.azure.analytics.synapse.artifacts.models.DataFlowDebugSessionsExecuteCommandResponse;
 import com.azure.analytics.synapse.artifacts.models.DeleteDataFlowDebugSessionRequest;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -60,7 +62,7 @@ public final class DataFlowDebugSessionClient {
      * @return response body structure for creating data flow debug session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CreateDataFlowDebugSessionResponse> createDataFlowDebugSessionWithResponse(
+    public DataFlowDebugSessionsCreateDataFlowDebugSessionResponse createDataFlowDebugSessionWithResponse(
             CreateDataFlowDebugSessionRequest request, Context context) {
         return this.serviceClient.createDataFlowDebugSessionWithResponse(request, context);
     }
@@ -175,7 +177,7 @@ public final class DataFlowDebugSessionClient {
      * @return response body structure of data flow result for data preview, statistics or expression preview.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataFlowDebugCommandResponse> executeCommandWithResponse(
+    public DataFlowDebugSessionsExecuteCommandResponse executeCommandWithResponse(
             DataFlowDebugCommandRequest request, Context context) {
         return this.serviceClient.executeCommandWithResponse(request, context);
     }
