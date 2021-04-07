@@ -30,6 +30,7 @@ import com.azure.core.implementation.UnixTime;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.Person;
 import com.azure.core.util.UrlBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -409,6 +410,9 @@ public class SwaggerMethodParserTests {
         void applicationJsonBody(@BodyParam(ContentType.APPLICATION_JSON) String jsonBody);
 
         @Get("test")
+        void urlEncodedBodyParam(@BodyParam(APPLICATION_X_WWW_FORM_URLENCODED) Person person);
+
+        @Get("test")
         void formBody(@FormParam("name") String name, @FormParam("age") Integer age,
             @FormParam("dob") OffsetDateTime dob, @FormParam("favoriteColors") List<String> favoriteColors);
 
@@ -438,6 +442,7 @@ public class SwaggerMethodParserTests {
     private static Stream<Arguments> bodySubstitutionSupplier() throws NoSuchMethodException {
         Class<BodySubstitutionMethods> clazz = BodySubstitutionMethods.class;
         Method jsonBody = clazz.getDeclaredMethod("applicationJsonBody", String.class);
+        Method urlEncodedBodyParam = clazz.getDeclaredMethod("urlEncodedBodyParam", Person.class);
         Method formBody = clazz.getDeclaredMethod("formBody", String.class, Integer.class, OffsetDateTime.class,
             List.class);
         Method encodedFormBody = clazz.getDeclaredMethod("encodedFormBody", String.class, Integer.class,
@@ -450,9 +455,17 @@ public class SwaggerMethodParserTests {
         List<String> badFavoriteColors = Arrays.asList(null, "green");
 
         return Stream.of(
+            // BodyParam with Content-Type "application/json".
             Arguments.of(jsonBody, null, ContentType.APPLICATION_JSON, null),
             Arguments.of(jsonBody, toObjectArray("{name:John Doe,age:40,dob:01-01-1980}"), ContentType.APPLICATION_JSON,
                 "{name:John Doe,age:40,dob:01-01-1980}"),
+
+            // BodyParam with Content-Type "application/x-www-form-urlencoded".
+            Arguments.of(urlEncodedBodyParam, null, APPLICATION_X_WWW_FORM_URLENCODED, null),
+            Arguments.of(urlEncodedBodyParam, toObjectArray(new Person().setName("John Doe").setAge(40)),
+                APPLICATION_X_WWW_FORM_URLENCODED, "name=John+Doe&age=40"),
+
+            // Non-encoded FormParam request.
             Arguments.of(formBody, null, APPLICATION_X_WWW_FORM_URLENCODED, null),
             Arguments.of(formBody, toObjectArray("John Doe", null, dob, null), APPLICATION_X_WWW_FORM_URLENCODED,
                 "name=John+Doe&dob=1980-01-01T00%3A00%3A00Z"),
@@ -460,6 +473,8 @@ public class SwaggerMethodParserTests {
                 APPLICATION_X_WWW_FORM_URLENCODED, "name=John+Doe&age=40&favoriteColors=blue&favoriteColors=green"),
             Arguments.of(formBody, toObjectArray("John Doe", 40, null, badFavoriteColors),
                 APPLICATION_X_WWW_FORM_URLENCODED, "name=John+Doe&age=40&favoriteColors=green"),
+
+            // Encoded FormParam request.
             Arguments.of(encodedFormBody, null, APPLICATION_X_WWW_FORM_URLENCODED, null),
             Arguments.of(encodedFormBody, toObjectArray("John Doe", null, dob, null), APPLICATION_X_WWW_FORM_URLENCODED,
                 "name=John Doe&dob=1980-01-01T00%3A00%3A00Z"),
@@ -467,8 +482,12 @@ public class SwaggerMethodParserTests {
                 APPLICATION_X_WWW_FORM_URLENCODED, "name=John Doe&age=40&favoriteColors=blue&favoriteColors=green"),
             Arguments.of(encodedFormBody, toObjectArray("John Doe", 40, null, badFavoriteColors),
                 APPLICATION_X_WWW_FORM_URLENCODED, "name=John Doe&age=40&favoriteColors=green"),
+
+            // Non-encoded FormParam request where the key contains non-URL safe characters.
             Arguments.of(encodedFormKey, toObjectArray("value"), APPLICATION_X_WWW_FORM_URLENCODED,
                 "x%3Ams%3Avalue=value"),
+
+            // Encoded FormParam request where the key contains non-URL safe characters.
             Arguments.of(encodedFormKey2, toObjectArray("value"), APPLICATION_X_WWW_FORM_URLENCODED,
                 "x%3Ams%3Avalue=value")
         );

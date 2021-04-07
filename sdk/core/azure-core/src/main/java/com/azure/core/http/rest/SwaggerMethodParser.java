@@ -33,9 +33,16 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.UrlBuilder;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -45,15 +52,19 @@ import java.util.BitSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * The type to parse details of a specific Swagger REST API call from a provided Swagger interface method.
  */
 class SwaggerMethodParser implements HttpResponseDecodeData {
+    private static final List<Class<? extends Annotation>> ANY_OF_REQUIRED_ANNOTATIONS
+        = Arrays.asList(Get.class, Put.class, Head.class, Delete.class, Post.class, Patch.class);
+
     private static final Pattern PATTERN_COLON_SLASH_SLASH = Pattern.compile("://");
+
+    private static final Type MAP_STRING_STRING = TypeUtil.createParameterizedType(Map.class, String.class,
+        String.class);
 
     private final SerializerAdapter serializer;
     private final String rawHost;
@@ -76,6 +87,8 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     private Map<Integer, UnexpectedExceptionInformation> exceptionMapping;
     private UnexpectedExceptionInformation defaultException;
 
+    private final ClientLogger logger = new ClientLogger(SwaggerMethodParser.class);
+
     /**
      * Create a SwaggerMethodParser object using the provided fully qualified method name.
      *
@@ -92,8 +105,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
         this.rawHost = rawHost;
 
         final Class<?> swaggerInterface = swaggerMethod.getDeclaringClass();
-
-        fullyQualifiedMethodName = swaggerInterface.getName() + "." + swaggerMethod.getName();
+        this.fullyQualifiedMethodName = swaggerInterface.getName() + "." + swaggerMethod.getName();
 
         if (swaggerMethod.isAnnotationPresent(Get.class)) {
             this.httpMethod = HttpMethod.GET;
@@ -114,64 +126,18 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
             this.httpMethod = HttpMethod.PATCH;
             this.relativePath = swaggerMethod.getAnnotation(Patch.class).value();
         } else {
-            throw new MissingRequiredAnnotationException(Arrays.asList(Get.class, Put.class, Head.class,
-                Delete.class, Post.class, Patch.class), swaggerMethod);
+            throw new MissingRequiredAnnotationException(ANY_OF_REQUIRED_ANNOTATIONS, swaggerMethod);
         }
 
-        returnType = swaggerMethod.getGenericReturnType();
+        this.returnType = swaggerMethod.getGenericReturnType();
+        this.returnValueWireType = getReturnValueWireType(swaggerMethod);
 
-        final ReturnValueWireType returnValueWireTypeAnnotation =
-            swaggerMethod.getAnnotation(ReturnValueWireType.class);
-        if (returnValueWireTypeAnnotation != null) {
-            Class<?> returnValueWireType = returnValueWireTypeAnnotation.value();
-            if (returnValueWireType == Base64Url.class
-                || returnValueWireType == UnixTime.class
-                || returnValueWireType == DateTimeRfc1123.class) {
-                this.returnValueWireType = returnValueWireType;
-            } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, List.class)) {
-                this.returnValueWireType = returnValueWireType.getGenericInterfaces()[0];
-            } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, Page.class)) {
-                this.returnValueWireType = returnValueWireType;
-            } else {
-                this.returnValueWireType = null;
-            }
-        } else {
-            this.returnValueWireType = null;
-        }
+        // Check the Method for the Headers annotation and parse the header values if it exists.
+        setupHeaders(swaggerMethod);
 
-        if (swaggerMethod.isAnnotationPresent(Headers.class)) {
-            final Headers headersAnnotation = swaggerMethod.getAnnotation(Headers.class);
-            final String[] headers = headersAnnotation.value();
-            for (final String header : headers) {
-                final int colonIndex = header.indexOf(":");
-                if (colonIndex >= 0) {
-                    final String headerName = header.substring(0, colonIndex).trim();
-                    if (!headerName.isEmpty()) {
-                        final String headerValue = header.substring(colonIndex + 1).trim();
-                        if (!headerValue.isEmpty()) {
-                            if (headerValue.contains(",")) {
-                                // there are multiple values for this header, so we split them out.
-                                this.headers.set(headerName, Arrays.asList(headerValue.split(",")));
-                            } else {
-                                this.headers.set(headerName, headerValue);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        final ExpectedResponses expectedResponses = swaggerMethod.getAnnotation(ExpectedResponses.class);
-        if (expectedResponses != null && expectedResponses.value().length > 0) {
-            expectedStatusCodes = new BitSet();
-            for (int code : expectedResponses.value()) {
-                expectedStatusCodes.set(code);
-            }
-        } else {
-            expectedStatusCodes = null;
-        }
-
-        unexpectedResponseExceptionTypes = swaggerMethod.getAnnotationsByType(UnexpectedResponseExceptionType.class);
+        this.expectedStatusCodes = getExpectedStatusCodes(swaggerMethod);
+        this.unexpectedResponseExceptionTypes = swaggerMethod
+            .getAnnotationsByType(UnexpectedResponseExceptionType.class);
 
         Integer bodyContentMethodParameterIndex = null;
         String bodyContentType = null;
@@ -201,11 +167,17 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
                     final BodyParam bodyParamAnnotation = (BodyParam) annotation;
                     bodyContentMethodParameterIndex = parameterIndex;
                     bodyContentType = bodyParamAnnotation.value();
-                    bodyJavaType = swaggerMethod.getGenericParameterTypes()[parameterIndex];
+
+                    // If the body Content-Type is "application/x-www-form-urlencoded" the real body type is a String.
+                    bodyJavaType = (ContentType.APPLICATION_X_WWW_FORM_URLENCODED.equals(bodyContentType))
+                        ? String.class : swaggerMethod.getGenericParameterTypes()[parameterIndex];
                 } else if (annotationType.equals(FormParam.class)) {
                     final FormParam formParamAnnotation = (FormParam) annotation;
-                    formSubstitutions.add(new Substitution(formParamAnnotation.value(), parameterIndex,
-                        !formParamAnnotation.encoded()));
+
+                    // Encode the key now as this is only required once.
+                    String encodedKey = UrlEscapers.FORM_ESCAPER.escape(formParamAnnotation.value());
+
+                    formSubstitutions.add(new Substitution(encodedKey, parameterIndex, !formParamAnnotation.encoded()));
                     bodyContentType = ContentType.APPLICATION_X_WWW_FORM_URLENCODED;
                     bodyJavaType = String.class;
                 }
@@ -215,6 +187,71 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
         this.bodyContentMethodParameterIndex = bodyContentMethodParameterIndex;
         this.bodyContentType = bodyContentType;
         this.bodyJavaType = bodyJavaType;
+    }
+
+    private static Type getReturnValueWireType(Method swaggerMethod) {
+        final ReturnValueWireType returnValueWireTypeAnnotation =
+            swaggerMethod.getAnnotation(ReturnValueWireType.class);
+        if (returnValueWireTypeAnnotation != null) {
+            Class<?> returnValueWireType = returnValueWireTypeAnnotation.value();
+            if (returnValueWireType == Base64Url.class
+                || returnValueWireType == UnixTime.class
+                || returnValueWireType == DateTimeRfc1123.class) {
+                return returnValueWireType;
+            } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, List.class)) {
+                return returnValueWireType.getGenericInterfaces()[0];
+            } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, Page.class)) {
+                return returnValueWireType;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    private void setupHeaders(Method swaggerMethod) {
+        if (!swaggerMethod.isAnnotationPresent(Headers.class)) {
+            return;
+        }
+
+        final Headers headersAnnotation = swaggerMethod.getAnnotation(Headers.class);
+        final String[] headers = headersAnnotation.value();
+        for (final String header : headers) {
+            final int colonIndex = header.indexOf(":");
+            if (colonIndex < 0) {
+                continue;
+            }
+
+            final String headerName = header.substring(0, colonIndex).trim();
+            if (headerName.isEmpty()) {
+                continue;
+            }
+
+            final String headerValue = header.substring(colonIndex + 1).trim();
+            if (headerValue.isEmpty()) {
+                continue;
+            }
+
+            if (headerValue.contains(",")) {
+                // there are multiple values for this header, so we split them out.
+                this.headers.set(headerName, Arrays.asList(headerValue.split(",")));
+            } else {
+                this.headers.set(headerName, headerValue);
+            }
+        }
+    }
+
+    private static BitSet getExpectedStatusCodes(Method swaggerMethod) {
+        final ExpectedResponses expectedResponses = swaggerMethod.getAnnotation(ExpectedResponses.class);
+        if (expectedResponses != null && expectedResponses.value().length > 0) {
+            BitSet expectedStatusCodes = new BitSet();
+            Arrays.stream(expectedResponses.value()).forEach(expectedStatusCodes::set);
+
+            return expectedStatusCodes;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -294,12 +331,13 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     /**
-     * Sets the headers that have been added to this value based on the provided method arguments into the passed
-     * {@link HttpHeaders}.
+     * Sets the headers that have been added to this value based on the provided method arguments into the passed {@link
+     * HttpHeaders}.
      *
      * @param swaggerMethodArguments The arguments that will be used to create the headers' values.
      * @param httpHeaders The {@link HttpHeaders} where the header values will be set.
      */
+    @SuppressWarnings("unchecked")
     public void setHeaders(Object[] swaggerMethodArguments, HttpHeaders httpHeaders) {
         for (HttpHeader header : headers) {
             httpHeaders.set(header.getName(), header.getValuesList());
@@ -314,8 +352,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
             if (0 <= parameterIndex && parameterIndex < swaggerMethodArguments.length) {
                 final Object methodArgument = swaggerMethodArguments[headerSubstitution.getMethodParameterIndex()];
                 if (methodArgument instanceof Map) {
-                    @SuppressWarnings("unchecked") final Map<String, ?> headerCollection =
-                        (Map<String, ?>) methodArgument;
+                    final Map<String, ?> headerCollection = (Map<String, ?>) methodArgument;
                     final String headerCollectionPrefix = headerSubstitution.getUrlParameterName();
                     for (final Map.Entry<String, ?> headerCollectionEntry : headerCollection.entrySet()) {
                         final String headerName = headerCollectionPrefix + headerCollectionEntry.getKey();
@@ -351,8 +388,8 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
      * Get whether or not the provided response status code is one of the expected status codes for this Swagger
      * method.
      *
-     * 1. If the returned int[] is null, then all 2XX status codes are considered as success code.
-     * 2. If the returned int[] is not-null, only the codes in the array are considered as success code.
+     * 1. If the returned int[] is null, then all 2XX status codes are considered as success code. 2. If the returned
+     * int[] is not-null, only the codes in the array are considered as success code.
      *
      * @param statusCode the status code that was returned in the HTTP response
      * @return whether or not the provided response status code is one of the expected status codes for this Swagger
@@ -360,9 +397,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
      */
     @Override
     public boolean isExpectedResponseStatusCode(final int statusCode) {
-        return expectedStatusCodes == null
-            ? statusCode < 400
-            : expectedStatusCodes.get(statusCode);
+        return expectedStatusCodes == null ? statusCode < 400 : expectedStatusCodes.get(statusCode);
     }
 
     /**
@@ -397,18 +432,92 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
             && swaggerMethodArguments != null
             && 0 <= bodyContentMethodParameterIndex
             && bodyContentMethodParameterIndex < swaggerMethodArguments.length) {
-            result = swaggerMethodArguments[bodyContentMethodParameterIndex];
+            Object body = swaggerMethodArguments[bodyContentMethodParameterIndex];
+
+            result =  (ContentType.APPLICATION_X_WWW_FORM_URLENCODED.equals(bodyContentType))
+                ? turnBodyObjectIntoUrlEncodedString(serializer, body, logger)
+                : body;
         }
 
         if (!CoreUtils.isNullOrEmpty(formSubstitutions) && swaggerMethodArguments != null) {
-            result = formSubstitutions.stream()
-                .map(substitution -> serializeFormData(serializer, substitution.getUrlParameterName(),
-                    swaggerMethodArguments[substitution.getMethodParameterIndex()], substitution.shouldEncode()))
-                .filter(Objects::nonNull)
-                .collect(Collectors.joining("&"));
+            StringBuilder urlEncodedBody = new StringBuilder();
+
+            for (Substitution substitution : formSubstitutions) {
+                addFormDataSubstitution(urlEncodedBody, serializer, substitution.getUrlParameterName(),
+                    swaggerMethodArguments[substitution.getMethodParameterIndex()], substitution.shouldEncode());
+            }
+
+            result = urlEncodedBody.toString();
         }
 
         return result;
+    }
+
+    private static String turnBodyObjectIntoUrlEncodedString(SerializerAdapter serializer, Object body,
+        ClientLogger logger) {
+        try {
+            Map<String, String> bodyAsTree;
+
+            // Generally the serializer will be a JacksonAdapter and it has more performant APIs available.
+            if (serializer instanceof JacksonAdapter) {
+                ObjectMapper mapper = ((JacksonAdapter) serializer).serializer();
+
+                bodyAsTree = ((JacksonAdapter) serializer).serializer()
+                    .convertValue(body, new TypeReference<Map<String, String>>() { });
+            } else {
+                String objectAsJson = serializer.serialize(body, SerializerEncoding.JSON);
+                bodyAsTree = serializer.deserialize(objectAsJson, MAP_STRING_STRING, SerializerEncoding.JSON);
+            }
+
+
+            StringBuilder urlEncodedBody = new StringBuilder();
+
+            for (Map.Entry<String, String> entry : bodyAsTree.entrySet()) {
+                addFormDataSubstitution(urlEncodedBody, serializer, entry.getKey(), entry.getValue(), true);
+            }
+
+            return urlEncodedBody.toString();
+        } catch (IOException e) {
+            throw logger.logExceptionAsError(new UncheckedIOException(e));
+        }
+    }
+
+    private static void addFormDataSubstitution(StringBuilder urlEncodedBody, SerializerAdapter serializer, String key,
+        Object value, boolean shouldEncode) {
+        if (value == null) {
+            return;
+        }
+
+        if (value instanceof List<?>) {
+            for (Object val : (List<?>) value) {
+                addFormData(urlEncodedBody, key, serializeAndEncodeFormValue(serializer, val, shouldEncode));
+            }
+        } else {
+            addFormData(urlEncodedBody, key, serializeAndEncodeFormValue(serializer, value, shouldEncode));
+        }
+    }
+
+    private static String serializeAndEncodeFormValue(SerializerAdapter serializer, Object value,
+        boolean shouldEncode) {
+        if (value == null) {
+            return null;
+        }
+
+        String serializedValue = serializer.serializeRaw(value);
+
+        return shouldEncode ? UrlEscapers.FORM_ESCAPER.escape(serializedValue) : serializedValue;
+    }
+
+    private static void addFormData(StringBuilder urlEncodedBody, String key, String value) {
+        if (value == null) {
+            return;
+        }
+
+        if (urlEncodedBody.length() > 0) {
+            urlEncodedBody.append("&");
+        }
+
+        urlEncodedBody.append(key).append("=").append(value);
     }
 
     /**
@@ -461,35 +570,6 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
         } else {
             return serializer.serializeRaw(value);
         }
-    }
-
-    private static String serializeFormData(SerializerAdapter serializer, String key, Object value,
-        boolean shouldEncode) {
-        if (value == null) {
-            return null;
-        }
-
-        String encodedKey = UrlEscapers.FORM_ESCAPER.escape(key);
-        if (value instanceof List<?>) {
-            return ((List<?>) value).stream()
-                .map(element -> serializeAndEncodeFormValue(serializer, element, shouldEncode))
-                .filter(Objects::nonNull)
-                .map(formValue -> encodedKey + "=" + formValue)
-                .collect(Collectors.joining("&"));
-        } else {
-            return encodedKey + "=" + serializeAndEncodeFormValue(serializer, value, shouldEncode);
-        }
-    }
-
-    private static String serializeAndEncodeFormValue(SerializerAdapter serializer, Object value,
-        boolean shouldEncode) {
-        if (value == null) {
-            return null;
-        }
-
-        String serializedValue = serializer.serializeRaw(value);
-
-        return shouldEncode ? UrlEscapers.FORM_ESCAPER.escape(serializedValue) : serializedValue;
     }
 
     private String applySubstitutions(String originalValue, Iterable<Substitution> substitutions,
