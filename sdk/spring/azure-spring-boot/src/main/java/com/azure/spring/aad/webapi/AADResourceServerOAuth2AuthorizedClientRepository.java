@@ -52,8 +52,8 @@ public class AADResourceServerOAuth2AuthorizedClientRepository implements OAuth2
             return null;
         }
         if (AADAuthorizationGrantType.CLIENT_CREDENTIALS
-            .isSameGrantType(clientRegistration.getAuthorizationGrantType()) ||
-            AADAuthorizationGrantType.ON_BEHALF_OF
+            .isSameGrantType(clientRegistration.getAuthorizationGrantType())
+            || AADAuthorizationGrantType.ON_BEHALF_OF
                 .isSameGrantType(clientRegistration.getAuthorizationGrantType())) {
             return this.oAuth2AuthorizedClientService.loadAuthorizedClient(registrationId, authentication.getName());
         }
