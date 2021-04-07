@@ -123,6 +123,7 @@ if ($ProvisionerApplicationId) {
 $context = Get-AzContext
 
 # Make sure $BaseName is set.
+Log "BaseName is '$BaseName'"
 if (!$BaseName) {
 
     $UserName =  if ($env:USER) { $env:USER } else { "${env:USERNAME}" }
@@ -136,6 +137,7 @@ if (!$BaseName) {
 if (!$ResourceGroupName) {
     # Format the resource group name like in New-TestResources.ps1.
     $ResourceGroupName = "rg-$BaseName"
+    Log "BaseName is is '$BaseName'"
 }
 
 # If no subscription was specified, try to select the Azure SDK Developer Playground subscription.
