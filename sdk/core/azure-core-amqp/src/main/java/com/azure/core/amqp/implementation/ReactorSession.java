@@ -625,13 +625,19 @@ public class ReactorSession implements AmqpSession {
         final ArrayList<Mono<Void>> closingLinks = new ArrayList<>();
         if (disposeLinks) {
             synchronized (closeLock) {
-                openReceiveLinks.forEach((key, link) -> {
-                    closingLinks.add(link.isClosed());
-                    link.dispose(errorCondition);
+                openReceiveLinks.values().forEach(link -> {
+                    if (link == null) {
+                        return;
+                    }
+
+                    closingLinks.add(link.closeAsync(errorCondition));
                 });
-                openSendLinks.forEach((key, link) -> {
-                    closingLinks.add(link.isClosed());
-                    link.dispose(errorCondition);
+                openSendLinks.values().forEach(link -> {
+                    if (link == null) {
+                        return;
+                    }
+
+                    closingLinks.add(link.closeAsync(errorCondition));
                 });
             }
         }
@@ -662,12 +668,14 @@ public class ReactorSession implements AmqpSession {
             return false;
         }
 
-        final LinkSubscription<T> removed = openLinks.remove(key);
-        if (removed != null) {
-            removed.dispose(null);
-        }
+        synchronized (closeLock) {
+            final LinkSubscription<T> removed = openLinks.remove(key);
+            if (removed != null) {
+                removed.closeAsync(null).subscribe();
+            }
 
-        return removed != null;
+            return removed != null;
+        }
     }
 
     private static final class LinkSubscription<T extends AmqpLink> {
@@ -686,30 +694,19 @@ public class ReactorSession implements AmqpSession {
             return link;
         }
 
-        void dispose(ErrorCondition errorCondition) {
+        Mono<Void> closeAsync(ErrorCondition errorCondition) {
             if (isDisposed.getAndSet(true)) {
-                return;
-            }
-
-            if (link instanceof ReactorReceiver) {
-                final ReactorReceiver reactorReceiver = (ReactorReceiver) link;
-                reactorReceiver.closeAsync(errorMessage, errorCondition).subscribe();
-            } else if (link instanceof ReactorSender) {
-                final ReactorSender reactorSender = (ReactorSender) link;
-                reactorSender.closeAsync(errorMessage, errorCondition).subscribe();
-            } else {
-                link.dispose();
+                return Mono.empty();
             }
 
             subscription.dispose();
-        }
 
-        Mono<Void> isClosed() {
             if (link instanceof ReactorReceiver) {
-                return ((ReactorReceiver) link).isClosed();
+                return ((ReactorReceiver) link).closeAsync(errorMessage, errorCondition);
             } else if (link instanceof ReactorSender) {
-                return ((ReactorSender) link).isClosed();
+                return ((ReactorSender) link).closeAsync(errorMessage, errorCondition);
             } else {
+                link.dispose();
                 return Mono.empty();
             }
         }

@@ -482,7 +482,7 @@ class ReactorReceiverTest {
             .expectComplete()
             .verify();
 
-        StepVerifier.create(reactorReceiver.isClosed())
+        StepVerifier.create(reactorReceiver.closeAsync())
             .expectComplete()
             .verify();
 
@@ -523,7 +523,7 @@ class ReactorReceiverTest {
         reactorReceiver.dispose();
 
         // Assert
-        StepVerifier.create(reactorReceiver.isClosed())
+        StepVerifier.create(reactorReceiver.closeAsync())
             .expectComplete()
             .verify();
 

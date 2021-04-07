@@ -281,15 +281,6 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncAutoCloseable {
     }
 
     /**
-     * A mono that completes when the sender has completely closed.
-     *
-     * @return mono that completes when the sender has completely closed.
-     */
-    Mono<Void> isClosed() {
-        return isClosedMono.asMono();
-    }
-
-    /**
      * Takes care of disposing of subscriptions, reactor resources after they've been closed.
      */
     private void completeClose() {
