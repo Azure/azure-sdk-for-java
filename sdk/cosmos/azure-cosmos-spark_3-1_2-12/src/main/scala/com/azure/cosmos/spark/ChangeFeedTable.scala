@@ -26,20 +26,20 @@ import scala.collection.JavaConverters._
 private[spark] object ChangeFeedTable {
 
   private[spark] val defaultIncrementalChangeFeedSchemaForInferenceDisabled = StructType(Seq(
-    StructField(RawJsonBodyAttributeName, StringType),
-    StructField(IdAttributeName, StringType),
-    StructField(TimestampAttributeName, LongType),
-    StructField(ETagAttributeName, StringType)
+    StructField(RawJsonBodyAttributeName, StringType, nullable=false),
+    StructField(IdAttributeName, StringType, nullable=false),
+    StructField(TimestampAttributeName, LongType, nullable=false),
+    StructField(ETagAttributeName, StringType, nullable=false)
   ))
 
   private[spark] val defaultFullFidelityChangeFeedSchemaForInferenceDisabled = StructType(Seq(
-    StructField(RawJsonBodyAttributeName, StringType),
-    StructField(IdAttributeName, StringType),
-    StructField(TimestampAttributeName, LongType),
-    StructField(ETagAttributeName, StringType),
-    StructField(OperationTypeAttributeName, StringType),
-    StructField(PreviousRawJsonBodyAttributeName, StringType),
-    StructField(TtlExpiredAttributeName, BooleanType)
+    StructField(RawJsonBodyAttributeName, StringType, nullable=false),
+    StructField(IdAttributeName, StringType, nullable=false),
+    StructField(TimestampAttributeName, LongType, nullable=false),
+    StructField(ETagAttributeName, StringType, nullable=false),
+    StructField(OperationTypeAttributeName, StringType, nullable=false),
+    StructField(PreviousRawJsonBodyAttributeName, StringType, nullable=true),
+    StructField(TtlExpiredAttributeName, BooleanType, nullable=true)
   ))
 }
 

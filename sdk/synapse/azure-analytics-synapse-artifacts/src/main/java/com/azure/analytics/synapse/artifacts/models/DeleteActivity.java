@@ -50,6 +50,12 @@ public class DeleteActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.dataset", required = true)
     private DatasetReference dataset;
 
+    /*
+     * Delete activity store settings.
+     */
+    @JsonProperty(value = "typeProperties.storeSettings")
+    private StoreReadSettings storeSettings;
+
     /**
      * Get the recursive property: If true, files or sub-folders under current folder path will be deleted recursively.
      * Default is false. Type: boolean (or Expression with resultType boolean).
@@ -153,6 +159,26 @@ public class DeleteActivity extends ExecutionActivity {
      */
     public DeleteActivity setDataset(DatasetReference dataset) {
         this.dataset = dataset;
+        return this;
+    }
+
+    /**
+     * Get the storeSettings property: Delete activity store settings.
+     *
+     * @return the storeSettings value.
+     */
+    public StoreReadSettings getStoreSettings() {
+        return this.storeSettings;
+    }
+
+    /**
+     * Set the storeSettings property: Delete activity store settings.
+     *
+     * @param storeSettings the storeSettings value to set.
+     * @return the DeleteActivity object itself.
+     */
+    public DeleteActivity setStoreSettings(StoreReadSettings storeSettings) {
+        this.storeSettings = storeSettings;
         return this;
     }
 }

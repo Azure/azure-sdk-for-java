@@ -15,19 +15,19 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Wait")
 @JsonFlatten
 @Fluent
-public class WaitActivity extends Activity {
+public class WaitActivity extends ControlActivity {
     /*
      * Duration in seconds.
      */
     @JsonProperty(value = "typeProperties.waitTimeInSeconds", required = true)
-    private int waitTimeInSeconds;
+    private Object waitTimeInSeconds;
 
     /**
      * Get the waitTimeInSeconds property: Duration in seconds.
      *
      * @return the waitTimeInSeconds value.
      */
-    public int getWaitTimeInSeconds() {
+    public Object getWaitTimeInSeconds() {
         return this.waitTimeInSeconds;
     }
 
@@ -37,7 +37,7 @@ public class WaitActivity extends Activity {
      * @param waitTimeInSeconds the waitTimeInSeconds value to set.
      * @return the WaitActivity object itself.
      */
-    public WaitActivity setWaitTimeInSeconds(int waitTimeInSeconds) {
+    public WaitActivity setWaitTimeInSeconds(Object waitTimeInSeconds) {
         this.waitTimeInSeconds = waitTimeInSeconds;
         return this;
     }

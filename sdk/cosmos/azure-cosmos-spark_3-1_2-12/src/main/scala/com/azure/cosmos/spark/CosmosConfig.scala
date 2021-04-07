@@ -7,6 +7,7 @@ import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, FeedRange}
 import com.azure.cosmos.spark.ItemWriteStrategy.ItemWriteStrategy
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
+import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
 import com.azure.cosmos.spark.PartitioningStrategies.PartitioningStrategy
 
 import java.net.URL
@@ -141,19 +142,54 @@ private object CosmosAccountConfig {
   }
 }
 
-private case class CosmosReadConfig(forceEventualConsistency: Boolean)
+private case class CosmosReadConfig(forceEventualConsistency: Boolean,
+                                    schemaConversionMode: SchemaConversionMode)
+
+private object SchemaConversionModes extends Enumeration {
+  type SchemaConversionMode = Value
+
+  val Relaxed: SchemaConversionModes.Value = Value("Relaxed")
+  val Strict: SchemaConversionModes.Value = Value("Strict")
+}
 
 private object CosmosReadConfig {
+  private val DefaultSchemaConversionMode: SchemaConversionMode = SchemaConversionModes.Relaxed
+
   private val ForceEventualConsistency = CosmosConfigEntry[Boolean](key = "spark.cosmos.read.forceEventualConsistency",
     mandatory = false,
     defaultValue = Some(true),
     parseFromStringFunction = value => value.toBoolean,
     helpMessage = "Makes the client use Eventual consistency for read operations")
 
+  private val JsonSchemaConversion = CosmosConfigEntry[SchemaConversionMode](
+    key = "spark.cosmos.read.schemaConversionMode",
+    mandatory = false,
+    defaultValue = Some(DefaultSchemaConversionMode),
+    parseFromStringFunction = value => validateJsonSchemaConversion(value),
+    helpMessage = "Defines whether to throw on inconsistencies between schema definition and json attribute " +
+      "types (Strict) or to return null values (Relaxed).")
+
+  private def validateJsonSchemaConversion(mode: String): SchemaConversionMode = {
+    Option(mode).fold(DefaultSchemaConversionMode)(p => {
+      val modeName = p.trim
+
+      if (modeName.isEmpty) {
+        DefaultSchemaConversionMode
+      } else {
+        SchemaConversionModes
+          .values
+          .find(_.toString.equalsIgnoreCase(modeName))
+          .getOrElse(throw new IllegalArgumentException(s"Invalid json schema conversion mode '$modeName'"))
+      }
+    })
+  }
+
+
   def parseCosmosReadConfig(cfg: Map[String, String]): CosmosReadConfig = {
     val forceEventualConsistency = CosmosConfigEntry.parse(cfg, ForceEventualConsistency)
+    val jsonSchemaConversionMode = CosmosConfigEntry.parse(cfg, JsonSchemaConversion)
 
-    CosmosReadConfig(forceEventualConsistency.get)
+    CosmosReadConfig(forceEventualConsistency.get, jsonSchemaConversionMode.get)
   }
 }
 

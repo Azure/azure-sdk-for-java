@@ -67,7 +67,7 @@ Alternatively, get the connection string from the Azure Portal.
 Once you have the value of the connection string you can create the configuration client:
 
 <!-- embedme ./src/samples/java/com/azure/data/appconfiguration/ReadmeSamples.java#L46-L48 -->
-```Java
+```java
 ConfigurationClient configurationClient = new ConfigurationClientBuilder()
     .connectionString(connectionString)
     .buildClient();
@@ -76,7 +76,7 @@ ConfigurationClient configurationClient = new ConfigurationClientBuilder()
 or
 
 <!-- embedme ./src/samples/java/com/azure/data/appconfiguration/ReadmeSamples.java#L52-L54 -->
-```Java
+```java
 ConfigurationAsyncClient configurationClient = new ConfigurationClientBuilder()
     .connectionString(connectionString)
     .buildAsyncClient();
@@ -96,7 +96,7 @@ new service principal. Before using it, replace "your-application-name" with
 the appropriate name for your service principal.
 
 Create a service principal:
-```Bash
+```bash
 az ad sp create-for-rbac --name http://my-application --skip-assignment
 ```
 
@@ -114,7 +114,7 @@ Output:
 Use the output to set **AZURE_CLIENT_ID** ("appId" above), **AZURE_CLIENT_SECRET**
 ("password" above) and **AZURE_TENANT_ID** ("tenant" above) environment variables.
 The following example shows a way to do this in Bash:
-```Bash
+```bash
 export AZURE_CLIENT_ID="generated app id"
 export AZURE_CLIENT_SECRET="random password"
 export AZURE_TENANT_ID="tenant id"
@@ -132,7 +132,7 @@ Constructing the client also requires your configuration store's URL, which you 
 get from the Azure CLI or the Azure Portal. In the Azure Portal, the URL can be found listed as the service "Endpoint".
 
 <!-- embedme ./src/samples/java/com/azure/data/appconfiguration/ReadmeSamples.java#L58-L62 -->
-```Java
+```java
 DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 ConfigurationClient configurationClient = new ConfigurationClientBuilder()
     .credential(credential)
@@ -155,7 +155,7 @@ The client performs the interactions with the App Configuration service, getting
 An application that needs to retrieve startup configurations is better suited using the synchronous client, for example setting up a SQL connection.
 
 <!-- embedme ./src/samples/java/com/azure/data/appconfiguration/ReadmeSamples.java#L66-L85 -->
-```Java
+```java
 ConfigurationClient configurationClient = new ConfigurationClientBuilder()
     .connectionString(connectionString)
     .buildClient();
@@ -181,7 +181,7 @@ try {
 An application that has a large set of configurations that it needs to periodically update is be better suited using the asynchronous client, for example all settings with a specific label are periodically updated.
 
 <!-- embedme ./src/samples/java/com/azure/data/appconfiguration/ReadmeSamples.java#L89-L94 -->
-```Java
+```java
 ConfigurationAsyncClient configurationClient = new ConfigurationClientBuilder()
     .connectionString(connectionString)
     .buildAsyncClient();
@@ -199,7 +199,7 @@ The following sections provide several code snippets covering some of the most c
 Create a configuration client by using `ConfigurationClientBuilder` by passing connection string.
 
 <!-- embedme ./src/samples/java/com/azure/data/appconfiguration/ReadmeSamples.java#L46-L48 -->
-```Java
+```java
 ConfigurationClient configurationClient = new ConfigurationClientBuilder()
     .connectionString(connectionString)
     .buildClient();
@@ -212,7 +212,7 @@ Create a configuration setting to be stored in the configuration store. There ar
 - `addConfigurationSetting` creates a setting only if the setting does not already exist in the store.
 
 <!-- embedme ./src/samples/java/com/azure/data/appconfiguration/ReadmeSamples.java#L98-L98 -->
-```Java
+```java
 ConfigurationSetting setting = configurationClient.addConfigurationSetting("new_key", "new_label", "new_value");
 ```
 
@@ -221,7 +221,7 @@ Or
 - `setConfigurationSetting` creates a setting if it doesn't exist or overrides an existing setting.
 
 <!-- embedme ./src/samples/java/com/azure/data/appconfiguration/ReadmeSamples.java#L102-L102 -->
-```Java
+```java
 ConfigurationSetting setting = configurationClient.setConfigurationSetting("some_key", "some_label", "some_value");
 ```
 
@@ -230,7 +230,7 @@ ConfigurationSetting setting = configurationClient.setConfigurationSetting("some
 Retrieve a previously stored configuration setting by calling `getConfigurationSetting`.
 
 <!-- embedme ./src/samples/java/com/azure/data/appconfiguration/ReadmeSamples.java#L106-L107 -->
-```Java
+```java
 ConfigurationSetting setting = configurationClient.setConfigurationSetting("some_key", "some_label", "some_value");
 ConfigurationSetting retrievedSetting = configurationClient.getConfigurationSetting("some_key", "some_label");
 ```
@@ -241,7 +241,7 @@ This is determined by comparing the ETag of the `setting` to the one in the serv
 If the ETags are not the same, it means the configuration setting is different, and its value is retrieved.
 
 <!-- embedme ./src/samples/java/com/azure/data/appconfiguration/ReadmeSamples.java#L111-L112 -->
-```Java
+```java
 ConfigurationSetting setting = configurationClient.setConfigurationSetting("some_key", "some_label", "some_value");
 Response<ConfigurationSetting> settingResponse = configurationClient.getConfigurationSettingWithResponse(setting, null, true, Context.NONE);
 ```
@@ -251,7 +251,7 @@ Response<ConfigurationSetting> settingResponse = configurationClient.getConfigur
 Update an existing configuration setting by calling `setConfigurationSetting`.
 
 <!-- embedme ./src/samples/java/com/azure/data/appconfiguration/ReadmeSamples.java#L116-L117 -->
-```Java
+```java
 ConfigurationSetting setting = configurationClient.setConfigurationSetting("some_key", "some_label", "some_value");
 ConfigurationSetting updatedSetting = configurationClient.setConfigurationSetting("some_key", "some_label", "new_value");
 ```
@@ -262,7 +262,7 @@ This is determined by comparing the ETag of the `setting` to the one in the serv
 If the ETag are the same, it means the configuration setting is same, and its value is updated.
 
 <!-- embedme ./src/samples/java/com/azure/data/appconfiguration/ReadmeSamples.java#L121-L122 -->
-```Java
+```java
 ConfigurationSetting setting = configurationClient.setConfigurationSetting("some_key", "some_label", "some_value");
 Response<ConfigurationSetting> settingResponse = configurationClient.setConfigurationSettingWithResponse(setting, true, Context.NONE);
 ```
@@ -272,7 +272,7 @@ Response<ConfigurationSetting> settingResponse = configurationClient.setConfigur
 Delete an existing configuration setting by calling `deleteConfigurationSetting`.
 
 <!-- embedme ./src/samples/java/com/azure/data/appconfiguration/ReadmeSamples.java#L126-L127 -->
-```Java
+```java
 ConfigurationSetting setting = configurationClient.setConfigurationSetting("some_key", "some_label", "some_value");
 ConfigurationSetting deletedSetting = configurationClient.deleteConfigurationSetting("some_key", "some_label");
 ```
@@ -282,7 +282,7 @@ it is same as the given `setting`. This is determined by comparing the ETag of t
 to see if they are the same or not. If the ETag are same, it means the configuration setting is same, and its value is deleted.
 
 <!-- embedme ./src/samples/java/com/azure/data/appconfiguration/ReadmeSamples.java#L131-L132 -->
-```Java
+```java
 ConfigurationSetting setting = configurationClient.setConfigurationSetting("some_key", "some_label", "some_value");
 Response<ConfigurationSetting> settingResponse = configurationClient.deleteConfigurationSettingWithResponse(setting, true, Context.NONE);
 ```
@@ -293,7 +293,7 @@ List multiple configuration settings by calling `listConfigurationSettings`.
 Pass a null `SettingSelector` into the method if you want to fetch all the configuration settings and their fields.
 
 <!-- embedme ./src/samples/java/com/azure/data/appconfiguration/ReadmeSamples.java#L136-L141 -->
-```Java
+```java
 String key = "some_key";
 String key2 = "new_key";
 configurationClient.setConfigurationSetting(key, "some_label", "some_value");
@@ -307,7 +307,7 @@ PagedIterable<ConfigurationSetting> settings = configurationClient.listConfigura
 List all revisions of a configuration setting by calling `listRevisions`.
 
 <!-- embedme ./src/samples/java/com/azure/data/appconfiguration/ReadmeSamples.java#L145-L149 -->
-```Java
+```java
 String key = "revisionKey";
 configurationClient.setConfigurationSetting(key, "some_label", "some_value");
 configurationClient.setConfigurationSetting(key, "new_label", "new_value");
@@ -320,7 +320,7 @@ PagedIterable<ConfigurationSetting> settings = configurationClient.listRevisions
 Set a configuration setting to read-only status.
 
 <!-- embedme ./src/samples/java/com/azure/data/appconfiguration/ReadmeSamples.java#L153-L154 -->
-```Java
+```java
 configurationClient.setConfigurationSetting("some_key", "some_label", "some_value");
 ConfigurationSetting setting = configurationClient.setReadOnly("some_key", "some_label", true);
 ```
@@ -329,7 +329,7 @@ ConfigurationSetting setting = configurationClient.setReadOnly("some_key", "some
 Clear read-only from a configuration setting.
 
 <!-- embedme ./src/samples/java/com/azure/data/appconfiguration/ReadmeSamples.java#L158-L158 -->
-```Java
+```java
 ConfigurationSetting setting = configurationClient.setReadOnly("some_key", "some_label", false);
 ```
 
@@ -338,7 +338,7 @@ ConfigurationSetting setting = configurationClient.setReadOnly("some_key", "some
 Create a configuration client with proxy options.
 
 <!-- embedme ./src/samples/java/com/azure/data/appconfiguration/ReadmeSamples.java#L175-L187 -->
-```Java
+```java
 // Proxy options
 final String hostname = "{your-host-name}";
 final int port = 447; // your port number

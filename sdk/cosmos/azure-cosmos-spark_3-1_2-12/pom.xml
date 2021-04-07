@@ -38,6 +38,7 @@
     </developer>
   </developers>
 
+
   <dependencies>
     <dependency>
       <groupId>org.scala-lang</groupId>
@@ -60,13 +61,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.14.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.15.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>org.scala-lang.modules</groupId>
       <artifactId>scala-java8-compat_2.12</artifactId>
       <version>0.8.0</version> <!-- {x-version-update;cosmos_org.scala-lang.modules:scala-java8-compat_2.12;external_dependency} -->
-      <scope>provided</scope> <!-- Databricks Runtime8 has 0.8.0 jar https://docs.databricks.com/release-notes/runtime/8.0ml.html -->
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
@@ -346,6 +346,14 @@
                     <exclude>com.azure.cosmos.implementation.SparkBridgeInternal</exclude>
                     <exclude>com.azure.cosmos.models.CosmosParameterizedQuery</exclude>
                   </excludes>
+                </relocation>
+                <relocation>
+                  <pattern>scala.compat.java8</pattern>
+                  <shadedPattern>${shadingPrefix}.scala.compat.java8</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>scala.concurrent.java8</pattern>
+                  <shadedPattern>${shadingPrefix}.scala.concurrent.java8</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>io.netty</pattern>

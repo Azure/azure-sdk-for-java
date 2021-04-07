@@ -415,6 +415,21 @@
         "old": "field com.azure.messaging.eventgrid.SystemEventNames.COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD",
         "new": "field com.azure.messaging.eventgrid.SystemEventNames.COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD",
         "justification": "Correct the event type defined in swagger file"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.http.ProxyOptions com.azure.core.http.ProxyOptions::fromConfiguration(com.azure.core.util.Configuration, boolean)",
+        "justification": "Method exposed from Azure Core"
+      },
+      {
+        "code": "java.method.defaultMethodAddedToInterface",
+        "new": "method <T> T com.azure.core.util.serializer.SerializerAdapter::deserialize(byte[], java.lang.reflect.Type, com.azure.core.util.serializer.SerializerEncoding) throws java.io.IOException",
+        "justification": "Method exposed from Azure Core"
+      },
+      {
+        "code": "java.method.defaultMethodAddedToInterface",
+        "new": "method byte[] com.azure.core.util.serializer.SerializerAdapter::serializeToBytes(java.lang.Object, com.azure.core.util.serializer.SerializerEncoding) throws java.io.IOException",
+        "justification": "Method exposed from Azure Core"
       }
     ]
   }
