@@ -11,7 +11,7 @@ import java.util.UUID
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-class CosmosCatalogITest extends IntegrationSpec with CosmosClient {
+class CosmosCatalogITest extends IntegrationSpec with CosmosClient with CosmosLoggingTrait {
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
 
@@ -448,6 +448,108 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient {
     spark.sql(s"DROP TABLE testCatalog.$databaseName.$viewNameWithSchemaInference;")
     tables = spark.sql(s"SHOW TABLES in testCatalog.$databaseName;")
     tables.collect() should have size 1
+  }
+
+  "creating a view without specifying isCosmosView table property" should "throw IllegalArgumentException" in {
+    val databaseName = getAutoCleanableDatabaseName()
+    val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
+    val viewName = containerName +
+      "view" +
+      RandomStringUtils.randomAlphabetic(6).toLowerCase +
+      System.currentTimeMillis()
+
+    spark.sql(s"CREATE DATABASE testCatalog.$databaseName;")
+    spark.sql(s"CREATE TABLE testCatalog.$databaseName.$containerName using cosmos.items;")
+
+    val container = cosmosClient.getDatabase(databaseName).getContainer(containerName)
+    val containerProperties = container.read().block().getProperties
+
+    // verify default partition key path is used
+    containerProperties.getPartitionKeyDefinition.getPaths.asScala.toArray should equal(Array("/id"))
+
+    // validate throughput
+    val throughput = cosmosClient.getDatabase(databaseName).getContainer(containerName).readThroughput().block().getProperties
+    throughput.getManualThroughput shouldEqual 400
+
+    for (state <- Array(true, false)) {
+      val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+      objectNode.put("name", "Shrodigner's snake")
+      objectNode.put("type", "snake")
+      objectNode.put("age", 20)
+      objectNode.put("isAlive", state)
+      objectNode.put("id", UUID.randomUUID().toString)
+      container.createItem(objectNode).block()
+    }
+
+    try {
+      spark.sql(
+        s"CREATE TABLE testCatalog.$databaseName.$viewName using cosmos.items " +
+          s"TBLPROPERTIES(isCosmosViewWithTypo = 'True') " +
+          s"OPTIONS (" +
+          s"spark.cosmos.database = '$databaseName', " +
+          s"spark.cosmos.container = '$containerName', " +
+          "spark.cosmos.read.inferSchemaEnabled = 'False', " +
+          "spark.cosmos.partitioning.strategy = 'Restrictive');")
+
+      fail("Expected IllegalArgumentException not thrown")
+    }
+    catch {
+      case expectedError: IllegalArgumentException => {
+        logInfo(s"Expected IllegaleArgumentException: $expectedError")
+        succeed
+      }
+    }
+  }
+
+  "creating a view with specifying isCosmosView==False table property" should "throw IllegalArgumentException" in {
+    val databaseName = getAutoCleanableDatabaseName()
+    val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
+    val viewName = containerName +
+      "view" +
+      RandomStringUtils.randomAlphabetic(6).toLowerCase +
+      System.currentTimeMillis()
+
+    spark.sql(s"CREATE DATABASE testCatalog.$databaseName;")
+    spark.sql(s"CREATE TABLE testCatalog.$databaseName.$containerName using cosmos.items;")
+
+    val container = cosmosClient.getDatabase(databaseName).getContainer(containerName)
+    val containerProperties = container.read().block().getProperties
+
+    // verify default partition key path is used
+    containerProperties.getPartitionKeyDefinition.getPaths.asScala.toArray should equal(Array("/id"))
+
+    // validate throughput
+    val throughput = cosmosClient.getDatabase(databaseName).getContainer(containerName).readThroughput().block().getProperties
+    throughput.getManualThroughput shouldEqual 400
+
+    for (state <- Array(true, false)) {
+      val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+      objectNode.put("name", "Shrodigner's snake")
+      objectNode.put("type", "snake")
+      objectNode.put("age", 20)
+      objectNode.put("isAlive", state)
+      objectNode.put("id", UUID.randomUUID().toString)
+      container.createItem(objectNode).block()
+    }
+
+    try {
+      spark.sql(
+        s"CREATE TABLE testCatalog.$databaseName.$viewName using cosmos.items " +
+          s"TBLPROPERTIES(isCosmosView = 'False') " +
+          s"OPTIONS (" +
+          s"spark.cosmos.database = '$databaseName', " +
+          s"spark.cosmos.container = '$containerName', " +
+          "spark.cosmos.read.inferSchemaEnabled = 'False', " +
+          "spark.cosmos.partitioning.strategy = 'Restrictive');")
+
+      fail("Expected IllegalArgumentException not thrown")
+    }
+    catch {
+      case expectedError: IllegalArgumentException => {
+        logInfo(s"Expected IllegaleArgumentException: $expectedError")
+        succeed
+      }
+    }
   }
 
   private def createDatabase(spark: SparkSession, databaseName: String) = {

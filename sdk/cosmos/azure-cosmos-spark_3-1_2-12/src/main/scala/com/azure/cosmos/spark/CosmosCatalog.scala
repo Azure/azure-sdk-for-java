@@ -375,8 +375,8 @@ class CosmosCatalog
             lastBatchId = viewDefinitionsSnapshot._1
             val alreadyExistingViews = viewDefinitionsSnapshot._2
 
-            if (alreadyExistingViews.exists(v => v.databaseName.equalsIgnoreCase(databaseName) &&
-              v.viewName.equalsIgnoreCase(viewName))) {
+            if (alreadyExistingViews.exists(v => v.databaseName.equals(databaseName) &&
+              v.viewName.equals(viewName))) {
 
               throw new IllegalArgumentException(s"View '$viewName' already exists in database '$databaseName'")
             }
@@ -433,8 +433,8 @@ class CosmosCatalog
             val lastBatchId = viewDefinitionsSnapshot._1
             val viewDefinitions = viewDefinitionsSnapshot._2
 
-            viewDefinitions.find(v => v.databaseName.equalsIgnoreCase(databaseName) &&
-              v.viewName.equalsIgnoreCase(viewName)) match {
+            viewDefinitions.find(v => v.databaseName.equals(databaseName) &&
+              v.viewName.equals(viewName)) match {
               case Some(existingView) =>
                 val updatedViewDefinitionsSnapshot: Array[ViewDefinition] =
                   (ArrayBuffer(viewDefinitions: _*) - existingView).toArray
@@ -482,8 +482,8 @@ class CosmosCatalog
 
     this.tryGetViewDefinitions(databaseName) match {
       case Some(viewDefinitions) =>
-        viewDefinitions.find(v => databaseName.equalsIgnoreCase(v.databaseName) &&
-          containerName.equalsIgnoreCase(v.viewName))
+        viewDefinitions.find(v => databaseName.equals(v.databaseName) &&
+          containerName.equals(v.viewName))
       case None => None
     }
   }
@@ -494,7 +494,7 @@ class CosmosCatalog
       case Some(viewRepositorySnapshot) =>
         viewRepositorySnapshot.getLatest() match {
           case Some(latestMetadataSnapshot) =>
-            val viewDefinitions = latestMetadataSnapshot._2.filter(v => databaseName.equalsIgnoreCase(v.databaseName))
+            val viewDefinitions = latestMetadataSnapshot._2.filter(v => databaseName.equals(v.databaseName))
             if (viewDefinitions.length > 0) {
               Some(viewDefinitions)
             } else {

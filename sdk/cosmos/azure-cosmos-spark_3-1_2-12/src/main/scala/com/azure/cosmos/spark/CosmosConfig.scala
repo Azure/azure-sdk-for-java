@@ -197,11 +197,12 @@ private case class CosmosViewRepositoryConfig(metaDataPath: Option[String])
 
 private object CosmosViewRepositoryConfig {
   val MetaDataPathKeyName = "spark.cosmos.views.repositoryPath"
+  val IsCosmosViewKeyName = "isCosmosView"
   private val MetaDataPath = CosmosConfigEntry[String](key = MetaDataPathKeyName,
     mandatory = false,
     defaultValue = None,
     parseFromStringFunction = value => value,
-    helpMessage = "Makes the client use Eventual consistency for read operations")
+    helpMessage = "The path to the hive metadata store used to store the view definitions")
 
   private val IsCosmosView = CosmosConfigEntry[Boolean](key = "isCosmosView",
     mandatory = false,
@@ -216,7 +217,16 @@ private object CosmosViewRepositoryConfig {
   }
 
   def isCosmosView(cfg: Map[String, String]): Boolean = {
-    CosmosConfigEntry.parse(cfg, IsCosmosView).getOrElse(false)
+    val isView = CosmosConfigEntry.parse(cfg, IsCosmosView).getOrElse(false)
+
+    if (!isView &&
+        CosmosConfigEntry.parse(cfg, CosmosContainerConfig.optionalContainerNameSupplier).isDefined) {
+
+      throw new IllegalArgumentException(
+        s"Table property '$IsCosmosViewKeyName' must be set to 'True' when defining a Cosmos view.")
+    }
+
+    isView
   }
 }
 
@@ -301,6 +311,11 @@ private object CosmosContainerConfig {
 
   private val containerNameSupplier = CosmosConfigEntry[String](key = CONTAINER_NAME_KEY,
     mandatory = true,
+    parseFromStringFunction = container => container,
+    helpMessage = "Cosmos DB container name")
+
+  val optionalContainerNameSupplier = CosmosConfigEntry[String](key = CONTAINER_NAME_KEY,
+    mandatory = false,
     parseFromStringFunction = container => container,
     helpMessage = "Cosmos DB container name")
 
