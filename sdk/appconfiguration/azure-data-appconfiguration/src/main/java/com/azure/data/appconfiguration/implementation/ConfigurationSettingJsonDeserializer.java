@@ -18,9 +18,10 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -50,7 +51,8 @@ import static com.azure.data.appconfiguration.implementation.ConfigurationSettin
  */
 public class ConfigurationSettingJsonDeserializer extends JsonDeserializer<ConfigurationSetting> {
     private static final ClientLogger LOGGER = new ClientLogger(ConfigurationSettingJsonDeserializer.class);
-
+    private static final String CONFIGURATION_SETTING_PATH =
+        "com.azure.data.appconfiguration.models.ConfigurationSetting";
     private static final String FEATURE_FLAG_CONTENT_TYPE = "application/vnd.microsoft.appconfig.ff+json;charset=utf-8";
     private static final String SECRET_REFERENCE_CONTENT_TYPE =
         "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8";
@@ -81,44 +83,29 @@ public class ConfigurationSettingJsonDeserializer extends JsonDeserializer<Confi
     }
 
     private static ConfigurationSetting read(JsonNode node) {
-        final String key = getRequiredProperty(node, KEY).asText();
+        String key = null;
+        final JsonNode keyNode = node.get(KEY);
+        if (keyNode != null && !keyNode.isNull()) {
+            key = keyNode.asText();
+        }
 
         final JsonNode contentTypeNode = node.get(CONTENT_TYPE);
         String contentType = null;
         if (contentTypeNode != null && !contentTypeNode.isNull()) {
-            contentType = getRequiredProperty(node, CONTENT_TYPE).asText();
+            contentType = contentTypeNode.asText();
         }
 
         try {
-            if (key.startsWith(FeatureFlagConfigurationSetting.KEY_PREFIX) &&
-                    FEATURE_FLAG_CONTENT_TYPE.equals(contentType)) {
+            if (key.startsWith(FeatureFlagConfigurationSetting.KEY_PREFIX)
+                    && FEATURE_FLAG_CONTENT_TYPE.equals(contentType)) {
                 return readFeatureFlagConfigurationSetting(node, contentType);
             } else if (SECRET_REFERENCE_CONTENT_TYPE.equals(contentType)) {
                 return readSecretReferenceConfigurationSetting(node, contentType);
             }
         } catch (Exception exception) {
-            LOGGER.info("Can't read Configuration setting, error is " + exception.getMessage());
+            LOGGER.info("Can't parse Configuration setting, error is " + exception.getMessage());
         }
-
         return readConfigurationSetting(node, contentType);
-    }
-
-    /*
-     * Attempts to retrieve a required property node value.
-     *
-     * @param node Parent JsonNode.
-     * @param name Property being retrieved.
-     * @return The JsonNode of the required property.
-     */
-    private static JsonNode getRequiredProperty(JsonNode node, String name) {
-        JsonNode requiredNode = node.get(name);
-
-        if (requiredNode == null) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                String.format("Setting expected to have '%s' property.", name)));
-        }
-
-        return requiredNode;
     }
 
     private static SecretReferenceConfigurationSetting readSecretReferenceConfigurationSetting(JsonNode settingNode,
@@ -126,10 +113,19 @@ public class ConfigurationSettingJsonDeserializer extends JsonDeserializer<Confi
         throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
         final ConfigurationSetting baseSetting = readConfigurationSetting(settingNode, contentType);
 
-        final String settingValue = getRequiredProperty(settingNode, VALUE).asText();
+        final JsonNode valueNode = settingNode.get(VALUE);
+        String settingValue = null;
+        if (valueNode != null && !valueNode.isNull()) {
+            settingValue = valueNode.asText();
+        }
 
         final JsonNode settingValueNode = toJsonNode(settingValue);
-        final String secretID = getRequiredProperty(settingValueNode, URI).asText();
+
+        final JsonNode uriNode = settingValueNode.get(URI);
+        String secretID = null;
+        if (uriNode != null && !uriNode.isNull()) {
+            secretID = uriNode.asText(); // uri node contains the secret ID value
+        }
 
         SecretReferenceConfigurationSetting secretReferenceConfigurationSetting =
             new SecretReferenceConfigurationSetting(secretID, secretID)
@@ -147,9 +143,19 @@ public class ConfigurationSettingJsonDeserializer extends JsonDeserializer<Confi
     }
 
     private static ConfigurationSetting readConfigurationSetting(JsonNode setting, String contentType) {
-        final String value = getRequiredProperty(setting, VALUE).asText();
+        String value = null;
+        final JsonNode settingValueNode = setting.get(VALUE);
+        if (settingValueNode != null && !settingValueNode.isNull()) {
+            value = settingValueNode.asText();
+        }
 
-        final String key = getRequiredProperty(setting, KEY).asText();
+        final JsonNode keyNode = setting.get(KEY);
+
+        String key = null;
+        if (keyNode != null && !keyNode.isNull()) {
+            key = keyNode.asText();
+        }
+
         final JsonNode labelNode = setting.get(LABEL);
         String label = null;
         if (labelNode != null && !labelNode.isNull()) {
@@ -168,13 +174,20 @@ public class ConfigurationSettingJsonDeserializer extends JsonDeserializer<Confi
             tagsMap = readTags(tagsNode);
         }
 
-        return new ConfigurationSetting()
-                   .setKey(key)
-                   .setValue(value)
-                   .setLabel(label)
-                   .setETag(etag)
-                   .setContentType(contentType)
-                   .setTags(tagsMap);
+        final ConfigurationSetting configurationSetting =
+            new ConfigurationSetting()
+                .setKey(key)
+                .setValue(value)
+                .setLabel(label)
+                .setETag(etag)
+                .setContentType(contentType)
+                .setTags(tagsMap);
+        try {
+            configurationSettingSubclassReflection(ConfigurationSetting.class, configurationSetting, setting);
+        } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException exception) {
+            LOGGER.info("Can't do the reflection on private properties of `ConfiguratioSetting`, "  + exception);
+        }
+        return configurationSetting;
     }
 
     private static FeatureFlagConfigurationSetting readFeatureFlagConfigurationSetting(JsonNode settingNode,
@@ -182,7 +195,12 @@ public class ConfigurationSettingJsonDeserializer extends JsonDeserializer<Confi
         throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
         final ConfigurationSetting baseSetting = readConfigurationSetting(settingNode, contentType);
 
-        final String settingValue = getRequiredProperty(settingNode, VALUE).asText();
+        final JsonNode valueNode = settingNode.get(VALUE);
+        String settingValue = null;
+        if (valueNode != null && !valueNode.isNull()) {
+            settingValue = valueNode.asText();
+        }
+
         final FeatureFlagConfigurationSetting featureFlagConfigurationSetting =
             readFeatureFlagConfigurationSettingValue(settingValue)
                 .setKey(baseSetting.getKey())
@@ -202,23 +220,30 @@ public class ConfigurationSettingJsonDeserializer extends JsonDeserializer<Confi
         Class<T> subclass, ConfigurationSetting setting, JsonNode settingNode)
         throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
 
-        Class<?> superClass = Class.forName(subclass.getName()).getSuperclass();
+        Class<?> configurationSettingClass = subclass;
+        while (!CONFIGURATION_SETTING_PATH.equals(configurationSettingClass.getName())) {
+            configurationSettingClass = Class.forName(subclass.getName()).getSuperclass();
+        }
 
         // private field: readOnly
-        Field readOnlyField = superClass.getDeclaredField("readOnly");
+        Field readOnlyField = configurationSettingClass.getDeclaredField("readOnly");
         readOnlyField.setAccessible(true);
 
-        final boolean locked = getRequiredProperty(settingNode, LOCKED).asBoolean();
+        final JsonNode isLockedNode = settingNode.get(LOCKED);
+        boolean locked = false;
+        if (isLockedNode != null && !isLockedNode.isNull()) {
+            locked = isLockedNode.asBoolean();
+        }
+
         readOnlyField.set(setting, locked);
 
         final JsonNode lastModifiedNode = settingNode.get(LAST_MODIFIED);
         if (lastModifiedNode != null && !lastModifiedNode.isNull()) {
             String lastModified = lastModifiedNode.asText();
             // private filed: lastModified
-            Field lastModifiedField = superClass.getDeclaredField("lastModified");
+            Field lastModifiedField = configurationSettingClass.getDeclaredField("lastModified");
             lastModifiedField.setAccessible(true);
-            LocalDate lastModifiedDate = LocalDate.parse(lastModified, DateTimeFormatter.ofPattern("yyyyMMdd"));
-            lastModifiedField.set(setting, lastModifiedDate);
+            lastModifiedField.set(setting, OffsetDateTime.parse(lastModified, DateTimeFormatter.ISO_DATE_TIME));
         }
         return setting;
     }
@@ -239,7 +264,12 @@ public class ConfigurationSettingJsonDeserializer extends JsonDeserializer<Confi
 
     private static FeatureFlagConfigurationSetting readFeatureFlagConfigurationSettingValue(String settingValue) {
         JsonNode settingValueNode = toJsonNode(settingValue);
-        final String featureId = getRequiredProperty(settingValueNode, ID).asText();
+
+        final JsonNode featureIdNode = settingValueNode.get(ID);
+        String featureId = null;
+        if (featureIdNode != null && !featureIdNode.isNull()) {
+            featureId = featureIdNode.asText();
+        }
 
         final JsonNode descriptionNode = settingValueNode.get(DESCRIPTION);
         String description = null;
@@ -253,7 +283,11 @@ public class ConfigurationSettingJsonDeserializer extends JsonDeserializer<Confi
             displayName = displayNameNode.asText();
         }
 
-        final boolean isEnabled = getRequiredProperty(settingValueNode, ENABLED).asBoolean();
+        final JsonNode isEnabledNode = settingValueNode.get(ENABLED);
+        boolean isEnabled = false;
+        if (isEnabledNode != null && !isEnabledNode.isNull()) {
+            isEnabled = isEnabledNode.asBoolean();
+        }
 
         final JsonNode conditionsNode = settingValueNode.get(CONDITIONS);
         List<FeatureFlagFilter> filters = null;
@@ -268,7 +302,10 @@ public class ConfigurationSettingJsonDeserializer extends JsonDeserializer<Confi
     }
 
     private static List<FeatureFlagFilter> readConditions(JsonNode conditionsNode) {
-        JsonNode clientFiltersNode = getRequiredProperty(conditionsNode, CLIENT_FILTERS);
+        JsonNode clientFiltersNode = conditionsNode.get(CLIENT_FILTERS);
+        if (clientFiltersNode == null || clientFiltersNode.isNull()) {
+            return Collections.emptyList();
+        }
         return readFeatureFlagFilters(clientFiltersNode);
     }
 
@@ -279,11 +316,18 @@ public class ConfigurationSettingJsonDeserializer extends JsonDeserializer<Confi
     }
 
     private static FeatureFlagFilter readFeatureFlagFilter(JsonNode filter) {
-        final String name = getRequiredProperty(filter, NAME).asText();
-        final FeatureFlagFilter flagFilter = new FeatureFlagFilter(name);
-        final JsonNode parametersNode = getRequiredProperty(filter, PARAMETERS);
+        String name = null;
+        final JsonNode filterNameNode = filter.get(NAME);
+        if (filterNameNode != null && !filterNameNode.isNull()) {
+            name = filterNameNode.asText();
+        }
 
-        flagFilter.setParameters(readParameters(parametersNode));
+        final FeatureFlagFilter flagFilter = new FeatureFlagFilter(name);
+
+        final JsonNode parametersNode = filter.get(PARAMETERS);
+        if (parametersNode != null && !parametersNode.isNull()) {
+            flagFilter.setParameters(readParameters(parametersNode));
+        }
         return flagFilter;
     }
 
