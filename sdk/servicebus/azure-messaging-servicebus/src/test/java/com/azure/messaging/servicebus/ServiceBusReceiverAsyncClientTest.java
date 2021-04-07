@@ -163,6 +163,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         when(sessionReceiveLink.receive()).thenReturn(messageProcessor.publishOn(Schedulers.single()));
         when(sessionReceiveLink.getEndpointStates()).thenReturn(endpointProcessor);
+        when(sessionReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
 
         ConnectionOptions connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(),
