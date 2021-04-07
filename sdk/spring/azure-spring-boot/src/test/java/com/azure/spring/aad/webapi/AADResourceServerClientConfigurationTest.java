@@ -87,6 +87,17 @@ public class AADResourceServerClientConfigurationTest {
             });
     }
 
+    @Test(expected = IllegalStateException.class)
+    public void testGrantTypeIsAuthorizationCodeClient() {
+        this.contextRunner
+            .withUserConfiguration(AADResourceServerClientConfiguration.class)
+            .withPropertyValues("azure.activedirectory.authorization-clients.graph.authorization-grant-type="
+                + "authorization_code")
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+            });
+    }
+
     @Test
     public void testExistCustomAndGraphClient() {
         this.contextRunner

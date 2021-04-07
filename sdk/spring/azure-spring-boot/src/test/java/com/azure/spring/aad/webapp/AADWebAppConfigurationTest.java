@@ -148,19 +148,8 @@ public class AADWebAppConfigurationTest {
                 ClientRegistration azure = repo.findByRegistrationId("azure");
                 ClientRegistration graph = repo.findByRegistrationId("graph");
 
-                assertNotNull(azure);
-                assertDefaultScopes(
-                    azure,
-                    "openid",
-                    "profile",
-                    "offline_access");
-
                 assertEquals(repo.findByRegistrationId("azure").getAuthorizationGrantType(), AuthorizationGrantType.AUTHORIZATION_CODE);
                 assertEquals(repo.findByRegistrationId("graph").getAuthorizationGrantType(), AuthorizationGrantType.CLIENT_CREDENTIALS);
-                assertTrue(repo.isClientNeedConsentWhenLogin(graph));
-                assertTrue(repo.isClientNeedConsentWhenLogin("graph"));
-                assertTrue(repo.isClientCredentials("graph"));
-                assertDefaultScopes(repo.findByRegistrationId("graph"), "fakeValue:/.default");
             });
     }
 
@@ -171,6 +160,20 @@ public class AADWebAppConfigurationTest {
             .withPropertyValues(
                 "azure.activedirectory.authorization-clients.graph.scopes = fakeValue:/.default",
                 "azure.activedirectory.authorization-clients.graph.authorizationGrantType = on-behalf-of"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+            });
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void clientWhichIsNotAuthorizationCodeButOnDemandExceptionTest() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.authorization-clients.graph.scopes = fakeValue:/.default",
+                "azure.activedirectory.authorization-clients.graph.authorizationGrantType = on-behalf-of",
+                "azure.activedirectory.authorization-clients.graph.on-demand = true"
             )
             .run(context -> {
                 AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);

@@ -3,6 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
+import com.azure.spring.aad.AADAuthorizationGrantType;
 import com.azure.spring.aad.webapp.AuthorizationClientProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.springframework.beans.factory.InitializingBean;
@@ -16,6 +17,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -45,6 +47,8 @@ public class AADAuthenticationProperties implements InitializingBean {
     private String clientSecret;
 
     /**
+     * @see <a href="https://github.com/Azure/azure-sdk-for-java/tree/c27ee4421309cec8598462b419e035cf091429da/sdk/spring/azure-spring-boot-starter-active-directory#accessing-a-web-application">aad-starter readme.</a>
+     * @see com.azure.spring.aad.webapp.AADWebAppConfiguration#clientRegistrationRepository()
      * @deprecated Now the redirect-url-template is not configurable.
      * <p>
      * Redirect URI always equal to "{baseUrl}/login/oauth2/code/".
@@ -52,9 +56,6 @@ public class AADAuthenticationProperties implements InitializingBean {
      * <p>
      * User should set "Redirect URI" to "{baseUrl}/login/oauth2/code/" in Azure Portal.
      * </p>
-     *
-     * @see <a href="https://github.com/Azure/azure-sdk-for-java/tree/c27ee4421309cec8598462b419e035cf091429da/sdk/spring/azure-spring-boot-starter-active-directory#accessing-a-web-application">aad-starter readme.</a>
-     * @see com.azure.spring.aad.webapp.AADWebAppConfiguration#clientRegistrationRepository()
      */
     @Deprecated
     private String redirectUriTemplate;
@@ -146,10 +147,10 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     public boolean allowedGroupsConfigured() {
         return Optional.of(this)
-                       .map(AADAuthenticationProperties::getUserGroup)
-                       .map(AADAuthenticationProperties.UserGroupProperties::getAllowedGroups)
-                       .map(allowedGroups -> !allowedGroups.isEmpty())
-                       .orElse(false);
+            .map(AADAuthenticationProperties::getUserGroup)
+            .map(AADAuthenticationProperties.UserGroupProperties::getAllowedGroups)
+            .map(allowedGroups -> !allowedGroups.isEmpty())
+            .orElse(false);
     }
 
     public UserGroupProperties getUserGroup() {
@@ -305,9 +306,9 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     public boolean isAllowedGroup(String group) {
         return Optional.ofNullable(getUserGroup())
-                       .map(UserGroupProperties::getAllowedGroups)
-                       .orElseGet(Collections::emptyList)
-                       .contains(group);
+            .map(UserGroupProperties::getAllowedGroups)
+            .orElseGet(Collections::emptyList)
+            .contains(group);
     }
 
     @Override
@@ -345,6 +346,16 @@ public class AADAuthenticationProperties implements InitializingBean {
                 + "But actually azure.activedirectory.tenant-id=" + tenantId
                 + ", and azure.activedirectory.user-group.allowed-groups=" + userGroup.getAllowedGroups());
         }
+        authorizationClients.values()
+                            .stream()
+                            .filter(AuthorizationClientProperties::isOnDemand)
+                            .filter(v -> Objects.nonNull(v.getAuthorizationGrantType()))
+                            .forEach(v -> {
+                                if (!AADAuthorizationGrantType.AUTHORIZATION_CODE.equals(
+                                    v.getAuthorizationGrantType())) {
+                                    throw new IllegalStateException("onDemand only support authorization_code grant type");
+                                }
+                            });
     }
 
     private boolean isMultiTenantsApplication(String tenantId) {

@@ -153,10 +153,10 @@ public class AADWebAppConfiguration {
         ClientRegistration.Builder result = createClientBuilder(id, authz.getAuthorizationGrantType());
         List<String> scopes = authz.getScopes();
         if (AADAuthorizationGrantType.ON_BEHALF_OF.equals(authz.getAuthorizationGrantType())) {
-            throw new IllegalStateException("Web Application do not support on behalf of");
+            throw new IllegalStateException("Web Application do not support on-behalf-of grant type. id = "
+                + id + ".");
         }
-        if (authz.isOnDemand()
-            && !AADAuthorizationGrantType.ON_BEHALF_OF.equals(authz.getAuthorizationGrantType())) {
+        if (authz.isOnDemand()) {
             if (!scopes.contains("openid")) {
                 scopes.add("openid");
             }
@@ -170,11 +170,13 @@ public class AADWebAppConfiguration {
 
     private ClientRegistration.Builder createClientBuilder(String id, AADAuthorizationGrantType aadAuthorizationGrantType) {
         ClientRegistration.Builder result = ClientRegistration.withRegistrationId(id);
-        if (aadAuthorizationGrantType != null) {
-            result.authorizationGrantType(new AuthorizationGrantType(aadAuthorizationGrantType.getValue()));
-        } else {
-            result.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE);
-        }
+
+        AuthorizationGrantType authorizationGrantType = Optional.ofNullable(aadAuthorizationGrantType)
+            .map(AADAuthorizationGrantType::getValue)
+            .map(AuthorizationGrantType::new)
+            .orElse(AuthorizationGrantType.AUTHORIZATION_CODE);
+        result.authorizationGrantType(authorizationGrantType);
+
         result.redirectUri("{baseUrl}/login/oauth2/code/");
 
         result.clientId(properties.getClientId());
