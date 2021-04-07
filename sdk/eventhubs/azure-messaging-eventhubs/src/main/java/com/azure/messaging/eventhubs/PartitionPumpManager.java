@@ -133,20 +133,25 @@ class PartitionPumpManager {
      * @param ownership The partition ownership information for which the connection state will be verified.
      */
     void verifyPartitionConnection(PartitionOwnership ownership) {
-        String partitionId = ownership.getPartitionId();
-        if (partitionPumps.containsKey(partitionId)) {
-            PartitionPump partitionPump = partitionPumps.get(partitionId);
-            EventHubConsumerAsyncClient consumerClient = partitionPump.getClient();
-            if (consumerClient.isConnectionClosed()) {
-                logger.info("Connection closed for {}, partition {}. Removing the consumer.",
-                    ownership.getEventHubName(), partitionId);
-                try {
-                    partitionPumps.get(partitionId).close();
-                } catch (Exception ex) {
-                    logger.warning(Messages.FAILED_CLOSE_CONSUMER_PARTITION, partitionId, ex);
-                } finally {
-                    partitionPumps.remove(partitionId);
-                }
+        final String partitionId = ownership.getPartitionId();
+        final PartitionPump partitionPump = partitionPumps.get(partitionId);
+
+        if (partitionPump == null) {
+            logger.info("eventHubName[{}] partitionId[{}] No partition pump found for ownership record.",
+                ownership.getEventHubName(), partitionId);
+            return;
+        }
+
+        final EventHubConsumerAsyncClient consumerClient = partitionPump.getClient();
+        if (consumerClient.isConnectionClosed()) {
+            logger.info("eventHubName[{}] partitionId[{}] Connection closed for partition. Removing the consumer.",
+                ownership.getEventHubName(), partitionId);
+            try {
+                partitionPump.close();
+            } catch (Exception ex) {
+                logger.warning(Messages.FAILED_CLOSE_CONSUMER_PARTITION, partitionId, ex);
+            } finally {
+                partitionPumps.remove(partitionId);
             }
         }
     }
