@@ -96,7 +96,7 @@ public class ConfigurationSettingJsonDeserializer extends JsonDeserializer<Confi
         }
 
         try {
-            if (key.startsWith(FeatureFlagConfigurationSetting.KEY_PREFIX)
+            if (key != null && key.startsWith(FeatureFlagConfigurationSetting.KEY_PREFIX)
                     && FEATURE_FLAG_CONTENT_TYPE.equals(contentType)) {
                 return readFeatureFlagConfigurationSetting(node, contentType);
             } else if (SECRET_REFERENCE_CONTENT_TYPE.equals(contentType)) {

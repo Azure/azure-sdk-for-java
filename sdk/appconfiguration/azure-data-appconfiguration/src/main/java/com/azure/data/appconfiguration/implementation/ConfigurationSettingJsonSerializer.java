@@ -74,11 +74,8 @@ public final class ConfigurationSettingJsonSerializer extends JsonSerializer<Con
         } else if (value instanceof SecretReferenceConfigurationSetting) {
             writeSecretReferenceConfigurationSetting((SecretReferenceConfigurationSetting) value, generator);
             settingValue = jsonObjectWriter.toString();
-        } else if (value instanceof ConfigurationSetting) {
-            settingValue = value.getValue();
         } else {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("Configuration setting type '%s' isn't supported.", value.getClass().getName())));
+            settingValue = value.getValue();
         }
 
         gen.writeStartObject();

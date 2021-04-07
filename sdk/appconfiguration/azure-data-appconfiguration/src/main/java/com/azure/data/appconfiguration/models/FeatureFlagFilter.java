@@ -3,6 +3,7 @@
 
 package com.azure.data.appconfiguration.models;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -19,6 +20,7 @@ public final class FeatureFlagFilter {
      */
     public FeatureFlagFilter(String name) {
         this.name = name;
+        this.parameters = new HashMap<>();
     }
 
     /**

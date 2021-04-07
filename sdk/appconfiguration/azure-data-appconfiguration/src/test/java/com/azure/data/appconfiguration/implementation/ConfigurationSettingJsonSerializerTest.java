@@ -23,9 +23,9 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Tests for {@link ConfigurationSettingSerializerTest}
+ * Tests for {@link ConfigurationSettingJsonSerializerTest}
  */
-public class ConfigurationSettingSerializerTest {
+public class ConfigurationSettingJsonSerializerTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
