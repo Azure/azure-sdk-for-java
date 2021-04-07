@@ -25,9 +25,6 @@ parameters:
 - name: SparseCheckoutPaths
   type: object
   default: []
-- name: Pool
-  type: string
-  default: azsdk-pool-mms-ubuntu-1804-general
 - name: OsVmImage
   type: string
   default: MMSUbuntu18.04
