@@ -550,30 +550,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests assert that the setting can not be deleted after set the setting to read-only.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void setReadOnly(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
-        client = getConfigurationAsyncClient(httpClient, serviceVersion);
-
-        lockUnlockRunner((expected) -> {
-            StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
-                .assertNext(response -> assertConfigurationEquals(expected, response))
-                .verifyComplete();
-
-            // read-only setting
-            StepVerifier.create(client.setReadOnly(expected.getKey(), expected.getLabel(), true))
-                .assertNext(response -> assertConfigurationEquals(expected, response))
-                .verifyComplete();
-
-            // unsuccessfully delete
-            StepVerifier.create(client.deleteConfigurationSettingWithResponse(expected, false))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, 409));
-        });
-    }
-
-    /**
      * Tests assert that the setting can be deleted after clear read-only of the setting.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -604,96 +580,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             StepVerifier.create(client.deleteConfigurationSettingWithResponse(expected, false))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
-        });
-    }
-
-    /**
-     * Tests assert that the setting can not be deleted after set the setting to read-only.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void setReadOnlyWithConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
-        client = getConfigurationAsyncClient(httpClient, serviceVersion);
-        lockUnlockRunner((expected) -> {
-            StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
-                .assertNext(response -> assertConfigurationEquals(expected, response))
-                .verifyComplete();
-
-            // read-only setting
-            StepVerifier.create(client.setReadOnlyWithResponse(expected, true))
-                .assertNext(response -> assertConfigurationEquals(expected, response))
-                .verifyComplete();
-
-            // unsuccessfully delete
-            StepVerifier.create(client.deleteConfigurationSettingWithResponse(expected, false))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, 409));
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void setReadOnlyWithConfigurationSettingConvenience(HttpClient httpClient,
-        ConfigurationServiceVersion serviceVersion) {
-        client = getConfigurationAsyncClient(httpClient, serviceVersion);
-        lockUnlockRunner((expected) -> {
-            StepVerifier.create(client.addConfigurationSetting(expected))
-                .assertNext(response -> assertConfigurationEquals(expected, response))
-                .verifyComplete();
-
-            // read-only setting
-            StepVerifier.create(client.setReadOnly(expected, true))
-                .assertNext(response -> assertConfigurationEquals(expected, response))
-                .verifyComplete();
-
-            // unsuccessfully delete
-            StepVerifier.create(client.deleteConfigurationSetting(expected))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, 409));
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void setReadOnlyWithFeatureFlagConfigurationSettingConvenience(HttpClient httpClient,
-        ConfigurationServiceVersion serviceVersion) {
-        client = getConfigurationAsyncClient(httpClient, serviceVersion);
-        lockUnlockFeatureFlagRunner((expected) -> {
-            StepVerifier.create(client.addConfigurationSetting(expected))
-                .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(expected,
-                    (FeatureFlagConfigurationSetting) response))
-                .verifyComplete();
-
-            // read-only setting
-            StepVerifier.create(client.setReadOnly(expected, true))
-                .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(expected,
-                    (FeatureFlagConfigurationSetting) response))
-                .verifyComplete();
-
-            // unsuccessfully delete
-            StepVerifier.create(client.deleteConfigurationSetting(expected))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, 409));
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void setReadOnlyWithSecretReferenceConfigurationSettingConvenience(HttpClient httpClient,
-        ConfigurationServiceVersion serviceVersion) {
-        client = getConfigurationAsyncClient(httpClient, serviceVersion);
-        lockUnlockSecretReferenceRunner((expected) -> {
-            StepVerifier.create(client.addConfigurationSetting(expected))
-                .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(expected,
-                    (SecretReferenceConfigurationSetting) response))
-                .verifyComplete();
-
-            // read-only setting
-            StepVerifier.create(client.setReadOnly(expected, true))
-                .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(expected,
-                    (SecretReferenceConfigurationSetting) response))
-                .verifyComplete();
-
-            // unsuccessfully delete
-            StepVerifier.create(client.deleteConfigurationSetting(expected))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, 409));
         });
     }
 

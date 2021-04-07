@@ -48,9 +48,6 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     private static final String LABEL_PREFIX = "label";
     private static final int PREFIX_LENGTH = 8;
     private static final int RESOURCE_LENGTH = 16;
-    private static final String FEATURE_FLAG_CONTENT_TYPE = "application/vnd.microsoft.appconfig.ff+json;charset=utf-8";
-    private static final String SECRET_REFERENCE_CONTENT_TYPE =
-        "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8";
 
     static String connectionString;
 
@@ -332,18 +329,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void setReadOnly(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
-
-    @Test
     public abstract void clearReadOnly(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
-
-    @Test
-    public abstract void setReadOnlyWithConfigurationSetting(HttpClient httpClient,
-        ConfigurationServiceVersion serviceVersion);
-
-    @Test
-    public abstract void setReadOnlyWithConfigurationSettingConvenience(HttpClient httpClient,
-        ConfigurationServiceVersion serviceVersion);
 
     @Test
     public abstract void clearReadOnlyWithConfigurationSetting(HttpClient httpClient,
@@ -361,20 +347,12 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void setReadOnlyWithFeatureFlagConfigurationSettingConvenience(HttpClient httpClient,
-        ConfigurationServiceVersion serviceVersion);
-
-    @Test
     public abstract void clearReadOnlyWithFeatureFlagConfigurationSettingConvenience(HttpClient httpClient,
         ConfigurationServiceVersion serviceVersion);
 
     void lockUnlockFeatureFlagRunner(Consumer<FeatureFlagConfigurationSetting> testRunner) {
         testRunner.accept(getFeatureFlagConfigurationSetting(getKey(), "Feature Flag X"));
     }
-
-    @Test
-    public abstract void setReadOnlyWithSecretReferenceConfigurationSettingConvenience(HttpClient httpClient,
-        ConfigurationServiceVersion serviceVersion);
 
     @Test
     public abstract void clearReadOnlyWithSecretReferenceConfigurationSettingConvenience(HttpClient httpClient,
@@ -813,7 +791,6 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         return new FeatureFlagConfigurationSetting(key, false)
                 .setDisplayName(displayName)
                 .setClientFilters(filters)
-                .setContentType(FEATURE_FLAG_CONTENT_TYPE)
                 .setValue(getFeatureFlagConfigurationSettingValue(key));
     }
 }

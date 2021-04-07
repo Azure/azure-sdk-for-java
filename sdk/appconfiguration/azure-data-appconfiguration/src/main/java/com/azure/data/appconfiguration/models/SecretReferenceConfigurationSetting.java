@@ -13,6 +13,8 @@ import java.util.Map;
 @Fluent
 public final class SecretReferenceConfigurationSetting extends ConfigurationSetting {
     private final String secretId;
+    private static final String SECRET_REFERENCE_CONTENT_TYPE =
+        "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8";
 
     /**
      * The constructor for a secret reference configuration setting.
@@ -24,6 +26,7 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
         this.secretId = secretId;
         super.setKey(key);
         super.setValue("{\"uri\":\"" + secretId + "\"}");
+        super.setContentType(SECRET_REFERENCE_CONTENT_TYPE);
     }
 
     /**

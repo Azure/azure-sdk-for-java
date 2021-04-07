@@ -22,6 +22,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonDeserializer;
 import com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -80,10 +81,11 @@ public final class ConfigurationAsyncClient {
      */
     ConfigurationAsyncClient(String serviceEndpoint, HttpPipeline pipeline, ConfigurationServiceVersion version,
         SyncTokenPolicy syncTokenPolicy) {
+
         final JacksonAdapter jacksonAdapter = new JacksonAdapter();
         jacksonAdapter.serializer().registerModule(ConfigurationSettingJsonSerializer.getModule());
-        // TODO: investigate why Deserializer is not needed.
-//        jacksonAdapter.serializer().registerModule(ConfigurationSettingJsonDeserializer.getModule());
+        jacksonAdapter.serializer().registerModule(ConfigurationSettingJsonDeserializer.getModule());
+
         this.service = RestProxy.create(ConfigurationService.class, pipeline, jacksonAdapter);
         this.serviceEndpoint = serviceEndpoint;
         this.apiVersion = version.getVersion();

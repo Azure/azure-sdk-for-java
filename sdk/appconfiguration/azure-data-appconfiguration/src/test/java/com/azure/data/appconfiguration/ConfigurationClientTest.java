@@ -447,26 +447,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests assert that the setting can not be deleted after set the setting to read-only.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void setReadOnly(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
-        client = getConfigurationClient(httpClient, serviceVersion);
-
-        lockUnlockRunner((expected) -> {
-            // read-only setting
-            client.addConfigurationSettingWithResponse(expected, Context.NONE);
-            client.setReadOnly(expected.getKey(), expected.getLabel(), true);
-
-            // unsuccessfully delete
-            assertRestException(() ->
-                client.deleteConfigurationSettingWithResponse(expected, false, Context.NONE),
-                HttpResponseException.class, 409);
-        });
-    }
-
-    /**
      * Tests assert that the setting can be deleted after clear read-only of the setting.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -489,73 +469,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             // successfully deleted
             assertConfigurationEquals(expected,
                 client.deleteConfigurationSettingWithResponse(expected, false, Context.NONE).getValue());
-        });
-    }
-
-    /**
-     * Tests assert that the setting can not be deleted after lock the setting.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void setReadOnlyWithConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
-        client = getConfigurationClient(httpClient, serviceVersion);
-        lockUnlockRunner((expected) -> {
-            // lock setting
-            client.addConfigurationSettingWithResponse(expected, Context.NONE);
-            client.setReadOnlyWithResponse(expected, true, Context.NONE);
-
-            // unsuccessfully delete
-            assertRestException(() ->
-                client.deleteConfigurationSettingWithResponse(expected, false, Context.NONE),
-                HttpResponseException.class, 409);
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void setReadOnlyWithConfigurationSettingConvenience(HttpClient httpClient,
-        ConfigurationServiceVersion serviceVersion) {
-        client = getConfigurationClient(httpClient, serviceVersion);
-        lockUnlockRunner((expected) -> {
-            // lock setting
-            client.addConfigurationSetting(expected);
-            client.setReadOnly(expected, true);
-
-            // unsuccessfully delete
-            assertRestException(() -> client.deleteConfigurationSetting(expected),
-                HttpResponseException.class, 409);
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void setReadOnlyWithFeatureFlagConfigurationSettingConvenience(HttpClient httpClient,
-        ConfigurationServiceVersion serviceVersion) {
-        client = getConfigurationClient(httpClient, serviceVersion);
-        lockUnlockFeatureFlagRunner((expected) -> {
-            // lock setting
-            client.addConfigurationSetting(expected);
-            client.setReadOnly(expected, true);
-
-            // unsuccessfully delete
-            assertRestException(() -> client.deleteConfigurationSetting(expected),
-                HttpResponseException.class, 409);
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void setReadOnlyWithSecretReferenceConfigurationSettingConvenience(HttpClient httpClient,
-        ConfigurationServiceVersion serviceVersion) {
-        client = getConfigurationClient(httpClient, serviceVersion);
-        lockUnlockSecretReferenceRunner((expected) -> {
-            // lock setting
-            client.addConfigurationSetting(expected);
-            client.setReadOnly(expected, true);
-
-            // unsuccessfully delete
-            assertRestException(() -> client.deleteConfigurationSetting(expected),
-                HttpResponseException.class, 409);
         });
     }
 

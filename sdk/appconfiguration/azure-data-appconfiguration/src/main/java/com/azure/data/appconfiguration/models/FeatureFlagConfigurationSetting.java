@@ -17,6 +17,8 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
     private String displayName;
     private List<FeatureFlagFilter> clientFilters;
 
+    private static final String FEATURE_FLAG_CONTENT_TYPE = "application/vnd.microsoft.appconfig.ff+json;charset=utf-8";
+
     /**
      * A prefix is used to construct a feature flag configuration setting's key.
      */
@@ -33,6 +35,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
         this.featureId = featureId;
         this.isEnabled = isEnabled;
         super.setKey(KEY_PREFIX + featureId);
+        super.setContentType(FEATURE_FLAG_CONTENT_TYPE);
     }
 
     /**
