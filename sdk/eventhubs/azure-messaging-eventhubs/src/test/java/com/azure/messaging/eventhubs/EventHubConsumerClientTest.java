@@ -122,16 +122,16 @@ public class EventHubConsumerClientTest {
 
         when(connection.createReceiveLink(any(), argThat(name -> name.endsWith(PARTITION_ID)),
             any(EventPosition.class), any(ReceiveOptions.class))).thenReturn(
-                Mono.fromCallable(() -> {
-                    System.out.println("Returning first link");
-                    return amqpReceiveLink;
-                }), Mono.fromCallable(() -> {
-                    System.out.println("Returning second link");
-                    return amqpReceiveLink2;
-                }));
+            Mono.fromCallable(() -> {
+                System.out.println("Returning first link");
+                return amqpReceiveLink;
+            }), Mono.fromCallable(() -> {
+                System.out.println("Returning second link");
+                return amqpReceiveLink2;
+            }));
 
         asyncConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, messageSerializer, CONSUMER_GROUP, PREFETCH, Schedulers.parallel(), false, onClientClosed);
+            connectionProcessor, messageSerializer, CONSUMER_GROUP, PREFETCH, false, onClientClosed);
         consumer = new EventHubConsumerClient(asyncConsumer, Duration.ofSeconds(10));
     }
 
@@ -157,7 +157,7 @@ public class EventHubConsumerClientTest {
         // Arrange
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(
             HOSTNAME, EVENT_HUB_NAME, connectionProcessor, messageSerializer, CONSUMER_GROUP,
-            PREFETCH, Schedulers.parallel(), false, onClientClosed);
+            PREFETCH, false, onClientClosed);
         final EventHubConsumerClient consumer = new EventHubConsumerClient(runtimeConsumer, Duration.ofSeconds(5));
         final int numberOfEvents = 10;
         sendMessages(messageProcessor, numberOfEvents, PARTITION_ID);
@@ -186,8 +186,7 @@ public class EventHubConsumerClientTest {
         // Arrange
         final ReceiveOptions options = new ReceiveOptions().setTrackLastEnqueuedEventProperties(true);
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(
-            HOSTNAME, EVENT_HUB_NAME, connectionProcessor, messageSerializer, CONSUMER_GROUP, PREFETCH,
-            Schedulers.parallel(), false, onClientClosed);
+            HOSTNAME, EVENT_HUB_NAME, connectionProcessor, messageSerializer, CONSUMER_GROUP, PREFETCH, false, onClientClosed);
         final EventHubConsumerClient consumer = new EventHubConsumerClient(runtimeConsumer, Duration.ofSeconds(5));
 
         final int numberOfEvents = 10;
