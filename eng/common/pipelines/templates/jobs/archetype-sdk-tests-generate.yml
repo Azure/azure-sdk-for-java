@@ -28,9 +28,12 @@ parameters:
 - name: Pool
   type: string
   default: azsdk-pool-mms-ubuntu-1804-general
+- name: Pool
+  type: string
+  default: Azure Pipelines
 - name: OsVmImage
   type: string
-  default: MMSUbuntu18.04
+  default: ubuntu-18.04
 
 jobs:
 - job: generate_matrix
