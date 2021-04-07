@@ -41,6 +41,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
@@ -51,6 +52,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
@@ -60,6 +62,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
@@ -118,7 +121,7 @@ class ReactorConnectionTest {
 
     @BeforeAll
     static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(10));
     }
 
     @AfterAll
@@ -214,10 +217,6 @@ class ReactorConnectionTest {
      */
     @Test
     void createSession() {
-        // Arrange
-        // We want to ensure that the ReactorExecutor does not shutdown unexpectedly. There are still items to still
-        // process.
-        when(reactor.process()).thenReturn(true);
         when(reactor.connectionToHost(connectionHandler.getHostname(), connectionHandler.getProtocolPort(),
             connectionHandler)).thenReturn(connectionProtonJ);
         when(connectionProtonJ.session()).thenReturn(session);
@@ -255,9 +254,6 @@ class ReactorConnectionTest {
     @Test
     void doesNotCreateSessionWhenConnectionInactive() {
         // Arrange
-        // We want to ensure that the ReactorExecutor does not shutdown unexpectedly. There are still items to still
-        // process.
-        when(reactor.process()).thenReturn(true);
         when(reactor.connectionToHost(connectionHandler.getHostname(), connectionHandler.getProtocolPort(),
             connectionHandler)).thenReturn(connectionProtonJ);
         when(connectionProtonJ.session()).thenReturn(session);
@@ -283,11 +279,6 @@ class ReactorConnectionTest {
      */
     @Test
     void removeSessionThatExists() {
-        // Arrange
-        // We want to ensure that the ReactorExecutor does not shutdown unexpectedly. There are still items to still
-        // process.
-        when(reactor.process()).thenReturn(true);
-
         final Record reactorRecord = mock(Record.class);
         when(reactor.attachments()).thenReturn(reactorRecord);
         when(reactor.connectionToHost(connectionHandler.getHostname(), connectionHandler.getProtocolPort(),
@@ -316,10 +307,6 @@ class ReactorConnectionTest {
      */
     @Test
     void removeSessionThatDoesNotExist() {
-        // Arrange
-        // We want to ensure that the ReactorExecutor does not shutdown unexpectedly. There are still items to still
-        // process.
-        when(reactor.process()).thenReturn(true);
         when(reactor.connectionToHost(connectionHandler.getHostname(), connectionHandler.getProtocolPort(),
             connectionHandler)).thenReturn(connectionProtonJ);
         when(connectionProtonJ.session()).thenReturn(session);
@@ -346,10 +333,6 @@ class ReactorConnectionTest {
      */
     @Test
     void initialConnectionState() {
-        // We want to ensure that the ReactorExecutor does not shutdown unexpectedly. There are still items to still
-        // process.
-        when(reactor.process()).thenReturn(true);
-
         // Assert
         StepVerifier.create(connection.getEndpointStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
@@ -362,11 +345,6 @@ class ReactorConnectionTest {
      */
     @Test
     void onConnectionStateOpen() {
-        // Arrange
-        // We want to ensure that the ReactorExecutor does not shutdown unexpectedly. There are still items to still
-        // process.
-        when(reactor.process()).thenReturn(true);
-
         final Event event = mock(Event.class);
         when(event.getConnection()).thenReturn(connectionProtonJ);
         when(connectionProtonJ.getHostname()).thenReturn(FULLY_QUALIFIED_NAMESPACE);
@@ -389,11 +367,6 @@ class ReactorConnectionTest {
      */
     @Test
     void createCBSNode() {
-        // Arrange
-        // We want to ensure that the ReactorExecutor does not shutdown unexpectedly. There are still items to still
-        // process.
-        when(reactor.process()).thenReturn(true);
-
         when(connectionProtonJ.getRemoteState()).thenReturn(EndpointState.ACTIVE);
         final Event mock = mock(Event.class);
         when(mock.getConnection()).thenReturn(connectionProtonJ);
@@ -409,12 +382,11 @@ class ReactorConnectionTest {
      * Verifies that if the connection cannot be created within the timeout period, it errors.
      */
     @Test
-    void createCBSNodeTimeoutException() {
-        // Arrange
-        // We want to ensure that the ReactorExecutor does not shutdown unexpectedly. There are still items to still
-        // process.
-        when(reactor.process()).thenReturn(true);
-
+    void createCBSNodeTimeoutException() throws IOException {
+        when(reactor.process()).then(invocation -> {
+            TimeUnit.SECONDS.sleep(10);
+            return true;
+        });
         final Duration timeout = Duration.ofSeconds(2);
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
             .setMaxRetries(1)
@@ -426,11 +398,19 @@ class ReactorConnectionTest {
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION);
 
         final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails);
-        final ReactorHandlerProvider provider = mock(ReactorHandlerProvider.class);
+        final ReactorHandlerProvider handlerProvider = mock(ReactorHandlerProvider.class);
+        final ReactorProvider reactorProvider = mock(ReactorProvider.class);
+        final ReactorDispatcher dispatcher = mock(ReactorDispatcher.class);
 
-        when(provider.createConnectionHandler(CONNECTION_ID, connectionOptions))
+        when(reactorProvider.createReactor(anyString(), anyInt())).thenReturn(reactor);
+        when(reactorProvider.getReactor()).thenReturn(reactor);
+        when(reactorProvider.getReactorDispatcher()).thenReturn(dispatcher);
+
+        when(dispatcher.getShutdownSignal()).thenReturn(Mono.never());
+
+        when(handlerProvider.createConnectionHandler(CONNECTION_ID, connectionOptions))
             .thenReturn(handler);
-        when(provider.createSessionHandler(CONNECTION_ID, FULLY_QUALIFIED_NAMESPACE, SESSION_NAME, timeout))
+        when(handlerProvider.createSessionHandler(CONNECTION_ID, FULLY_QUALIFIED_NAMESPACE, SESSION_NAME, timeout))
             .thenReturn(sessionHandler);
 
         when(reactor.connectionToHost(FULLY_QUALIFIED_NAMESPACE, handler.getProtocolPort(), handler))
@@ -438,7 +418,7 @@ class ReactorConnectionTest {
 
         // Act and Assert
         final ReactorConnection connectionBad = new ReactorConnection(CONNECTION_ID, connectionOptions,
-            reactorProvider, provider, tokenManager, messageSerializer, SenderSettleMode.SETTLED,
+            reactorProvider, handlerProvider, tokenManager, messageSerializer, SenderSettleMode.SETTLED,
             ReceiverSettleMode.FIRST);
 
         StepVerifier.create(connectionBad.getClaimsBasedSecurityNode())
@@ -463,11 +443,6 @@ class ReactorConnectionTest {
      */
     @Test
     void endpointStatesOnDispose() {
-        // Arrange
-        // We want to ensure that the ReactorExecutor does not shutdown unexpectedly. There are still items to still
-        // process.
-        when(reactor.process()).thenReturn(true);
-
         when(connectionProtonJ.getRemoteState()).thenReturn(EndpointState.ACTIVE, EndpointState.CLOSED,
             EndpointState.CLOSED);
         final Event mock = mock(Event.class);
@@ -567,11 +542,6 @@ class ReactorConnectionTest {
      */
     @Test
     void cannotCreateResourcesOnFailure() {
-        // Arrange
-        // We want to ensure that the ReactorExecutor does not shutdown unexpectedly. There are still items to still
-        // process.
-        when(reactor.process()).thenReturn(true);
-
         final Record reactorRecord = mock(Record.class);
         when(reactor.attachments()).thenReturn(reactorRecord);
 
@@ -629,10 +599,6 @@ class ReactorConnectionTest {
      */
     @Test
     void setsPropertiesUsingCustomEndpoint() throws IOException {
-        // We want to ensure that the ReactorExecutor does not shutdown unexpectedly. There are still items to still
-        // process.
-        when(reactor.process()).thenReturn(true);
-
         final String connectionId = "new-connection-id";
         final String hostname = "custom-endpoint.com";
         final int port = 10002;

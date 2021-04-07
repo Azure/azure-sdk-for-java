@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.test.StepVerifier;
 
@@ -86,6 +87,8 @@ public class ReactorDispatcherTest {
 
     @AfterEach
     public void afterEach() throws Exception {
+        Mockito.reset(reactor, selectable, pipe, sinkChannel, sourceChannel);
+
         if (mockCloseable != null) {
             mockCloseable.close();
         }
