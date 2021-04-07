@@ -36,6 +36,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ReactorConnection implements AmqpConnection {
@@ -368,7 +369,7 @@ public class ReactorConnection implements AmqpConnection {
                 } else {
                     closeConnectionWork();
                 }
-            } catch (IOException e) {
+            } catch (IOException | RejectedExecutionException e) {
                 logger.warning("connectionId[{}] Error while scheduling closeConnection work. Manually disposing.",
                     connectionId, e);
                 closeConnectionWork();

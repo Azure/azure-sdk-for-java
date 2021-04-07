@@ -38,6 +38,7 @@ import reactor.core.scheduler.Schedulers;
 import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -216,9 +217,9 @@ public class RequestResponseChannel implements Disposable {
                     sendLink.close();
                     receiveLink.close();
                 });
-            } catch (IOException e) {
-                logger.warning("connectionId[{}] linkName[{}] Unable to schedule close work. Closing manually",
-                    connectionId, linkName);
+            } catch (IOException | RejectedExecutionException e) {
+                logger.info("connectionId[{}] linkName[{}] Unable to schedule close work. Closing manually",
+                    connectionId, linkName, e);
                 sendLink.close();
                 receiveLink.close();
             }

@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -252,8 +253,8 @@ public class ReactorSession implements AmqpSession {
         return Mono.fromRunnable(() -> {
             try {
                 provider.getReactorDispatcher().invoke(() -> disposeWork(errorCondition, disposeLinks));
-            } catch (IOException e) {
-                logger.warning("connectionId[{}] sessionName[{}] Error while scheduling work. Manually disposing.",
+            } catch (IOException | RejectedExecutionException e) {
+                logger.info("connectionId[{}] sessionName[{}] Error while scheduling work. Manually disposing.",
                     sessionHandler.getConnectionId(), sessionName, e);
                 disposeWork(errorCondition, disposeLinks);
             }

@@ -25,6 +25,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
@@ -271,8 +272,9 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncAutoCloseable {
         return Mono.fromRunnable(() -> {
             try {
                 dispatcher.invoke(closeReceiver);
-            } catch (IOException e) {
-                logger.warning("Could not schedule disposing of receiver on ReactorDispatcher.", e);
+            } catch (IOException | RejectedExecutionException e) {
+                logger.info("connectionId[{}] linkName[{}] Could not schedule disposing of receiver on "
+                        + "ReactorDispatcher. Manually invoking.", handler.getConnectionId(), getLinkName(), e);
                 closeReceiver.run();
             }
         }).then(isClosedMono.asMono()).publishOn(Schedulers.boundedElastic());

@@ -115,10 +115,10 @@ public final class ReactorDispatcher {
                 logger.warning("connectionId[{}] signalWorkQueue failed before reactor closed.",
                     connectionId, ignorePipeClosedDuringReactorShutdown);
                 shutdownSignal.emitError(new RuntimeException(String.format(
-                    "connectionId[%s] IOSignal sink was interrupted.", connectionId),
+                    "connectionId[%s] IO Sink was interrupted before reactor closed.", connectionId),
                     ignorePipeClosedDuringReactorShutdown), Sinks.EmitFailureHandler.FAIL_FAST);
             } else {
-                logger.info("connectionId[{}] signalWorkQueue failed with an error after closed.",
+                logger.verbose("connectionId[{}] signalWorkQueue failed with an error after closed. Can be ignored.",
                     connectionId, ignorePipeClosedDuringReactorShutdown);
             }
         }
@@ -144,13 +144,23 @@ public final class ReactorDispatcher {
                         oneKbByteBuffer = ByteBuffer.allocate(1024);
                     }
                 } catch (ClosedChannelException ignorePipeClosedDuringReactorShutdown) {
-                    logger.info("connectionId[{}] WorkScheduler.run() failed with an error. Can be ignored.",
-                        connectionId, ignorePipeClosedDuringReactorShutdown);
+                    if (!isClosed.get()) {
+                        logger.warning("connectionId[{}] WorkScheduler.run() failed before reactor was closed.",
+                            connectionId, ignorePipeClosedDuringReactorShutdown);
+                        shutdownSignal.emitError(new RuntimeException(String.format(
+                            "connectionId[%s] IO Source was interrupted before reactor closed.", connectionId),
+                            ignorePipeClosedDuringReactorShutdown), Sinks.EmitFailureHandler.FAIL_FAST);
+                    } else {
+                        logger.verbose("connectionId[{}] WorkScheduler.run() failed with an error. Can be ignored.",
+                            connectionId, ignorePipeClosedDuringReactorShutdown);
+                    }
+
+                    break;
                 } catch (IOException ioException) {
-                    shutdownSignal.emitError(logger.logExceptionAsError(
-                        new RuntimeException(String.format("connectionId[%s] WorkScheduler.run() failed with an error.",
-                            connectionId), ioException)), Sinks.EmitFailureHandler.FAIL_FAST);
-                    return;
+                    shutdownSignal.emitError(logger.logExceptionAsError(new RuntimeException(
+                        String.format("connectionId[%s] WorkScheduler.run() failed with an error.", connectionId),
+                        ioException)), Sinks.EmitFailureHandler.FAIL_FAST);
+                    break;
                 }
 
                 Work topWork;

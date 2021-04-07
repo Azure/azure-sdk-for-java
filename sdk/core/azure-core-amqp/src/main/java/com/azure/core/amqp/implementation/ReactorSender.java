@@ -376,8 +376,8 @@ class ReactorSender implements AmqpSendLink, AsyncAutoCloseable {
         return Mono.fromRunnable(() -> {
             try {
                 reactorProvider.getReactorDispatcher().invoke(closeWork);
-            } catch (IOException e) {
-                logger.warning("connectionId[{}] entityPath[{}] linkName[{}]: Could not schedule close work. Running"
+            } catch (IOException | RejectedExecutionException e) {
+                logger.info("connectionId[{}] entityPath[{}] linkName[{}]: Could not schedule close work. Running"
                     + " manually.", handler.getConnectionId(), entityPath, getLinkName(), e);
                 closeWork.run();
             }
