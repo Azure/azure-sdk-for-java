@@ -3,6 +3,8 @@
 
 package com.azure.digitaltwins.parser.implementation.codegen;
 
+import java.io.IOException;
+
 /**
  * Interface for top-level declarations in java code files.
  */
@@ -18,5 +20,5 @@ public interface JavaFile {
      *
      * @param codeWriter A {@link CodeWriter} object for generating the file code.
      */
-    void generateCode(CodeWriter codeWriter);
+    void generateCode(CodeWriter codeWriter) throws IOException;
 }
