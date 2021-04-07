@@ -3,7 +3,6 @@
 
 package com.azure.core.amqp.implementation.handler;
 
-import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Modified;
@@ -15,7 +14,6 @@ import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Receiver;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
-import reactor.util.concurrent.Queues;
 
 import java.util.Collections;
 import java.util.Set;
