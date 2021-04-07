@@ -61,8 +61,8 @@ server:
     trust-store-type:    # Used for MTLS   
 ```
 1. Start SampleApplication
-1. MTLS for mutual authentication. So you need a server or client have trusted CA certificate.([azure-spring-boot-sample-keyvault-certificates-client-side]is a trusted client sample.)
-1. Your client or Server access https://localhost:8443/.
+1. MTLS for mutual authentication. So your client needs have a trusted CA certificate.([azure-spring-boot-sample-keyvault-certificates-client-side]is a trusted client sample.)
+1. Your client access https://localhost:8443/
 
 Then the client or server will get
 ```text

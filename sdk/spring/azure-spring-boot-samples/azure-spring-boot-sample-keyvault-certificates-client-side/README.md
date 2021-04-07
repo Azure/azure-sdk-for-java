@@ -25,7 +25,7 @@ azure:
 
 #### Run with TLS
 1. Start azure-spring-boot-sample-keyvault-certificates-server-side's SampleApplication
-1. Start azure-spring-boot-sample-keyvault-certificates-client-side's SampleApplication with [run-with-MTLS] configuration.
+1. Start azure-spring-boot-sample-keyvault-certificates-client-side's SampleApplication
 1. Access http://localhost:8080/tls
 
 Then you will get
@@ -45,8 +45,8 @@ Response from "https://localhost:8443/": Hello World
     }
     ``` 
 1. Start azure-spring-boot-sample-keyvault-certificates-server-side's SampleApplication
-1. Start azure-spring-boot-sample-keyvault-certificates-client-side's SampleApplication  
-1. Access http://localhost:8080/mtls
+1. Start azure-spring-boot-sample-keyvault-certificates-client-side's SampleApplication with [MTLS] configuration.  
+1. When the [MTLS] server starts, `tls endpoint`(http://localhost:8080/tls) will not be able to access the resource. Access http://localhost:8080/mtls
 
 Then you will get
 ```text
@@ -64,4 +64,4 @@ Response from "https://localhost:8443/": Hello World
 [azure_spring_boot_starter_key_vault_certificates]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/README.md
 [steps_to_store_certificate]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/README.md#creating-an-azure-key-vault
 [azure-spring-boot-sample-keyvault-certificates-server-side]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-server-side
-[run-with-MTLS]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/README.md#run-with-MTLS
+[MTLS]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/README.md#run-with-MTLS
