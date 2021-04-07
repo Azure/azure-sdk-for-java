@@ -486,10 +486,14 @@ public class ReactorSession implements AmqpSession {
         //@formatter:off
         final Disposable subscription = reactorSender.getEndpointStates().subscribe(state -> {
         }, error -> {
-            removeLink(openSendLinks, linkName);
+            if (!isDisposed.get()) {
+                removeLink(openSendLinks, linkName);
+            }
         }, () -> {
-            logger.info("linkName[{}]: Complete. Removing and disposing send link.", linkName);
-            removeLink(openSendLinks, linkName);
+            if (!isDisposed.get()) {
+                logger.info("linkName[{}]: Complete. Removing and disposing send link.", linkName);
+                removeLink(openSendLinks, linkName);
+            }
         });
         //@formatter:on
 
@@ -542,12 +546,16 @@ public class ReactorSession implements AmqpSession {
 
         final Disposable subscription = reactorReceiver.getEndpointStates().subscribe(state -> {
         }, error -> {
-            removeLink(openReceiveLinks, linkName);
+            if (!isDisposed.get()) {
+                removeLink(openReceiveLinks, linkName);
+            }
         }, () -> {
-            logger.info("linkName[{}] entityPath[{}]: Complete. Removing receive link.",
-                linkName, entityPath);
+            if (!isDisposed.get()) {
+                logger.info("linkName[{}] entityPath[{}]: Complete. Removing receive link.",
+                    linkName, entityPath);
 
-            removeLink(openReceiveLinks, linkName);
+                removeLink(openReceiveLinks, linkName);
+            }
         });
 
         return new LinkSubscription<>(reactorReceiver, subscription,

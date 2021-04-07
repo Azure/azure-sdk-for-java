@@ -226,10 +226,20 @@ public class ReactorConnection implements AmqpConnection {
                 final Disposable subscription = amqpSession.getEndpointStates()
                     .subscribe(state -> {
                     }, error -> {
+                        // If we were already disposing of the connection, the session would be removed.
+                        if (isDisposed.get()) {
+                            return;
+                        }
+
                         logger.info("connectionId[{}] sessionName[{}]: Error occurred. Removing and disposing"
                             + " session.", connectionId, sessionName, error);
                         removeSession(key);
                     }, () -> {
+                        // If we were already disposing of the connection, the session would be removed.
+                        if (isDisposed.get()) {
+                            return;
+                        }
+
                         logger.verbose("connectionId[{}] sessionName[{}]: Complete. Removing and disposing session.",
                             connectionId, sessionName);
                         removeSession(key);
@@ -405,7 +415,7 @@ public class ReactorConnection implements AmqpConnection {
         connection.close();
 
         final ArrayList<Mono<Void>> closingSessions = new ArrayList<>();
-        sessionMap.forEach((key, link) -> closingSessions.add(link.isClosed()));
+        sessionMap.values().forEach(link -> closingSessions.add(link.isClosed()));
 
         final Mono<Void> closedExecutor;
         if (executor != null) {
@@ -491,7 +501,7 @@ public class ReactorConnection implements AmqpConnection {
 
         @Override
         public void onConnectionError(Throwable exception) {
-            logger.warning(
+            logger.info(
                 "onConnectionError connectionId[{}], hostName[{}], message[Starting new reactor], error[{}]",
                 getId(), getFullyQualifiedNamespace(), exception.getMessage(), exception);
 

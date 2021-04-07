@@ -218,7 +218,7 @@ public class RequestResponseChannel implements Disposable {
                     receiveLink.close();
                 });
             } catch (IOException | RejectedExecutionException e) {
-                logger.info("connectionId[{}] linkName[{}] Unable to schedule close work. Closing manually",
+                logger.info("connectionId[{}] linkName[{}] Unable to schedule close work. Closing manually.",
                     connectionId, linkName, e);
                 sendLink.close();
                 receiveLink.close();
