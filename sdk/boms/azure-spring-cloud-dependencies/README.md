@@ -1,11 +1,11 @@
-# Azure Spring Cloud Dependencies for client libraries
+# Azure client library for Java
 
-## Table of contents
+## Key concepts
 
-## Getting started
+## Examples
 
-### Adding the dependencies to your project
+### Troubleshooting
 
-### Adding libraries to your project
+### Next steps
 
-### Adding library dependencies to your project
+### Contributing
