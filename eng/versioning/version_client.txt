@@ -42,11 +42,11 @@ com.azure:azure-ai-formrecognizer-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-metricsadvisor;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-ai-textanalytics;5.0.5;5.1.0-beta.6
 com.azure:azure-ai-textanalytics-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-analytics-synapse-accesscontrol;1.0.0-beta.2;1.0.0-beta.3
-com.azure:azure-analytics-synapse-artifacts;1.0.0-beta.3;1.0.0-beta.4
-com.azure:azure-analytics-synapse-spark;1.0.0-beta.2;1.0.0-beta.3
-com.azure:azure-analytics-synapse-managedprivateendpoints;1.0.0-beta.2;1.0.0-beta.3
-com.azure:azure-analytics-synapse-monitoring;1.0.0-beta.2;1.0.0-beta.3
+com.azure:azure-analytics-synapse-accesscontrol;1.0.0-beta.3;1.0.0-beta.4
+com.azure:azure-analytics-synapse-artifacts;1.0.0-beta.4;1.0.0-beta.5
+com.azure:azure-analytics-synapse-spark;1.0.0-beta.3;1.0.0-beta.4
+com.azure:azure-analytics-synapse-managedprivateendpoints;1.0.0-beta.3;1.0.0-beta.4
+com.azure:azure-analytics-synapse-monitoring;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-communication-chat;1.0.0-beta.6;1.0.0
 com.azure:azure-communication-common;1.0.0-beta.6;1.0.0
 com.azure:azure-communication-sms;1.0.0-beta.4;1.0.0
