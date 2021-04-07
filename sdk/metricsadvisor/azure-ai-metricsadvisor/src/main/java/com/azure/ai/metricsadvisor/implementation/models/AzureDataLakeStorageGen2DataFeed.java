@@ -17,7 +17,7 @@ public final class AzureDataLakeStorageGen2DataFeed extends DataFeedDetail {
     /*
      * The dataSourceParameter property.
      */
-    @JsonProperty(value = "dataSourceParameter", required = true)
+    @JsonProperty(value = "dataSourceParameter")
     private AzureDataLakeStorageGen2Parameter dataSourceParameter;
 
     /**

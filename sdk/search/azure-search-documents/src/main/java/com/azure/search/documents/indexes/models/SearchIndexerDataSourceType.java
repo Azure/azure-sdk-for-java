@@ -27,6 +27,9 @@ public final class SearchIndexerDataSourceType extends ExpandableStringEnum<Sear
     /** Static value mysql for SearchIndexerDataSourceType. */
     public static final SearchIndexerDataSourceType MY_SQL = fromString("mysql");
 
+    /** Static value adlsgen2 for SearchIndexerDataSourceType. */
+    public static final SearchIndexerDataSourceType ADLS_GEN2 = fromString("adlsgen2");
+
     /**
      * Creates or finds a SearchIndexerDataSourceType from its string representation.
      *
